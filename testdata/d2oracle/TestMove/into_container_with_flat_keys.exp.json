@@ -129,7 +129,8 @@
                                     "range": "d2/testdata/d2oracle/TestMove/into_container_with_flat_keys.d2,3:16:51-3:25:60",
                                     "value": [
                                       {
-                                        "string": "#FFFFFF"
+                                        "string": "#FFFFFF",
+                                        "raw_string": "#FFFFFF"
                                       }
                                     ]
                                   }
@@ -172,7 +173,8 @@
                                     "range": "d2/testdata/d2oracle/TestMove/into_container_with_flat_keys.d2,4:18:79-4:27:88",
                                     "value": [
                                       {
-                                        "string": "#FFFFFF"
+                                        "string": "#FFFFFF",
+                                        "raw_string": "#FFFFFF"
                                       }
                                     ]
                                   }

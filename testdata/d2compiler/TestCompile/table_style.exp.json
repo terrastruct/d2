@@ -54,7 +54,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,1:9:28-1:18:37",
                           "value": [
                             {
-                              "string": "sql_table"
+                              "string": "sql_table",
+                              "raw_string": "sql_table"
                             }
                           ]
                         }
@@ -86,7 +87,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,2:13:51-2:19:57",
                           "value": [
                             {
-                              "string": "string"
+                              "string": "string",
+                              "raw_string": "string"
                             }
                           ]
                         }

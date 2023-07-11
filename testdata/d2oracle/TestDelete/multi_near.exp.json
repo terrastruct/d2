@@ -77,7 +77,8 @@
                           "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,2:8:24-2:11:27",
                           "value": [
                             {
-                              "string": "API"
+                              "string": "API",
+                              "raw_string": "API"
                             }
                           ]
                         }
@@ -138,7 +139,8 @@
                           "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,5:8:44-5:12:48",
                           "value": [
                             {
-                              "string": "Blah"
+                              "string": "Blah",
+                              "raw_string": "Blah"
                             }
                           ]
                         }

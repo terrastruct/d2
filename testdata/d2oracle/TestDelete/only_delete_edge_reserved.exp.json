@@ -65,7 +65,8 @@
                           "range": "d2/testdata/d2oracle/TestDelete/only_delete_edge_reserved.d2,0:18:18-0:27:27",
                           "value": [
                             {
-                              "string": "#000e3d"
+                              "string": "#000e3d",
+                              "raw_string": "#000e3d"
                             }
                           ]
                         }

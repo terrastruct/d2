@@ -88,7 +88,8 @@
                           "range": "d2/testdata/d2oracle/TestDelete/arrowhead_label.d2,1:26:36-1:33:43",
                           "value": [
                             {
-                              "string": "diamond"
+                              "string": "diamond",
+                              "raw_string": "diamond"
                             }
                           ]
                         }

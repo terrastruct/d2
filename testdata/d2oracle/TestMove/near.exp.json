@@ -54,7 +54,8 @@
                           "range": "d2/testdata/d2oracle/TestMove/near.d2,1:8:13-1:11:16",
                           "value": [
                             {
-                              "string": "a.y"
+                              "string": "a.y",
+                              "raw_string": "a.y"
                             }
                           ]
                         }

@@ -54,7 +54,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/double-quoted.d2,2:5:14-2:13:22",
                           "value": [
                             {
-                              "string": "im a var"
+                              "string": "im a var",
+                              "raw_string": "im a var"
                             }
                           ]
                         }

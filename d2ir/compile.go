@@ -108,6 +108,7 @@ func (c *compiler) resolveSubstitutions(refctx *RefContext) {
 		varsMap = vars.Map()
 	}
 
+	subbed := false
 	switch {
 	case refctx.Key.Value.UnquotedString != nil:
 		for i, box := range refctx.Key.Value.UnquotedString.Value {
@@ -115,20 +116,26 @@ func (c *compiler) resolveSubstitutions(refctx *RefContext) {
 				resolvedField := c.resolveSubstitution(varsMap, refctx.Key, box.Substitution)
 				if resolvedField != nil {
 					refctx.Key.Value.UnquotedString.Value[i].String = go2.Pointer(resolvedField.Primary().String())
+					subbed = true
 				}
 			}
 		}
-		refctx.Key.Value.UnquotedString.Coalesce()
+		if subbed {
+			refctx.Key.Value.UnquotedString.Coalesce()
+		}
 	case refctx.Key.Value.DoubleQuotedString != nil:
 		for i, box := range refctx.Key.Value.DoubleQuotedString.Value {
 			if box.Substitution != nil {
 				resolvedField := c.resolveSubstitution(varsMap, refctx.Key, box.Substitution)
 				if resolvedField != nil {
 					refctx.Key.Value.DoubleQuotedString.Value[i].String = go2.Pointer(resolvedField.Primary().String())
+					subbed = true
 				}
 			}
 		}
-		refctx.Key.Value.DoubleQuotedString.Coalesce()
+		if subbed {
+			refctx.Key.Value.DoubleQuotedString.Coalesce()
+		}
 	}
 }
 

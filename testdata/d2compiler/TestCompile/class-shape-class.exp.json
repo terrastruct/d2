@@ -78,7 +78,8 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,2:11:38-2:16:43",
                                     "value": [
                                       {
-                                        "string": "class"
+                                        "string": "class",
+                                        "raw_string": "class"
                                       }
                                     ]
                                   }
@@ -144,7 +145,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,7:9:70-7:19:80",
                           "value": [
                             {
-                              "string": "classClass"
+                              "string": "classClass",
+                              "raw_string": "classClass"
                             }
                           ]
                         }
@@ -176,7 +178,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,8:12:93-8:15:96",
                           "value": [
                             {
-                              "string": "int"
+                              "string": "int",
+                              "raw_string": "int"
                             }
                           ]
                         }

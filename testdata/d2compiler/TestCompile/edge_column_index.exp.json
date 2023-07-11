@@ -54,7 +54,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/edge_column_index.d2,1:8:15-1:17:24",
                           "value": [
                             {
-                              "string": "sql_table"
+                              "string": "sql_table",
+                              "raw_string": "sql_table"
                             }
                           ]
                         }
@@ -86,7 +87,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/edge_column_index.d2,2:5:30-2:8:33",
                           "value": [
                             {
-                              "string": "int"
+                              "string": "int",
+                              "raw_string": "int"
                             }
                           ]
                         }
@@ -118,7 +120,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/edge_column_index.d2,3:9:43-3:12:46",
                           "value": [
                             {
-                              "string": "int"
+                              "string": "int",
+                              "raw_string": "int"
                             }
                           ]
                         }
@@ -179,7 +182,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/edge_column_index.d2,7:8:65-7:17:74",
                           "value": [
                             {
-                              "string": "sql_table"
+                              "string": "sql_table",
+                              "raw_string": "sql_table"
                             }
                           ]
                         }
@@ -211,7 +215,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/edge_column_index.d2,8:5:80-8:8:83",
                           "value": [
                             {
-                              "string": "int"
+                              "string": "int",
+                              "raw_string": "int"
                             }
                           ]
                         }
@@ -243,7 +248,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/edge_column_index.d2,9:7:91-9:13:97",
                           "value": [
                             {
-                              "string": "string"
+                              "string": "string",
+                              "raw_string": "string"
                             }
                           ]
                         }

@@ -87,7 +87,8 @@
                 "range": "d2/testdata/d2oracle/TestDelete/children_nested_referenced_conflicts.d2,4:5:15-4:9:19",
                 "value": [
                   {
-                    "string": "hi"
+                    "string": "hi",
+                    "raw_string": "hi"
                   }
                 ]
               }
@@ -130,7 +131,8 @@
                 "range": "d2/testdata/d2oracle/TestDelete/children_nested_referenced_conflicts.d2,5:7:27-5:12:32",
                 "value": [
                   {
-                    "string": "hey"
+                    "string": "hey",
+                    "raw_string": "hey"
                   }
                 ]
               }

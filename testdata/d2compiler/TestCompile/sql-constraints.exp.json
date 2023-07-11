@@ -54,7 +54,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/sql-constraints.d2,1:9:14-1:18:23",
                           "value": [
                             {
-                              "string": "sql_table"
+                              "string": "sql_table",
+                              "raw_string": "sql_table"
                             }
                           ]
                         }
@@ -120,7 +121,8 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/sql-constraints.d2,2:22:46-2:33:57",
                                     "value": [
                                       {
-                                        "string": "primary_key"
+                                        "string": "primary_key",
+                                        "raw_string": "primary_key"
                                       }
                                     ]
                                   }

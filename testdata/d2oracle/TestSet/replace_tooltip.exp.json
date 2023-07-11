@@ -54,7 +54,8 @@
                           "range": "d2/testdata/d2oracle/TestSet/replace_tooltip.d2,1:11:21-1:12:22",
                           "value": [
                             {
-                              "string": "y"
+                              "string": "y",
+                              "raw_string": "y"
                             }
                           ]
                         }

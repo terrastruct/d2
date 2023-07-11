@@ -76,7 +76,8 @@
                 "range": "d2/testdata/d2oracle/TestDelete/children_flat_conflicts.d2,3:5:12-3:9:16",
                 "value": [
                   {
-                    "string": "hi"
+                    "string": "hi",
+                    "raw_string": "hi"
                   }
                 ]
               }

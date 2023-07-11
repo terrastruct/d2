@@ -77,7 +77,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/edge_map.d2,2:9:20-2:88:99",
                           "value": [
                             {
-                              "string": "Space: the final frontier.  These are the voyages of the starship Enterprise."
+                              "string": "Space: the final frontier.  These are the voyages of the starship Enterprise.",
+                              "raw_string": "Space: the final frontier.  These are the voyages of the starship Enterprise."
                             }
                           ]
                         }

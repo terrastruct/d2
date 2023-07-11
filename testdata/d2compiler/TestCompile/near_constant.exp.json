@@ -41,7 +41,8 @@
                 "range": "d2/testdata/d2compiler/TestCompile/near_constant.d2,0:8:8-0:18:18",
                 "value": [
                   {
-                    "string": "top-center"
+                    "string": "top-center",
+                    "raw_string": "top-center"
                   }
                 ]
               }

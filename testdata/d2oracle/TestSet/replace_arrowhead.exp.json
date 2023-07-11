@@ -88,7 +88,8 @@
                           "range": "d2/testdata/d2oracle/TestSet/replace_arrowhead.d2,1:26:36-1:32:42",
                           "value": [
                             {
-                              "string": "circle"
+                              "string": "circle",
+                              "raw_string": "circle"
                             }
                           ]
                         }

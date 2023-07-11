@@ -54,7 +54,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/table_connection_attr.d2,1:9:14-1:18:23",
                           "value": [
                             {
-                              "string": "sql_table"
+                              "string": "sql_table",
+                              "raw_string": "sql_table"
                             }
                           ]
                         }
@@ -138,7 +139,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/table_connection_attr.d2,5:9:44-5:18:53",
                           "value": [
                             {
-                              "string": "sql_table"
+                              "string": "sql_table",
+                              "raw_string": "sql_table"
                             }
                           ]
                         }

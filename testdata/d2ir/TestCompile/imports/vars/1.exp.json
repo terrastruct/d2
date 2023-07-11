@@ -11,7 +11,8 @@
                 "range": "x.d2,0:6:6-0:18:18",
                 "value": [
                   {
-                    "string": "var replaced"
+                    "string": "var replaced",
+                    "raw_string": "var replaced"
                   }
                 ]
               }
@@ -69,7 +70,8 @@
                         "range": "x.d2,0:6:6-0:18:18",
                         "value": [
                           {
-                            "string": "var replaced"
+                            "string": "var replaced",
+                            "raw_string": "var replaced"
                           }
                         ]
                       }
@@ -129,7 +131,8 @@
                         "range": "x.d2,0:6:6-0:18:18",
                         "value": [
                           {
-                            "string": "var replaced"
+                            "string": "var replaced",
+                            "raw_string": "var replaced"
                           }
                         ]
                       }

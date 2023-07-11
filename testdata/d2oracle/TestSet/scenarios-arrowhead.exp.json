@@ -88,7 +88,8 @@
                           "range": "d2/testdata/d2oracle/TestSet/scenarios-arrowhead.d2,1:26:36-1:34:44",
                           "value": [
                             {
-                              "string": "triangle"
+                              "string": "triangle",
+                              "raw_string": "triangle"
                             }
                           ]
                         }
@@ -282,7 +283,8 @@
                                               "range": "d2/testdata/d2oracle/TestSet/scenarios-arrowhead.d2,8:30:124-8:37:131",
                                               "value": [
                                                 {
-                                                  "string": "diamond"
+                                                  "string": "diamond",
+                                                  "raw_string": "diamond"
                                                 }
                                               ]
                                             }
@@ -867,7 +869,8 @@
                                         "range": "d2/testdata/d2oracle/TestSet/scenarios-arrowhead.d2,8:30:124-8:37:131",
                                         "value": [
                                           {
-                                            "string": "diamond"
+                                            "string": "diamond",
+                                            "raw_string": "diamond"
                                           }
                                         ]
                                       }

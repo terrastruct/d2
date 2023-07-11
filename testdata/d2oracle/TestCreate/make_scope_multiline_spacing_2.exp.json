@@ -77,7 +77,8 @@
                           "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,3:9:25-3:15:31",
                           "value": [
                             {
-                              "string": "circle"
+                              "string": "circle",
+                              "raw_string": "circle"
                             }
                           ]
                         }

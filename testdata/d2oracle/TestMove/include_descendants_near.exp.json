@@ -104,7 +104,8 @@
                 "range": "d2/testdata/d2oracle/TestMove/include_descendants_near.d2,3:8:21-3:13:26",
                 "value": [
                   {
-                    "string": "z.x.y"
+                    "string": "z.x.y",
+                    "raw_string": "z.x.y"
                   }
                 ]
               }

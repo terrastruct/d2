@@ -75,7 +75,8 @@
                             "range": "TestCompile/classes/basic.d2,3:16:40-3:22:46",
                             "value": [
                               {
-                                "string": "orange"
+                                "string": "orange",
+                                "raw_string": "orange"
                               }
                             ]
                           }
@@ -155,7 +156,8 @@
                                     "range": "TestCompile/classes/basic.d2,3:16:40-3:22:46",
                                     "value": [
                                       {
-                                        "string": "orange"
+                                        "string": "orange",
+                                        "raw_string": "orange"
                                       }
                                     ]
                                   }
@@ -243,7 +245,8 @@
                               "range": "TestCompile/classes/basic.d2,3:16:40-3:22:46",
                               "value": [
                                 {
-                                  "string": "orange"
+                                  "string": "orange",
+                                  "raw_string": "orange"
                                 }
                               ]
                             }
@@ -344,7 +347,8 @@
                                   "range": "TestCompile/classes/basic.d2,3:16:40-3:22:46",
                                   "value": [
                                     {
-                                      "string": "orange"
+                                      "string": "orange",
+                                      "raw_string": "orange"
                                     }
                                   ]
                                 }
@@ -474,7 +478,8 @@
                                       "range": "TestCompile/classes/basic.d2,3:16:40-3:22:46",
                                       "value": [
                                         {
-                                          "string": "orange"
+                                          "string": "orange",
+                                          "raw_string": "orange"
                                         }
                                       ]
                                     }

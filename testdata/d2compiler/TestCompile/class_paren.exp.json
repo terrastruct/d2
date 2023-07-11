@@ -64,7 +64,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,1:9:28-1:14:33",
                           "value": [
                             {
-                              "string": "class"
+                              "string": "class",
+                              "raw_string": "class"
                             }
                           ]
                         }
@@ -119,7 +120,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,4:13:60-4:19:66",
                           "value": [
                             {
-                              "string": "string"
+                              "string": "string",
+                              "raw_string": "string"
                             }
                           ]
                         }
@@ -151,7 +153,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,5:8:75-5:12:79",
                           "value": [
                             {
-                              "string": "bool"
+                              "string": "bool",
+                              "raw_string": "bool"
                             }
                           ]
                         }

@@ -54,7 +54,8 @@
                           "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,1:9:17-1:11:19",
                           "value": [
                             {
-                              "string": "do"
+                              "string": "do",
+                              "raw_string": "do"
                             }
                           ]
                         }
@@ -109,7 +110,8 @@
                           "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:16:36-2:20:40",
                           "value": [
                             {
-                              "string": "asdf"
+                              "string": "asdf",
+                              "raw_string": "asdf"
                             }
                           ]
                         }
@@ -141,7 +143,8 @@
                           "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,3:8:49-3:158:199",
                           "value": [
                             {
-                              "string": "How much of their influence on you is a result of your influence on them?\nA conference is a gathering of important people who singly can do nothing"
+                              "string": "How much of their influence on you is a result of your influence on them?\nA conference is a gathering of important people who singly can do nothing",
+                              "raw_string": "How much of their influence on you is a result of your influence on them?\\nA conference is a gathering of important people who singly can do nothing"
                             }
                           ]
                         }

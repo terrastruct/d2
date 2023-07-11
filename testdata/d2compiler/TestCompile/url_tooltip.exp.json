@@ -54,7 +54,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/url_tooltip.d2,0:13:13-0:31:31",
                           "value": [
                             {
-                              "string": "https://google.com"
+                              "string": "https://google.com",
+                              "raw_string": "https://google.com"
                             }
                           ]
                         }

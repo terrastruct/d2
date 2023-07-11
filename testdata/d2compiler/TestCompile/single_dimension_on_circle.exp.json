@@ -59,7 +59,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/single_dimension_on_circle.d2,1:8:18-1:14:24",
                           "value": [
                             {
-                              "string": "circle"
+                              "string": "circle",
+                              "raw_string": "circle"
                             }
                           ]
                         }

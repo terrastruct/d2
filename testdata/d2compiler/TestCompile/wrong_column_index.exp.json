@@ -54,7 +54,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,1:9:24-1:18:33",
                           "value": [
                             {
-                              "string": "sql_table"
+                              "string": "sql_table",
+                              "raw_string": "sql_table"
                             }
                           ]
                         }
@@ -120,7 +121,8 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,2:23:57-2:34:68",
                                     "value": [
                                       {
-                                        "string": "primary_key"
+                                        "string": "primary_key",
+                                        "raw_string": "primary_key"
                                       }
                                     ]
                                   }
@@ -157,7 +159,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,3:15:85-3:18:88",
                           "value": [
                             {
-                              "string": "int"
+                              "string": "int",
+                              "raw_string": "int"
                             }
                           ]
                         }
@@ -189,7 +192,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,4:13:102-4:19:108",
                           "value": [
                             {
-                              "string": "string"
+                              "string": "string",
+                              "raw_string": "string"
                             }
                           ]
                         }
@@ -221,7 +225,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,5:7:116-5:10:119",
                           "value": [
                             {
-                              "string": "int"
+                              "string": "int",
+                              "raw_string": "int"
                             }
                           ]
                         }
@@ -287,7 +292,8 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,6:27:147-6:38:158",
                                     "value": [
                                       {
-                                        "string": "foreign_key"
+                                        "string": "foreign_key",
+                                        "raw_string": "foreign_key"
                                       }
                                     ]
                                   }
@@ -358,7 +364,8 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,7:30:190-7:41:201",
                                     "value": [
                                       {
-                                        "string": "foreign_key"
+                                        "string": "foreign_key",
+                                        "raw_string": "foreign_key"
                                       }
                                     ]
                                   }
@@ -424,7 +431,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,11:9:243-11:18:252",
                           "value": [
                             {
-                              "string": "sql_table"
+                              "string": "sql_table",
+                              "raw_string": "sql_table"
                             }
                           ]
                         }
@@ -456,7 +464,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,12:6:259-12:9:262",
                           "value": [
                             {
-                              "string": "int"
+                              "string": "int",
+                              "raw_string": "int"
                             }
                           ]
                         }
@@ -522,7 +531,8 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,13:31:294-13:42:305",
                                     "value": [
                                       {
-                                        "string": "foreign_key"
+                                        "string": "foreign_key",
+                                        "raw_string": "foreign_key"
                                       }
                                     ]
                                   }
@@ -593,7 +603,8 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,14:30:337-14:41:348",
                                     "value": [
                                       {
-                                        "string": "foreign_key"
+                                        "string": "foreign_key",
+                                        "raw_string": "foreign_key"
                                       }
                                     ]
                                   }

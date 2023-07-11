@@ -77,7 +77,8 @@
                           "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,1:22:32-1:25:35",
                           "value": [
                             {
-                              "string": "two"
+                              "string": "two",
+                              "raw_string": "two"
                             }
                           ]
                         }

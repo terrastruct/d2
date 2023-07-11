@@ -78,7 +78,8 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/nested_sql.d2,2:11:31-2:20:40",
                                     "value": [
                                       {
-                                        "string": "sql_table"
+                                        "string": "sql_table",
+                                        "raw_string": "sql_table"
                                       }
                                     ]
                                   }
@@ -110,7 +111,8 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/nested_sql.d2,4:15:57-4:21:63",
                                     "value": [
                                       {
-                                        "string": "string"
+                                        "string": "string",
+                                        "raw_string": "string"
                                       }
                                     ]
                                   }
@@ -142,7 +144,8 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/nested_sql.d2,5:10:74-5:14:78",
                                     "value": [
                                       {
-                                        "string": "bool"
+                                        "string": "bool",
+                                        "raw_string": "bool"
                                       }
                                     ]
                                   }

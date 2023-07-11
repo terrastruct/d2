@@ -54,7 +54,8 @@
                           "range": "d2/testdata/d2oracle/TestDelete/save_map.d2,1:9:14-1:15:20",
                           "value": [
                             {
-                              "string": "circle"
+                              "string": "circle",
+                              "raw_string": "circle"
                             }
                           ]
                         }

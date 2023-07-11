@@ -89,7 +89,8 @@
                                     "range": "d2/testdata/d2oracle/TestSet/unapplied-classes-style.d2,2:16:34-2:19:37",
                                     "value": [
                                       {
-                                        "string": "red"
+                                        "string": "red",
+                                        "raw_string": "red"
                                       }
                                     ]
                                   }
@@ -153,7 +154,8 @@
                 "range": "d2/testdata/d2oracle/TestSet/unapplied-classes-style.d2,5:14:58-5:19:63",
                 "value": [
                   {
-                    "string": "green"
+                    "string": "green",
+                    "raw_string": "green"
                   }
                 ]
               }

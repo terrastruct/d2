@@ -30,7 +30,8 @@
                 "range": "d2/testdata/d2oracle/TestDelete/delete_container_of_near.d2,0:11:11-0:15:15",
                 "value": [
                   {
-                    "string": "down"
+                    "string": "down",
+                    "raw_string": "down"
                   }
                 ]
               }
@@ -451,7 +452,8 @@
                 "range": "d2/testdata/d2oracle/TestDelete/delete_container_of_near.d2,9:19:236-9:37:254",
                 "value": [
                   {
-                    "string": "collision detected"
+                    "string": "collision detected",
+                    "raw_string": "collision detected"
                   }
                 ]
               }

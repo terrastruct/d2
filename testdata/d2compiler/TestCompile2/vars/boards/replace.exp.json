@@ -54,7 +54,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/replace.d2,2:5:14-2:13:22",
                           "value": [
                             {
-                              "string": "im x var"
+                              "string": "im x var",
+                              "raw_string": "im x var"
                             }
                           ]
                         }
@@ -163,7 +164,8 @@
                                               "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/replace.d2,8:9:67-8:26:84",
                                               "value": [
                                                 {
-                                                  "string": "im replaced x var"
+                                                  "string": "im replaced x var",
+                                                  "raw_string": "im replaced x var"
                                                 }
                                               ]
                                             }
@@ -297,7 +299,8 @@
                               "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/replace.d2,8:9:67-8:26:84",
                               "value": [
                                 {
-                                  "string": "im replaced x var"
+                                  "string": "im replaced x var",
+                                  "raw_string": "im replaced x var"
                                 }
                               ]
                             }

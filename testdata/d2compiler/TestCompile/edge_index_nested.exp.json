@@ -77,7 +77,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/edge_index_nested.d2,2:9:15-2:12:18",
                           "value": [
                             {
-                              "string": "one"
+                              "string": "one",
+                              "raw_string": "one"
                             }
                           ]
                         }
@@ -137,7 +138,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/edge_index_nested.d2,3:14:33-3:17:36",
                           "value": [
                             {
-                              "string": "two"
+                              "string": "two",
+                              "raw_string": "two"
                             }
                           ]
                         }

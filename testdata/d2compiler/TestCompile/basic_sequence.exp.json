@@ -54,7 +54,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/basic_sequence.d2,1:9:14-1:25:30",
                           "value": [
                             {
-                              "string": "sequence_diagram"
+                              "string": "sequence_diagram",
+                              "raw_string": "sequence_diagram"
                             }
                           ]
                         }

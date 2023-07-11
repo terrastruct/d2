@@ -78,7 +78,8 @@
                                     "range": "d2/testdata/d2oracle/TestMove/container_near.d2,2:10:22-2:15:27",
                                     "value": [
                                       {
-                                        "string": "x.a.z"
+                                        "string": "x.a.z",
+                                        "raw_string": "x.a.z"
                                       }
                                     ]
                                   }

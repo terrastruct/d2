@@ -77,7 +77,8 @@
                           "range": "d2/testdata/d2oracle/TestMove/map_with_label.d2,3:5:13-3:9:17",
                           "value": [
                             {
-                              "string": "yo"
+                              "string": "yo",
+                              "raw_string": "yo"
                             }
                           ]
                         }

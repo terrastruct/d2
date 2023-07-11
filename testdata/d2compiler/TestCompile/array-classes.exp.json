@@ -76,11 +76,7 @@
                                 "value": {
                                   "double_quoted_string": {
                                     "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,2:11:39-2:13:41",
-                                    "value": [
-                                      {
-                                        "string": ""
-                                      }
-                                    ]
+                                    "value": null
                                   }
                                 }
                               }
@@ -110,7 +106,8 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,3:11:53-3:17:59",
                                     "value": [
                                       {
-                                        "string": "circle"
+                                        "string": "circle",
+                                        "raw_string": "circle"
                                       }
                                     ]
                                   }
@@ -153,7 +150,8 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,4:16:76-4:22:82",
                                     "value": [
                                       {
-                                        "string": "orange"
+                                        "string": "orange",
+                                        "raw_string": "orange"
                                       }
                                     ]
                                   }
@@ -214,7 +212,8 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,7:11:108-7:17:114",
                                     "value": [
                                       {
-                                        "string": "then"
+                                        "string": "then",
+                                        "raw_string": "then"
                                       }
                                     ]
                                   }

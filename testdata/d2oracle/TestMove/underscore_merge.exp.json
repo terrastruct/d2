@@ -77,7 +77,8 @@
                           "range": "d2/testdata/d2oracle/TestMove/underscore_merge.d2,3:5:13-3:9:17",
                           "value": [
                             {
-                              "string": "yo"
+                              "string": "yo",
+                              "raw_string": "yo"
                             }
                           ]
                         }
@@ -109,7 +110,8 @@
                           "range": "d2/testdata/d2oracle/TestMove/underscore_merge.d2,4:5:23-4:11:29",
                           "value": [
                             {
-                              "string": "what"
+                              "string": "what",
+                              "raw_string": "what"
                             }
                           ]
                         }

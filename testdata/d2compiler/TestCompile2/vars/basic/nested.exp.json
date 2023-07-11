@@ -102,7 +102,8 @@
                                               "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,4:14:49-4:17:52",
                                               "value": [
                                                 {
-                                                  "string": "red"
+                                                  "string": "red",
+                                                  "raw_string": "red"
                                                 }
                                               ]
                                             }

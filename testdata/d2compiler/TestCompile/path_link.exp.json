@@ -54,7 +54,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/path_link.d2,1:8:13-1:39:44",
                           "value": [
                             {
-                              "string": "Overview.Untitled board 7.zzzzz"
+                              "string": "Overview.Untitled board 7.zzzzz",
+                              "raw_string": "Overview.Untitled board 7.zzzzz"
                             }
                           ]
                         }

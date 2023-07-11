@@ -59,7 +59,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/image_style.d2,1:8:18-1:64:74",
                           "value": [
                             {
-                              "string": "https://icons.terrastruct.com/essentials/004-picture.svg"
+                              "string": "https://icons.terrastruct.com/essentials/004-picture.svg",
+                              "raw_string": "https://icons.terrastruct.com/essentials/004-picture.svg"
                             }
                           ]
                         }
@@ -91,7 +92,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/image_style.d2,2:9:84-2:14:89",
                           "value": [
                             {
-                              "string": "image"
+                              "string": "image",
+                              "raw_string": "image"
                             }
                           ]
                         }
@@ -134,7 +136,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/image_style.d2,3:16:106-3:25:115",
                           "value": [
                             {
-                              "string": "#0D32B2"
+                              "string": "#0D32B2",
+                              "raw_string": "#0D32B2"
                             }
                           ]
                         }

@@ -54,7 +54,8 @@
                           "range": "d2/testdata/d2oracle/TestDelete/container_near.d2,1:8:13-1:9:14",
                           "value": [
                             {
-                              "string": "z"
+                              "string": "z",
+                              "raw_string": "z"
                             }
                           ]
                         }
@@ -138,7 +139,8 @@
                           "range": "d2/testdata/d2oracle/TestDelete/container_near.d2,5:8:32-5:9:33",
                           "value": [
                             {
-                              "string": "z"
+                              "string": "z",
+                              "raw_string": "z"
                             }
                           ]
                         }

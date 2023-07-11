@@ -53,7 +53,8 @@
                 "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing.d2,1:8:9-1:77:78",
                 "value": [
                   {
-                    "string": "Can you imagine how life could be improved if we could do away with"
+                    "string": "Can you imagine how life could be improved if we could do away with",
+                    "raw_string": "Can you imagine how life could be improved if we could do away with"
                   }
                 ]
               }
@@ -154,7 +155,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing.d2,3:13:97-3:80:164",
                           "value": [
                             {
-                              "string": "Well, it's garish, ugly, and derelicts have used it for a toilet."
+                              "string": "Well, it's garish, ugly, and derelicts have used it for a toilet.",
+                              "raw_string": "Well, it's garish, ugly, and derelicts have used it for a toilet."
                             }
                           ]
                         }

@@ -88,7 +88,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/edge_mixed_arrowhead.d2,1:26:36-1:33:43",
                           "value": [
                             {
-                              "string": "diamond"
+                              "string": "diamond",
+                              "raw_string": "diamond"
                             }
                           ]
                         }
@@ -193,7 +194,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/edge_mixed_arrowhead.d2,4:9:87-4:16:94",
                           "value": [
                             {
-                              "string": "diamond"
+                              "string": "diamond",
+                              "raw_string": "diamond"
                             }
                           ]
                         }

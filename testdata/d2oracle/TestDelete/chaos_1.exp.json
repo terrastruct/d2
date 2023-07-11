@@ -54,7 +54,8 @@
                           "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,0:12:12-0:20:20",
                           "value": [
                             {
-                              "string": "cylinder"
+                              "string": "cylinder",
+                              "raw_string": "cylinder"
                             }
                           ]
                         }
@@ -149,7 +150,8 @@
                           "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,1:36:58-1:51:73",
                           "value": [
                             {
-                              "string": "cf-one-required"
+                              "string": "cf-one-required",
+                              "raw_string": "cf-one-required"
                             }
                           ]
                         }
@@ -186,7 +188,8 @@
                 "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,2:4:79-2:5:80",
                 "value": [
                   {
-                    "string": "z"
+                    "string": "z",
+                    "raw_string": "z"
                   }
                 ]
               }

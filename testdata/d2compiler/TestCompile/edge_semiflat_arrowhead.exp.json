@@ -144,7 +144,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/edge_semiflat_arrowhead.d2,2:9:48-2:16:55",
                           "value": [
                             {
-                              "string": "diamond"
+                              "string": "diamond",
+                              "raw_string": "diamond"
                             }
                           ]
                         }

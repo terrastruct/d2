@@ -88,7 +88,8 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/label-near-composite-together.d2,2:8:32-2:24:48",
                                     "value": [
                                       {
-                                        "string": "outside-top-left"
+                                        "string": "outside-top-left",
+                                        "raw_string": "outside-top-left"
                                       }
                                     ]
                                   }

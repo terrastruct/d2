@@ -59,7 +59,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,1:9:19-1:16:26",
                           "value": [
                             {
-                              "string": "hexagon"
+                              "string": "hexagon",
+                              "raw_string": "hexagon"
                             }
                           ]
                         }

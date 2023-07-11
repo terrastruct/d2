@@ -54,7 +54,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/label-near-composite-separate.d2,1:8:15-1:13:20",
                           "value": [
                             {
-                              "string": "sushi"
+                              "string": "sushi",
+                              "raw_string": "sushi"
                             }
                           ]
                         }
@@ -97,7 +98,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/label-near-composite-separate.d2,2:13:34-2:29:50",
                           "value": [
                             {
-                              "string": "outside-top-left"
+                              "string": "outside-top-left",
+                              "raw_string": "outside-top-left"
                             }
                           ]
                         }

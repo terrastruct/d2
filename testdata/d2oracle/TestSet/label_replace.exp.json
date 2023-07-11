@@ -30,7 +30,8 @@
                 "range": "d2/testdata/d2oracle/TestSet/label_replace.d2,0:8:8-0:87:87",
                 "value": [
                   {
-                    "string": "Always try to do things in chronological order; it's less confusing that way."
+                    "string": "Always try to do things in chronological order; it's less confusing that way.",
+                    "raw_string": "Always try to do things in chronological order; it's less confusing that way."
                   }
                 ]
               }

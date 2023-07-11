@@ -78,7 +78,8 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,2:10:26-2:22:38",
                                     "value": [
                                       {
-                                        "string": "lemonchiffon"
+                                        "string": "lemonchiffon",
+                                        "raw_string": "lemonchiffon"
                                       }
                                     ]
                                   }
@@ -139,7 +140,8 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,5:11:61-5:20:70",
                                     "value": [
                                       {
-                                        "string": "sql_table"
+                                        "string": "sql_table",
+                                        "raw_string": "sql_table"
                                       }
                                     ]
                                   }

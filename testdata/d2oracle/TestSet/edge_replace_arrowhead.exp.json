@@ -88,7 +88,8 @@
                           "range": "d2/testdata/d2oracle/TestSet/edge_replace_arrowhead.d2,0:33:33-0:40:40",
                           "value": [
                             {
-                              "string": "diamond"
+                              "string": "diamond",
+                              "raw_string": "diamond"
                             }
                           ]
                         }

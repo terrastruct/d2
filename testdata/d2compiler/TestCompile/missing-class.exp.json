@@ -41,7 +41,8 @@
                 "range": "d2/testdata/d2compiler/TestCompile/missing-class.d2,0:9:9-0:11:11",
                 "value": [
                   {
-                    "string": "yo"
+                    "string": "yo",
+                    "raw_string": "yo"
                   }
                 ]
               }

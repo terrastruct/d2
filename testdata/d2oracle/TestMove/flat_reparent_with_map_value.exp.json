@@ -77,7 +77,8 @@
                           "range": "d2/testdata/d2oracle/TestMove/flat_reparent_with_map_value.d2,2:9:16-2:16:23",
                           "value": [
                             {
-                              "string": "hexagon"
+                              "string": "hexagon",
+                              "raw_string": "hexagon"
                             }
                           ]
                         }

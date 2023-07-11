@@ -54,7 +54,8 @@
                           "range": "d2/testdata/d2oracle/TestSet/scenarios-nested-usable-ref-style.d2,1:5:10-1:10:15",
                           "value": [
                             {
-                              "string": "outer"
+                              "string": "outer",
+                              "raw_string": "outer"
                             }
                           ]
                         }

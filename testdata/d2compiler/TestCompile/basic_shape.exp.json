@@ -54,7 +54,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/basic_shape.d2,2:9:15-2:15:21",
                           "value": [
                             {
-                              "string": "circle"
+                              "string": "circle",
+                              "raw_string": "circle"
                             }
                           ]
                         }

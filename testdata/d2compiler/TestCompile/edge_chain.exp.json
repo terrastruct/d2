@@ -90,7 +90,8 @@
                 "range": "d2/testdata/d2compiler/TestCompile/edge_chain.d2,1:13:14-1:55:56",
                 "value": [
                   {
-                    "string": "The kids will love our inflatable slides"
+                    "string": "The kids will love our inflatable slides",
+                    "raw_string": "The kids will love our inflatable slides"
                   }
                 ]
               }

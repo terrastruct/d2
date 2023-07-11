@@ -76,7 +76,8 @@
                 "range": "d2/testdata/d2oracle/TestDelete/children_referenced_conflicts.d2,4:5:13-4:9:17",
                 "value": [
                   {
-                    "string": "hi"
+                    "string": "hi",
+                    "raw_string": "hi"
                   }
                 ]
               }

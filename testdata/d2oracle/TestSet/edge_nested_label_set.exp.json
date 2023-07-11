@@ -77,7 +77,8 @@
                           "range": "d2/testdata/d2oracle/TestSet/edge_nested_label_set.d2,1:10:18-1:12:20",
                           "value": [
                             {
-                              "string": "yo"
+                              "string": "yo",
+                              "raw_string": "yo"
                             }
                           ]
                         }

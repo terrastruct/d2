@@ -11,7 +11,8 @@
                 "range": "TestCompile/fields/nested.d2,0:5:5-0:8:8",
                 "value": [
                   {
-                    "string": "yes"
+                    "string": "yes",
+                    "raw_string": "yes"
                   }
                 ]
               }
@@ -91,7 +92,8 @@
                         "range": "TestCompile/fields/nested.d2,0:5:5-0:8:8",
                         "value": [
                           {
-                            "string": "yes"
+                            "string": "yes",
+                            "raw_string": "yes"
                           }
                         ]
                       }
@@ -179,7 +181,8 @@
                   "range": "TestCompile/fields/nested.d2,0:5:5-0:8:8",
                   "value": [
                     {
-                      "string": "yes"
+                      "string": "yes",
+                      "raw_string": "yes"
                     }
                   ]
                 }

@@ -54,7 +54,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/url_link_non_url_tooltip_ok.d2,0:10:10-0:32:32",
                           "value": [
                             {
-                              "string": "https://not-google.com"
+                              "string": "https://not-google.com",
+                              "raw_string": "https://not-google.com"
                             }
                           ]
                         }
@@ -86,7 +87,8 @@
                           "range": "d2/testdata/d2compiler/TestCompile/url_link_non_url_tooltip_ok.d2,0:43:43-0:92:92",
                           "value": [
                             {
-                              "string": "note: url.ParseRequestURI might see this as a URL"
+                              "string": "note: url.ParseRequestURI might see this as a URL",
+                              "raw_string": "note: url.ParseRequestURI might see this as a URL"
                             }
                           ]
                         }

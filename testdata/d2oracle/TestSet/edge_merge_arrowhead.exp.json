@@ -130,7 +130,8 @@
                                     "range": "d2/testdata/d2oracle/TestSet/edge_merge_arrowhead.d2,3:11:56-3:18:63",
                                     "value": [
                                       {
-                                        "string": "diamond"
+                                        "string": "diamond",
+                                        "raw_string": "diamond"
                                       }
                                     ]
                                   }

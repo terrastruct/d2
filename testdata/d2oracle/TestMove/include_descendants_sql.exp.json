@@ -78,7 +78,8 @@
                                     "range": "d2/testdata/d2oracle/TestMove/include_descendants_sql.d2,2:11:23-2:20:32",
                                     "value": [
                                       {
-                                        "string": "sql_table"
+                                        "string": "sql_table",
+                                        "raw_string": "sql_table"
                                       }
                                     ]
                                   }
@@ -110,7 +111,8 @@
                                     "range": "d2/testdata/d2oracle/TestMove/include_descendants_sql.d2,3:7:40-3:8:41",
                                     "value": [
                                       {
-                                        "string": "b"
+                                        "string": "b",
+                                        "raw_string": "b"
                                       }
                                     ]
                                   }

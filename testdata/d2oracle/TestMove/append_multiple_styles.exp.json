@@ -189,7 +189,8 @@
                                               "range": "d2/testdata/d2oracle/TestMove/append_multiple_styles.d2,8:12:86-8:17:91",
                                               "value": [
                                                 {
-                                                  "string": "red"
+                                                  "string": "red",
+                                                  "raw_string": "red"
                                                 }
                                               ]
                                             }

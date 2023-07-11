@@ -65,7 +65,8 @@
                           "range": "d2/testdata/d2oracle/TestSet/set_fill_pattern.d2,0:29:29-0:34:34",
                           "value": [
                             {
-                              "string": "grain"
+                              "string": "grain",
+                              "raw_string": "grain"
                             }
                           ]
                         }

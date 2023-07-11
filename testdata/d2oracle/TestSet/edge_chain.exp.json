@@ -114,7 +114,8 @@
                           "range": "d2/testdata/d2oracle/TestSet/edge_chain.d2,1:15:23-1:19:27",
                           "value": [
                             {
-                              "string": "wsup"
+                              "string": "wsup",
+                              "raw_string": "wsup"
                             }
                           ]
                         }
@@ -174,7 +175,8 @@
                           "range": "d2/testdata/d2oracle/TestSet/edge_chain.d2,2:15:43-2:62:90",
                           "value": [
                             {
-                              "string": "QOTD:\n  \"It's been Monday all week today.\""
+                              "string": "QOTD:\n  \"It's been Monday all week today.\"",
+                              "raw_string": "QOTD:\\n  \\\"It's been Monday all week today.\\\""
                             }
                           ]
                         }

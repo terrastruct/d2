@@ -19,7 +19,8 @@
                             "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
                             "value": [
                               {
-                                "string": "yellow"
+                                "string": "yellow",
+                                "raw_string": "yellow"
                               }
                             ]
                           }
@@ -99,7 +100,8 @@
                                     "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
                                     "value": [
                                       {
-                                        "string": "yellow"
+                                        "string": "yellow",
+                                        "raw_string": "yellow"
                                       }
                                     ]
                                   }
@@ -187,7 +189,8 @@
                               "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
                               "value": [
                                 {
-                                  "string": "yellow"
+                                  "string": "yellow",
+                                  "raw_string": "yellow"
                                 }
                               ]
                             }
@@ -288,7 +291,8 @@
                                   "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
                                   "value": [
                                     {
-                                      "string": "yellow"
+                                      "string": "yellow",
+                                      "raw_string": "yellow"
                                     }
                                   ]
                                 }
@@ -418,7 +422,8 @@
                                       "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
                                       "value": [
                                         {
-                                          "string": "yellow"
+                                          "string": "yellow",
+                                          "raw_string": "yellow"
                                         }
                                       ]
                                     }
@@ -465,7 +470,8 @@
                                         "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
                                         "value": [
                                           {
-                                            "string": "yellow"
+                                            "string": "yellow",
+                                            "raw_string": "yellow"
                                           }
                                         ]
                                       }
@@ -545,7 +551,8 @@
                                                 "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
                                                 "value": [
                                                   {
-                                                    "string": "yellow"
+                                                    "string": "yellow",
+                                                    "raw_string": "yellow"
                                                   }
                                                 ]
                                               }
@@ -562,7 +569,8 @@
                                         "range": "TestCompile/classes/layer-modify.d2,7:30:96-7:33:99",
                                         "value": [
                                           {
-                                            "string": "red"
+                                            "string": "red",
+                                            "raw_string": "red"
                                           }
                                         ]
                                       }
@@ -686,7 +694,8 @@
                                                 "range": "TestCompile/classes/layer-modify.d2,7:30:96-7:33:99",
                                                 "value": [
                                                   {
-                                                    "string": "red"
+                                                    "string": "red",
+                                                    "raw_string": "red"
                                                   }
                                                 ]
                                               }
@@ -774,7 +783,8 @@
                                           "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
                                           "value": [
                                             {
-                                              "string": "yellow"
+                                              "string": "yellow",
+                                              "raw_string": "yellow"
                                             }
                                           ]
                                         }
@@ -900,7 +910,8 @@
                                           "range": "TestCompile/classes/layer-modify.d2,7:30:96-7:33:99",
                                           "value": [
                                             {
-                                              "string": "red"
+                                              "string": "red",
+                                              "raw_string": "red"
                                             }
                                           ]
                                         }
@@ -1001,7 +1012,8 @@
                                               "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
                                               "value": [
                                                 {
-                                                  "string": "yellow"
+                                                  "string": "yellow",
+                                                  "raw_string": "yellow"
                                                 }
                                               ]
                                             }
@@ -1132,7 +1144,8 @@
                                     "range": "TestCompile/classes/layer-modify.d2,7:30:96-7:33:99",
                                     "value": [
                                       {
-                                        "string": "red"
+                                        "string": "red",
+                                        "raw_string": "red"
                                       }
                                     ]
                                   }
@@ -1257,7 +1270,8 @@
                                                   "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
                                                   "value": [
                                                     {
-                                                      "string": "yellow"
+                                                      "string": "yellow",
+                                                      "raw_string": "yellow"
                                                     }
                                                   ]
                                                 }
@@ -1390,7 +1404,8 @@
                                   "range": "TestCompile/classes/layer-modify.d2,7:30:96-7:33:99",
                                   "value": [
                                     {
-                                      "string": "red"
+                                      "string": "red",
+                                      "raw_string": "red"
                                     }
                                   ]
                                 }
@@ -1542,7 +1557,8 @@
                                       "range": "TestCompile/classes/layer-modify.d2,7:30:96-7:33:99",
                                       "value": [
                                         {
-                                          "string": "red"
+                                          "string": "red",
+                                          "raw_string": "red"
                                         }
                                       ]
                                     }

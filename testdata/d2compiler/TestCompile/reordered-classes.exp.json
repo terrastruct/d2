@@ -78,7 +78,8 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/reordered-classes.d2,2:11:29-2:17:35",
                                     "value": [
                                       {
-                                        "string": "circle"
+                                        "string": "circle",
+                                        "raw_string": "circle"
                                       }
                                     ]
                                   }
@@ -131,7 +132,8 @@
                 "range": "d2/testdata/d2compiler/TestCompile/reordered-classes.d2,5:9:51-5:10:52",
                 "value": [
                   {
-                    "string": "x"
+                    "string": "x",
+                    "raw_string": "x"
                   }
                 ]
               }
@@ -185,7 +187,8 @@
                 "range": "d2/testdata/d2compiler/TestCompile/reordered-classes.d2,6:17:70-6:24:77",
                 "value": [
                   {
-                    "string": "diamond"
+                    "string": "diamond",
+                    "raw_string": "diamond"
                   }
                 ]
               }
