@@ -54,8 +54,7 @@
                           "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/label.d2,2:5:14-2:13:22",
                           "value": [
                             {
-                              "string": "im a var",
-                              "raw_string": "im a var"
+                              "string": "im a var"
                             }
                           ]
                         }
@@ -88,20 +87,11 @@
             },
             "primary": {},
             "value": {
-              "substitution": {
-                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/label.d2,4:4:29-4:8:33",
-                "spread": false,
-                "path": [
+              "unquoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/label.d2,2:5:14-2:13:22",
+                "value": [
                   {
-                    "unquoted_string": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/label.d2,4:6:31-4:7:32",
-                      "value": [
-                        {
-                          "string": "x",
-                          "raw_string": "x"
-                        }
-                      ]
-                    }
+                    "string": "im a var"
                   }
                 ]
               }

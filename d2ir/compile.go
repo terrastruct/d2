@@ -7,6 +7,7 @@ import (
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2parser"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type compiler struct {
@@ -96,7 +97,47 @@ func (c *compiler) overlayClasses(m *Map) {
 	}
 }
 
-func (c *compiler) resolveSubstitution(vars *Map, mk *d2ast.Key, substitution *d2ast.Substitution) d2ast.Scalar {
+func (c *compiler) resolveSubstitutions(refctx *RefContext) {
+	varsMap := &Map{}
+	boardScope := refctx.ScopeMap
+	if NodeBoardKind(refctx.ScopeMap) == "" {
+		boardScope = ParentBoard(refctx.ScopeMap).Map()
+	}
+	vars := boardScope.GetField("vars")
+	if vars != nil {
+		varsMap = vars.Map()
+	}
+
+	switch {
+	case refctx.Key.Value.Substitution != nil:
+		resolvedField := c.resolveSubstitution(varsMap, refctx.Key, refctx.Key.Value.Substitution)
+		if resolvedField != nil {
+			refctx.Key.Value = d2ast.MakeValueBox(resolvedField.Primary().Value)
+		}
+	case refctx.Key.Value.UnquotedString != nil:
+		for i, box := range refctx.Key.Value.UnquotedString.Value {
+			if box.Substitution != nil {
+				resolvedField := c.resolveSubstitution(varsMap, refctx.Key, box.Substitution)
+				if resolvedField != nil {
+					refctx.Key.Value.UnquotedString.Value[i].String = go2.Pointer(resolvedField.Primary().String())
+				}
+			}
+		}
+		refctx.Key.Value.UnquotedString.Coalesce()
+	case refctx.Key.Value.DoubleQuotedString != nil:
+		for i, box := range refctx.Key.Value.DoubleQuotedString.Value {
+			if box.Substitution != nil {
+				resolvedField := c.resolveSubstitution(varsMap, refctx.Key, box.Substitution)
+				if resolvedField != nil {
+					refctx.Key.Value.DoubleQuotedString.Value[i].String = go2.Pointer(resolvedField.Primary().String())
+				}
+			}
+		}
+		refctx.Key.Value.DoubleQuotedString.Coalesce()
+	}
+}
+
+func (c *compiler) resolveSubstitution(vars *Map, mk *d2ast.Key, substitution *d2ast.Substitution) *Field {
 	var resolved *Field
 	for _, p := range substitution.Path {
 		if vars == nil {
@@ -115,7 +156,7 @@ func (c *compiler) resolveSubstitution(vars *Map, mk *d2ast.Key, substitution *d
 		c.errorf(mk, "could not resolve variable %s", strings.Join(substitution.IDA(), "."))
 	} else {
 		// TODO maps
-		return resolved.Primary().Value
+		return resolved
 	}
 	return nil
 }
@@ -205,6 +246,7 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 
 func (c *compiler) compileKey(refctx *RefContext) {
 	// resolve substitutions here
+	c.resolveSubstitutions(refctx)
 	if len(refctx.Key.Edges) == 0 {
 		c.compileField(refctx.ScopeMap, refctx.Key.Key, refctx)
 	} else {
@@ -308,15 +350,15 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 				c.overlayClasses(f.Map())
 			}
 		}
-	} else if refctx.Key.Value.Substitution != nil {
-		vars := ParentBoard(f).Map().GetField("vars")
-		resolved := c.resolveSubstitution(vars.Map(), refctx.Key, refctx.Key.Value.Substitution)
-		if resolved != nil {
-			f.Primary_ = &Scalar{
-				parent: f,
-				Value:  resolved,
-			}
-		}
+		// } else if refctx.Key.Value.Substitution != nil {
+		//   vars := ParentBoard(f).Map().GetField("vars")
+		//   resolved := c.resolveSubstitution(vars.Map(), refctx.Key, refctx.Key.Value.Substitution)
+		//   if resolved != nil {
+		//     f.Primary_ = &Scalar{
+		//       parent: f,
+		//       Value:  resolved,
+		//     }
+		//   }
 	} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
 		// If the link is a board, we need to transform it into an absolute path.
 		if f.Name == "link" {
@@ -496,15 +538,15 @@ func (c *compiler) compileEdges(refctx *RefContext) {
 					}
 				}
 				c.compileMap(e.Map_, refctx.Key.Value.Map, refctx.ScopeAST)
-			} else if refctx.Key.Value.Substitution != nil {
-				vars := ParentBoard(e).Map().GetField("vars")
-				resolved := c.resolveSubstitution(vars.Map(), refctx.Key, refctx.Key.Value.Substitution)
-				if resolved != nil {
-					e.Primary_ = &Scalar{
-						parent: e,
-						Value:  resolved,
-					}
-				}
+				// } else if refctx.Key.Value.Substitution != nil {
+				//   vars := ParentBoard(e).Map().GetField("vars")
+				//   resolved := c.resolveSubstitution(vars.Map(), refctx.Key, refctx.Key.Value.Substitution)
+				//   if resolved != nil {
+				//     e.Primary_ = &Scalar{
+				//       parent: e,
+				//       Value:  resolved,
+				//     }
+				//   }
 			} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
 				e.Primary_ = &Scalar{
 					parent: e,

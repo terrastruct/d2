@@ -54,8 +54,7 @@
                           "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/style.d2,2:17:26-2:20:29",
                           "value": [
                             {
-                              "string": "red",
-                              "raw_string": "red"
+                              "string": "red"
                             }
                           ]
                         }
@@ -123,20 +122,11 @@
                       },
                       "primary": {},
                       "value": {
-                        "substitution": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/style.d2,5:14:52-5:30:68",
-                          "spread": false,
-                          "path": [
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/style.d2,2:17:26-2:20:29",
+                          "value": [
                             {
-                              "unquoted_string": {
-                                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/style.d2,5:16:54-5:29:67",
-                                "value": [
-                                  {
-                                    "string": "primary-color",
-                                    "raw_string": "primary-color"
-                                  }
-                                ]
-                              }
+                              "string": "red"
                             }
                           ]
                         }

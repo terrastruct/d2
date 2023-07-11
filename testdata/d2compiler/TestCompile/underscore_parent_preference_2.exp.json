@@ -30,8 +30,7 @@
                 "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference_2.d2,1:3:4-1:80:81",
                 "value": [
                   {
-                    "string": "But it's real.  And if it's real it can be affected ...  we may not be able",
-                    "raw_string": "But it's real.  And if it's real it can be affected ...  we may not be able"
+                    "string": "But it's real.  And if it's real it can be affected ...  we may not be able"
                   }
                 ]
               }
@@ -98,8 +97,7 @@
                           "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference_2.d2,3:6:93-3:84:171",
                           "value": [
                             {
-                              "string": "All we are given is possibilities -- to make ourselves one thing or another.",
-                              "raw_string": "All we are given is possibilities -- to make ourselves one thing or another."
+                              "string": "All we are given is possibilities -- to make ourselves one thing or another."
                             }
                           ]
                         }

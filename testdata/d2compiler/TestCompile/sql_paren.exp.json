@@ -64,8 +64,7 @@
                           "range": "d2/testdata/d2compiler/TestCompile/sql_paren.d2,1:9:28-1:18:37",
                           "value": [
                             {
-                              "string": "sql_table",
-                              "raw_string": "sql_table"
+                              "string": "sql_table"
                             }
                           ]
                         }
@@ -97,8 +96,7 @@
                           "range": "d2/testdata/d2compiler/TestCompile/sql_paren.d2,3:13:52-3:19:58",
                           "value": [
                             {
-                              "string": "string",
-                              "raw_string": "string"
+                              "string": "string"
                             }
                           ]
                         }
@@ -130,8 +128,7 @@
                           "range": "d2/testdata/d2compiler/TestCompile/sql_paren.d2,4:8:67-4:12:71",
                           "value": [
                             {
-                              "string": "bool",
-                              "raw_string": "bool"
+                              "string": "bool"
                             }
                           ]
                         }

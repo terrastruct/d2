@@ -54,8 +54,7 @@
                           "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,1:9:28-1:16:35",
                           "value": [
                             {
-                              "string": "class",
-                              "raw_string": "class"
+                              "string": "class"
                             }
                           ]
                         }
@@ -87,8 +86,7 @@
                           "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,2:14:50-2:22:58",
                           "value": [
                             {
-                              "string": "string",
-                              "raw_string": "string"
+                              "string": "string"
                             }
                           ]
                         }

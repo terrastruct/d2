@@ -3,17 +3,17 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/combined.d2,0:0:0-5:0:38",
+      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/double-quoted.d2,0:0:0-5:0:40",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/combined.d2,1:0:1-3:1:24",
+            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/double-quoted.d2,1:0:1-3:1:24",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/combined.d2,1:0:1-1:4:5",
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/double-quoted.d2,1:0:1-1:4:5",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/combined.d2,1:0:1-1:4:5",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/double-quoted.d2,1:0:1-1:4:5",
                     "value": [
                       {
                         "string": "vars",
@@ -27,17 +27,17 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/combined.d2,1:6:7-3:1:24",
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/double-quoted.d2,1:6:7-3:1:24",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/combined.d2,2:2:11-2:13:22",
+                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/double-quoted.d2,2:2:11-2:13:22",
                       "key": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/combined.d2,2:2:11-2:3:12",
+                        "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/double-quoted.d2,2:2:11-2:3:12",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/combined.d2,2:2:11-2:3:12",
+                              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/double-quoted.d2,2:2:11-2:3:12",
                               "value": [
                                 {
                                   "string": "x",
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "unquoted_string": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/combined.d2,2:5:14-2:13:22",
+                          "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/double-quoted.d2,2:5:14-2:13:22",
                           "value": [
                             {
                               "string": "im a var"
@@ -68,13 +68,13 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/combined.d2,4:0:25-4:12:37",
+            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/double-quoted.d2,4:0:25-4:14:39",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/combined.d2,4:0:25-4:2:27",
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/double-quoted.d2,4:0:25-4:2:27",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/combined.d2,4:0:25-4:2:27",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/double-quoted.d2,4:0:25-4:2:27",
                     "value": [
                       {
                         "string": "hi",
@@ -87,8 +87,8 @@
             },
             "primary": {},
             "value": {
-              "unquoted_string": {
-                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/combined.d2,4:4:29-4:12:37",
+              "double_quoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/double-quoted.d2,4:4:29-4:14:39",
                 "value": [
                   {
                     "string": "1 im a var 2"
@@ -131,11 +131,11 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/combined.d2,4:0:25-4:2:27",
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/double-quoted.d2,4:0:25-4:2:27",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/combined.d2,4:0:25-4:2:27",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/double-quoted.d2,4:0:25-4:2:27",
                     "value": [
                       {
                         "string": "hi",

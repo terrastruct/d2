@@ -30,8 +30,7 @@
                 "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,0:11:11-0:16:16",
                 "value": [
                   {
-                    "string": "right",
-                    "raw_string": "right"
+                    "string": "right"
                   }
                 ]
               }
@@ -144,8 +143,7 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,3:20:61-3:30:71",
                                     "value": [
                                       {
-                                        "string": "capitalize",
-                                        "raw_string": "capitalize"
+                                        "string": "capitalize"
                                       }
                                     ]
                                   }
@@ -209,8 +207,7 @@
                 "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,6:24:102-6:33:111",
                 "value": [
                   {
-                    "string": "uppercase",
-                    "raw_string": "uppercase"
+                    "string": "uppercase"
                   }
                 ]
               }
@@ -264,8 +261,7 @@
                 "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,7:24:136-7:33:145",
                 "value": [
                   {
-                    "string": "lowercase",
-                    "raw_string": "lowercase"
+                    "string": "lowercase"
                   }
                 ]
               }

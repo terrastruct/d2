@@ -111,8 +111,7 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/edge_arrowhead_fields.d2,2:11:80-2:18:87",
                                     "value": [
                                       {
-                                        "string": "diamond",
-                                        "raw_string": "diamond"
+                                        "string": "diamond"
                                       }
                                     ]
                                   }
@@ -149,8 +148,7 @@
                           "range": "d2/testdata/d2compiler/TestCompile/edge_arrowhead_fields.d2,4:20:112-4:24:116",
                           "value": [
                             {
-                              "string": "QOTD",
-                              "raw_string": "QOTD"
+                              "string": "QOTD"
                             }
                           ]
                         }

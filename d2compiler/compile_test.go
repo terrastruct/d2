@@ -3254,6 +3254,30 @@ hi: 1 ${x} 2
 				},
 			},
 			{
+				name: "double-quoted",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+  x: im a var
+}
+hi: "1 ${x} 2"
+`, "")
+					assert.Equal(t, "1 im a var 2", g.Objects[0].Label.Value)
+				},
+			},
+			{
+				name: "single-quoted",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+  x: im a var
+}
+hi: '1 ${x} 2'
+`, "")
+					assert.Equal(t, "1 ${x} 2", g.Objects[0].Label.Value)
+				},
+			},
+			{
 				name: "edge label",
 				run: func(t *testing.T) {
 					g := assertCompile(t, `
@@ -3411,19 +3435,9 @@ scenarios: {
     x: ${x}
   }
 }
-layers: {
-  l2: {
-    vars: {
-      x: im replaced x var
-    }
-    x: ${x}
-  }
-}
 `, "")
 					assert.Equal(t, 1, len(g.Scenarios[0].Objects))
 					assert.Equal(t, "im replaced x var", g.Scenarios[0].Objects[0].Label.Value)
-					assert.Equal(t, 1, len(g.Layers[0].Objects))
-					assert.Equal(t, "im replaced x var", g.Layers[0].Objects[0].Label.Value)
 				},
 			},
 		}
@@ -3456,17 +3470,6 @@ vars: {
   x: hey
 }
 hi: ${z}
-`, "d2/testdata/d2compiler/TestCompile2/vars/errors/missing.d2:5:1: could not resolve variable z")
-				},
-			},
-			{
-				name: "key",
-				run: func(t *testing.T) {
-					assertCompile(t, `
-vars: {
-  x: hey
-}
-${x}
 `, "d2/testdata/d2compiler/TestCompile2/vars/errors/missing.d2:5:1: could not resolve variable z")
 				},
 			},

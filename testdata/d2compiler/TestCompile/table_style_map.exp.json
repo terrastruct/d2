@@ -54,8 +54,7 @@
                           "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,1:9:28-1:18:37",
                           "value": [
                             {
-                              "string": "sql_table",
-                              "raw_string": "sql_table"
+                              "string": "sql_table"
                             }
                           ]
                         }
@@ -87,8 +86,7 @@
                           "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,2:13:51-2:19:57",
                           "value": [
                             {
-                              "string": "string",
-                              "raw_string": "string"
+                              "string": "string"
                             }
                           ]
                         }
@@ -173,8 +171,7 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,5:16:102-5:20:106",
                                     "value": [
                                       {
-                                        "string": "blue",
-                                        "raw_string": "blue"
+                                        "string": "blue"
                                       }
                                     ]
                                   }

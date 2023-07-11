@@ -108,22 +108,10 @@
                       },
                       "primary": {},
                       "value": {
-                        "substitution": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/number.d2,5:15:44-5:25:54",
-                          "spread": false,
-                          "path": [
-                            {
-                              "unquoted_string": {
-                                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/number.d2,5:17:46-5:24:53",
-                                "value": [
-                                  {
-                                    "string": "columns",
-                                    "raw_string": "columns"
-                                  }
-                                ]
-                              }
-                            }
-                          ]
+                        "number": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/number.d2,2:10:19-2:11:20",
+                          "raw": "2",
+                          "value": "2"
                         }
                       }
                     }

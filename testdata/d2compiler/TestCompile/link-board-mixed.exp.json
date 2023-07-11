@@ -30,8 +30,7 @@
                 "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:10:10-0:30:30",
                 "value": [
                   {
-                    "string": "How does the cat go?",
-                    "raw_string": "How does the cat go?"
+                    "string": "How does the cat go?"
                   }
                 ]
               }
@@ -177,8 +176,7 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:26:103-5:30:107",
                                     "value": [
                                       {
-                                        "string": "goes",
-                                        "raw_string": "goes"
+                                        "string": "goes"
                                       }
                                     ]
                                   }
@@ -290,8 +288,7 @@
                                     "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,11:25:164-11:30:169",
                                     "value": [
                                       {
-                                        "string": "green",
-                                        "raw_string": "green"
+                                        "string": "green"
                                       }
                                     ]
                                   }
@@ -511,8 +508,7 @@
                     "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:26:103-5:30:107",
                     "value": [
                       {
-                        "string": "goes",
-                        "raw_string": "goes"
+                        "string": "goes"
                       }
                     ]
                   }
@@ -701,8 +697,7 @@
                     "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:10:10-0:30:30",
                     "value": [
                       {
-                        "string": "How does the cat go?",
-                        "raw_string": "How does the cat go?"
+                        "string": "How does the cat go?"
                       }
                     ]
                   }
@@ -788,8 +783,7 @@
                                         "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,11:25:164-11:30:169",
                                         "value": [
                                           {
-                                            "string": "green",
-                                            "raw_string": "green"
+                                            "string": "green"
                                           }
                                         ]
                                       }

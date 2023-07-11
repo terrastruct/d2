@@ -53,8 +53,7 @@
                 "range": "d2/testdata/d2compiler/TestCompile/edge_index.d2,1:8:9-1:11:12",
                 "value": [
                   {
-                    "string": "one",
-                    "raw_string": "one"
+                    "string": "one"
                   }
                 ]
               }
@@ -114,8 +113,7 @@
                 "range": "d2/testdata/d2compiler/TestCompile/edge_index.d2,2:13:26-2:16:29",
                 "value": [
                   {
-                    "string": "two",
-                    "raw_string": "two"
+                    "string": "two"
                   }
                 ]
               }
