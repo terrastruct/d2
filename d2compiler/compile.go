@@ -1,7 +1,6 @@
 package d2compiler
 
 import (
-	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io"
@@ -65,8 +64,6 @@ func compileIR(ast *d2ast.Map, m *d2ir.Map) (*d2graph.Graph, error) {
 	g := d2graph.NewGraph()
 	g.AST = ast
 	c.compileBoard(g, m)
-	b, _ := json.MarshalIndent(m, "", "  ")
-	println("\033[1;31m--- DEBUG:", string(b), "\033[m")
 	if len(c.err.Errors) > 0 {
 		return nil, c.err
 	}

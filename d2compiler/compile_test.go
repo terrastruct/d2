@@ -3193,6 +3193,69 @@ hi: ${x}
 					assert.Equal(t, "im a var", g.Objects[0].Label.Value)
 				},
 			},
+			{
+				// TODO: text before/after substitutions
+				name: "combined",
+				skip: true,
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+  x: im a var
+}
+hi: 1 ${x} 2
+`, "")
+					assert.Equal(t, "1 im a var 2", g.Objects[0].Label.Value)
+				},
+			},
+			{
+				name: "edge label",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+  x: im a var
+}
+a -> b: ${x}
+`, "")
+					assert.Equal(t, 1, len(g.Edges))
+					assert.Equal(t, "im a var", g.Edges[0].Label.Value)
+				},
+			},
+		}
+
+		for _, tc := range tca {
+			tc := tc
+			t.Run(tc.name, func(t *testing.T) {
+				t.Parallel()
+				if tc.skip {
+					t.SkipNow()
+				}
+				tc.run(t)
+			})
+		}
+	})
+
+	t.Run("override", func(t *testing.T) {
+		t.Parallel()
+
+		tca := []struct {
+			name string
+			skip bool
+			run  func(t *testing.T)
+		}{
+			{
+				name: "label",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+  x: im a var
+}
+hi: ${x}
+hi: not a var
+`, "")
+					assert.Equal(t, 1, len(g.Objects))
+					assert.Equal(t, "not a var", g.Objects[0].Label.Value)
+				},
+			},
 		}
 
 		for _, tc := range tca {

@@ -3,17 +3,17 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/label.d2,0:0:0-5:0:34",
+      "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,0:0:0-6:0:48",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/label.d2,1:0:1-3:1:24",
+            "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,1:0:1-3:1:24",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/label.d2,1:0:1-1:4:5",
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,1:0:1-1:4:5",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/label.d2,1:0:1-1:4:5",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,1:0:1-1:4:5",
                     "value": [
                       {
                         "string": "vars",
@@ -27,17 +27,17 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/label.d2,1:6:7-3:1:24",
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,1:6:7-3:1:24",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/label.d2,2:2:11-2:13:22",
+                      "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,2:2:11-2:13:22",
                       "key": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/label.d2,2:2:11-2:3:12",
+                        "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,2:2:11-2:3:12",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/label.d2,2:2:11-2:3:12",
+                              "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,2:2:11-2:3:12",
                               "value": [
                                 {
                                   "string": "x",
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "unquoted_string": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/label.d2,2:5:14-2:13:22",
+                          "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,2:5:14-2:13:22",
                           "value": [
                             {
                               "string": "im a var",
@@ -69,13 +69,13 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/label.d2,4:0:25-4:8:33",
+            "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,4:0:25-4:8:33",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/label.d2,4:0:25-4:2:27",
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,4:0:25-4:2:27",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/label.d2,4:0:25-4:2:27",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,4:0:25-4:2:27",
                     "value": [
                       {
                         "string": "hi",
@@ -89,12 +89,12 @@
             "primary": {},
             "value": {
               "substitution": {
-                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/label.d2,4:4:29-4:8:33",
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,4:4:29-4:8:33",
                 "spread": false,
                 "path": [
                   {
                     "unquoted_string": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/label.d2,4:6:31-4:7:32",
+                      "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,4:6:31-4:7:32",
                       "value": [
                         {
                           "string": "x",
@@ -102,6 +102,39 @@
                         }
                       ]
                     }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,5:0:34-5:13:47",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,5:0:34-5:2:36",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,5:0:34-5:2:36",
+                    "value": [
+                      {
+                        "string": "hi",
+                        "raw_string": "hi"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "unquoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,5:4:38-5:13:47",
+                "value": [
+                  {
+                    "string": "not a var",
+                    "raw_string": "not a var"
                   }
                 ]
               }
@@ -141,11 +174,31 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/label.d2,4:0:25-4:2:27",
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,4:0:25-4:2:27",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/label.d2,4:0:25-4:2:27",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,4:0:25-4:2:27",
+                    "value": [
+                      {
+                        "string": "hi",
+                        "raw_string": "hi"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,5:0:34-5:2:36",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label.d2,5:0:34-5:2:36",
                     "value": [
                       {
                         "string": "hi",
@@ -162,7 +215,7 @@
         ],
         "attributes": {
           "label": {
-            "value": "im a var"
+            "value": "not a var"
           },
           "labelDimensions": {
             "width": 0,

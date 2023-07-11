@@ -52,16 +52,15 @@ func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, error) {
 	defer c.popImportStack()
 
 	c.compileMap(m, ast, ast)
-	c.compileClasses(m)
-	c.compileVars(m)
-	c.compileSubstitutions(m)
+	c.overlayClasses(m)
+	c.overlayVars(m)
 	if !c.err.Empty() {
 		return nil, c.err
 	}
 	return m, nil
 }
 
-func (c *compiler) compileClasses(m *Map) {
+func (c *compiler) overlayClasses(m *Map) {
 	classes := m.GetField("classes")
 	if classes == nil || classes.Map() == nil {
 		return
@@ -94,49 +93,49 @@ func (c *compiler) compileClasses(m *Map) {
 			l.Fields = append(l.Fields, base)
 		}
 
-		c.compileClasses(l)
+		c.overlayClasses(l)
 	}
 }
 
-func (c *compiler) compileSubstitutions(m *Map) {
-	vars := m.GetField("vars")
-	for _, f := range m.Fields {
-		// No substitutions within vars itself
-		if f.Name == "vars" {
-			continue
+func (c *compiler) resolveSubstitution(vars *Map, mk *d2ast.Key, substitution *d2ast.Substitution) d2ast.Scalar {
+	var resolved *Field
+	for _, p := range substitution.Path {
+		if vars == nil {
+			resolved = nil
+			break
 		}
-		for _, ref := range f.References {
-			if ref.Context.Key != nil && ref.Context.Key.Value.Substitution != nil {
-				var resolved *Field
-				m := vars
-				for _, p := range ref.Context.Key.Value.Substitution.Path {
-					r := m.Map().GetField(p.Unbox().ScalarString())
-					if r == nil {
-						resolved = nil
-						break
-					}
-					m = r
-					resolved = r
-				}
-				if resolved == nil {
-					c.errorf(ref.Context.Key, "could not resolve variable %s", strings.Join(ref.Context.Key.Value.Substitution.IDA(), "."))
-				} else {
-					// TODO do i need this
-					// ref.Context.Key.Value = d2ast.MakeValueBox(resolved.Primary().Value)
+		r := vars.GetField(p.Unbox().ScalarString())
+		if r == nil {
+			resolved = nil
+			break
+		}
+		vars = r.Map()
+		resolved = r
+	}
+	if resolved == nil {
+		c.errorf(mk, "could not resolve variable %s", strings.Join(substitution.IDA(), "."))
+	} else {
+		// TODO maps
+		return resolved.Primary().Value
+	}
+	return nil
+}
 
-					// TODO maps
-					f.Primary_ = &Scalar{
-						parent: f,
-						Value:  resolved.Primary().Value,
-					}
-				}
-				ref.Context.Key.Value.Substitution = nil
-			}
+func (c *compiler) compileVars(m *Map, ast *d2ast.Map) {
+	for _, n := range ast.Nodes {
+		if n.MapKey != nil && n.MapKey.Key != nil && len(n.MapKey.Key.Path) == 1 && strings.EqualFold(n.MapKey.Key.Path[0].Unbox().ScalarString(), "vars") {
+			c.compileKey(&RefContext{
+				Key:      n.MapKey,
+				Scope:    ast,
+				ScopeMap: m,
+				ScopeAST: ast,
+			})
+			break
 		}
 	}
 }
 
-func (c *compiler) compileVars(m *Map) {
+func (c *compiler) overlayVars(m *Map) {
 	vars := m.GetField("vars")
 	if vars == nil || vars.Map() == nil {
 		return
@@ -169,7 +168,7 @@ func (c *compiler) compileVars(m *Map) {
 			l.Fields = append(l.Fields, base)
 		}
 
-		c.compileVars(l)
+		c.overlayVars(l)
 	}
 }
 
@@ -184,6 +183,10 @@ func (c *compiler) overlay(base *Map, f *Field) {
 }
 
 func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
+	// When compiling a new board, compile vars before all else, as it might be referenced
+	if NodeBoardKind(dst) != "" {
+		c.compileVars(dst, ast)
+	}
 	for _, n := range ast.Nodes {
 		switch {
 		case n.MapKey != nil:
@@ -279,7 +282,7 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 		c.compileMap(f.Map(), refctx.Key.Value.Map, scopeAST)
 		switch NodeBoardKind(f) {
 		case BoardScenario, BoardStep:
-			c.compileClasses(f.Map())
+			c.overlayClasses(f.Map())
 		}
 	} else if refctx.Key.Value.Import != nil {
 		n, ok := c._import(refctx.Key.Value.Import)
@@ -318,13 +321,18 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 			c.updateLinks(f.Map())
 			switch NodeBoardKind(f) {
 			case BoardScenario, BoardStep:
-				c.compileClasses(f.Map())
+				c.overlayClasses(f.Map())
 			}
 		}
 	} else if refctx.Key.Value.Substitution != nil {
-		// b, _ := json.MarshalIndent(refctx.Key.Value.Substitution.IDA(), "", "  ")
-		// println("\033[1;31m--- DEBUG:", string(b), "\033[m")
-		// println("\033[1;31m--- DEBUG:", "=======what===============", "\033[m")
+		vars := ParentBoard(f).Map().GetField("vars")
+		resolved := c.resolveSubstitution(vars.Map(), refctx.Key, refctx.Key.Value.Substitution)
+		if resolved != nil {
+			f.Primary_ = &Scalar{
+				parent: f,
+				Value:  resolved,
+			}
+		}
 	} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
 		// If the link is a board, we need to transform it into an absolute path.
 		if f.Name == "link" {
@@ -502,6 +510,15 @@ func (c *compiler) compileEdges(refctx *RefContext) {
 					}
 				}
 				c.compileMap(e.Map_, refctx.Key.Value.Map, refctx.ScopeAST)
+			} else if refctx.Key.Value.Substitution != nil {
+				vars := ParentBoard(e).Map().GetField("vars")
+				resolved := c.resolveSubstitution(vars.Map(), refctx.Key, refctx.Key.Value.Substitution)
+				if resolved != nil {
+					e.Primary_ = &Scalar{
+						parent: e,
+						Value:  resolved,
+					}
+				}
 			} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
 				e.Primary_ = &Scalar{
 					parent: e,
