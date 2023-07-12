@@ -143,14 +143,33 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) {
 					c.errorf(node.LastRef().AST(), `could not resolve variable "%s"`, strings.Join(box.Substitution.IDA(), "."))
 					return
 				}
+				if box.Substitution.Spread {
+					if resolvedField.Composite == nil {
+						c.errorf(box.Substitution, "cannot spread non-map into map")
+						continue
+					}
+					// TODO arrays
+					if resolvedField.Map() != nil {
+						OverlayMap(ParentMap(node), resolvedField.Map())
+					}
+					// Remove the placeholder field
+					f := node.(*Field)
+					m := f.parent.(*Map)
+					for i, f2 := range m.Fields {
+						if f == f2 {
+							m.Fields = append(m.Fields[:i], m.Fields[i+1:]...)
+							break
+						}
+					}
+				}
 				if resolvedField.Primary() == nil {
 					if len(s.Value) > 1 {
 						c.errorf(node.LastRef().AST(), `cannot substitute map variable "%s" as part of a string`, strings.Join(box.Substitution.IDA(), "."))
 						return
 					}
 				} else {
-					// If lone and unquoted, replace with value of sub
 					if len(s.Value) == 1 {
+						// If lone and unquoted, replace with value of sub
 						node.Primary().Value = resolvedField.Primary().Value
 					} else {
 						s.Value[i].String = go2.Pointer(resolvedField.Primary().String())
@@ -255,6 +274,21 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 				ScopeMap: dst,
 				ScopeAST: scopeAST,
 			})
+		case n.Substitution != nil:
+			if !n.Substitution.Spread {
+				c.errorf(n.Import, "invalid non-spread substitution in map")
+				continue
+			}
+			// placeholder field to be resolved at the end
+			f := &Field{
+				parent: dst,
+				Primary_: &Scalar{
+					Value: &d2ast.UnquotedString{
+						Value: []d2ast.InterpolationBox{{Substitution: n.Substitution}},
+					},
+				},
+			}
+			dst.Fields = append(dst.Fields, f)
 		case n.Import != nil:
 			impn, ok := c._import(n.Import)
 			if !ok {
@@ -619,6 +653,7 @@ func (c *compiler) compileArray(dst *Array, a *d2ast.Array, scopeAST *d2ast.Map)
 				irv = n
 			}
 		case *d2ast.Substitution:
+			// TODO
 			// panic("TODO")
 		}
 

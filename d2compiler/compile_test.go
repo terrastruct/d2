@@ -3392,6 +3392,25 @@ z: ${x}
 					assert.Equal(t, 1, len(g.Objects[1].Children))
 				},
 			},
+			{
+				name: "spread",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+	x: all {
+		a: b
+    b: c
+  }
+}
+z: {
+  ...${x}
+  c
+}
+`, "")
+					assert.Equal(t, "z", g.Objects[1].ID)
+					assert.Equal(t, 3, len(g.Objects[1].Children))
+				},
+			},
 		}
 
 		for _, tc := range tca {
@@ -3710,6 +3729,37 @@ vars: {
 }
 hi
 `, "d2/testdata/d2compiler/TestCompile2/vars/errors/edge.d2:3:3: vars cannot contain an edge")
+				},
+			},
+			{
+				name: "spread-non-map",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+	x: all
+}
+z: {
+  ...${x}
+  c
+}
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/spread-non-map.d2:6:3: cannot spread non-map into map`)
+				},
+			},
+			{
+				name: "spread-non-solo",
+				// NOTE: this doesn't get parsed correctly and so the error message isn't exactly right, but the important thing is that it errors
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+	x: {
+    a: b
+  }
+}
+z: {
+	d: ...${x}
+  c
+}
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/spread-non-solo.d2:8:2: cannot substitute map variable "x" as part of a string`)
 				},
 			},
 		}
