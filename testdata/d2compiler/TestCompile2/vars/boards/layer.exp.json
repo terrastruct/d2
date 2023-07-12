@@ -137,11 +137,26 @@
                                 "primary": {},
                                 "value": {
                                   "unquoted_string": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer.d2,2:5:14-2:13:22",
+                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer.d2,7:8:51-7:9:52",
                                     "value": [
                                       {
-                                        "string": "im a var",
-                                        "raw_string": "im a var"
+                                        "substitution": {
+                                          "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer.d2,7:8:51-7:12:55",
+                                          "spread": false,
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer.d2,7:10:53-7:11:54",
+                                                "value": [
+                                                  {
+                                                    "string": "x",
+                                                    "raw_string": "x"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        }
                                       }
                                     ]
                                   }

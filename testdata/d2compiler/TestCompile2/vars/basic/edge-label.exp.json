@@ -3,17 +3,17 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,0:0:0-5:0:38",
+      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,0:0:0-5:0:38",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,1:0:1-3:1:24",
+            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,1:0:1-3:1:24",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,1:0:1-1:4:5",
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,1:0:1-1:4:5",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,1:0:1-1:4:5",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,1:0:1-1:4:5",
                     "value": [
                       {
                         "string": "vars",
@@ -27,17 +27,17 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,1:6:7-3:1:24",
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,1:6:7-3:1:24",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,2:2:11-2:13:22",
+                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,2:2:11-2:13:22",
                       "key": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,2:2:11-2:3:12",
+                        "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,2:2:11-2:3:12",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,2:2:11-2:3:12",
+                              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,2:2:11-2:3:12",
                               "value": [
                                 {
                                   "string": "x",
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "unquoted_string": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,2:5:14-2:13:22",
+                          "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,2:5:14-2:13:22",
                           "value": [
                             {
                               "string": "im a var",
@@ -69,16 +69,16 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,4:0:25-4:12:37",
+            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,4:0:25-4:12:37",
             "edges": [
               {
-                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,4:0:25-4:6:31",
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,4:0:25-4:6:31",
                 "src": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,4:0:25-4:1:26",
+                  "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,4:0:25-4:1:26",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,4:0:25-4:1:26",
+                        "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,4:0:25-4:1:26",
                         "value": [
                           {
                             "string": "a",
@@ -91,11 +91,11 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,4:5:30-4:6:31",
+                  "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,4:5:30-4:6:31",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,4:5:30-4:6:31",
+                        "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,4:5:30-4:6:31",
                         "value": [
                           {
                             "string": "b",
@@ -112,16 +112,16 @@
             "primary": {},
             "value": {
               "unquoted_string": {
-                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,4:8:33-4:9:34",
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,4:8:33-4:9:34",
                 "value": [
                   {
                     "substitution": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,4:8:33-4:12:37",
+                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,4:8:33-4:12:37",
                       "spread": false,
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,4:10:35-4:11:36",
+                            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,4:10:35-4:11:36",
                             "value": [
                               {
                                 "string": "x",
@@ -176,7 +176,7 @@
         ],
         "attributes": {
           "label": {
-            "value": ""
+            "value": "im a var"
           },
           "labelDimensions": {
             "width": 0,
@@ -202,11 +202,11 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,4:0:25-4:1:26",
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,4:0:25-4:1:26",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,4:0:25-4:1:26",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,4:0:25-4:1:26",
                     "value": [
                       {
                         "string": "a",
@@ -247,11 +247,11 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,4:5:30-4:6:31",
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,4:5:30-4:6:31",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,4:5:30-4:6:31",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-label.d2,4:5:30-4:6:31",
                     "value": [
                       {
                         "string": "b",

@@ -53,6 +53,7 @@ func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, error) {
 	defer c.popImportStack()
 
 	c.compileMap(m, ast, ast)
+	c.compileSubstitutions(m, nil)
 	c.overlayClasses(m)
 	if !c.err.Empty() {
 		return nil, c.err
@@ -97,55 +98,63 @@ func (c *compiler) overlayClasses(m *Map) {
 	}
 }
 
-func (c *compiler) resolveSubstitutions(refctx *RefContext) {
-	boardScope := refctx.ScopeMap
-	if NodeBoardKind(refctx.ScopeMap) == "" {
-		boardScope = ParentBoard(refctx.ScopeMap).Map()
+func (c *compiler) compileSubstitutions(m *Map, varsStack []*Map) {
+	for _, f := range m.Fields {
+		if f.Name == "vars" && f.Map() != nil {
+			varsStack = append([]*Map{f.Map()}, varsStack...)
+		}
+		if f.Primary() != nil {
+			c.resolveSubstitutions(varsStack, f.LastRef().AST(), f.Primary())
+		}
+		if f.Map() != nil {
+			c.compileSubstitutions(f.Map(), varsStack)
+		}
 	}
-
-	varsMap := &Map{}
-	vars := boardScope.GetField("vars")
-	if vars != nil {
-		varsMap = vars.Map()
+	for _, e := range m.Edges {
+		if e.Primary() != nil {
+			c.resolveSubstitutions(varsStack, e.LastRef().AST(), e.Primary())
+		}
 	}
+}
 
+func (c *compiler) resolveSubstitutions(varsStack []*Map, node d2ast.Node, scalar *Scalar) {
 	subbed := false
-	switch {
-	case refctx.Key.Value.UnquotedString != nil:
-		for i, box := range refctx.Key.Value.UnquotedString.Value {
+	switch s := scalar.Value.(type) {
+	case *d2ast.UnquotedString:
+		for i, box := range s.Value {
 			if box.Substitution != nil {
-				resolvedField := c.resolveSubstitution(varsMap, refctx.Key, box.Substitution)
+				resolvedField := c.resolveSubstitution(varsStack[0], node, box.Substitution)
 				if resolvedField != nil {
 					// If lone and unquoted, replace with value of sub
-					if len(refctx.Key.Value.UnquotedString.Value) == 1 {
-						refctx.Key.Value = d2ast.MakeValueBox(resolvedField.Primary().Value)
+					if len(s.Value) == 1 {
+						scalar.Value = resolvedField.Primary().Value
 					} else {
-						refctx.Key.Value.UnquotedString.Value[i].String = go2.Pointer(resolvedField.Primary().String())
+						s.Value[i].String = go2.Pointer(resolvedField.Primary().String())
 						subbed = true
 					}
 				}
 			}
 		}
 		if subbed {
-			refctx.Key.Value.UnquotedString.Coalesce()
+			s.Coalesce()
 		}
-	case refctx.Key.Value.DoubleQuotedString != nil:
-		for i, box := range refctx.Key.Value.DoubleQuotedString.Value {
+	case *d2ast.DoubleQuotedString:
+		for i, box := range s.Value {
 			if box.Substitution != nil {
-				resolvedField := c.resolveSubstitution(varsMap, refctx.Key, box.Substitution)
+				resolvedField := c.resolveSubstitution(varsStack[0], node, box.Substitution)
 				if resolvedField != nil {
-					refctx.Key.Value.DoubleQuotedString.Value[i].String = go2.Pointer(resolvedField.Primary().String())
+					s.Value[i].String = go2.Pointer(resolvedField.Primary().String())
 					subbed = true
 				}
 			}
 		}
 		if subbed {
-			refctx.Key.Value.DoubleQuotedString.Coalesce()
+			s.Coalesce()
 		}
 	}
 }
 
-func (c *compiler) resolveSubstitution(vars *Map, mk *d2ast.Key, substitution *d2ast.Substitution) *Field {
+func (c *compiler) resolveSubstitution(vars *Map, node d2ast.Node, substitution *d2ast.Substitution) *Field {
 	var resolved *Field
 	for _, p := range substitution.Path {
 		if vars == nil {
@@ -162,27 +171,13 @@ func (c *compiler) resolveSubstitution(vars *Map, mk *d2ast.Key, substitution *d
 	}
 
 	if resolved == nil {
-		c.errorf(mk, `could not resolve variable "%s"`, strings.Join(substitution.IDA(), "."))
+		c.errorf(node, `could not resolve variable "%s"`, strings.Join(substitution.IDA(), "."))
 	} else if resolved.Composite != nil {
-		c.errorf(mk, `cannot reference map variable "%s"`, strings.Join(substitution.IDA(), "."))
+		c.errorf(node, `cannot reference map variable "%s"`, strings.Join(substitution.IDA(), "."))
 	} else {
 		return resolved
 	}
 	return nil
-}
-
-func (c *compiler) compileVars(m *Map, ast *d2ast.Map) {
-	for _, n := range ast.Nodes {
-		if n.MapKey != nil && n.MapKey.Key != nil && len(n.MapKey.Key.Path) == 1 && strings.EqualFold(n.MapKey.Key.Path[0].Unbox().ScalarString(), "vars") {
-			c.compileKey(&RefContext{
-				Key:      n.MapKey,
-				Scope:    ast,
-				ScopeMap: m,
-				ScopeAST: ast,
-			})
-			break
-		}
-	}
 }
 
 func (c *compiler) overlayVars(base, overlay *Map) {
@@ -215,10 +210,6 @@ func (c *compiler) overlay(base *Map, f *Field) {
 }
 
 func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
-	// When compiling a new board, compile vars before all else, as it might be referenced
-	if NodeBoardKind(dst) != "" {
-		c.compileVars(dst, ast)
-	}
 	for _, n := range ast.Nodes {
 		switch {
 		case n.MapKey != nil:
@@ -252,7 +243,6 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 }
 
 func (c *compiler) compileKey(refctx *RefContext) {
-	c.resolveSubstitutions(refctx)
 	if len(refctx.Key.Edges) == 0 {
 		c.compileField(refctx.ScopeMap, refctx.Key.Key, refctx)
 	} else {

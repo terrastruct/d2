@@ -182,11 +182,48 @@
                       "primary": {},
                       "value": {
                         "unquoted_string": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,4:14:49-4:17:52",
+                          "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,9:14:85-9:15:86",
                           "value": [
                             {
-                              "string": "red",
-                              "raw_string": "red"
+                              "substitution": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,9:14:85-9:38:109",
+                                "spread": false,
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,9:16:87-9:22:93",
+                                      "value": [
+                                        {
+                                          "string": "colors",
+                                          "raw_string": "colors"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,9:23:94-9:30:101",
+                                      "value": [
+                                        {
+                                          "string": "primary",
+                                          "raw_string": "primary"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,9:31:102-9:37:108",
+                                      "value": [
+                                        {
+                                          "string": "button",
+                                          "raw_string": "button"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
                             }
                           ]
                         }

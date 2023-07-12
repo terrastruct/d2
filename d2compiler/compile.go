@@ -283,9 +283,6 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 				c.errorf(f.Map().Edges[0].LastRef().AST(), "vars cannot contain an edge")
 			}
 		}
-		if d2ir.NodeBoardKind(d2ir.ParentMap(f)) == "" {
-			c.errorf(f.LastRef().AST(), "vars must be defined at the root of a board")
-		}
 		return
 	} else if isReserved {
 		c.compileReserved(&obj.Attributes, f)

@@ -3181,7 +3181,7 @@ func testVars(t *testing.T) {
 			run  func(t *testing.T)
 		}{
 			{
-				name: "label",
+				name: "shape-label",
 				run: func(t *testing.T) {
 					g := assertCompile(t, `
 vars: {
@@ -3278,7 +3278,7 @@ hi: '1 ${x} 2'
 				},
 			},
 			{
-				name: "edge label",
+				name: "edge-label",
 				run: func(t *testing.T) {
 					g := assertCompile(t, `
 vars: {
@@ -3359,6 +3359,23 @@ hi: not a var
 `, "")
 					assert.Equal(t, 1, len(g.Objects))
 					assert.Equal(t, "not a var", g.Objects[0].Label.Value)
+				},
+			},
+			{
+				name: "map",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+  x: im root var
+}
+a: {
+  vars: {
+    x: im nested var
+  }
+  hi: ${x}
+}
+`, "")
+					assert.Equal(t, "im nested var", g.Objects[1].Label.Value)
 				},
 			},
 		}
@@ -3543,18 +3560,6 @@ vars: {
 }
 hi: ${colors}
 `, `d2/testdata/d2compiler/TestCompile2/vars/errors/map.d2:7:1: cannot reference map variable "colors"`)
-				},
-			},
-			{
-				name: "non-root",
-				run: func(t *testing.T) {
-					assertCompile(t, `
-x: {
-  vars: {
-    x: hey
-  }
-}
-`, `d2/testdata/d2compiler/TestCompile2/vars/errors/non-root.d2:3:3: vars must be defined at the root of a board`)
 				},
 			},
 		}

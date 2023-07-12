@@ -199,11 +199,26 @@
                                 "primary": {},
                                 "value": {
                                   "unquoted_string": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,2:5:14-2:13:22",
+                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,10:7:89-10:8:90",
                                     "value": [
                                       {
-                                        "string": "im x var",
-                                        "raw_string": "im x var"
+                                        "substitution": {
+                                          "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,10:7:89-10:11:93",
+                                          "spread": false,
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,10:9:91-10:10:92",
+                                                "value": [
+                                                  {
+                                                    "string": "x",
+                                                    "raw_string": "x"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        }
                                       }
                                     ]
                                   }
@@ -232,11 +247,26 @@
                                 "primary": {},
                                 "value": {
                                   "unquoted_string": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,8:9:67-8:17:75",
+                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,11:7:101-11:8:102",
                                     "value": [
                                       {
-                                        "string": "im y var",
-                                        "raw_string": "im y var"
+                                        "substitution": {
+                                          "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,11:7:101-11:11:105",
+                                          "spread": false,
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,11:9:103-11:10:104",
+                                                "value": [
+                                                  {
+                                                    "string": "y",
+                                                    "raw_string": "y"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        }
                                       }
                                     ]
                                   }
@@ -385,11 +415,26 @@
                                 "primary": {},
                                 "value": {
                                   "unquoted_string": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,2:5:14-2:13:22",
+                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,19:7:173-19:8:174",
                                     "value": [
                                       {
-                                        "string": "im x var",
-                                        "raw_string": "im x var"
+                                        "substitution": {
+                                          "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,19:7:173-19:11:177",
+                                          "spread": false,
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,19:9:175-19:10:176",
+                                                "value": [
+                                                  {
+                                                    "string": "x",
+                                                    "raw_string": "x"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        }
                                       }
                                     ]
                                   }
@@ -418,11 +463,26 @@
                                 "primary": {},
                                 "value": {
                                   "unquoted_string": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,17:9:151-17:17:159",
+                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,20:7:185-20:8:186",
                                     "value": [
                                       {
-                                        "string": "im y var",
-                                        "raw_string": "im y var"
+                                        "substitution": {
+                                          "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,20:7:185-20:11:189",
+                                          "spread": false,
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,20:9:187-20:10:188",
+                                                "value": [
+                                                  {
+                                                    "string": "y",
+                                                    "raw_string": "y"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        }
                                       }
                                     ]
                                   }
