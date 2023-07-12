@@ -3428,6 +3428,23 @@ a: {
 					assert.Equal(t, "BlackSmith", g.Objects[1].Label.Value)
 				},
 			},
+			{
+				name: "recursive-var",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+  x: a
+}
+hi: {
+  vars: {
+    x: ${x}-b
+  }
+  yo: ${x}
+}
+`, "")
+					assert.Equal(t, "a-b", g.Objects[1].Label.Value)
+				},
+			},
 		}
 
 		for _, tc := range tca {
@@ -3599,6 +3616,17 @@ a: {
 }
 hi: ${x}
 `, `d2/testdata/d2compiler/TestCompile2/vars/errors/out-of-scope.d2:7:1: could not resolve variable "x"`)
+				},
+			},
+			{
+				name: "recursive-var",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+  x: ${x}
+}
+hi: ${x}
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/recursive-var.d2:3:3: could not resolve variable "x"`)
 				},
 			},
 			{

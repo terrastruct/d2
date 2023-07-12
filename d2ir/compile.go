@@ -107,7 +107,13 @@ func (c *compiler) compileSubstitutions(m *Map, varsStack []*Map) {
 			c.resolveSubstitutions(varsStack, f.LastRef().AST(), f.Primary())
 		}
 		if f.Map() != nil {
-			c.compileSubstitutions(f.Map(), varsStack)
+			// this map could be the "vars"
+			// and if it is, then its already been compiled, so the varsStack can be truncated
+			if f.Name == "vars" {
+				c.compileSubstitutions(f.Map(), varsStack[1:])
+			} else {
+				c.compileSubstitutions(f.Map(), varsStack)
+			}
 		}
 	}
 	for _, e := range m.Edges {
@@ -134,27 +140,25 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node d2ast.Node, scala
 						break
 					}
 				}
-				if resolvedField != nil {
-					if resolvedField.Composite != nil {
-						c.errorf(node, `cannot reference map variable "%s"`, strings.Join(box.Substitution.IDA(), "."))
-						return
-					}
-					// If lone and unquoted, replace with value of sub
-					if len(s.Value) == 1 {
-						scalar.Value = resolvedField.Primary().Value
-					} else {
-						s.Value[i].String = go2.Pointer(resolvedField.Primary().String())
-						subbed = true
-					}
-				} else {
+				if resolvedField == nil {
 					c.errorf(node, `could not resolve variable "%s"`, strings.Join(box.Substitution.IDA(), "."))
 					return
+				}
+				if resolvedField.Composite != nil {
+					c.errorf(node, `cannot reference map variable "%s"`, strings.Join(box.Substitution.IDA(), "."))
+					return
+				}
+				// If lone and unquoted, replace with value of sub
+				if len(s.Value) == 1 {
+					scalar.Value = resolvedField.Primary().Value
+				} else {
+					s.Value[i].String = go2.Pointer(resolvedField.Primary().String())
+					subbed = true
 				}
 			}
 		}
 		if subbed {
 			s.Coalesce()
-			scalar.Value = d2ast.RawString(s.ScalarString(), false)
 		}
 	case *d2ast.DoubleQuotedString:
 		for i, box := range s.Value {
@@ -165,17 +169,16 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node d2ast.Node, scala
 						break
 					}
 				}
-				if resolvedField != nil {
-					if resolvedField.Composite != nil {
-						c.errorf(node, `cannot reference map variable "%s"`, strings.Join(box.Substitution.IDA(), "."))
-						return
-					}
-					s.Value[i].String = go2.Pointer(resolvedField.Primary().String())
-					subbed = true
-				} else {
+				if resolvedField == nil {
 					c.errorf(node, `could not resolve variable "%s"`, strings.Join(box.Substitution.IDA(), "."))
 					return
 				}
+				if resolvedField.Composite != nil {
+					c.errorf(node, `cannot reference map variable "%s"`, strings.Join(box.Substitution.IDA(), "."))
+					return
+				}
+				s.Value[i].String = go2.Pointer(resolvedField.Primary().String())
+				subbed = true
 			}
 		}
 		if subbed {
@@ -185,21 +188,21 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node d2ast.Node, scala
 }
 
 func (c *compiler) resolveSubstitution(vars *Map, substitution *d2ast.Substitution) *Field {
-	var resolved *Field
-	for _, p := range substitution.Path {
-		if vars == nil {
-			resolved = nil
-			break
-		}
-		r := vars.GetField(p.Unbox().ScalarString())
-		if r == nil {
-			resolved = nil
-			break
-		}
-		vars = r.Map()
-		resolved = r
+	if vars == nil {
+		return nil
 	}
-	return resolved
+
+	for i, p := range substitution.Path {
+		f := vars.GetField(p.Unbox().ScalarString())
+		if f == nil {
+			return nil
+		}
+		if i == len(substitution.Path)-1 {
+			return f
+		}
+		vars = f.Map()
+	}
+	return nil
 }
 
 func (c *compiler) overlayVars(base, overlay *Map) {
@@ -208,14 +211,14 @@ func (c *compiler) overlayVars(base, overlay *Map) {
 		return
 	}
 
-	lVars := base.GetField("vars")
+	baseVars := base.GetField("vars")
 
-	if lVars == nil {
-		lVars = vars.Copy(base).(*Field)
-		base.Fields = append(base.Fields, lVars)
+	if baseVars == nil {
+		baseVars = vars.Copy(base).(*Field)
+		base.Fields = append(base.Fields, baseVars)
 	} else {
 		overlayed := vars.Copy(base).(*Field)
-		OverlayMap(overlayed.Map(), lVars.Map())
+		OverlayMap(overlayed.Map(), baseVars.Map())
 		base.DeleteField("vars")
 		base.Fields = append(base.Fields, overlayed)
 	}
