@@ -3291,6 +3291,21 @@ a -> b: ${x}
 				},
 			},
 			{
+				name: "edge-map",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+  x: im a var
+}
+a -> b: {
+  target-arrowhead.label: ${x}
+}
+`, "")
+					assert.Equal(t, 1, len(g.Edges))
+					assert.Equal(t, "im a var", g.Edges[0].DstArrowhead.Label.Value)
+				},
+			},
+			{
 				name: "quoted-var",
 				run: func(t *testing.T) {
 					g := assertCompile(t, `
@@ -3323,6 +3338,23 @@ vars: {
 y: "hey ${x}"
 `, "")
 					assert.Equal(t, `hey "hi"`, g.Objects[0].Label.Value)
+				},
+			},
+			{
+				name: "parent-scope",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+  x: im root var
+}
+a: {
+  vars: {
+    b: im nested var
+  }
+  hi: ${x}
+}
+`, "")
+					assert.Equal(t, "im root var", g.Objects[1].Label.Value)
 				},
 			},
 		}
@@ -3536,6 +3568,19 @@ vars: {
 }
 hi: ${x.z}
 `, `d2/testdata/d2compiler/TestCompile2/vars/errors/nested-missing.d2:7:1: could not resolve variable "x.z"`)
+				},
+			},
+			{
+				name: "out-of-scope",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+a: {
+  vars: {
+    x: hey
+  }
+}
+hi: ${x}
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/out-of-scope.d2:7:1: could not resolve variable "x"`)
 				},
 			},
 			{

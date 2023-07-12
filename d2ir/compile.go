@@ -114,17 +114,31 @@ func (c *compiler) compileSubstitutions(m *Map, varsStack []*Map) {
 		if e.Primary() != nil {
 			c.resolveSubstitutions(varsStack, e.LastRef().AST(), e.Primary())
 		}
+		if e.Map() != nil {
+			c.compileSubstitutions(e.Map(), varsStack)
+		}
 	}
 }
 
 func (c *compiler) resolveSubstitutions(varsStack []*Map, node d2ast.Node, scalar *Scalar) {
-	subbed := false
+	var subbed bool
+	var resolvedField *Field
+
 	switch s := scalar.Value.(type) {
 	case *d2ast.UnquotedString:
 		for i, box := range s.Value {
 			if box.Substitution != nil {
-				resolvedField := c.resolveSubstitution(varsStack[0], node, box.Substitution)
+				for _, vars := range varsStack {
+					resolvedField = c.resolveSubstitution(vars, box.Substitution)
+					if resolvedField != nil {
+						break
+					}
+				}
 				if resolvedField != nil {
+					if resolvedField.Composite != nil {
+						c.errorf(node, `cannot reference map variable "%s"`, strings.Join(box.Substitution.IDA(), "."))
+						return
+					}
 					// If lone and unquoted, replace with value of sub
 					if len(s.Value) == 1 {
 						scalar.Value = resolvedField.Primary().Value
@@ -132,6 +146,9 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node d2ast.Node, scala
 						s.Value[i].String = go2.Pointer(resolvedField.Primary().String())
 						subbed = true
 					}
+				} else {
+					c.errorf(node, `could not resolve variable "%s"`, strings.Join(box.Substitution.IDA(), "."))
+					return
 				}
 			}
 		}
@@ -141,10 +158,22 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node d2ast.Node, scala
 	case *d2ast.DoubleQuotedString:
 		for i, box := range s.Value {
 			if box.Substitution != nil {
-				resolvedField := c.resolveSubstitution(varsStack[0], node, box.Substitution)
+				for _, vars := range varsStack {
+					resolvedField = c.resolveSubstitution(vars, box.Substitution)
+					if resolvedField != nil {
+						break
+					}
+				}
 				if resolvedField != nil {
+					if resolvedField.Composite != nil {
+						c.errorf(node, `cannot reference map variable "%s"`, strings.Join(box.Substitution.IDA(), "."))
+						return
+					}
 					s.Value[i].String = go2.Pointer(resolvedField.Primary().String())
 					subbed = true
+				} else {
+					c.errorf(node, `could not resolve variable "%s"`, strings.Join(box.Substitution.IDA(), "."))
+					return
 				}
 			}
 		}
@@ -154,7 +183,7 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node d2ast.Node, scala
 	}
 }
 
-func (c *compiler) resolveSubstitution(vars *Map, node d2ast.Node, substitution *d2ast.Substitution) *Field {
+func (c *compiler) resolveSubstitution(vars *Map, substitution *d2ast.Substitution) *Field {
 	var resolved *Field
 	for _, p := range substitution.Path {
 		if vars == nil {
@@ -170,14 +199,7 @@ func (c *compiler) resolveSubstitution(vars *Map, node d2ast.Node, substitution 
 		resolved = r
 	}
 
-	if resolved == nil {
-		c.errorf(node, `could not resolve variable "%s"`, strings.Join(substitution.IDA(), "."))
-	} else if resolved.Composite != nil {
-		c.errorf(node, `cannot reference map variable "%s"`, strings.Join(substitution.IDA(), "."))
-	} else {
-		return resolved
-	}
-	return nil
+	return resolved
 }
 
 func (c *compiler) overlayVars(base, overlay *Map) {
