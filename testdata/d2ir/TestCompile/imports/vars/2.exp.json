@@ -1,0 +1,401 @@
+{
+  "fields": [
+    {
+      "name": "vars",
+      "composite": {
+        "fields": [
+          {
+            "name": "x",
+            "primary": {
+              "value": {
+                "range": "a.d2,0:11:11-0:12:12",
+                "raw": "2",
+                "value": "2"
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "index.d2,0:8:8-0:9:9",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "index.d2,0:8:8-0:9:9",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "index.d2,0:8:8-0:9:9",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "index.d2,0:8:8-0:13:13",
+                    "key": {
+                      "range": "index.d2,0:8:8-0:9:9",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "index.d2,0:8:8-0:9:9",
+                            "value": [
+                              {
+                                "string": "x",
+                                "raw_string": "x"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "number": {
+                        "range": "index.d2,0:11:11-0:12:12",
+                        "raw": "1",
+                        "value": "1"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "string": {
+                  "range": "a.d2,0:8:8-0:9:9",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "a.d2,0:8:8-0:9:9",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "a.d2,0:8:8-0:9:9",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "a.d2,0:8:8-0:13:13",
+                    "key": {
+                      "range": "a.d2,0:8:8-0:9:9",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "a.d2,0:8:8-0:9:9",
+                            "value": [
+                              {
+                                "string": "x",
+                                "raw_string": "x"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "number": {
+                        "range": "a.d2,0:11:11-0:12:12",
+                        "raw": "2",
+                        "value": "2"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "index.d2,0:0:0-0:4:4",
+            "value": [
+              {
+                "string": "vars",
+                "raw_string": "vars"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "index.d2,0:0:0-0:4:4",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "index.d2,0:0:0-0:4:4",
+                  "value": [
+                    {
+                      "string": "vars",
+                      "raw_string": "vars"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "index.d2,0:0:0-0:14:14",
+              "key": {
+                "range": "index.d2,0:0:0-0:4:4",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "index.d2,0:0:0-0:4:4",
+                      "value": [
+                        {
+                          "string": "vars",
+                          "raw_string": "vars"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "index.d2,0:6:6-0:14:14",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "index.d2,0:8:8-0:13:13",
+                        "key": {
+                          "range": "index.d2,0:8:8-0:9:9",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "index.d2,0:8:8-0:9:9",
+                                "value": [
+                                  {
+                                    "string": "x",
+                                    "raw_string": "x"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "number": {
+                            "range": "index.d2,0:11:11-0:12:12",
+                            "raw": "1",
+                            "value": "1"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "string": {
+            "range": "a.d2,0:0:0-0:4:4",
+            "value": [
+              {
+                "string": "vars",
+                "raw_string": "vars"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "a.d2,0:0:0-0:4:4",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "a.d2,0:0:0-0:4:4",
+                  "value": [
+                    {
+                      "string": "vars",
+                      "raw_string": "vars"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "a.d2,0:0:0-0:14:14",
+              "key": {
+                "range": "a.d2,0:0:0-0:4:4",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "a.d2,0:0:0-0:4:4",
+                      "value": [
+                        {
+                          "string": "vars",
+                          "raw_string": "vars"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "a.d2,0:6:6-0:14:14",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "a.d2,0:8:8-0:13:13",
+                        "key": {
+                          "range": "a.d2,0:8:8-0:9:9",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "a.d2,0:8:8-0:9:9",
+                                "value": [
+                                  {
+                                    "string": "x",
+                                    "raw_string": "x"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "number": {
+                            "range": "a.d2,0:11:11-0:12:12",
+                            "raw": "2",
+                            "value": "2"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "hi",
+      "primary": {
+        "value": {
+          "range": "a.d2,0:11:11-0:12:12",
+          "raw": "2",
+          "value": "2"
+        }
+      },
+      "references": [
+        {
+          "string": {
+            "range": "a.d2,0:16:16-0:18:18",
+            "value": [
+              {
+                "string": "hi",
+                "raw_string": "hi"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "a.d2,0:16:16-0:18:18",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "a.d2,0:16:16-0:18:18",
+                  "value": [
+                    {
+                      "string": "hi",
+                      "raw_string": "hi"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "a.d2,0:16:16-0:24:24",
+              "key": {
+                "range": "a.d2,0:16:16-0:18:18",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "a.d2,0:16:16-0:18:18",
+                      "value": [
+                        {
+                          "string": "hi",
+                          "raw_string": "hi"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "a.d2,0:20:20-0:21:21",
+                  "value": [
+                    {
+                      "substitution": {
+                        "range": "a.d2,0:20:20-0:24:24",
+                        "spread": false,
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "a.d2,0:22:22-0:23:23",
+                              "value": [
+                                {
+                                  "string": "x",
+                                  "raw_string": "x"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": null
+}
