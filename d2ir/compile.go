@@ -154,6 +154,7 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node d2ast.Node, scala
 		}
 		if subbed {
 			s.Coalesce()
+			scalar.Value = d2ast.RawString(s.ScalarString(), false)
 		}
 	case *d2ast.DoubleQuotedString:
 		for i, box := range s.Value {
@@ -198,7 +199,6 @@ func (c *compiler) resolveSubstitution(vars *Map, substitution *d2ast.Substituti
 		vars = r.Map()
 		resolved = r
 	}
-
 	return resolved
 }
 

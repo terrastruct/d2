@@ -3410,6 +3410,24 @@ a: {
 					assert.Equal(t, "im nested var", g.Objects[1].Label.Value)
 				},
 			},
+			{
+				name: "var-in-var",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+	surname: Smith
+}
+a: {
+  vars: {
+		trade1: Black${surname}
+		trade2: Metal${surname}
+  }
+  hi: ${trade1}
+}
+`, "")
+					assert.Equal(t, "BlackSmith", g.Objects[1].Label.Value)
+				},
+			},
 		}
 
 		for _, tc := range tca {
