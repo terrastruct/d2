@@ -273,7 +273,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		// arrowheads can appear broken if segments are very short from dagre routing a point just outside the shape
 		// to fix this, we try extending the previous segment into the shape instead of having a very short segment
-		if !start.Equals(points[0]) && startIndex+2 < len(points) {
+		if startIndex+2 < len(points) {
 			newStartingSegment := *geo.NewSegment(start, points[startIndex+1])
 			if newStartingSegment.Length() < d2graph.MIN_SEGMENT_LEN {
 				// we don't want a very short segment right next to the source because it will mess up the arrowhead
@@ -294,7 +294,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				}
 			}
 		}
-		if !end.Equals(points[len(points)-1]) && endIndex-2 >= 0 {
+		if endIndex-2 >= 0 {
 			newEndingSegment := *geo.NewSegment(end, points[endIndex-1])
 			if newEndingSegment.Length() < d2graph.MIN_SEGMENT_LEN {
 				// extend the prev segment into the shape border if possible

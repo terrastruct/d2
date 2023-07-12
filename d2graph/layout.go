@@ -346,7 +346,7 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 				points[startIndex] = p
 				startingSegment.End = p
 				// if the segment becomes too short, just merge it with the next segment
-				if startIndex+1 < len(points)-1 && startingSegment.Length() < MIN_SEGMENT_LEN {
+				if startIndex+1 < endIndex && startingSegment.Length() < MIN_SEGMENT_LEN {
 					points[startIndex+1] = points[startIndex]
 					startIndex++
 				}
@@ -359,7 +359,7 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 			points[startIndex] = intersections[0]
 			startingSegment.End = intersections[0]
 			// if the segment becomes too short, just merge it with the next segment
-			if startIndex+1 < len(points)-1 && startingSegment.Length() < MIN_SEGMENT_LEN {
+			if startIndex+1 < endIndex && startingSegment.Length() < MIN_SEGMENT_LEN {
 				points[startIndex+1] = points[startIndex]
 				startIndex++
 			}
@@ -391,7 +391,7 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 				points[endIndex] = p
 				endingSegment.End = p
 				// if the segment becomes too short, just merge it with the previous segment
-				if endIndex-1 > 0 && endingSegment.Length() < MIN_SEGMENT_LEN {
+				if endIndex-1 > startIndex && endingSegment.Length() < MIN_SEGMENT_LEN {
 					points[endIndex-1] = points[endIndex]
 					endIndex--
 				}
@@ -404,7 +404,7 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 			points[endIndex] = intersections[0]
 			endingSegment.End = intersections[0]
 			// if the segment becomes too short, just merge it with the previous segment
-			if endIndex-1 > 0 && endingSegment.Length() < MIN_SEGMENT_LEN {
+			if endIndex-1 > startIndex && endingSegment.Length() < MIN_SEGMENT_LEN {
 				points[endIndex-1] = points[endIndex]
 				endIndex--
 			}
