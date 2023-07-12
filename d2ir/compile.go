@@ -210,18 +210,15 @@ func (c *compiler) overlayVars(base, overlay *Map) {
 	if vars == nil {
 		return
 	}
+	vars = vars.Copy(base).(*Field)
 
 	baseVars := base.GetField("vars")
-
-	if baseVars == nil {
-		baseVars = vars.Copy(base).(*Field)
-		base.Fields = append(base.Fields, baseVars)
-	} else {
-		overlayed := vars.Copy(base).(*Field)
-		OverlayMap(overlayed.Map(), baseVars.Map())
+	if baseVars != nil {
+		OverlayMap(vars.Map(), baseVars.Map())
 		base.DeleteField("vars")
-		base.Fields = append(base.Fields, overlayed)
 	}
+
+	base.Fields = append(base.Fields, vars)
 }
 
 func (c *compiler) overlay(base *Map, f *Field) {
