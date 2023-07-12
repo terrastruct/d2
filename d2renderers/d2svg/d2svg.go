@@ -1220,12 +1220,11 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		fontClass := "text"
 		if targetShape.FontFamily == "mono" {
 			fontClass = "text-mono"
-		} else {
-			if targetShape.Bold {
-				fontClass += "-bold"
-			} else if targetShape.Italic {
-				fontClass += "-italic"
-			}
+		}
+		if targetShape.Bold {
+			fontClass += "-bold"
+		} else if targetShape.Italic {
+			fontClass += "-italic"
 		}
 		if targetShape.Underline {
 			fontClass += " text-underline"
