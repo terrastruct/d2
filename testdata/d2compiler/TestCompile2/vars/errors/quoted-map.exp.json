@@ -1,0 +1,11 @@
+{
+  "graph": null,
+  "err": {
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile2/vars/errors/quoted-map.d2,6:0:31-6:2:33",
+        "errmsg": "d2/testdata/d2compiler/TestCompile2/vars/errors/quoted-map.d2:7:1: cannot substitute map variable \"x\" in quotes"
+      }
+    ]
+  }
+}

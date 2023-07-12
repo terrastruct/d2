@@ -3357,6 +3357,41 @@ a: {
 					assert.Equal(t, "im root var", g.Objects[1].Label.Value)
 				},
 			},
+			{
+				name: "map",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+  cool-style: {
+		fill: red
+  }
+  arrows: {
+    target-arrowhead.label: yay
+  }
+}
+hi.style: ${cool-style}
+a -> b: ${arrows}
+`, "")
+					assert.Equal(t, "red", g.Objects[0].Style.Fill.Value)
+					assert.Equal(t, "yay", g.Edges[0].DstArrowhead.Label.Value)
+				},
+			},
+			{
+				name: "primary-and-composite",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+	x: all {
+		a: b
+  }
+}
+z: ${x}
+`, "")
+					assert.Equal(t, "z", g.Objects[1].ID)
+					assert.Equal(t, "all", g.Objects[1].Label.Value)
+					assert.Equal(t, 1, len(g.Objects[1].Children))
+				},
+			},
 		}
 
 		for _, tc := range tca {
@@ -3593,6 +3628,43 @@ hi: ${z}
 				},
 			},
 			{
+				name: "bad-var",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+  x
+}
+hi: ${x}
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/bad-var.d2:3:3: invalid var with no value`)
+				},
+			},
+			{
+				name: "multi-part-map",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+  x: {
+    a: b
+  }
+}
+hi: 1 ${x}
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/multi-part-map.d2:7:1: cannot substitute map variable "x" as part of a string`)
+				},
+			},
+			{
+				name: "quoted-map",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+  x: {
+    a: b
+  }
+}
+hi: "${x}"
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/quoted-map.d2:7:1: cannot substitute map variable "x" in quotes`)
+				},
+			},
+			{
 				name: "nested-missing",
 				run: func(t *testing.T) {
 					assertCompile(t, `
@@ -3638,19 +3710,6 @@ vars: {
 }
 hi
 `, "d2/testdata/d2compiler/TestCompile2/vars/errors/edge.d2:3:3: vars cannot contain an edge")
-				},
-			},
-			{
-				name: "map",
-				run: func(t *testing.T) {
-					assertCompile(t, `
-vars: {
-  colors: {
-    button: red
-  }
-}
-hi: ${colors}
-`, `d2/testdata/d2compiler/TestCompile2/vars/errors/map.d2:7:1: cannot reference map variable "colors"`)
 				},
 			},
 		}

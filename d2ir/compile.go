@@ -104,11 +104,10 @@ func (c *compiler) compileSubstitutions(m *Map, varsStack []*Map) {
 			varsStack = append([]*Map{f.Map()}, varsStack...)
 		}
 		if f.Primary() != nil {
-			c.resolveSubstitutions(varsStack, f.LastRef().AST(), f.Primary())
+			c.resolveSubstitutions(varsStack, f)
 		}
 		if f.Map() != nil {
-			// this map could be the "vars"
-			// and if it is, then its already been compiled, so the varsStack can be truncated
+			// don't resolve substitutions in vars with the current scope of vars
 			if f.Name == "vars" {
 				c.compileSubstitutions(f.Map(), varsStack[1:])
 			} else {
@@ -118,7 +117,7 @@ func (c *compiler) compileSubstitutions(m *Map, varsStack []*Map) {
 	}
 	for _, e := range m.Edges {
 		if e.Primary() != nil {
-			c.resolveSubstitutions(varsStack, e.LastRef().AST(), e.Primary())
+			c.resolveSubstitutions(varsStack, e)
 		}
 		if e.Map() != nil {
 			c.compileSubstitutions(e.Map(), varsStack)
@@ -126,11 +125,11 @@ func (c *compiler) compileSubstitutions(m *Map, varsStack []*Map) {
 	}
 }
 
-func (c *compiler) resolveSubstitutions(varsStack []*Map, node d2ast.Node, scalar *Scalar) {
+func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) {
 	var subbed bool
 	var resolvedField *Field
 
-	switch s := scalar.Value.(type) {
+	switch s := node.Primary().Value.(type) {
 	case *d2ast.UnquotedString:
 		for i, box := range s.Value {
 			if box.Substitution != nil {
@@ -141,19 +140,34 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node d2ast.Node, scala
 					}
 				}
 				if resolvedField == nil {
-					c.errorf(node, `could not resolve variable "%s"`, strings.Join(box.Substitution.IDA(), "."))
+					c.errorf(node.LastRef().AST(), `could not resolve variable "%s"`, strings.Join(box.Substitution.IDA(), "."))
 					return
+				}
+				if resolvedField.Primary() == nil {
+					if len(s.Value) > 1 {
+						c.errorf(node.LastRef().AST(), `cannot substitute map variable "%s" as part of a string`, strings.Join(box.Substitution.IDA(), "."))
+						return
+					}
+				} else {
+					// If lone and unquoted, replace with value of sub
+					if len(s.Value) == 1 {
+						node.Primary().Value = resolvedField.Primary().Value
+					} else {
+						s.Value[i].String = go2.Pointer(resolvedField.Primary().String())
+						subbed = true
+					}
 				}
 				if resolvedField.Composite != nil {
-					c.errorf(node, `cannot reference map variable "%s"`, strings.Join(box.Substitution.IDA(), "."))
-					return
-				}
-				// If lone and unquoted, replace with value of sub
-				if len(s.Value) == 1 {
-					scalar.Value = resolvedField.Primary().Value
-				} else {
-					s.Value[i].String = go2.Pointer(resolvedField.Primary().String())
-					subbed = true
+					switch n := node.(type) {
+					case *Field:
+						n.Composite = resolvedField.Composite
+					case *Edge:
+						if resolvedField.Composite.Map() == nil {
+							c.errorf(node.LastRef().AST(), `cannot substitute array variable "%s" to an edge`, strings.Join(box.Substitution.IDA(), "."))
+							return
+						}
+						n.Map_ = resolvedField.Composite.Map()
+					}
 				}
 			}
 		}
@@ -170,11 +184,11 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node d2ast.Node, scala
 					}
 				}
 				if resolvedField == nil {
-					c.errorf(node, `could not resolve variable "%s"`, strings.Join(box.Substitution.IDA(), "."))
+					c.errorf(node.LastRef().AST(), `could not resolve variable "%s"`, strings.Join(box.Substitution.IDA(), "."))
 					return
 				}
 				if resolvedField.Composite != nil {
-					c.errorf(node, `cannot reference map variable "%s"`, strings.Join(box.Substitution.IDA(), "."))
+					c.errorf(node.LastRef().AST(), `cannot substitute map variable "%s" in quotes`, strings.Join(box.Substitution.IDA(), "."))
 					return
 				}
 				s.Value[i].String = go2.Pointer(resolvedField.Primary().String())
