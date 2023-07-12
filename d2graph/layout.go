@@ -1,6 +1,7 @@
 package d2graph
 
 import (
+	"sort"
 	"strings"
 
 	"oss.terrastruct.com/d2/d2target"
@@ -337,9 +338,13 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 			labelBox.Width += 2 * label.PADDING
 			if intersections := labelBox.Intersections(startingSegment); len(intersections) > 0 {
 				overlapsOutsideLabel = true
+				p := intersections[0]
+				if len(intersections) > 1 {
+					p = findOuterIntersection(labelPosition, intersections)
+				}
 				// move starting segment to label intersection point
-				points[startIndex] = intersections[0]
-				startingSegment.End = intersections[0]
+				points[startIndex] = p
+				startingSegment.End = p
 				// if the segment becomes too short, just merge it with the next segment
 				if startIndex+1 < len(points)-1 && startingSegment.Length() < MIN_SEGMENT_LEN {
 					points[startIndex+1] = points[startIndex]
@@ -378,9 +383,13 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 			labelBox.Width += 2 * label.PADDING
 			if intersections := labelBox.Intersections(endingSegment); len(intersections) > 0 {
 				overlapsOutsideLabel = true
+				p := intersections[0]
+				if len(intersections) > 1 {
+					p = findOuterIntersection(labelPosition, intersections)
+				}
 				// move ending segment to label intersection point
-				points[endIndex] = intersections[0]
-				endingSegment.End = intersections[0]
+				points[endIndex] = p
+				endingSegment.End = p
 				// if the segment becomes too short, just merge it with the previous segment
 				if endIndex-1 > 0 && endingSegment.Length() < MIN_SEGMENT_LEN {
 					points[endIndex-1] = points[endIndex]
@@ -403,4 +412,26 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 		points[endIndex] = shape.TraceToShapeBorder(dstShape, points[endIndex], points[endIndex-1])
 	}
 	return startIndex, endIndex
+}
+
+func findOuterIntersection(labelPosition label.Position, intersections []*geo.Point) *geo.Point {
+	switch labelPosition {
+	case label.OutsideTopLeft, label.OutsideTopRight, label.OutsideTopCenter:
+		sort.Slice(intersections, func(i, j int) bool {
+			return intersections[i].Y < intersections[j].Y
+		})
+	case label.OutsideBottomLeft, label.OutsideBottomRight, label.OutsideBottomCenter:
+		sort.Slice(intersections, func(i, j int) bool {
+			return intersections[i].Y > intersections[j].Y
+		})
+	case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
+		sort.Slice(intersections, func(i, j int) bool {
+			return intersections[i].X < intersections[j].X
+		})
+	case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+		sort.Slice(intersections, func(i, j int) bool {
+			return intersections[i].X > intersections[j].X
+		})
+	}
+	return intersections[0]
 }
