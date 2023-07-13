@@ -4,7 +4,7 @@
     "errs": [
       {
         "range": "d2/testdata/d2compiler/TestCompile2/vars/errors/spread-non-map.d2,5:2:26-5:9:33",
-        "errmsg": "d2/testdata/d2compiler/TestCompile2/vars/errors/spread-non-map.d2:6:3: cannot spread non-map into map"
+        "errmsg": "d2/testdata/d2compiler/TestCompile2/vars/errors/spread-non-map.d2:6:3: cannot spread non-composite into composite"
       }
     ]
   }

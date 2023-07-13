@@ -3411,6 +3411,64 @@ z: {
 					assert.Equal(t, 3, len(g.Objects[1].Children))
 				},
 			},
+			{
+				name: "array",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+	base-constraints: [UNQ; NOT NULL]
+}
+a: {
+  shape: sql_table
+	b: int {constraint: ${base-constraints}}
+}
+`, "")
+					assert.Equal(t, "a", g.Objects[0].ID)
+					assert.Equal(t, 2, len(g.Objects[0].SQLTable.Columns[0].Constraint))
+				},
+			},
+			{
+				name: "spread-array",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+	base-constraints: [UNQ; NOT NULL]
+}
+a: {
+  shape: sql_table
+	b: int {constraint: [PK; ...${base-constraints}]}
+}
+`, "")
+					assert.Equal(t, "a", g.Objects[0].ID)
+					assert.Equal(t, 3, len(g.Objects[0].SQLTable.Columns[0].Constraint))
+				},
+			},
+			{
+				name: "sub-array",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+	x: all
+}
+z.class: [a; ${x}]
+`, "")
+					assert.Equal(t, "z", g.Objects[0].ID)
+					assert.Equal(t, "all", g.Objects[0].Attributes.Classes[1])
+				},
+			},
+			{
+				name: "multi-part-array",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+	x: all
+}
+z.class: [a; ${x}together]
+`, "")
+					assert.Equal(t, "z", g.Objects[0].ID)
+					assert.Equal(t, "alltogether", g.Objects[0].Attributes.Classes[1])
+				},
+			},
 		}
 
 		for _, tc := range tca {
@@ -3742,7 +3800,35 @@ z: {
   ...${x}
   c
 }
-`, `d2/testdata/d2compiler/TestCompile2/vars/errors/spread-non-map.d2:6:3: cannot spread non-map into map`)
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/spread-non-map.d2:6:3: cannot spread non-composite into composite`)
+				},
+			},
+			{
+				name: "missing-array",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+	x: b
+}
+z: {
+  class: [...${a}]
+}
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/missing-array.d2:6:3: could not resolve variable "a"`)
+				},
+			},
+			{
+				name: "spread-non-array",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+	x: {
+    a: b
+  }
+}
+z: {
+  class: [...${x}]
+}
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/spread-non-array.d2:8:11: cannot spread non-array into array`)
 				},
 			},
 			{

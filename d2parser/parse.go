@@ -1560,7 +1560,8 @@ func (p *parser) parseArrayNode(r rune) d2ast.ArrayNodeBox {
 
 	p.replay(r)
 	vbox := p.parseValue()
-	if vbox.UnquotedString != nil && vbox.UnquotedString.ScalarString() == "" {
+	if vbox.UnquotedString != nil && vbox.UnquotedString.ScalarString() == "" &&
+		!(len(vbox.UnquotedString.Value) > 0 && vbox.UnquotedString.Value[0].Substitution != nil) {
 		p.errorf(p.pos, p.pos.Advance(r, p.utf16), "unquoted strings cannot start on %q", r)
 	}
 	box.Null = vbox.Null

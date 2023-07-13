@@ -106,6 +106,13 @@ func (c *compiler) compileSubstitutions(m *Map, varsStack []*Map) {
 		if f.Primary() != nil {
 			c.resolveSubstitutions(varsStack, f)
 		}
+		if arr, ok := f.Composite.(*Array); ok {
+			for _, val := range arr.Values {
+				if scalar, ok := val.(*Scalar); ok {
+					c.resolveSubstitutions(varsStack, scalar)
+				}
+			}
+		}
 		if f.Map() != nil {
 			// don't resolve substitutions in vars with the current scope of vars
 			if f.Name == "vars" {
@@ -145,20 +152,34 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) {
 				}
 				if box.Substitution.Spread {
 					if resolvedField.Composite == nil {
-						c.errorf(box.Substitution, "cannot spread non-map into map")
+						c.errorf(box.Substitution, "cannot spread non-composite into composite")
 						continue
 					}
-					// TODO arrays
-					if resolvedField.Map() != nil {
-						OverlayMap(ParentMap(node), resolvedField.Map())
-					}
-					// Remove the placeholder field
-					f := node.(*Field)
-					m := f.parent.(*Map)
-					for i, f2 := range m.Fields {
-						if f == f2 {
-							m.Fields = append(m.Fields[:i], m.Fields[i+1:]...)
-							break
+					switch n := node.(type) {
+					case *Scalar: // Array value
+						resolvedArr, ok := resolvedField.Composite.(*Array)
+						if !ok {
+							c.errorf(box.Substitution, "cannot spread non-array into array")
+							continue
+						}
+						arr := n.parent.(*Array)
+						for i, s := range arr.Values {
+							if s == n {
+								arr.Values = append(append(arr.Values[:i], resolvedArr.Values...), arr.Values[i+1:]...)
+								break
+							}
+						}
+					case *Field:
+						if resolvedField.Map() != nil {
+							OverlayMap(ParentMap(n), resolvedField.Map())
+						}
+						// Remove the placeholder field
+						m := n.parent.(*Map)
+						for i, f2 := range m.Fields {
+							if n == f2 {
+								m.Fields = append(m.Fields[:i], m.Fields[i+1:]...)
+								break
+							}
 						}
 					}
 				}
@@ -166,6 +187,12 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) {
 					if len(s.Value) > 1 {
 						c.errorf(node.LastRef().AST(), `cannot substitute map variable "%s" as part of a string`, strings.Join(box.Substitution.IDA(), "."))
 						return
+					}
+					switch n := node.(type) {
+					case *Field:
+						n.Primary_ = nil
+					case *Edge:
+						n.Primary_ = nil
 					}
 				} else {
 					if len(s.Value) == 1 {
@@ -276,7 +303,9 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 			})
 		case n.Substitution != nil:
 			if !n.Substitution.Spread {
-				c.errorf(n.Import, "invalid non-spread substitution in map")
+				// TODO parser parses ${x} as a field with name "$" and map of child x
+				// So this is never reached. But that parser behavior could change
+				c.errorf(n.Substitution, "invalid non-spread substitution in map")
 				continue
 			}
 			// placeholder field to be resolved at the end
@@ -653,8 +682,12 @@ func (c *compiler) compileArray(dst *Array, a *d2ast.Array, scopeAST *d2ast.Map)
 				irv = n
 			}
 		case *d2ast.Substitution:
-			// TODO
-			// panic("TODO")
+			irv = &Scalar{
+				parent: dst,
+				Value: &d2ast.UnquotedString{
+					Value: []d2ast.InterpolationBox{{Substitution: an.Substitution}},
+				},
+			}
 		}
 
 		dst.Values = append(dst.Values, irv)
