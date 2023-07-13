@@ -265,22 +265,6 @@ func (c *compiler) resolveSubstitution(vars *Map, substitution *d2ast.Substituti
 	return nil
 }
 
-func (c *compiler) overlayVars(base, overlay *Map) {
-	vars := overlay.GetField("vars")
-	if vars == nil {
-		return
-	}
-	vars = vars.Copy(base).(*Field)
-
-	baseVars := base.GetField("vars")
-	if baseVars != nil {
-		OverlayMap(vars.Map(), baseVars.Map())
-		base.DeleteField("vars")
-	}
-
-	base.Fields = append(base.Fields, vars)
-}
-
 func (c *compiler) overlay(base *Map, f *Field) {
 	if f.Map() == nil || f.Primary() != nil {
 		c.errorf(f.References[0].Context.Key, "invalid %s", NodeBoardKind(f))
@@ -393,7 +377,6 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 				}
 			}
 		case BoardLayer:
-			c.overlayVars(f.Map(), ParentBoard(f).Map())
 		default:
 			// If new board type, use that as the new scope AST, otherwise, carry on
 			scopeAST = refctx.ScopeAST

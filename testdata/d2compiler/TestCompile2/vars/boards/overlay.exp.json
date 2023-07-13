@@ -503,38 +503,6 @@
                                   "range": ",0:0:0-0:0:0",
                                   "value": [
                                     {
-                                      "string": "x"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {
-                            "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,2:5:14-2:13:22",
-                              "value": [
-                                {
-                                  "string": "im x var",
-                                  "raw_string": "im x var"
-                                }
-                              ]
-                            }
-                          },
-                          "value": {}
-                        }
-                      },
-                      {
-                        "map_key": {
-                          "range": ",0:0:0-0:0:0",
-                          "key": {
-                            "range": ",0:0:0-0:0:0",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
-                                  "value": [
-                                    {
                                       "string": "y"
                                     }
                                   ]

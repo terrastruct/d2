@@ -202,66 +202,6 @@
                         "range": ",0:0:0-0:0:0",
                         "value": [
                           {
-                            "string": "vars"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "primary": {},
-                "value": {
-                  "map": {
-                    "range": ",1:0:0-2:0:0",
-                    "nodes": [
-                      {
-                        "map_key": {
-                          "range": ",0:0:0-0:0:0",
-                          "key": {
-                            "range": ",0:0:0-0:0:0",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
-                                  "value": [
-                                    {
-                                      "string": "x"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {
-                            "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer.d2,2:5:14-2:13:22",
-                              "value": [
-                                {
-                                  "string": "im a var",
-                                  "raw_string": "im a var"
-                                }
-                              ]
-                            }
-                          },
-                          "value": {}
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            },
-            {
-              "map_key": {
-                "range": ",0:0:0-0:0:0",
-                "key": {
-                  "range": ",0:0:0-0:0:0",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
-                        "value": [
-                          {
                             "string": "hi"
                           }
                         ]

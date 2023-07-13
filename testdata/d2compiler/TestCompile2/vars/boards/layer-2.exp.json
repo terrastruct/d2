@@ -372,38 +372,6 @@
                           },
                           "value": {}
                         }
-                      },
-                      {
-                        "map_key": {
-                          "range": ",0:0:0-0:0:0",
-                          "key": {
-                            "range": ",0:0:0-0:0:0",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
-                                  "value": [
-                                    {
-                                      "string": "y"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {
-                            "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer-2.d2,3:5:30-3:15:40",
-                              "value": [
-                                {
-                                  "string": "root var y",
-                                  "raw_string": "root var y"
-                                }
-                              ]
-                            }
-                          },
-                          "value": {}
-                        }
                       }
                     ]
                   }
