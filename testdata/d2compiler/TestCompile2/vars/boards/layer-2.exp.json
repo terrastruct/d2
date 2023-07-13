@@ -235,23 +235,7 @@
                                     "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer-2.d2,11:8:108-11:9:109",
                                     "value": [
                                       {
-                                        "substitution": {
-                                          "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer-2.d2,11:8:108-11:12:112",
-                                          "spread": false,
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer-2.d2,11:10:110-11:11:111",
-                                                "value": [
-                                                  {
-                                                    "string": "x",
-                                                    "raw_string": "x"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        }
+                                        "string": "layer var x"
                                       }
                                     ]
                                   }
@@ -283,23 +267,7 @@
                                     "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer-2.d2,12:11:124-12:12:125",
                                     "value": [
                                       {
-                                        "substitution": {
-                                          "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer-2.d2,12:11:124-12:15:128",
-                                          "spread": false,
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer-2.d2,12:13:126-12:14:127",
-                                                "value": [
-                                                  {
-                                                    "string": "y",
-                                                    "raw_string": "y"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        }
+                                        "string": "root var y"
                                       }
                                     ]
                                   }
@@ -462,11 +430,10 @@
                 },
                 "primary": {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer-2.d2,9:9:82-9:20:93",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer-2.d2,11:8:108-11:9:109",
                     "value": [
                       {
-                        "string": "layer var x",
-                        "raw_string": "layer var x"
+                        "string": "layer var x"
                       }
                     ]
                   }
@@ -494,11 +461,10 @@
                 },
                 "primary": {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer-2.d2,3:5:30-3:15:40",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer-2.d2,12:11:124-12:12:125",
                     "value": [
                       {
-                        "string": "root var y",
-                        "raw_string": "root var y"
+                        "string": "root var y"
                       }
                     ]
                   }

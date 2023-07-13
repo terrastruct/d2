@@ -227,45 +227,7 @@
                                     "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/quoted-var.d2,12:10:131-12:11:132",
                                     "value": [
                                       {
-                                        "substitution": {
-                                          "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/quoted-var.d2,12:10:131-12:40:161",
-                                          "spread": false,
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/quoted-var.d2,12:12:133-12:25:146",
-                                                "value": [
-                                                  {
-                                                    "string": "primaryColors",
-                                                    "raw_string": "primaryColors"
-                                                  }
-                                                ]
-                                              }
-                                            },
-                                            {
-                                              "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/quoted-var.d2,12:26:147-12:32:153",
-                                                "value": [
-                                                  {
-                                                    "string": "button",
-                                                    "raw_string": "button"
-                                                  }
-                                                ]
-                                              }
-                                            },
-                                            {
-                                              "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/quoted-var.d2,12:33:154-12:39:160",
-                                                "value": [
-                                                  {
-                                                    "string": "active",
-                                                    "raw_string": "active"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        }
+                                        "string": "#4baae5"
                                       }
                                     ]
                                   }

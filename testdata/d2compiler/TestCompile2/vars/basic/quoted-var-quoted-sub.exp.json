@@ -92,7 +92,7 @@
                 "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/quoted-var-quoted-sub.d2,5:3:25-5:13:35",
                 "value": [
                   {
-                    "string": "hey \"hi\""
+                    "string": "hey hi"
                   }
                 ]
               }
@@ -153,7 +153,7 @@
         ],
         "attributes": {
           "label": {
-            "value": "hey \"hi\""
+            "value": "hey hi"
           },
           "labelDimensions": {
             "width": 0,

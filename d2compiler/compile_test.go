@@ -3337,7 +3337,7 @@ vars: {
 
 y: "hey ${x}"
 `, "")
-					assert.Equal(t, `hey "hi"`, g.Objects[0].Label.Value)
+					assert.Equal(t, `hey hi`, g.Objects[0].Label.Value)
 				},
 			},
 			{

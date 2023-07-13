@@ -199,13 +199,8 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) {
 						n.Primary_ = nil
 					}
 				} else {
-					if len(s.Value) == 1 {
-						// If lone and unquoted, replace with value of sub
-						node.Primary().Value = resolvedField.Primary().Value
-					} else {
-						s.Value[i].String = go2.Pointer(resolvedField.Primary().String())
-						subbed = true
-					}
+					s.Value[i].String = go2.Pointer(resolvedField.Primary().Value.ScalarString())
+					subbed = true
 				}
 				if resolvedField.Composite != nil {
 					switch n := node.(type) {
@@ -241,7 +236,7 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) {
 					c.errorf(node.LastRef().AST(), `cannot substitute map variable "%s" in quotes`, strings.Join(box.Substitution.IDA(), "."))
 					return
 				}
-				s.Value[i].String = go2.Pointer(resolvedField.Primary().String())
+				s.Value[i].String = go2.Pointer(resolvedField.Primary().Value.ScalarString())
 				subbed = true
 			}
 		}

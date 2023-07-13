@@ -131,23 +131,7 @@
                 "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,6:3:35-6:4:36",
                 "value": [
                   {
-                    "substitution": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,6:3:35-6:7:39",
-                      "spread": false,
-                      "path": [
-                        {
-                          "unquoted_string": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,6:5:37-6:6:38",
-                            "value": [
-                              {
-                                "string": "x",
-                                "raw_string": "x"
-                              }
-                            ]
-                          }
-                        }
-                      ]
-                    }
+                    "string": "all"
                   }
                 ]
               }
