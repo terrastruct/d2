@@ -3841,7 +3841,7 @@ z: {
   ...${x}
   c
 }
-`, `d2/testdata/d2compiler/TestCompile2/vars/errors/spread-non-map.d2:6:3: cannot spread non-composite into composite`)
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/spread-non-map.d2:6:3: cannot spread non-composite`)
 				},
 			},
 			{

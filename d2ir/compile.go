@@ -157,7 +157,7 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) {
 				}
 				if box.Substitution.Spread {
 					if resolvedField.Composite == nil {
-						c.errorf(box.Substitution, "cannot spread non-composite into composite")
+						c.errorf(box.Substitution, "cannot spread non-composite")
 						continue
 					}
 					switch n := node.(type) {
