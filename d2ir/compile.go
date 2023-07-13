@@ -143,6 +143,11 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) {
 				for _, vars := range varsStack {
 					resolvedField = c.resolveSubstitution(vars, box.Substitution)
 					if resolvedField != nil {
+						if resolvedField.Primary() != nil {
+							if _, ok := resolvedField.Primary().Value.(*d2ast.Null); ok {
+								resolvedField = nil
+							}
+						}
 						break
 					}
 				}
@@ -257,6 +262,7 @@ func (c *compiler) resolveSubstitution(vars *Map, substitution *d2ast.Substituti
 		if f == nil {
 			return nil
 		}
+
 		if i == len(substitution.Path)-1 {
 			return f
 		}
@@ -351,8 +357,12 @@ func (c *compiler) compileKey(refctx *RefContext) {
 
 func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext) {
 	if refctx.Key != nil && len(refctx.Key.Edges) == 0 && refctx.Key.Value.Null != nil {
-		dst.DeleteField(kp.IDA()...)
-		return
+		// For vars, if we delete the field, it may just resolve to an outer scope var of the same name
+		// Instead we keep it around, so that resolveSubstitutions can find it
+		if ParentField(dst) == nil || ParentField(dst).Name != "vars" {
+			dst.DeleteField(kp.IDA()...)
+			return
+		}
 	}
 	f, err := dst.EnsureField(kp, refctx)
 	if err != nil {

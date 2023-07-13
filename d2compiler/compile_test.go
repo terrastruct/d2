@@ -3696,6 +3696,22 @@ scenarios: {
 					assert.Equal(t, "im replaced x var", g.Scenarios[0].Objects[0].Label.Value)
 				},
 			},
+			{
+				name: "null",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+	surname: Smith
+}
+a: {
+  vars: {
+		surname: null
+  }
+  hi: John ${surname}
+}
+`, `d2/testdata/d2compiler/TestCompile2/vars/boards/null.d2:9:3: could not resolve variable "surname"`)
+				},
+			},
 		}
 
 		for _, tc := range tca {
