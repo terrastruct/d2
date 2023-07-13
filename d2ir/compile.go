@@ -523,6 +523,10 @@ func (c *compiler) compileLink(refctx *RefContext) {
 }
 
 func (c *compiler) compileEdges(refctx *RefContext) {
+	if IsVar(refctx.ScopeMap) {
+		c.errorf(refctx.Key, "vars cannot contain an edge")
+		return
+	}
 	if refctx.Key.Key != nil {
 		f, err := refctx.ScopeMap.EnsureField(refctx.Key.Key, refctx)
 		if err != nil {
