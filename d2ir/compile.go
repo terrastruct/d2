@@ -308,12 +308,6 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 				ScopeAST: scopeAST,
 			})
 		case n.Substitution != nil:
-			if !n.Substitution.Spread {
-				// TODO parser parses ${x} as a field with name "$" and map of child x
-				// So this is never reached. But that parser behavior could change
-				c.errorf(n.Substitution, "invalid non-spread substitution in map")
-				continue
-			}
 			// placeholder field to be resolved at the end
 			f := &Field{
 				parent: dst,
