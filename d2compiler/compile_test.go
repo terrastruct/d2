@@ -3407,8 +3407,9 @@ z: {
   c
 }
 `, "")
-					assert.Equal(t, "z", g.Objects[1].ID)
-					assert.Equal(t, 3, len(g.Objects[1].Children))
+					assert.Equal(t, "z", g.Objects[2].ID)
+					assert.Equal(t, 4, len(g.Objects))
+					assert.Equal(t, 3, len(g.Objects[2].Children))
 				},
 			},
 			{
@@ -3482,6 +3483,22 @@ z: "${x} be my maybe"
 `, "")
 					assert.Equal(t, "z", g.Objects[0].ID)
 					assert.Equal(t, "always be my maybe", g.Objects[0].Label.Value)
+				},
+			},
+			{
+				name: "spread-nested",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+  disclaimer: {
+    I am not a lawyer
+  }
+}
+custom-disclaimer: DRAFT DISCLAIMER {
+  ...${disclaimer}
+}
+`, "")
+					assert.Equal(t, 2, len(g.Objects))
 				},
 			},
 		}

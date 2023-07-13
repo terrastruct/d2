@@ -3,17 +3,17 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,0:0:0-7:0:40",
+      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,0:0:0-9:0:112",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,1:0:1-5:1:31",
+            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,1:0:1-5:1:52",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,1:0:1-1:4:5",
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,1:0:1-1:4:5",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,1:0:1-1:4:5",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,1:0:1-1:4:5",
                     "value": [
                       {
                         "string": "vars",
@@ -27,55 +27,45 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,1:6:7-5:1:31",
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,1:6:7-5:1:52",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,2:1:10-4:3:29",
+                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,2:2:11-4:3:50",
                       "key": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,2:1:10-2:2:11",
+                        "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,2:2:11-2:12:21",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,2:1:10-2:2:11",
+                              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,2:2:11-2:12:21",
                               "value": [
                                 {
-                                  "string": "x",
-                                  "raw_string": "x"
+                                  "string": "disclaimer",
+                                  "raw_string": "disclaimer"
                                 }
                               ]
                             }
                           }
                         ]
                       },
-                      "primary": {
-                        "unquoted_string": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,2:4:13-2:7:16",
-                          "value": [
-                            {
-                              "string": "all",
-                              "raw_string": "all"
-                            }
-                          ]
-                        }
-                      },
+                      "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,2:8:17-4:3:29",
+                          "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,2:14:23-4:3:50",
                           "nodes": [
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,3:2:21-3:6:25",
+                                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,3:4:29-3:21:46",
                                 "key": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,3:2:21-3:3:22",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,3:4:29-3:21:46",
                                   "path": [
                                     {
                                       "unquoted_string": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,3:2:21-3:3:22",
+                                        "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,3:4:29-3:21:46",
                                         "value": [
                                           {
-                                            "string": "a",
-                                            "raw_string": "a"
+                                            "string": "I am not a lawyer",
+                                            "raw_string": "I am not a lawyer"
                                           }
                                         ]
                                       }
@@ -83,17 +73,7 @@
                                   ]
                                 },
                                 "primary": {},
-                                "value": {
-                                  "unquoted_string": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,3:5:24-3:6:25",
-                                    "value": [
-                                      {
-                                        "string": "b",
-                                        "raw_string": "b"
-                                      }
-                                    ]
-                                  }
-                                }
+                                "value": {}
                               }
                             }
                           ]
@@ -108,30 +88,56 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,6:0:32-6:7:39",
+            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,6:0:53-8:1:111",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,6:0:32-6:1:33",
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,6:0:53-6:17:70",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,6:0:32-6:1:33",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,6:0:53-6:17:70",
                     "value": [
                       {
-                        "string": "z",
-                        "raw_string": "z"
+                        "string": "custom-disclaimer",
+                        "raw_string": "custom-disclaimer"
                       }
                     ]
                   }
                 }
               ]
             },
-            "primary": {},
-            "value": {
+            "primary": {
               "unquoted_string": {
-                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,6:3:35-6:4:36",
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,6:19:72-6:35:88",
                 "value": [
                   {
-                    "string": "all"
+                    "string": "DRAFT DISCLAIMER",
+                    "raw_string": "DRAFT DISCLAIMER"
+                  }
+                ]
+              }
+            },
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,6:36:89-8:1:111",
+                "nodes": [
+                  {
+                    "substitution": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,7:2:93-7:18:109",
+                      "spread": true,
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,7:7:98-7:17:108",
+                            "value": [
+                              {
+                                "string": "disclaimer",
+                                "raw_string": "disclaimer"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
                   }
                 ]
               }
@@ -166,20 +172,20 @@
     "edges": null,
     "objects": [
       {
-        "id": "a",
-        "id_val": "a",
+        "id": "I am not a lawyer",
+        "id_val": "I am not a lawyer",
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,3:2:21-3:3:22",
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,3:4:29-3:21:46",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,3:2:21-3:3:22",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,3:4:29-3:21:46",
                     "value": [
                       {
-                        "string": "a",
-                        "raw_string": "a"
+                        "string": "I am not a lawyer",
+                        "raw_string": "I am not a lawyer"
                       }
                     ]
                   }
@@ -192,7 +198,7 @@
         ],
         "attributes": {
           "label": {
-            "value": "b"
+            "value": "I am not a lawyer"
           },
           "labelDimensions": {
             "width": 0,
@@ -211,20 +217,20 @@
         "zIndex": 0
       },
       {
-        "id": "z",
-        "id_val": "z",
+        "id": "custom-disclaimer",
+        "id_val": "custom-disclaimer",
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,6:0:32-6:1:33",
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,6:0:53-6:17:70",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/primary-and-composite.d2,6:0:32-6:1:33",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,6:0:53-6:17:70",
                     "value": [
                       {
-                        "string": "z",
-                        "raw_string": "z"
+                        "string": "custom-disclaimer",
+                        "raw_string": "custom-disclaimer"
                       }
                     ]
                   }
@@ -237,7 +243,7 @@
         ],
         "attributes": {
           "label": {
-            "value": "all"
+            "value": "DRAFT DISCLAIMER"
           },
           "labelDimensions": {
             "width": 0,
