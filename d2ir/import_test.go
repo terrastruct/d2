@@ -157,7 +157,7 @@ label: meow`,
 					"a.d2":     "vars: { x: 2 }; hi: ${x}",
 				})
 				assert.Success(t, err)
-				assertQuery(t, m, 0, 0, 2, "hi")
+				assertQuery(t, m, 0, 0, "2", "hi")
 			},
 		},
 		{
@@ -168,7 +168,7 @@ label: meow`,
 					"a.d2":     "vars: { x: 2 }",
 				})
 				assert.Success(t, err)
-				assertQuery(t, m, 0, 0, 1, "hi")
+				assertQuery(t, m, 0, 0, "1", "hi")
 			},
 		},
 	}
