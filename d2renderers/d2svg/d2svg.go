@@ -1201,9 +1201,11 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					offsetY /= 2
 				}
 				box.TopLeft.Y -= float64(offsetY)
+				box.Height += float64(offsetY)
 				box.Width += d2target.THREE_DEE_OFFSET
 			} else if targetShape.Multiple {
 				box.TopLeft.Y -= d2target.MULTIPLE_OFFSET
+				box.Height += d2target.MULTIPLE_OFFSET
 				box.Width += d2target.MULTIPLE_OFFSET
 			}
 		} else {
