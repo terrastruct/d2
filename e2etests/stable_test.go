@@ -2782,6 +2782,7 @@ scenarios: {
 		loadFromFile(t, "outside_bottom_labels"),
 		loadFromFile(t, "label_positions"),
 		loadFromFile(t, "icon_positions"),
+		loadFromFile(t, "centered_horizontal_connections"),
 		loadFromFile(t, "all_shapes_link"),
 		loadFromFile(t, "nested_shape_labels"),
 		loadFromFile(t, "dagre_spacing"),
