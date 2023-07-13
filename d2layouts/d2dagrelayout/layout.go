@@ -1245,6 +1245,9 @@ func adjustCrossRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool
 		prevMarginBottom = make(map[*d2graph.Object]float64)
 	}
 	for _, obj := range g.Objects {
+		if obj.IsGridDiagram() {
+			continue
+		}
 		margin, padding := getSpacing(obj)
 		if !isHorizontal {
 			if prevShift, has := prevMarginBottom[obj]; has {
