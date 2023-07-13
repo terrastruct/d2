@@ -3572,6 +3572,42 @@ hi: {
 					assert.Equal(t, "a-b", g.Objects[1].Label.Value)
 				},
 			},
+			{
+				name: "null",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+	surname: Smith
+}
+a: {
+  vars: {
+		surname: null
+  }
+  hi: John ${surname}
+}
+`, `d2/testdata/d2compiler/TestCompile2/vars/override/null.d2:9:3: could not resolve variable "surname"`)
+				},
+			},
+			{
+				name: "nested-null",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+	surnames: {
+    john: smith
+  }
+}
+a: {
+  vars: {
+		surnames: {
+      john: null
+    }
+  }
+  hi: John ${surname}
+}
+`, `d2/testdata/d2compiler/TestCompile2/vars/override/nested-null.d2:13:3: could not resolve variable "surname"`)
+				},
+			},
 		}
 
 		for _, tc := range tca {
@@ -3709,22 +3745,6 @@ scenarios: {
 `, "")
 					assert.Equal(t, 1, len(g.Scenarios[0].Objects))
 					assert.Equal(t, "im replaced x var", g.Scenarios[0].Objects[0].Label.Value)
-				},
-			},
-			{
-				name: "null",
-				run: func(t *testing.T) {
-					assertCompile(t, `
-vars: {
-	surname: Smith
-}
-a: {
-  vars: {
-		surname: null
-  }
-  hi: John ${surname}
-}
-`, `d2/testdata/d2compiler/TestCompile2/vars/boards/null.d2:9:3: could not resolve variable "surname"`)
 				},
 			},
 		}

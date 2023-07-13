@@ -331,7 +331,7 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 	if refctx.Key != nil && len(refctx.Key.Edges) == 0 && refctx.Key.Value.Null != nil {
 		// For vars, if we delete the field, it may just resolve to an outer scope var of the same name
 		// Instead we keep it around, so that resolveSubstitutions can find it
-		if ParentField(dst) == nil || ParentField(dst).Name != "vars" {
+		if !IsVar(dst) {
 			dst.DeleteField(kp.IDA()...)
 			return
 		}

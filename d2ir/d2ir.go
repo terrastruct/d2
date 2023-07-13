@@ -1026,6 +1026,21 @@ func ParentField(n Node) *Field {
 	}
 }
 
+func IsVar(n Node) bool {
+	for {
+		if n == nil {
+			return false
+		}
+		if NodeBoardKind(n) != "" {
+			return false
+		}
+		if f, ok := n.(*Field); ok && f.Name == "vars" {
+			return true
+		}
+		n = n.Parent()
+	}
+}
+
 func ParentBoard(n Node) Node {
 	for {
 		n = n.Parent()
