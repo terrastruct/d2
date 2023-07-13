@@ -3501,6 +3501,23 @@ custom-disclaimer: DRAFT DISCLAIMER {
 					assert.Equal(t, 2, len(g.Objects))
 				},
 			},
+			{
+				name: "spread-edge",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+  connections: {
+    x -> a
+  }
+}
+hi: {
+  ...${connections}
+}
+`, "")
+					assert.Equal(t, 3, len(g.Objects))
+					assert.Equal(t, 1, len(g.Edges))
+				},
+			},
 		}
 
 		for _, tc := range tca {
@@ -3860,17 +3877,7 @@ hi: ${x}
 `, `d2/testdata/d2compiler/TestCompile2/vars/errors/recursive-var.d2:3:3: could not resolve variable "x"`)
 				},
 			},
-			{
-				name: "edge",
-				run: func(t *testing.T) {
-					assertCompile(t, `
-vars: {
-  x -> a
-}
-hi
-`, "d2/testdata/d2compiler/TestCompile2/vars/errors/edge.d2:3:3: vars cannot contain an edge")
-				},
-			},
+
 			{
 				name: "spread-non-map",
 				run: func(t *testing.T) {

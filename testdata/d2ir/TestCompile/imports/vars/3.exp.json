@@ -312,9 +312,12 @@
       "name": "hi",
       "primary": {
         "value": {
-          "range": "index.d2,0:18:18-0:19:19",
-          "raw": "1",
-          "value": "1"
+          "range": "index.d2,0:27:27-0:28:28",
+          "value": [
+            {
+              "string": "1"
+            }
+          ]
         }
       },
       "references": [
@@ -370,23 +373,7 @@
                   "range": "index.d2,0:27:27-0:28:28",
                   "value": [
                     {
-                      "substitution": {
-                        "range": "index.d2,0:27:27-0:31:31",
-                        "spread": false,
-                        "path": [
-                          {
-                            "unquoted_string": {
-                              "range": "index.d2,0:29:29-0:30:30",
-                              "value": [
-                                {
-                                  "string": "x",
-                                  "raw_string": "x"
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      }
+                      "string": "1"
                     }
                   ]
                 }
