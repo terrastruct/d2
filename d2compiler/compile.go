@@ -281,12 +281,6 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 		if f.Map() != nil {
 			if len(f.Map().Edges) > 0 {
 				c.errorf(f.Map().Edges[0].LastRef().AST(), "vars cannot contain an edge")
-			} else {
-				for _, f := range f.Map().Fields {
-					if f.Primary() == nil && f.Composite == nil {
-						c.errorf(f.LastRef().AST(), "invalid var with no value")
-					}
-				}
 			}
 		}
 		return

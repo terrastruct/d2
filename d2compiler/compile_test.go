@@ -3798,17 +3798,6 @@ hi: ${z}
 				},
 			},
 			{
-				name: "bad-var",
-				run: func(t *testing.T) {
-					assertCompile(t, `
-vars: {
-  x
-}
-hi: ${x}
-`, `d2/testdata/d2compiler/TestCompile2/vars/errors/bad-var.d2:3:3: invalid var with no value`)
-				},
-			},
-			{
 				name: "multi-part-map",
 				run: func(t *testing.T) {
 					assertCompile(t, `
@@ -3818,7 +3807,7 @@ vars: {
   }
 }
 hi: 1 ${x}
-`, `d2/testdata/d2compiler/TestCompile2/vars/errors/multi-part-map.d2:7:1: cannot substitute map variable "x" as part of a string`)
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/multi-part-map.d2:7:1: cannot substitute composite variable "x" as part of a string`)
 				},
 			},
 			{
@@ -3938,7 +3927,7 @@ z: {
 	d: ...${x}
   c
 }
-`, `d2/testdata/d2compiler/TestCompile2/vars/errors/spread-non-solo.d2:8:2: cannot substitute map variable "x" as part of a string`)
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/spread-non-solo.d2:8:2: cannot substitute composite variable "x" as part of a string`)
 				},
 			},
 		}

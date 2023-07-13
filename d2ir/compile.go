@@ -188,8 +188,12 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) {
 					}
 				}
 				if resolvedField.Primary() == nil {
+					if resolvedField.Composite == nil {
+						c.errorf(node.LastRef().AST(), `cannot substitute variable without value: "%s"`, strings.Join(box.Substitution.IDA(), "."))
+						return
+					}
 					if len(s.Value) > 1 {
-						c.errorf(node.LastRef().AST(), `cannot substitute map variable "%s" as part of a string`, strings.Join(box.Substitution.IDA(), "."))
+						c.errorf(node.LastRef().AST(), `cannot substitute composite variable "%s" as part of a string`, strings.Join(box.Substitution.IDA(), "."))
 						return
 					}
 					switch n := node.(type) {
