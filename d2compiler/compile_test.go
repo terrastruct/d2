@@ -3598,6 +3598,31 @@ layers: {
 				},
 			},
 			{
+				name: "layer-2",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+  x: root var x
+  y: root var y
+}
+
+layers: {
+  l: {
+    vars: {
+      x: layer var x
+    }
+    hi: ${x}
+    hello: ${y}
+  }
+}
+`, "")
+					assert.Equal(t, "hi", g.Layers[0].Objects[0].ID)
+					assert.Equal(t, "layer var x", g.Layers[0].Objects[0].Label.Value)
+					assert.Equal(t, "hello", g.Layers[0].Objects[1].ID)
+					assert.Equal(t, "root var y", g.Layers[0].Objects[1].Label.Value)
+				},
+			},
+			{
 				name: "scenario",
 				run: func(t *testing.T) {
 					g := assertCompile(t, `
