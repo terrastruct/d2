@@ -1,0 +1,267 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,0:0:0-9:0:112",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,1:0:1-5:1:52",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,1:0:1-1:4:5",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,1:0:1-1:4:5",
+                    "value": [
+                      {
+                        "string": "vars",
+                        "raw_string": "vars"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,1:6:7-5:1:52",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,2:2:11-4:3:50",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,2:2:11-2:12:21",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,2:2:11-2:12:21",
+                              "value": [
+                                {
+                                  "string": "disclaimer",
+                                  "raw_string": "disclaimer"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,2:14:23-4:3:50",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,3:4:29-3:21:46",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,3:4:29-3:21:46",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,3:4:29-3:21:46",
+                                        "value": [
+                                          {
+                                            "string": "I am not a lawyer",
+                                            "raw_string": "I am not a lawyer"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {}
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,6:0:53-8:1:111",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,6:0:53-6:17:70",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,6:0:53-6:17:70",
+                    "value": [
+                      {
+                        "string": "custom-disclaimer",
+                        "raw_string": "custom-disclaimer"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {
+              "unquoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,6:19:72-6:35:88",
+                "value": [
+                  {
+                    "string": "DRAFT DISCLAIMER",
+                    "raw_string": "DRAFT DISCLAIMER"
+                  }
+                ]
+              }
+            },
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,6:36:89-8:1:111",
+                "nodes": [
+                  {
+                    "substitution": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,7:2:93-7:18:109",
+                      "spread": true,
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,7:7:98-7:17:108",
+                            "value": [
+                              {
+                                "string": "disclaimer",
+                                "raw_string": "disclaimer"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "I am not a lawyer",
+        "id_val": "I am not a lawyer",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,3:4:29-3:21:46",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,3:4:29-3:21:46",
+                    "value": [
+                      {
+                        "string": "I am not a lawyer",
+                        "raw_string": "I am not a lawyer"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "I am not a lawyer"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "custom-disclaimer",
+        "id_val": "custom-disclaimer",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,6:0:53-6:17:70",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,6:0:53-6:17:70",
+                    "value": [
+                      {
+                        "string": "custom-disclaimer",
+                        "raw_string": "custom-disclaimer"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "DRAFT DISCLAIMER"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

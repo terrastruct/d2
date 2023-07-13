@@ -277,6 +277,8 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 			}
 		}
 		return
+	} else if f.Name == "vars" {
+		return
 	} else if isReserved {
 		c.compileReserved(&obj.Attributes, f)
 		return
@@ -329,7 +331,7 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 			Scope:           fr.Context.Scope,
 			ScopeAST:        fr.Context.ScopeAST,
 		}
-		if fr.Context.ScopeMap != nil {
+		if fr.Context.ScopeMap != nil && !d2ir.IsVar(fr.Context.ScopeMap) {
 			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(fr.Context.ScopeMap))
 			r.ScopeObj = obj.Graph.Root.EnsureChild(scopeObjIDA)
 		}
@@ -725,7 +727,7 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 			Scope:           er.Context.Scope,
 			ScopeAST:        er.Context.ScopeAST,
 		}
-		if er.Context.ScopeMap != nil {
+		if er.Context.ScopeMap != nil && !d2ir.IsVar(er.Context.ScopeMap) {
 			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(er.Context.ScopeMap))
 			r.ScopeObj = edge.Src.Graph.Root.EnsureChild(scopeObjIDA)
 		}

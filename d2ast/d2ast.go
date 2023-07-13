@@ -502,6 +502,17 @@ type UnquotedString struct {
 	Value []InterpolationBox `json:"value"`
 }
 
+func (s *UnquotedString) Coalesce() {
+	var b strings.Builder
+	for _, box := range s.Value {
+		if box.String == nil {
+			break
+		}
+		b.WriteString(*box.String)
+	}
+	s.SetString(b.String())
+}
+
 func FlatUnquotedString(s string) *UnquotedString {
 	return &UnquotedString{
 		Value: []InterpolationBox{{String: &s}},
@@ -511,6 +522,17 @@ func FlatUnquotedString(s string) *UnquotedString {
 type DoubleQuotedString struct {
 	Range Range              `json:"range"`
 	Value []InterpolationBox `json:"value"`
+}
+
+func (s *DoubleQuotedString) Coalesce() {
+	var b strings.Builder
+	for _, box := range s.Value {
+		if box.String == nil {
+			break
+		}
+		b.WriteString(*box.String)
+	}
+	s.SetString(b.String())
 }
 
 func FlatDoubleQuotedString(s string) *DoubleQuotedString {

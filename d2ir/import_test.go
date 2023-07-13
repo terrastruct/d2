@@ -138,6 +138,39 @@ label: meow`,
 				assertQuery(t, m, 0, 0, nil, "q.jon")
 			},
 		},
+		{
+			name: "vars/1",
+			run: func(t testing.TB) {
+				m, err := compileFS(t, "index.d2", map[string]string{
+					"index.d2": "vars: { ...@x }; q: ${meow}",
+					"x.d2":     "meow: var replaced",
+				})
+				assert.Success(t, err)
+				assertQuery(t, m, 0, 0, "var replaced", "q")
+			},
+		},
+		{
+			name: "vars/2",
+			run: func(t testing.TB) {
+				m, err := compileFS(t, "index.d2", map[string]string{
+					"index.d2": "vars: { x: 1 }; ...@a",
+					"a.d2":     "vars: { x: 2 }; hi: ${x}",
+				})
+				assert.Success(t, err)
+				assertQuery(t, m, 0, 0, "2", "hi")
+			},
+		},
+		{
+			name: "vars/3",
+			run: func(t testing.TB) {
+				m, err := compileFS(t, "index.d2", map[string]string{
+					"index.d2": "...@a; vars: { x: 1 }; hi: ${x}",
+					"a.d2":     "vars: { x: 2 }",
+				})
+				assert.Success(t, err)
+				assertQuery(t, m, 0, 0, "1", "hi")
+			},
+		},
 	}
 
 	runa(t, tca)

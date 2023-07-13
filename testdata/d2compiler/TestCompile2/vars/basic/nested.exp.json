@@ -1,0 +1,279 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,0:0:0-11:0:112",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,1:0:1-7:1:64",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,1:0:1-1:4:5",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,1:0:1-1:4:5",
+                    "value": [
+                      {
+                        "string": "vars",
+                        "raw_string": "vars"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,1:6:7-7:1:64",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,2:1:10-6:3:62",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,2:1:10-2:7:16",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,2:1:10-2:7:16",
+                              "value": [
+                                {
+                                  "string": "colors",
+                                  "raw_string": "colors"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,2:9:18-6:3:62",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,3:4:24-5:5:58",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,3:4:24-3:11:31",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,3:4:24-3:11:31",
+                                        "value": [
+                                          {
+                                            "string": "primary",
+                                            "raw_string": "primary"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "map": {
+                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,3:13:33-5:5:58",
+                                    "nodes": [
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,4:6:41-4:17:52",
+                                          "key": {
+                                            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,4:6:41-4:12:47",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,4:6:41-4:12:47",
+                                                  "value": [
+                                                    {
+                                                      "string": "button",
+                                                      "raw_string": "button"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "unquoted_string": {
+                                              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,4:14:49-4:17:52",
+                                              "value": [
+                                                {
+                                                  "string": "red",
+                                                  "raw_string": "red"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,8:0:65-10:1:111",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,8:0:65-8:2:67",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,8:0:65-8:2:67",
+                    "value": [
+                      {
+                        "string": "hi",
+                        "raw_string": "hi"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,8:4:69-10:1:111",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,9:2:73-9:38:109",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,9:2:73-9:12:83",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,9:2:73-9:7:78",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,9:8:79-9:12:83",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,9:14:85-9:15:86",
+                          "value": [
+                            {
+                              "string": "red"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "hi",
+        "id_val": "hi",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,8:0:65-8:2:67",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/nested.d2,8:0:65-8:2:67",
+                    "value": [
+                      {
+                        "string": "hi",
+                        "raw_string": "hi"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "hi"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "fill": {
+              "value": "red"
+            }
+          },
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

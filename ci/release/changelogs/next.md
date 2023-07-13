@@ -1,5 +1,6 @@
 #### Features 🚀
 
+- Variables and substitutions are implemented. See [docs](https://d2lang.com/tour/vars). [#1473](https://github.com/terrastruct/d2/pull/1473)
 - Configure timeout value with D2_TIMEOUT env var [#1392](https://github.com/terrastruct/d2/pull/1392)
 - Scale renders and disable fit to screen with `--scale` flag [#1413](https://github.com/terrastruct/d2/pull/1413)
 - `null` keyword can be used to un-declare. See [docs](https://d2lang.com/tour/TODO) [#1446](https://github.com/terrastruct/d2/pull/1446)
