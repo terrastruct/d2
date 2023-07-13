@@ -278,11 +278,6 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 		}
 		return
 	} else if f.Name == "vars" {
-		// if f.Map() != nil {
-		//   if len(f.Map().Edges) > 0 {
-		//     c.errorf(f.Map().Edges[0].LastRef().AST(), "vars cannot contain an edge")
-		//   }
-		// }
 		return
 	} else if isReserved {
 		c.compileReserved(&obj.Attributes, f)
