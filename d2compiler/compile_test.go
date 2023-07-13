@@ -3469,6 +3469,21 @@ z.class: [a; ${x}together]
 					assert.Equal(t, "alltogether", g.Objects[0].Attributes.Classes[1])
 				},
 			},
+			{
+				name: "double-quote-primary",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+	x: always {
+    a: b
+  }
+}
+z: "${x} be my maybe"
+`, "")
+					assert.Equal(t, "z", g.Objects[0].ID)
+					assert.Equal(t, "always be my maybe", g.Objects[0].Label.Value)
+				},
+			},
 		}
 
 		for _, tc := range tca {

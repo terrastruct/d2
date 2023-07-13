@@ -112,8 +112,7 @@ func (c *compiler) compileSubstitutions(m *Map, varsStack []*Map) {
 					c.resolveSubstitutions(varsStack, scalar)
 				}
 			}
-		}
-		if f.Map() != nil {
+		} else if f.Map() != nil {
 			// don't resolve substitutions in vars with the current scope of vars
 			if f.Name == "vars" {
 				c.compileSubstitutions(f.Map(), varsStack[1:])
@@ -238,7 +237,7 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) {
 					c.errorf(node.LastRef().AST(), `could not resolve variable "%s"`, strings.Join(box.Substitution.IDA(), "."))
 					return
 				}
-				if resolvedField.Composite != nil {
+				if resolvedField.Primary() == nil && resolvedField.Composite != nil {
 					c.errorf(node.LastRef().AST(), `cannot substitute map variable "%s" in quotes`, strings.Join(box.Substitution.IDA(), "."))
 					return
 				}
