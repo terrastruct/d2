@@ -396,15 +396,6 @@ func (c *compiler) compileKey(refctx *RefContext) {
 }
 
 func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext) {
-	if refctx.Key != nil && len(refctx.Key.Edges) == 0 && refctx.Key.Value.Null != nil {
-		// For vars, if we delete the field, it may just resolve to an outer scope var of the same name
-		// Instead we keep it around, so that resolveSubstitutions can find it
-		if !IsVar(dst) {
-			dst.DeleteField(kp.IDA()...)
-			return
-		}
-	}
-
 	us, ok := kp.Path[0].Unbox().(*d2ast.UnquotedString)
 	if ok && us.Pattern != nil {
 		for _, f := range dst.Fields {
@@ -429,6 +420,15 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 }
 
 func (c *compiler) _compileField(f *Field, refctx *RefContext) {
+	if len(refctx.Key.Edges) == 0 && refctx.Key.Value.Null != nil {
+		// For vars, if we delete the field, it may just resolve to an outer scope var of the same name
+		// Instead we keep it around, so that resolveSubstitutions can find it
+		if !IsVar(ParentMap(f)) {
+			dst.DeleteField(f.Name)
+			return
+		}
+	}
+
 	if refctx.Key.Primary.Unbox() != nil {
 		f.Primary_ = &Scalar{
 			parent: f,
