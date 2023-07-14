@@ -48,11 +48,11 @@
       "id": "y",
       "type": "rectangle",
       "pos": {
-        "x": 0,
-        "y": 207
+        "x": 10,
+        "y": 186
       },
-      "width": 132,
-      "height": 125,
+      "width": 112,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -90,7 +90,7 @@
       "type": "rectangle",
       "pos": {
         "x": 40,
-        "y": 236
+        "y": 216
       },
       "width": 52,
       "height": 66,
@@ -174,11 +174,11 @@
         },
         {
           "x": 66,
-          "y": 126
+          "y": 121.80000305175781
         },
         {
           "x": 66,
-          "y": 166
+          "y": 145
         }
       ],
       "isCurve": true,

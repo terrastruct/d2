@@ -8,10 +8,10 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 41
+        "y": 5
       },
       "width": 320,
-      "height": 443,
+      "height": 327,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -61,10 +61,10 @@
       "type": "rectangle",
       "pos": {
         "x": 20,
-        "y": 117
+        "y": 46
       },
       "width": 280,
-      "height": 326,
+      "height": 256,
       "opacity": 1,
       "strokeDash": 3,
       "strokeWidth": 2,
@@ -101,11 +101,11 @@
       "id": "vpc.az.firewall",
       "type": "rectangle",
       "pos": {
-        "x": 40,
-        "y": 191
+        "x": 50,
+        "y": 120
       },
-      "width": 240,
-      "height": 209,
+      "width": 220,
+      "height": 152,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -155,10 +155,10 @@
       "type": "rectangle",
       "pos": {
         "x": 80,
-        "y": 237
+        "y": 150
       },
       "width": 160,
-      "height": 118,
+      "height": 92,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
