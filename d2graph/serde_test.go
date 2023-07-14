@@ -13,7 +13,7 @@ import (
 func TestSerialization(t *testing.T) {
 	t.Parallel()
 
-	g, err := d2compiler.Compile("", strings.NewReader("a.a.b -> a.a.c"), nil)
+	g, _, err := d2compiler.Compile("", strings.NewReader("a.a.b -> a.a.c"), nil)
 	assert.Nil(t, err)
 
 	asserts := func(g *d2graph.Graph) {
@@ -53,7 +53,7 @@ func TestCasingRegression(t *testing.T) {
 
 	script := `UserCreatedTypeField`
 
-	g, err := d2compiler.Compile("", strings.NewReader(script), nil)
+	g, _, err := d2compiler.Compile("", strings.NewReader(script), nil)
 	assert.Nil(t, err)
 
 	_, ok := g.Root.HasChild([]string{"UserCreatedTypeField"})

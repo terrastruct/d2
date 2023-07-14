@@ -49,10 +49,10 @@ func Wrap(rootDiagram *d2target.Diagram, svgs [][]byte, renderOpts d2svg.RenderO
 	// TODO account for stroke width of root border
 
 	tl, br := rootDiagram.NestedBoundingBox()
-	left := tl.X - renderOpts.Pad
-	top := tl.Y - renderOpts.Pad
-	width := br.X - tl.X + renderOpts.Pad*2
-	height := br.Y - tl.Y + renderOpts.Pad*2
+	left := tl.X - int(*renderOpts.Pad)
+	top := tl.Y - int(*renderOpts.Pad)
+	width := br.X - tl.X + int(*renderOpts.Pad)*2
+	height := br.Y - tl.Y + int(*renderOpts.Pad)*2
 
 	fitToScreenWrapperOpening := fmt.Sprintf(`<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="%s" preserveAspectRatio="xMinYMin meet" viewBox="0 0 %d %d">`,
 		version.Version,
@@ -93,7 +93,7 @@ func Wrap(rootDiagram *d2target.Diagram, svgs [][]byte, renderOpts d2svg.RenderO
 		fmt.Fprintf(buf, `<style type="text/css">%s</style>`, css)
 	}
 
-	if renderOpts.Sketch {
+	if renderOpts.Sketch != nil && *renderOpts.Sketch {
 		d2sketch.DefineFillPatterns(buf)
 	}
 

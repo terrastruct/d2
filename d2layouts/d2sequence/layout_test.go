@@ -37,7 +37,7 @@ n2 -> n1: right to left
 n1 -> n2
 n2 -> n1
 `
-	g, err := d2compiler.Compile("", strings.NewReader(input), nil)
+	g, _, err := d2compiler.Compile("", strings.NewReader(input), nil)
 	assert.Nil(t, err)
 
 	n1, has := g.Root.HasChild([]string{"n1"})
@@ -177,7 +177,7 @@ a.t2 -> b
 b -> a.t2`
 
 	ctx := log.WithTB(context.Background(), t, nil)
-	g, err := d2compiler.Compile("", strings.NewReader(input), nil)
+	g, _, err := d2compiler.Compile("", strings.NewReader(input), nil)
 	assert.Nil(t, err)
 
 	g.Root.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
@@ -298,7 +298,7 @@ c
 container -> c: edge 1
 `
 	ctx := log.WithTB(context.Background(), t, nil)
-	g, err := d2compiler.Compile("", strings.NewReader(input), nil)
+	g, _, err := d2compiler.Compile("", strings.NewReader(input), nil)
 	assert.Nil(t, err)
 
 	container, has := g.Root.HasChild([]string{"container"})

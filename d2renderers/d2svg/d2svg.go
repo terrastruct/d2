@@ -69,10 +69,10 @@ var grain string
 var paper string
 
 type RenderOpts struct {
-	Pad         int
-	Sketch      bool
-	Center      bool
-	ThemeID     int64
+	Pad         *int64
+	Sketch      *bool
+	Center      *bool
+	ThemeID     *int64
 	DarkThemeID *int64
 	Font        string
 	// the svg will be scaled by this factor, if unset the svg will fit to screen
@@ -1689,26 +1689,28 @@ func appendOnTrigger(buf *bytes.Buffer, source string, triggers []string, newCon
 	}
 }
 
-const DEFAULT_THEME int64 = 0
-
 var DEFAULT_DARK_THEME *int64 = nil // no theme selected
 
 func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	var sketchRunner *d2sketch.Runner
 	pad := DEFAULT_PADDING
-	themeID := DEFAULT_THEME
+	themeID := d2themescatalog.NeutralDefault.ID
 	darkThemeID := DEFAULT_DARK_THEME
 	var scale *float64
 	if opts != nil {
-		pad = opts.Pad
-		if opts.Sketch {
+		if opts.Pad != nil {
+			pad = int(*opts.Pad)
+		}
+		if opts.Sketch != nil && *opts.Sketch {
 			var err error
 			sketchRunner, err = d2sketch.InitSketchVM()
 			if err != nil {
 				return nil, err
 			}
 		}
-		themeID = opts.ThemeID
+		if opts.ThemeID != nil {
+			themeID = *opts.ThemeID
+		}
 		darkThemeID = opts.DarkThemeID
 		scale = opts.Scale
 	}
@@ -1792,7 +1794,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	upperBuf := &bytes.Buffer{}
 	if opts.MasterID == "" {
 		EmbedFonts(upperBuf, diagramHash, buf.String(), diagram.FontFamily, diagram.GetCorpus()) // EmbedFonts *must* run before `d2sketch.DefineFillPatterns`, but after all elements are appended to `buf`
-		themeStylesheet, err := ThemeCSS(diagramHash, themeID, darkThemeID)
+		themeStylesheet, err := ThemeCSS(diagramHash, &themeID, darkThemeID)
 		if err != nil {
 			return nil, err
 		}
@@ -1913,7 +1915,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	}
 
 	alignment := "xMinYMin"
-	if opts.Center {
+	if opts.Center != nil && *opts.Center {
 		alignment = "xMidYMid"
 	}
 	fitToScreenWrapperOpening := ""
@@ -1954,8 +1956,11 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 }
 
 // TODO include only colors that are being used to reduce size
-func ThemeCSS(diagramHash string, themeID int64, darkThemeID *int64) (stylesheet string, err error) {
-	out, err := singleThemeRulesets(diagramHash, themeID)
+func ThemeCSS(diagramHash string, themeID *int64, darkThemeID *int64) (stylesheet string, err error) {
+	if themeID == nil {
+		themeID = &d2themescatalog.NeutralDefault.ID
+	}
+	out, err := singleThemeRulesets(diagramHash, *themeID)
 	if err != nil {
 		return "", err
 	}

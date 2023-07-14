@@ -17,6 +17,7 @@ import (
 	"oss.terrastruct.com/util-go/diff"
 	"oss.terrastruct.com/util-go/go2"
 
+	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
 	"oss.terrastruct.com/d2/d2layouts/d2elklayout"
 	"oss.terrastruct.com/d2/d2lib"
@@ -1339,16 +1340,22 @@ func run(t *testing.T, tc testCase) {
 		return
 	}
 
-	layout := d2dagrelayout.DefaultLayout
-	if strings.EqualFold(tc.engine, "elk") {
-		layout = d2elklayout.DefaultLayout
+	layoutResolver := func(engine string) (d2graph.LayoutGraph, error) {
+		if strings.EqualFold(engine, "elk") {
+			return d2elklayout.DefaultLayout, nil
+		}
+		return d2dagrelayout.DefaultLayout, nil
+	}
+	renderOpts := &d2svg.RenderOpts{
+		Sketch:  go2.Pointer(true),
+		ThemeID: go2.Pointer(tc.themeID),
 	}
 	diagram, _, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
-		Ruler:      ruler,
-		Layout:     layout,
-		FontFamily: go2.Pointer(d2fonts.HandDrawn),
-		ThemeID:    tc.themeID,
-	})
+		Ruler:          ruler,
+		Layout:         &tc.engine,
+		LayoutResolver: layoutResolver,
+		FontFamily:     go2.Pointer(d2fonts.HandDrawn),
+	}, renderOpts)
 	if !tassert.Nil(t, err) {
 		return
 	}
@@ -1356,11 +1363,7 @@ func run(t *testing.T, tc testCase) {
 	dataPath := filepath.Join("testdata", strings.TrimPrefix(t.Name(), "TestSketch/"))
 	pathGotSVG := filepath.Join(dataPath, "sketch.got.svg")
 
-	svgBytes, err := d2svg.Render(diagram, &d2svg.RenderOpts{
-		Pad:     d2svg.DEFAULT_PADDING,
-		Sketch:  true,
-		ThemeID: tc.themeID,
-	})
+	svgBytes, err := d2svg.Render(diagram, renderOpts)
 	assert.Success(t, err)
 	err = os.MkdirAll(dataPath, 0755)
 	assert.Success(t, err)

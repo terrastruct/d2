@@ -219,7 +219,7 @@ func run(t *testing.T, tc testCase) {
 	ctx = log.WithTB(ctx, t, nil)
 	ctx = log.Leveled(ctx, slog.LevelDebug)
 
-	g, err := d2compiler.Compile("", strings.NewReader(tc.dsl), &d2compiler.CompileOptions{
+	g, _, err := d2compiler.Compile("", strings.NewReader(tc.dsl), &d2compiler.CompileOptions{
 		UTF16: true,
 	})
 	if err != nil {

@@ -2,11 +2,14 @@ package d2ir
 
 import (
 	"io/fs"
+	"strconv"
 	"strings"
 
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2parser"
+	"oss.terrastruct.com/d2/d2themes"
+	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/util-go/go2"
 )
 
@@ -116,6 +119,7 @@ func (c *compiler) compileSubstitutions(m *Map, varsStack []*Map) {
 			// don't resolve substitutions in vars with the current scope of vars
 			if f.Name == "vars" {
 				c.compileSubstitutions(f.Map(), varsStack[1:])
+				c.validateConfigs(f.Map().GetField("d2-config"))
 			} else {
 				c.compileSubstitutions(f.Map(), varsStack)
 			}
@@ -127,6 +131,62 @@ func (c *compiler) compileSubstitutions(m *Map, varsStack []*Map) {
 		}
 		if e.Map() != nil {
 			c.compileSubstitutions(e.Map(), varsStack)
+		}
+	}
+}
+
+func (c *compiler) validateConfigs(configs *Field) {
+	if configs == nil || configs.Map() == nil {
+		return
+	}
+
+	if NodeBoardKind(ParentMap(ParentMap(configs))) == "" {
+		c.errorf(configs.LastRef().AST(), `"%s" can only appear at root vars`, configs.Name)
+		return
+	}
+
+	for _, f := range configs.Map().Fields {
+		var val string
+		if f.Primary() == nil {
+			if f.Name != "theme-colors" {
+				c.errorf(f.LastRef().AST(), `"%s" needs a value`, f.Name)
+				continue
+			}
+		} else {
+			val = f.Primary().Value.ScalarString()
+		}
+
+		switch f.Name {
+		case "sketch", "center":
+			_, err := strconv.ParseBool(val)
+			if err != nil {
+				c.errorf(f.LastRef().AST(), `expected a boolean for "%s", got "%s"`, f.Name, val)
+				continue
+			}
+		case "theme-colors":
+			if f.Map() == nil {
+				c.errorf(f.LastRef().AST(), `"%s" needs a map`, f.Name)
+				continue
+			}
+		case "theme-id", "dark-theme-id":
+			valInt, err := strconv.Atoi(val)
+			if err != nil {
+				c.errorf(f.LastRef().AST(), `expected an integer for "%s", got "%s"`, f.Name, val)
+				continue
+			}
+			if d2themescatalog.Find(int64(valInt)) == (d2themes.Theme{}) {
+				c.errorf(f.LastRef().AST(), `%d is not a valid theme ID`, valInt)
+				continue
+			}
+		case "pad":
+			_, err := strconv.Atoi(val)
+			if err != nil {
+				c.errorf(f.LastRef().AST(), `expected an integer for "%s", got "%s"`, f.Name, val)
+				continue
+			}
+		case "layout-engine":
+		default:
+			c.errorf(f.LastRef().AST(), `"%s" is not a valid config`, f.Name)
 		}
 	}
 }
