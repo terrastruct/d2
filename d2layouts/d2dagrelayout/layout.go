@@ -22,6 +22,7 @@ import (
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/log"
+	"oss.terrastruct.com/d2/lib/shape"
 )
 
 //go:embed setup.js
@@ -31,9 +32,9 @@ var setupJS string
 var dagreJS string
 
 const (
-	MIN_RANK_SEP   = 60
-	EDGE_LABEL_GAP = 20
-	MIN_MARGIN     = 10.
+	MIN_RANK_SEP    = 60
+	EDGE_LABEL_GAP  = 20
+	DEFAULT_PADDING = 30.
 )
 
 type ConfigurableOpts struct {
@@ -265,6 +266,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 	adjustRankSpacing(g, float64(rootAttrs.ranksep), isHorizontal)
 	adjustCrossRankSpacing(g, float64(rootAttrs.ranksep), !isHorizontal)
+
+	fitContainerPadding(g, float64(rootAttrs.ranksep), isHorizontal)
 
 	for _, edge := range g.Edges {
 		points := edge.Route
@@ -1303,6 +1306,133 @@ func adjustCrossRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool
 				shiftReachableDown(g, obj, obj.TopLeft.X, padding.left, isHorizontal, false)
 				obj.Width += padding.left
 			}
+		}
+	}
+}
+
+func fitContainerPadding(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
+	for _, obj := range g.Root.ChildrenArray {
+		fitPadding(obj)
+	}
+}
+
+func fitPadding(obj *d2graph.Object) {
+	dslShape := strings.ToLower(obj.Shape.Value)
+	shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
+	// Note: there's no shape-specific padding/placement in dagre yet
+	if !obj.IsContainer() || shapeType != shape.SQUARE_TYPE {
+		return
+	}
+	for _, child := range obj.ChildrenArray {
+		fitPadding(child)
+	}
+
+	_, padding := getSpacing(obj)
+	padding.top = math.Max(padding.top, DEFAULT_PADDING)
+	padding.bottom = math.Max(padding.bottom, DEFAULT_PADDING)
+	padding.left = math.Max(padding.left, DEFAULT_PADDING)
+	padding.right = math.Max(padding.right, DEFAULT_PADDING)
+
+	innerTop := math.Inf(1)
+	innerBottom := math.Inf(-1)
+	innerLeft := math.Inf(1)
+	innerRight := math.Inf(-1)
+
+	for _, child := range obj.ChildrenArray {
+		margin, _ := getSpacing(child)
+
+		innerTop = math.Min(innerTop, child.TopLeft.Y-math.Max(margin.top, padding.top))
+		innerBottom = math.Max(innerBottom, child.TopLeft.Y+child.Height+math.Max(margin.bottom, padding.bottom))
+		innerLeft = math.Min(innerLeft, child.TopLeft.X-math.Max(margin.left, padding.left))
+		innerRight = math.Max(innerRight, child.TopLeft.X+child.Width+math.Max(margin.right, padding.right))
+	}
+
+	currentTop := obj.TopLeft.Y
+	currentBottom := obj.TopLeft.Y + obj.Height
+	currentLeft := obj.TopLeft.X
+	currentRight := obj.TopLeft.X + obj.Width
+
+	topDelta := innerTop - currentTop
+	bottomDelta := currentBottom - innerBottom
+	leftDelta := innerLeft - currentLeft
+	rightDelta := currentRight - innerRight
+
+	if 0 < topDelta {
+		obj.TopLeft.Y += topDelta
+		obj.Height -= topDelta
+		adjustEdges(obj, currentTop, topDelta, false)
+	}
+	if 0 < bottomDelta {
+		obj.Height -= bottomDelta
+		adjustEdges(obj, currentBottom, -bottomDelta, false)
+	}
+	if 0 < leftDelta {
+		obj.TopLeft.X += leftDelta
+		obj.Width -= leftDelta
+		adjustEdges(obj, currentLeft, leftDelta, true)
+	}
+	if 0 < rightDelta {
+		obj.Width -= rightDelta
+		adjustEdges(obj, currentRight, -rightDelta, true)
+	}
+}
+
+func adjustEdges(obj *d2graph.Object, objPosition, delta float64, isHorizontal bool) {
+	adjust := func(p *geo.Point) {
+		var position float64
+		if isHorizontal {
+			position = p.X
+		} else {
+			position = p.Y
+		}
+		if geo.PrecisionCompare(position, objPosition, 1) == 0 {
+			if isHorizontal {
+				p.X += delta
+			} else {
+				p.Y += delta
+			}
+		} else {
+			// check side corners
+			var isOnSide bool
+			if isHorizontal {
+				if geo.PrecisionCompare(p.Y, obj.TopLeft.Y, 1) == 0 ||
+					geo.PrecisionCompare(p.Y, obj.TopLeft.Y+obj.Height, 1) == 0 {
+					isOnSide = true
+				}
+			} else {
+				if geo.PrecisionCompare(p.X, obj.TopLeft.X, 1) == 0 ||
+					geo.PrecisionCompare(p.X, obj.TopLeft.X+obj.Width, 1) == 0 {
+					isOnSide = true
+				}
+			}
+			if isOnSide {
+				var isInRange bool
+				if delta > 0 {
+					if objPosition < position && position < objPosition+delta {
+						isInRange = true
+					}
+				} else {
+					if objPosition+delta < position && position < objPosition {
+						isInRange = true
+					}
+				}
+				if isInRange {
+					if isHorizontal {
+						p.X = objPosition + delta
+					} else {
+						p.Y = objPosition + delta
+					}
+				}
+			}
+		}
+	}
+
+	for _, edge := range obj.Graph.Edges {
+		if edge.Src == obj {
+			adjust(edge.Route[0])
+		}
+		if edge.Dst == obj {
+			adjust(edge.Route[len(edge.Route)-1])
 		}
 	}
 }
