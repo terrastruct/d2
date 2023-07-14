@@ -266,7 +266,6 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 	adjustRankSpacing(g, float64(rootAttrs.ranksep), isHorizontal)
 	adjustCrossRankSpacing(g, float64(rootAttrs.ranksep), !isHorizontal)
-
 	fitContainerPadding(g, float64(rootAttrs.ranksep), isHorizontal)
 
 	for _, edge := range g.Edges {
@@ -723,72 +722,129 @@ func getRanks(g *d2graph.Graph, isHorizontal bool) (ranks [][]*d2graph.Object, o
 // shift everything down by distance if it is at or below start position
 func shiftDown(g *d2graph.Graph, start, distance float64, isHorizontal bool) {
 	if isHorizontal {
+		for _, edge := range g.Edges {
+			first, last := edge.Route[0], edge.Route[len(edge.Route)-1]
+			if start <= first.X {
+				onStaticSrc := first.X == edge.Src.TopLeft.X+edge.Src.Width && edge.Src.TopLeft.X < start
+				if !onStaticSrc {
+					// src is not shifting and we are on src so don't shift
+					first.X += distance
+				}
+			}
+			if start <= last.X {
+				onStaticDst := last.X == edge.Dst.TopLeft.X+edge.Dst.Width && edge.Dst.TopLeft.X < start
+				if !onStaticDst {
+					last.X += distance
+				}
+			}
+			for i := 1; i < len(edge.Route)-1; i++ {
+				p := edge.Route[i]
+				if p.X < start {
+					continue
+				}
+				p.X += distance
+			}
+		}
 		for _, obj := range g.Objects {
 			if obj.TopLeft.X < start {
 				continue
 			}
 			obj.TopLeft.X += distance
 		}
+	} else {
 		for _, edge := range g.Edges {
-			for _, p := range edge.Route {
-				// Note: == so incoming edge shifts down with object at startY
-				if p.X <= start {
+			first, last := edge.Route[0], edge.Route[len(edge.Route)-1]
+			if start <= first.Y {
+				onStaticSrc := first.Y == edge.Src.TopLeft.Y+edge.Src.Height && edge.Src.TopLeft.Y < start
+				if !onStaticSrc {
+					// src is not shifting and we are on src so don't shift
+					first.Y += distance
+				}
+			}
+			if start <= last.Y {
+				onStaticDst := last.Y == edge.Dst.TopLeft.Y+edge.Dst.Height && edge.Dst.TopLeft.Y < start
+				if !onStaticDst {
+					last.Y += distance
+				}
+			}
+			for i := 1; i < len(edge.Route)-1; i++ {
+				p := edge.Route[i]
+				if p.Y < start {
 					continue
 				}
-				p.X += distance
+				p.Y += distance
 			}
 		}
-	} else {
 		for _, obj := range g.Objects {
 			if obj.TopLeft.Y < start {
 				continue
 			}
 			obj.TopLeft.Y += distance
 		}
-		for _, edge := range g.Edges {
-			for _, p := range edge.Route {
-				// Note: == so incoming edge shifts down with object at startY
-				if p.Y <= start {
-					continue
-				}
-				p.Y += distance
-			}
-		}
 	}
 }
 
 func shiftUp(g *d2graph.Graph, start, distance float64, isHorizontal bool) {
 	if isHorizontal {
+		for _, edge := range g.Edges {
+			first, last := edge.Route[0], edge.Route[len(edge.Route)-1]
+			if first.X <= start {
+				onStaticSrc := first.X == edge.Src.TopLeft.X && start < edge.Src.TopLeft.X+edge.Src.Width
+				if !onStaticSrc {
+					// src is not shifting and we are on src so don't shift
+					first.X -= distance
+				}
+			}
+			if last.X <= start {
+				onStaticDst := last.X == edge.Dst.TopLeft.X && start < edge.Dst.TopLeft.X+edge.Dst.Width
+				if !onStaticDst {
+					last.X -= distance
+				}
+			}
+			for i := 1; i < len(edge.Route)-1; i++ {
+				p := edge.Route[i]
+				if start < p.X {
+					continue
+				}
+				p.X -= distance
+			}
+		}
 		for _, obj := range g.Objects {
 			if start < obj.TopLeft.X {
 				continue
 			}
 			obj.TopLeft.X -= distance
 		}
+	} else {
 		for _, edge := range g.Edges {
-			for _, p := range edge.Route {
-				// Note: == so incoming edge shifts down with object at startY
-				if start <= p.X {
+			first, last := edge.Route[0], edge.Route[len(edge.Route)-1]
+			if first.Y <= start {
+				// don't shift first edge point if src is not shifting and we are on src
+				onStaticSrc := first.Y == edge.Src.TopLeft.Y && start < edge.Src.TopLeft.Y+edge.Src.Height
+				if !onStaticSrc {
+					first.Y -= distance
+				}
+			}
+			if last.Y <= start {
+				onStaticDst := last.Y == edge.Dst.TopLeft.Y && start < edge.Dst.TopLeft.Y
+				if !onStaticDst {
+					last.Y -= distance
+				}
+			}
+			for i := 1; i < len(edge.Route)-1; i++ {
+				p := edge.Route[i]
+				// for _, p := range edge.Route {
+				if start < p.Y {
 					continue
 				}
-				p.X -= distance
+				p.Y -= distance
 			}
 		}
-	} else {
 		for _, obj := range g.Objects {
 			if start < obj.TopLeft.Y {
 				continue
 			}
 			obj.TopLeft.Y -= distance
-		}
-		for _, edge := range g.Edges {
-			for _, p := range edge.Route {
-				// Note: == so incoming edge shifts down with object at startY
-				if start <= p.Y {
-					continue
-				}
-				p.Y -= distance
-			}
 		}
 	}
 }
@@ -1361,31 +1417,31 @@ func fitPadding(obj *d2graph.Object) {
 	if 0 < topDelta {
 		topDelta = adjustDeltaForEdges(obj, currentTop, topDelta, false)
 		if 0 < topDelta {
+			adjustEdges(obj, currentTop, topDelta, false)
 			obj.TopLeft.Y += topDelta
 			obj.Height -= topDelta
-			adjustEdges(obj, currentTop, topDelta, false)
 		}
 	}
 	if 0 < bottomDelta {
 		bottomDelta = adjustDeltaForEdges(obj, currentBottom, -bottomDelta, false)
 		if 0 < bottomDelta {
-			obj.Height -= bottomDelta
 			adjustEdges(obj, currentBottom, -bottomDelta, false)
+			obj.Height -= bottomDelta
 		}
 	}
 	if 0 < leftDelta {
 		leftDelta = adjustDeltaForEdges(obj, currentLeft, leftDelta, true)
 		if 0 < leftDelta {
+			adjustEdges(obj, currentLeft, leftDelta, true)
 			obj.TopLeft.X += leftDelta
 			obj.Width -= leftDelta
-			adjustEdges(obj, currentLeft, leftDelta, true)
 		}
 	}
 	if 0 < rightDelta {
 		rightDelta = adjustDeltaForEdges(obj, currentRight, -rightDelta, true)
 		if 0 < rightDelta {
-			obj.Width -= rightDelta
 			adjustEdges(obj, currentRight, -rightDelta, true)
+			obj.Width -= rightDelta
 		}
 	}
 }
@@ -1414,23 +1470,24 @@ func adjustDeltaForEdges(obj *d2graph.Object, objPosition, delta float64, isHori
 				isOnSide = true
 			}
 		}
-		if isOnSide {
-			var isInRange bool
-			if delta > 0 {
-				if objPosition < position && position < objPosition+delta {
-					isInRange = true
-				}
-			} else {
-				if objPosition+delta < position && position < objPosition {
-					isInRange = true
-				}
+		if !isOnSide {
+			return false
+		}
+		var isInRange bool
+		if delta > 0 {
+			if objPosition < position && position < objPosition+delta {
+				isInRange = true
 			}
-			if !isInRange {
-				if isHorizontal {
-					return false
-				} else {
-					return false
-				}
+		} else {
+			if objPosition+delta < position && position < objPosition {
+				isInRange = true
+			}
+		}
+		if !isInRange {
+			if isHorizontal {
+				return false
+			} else {
+				return false
 			}
 		}
 		return true
