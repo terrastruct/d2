@@ -1340,11 +1340,12 @@ func fitPadding(obj *d2graph.Object) {
 
 	for _, child := range obj.ChildrenArray {
 		margin, _ := getSpacing(child)
+		dx, dy := child.GetModifierElementAdjustments()
 
-		innerTop = math.Min(innerTop, child.TopLeft.Y-math.Max(margin.top, padding.top))
+		innerTop = math.Min(innerTop, child.TopLeft.Y-dy-math.Max(margin.top, padding.top))
 		innerBottom = math.Max(innerBottom, child.TopLeft.Y+child.Height+math.Max(margin.bottom, padding.bottom))
 		innerLeft = math.Min(innerLeft, child.TopLeft.X-math.Max(margin.left, padding.left))
-		innerRight = math.Max(innerRight, child.TopLeft.X+child.Width+math.Max(margin.right, padding.right))
+		innerRight = math.Max(innerRight, child.TopLeft.X+child.Width+dx+math.Max(margin.right, padding.right))
 	}
 
 	currentTop := obj.TopLeft.Y
