@@ -78,3 +78,8 @@ func (b *Box) ToString() string {
 	}
 	return fmt.Sprintf("{TopLeft: %s, Width: %.0f, Height: %.0f}", b.TopLeft.ToString(), b.Width, b.Height)
 }
+
+func (b *Box) Contains(p *Point) bool {
+	return !(p.X < b.TopLeft.X || b.TopLeft.X+b.Width < p.X ||
+		p.Y < b.TopLeft.Y || b.TopLeft.Y+b.Height < p.Y)
+}

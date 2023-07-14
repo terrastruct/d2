@@ -336,6 +336,12 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 			// add left/right padding to box
 			labelBox.TopLeft.X -= label.PADDING
 			labelBox.Width += 2 * label.PADDING
+
+			for labelBox.Contains(startingSegment.End) && startIndex+1 > endIndex {
+				startingSegment.Start = startingSegment.End
+				startingSegment.End = points[startIndex+2]
+				startIndex++
+			}
 			if intersections := labelBox.Intersections(startingSegment); len(intersections) > 0 {
 				overlapsOutsideLabel = true
 				p := intersections[0]
@@ -381,6 +387,11 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 			// add left/right padding to box
 			labelBox.TopLeft.X -= label.PADDING
 			labelBox.Width += 2 * label.PADDING
+			for labelBox.Contains(endingSegment.Start) && endIndex-1 > startIndex {
+				endingSegment.End = endingSegment.Start
+				endingSegment.Start = points[endIndex-2]
+				endIndex--
+			}
 			if intersections := labelBox.Intersections(endingSegment); len(intersections) > 0 {
 				overlapsOutsideLabel = true
 				p := intersections[0]
