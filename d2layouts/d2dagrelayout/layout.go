@@ -1403,6 +1403,32 @@ func fitPadding(obj *d2graph.Object) {
 		innerLeft = math.Min(innerLeft, child.TopLeft.X-math.Max(margin.left, padding.left))
 		innerRight = math.Max(innerRight, child.TopLeft.X+child.Width+dx+math.Max(margin.right, padding.right))
 	}
+	for _, edge := range obj.Graph.Edges {
+		if !edge.Src.IsDescendantOf(obj) || !edge.Dst.IsDescendantOf(obj) {
+			continue
+		}
+		// check internal edge + their labels
+		if edge.Label.Value != "" {
+			labelPosition := label.InsideMiddleCenter
+			if edge.LabelPosition != nil {
+				labelPosition = label.Position(*edge.LabelPosition)
+			}
+			labelWidth := float64(edge.LabelDimensions.Width)
+			labelHeight := float64(edge.LabelDimensions.Height)
+			point, _ := labelPosition.GetPointOnRoute(edge.Route, 2, 0, labelWidth, labelHeight)
+
+			innerTop = math.Min(innerTop, point.Y-padding.top)
+			innerBottom = math.Max(innerBottom, point.Y+labelHeight+padding.bottom)
+			innerLeft = math.Min(innerLeft, point.X-padding.left)
+			innerRight = math.Max(innerRight, point.X+labelWidth+padding.right)
+		}
+		for _, point := range edge.Route {
+			innerTop = math.Min(innerTop, point.Y-padding.top)
+			innerBottom = math.Max(innerBottom, point.Y+padding.bottom)
+			innerLeft = math.Min(innerLeft, point.X-padding.left)
+			innerRight = math.Max(innerRight, point.X+padding.right)
+		}
+	}
 
 	currentTop := obj.TopLeft.Y
 	currentBottom := obj.TopLeft.Y + obj.Height
