@@ -2785,6 +2785,7 @@ scenarios: {
 		loadFromFile(t, "centered_horizontal_connections"),
 		loadFromFile(t, "all_shapes_link"),
 		loadFromFile(t, "nested_shape_labels"),
+		loadFromFile(t, "overlapping_child_label"),
 		loadFromFile(t, "dagre_spacing"),
 		loadFromFile(t, "dagre_spacing_right"),
 	}
