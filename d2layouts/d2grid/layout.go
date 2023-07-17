@@ -90,10 +90,10 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 	}
 
 	if obj.HasLabel() {
-		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+		obj.LabelPosition = go2.Pointer(label.InsideTopCenter.String())
 	}
 	if obj.Icon != nil {
-		obj.IconPosition = go2.Pointer(string(label.InsideTopLeft))
+		obj.IconPosition = go2.Pointer(label.InsideTopLeft.String())
 	}
 
 	// simple straight line edge routing between grid objects
@@ -111,7 +111,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 		e.Route = []*geo.Point{e.Src.Center(), e.Dst.Center()}
 		e.TraceToShape(e.Route, 0, 1)
 		if e.Label.Value != "" {
-			e.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			e.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
 		}
 	}
 
@@ -119,7 +119,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 		g.Root.TopLeft = geo.NewPoint(0, 0)
 	}
 
-	obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+	obj.LabelPosition = go2.Pointer(label.InsideTopCenter.String())
 
 	if g.RootLevel > 0 {
 		horizontalPadding, verticalPadding := CONTAINER_PADDING, CONTAINER_PADDING
@@ -147,25 +147,25 @@ func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*gridDiagram, error) {
 		positionedLabel := false
 		if o.Icon != nil && o.IconPosition == nil {
 			if len(o.ChildrenArray) > 0 {
-				o.IconPosition = go2.Pointer(string(label.OutsideTopLeft))
+				o.IconPosition = go2.Pointer(label.OutsideTopLeft.String())
 				// don't overwrite position if nested graph layout positioned label/icon
 				if o.LabelPosition == nil {
-					o.LabelPosition = go2.Pointer(string(label.OutsideTopRight))
+					o.LabelPosition = go2.Pointer(label.OutsideTopRight.String())
 					positionedLabel = true
 				}
 			} else {
-				o.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+				o.IconPosition = go2.Pointer(label.InsideMiddleCenter.String())
 			}
 		}
 		if !positionedLabel && o.HasLabel() && o.LabelPosition == nil {
 			if len(o.ChildrenArray) > 0 {
-				o.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
+				o.LabelPosition = go2.Pointer(label.OutsideTopCenter.String())
 			} else if o.HasOutsideBottomLabel() {
-				o.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
+				o.LabelPosition = go2.Pointer(label.OutsideBottomCenter.String())
 			} else if o.Icon != nil {
-				o.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+				o.LabelPosition = go2.Pointer(label.InsideTopCenter.String())
 			} else {
-				o.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+				o.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
 			}
 		}
 	}

@@ -76,7 +76,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) (*s
 			// Groups may have more nested groups
 			for len(queue) > 0 {
 				curr := queue[0]
-				curr.LabelPosition = go2.Pointer(string(label.InsideTopLeft))
+				curr.LabelPosition = go2.Pointer(label.InsideTopLeft.String())
 				groups = append(groups, curr)
 				queue = queue[1:]
 				queue = append(queue, curr.ChildrenArray...)
@@ -135,7 +135,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) (*s
 				child.Shape = d2graph.Scalar{Value: shape.PAGE_TYPE}
 				sd.notes = append(sd.notes, child)
 				sd.objectRank[child] = rank
-				child.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+				child.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
 				maxNoteWidth = math.Max(maxNoteWidth, child.Width)
 			} else {
 				// spans have no labels
@@ -338,13 +338,13 @@ func (sd *sequenceDiagram) placeActors() {
 	for rank, actor := range sd.actors {
 		var yOffset float64
 		if actor.HasOutsideBottomLabel() {
-			actor.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
+			actor.LabelPosition = go2.Pointer(label.OutsideBottomCenter.String())
 			yOffset = sd.maxActorHeight - actor.Height
 			if actor.HasLabel() {
 				yOffset -= float64(actor.LabelDimensions.Height)
 			}
 		} else {
-			actor.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			actor.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
 			yOffset = sd.maxActorHeight - actor.Height
 		}
 		halfWidth := actor.Width / 2.
@@ -382,7 +382,7 @@ func (sd *sequenceDiagram) addLifelineEdges() {
 	for _, actor := range sd.actors {
 		actorBottom := actor.Center()
 		actorBottom.Y = actor.TopLeft.Y + actor.Height
-		if *actor.LabelPosition == string(label.OutsideBottomCenter) && actor.HasLabel() {
+		if *actor.LabelPosition == label.OutsideBottomCenter.String() && actor.HasLabel() {
 			actorBottom.Y += float64(actor.LabelDimensions.Height) + LIFELINE_LABEL_PAD
 		}
 		actorLifelineEnd := actor.Center()
@@ -602,7 +602,7 @@ func (sd *sequenceDiagram) routeMessages() error {
 		messageOffset += sd.yStep
 
 		if message.Label.Value != "" {
-			message.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			message.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
 		}
 	}
 	return nil
