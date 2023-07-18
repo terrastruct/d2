@@ -112,7 +112,23 @@
                           "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/number.d2,5:15:44-5:16:45",
                           "value": [
                             {
-                              "string": "2"
+                              "substitution": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/number.d2,5:15:44-5:25:54",
+                                "spread": false,
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/number.d2,5:17:46-5:24:53",
+                                      "value": [
+                                        {
+                                          "string": "columns",
+                                          "raw_string": "columns"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
                             }
                           ]
                         }

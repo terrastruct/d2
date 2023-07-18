@@ -178,7 +178,23 @@
                           "range": "d2/testdata/d2compiler/TestCompile2/vars/override/map.d2,8:6:74-8:7:75",
                           "value": [
                             {
-                              "string": "im nested var"
+                              "substitution": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/vars/override/map.d2,8:6:74-8:10:78",
+                                "spread": false,
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2compiler/TestCompile2/vars/override/map.d2,8:8:76-8:9:77",
+                                      "value": [
+                                        {
+                                          "string": "x",
+                                          "raw_string": "x"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
                             }
                           ]
                         }

@@ -202,7 +202,23 @@
                                     "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/replace.d2,10:7:98-10:8:99",
                                     "value": [
                                       {
-                                        "string": "im replaced x var"
+                                        "substitution": {
+                                          "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/replace.d2,10:7:98-10:11:102",
+                                          "spread": false,
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/replace.d2,10:9:100-10:10:101",
+                                                "value": [
+                                                  {
+                                                    "string": "x",
+                                                    "raw_string": "x"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        }
                                       }
                                     ]
                                   }
@@ -333,10 +349,11 @@
                 },
                 "primary": {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/replace.d2,10:7:98-10:8:99",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/replace.d2,8:9:67-8:26:84",
                     "value": [
                       {
-                        "string": "im replaced x var"
+                        "string": "im replaced x var",
+                        "raw_string": "im replaced x var"
                       }
                     ]
                   }

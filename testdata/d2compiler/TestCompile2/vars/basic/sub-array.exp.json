@@ -118,7 +118,23 @@
                       "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/sub-array.d2,4:13:32-4:14:33",
                       "value": [
                         {
-                          "string": "all"
+                          "substitution": {
+                            "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/sub-array.d2,4:13:32-4:17:36",
+                            "spread": false,
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/sub-array.d2,4:15:34-4:16:35",
+                                  "value": [
+                                    {
+                                      "string": "x",
+                                      "raw_string": "x"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
                         }
                       ]
                     }

@@ -203,8 +203,12 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) {
 						n.Primary_ = nil
 					}
 				} else {
-					s.Value[i].String = go2.Pointer(resolvedField.Primary().Value.ScalarString())
-					subbed = true
+					if i == 0 && len(s.Value) == 1 {
+						node.Primary().Value = resolvedField.Primary().Value
+					} else {
+						s.Value[i].String = go2.Pointer(resolvedField.Primary().Value.ScalarString())
+						subbed = true
+					}
 				}
 				if resolvedField.Composite != nil {
 					switch n := node.(type) {
