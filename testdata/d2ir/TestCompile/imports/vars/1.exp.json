@@ -168,10 +168,11 @@
       "name": "q",
       "primary": {
         "value": {
-          "range": "index.d2,0:20:20-0:21:21",
+          "range": "x.d2,0:6:6-0:18:18",
           "value": [
             {
-              "string": "var replaced"
+              "string": "var replaced",
+              "raw_string": "var replaced"
             }
           ]
         }
@@ -229,7 +230,23 @@
                   "range": "index.d2,0:20:20-0:21:21",
                   "value": [
                     {
-                      "string": "var replaced"
+                      "substitution": {
+                        "range": "index.d2,0:20:20-0:27:27",
+                        "spread": false,
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "index.d2,0:22:22-0:26:26",
+                              "value": [
+                                {
+                                  "string": "meow",
+                                  "raw_string": "meow"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
                     }
                   ]
                 }

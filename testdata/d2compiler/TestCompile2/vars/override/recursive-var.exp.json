@@ -177,7 +177,23 @@
                           "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,8:6:58-8:7:59",
                           "value": [
                             {
-                              "string": "a-b"
+                              "substitution": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,8:6:58-8:10:62",
+                                "spread": false,
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,8:8:60-8:9:61",
+                                      "value": [
+                                        {
+                                          "string": "x",
+                                          "raw_string": "x"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
                             }
                           ]
                         }

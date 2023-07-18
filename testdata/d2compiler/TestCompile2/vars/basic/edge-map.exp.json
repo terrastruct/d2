@@ -150,7 +150,23 @@
                           "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-map.d2,5:26:61-5:27:62",
                           "value": [
                             {
-                              "string": "im a var"
+                              "substitution": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-map.d2,5:26:61-5:30:65",
+                                "spread": false,
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge-map.d2,5:28:63-5:29:64",
+                                      "value": [
+                                        {
+                                          "string": "x",
+                                          "raw_string": "x"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
                             }
                           ]
                         }

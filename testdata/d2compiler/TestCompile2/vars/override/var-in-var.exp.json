@@ -209,7 +209,23 @@
                           "range": "d2/testdata/d2compiler/TestCompile2/vars/override/var-in-var.d2,9:6:104-9:7:105",
                           "value": [
                             {
-                              "string": "BlackSmith"
+                              "substitution": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/vars/override/var-in-var.d2,9:6:104-9:15:113",
+                                "spread": false,
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2compiler/TestCompile2/vars/override/var-in-var.d2,9:8:106-9:14:112",
+                                      "value": [
+                                        {
+                                          "string": "trade1",
+                                          "raw_string": "trade1"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
                             }
                           ]
                         }
