@@ -1723,30 +1723,26 @@ func adjustDeltaForEdges(obj *d2graph.Object, objPosition, delta float64, isHori
 		if !isOnSide {
 			return false
 		}
+		buffer := 10.
 		var isInRange bool
 		if delta > 0 {
-			if objPosition < position && position < objPosition+delta {
+			if objPosition <= position && position <= objPosition+delta+buffer {
 				isInRange = true
 			}
 		} else {
-			if objPosition+delta < position && position < objPosition {
+			if objPosition+delta-buffer <= position && position <= objPosition {
 				isInRange = true
 			}
 		}
-		if !isInRange {
-			if isHorizontal {
-				return false
-			} else {
-				return false
-			}
-		}
-		return true
+		return isInRange
 	}
+	hasEdgeOnCollapsingSide := false
 	outermost := objPosition + delta
 	for _, edge := range obj.Graph.Edges {
 		if edge.Src == obj {
 			p := edge.Route[0]
 			if isOnCollapsingSide(p) {
+				hasEdgeOnCollapsingSide = true
 				var position float64
 				if isHorizontal {
 					position = p.X
@@ -1763,6 +1759,7 @@ func adjustDeltaForEdges(obj *d2graph.Object, objPosition, delta float64, isHori
 		if edge.Dst == obj {
 			p := edge.Route[len(edge.Route)-1]
 			if isOnCollapsingSide(p) {
+				hasEdgeOnCollapsingSide = true
 				var position float64
 				if isHorizontal {
 					position = p.X
@@ -1778,7 +1775,7 @@ func adjustDeltaForEdges(obj *d2graph.Object, objPosition, delta float64, isHori
 		}
 	}
 	newMagnitude = math.Abs(delta)
-	if outermost != objPosition+delta {
+	if hasEdgeOnCollapsingSide {
 		// only reduce to outermost + DEFAULT_PADDING
 		if delta < 0 {
 			newMagnitude = math.Max(0, objPosition-(outermost+DEFAULT_PADDING))
