@@ -35,6 +35,7 @@ const (
 	MIN_RANK_SEP    = 60
 	EDGE_LABEL_GAP  = 20
 	DEFAULT_PADDING = 30.
+	MIN_SPACING     = 10.
 )
 
 type ConfigurableOpts struct {
@@ -1651,16 +1652,16 @@ func fitPadding(obj *d2graph.Object) {
 		}
 
 		if leftOverlap > 0 {
-			leftDelta -= leftOverlap
+			leftDelta -= leftOverlap + MIN_SPACING
 		}
 		if rightOverlap > 0 {
-			rightDelta -= rightOverlap
+			rightDelta -= rightOverlap + MIN_SPACING
 		}
 		if topOverlap > 0 {
-			topDelta -= topOverlap
+			topDelta -= topOverlap + MIN_SPACING
 		}
 		if bottomOverlap > 0 {
-			bottomDelta -= bottomOverlap
+			bottomDelta -= bottomOverlap + MIN_SPACING
 		}
 	}
 
@@ -1723,7 +1724,7 @@ func adjustDeltaForEdges(obj *d2graph.Object, objPosition, delta float64, isHori
 		if !isOnSide {
 			return false
 		}
-		buffer := 10.
+		buffer := MIN_SPACING
 		var isInRange bool
 		if delta > 0 {
 			if objPosition <= position && position <= objPosition+delta+buffer {
