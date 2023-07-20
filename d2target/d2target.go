@@ -38,8 +38,24 @@ const (
 
 var BorderOffset = geo.NewVector(5, 5)
 
+type Config struct {
+	Sketch         *bool           `json:"sketch"`
+	ThemeID        *int64          `json:"themeID"`
+	DarkThemeID    *int64          `json:"darkThemeID"`
+	Pad            *int64          `json:"pad"`
+	Center         *bool           `json:"center"`
+	LayoutEngine   *string         `json:"layoutEngine"`
+	ThemeOverrides *ThemeOverrides `json:"themeOverrides"`
+}
+
+type ThemeOverrides struct {
+	N1 *string `json:"n1"`
+	// TODO
+}
+
 type Diagram struct {
-	Name string `json:"name"`
+	Name   string  `json:"name"`
+	Config *Config `json:"config,omitempty"`
 	// See docs on the same field in d2graph to understand what it means.
 	IsFolderOnly bool                `json:"isFolderOnly"`
 	Description  string              `json:"description,omitempty"`

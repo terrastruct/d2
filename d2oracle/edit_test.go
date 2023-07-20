@@ -7002,7 +7002,7 @@ type editTest struct {
 
 func (tc editTest) run(t *testing.T) {
 	d2Path := fmt.Sprintf("d2/testdata/d2oracle/%v.d2", t.Name())
-	g, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), nil)
+	g, _, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -7265,7 +7265,7 @@ scenarios: {
 			t.Parallel()
 
 			d2Path := fmt.Sprintf("d2/testdata/d2oracle/%v.d2", t.Name())
-			g, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), nil)
+			g, _, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), nil)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -7725,7 +7725,7 @@ z
 			t.Parallel()
 
 			d2Path := fmt.Sprintf("d2/testdata/d2oracle/%v.d2", t.Name())
-			g, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), nil)
+			g, _, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), nil)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -8095,7 +8095,7 @@ layers: {
 			t.Parallel()
 
 			d2Path := fmt.Sprintf("d2/testdata/d2oracle/%v.d2", t.Name())
-			g, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), nil)
+			g, _, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), nil)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -8325,7 +8325,7 @@ scenarios: {
 			t.Parallel()
 
 			d2Path := fmt.Sprintf("d2/testdata/d2oracle/%v.d2", t.Name())
-			g, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), nil)
+			g, _, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), nil)
 			if err != nil {
 				t.Fatal(err)
 			}

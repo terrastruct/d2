@@ -2702,7 +2702,7 @@ object: {
 			t.Parallel()
 
 			d2Path := fmt.Sprintf("d2/testdata/d2compiler/%v.d2", t.Name())
-			g, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), nil)
+			g, _, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), nil)
 			if tc.expErr != "" {
 				if err == nil {
 					t.Fatalf("expected error with: %q", tc.expErr)
@@ -2757,7 +2757,7 @@ func testBoards(t *testing.T) {
 		{
 			name: "root",
 			run: func(t *testing.T) {
-				g := assertCompile(t, `base
+				g, _ := assertCompile(t, `base
 
 layers: {
   one: {
@@ -2776,7 +2776,7 @@ layers: {
 		{
 			name: "recursive",
 			run: func(t *testing.T) {
-				g := assertCompile(t, `base
+				g, _ := assertCompile(t, `base
 
 layers: {
   one: {
@@ -2804,7 +2804,7 @@ layers: {
 		{
 			name: "isFolderOnly",
 			run: func(t *testing.T) {
-				g := assertCompile(t, `
+				g, _ := assertCompile(t, `
 layers: {
   one: {
     santa
@@ -2939,7 +2939,7 @@ func testNulls(t *testing.T) {
 			{
 				name: "shape",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 a
 a: null
 `, "")
@@ -2949,7 +2949,7 @@ a: null
 			{
 				name: "edge",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 a -> b
 (a -> b)[0]: null
 `, "")
@@ -2960,7 +2960,7 @@ a -> b
 			{
 				name: "attribute",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 a.style.opacity: 0.2
 a.style.opacity: null
 			`, "")
@@ -2992,7 +2992,7 @@ a.style.opacity: null
 			{
 				name: "shape",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 a
 a: null
 a
@@ -3003,7 +3003,7 @@ a
 			{
 				name: "edge",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 a -> b
 (a -> b)[0]: null
 a -> b
@@ -3015,7 +3015,7 @@ a -> b
 			{
 				name: "attribute-reset",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 a.style.opacity: 0.2
 a: null
 a
@@ -3027,7 +3027,7 @@ a
 			{
 				name: "edge-reset",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 a -> b
 a: null
 a
@@ -3039,7 +3039,7 @@ a
 			{
 				name: "children-reset",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 a.b.c
 a.b: null
 a.b
@@ -3072,7 +3072,7 @@ a.b
 			{
 				name: "delete-connection",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 x -> y
 y: null
 `, "")
@@ -3083,7 +3083,7 @@ y: null
 			{
 				name: "delete-multiple-connections",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 x -> y
 z -> y
 y -> a
@@ -3096,7 +3096,7 @@ y: null
 			{
 				name: "no-delete-connection",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 y: null
 x -> y
 `, "")
@@ -3107,7 +3107,7 @@ x -> y
 			{
 				name: "delete-children",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 x.y.z
 a.b.c
 
@@ -3142,7 +3142,7 @@ a.b: null
 			{
 				name: "scenario",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 x
 
 scenarios: {
@@ -3183,7 +3183,7 @@ func testVars(t *testing.T) {
 			{
 				name: "shape-label",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
   x: im a var
 }
@@ -3196,7 +3196,7 @@ hi: ${x}
 			{
 				name: "style",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
   primary-color: red
 }
@@ -3211,7 +3211,7 @@ hi: {
 			{
 				name: "number",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
 	columns: 2
 }
@@ -3226,7 +3226,7 @@ hi: {
 			{
 				name: "nested",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
 	colors: {
     primary: {
@@ -3244,7 +3244,7 @@ hi: {
 			{
 				name: "combined",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
   x: im a var
 }
@@ -3256,7 +3256,7 @@ hi: 1 ${x} 2
 			{
 				name: "double-quoted",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
   x: im a var
 }
@@ -3268,7 +3268,7 @@ hi: "1 ${x} 2"
 			{
 				name: "single-quoted",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
   x: im a var
 }
@@ -3280,7 +3280,7 @@ hi: '1 ${x} 2'
 			{
 				name: "edge-label",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
   x: im a var
 }
@@ -3293,7 +3293,7 @@ a -> b: ${x}
 			{
 				name: "edge-map",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
   x: im a var
 }
@@ -3308,7 +3308,7 @@ a -> b: {
 			{
 				name: "quoted-var",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
   primaryColors: {
     button: {
@@ -3330,7 +3330,7 @@ button: {
 			{
 				name: "quoted-var-quoted-sub",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
   x: "hi"
 }
@@ -3343,7 +3343,7 @@ y: "hey ${x}"
 			{
 				name: "parent-scope",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
   x: im root var
 }
@@ -3360,7 +3360,7 @@ a: {
 			{
 				name: "map",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
   cool-style: {
 		fill: red
@@ -3379,7 +3379,7 @@ a -> b: ${arrows}
 			{
 				name: "primary-and-composite",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
 	x: all {
 		a: b
@@ -3395,7 +3395,7 @@ z: ${x}
 			{
 				name: "spread",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
 	x: all {
 		a: b
@@ -3415,7 +3415,7 @@ z: {
 			{
 				name: "array",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
 	base-constraints: [UNQ; NOT NULL]
 }
@@ -3431,7 +3431,7 @@ a: {
 			{
 				name: "spread-array",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
 	base-constraints: [UNQ; NOT NULL]
 }
@@ -3447,7 +3447,7 @@ a: {
 			{
 				name: "sub-array",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
 	x: all
 }
@@ -3460,7 +3460,7 @@ z.class: [a; ${x}]
 			{
 				name: "multi-part-array",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
 	x: all
 }
@@ -3473,7 +3473,7 @@ z.class: [a; ${x}together]
 			{
 				name: "double-quote-primary",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
 	x: always {
     a: b
@@ -3488,7 +3488,7 @@ z: "${x} be my maybe"
 			{
 				name: "spread-nested",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
   disclaimer: {
     I am not a lawyer
@@ -3504,7 +3504,7 @@ custom-disclaimer: DRAFT DISCLAIMER {
 			{
 				name: "spread-edge",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
   connections: {
     x -> a
@@ -3543,7 +3543,7 @@ hi: {
 			{
 				name: "label",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
   x: im a var
 }
@@ -3557,7 +3557,7 @@ hi: not a var
 			{
 				name: "map",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
   x: im root var
 }
@@ -3574,7 +3574,7 @@ a: {
 			{
 				name: "var-in-var",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
 	surname: Smith
 }
@@ -3592,7 +3592,7 @@ a: {
 			{
 				name: "recursive-var",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
   x: a
 }
@@ -3667,7 +3667,7 @@ a: {
 			{
 				name: "layer",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
   x: im a var
 }
@@ -3685,7 +3685,7 @@ layers: {
 			{
 				name: "layer-2",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
   x: root var x
   y: root var y
@@ -3710,7 +3710,7 @@ layers: {
 			{
 				name: "scenario",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
   x: im a var
 }
@@ -3728,7 +3728,7 @@ scenarios: {
 			{
 				name: "overlay",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
   x: im x var
 }
@@ -3763,7 +3763,7 @@ layers: {
 			{
 				name: "replace",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 vars: {
   x: im x var
 }
@@ -3779,6 +3779,71 @@ scenarios: {
 `, "")
 					assert.Equal(t, 1, len(g.Scenarios[0].Objects))
 					assert.Equal(t, "im replaced x var", g.Scenarios[0].Objects[0].Label.Value)
+				},
+			},
+		}
+
+		for _, tc := range tca {
+			tc := tc
+			t.Run(tc.name, func(t *testing.T) {
+				t.Parallel()
+				if tc.skip {
+					t.SkipNow()
+				}
+				tc.run(t)
+			})
+		}
+	})
+
+	t.Run("config", func(t *testing.T) {
+		t.Parallel()
+
+		tca := []struct {
+			name string
+			skip bool
+			run  func(t *testing.T)
+		}{
+			{
+				name: "basic",
+				run: func(t *testing.T) {
+					_, config := assertCompile(t, `
+vars: {
+	d2-config: {
+    sketch: true
+  }
+}
+
+x -> y
+`, "")
+					assert.Equal(t, true, *config.Sketch)
+				},
+			},
+			{
+				name: "invalid",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+	d2-config: {
+    sketch: lol
+  }
+}
+
+x -> y
+`, `d2/testdata/d2compiler/TestCompile2/vars/config/invalid.d2:4:5: expected a boolean for "sketch", got "lol"`)
+				},
+			},
+			{
+				name: "not-root",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+x: {
+  vars: {
+  	d2-config: {
+      sketch: false
+    }
+  }
+}
+`, `d2/testdata/d2compiler/TestCompile2/vars/config/not-root.d2:4:4: "d2-config" can only appear at root vars`)
 				},
 			},
 		}
@@ -3952,9 +4017,9 @@ z: {
 	})
 }
 
-func assertCompile(t *testing.T, text string, expErr string) *d2graph.Graph {
+func assertCompile(t *testing.T, text string, expErr string) (*d2graph.Graph, *d2target.Config) {
 	d2Path := fmt.Sprintf("d2/testdata/d2compiler/%v.d2", t.Name())
-	g, err := d2compiler.Compile(d2Path, strings.NewReader(text), nil)
+	g, config, err := d2compiler.Compile(d2Path, strings.NewReader(text), nil)
 	if expErr != "" {
 		assert.Error(t, err)
 		assert.ErrorString(t, err, expErr)
@@ -3972,5 +4037,5 @@ func assertCompile(t *testing.T, text string, expErr string) *d2graph.Graph {
 
 	err = diff.TestdataJSON(filepath.Join("..", "testdata", "d2compiler", t.Name()), got)
 	assert.Success(t, err)
-	return g
+	return g, config
 }

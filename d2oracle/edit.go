@@ -305,7 +305,7 @@ func pathFromScopeObj(g *d2graph.Graph, key *d2ast.Key, fromScope *d2graph.Objec
 
 func recompile(ast *d2ast.Map) (*d2graph.Graph, error) {
 	s := d2format.Format(ast)
-	g, err := d2compiler.Compile(ast.Range.Path, strings.NewReader(s), nil)
+	g, _, err := d2compiler.Compile(ast.Range.Path, strings.NewReader(s), nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to recompile:\n%s\n%w", s, err)
 	}

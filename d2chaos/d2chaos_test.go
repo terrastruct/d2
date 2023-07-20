@@ -102,7 +102,7 @@ func test(t *testing.T, textPath, text string) {
 		t.Fatal(err)
 	}
 
-	g, err := d2compiler.Compile("", strings.NewReader(text), nil)
+	g, _, err := d2compiler.Compile("", strings.NewReader(text), nil)
 	if err != nil {
 		t.Fatal(err)
 	}

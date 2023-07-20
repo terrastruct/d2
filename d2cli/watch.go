@@ -41,7 +41,8 @@ var devMode = false
 var staticFS embed.FS
 
 type watcherOpts struct {
-	layoutPlugin    d2plugin.Plugin
+	layout          *string
+	plugins         []d2plugin.Plugin
 	renderOpts      d2svg.RenderOpts
 	animateInterval int64
 	host            string
@@ -361,7 +362,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			w.pw = newPW
 		}
 
-		svg, _, err := compile(ctx, w.ms, w.layoutPlugin, w.renderOpts, w.fontFamily, w.animateInterval, w.inputPath, w.outputPath, w.bundle, w.forceAppendix, w.pw.Page)
+		svg, _, err := compile(ctx, w.ms, w.plugins, w.layout, w.renderOpts, w.fontFamily, w.animateInterval, w.inputPath, w.outputPath, w.bundle, w.forceAppendix, w.pw.Page)
 		errs := ""
 		if err != nil {
 			if len(svg) > 0 {
