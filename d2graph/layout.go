@@ -1,6 +1,7 @@
 package d2graph
 
 import (
+	"sort"
 	"strings"
 
 	"oss.terrastruct.com/d2/d2target"
@@ -316,10 +317,29 @@ func (obj *Object) GetLabelTopLeft() *geo.Point {
 	return labelTL
 }
 
+func (obj *Object) GetIconTopLeft() *geo.Point {
+	if obj.IconPosition == nil {
+		return nil
+	}
+
+	s := obj.ToShape()
+	iconPosition := label.Position(*obj.IconPosition)
+
+	var box *geo.Box
+	if iconPosition.IsOutside() {
+		box = s.GetBox()
+	} else {
+		box = s.GetInnerBox()
+	}
+
+	return iconPosition.GetPointOnBox(box, label.PADDING, d2target.MAX_ICON_SIZE, d2target.MAX_ICON_SIZE)
+}
+
 func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (newStart, newEnd int) {
 	srcShape := edge.Src.ToShape()
 	dstShape := edge.Dst.ToShape()
 
+	startingSegment := geo.Segment{Start: points[startIndex+1], End: points[startIndex]}
 	// if an edge runs into an outside label, stop the edge at the label instead
 	overlapsOutsideLabel := false
 	if edge.Src.HasLabel() {
@@ -330,18 +350,27 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 			labelHeight := float64(edge.Src.LabelDimensions.Height)
 			labelTL := labelPosition.GetPointOnBox(edge.Src.Box, label.PADDING, labelWidth, labelHeight)
 
-			startingSegment := geo.Segment{Start: points[startIndex+1], End: points[startIndex]}
 			labelBox := geo.NewBox(labelTL, labelWidth, labelHeight)
 			// add left/right padding to box
 			labelBox.TopLeft.X -= label.PADDING
 			labelBox.Width += 2 * label.PADDING
+
+			for labelBox.Contains(startingSegment.End) && startIndex+1 > endIndex {
+				startingSegment.Start = startingSegment.End
+				startingSegment.End = points[startIndex+2]
+				startIndex++
+			}
 			if intersections := labelBox.Intersections(startingSegment); len(intersections) > 0 {
 				overlapsOutsideLabel = true
+				p := intersections[0]
+				if len(intersections) > 1 {
+					p = findOuterIntersection(labelPosition, intersections)
+				}
 				// move starting segment to label intersection point
-				points[startIndex] = intersections[0]
-				startingSegment.End = intersections[0]
+				points[startIndex] = p
+				startingSegment.End = p
 				// if the segment becomes too short, just merge it with the next segment
-				if startIndex < len(points) && startingSegment.Length() < MIN_SEGMENT_LEN {
+				if startIndex+1 < endIndex && startingSegment.Length() < MIN_SEGMENT_LEN {
 					points[startIndex+1] = points[startIndex]
 					startIndex++
 				}
@@ -349,9 +378,20 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 		}
 	}
 	if !overlapsOutsideLabel {
+		if intersections := edge.Src.Intersections(startingSegment); len(intersections) > 0 {
+			// move starting segment to intersection point
+			points[startIndex] = intersections[0]
+			startingSegment.End = intersections[0]
+			// if the segment becomes too short, just merge it with the next segment
+			if startIndex+1 < endIndex && startingSegment.Length() < MIN_SEGMENT_LEN {
+				points[startIndex+1] = points[startIndex]
+				startIndex++
+			}
+		}
 		// trace the edge to the specific shape's border
 		points[startIndex] = shape.TraceToShapeBorder(srcShape, points[startIndex], points[startIndex+1])
 	}
+	endingSegment := geo.Segment{Start: points[endIndex-1], End: points[endIndex]}
 	overlapsOutsideLabel = false
 	if edge.Dst.HasLabel() {
 		// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
@@ -361,18 +401,26 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 			labelHeight := float64(edge.Dst.LabelDimensions.Height)
 			labelTL := labelPosition.GetPointOnBox(edge.Dst.Box, label.PADDING, labelWidth, labelHeight)
 
-			endingSegment := geo.Segment{Start: points[endIndex-1], End: points[endIndex]}
 			labelBox := geo.NewBox(labelTL, labelWidth, labelHeight)
 			// add left/right padding to box
 			labelBox.TopLeft.X -= label.PADDING
 			labelBox.Width += 2 * label.PADDING
+			for labelBox.Contains(endingSegment.Start) && endIndex-1 > startIndex {
+				endingSegment.End = endingSegment.Start
+				endingSegment.Start = points[endIndex-2]
+				endIndex--
+			}
 			if intersections := labelBox.Intersections(endingSegment); len(intersections) > 0 {
 				overlapsOutsideLabel = true
+				p := intersections[0]
+				if len(intersections) > 1 {
+					p = findOuterIntersection(labelPosition, intersections)
+				}
 				// move ending segment to label intersection point
-				points[endIndex] = intersections[0]
-				endingSegment.End = intersections[0]
+				points[endIndex] = p
+				endingSegment.End = p
 				// if the segment becomes too short, just merge it with the previous segment
-				if endIndex-1 > 0 && endingSegment.Length() < MIN_SEGMENT_LEN {
+				if endIndex-1 > startIndex && endingSegment.Length() < MIN_SEGMENT_LEN {
 					points[endIndex-1] = points[endIndex]
 					endIndex--
 				}
@@ -380,7 +428,39 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 		}
 	}
 	if !overlapsOutsideLabel {
+		if intersections := edge.Dst.Intersections(endingSegment); len(intersections) > 0 {
+			// move ending segment to intersection point
+			points[endIndex] = intersections[0]
+			endingSegment.End = intersections[0]
+			// if the segment becomes too short, just merge it with the previous segment
+			if endIndex-1 > startIndex && endingSegment.Length() < MIN_SEGMENT_LEN {
+				points[endIndex-1] = points[endIndex]
+				endIndex--
+			}
+		}
 		points[endIndex] = shape.TraceToShapeBorder(dstShape, points[endIndex], points[endIndex-1])
 	}
 	return startIndex, endIndex
+}
+
+func findOuterIntersection(labelPosition label.Position, intersections []*geo.Point) *geo.Point {
+	switch labelPosition {
+	case label.OutsideTopLeft, label.OutsideTopRight, label.OutsideTopCenter:
+		sort.Slice(intersections, func(i, j int) bool {
+			return intersections[i].Y < intersections[j].Y
+		})
+	case label.OutsideBottomLeft, label.OutsideBottomRight, label.OutsideBottomCenter:
+		sort.Slice(intersections, func(i, j int) bool {
+			return intersections[i].Y > intersections[j].Y
+		})
+	case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
+		sort.Slice(intersections, func(i, j int) bool {
+			return intersections[i].X < intersections[j].X
+		})
+	case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+		sort.Slice(intersections, func(i, j int) bool {
+			return intersections[i].X > intersections[j].X
+		})
+	}
+	return intersections[0]
 }
