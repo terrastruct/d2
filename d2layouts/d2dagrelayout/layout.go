@@ -1150,17 +1150,15 @@ func adjustRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
 							continue
 						}
 					} else {
-						startingRank := startingParentRanks[child]
-						endingRank := endingParentRanks[child]
-						if startingRank != rank && endingRank != rank {
+						if startingParentRanks[child] != rank {
 							continue
 						}
 					}
 					margin, _ := getSpacing(child)
 					if isHorizontal {
-						startPosition = child.TopLeft.X - margin.left
+						startPosition = child.TopLeft.X - margin.left - padding.left
 					} else {
-						startPosition = child.TopLeft.Y - margin.top
+						startPosition = child.TopLeft.Y - margin.top - padding.top
 					}
 					startingAncestorPositions[parent] = math.Min(startingAncestorPositions[parent], startPosition)
 				}
@@ -1185,6 +1183,7 @@ func adjustRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
 				} else {
 					endPosition = parent.TopLeft.Y + parent.Height + padding.bottom - rankSep/2.
 				}
+
 				endingAncestorPositions[parent] = math.Max(endingAncestorPositions[parent], endPosition)
 				for _, child := range parent.ChildrenArray {
 					if r, has := objectRanks[child]; has {
@@ -1192,18 +1191,16 @@ func adjustRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
 							continue
 						}
 					} else {
-						startingRank := startingParentRanks[child]
-						endingRank := endingParentRanks[child]
-						if startingRank != rank && endingRank != rank {
+						if endingParentRanks[child] != rank {
 							continue
 						}
 					}
 					margin, _ := getSpacing(child)
 
 					if isHorizontal {
-						endPosition = child.TopLeft.X + child.Width + margin.right
+						endPosition = child.TopLeft.X + child.Width + margin.right + padding.right
 					} else {
-						endPosition = child.TopLeft.Y + child.Height + margin.bottom
+						endPosition = child.TopLeft.Y + child.Height + margin.bottom + padding.bottom
 					}
 					endingAncestorPositions[parent] = math.Max(endingAncestorPositions[parent], endPosition)
 				}
@@ -1383,26 +1380,93 @@ func fitPadding(obj *d2graph.Object) {
 		fitPadding(child)
 	}
 
+	// we will compute a perfectly fit innerBox merging our padding with children's margin,
+	// but we need to add padding and margin together if an outside child label will overlap with our inside label
 	_, padding := getSpacing(obj)
 	padding.top = math.Max(padding.top, DEFAULT_PADDING)
 	padding.bottom = math.Max(padding.bottom, DEFAULT_PADDING)
 	padding.left = math.Max(padding.left, DEFAULT_PADDING)
 	padding.right = math.Max(padding.right, DEFAULT_PADDING)
 
+	// where we are (current*) vs where we want to fit each side to (inner*)
+	currentTop := obj.TopLeft.Y
+	currentBottom := obj.TopLeft.Y + obj.Height
+	currentLeft := obj.TopLeft.X
+	currentRight := obj.TopLeft.X + obj.Width
+
 	innerTop := math.Inf(1)
 	innerBottom := math.Inf(-1)
 	innerLeft := math.Inf(1)
 	innerRight := math.Inf(-1)
 
+	// we create boxes for our inside label and icon, and will check against overlaps with any internal boxes
+	var labelPosition, iconPosition label.Position
+	var labelBox, iconBox *geo.Box
+	if obj.HasLabel() && obj.LabelPosition != nil {
+		labelPosition = label.Position(*obj.LabelPosition)
+		switch labelPosition {
+		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight,
+			label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight,
+			label.InsideMiddleLeft, label.InsideMiddleRight:
+			labelTL := obj.GetLabelTopLeft()
+			if labelTL != nil {
+				labelBox = geo.NewBox(labelTL, float64(obj.LabelDimensions.Width)+2*label.PADDING, float64(obj.LabelDimensions.Height))
+			}
+		}
+	}
+	if obj.Icon != nil && shapeType != shape.IMAGE_TYPE && obj.IconPosition != nil {
+		iconPosition = label.Position(*obj.IconPosition)
+		switch iconPosition {
+		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight,
+			label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight,
+			label.InsideMiddleLeft, label.InsideMiddleRight:
+			iconTL := obj.GetIconTopLeft()
+			if iconTL != nil {
+				iconBox = geo.NewBox(iconTL, d2target.MAX_ICON_SIZE, d2target.MAX_ICON_SIZE)
+			}
+		}
+	}
+
+	// update the inner positions for children's margin and collect the outside boxes that we cannot overlap with
+	var innerBoxes []geo.Box
 	for _, child := range obj.ChildrenArray {
 		margin, _ := getSpacing(child)
 		dx, dy := child.GetModifierElementAdjustments()
+
+		if labelBox != nil || iconBox != nil {
+			var childLabelBox *geo.Box
+			var childLabelPosition, childIconPosition label.Position
+			if child.HasLabel() && child.LabelPosition != nil {
+				childLabelPosition = label.Position(*child.LabelPosition)
+				if childLabelPosition.IsOutside() {
+					childLabelTL := child.GetLabelTopLeft()
+
+					childLabelBox = geo.NewBox(
+						childLabelTL,
+						float64(child.LabelDimensions.Width),
+						float64(child.LabelDimensions.Height),
+					)
+					innerBoxes = append(innerBoxes, *childLabelBox)
+				}
+			}
+			if child.Icon != nil && child.Shape.Value != d2target.ShapeImage && child.IconPosition != nil {
+				childIconPosition = label.Position(*child.IconPosition)
+				if childIconPosition.IsOutside() {
+					childIconTL := child.GetIconTopLeft()
+
+					childIconBox := geo.NewBox(childIconTL, d2target.MAX_ICON_SIZE, d2target.MAX_ICON_SIZE)
+					innerBoxes = append(innerBoxes, *childIconBox)
+				}
+			}
+		}
 
 		innerTop = math.Min(innerTop, child.TopLeft.Y-dy-math.Max(margin.top, padding.top))
 		innerBottom = math.Max(innerBottom, child.TopLeft.Y+child.Height+math.Max(margin.bottom, padding.bottom))
 		innerLeft = math.Min(innerLeft, child.TopLeft.X-math.Max(margin.left, padding.left))
 		innerRight = math.Max(innerRight, child.TopLeft.X+child.Width+dx+math.Max(margin.right, padding.right))
 	}
+
+	// collect edge label boxes and update inner box for internal edges
 	for _, edge := range obj.Graph.Edges {
 		if !edge.Src.IsDescendantOf(obj) || !edge.Dst.IsDescendantOf(obj) {
 			continue
@@ -1417,6 +1481,10 @@ func fitPadding(obj *d2graph.Object) {
 			labelHeight := float64(edge.LabelDimensions.Height)
 			point, _ := labelPosition.GetPointOnRoute(edge.Route, 2, 0, labelWidth, labelHeight)
 
+			if labelBox != nil || iconBox != nil {
+				innerBoxes = append(innerBoxes, geo.Box{TopLeft: point, Width: labelWidth, Height: labelHeight})
+			}
+
 			innerTop = math.Min(innerTop, point.Y-padding.top)
 			innerBottom = math.Max(innerBottom, point.Y+labelHeight+padding.bottom)
 			innerLeft = math.Min(innerLeft, point.X-padding.left)
@@ -1430,15 +1498,171 @@ func fitPadding(obj *d2graph.Object) {
 		}
 	}
 
-	currentTop := obj.TopLeft.Y
-	currentBottom := obj.TopLeft.Y + obj.Height
-	currentLeft := obj.TopLeft.X
-	currentRight := obj.TopLeft.X + obj.Width
-
+	// how much do we need to shrink each side
 	topDelta := innerTop - currentTop
 	bottomDelta := currentBottom - innerBottom
 	leftDelta := innerLeft - currentLeft
 	rightDelta := currentRight - innerRight
+
+	if topDelta > 0 || bottomDelta > 0 || leftDelta > 0 || rightDelta > 0 {
+		var leftOverlap, rightOverlap, topOverlap, bottomOverlap float64
+		var labelSide, iconSide geo.Orientation
+		if labelBox != nil {
+			switch labelPosition {
+			case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
+				labelSide = geo.Top
+			case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
+				labelSide = geo.Bottom
+			case label.InsideMiddleLeft:
+				labelSide = geo.Left
+			case label.InsideMiddleRight:
+				labelSide = geo.Right
+			default:
+				labelSide = geo.NONE
+			}
+			// move labelBox to its position with the merged delta and check for overlaps
+			switch labelSide {
+			case geo.Top:
+				if topDelta > 0 {
+					labelBox.TopLeft.Y += topDelta
+				}
+			case geo.Bottom:
+				if bottomDelta > 0 {
+					labelBox.TopLeft.Y -= bottomDelta
+				}
+			case geo.Left:
+				if leftDelta > 0 {
+					labelBox.TopLeft.X += leftDelta
+				}
+			case geo.Right:
+				if rightDelta > 0 {
+					labelBox.TopLeft.X -= rightDelta
+				}
+			}
+			switch labelSide {
+			case geo.Top:
+				if topDelta > 0 {
+					for _, box := range innerBoxes {
+						if labelBox.Overlaps(box) {
+							dy := labelBox.TopLeft.Y + labelBox.Height - box.TopLeft.Y
+							topOverlap = go2.Max(topOverlap, dy)
+						}
+					}
+				}
+			case geo.Bottom:
+				if bottomDelta > 0 {
+					for _, box := range innerBoxes {
+						if labelBox.Overlaps(box) {
+							dy := box.TopLeft.Y + box.Height - labelBox.TopLeft.Y
+							bottomOverlap = go2.Max(bottomOverlap, dy)
+						}
+					}
+				}
+			case geo.Left:
+				if leftDelta > 0 {
+					for _, box := range innerBoxes {
+						if labelBox.Overlaps(box) {
+							dx := labelBox.TopLeft.X + labelBox.Width - box.TopLeft.X
+							leftOverlap = go2.Max(leftOverlap, dx)
+						}
+					}
+				}
+			case geo.Right:
+				if rightDelta > 0 {
+					for _, box := range innerBoxes {
+						if labelBox.Overlaps(box) {
+							dx := box.TopLeft.X + box.Width - labelBox.TopLeft.X
+							rightOverlap = go2.Max(rightOverlap, dx)
+						}
+					}
+				}
+			}
+		}
+		if iconBox != nil {
+			switch iconPosition {
+			case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
+				iconSide = geo.Top
+			case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
+				iconSide = geo.Bottom
+			case label.InsideMiddleLeft:
+				iconSide = geo.Left
+			case label.InsideMiddleRight:
+				iconSide = geo.Right
+			default:
+				iconSide = geo.NONE
+			}
+			// move iconBox to its position with the merged delta and check for overlaps
+			switch iconSide {
+			case geo.Top:
+				if topDelta > 0 {
+					iconBox.TopLeft.Y += topDelta
+				}
+			case geo.Bottom:
+				if bottomDelta > 0 {
+					iconBox.TopLeft.Y -= bottomDelta
+				}
+			case geo.Left:
+				if leftDelta > 0 {
+					iconBox.TopLeft.X += leftDelta
+				}
+			case geo.Right:
+				if rightDelta > 0 {
+					iconBox.TopLeft.X -= rightDelta
+				}
+			}
+			switch iconSide {
+			case geo.Top:
+				if topDelta > 0 {
+					for _, box := range innerBoxes {
+						if iconBox.Overlaps(box) {
+							dy := iconBox.TopLeft.Y + iconBox.Height - box.TopLeft.Y
+							topOverlap = go2.Max(topOverlap, dy)
+						}
+					}
+				}
+			case geo.Bottom:
+				if bottomDelta > 0 {
+					for _, box := range innerBoxes {
+						if iconBox.Overlaps(box) {
+							dy := box.TopLeft.Y + box.Height - iconBox.TopLeft.Y
+							bottomOverlap = go2.Max(bottomOverlap, dy)
+						}
+					}
+				}
+			case geo.Left:
+				if leftDelta > 0 {
+					for _, box := range innerBoxes {
+						if iconBox.Overlaps(box) {
+							dx := iconBox.TopLeft.X + iconBox.Width - box.TopLeft.X
+							leftOverlap = go2.Max(leftOverlap, dx)
+						}
+					}
+				}
+			case geo.Right:
+				if rightDelta > 0 {
+					for _, box := range innerBoxes {
+						if iconBox.Overlaps(box) {
+							dx := box.TopLeft.X + box.Width - iconBox.TopLeft.X
+							rightOverlap = go2.Max(rightOverlap, dx)
+						}
+					}
+				}
+			}
+		}
+
+		if leftOverlap > 0 {
+			leftDelta -= leftOverlap
+		}
+		if rightOverlap > 0 {
+			rightDelta -= rightOverlap
+		}
+		if topOverlap > 0 {
+			topDelta -= topOverlap
+		}
+		if bottomOverlap > 0 {
+			bottomDelta -= bottomOverlap
+		}
+	}
 
 	if 0 < topDelta {
 		topDelta = adjustDeltaForEdges(obj, currentTop, topDelta, false)

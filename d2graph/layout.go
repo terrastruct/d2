@@ -317,6 +317,24 @@ func (obj *Object) GetLabelTopLeft() *geo.Point {
 	return labelTL
 }
 
+func (obj *Object) GetIconTopLeft() *geo.Point {
+	if obj.IconPosition == nil {
+		return nil
+	}
+
+	s := obj.ToShape()
+	iconPosition := label.Position(*obj.IconPosition)
+
+	var box *geo.Box
+	if iconPosition.IsOutside() {
+		box = s.GetBox()
+	} else {
+		box = s.GetInnerBox()
+	}
+
+	return iconPosition.GetPointOnBox(box, label.PADDING, d2target.MAX_ICON_SIZE, d2target.MAX_ICON_SIZE)
+}
+
 func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (newStart, newEnd int) {
 	srcShape := edge.Src.ToShape()
 	dstShape := edge.Dst.ToShape()
