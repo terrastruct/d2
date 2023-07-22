@@ -223,6 +223,12 @@ committee chair -> committee: Accept appeal`,
 x -> y: hi { style.font: mono }`,
 		},
 		{
+			name: "bold-mono",
+			script: `not bold mono.style.font: mono
+not bold mono.style.bold: false
+bold mono.style.font: mono`,
+		},
+		{
 			name: "mono-font",
 			script: `satellites: SATELLITES {
   shape: stored_data
