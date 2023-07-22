@@ -37,7 +37,7 @@ type jsObjOrder struct {
 func jsGetObjOrder(this js.Value, args []js.Value) interface{} {
 	dsl := args[0].String()
 
-	g, err := d2compiler.Compile("", strings.NewReader(dsl), &d2compiler.CompileOptions{
+	g, _, err := d2compiler.Compile("", strings.NewReader(dsl), &d2compiler.CompileOptions{
 		UTF16: true,
 	})
 	if err != nil {
@@ -46,8 +46,14 @@ func jsGetObjOrder(this js.Value, args []js.Value) interface{} {
 		return string(str)
 	}
 
+	objOrder, err := d2oracle.GetObjOrder(g, nil)
+	if err != nil {
+		ret := jsObjOrder{Error: err.Error()}
+		str, _ := json.Marshal(ret)
+		return string(str)
+	}
 	resp := jsObjOrder{
-		Order: d2oracle.GetObjOrder(g),
+		Order: objOrder,
 	}
 
 	str, _ := json.Marshal(resp)
@@ -72,7 +78,7 @@ func jsGetRefRanges(this js.Value, args []js.Value) interface{} {
 		return string(str)
 	}
 
-	g, err := d2compiler.Compile("", strings.NewReader(dsl), &d2compiler.CompileOptions{
+	g, _, err := d2compiler.Compile("", strings.NewReader(dsl), &d2compiler.CompileOptions{
 		UTF16: true,
 	})
 	var pe *d2parser.ParseError
@@ -91,7 +97,7 @@ func jsGetRefRanges(this js.Value, args []js.Value) interface{} {
 
 	var ranges []d2ast.Range
 	if len(mk.Edges) == 1 {
-		edge := d2oracle.GetEdge(g, key)
+		edge := d2oracle.GetEdge(g, nil, key)
 		if edge == nil {
 			ret := jsRefRanges{D2Error: "edge not found"}
 			str, _ := json.Marshal(ret)
@@ -102,7 +108,7 @@ func jsGetRefRanges(this js.Value, args []js.Value) interface{} {
 			ranges = append(ranges, ref.MapKey.Range)
 		}
 	} else {
-		obj := d2oracle.GetObj(g, key)
+		obj := d2oracle.GetObj(g, nil, key)
 		if obj == nil {
 			ret := jsRefRanges{D2Error: "obj not found"}
 			str, _ := json.Marshal(ret)
@@ -164,7 +170,7 @@ func jsParse(this js.Value, args []js.Value) interface{} {
 
 	detectFS := detectFS{}
 
-	g, err := d2compiler.Compile("", strings.NewReader(dsl), &d2compiler.CompileOptions{
+	g, _, err := d2compiler.Compile("", strings.NewReader(dsl), &d2compiler.CompileOptions{
 		UTF16: true,
 		FS:    detectFS,
 	})
@@ -221,7 +227,7 @@ func jsParse(this js.Value, args []js.Value) interface{} {
 func jsCompile(this js.Value, args []js.Value) interface{} {
 	script := args[0].String()
 
-	g, err := d2compiler.Compile("", strings.NewReader(script), &d2compiler.CompileOptions{
+	g, _, err := d2compiler.Compile("", strings.NewReader(script), &d2compiler.CompileOptions{
 		UTF16: true,
 	})
 	var pe *d2parser.ParseError
