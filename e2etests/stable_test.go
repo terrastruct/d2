@@ -2767,6 +2767,25 @@ scenarios: {
   }
 }`,
 		},
+		{
+			name: "label-near",
+			script: `
+direction: right
+x -> y
+
+x: worker {
+  label.near: top-center
+  icon: https://icons.terrastruct.com/essentials%2F005-programmer.svg
+  icon.near: outside-top-right
+}
+
+y: profits {
+  label.near: bottom-right
+  icon: https://icons.terrastruct.com/essentials%2Fprofits.svg
+  icon.near: outside-bottom-center
+}
+`,
+		},
 		loadFromFile(t, "arrowhead_scaling"),
 		loadFromFile(t, "teleport_grid"),
 		loadFromFile(t, "dagger_grid"),
