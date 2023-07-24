@@ -215,11 +215,11 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 			if strings.HasPrefix(targetShape.IconPosition, "OUTSIDE_TOP") {
 				y1 = go2.Min(y1, targetShape.Pos.Y-label.PADDING-size)
 			} else if strings.HasPrefix(targetShape.IconPosition, "OUTSIDE_BOTTOM") {
-				y2 = go2.Max(y2, targetShape.Pos.Y+label.PADDING+size)
+				y2 = go2.Max(y2, targetShape.Pos.Y+targetShape.Height+label.PADDING+size)
 			} else if strings.HasPrefix(targetShape.IconPosition, "OUTSIDE_LEFT") {
 				x1 = go2.Min(x1, targetShape.Pos.X-label.PADDING-size)
 			} else if strings.HasPrefix(targetShape.IconPosition, "OUTSIDE_RIGHT") {
-				x2 = go2.Max(x2, targetShape.Pos.X+label.PADDING+size)
+				x2 = go2.Max(x2, targetShape.Pos.X+targetShape.Width+label.PADDING+size)
 			}
 		}
 
