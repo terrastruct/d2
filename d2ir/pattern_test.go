@@ -134,7 +134,7 @@ sh*.an* -> sh*.an*`)
 			},
 		},
 		{
-			name: "double-glob",
+			name: "double-glob/1",
 			run: func(t testing.TB) {
 				m, err := compile(t, `shared.animate
 shared.animal
@@ -142,9 +142,11 @@ shared.animal
 				assert.Success(t, err)
 				assertQuery(t, m, 9, 0, nil, "")
 				assertQuery(t, m, 8, 0, nil, "shared")
-				assertQuery(t, m, 2, 0, nil, "shared.style")
+				assertQuery(t, m, 1, 0, nil, "shared.style")
 				assertQuery(t, m, 2, 0, nil, "shared.animate")
+				assertQuery(t, m, 1, 0, nil, "shared.animate.style")
 				assertQuery(t, m, 2, 0, nil, "shared.animal")
+				assertQuery(t, m, 1, 0, nil, "shared.animal.style")
 			},
 		},
 	}

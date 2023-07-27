@@ -16,7 +16,7 @@
                         "name": "fill",
                         "primary": {
                           "value": {
-                            "range": "TestCompile/patterns/double-glob.d2,2:18:47-2:21:50",
+                            "range": "TestCompile/patterns/double-glob/1.d2,2:15:44-2:18:47",
                             "value": [
                               {
                                 "string": "red",
@@ -28,7 +28,7 @@
                         "references": [
                           {
                             "string": {
-                              "range": "TestCompile/patterns/double-glob.d2,2:12:41-2:16:45",
+                              "range": "TestCompile/patterns/double-glob/1.d2,2:9:38-2:13:42",
                               "value": [
                                 {
                                   "string": "fill",
@@ -37,11 +37,27 @@
                               ]
                             },
                             "key_path": {
-                              "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:16:45",
+                              "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:13:42",
                               "path": [
                                 {
                                   "unquoted_string": {
-                                    "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:11:40",
+                                    "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:2:31",
+                                    "value": [
+                                      {
+                                        "string": "**",
+                                        "raw_string": "**"
+                                      }
+                                    ],
+                                    "pattern": [
+                                      "*",
+                                      "",
+                                      "*"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/double-glob/1.d2,2:3:32-2:8:37",
                                     "value": [
                                       {
                                         "string": "style",
@@ -52,7 +68,7 @@
                                 },
                                 {
                                   "unquoted_string": {
-                                    "range": "TestCompile/patterns/double-glob.d2,2:12:41-2:16:45",
+                                    "range": "TestCompile/patterns/double-glob/1.d2,2:9:38-2:13:42",
                                     "value": [
                                       {
                                         "string": "fill",
@@ -66,13 +82,29 @@
                             "context": {
                               "edge": null,
                               "key": {
-                                "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:22:51",
+                                "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:18:47",
                                 "key": {
-                                  "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:16:45",
+                                  "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:13:42",
                                   "path": [
                                     {
                                       "unquoted_string": {
-                                        "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:11:40",
+                                        "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:2:31",
+                                        "value": [
+                                          {
+                                            "string": "**",
+                                            "raw_string": "**"
+                                          }
+                                        ],
+                                        "pattern": [
+                                          "*",
+                                          "",
+                                          "*"
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/double-glob/1.d2,2:3:32-2:8:37",
                                         "value": [
                                           {
                                             "string": "style",
@@ -83,7 +115,7 @@
                                     },
                                     {
                                       "unquoted_string": {
-                                        "range": "TestCompile/patterns/double-glob.d2,2:12:41-2:16:45",
+                                        "range": "TestCompile/patterns/double-glob/1.d2,2:9:38-2:13:42",
                                         "value": [
                                           {
                                             "string": "fill",
@@ -97,7 +129,7 @@
                                 "primary": {},
                                 "value": {
                                   "unquoted_string": {
-                                    "range": "TestCompile/patterns/double-glob.d2,2:18:47-2:21:50",
+                                    "range": "TestCompile/patterns/double-glob/1.d2,2:15:44-2:18:47",
                                     "value": [
                                       {
                                         "string": "red",
@@ -117,7 +149,7 @@
                   "references": [
                     {
                       "string": {
-                        "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:11:40",
+                        "range": "TestCompile/patterns/double-glob/1.d2,2:3:32-2:8:37",
                         "value": [
                           {
                             "string": "style",
@@ -126,11 +158,27 @@
                         ]
                       },
                       "key_path": {
-                        "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:16:45",
+                        "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:13:42",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:11:40",
+                              "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:2:31",
+                              "value": [
+                                {
+                                  "string": "**",
+                                  "raw_string": "**"
+                                }
+                              ],
+                              "pattern": [
+                                "*",
+                                "",
+                                "*"
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/double-glob/1.d2,2:3:32-2:8:37",
                               "value": [
                                 {
                                   "string": "style",
@@ -141,7 +189,7 @@
                           },
                           {
                             "unquoted_string": {
-                              "range": "TestCompile/patterns/double-glob.d2,2:12:41-2:16:45",
+                              "range": "TestCompile/patterns/double-glob/1.d2,2:9:38-2:13:42",
                               "value": [
                                 {
                                   "string": "fill",
@@ -155,13 +203,29 @@
                       "context": {
                         "edge": null,
                         "key": {
-                          "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:22:51",
+                          "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:18:47",
                           "key": {
-                            "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:16:45",
+                            "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:13:42",
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:11:40",
+                                  "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:2:31",
+                                  "value": [
+                                    {
+                                      "string": "**",
+                                      "raw_string": "**"
+                                    }
+                                  ],
+                                  "pattern": [
+                                    "*",
+                                    "",
+                                    "*"
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/double-glob/1.d2,2:3:32-2:8:37",
                                   "value": [
                                     {
                                       "string": "style",
@@ -172,7 +236,7 @@
                               },
                               {
                                 "unquoted_string": {
-                                  "range": "TestCompile/patterns/double-glob.d2,2:12:41-2:16:45",
+                                  "range": "TestCompile/patterns/double-glob/1.d2,2:9:38-2:13:42",
                                   "value": [
                                     {
                                       "string": "fill",
@@ -186,7 +250,7 @@
                           "primary": {},
                           "value": {
                             "unquoted_string": {
-                              "range": "TestCompile/patterns/double-glob.d2,2:18:47-2:21:50",
+                              "range": "TestCompile/patterns/double-glob/1.d2,2:15:44-2:18:47",
                               "value": [
                                 {
                                   "string": "red",
@@ -206,7 +270,7 @@
             "references": [
               {
                 "string": {
-                  "range": "TestCompile/patterns/double-glob.d2,0:7:7-0:14:14",
+                  "range": "TestCompile/patterns/double-glob/1.d2,0:7:7-0:14:14",
                   "value": [
                     {
                       "string": "animate",
@@ -215,11 +279,11 @@
                   ]
                 },
                 "key_path": {
-                  "range": "TestCompile/patterns/double-glob.d2,0:0:0-0:14:14",
+                  "range": "TestCompile/patterns/double-glob/1.d2,0:0:0-0:14:14",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "TestCompile/patterns/double-glob.d2,0:0:0-0:6:6",
+                        "range": "TestCompile/patterns/double-glob/1.d2,0:0:0-0:6:6",
                         "value": [
                           {
                             "string": "shared",
@@ -230,7 +294,7 @@
                     },
                     {
                       "unquoted_string": {
-                        "range": "TestCompile/patterns/double-glob.d2,0:7:7-0:14:14",
+                        "range": "TestCompile/patterns/double-glob/1.d2,0:7:7-0:14:14",
                         "value": [
                           {
                             "string": "animate",
@@ -244,13 +308,13 @@
                 "context": {
                   "edge": null,
                   "key": {
-                    "range": "TestCompile/patterns/double-glob.d2,0:0:0-0:14:14",
+                    "range": "TestCompile/patterns/double-glob/1.d2,0:0:0-0:14:14",
                     "key": {
-                      "range": "TestCompile/patterns/double-glob.d2,0:0:0-0:14:14",
+                      "range": "TestCompile/patterns/double-glob/1.d2,0:0:0-0:14:14",
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": "TestCompile/patterns/double-glob.d2,0:0:0-0:6:6",
+                            "range": "TestCompile/patterns/double-glob/1.d2,0:0:0-0:6:6",
                             "value": [
                               {
                                 "string": "shared",
@@ -261,7 +325,7 @@
                         },
                         {
                           "unquoted_string": {
-                            "range": "TestCompile/patterns/double-glob.d2,0:7:7-0:14:14",
+                            "range": "TestCompile/patterns/double-glob/1.d2,0:7:7-0:14:14",
                             "value": [
                               {
                                 "string": "animate",
@@ -291,7 +355,7 @@
                         "name": "fill",
                         "primary": {
                           "value": {
-                            "range": "TestCompile/patterns/double-glob.d2,2:18:47-2:21:50",
+                            "range": "TestCompile/patterns/double-glob/1.d2,2:15:44-2:18:47",
                             "value": [
                               {
                                 "string": "red",
@@ -303,7 +367,7 @@
                         "references": [
                           {
                             "string": {
-                              "range": "TestCompile/patterns/double-glob.d2,2:12:41-2:16:45",
+                              "range": "TestCompile/patterns/double-glob/1.d2,2:9:38-2:13:42",
                               "value": [
                                 {
                                   "string": "fill",
@@ -312,11 +376,27 @@
                               ]
                             },
                             "key_path": {
-                              "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:16:45",
+                              "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:13:42",
                               "path": [
                                 {
                                   "unquoted_string": {
-                                    "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:11:40",
+                                    "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:2:31",
+                                    "value": [
+                                      {
+                                        "string": "**",
+                                        "raw_string": "**"
+                                      }
+                                    ],
+                                    "pattern": [
+                                      "*",
+                                      "",
+                                      "*"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/double-glob/1.d2,2:3:32-2:8:37",
                                     "value": [
                                       {
                                         "string": "style",
@@ -327,7 +407,7 @@
                                 },
                                 {
                                   "unquoted_string": {
-                                    "range": "TestCompile/patterns/double-glob.d2,2:12:41-2:16:45",
+                                    "range": "TestCompile/patterns/double-glob/1.d2,2:9:38-2:13:42",
                                     "value": [
                                       {
                                         "string": "fill",
@@ -341,13 +421,29 @@
                             "context": {
                               "edge": null,
                               "key": {
-                                "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:22:51",
+                                "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:18:47",
                                 "key": {
-                                  "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:16:45",
+                                  "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:13:42",
                                   "path": [
                                     {
                                       "unquoted_string": {
-                                        "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:11:40",
+                                        "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:2:31",
+                                        "value": [
+                                          {
+                                            "string": "**",
+                                            "raw_string": "**"
+                                          }
+                                        ],
+                                        "pattern": [
+                                          "*",
+                                          "",
+                                          "*"
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/double-glob/1.d2,2:3:32-2:8:37",
                                         "value": [
                                           {
                                             "string": "style",
@@ -358,7 +454,7 @@
                                     },
                                     {
                                       "unquoted_string": {
-                                        "range": "TestCompile/patterns/double-glob.d2,2:12:41-2:16:45",
+                                        "range": "TestCompile/patterns/double-glob/1.d2,2:9:38-2:13:42",
                                         "value": [
                                           {
                                             "string": "fill",
@@ -372,7 +468,7 @@
                                 "primary": {},
                                 "value": {
                                   "unquoted_string": {
-                                    "range": "TestCompile/patterns/double-glob.d2,2:18:47-2:21:50",
+                                    "range": "TestCompile/patterns/double-glob/1.d2,2:15:44-2:18:47",
                                     "value": [
                                       {
                                         "string": "red",
@@ -392,7 +488,7 @@
                   "references": [
                     {
                       "string": {
-                        "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:11:40",
+                        "range": "TestCompile/patterns/double-glob/1.d2,2:3:32-2:8:37",
                         "value": [
                           {
                             "string": "style",
@@ -401,11 +497,27 @@
                         ]
                       },
                       "key_path": {
-                        "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:16:45",
+                        "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:13:42",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:11:40",
+                              "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:2:31",
+                              "value": [
+                                {
+                                  "string": "**",
+                                  "raw_string": "**"
+                                }
+                              ],
+                              "pattern": [
+                                "*",
+                                "",
+                                "*"
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/double-glob/1.d2,2:3:32-2:8:37",
                               "value": [
                                 {
                                   "string": "style",
@@ -416,7 +528,7 @@
                           },
                           {
                             "unquoted_string": {
-                              "range": "TestCompile/patterns/double-glob.d2,2:12:41-2:16:45",
+                              "range": "TestCompile/patterns/double-glob/1.d2,2:9:38-2:13:42",
                               "value": [
                                 {
                                   "string": "fill",
@@ -430,13 +542,29 @@
                       "context": {
                         "edge": null,
                         "key": {
-                          "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:22:51",
+                          "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:18:47",
                           "key": {
-                            "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:16:45",
+                            "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:13:42",
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:11:40",
+                                  "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:2:31",
+                                  "value": [
+                                    {
+                                      "string": "**",
+                                      "raw_string": "**"
+                                    }
+                                  ],
+                                  "pattern": [
+                                    "*",
+                                    "",
+                                    "*"
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/double-glob/1.d2,2:3:32-2:8:37",
                                   "value": [
                                     {
                                       "string": "style",
@@ -447,7 +575,7 @@
                               },
                               {
                                 "unquoted_string": {
-                                  "range": "TestCompile/patterns/double-glob.d2,2:12:41-2:16:45",
+                                  "range": "TestCompile/patterns/double-glob/1.d2,2:9:38-2:13:42",
                                   "value": [
                                     {
                                       "string": "fill",
@@ -461,7 +589,7 @@
                           "primary": {},
                           "value": {
                             "unquoted_string": {
-                              "range": "TestCompile/patterns/double-glob.d2,2:18:47-2:21:50",
+                              "range": "TestCompile/patterns/double-glob/1.d2,2:15:44-2:18:47",
                               "value": [
                                 {
                                   "string": "red",
@@ -481,7 +609,7 @@
             "references": [
               {
                 "string": {
-                  "range": "TestCompile/patterns/double-glob.d2,1:7:22-1:13:28",
+                  "range": "TestCompile/patterns/double-glob/1.d2,1:7:22-1:13:28",
                   "value": [
                     {
                       "string": "animal",
@@ -490,11 +618,11 @@
                   ]
                 },
                 "key_path": {
-                  "range": "TestCompile/patterns/double-glob.d2,1:0:15-1:13:28",
+                  "range": "TestCompile/patterns/double-glob/1.d2,1:0:15-1:13:28",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "TestCompile/patterns/double-glob.d2,1:0:15-1:6:21",
+                        "range": "TestCompile/patterns/double-glob/1.d2,1:0:15-1:6:21",
                         "value": [
                           {
                             "string": "shared",
@@ -505,7 +633,7 @@
                     },
                     {
                       "unquoted_string": {
-                        "range": "TestCompile/patterns/double-glob.d2,1:7:22-1:13:28",
+                        "range": "TestCompile/patterns/double-glob/1.d2,1:7:22-1:13:28",
                         "value": [
                           {
                             "string": "animal",
@@ -519,13 +647,13 @@
                 "context": {
                   "edge": null,
                   "key": {
-                    "range": "TestCompile/patterns/double-glob.d2,1:0:15-1:13:28",
+                    "range": "TestCompile/patterns/double-glob/1.d2,1:0:15-1:13:28",
                     "key": {
-                      "range": "TestCompile/patterns/double-glob.d2,1:0:15-1:13:28",
+                      "range": "TestCompile/patterns/double-glob/1.d2,1:0:15-1:13:28",
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": "TestCompile/patterns/double-glob.d2,1:0:15-1:6:21",
+                            "range": "TestCompile/patterns/double-glob/1.d2,1:0:15-1:6:21",
                             "value": [
                               {
                                 "string": "shared",
@@ -536,7 +664,7 @@
                         },
                         {
                           "unquoted_string": {
-                            "range": "TestCompile/patterns/double-glob.d2,1:7:22-1:13:28",
+                            "range": "TestCompile/patterns/double-glob/1.d2,1:7:22-1:13:28",
                             "value": [
                               {
                                 "string": "animal",
@@ -562,7 +690,7 @@
                   "name": "fill",
                   "primary": {
                     "value": {
-                      "range": "TestCompile/patterns/double-glob.d2,2:18:47-2:21:50",
+                      "range": "TestCompile/patterns/double-glob/1.d2,2:15:44-2:18:47",
                       "value": [
                         {
                           "string": "red",
@@ -574,7 +702,7 @@
                   "references": [
                     {
                       "string": {
-                        "range": "TestCompile/patterns/double-glob.d2,2:12:41-2:16:45",
+                        "range": "TestCompile/patterns/double-glob/1.d2,2:9:38-2:13:42",
                         "value": [
                           {
                             "string": "fill",
@@ -583,11 +711,27 @@
                         ]
                       },
                       "key_path": {
-                        "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:16:45",
+                        "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:13:42",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:11:40",
+                              "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:2:31",
+                              "value": [
+                                {
+                                  "string": "**",
+                                  "raw_string": "**"
+                                }
+                              ],
+                              "pattern": [
+                                "*",
+                                "",
+                                "*"
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/double-glob/1.d2,2:3:32-2:8:37",
                               "value": [
                                 {
                                   "string": "style",
@@ -598,7 +742,7 @@
                           },
                           {
                             "unquoted_string": {
-                              "range": "TestCompile/patterns/double-glob.d2,2:12:41-2:16:45",
+                              "range": "TestCompile/patterns/double-glob/1.d2,2:9:38-2:13:42",
                               "value": [
                                 {
                                   "string": "fill",
@@ -612,13 +756,29 @@
                       "context": {
                         "edge": null,
                         "key": {
-                          "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:22:51",
+                          "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:18:47",
                           "key": {
-                            "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:16:45",
+                            "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:13:42",
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:11:40",
+                                  "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:2:31",
+                                  "value": [
+                                    {
+                                      "string": "**",
+                                      "raw_string": "**"
+                                    }
+                                  ],
+                                  "pattern": [
+                                    "*",
+                                    "",
+                                    "*"
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/double-glob/1.d2,2:3:32-2:8:37",
                                   "value": [
                                     {
                                       "string": "style",
@@ -629,7 +789,7 @@
                               },
                               {
                                 "unquoted_string": {
-                                  "range": "TestCompile/patterns/double-glob.d2,2:12:41-2:16:45",
+                                  "range": "TestCompile/patterns/double-glob/1.d2,2:9:38-2:13:42",
                                   "value": [
                                     {
                                       "string": "fill",
@@ -643,7 +803,7 @@
                           "primary": {},
                           "value": {
                             "unquoted_string": {
-                              "range": "TestCompile/patterns/double-glob.d2,2:18:47-2:21:50",
+                              "range": "TestCompile/patterns/double-glob/1.d2,2:15:44-2:18:47",
                               "value": [
                                 {
                                   "string": "red",
@@ -663,7 +823,7 @@
             "references": [
               {
                 "string": {
-                  "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:11:40",
+                  "range": "TestCompile/patterns/double-glob/1.d2,2:3:32-2:8:37",
                   "value": [
                     {
                       "string": "style",
@@ -672,11 +832,27 @@
                   ]
                 },
                 "key_path": {
-                  "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:16:45",
+                  "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:13:42",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:11:40",
+                        "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:2:31",
+                        "value": [
+                          {
+                            "string": "**",
+                            "raw_string": "**"
+                          }
+                        ],
+                        "pattern": [
+                          "*",
+                          "",
+                          "*"
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/double-glob/1.d2,2:3:32-2:8:37",
                         "value": [
                           {
                             "string": "style",
@@ -687,7 +863,7 @@
                     },
                     {
                       "unquoted_string": {
-                        "range": "TestCompile/patterns/double-glob.d2,2:12:41-2:16:45",
+                        "range": "TestCompile/patterns/double-glob/1.d2,2:9:38-2:13:42",
                         "value": [
                           {
                             "string": "fill",
@@ -701,13 +877,29 @@
                 "context": {
                   "edge": null,
                   "key": {
-                    "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:22:51",
+                    "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:18:47",
                     "key": {
-                      "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:16:45",
+                      "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:13:42",
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": "TestCompile/patterns/double-glob.d2,2:6:35-2:11:40",
+                            "range": "TestCompile/patterns/double-glob/1.d2,2:0:29-2:2:31",
+                            "value": [
+                              {
+                                "string": "**",
+                                "raw_string": "**"
+                              }
+                            ],
+                            "pattern": [
+                              "*",
+                              "",
+                              "*"
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/double-glob/1.d2,2:3:32-2:8:37",
                             "value": [
                               {
                                 "string": "style",
@@ -718,7 +910,7 @@
                         },
                         {
                           "unquoted_string": {
-                            "range": "TestCompile/patterns/double-glob.d2,2:12:41-2:16:45",
+                            "range": "TestCompile/patterns/double-glob/1.d2,2:9:38-2:13:42",
                             "value": [
                               {
                                 "string": "fill",
@@ -732,7 +924,7 @@
                     "primary": {},
                     "value": {
                       "unquoted_string": {
-                        "range": "TestCompile/patterns/double-glob.d2,2:18:47-2:21:50",
+                        "range": "TestCompile/patterns/double-glob/1.d2,2:15:44-2:18:47",
                         "value": [
                           {
                             "string": "red",
@@ -752,7 +944,7 @@
       "references": [
         {
           "string": {
-            "range": "TestCompile/patterns/double-glob.d2,0:0:0-0:6:6",
+            "range": "TestCompile/patterns/double-glob/1.d2,0:0:0-0:6:6",
             "value": [
               {
                 "string": "shared",
@@ -761,11 +953,11 @@
             ]
           },
           "key_path": {
-            "range": "TestCompile/patterns/double-glob.d2,0:0:0-0:14:14",
+            "range": "TestCompile/patterns/double-glob/1.d2,0:0:0-0:14:14",
             "path": [
               {
                 "unquoted_string": {
-                  "range": "TestCompile/patterns/double-glob.d2,0:0:0-0:6:6",
+                  "range": "TestCompile/patterns/double-glob/1.d2,0:0:0-0:6:6",
                   "value": [
                     {
                       "string": "shared",
@@ -776,7 +968,7 @@
               },
               {
                 "unquoted_string": {
-                  "range": "TestCompile/patterns/double-glob.d2,0:7:7-0:14:14",
+                  "range": "TestCompile/patterns/double-glob/1.d2,0:7:7-0:14:14",
                   "value": [
                     {
                       "string": "animate",
@@ -790,13 +982,13 @@
           "context": {
             "edge": null,
             "key": {
-              "range": "TestCompile/patterns/double-glob.d2,0:0:0-0:14:14",
+              "range": "TestCompile/patterns/double-glob/1.d2,0:0:0-0:14:14",
               "key": {
-                "range": "TestCompile/patterns/double-glob.d2,0:0:0-0:14:14",
+                "range": "TestCompile/patterns/double-glob/1.d2,0:0:0-0:14:14",
                 "path": [
                   {
                     "unquoted_string": {
-                      "range": "TestCompile/patterns/double-glob.d2,0:0:0-0:6:6",
+                      "range": "TestCompile/patterns/double-glob/1.d2,0:0:0-0:6:6",
                       "value": [
                         {
                           "string": "shared",
@@ -807,7 +999,7 @@
                   },
                   {
                     "unquoted_string": {
-                      "range": "TestCompile/patterns/double-glob.d2,0:7:7-0:14:14",
+                      "range": "TestCompile/patterns/double-glob/1.d2,0:7:7-0:14:14",
                       "value": [
                         {
                           "string": "animate",
@@ -825,7 +1017,7 @@
         },
         {
           "string": {
-            "range": "TestCompile/patterns/double-glob.d2,1:0:15-1:6:21",
+            "range": "TestCompile/patterns/double-glob/1.d2,1:0:15-1:6:21",
             "value": [
               {
                 "string": "shared",
@@ -834,11 +1026,11 @@
             ]
           },
           "key_path": {
-            "range": "TestCompile/patterns/double-glob.d2,1:0:15-1:13:28",
+            "range": "TestCompile/patterns/double-glob/1.d2,1:0:15-1:13:28",
             "path": [
               {
                 "unquoted_string": {
-                  "range": "TestCompile/patterns/double-glob.d2,1:0:15-1:6:21",
+                  "range": "TestCompile/patterns/double-glob/1.d2,1:0:15-1:6:21",
                   "value": [
                     {
                       "string": "shared",
@@ -849,7 +1041,7 @@
               },
               {
                 "unquoted_string": {
-                  "range": "TestCompile/patterns/double-glob.d2,1:7:22-1:13:28",
+                  "range": "TestCompile/patterns/double-glob/1.d2,1:7:22-1:13:28",
                   "value": [
                     {
                       "string": "animal",
@@ -863,13 +1055,13 @@
           "context": {
             "edge": null,
             "key": {
-              "range": "TestCompile/patterns/double-glob.d2,1:0:15-1:13:28",
+              "range": "TestCompile/patterns/double-glob/1.d2,1:0:15-1:13:28",
               "key": {
-                "range": "TestCompile/patterns/double-glob.d2,1:0:15-1:13:28",
+                "range": "TestCompile/patterns/double-glob/1.d2,1:0:15-1:13:28",
                 "path": [
                   {
                     "unquoted_string": {
-                      "range": "TestCompile/patterns/double-glob.d2,1:0:15-1:6:21",
+                      "range": "TestCompile/patterns/double-glob/1.d2,1:0:15-1:6:21",
                       "value": [
                         {
                           "string": "shared",
@@ -880,7 +1072,7 @@
                   },
                   {
                     "unquoted_string": {
-                      "range": "TestCompile/patterns/double-glob.d2,1:7:22-1:13:28",
+                      "range": "TestCompile/patterns/double-glob/1.d2,1:7:22-1:13:28",
                       "value": [
                         {
                           "string": "animal",

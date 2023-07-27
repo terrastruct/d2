@@ -2,7 +2,30 @@ package d2ir
 
 import (
 	"strings"
+
+	"oss.terrastruct.com/d2/d2graph"
 )
+
+func (m *Map) doubleGlob(pattern []string) ([]*Field, bool) {
+	if !(len(pattern) == 3 && pattern[0] == "*" && pattern[1] == "" && pattern[2] == "*") {
+		return nil, false
+	}
+	var fa []*Field
+	m._doubleGlob(&fa)
+	return fa, true
+}
+
+func (m *Map) _doubleGlob(fa *[]*Field) {
+	for _, f := range m.Fields {
+		if _, ok := d2graph.ReservedKeywords[f.Name]; ok {
+			continue
+		}
+		*fa = append(*fa, f)
+		if f.Map() != nil {
+			f.Map()._doubleGlob(fa)
+		}
+	}
+}
 
 func matchPattern(s string, pattern []string) bool {
 	if len(pattern) == 0 {

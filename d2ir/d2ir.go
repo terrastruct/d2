@@ -672,12 +672,39 @@ func (m *Map) EnsureField(kp *d2ast.KeyPath, refctx *RefContext) ([]*Field, erro
 func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, fa *[]*Field) error {
 	us, ok := kp.Path[i].Unbox().(*d2ast.UnquotedString)
 	if ok && us.Pattern != nil {
+		fa2, ok := m.doubleGlob(us.Pattern)
+		if ok {
+			if i == len(kp.Path)-1 {
+				*fa = append(*fa, fa2...)
+			} else {
+				for _, f := range fa2 {
+					if f.Map() == nil {
+						f.Composite = &Map{
+							parent: f,
+						}
+					}
+					err := f.Map().ensureField(i+1, kp, refctx, fa)
+					if err != nil {
+						return err
+					}
+				}
+			}
+			return nil
+		}
 		for _, f := range m.Fields {
 			if matchPattern(f.Name, us.Pattern) {
 				if i == len(kp.Path)-1 {
 					*fa = append(*fa, f)
-				} else if f.Map() != nil {
-					f.Map().ensureField(i+1, kp, refctx, fa)
+				} else {
+					if f.Map() == nil {
+						f.Composite = &Map{
+							parent: f,
+						}
+					}
+					err := f.Map().ensureField(i+1, kp, refctx, fa)
+					if err != nil {
+						return err
+					}
 				}
 			}
 		}
