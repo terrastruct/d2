@@ -509,6 +509,21 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 func (c *compiler) updateLinks(m *Map) {
 	for _, f := range m.Fields {
 		if f.Name == "link" {
+			val := f.Primary().Value.ScalarString()
+			link, err := d2parser.ParseKey(val)
+			if err != nil {
+				continue
+			}
+
+			linkIDA := link.IDA()
+			if len(linkIDA) == 0 {
+				continue
+			}
+
+			// When updateLinks is called, all valid board links are already compiled and changed to the qualified path beginning with "root"
+			if linkIDA[0] != "root" {
+				continue
+			}
 			bida := BoardIDA(f)
 			aida := IDA(f)
 			if len(bida) != len(aida) {
