@@ -1341,7 +1341,11 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			}
 		}
 	}
-
+	if targetShape.Tooltip != "" {
+		fmt.Fprintf(writer, `<title>%s</title>`,
+			svg.EscapeText(targetShape.Tooltip),
+		)
+	}
 	addAppendixItems(appendixWriter, targetShape, s)
 
 	fmt.Fprint(writer, closingTag)
@@ -1390,12 +1394,12 @@ func addAppendixItems(writer io.Writer, targetShape d2target.Shape, s shape.Shap
 		x := int(math.Ceil(p1.X))
 		y := int(math.Ceil(p1.Y))
 
-		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
+		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon"><title>%s</title>%s</g>`,
 			x-appendixIconRadius,
 			y-appendixIconRadius,
+			svg.EscapeText(targetShape.Tooltip),
 			TooltipIcon,
 		)
-		fmt.Fprintf(writer, `<title>%s</title>`, svg.EscapeText(targetShape.Tooltip))
 	}
 	if targetShape.Link != "" {
 		if p2 == nil {
