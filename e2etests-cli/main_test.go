@@ -79,6 +79,17 @@ func TestCLI_E2E(t *testing.T) {
 			},
 		},
 		{
+			name: "layer-link",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "test.d2", `doh: { link: layers.test2 }; layers: { test2: @test2.d2 }`)
+				writeFile(t, dir, "test2.d2", `x: I'm a Mac { link: https://example.com }`)
+				err := runTestMain(t, ctx, dir, env, "test.d2", "layer-link.svg")
+				assert.Success(t, err)
+
+				assert.TestdataDir(t, filepath.Join(dir, "layer-link"))
+			},
+		},
+		{
 			// Skip the empty base board so the animation doesn't show blank for 1400ms
 			name: "empty-base",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
