@@ -325,6 +325,7 @@ type EdgeID struct {
 
 	// If nil, then any EdgeID with equal src/dst/arrows matches.
 	Index *int `json:"index"`
+	Glob  bool `json:"glob"`
 }
 
 func NewEdgeIDs(k *d2ast.Key) (eida []*EdgeID) {
@@ -337,6 +338,7 @@ func NewEdgeIDs(k *d2ast.Key) (eida []*EdgeID) {
 		}
 		if k.EdgeIndex != nil {
 			eid.Index = k.EdgeIndex.Int
+			eid.Glob = k.EdgeIndex.Glob
 		}
 		eida = append(eida, eid)
 	}

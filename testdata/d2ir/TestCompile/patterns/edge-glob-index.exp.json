@@ -1,0 +1,4003 @@
+{
+  "fields": [
+    {
+      "name": "a",
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                  "value": [
+                    {
+                      "string": "a",
+                      "raw_string": "a"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:6:6",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:6:6",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        },
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                  "value": [
+                    {
+                      "string": "a",
+                      "raw_string": "a"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:6:6",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:6:6",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        },
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                  "value": [
+                    {
+                      "string": "a",
+                      "raw_string": "a"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:6:13",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:6:13",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:6:13",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        },
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                  "value": [
+                    {
+                      "string": "a",
+                      "raw_string": "a"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:6:13",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:6:13",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:6:13",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        },
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                  "value": [
+                    {
+                      "string": "a",
+                      "raw_string": "a"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:6:20",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:6:20",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:6:20",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        },
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                  "value": [
+                    {
+                      "string": "a",
+                      "raw_string": "a"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:6:20",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:6:20",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:6:20",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        },
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                  "value": [
+                    {
+                      "string": "a",
+                      "raw_string": "a"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,3:0:21-3:27:48",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "edge_index": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:8:29-3:11:32",
+                "int": null,
+                "glob": true
+              },
+              "edge_key": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:22:43",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                      "value": [
+                        {
+                          "string": "style",
+                          "raw_string": "style"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                      "value": [
+                        {
+                          "string": "fill",
+                          "raw_string": "fill"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:24:45-3:27:48",
+                  "value": [
+                    {
+                      "string": "red",
+                      "raw_string": "red"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                  "value": [
+                    {
+                      "string": "a",
+                      "raw_string": "a"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,3:0:21-3:27:48",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "edge_index": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:8:29-3:11:32",
+                "int": null,
+                "glob": true
+              },
+              "edge_key": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:22:43",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                      "value": [
+                        {
+                          "string": "style",
+                          "raw_string": "style"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                      "value": [
+                        {
+                          "string": "fill",
+                          "raw_string": "fill"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:24:45-3:27:48",
+                  "value": [
+                    {
+                      "string": "red",
+                      "raw_string": "red"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                  "value": [
+                    {
+                      "string": "a",
+                      "raw_string": "a"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,3:0:21-3:27:48",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "edge_index": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:8:29-3:11:32",
+                "int": null,
+                "glob": true
+              },
+              "edge_key": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:22:43",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                      "value": [
+                        {
+                          "string": "style",
+                          "raw_string": "style"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                      "value": [
+                        {
+                          "string": "fill",
+                          "raw_string": "fill"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:24:45-3:27:48",
+                  "value": [
+                    {
+                      "string": "red",
+                      "raw_string": "red"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "b",
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                  "value": [
+                    {
+                      "string": "b",
+                      "raw_string": "b"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:6:6",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:6:6",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        },
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                  "value": [
+                    {
+                      "string": "b",
+                      "raw_string": "b"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:6:6",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:6:6",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        },
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                  "value": [
+                    {
+                      "string": "b",
+                      "raw_string": "b"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:6:13",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:6:13",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:6:13",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        },
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                  "value": [
+                    {
+                      "string": "b",
+                      "raw_string": "b"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:6:13",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:6:13",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:6:13",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        },
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                  "value": [
+                    {
+                      "string": "b",
+                      "raw_string": "b"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:6:20",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:6:20",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:6:20",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        },
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                  "value": [
+                    {
+                      "string": "b",
+                      "raw_string": "b"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:6:20",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:6:20",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:6:20",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        },
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                  "value": [
+                    {
+                      "string": "b",
+                      "raw_string": "b"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,3:0:21-3:27:48",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "edge_index": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:8:29-3:11:32",
+                "int": null,
+                "glob": true
+              },
+              "edge_key": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:22:43",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                      "value": [
+                        {
+                          "string": "style",
+                          "raw_string": "style"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                      "value": [
+                        {
+                          "string": "fill",
+                          "raw_string": "fill"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:24:45-3:27:48",
+                  "value": [
+                    {
+                      "string": "red",
+                      "raw_string": "red"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                  "value": [
+                    {
+                      "string": "b",
+                      "raw_string": "b"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,3:0:21-3:27:48",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "edge_index": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:8:29-3:11:32",
+                "int": null,
+                "glob": true
+              },
+              "edge_key": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:22:43",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                      "value": [
+                        {
+                          "string": "style",
+                          "raw_string": "style"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                      "value": [
+                        {
+                          "string": "fill",
+                          "raw_string": "fill"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:24:45-3:27:48",
+                  "value": [
+                    {
+                      "string": "red",
+                      "raw_string": "red"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                  "value": [
+                    {
+                      "string": "b",
+                      "raw_string": "b"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,3:0:21-3:27:48",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "edge_index": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:8:29-3:11:32",
+                "int": null,
+                "glob": true
+              },
+              "edge_key": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:22:43",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                      "value": [
+                        {
+                          "string": "style",
+                          "raw_string": "style"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                      "value": [
+                        {
+                          "string": "fill",
+                          "raw_string": "fill"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:24:45-3:27:48",
+                  "value": [
+                    {
+                      "string": "red",
+                      "raw_string": "red"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": {
+        "src_path": [
+          "a"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "b"
+        ],
+        "dst_arrow": true,
+        "index": 0,
+        "glob": false
+      },
+      "map": {
+        "fields": [
+          {
+            "name": "style",
+            "composite": {
+              "fields": [
+                {
+                  "name": "fill",
+                  "primary": {
+                    "value": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:24:45-3:27:48",
+                      "value": [
+                        {
+                          "string": "red",
+                          "raw_string": "red"
+                        }
+                      ]
+                    }
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                        "value": [
+                          {
+                            "string": "fill",
+                            "raw_string": "fill"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:22:43",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+                          "src": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                                  "value": [
+                                    {
+                                      "string": "a",
+                                      "raw_string": "a"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                                  "value": [
+                                    {
+                                      "string": "b",
+                                      "raw_string": "b"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
+                        "key": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:0:21-3:27:48",
+                          "edges": [
+                            {
+                              "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+                              "src": {
+                                "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                                      "value": [
+                                        {
+                                          "string": "a",
+                                          "raw_string": "a"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "src_arrow": "",
+                              "dst": {
+                                "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                                      "value": [
+                                        {
+                                          "string": "b",
+                                          "raw_string": "b"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "dst_arrow": ">"
+                            }
+                          ],
+                          "edge_index": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:8:29-3:11:32",
+                            "int": null,
+                            "glob": true
+                          },
+                          "edge_key": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:22:43",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                                  "value": [
+                                    {
+                                      "string": "fill",
+                                      "raw_string": "fill"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/edge-glob-index.d2,3:24:45-3:27:48",
+                              "value": [
+                                {
+                                  "string": "red",
+                                  "raw_string": "red"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                  "value": [
+                    {
+                      "string": "style",
+                      "raw_string": "style"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:22:43",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                        "value": [
+                          {
+                            "string": "fill",
+                            "raw_string": "fill"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+                    "src": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                            "value": [
+                              {
+                                "string": "a",
+                                "raw_string": "a"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "src_arrow": "",
+                    "dst": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                            "value": [
+                              {
+                                "string": "b",
+                                "raw_string": "b"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "dst_arrow": ">"
+                  },
+                  "key": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:0:21-3:27:48",
+                    "edges": [
+                      {
+                        "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+                        "src": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                                "value": [
+                                  {
+                                    "string": "a",
+                                    "raw_string": "a"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "src_arrow": "",
+                        "dst": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                                "value": [
+                                  {
+                                    "string": "b",
+                                    "raw_string": "b"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "dst_arrow": ">"
+                      }
+                    ],
+                    "edge_index": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:8:29-3:11:32",
+                      "int": null,
+                      "glob": true
+                    },
+                    "edge_key": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:22:43",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                            "value": [
+                              {
+                                "string": "fill",
+                                "raw_string": "fill"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/edge-glob-index.d2,3:24:45-3:27:48",
+                        "value": [
+                          {
+                            "string": "red",
+                            "raw_string": "red"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:6:6",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:6:6",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,0:0:0-0:1:1",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        },
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,3:0:21-3:27:48",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "edge_index": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:8:29-3:11:32",
+                "int": null,
+                "glob": true
+              },
+              "edge_key": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:22:43",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                      "value": [
+                        {
+                          "string": "style",
+                          "raw_string": "style"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                      "value": [
+                        {
+                          "string": "fill",
+                          "raw_string": "fill"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:24:45-3:27:48",
+                  "value": [
+                    {
+                      "string": "red",
+                      "raw_string": "red"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "edge_id": {
+        "src_path": [
+          "a"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "b"
+        ],
+        "dst_arrow": true,
+        "index": 1,
+        "glob": false
+      },
+      "map": {
+        "fields": [
+          {
+            "name": "style",
+            "composite": {
+              "fields": [
+                {
+                  "name": "fill",
+                  "primary": {
+                    "value": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:24:45-3:27:48",
+                      "value": [
+                        {
+                          "string": "red",
+                          "raw_string": "red"
+                        }
+                      ]
+                    }
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                        "value": [
+                          {
+                            "string": "fill",
+                            "raw_string": "fill"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:22:43",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+                          "src": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                                  "value": [
+                                    {
+                                      "string": "a",
+                                      "raw_string": "a"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                                  "value": [
+                                    {
+                                      "string": "b",
+                                      "raw_string": "b"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
+                        "key": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:0:21-3:27:48",
+                          "edges": [
+                            {
+                              "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+                              "src": {
+                                "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                                      "value": [
+                                        {
+                                          "string": "a",
+                                          "raw_string": "a"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "src_arrow": "",
+                              "dst": {
+                                "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                                      "value": [
+                                        {
+                                          "string": "b",
+                                          "raw_string": "b"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "dst_arrow": ">"
+                            }
+                          ],
+                          "edge_index": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:8:29-3:11:32",
+                            "int": null,
+                            "glob": true
+                          },
+                          "edge_key": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:22:43",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                                  "value": [
+                                    {
+                                      "string": "fill",
+                                      "raw_string": "fill"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/edge-glob-index.d2,3:24:45-3:27:48",
+                              "value": [
+                                {
+                                  "string": "red",
+                                  "raw_string": "red"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                  "value": [
+                    {
+                      "string": "style",
+                      "raw_string": "style"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:22:43",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                        "value": [
+                          {
+                            "string": "fill",
+                            "raw_string": "fill"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+                    "src": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                            "value": [
+                              {
+                                "string": "a",
+                                "raw_string": "a"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "src_arrow": "",
+                    "dst": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                            "value": [
+                              {
+                                "string": "b",
+                                "raw_string": "b"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "dst_arrow": ">"
+                  },
+                  "key": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:0:21-3:27:48",
+                    "edges": [
+                      {
+                        "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+                        "src": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                                "value": [
+                                  {
+                                    "string": "a",
+                                    "raw_string": "a"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "src_arrow": "",
+                        "dst": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                                "value": [
+                                  {
+                                    "string": "b",
+                                    "raw_string": "b"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "dst_arrow": ">"
+                      }
+                    ],
+                    "edge_index": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:8:29-3:11:32",
+                      "int": null,
+                      "glob": true
+                    },
+                    "edge_key": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:22:43",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                            "value": [
+                              {
+                                "string": "fill",
+                                "raw_string": "fill"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/edge-glob-index.d2,3:24:45-3:27:48",
+                        "value": [
+                          {
+                            "string": "red",
+                            "raw_string": "red"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:6:13",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:6:13",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:6:13",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,1:0:7-1:1:8",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,1:5:12-1:6:13",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        },
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,3:0:21-3:27:48",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "edge_index": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:8:29-3:11:32",
+                "int": null,
+                "glob": true
+              },
+              "edge_key": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:22:43",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                      "value": [
+                        {
+                          "string": "style",
+                          "raw_string": "style"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                      "value": [
+                        {
+                          "string": "fill",
+                          "raw_string": "fill"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:24:45-3:27:48",
+                  "value": [
+                    {
+                      "string": "red",
+                      "raw_string": "red"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "edge_id": {
+        "src_path": [
+          "a"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "b"
+        ],
+        "dst_arrow": true,
+        "index": 2,
+        "glob": false
+      },
+      "map": {
+        "fields": [
+          {
+            "name": "style",
+            "composite": {
+              "fields": [
+                {
+                  "name": "fill",
+                  "primary": {
+                    "value": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:24:45-3:27:48",
+                      "value": [
+                        {
+                          "string": "red",
+                          "raw_string": "red"
+                        }
+                      ]
+                    }
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                        "value": [
+                          {
+                            "string": "fill",
+                            "raw_string": "fill"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:22:43",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+                          "src": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                                  "value": [
+                                    {
+                                      "string": "a",
+                                      "raw_string": "a"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                                  "value": [
+                                    {
+                                      "string": "b",
+                                      "raw_string": "b"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
+                        "key": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:0:21-3:27:48",
+                          "edges": [
+                            {
+                              "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+                              "src": {
+                                "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                                      "value": [
+                                        {
+                                          "string": "a",
+                                          "raw_string": "a"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "src_arrow": "",
+                              "dst": {
+                                "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                                      "value": [
+                                        {
+                                          "string": "b",
+                                          "raw_string": "b"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "dst_arrow": ">"
+                            }
+                          ],
+                          "edge_index": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:8:29-3:11:32",
+                            "int": null,
+                            "glob": true
+                          },
+                          "edge_key": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:22:43",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                                  "value": [
+                                    {
+                                      "string": "fill",
+                                      "raw_string": "fill"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/edge-glob-index.d2,3:24:45-3:27:48",
+                              "value": [
+                                {
+                                  "string": "red",
+                                  "raw_string": "red"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                  "value": [
+                    {
+                      "string": "style",
+                      "raw_string": "style"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:22:43",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                        "value": [
+                          {
+                            "string": "fill",
+                            "raw_string": "fill"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+                    "src": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                            "value": [
+                              {
+                                "string": "a",
+                                "raw_string": "a"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "src_arrow": "",
+                    "dst": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                            "value": [
+                              {
+                                "string": "b",
+                                "raw_string": "b"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "dst_arrow": ">"
+                  },
+                  "key": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:0:21-3:27:48",
+                    "edges": [
+                      {
+                        "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+                        "src": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                                "value": [
+                                  {
+                                    "string": "a",
+                                    "raw_string": "a"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "src_arrow": "",
+                        "dst": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                                "value": [
+                                  {
+                                    "string": "b",
+                                    "raw_string": "b"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "dst_arrow": ">"
+                      }
+                    ],
+                    "edge_index": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:8:29-3:11:32",
+                      "int": null,
+                      "glob": true
+                    },
+                    "edge_key": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:22:43",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                            "value": [
+                              {
+                                "string": "fill",
+                                "raw_string": "fill"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/edge-glob-index.d2,3:24:45-3:27:48",
+                        "value": [
+                          {
+                            "string": "red",
+                            "raw_string": "red"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:6:20",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:6:20",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:6:20",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,2:0:14-2:1:15",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,2:5:19-2:6:20",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        },
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+              "src": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-glob-index.d2,3:0:21-3:27:48",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:7:28",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:1:22-3:2:23",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-glob-index.d2,3:6:27-3:7:28",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "edge_index": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:8:29-3:11:32",
+                "int": null,
+                "glob": true
+              },
+              "edge_key": {
+                "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:22:43",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:12:33-3:17:38",
+                      "value": [
+                        {
+                          "string": "style",
+                          "raw_string": "style"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-glob-index.d2,3:18:39-3:22:43",
+                      "value": [
+                        {
+                          "string": "fill",
+                          "raw_string": "fill"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-glob-index.d2,3:24:45-3:27:48",
+                  "value": [
+                    {
+                      "string": "red",
+                      "raw_string": "red"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

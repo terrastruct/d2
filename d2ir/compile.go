@@ -647,7 +647,7 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 		refctx.Edge = refctx.Key.Edges[i]
 
 		var ea []*Edge
-		if eid.Index != nil {
+		if eid.Index != nil || eid.Glob {
 			ea = refctx.ScopeMap.GetEdges(eid)
 			if len(ea) == 0 {
 				c.errorf(refctx.Edge, "indexed edge does not exist")

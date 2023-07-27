@@ -56,7 +56,7 @@ func (m *Map) Query(idStr string) (Node, error) {
 		return nil, nil
 	}
 	if len(na) > 1 {
-		return nil, fmt.Errorf("expected only one query result but got: %#v", err)
+		return nil, fmt.Errorf("expected only one query result but got: %#v", na)
 	}
 	return na[0], nil
 }

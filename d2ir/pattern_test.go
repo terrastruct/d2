@@ -134,6 +134,21 @@ sh*.an* -> sh*.an*`)
 			},
 		},
 		{
+			name: "edge-glob-index",
+			run: func(t testing.TB) {
+				m, err := compile(t, `a -> b
+a -> b
+a -> b
+(a -> b)[*].style.fill: red
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 8, 3, nil, "")
+				assertQuery(t, m, 0, 0, "red", "(a -> b)[0].style.fill")
+				assertQuery(t, m, 0, 0, "red", "(a -> b)[1].style.fill")
+				assertQuery(t, m, 0, 0, "red", "(a -> b)[2].style.fill")
+			},
+		},
+		{
 			name: "double-glob/1",
 			run: func(t testing.TB) {
 				m, err := compile(t, `shared.animate
