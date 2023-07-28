@@ -856,6 +856,7 @@ func shiftUp(g *d2graph.Graph, start, distance float64, isHorizontal bool) {
 func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance float64, isHorizontal, isMargin bool) map[*d2graph.Object]struct{} {
 	q := []*d2graph.Object{obj}
 
+	needsMove := make(map[*d2graph.Object]struct{})
 	seen := make(map[*d2graph.Object]struct{})
 	shifted := make(map[*d2graph.Object]struct{})
 	shiftedEdges := make(map[*d2graph.Edge]struct{})
@@ -915,23 +916,27 @@ func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance f
 			}
 			// skip other objects behind start
 			if curr != obj {
-				if isHorizontal {
-					if curr.TopLeft.X < start {
-						continue
-					}
-				} else {
-					if curr.TopLeft.Y < start {
-						continue
+				if _, in := needsMove[curr]; !in {
+					if isHorizontal {
+						if curr.TopLeft.X < start {
+							continue
+						}
+					} else {
+						if curr.TopLeft.Y < start {
+							continue
+						}
 					}
 				}
 			}
 
 			if isHorizontal {
-				shift := false
-				if !isMargin {
-					shift = start < curr.TopLeft.X
-				} else {
-					shift = start <= curr.TopLeft.X
+				_, shift := needsMove[curr]
+				if !shift {
+					if !isMargin {
+						shift = start < curr.TopLeft.X
+					} else {
+						shift = start <= curr.TopLeft.X
+					}
 				}
 
 				if shift {
@@ -939,11 +944,13 @@ func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance f
 					shifted[curr] = struct{}{}
 				}
 			} else {
-				shift := false
-				if !isMargin {
-					shift = start < curr.TopLeft.Y
-				} else {
-					shift = start <= curr.TopLeft.Y
+				_, shift := needsMove[curr]
+				if !shift {
+					if !isMargin {
+						shift = start < curr.TopLeft.Y
+					} else {
+						shift = start <= curr.TopLeft.Y
+					}
 				}
 				if shift {
 					curr.TopLeft.Y += distance
@@ -977,6 +984,18 @@ func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance f
 					shiftedEdges[e] = struct{}{}
 					continue
 				} else if e.Src == curr {
+					last := e.Route[len(e.Route)-1]
+					if isHorizontal {
+						if start <= last.X &&
+							e.Dst.TopLeft.X+e.Dst.Width < last.X+distance {
+							needsMove[e.Dst] = struct{}{}
+						}
+					} else {
+						if start <= last.Y &&
+							e.Dst.TopLeft.Y+e.Dst.Height < last.Y+distance {
+							needsMove[e.Dst] = struct{}{}
+						}
+					}
 					queue(e.Dst)
 					if isHorizontal {
 						for _, p := range e.Route {
@@ -993,6 +1012,18 @@ func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance f
 					}
 					shiftedEdges[e] = struct{}{}
 				} else if e.Dst == curr {
+					first := e.Route[0]
+					if isHorizontal {
+						if start <= first.X &&
+							e.Src.TopLeft.X+e.Src.Width < first.X+distance {
+							needsMove[e.Src] = struct{}{}
+						}
+					} else {
+						if start <= first.Y &&
+							e.Src.TopLeft.Y+e.Src.Height < first.Y+distance {
+							needsMove[e.Src] = struct{}{}
+						}
+					}
 					queue(e.Src)
 					if isHorizontal {
 						for _, p := range e.Route {
