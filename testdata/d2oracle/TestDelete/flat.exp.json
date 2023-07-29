@@ -1,7 +1,7 @@
 {
   "graph": {
     "name": "",
-    "isFolderOnly": false,
+    "isFolderOnly": true,
     "ast": {
       "range": "d2/testdata/d2oracle/TestDelete/flat.d2,0:0:0-0:0:0",
       "nodes": null

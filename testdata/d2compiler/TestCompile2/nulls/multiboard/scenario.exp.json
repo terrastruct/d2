@@ -189,7 +189,7 @@
     "scenarios": [
       {
         "name": "a",
-        "isFolderOnly": false,
+        "isFolderOnly": true,
         "ast": {
           "range": ",1:0:0-2:0:0",
           "nodes": null

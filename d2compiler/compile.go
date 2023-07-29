@@ -92,6 +92,9 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 			g.IsFolderOnly = true
 		}
 	}
+	if len(g.Objects) == 0 {
+		g.IsFolderOnly = true
+	}
 	return g
 }
 
