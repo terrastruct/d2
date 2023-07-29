@@ -81,7 +81,19 @@ func (diagram Diagram) Bytes() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	base := append(b1, b2...)
+	b3, err := json.Marshal(diagram.Root)
+	if err != nil {
+		return nil, err
+	}
+	base := append(append(b1, b2...), b3...)
+
+	if diagram.Config != nil {
+		b, err := json.Marshal(diagram.Config)
+		if err != nil {
+			return nil, err
+		}
+		base = append(base, b...)
+	}
 
 	for _, d := range diagram.Layers {
 		slices, err := d.Bytes()

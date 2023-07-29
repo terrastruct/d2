@@ -12,12 +12,15 @@ import (
 
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
+	"oss.terrastruct.com/util-go/go2"
 
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2exporter"
+	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
 	"oss.terrastruct.com/d2/d2layouts/d2grid"
 	"oss.terrastruct.com/d2/d2layouts/d2sequence"
+	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/log"
@@ -219,7 +222,7 @@ func run(t *testing.T, tc testCase) {
 	ctx = log.WithTB(ctx, t, nil)
 	ctx = log.Leveled(ctx, slog.LevelDebug)
 
-	g, _, err := d2compiler.Compile("", strings.NewReader(tc.dsl), &d2compiler.CompileOptions{
+	g, config, err := d2compiler.Compile("", strings.NewReader(tc.dsl), &d2compiler.CompileOptions{
 		UTF16: true,
 	})
 	if err != nil {
@@ -240,6 +243,9 @@ func run(t *testing.T, tc testCase) {
 	got, err := d2exporter.Export(ctx, g, nil)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if got != nil {
+		got.Config = config
 	}
 
 	if tc.assertions != nil {
@@ -266,4 +272,58 @@ func run(t *testing.T, tc testCase) {
 
 	err = diff.TestdataJSON(filepath.Join("..", "testdata", "d2exporter", t.Name()), got)
 	assert.Success(t, err)
+}
+
+// TestHashID tests that 2 diagrams with different theme configs do not equal each other
+func TestHashID(t *testing.T) {
+	ctx := context.Background()
+	ctx = log.WithTB(ctx, t, nil)
+	ctx = log.Leveled(ctx, slog.LevelDebug)
+
+	aString := `
+vars: {
+  d2-config: {
+    theme-id: 3
+  }
+}
+a -> b
+`
+
+	bString := `
+vars: {
+  d2-config: {
+    theme-id: 4
+  }
+}
+a -> b
+`
+
+	da, err := compile(ctx, aString)
+	assert.JSON(t, nil, err)
+
+	db, err := compile(ctx, bString)
+	assert.JSON(t, nil, err)
+
+	hashA, err := da.HashID()
+	assert.JSON(t, nil, err)
+
+	hashB, err := db.HashID()
+	assert.JSON(t, nil, err)
+
+	assert.NotEqual(t, hashA, hashB)
+}
+
+func layoutResolver(engine string) (d2graph.LayoutGraph, error) {
+	return d2dagrelayout.DefaultLayout, nil
+}
+
+func compile(ctx context.Context, d2 string) (*d2target.Diagram, error) {
+	ruler, _ := textmeasure.NewRuler()
+	opts := &d2lib.CompileOptions{
+		Ruler:          ruler,
+		LayoutResolver: layoutResolver,
+		Layout:         go2.Pointer("dagre"),
+	}
+	d, _, e := d2lib.Compile(ctx, d2, opts, nil)
+	return d, e
 }
