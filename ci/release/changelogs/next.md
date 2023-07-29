@@ -16,6 +16,7 @@
 - Tooltip and link icons are now positioned on shape border [#1466](https://github.com/terrastruct/d2/pull/1466)
 - Tooltip and link icons are always rendered over shapes [#1467](https://github.com/terrastruct/d2/pull/1467)
 - Boards with no objects are considered folders [#1504](https://github.com/terrastruct/d2/pull/1504)
+- `DEBUG` environment variable ignored if set incorrectly [#1505](https://github.com/terrastruct/d2/pull/1505)
 
 #### Bugfixes ⛑️
 
