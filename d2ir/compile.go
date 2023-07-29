@@ -396,7 +396,7 @@ func (c *compiler) compileKey(refctx *RefContext) {
 }
 
 func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext) {
-	fa, err := dst.EnsureField(kp, refctx)
+	fa, err := dst.EnsureField(kp, refctx, true)
 	if err != nil {
 		c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 		return
@@ -614,7 +614,7 @@ func (c *compiler) compileEdges(refctx *RefContext) {
 		return
 	}
 
-	fa, err := refctx.ScopeMap.EnsureField(refctx.Key.Key, refctx)
+	fa, err := refctx.ScopeMap.EnsureField(refctx.Key.Key, refctx, true)
 	if err != nil {
 		c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 		return
@@ -648,7 +648,7 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 
 		var ea []*Edge
 		if eid.Index != nil || eid.Glob {
-			ea = refctx.ScopeMap.GetEdges(eid)
+			ea = refctx.ScopeMap.GetEdges(eid, refctx)
 			if len(ea) == 0 {
 				c.errorf(refctx.Edge, "indexed edge does not exist")
 				continue
@@ -661,12 +661,12 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 				refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Dst, refctx)
 			}
 		} else {
-			_, err := refctx.ScopeMap.EnsureField(refctx.Edge.Src, refctx)
+			_, err := refctx.ScopeMap.EnsureField(refctx.Edge.Src, refctx, true)
 			if err != nil {
 				c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 				continue
 			}
-			_, err = refctx.ScopeMap.EnsureField(refctx.Edge.Dst, refctx)
+			_, err = refctx.ScopeMap.EnsureField(refctx.Edge.Dst, refctx, true)
 			if err != nil {
 				c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 				continue

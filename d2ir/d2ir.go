@@ -653,7 +653,7 @@ func (m *Map) getField(ida []string) *Field {
 	return nil
 }
 
-func (m *Map) EnsureField(kp *d2ast.KeyPath, refctx *RefContext) ([]*Field, error) {
+func (m *Map) EnsureField(kp *d2ast.KeyPath, refctx *RefContext, create bool) ([]*Field, error) {
 	i := 0
 	for kp.Path[i].Unbox().ScalarString() == "_" {
 		m = ParentMap(m)
@@ -667,11 +667,11 @@ func (m *Map) EnsureField(kp *d2ast.KeyPath, refctx *RefContext) ([]*Field, erro
 	}
 
 	var fa []*Field
-	err := m.ensureField(i, kp, refctx, &fa)
+	err := m.ensureField(i, kp, refctx, create, &fa)
 	return fa, err
 }
 
-func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, fa *[]*Field) error {
+func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create bool, fa *[]*Field) error {
 	us, ok := kp.Path[i].Unbox().(*d2ast.UnquotedString)
 	if ok && us.Pattern != nil {
 		fa2, ok := m.doubleGlob(us.Pattern)
@@ -685,7 +685,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, fa *[]*F
 							parent: f,
 						}
 					}
-					err := f.Map().ensureField(i+1, kp, refctx, fa)
+					err := f.Map().ensureField(i+1, kp, refctx, create, fa)
 					if err != nil {
 						return err
 					}
@@ -703,7 +703,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, fa *[]*F
 							parent: f,
 						}
 					}
-					err := f.Map().ensureField(i+1, kp, refctx, fa)
+					err := f.Map().ensureField(i+1, kp, refctx, create, fa)
 					if err != nil {
 						return err
 					}
@@ -760,9 +760,12 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, fa *[]*F
 				parent: f,
 			}
 		}
-		return f.Map().ensureField(i+1, kp, refctx, fa)
+		return f.Map().ensureField(i+1, kp, refctx, create, fa)
 	}
 
+	if !create {
+		return nil
+	}
 	f := &Field{
 		parent: m,
 		Name:   head,
@@ -783,7 +786,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, fa *[]*F
 	f.Composite = &Map{
 		parent: f,
 	}
-	return f.Map().ensureField(i+1, kp, refctx, fa)
+	return f.Map().ensureField(i+1, kp, refctx, create, fa)
 }
 
 func (m *Map) DeleteEdge(eid *EdgeID) *Edge {
@@ -848,7 +851,13 @@ func (m *Map) DeleteField(ida ...string) *Field {
 	return nil
 }
 
-func (m *Map) GetEdges(eid *EdgeID) []*Edge {
+func (m *Map) GetEdges(eid *EdgeID, refctx *RefContext) []*Edge {
+	if refctx != nil {
+		var ea []*Edge
+		m.getEdges(eid, refctx, &ea)
+		return ea
+	}
+
 	eid, m, common, err := eid.resolve(m)
 	if err != nil {
 		return nil
@@ -859,7 +868,7 @@ func (m *Map) GetEdges(eid *EdgeID) []*Edge {
 			return nil
 		}
 		if f.Map() != nil {
-			return f.Map().GetEdges(eid)
+			return f.Map().GetEdges(eid, nil)
 		}
 		return nil
 	}
@@ -871,6 +880,90 @@ func (m *Map) GetEdges(eid *EdgeID) []*Edge {
 		}
 	}
 	return ea
+}
+
+func (m *Map) getEdges(eid *EdgeID, refctx *RefContext, ea *[]*Edge) error {
+	eid, m, common, err := eid.resolve(m)
+	if err != nil {
+		return err
+	}
+
+	if len(common) > 0 {
+		commonKP := d2ast.MakeKeyPath(common)
+		lastMatch := 0
+		for i, el := range commonKP.Path {
+			for j := lastMatch; j < len(refctx.Edge.Src.Path); j++ {
+				realEl := refctx.Edge.Src.Path[j]
+				if el.ScalarString() == realEl.ScalarString() {
+					commonKP.Path[i] = realEl
+					lastMatch += j + 1
+				}
+			}
+		}
+		fa, err := m.EnsureField(commonKP, nil, false)
+		if err != nil {
+			return nil
+		}
+		for _, f := range fa {
+			if _, ok := f.Composite.(*Array); ok {
+				return d2parser.Errorf(refctx.Edge.Src, "cannot index into array")
+			}
+			if f.Map() == nil {
+				f.Composite = &Map{
+					parent: f,
+				}
+			}
+			err = f.Map().getEdges(eid, refctx, ea)
+			if err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+
+	srcKP := d2ast.MakeKeyPath(eid.SrcPath)
+	lastMatch := 0
+	for i, el := range srcKP.Path {
+		for j := lastMatch; j < len(refctx.Edge.Src.Path); j++ {
+			realEl := refctx.Edge.Src.Path[j]
+			if el.ScalarString() == realEl.ScalarString() {
+				srcKP.Path[i] = realEl
+				lastMatch += j + 1
+			}
+		}
+	}
+	dstKP := d2ast.MakeKeyPath(eid.DstPath)
+	lastMatch = 0
+	for i, el := range dstKP.Path {
+		for j := lastMatch; j < len(refctx.Edge.Dst.Path); j++ {
+			realEl := refctx.Edge.Dst.Path[j]
+			if el.ScalarString() == realEl.ScalarString() {
+				dstKP.Path[i] = realEl
+				lastMatch += j + 1
+			}
+		}
+	}
+
+	srcFA, err := m.EnsureField(srcKP, nil, false)
+	if err != nil {
+		return err
+	}
+	dstFA, err := m.EnsureField(dstKP, nil, false)
+	if err != nil {
+		return err
+	}
+
+	for _, src := range srcFA {
+		for _, dst := range dstFA {
+			eid2 := eid.Copy()
+			eid2.SrcPath = RelIDA(m, src)
+			eid2.DstPath = RelIDA(m, dst)
+
+			ea2 := m.GetEdges(eid2, nil)
+			*ea = append(*ea, ea2...)
+		}
+	}
+	return nil
 }
 
 func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext) ([]*Edge, error) {
@@ -888,11 +981,18 @@ func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, ea *[]*Edge) error {
 		return d2parser.Errorf(refctx.Edge, err.Error())
 	}
 	if len(common) > 0 {
-		commonEnd := len(refctx.Edge.Src.Path) - len(eid.SrcPath)
-		commonStart := commonEnd - len(common)
-		commonKP := refctx.Edge.Src.Copy()
-		commonKP.Path = commonKP.Path[commonStart:commonEnd]
-		fa, err := m.EnsureField(commonKP, nil)
+		commonKP := d2ast.MakeKeyPath(common)
+		lastMatch := 0
+		for i, el := range commonKP.Path {
+			for j := lastMatch; j < len(refctx.Edge.Src.Path); j++ {
+				realEl := refctx.Edge.Src.Path[j]
+				if el.ScalarString() == realEl.ScalarString() {
+					commonKP.Path[i] = realEl
+					lastMatch += j + 1
+				}
+			}
+		}
+		fa, err := m.EnsureField(commonKP, nil, true)
 		if err != nil {
 			return err
 		}
@@ -954,11 +1054,11 @@ func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, ea *[]*Edge) error {
 		}
 	}
 
-	srcFA, err := m.EnsureField(srcKP, nil)
+	srcFA, err := m.EnsureField(srcKP, nil, true)
 	if err != nil {
 		return err
 	}
-	dstFA, err := m.EnsureField(dstKP, nil)
+	dstFA, err := m.EnsureField(dstKP, nil, true)
 	if err != nil {
 		return err
 	}
@@ -990,9 +1090,11 @@ func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, src, dst *Field) (*Ed
 	}
 
 	eid.Index = nil
-	ea := m.GetEdges(eid)
+	eid.Glob = true
+	ea := m.GetEdges(eid, refctx)
 	index := len(ea)
 	eid.Index = &index
+	eid.Glob = false
 	e := &Edge{
 		parent: m,
 		ID:     eid,

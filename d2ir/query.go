@@ -30,7 +30,7 @@ func (m *Map) QueryAll(idStr string) (na []Node, _ error) {
 
 	eida := NewEdgeIDs(k)
 	for _, eid := range eida {
-		ea := m.GetEdges(eid)
+		ea := m.GetEdges(eid, nil)
 		for _, e := range ea {
 			if k.EdgeKey == nil {
 				na = append(na, e)

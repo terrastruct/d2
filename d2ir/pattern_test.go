@@ -149,6 +149,23 @@ a -> b
 			},
 		},
 		{
+			name: "glob-edge-glob-index",
+			run: func(t testing.TB) {
+				m, err := compile(t, `a -> b
+a -> b
+a -> b
+c -> b
+(* -> b)[*].style.fill: red
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 11, 4, nil, "")
+				assertQuery(t, m, 0, 0, "red", "(a -> b)[0].style.fill")
+				assertQuery(t, m, 0, 0, "red", "(a -> b)[1].style.fill")
+				assertQuery(t, m, 0, 0, "red", "(a -> b)[2].style.fill")
+				assertQuery(t, m, 0, 0, "red", "(c -> b)[0].style.fill")
+			},
+		},
+		{
 			name: "double-glob/1",
 			run: func(t testing.TB) {
 				m, err := compile(t, `shared.animate
@@ -169,7 +186,17 @@ shared.animal
 	runa(t, tca)
 
 	t.Run("errors", func(t *testing.T) {
-		tca := []testCase{}
+		tca := []testCase{
+			{
+				name: "glob-edge-glob-index",
+				run: func(t testing.TB) {
+					m, err := compile(t, `(* -> b)[*].style.fill: red
+`)
+					assert.ErrorString(t, err, `TestCompile/patterns/errors/glob-edge-glob-index.d2:1:2: indexed edge does not exist`)
+					assertQuery(t, m, 0, 0, nil, "")
+				},
+			},
+		}
 		runa(t, tca)
 	})
 }
