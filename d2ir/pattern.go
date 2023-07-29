@@ -44,7 +44,7 @@ func matchPattern(s string, pattern []string) bool {
 				i++
 			}
 		} else {
-			if !strings.HasPrefix(s, pattern[i]) {
+			if !strings.HasPrefix(strings.ToLower(s), strings.ToLower(pattern[i])) {
 				return false
 			}
 			s = s[len(pattern[i]):]

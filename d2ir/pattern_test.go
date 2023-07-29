@@ -36,6 +36,18 @@ a*: globbed`)
 			},
 		},
 		{
+			name: "case",
+			run: func(t testing.TB) {
+				m, err := compile(t, `animal: meow
+action: yes
+A*: globbed`)
+				assert.Success(t, err)
+				assertQuery(t, m, 2, 0, nil, "")
+				assertQuery(t, m, 0, 0, "globbed", "animal")
+				assertQuery(t, m, 0, 0, "globbed", "action")
+			},
+		},
+		{
 			name: "suffix",
 			run: func(t testing.TB) {
 				m, err := compile(t, `animal: meow
