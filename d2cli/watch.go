@@ -443,8 +443,10 @@ func (w *watcher) handleRoot(hw http.ResponseWriter, r *http.Request) {
 </html>`, filepath.Base(w.outputPath), w.devMode)
 
 	// if path is "/x.svg", we just want "x"
-	split := strings.Split(strings.TrimPrefix(r.URL.Path, "/"), ".")
-	boardPath := strings.Join(split[:len(split)-1], ".")
+	boardPath := strings.TrimPrefix(r.URL.Path, "/")
+	if idx := strings.LastIndexByte(boardPath, '.'); idx != -1 {
+		boardPath = boardPath[:idx]
+	}
 	if boardPath != w.boardPath {
 		w.boardPath = boardPath
 		w.requestCompile()

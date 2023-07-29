@@ -81,53 +81,59 @@ func (d *Diagram) GetBoard(boardPath string) *Diagram {
 		return d
 	}
 
-	head := path[0]
+	return d.getBoard(path)
+}
+
+func (d *Diagram) getBoard(boardPath []string) *Diagram {
+	head := boardPath[0]
 
 	if head == "index" {
 		return d
 	}
 
 	switch head {
-	case "layers", "scenarios", "steps":
-		if len(path) < 2 {
+	case "layers":
+		if len(boardPath) < 2 {
 			return nil
 		}
-	}
-
-	switch head {
-	case "layers":
 		for _, b := range d.Layers {
-			if b.Name == path[1] {
-				return b.GetBoard(strings.Join(path[2:], string(os.PathSeparator)))
+			if b.Name == boardPath[1] {
+				return b.getBoard(boardPath[2:])
 			}
 		}
 	case "scenarios":
+		if len(boardPath) < 2 {
+			return nil
+		}
 		for _, b := range d.Scenarios {
-			if b.Name == path[1] {
-				return b.GetBoard(strings.Join(path[2:], string(os.PathSeparator)))
+			if b.Name == boardPath[1] {
+				return b.getBoard(boardPath[2:])
 			}
 		}
 	case "steps":
+		if len(boardPath) < 2 {
+			return nil
+		}
 		for _, b := range d.Steps {
-			if b.Name == path[1] {
-				return b.GetBoard(strings.Join(path[2:], string(os.PathSeparator)))
+			if b.Name == boardPath[1] {
+				return b.getBoard(boardPath[2:])
 			}
 		}
 	}
 
 	for _, b := range d.Layers {
 		if b.Name == head {
-			return b.GetBoard(strings.Join(path[1:], string(os.PathSeparator)))
+			return b.getBoard(boardPath[2:])
 		}
 	}
 	for _, b := range d.Scenarios {
 		if b.Name == head {
-			return b.GetBoard(strings.Join(path[1:], string(os.PathSeparator)))
+			return b.getBoard(boardPath[2:])
 		}
 	}
 	for _, b := range d.Steps {
 		if b.Name == head {
-			return b.GetBoard(strings.Join(path[1:], string(os.PathSeparator)))
+			return b.getBoard(boardPath[2:])
 		}
 	}
 	return nil
