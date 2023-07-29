@@ -8,9 +8,7 @@ function init(reconnectDelay) {
   const d2SVG = window.document.querySelector("#d2-svg-container");
 
   const devMode = document.body.dataset.d2DevMode === "true";
-  const ws = new WebSocket(
-    `ws://${window.location.host}/watch`
-  );
+  const ws = new WebSocket(`ws://${window.location.host}/watch`);
   let isInit = true;
   let ratio;
   ws.onopen = () => {
