@@ -67,7 +67,8 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	debugFlag, err := ms.Opts.Bool("DEBUG", "debug", "d", false, "print debug logs.")
 	if err != nil {
-		return err
+		ms.Log.Warn.Printf("Invalid DEBUG flag value ignored")
+		debugFlag = go2.Pointer(false)
 	}
 	imgCacheFlag, err := ms.Opts.Bool("IMG_CACHE", "img-cache", "", true, "in watch mode, images used in icons are cached for subsequent compilations. This should be disabled if images might change.")
 	if err != nil {
