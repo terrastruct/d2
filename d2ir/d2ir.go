@@ -653,6 +653,7 @@ func (m *Map) getField(ida []string) *Field {
 	return nil
 }
 
+// EnsureField is a bit of a misnomer. It's more of a Query/Ensure combination function at this point.
 func (m *Map) EnsureField(kp *d2ast.KeyPath, refctx *RefContext, create bool) ([]*Field, error) {
 	i := 0
 	for kp.Path[i].Unbox().ScalarString() == "_" {
