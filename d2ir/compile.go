@@ -408,6 +408,31 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 }
 
 func (c *compiler) _compileField(f *Field, refctx *RefContext) {
+	if refctx.Key.Ampersand {
+		f2 := ParentMap(f).Map().GetField(refctx.Key.Key.IDA()...)
+		if f2 == nil {
+			return
+		}
+		if refctx.Key.Primary.Unbox() != nil {
+		  if f2.Primary_ == nil {
+			return
+		  }
+		  if refctx.Key.Primary.Unbox().ScalarString() != f2.Primary_.Value.ScalarString() {
+			return
+		  }
+		}
+		if refctx.Key.Value.ScalarBox().Unbox() != nil {
+		  if f2.Primary_ == nil {
+			return
+		  }
+		  if refctx.Key.Value.ScalarBox().Unbox().ScalarString() != f2.Primary_.Value.ScalarString() {
+			println(refctx.Key.Value.ScalarBox().Unbox().ScalarString())
+			println(f2.Primary_.Value.ScalarString())
+			return
+		  }
+		}
+	}
+
 	if len(refctx.Key.Edges) == 0 && refctx.Key.Value.Null != nil {
 		// For vars, if we delete the field, it may just resolve to an outer scope var of the same name
 		// Instead we keep it around, so that resolveSubstitutions can find it

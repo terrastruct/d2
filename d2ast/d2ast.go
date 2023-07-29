@@ -610,7 +610,7 @@ func (m *Map) IsFileMap() bool {
 type Key struct {
 	Range Range `json:"range"`
 
-	// Indicates this MapKey is an override selector.
+	// Indicates this MapKey is a filter selector.
 	Ampersand bool `json:"ampersand,omitempty"`
 
 	// At least one of Key and Edges will be set but all four can also be set.
