@@ -193,6 +193,25 @@ shared.animal
 				assertQuery(t, m, 1, 0, nil, "shared.animal.style")
 			},
 		},
+		{
+			name: "reserved",
+			run: func(t testing.TB) {
+				m, err := compile(t, `vars: {
+  d2-config: {
+    layout-engine: elk
+  }
+}
+
+Spiderman 1
+Spiderman 2
+Spiderman 3
+
+* -> *: arrow`)
+				assert.Success(t, err)
+				assertQuery(t, m, 6, 9, nil, "")
+				assertQuery(t, m, 0, 0, "arrow", "(* -> *)[*]")
+			},
+		},
 	}
 
 	runa(t, tca)

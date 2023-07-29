@@ -31,6 +31,9 @@ func matchPattern(s string, pattern []string) bool {
 	if len(pattern) == 0 {
 		return true
 	}
+	if _, ok := d2graph.ReservedKeywords[s]; ok {
+		return false
+	}
 
 	for i := 0; i < len(pattern); i++ {
 		if pattern[i] == "*" {

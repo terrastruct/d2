@@ -29,8 +29,14 @@ func (m *Map) QueryAll(idStr string) (na []Node, _ error) {
 	}
 
 	eida := NewEdgeIDs(k)
-	for _, eid := range eida {
-		ea := m.GetEdges(eid, nil)
+
+	for i, eid := range eida {
+		refctx := &RefContext{
+			Key:      k,
+			ScopeMap: m,
+			Edge:     k.Edges[i],
+		}
+		ea := m.GetEdges(eid, refctx)
 		for _, e := range ea {
 			if k.EdgeKey == nil {
 				na = append(na, e)

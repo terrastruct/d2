@@ -1,0 +1,1686 @@
+{
+  "fields": [
+    {
+      "name": "vars",
+      "composite": {
+        "fields": [
+          {
+            "name": "d2-config",
+            "composite": {
+              "fields": [
+                {
+                  "name": "layout-engine",
+                  "primary": {
+                    "value": {
+                      "range": "TestCompile/patterns/reserved.d2,2:19:42-2:22:45",
+                      "value": [
+                        {
+                          "string": "elk",
+                          "raw_string": "elk"
+                        }
+                      ]
+                    }
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/reserved.d2,2:4:27-2:17:40",
+                        "value": [
+                          {
+                            "string": "layout-engine",
+                            "raw_string": "layout-engine"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/reserved.d2,2:4:27-2:17:40",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/reserved.d2,2:4:27-2:17:40",
+                              "value": [
+                                {
+                                  "string": "layout-engine",
+                                  "raw_string": "layout-engine"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/patterns/reserved.d2,2:4:27-2:22:45",
+                          "key": {
+                            "range": "TestCompile/patterns/reserved.d2,2:4:27-2:17:40",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/reserved.d2,2:4:27-2:17:40",
+                                  "value": [
+                                    {
+                                      "string": "layout-engine",
+                                      "raw_string": "layout-engine"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/reserved.d2,2:19:42-2:22:45",
+                              "value": [
+                                {
+                                  "string": "elk",
+                                  "raw_string": "elk"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/patterns/reserved.d2,1:2:10-1:11:19",
+                  "value": [
+                    {
+                      "string": "d2-config",
+                      "raw_string": "d2-config"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/reserved.d2,1:2:10-1:11:19",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/reserved.d2,1:2:10-1:11:19",
+                        "value": [
+                          {
+                            "string": "d2-config",
+                            "raw_string": "d2-config"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/reserved.d2,1:2:10-3:3:49",
+                    "key": {
+                      "range": "TestCompile/patterns/reserved.d2,1:2:10-1:11:19",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/reserved.d2,1:2:10-1:11:19",
+                            "value": [
+                              {
+                                "string": "d2-config",
+                                "raw_string": "d2-config"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/patterns/reserved.d2,1:13:21-3:3:49",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/patterns/reserved.d2,2:4:27-2:22:45",
+                              "key": {
+                                "range": "TestCompile/patterns/reserved.d2,2:4:27-2:17:40",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/reserved.d2,2:4:27-2:17:40",
+                                      "value": [
+                                        {
+                                          "string": "layout-engine",
+                                          "raw_string": "layout-engine"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/reserved.d2,2:19:42-2:22:45",
+                                  "value": [
+                                    {
+                                      "string": "elk",
+                                      "raw_string": "elk"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/reserved.d2,0:0:0-0:4:4",
+            "value": [
+              {
+                "string": "vars",
+                "raw_string": "vars"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/reserved.d2,0:0:0-0:4:4",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/reserved.d2,0:0:0-0:4:4",
+                  "value": [
+                    {
+                      "string": "vars",
+                      "raw_string": "vars"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/reserved.d2,0:0:0-4:1:51",
+              "key": {
+                "range": "TestCompile/patterns/reserved.d2,0:0:0-0:4:4",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,0:0:0-0:4:4",
+                      "value": [
+                        {
+                          "string": "vars",
+                          "raw_string": "vars"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/patterns/reserved.d2,0:6:6-4:1:51",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/patterns/reserved.d2,1:2:10-3:3:49",
+                        "key": {
+                          "range": "TestCompile/patterns/reserved.d2,1:2:10-1:11:19",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/reserved.d2,1:2:10-1:11:19",
+                                "value": [
+                                  {
+                                    "string": "d2-config",
+                                    "raw_string": "d2-config"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "map": {
+                            "range": "TestCompile/patterns/reserved.d2,1:13:21-3:3:49",
+                            "nodes": [
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/patterns/reserved.d2,2:4:27-2:22:45",
+                                  "key": {
+                                    "range": "TestCompile/patterns/reserved.d2,2:4:27-2:17:40",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/patterns/reserved.d2,2:4:27-2:17:40",
+                                          "value": [
+                                            {
+                                              "string": "layout-engine",
+                                              "raw_string": "layout-engine"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/reserved.d2,2:19:42-2:22:45",
+                                      "value": [
+                                        {
+                                          "string": "elk",
+                                          "raw_string": "elk"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Spiderman 1",
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/reserved.d2,6:0:53-6:11:64",
+            "value": [
+              {
+                "string": "Spiderman 1",
+                "raw_string": "Spiderman 1"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/reserved.d2,6:0:53-6:11:64",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/reserved.d2,6:0:53-6:11:64",
+                  "value": [
+                    {
+                      "string": "Spiderman 1",
+                      "raw_string": "Spiderman 1"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/reserved.d2,6:0:53-6:11:64",
+              "key": {
+                "range": "TestCompile/patterns/reserved.d2,6:0:53-6:11:64",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,6:0:53-6:11:64",
+                      "value": [
+                        {
+                          "string": "Spiderman 1",
+                          "raw_string": "Spiderman 1"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Spiderman 2",
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/reserved.d2,7:0:65-7:11:76",
+            "value": [
+              {
+                "string": "Spiderman 2",
+                "raw_string": "Spiderman 2"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/reserved.d2,7:0:65-7:11:76",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/reserved.d2,7:0:65-7:11:76",
+                  "value": [
+                    {
+                      "string": "Spiderman 2",
+                      "raw_string": "Spiderman 2"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/reserved.d2,7:0:65-7:11:76",
+              "key": {
+                "range": "TestCompile/patterns/reserved.d2,7:0:65-7:11:76",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,7:0:65-7:11:76",
+                      "value": [
+                        {
+                          "string": "Spiderman 2",
+                          "raw_string": "Spiderman 2"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Spiderman 3",
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/reserved.d2,8:0:77-8:11:88",
+            "value": [
+              {
+                "string": "Spiderman 3",
+                "raw_string": "Spiderman 3"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/reserved.d2,8:0:77-8:11:88",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/reserved.d2,8:0:77-8:11:88",
+                  "value": [
+                    {
+                      "string": "Spiderman 3",
+                      "raw_string": "Spiderman 3"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/reserved.d2,8:0:77-8:11:88",
+              "key": {
+                "range": "TestCompile/patterns/reserved.d2,8:0:77-8:11:88",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,8:0:77-8:11:88",
+                      "value": [
+                        {
+                          "string": "Spiderman 3",
+                          "raw_string": "Spiderman 3"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": {
+        "src_path": [
+          "Spiderman 1"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "Spiderman 1"
+        ],
+        "dst_arrow": true,
+        "index": 0,
+        "glob": false
+      },
+      "primary": {
+        "value": {
+          "range": "TestCompile/patterns/reserved.d2,10:8:98-10:13:103",
+          "value": [
+            {
+              "string": "arrow",
+              "raw_string": "arrow"
+            }
+          ]
+        }
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/reserved.d2,10:0:90-10:6:96",
+              "src": {
+                "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/reserved.d2,10:0:90-10:13:103",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/reserved.d2,10:0:90-10:6:96",
+                  "src": {
+                    "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/reserved.d2,10:8:98-10:13:103",
+                  "value": [
+                    {
+                      "string": "arrow",
+                      "raw_string": "arrow"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "edge_id": {
+        "src_path": [
+          "Spiderman 1"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "Spiderman 2"
+        ],
+        "dst_arrow": true,
+        "index": 0,
+        "glob": false
+      },
+      "primary": {
+        "value": {
+          "range": "TestCompile/patterns/reserved.d2,10:8:98-10:13:103",
+          "value": [
+            {
+              "string": "arrow",
+              "raw_string": "arrow"
+            }
+          ]
+        }
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/reserved.d2,10:0:90-10:6:96",
+              "src": {
+                "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/reserved.d2,10:0:90-10:13:103",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/reserved.d2,10:0:90-10:6:96",
+                  "src": {
+                    "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/reserved.d2,10:8:98-10:13:103",
+                  "value": [
+                    {
+                      "string": "arrow",
+                      "raw_string": "arrow"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "edge_id": {
+        "src_path": [
+          "Spiderman 1"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "Spiderman 3"
+        ],
+        "dst_arrow": true,
+        "index": 0,
+        "glob": false
+      },
+      "primary": {
+        "value": {
+          "range": "TestCompile/patterns/reserved.d2,10:8:98-10:13:103",
+          "value": [
+            {
+              "string": "arrow",
+              "raw_string": "arrow"
+            }
+          ]
+        }
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/reserved.d2,10:0:90-10:6:96",
+              "src": {
+                "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/reserved.d2,10:0:90-10:13:103",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/reserved.d2,10:0:90-10:6:96",
+                  "src": {
+                    "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/reserved.d2,10:8:98-10:13:103",
+                  "value": [
+                    {
+                      "string": "arrow",
+                      "raw_string": "arrow"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "edge_id": {
+        "src_path": [
+          "Spiderman 2"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "Spiderman 1"
+        ],
+        "dst_arrow": true,
+        "index": 0,
+        "glob": false
+      },
+      "primary": {
+        "value": {
+          "range": "TestCompile/patterns/reserved.d2,10:8:98-10:13:103",
+          "value": [
+            {
+              "string": "arrow",
+              "raw_string": "arrow"
+            }
+          ]
+        }
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/reserved.d2,10:0:90-10:6:96",
+              "src": {
+                "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/reserved.d2,10:0:90-10:13:103",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/reserved.d2,10:0:90-10:6:96",
+                  "src": {
+                    "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/reserved.d2,10:8:98-10:13:103",
+                  "value": [
+                    {
+                      "string": "arrow",
+                      "raw_string": "arrow"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "edge_id": {
+        "src_path": [
+          "Spiderman 2"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "Spiderman 2"
+        ],
+        "dst_arrow": true,
+        "index": 0,
+        "glob": false
+      },
+      "primary": {
+        "value": {
+          "range": "TestCompile/patterns/reserved.d2,10:8:98-10:13:103",
+          "value": [
+            {
+              "string": "arrow",
+              "raw_string": "arrow"
+            }
+          ]
+        }
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/reserved.d2,10:0:90-10:6:96",
+              "src": {
+                "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/reserved.d2,10:0:90-10:13:103",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/reserved.d2,10:0:90-10:6:96",
+                  "src": {
+                    "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/reserved.d2,10:8:98-10:13:103",
+                  "value": [
+                    {
+                      "string": "arrow",
+                      "raw_string": "arrow"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "edge_id": {
+        "src_path": [
+          "Spiderman 2"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "Spiderman 3"
+        ],
+        "dst_arrow": true,
+        "index": 0,
+        "glob": false
+      },
+      "primary": {
+        "value": {
+          "range": "TestCompile/patterns/reserved.d2,10:8:98-10:13:103",
+          "value": [
+            {
+              "string": "arrow",
+              "raw_string": "arrow"
+            }
+          ]
+        }
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/reserved.d2,10:0:90-10:6:96",
+              "src": {
+                "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/reserved.d2,10:0:90-10:13:103",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/reserved.d2,10:0:90-10:6:96",
+                  "src": {
+                    "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/reserved.d2,10:8:98-10:13:103",
+                  "value": [
+                    {
+                      "string": "arrow",
+                      "raw_string": "arrow"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "edge_id": {
+        "src_path": [
+          "Spiderman 3"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "Spiderman 1"
+        ],
+        "dst_arrow": true,
+        "index": 0,
+        "glob": false
+      },
+      "primary": {
+        "value": {
+          "range": "TestCompile/patterns/reserved.d2,10:8:98-10:13:103",
+          "value": [
+            {
+              "string": "arrow",
+              "raw_string": "arrow"
+            }
+          ]
+        }
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/reserved.d2,10:0:90-10:6:96",
+              "src": {
+                "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/reserved.d2,10:0:90-10:13:103",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/reserved.d2,10:0:90-10:6:96",
+                  "src": {
+                    "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/reserved.d2,10:8:98-10:13:103",
+                  "value": [
+                    {
+                      "string": "arrow",
+                      "raw_string": "arrow"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "edge_id": {
+        "src_path": [
+          "Spiderman 3"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "Spiderman 2"
+        ],
+        "dst_arrow": true,
+        "index": 0,
+        "glob": false
+      },
+      "primary": {
+        "value": {
+          "range": "TestCompile/patterns/reserved.d2,10:8:98-10:13:103",
+          "value": [
+            {
+              "string": "arrow",
+              "raw_string": "arrow"
+            }
+          ]
+        }
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/reserved.d2,10:0:90-10:6:96",
+              "src": {
+                "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/reserved.d2,10:0:90-10:13:103",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/reserved.d2,10:0:90-10:6:96",
+                  "src": {
+                    "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/reserved.d2,10:8:98-10:13:103",
+                  "value": [
+                    {
+                      "string": "arrow",
+                      "raw_string": "arrow"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "edge_id": {
+        "src_path": [
+          "Spiderman 3"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "Spiderman 3"
+        ],
+        "dst_arrow": true,
+        "index": 0,
+        "glob": false
+      },
+      "primary": {
+        "value": {
+          "range": "TestCompile/patterns/reserved.d2,10:8:98-10:13:103",
+          "value": [
+            {
+              "string": "arrow",
+              "raw_string": "arrow"
+            }
+          ]
+        }
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/reserved.d2,10:0:90-10:6:96",
+              "src": {
+                "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/reserved.d2,10:0:90-10:13:103",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/reserved.d2,10:0:90-10:6:96",
+                  "src": {
+                    "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/reserved.d2,10:0:90-10:1:91",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/reserved.d2,10:5:95-10:6:96",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/reserved.d2,10:8:98-10:13:103",
+                  "value": [
+                    {
+                      "string": "arrow",
+                      "raw_string": "arrow"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
