@@ -11,7 +11,7 @@ func testCompileFilters(t *testing.T) {
 
 	tca := []testCase{
 		{
-			name: "escaped",
+			name: "base",
 			run: func(t testing.TB) {
 				m, err := compile(t, `jacob: {
 	shape: circle
@@ -24,9 +24,27 @@ jeremy: {
 	label: I'm a rectangle
 }`)
 				assert.Success(t, err)
-				t.Log(m.String())
 				assertQuery(t, m, 1, 0, nil, "jacob")
-				assertQuery(t, m, 2, 0, "", "jeremy")
+				assertQuery(t, m, 2, 0, nil, "jeremy")
+				assertQuery(t, m, 0, 0, "I'm a rectangle", "jeremy.label")
+			},
+		},
+		{
+			name: "order",
+			run: func(t testing.TB) {
+				m, err := compile(t, `jacob: {
+	shape: circle
+}
+jeremy: {
+	shape: rectangle
+}
+*: {
+	label: I'm a rectangle
+	&shape: rectangle
+}`)
+				assert.Success(t, err)
+				assertQuery(t, m, 1, 0, nil, "jacob")
+				assertQuery(t, m, 2, 0, nil, "jeremy")
 				assertQuery(t, m, 0, 0, "I'm a rectangle", "jeremy.label")
 			},
 		},

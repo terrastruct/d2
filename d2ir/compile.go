@@ -347,6 +347,20 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 	for _, n := range ast.Nodes {
 		switch {
 		case n.MapKey != nil:
+			ok := c.ampersandFilter(&RefContext{
+				Key:      n.MapKey,
+				Scope:    ast,
+				ScopeMap: dst,
+				ScopeAST: scopeAST,
+			})
+			if !ok {
+				return
+			}
+		}
+	}
+	for _, n := range ast.Nodes {
+		switch {
+		case n.MapKey != nil:
 			c.compileKey(&RefContext{
 				Key:      n.MapKey,
 				Scope:    ast,
@@ -407,32 +421,57 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 	}
 }
 
-func (c *compiler) _compileField(f *Field, refctx *RefContext) {
-	if refctx.Key.Ampersand {
-		f2 := ParentMap(f).Map().GetField(refctx.Key.Key.IDA()...)
-		if f2 == nil {
-			return
+func (c *compiler) ampersandFilter(refctx *RefContext) bool {
+	if !refctx.Key.Ampersand {
+		return true
+	}
+	if len(refctx.Key.Edges) > 0 {
+		return true
+	}
+
+	fa, err := refctx.ScopeMap.EnsureField(refctx.Key.Key, refctx, false)
+	if err != nil {
+		c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
+		return false
+	}
+	if len(fa) == 0 {
+		return false
+	}
+	for _, f := range fa {
+		ok := c._ampersandFilter(f, refctx)
+		if !ok {
+			return false
 		}
-		if refctx.Key.Primary.Unbox() != nil {
-		  if f2.Primary_ == nil {
-			return
-		  }
-		  if refctx.Key.Primary.Unbox().ScalarString() != f2.Primary_.Value.ScalarString() {
-			return
-		  }
+	}
+	return true
+}
+
+func (c *compiler) _ampersandFilter(f *Field, refctx *RefContext) bool {
+	f2 := ParentMap(f).Map().GetField(refctx.Key.Key.IDA()...)
+	if f2 == nil {
+		return false
+	}
+	if refctx.Key.Primary.Unbox() != nil {
+		if f2.Primary_ == nil {
+			return false
 		}
-		if refctx.Key.Value.ScalarBox().Unbox() != nil {
-		  if f2.Primary_ == nil {
-			return
-		  }
-		  if refctx.Key.Value.ScalarBox().Unbox().ScalarString() != f2.Primary_.Value.ScalarString() {
-			println(refctx.Key.Value.ScalarBox().Unbox().ScalarString())
-			println(f2.Primary_.Value.ScalarString())
-			return
-		  }
+		if refctx.Key.Primary.Unbox().ScalarString() != f2.Primary_.Value.ScalarString() {
+			return false
+		}
+	}
+	if refctx.Key.Value.ScalarBox().Unbox() != nil {
+		if f2.Primary_ == nil {
+			return false
+		}
+		if refctx.Key.Value.ScalarBox().Unbox().ScalarString() != f2.Primary_.Value.ScalarString() {
+			return false
 		}
 	}
 
+	return true
+}
+
+func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 	if len(refctx.Key.Edges) == 0 && refctx.Key.Value.Null != nil {
 		// For vars, if we delete the field, it may just resolve to an outer scope var of the same name
 		// Instead we keep it around, so that resolveSubstitutions can find it
