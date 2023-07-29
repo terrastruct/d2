@@ -9,7 +9,7 @@ function init(reconnectDelay) {
 
   const devMode = document.body.dataset.d2DevMode === "true";
   const ws = new WebSocket(
-    `ws://${window.location.host}${window.location.pathname}watch`
+    `ws://${window.location.host}/watch`
   );
   let isInit = true;
   let ratio;
@@ -28,7 +28,7 @@ function init(reconnectDelay) {
       // we can't just set `d2SVG.innerHTML = msg.svg` need to parse this as xml not html
       const parsedXML = new DOMParser().parseFromString(msg.svg, "text/xml");
       d2SVG.replaceChildren(parsedXML.documentElement);
-      changeFavicon("./static/favicon.ico");
+      changeFavicon("/static/favicon.ico");
       const svgEl = d2SVG.querySelector("#d2-svg");
       // just use inner SVG in watch mode
       svgEl.parentElement.replaceWith(svgEl);
@@ -60,7 +60,7 @@ function init(reconnectDelay) {
     if (msg.err) {
       d2ErrDiv.innerText = msg.err;
       d2ErrDiv.style.display = "block";
-      changeFavicon("./static/favicon-err.ico");
+      changeFavicon("/static/favicon-err.ico");
       d2ErrDiv.scrollIntoView();
     }
   };

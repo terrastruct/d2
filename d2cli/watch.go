@@ -12,6 +12,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"sync"
 	"time"
 
@@ -49,6 +50,7 @@ type watcherOpts struct {
 	port            string
 	inputPath       string
 	outputPath      string
+	boardPath       string
 	pwd             string
 	bundle          bool
 	forceAppendix   bool
@@ -362,7 +364,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			w.pw = newPW
 		}
 
-		svg, _, err := compile(ctx, w.ms, w.plugins, w.layout, w.renderOpts, w.fontFamily, w.animateInterval, w.inputPath, w.outputPath, w.bundle, w.forceAppendix, w.pw.Page)
+		svg, _, err := compile(ctx, w.ms, w.plugins, w.layout, w.renderOpts, w.fontFamily, w.animateInterval, w.inputPath, w.outputPath, w.boardPath, w.bundle, w.forceAppendix, w.pw.Page)
 		errs := ""
 		if err != nil {
 			if len(svg) > 0 {
@@ -430,15 +432,23 @@ func (w *watcher) handleRoot(hw http.ResponseWriter, r *http.Request) {
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>%s</title>
-	<script src="./static/watch.js"></script>
-	<link rel="stylesheet" href="./static/watch.css">
-	<link id="favicon" rel="icon" href="./static/favicon.ico">
+	<script src="/static/watch.js"></script>
+	<link rel="stylesheet" href="/static/watch.css">
+	<link id="favicon" rel="icon" href="/static/favicon.ico">
 </head>
 <body data-d2-dev-mode=%t>
 	<div id="d2-err" style="display: none"></div>
 	<div id="d2-svg-container"></div>
 </body>
 </html>`, filepath.Base(w.outputPath), w.devMode)
+
+	// if path is "/x.svg", we just want "x"
+	split := strings.Split(strings.TrimPrefix(r.URL.Path, "/"), ".")
+	boardPath := strings.Join(split[:len(split)-1], ".")
+	if boardPath != w.boardPath {
+		w.boardPath = boardPath
+		w.requestCompile()
+	}
 }
 
 func (w *watcher) handleWatch(hw http.ResponseWriter, r *http.Request) error {
