@@ -1,7 +1,7 @@
 {
   "graph": {
     "name": "",
-    "isFolderOnly": false,
+    "isFolderOnly": true,
     "ast": {
       "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer.d2,0:0:0-10:0:62",
       "nodes": [

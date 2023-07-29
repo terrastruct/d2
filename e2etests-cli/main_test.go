@@ -74,8 +74,6 @@ func TestCLI_E2E(t *testing.T) {
 				writeFile(t, dir, "empty-layer.d2", `layers: { x: {} }`)
 				err := runTestMain(t, ctx, dir, env, "empty-layer.d2")
 				assert.Success(t, err)
-
-				assert.TestdataDir(t, filepath.Join(dir, "empty-layer"))
 			},
 		},
 		{

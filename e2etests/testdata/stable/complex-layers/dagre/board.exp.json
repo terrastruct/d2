@@ -602,7 +602,7 @@
     },
     {
       "name": "repair",
-      "isFolderOnly": false,
+      "isFolderOnly": true,
       "fontFamily": "SourceSansPro",
       "shapes": [],
       "connections": [],

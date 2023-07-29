@@ -2833,6 +2833,21 @@ layers: {
 			},
 		},
 		{
+			name: "isFolderOnly-shapes",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+direction: right
+
+steps: {
+  1: {
+    RJ
+  }
+}
+`, "")
+				assert.True(t, g.IsFolderOnly)
+			},
+		},
+		{
 			name: "scenarios_edge_index",
 			run: func(t *testing.T) {
 				assertCompile(t, `a -> x
