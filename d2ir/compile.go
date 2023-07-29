@@ -685,8 +685,8 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 					e.Map_ = &Map{
 						parent: e,
 					}
-					c.compileField(e.Map_, refctx.Key.EdgeKey, refctx)
 				}
+				c.compileField(e.Map_, refctx.Key.EdgeKey, refctx)
 			} else {
 				if refctx.Key.Primary.Unbox() != nil {
 					e.Primary_ = &Scalar{

@@ -922,13 +922,6 @@ func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, ea *[]*Edge) error {
 		return d2parser.Errorf(refctx.Edge.Src.Path[ij].Unbox(), "edge with board keyword alone doesn't make sense")
 	}
 
-	srcStart := len(refctx.Edge.Src.Path) - len(eid.SrcPath)
-	if srcStart < 0 {
-		srcStart = 0
-	}
-	srcKP := refctx.Edge.Src.Copy()
-	srcKP.Path = srcKP.Path[srcStart:]
-
 	ij = findProhibitedEdgeKeyword(eid.DstPath...)
 	if ij != -1 {
 		return d2parser.Errorf(refctx.Edge.Dst.Path[ij].Unbox(), "reserved keywords are prohibited in edges")
@@ -938,37 +931,34 @@ func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, ea *[]*Edge) error {
 		return d2parser.Errorf(refctx.Edge.Dst.Path[ij].Unbox(), "edge with board keyword alone doesn't make sense")
 	}
 
-	dstStart := len(refctx.Edge.Dst.Path) - len(eid.DstPath)
-	if dstStart < 0 {
-		dstStart = 0
-	}
-	dstKP := refctx.Edge.Dst.Copy()
-	dstKP.Path = dstKP.Path[dstStart:]
-
-	underscoresCountSrc := 0
-	underscoresCountDst := 0
-	for _, el := range refctx.Edge.Src.Path {
-		if el.ScalarString() == "_" {
-			underscoresCountSrc++
+	srcKP := d2ast.MakeKeyPath(eid.SrcPath)
+	lastMatch := 0
+	for i, el := range srcKP.Path {
+		for j := lastMatch; j < len(refctx.Edge.Src.Path); j++ {
+			realEl := refctx.Edge.Src.Path[j]
+			if el.ScalarString() == realEl.ScalarString() {
+				srcKP.Path[i] = realEl
+				lastMatch += j + 1
+			}
 		}
 	}
-	for _, el := range refctx.Edge.Dst.Path {
-		if el.ScalarString() == "_" {
-			underscoresCountDst++
+	dstKP := d2ast.MakeKeyPath(eid.DstPath)
+	lastMatch = 0
+	for i, el := range dstKP.Path {
+		for j := lastMatch; j < len(refctx.Edge.Dst.Path); j++ {
+			realEl := refctx.Edge.Dst.Path[j]
+			if el.ScalarString() == realEl.ScalarString() {
+				dstKP.Path[i] = realEl
+				lastMatch += j + 1
+			}
 		}
 	}
-	for i := 0; i < underscoresCountDst; i++ {
-		srcKP.Path = append([]*d2ast.StringBox{d2ast.RawStringBox(eid.SrcPath[i], true)}, srcKP.Path...)
-	}
-	for i := 0; i < underscoresCountSrc; i++ {
-		dstKP.Path = append([]*d2ast.StringBox{d2ast.RawStringBox(eid.DstPath[i], true)}, dstKP.Path...)
-	}
 
-	srcFA, err := m.EnsureField(srcKP, refctx)
+	srcFA, err := m.EnsureField(srcKP, nil)
 	if err != nil {
 		return err
 	}
-	dstFA, err := m.EnsureField(dstKP, refctx)
+	dstFA, err := m.EnsureField(dstKP, nil)
 	if err != nil {
 		return err
 	}

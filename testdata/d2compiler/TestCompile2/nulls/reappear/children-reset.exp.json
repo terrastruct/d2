@@ -197,6 +197,37 @@
           },
           {
             "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/children-reset.d2,2:0:7-2:3:10",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/children-reset.d2,2:0:7-2:1:8",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/children-reset.d2,2:2:9-2:3:10",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
               "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/children-reset.d2,3:0:17-3:3:20",
               "path": [
                 {

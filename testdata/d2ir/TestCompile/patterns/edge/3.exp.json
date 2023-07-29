@@ -172,7 +172,8 @@
                 "animate"
               ],
               "dst_arrow": true,
-              "index": 0
+              "index": 0,
+              "glob": false
             },
             "references": [
               {
@@ -348,7 +349,8 @@
                 "animal"
               ],
               "dst_arrow": true,
-              "index": 0
+              "index": 0,
+              "glob": false
             },
             "references": [
               {
@@ -524,7 +526,8 @@
                 "animate"
               ],
               "dst_arrow": true,
-              "index": 0
+              "index": 0,
+              "glob": false
             },
             "references": [
               {
@@ -700,7 +703,8 @@
                 "animal"
               ],
               "dst_arrow": true,
-              "index": 0
+              "index": 0,
+              "glob": false
             },
             "references": [
               {
