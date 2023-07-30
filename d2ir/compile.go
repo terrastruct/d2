@@ -5,13 +5,22 @@ import (
 	"strconv"
 	"strings"
 
+	"oss.terrastruct.com/util-go/go2"
+
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
-	"oss.terrastruct.com/util-go/go2"
 )
+
+type globContext struct {
+	refctx *RefContext
+	// Set of BoardIDA that this glob has already applied to.
+	appliedFields map[string]struct{}
+	// Set of Edge IDs that this glob has already applied to.
+	appliedEdges map[string]struct{}
+}
 
 type compiler struct {
 	err *d2parser.ParseError
@@ -23,7 +32,12 @@ type compiler struct {
 	importCache map[string]*Map
 	utf16Pos    bool
 
-	globStack []bool
+	// Stack of globs that must be recomputed at each new object in and below the current scope.
+	globContextStack [][]*globContext
+	// Used to prevent field globs causing infinite loops.
+	globRefContextStack []*RefContext
+	// Used to check whether ampersands are allowed in the current map.
+	mapRefContextStack []*RefContext
 }
 
 type CompileOptions struct {
@@ -346,6 +360,52 @@ func (c *compiler) overlay(base *Map, f *Field) {
 }
 
 func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
+	var globs []*globContext
+	if len(c.globContextStack) > 0 {
+		previousGlobs := c.globContextStack[len(c.globContextStack)-1]
+		if NodeBoardKind(dst) == BoardLayer {
+			for _, g := range previousGlobs {
+				if g.refctx.Key.HasTripleGlob() {
+					// Same as below but reset applied too.
+					g2 := *g
+					g2.refctx = g.refctx.Copy()
+					g2.appliedFields = make(map[string]struct{})
+					g2.appliedEdges = make(map[string]struct{})
+					prefix := d2ast.MakeKeyPath(RelIDA(g2.refctx.ScopeMap, dst))
+					g2.refctx.Key = g2.refctx.Key.Copy()
+					if g2.refctx.Key.Key != nil {
+						prefix.Path = append(prefix.Path, g2.refctx.Key.Key.Path...)
+					}
+					if len(prefix.Path) > 0 {
+						g2.refctx.Key.Key = prefix
+					}
+					globs = append(globs, &g2)
+				}
+			}
+		} else if NodeBoardKind(dst) != "" {
+			// Make all globs relative to the scenario or step.
+			for _, g := range previousGlobs {
+				g2 := *g
+				g2.refctx = g.refctx.Copy()
+				prefix := d2ast.MakeKeyPath(RelIDA(g2.refctx.ScopeMap, dst))
+				g2.refctx.Key = g2.refctx.Key.Copy()
+				if g2.refctx.Key.Key != nil {
+					prefix.Path = append(prefix.Path, g2.refctx.Key.Key.Path...)
+				}
+				if len(prefix.Path) > 0 {
+					g2.refctx.Key.Key = prefix
+				}
+				globs = append(globs, &g2)
+			}
+		} else {
+			globs = append(globs, previousGlobs...)
+		}
+	}
+	c.globContextStack = append(c.globContextStack, globs)
+	defer func() {
+		c.globContextStack = c.globContextStack[:len(c.globContextStack)-1]
+	}()
+
 	for _, n := range ast.Nodes {
 		switch {
 		case n.MapKey != nil:
@@ -403,7 +463,47 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 	}
 }
 
+func (c *compiler) globContexts() []*globContext {
+	return c.globContextStack[len(c.globContextStack)-1]
+}
+
+func (c *compiler) getGlobContext(refctx *RefContext) *globContext {
+	for _, gctx := range c.globContexts() {
+		if gctx.refctx.Equal(refctx) {
+			return gctx
+		}
+	}
+	return nil
+}
+
+func (c *compiler) ensureGlobContext(refctx *RefContext) *globContext {
+	gctx := c.getGlobContext(refctx)
+	if gctx != nil {
+		return gctx
+	}
+	gctx = &globContext{
+		refctx:        refctx,
+		appliedFields: make(map[string]struct{}),
+		appliedEdges:  make(map[string]struct{}),
+	}
+	c.globContextStack[len(c.globContextStack)-1] = append(c.globContexts(), gctx)
+	return gctx
+}
+
 func (c *compiler) compileKey(refctx *RefContext) {
+	if refctx.Key.HasGlob() {
+		for _, refctx2 := range c.globRefContextStack {
+			if refctx.Equal(refctx2) {
+				// Break the infinite loop.
+				return
+			}
+		}
+		c.globRefContextStack = append(c.globRefContextStack, refctx)
+		defer func() {
+			c.globRefContextStack = c.globRefContextStack[:len(c.globRefContextStack)-1]
+		}()
+		c.ensureGlobContext(refctx)
+	}
 	if len(refctx.Key.Edges) == 0 {
 		c.compileField(refctx.ScopeMap, refctx.Key.Key, refctx)
 	} else {
@@ -416,7 +516,7 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 		return
 	}
 
-	fa, err := dst.EnsureField(kp, refctx, true)
+	fa, err := dst.EnsureField(kp, refctx, true, c)
 	if err != nil {
 		c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 		return
@@ -431,7 +531,7 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 	if !refctx.Key.Ampersand {
 		return true
 	}
-	if len(c.globStack) == 0 || !c.globStack[len(c.globStack)-1] {
+	if len(c.mapRefContextStack) == 0 || !c.mapRefContextStack[len(c.mapRefContextStack)-1].Key.SupportsGlobFilters() {
 		c.errorf(refctx.Key, "glob filters cannot be used outside globs")
 		return false
 	}
@@ -439,7 +539,7 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 		return true
 	}
 
-	fa, err := refctx.ScopeMap.EnsureField(refctx.Key.Key, refctx, false)
+	fa, err := refctx.ScopeMap.EnsureField(refctx.Key.Key, refctx, false, c)
 	if err != nil {
 		c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 		return false
@@ -532,9 +632,9 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 			// If new board type, use that as the new scope AST, otherwise, carry on
 			scopeAST = refctx.ScopeAST
 		}
-		c.globStack = append(c.globStack, refctx.Key.HasQueryGlob())
+		c.mapRefContextStack = append(c.mapRefContextStack, refctx)
 		c.compileMap(f.Map(), refctx.Key.Value.Map, scopeAST)
-		c.globStack = c.globStack[:len(c.globStack)-1]
+		c.mapRefContextStack = c.mapRefContextStack[:len(c.mapRefContextStack)-1]
 		switch NodeBoardKind(f) {
 		case BoardScenario, BoardStep:
 			c.overlayClasses(f.Map())
@@ -692,7 +792,7 @@ func (c *compiler) compileEdges(refctx *RefContext) {
 		return
 	}
 
-	fa, err := refctx.ScopeMap.EnsureField(refctx.Key.Key, refctx, true)
+	fa, err := refctx.ScopeMap.EnsureField(refctx.Key.Key, refctx, true, c)
 	if err != nil {
 		c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 		return
@@ -728,7 +828,9 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 		if eid.Index != nil || eid.Glob {
 			ea = refctx.ScopeMap.GetEdges(eid, refctx)
 			if len(ea) == 0 {
-				c.errorf(refctx.Edge, "indexed edge does not exist")
+				if !eid.Glob {
+					c.errorf(refctx.Edge, "indexed edge does not exist")
+				}
 				continue
 			}
 			for _, e := range ea {
@@ -740,7 +842,7 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 			}
 		} else {
 			var err error
-			ea, err = refctx.ScopeMap.CreateEdge(eid, refctx)
+			ea, err = refctx.ScopeMap.CreateEdge(eid, refctx, c)
 			if err != nil {
 				c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 				continue
@@ -771,9 +873,9 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 							parent: e,
 						}
 					}
-					c.globStack = append(c.globStack, refctx.Key.HasQueryGlob())
+					c.mapRefContextStack = append(c.mapRefContextStack, refctx)
 					c.compileMap(e.Map_, refctx.Key.Value.Map, refctx.ScopeAST)
-					c.globStack = c.globStack[:len(c.globStack)-1]
+					c.mapRefContextStack = c.mapRefContextStack[:len(c.mapRefContextStack)-1]
 				} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
 					e.Primary_ = &Scalar{
 						parent: e,

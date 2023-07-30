@@ -723,7 +723,43 @@ func (mk *Key) SetScalar(scalar ScalarBox) {
 	}
 }
 
-func (mk *Key) HasQueryGlob() bool {
+func (mk *Key) HasGlob() bool {
+	if mk.Key.HasGlob() {
+		return true
+	}
+	for _, e := range mk.Edges {
+		if e.Src.HasGlob() || e.Dst.HasGlob() {
+			return true
+		}
+	}
+	if mk.EdgeIndex != nil && mk.EdgeIndex.Glob {
+		return true
+	}
+	if mk.EdgeKey.HasGlob() {
+		return true
+	}
+	return false
+}
+
+func (mk *Key) HasTripleGlob() bool {
+	if mk.Key.HasTripleGlob() {
+		return true
+	}
+	for _, e := range mk.Edges {
+		if e.Src.HasTripleGlob() || e.Dst.HasTripleGlob() {
+			return true
+		}
+	}
+	if mk.EdgeIndex != nil && mk.EdgeIndex.Glob {
+		return true
+	}
+	if mk.EdgeKey.HasTripleGlob() {
+		return true
+	}
+	return false
+}
+
+func (mk *Key) SupportsGlobFilters() bool {
 	if mk.Key.HasGlob() && len(mk.Edges) == 0 {
 		return true
 	}
@@ -734,6 +770,11 @@ func (mk *Key) HasQueryGlob() bool {
 		return true
 	}
 	return false
+}
+
+func (mk *Key) Copy() *Key {
+	mk2 := *mk
+	return &mk2
 }
 
 type KeyPath struct {
@@ -763,16 +804,12 @@ func (kp *KeyPath) Copy() *KeyPath {
 	return &kp2
 }
 
-func (kp *KeyPath) HasDoubleGlob() bool {
-	if kp == nil {
-		return false
-	}
-	for _, el := range kp.Path {
-		if el.UnquotedString != nil && el.ScalarString() == "**" {
-			return true
-		}
-	}
-	return false
+func IsDoubleGlob(pattern []string) bool {
+	return len(pattern) == 3 && pattern[0] == "*" && pattern[1] == "" && pattern[2] == "*"
+}
+
+func IsTripleGlob(pattern []string) bool {
+	return len(pattern) == 5 && pattern[0] == "*" && pattern[1] == "" && pattern[2] == "*" && pattern[3] == "" && pattern[4] == "*"
 }
 
 func (kp *KeyPath) HasGlob() bool {
@@ -781,6 +818,30 @@ func (kp *KeyPath) HasGlob() bool {
 	}
 	for _, el := range kp.Path {
 		if el.UnquotedString != nil && len(el.UnquotedString.Pattern) > 0 {
+			return true
+		}
+	}
+	return false
+}
+
+func (kp *KeyPath) HasTripleGlob() bool {
+	if kp == nil {
+		return false
+	}
+	for _, el := range kp.Path {
+		if el.UnquotedString != nil && IsTripleGlob(el.UnquotedString.Pattern) {
+			return true
+		}
+	}
+	return false
+}
+
+func (kp *KeyPath) HasMultiGlob() bool {
+	if kp == nil {
+		return false
+	}
+	for _, el := range kp.Path {
+		if el.UnquotedString != nil && (IsDoubleGlob(el.UnquotedString.Pattern) || IsTripleGlob(el.UnquotedString.Pattern)) {
 			return true
 		}
 	}

@@ -286,6 +286,31 @@ d
 			},
 		},
 		{
+			name: "single-glob/defaults",
+			run: func(t testing.TB) {
+				m, err := compile(t, `wrapper.*: {
+	shape: page
+}
+
+wrapper.a
+wrapper.b
+wrapper.c
+wrapper.d
+
+scenarios.x: { wrapper.p }
+layers.x: { wrapper.p }
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 26, 0, nil, "")
+				assertQuery(t, m, 0, 0, "page", "wrapper.a.shape")
+				assertQuery(t, m, 0, 0, "page", "wrapper.b.shape")
+				assertQuery(t, m, 0, 0, "page", "wrapper.c.shape")
+				assertQuery(t, m, 0, 0, "page", "wrapper.d.shape")
+				assertQuery(t, m, 0, 0, "page", "scenarios.x.wrapper.p.shape")
+				assertQuery(t, m, 0, 0, nil, "layers.x.wrapper.p")
+			},
+		},
+		{
 			name: "double-glob/edge/1",
 			run: func(t testing.TB) {
 				m, err := compile(t, `fast: {
@@ -314,21 +339,81 @@ task.** -> fast
 				assertQuery(t, m, 3, 1, nil, "")
 			},
 		},
+		{
+			name: "double-glob/defaults",
+			run: func(t testing.TB) {
+				m, err := compile(t, `**: {
+	shape: page
+}
+
+a
+b
+c
+d
+
+scenarios.x: { p }
+layers.x: { p }
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 25, 0, nil, "")
+				assertQuery(t, m, 0, 0, "page", "a.shape")
+				assertQuery(t, m, 0, 0, "page", "b.shape")
+				assertQuery(t, m, 0, 0, "page", "c.shape")
+				assertQuery(t, m, 0, 0, "page", "d.shape")
+				assertQuery(t, m, 0, 0, "page", "scenarios.x.p.shape")
+				assertQuery(t, m, 0, 0, nil, "layers.x.p")
+			},
+		},
+		{
+			name: "triple-glob/defaults",
+			run: func(t testing.TB) {
+				m, err := compile(t, `***: {
+	shape: page
+}
+
+a
+b
+c
+d
+
+scenarios.x: { p }
+layers.x: { p }
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 27, 0, nil, "")
+				assertQuery(t, m, 0, 0, "page", "a.shape")
+				assertQuery(t, m, 0, 0, "page", "b.shape")
+				assertQuery(t, m, 0, 0, "page", "c.shape")
+				assertQuery(t, m, 0, 0, "page", "d.shape")
+				assertQuery(t, m, 0, 0, "page", "scenarios.x.p.shape")
+				assertQuery(t, m, 0, 0, "page", "layers.x.p.shape")
+			},
+		},
+		{
+			name: "triple-glob/edge-defaults",
+			run: func(t testing.TB) {
+				m, err := compile(t, `(*** -> ***)[*]: {
+	target-arrowhead.shape: diamond
+}
+
+a -> b
+c -> d
+
+scenarios.x: { p -> q }
+layers.x: { j -> f }
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 28, 6, nil, "")
+				assertQuery(t, m, 0, 0, "diamond", "(a -> b)[0].target-arrowhead.shape")
+				assertQuery(t, m, 0, 0, "diamond", "(c -> d)[0].target-arrowhead.shape")
+				assertQuery(t, m, 0, 0, "diamond", "scenarios.x.(a -> b)[0].target-arrowhead.shape")
+				assertQuery(t, m, 0, 0, "diamond", "scenarios.x.(c -> d)[0].target-arrowhead.shape")
+				assertQuery(t, m, 0, 0, "diamond", "scenarios.x.(p -> q)[0].target-arrowhead.shape")
+				assertQuery(t, m, 4, 1, nil, "layers.x")
+				assertQuery(t, m, 0, 0, "diamond", "layers.x.(j -> f)[0].target-arrowhead.shape")
+			},
+		},
 	}
 
 	runa(t, tca)
-
-	t.Run("errors", func(t *testing.T) {
-		tca := []testCase{
-			{
-				name: "glob-edge-glob-index",
-				run: func(t testing.TB) {
-					_, err := compile(t, `(* -> b)[*].style.fill: red
-`)
-					assert.ErrorString(t, err, `TestCompile/patterns/errors/glob-edge-glob-index.d2:1:2: indexed edge does not exist`)
-				},
-			},
-		}
-		runa(t, tca)
-	})
 }
