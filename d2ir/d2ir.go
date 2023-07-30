@@ -935,34 +935,11 @@ func (m *Map) getEdges(eid *EdgeID, refctx *RefContext, ea *[]*Edge) error {
 		return nil
 	}
 
-	srcKP := d2ast.MakeKeyPath(eid.SrcPath)
-	lastMatch := 0
-	for i, el := range srcKP.Path {
-		for j := lastMatch; j < len(refctx.Edge.Src.Path); j++ {
-			realEl := refctx.Edge.Src.Path[j]
-			if el.ScalarString() == realEl.ScalarString() {
-				srcKP.Path[i] = realEl
-				lastMatch += j + 1
-			}
-		}
-	}
-	dstKP := d2ast.MakeKeyPath(eid.DstPath)
-	lastMatch = 0
-	for i, el := range dstKP.Path {
-		for j := lastMatch; j < len(refctx.Edge.Dst.Path); j++ {
-			realEl := refctx.Edge.Dst.Path[j]
-			if el.ScalarString() == realEl.ScalarString() {
-				dstKP.Path[i] = realEl
-				lastMatch += j + 1
-			}
-		}
-	}
-
-	srcFA, err := m.EnsureField(srcKP, nil, false)
+	srcFA, err := refctx.ScopeMap.EnsureField(refctx.Edge.Src, nil, false)
 	if err != nil {
 		return err
 	}
-	dstFA, err := m.EnsureField(dstKP, nil, false)
+	dstFA, err := refctx.ScopeMap.EnsureField(refctx.Edge.Dst, nil, false)
 	if err != nil {
 		return err
 	}
@@ -1045,51 +1022,36 @@ func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, ea *[]*Edge) error {
 		return d2parser.Errorf(refctx.Edge.Dst.Path[ij].Unbox(), "edge with board keyword alone doesn't make sense")
 	}
 
-	srcKP := d2ast.MakeKeyPath(eid.SrcPath)
-	lastMatch := 0
-	for i, el := range srcKP.Path {
-		for j := lastMatch; j < len(refctx.Edge.Src.Path); j++ {
-			realEl := refctx.Edge.Src.Path[j]
-			if el.ScalarString() == realEl.ScalarString() {
-				srcKP.Path[i] = realEl
-				lastMatch += j + 1
-			}
-		}
-	}
-	dstKP := d2ast.MakeKeyPath(eid.DstPath)
-	lastMatch = 0
-	for i, el := range dstKP.Path {
-		for j := lastMatch; j < len(refctx.Edge.Dst.Path); j++ {
-			realEl := refctx.Edge.Dst.Path[j]
-			if el.ScalarString() == realEl.ScalarString() {
-				dstKP.Path[i] = realEl
-				lastMatch += j + 1
-			}
-		}
-	}
-
-	srcFA, err := m.EnsureField(srcKP, nil, true)
+	srcFA, err := refctx.ScopeMap.EnsureField(refctx.Edge.Src, refctx, true)
 	if err != nil {
 		return err
 	}
-	dstFA, err := m.EnsureField(dstKP, nil, true)
+	dstFA, err := refctx.ScopeMap.EnsureField(refctx.Edge.Dst, refctx, true)
 	if err != nil {
 		return err
 	}
 
 	for _, src := range srcFA {
 		for _, dst := range dstFA {
-			if src == dst && (len(srcFA) > 1 || len(dstFA) > 1) {
+			if src == dst && (refctx.Edge.Src.HasGlob() || refctx.Edge.Dst.HasGlob()) {
 				// Globs do not make self edges.
 				continue
 			}
 
-			if srcKP.HasDoubleGlob() || dstKP.HasDoubleGlob() {
-				// If either has a double glob we only select leafs, those without children.
-				if src.Map().IsContainer() || dst.Map().IsContainer() {
+			if refctx.Edge.Src.HasDoubleGlob() {
+				// If src has a double glob we only select leafs, those without children.
+				if src.Map().IsContainer() {
 					continue
 				}
-				// If either has a double glob we ignore connections across boards
+				if ParentBoard(src) != ParentBoard(dst) {
+					continue
+				}
+			}
+			if refctx.Edge.Dst.HasDoubleGlob() {
+				// If dst has a double glob we only select leafs, those without children.
+				if dst.Map().IsContainer() {
+					continue
+				}
 				if ParentBoard(src) != ParentBoard(dst) {
 					continue
 				}
@@ -1121,7 +1083,7 @@ func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, src, dst *Field) (*Ed
 
 	eid.Index = nil
 	eid.Glob = true
-	ea := m.GetEdges(eid, refctx)
+	ea := m.GetEdges(eid, nil)
 	index := len(ea)
 	eid.Index = &index
 	eid.Glob = false
@@ -1400,7 +1362,7 @@ func IDA(n Node) (ida []string) {
 	}
 }
 
-// RelIDA returns the absolute path to n relative to p.
+// RelIDA returns the path to n relative to p.
 func RelIDA(p, n Node) (ida []string) {
 	for {
 		f, ok := n.(*Field)

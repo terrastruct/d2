@@ -749,7 +749,16 @@ func (kp *KeyPath) Copy() *KeyPath {
 
 func (kp *KeyPath) HasDoubleGlob() bool {
 	for _, el := range kp.Path {
-		if el.ScalarString() == "**" {
+		if el.UnquotedString != nil && el.ScalarString() == "**" {
+			return true
+		}
+	}
+	return false
+}
+
+func (kp *KeyPath) HasGlob() bool {
+	for _, el := range kp.Path {
+		if el.UnquotedString != nil && len(el.UnquotedString.Pattern) > 0 {
 			return true
 		}
 	}

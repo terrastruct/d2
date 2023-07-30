@@ -661,17 +661,7 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 				refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Dst, refctx)
 			}
 		} else {
-			_, err := refctx.ScopeMap.EnsureField(refctx.Edge.Src, refctx, true)
-			if err != nil {
-				c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
-				continue
-			}
-			_, err = refctx.ScopeMap.EnsureField(refctx.Edge.Dst, refctx, true)
-			if err != nil {
-				c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
-				continue
-			}
-
+			var err error
 			ea, err = refctx.ScopeMap.CreateEdge(eid, refctx)
 			if err != nil {
 				c.err.Errors = append(c.err.Errors, err.(d2ast.Error))

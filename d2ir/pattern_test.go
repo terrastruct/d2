@@ -285,6 +285,35 @@ d
 				assertQuery(t, m, 0, 0, nil, "(* -> *)[*]")
 			},
 		},
+		{
+			name: "double-glob/edge/1",
+			run: func(t testing.TB) {
+				m, err := compile(t, `fast: {
+  a
+  far
+}
+
+task: {
+  a
+}
+
+task.** -> fast
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 5, 1, nil, "")
+			},
+		},
+		{
+			name: "double-glob/edge/2",
+			run: func(t testing.TB) {
+				m, err := compile(t, `a
+
+**.b -> c
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 3, 1, nil, "")
+			},
+		},
 	}
 
 	runa(t, tca)
