@@ -466,6 +466,9 @@ func (c *compiler) _ampersandFilter(f *Field, refctx *RefContext) bool {
 		if refctx.Key.Value.ScalarBox().Unbox().ScalarString() != f2.Primary_.Value.ScalarString() {
 			return false
 		}
+	} else if refctx.Key.Value.Unbox() != nil {
+		c.errorf(refctx.Key, "ampersand filters cannot be composites")
+		return false
 	}
 
 	return true
