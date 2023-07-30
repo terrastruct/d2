@@ -43,9 +43,35 @@ jeremy: {
 	&shape: rectangle
 }`)
 				assert.Success(t, err)
+				assertQuery(t, m, 5, 0, nil, "")
 				assertQuery(t, m, 1, 0, nil, "jacob")
 				assertQuery(t, m, 2, 0, nil, "jeremy")
 				assertQuery(t, m, 0, 0, "I'm a rectangle", "jeremy.label")
+			},
+		},
+		{
+			name: "array",
+			run: func(t testing.TB) {
+				m, err := compile(t, `the-little-cannon: {
+	class: [server; deployed]
+}
+dino: {
+	class: [internal; deployed]
+}
+catapult: {
+	class: [jacob; server]
+}
+
+*: {
+	&class: server
+	style.multiple: true
+}
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 10, 0, nil, "")
+				assertQuery(t, m, 3, 0, nil, "the-little-cannon")
+				assertQuery(t, m, 1, 0, nil, "dino")
+				assertQuery(t, m, 3, 0, nil, "catapult")
 			},
 		},
 	}

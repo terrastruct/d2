@@ -1,0 +1,1229 @@
+{
+  "fields": [
+    {
+      "name": "the-little-cannon",
+      "composite": {
+        "fields": [
+          {
+            "name": "class",
+            "composite": {
+              "values": [
+                {
+                  "value": {
+                    "range": "TestCompile/filters/array.d2,1:9:30-1:15:36",
+                    "value": [
+                      {
+                        "string": "server",
+                        "raw_string": "server"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "value": {
+                    "range": "TestCompile/filters/array.d2,1:17:38-1:25:46",
+                    "value": [
+                      {
+                        "string": "deployed",
+                        "raw_string": "deployed"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/filters/array.d2,1:1:22-1:6:27",
+                  "value": [
+                    {
+                      "string": "class",
+                      "raw_string": "class"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/array.d2,1:1:22-1:6:27",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/array.d2,1:1:22-1:6:27",
+                        "value": [
+                          {
+                            "string": "class",
+                            "raw_string": "class"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/array.d2,1:1:22-1:26:47",
+                    "key": {
+                      "range": "TestCompile/filters/array.d2,1:1:22-1:6:27",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/array.d2,1:1:22-1:6:27",
+                            "value": [
+                              {
+                                "string": "class",
+                                "raw_string": "class"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "array": {
+                        "range": "TestCompile/filters/array.d2,1:8:29-1:25:46",
+                        "nodes": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/filters/array.d2,1:9:30-1:15:36",
+                              "value": [
+                                {
+                                  "string": "server",
+                                  "raw_string": "server"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/filters/array.d2,1:17:38-1:25:46",
+                              "value": [
+                                {
+                                  "string": "deployed",
+                                  "raw_string": "deployed"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "string": {
+                  "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                  "value": [
+                    {
+                      "string": "class",
+                      "raw_string": "class"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                        "value": [
+                          {
+                            "string": "class",
+                            "raw_string": "class"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/array.d2,11:1:134-11:15:148",
+                    "ampersand": true,
+                    "key": {
+                      "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                            "value": [
+                              {
+                                "string": "class",
+                                "raw_string": "class"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/array.d2,11:9:142-11:15:148",
+                        "value": [
+                          {
+                            "string": "server",
+                            "raw_string": "server"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "style",
+            "composite": {
+              "fields": [
+                {
+                  "name": "multiple",
+                  "primary": {
+                    "value": {
+                      "range": "TestCompile/filters/array.d2,12:17:166-12:21:170",
+                      "value": true
+                    }
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/filters/array.d2,12:7:156-12:15:164",
+                        "value": [
+                          {
+                            "string": "multiple",
+                            "raw_string": "multiple"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/filters/array.d2,12:1:150-12:15:164",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/filters/array.d2,12:1:150-12:6:155",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/filters/array.d2,12:7:156-12:15:164",
+                              "value": [
+                                {
+                                  "string": "multiple",
+                                  "raw_string": "multiple"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/filters/array.d2,12:1:150-12:21:170",
+                          "key": {
+                            "range": "TestCompile/filters/array.d2,12:1:150-12:15:164",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/filters/array.d2,12:1:150-12:6:155",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/filters/array.d2,12:7:156-12:15:164",
+                                  "value": [
+                                    {
+                                      "string": "multiple",
+                                      "raw_string": "multiple"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "boolean": {
+                              "range": "TestCompile/filters/array.d2,12:17:166-12:21:170",
+                              "value": true
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/filters/array.d2,12:1:150-12:6:155",
+                  "value": [
+                    {
+                      "string": "style",
+                      "raw_string": "style"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/array.d2,12:1:150-12:15:164",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/array.d2,12:1:150-12:6:155",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/array.d2,12:7:156-12:15:164",
+                        "value": [
+                          {
+                            "string": "multiple",
+                            "raw_string": "multiple"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/array.d2,12:1:150-12:21:170",
+                    "key": {
+                      "range": "TestCompile/filters/array.d2,12:1:150-12:15:164",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/array.d2,12:1:150-12:6:155",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/array.d2,12:7:156-12:15:164",
+                            "value": [
+                              {
+                                "string": "multiple",
+                                "raw_string": "multiple"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "boolean": {
+                        "range": "TestCompile/filters/array.d2,12:17:166-12:21:170",
+                        "value": true
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/filters/array.d2,0:0:0-0:17:17",
+            "value": [
+              {
+                "string": "the-little-cannon",
+                "raw_string": "the-little-cannon"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/filters/array.d2,0:0:0-0:17:17",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/filters/array.d2,0:0:0-0:17:17",
+                  "value": [
+                    {
+                      "string": "the-little-cannon",
+                      "raw_string": "the-little-cannon"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/filters/array.d2,0:0:0-2:1:49",
+              "key": {
+                "range": "TestCompile/filters/array.d2,0:0:0-0:17:17",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/filters/array.d2,0:0:0-0:17:17",
+                      "value": [
+                        {
+                          "string": "the-little-cannon",
+                          "raw_string": "the-little-cannon"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/filters/array.d2,0:19:19-2:1:49",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/filters/array.d2,1:1:22-1:26:47",
+                        "key": {
+                          "range": "TestCompile/filters/array.d2,1:1:22-1:6:27",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/array.d2,1:1:22-1:6:27",
+                                "value": [
+                                  {
+                                    "string": "class",
+                                    "raw_string": "class"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "array": {
+                            "range": "TestCompile/filters/array.d2,1:8:29-1:25:46",
+                            "nodes": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/filters/array.d2,1:9:30-1:15:36",
+                                  "value": [
+                                    {
+                                      "string": "server",
+                                      "raw_string": "server"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/filters/array.d2,1:17:38-1:25:46",
+                                  "value": [
+                                    {
+                                      "string": "deployed",
+                                      "raw_string": "deployed"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "dino",
+      "composite": {
+        "fields": [
+          {
+            "name": "class",
+            "composite": {
+              "values": [
+                {
+                  "value": {
+                    "range": "TestCompile/filters/array.d2,4:9:67-4:17:75",
+                    "value": [
+                      {
+                        "string": "internal",
+                        "raw_string": "internal"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "value": {
+                    "range": "TestCompile/filters/array.d2,4:19:77-4:27:85",
+                    "value": [
+                      {
+                        "string": "deployed",
+                        "raw_string": "deployed"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/filters/array.d2,4:1:59-4:6:64",
+                  "value": [
+                    {
+                      "string": "class",
+                      "raw_string": "class"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/array.d2,4:1:59-4:6:64",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/array.d2,4:1:59-4:6:64",
+                        "value": [
+                          {
+                            "string": "class",
+                            "raw_string": "class"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/array.d2,4:1:59-4:28:86",
+                    "key": {
+                      "range": "TestCompile/filters/array.d2,4:1:59-4:6:64",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/array.d2,4:1:59-4:6:64",
+                            "value": [
+                              {
+                                "string": "class",
+                                "raw_string": "class"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "array": {
+                        "range": "TestCompile/filters/array.d2,4:8:66-4:27:85",
+                        "nodes": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/filters/array.d2,4:9:67-4:17:75",
+                              "value": [
+                                {
+                                  "string": "internal",
+                                  "raw_string": "internal"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/filters/array.d2,4:19:77-4:27:85",
+                              "value": [
+                                {
+                                  "string": "deployed",
+                                  "raw_string": "deployed"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "string": {
+                  "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                  "value": [
+                    {
+                      "string": "class",
+                      "raw_string": "class"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                        "value": [
+                          {
+                            "string": "class",
+                            "raw_string": "class"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/array.d2,11:1:134-11:15:148",
+                    "ampersand": true,
+                    "key": {
+                      "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                            "value": [
+                              {
+                                "string": "class",
+                                "raw_string": "class"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/array.d2,11:9:142-11:15:148",
+                        "value": [
+                          {
+                            "string": "server",
+                            "raw_string": "server"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/filters/array.d2,3:0:50-3:4:54",
+            "value": [
+              {
+                "string": "dino",
+                "raw_string": "dino"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/filters/array.d2,3:0:50-3:4:54",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/filters/array.d2,3:0:50-3:4:54",
+                  "value": [
+                    {
+                      "string": "dino",
+                      "raw_string": "dino"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/filters/array.d2,3:0:50-5:1:88",
+              "key": {
+                "range": "TestCompile/filters/array.d2,3:0:50-3:4:54",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/filters/array.d2,3:0:50-3:4:54",
+                      "value": [
+                        {
+                          "string": "dino",
+                          "raw_string": "dino"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/filters/array.d2,3:6:56-5:1:88",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/filters/array.d2,4:1:59-4:28:86",
+                        "key": {
+                          "range": "TestCompile/filters/array.d2,4:1:59-4:6:64",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/array.d2,4:1:59-4:6:64",
+                                "value": [
+                                  {
+                                    "string": "class",
+                                    "raw_string": "class"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "array": {
+                            "range": "TestCompile/filters/array.d2,4:8:66-4:27:85",
+                            "nodes": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/filters/array.d2,4:9:67-4:17:75",
+                                  "value": [
+                                    {
+                                      "string": "internal",
+                                      "raw_string": "internal"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/filters/array.d2,4:19:77-4:27:85",
+                                  "value": [
+                                    {
+                                      "string": "deployed",
+                                      "raw_string": "deployed"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "catapult",
+      "composite": {
+        "fields": [
+          {
+            "name": "class",
+            "composite": {
+              "values": [
+                {
+                  "value": {
+                    "range": "TestCompile/filters/array.d2,7:9:110-7:14:115",
+                    "value": [
+                      {
+                        "string": "jacob",
+                        "raw_string": "jacob"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "value": {
+                    "range": "TestCompile/filters/array.d2,7:16:117-7:22:123",
+                    "value": [
+                      {
+                        "string": "server",
+                        "raw_string": "server"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/filters/array.d2,7:1:102-7:6:107",
+                  "value": [
+                    {
+                      "string": "class",
+                      "raw_string": "class"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/array.d2,7:1:102-7:6:107",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/array.d2,7:1:102-7:6:107",
+                        "value": [
+                          {
+                            "string": "class",
+                            "raw_string": "class"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/array.d2,7:1:102-7:23:124",
+                    "key": {
+                      "range": "TestCompile/filters/array.d2,7:1:102-7:6:107",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/array.d2,7:1:102-7:6:107",
+                            "value": [
+                              {
+                                "string": "class",
+                                "raw_string": "class"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "array": {
+                        "range": "TestCompile/filters/array.d2,7:8:109-7:22:123",
+                        "nodes": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/filters/array.d2,7:9:110-7:14:115",
+                              "value": [
+                                {
+                                  "string": "jacob",
+                                  "raw_string": "jacob"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/filters/array.d2,7:16:117-7:22:123",
+                              "value": [
+                                {
+                                  "string": "server",
+                                  "raw_string": "server"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "string": {
+                  "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                  "value": [
+                    {
+                      "string": "class",
+                      "raw_string": "class"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                        "value": [
+                          {
+                            "string": "class",
+                            "raw_string": "class"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/array.d2,11:1:134-11:15:148",
+                    "ampersand": true,
+                    "key": {
+                      "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                            "value": [
+                              {
+                                "string": "class",
+                                "raw_string": "class"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/array.d2,11:9:142-11:15:148",
+                        "value": [
+                          {
+                            "string": "server",
+                            "raw_string": "server"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "style",
+            "composite": {
+              "fields": [
+                {
+                  "name": "multiple",
+                  "primary": {
+                    "value": {
+                      "range": "TestCompile/filters/array.d2,12:17:166-12:21:170",
+                      "value": true
+                    }
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/filters/array.d2,12:7:156-12:15:164",
+                        "value": [
+                          {
+                            "string": "multiple",
+                            "raw_string": "multiple"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/filters/array.d2,12:1:150-12:15:164",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/filters/array.d2,12:1:150-12:6:155",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/filters/array.d2,12:7:156-12:15:164",
+                              "value": [
+                                {
+                                  "string": "multiple",
+                                  "raw_string": "multiple"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/filters/array.d2,12:1:150-12:21:170",
+                          "key": {
+                            "range": "TestCompile/filters/array.d2,12:1:150-12:15:164",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/filters/array.d2,12:1:150-12:6:155",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/filters/array.d2,12:7:156-12:15:164",
+                                  "value": [
+                                    {
+                                      "string": "multiple",
+                                      "raw_string": "multiple"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "boolean": {
+                              "range": "TestCompile/filters/array.d2,12:17:166-12:21:170",
+                              "value": true
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/filters/array.d2,12:1:150-12:6:155",
+                  "value": [
+                    {
+                      "string": "style",
+                      "raw_string": "style"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/array.d2,12:1:150-12:15:164",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/array.d2,12:1:150-12:6:155",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/array.d2,12:7:156-12:15:164",
+                        "value": [
+                          {
+                            "string": "multiple",
+                            "raw_string": "multiple"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/array.d2,12:1:150-12:21:170",
+                    "key": {
+                      "range": "TestCompile/filters/array.d2,12:1:150-12:15:164",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/array.d2,12:1:150-12:6:155",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/array.d2,12:7:156-12:15:164",
+                            "value": [
+                              {
+                                "string": "multiple",
+                                "raw_string": "multiple"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "boolean": {
+                        "range": "TestCompile/filters/array.d2,12:17:166-12:21:170",
+                        "value": true
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/filters/array.d2,6:0:89-6:8:97",
+            "value": [
+              {
+                "string": "catapult",
+                "raw_string": "catapult"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/filters/array.d2,6:0:89-6:8:97",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/filters/array.d2,6:0:89-6:8:97",
+                  "value": [
+                    {
+                      "string": "catapult",
+                      "raw_string": "catapult"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/filters/array.d2,6:0:89-8:1:126",
+              "key": {
+                "range": "TestCompile/filters/array.d2,6:0:89-6:8:97",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/filters/array.d2,6:0:89-6:8:97",
+                      "value": [
+                        {
+                          "string": "catapult",
+                          "raw_string": "catapult"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/filters/array.d2,6:10:99-8:1:126",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/filters/array.d2,7:1:102-7:23:124",
+                        "key": {
+                          "range": "TestCompile/filters/array.d2,7:1:102-7:6:107",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/array.d2,7:1:102-7:6:107",
+                                "value": [
+                                  {
+                                    "string": "class",
+                                    "raw_string": "class"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "array": {
+                            "range": "TestCompile/filters/array.d2,7:8:109-7:22:123",
+                            "nodes": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/filters/array.d2,7:9:110-7:14:115",
+                                  "value": [
+                                    {
+                                      "string": "jacob",
+                                      "raw_string": "jacob"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/filters/array.d2,7:16:117-7:22:123",
+                                  "value": [
+                                    {
+                                      "string": "server",
+                                      "raw_string": "server"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": null
+}

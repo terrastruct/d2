@@ -247,7 +247,7 @@
             "name": "shape",
             "primary": {
               "value": {
-                "range": "TestCompile/filters/base.d2,7:9:70-7:18:79",
+                "range": "TestCompile/filters/base.d2,4:8:44-4:17:53",
                 "value": [
                   {
                     "string": "rectangle",
@@ -307,68 +307,6 @@
                     "value": {
                       "unquoted_string": {
                         "range": "TestCompile/filters/base.d2,4:8:44-4:17:53",
-                        "value": [
-                          {
-                            "string": "rectangle",
-                            "raw_string": "rectangle"
-                          }
-                        ]
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                "string": {
-                  "range": "TestCompile/filters/base.d2,7:2:63-7:7:68",
-                  "value": [
-                    {
-                      "string": "shape",
-                      "raw_string": "shape"
-                    }
-                  ]
-                },
-                "key_path": {
-                  "range": "TestCompile/filters/base.d2,7:2:63-7:7:68",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "TestCompile/filters/base.d2,7:2:63-7:7:68",
-                        "value": [
-                          {
-                            "string": "shape",
-                            "raw_string": "shape"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "context": {
-                  "edge": null,
-                  "key": {
-                    "range": "TestCompile/filters/base.d2,7:1:62-7:18:79",
-                    "ampersand": true,
-                    "key": {
-                      "range": "TestCompile/filters/base.d2,7:2:63-7:7:68",
-                      "path": [
-                        {
-                          "unquoted_string": {
-                            "range": "TestCompile/filters/base.d2,7:2:63-7:7:68",
-                            "value": [
-                              {
-                                "string": "shape",
-                                "raw_string": "shape"
-                              }
-                            ]
-                          }
-                        }
-                      ]
-                    },
-                    "primary": {},
-                    "value": {
-                      "unquoted_string": {
-                        "range": "TestCompile/filters/base.d2,7:9:70-7:18:79",
                         "value": [
                           {
                             "string": "rectangle",

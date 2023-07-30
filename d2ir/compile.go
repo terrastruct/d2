@@ -410,6 +410,10 @@ func (c *compiler) compileKey(refctx *RefContext) {
 }
 
 func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext) {
+	if refctx.Key.Ampersand {
+		return
+	}
+
 	fa, err := dst.EnsureField(kp, refctx, true)
 	if err != nil {
 		c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
@@ -451,23 +455,26 @@ func (c *compiler) _ampersandFilter(f *Field, refctx *RefContext) bool {
 	if f2 == nil {
 		return false
 	}
-	if refctx.Key.Primary.Unbox() != nil {
-		if f2.Primary_ == nil {
-			return false
-		}
-		if refctx.Key.Primary.Unbox().ScalarString() != f2.Primary_.Value.ScalarString() {
-			return false
+	if refctx.Key.Value.ScalarBox().Unbox() == nil {
+		c.errorf(refctx.Key, "ampersand filters cannot be composites")
+		return false
+	}
+
+	if a, ok := f2.Composite.(*Array); ok {
+		for _, v := range a.Values {
+			if s, ok := v.(*Scalar); ok {
+				if refctx.Key.Value.ScalarBox().Unbox().ScalarString() == s.Value.ScalarString() {
+					return true
+				}
+			}
 		}
 	}
-	if refctx.Key.Value.ScalarBox().Unbox() != nil {
-		if f2.Primary_ == nil {
-			return false
-		}
-		if refctx.Key.Value.ScalarBox().Unbox().ScalarString() != f2.Primary_.Value.ScalarString() {
-			return false
-		}
-	} else if refctx.Key.Value.Unbox() != nil {
-		c.errorf(refctx.Key, "ampersand filters cannot be composites")
+
+	if f2.Primary_ == nil {
+		return false
+	}
+
+	if refctx.Key.Value.ScalarBox().Unbox().ScalarString() != f2.Primary_.Value.ScalarString() {
 		return false
 	}
 
