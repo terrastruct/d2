@@ -39,7 +39,7 @@ func matchPattern(s string, pattern []string) bool {
 		if pattern[i] == "*" {
 			// * so match next.
 			if i != len(pattern)-1 {
-				j := strings.Index(s, pattern[i+1])
+				j := strings.Index(strings.ToLower(s), strings.ToLower(pattern[i+1]))
 				if j == -1 {
 					return false
 				}
