@@ -27,6 +27,7 @@ func TestCompile(t *testing.T) {
 	t.Run("steps", testCompileSteps)
 	t.Run("imports", testCompileImports)
 	t.Run("patterns", testCompilePatterns)
+	t.Run("filters", testCompileFilters)
 }
 
 type testCase struct {

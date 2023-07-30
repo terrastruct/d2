@@ -648,11 +648,9 @@ group: {
 		},
 		{
 			name: "ampersand-escape",
-			script: `h&y: &∈ {
+			script: `hy: &∈ {
   tooltip: beans & rice
 }
-&foo
-&&bar
 `,
 		},
 		{

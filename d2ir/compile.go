@@ -22,6 +22,8 @@ type compiler struct {
 	// importCache enables reuse of files imported multiple times.
 	importCache map[string]*Map
 	utf16       bool
+
+	globStack []bool
 }
 
 type CompileOptions struct {
@@ -347,6 +349,20 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 	for _, n := range ast.Nodes {
 		switch {
 		case n.MapKey != nil:
+			ok := c.ampersandFilter(&RefContext{
+				Key:      n.MapKey,
+				Scope:    ast,
+				ScopeMap: dst,
+				ScopeAST: scopeAST,
+			})
+			if !ok {
+				return
+			}
+		}
+	}
+	for _, n := range ast.Nodes {
+		switch {
+		case n.MapKey != nil:
 			c.compileKey(&RefContext{
 				Key:      n.MapKey,
 				Scope:    ast,
@@ -396,6 +412,10 @@ func (c *compiler) compileKey(refctx *RefContext) {
 }
 
 func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext) {
+	if refctx.Key.Ampersand {
+		return
+	}
+
 	fa, err := dst.EnsureField(kp, refctx, true)
 	if err != nil {
 		c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
@@ -405,6 +425,62 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 	for _, f := range fa {
 		c._compileField(f, refctx)
 	}
+}
+
+func (c *compiler) ampersandFilter(refctx *RefContext) bool {
+	if !refctx.Key.Ampersand {
+		return true
+	}
+	if len(c.globStack) == 0 || !c.globStack[len(c.globStack)-1] {
+		c.errorf(refctx.Key, "glob filters cannot be used outside globs")
+		return false
+	}
+	if len(refctx.Key.Edges) > 0 {
+		return true
+	}
+
+	fa, err := refctx.ScopeMap.EnsureField(refctx.Key.Key, refctx, false)
+	if err != nil {
+		c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
+		return false
+	}
+	if len(fa) == 0 {
+		return false
+	}
+	for _, f := range fa {
+		ok := c._ampersandFilter(f, refctx)
+		if !ok {
+			return false
+		}
+	}
+	return true
+}
+
+func (c *compiler) _ampersandFilter(f *Field, refctx *RefContext) bool {
+	if refctx.Key.Value.ScalarBox().Unbox() == nil {
+		c.errorf(refctx.Key, "glob filters cannot be composites")
+		return false
+	}
+
+	if a, ok := f.Composite.(*Array); ok {
+		for _, v := range a.Values {
+			if s, ok := v.(*Scalar); ok {
+				if refctx.Key.Value.ScalarBox().Unbox().ScalarString() == s.Value.ScalarString() {
+					return true
+				}
+			}
+		}
+	}
+
+	if f.Primary_ == nil {
+		return false
+	}
+
+	if refctx.Key.Value.ScalarBox().Unbox().ScalarString() != f.Primary_.Value.ScalarString() {
+		return false
+	}
+
+	return true
 }
 
 func (c *compiler) _compileField(f *Field, refctx *RefContext) {
@@ -456,7 +532,9 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 			// If new board type, use that as the new scope AST, otherwise, carry on
 			scopeAST = refctx.ScopeAST
 		}
+		c.globStack = append(c.globStack, refctx.Key.HasQueryGlob())
 		c.compileMap(f.Map(), refctx.Key.Value.Map, scopeAST)
+		c.globStack = c.globStack[:len(c.globStack)-1]
 		switch NodeBoardKind(f) {
 		case BoardScenario, BoardStep:
 			c.overlayClasses(f.Map())
@@ -693,7 +771,9 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 							parent: e,
 						}
 					}
+					c.globStack = append(c.globStack, refctx.Key.HasQueryGlob())
 					c.compileMap(e.Map_, refctx.Key.Value.Map, refctx.ScopeAST)
+					c.globStack = c.globStack[:len(c.globStack)-1]
 				} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
 					e.Primary_ = &Scalar{
 						parent: e,

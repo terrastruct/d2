@@ -323,10 +323,9 @@ task.** -> fast
 			{
 				name: "glob-edge-glob-index",
 				run: func(t testing.TB) {
-					m, err := compile(t, `(* -> b)[*].style.fill: red
+					_, err := compile(t, `(* -> b)[*].style.fill: red
 `)
 					assert.ErrorString(t, err, `TestCompile/patterns/errors/glob-edge-glob-index.d2:1:2: indexed edge does not exist`)
-					assertQuery(t, m, 0, 0, nil, "")
 				},
 			},
 		}

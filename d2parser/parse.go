@@ -1098,7 +1098,7 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 		}
 		if inKey {
 			switch r {
-			case ':', '.', '<', '>':
+			case ':', '.', '<', '>', '&':
 				p.rewind()
 				return s
 			case '-':
