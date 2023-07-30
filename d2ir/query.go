@@ -29,8 +29,14 @@ func (m *Map) QueryAll(idStr string) (na []Node, _ error) {
 	}
 
 	eida := NewEdgeIDs(k)
-	for _, eid := range eida {
-		ea := m.GetEdges(eid)
+
+	for i, eid := range eida {
+		refctx := &RefContext{
+			Key:      k,
+			ScopeMap: m,
+			Edge:     k.Edges[i],
+		}
+		ea := m.GetEdges(eid, refctx)
 		for _, e := range ea {
 			if k.EdgeKey == nil {
 				na = append(na, e)
@@ -56,7 +62,7 @@ func (m *Map) Query(idStr string) (Node, error) {
 		return nil, nil
 	}
 	if len(na) > 1 {
-		return nil, fmt.Errorf("expected only one query result but got: %#v", err)
+		return nil, fmt.Errorf("expected only one query result but got: %#v", na)
 	}
 	return na[0], nil
 }

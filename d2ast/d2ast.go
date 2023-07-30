@@ -500,6 +500,8 @@ type Number struct {
 type UnquotedString struct {
 	Range Range              `json:"range"`
 	Value []InterpolationBox `json:"value"`
+	// Pattern holds the parsed glob pattern if in a key and the unquoted string represents a valid pattern.
+	Pattern []string `json:"pattern,omitempty"`
 }
 
 func (s *UnquotedString) Coalesce() {
@@ -736,6 +738,31 @@ func (kp *KeyPath) IDA() (ida []string) {
 		ida = append(ida, el.Unbox().ScalarString())
 	}
 	return ida
+}
+
+func (kp *KeyPath) Copy() *KeyPath {
+	kp2 := *kp
+	kp2.Path = nil
+	kp2.Path = append(kp2.Path, kp.Path...)
+	return &kp2
+}
+
+func (kp *KeyPath) HasDoubleGlob() bool {
+	for _, el := range kp.Path {
+		if el.UnquotedString != nil && el.ScalarString() == "**" {
+			return true
+		}
+	}
+	return false
+}
+
+func (kp *KeyPath) HasGlob() bool {
+	for _, el := range kp.Path {
+		if el.UnquotedString != nil && len(el.UnquotedString.Pattern) > 0 {
+			return true
+		}
+	}
+	return false
 }
 
 type Edge struct {
@@ -1054,6 +1081,10 @@ func (sb *StringBox) Unbox() String {
 	default:
 		return nil
 	}
+}
+
+func (sb *StringBox) ScalarString() string {
+	return sb.Unbox().ScalarString()
 }
 
 // InterpolationBox is used to select between strings and substitutions in unquoted and

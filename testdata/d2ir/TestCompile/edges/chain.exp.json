@@ -1136,7 +1136,8 @@
           "b"
         ],
         "dst_arrow": true,
-        "index": 0
+        "index": 0,
+        "glob": false
       },
       "references": [
         {
@@ -1310,7 +1311,8 @@
           "c"
         ],
         "dst_arrow": true,
-        "index": 0
+        "index": 0,
+        "glob": false
       },
       "references": [
         {
@@ -1484,7 +1486,8 @@
           "d"
         ],
         "dst_arrow": true,
-        "index": 0
+        "index": 0,
+        "glob": false
       },
       "references": [
         {

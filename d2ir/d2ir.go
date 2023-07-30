@@ -325,6 +325,7 @@ type EdgeID struct {
 
 	// If nil, then any EdgeID with equal src/dst/arrows matches.
 	Index *int `json:"index"`
+	Glob  bool `json:"glob"`
 }
 
 func NewEdgeIDs(k *d2ast.Key) (eida []*EdgeID) {
@@ -337,6 +338,7 @@ func NewEdgeIDs(k *d2ast.Key) (eida []*EdgeID) {
 		}
 		if k.EdgeIndex != nil {
 			eid.Index = k.EdgeIndex.Int
+			eid.Glob = k.EdgeIndex.Glob
 		}
 		eida = append(eida, eid)
 	}
@@ -585,6 +587,19 @@ func (m *Map) FieldCountRecursive() int {
 	return acc
 }
 
+func (m *Map) IsContainer() bool {
+	if m == nil {
+		return false
+	}
+	for _, f := range m.Fields {
+		_, isReserved := d2graph.ReservedKeywords[f.Name]
+		if !isReserved {
+			return true
+		}
+	}
+	return false
+}
+
 func (m *Map) EdgeCountRecursive() int {
 	if m == nil {
 		return 0
@@ -651,7 +666,8 @@ func (m *Map) getField(ida []string) *Field {
 	return nil
 }
 
-func (m *Map) EnsureField(kp *d2ast.KeyPath, refctx *RefContext) (*Field, error) {
+// EnsureField is a bit of a misnomer. It's more of a Query/Ensure combination function at this point.
+func (m *Map) EnsureField(kp *d2ast.KeyPath, refctx *RefContext, create bool) ([]*Field, error) {
 	i := 0
 	for kp.Path[i].Unbox().ScalarString() == "_" {
 		m = ParentMap(m)
@@ -663,29 +679,73 @@ func (m *Map) EnsureField(kp *d2ast.KeyPath, refctx *RefContext) (*Field, error)
 		}
 		i++
 	}
-	return m.ensureField(i, kp, refctx)
+
+	var fa []*Field
+	err := m.ensureField(i, kp, refctx, create, &fa)
+	return fa, err
 }
 
-func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field, error) {
+func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create bool, fa *[]*Field) error {
+	us, ok := kp.Path[i].Unbox().(*d2ast.UnquotedString)
+	if ok && us.Pattern != nil {
+		fa2, ok := m.doubleGlob(us.Pattern)
+		if ok {
+			if i == len(kp.Path)-1 {
+				*fa = append(*fa, fa2...)
+			} else {
+				for _, f := range fa2 {
+					if f.Map() == nil {
+						f.Composite = &Map{
+							parent: f,
+						}
+					}
+					err := f.Map().ensureField(i+1, kp, refctx, create, fa)
+					if err != nil {
+						return err
+					}
+				}
+			}
+			return nil
+		}
+		for _, f := range m.Fields {
+			if matchPattern(f.Name, us.Pattern) {
+				if i == len(kp.Path)-1 {
+					*fa = append(*fa, f)
+				} else {
+					if f.Map() == nil {
+						f.Composite = &Map{
+							parent: f,
+						}
+					}
+					err := f.Map().ensureField(i+1, kp, refctx, create, fa)
+					if err != nil {
+						return err
+					}
+				}
+			}
+		}
+		return nil
+	}
+
 	head := kp.Path[i].Unbox().ScalarString()
 
 	if _, ok := d2graph.ReservedKeywords[strings.ToLower(head)]; ok {
 		head = strings.ToLower(head)
 		if _, ok := d2graph.CompositeReservedKeywords[head]; !ok && i < len(kp.Path)-1 {
-			return nil, d2parser.Errorf(kp.Path[i].Unbox(), fmt.Sprintf(`"%s" must be the last part of the key`, head))
+			return d2parser.Errorf(kp.Path[i].Unbox(), fmt.Sprintf(`"%s" must be the last part of the key`, head))
 		}
 	}
 
 	if head == "_" {
-		return nil, d2parser.Errorf(kp.Path[i].Unbox(), `parent "_" can only be used in the beginning of paths, e.g. "_.x"`)
+		return d2parser.Errorf(kp.Path[i].Unbox(), `parent "_" can only be used in the beginning of paths, e.g. "_.x"`)
 	}
 
 	if head == "classes" && NodeBoardKind(m) == "" {
-		return nil, d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", head)
+		return d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", head)
 	}
 
 	if findBoardKeyword(head) != -1 && NodeBoardKind(m) == "" {
-		return nil, d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", head)
+		return d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", head)
 	}
 
 	for _, f := range m.Fields {
@@ -703,19 +763,23 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field,
 		}
 
 		if i+1 == len(kp.Path) {
-			return f, nil
+			*fa = append(*fa, f)
+			return nil
 		}
 		if _, ok := f.Composite.(*Array); ok {
-			return nil, d2parser.Errorf(kp.Path[i].Unbox(), "cannot index into array")
+			return d2parser.Errorf(kp.Path[i].Unbox(), "cannot index into array")
 		}
 		if f.Map() == nil {
 			f.Composite = &Map{
 				parent: f,
 			}
 		}
-		return f.Map().ensureField(i+1, kp, refctx)
+		return f.Map().ensureField(i+1, kp, refctx, create, fa)
 	}
 
+	if !create {
+		return nil
+	}
 	f := &Field{
 		parent: m,
 		Name:   head,
@@ -730,12 +794,13 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field,
 	}
 	m.Fields = append(m.Fields, f)
 	if i+1 == len(kp.Path) {
-		return f, nil
+		*fa = append(*fa, f)
+		return nil
 	}
 	f.Composite = &Map{
 		parent: f,
 	}
-	return f.Map().ensureField(i+1, kp, refctx)
+	return f.Map().ensureField(i+1, kp, refctx, create, fa)
 }
 
 func (m *Map) DeleteEdge(eid *EdgeID) *Edge {
@@ -800,7 +865,13 @@ func (m *Map) DeleteField(ida ...string) *Field {
 	return nil
 }
 
-func (m *Map) GetEdges(eid *EdgeID) []*Edge {
+func (m *Map) GetEdges(eid *EdgeID, refctx *RefContext) []*Edge {
+	if refctx != nil {
+		var ea []*Edge
+		m.getEdges(eid, refctx, &ea)
+		return ea
+	}
+
 	eid, m, common, err := eid.resolve(m)
 	if err != nil {
 		return nil
@@ -811,7 +882,7 @@ func (m *Map) GetEdges(eid *EdgeID) []*Edge {
 			return nil
 		}
 		if f.Map() != nil {
-			return f.Map().GetEdges(eid)
+			return f.Map().GetEdges(eid, nil)
 		}
 		return nil
 	}
@@ -825,65 +896,197 @@ func (m *Map) GetEdges(eid *EdgeID) []*Edge {
 	return ea
 }
 
-func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext) (*Edge, error) {
+func (m *Map) getEdges(eid *EdgeID, refctx *RefContext, ea *[]*Edge) error {
+	eid, m, common, err := eid.resolve(m)
+	if err != nil {
+		return err
+	}
+
+	if len(common) > 0 {
+		commonKP := d2ast.MakeKeyPath(common)
+		lastMatch := 0
+		for i, el := range commonKP.Path {
+			for j := lastMatch; j < len(refctx.Edge.Src.Path); j++ {
+				realEl := refctx.Edge.Src.Path[j]
+				if el.ScalarString() == realEl.ScalarString() {
+					commonKP.Path[i] = realEl
+					lastMatch += j + 1
+				}
+			}
+		}
+		fa, err := m.EnsureField(commonKP, nil, false)
+		if err != nil {
+			return nil
+		}
+		for _, f := range fa {
+			if _, ok := f.Composite.(*Array); ok {
+				return d2parser.Errorf(refctx.Edge.Src, "cannot index into array")
+			}
+			if f.Map() == nil {
+				f.Composite = &Map{
+					parent: f,
+				}
+			}
+			err = f.Map().getEdges(eid, refctx, ea)
+			if err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+
+	srcFA, err := refctx.ScopeMap.EnsureField(refctx.Edge.Src, nil, false)
+	if err != nil {
+		return err
+	}
+	dstFA, err := refctx.ScopeMap.EnsureField(refctx.Edge.Dst, nil, false)
+	if err != nil {
+		return err
+	}
+
+	for _, src := range srcFA {
+		for _, dst := range dstFA {
+			eid2 := eid.Copy()
+			eid2.SrcPath = RelIDA(m, src)
+			eid2.DstPath = RelIDA(m, dst)
+
+			ea2 := m.GetEdges(eid2, nil)
+			*ea = append(*ea, ea2...)
+		}
+	}
+	return nil
+}
+
+func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext) ([]*Edge, error) {
+	var ea []*Edge
+	return ea, m.createEdge(eid, refctx, &ea)
+}
+
+func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, ea *[]*Edge) error {
 	if ParentEdge(m) != nil {
-		return nil, d2parser.Errorf(refctx.Edge, "cannot create edge inside edge")
+		return d2parser.Errorf(refctx.Edge, "cannot create edge inside edge")
 	}
 
 	eid, m, common, err := eid.resolve(m)
 	if err != nil {
-		return nil, d2parser.Errorf(refctx.Edge, err.Error())
+		return d2parser.Errorf(refctx.Edge, err.Error())
 	}
 	if len(common) > 0 {
-		f, err := m.EnsureField(d2ast.MakeKeyPath(common), nil)
-		if err != nil {
-			return nil, err
-		}
-		if _, ok := f.Composite.(*Array); ok {
-			return nil, d2parser.Errorf(refctx.Edge.Src, "cannot index into array")
-		}
-		if f.Map() == nil {
-			f.Composite = &Map{
-				parent: f,
+		commonKP := d2ast.MakeKeyPath(common)
+		lastMatch := 0
+		for i, el := range commonKP.Path {
+			for j := lastMatch; j < len(refctx.Edge.Src.Path); j++ {
+				realEl := refctx.Edge.Src.Path[j]
+				if el.ScalarString() == realEl.ScalarString() {
+					commonKP.Path[i] = realEl
+					lastMatch += j + 1
+				}
 			}
 		}
-		return f.Map().CreateEdge(eid, refctx)
+		fa, err := m.EnsureField(commonKP, nil, true)
+		if err != nil {
+			return err
+		}
+		for _, f := range fa {
+			if _, ok := f.Composite.(*Array); ok {
+				return d2parser.Errorf(refctx.Edge.Src, "cannot index into array")
+			}
+			if f.Map() == nil {
+				f.Composite = &Map{
+					parent: f,
+				}
+			}
+			err = f.Map().createEdge(eid, refctx, ea)
+			if err != nil {
+				return err
+			}
+		}
+		return nil
 	}
 
 	ij := findProhibitedEdgeKeyword(eid.SrcPath...)
 	if ij != -1 {
-		return nil, d2parser.Errorf(refctx.Edge.Src.Path[ij].Unbox(), "reserved keywords are prohibited in edges")
+		return d2parser.Errorf(refctx.Edge.Src.Path[ij].Unbox(), "reserved keywords are prohibited in edges")
 	}
 	ij = findBoardKeyword(eid.SrcPath...)
 	if ij == len(eid.SrcPath)-1 {
-		return nil, d2parser.Errorf(refctx.Edge.Src.Path[ij].Unbox(), "edge with board keyword alone doesn't make sense")
-	}
-	src := m.GetField(eid.SrcPath...)
-	if NodeBoardKind(src) != "" {
-		return nil, d2parser.Errorf(refctx.Edge.Src, "cannot create edges between boards")
+		return d2parser.Errorf(refctx.Edge.Src.Path[ij].Unbox(), "edge with board keyword alone doesn't make sense")
 	}
 
 	ij = findProhibitedEdgeKeyword(eid.DstPath...)
 	if ij != -1 {
-		return nil, d2parser.Errorf(refctx.Edge.Dst.Path[ij].Unbox(), "reserved keywords are prohibited in edges")
+		return d2parser.Errorf(refctx.Edge.Dst.Path[ij].Unbox(), "reserved keywords are prohibited in edges")
 	}
 	ij = findBoardKeyword(eid.DstPath...)
 	if ij == len(eid.DstPath)-1 {
-		return nil, d2parser.Errorf(refctx.Edge.Dst.Path[ij].Unbox(), "edge with board keyword alone doesn't make sense")
+		return d2parser.Errorf(refctx.Edge.Dst.Path[ij].Unbox(), "edge with board keyword alone doesn't make sense")
 	}
-	dst := m.GetField(eid.DstPath...)
+
+	srcFA, err := refctx.ScopeMap.EnsureField(refctx.Edge.Src, refctx, true)
+	if err != nil {
+		return err
+	}
+	dstFA, err := refctx.ScopeMap.EnsureField(refctx.Edge.Dst, refctx, true)
+	if err != nil {
+		return err
+	}
+
+	for _, src := range srcFA {
+		for _, dst := range dstFA {
+			if src == dst && (refctx.Edge.Src.HasGlob() || refctx.Edge.Dst.HasGlob()) {
+				// Globs do not make self edges.
+				continue
+			}
+
+			if refctx.Edge.Src.HasDoubleGlob() {
+				// If src has a double glob we only select leafs, those without children.
+				if src.Map().IsContainer() {
+					continue
+				}
+				if ParentBoard(src) != ParentBoard(dst) {
+					continue
+				}
+			}
+			if refctx.Edge.Dst.HasDoubleGlob() {
+				// If dst has a double glob we only select leafs, those without children.
+				if dst.Map().IsContainer() {
+					continue
+				}
+				if ParentBoard(src) != ParentBoard(dst) {
+					continue
+				}
+			}
+
+			eid2 := eid.Copy()
+			eid2.SrcPath = RelIDA(m, src)
+			eid2.DstPath = RelIDA(m, dst)
+			e, err := m.createEdge2(eid2, refctx, src, dst)
+			if err != nil {
+				return err
+			}
+			*ea = append(*ea, e)
+		}
+	}
+	return nil
+}
+
+func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, src, dst *Field) (*Edge, error) {
+	if NodeBoardKind(src) != "" {
+		return nil, d2parser.Errorf(refctx.Edge.Src, "cannot create edges between boards")
+	}
 	if NodeBoardKind(dst) != "" {
 		return nil, d2parser.Errorf(refctx.Edge.Dst, "cannot create edges between boards")
 	}
-
 	if ParentBoard(src) != ParentBoard(dst) {
 		return nil, d2parser.Errorf(refctx.Edge, "cannot create edges between boards")
 	}
 
 	eid.Index = nil
-	ea := m.GetEdges(eid)
+	eid.Glob = true
+	ea := m.GetEdges(eid, nil)
 	index := len(ea)
 	eid.Index = &index
+	eid.Glob = false
 	e := &Edge{
 		parent: m,
 		ID:     eid,
@@ -1152,6 +1355,26 @@ func IDA(n Node) (ida []string) {
 		}
 		f = ParentField(n)
 		if f == nil {
+			reverseIDA(ida)
+			return ida
+		}
+		n = f
+	}
+}
+
+// RelIDA returns the path to n relative to p.
+func RelIDA(p, n Node) (ida []string) {
+	for {
+		f, ok := n.(*Field)
+		if ok {
+			ida = append(ida, f.Name)
+			if f.Root() {
+				reverseIDA(ida)
+				return ida
+			}
+		}
+		f = ParentField(n)
+		if f == nil || f.Root() || f == p || f.Composite == p {
 			reverseIDA(ida)
 			return ida
 		}

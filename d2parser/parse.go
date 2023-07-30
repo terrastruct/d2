@@ -1030,9 +1030,15 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 
 	var sb strings.Builder
 	var rawb strings.Builder
+	lastPatternIndex := 0
 	defer func() {
 		sv := strings.TrimRightFunc(sb.String(), unicode.IsSpace)
 		rawv := strings.TrimRightFunc(rawb.String(), unicode.IsSpace)
+		if s.Pattern != nil {
+			if lastPatternIndex < len(sv) {
+				s.Pattern = append(s.Pattern, sv[lastPatternIndex:])
+			}
+		}
 		if sv == "" {
 			if len(s.Value) > 0 {
 				return
@@ -1118,18 +1124,12 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 				rawb.WriteRune(r)
 				r = r2
 			case '*':
-				// TODO: need a peekNotSpace across escaped newlines
-				r2, eof := p.peek()
-				if eof {
-					return s
+				if sb.Len() == 0 {
+					s.Pattern = append(s.Pattern, "*")
+				} else {
+					s.Pattern = append(s.Pattern, sb.String()[lastPatternIndex:], "*")
 				}
-				if r2 == '-' {
-					p.rewind()
-					return s
-				}
-				sb.WriteRune(r)
-				rawb.WriteRune(r)
-				r = r2
+				lastPatternIndex = len(sb.String()) + 1
 			}
 		}
 
