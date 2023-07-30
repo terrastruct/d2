@@ -9,6 +9,7 @@ Layout capability also takes a subtle but important step forward: you can now cu
 - Scale renders and disable fit to screen with `--scale` flag [#1413](https://github.com/terrastruct/d2/pull/1413)
 - `null` keyword can be used to un-declare. See [docs](https://d2lang.com/tour/overrides#null) [#1446](https://github.com/terrastruct/d2/pull/1446)
 - Develop multi-board diagrams in watch mode (links to layers/scenarios/steps work in `--watch`) [#1503](https://github.com/terrastruct/d2/pull/1503)
+- Glob patterns have been implemented. See [docs](https://d2lang.com/tour/globs). [#1479](https://github.com/terrastruct/d2/pull/1479)
 
 #### Improvements 🧹
 
