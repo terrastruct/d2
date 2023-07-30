@@ -74,6 +74,28 @@ catapult: {
 				assertQuery(t, m, 3, 0, nil, "catapult")
 			},
 		},
+		{
+			name: "edge",
+			run: func(t testing.TB) {
+				m, err := compile(t, `x -> y: {
+	source-arrowhead.shape: diamond
+	target-arrowhead.shape: diamond
+}
+x -> y
+
+(x -> *)[*]: {
+	&source-arrowhead.shape: diamond
+	&target-arrowhead.shape: diamond
+	label: diamond shape arrowheads
+}
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 7, 2, nil, "")
+				assertQuery(t, m, 5, 0, nil, "(x -> y)[0]")
+				assertQuery(t, m, 0, 0, "diamond shape arrowheads", "(x -> y)[0].label")
+				assertQuery(t, m, 0, 0, nil, "(x -> y)[1]")
+			},
+		},
 	}
 
 	runa(t, tca)
@@ -98,6 +120,22 @@ TestCompile/filters/errors/bad-syntax.d2:9:1: unexpected map termination charact
 				},
 			},
 			{
+				name: "no-glob",
+				run: func(t testing.TB) {
+					_, err := compile(t, `jacob.style: {
+	fill: red
+	multiple: true
+}
+
+jasmine.style: {
+		&fill: red
+		multiple: false
+}
+`)
+					assert.ErrorString(t, err, `TestCompile/filters/errors/no-glob.d2:7:3: glob filters cannot be used outside globs`)
+				},
+			},
+			{
 				name: "composite",
 				run: func(t testing.TB) {
 					_, err := compile(t, `jacob.style: {
@@ -111,7 +149,7 @@ TestCompile/filters/errors/bad-syntax.d2:9:1: unexpected map termination charact
 	}
 }
 `)
-					assert.ErrorString(t, err, `TestCompile/filters/errors/composite.d2:6:2: ampersand filters cannot be composites`)
+					assert.ErrorString(t, err, `TestCompile/filters/errors/composite.d2:6:2: glob filters cannot be composites`)
 				},
 			},
 		}

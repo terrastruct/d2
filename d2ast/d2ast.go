@@ -720,6 +720,19 @@ func (mk *Key) SetScalar(scalar ScalarBox) {
 	}
 }
 
+func (mk *Key) HasQueryGlob() bool {
+	if mk.Key.HasGlob() && len(mk.Edges) == 0 {
+		return true
+	}
+	if mk.EdgeIndex != nil && mk.EdgeIndex.Glob && mk.EdgeKey == nil {
+		return true
+	}
+	if mk.EdgeKey.HasGlob() {
+		return true
+	}
+	return false
+}
+
 type KeyPath struct {
 	Range Range        `json:"range"`
 	Path  []*StringBox `json:"path"`
@@ -748,6 +761,9 @@ func (kp *KeyPath) Copy() *KeyPath {
 }
 
 func (kp *KeyPath) HasDoubleGlob() bool {
+	if kp == nil {
+		return false
+	}
 	for _, el := range kp.Path {
 		if el.UnquotedString != nil && el.ScalarString() == "**" {
 			return true
@@ -757,6 +773,9 @@ func (kp *KeyPath) HasDoubleGlob() bool {
 }
 
 func (kp *KeyPath) HasGlob() bool {
+	if kp == nil {
+		return false
+	}
 	for _, el := range kp.Path {
 		if el.UnquotedString != nil && len(el.UnquotedString.Pattern) > 0 {
 			return true

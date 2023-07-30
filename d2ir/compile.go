@@ -22,6 +22,8 @@ type compiler struct {
 	// importCache enables reuse of files imported multiple times.
 	importCache map[string]*Map
 	utf16       bool
+
+	globStack []bool
 }
 
 type CompileOptions struct {
@@ -429,6 +431,10 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 	if !refctx.Key.Ampersand {
 		return true
 	}
+	if len(c.globStack) == 0 || !c.globStack[len(c.globStack)-1] {
+		c.errorf(refctx.Key, "glob filters cannot be used outside globs")
+		return false
+	}
 	if len(refctx.Key.Edges) > 0 {
 		return true
 	}
@@ -451,16 +457,12 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 }
 
 func (c *compiler) _ampersandFilter(f *Field, refctx *RefContext) bool {
-	f2 := ParentMap(f).Map().GetField(refctx.Key.Key.IDA()...)
-	if f2 == nil {
-		return false
-	}
 	if refctx.Key.Value.ScalarBox().Unbox() == nil {
-		c.errorf(refctx.Key, "ampersand filters cannot be composites")
+		c.errorf(refctx.Key, "glob filters cannot be composites")
 		return false
 	}
 
-	if a, ok := f2.Composite.(*Array); ok {
+	if a, ok := f.Composite.(*Array); ok {
 		for _, v := range a.Values {
 			if s, ok := v.(*Scalar); ok {
 				if refctx.Key.Value.ScalarBox().Unbox().ScalarString() == s.Value.ScalarString() {
@@ -470,11 +472,11 @@ func (c *compiler) _ampersandFilter(f *Field, refctx *RefContext) bool {
 		}
 	}
 
-	if f2.Primary_ == nil {
+	if f.Primary_ == nil {
 		return false
 	}
 
-	if refctx.Key.Value.ScalarBox().Unbox().ScalarString() != f2.Primary_.Value.ScalarString() {
+	if refctx.Key.Value.ScalarBox().Unbox().ScalarString() != f.Primary_.Value.ScalarString() {
 		return false
 	}
 
@@ -530,7 +532,9 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 			// If new board type, use that as the new scope AST, otherwise, carry on
 			scopeAST = refctx.ScopeAST
 		}
+		c.globStack = append(c.globStack, refctx.Key.HasQueryGlob())
 		c.compileMap(f.Map(), refctx.Key.Value.Map, scopeAST)
+		c.globStack = c.globStack[:len(c.globStack)-1]
 		switch NodeBoardKind(f) {
 		case BoardScenario, BoardStep:
 			c.overlayClasses(f.Map())
@@ -767,7 +771,9 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 							parent: e,
 						}
 					}
+					c.globStack = append(c.globStack, refctx.Key.HasQueryGlob())
 					c.compileMap(e.Map_, refctx.Key.Value.Map, refctx.ScopeAST)
+					c.globStack = c.globStack[:len(c.globStack)-1]
 				} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
 					e.Primary_ = &Scalar{
 						parent: e,
