@@ -1099,12 +1099,11 @@ type InterpolationBox struct {
 // & is only special if it begins a key.
 // - is only special if followed by another - in a key.
 // ' " and | are only special if they begin an unquoted key or value.
-var UnquotedKeySpecials = string([]rune{'#', ';', '\n', '\\', '{', '}', '[', ']', '\'', '"', '|', ':', '.', '-', '<', '>', '*', '&', '(', ')', '@'})
+var UnquotedKeySpecials = string([]rune{'#', ';', '\n', '\\', '{', '}', '[', ']', '\'', '"', '|', ':', '.', '-', '<', '>', '*', '&', '(', ')', '@', '&'})
 var UnquotedValueSpecials = string([]rune{'#', ';', '\n', '\\', '{', '}', '[', ']', '\'', '"', '|', '$', '@'})
 
 // RawString returns s in a AST String node that can format s in the most aesthetically
 // pleasing way.
-// TODO: Return StringBox
 func RawString(s string, inKey bool) String {
 	if s == "" {
 		return FlatDoubleQuotedString(s)
@@ -1115,10 +1114,6 @@ func RawString(s string, inKey bool) String {
 			switch r {
 			case '-':
 				if i+1 < len(s) && s[i+1] != '-' {
-					continue
-				}
-			case '&':
-				if i > 0 {
 					continue
 				}
 			}
