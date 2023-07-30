@@ -587,6 +587,19 @@ func (m *Map) FieldCountRecursive() int {
 	return acc
 }
 
+func (m *Map) IsContainer() bool {
+	if m == nil {
+		return false
+	}
+	for _, f := range m.Fields {
+		_, isReserved := d2graph.ReservedKeywords[f.Name]
+		if !isReserved {
+			return true
+		}
+	}
+	return false
+}
+
 func (m *Map) EdgeCountRecursive() int {
 	if m == nil {
 		return 0
@@ -1066,6 +1079,18 @@ func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, ea *[]*Edge) error {
 
 	for _, src := range srcFA {
 		for _, dst := range dstFA {
+			if src == dst && (len(srcFA) > 1 || len(dstFA) > 1) {
+				// Globs do not make self edges.
+				continue
+			}
+
+			// If either has a double glob at the end we only select leafs, those without children.
+			if srcKP.Path[len(srcKP.Path)-1].ScalarString() == "**" || dstKP.Path[len(dstKP.Path)-1].ScalarString() == "**" {
+				if src.Map().IsContainer() || dst.Map().IsContainer() {
+					continue
+				}
+			}
+
 			eid2 := eid.Copy()
 			eid2.SrcPath = RelIDA(m, src)
 			eid2.DstPath = RelIDA(m, dst)

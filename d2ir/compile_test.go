@@ -105,6 +105,10 @@ func assertQuery(t testing.TB, n d2ir.Node, nfields, nedges int, primary interfa
 		}
 	}
 
+	if len(na) == 0 {
+		return nil
+	}
+
 	return na[0]
 }
 

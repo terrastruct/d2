@@ -126,7 +126,7 @@ a*n*t*.constant.t*ink*r*t*inke*: globbed`)
 animal
 an* -> an*`)
 				assert.Success(t, err)
-				assertQuery(t, m, 2, 4, nil, "")
+				assertQuery(t, m, 2, 2, nil, "")
 				assertQuery(t, m, 0, 0, nil, "(animate -> animal)[0]")
 				assertQuery(t, m, 0, 0, nil, "(animal -> animal)[0]")
 			},
@@ -138,10 +138,10 @@ an* -> an*`)
 shared.animal
 sh*.(an* -> an*)`)
 				assert.Success(t, err)
-				assertQuery(t, m, 3, 4, nil, "")
-				assertQuery(t, m, 2, 4, nil, "shared")
+				assertQuery(t, m, 3, 2, nil, "")
+				assertQuery(t, m, 2, 2, nil, "shared")
 				assertQuery(t, m, 0, 0, nil, "shared.(animate -> animal)[0]")
-				assertQuery(t, m, 0, 0, nil, "shared.(animal -> animal)[0]")
+				assertQuery(t, m, 0, 0, nil, "shared.(animal -> animate)[0]")
 			},
 		},
 		{
@@ -151,8 +151,8 @@ sh*.(an* -> an*)`)
 shared.animal
 sh*.an* -> sh*.an*`)
 				assert.Success(t, err)
-				assertQuery(t, m, 3, 4, nil, "")
-				assertQuery(t, m, 2, 4, nil, "shared")
+				assertQuery(t, m, 3, 2, nil, "")
+				assertQuery(t, m, 2, 2, nil, "shared")
 				assertQuery(t, m, 0, 0, nil, "shared.(animate -> animal)[0]")
 				assertQuery(t, m, 0, 0, nil, "shared.(animal -> animal)[0]")
 			},
@@ -190,6 +190,23 @@ c -> b
 			},
 		},
 		{
+			name: "edge-nexus",
+			run: func(t testing.TB) {
+				m, err := compile(t, `a
+b
+c
+d
+* -> nexus
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 5, 4, nil, "")
+				assertQuery(t, m, 0, 0, nil, "(a -> nexus)[0]")
+				assertQuery(t, m, 0, 0, nil, "(b -> nexus)[0]")
+				assertQuery(t, m, 0, 0, nil, "(c -> nexus)[0]")
+				assertQuery(t, m, 0, 0, nil, "(d -> nexus)[0]")
+			},
+		},
+		{
 			name: "double-glob/1",
 			run: func(t testing.TB) {
 				m, err := compile(t, `shared.animate
@@ -203,6 +220,22 @@ shared.animal
 				assertQuery(t, m, 1, 0, nil, "shared.animate.style")
 				assertQuery(t, m, 2, 0, nil, "shared.animal")
 				assertQuery(t, m, 1, 0, nil, "shared.animal.style")
+			},
+		},
+		{
+			name: "double-glob/edge-no-container",
+			run: func(t testing.TB) {
+				m, err := compile(t, `zone A: {
+	machine A
+	machine B: {
+		submachine A
+		submachine B
+	}
+}
+zone A.** -> load balancer
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 6, 3, nil, "")
 			},
 		},
 		{
@@ -220,7 +253,7 @@ Spiderman 3
 
 * -> *: arrow`)
 				assert.Success(t, err)
-				assertQuery(t, m, 6, 9, nil, "")
+				assertQuery(t, m, 6, 6, nil, "")
 				assertQuery(t, m, 0, 0, "arrow", "(* -> *)[*]")
 			},
 		},

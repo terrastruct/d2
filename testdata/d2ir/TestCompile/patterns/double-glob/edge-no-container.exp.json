@@ -1,0 +1,1161 @@
+{
+  "fields": [
+    {
+      "name": "zone A",
+      "composite": {
+        "fields": [
+          {
+            "name": "machine A",
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/patterns/double-glob/edge-no-container.d2,1:1:11-1:10:20",
+                  "value": [
+                    {
+                      "string": "machine A",
+                      "raw_string": "machine A"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/double-glob/edge-no-container.d2,1:1:11-1:10:20",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/double-glob/edge-no-container.d2,1:1:11-1:10:20",
+                        "value": [
+                          {
+                            "string": "machine A",
+                            "raw_string": "machine A"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/double-glob/edge-no-container.d2,1:1:11-1:10:20",
+                    "key": {
+                      "range": "TestCompile/patterns/double-glob/edge-no-container.d2,1:1:11-1:10:20",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/double-glob/edge-no-container.d2,1:1:11-1:10:20",
+                            "value": [
+                              {
+                                "string": "machine A",
+                                "raw_string": "machine A"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {}
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "machine B",
+            "composite": {
+              "fields": [
+                {
+                  "name": "submachine A",
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/double-glob/edge-no-container.d2,3:2:37-3:14:49",
+                        "value": [
+                          {
+                            "string": "submachine A",
+                            "raw_string": "submachine A"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/double-glob/edge-no-container.d2,3:2:37-3:14:49",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/double-glob/edge-no-container.d2,3:2:37-3:14:49",
+                              "value": [
+                                {
+                                  "string": "submachine A",
+                                  "raw_string": "submachine A"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/patterns/double-glob/edge-no-container.d2,3:2:37-3:14:49",
+                          "key": {
+                            "range": "TestCompile/patterns/double-glob/edge-no-container.d2,3:2:37-3:14:49",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/double-glob/edge-no-container.d2,3:2:37-3:14:49",
+                                  "value": [
+                                    {
+                                      "string": "submachine A",
+                                      "raw_string": "submachine A"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {}
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "submachine B",
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/double-glob/edge-no-container.d2,4:2:52-4:14:64",
+                        "value": [
+                          {
+                            "string": "submachine B",
+                            "raw_string": "submachine B"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/double-glob/edge-no-container.d2,4:2:52-4:14:64",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/double-glob/edge-no-container.d2,4:2:52-4:14:64",
+                              "value": [
+                                {
+                                  "string": "submachine B",
+                                  "raw_string": "submachine B"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/patterns/double-glob/edge-no-container.d2,4:2:52-4:14:64",
+                          "key": {
+                            "range": "TestCompile/patterns/double-glob/edge-no-container.d2,4:2:52-4:14:64",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/double-glob/edge-no-container.d2,4:2:52-4:14:64",
+                                  "value": [
+                                    {
+                                      "string": "submachine B",
+                                      "raw_string": "submachine B"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {}
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/patterns/double-glob/edge-no-container.d2,2:1:22-2:10:31",
+                  "value": [
+                    {
+                      "string": "machine B",
+                      "raw_string": "machine B"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/double-glob/edge-no-container.d2,2:1:22-2:10:31",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/double-glob/edge-no-container.d2,2:1:22-2:10:31",
+                        "value": [
+                          {
+                            "string": "machine B",
+                            "raw_string": "machine B"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/double-glob/edge-no-container.d2,2:1:22-5:2:67",
+                    "key": {
+                      "range": "TestCompile/patterns/double-glob/edge-no-container.d2,2:1:22-2:10:31",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/double-glob/edge-no-container.d2,2:1:22-2:10:31",
+                            "value": [
+                              {
+                                "string": "machine B",
+                                "raw_string": "machine B"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/patterns/double-glob/edge-no-container.d2,2:12:33-5:2:67",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/patterns/double-glob/edge-no-container.d2,3:2:37-3:14:49",
+                              "key": {
+                                "range": "TestCompile/patterns/double-glob/edge-no-container.d2,3:2:37-3:14:49",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/double-glob/edge-no-container.d2,3:2:37-3:14:49",
+                                      "value": [
+                                        {
+                                          "string": "submachine A",
+                                          "raw_string": "submachine A"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {}
+                            }
+                          },
+                          {
+                            "map_key": {
+                              "range": "TestCompile/patterns/double-glob/edge-no-container.d2,4:2:52-4:14:64",
+                              "key": {
+                                "range": "TestCompile/patterns/double-glob/edge-no-container.d2,4:2:52-4:14:64",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/double-glob/edge-no-container.d2,4:2:52-4:14:64",
+                                      "value": [
+                                        {
+                                          "string": "submachine B",
+                                          "raw_string": "submachine B"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {}
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/double-glob/edge-no-container.d2,0:0:0-0:6:6",
+            "value": [
+              {
+                "string": "zone A",
+                "raw_string": "zone A"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/double-glob/edge-no-container.d2,0:0:0-0:6:6",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/double-glob/edge-no-container.d2,0:0:0-0:6:6",
+                  "value": [
+                    {
+                      "string": "zone A",
+                      "raw_string": "zone A"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/double-glob/edge-no-container.d2,0:0:0-6:1:69",
+              "key": {
+                "range": "TestCompile/patterns/double-glob/edge-no-container.d2,0:0:0-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/double-glob/edge-no-container.d2,0:0:0-0:6:6",
+                      "value": [
+                        {
+                          "string": "zone A",
+                          "raw_string": "zone A"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/patterns/double-glob/edge-no-container.d2,0:8:8-6:1:69",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/patterns/double-glob/edge-no-container.d2,1:1:11-1:10:20",
+                        "key": {
+                          "range": "TestCompile/patterns/double-glob/edge-no-container.d2,1:1:11-1:10:20",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/double-glob/edge-no-container.d2,1:1:11-1:10:20",
+                                "value": [
+                                  {
+                                    "string": "machine A",
+                                    "raw_string": "machine A"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {}
+                      }
+                    },
+                    {
+                      "map_key": {
+                        "range": "TestCompile/patterns/double-glob/edge-no-container.d2,2:1:22-5:2:67",
+                        "key": {
+                          "range": "TestCompile/patterns/double-glob/edge-no-container.d2,2:1:22-2:10:31",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/double-glob/edge-no-container.d2,2:1:22-2:10:31",
+                                "value": [
+                                  {
+                                    "string": "machine B",
+                                    "raw_string": "machine B"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "map": {
+                            "range": "TestCompile/patterns/double-glob/edge-no-container.d2,2:12:33-5:2:67",
+                            "nodes": [
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/patterns/double-glob/edge-no-container.d2,3:2:37-3:14:49",
+                                  "key": {
+                                    "range": "TestCompile/patterns/double-glob/edge-no-container.d2,3:2:37-3:14:49",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/patterns/double-glob/edge-no-container.d2,3:2:37-3:14:49",
+                                          "value": [
+                                            {
+                                              "string": "submachine A",
+                                              "raw_string": "submachine A"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {}
+                                }
+                              },
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/patterns/double-glob/edge-no-container.d2,4:2:52-4:14:64",
+                                  "key": {
+                                    "range": "TestCompile/patterns/double-glob/edge-no-container.d2,4:2:52-4:14:64",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/patterns/double-glob/edge-no-container.d2,4:2:52-4:14:64",
+                                          "value": [
+                                            {
+                                              "string": "submachine B",
+                                              "raw_string": "submachine B"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {}
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "string": {
+            "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:6:76",
+            "value": [
+              {
+                "string": "zone A",
+                "raw_string": "zone A"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:9:79",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:6:76",
+                  "value": [
+                    {
+                      "string": "zone A",
+                      "raw_string": "zone A"
+                    }
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:7:77-7:9:79",
+                  "value": [
+                    {
+                      "string": "**",
+                      "raw_string": "**"
+                    }
+                  ],
+                  "pattern": [
+                    "*",
+                    "",
+                    "*"
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:26:96",
+              "src": {
+                "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:9:79",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:6:76",
+                      "value": [
+                        {
+                          "string": "zone A",
+                          "raw_string": "zone A"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:7:77-7:9:79",
+                      "value": [
+                        {
+                          "string": "**",
+                          "raw_string": "**"
+                        }
+                      ],
+                      "pattern": [
+                        "*",
+                        "",
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+                      "value": [
+                        {
+                          "string": "load balancer",
+                          "raw_string": "load balancer"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:26:96",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:26:96",
+                  "src": {
+                    "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:9:79",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:6:76",
+                          "value": [
+                            {
+                              "string": "zone A",
+                              "raw_string": "zone A"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:7:77-7:9:79",
+                          "value": [
+                            {
+                              "string": "**",
+                              "raw_string": "**"
+                            }
+                          ],
+                          "pattern": [
+                            "*",
+                            "",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+                          "value": [
+                            {
+                              "string": "load balancer",
+                              "raw_string": "load balancer"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "load balancer",
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+            "value": [
+              {
+                "string": "load balancer",
+                "raw_string": "load balancer"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+                  "value": [
+                    {
+                      "string": "load balancer",
+                      "raw_string": "load balancer"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:26:96",
+              "src": {
+                "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:9:79",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:6:76",
+                      "value": [
+                        {
+                          "string": "zone A",
+                          "raw_string": "zone A"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:7:77-7:9:79",
+                      "value": [
+                        {
+                          "string": "**",
+                          "raw_string": "**"
+                        }
+                      ],
+                      "pattern": [
+                        "*",
+                        "",
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+                      "value": [
+                        {
+                          "string": "load balancer",
+                          "raw_string": "load balancer"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:26:96",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:26:96",
+                  "src": {
+                    "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:9:79",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:6:76",
+                          "value": [
+                            {
+                              "string": "zone A",
+                              "raw_string": "zone A"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:7:77-7:9:79",
+                          "value": [
+                            {
+                              "string": "**",
+                              "raw_string": "**"
+                            }
+                          ],
+                          "pattern": [
+                            "*",
+                            "",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+                          "value": [
+                            {
+                              "string": "load balancer",
+                              "raw_string": "load balancer"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": {
+        "src_path": [
+          "zone A",
+          "machine A"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "load balancer"
+        ],
+        "dst_arrow": true,
+        "index": 0,
+        "glob": false
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:26:96",
+              "src": {
+                "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:9:79",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:6:76",
+                      "value": [
+                        {
+                          "string": "zone A",
+                          "raw_string": "zone A"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:7:77-7:9:79",
+                      "value": [
+                        {
+                          "string": "**",
+                          "raw_string": "**"
+                        }
+                      ],
+                      "pattern": [
+                        "*",
+                        "",
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+                      "value": [
+                        {
+                          "string": "load balancer",
+                          "raw_string": "load balancer"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:26:96",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:26:96",
+                  "src": {
+                    "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:9:79",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:6:76",
+                          "value": [
+                            {
+                              "string": "zone A",
+                              "raw_string": "zone A"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:7:77-7:9:79",
+                          "value": [
+                            {
+                              "string": "**",
+                              "raw_string": "**"
+                            }
+                          ],
+                          "pattern": [
+                            "*",
+                            "",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+                          "value": [
+                            {
+                              "string": "load balancer",
+                              "raw_string": "load balancer"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "edge_id": {
+        "src_path": [
+          "zone A",
+          "machine B",
+          "submachine A"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "load balancer"
+        ],
+        "dst_arrow": true,
+        "index": 0,
+        "glob": false
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:26:96",
+              "src": {
+                "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:9:79",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:6:76",
+                      "value": [
+                        {
+                          "string": "zone A",
+                          "raw_string": "zone A"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:7:77-7:9:79",
+                      "value": [
+                        {
+                          "string": "**",
+                          "raw_string": "**"
+                        }
+                      ],
+                      "pattern": [
+                        "*",
+                        "",
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+                      "value": [
+                        {
+                          "string": "load balancer",
+                          "raw_string": "load balancer"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:26:96",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:26:96",
+                  "src": {
+                    "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:9:79",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:6:76",
+                          "value": [
+                            {
+                              "string": "zone A",
+                              "raw_string": "zone A"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:7:77-7:9:79",
+                          "value": [
+                            {
+                              "string": "**",
+                              "raw_string": "**"
+                            }
+                          ],
+                          "pattern": [
+                            "*",
+                            "",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+                          "value": [
+                            {
+                              "string": "load balancer",
+                              "raw_string": "load balancer"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "edge_id": {
+        "src_path": [
+          "zone A",
+          "machine B",
+          "submachine B"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "load balancer"
+        ],
+        "dst_arrow": true,
+        "index": 0,
+        "glob": false
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:26:96",
+              "src": {
+                "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:9:79",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:6:76",
+                      "value": [
+                        {
+                          "string": "zone A",
+                          "raw_string": "zone A"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:7:77-7:9:79",
+                      "value": [
+                        {
+                          "string": "**",
+                          "raw_string": "**"
+                        }
+                      ],
+                      "pattern": [
+                        "*",
+                        "",
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+                      "value": [
+                        {
+                          "string": "load balancer",
+                          "raw_string": "load balancer"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:26:96",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:26:96",
+                  "src": {
+                    "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:9:79",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:0:70-7:6:76",
+                          "value": [
+                            {
+                              "string": "zone A",
+                              "raw_string": "zone A"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:7:77-7:9:79",
+                          "value": [
+                            {
+                              "string": "**",
+                              "raw_string": "**"
+                            }
+                          ],
+                          "pattern": [
+                            "*",
+                            "",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+                          "value": [
+                            {
+                              "string": "load balancer",
+                              "raw_string": "load balancer"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
