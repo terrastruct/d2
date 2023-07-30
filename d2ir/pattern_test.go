@@ -257,6 +257,34 @@ Spiderman 3
 				assertQuery(t, m, 0, 0, "arrow", "(* -> *)[*]")
 			},
 		},
+		{
+			name: "scenarios",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+
+scenarios: {
+  meow: {
+	e
+	f
+	g
+	h
+  }
+}
+
+a
+b
+c
+d
+
+**: something
+** -> **
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 10, 24, nil, "")
+				assertQuery(t, m, 0, 0, "something", "**")
+				assertQuery(t, m, 0, 0, nil, "(* -> *)[*]")
+			},
+		},
 	}
 
 	runa(t, tca)

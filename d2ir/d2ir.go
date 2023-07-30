@@ -1084,9 +1084,13 @@ func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, ea *[]*Edge) error {
 				continue
 			}
 
-			// If either has a double glob at the end we only select leafs, those without children.
-			if srcKP.Path[len(srcKP.Path)-1].ScalarString() == "**" || dstKP.Path[len(dstKP.Path)-1].ScalarString() == "**" {
+			if srcKP.HasDoubleGlob() || dstKP.HasDoubleGlob() {
+				// If either has a double glob we only select leafs, those without children.
 				if src.Map().IsContainer() || dst.Map().IsContainer() {
+					continue
+				}
+				// If either has a double glob we ignore connections across boards
+				if ParentBoard(src) != ParentBoard(dst) {
 					continue
 				}
 			}

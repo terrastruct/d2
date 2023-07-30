@@ -18,7 +18,9 @@ func (m *Map) doubleGlob(pattern []string) ([]*Field, bool) {
 func (m *Map) _doubleGlob(fa *[]*Field) {
 	for _, f := range m.Fields {
 		if _, ok := d2graph.ReservedKeywords[f.Name]; ok {
-			continue
+			if _, ok := d2graph.BoardKeywords[f.Name]; !ok {
+				continue
+			}
 		}
 		*fa = append(*fa, f)
 		if f.Map() != nil {

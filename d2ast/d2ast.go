@@ -747,6 +747,15 @@ func (kp *KeyPath) Copy() *KeyPath {
 	return &kp2
 }
 
+func (kp *KeyPath) HasDoubleGlob() bool {
+	for _, el := range kp.Path {
+		if el.ScalarString() == "**" {
+			return true
+		}
+	}
+	return false
+}
+
 type Edge struct {
 	Range Range `json:"range"`
 
