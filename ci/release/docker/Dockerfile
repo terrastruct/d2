@@ -1,5 +1,5 @@
 # https://hub.docker.com/repository/docker/terrastruct/d2
-FROM debian:latest
+FROM ubuntu:latest
 
 ARG TARGETARCH
 
