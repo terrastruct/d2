@@ -1,4 +1,26 @@
-D2 v0.6 introduces variable substitutions. The only major language feature left that were in the intial language design is globs, then we'll stamp it 1.0!
+D2 v0.6 introduces variable substitutions and globs. These two were the last of the features planned in the initial designs for D2, and v1 is now very close!
+
+The power of variables and globs in a programming language need no introduction, so here's two minimal examples to get started:
+
+**Variables**:
+```d2
+vars: {
+  color: aquamarine
+}
+
+x.style.fill: ${color}
+```
+
+**Globs**:
+```d2
+x
+y
+z
+
+*.style.fill: aquamarine
+```
+
+Both are live on [D2 Playground](https://play.d2lang.com) so give it a try! Looking forward to your issues and iterating 
 
 Layout capability also takes a subtle but important step forward: you can now customize the position of labels and icons.
 
