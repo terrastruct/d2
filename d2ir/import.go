@@ -99,7 +99,7 @@ func (c *compiler) __import(imp *d2ast.Import) (*Map, bool) {
 	defer f.Close()
 
 	ast, err := d2parser.Parse(impPath, f, &d2parser.ParseOptions{
-		UTF16:      c.utf16,
+		UTF16Pos:   c.utf16Pos,
 		ParseError: c.err,
 	})
 	if err != nil {

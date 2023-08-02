@@ -17,7 +17,6 @@ import (
 type testCase struct {
 	name   string
 	text   string
-	utf16  bool
 	assert func(t testing.TB, ast *d2ast.Map, err error)
 }
 
@@ -395,18 +394,10 @@ c-
 		},
 		{
 			name: "utf16-input",
-			utf16: true,
 			text: "\xff\xfex\x00 \x00-\x00>\x00 \x00y\x00\r\x00\n\x00",
 			assert: func(t testing.TB, ast *d2ast.Map, err error) {
 				assert.Success(t, err)
 				assert.Equal(t, "x -> y\n", d2format.Format(ast))
-			},
-		},
-		{
-			name: "errors/utf16-input",
-			text: "\xff\xfex\x00 \x00-\x00>\x00 \x00y\x00\r\x00\n\x00",
-			assert: func(t testing.TB, ast *d2ast.Map, err error) {
-				assert.ErrorString(t, err, `d2/testdata/d2parser/TestParse/errors/utf16-input.d2:1:13: invalid text beginning unquoted key`)
 			},
 		},
 	}
@@ -510,9 +501,6 @@ func runa(t *testing.T, tca []testCase) {
 
 			d2Path := fmt.Sprintf("d2/testdata/d2parser/%v.d2", t.Name())
 			opts := &d2parser.ParseOptions{}
-			if tc.utf16 {
-				opts.UTF16Input = true
-			}
 			ast, err := d2parser.Parse(d2Path, strings.NewReader(tc.text), opts)
 
 			if tc.assert != nil {

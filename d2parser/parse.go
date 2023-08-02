@@ -2,6 +2,7 @@ package d2parser
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"io"
 	"math/big"
@@ -23,9 +24,6 @@ type ParseOptions struct {
 	// So you want to read UTF-8 still but adjust the indexes to pretend the input is utf16.
 	UTF16Pos bool
 
-	// UTF16Input makes the parser read the input as UTF16 and also sets UTF16Pos.
-	UTF16Input bool
-
 	ParseError *ParseError
 }
 
@@ -44,25 +42,36 @@ type ParseOptions struct {
 func Parse(path string, r io.Reader, opts *ParseOptions) (*d2ast.Map, error) {
 	if opts == nil {
 		opts = &ParseOptions{
-			UTF16Pos:   false,
-			UTF16Input: false,
+			UTF16Pos: false,
 		}
 	}
 
 	p := &parser{
 		path: path,
 
-		utf16Input: opts.UTF16Input,
-		utf16Pos:   opts.UTF16Pos,
-		err:        opts.ParseError,
+		utf16Pos: opts.UTF16Pos,
+		err:      opts.ParseError,
 	}
-	if p.utf16Input {
-		p.utf16Pos = true
-		tr := transform.NewReader(r, tunicode.UTF16(tunicode.LittleEndian, tunicode.UseBOM).NewDecoder())
-		p.reader = bufio.NewReader(tr)
-	} else {
-		p.reader = bufio.NewReader(r)
+	br := bufio.NewReader(r)
+	p.reader = br
+
+	bom, err := br.Peek(2)
+	if err == nil {
+		// 0xFFFE is invalid UTF-8 so this is safe.
+		// Also a different BOM is used for UTF-8.
+		// See https://unicode.org/faq/utf_bom.html#bom4
+		if bom[0] == 0xFF && bom[1] == 0xFE {
+			p.utf16Pos = true
+
+			buf := make([]byte, br.Buffered())
+			io.ReadFull(br, buf)
+
+			mr := io.MultiReader(bytes.NewBuffer(buf), r)
+			tr := transform.NewReader(mr, tunicode.UTF16(tunicode.LittleEndian, tunicode.UseBOM).NewDecoder())
+			br.Reset(tr)
+		}
 	}
+
 	if p.err == nil {
 		p.err = &ParseError{}
 	}
@@ -131,10 +140,9 @@ func ParseValue(value string) (d2ast.Value, error) {
 //
 // TODO: ast struct that combines map & errors and pass that around
 type parser struct {
-	path       string
-	pos        d2ast.Position
-	utf16Pos   bool
-	utf16Input bool
+	path     string
+	pos      d2ast.Position
+	utf16Pos bool
 
 	reader    io.RuneReader
 	readerPos d2ast.Position
@@ -212,10 +220,7 @@ func (p *parser) _readRune() (r rune, eof bool) {
 
 	p.readerPos = p.lookaheadPos
 
-	r, n, err := p.reader.ReadRune()
-	if p.utf16Input && n > 0 {
-		// TODO:
-	}
+	r, _, err := p.reader.ReadRune()
 	if err != nil {
 		p.ioerr = true
 		if err != io.EOF {

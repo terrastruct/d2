@@ -23,7 +23,7 @@ import (
 )
 
 type CompileOptions struct {
-	UTF16          bool
+	UTF16Pos       bool
 	FS             fs.FS
 	MeasuredTexts  []*d2target.MText
 	Ruler          *textmeasure.Ruler
@@ -50,8 +50,8 @@ func Compile(ctx context.Context, input string, compileOpts *CompileOptions, ren
 	}
 
 	g, config, err := d2compiler.Compile(compileOpts.InputPath, strings.NewReader(input), &d2compiler.CompileOptions{
-		UTF16: compileOpts.UTF16,
-		FS:    compileOpts.FS,
+		UTF16Pos: compileOpts.UTF16Pos,
+		FS:       compileOpts.FS,
 	})
 	if err != nil {
 		return nil, nil, err

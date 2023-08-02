@@ -10,6 +10,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"unicode/utf8"
 
 	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
@@ -27,6 +28,8 @@ func main() {
 	}
 
 	fmt.Printf("%q\n", b.String())
+	fmt.Println("\xFF\xFE")
+	fmt.Println(utf8.ValidString("\xFF\xFE"))
 
 	err = os.WriteFile("./utf16.d2", b.Bytes(), 0644)
 	if err != nil {
