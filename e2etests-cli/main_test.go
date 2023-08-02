@@ -521,6 +521,16 @@ i used to read
 				assert.Testdata(t, ".svg", svg)
 			},
 		},
+		{
+			name: "basic-fmt",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `x ---> y`)
+				err := runTestMainPersist(t, ctx, dir, env, "fmt", "hello-world.d2")
+				assert.Success(t, err)
+				got := readFile(t, dir, "hello-world.d2")
+				assert.Equal(t, "x -> y\n", string(got))
+			},
+		},
 	}
 
 	ctx := context.Background()
@@ -561,6 +571,15 @@ func testMain(dir string, env *xos.Env, args ...string) *xmain.TestState {
 }
 
 func runTestMain(tb testing.TB, ctx context.Context, dir string, env *xos.Env, args ...string) error {
+	err := runTestMainPersist(tb, ctx, dir, env, args...)
+	if err != nil {
+		return err
+	}
+	removeD2Files(tb, dir)
+	return nil
+}
+
+func runTestMainPersist(tb testing.TB, ctx context.Context, dir string, env *xos.Env, args ...string) error {
 	tms := testMain(dir, env, args...)
 	tms.Start(tb, ctx)
 	defer tms.Cleanup(tb)
@@ -568,7 +587,6 @@ func runTestMain(tb testing.TB, ctx context.Context, dir string, env *xos.Env, a
 	if err != nil {
 		return err
 	}
-	removeD2Files(tb, dir)
 	return nil
 }
 
