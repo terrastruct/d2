@@ -20,6 +20,7 @@ import (
 	"oss.terrastruct.com/util-go/go2"
 	"oss.terrastruct.com/util-go/xmain"
 
+	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2plugin"
@@ -66,7 +67,8 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	debugFlag, err := ms.Opts.Bool("DEBUG", "debug", "d", false, "print debug logs.")
 	if err != nil {
-		return err
+		ms.Log.Warn.Printf("Invalid DEBUG flag value ignored")
+		debugFlag = go2.Pointer(false)
 	}
 	imgCacheFlag, err := ms.Opts.Bool("IMG_CACHE", "img-cache", "", true, "in watch mode, images used in icons are cached for subsequent compilations. This should be disabled if images might change.")
 	if err != nil {
@@ -117,11 +119,11 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	fontBoldFlag := ms.Opts.String("D2_FONT_BOLD", "font-bold", "", "", "path to .ttf file to use for the bold font. If none provided, Source Sans Pro Bold is used.")
 	fontSemiboldFlag := ms.Opts.String("D2_FONT_SEMIBOLD", "font-semibold", "", "", "path to .ttf file to use for the semibold font. If none provided, Source Sans Pro Semibold is used.")
 
-	ps, err := d2plugin.ListPlugins(ctx)
+	plugins, err := d2plugin.ListPlugins(ctx)
 	if err != nil {
 		return err
 	}
-	err = populateLayoutOpts(ctx, ms, ps)
+	err = populateLayoutOpts(ctx, ms, plugins)
 	if err != nil {
 		return err
 	}
@@ -146,7 +148,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		case "init-playwright":
 			return initPlaywright()
 		case "layout":
-			return layoutCmd(ctx, ms, ps)
+			return layoutCmd(ctx, ms, plugins)
 		case "themes":
 			themesCmd(ctx, ms)
 			return nil
@@ -226,6 +228,38 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	ms.Log.Debug.Printf("using theme %s (ID: %d)", match.Name, *themeFlag)
 
+	// If flag is not explicitly set by user, set to nil.
+	// Later, configs from D2 code will only overwrite if they weren't explicitly set by user
+	flagSet := make(map[string]struct{})
+	ms.Opts.Flags.Visit(func(f *pflag.Flag) {
+		flagSet[f.Name] = struct{}{}
+	})
+	if ms.Env.Getenv("D2_LAYOUT") == "" {
+		if _, ok := flagSet["layout"]; !ok {
+			layoutFlag = nil
+		}
+	}
+	if ms.Env.Getenv("D2_THEME") == "" {
+		if _, ok := flagSet["theme"]; !ok {
+			themeFlag = nil
+		}
+	}
+	if ms.Env.Getenv("D2_SKETCH") == "" {
+		if _, ok := flagSet["sketch"]; !ok {
+			sketchFlag = nil
+		}
+	}
+	if ms.Env.Getenv("D2_PAD") == "" {
+		if _, ok := flagSet["pad"]; !ok {
+			padFlag = nil
+		}
+	}
+	if ms.Env.Getenv("D2_CENTER") == "" {
+		if _, ok := flagSet["center"]; !ok {
+			centerFlag = nil
+		}
+	}
+
 	if *darkThemeFlag == -1 {
 		darkThemeFlag = nil // TODO this is a temporary solution: https://github.com/terrastruct/util-go/issues/7
 	}
@@ -240,29 +274,6 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if scaleFlag != nil && *scaleFlag > 0. {
 		scale = scaleFlag
 	}
-
-	plugin, err := d2plugin.FindPlugin(ctx, ps, *layoutFlag)
-	if err != nil {
-		if errors.Is(err, exec.ErrNotFound) {
-			return layoutNotFound(ctx, ps, *layoutFlag)
-		}
-		return err
-	}
-
-	err = d2plugin.HydratePluginOpts(ctx, ms, plugin)
-	if err != nil {
-		return err
-	}
-
-	pinfo, err := plugin.Info(ctx)
-	if err != nil {
-		return err
-	}
-	plocation := pinfo.Type
-	if pinfo.Type == "binary" {
-		plocation = fmt.Sprintf("executable plugin at %s", humanPath(pinfo.Path))
-	}
-	ms.Log.Debug.Printf("using layout plugin %s (%s)", *layoutFlag, plocation)
 
 	if !outputFormat.supportsDarkTheme() {
 		if darkThemeFlag != nil {
@@ -285,10 +296,10 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 
 	renderOpts := d2svg.RenderOpts{
-		Pad:         int(*padFlag),
-		Sketch:      *sketchFlag,
-		Center:      *centerFlag,
-		ThemeID:     *themeFlag,
+		Pad:         padFlag,
+		Sketch:      sketchFlag,
+		Center:      centerFlag,
+		ThemeID:     themeFlag,
 		DarkThemeID: darkThemeFlag,
 		Scale:       scale,
 	}
@@ -298,7 +309,8 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 			return xmain.UsageErrorf("-w[atch] cannot be combined with reading input from stdin")
 		}
 		w, err := newWatcher(ctx, ms, watcherOpts{
-			layoutPlugin:    plugin,
+			plugins:         plugins,
+			layout:          layoutFlag,
 			renderOpts:      renderOpts,
 			animateInterval: *animateIntervalFlag,
 			host:            *hostFlag,
@@ -319,7 +331,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	ctx, cancel := timelib.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
-	_, written, err := compile(ctx, ms, plugin, renderOpts, fontFamily, *animateIntervalFlag, inputPath, outputPath, *bundleFlag, *forceAppendixFlag, pw.Page)
+	_, written, err := compile(ctx, ms, plugins, layoutFlag, renderOpts, fontFamily, *animateIntervalFlag, inputPath, outputPath, "", *bundleFlag, *forceAppendixFlag, pw.Page)
 	if err != nil {
 		if written {
 			return fmt.Errorf("failed to fully compile (partial render written): %w", err)
@@ -329,7 +341,32 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	return nil
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, renderOpts d2svg.RenderOpts, fontFamily *d2fonts.FontFamily, animateInterval int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page) (_ []byte, written bool, _ error) {
+func LayoutResolver(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin) func(engine string) (d2graph.LayoutGraph, error) {
+	cached := make(map[string]d2graph.LayoutGraph)
+	return func(engine string) (d2graph.LayoutGraph, error) {
+		if c, ok := cached[engine]; ok {
+			return c, nil
+		}
+
+		plugin, err := d2plugin.FindPlugin(ctx, plugins, engine)
+		if err != nil {
+			if errors.Is(err, exec.ErrNotFound) {
+				return nil, layoutNotFound(ctx, plugins, engine)
+			}
+			return nil, err
+		}
+
+		err = d2plugin.HydratePluginOpts(ctx, ms, plugin)
+		if err != nil {
+			return nil, err
+		}
+
+		cached[engine] = plugin.Layout
+		return plugin.Layout, nil
+	}
+}
+
+func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, layout *string, renderOpts d2svg.RenderOpts, fontFamily *d2fonts.FontFamily, animateInterval int64, inputPath, outputPath, boardPath string, bundle, forceAppendix bool, page playwright.Page) (_ []byte, written bool, _ error) {
 	start := time.Now()
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
@@ -341,16 +378,12 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		return nil, false, err
 	}
 
-	layout := plugin.Layout
 	opts := &d2lib.CompileOptions{
-		Layout:     layout,
-		Ruler:      ruler,
-		ThemeID:    renderOpts.ThemeID,
-		FontFamily: fontFamily,
-		InputPath:  inputPath,
-	}
-	if renderOpts.Sketch {
-		opts.FontFamily = go2.Pointer(d2fonts.HandDrawn)
+		Ruler:          ruler,
+		FontFamily:     fontFamily,
+		InputPath:      inputPath,
+		LayoutResolver: LayoutResolver(ctx, ms, plugins),
+		Layout:         layout,
 	}
 
 	cancel := background.Repeat(func() {
@@ -358,11 +391,13 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 	}, time.Second*5)
 	defer cancel()
 
-	diagram, g, err := d2lib.Compile(ctx, string(input), opts)
+	diagram, g, err := d2lib.Compile(ctx, string(input), opts, &renderOpts)
 	if err != nil {
 		return nil, false, err
 	}
 	cancel()
+
+	plugin, _ := d2plugin.FindPlugin(ctx, plugins, *opts.Layout)
 
 	if animateInterval > 0 {
 		masterID, err := diagram.HashID()
@@ -371,6 +406,16 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		}
 		renderOpts.MasterID = masterID
 	}
+
+	pinfo, err := plugin.Info(ctx)
+	if err != nil {
+		return nil, false, err
+	}
+	plocation := pinfo.Type
+	if pinfo.Type == "binary" {
+		plocation = fmt.Sprintf("executable plugin at %s", humanPath(pinfo.Path))
+	}
+	ms.Log.Debug.Printf("using layout plugin %s (%s)", *opts.Layout, plocation)
 
 	pluginInfo, err := plugin.Info(ctx)
 	if err != nil {
@@ -455,7 +500,12 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 			}
 		}
 
-		boards, err := render(ctx, ms, compileDur, plugin, renderOpts, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
+		board := diagram.GetBoard(boardPath)
+		if board == nil {
+			return nil, false, fmt.Errorf("Diagram with path %s not found", boardPath)
+		}
+
+		boards, err := render(ctx, ms, compileDur, plugin, renderOpts, inputPath, outputPath, bundle, forceAppendix, page, ruler, board)
 		if err != nil {
 			return nil, false, err
 		}
@@ -805,7 +855,7 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 		if err != nil {
 			return svg, err
 		}
-		err = doc.AddPDFPage(pngImg, boardPath, opts.ThemeID, rootFill, diagram.Shapes, int64(opts.Pad), viewboxX, viewboxY, pageMap)
+		err = doc.AddPDFPage(pngImg, boardPath, *opts.ThemeID, rootFill, diagram.Shapes, *opts.Pad, viewboxX, viewboxY, pageMap)
 		if err != nil {
 			return svg, err
 		}

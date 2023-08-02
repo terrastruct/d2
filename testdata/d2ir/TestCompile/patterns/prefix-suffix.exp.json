@@ -1,0 +1,159 @@
+{
+  "fields": [
+    {
+      "name": "tinker",
+      "primary": {
+        "value": {
+          "range": "TestCompile/patterns/prefix-suffix.d2,2:5:31-2:12:38",
+          "value": [
+            {
+              "string": "globbed",
+              "raw_string": "globbed"
+            }
+          ]
+        }
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/prefix-suffix.d2,0:0:0-0:6:6",
+            "value": [
+              {
+                "string": "tinker",
+                "raw_string": "tinker"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/prefix-suffix.d2,0:0:0-0:6:6",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/prefix-suffix.d2,0:0:0-0:6:6",
+                  "value": [
+                    {
+                      "string": "tinker",
+                      "raw_string": "tinker"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/prefix-suffix.d2,0:0:0-0:12:12",
+              "key": {
+                "range": "TestCompile/patterns/prefix-suffix.d2,0:0:0-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/prefix-suffix.d2,0:0:0-0:6:6",
+                      "value": [
+                        {
+                          "string": "tinker",
+                          "raw_string": "tinker"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/prefix-suffix.d2,0:8:8-0:12:12",
+                  "value": [
+                    {
+                      "string": "meow",
+                      "raw_string": "meow"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "thinker",
+      "primary": {
+        "value": {
+          "range": "TestCompile/patterns/prefix-suffix.d2,2:5:31-2:12:38",
+          "value": [
+            {
+              "string": "globbed",
+              "raw_string": "globbed"
+            }
+          ]
+        }
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/prefix-suffix.d2,1:0:13-1:7:20",
+            "value": [
+              {
+                "string": "thinker",
+                "raw_string": "thinker"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/prefix-suffix.d2,1:0:13-1:7:20",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/prefix-suffix.d2,1:0:13-1:7:20",
+                  "value": [
+                    {
+                      "string": "thinker",
+                      "raw_string": "thinker"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/prefix-suffix.d2,1:0:13-1:12:25",
+              "key": {
+                "range": "TestCompile/patterns/prefix-suffix.d2,1:0:13-1:7:20",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/prefix-suffix.d2,1:0:13-1:7:20",
+                      "value": [
+                        {
+                          "string": "thinker",
+                          "raw_string": "thinker"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/prefix-suffix.d2,1:9:22-1:12:25",
+                  "value": [
+                    {
+                      "string": "yes",
+                      "raw_string": "yes"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": null
+}

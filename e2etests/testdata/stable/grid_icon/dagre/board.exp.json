@@ -11,10 +11,10 @@
       ],
       "pos": {
         "x": 0,
-        "y": 18
+        "y": 0
       },
-      "width": 384,
-      "height": 421,
+      "width": 364,
+      "height": 417,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -52,10 +52,10 @@
       "type": "rectangle",
       "pos": {
         "x": 60,
-        "y": 143
+        "y": 125
       },
       "width": 53,
-      "height": 130,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -93,10 +93,10 @@
       "type": "rectangle",
       "pos": {
         "x": 153,
-        "y": 143
+        "y": 125
       },
-      "width": 171,
-      "height": 130,
+      "width": 151,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -145,8 +145,8 @@
       "id": "grid w/ container + icon.b.b child",
       "type": "rectangle",
       "pos": {
-        "x": 193,
-        "y": 175
+        "x": 183,
+        "y": 155
       },
       "width": 91,
       "height": 66,
@@ -187,7 +187,7 @@
       "type": "rectangle",
       "pos": {
         "x": 60,
-        "y": 313
+        "y": 291
       },
       "width": 53,
       "height": 66,
@@ -228,9 +228,9 @@
       "type": "rectangle",
       "pos": {
         "x": 153,
-        "y": 313
+        "y": 291
       },
-      "width": 171,
+      "width": 151,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -271,11 +271,11 @@
         "2x2"
       ],
       "pos": {
-        "x": 444,
-        "y": 55
+        "x": 424,
+        "y": 56
       },
       "width": 278,
-      "height": 347,
+      "height": 306,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -324,8 +324,8 @@
       "id": "grid + icon.a",
       "type": "rectangle",
       "pos": {
-        "x": 509,
-        "y": 129
+        "x": 489,
+        "y": 130
       },
       "width": 53,
       "height": 66,
@@ -365,8 +365,8 @@
       "id": "grid + icon.b",
       "type": "rectangle",
       "pos": {
-        "x": 602,
-        "y": 129
+        "x": 582,
+        "y": 130
       },
       "width": 54,
       "height": 66,
@@ -406,8 +406,8 @@
       "id": "grid + icon.c",
       "type": "rectangle",
       "pos": {
-        "x": 509,
-        "y": 235
+        "x": 489,
+        "y": 236
       },
       "width": 53,
       "height": 66,
@@ -447,8 +447,8 @@
       "id": "grid + icon.d",
       "type": "rectangle",
       "pos": {
-        "x": 602,
-        "y": 235
+        "x": 582,
+        "y": 236
       },
       "width": 54,
       "height": 66,
@@ -491,11 +491,11 @@
         "2x2"
       ],
       "pos": {
-        "x": 782,
-        "y": 0
+        "x": 762,
+        "y": 3
       },
       "width": 433,
-      "height": 457,
+      "height": 412,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -544,11 +544,11 @@
       "id": "grid + icon w/ container.a",
       "type": "rectangle",
       "pos": {
-        "x": 866,
-        "y": 120
+        "x": 856,
+        "y": 123
       },
       "width": 53,
-      "height": 130,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -585,11 +585,11 @@
       "id": "grid + icon w/ container.b",
       "type": "rectangle",
       "pos": {
-        "x": 959,
-        "y": 120
+        "x": 949,
+        "y": 123
       },
-      "width": 171,
-      "height": 130,
+      "width": 151,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -626,8 +626,8 @@
       "id": "grid + icon w/ container.b.b child",
       "type": "rectangle",
       "pos": {
-        "x": 999,
-        "y": 152
+        "x": 979,
+        "y": 153
       },
       "width": 91,
       "height": 66,
@@ -667,8 +667,8 @@
       "id": "grid + icon w/ container.c",
       "type": "rectangle",
       "pos": {
-        "x": 866,
-        "y": 290
+        "x": 856,
+        "y": 289
       },
       "width": 53,
       "height": 66,
@@ -708,10 +708,10 @@
       "id": "grid + icon w/ container.d",
       "type": "rectangle",
       "pos": {
-        "x": 959,
-        "y": 290
+        "x": 949,
+        "y": 289
       },
-      "width": 171,
+      "width": 151,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -752,11 +752,11 @@
         "2x2"
       ],
       "pos": {
-        "x": 1275,
-        "y": 41
+        "x": 1255,
+        "y": 23
       },
-      "width": 384,
-      "height": 375,
+      "width": 364,
+      "height": 371,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -793,11 +793,11 @@
       "id": "no label grid w/ container + icon.a",
       "type": "rectangle",
       "pos": {
-        "x": 1335,
-        "y": 120
+        "x": 1315,
+        "y": 102
       },
       "width": 53,
-      "height": 130,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -834,11 +834,11 @@
       "id": "no label grid w/ container + icon.b",
       "type": "rectangle",
       "pos": {
-        "x": 1428,
-        "y": 120
+        "x": 1408,
+        "y": 102
       },
-      "width": 171,
-      "height": 130,
+      "width": 151,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -887,8 +887,8 @@
       "id": "no label grid w/ container + icon.b.b child",
       "type": "rectangle",
       "pos": {
-        "x": 1468,
-        "y": 152
+        "x": 1438,
+        "y": 132
       },
       "width": 91,
       "height": 66,
@@ -928,8 +928,8 @@
       "id": "no label grid w/ container + icon.c",
       "type": "rectangle",
       "pos": {
-        "x": 1335,
-        "y": 290
+        "x": 1315,
+        "y": 268
       },
       "width": 53,
       "height": 66,
@@ -969,10 +969,10 @@
       "id": "no label grid w/ container + icon.d",
       "type": "rectangle",
       "pos": {
-        "x": 1428,
-        "y": 290
+        "x": 1408,
+        "y": 268
       },
-      "width": 171,
+      "width": 151,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -1013,8 +1013,8 @@
         "2x2"
       ],
       "pos": {
-        "x": 1719,
-        "y": 76
+        "x": 1679,
+        "y": 56
       },
       "width": 267,
       "height": 306,
@@ -1066,8 +1066,8 @@
       "id": "no label grid + icon.a",
       "type": "rectangle",
       "pos": {
-        "x": 1779,
-        "y": 150
+        "x": 1739,
+        "y": 130
       },
       "width": 53,
       "height": 66,
@@ -1107,8 +1107,8 @@
       "id": "no label grid + icon.b",
       "type": "rectangle",
       "pos": {
-        "x": 1872,
-        "y": 150
+        "x": 1832,
+        "y": 130
       },
       "width": 54,
       "height": 66,
@@ -1148,8 +1148,8 @@
       "id": "no label grid + icon.c",
       "type": "rectangle",
       "pos": {
-        "x": 1779,
-        "y": 256
+        "x": 1739,
+        "y": 236
       },
       "width": 53,
       "height": 66,
@@ -1189,8 +1189,8 @@
       "id": "no label grid + icon.d",
       "type": "rectangle",
       "pos": {
-        "x": 1872,
-        "y": 256
+        "x": 1832,
+        "y": 236
       },
       "width": 54,
       "height": 66,

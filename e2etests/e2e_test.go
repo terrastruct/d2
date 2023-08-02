@@ -15,6 +15,7 @@ import (
 
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
+	"oss.terrastruct.com/util-go/go2"
 
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2graph"
@@ -87,7 +88,7 @@ type testCase struct {
 	dagreFeatureError string
 	elkFeatureError   string
 	expErr            string
-	themeID           int64
+	themeID           *int64
 }
 
 func runa(t *testing.T, tcs []testCase) {
@@ -109,7 +110,7 @@ func runa(t *testing.T, tcs []testCase) {
 func serde(t *testing.T, tc testCase, ruler *textmeasure.Ruler) {
 	ctx := context.Background()
 	ctx = log.WithTB(ctx, t, nil)
-	g, err := d2compiler.Compile("", strings.NewReader(tc.script), &d2compiler.CompileOptions{
+	g, _, err := d2compiler.Compile("", strings.NewReader(tc.script), &d2compiler.CompileOptions{
 		UTF16: false,
 	})
 	trequire.Nil(t, err)
@@ -146,28 +147,39 @@ func run(t *testing.T, tc testCase) {
 		layoutsTested = append(layoutsTested, "elk")
 	}
 
+	layoutResolver := func(engine string) (d2graph.LayoutGraph, error) {
+		if strings.EqualFold(engine, "elk") {
+			return d2elklayout.DefaultLayout, nil
+		}
+		return d2dagrelayout.DefaultLayout, nil
+	}
+
 	for _, layoutName := range layoutsTested {
-		var layout func(context.Context, *d2graph.Graph) error
 		var plugin d2plugin.Plugin
 		if layoutName == "dagre" {
-			layout = d2dagrelayout.DefaultLayout
 			plugin = &d2plugin.DagrePlugin
 		} else if layoutName == "elk" {
 			// If measured texts exists, we are specifically exercising text measurements, no need to run on both layouts
 			if tc.mtexts != nil {
 				continue
 			}
-			layout = d2elklayout.DefaultLayout
 			plugin = &d2plugin.ELKPlugin
 		}
 
-		diagram, g, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
-			Ruler:         ruler,
-			MeasuredTexts: tc.mtexts,
-			Layout:        layout,
-			ThemeID:       tc.themeID,
-		})
+		compileOpts := &d2lib.CompileOptions{
+			Ruler:          ruler,
+			MeasuredTexts:  tc.mtexts,
+			Layout:         go2.Pointer(layoutName),
+			LayoutResolver: layoutResolver,
+		}
+		renderOpts := &d2svg.RenderOpts{
+			Pad:     go2.Pointer(int64(0)),
+			ThemeID: tc.themeID,
+			// To compare deltas at a fixed scale
+			// Scale: go2.Pointer(1.),
+		}
 
+		diagram, g, err := d2lib.Compile(ctx, tc.script, compileOpts, renderOpts)
 		if tc.expErr != "" {
 			assert.Error(t, err)
 			assert.ErrorString(t, err, tc.expErr)
@@ -205,10 +217,6 @@ func run(t *testing.T, tc testCase) {
 		dataPath := filepath.Join("testdata", strings.TrimPrefix(t.Name(), "TestE2E/"), layoutName)
 		pathGotSVG := filepath.Join(dataPath, "sketch.got.svg")
 
-		renderOpts := &d2svg.RenderOpts{
-			Pad:     0,
-			ThemeID: tc.themeID,
-		}
 		if len(diagram.Layers) > 0 || len(diagram.Scenarios) > 0 || len(diagram.Steps) > 0 {
 			masterID, err := diagram.HashID()
 			assert.Success(t, err)

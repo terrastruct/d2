@@ -223,6 +223,12 @@ committee chair -> committee: Accept appeal`,
 x -> y: hi { style.font: mono }`,
 		},
 		{
+			name: "bold-mono",
+			script: `not bold mono.style.font: mono
+not bold mono.style.bold: false
+bold mono.style.font: mono`,
+		},
+		{
 			name: "mono-font",
 			script: `satellites: SATELLITES {
   shape: stored_data
@@ -2013,7 +2019,7 @@ papa bear -> bear
 `,
 		},
 		{
-			name: "tooltips",
+			name: "basic-tooltips",
 			script: `x: { tooltip: Total abstinence is easier than perfect moderation }
 y: { tooltip: Gee, I feel kind of LIGHT in the head now,\nknowing I can't make my satellite dish PAYMENTS! }
 x -> y
@@ -2761,6 +2767,25 @@ scenarios: {
   }
 }`,
 		},
+		{
+			name: "label-near",
+			script: `
+direction: right
+x -> y
+
+x: worker {
+  label.near: top-center
+  icon: https://icons.terrastruct.com/essentials%2F005-programmer.svg
+  icon.near: outside-top-right
+}
+
+y: profits {
+  label.near: bottom-right
+  icon: https://icons.terrastruct.com/essentials%2Fprofits.svg
+  icon.near: outside-bottom-center
+}
+`,
+		},
 		loadFromFile(t, "arrowhead_scaling"),
 		loadFromFile(t, "teleport_grid"),
 		loadFromFile(t, "dagger_grid"),
@@ -2778,10 +2803,16 @@ scenarios: {
 		loadFromFile(t, "multiple_offset"),
 		loadFromFile(t, "multiple_offset_left"),
 		loadFromFile(t, "multiple_box_selection"),
+		loadFromFile(t, "multiple_person_label"),
 		loadFromFile(t, "outside_bottom_labels"),
 		loadFromFile(t, "label_positions"),
 		loadFromFile(t, "icon_positions"),
+		loadFromFile(t, "centered_horizontal_connections"),
 		loadFromFile(t, "all_shapes_link"),
+		loadFromFile(t, "nested_shape_labels"),
+		loadFromFile(t, "overlapping_child_label"),
+		loadFromFile(t, "dagre_spacing"),
+		loadFromFile(t, "dagre_spacing_right"),
 	}
 
 	runa(t, tcs)

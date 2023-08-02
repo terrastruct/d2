@@ -27,7 +27,7 @@ type CompileOptions struct {
 	FS fs.FS
 }
 
-func Compile(p string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph, error) {
+func Compile(p string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph, *d2target.Config, error) {
 	if opts == nil {
 		opts = &CompileOptions{}
 	}
@@ -36,7 +36,7 @@ func Compile(p string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph, e
 		UTF16: opts.UTF16,
 	})
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	ir, err := d2ir.Compile(ast, &d2ir.CompileOptions{
@@ -44,16 +44,16 @@ func Compile(p string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph, e
 		FS:    opts.FS,
 	})
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	g, err := compileIR(ast, ir)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	g.SortObjectsByAST()
 	g.SortEdgesByAST()
-	return g, nil
+	return g, compileConfig(ir), nil
 }
 
 func compileIR(ast *d2ast.Map, m *d2ir.Map) (*d2graph.Graph, error) {
@@ -91,6 +91,9 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 		if len(g.Layers) > 0 || len(g.Scenarios) > 0 || len(g.Steps) > 0 {
 			g.IsFolderOnly = true
 		}
+	}
+	if len(g.Objects) == 0 {
+		g.IsFolderOnly = true
 	}
 	return g
 }
@@ -277,6 +280,8 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 			}
 		}
 		return
+	} else if f.Name == "vars" {
+		return
 	} else if isReserved {
 		c.compileReserved(&obj.Attributes, f)
 		return
@@ -329,7 +334,7 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 			Scope:           fr.Context.Scope,
 			ScopeAST:        fr.Context.ScopeAST,
 		}
-		if fr.Context.ScopeMap != nil {
+		if fr.Context.ScopeMap != nil && !d2ir.IsVar(fr.Context.ScopeMap) {
 			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(fr.Context.ScopeMap))
 			r.ScopeObj = obj.Graph.Root.EnsureChild(scopeObjIDA)
 		}
@@ -725,7 +730,7 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 			Scope:           er.Context.Scope,
 			ScopeAST:        er.Context.ScopeAST,
 		}
-		if er.Context.ScopeMap != nil {
+		if er.Context.ScopeMap != nil && !d2ir.IsVar(er.Context.ScopeMap) {
 			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(er.Context.ScopeMap))
 			r.ScopeObj = edge.Src.Graph.Root.EnsureChild(scopeObjIDA)
 		}
@@ -1282,4 +1287,46 @@ func parentSeqDiagram(n d2ir.Node) *d2ir.Map {
 		}
 		n = m
 	}
+}
+
+func compileConfig(ir *d2ir.Map) *d2target.Config {
+	f := ir.GetField("vars", "d2-config")
+	if f == nil || f.Map() == nil {
+		return nil
+	}
+
+	configMap := f.Map()
+
+	config := &d2target.Config{}
+
+	f = configMap.GetField("sketch")
+	if f != nil {
+		val, _ := strconv.ParseBool(f.Primary().Value.ScalarString())
+		config.Sketch = &val
+	}
+
+	f = configMap.GetField("theme-id")
+	if f != nil {
+		val, _ := strconv.Atoi(f.Primary().Value.ScalarString())
+		config.ThemeID = go2.Pointer(int64(val))
+	}
+
+	f = configMap.GetField("dark-theme-id")
+	if f != nil {
+		val, _ := strconv.Atoi(f.Primary().Value.ScalarString())
+		config.DarkThemeID = go2.Pointer(int64(val))
+	}
+
+	f = configMap.GetField("pad")
+	if f != nil {
+		val, _ := strconv.Atoi(f.Primary().Value.ScalarString())
+		config.Pad = go2.Pointer(int64(val))
+	}
+
+	f = configMap.GetField("layout-engine")
+	if f != nil {
+		config.LayoutEngine = go2.Pointer(f.Primary().Value.ScalarString())
+	}
+
+	return config
 }

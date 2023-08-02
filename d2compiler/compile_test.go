@@ -2702,7 +2702,7 @@ object: {
 			t.Parallel()
 
 			d2Path := fmt.Sprintf("d2/testdata/d2compiler/%v.d2", t.Name())
-			g, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), nil)
+			g, _, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), nil)
 			if tc.expErr != "" {
 				if err == nil {
 					t.Fatalf("expected error with: %q", tc.expErr)
@@ -2744,6 +2744,7 @@ func TestCompile2(t *testing.T) {
 	t.Run("boards", testBoards)
 	t.Run("seqdiagrams", testSeqDiagrams)
 	t.Run("nulls", testNulls)
+	t.Run("vars", testVars)
 }
 
 func testBoards(t *testing.T) {
@@ -2756,7 +2757,7 @@ func testBoards(t *testing.T) {
 		{
 			name: "root",
 			run: func(t *testing.T) {
-				g := assertCompile(t, `base
+				g, _ := assertCompile(t, `base
 
 layers: {
   one: {
@@ -2775,7 +2776,7 @@ layers: {
 		{
 			name: "recursive",
 			run: func(t *testing.T) {
-				g := assertCompile(t, `base
+				g, _ := assertCompile(t, `base
 
 layers: {
   one: {
@@ -2803,7 +2804,7 @@ layers: {
 		{
 			name: "isFolderOnly",
 			run: func(t *testing.T) {
-				g := assertCompile(t, `
+				g, _ := assertCompile(t, `
 layers: {
   one: {
     santa
@@ -2829,6 +2830,21 @@ layers: {
 				assert.Equal(t, 2, len(g.Layers[1].Scenarios))
 				assert.False(t, g.Layers[1].Scenarios[0].IsFolderOnly)
 				assert.False(t, g.Layers[1].Scenarios[1].IsFolderOnly)
+			},
+		},
+		{
+			name: "isFolderOnly-shapes",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+direction: right
+
+steps: {
+  1: {
+    RJ
+  }
+}
+`, "")
+				assert.True(t, g.IsFolderOnly)
 			},
 		},
 		{
@@ -2938,7 +2954,7 @@ func testNulls(t *testing.T) {
 			{
 				name: "shape",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 a
 a: null
 `, "")
@@ -2948,7 +2964,7 @@ a: null
 			{
 				name: "edge",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 a -> b
 (a -> b)[0]: null
 `, "")
@@ -2959,7 +2975,7 @@ a -> b
 			{
 				name: "attribute",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 a.style.opacity: 0.2
 a.style.opacity: null
 			`, "")
@@ -2991,7 +3007,7 @@ a.style.opacity: null
 			{
 				name: "shape",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 a
 a: null
 a
@@ -3002,7 +3018,7 @@ a
 			{
 				name: "edge",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 a -> b
 (a -> b)[0]: null
 a -> b
@@ -3014,7 +3030,7 @@ a -> b
 			{
 				name: "attribute-reset",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 a.style.opacity: 0.2
 a: null
 a
@@ -3026,7 +3042,7 @@ a
 			{
 				name: "edge-reset",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 a -> b
 a: null
 a
@@ -3038,7 +3054,7 @@ a
 			{
 				name: "children-reset",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 a.b.c
 a.b: null
 a.b
@@ -3071,7 +3087,7 @@ a.b
 			{
 				name: "delete-connection",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 x -> y
 y: null
 `, "")
@@ -3082,7 +3098,7 @@ y: null
 			{
 				name: "delete-multiple-connections",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 x -> y
 z -> y
 y -> a
@@ -3095,7 +3111,7 @@ y: null
 			{
 				name: "no-delete-connection",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 y: null
 x -> y
 `, "")
@@ -3106,7 +3122,7 @@ x -> y
 			{
 				name: "delete-children",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 x.y.z
 a.b.c
 
@@ -3141,7 +3157,7 @@ a.b: null
 			{
 				name: "scenario",
 				run: func(t *testing.T) {
-					g := assertCompile(t, `
+					g, _ := assertCompile(t, `
 x
 
 scenarios: {
@@ -3168,9 +3184,857 @@ scenarios: {
 	})
 }
 
-func assertCompile(t *testing.T, text string, expErr string) *d2graph.Graph {
+func testVars(t *testing.T) {
+	t.Parallel()
+
+	t.Run("basic", func(t *testing.T) {
+		t.Parallel()
+
+		tca := []struct {
+			name string
+			skip bool
+			run  func(t *testing.T)
+		}{
+			{
+				name: "shape-label",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  x: im a var
+}
+hi: ${x}
+`, "")
+					assert.Equal(t, 1, len(g.Objects))
+					assert.Equal(t, "im a var", g.Objects[0].Label.Value)
+				},
+			},
+			{
+				name: "style",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  primary-color: red
+}
+hi: {
+  style.fill: ${primary-color}
+}
+`, "")
+					assert.Equal(t, 1, len(g.Objects))
+					assert.Equal(t, "red", g.Objects[0].Style.Fill.Value)
+				},
+			},
+			{
+				name: "number",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+	columns: 2
+}
+hi: {
+	grid-columns: ${columns}
+	x
+}
+`, "")
+					assert.Equal(t, "2", g.Objects[0].GridColumns.Value)
+				},
+			},
+			{
+				name: "nested",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+	colors: {
+    primary: {
+      button: red
+    }
+  }
+}
+hi: {
+  style.fill: ${colors.primary.button}
+}
+`, "")
+					assert.Equal(t, "red", g.Objects[0].Style.Fill.Value)
+				},
+			},
+			{
+				name: "combined",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  x: im a var
+}
+hi: 1 ${x} 2
+`, "")
+					assert.Equal(t, "1 im a var 2", g.Objects[0].Label.Value)
+				},
+			},
+			{
+				name: "double-quoted",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  x: im a var
+}
+hi: "1 ${x} 2"
+`, "")
+					assert.Equal(t, "1 im a var 2", g.Objects[0].Label.Value)
+				},
+			},
+			{
+				name: "single-quoted",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  x: im a var
+}
+hi: '1 ${x} 2'
+`, "")
+					assert.Equal(t, "1 ${x} 2", g.Objects[0].Label.Value)
+				},
+			},
+			{
+				name: "edge-label",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  x: im a var
+}
+a -> b: ${x}
+`, "")
+					assert.Equal(t, 1, len(g.Edges))
+					assert.Equal(t, "im a var", g.Edges[0].Label.Value)
+				},
+			},
+			{
+				name: "edge-map",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  x: im a var
+}
+a -> b: {
+  target-arrowhead.label: ${x}
+}
+`, "")
+					assert.Equal(t, 1, len(g.Edges))
+					assert.Equal(t, "im a var", g.Edges[0].DstArrowhead.Label.Value)
+				},
+			},
+			{
+				name: "quoted-var",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  primaryColors: {
+    button: {
+      active: "#4baae5"
+    }
+  }
+}
+
+button: {
+  style: {
+    border-radius: 5
+    fill: ${primaryColors.button.active}
+  }
+}
+`, "")
+					assert.Equal(t, `#4baae5`, g.Objects[0].Style.Fill.Value)
+				},
+			},
+			{
+				name: "quoted-var-quoted-sub",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  x: "hi"
+}
+
+y: "hey ${x}"
+`, "")
+					assert.Equal(t, `hey hi`, g.Objects[0].Label.Value)
+				},
+			},
+			{
+				name: "parent-scope",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  x: im root var
+}
+a: {
+  vars: {
+    b: im nested var
+  }
+  hi: ${x}
+}
+`, "")
+					assert.Equal(t, "im root var", g.Objects[1].Label.Value)
+				},
+			},
+			{
+				name: "map",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  cool-style: {
+		fill: red
+  }
+  arrows: {
+    target-arrowhead.label: yay
+  }
+}
+hi.style: ${cool-style}
+a -> b: ${arrows}
+`, "")
+					assert.Equal(t, "red", g.Objects[0].Style.Fill.Value)
+					assert.Equal(t, "yay", g.Edges[0].DstArrowhead.Label.Value)
+				},
+			},
+			{
+				name: "primary-and-composite",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+	x: all {
+		a: b
+  }
+}
+z: ${x}
+`, "")
+					assert.Equal(t, "z", g.Objects[1].ID)
+					assert.Equal(t, "all", g.Objects[1].Label.Value)
+					assert.Equal(t, 1, len(g.Objects[1].Children))
+				},
+			},
+			{
+				name: "spread",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+	x: all {
+		a: b
+    b: c
+  }
+}
+z: {
+  ...${x}
+  c
+}
+`, "")
+					assert.Equal(t, "z", g.Objects[2].ID)
+					assert.Equal(t, 4, len(g.Objects))
+					assert.Equal(t, 3, len(g.Objects[2].Children))
+				},
+			},
+			{
+				name: "array",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+	base-constraints: [UNQ; NOT NULL]
+}
+a: {
+  shape: sql_table
+	b: int {constraint: ${base-constraints}}
+}
+`, "")
+					assert.Equal(t, "a", g.Objects[0].ID)
+					assert.Equal(t, 2, len(g.Objects[0].SQLTable.Columns[0].Constraint))
+				},
+			},
+			{
+				name: "spread-array",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+	base-constraints: [UNQ; NOT NULL]
+}
+a: {
+  shape: sql_table
+	b: int {constraint: [PK; ...${base-constraints}]}
+}
+`, "")
+					assert.Equal(t, "a", g.Objects[0].ID)
+					assert.Equal(t, 3, len(g.Objects[0].SQLTable.Columns[0].Constraint))
+				},
+			},
+			{
+				name: "sub-array",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+	x: all
+}
+z.class: [a; ${x}]
+`, "")
+					assert.Equal(t, "z", g.Objects[0].ID)
+					assert.Equal(t, "all", g.Objects[0].Attributes.Classes[1])
+				},
+			},
+			{
+				name: "multi-part-array",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+	x: all
+}
+z.class: [a; ${x}together]
+`, "")
+					assert.Equal(t, "z", g.Objects[0].ID)
+					assert.Equal(t, "alltogether", g.Objects[0].Attributes.Classes[1])
+				},
+			},
+			{
+				name: "double-quote-primary",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+	x: always {
+    a: b
+  }
+}
+z: "${x} be my maybe"
+`, "")
+					assert.Equal(t, "z", g.Objects[0].ID)
+					assert.Equal(t, "always be my maybe", g.Objects[0].Label.Value)
+				},
+			},
+			{
+				name: "spread-nested",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  disclaimer: {
+    I am not a lawyer
+  }
+}
+custom-disclaimer: DRAFT DISCLAIMER {
+  ...${disclaimer}
+}
+`, "")
+					assert.Equal(t, 2, len(g.Objects))
+				},
+			},
+			{
+				name: "spread-edge",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  connections: {
+    x -> a
+  }
+}
+hi: {
+  ...${connections}
+}
+`, "")
+					assert.Equal(t, 3, len(g.Objects))
+					assert.Equal(t, 1, len(g.Edges))
+				},
+			},
+		}
+
+		for _, tc := range tca {
+			tc := tc
+			t.Run(tc.name, func(t *testing.T) {
+				t.Parallel()
+				if tc.skip {
+					t.SkipNow()
+				}
+				tc.run(t)
+			})
+		}
+	})
+
+	t.Run("override", func(t *testing.T) {
+		t.Parallel()
+
+		tca := []struct {
+			name string
+			skip bool
+			run  func(t *testing.T)
+		}{
+			{
+				name: "label",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  x: im a var
+}
+hi: ${x}
+hi: not a var
+`, "")
+					assert.Equal(t, 1, len(g.Objects))
+					assert.Equal(t, "not a var", g.Objects[0].Label.Value)
+				},
+			},
+			{
+				name: "map",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  x: im root var
+}
+a: {
+  vars: {
+    x: im nested var
+  }
+  hi: ${x}
+}
+`, "")
+					assert.Equal(t, "im nested var", g.Objects[1].Label.Value)
+				},
+			},
+			{
+				name: "var-in-var",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+	surname: Smith
+}
+a: {
+  vars: {
+		trade1: Black${surname}
+		trade2: Metal${surname}
+  }
+  hi: ${trade1}
+}
+`, "")
+					assert.Equal(t, "BlackSmith", g.Objects[1].Label.Value)
+				},
+			},
+			{
+				name: "recursive-var",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  x: a
+}
+hi: {
+  vars: {
+    x: ${x}-b
+  }
+  yo: ${x}
+}
+`, "")
+					assert.Equal(t, "a-b", g.Objects[1].Label.Value)
+				},
+			},
+			{
+				name: "null",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+	surname: Smith
+}
+a: {
+  vars: {
+		surname: null
+  }
+  hi: John ${surname}
+}
+`, `d2/testdata/d2compiler/TestCompile2/vars/override/null.d2:9:3: could not resolve variable "surname"`)
+				},
+			},
+			{
+				name: "nested-null",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+	surnames: {
+    john: smith
+  }
+}
+a: {
+  vars: {
+		surnames: {
+      john: null
+    }
+  }
+  hi: John ${surname}
+}
+`, `d2/testdata/d2compiler/TestCompile2/vars/override/nested-null.d2:13:3: could not resolve variable "surname"`)
+				},
+			},
+		}
+
+		for _, tc := range tca {
+			tc := tc
+			t.Run(tc.name, func(t *testing.T) {
+				t.Parallel()
+				if tc.skip {
+					t.SkipNow()
+				}
+				tc.run(t)
+			})
+		}
+	})
+
+	t.Run("boards", func(t *testing.T) {
+		t.Parallel()
+
+		tca := []struct {
+			name string
+			skip bool
+			run  func(t *testing.T)
+		}{
+			{
+				name: "layer",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  x: im a var
+}
+
+layers: {
+  l: {
+    hi: ${x}
+  }
+}
+`, "")
+					assert.Equal(t, 1, len(g.Layers[0].Objects))
+					assert.Equal(t, "im a var", g.Layers[0].Objects[0].Label.Value)
+				},
+			},
+			{
+				name: "layer-2",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  x: root var x
+  y: root var y
+}
+
+layers: {
+  l: {
+    vars: {
+      x: layer var x
+    }
+    hi: ${x}
+    hello: ${y}
+  }
+}
+`, "")
+					assert.Equal(t, "hi", g.Layers[0].Objects[0].ID)
+					assert.Equal(t, "layer var x", g.Layers[0].Objects[0].Label.Value)
+					assert.Equal(t, "hello", g.Layers[0].Objects[1].ID)
+					assert.Equal(t, "root var y", g.Layers[0].Objects[1].Label.Value)
+				},
+			},
+			{
+				name: "scenario",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  x: im a var
+}
+
+scenarios: {
+  l: {
+    hi: ${x}
+  }
+}
+`, "")
+					assert.Equal(t, 1, len(g.Scenarios[0].Objects))
+					assert.Equal(t, "im a var", g.Scenarios[0].Objects[0].Label.Value)
+				},
+			},
+			{
+				name: "overlay",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  x: im x var
+}
+
+scenarios: {
+  l: {
+    vars: {
+      y: im y var
+    }
+    x: ${x}
+    y: ${y}
+  }
+}
+layers: {
+  l2: {
+    vars: {
+      y: im y var
+    }
+    x: ${x}
+    y: ${y}
+  }
+}
+`, "")
+					assert.Equal(t, 2, len(g.Scenarios[0].Objects))
+					assert.Equal(t, "im x var", g.Scenarios[0].Objects[0].Label.Value)
+					assert.Equal(t, "im y var", g.Scenarios[0].Objects[1].Label.Value)
+					assert.Equal(t, 2, len(g.Layers[0].Objects))
+					assert.Equal(t, "im x var", g.Layers[0].Objects[0].Label.Value)
+					assert.Equal(t, "im y var", g.Layers[0].Objects[1].Label.Value)
+				},
+			},
+			{
+				name: "replace",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  x: im x var
+}
+
+scenarios: {
+  l: {
+    vars: {
+      x: im replaced x var
+    }
+    x: ${x}
+  }
+}
+`, "")
+					assert.Equal(t, 1, len(g.Scenarios[0].Objects))
+					assert.Equal(t, "im replaced x var", g.Scenarios[0].Objects[0].Label.Value)
+				},
+			},
+		}
+
+		for _, tc := range tca {
+			tc := tc
+			t.Run(tc.name, func(t *testing.T) {
+				t.Parallel()
+				if tc.skip {
+					t.SkipNow()
+				}
+				tc.run(t)
+			})
+		}
+	})
+
+	t.Run("config", func(t *testing.T) {
+		t.Parallel()
+
+		tca := []struct {
+			name string
+			skip bool
+			run  func(t *testing.T)
+		}{
+			{
+				name: "basic",
+				run: func(t *testing.T) {
+					_, config := assertCompile(t, `
+vars: {
+	d2-config: {
+    sketch: true
+  }
+}
+
+x -> y
+`, "")
+					assert.Equal(t, true, *config.Sketch)
+				},
+			},
+			{
+				name: "invalid",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+	d2-config: {
+    sketch: lol
+  }
+}
+
+x -> y
+`, `d2/testdata/d2compiler/TestCompile2/vars/config/invalid.d2:4:5: expected a boolean for "sketch", got "lol"`)
+				},
+			},
+			{
+				name: "not-root",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+x: {
+  vars: {
+  	d2-config: {
+      sketch: false
+    }
+  }
+}
+`, `d2/testdata/d2compiler/TestCompile2/vars/config/not-root.d2:4:4: "d2-config" can only appear at root vars`)
+				},
+			},
+		}
+
+		for _, tc := range tca {
+			tc := tc
+			t.Run(tc.name, func(t *testing.T) {
+				t.Parallel()
+				if tc.skip {
+					t.SkipNow()
+				}
+				tc.run(t)
+			})
+		}
+	})
+
+	t.Run("errors", func(t *testing.T) {
+		t.Parallel()
+
+		tca := []struct {
+			name string
+			skip bool
+			run  func(t *testing.T)
+		}{
+			{
+				name: "missing",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+  x: hey
+}
+hi: ${z}
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/missing.d2:5:1: could not resolve variable "z"`)
+				},
+			},
+			{
+				name: "multi-part-map",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+  x: {
+    a: b
+  }
+}
+hi: 1 ${x}
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/multi-part-map.d2:7:1: cannot substitute composite variable "x" as part of a string`)
+				},
+			},
+			{
+				name: "quoted-map",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+  x: {
+    a: b
+  }
+}
+hi: "${x}"
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/quoted-map.d2:7:1: cannot substitute map variable "x" in quotes`)
+				},
+			},
+			{
+				name: "nested-missing",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+  x: {
+    y: hey
+  }
+}
+hi: ${x.z}
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/nested-missing.d2:7:1: could not resolve variable "x.z"`)
+				},
+			},
+			{
+				name: "out-of-scope",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+a: {
+  vars: {
+    x: hey
+  }
+}
+hi: ${x}
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/out-of-scope.d2:7:1: could not resolve variable "x"`)
+				},
+			},
+			{
+				name: "recursive-var",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+  x: ${x}
+}
+hi: ${x}
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/recursive-var.d2:3:3: could not resolve variable "x"`)
+				},
+			},
+
+			{
+				name: "spread-non-map",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+	x: all
+}
+z: {
+  ...${x}
+  c
+}
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/spread-non-map.d2:6:3: cannot spread non-composite`)
+				},
+			},
+			{
+				name: "missing-array",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+	x: b
+}
+z: {
+  class: [...${a}]
+}
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/missing-array.d2:6:3: could not resolve variable "a"`)
+				},
+			},
+			{
+				name: "spread-non-array",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+	x: {
+    a: b
+  }
+}
+z: {
+  class: [...${x}]
+}
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/spread-non-array.d2:8:11: cannot spread non-array into array`)
+				},
+			},
+			{
+				name: "spread-non-solo",
+				// NOTE: this doesn't get parsed correctly and so the error message isn't exactly right, but the important thing is that it errors
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+	x: {
+    a: b
+  }
+}
+z: {
+	d: ...${x}
+  c
+}
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/spread-non-solo.d2:8:2: cannot substitute composite variable "x" as part of a string`)
+				},
+			},
+		}
+
+		for _, tc := range tca {
+			tc := tc
+			t.Run(tc.name, func(t *testing.T) {
+				t.Parallel()
+				if tc.skip {
+					t.SkipNow()
+				}
+				tc.run(t)
+			})
+		}
+	})
+}
+
+func assertCompile(t *testing.T, text string, expErr string) (*d2graph.Graph, *d2target.Config) {
 	d2Path := fmt.Sprintf("d2/testdata/d2compiler/%v.d2", t.Name())
-	g, err := d2compiler.Compile(d2Path, strings.NewReader(text), nil)
+	g, config, err := d2compiler.Compile(d2Path, strings.NewReader(text), nil)
 	if expErr != "" {
 		assert.Error(t, err)
 		assert.ErrorString(t, err, expErr)
@@ -3188,5 +4052,5 @@ func assertCompile(t *testing.T, text string, expErr string) *d2graph.Graph {
 
 	err = diff.TestdataJSON(filepath.Join("..", "testdata", "d2compiler", t.Name()), got)
 	assert.Success(t, err)
-	return g
+	return g, config
 }

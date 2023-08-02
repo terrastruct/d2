@@ -17,6 +17,7 @@ import (
 	"oss.terrastruct.com/util-go/diff"
 	"oss.terrastruct.com/util-go/go2"
 
+	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
@@ -426,12 +427,18 @@ func run(t *testing.T, tc testCase) {
 		return
 	}
 
+	renderOpts := &d2svg.RenderOpts{
+		ThemeID: go2.Pointer(int64(200)),
+	}
+	layoutResolver := func(engine string) (d2graph.LayoutGraph, error) {
+		return d2dagrelayout.DefaultLayout, nil
+	}
+
 	diagram, _, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
-		Ruler:      ruler,
-		Layout:     d2dagrelayout.DefaultLayout,
-		FontFamily: go2.Pointer(d2fonts.HandDrawn),
-		ThemeID:    200,
-	})
+		Ruler:          ruler,
+		LayoutResolver: layoutResolver,
+		FontFamily:     go2.Pointer(d2fonts.HandDrawn),
+	}, renderOpts)
 	if !tassert.Nil(t, err) {
 		return
 	}
@@ -439,10 +446,7 @@ func run(t *testing.T, tc testCase) {
 	dataPath := filepath.Join("testdata", strings.TrimPrefix(t.Name(), "TestDarkTheme/"))
 	pathGotSVG := filepath.Join(dataPath, "dark_theme.got.svg")
 
-	svgBytes, err := d2svg.Render(diagram, &d2svg.RenderOpts{
-		Pad:     d2svg.DEFAULT_PADDING,
-		ThemeID: 200,
-	})
+	svgBytes, err := d2svg.Render(diagram, renderOpts)
 	assert.Success(t, err)
 	err = os.MkdirAll(dataPath, 0755)
 	assert.Success(t, err)

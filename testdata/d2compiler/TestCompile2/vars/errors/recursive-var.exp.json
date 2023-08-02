@@ -1,0 +1,11 @@
+{
+  "graph": null,
+  "err": {
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile2/vars/errors/recursive-var.d2,2:2:11-2:3:12",
+        "errmsg": "d2/testdata/d2compiler/TestCompile2/vars/errors/recursive-var.d2:3:3: could not resolve variable \"x\""
+      }
+    ]
+  }
+}

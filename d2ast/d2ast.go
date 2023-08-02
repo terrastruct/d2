@@ -500,6 +500,19 @@ type Number struct {
 type UnquotedString struct {
 	Range Range              `json:"range"`
 	Value []InterpolationBox `json:"value"`
+	// Pattern holds the parsed glob pattern if in a key and the unquoted string represents a valid pattern.
+	Pattern []string `json:"pattern,omitempty"`
+}
+
+func (s *UnquotedString) Coalesce() {
+	var b strings.Builder
+	for _, box := range s.Value {
+		if box.String == nil {
+			break
+		}
+		b.WriteString(*box.String)
+	}
+	s.SetString(b.String())
 }
 
 func FlatUnquotedString(s string) *UnquotedString {
@@ -511,6 +524,17 @@ func FlatUnquotedString(s string) *UnquotedString {
 type DoubleQuotedString struct {
 	Range Range              `json:"range"`
 	Value []InterpolationBox `json:"value"`
+}
+
+func (s *DoubleQuotedString) Coalesce() {
+	var b strings.Builder
+	for _, box := range s.Value {
+		if box.String == nil {
+			break
+		}
+		b.WriteString(*box.String)
+	}
+	s.SetString(b.String())
 }
 
 func FlatDoubleQuotedString(s string) *DoubleQuotedString {
@@ -586,7 +610,7 @@ func (m *Map) IsFileMap() bool {
 type Key struct {
 	Range Range `json:"range"`
 
-	// Indicates this MapKey is an override selector.
+	// Indicates this MapKey is a filter selector.
 	Ampersand bool `json:"ampersand,omitempty"`
 
 	// At least one of Key and Edges will be set but all four can also be set.
@@ -696,6 +720,19 @@ func (mk *Key) SetScalar(scalar ScalarBox) {
 	}
 }
 
+func (mk *Key) HasQueryGlob() bool {
+	if mk.Key.HasGlob() && len(mk.Edges) == 0 {
+		return true
+	}
+	if mk.EdgeIndex != nil && mk.EdgeIndex.Glob && mk.EdgeKey == nil {
+		return true
+	}
+	if mk.EdgeKey.HasGlob() {
+		return true
+	}
+	return false
+}
+
 type KeyPath struct {
 	Range Range        `json:"range"`
 	Path  []*StringBox `json:"path"`
@@ -714,6 +751,37 @@ func (kp *KeyPath) IDA() (ida []string) {
 		ida = append(ida, el.Unbox().ScalarString())
 	}
 	return ida
+}
+
+func (kp *KeyPath) Copy() *KeyPath {
+	kp2 := *kp
+	kp2.Path = nil
+	kp2.Path = append(kp2.Path, kp.Path...)
+	return &kp2
+}
+
+func (kp *KeyPath) HasDoubleGlob() bool {
+	if kp == nil {
+		return false
+	}
+	for _, el := range kp.Path {
+		if el.UnquotedString != nil && el.ScalarString() == "**" {
+			return true
+		}
+	}
+	return false
+}
+
+func (kp *KeyPath) HasGlob() bool {
+	if kp == nil {
+		return false
+	}
+	for _, el := range kp.Path {
+		if el.UnquotedString != nil && len(el.UnquotedString.Pattern) > 0 {
+			return true
+		}
+	}
+	return false
 }
 
 type Edge struct {
@@ -1034,6 +1102,10 @@ func (sb *StringBox) Unbox() String {
 	}
 }
 
+func (sb *StringBox) ScalarString() string {
+	return sb.Unbox().ScalarString()
+}
+
 // InterpolationBox is used to select between strings and substitutions in unquoted and
 // double quoted strings. There is no corresponding interface to avoid unnecessary
 // abstraction.
@@ -1046,12 +1118,11 @@ type InterpolationBox struct {
 // & is only special if it begins a key.
 // - is only special if followed by another - in a key.
 // ' " and | are only special if they begin an unquoted key or value.
-var UnquotedKeySpecials = string([]rune{'#', ';', '\n', '\\', '{', '}', '[', ']', '\'', '"', '|', ':', '.', '-', '<', '>', '*', '&', '(', ')', '@'})
+var UnquotedKeySpecials = string([]rune{'#', ';', '\n', '\\', '{', '}', '[', ']', '\'', '"', '|', ':', '.', '-', '<', '>', '*', '&', '(', ')', '@', '&'})
 var UnquotedValueSpecials = string([]rune{'#', ';', '\n', '\\', '{', '}', '[', ']', '\'', '"', '|', '$', '@'})
 
 // RawString returns s in a AST String node that can format s in the most aesthetically
 // pleasing way.
-// TODO: Return StringBox
 func RawString(s string, inKey bool) String {
 	if s == "" {
 		return FlatDoubleQuotedString(s)
@@ -1062,10 +1133,6 @@ func RawString(s string, inKey bool) String {
 			switch r {
 			case '-':
 				if i+1 < len(s) && s[i+1] != '-' {
-					continue
-				}
-			case '&':
-				if i > 0 {
 					continue
 				}
 			}

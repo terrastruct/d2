@@ -12,6 +12,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"sync"
 	"time"
 
@@ -41,13 +42,15 @@ var devMode = false
 var staticFS embed.FS
 
 type watcherOpts struct {
-	layoutPlugin    d2plugin.Plugin
+	layout          *string
+	plugins         []d2plugin.Plugin
 	renderOpts      d2svg.RenderOpts
 	animateInterval int64
 	host            string
 	port            string
 	inputPath       string
 	outputPath      string
+	boardPath       string
 	pwd             string
 	bundle          bool
 	forceAppendix   bool
@@ -361,7 +364,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			w.pw = newPW
 		}
 
-		svg, _, err := compile(ctx, w.ms, w.layoutPlugin, w.renderOpts, w.fontFamily, w.animateInterval, w.inputPath, w.outputPath, w.bundle, w.forceAppendix, w.pw.Page)
+		svg, _, err := compile(ctx, w.ms, w.plugins, w.layout, w.renderOpts, w.fontFamily, w.animateInterval, w.inputPath, w.outputPath, w.boardPath, w.bundle, w.forceAppendix, w.pw.Page)
 		errs := ""
 		if err != nil {
 			if len(svg) > 0 {
@@ -429,15 +432,25 @@ func (w *watcher) handleRoot(hw http.ResponseWriter, r *http.Request) {
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>%s</title>
-	<script src="./static/watch.js"></script>
-	<link rel="stylesheet" href="./static/watch.css">
-	<link id="favicon" rel="icon" href="./static/favicon.ico">
+	<script src="/static/watch.js"></script>
+	<link rel="stylesheet" href="/static/watch.css">
+	<link id="favicon" rel="icon" href="/static/favicon.ico">
 </head>
 <body data-d2-dev-mode=%t>
 	<div id="d2-err" style="display: none"></div>
 	<div id="d2-svg-container"></div>
 </body>
 </html>`, filepath.Base(w.outputPath), w.devMode)
+
+	// if path is "/x.svg", we just want "x"
+	boardPath := strings.TrimPrefix(r.URL.Path, "/")
+	if idx := strings.LastIndexByte(boardPath, '.'); idx != -1 {
+		boardPath = boardPath[:idx]
+	}
+	if boardPath != w.boardPath {
+		w.boardPath = boardPath
+		w.requestCompile()
+	}
 }
 
 func (w *watcher) handleWatch(hw http.ResponseWriter, r *http.Request) error {

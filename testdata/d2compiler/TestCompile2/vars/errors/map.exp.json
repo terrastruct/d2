@@ -1,0 +1,11 @@
+{
+  "graph": null,
+  "err": {
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile2/vars/errors/map.d2,6:0:43-6:2:45",
+        "errmsg": "d2/testdata/d2compiler/TestCompile2/vars/errors/map.d2:7:1: cannot reference map variable \"colors\""
+      }
+    ]
+  }
+}

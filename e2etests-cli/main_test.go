@@ -74,8 +74,17 @@ func TestCLI_E2E(t *testing.T) {
 				writeFile(t, dir, "empty-layer.d2", `layers: { x: {} }`)
 				err := runTestMain(t, ctx, dir, env, "empty-layer.d2")
 				assert.Success(t, err)
+			},
+		},
+		{
+			name: "layer-link",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "test.d2", `doh: { link: layers.test2 }; layers: { test2: @test2.d2 }`)
+				writeFile(t, dir, "test2.d2", `x: I'm a Mac { link: https://example.com }`)
+				err := runTestMain(t, ctx, dir, env, "test.d2", "layer-link.svg")
+				assert.Success(t, err)
 
-				assert.TestdataDir(t, filepath.Join(dir, "empty-layer"))
+				assert.TestdataDir(t, filepath.Join(dir, "layer-link"))
 			},
 		},
 		{
@@ -106,6 +115,38 @@ func TestCLI_E2E(t *testing.T) {
 			name: "animation",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "animation.d2", `Chicken's plan: {
+  style.font-size: 35
+  near: top-center
+  shape: text
+}
+
+steps: {
+  1: {
+    Approach road
+  }
+  2: {
+    Approach road -> Cross road
+  }
+  3: {
+    Cross road -> Make you wonder why
+  }
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "--animate-interval=1400", "animation.d2")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "animation.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
+			name: "vars-animation",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "animation.d2", `vars: {
+  d2-config: {
+    theme-id: 300
+  }
+}
+Chicken's plan: {
   style.font-size: 35
   near: top-center
   shape: text
@@ -405,6 +446,17 @@ steps: {
 			},
 		},
 		{
+			name: "import_vars",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `vars: { d2-config: @config }; x -> y`)
+				writeFile(t, dir, "config.d2", `theme-id: 200`)
+				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
+				assert.Success(t, err)
+				svg := readFile(t, dir, "hello-world.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
 			name: "import_spread_nested",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `...@x.y`)
@@ -447,6 +499,26 @@ steps: {
 					svg := readFile(t, dir, "hello-world/index.svg")
 					assert.Testdata(t, ".svg", svg)
 				})
+			},
+		},
+		{
+			name: "vars-config",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `vars: {
+  d2-config: {
+    sketch: true
+    layout-engine: elk
+  }
+}
+x -> y -> a.dream
+it -> was -> all -> a.dream
+i used to read
+`)
+				env.Setenv("D2_THEME", "1")
+				err := runTestMain(t, ctx, dir, env, "--pad=10", "hello-world.d2")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "hello-world.svg")
+				assert.Testdata(t, ".svg", svg)
 			},
 		},
 	}

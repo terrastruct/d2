@@ -69,10 +69,10 @@ var grain string
 var paper string
 
 type RenderOpts struct {
-	Pad         int
-	Sketch      bool
-	Center      bool
-	ThemeID     int64
+	Pad         *int64
+	Sketch      *bool
+	Center      *bool
+	ThemeID     *int64
 	DarkThemeID *int64
 	Font        string
 	// the svg will be scaled by this factor, if unset the svg will fit to screen
@@ -1201,9 +1201,11 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					offsetY /= 2
 				}
 				box.TopLeft.Y -= float64(offsetY)
+				box.Height += float64(offsetY)
 				box.Width += d2target.THREE_DEE_OFFSET
 			} else if targetShape.Multiple {
 				box.TopLeft.Y -= d2target.MULTIPLE_OFFSET
+				box.Height += d2target.MULTIPLE_OFFSET
 				box.Width += d2target.MULTIPLE_OFFSET
 			}
 		} else {
@@ -1218,12 +1220,11 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		fontClass := "text"
 		if targetShape.FontFamily == "mono" {
 			fontClass = "text-mono"
-		} else {
-			if targetShape.Bold {
-				fontClass += "-bold"
-			} else if targetShape.Italic {
-				fontClass += "-italic"
-			}
+		}
+		if targetShape.Bold {
+			fontClass += "-bold"
+		} else if targetShape.Italic {
+			fontClass += "-italic"
 		}
 		if targetShape.Underline {
 			fontClass += " text-underline"
@@ -1340,7 +1341,11 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			}
 		}
 	}
-
+	if targetShape.Tooltip != "" {
+		fmt.Fprintf(writer, `<title>%s</title>`,
+			svg.EscapeText(targetShape.Tooltip),
+		)
+	}
 	addAppendixItems(appendixWriter, targetShape, s)
 
 	fmt.Fprint(writer, closingTag)
@@ -1389,12 +1394,12 @@ func addAppendixItems(writer io.Writer, targetShape d2target.Shape, s shape.Shap
 		x := int(math.Ceil(p1.X))
 		y := int(math.Ceil(p1.Y))
 
-		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
+		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon"><title>%s</title>%s</g>`,
 			x-appendixIconRadius,
 			y-appendixIconRadius,
+			svg.EscapeText(targetShape.Tooltip),
 			TooltipIcon,
 		)
-		fmt.Fprintf(writer, `<title>%s</title>`, svg.EscapeText(targetShape.Tooltip))
 	}
 	if targetShape.Link != "" {
 		if p2 == nil {
@@ -1687,26 +1692,28 @@ func appendOnTrigger(buf *bytes.Buffer, source string, triggers []string, newCon
 	}
 }
 
-const DEFAULT_THEME int64 = 0
-
 var DEFAULT_DARK_THEME *int64 = nil // no theme selected
 
 func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	var sketchRunner *d2sketch.Runner
 	pad := DEFAULT_PADDING
-	themeID := DEFAULT_THEME
+	themeID := d2themescatalog.NeutralDefault.ID
 	darkThemeID := DEFAULT_DARK_THEME
 	var scale *float64
 	if opts != nil {
-		pad = opts.Pad
-		if opts.Sketch {
+		if opts.Pad != nil {
+			pad = int(*opts.Pad)
+		}
+		if opts.Sketch != nil && *opts.Sketch {
 			var err error
 			sketchRunner, err = d2sketch.InitSketchVM()
 			if err != nil {
 				return nil, err
 			}
 		}
-		themeID = opts.ThemeID
+		if opts.ThemeID != nil {
+			themeID = *opts.ThemeID
+		}
 		darkThemeID = opts.DarkThemeID
 		scale = opts.Scale
 	}
@@ -1790,7 +1797,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	upperBuf := &bytes.Buffer{}
 	if opts.MasterID == "" {
 		EmbedFonts(upperBuf, diagramHash, buf.String(), diagram.FontFamily, diagram.GetCorpus()) // EmbedFonts *must* run before `d2sketch.DefineFillPatterns`, but after all elements are appended to `buf`
-		themeStylesheet, err := ThemeCSS(diagramHash, themeID, darkThemeID)
+		themeStylesheet, err := ThemeCSS(diagramHash, &themeID, darkThemeID)
 		if err != nil {
 			return nil, err
 		}
@@ -1911,7 +1918,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	}
 
 	alignment := "xMinYMin"
-	if opts.Center {
+	if opts.Center != nil && *opts.Center {
 		alignment = "xMidYMid"
 	}
 	fitToScreenWrapperOpening := ""
@@ -1952,8 +1959,11 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 }
 
 // TODO include only colors that are being used to reduce size
-func ThemeCSS(diagramHash string, themeID int64, darkThemeID *int64) (stylesheet string, err error) {
-	out, err := singleThemeRulesets(diagramHash, themeID)
+func ThemeCSS(diagramHash string, themeID *int64, darkThemeID *int64) (stylesheet string, err error) {
+	if themeID == nil {
+		themeID = &d2themescatalog.NeutralDefault.ID
+	}
+	out, err := singleThemeRulesets(diagramHash, *themeID)
 	if err != nil {
 		return "", err
 	}

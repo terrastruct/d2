@@ -1,0 +1,779 @@
+{
+  "fields": [
+    {
+      "name": "a",
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-nexus.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-nexus.d2,0:0:0-0:1:1",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-nexus.d2,0:0:0-0:1:1",
+                  "value": [
+                    {
+                      "string": "a",
+                      "raw_string": "a"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/edge-nexus.d2,0:0:0-0:1:1",
+              "key": {
+                "range": "TestCompile/patterns/edge-nexus.d2,0:0:0-0:1:1",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-nexus.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "b",
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-nexus.d2,1:0:2-1:1:3",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-nexus.d2,1:0:2-1:1:3",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-nexus.d2,1:0:2-1:1:3",
+                  "value": [
+                    {
+                      "string": "b",
+                      "raw_string": "b"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/edge-nexus.d2,1:0:2-1:1:3",
+              "key": {
+                "range": "TestCompile/patterns/edge-nexus.d2,1:0:2-1:1:3",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-nexus.d2,1:0:2-1:1:3",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "c",
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-nexus.d2,2:0:4-2:1:5",
+            "value": [
+              {
+                "string": "c",
+                "raw_string": "c"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-nexus.d2,2:0:4-2:1:5",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-nexus.d2,2:0:4-2:1:5",
+                  "value": [
+                    {
+                      "string": "c",
+                      "raw_string": "c"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/edge-nexus.d2,2:0:4-2:1:5",
+              "key": {
+                "range": "TestCompile/patterns/edge-nexus.d2,2:0:4-2:1:5",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-nexus.d2,2:0:4-2:1:5",
+                      "value": [
+                        {
+                          "string": "c",
+                          "raw_string": "c"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "d",
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-nexus.d2,3:0:6-3:1:7",
+            "value": [
+              {
+                "string": "d",
+                "raw_string": "d"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-nexus.d2,3:0:6-3:1:7",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-nexus.d2,3:0:6-3:1:7",
+                  "value": [
+                    {
+                      "string": "d",
+                      "raw_string": "d"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/edge-nexus.d2,3:0:6-3:1:7",
+              "key": {
+                "range": "TestCompile/patterns/edge-nexus.d2,3:0:6-3:1:7",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-nexus.d2,3:0:6-3:1:7",
+                      "value": [
+                        {
+                          "string": "d",
+                          "raw_string": "d"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "nexus",
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+            "value": [
+              {
+                "string": "nexus",
+                "raw_string": "nexus"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+                  "value": [
+                    {
+                      "string": "nexus",
+                      "raw_string": "nexus"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:10:18",
+              "src": {
+                "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:1:9",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:1:9",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+                      "value": [
+                        {
+                          "string": "nexus",
+                          "raw_string": "nexus"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:10:18",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:10:18",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:1:9",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:1:9",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+                          "value": [
+                            {
+                              "string": "nexus",
+                              "raw_string": "nexus"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": {
+        "src_path": [
+          "a"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "nexus"
+        ],
+        "dst_arrow": true,
+        "index": 0,
+        "glob": false
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:10:18",
+              "src": {
+                "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:1:9",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:1:9",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+                      "value": [
+                        {
+                          "string": "nexus",
+                          "raw_string": "nexus"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:10:18",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:10:18",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:1:9",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:1:9",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+                          "value": [
+                            {
+                              "string": "nexus",
+                              "raw_string": "nexus"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "edge_id": {
+        "src_path": [
+          "b"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "nexus"
+        ],
+        "dst_arrow": true,
+        "index": 0,
+        "glob": false
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:10:18",
+              "src": {
+                "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:1:9",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:1:9",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+                      "value": [
+                        {
+                          "string": "nexus",
+                          "raw_string": "nexus"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:10:18",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:10:18",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:1:9",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:1:9",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+                          "value": [
+                            {
+                              "string": "nexus",
+                              "raw_string": "nexus"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "edge_id": {
+        "src_path": [
+          "c"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "nexus"
+        ],
+        "dst_arrow": true,
+        "index": 0,
+        "glob": false
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:10:18",
+              "src": {
+                "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:1:9",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:1:9",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+                      "value": [
+                        {
+                          "string": "nexus",
+                          "raw_string": "nexus"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:10:18",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:10:18",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:1:9",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:1:9",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+                          "value": [
+                            {
+                              "string": "nexus",
+                              "raw_string": "nexus"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "edge_id": {
+        "src_path": [
+          "d"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "nexus"
+        ],
+        "dst_arrow": true,
+        "index": 0,
+        "glob": false
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:10:18",
+              "src": {
+                "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:1:9",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:1:9",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+                      "value": [
+                        {
+                          "string": "nexus",
+                          "raw_string": "nexus"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:10:18",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:10:18",
+                  "src": {
+                    "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:1:9",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-nexus.d2,4:0:8-4:1:9",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge-nexus.d2,4:5:13-4:10:18",
+                          "value": [
+                            {
+                              "string": "nexus",
+                              "raw_string": "nexus"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

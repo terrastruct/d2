@@ -1,0 +1,159 @@
+{
+  "fields": [
+    {
+      "name": "animal",
+      "primary": {
+        "value": {
+          "range": "TestCompile/patterns/case.d2,2:4:29-2:11:36",
+          "value": [
+            {
+              "string": "globbed",
+              "raw_string": "globbed"
+            }
+          ]
+        }
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/case.d2,0:0:0-0:6:6",
+            "value": [
+              {
+                "string": "animal",
+                "raw_string": "animal"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/case.d2,0:0:0-0:6:6",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/case.d2,0:0:0-0:6:6",
+                  "value": [
+                    {
+                      "string": "animal",
+                      "raw_string": "animal"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/case.d2,0:0:0-0:12:12",
+              "key": {
+                "range": "TestCompile/patterns/case.d2,0:0:0-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/case.d2,0:0:0-0:6:6",
+                      "value": [
+                        {
+                          "string": "animal",
+                          "raw_string": "animal"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/case.d2,0:8:8-0:12:12",
+                  "value": [
+                    {
+                      "string": "meow",
+                      "raw_string": "meow"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "action",
+      "primary": {
+        "value": {
+          "range": "TestCompile/patterns/case.d2,2:4:29-2:11:36",
+          "value": [
+            {
+              "string": "globbed",
+              "raw_string": "globbed"
+            }
+          ]
+        }
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/case.d2,1:0:13-1:6:19",
+            "value": [
+              {
+                "string": "action",
+                "raw_string": "action"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/case.d2,1:0:13-1:6:19",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/case.d2,1:0:13-1:6:19",
+                  "value": [
+                    {
+                      "string": "action",
+                      "raw_string": "action"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/case.d2,1:0:13-1:11:24",
+              "key": {
+                "range": "TestCompile/patterns/case.d2,1:0:13-1:6:19",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/case.d2,1:0:13-1:6:19",
+                      "value": [
+                        {
+                          "string": "action",
+                          "raw_string": "action"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/case.d2,1:8:21-1:11:24",
+                  "value": [
+                    {
+                      "string": "yes",
+                      "raw_string": "yes"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": null
+}

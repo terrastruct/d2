@@ -790,7 +790,8 @@
                       "y"
                     ],
                     "dst_arrow": true,
-                    "index": 0
+                    "index": 0,
+                    "glob": false
                   },
                   "references": [
                     {
@@ -1289,7 +1290,8 @@
                       "y"
                     ],
                     "dst_arrow": true,
-                    "index": 0
+                    "index": 0,
+                    "glob": false
                   },
                   "references": [
                     {
@@ -1665,7 +1667,8 @@
           "y"
         ],
         "dst_arrow": true,
-        "index": 0
+        "index": 0,
+        "glob": false
       },
       "references": [
         {

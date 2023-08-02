@@ -232,6 +232,37 @@
             },
             "key_path_index": 0,
             "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/nulls/implicit/delete-children.d2,5:0:22-5:3:25",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/nulls/implicit/delete-children.d2,5:0:22-5:1:23",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/nulls/implicit/delete-children.d2,5:2:24-5:3:25",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {

@@ -78,3 +78,14 @@ func (b *Box) ToString() string {
 	}
 	return fmt.Sprintf("{TopLeft: %s, Width: %.0f, Height: %.0f}", b.TopLeft.ToString(), b.Width, b.Height)
 }
+
+func (b *Box) Contains(p *Point) bool {
+	return !(p.X < b.TopLeft.X || b.TopLeft.X+b.Width < p.X ||
+		p.Y < b.TopLeft.Y || b.TopLeft.Y+b.Height < p.Y)
+}
+
+func (b1 Box) Overlaps(b2 Box) bool {
+	// https://silentmatt.com/rectangle-intersection/
+	return (b1.TopLeft.X < (b2.TopLeft.X + b2.Width)) && ((b1.TopLeft.X + b1.Width) > b2.TopLeft.X) &&
+		(b1.TopLeft.Y < (b2.TopLeft.Y + b2.Height)) && ((b1.TopLeft.Y + b1.Height) > b2.TopLeft.Y)
+}

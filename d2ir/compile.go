@@ -2,11 +2,15 @@ package d2ir
 
 import (
 	"io/fs"
+	"strconv"
 	"strings"
 
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2parser"
+	"oss.terrastruct.com/d2/d2themes"
+	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type compiler struct {
@@ -18,6 +22,8 @@ type compiler struct {
 	// importCache enables reuse of files imported multiple times.
 	importCache map[string]*Map
 	utf16       bool
+
+	globStack []bool
 }
 
 type CompileOptions struct {
@@ -52,14 +58,15 @@ func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, error) {
 	defer c.popImportStack()
 
 	c.compileMap(m, ast, ast)
-	c.compileClasses(m)
+	c.compileSubstitutions(m, nil)
+	c.overlayClasses(m)
 	if !c.err.Empty() {
 		return nil, c.err
 	}
 	return m, nil
 }
 
-func (c *compiler) compileClasses(m *Map) {
+func (c *compiler) overlayClasses(m *Map) {
 	classes := m.GetField("classes")
 	if classes == nil || classes.Map() == nil {
 		return
@@ -92,8 +99,240 @@ func (c *compiler) compileClasses(m *Map) {
 			l.Fields = append(l.Fields, base)
 		}
 
-		c.compileClasses(l)
+		c.overlayClasses(l)
 	}
+}
+
+func (c *compiler) compileSubstitutions(m *Map, varsStack []*Map) {
+	for _, f := range m.Fields {
+		if f.Name == "vars" && f.Map() != nil {
+			varsStack = append([]*Map{f.Map()}, varsStack...)
+		}
+		if f.Primary() != nil {
+			c.resolveSubstitutions(varsStack, f)
+		}
+		if arr, ok := f.Composite.(*Array); ok {
+			for _, val := range arr.Values {
+				if scalar, ok := val.(*Scalar); ok {
+					c.resolveSubstitutions(varsStack, scalar)
+				}
+			}
+		} else if f.Map() != nil {
+			// don't resolve substitutions in vars with the current scope of vars
+			if f.Name == "vars" {
+				c.compileSubstitutions(f.Map(), varsStack[1:])
+				c.validateConfigs(f.Map().GetField("d2-config"))
+			} else {
+				c.compileSubstitutions(f.Map(), varsStack)
+			}
+		}
+	}
+	for _, e := range m.Edges {
+		if e.Primary() != nil {
+			c.resolveSubstitutions(varsStack, e)
+		}
+		if e.Map() != nil {
+			c.compileSubstitutions(e.Map(), varsStack)
+		}
+	}
+}
+
+func (c *compiler) validateConfigs(configs *Field) {
+	if configs == nil || configs.Map() == nil {
+		return
+	}
+
+	if NodeBoardKind(ParentMap(ParentMap(configs))) == "" {
+		c.errorf(configs.LastRef().AST(), `"%s" can only appear at root vars`, configs.Name)
+		return
+	}
+
+	for _, f := range configs.Map().Fields {
+		var val string
+		if f.Primary() == nil {
+			if f.Name != "theme-colors" {
+				c.errorf(f.LastRef().AST(), `"%s" needs a value`, f.Name)
+				continue
+			}
+		} else {
+			val = f.Primary().Value.ScalarString()
+		}
+
+		switch f.Name {
+		case "sketch", "center":
+			_, err := strconv.ParseBool(val)
+			if err != nil {
+				c.errorf(f.LastRef().AST(), `expected a boolean for "%s", got "%s"`, f.Name, val)
+				continue
+			}
+		case "theme-colors":
+			if f.Map() == nil {
+				c.errorf(f.LastRef().AST(), `"%s" needs a map`, f.Name)
+				continue
+			}
+		case "theme-id", "dark-theme-id":
+			valInt, err := strconv.Atoi(val)
+			if err != nil {
+				c.errorf(f.LastRef().AST(), `expected an integer for "%s", got "%s"`, f.Name, val)
+				continue
+			}
+			if d2themescatalog.Find(int64(valInt)) == (d2themes.Theme{}) {
+				c.errorf(f.LastRef().AST(), `%d is not a valid theme ID`, valInt)
+				continue
+			}
+		case "pad":
+			_, err := strconv.Atoi(val)
+			if err != nil {
+				c.errorf(f.LastRef().AST(), `expected an integer for "%s", got "%s"`, f.Name, val)
+				continue
+			}
+		case "layout-engine":
+		default:
+			c.errorf(f.LastRef().AST(), `"%s" is not a valid config`, f.Name)
+		}
+	}
+}
+
+func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) {
+	var subbed bool
+	var resolvedField *Field
+
+	switch s := node.Primary().Value.(type) {
+	case *d2ast.UnquotedString:
+		for i, box := range s.Value {
+			if box.Substitution != nil {
+				for _, vars := range varsStack {
+					resolvedField = c.resolveSubstitution(vars, box.Substitution)
+					if resolvedField != nil {
+						if resolvedField.Primary() != nil {
+							if _, ok := resolvedField.Primary().Value.(*d2ast.Null); ok {
+								resolvedField = nil
+							}
+						}
+						break
+					}
+				}
+				if resolvedField == nil {
+					c.errorf(node.LastRef().AST(), `could not resolve variable "%s"`, strings.Join(box.Substitution.IDA(), "."))
+					return
+				}
+				if box.Substitution.Spread {
+					if resolvedField.Composite == nil {
+						c.errorf(box.Substitution, "cannot spread non-composite")
+						continue
+					}
+					switch n := node.(type) {
+					case *Scalar: // Array value
+						resolvedArr, ok := resolvedField.Composite.(*Array)
+						if !ok {
+							c.errorf(box.Substitution, "cannot spread non-array into array")
+							continue
+						}
+						arr := n.parent.(*Array)
+						for i, s := range arr.Values {
+							if s == n {
+								arr.Values = append(append(arr.Values[:i], resolvedArr.Values...), arr.Values[i+1:]...)
+								break
+							}
+						}
+					case *Field:
+						if resolvedField.Map() != nil {
+							OverlayMap(ParentMap(n), resolvedField.Map())
+						}
+						// Remove the placeholder field
+						m := n.parent.(*Map)
+						for i, f2 := range m.Fields {
+							if n == f2 {
+								m.Fields = append(m.Fields[:i], m.Fields[i+1:]...)
+								break
+							}
+						}
+					}
+				}
+				if resolvedField.Primary() == nil {
+					if resolvedField.Composite == nil {
+						c.errorf(node.LastRef().AST(), `cannot substitute variable without value: "%s"`, strings.Join(box.Substitution.IDA(), "."))
+						return
+					}
+					if len(s.Value) > 1 {
+						c.errorf(node.LastRef().AST(), `cannot substitute composite variable "%s" as part of a string`, strings.Join(box.Substitution.IDA(), "."))
+						return
+					}
+					switch n := node.(type) {
+					case *Field:
+						n.Primary_ = nil
+					case *Edge:
+						n.Primary_ = nil
+					}
+				} else {
+					if i == 0 && len(s.Value) == 1 {
+						node.Primary().Value = resolvedField.Primary().Value
+					} else {
+						s.Value[i].String = go2.Pointer(resolvedField.Primary().Value.ScalarString())
+						subbed = true
+					}
+				}
+				if resolvedField.Composite != nil {
+					switch n := node.(type) {
+					case *Field:
+						n.Composite = resolvedField.Composite
+					case *Edge:
+						if resolvedField.Composite.Map() == nil {
+							c.errorf(node.LastRef().AST(), `cannot substitute array variable "%s" to an edge`, strings.Join(box.Substitution.IDA(), "."))
+							return
+						}
+						n.Map_ = resolvedField.Composite.Map()
+					}
+				}
+			}
+		}
+		if subbed {
+			s.Coalesce()
+		}
+	case *d2ast.DoubleQuotedString:
+		for i, box := range s.Value {
+			if box.Substitution != nil {
+				for _, vars := range varsStack {
+					resolvedField = c.resolveSubstitution(vars, box.Substitution)
+					if resolvedField != nil {
+						break
+					}
+				}
+				if resolvedField == nil {
+					c.errorf(node.LastRef().AST(), `could not resolve variable "%s"`, strings.Join(box.Substitution.IDA(), "."))
+					return
+				}
+				if resolvedField.Primary() == nil && resolvedField.Composite != nil {
+					c.errorf(node.LastRef().AST(), `cannot substitute map variable "%s" in quotes`, strings.Join(box.Substitution.IDA(), "."))
+					return
+				}
+				s.Value[i].String = go2.Pointer(resolvedField.Primary().Value.ScalarString())
+				subbed = true
+			}
+		}
+		if subbed {
+			s.Coalesce()
+		}
+	}
+}
+
+func (c *compiler) resolveSubstitution(vars *Map, substitution *d2ast.Substitution) *Field {
+	if vars == nil {
+		return nil
+	}
+
+	for i, p := range substitution.Path {
+		f := vars.GetField(p.Unbox().ScalarString())
+		if f == nil {
+			return nil
+		}
+
+		if i == len(substitution.Path)-1 {
+			return f
+		}
+		vars = f.Map()
+	}
+	return nil
 }
 
 func (c *compiler) overlay(base *Map, f *Field) {
@@ -110,12 +349,37 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 	for _, n := range ast.Nodes {
 		switch {
 		case n.MapKey != nil:
+			ok := c.ampersandFilter(&RefContext{
+				Key:      n.MapKey,
+				Scope:    ast,
+				ScopeMap: dst,
+				ScopeAST: scopeAST,
+			})
+			if !ok {
+				return
+			}
+		}
+	}
+	for _, n := range ast.Nodes {
+		switch {
+		case n.MapKey != nil:
 			c.compileKey(&RefContext{
 				Key:      n.MapKey,
 				Scope:    ast,
 				ScopeMap: dst,
 				ScopeAST: scopeAST,
 			})
+		case n.Substitution != nil:
+			// placeholder field to be resolved at the end
+			f := &Field{
+				parent: dst,
+				Primary_: &Scalar{
+					Value: &d2ast.UnquotedString{
+						Value: []d2ast.InterpolationBox{{Substitution: n.Substitution}},
+					},
+				},
+			}
+			dst.Fields = append(dst.Fields, f)
 		case n.Import != nil:
 			impn, ok := c._import(n.Import)
 			if !ok {
@@ -135,8 +399,6 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 					}
 				}
 			}
-		case n.Substitution != nil:
-			panic("TODO")
 		}
 	}
 }
@@ -150,14 +412,85 @@ func (c *compiler) compileKey(refctx *RefContext) {
 }
 
 func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext) {
-	if refctx.Key != nil && len(refctx.Key.Edges) == 0 && refctx.Key.Value.Null != nil {
-		dst.DeleteField(kp.IDA()...)
+	if refctx.Key.Ampersand {
 		return
 	}
-	f, err := dst.EnsureField(kp, refctx)
+
+	fa, err := dst.EnsureField(kp, refctx, true)
 	if err != nil {
 		c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 		return
+	}
+
+	for _, f := range fa {
+		c._compileField(f, refctx)
+	}
+}
+
+func (c *compiler) ampersandFilter(refctx *RefContext) bool {
+	if !refctx.Key.Ampersand {
+		return true
+	}
+	if len(c.globStack) == 0 || !c.globStack[len(c.globStack)-1] {
+		c.errorf(refctx.Key, "glob filters cannot be used outside globs")
+		return false
+	}
+	if len(refctx.Key.Edges) > 0 {
+		return true
+	}
+
+	fa, err := refctx.ScopeMap.EnsureField(refctx.Key.Key, refctx, false)
+	if err != nil {
+		c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
+		return false
+	}
+	if len(fa) == 0 {
+		return false
+	}
+	for _, f := range fa {
+		ok := c._ampersandFilter(f, refctx)
+		if !ok {
+			return false
+		}
+	}
+	return true
+}
+
+func (c *compiler) _ampersandFilter(f *Field, refctx *RefContext) bool {
+	if refctx.Key.Value.ScalarBox().Unbox() == nil {
+		c.errorf(refctx.Key, "glob filters cannot be composites")
+		return false
+	}
+
+	if a, ok := f.Composite.(*Array); ok {
+		for _, v := range a.Values {
+			if s, ok := v.(*Scalar); ok {
+				if refctx.Key.Value.ScalarBox().Unbox().ScalarString() == s.Value.ScalarString() {
+					return true
+				}
+			}
+		}
+	}
+
+	if f.Primary_ == nil {
+		return false
+	}
+
+	if refctx.Key.Value.ScalarBox().Unbox().ScalarString() != f.Primary_.Value.ScalarString() {
+		return false
+	}
+
+	return true
+}
+
+func (c *compiler) _compileField(f *Field, refctx *RefContext) {
+	if len(refctx.Key.Edges) == 0 && refctx.Key.Value.Null != nil {
+		// For vars, if we delete the field, it may just resolve to an outer scope var of the same name
+		// Instead we keep it around, so that resolveSubstitutions can find it
+		if !IsVar(ParentMap(f)) {
+			ParentMap(f).DeleteField(f.Name)
+			return
+		}
 	}
 
 	if refctx.Key.Primary.Unbox() != nil {
@@ -199,10 +532,12 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 			// If new board type, use that as the new scope AST, otherwise, carry on
 			scopeAST = refctx.ScopeAST
 		}
+		c.globStack = append(c.globStack, refctx.Key.HasQueryGlob())
 		c.compileMap(f.Map(), refctx.Key.Value.Map, scopeAST)
+		c.globStack = c.globStack[:len(c.globStack)-1]
 		switch NodeBoardKind(f) {
 		case BoardScenario, BoardStep:
-			c.compileClasses(f.Map())
+			c.overlayClasses(f.Map())
 		}
 	} else if refctx.Key.Value.Import != nil {
 		n, ok := c._import(refctx.Key.Value.Import)
@@ -241,7 +576,7 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 			c.updateLinks(f.Map())
 			switch NodeBoardKind(f) {
 			case BoardScenario, BoardStep:
-				c.compileClasses(f.Map())
+				c.overlayClasses(f.Map())
 			}
 		}
 	} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
@@ -259,6 +594,21 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 func (c *compiler) updateLinks(m *Map) {
 	for _, f := range m.Fields {
 		if f.Name == "link" {
+			val := f.Primary().Value.ScalarString()
+			link, err := d2parser.ParseKey(val)
+			if err != nil {
+				continue
+			}
+
+			linkIDA := link.IDA()
+			if len(linkIDA) == 0 {
+				continue
+			}
+
+			// When updateLinks is called, all valid board links are already compiled and changed to the qualified path beginning with "root"
+			if linkIDA[0] != "root" {
+				continue
+			}
 			bida := BoardIDA(f)
 			aida := IDA(f)
 			if len(bida) != len(aida) {
@@ -337,12 +687,17 @@ func (c *compiler) compileLink(refctx *RefContext) {
 }
 
 func (c *compiler) compileEdges(refctx *RefContext) {
-	if refctx.Key.Key != nil {
-		f, err := refctx.ScopeMap.EnsureField(refctx.Key.Key, refctx)
-		if err != nil {
-			c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
-			return
-		}
+	if refctx.Key.Key == nil {
+		c._compileEdges(refctx)
+		return
+	}
+
+	fa, err := refctx.ScopeMap.EnsureField(refctx.Key.Key, refctx, true)
+	if err != nil {
+		c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
+		return
+	}
+	for _, f := range fa {
 		if _, ok := f.Composite.(*Array); ok {
 			c.errorf(refctx.Key.Key, "cannot index into array")
 			return
@@ -352,9 +707,13 @@ func (c *compiler) compileEdges(refctx *RefContext) {
 				parent: f,
 			}
 		}
-		refctx.ScopeMap = f.Map()
+		refctx2 := *refctx
+		refctx2.ScopeMap = f.Map()
+		c._compileEdges(&refctx2)
 	}
+}
 
+func (c *compiler) _compileEdges(refctx *RefContext) {
 	eida := NewEdgeIDs(refctx.Key)
 	for i, eid := range eida {
 		if refctx.Key != nil && refctx.Key.Value.Null != nil {
@@ -365,66 +724,61 @@ func (c *compiler) compileEdges(refctx *RefContext) {
 		refctx = refctx.Copy()
 		refctx.Edge = refctx.Key.Edges[i]
 
-		var e *Edge
-		if eid.Index != nil {
-			ea := refctx.ScopeMap.GetEdges(eid)
+		var ea []*Edge
+		if eid.Index != nil || eid.Glob {
+			ea = refctx.ScopeMap.GetEdges(eid, refctx)
 			if len(ea) == 0 {
 				c.errorf(refctx.Edge, "indexed edge does not exist")
 				continue
 			}
-			e = ea[0]
-			e.References = append(e.References, &EdgeReference{
-				Context: refctx,
-			})
-			refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Src, refctx)
-			refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Dst, refctx)
+			for _, e := range ea {
+				e.References = append(e.References, &EdgeReference{
+					Context: refctx,
+				})
+				refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Src, refctx)
+				refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Dst, refctx)
+			}
 		} else {
-			_, err := refctx.ScopeMap.EnsureField(refctx.Edge.Src, refctx)
-			if err != nil {
-				c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
-				continue
-			}
-			_, err = refctx.ScopeMap.EnsureField(refctx.Edge.Dst, refctx)
-			if err != nil {
-				c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
-				continue
-			}
-
-			e, err = refctx.ScopeMap.CreateEdge(eid, refctx)
+			var err error
+			ea, err = refctx.ScopeMap.CreateEdge(eid, refctx)
 			if err != nil {
 				c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 				continue
 			}
 		}
 
-		if refctx.Key.EdgeKey != nil {
-			if e.Map_ == nil {
-				e.Map_ = &Map{
-					parent: e,
-				}
-			}
-			c.compileField(e.Map_, refctx.Key.EdgeKey, refctx)
-		} else {
-			if refctx.Key.Primary.Unbox() != nil {
-				e.Primary_ = &Scalar{
-					parent: e,
-					Value:  refctx.Key.Primary.Unbox(),
-				}
-			}
-			if refctx.Key.Value.Array != nil {
-				c.errorf(refctx.Key.Value.Unbox(), "edges cannot be assigned arrays")
-				continue
-			} else if refctx.Key.Value.Map != nil {
+		for _, e := range ea {
+			if refctx.Key.EdgeKey != nil {
 				if e.Map_ == nil {
 					e.Map_ = &Map{
 						parent: e,
 					}
 				}
-				c.compileMap(e.Map_, refctx.Key.Value.Map, refctx.ScopeAST)
-			} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
-				e.Primary_ = &Scalar{
-					parent: e,
-					Value:  refctx.Key.Value.ScalarBox().Unbox(),
+				c.compileField(e.Map_, refctx.Key.EdgeKey, refctx)
+			} else {
+				if refctx.Key.Primary.Unbox() != nil {
+					e.Primary_ = &Scalar{
+						parent: e,
+						Value:  refctx.Key.Primary.Unbox(),
+					}
+				}
+				if refctx.Key.Value.Array != nil {
+					c.errorf(refctx.Key.Value.Unbox(), "edges cannot be assigned arrays")
+					continue
+				} else if refctx.Key.Value.Map != nil {
+					if e.Map_ == nil {
+						e.Map_ = &Map{
+							parent: e,
+						}
+					}
+					c.globStack = append(c.globStack, refctx.Key.HasQueryGlob())
+					c.compileMap(e.Map_, refctx.Key.Value.Map, refctx.ScopeAST)
+					c.globStack = c.globStack[:len(c.globStack)-1]
+				} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
+					e.Primary_ = &Scalar{
+						parent: e,
+						Value:  refctx.Key.Value.ScalarBox().Unbox(),
+					}
 				}
 			}
 		}
@@ -481,7 +835,12 @@ func (c *compiler) compileArray(dst *Array, a *d2ast.Array, scopeAST *d2ast.Map)
 				irv = n
 			}
 		case *d2ast.Substitution:
-			// panic("TODO")
+			irv = &Scalar{
+				parent: dst,
+				Value: &d2ast.UnquotedString{
+					Value: []d2ast.InterpolationBox{{Substitution: an.Substitution}},
+				},
+			}
 		}
 
 		dst.Values = append(dst.Values, irv)

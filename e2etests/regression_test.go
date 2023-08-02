@@ -648,11 +648,9 @@ group: {
 		},
 		{
 			name: "ampersand-escape",
-			script: `h&y: &∈ {
+			script: `hy: &∈ {
   tooltip: beans & rice
 }
-&foo
-&&bar
 `,
 		},
 		{
@@ -1038,6 +1036,7 @@ cf many required: {
 		loadFromFile(t, "cylinder_grid_label"),
 		loadFromFile(t, "grid_with_latex"),
 		loadFromFile(t, "icons_on_top"),
+		loadFromFile(t, "dagre_disconnected_edge"),
 	}
 
 	runa(t, tcs)

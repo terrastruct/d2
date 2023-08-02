@@ -11,7 +11,7 @@ func testThemes(t *testing.T) {
 	tcs := []testCase{
 		{
 			name:    "dark terrastruct flagship",
-			themeID: d2themescatalog.DarkFlagshipTerrastruct.ID,
+			themeID: &d2themescatalog.DarkFlagshipTerrastruct.ID,
 			script: `
 network: {
   cell tower: {
@@ -118,7 +118,7 @@ ex: |tex
 		},
 		{
 			name:    "terminal",
-			themeID: d2themescatalog.Terminal.ID,
+			themeID: &d2themescatalog.Terminal.ID,
 			script: `
 network: {
   cell tower: {
@@ -225,7 +225,7 @@ ex: |tex
 		},
 		{
 			name:    "terminal_grayscale",
-			themeID: d2themescatalog.TerminalGrayscale.ID,
+			themeID: &d2themescatalog.TerminalGrayscale.ID,
 			script: `
 network: {
   cell tower: {
@@ -279,7 +279,7 @@ network.data processor -> api server
 		},
 		{
 			name:    "origami",
-			themeID: d2themescatalog.Origami.ID,
+			themeID: &d2themescatalog.Origami.ID,
 			script: `
 network: 通信網 {
   cell tower: {

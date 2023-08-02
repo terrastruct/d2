@@ -6,6 +6,7 @@ import (
 	"hash/fnv"
 	"math"
 	"net/url"
+	"os"
 	"strings"
 
 	"oss.terrastruct.com/util-go/go2"
@@ -38,8 +39,24 @@ const (
 
 var BorderOffset = geo.NewVector(5, 5)
 
+type Config struct {
+	Sketch         *bool           `json:"sketch"`
+	ThemeID        *int64          `json:"themeID"`
+	DarkThemeID    *int64          `json:"darkThemeID"`
+	Pad            *int64          `json:"pad"`
+	Center         *bool           `json:"center"`
+	LayoutEngine   *string         `json:"layoutEngine"`
+	ThemeOverrides *ThemeOverrides `json:"themeOverrides"`
+}
+
+type ThemeOverrides struct {
+	N1 *string `json:"n1"`
+	// TODO
+}
+
 type Diagram struct {
-	Name string `json:"name"`
+	Name   string  `json:"name"`
+	Config *Config `json:"config,omitempty"`
 	// See docs on the same field in d2graph to understand what it means.
 	IsFolderOnly bool                `json:"isFolderOnly"`
 	Description  string              `json:"description,omitempty"`
@@ -56,6 +73,76 @@ type Diagram struct {
 	Steps     []*Diagram `json:"steps,omitempty"`
 }
 
+// boardPath comes in the form of "x/layers/z/scenarios/a"
+// or in the form of "layers/z/scenarios/a"
+func (d *Diagram) GetBoard(boardPath string) *Diagram {
+	path := strings.Split(boardPath, string(os.PathSeparator))
+	if len(path) == 0 || len(boardPath) == 0 {
+		return d
+	}
+
+	return d.getBoard(path)
+}
+
+func (d *Diagram) getBoard(boardPath []string) *Diagram {
+	if len(boardPath) == 0 {
+		return d
+	}
+
+	head := boardPath[0]
+
+	if head == "index" {
+		return d
+	}
+
+	switch head {
+	case "layers":
+		if len(boardPath) < 2 {
+			return nil
+		}
+		for _, b := range d.Layers {
+			if b.Name == boardPath[1] {
+				return b.getBoard(boardPath[2:])
+			}
+		}
+	case "scenarios":
+		if len(boardPath) < 2 {
+			return nil
+		}
+		for _, b := range d.Scenarios {
+			if b.Name == boardPath[1] {
+				return b.getBoard(boardPath[2:])
+			}
+		}
+	case "steps":
+		if len(boardPath) < 2 {
+			return nil
+		}
+		for _, b := range d.Steps {
+			if b.Name == boardPath[1] {
+				return b.getBoard(boardPath[2:])
+			}
+		}
+	}
+
+	for _, b := range d.Layers {
+		if b.Name == head {
+			return b.getBoard(boardPath[2:])
+		}
+	}
+	for _, b := range d.Scenarios {
+		if b.Name == head {
+			return b.getBoard(boardPath[2:])
+		}
+	}
+	for _, b := range d.Steps {
+		if b.Name == head {
+			return b.getBoard(boardPath[2:])
+		}
+	}
+	return nil
+}
+
 func (diagram Diagram) Bytes() ([]byte, error) {
 	b1, err := json.Marshal(diagram.Shapes)
 	if err != nil {
@@ -65,7 +152,19 @@ func (diagram Diagram) Bytes() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	base := append(b1, b2...)
+	b3, err := json.Marshal(diagram.Root)
+	if err != nil {
+		return nil, err
+	}
+	base := append(append(b1, b2...), b3...)
+
+	if diagram.Config != nil {
+		b, err := json.Marshal(diagram.Config)
+		if err != nil {
+			return nil, err
+		}
+		base = append(base, b...)
+	}
 
 	for _, d := range diagram.Layers {
 		slices, err := d.Bytes()
@@ -199,11 +298,11 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 			if strings.HasPrefix(targetShape.IconPosition, "OUTSIDE_TOP") {
 				y1 = go2.Min(y1, targetShape.Pos.Y-label.PADDING-size)
 			} else if strings.HasPrefix(targetShape.IconPosition, "OUTSIDE_BOTTOM") {
-				y2 = go2.Max(y2, targetShape.Pos.Y+label.PADDING+size)
+				y2 = go2.Max(y2, targetShape.Pos.Y+targetShape.Height+label.PADDING+size)
 			} else if strings.HasPrefix(targetShape.IconPosition, "OUTSIDE_LEFT") {
 				x1 = go2.Min(x1, targetShape.Pos.X-label.PADDING-size)
 			} else if strings.HasPrefix(targetShape.IconPosition, "OUTSIDE_RIGHT") {
-				x2 = go2.Max(x2, targetShape.Pos.X+label.PADDING+size)
+				x2 = go2.Max(x2, targetShape.Pos.X+targetShape.Width+label.PADDING+size)
 			}
 		}
 

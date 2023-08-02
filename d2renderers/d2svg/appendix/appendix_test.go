@@ -16,6 +16,7 @@ import (
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
 
+	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
@@ -152,11 +153,17 @@ func run(t *testing.T, tc testCase) {
 		return
 	}
 
+	renderOpts := &d2svg.RenderOpts{
+		ThemeID: &tc.themeID,
+	}
+
+	layoutResolver := func(engine string) (d2graph.LayoutGraph, error) {
+		return d2dagrelayout.DefaultLayout, nil
+	}
 	diagram, _, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
-		Ruler:   ruler,
-		Layout:  d2dagrelayout.DefaultLayout,
-		ThemeID: tc.themeID,
-	})
+		Ruler:          ruler,
+		LayoutResolver: layoutResolver,
+	}, renderOpts)
 	if !tassert.Nil(t, err) {
 		return
 	}
@@ -164,10 +171,7 @@ func run(t *testing.T, tc testCase) {
 	dataPath := filepath.Join("testdata", strings.TrimPrefix(t.Name(), "TestAppendix/"))
 	pathGotSVG := filepath.Join(dataPath, "sketch.got.svg")
 
-	svgBytes, err := d2svg.Render(diagram, &d2svg.RenderOpts{
-		Pad:     d2svg.DEFAULT_PADDING,
-		ThemeID: tc.themeID,
-	})
+	svgBytes, err := d2svg.Render(diagram, renderOpts)
 	assert.Success(t, err)
 	svgBytes = appendix.Append(diagram, ruler, svgBytes)
 

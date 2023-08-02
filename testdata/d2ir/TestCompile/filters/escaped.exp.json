@@ -1,0 +1,560 @@
+{
+  "fields": [
+    {
+      "name": "jacob",
+      "composite": {
+        "fields": [
+          {
+            "name": "shape",
+            "primary": {
+              "value": {
+                "range": "TestCompile/filters/escaped.d2,1:8:17-1:14:23",
+                "value": [
+                  {
+                    "string": "circle",
+                    "raw_string": "circle"
+                  }
+                ]
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/filters/escaped.d2,1:1:10-1:6:15",
+                  "value": [
+                    {
+                      "string": "shape",
+                      "raw_string": "shape"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/escaped.d2,1:1:10-1:6:15",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/escaped.d2,1:1:10-1:6:15",
+                        "value": [
+                          {
+                            "string": "shape",
+                            "raw_string": "shape"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/escaped.d2,1:1:10-1:14:23",
+                    "key": {
+                      "range": "TestCompile/filters/escaped.d2,1:1:10-1:6:15",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/escaped.d2,1:1:10-1:6:15",
+                            "value": [
+                              {
+                                "string": "shape",
+                                "raw_string": "shape"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/escaped.d2,1:8:17-1:14:23",
+                        "value": [
+                          {
+                            "string": "circle",
+                            "raw_string": "circle"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "string": {
+                  "range": "TestCompile/filters/escaped.d2,7:2:63-7:7:68",
+                  "value": [
+                    {
+                      "string": "shape",
+                      "raw_string": "shape"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/escaped.d2,7:2:63-7:7:68",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/escaped.d2,7:2:63-7:7:68",
+                        "value": [
+                          {
+                            "string": "shape",
+                            "raw_string": "shape"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/escaped.d2,7:1:62-7:18:79",
+                    "ampersand": true,
+                    "key": {
+                      "range": "TestCompile/filters/escaped.d2,7:2:63-7:7:68",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/escaped.d2,7:2:63-7:7:68",
+                            "value": [
+                              {
+                                "string": "shape",
+                                "raw_string": "shape"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/escaped.d2,7:9:70-7:18:79",
+                        "value": [
+                          {
+                            "string": "rectangle",
+                            "raw_string": "rectangle"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/filters/escaped.d2,0:0:0-0:5:5",
+            "value": [
+              {
+                "string": "jacob",
+                "raw_string": "jacob"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/filters/escaped.d2,0:0:0-0:5:5",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/filters/escaped.d2,0:0:0-0:5:5",
+                  "value": [
+                    {
+                      "string": "jacob",
+                      "raw_string": "jacob"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/filters/escaped.d2,0:0:0-2:1:25",
+              "key": {
+                "range": "TestCompile/filters/escaped.d2,0:0:0-0:5:5",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/filters/escaped.d2,0:0:0-0:5:5",
+                      "value": [
+                        {
+                          "string": "jacob",
+                          "raw_string": "jacob"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/filters/escaped.d2,0:7:7-2:1:25",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/filters/escaped.d2,1:1:10-1:14:23",
+                        "key": {
+                          "range": "TestCompile/filters/escaped.d2,1:1:10-1:6:15",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/escaped.d2,1:1:10-1:6:15",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/escaped.d2,1:8:17-1:14:23",
+                            "value": [
+                              {
+                                "string": "circle",
+                                "raw_string": "circle"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "jeremy",
+      "composite": {
+        "fields": [
+          {
+            "name": "shape",
+            "primary": {
+              "value": {
+                "range": "TestCompile/filters/escaped.d2,7:9:70-7:18:79",
+                "value": [
+                  {
+                    "string": "rectangle",
+                    "raw_string": "rectangle"
+                  }
+                ]
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/filters/escaped.d2,4:1:37-4:6:42",
+                  "value": [
+                    {
+                      "string": "shape",
+                      "raw_string": "shape"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/escaped.d2,4:1:37-4:6:42",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/escaped.d2,4:1:37-4:6:42",
+                        "value": [
+                          {
+                            "string": "shape",
+                            "raw_string": "shape"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/escaped.d2,4:1:37-4:17:53",
+                    "key": {
+                      "range": "TestCompile/filters/escaped.d2,4:1:37-4:6:42",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/escaped.d2,4:1:37-4:6:42",
+                            "value": [
+                              {
+                                "string": "shape",
+                                "raw_string": "shape"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/escaped.d2,4:8:44-4:17:53",
+                        "value": [
+                          {
+                            "string": "rectangle",
+                            "raw_string": "rectangle"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "string": {
+                  "range": "TestCompile/filters/escaped.d2,7:2:63-7:7:68",
+                  "value": [
+                    {
+                      "string": "shape",
+                      "raw_string": "shape"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/escaped.d2,7:2:63-7:7:68",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/escaped.d2,7:2:63-7:7:68",
+                        "value": [
+                          {
+                            "string": "shape",
+                            "raw_string": "shape"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/escaped.d2,7:1:62-7:18:79",
+                    "ampersand": true,
+                    "key": {
+                      "range": "TestCompile/filters/escaped.d2,7:2:63-7:7:68",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/escaped.d2,7:2:63-7:7:68",
+                            "value": [
+                              {
+                                "string": "shape",
+                                "raw_string": "shape"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/escaped.d2,7:9:70-7:18:79",
+                        "value": [
+                          {
+                            "string": "rectangle",
+                            "raw_string": "rectangle"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "label",
+            "primary": {
+              "value": {
+                "range": "TestCompile/filters/escaped.d2,8:8:88-8:23:103",
+                "value": [
+                  {
+                    "string": "I'm a rectangle",
+                    "raw_string": "I'm a rectangle"
+                  }
+                ]
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/filters/escaped.d2,8:1:81-8:6:86",
+                  "value": [
+                    {
+                      "string": "label",
+                      "raw_string": "label"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/escaped.d2,8:1:81-8:6:86",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/escaped.d2,8:1:81-8:6:86",
+                        "value": [
+                          {
+                            "string": "label",
+                            "raw_string": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/escaped.d2,8:1:81-8:23:103",
+                    "key": {
+                      "range": "TestCompile/filters/escaped.d2,8:1:81-8:6:86",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/escaped.d2,8:1:81-8:6:86",
+                            "value": [
+                              {
+                                "string": "label",
+                                "raw_string": "label"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/escaped.d2,8:8:88-8:23:103",
+                        "value": [
+                          {
+                            "string": "I'm a rectangle",
+                            "raw_string": "I'm a rectangle"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/filters/escaped.d2,3:0:26-3:6:32",
+            "value": [
+              {
+                "string": "jeremy",
+                "raw_string": "jeremy"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/filters/escaped.d2,3:0:26-3:6:32",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/filters/escaped.d2,3:0:26-3:6:32",
+                  "value": [
+                    {
+                      "string": "jeremy",
+                      "raw_string": "jeremy"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/filters/escaped.d2,3:0:26-5:1:55",
+              "key": {
+                "range": "TestCompile/filters/escaped.d2,3:0:26-3:6:32",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/filters/escaped.d2,3:0:26-3:6:32",
+                      "value": [
+                        {
+                          "string": "jeremy",
+                          "raw_string": "jeremy"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/filters/escaped.d2,3:8:34-5:1:55",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/filters/escaped.d2,4:1:37-4:17:53",
+                        "key": {
+                          "range": "TestCompile/filters/escaped.d2,4:1:37-4:6:42",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/escaped.d2,4:1:37-4:6:42",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/escaped.d2,4:8:44-4:17:53",
+                            "value": [
+                              {
+                                "string": "rectangle",
+                                "raw_string": "rectangle"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": null
+}

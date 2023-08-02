@@ -1651,6 +1651,7 @@ var SimpleReservedKeywords = map[string]struct{}{
 	"vertical-gap":   {},
 	"horizontal-gap": {},
 	"class":          {},
+	"vars":           {},
 }
 
 // ReservedKeywordHolders are reserved keywords that are meaningless on its own and must hold composites

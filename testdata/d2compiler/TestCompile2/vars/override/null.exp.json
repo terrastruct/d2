@@ -1,0 +1,11 @@
+{
+  "graph": null,
+  "err": {
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile2/vars/override/null.d2,8:2:64-8:4:66",
+        "errmsg": "d2/testdata/d2compiler/TestCompile2/vars/override/null.d2:9:3: could not resolve variable \"surname\""
+      }
+    ]
+  }
+}

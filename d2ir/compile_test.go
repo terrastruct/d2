@@ -26,6 +26,8 @@ func TestCompile(t *testing.T) {
 	t.Run("scenarios", testCompileScenarios)
 	t.Run("steps", testCompileSteps)
 	t.Run("imports", testCompileImports)
+	t.Run("patterns", testCompilePatterns)
+	t.Run("filters", testCompileFilters)
 }
 
 type testCase struct {
@@ -84,23 +86,31 @@ func assertQuery(t testing.TB, n d2ir.Node, nfields, nedges int, primary interfa
 	m := n.Map()
 	p := n.Primary()
 
+	var na []d2ir.Node
 	if idStr != "" {
 		var err error
-		n, err = m.Query(idStr)
+		na, err = m.QueryAll(idStr)
 		assert.Success(t, err)
 		assert.NotEqual(t, n, nil)
+	} else {
+		na = append(na, n)
+	}
 
-		p = n.Primary()
+	for _, n := range na {
 		m = n.Map()
+		p = n.Primary()
+		assert.Equal(t, nfields, m.FieldCountRecursive())
+		assert.Equal(t, nedges, m.EdgeCountRecursive())
+		if !makeScalar(p).Equal(makeScalar(primary)) {
+			t.Fatalf("expected primary %#v but got %s", primary, p)
+		}
 	}
 
-	assert.Equal(t, nfields, m.FieldCountRecursive())
-	assert.Equal(t, nedges, m.EdgeCountRecursive())
-	if !makeScalar(p).Equal(makeScalar(primary)) {
-		t.Fatalf("expected primary %#v but got %s", primary, p)
+	if len(na) == 0 {
+		return nil
 	}
 
-	return n
+	return na[0]
 }
 
 func makeScalar(v interface{}) *d2ir.Scalar {
