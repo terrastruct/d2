@@ -21,13 +21,13 @@ type compiler struct {
 	importStack []string
 	// importCache enables reuse of files imported multiple times.
 	importCache map[string]*Map
-	utf16       bool
+	utf16Pos    bool
 
 	globStack []bool
 }
 
 type CompileOptions struct {
-	UTF16 bool
+	UTF16Pos bool
 	// Pass nil to disable imports.
 	FS fs.FS
 }
@@ -45,7 +45,7 @@ func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, error) {
 		fs:  opts.FS,
 
 		importCache: make(map[string]*Map),
-		utf16:       opts.UTF16,
+		utf16Pos:    opts.UTF16Pos,
 	}
 	m := &Map{}
 	m.initRoot()

@@ -223,7 +223,7 @@ func run(t *testing.T, tc testCase) {
 	ctx = log.Leveled(ctx, slog.LevelDebug)
 
 	g, config, err := d2compiler.Compile("", strings.NewReader(tc.dsl), &d2compiler.CompileOptions{
-		UTF16: true,
+		UTF16Pos: true,
 	})
 	if err != nil {
 		t.Fatal(err)
