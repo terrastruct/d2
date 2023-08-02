@@ -3,6 +3,8 @@ package d2cli
 import (
 	"bytes"
 	"context"
+	"os"
+	"path/filepath"
 
 	"oss.terrastruct.com/util-go/xdefer"
 
@@ -21,6 +23,14 @@ func fmtCmd(ctx context.Context, ms *xmain.State) (err error) {
 	}
 
 	for _, inputPath := range ms.Opts.Args {
+		if inputPath != "-" {
+			inputPath = ms.AbsPath(inputPath)
+			d, err := os.Stat(inputPath)
+			if err == nil && d.IsDir() {
+				inputPath = filepath.Join(inputPath, "index.d2")
+			}
+		}
+
 		input, err := ms.ReadPath(inputPath)
 		if err != nil {
 			return err
