@@ -1,7 +1,6 @@
 package d2ir
 
 import (
-	"bufio"
 	"io/fs"
 	"os"
 	"path"
@@ -99,7 +98,7 @@ func (c *compiler) __import(imp *d2ast.Import) (*Map, bool) {
 	}
 	defer f.Close()
 
-	ast, err := d2parser.Parse(impPath, bufio.NewReader(f), &d2parser.ParseOptions{
+	ast, err := d2parser.Parse(impPath, f, &d2parser.ParseOptions{
 		UTF16:      c.utf16,
 		ParseError: c.err,
 	})

@@ -1,0 +1,38 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/errors/utf16-input.d2,0:0:0-1:1:22",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/errors/utf16-input.d2,1:0:21-1:1:22",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/errors/utf16-input.d2,1:0:21-1:1:22",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/errors/utf16-input.d2,1:0:21-1:1:22",
+                  "value": [
+                    {
+                      "string": "\u0000",
+                      "raw_string": "\u0000"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {}
+        }
+      }
+    ]
+  },
+  "err": {
+    "errs": [
+      {
+        "range": "d2/testdata/d2parser/TestParse/errors/utf16-input.d2,0:12:12-0:20:20",
+        "errmsg": "d2/testdata/d2parser/TestParse/errors/utf16-input.d2:1:13: invalid text beginning unquoted key"
+      }
+    ]
+  }
+}

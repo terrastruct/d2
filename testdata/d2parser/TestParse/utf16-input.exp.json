@@ -1,0 +1,54 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/utf16-input.d2,0:0:0-1:0:8",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/utf16-input.d2,0:0:0-0:7:7",
+          "edges": [
+            {
+              "range": "d2/testdata/d2parser/TestParse/utf16-input.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "d2/testdata/d2parser/TestParse/utf16-input.d2,0:0:0-0:1:1",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/utf16-input.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "d2/testdata/d2parser/TestParse/utf16-input.d2,0:5:5-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/utf16-input.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            }
+          ],
+          "primary": {},
+          "value": {}
+        }
+      }
+    ]
+  },
+  "err": null
+}
