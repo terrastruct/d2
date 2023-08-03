@@ -531,6 +531,19 @@ i used to read
 				assert.Equal(t, "x -> y\n", string(got))
 			},
 		},
+		{
+			name: "fmt-multiple-files",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "foo.d2", `a ---> b`)
+				writeFile(t, dir, "bar.d2", `x ---> y`)
+				err := runTestMainPersist(t, ctx, dir, env, "fmt", "foo.d2", "bar.d2")
+				assert.Success(t, err)
+				gotFoo := readFile(t, dir, "foo.d2")
+				gotBar := readFile(t, dir, "bar.d2")
+				assert.Equal(t, "a -> b\n", string(gotFoo))
+				assert.Equal(t, "x -> y\n", string(gotBar))
+			},
+		},
 	}
 
 	ctx := context.Background()

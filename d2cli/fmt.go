@@ -43,7 +43,9 @@ func fmtCmd(ctx context.Context, ms *xmain.State) (err error) {
 
 		output := []byte(d2format.Format(m))
 		if !bytes.Equal(output, input) {
-			return ms.WritePath(inputPath, output)
+			if err := ms.WritePath(inputPath, output); err != nil {
+				return err
+			}
 		}
 	}
 	return nil
