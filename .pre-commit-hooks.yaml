@@ -1,0 +1,6 @@
+- id: d2-fmt
+  name: d2 fmt
+  description: Format d2 files
+  entry: d2 fmt
+  language: golang
+  files: \.d2$
