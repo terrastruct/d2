@@ -38,7 +38,7 @@ func jsGetObjOrder(this js.Value, args []js.Value) interface{} {
 	dsl := args[0].String()
 
 	g, _, err := d2compiler.Compile("", strings.NewReader(dsl), &d2compiler.CompileOptions{
-		UTF16: true,
+		UTF16Pos: true,
 	})
 	if err != nil {
 		ret := jsObjOrder{Error: err.Error()}
@@ -79,7 +79,7 @@ func jsGetRefRanges(this js.Value, args []js.Value) interface{} {
 	}
 
 	g, _, err := d2compiler.Compile("", strings.NewReader(dsl), &d2compiler.CompileOptions{
-		UTF16: true,
+		UTF16Pos: true,
 	})
 	var pe *d2parser.ParseError
 	if err != nil {
@@ -159,7 +159,7 @@ type detectFS struct {
 	importUsed bool
 }
 
-func (detectFS detectFS) Open(name string) (fs.File, error) {
+func (detectFS *detectFS) Open(name string) (fs.File, error) {
 	detectFS.importUsed = true
 	return &emptyFile{}, nil
 }
@@ -171,8 +171,8 @@ func jsParse(this js.Value, args []js.Value) interface{} {
 	detectFS := detectFS{}
 
 	g, _, err := d2compiler.Compile("", strings.NewReader(dsl), &d2compiler.CompileOptions{
-		UTF16: true,
-		FS:    detectFS,
+		UTF16Pos: true,
+		FS:       &detectFS,
 	})
 	// If an import was used, client side D2 cannot reliably compile
 	// Defer to backend compilation
@@ -228,7 +228,7 @@ func jsCompile(this js.Value, args []js.Value) interface{} {
 	script := args[0].String()
 
 	g, _, err := d2compiler.Compile("", strings.NewReader(script), &d2compiler.CompileOptions{
-		UTF16: true,
+		UTF16Pos: true,
 	})
 	var pe *d2parser.ParseError
 	if err != nil {
