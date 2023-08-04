@@ -111,7 +111,7 @@ func serde(t *testing.T, tc testCase, ruler *textmeasure.Ruler) {
 	ctx := context.Background()
 	ctx = log.WithTB(ctx, t, nil)
 	g, _, err := d2compiler.Compile("", strings.NewReader(tc.script), &d2compiler.CompileOptions{
-		UTF16: false,
+		UTF16Pos: false,
 	})
 	trequire.Nil(t, err)
 	if len(g.Objects) > 0 {

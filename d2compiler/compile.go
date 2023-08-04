@@ -21,27 +21,27 @@ import (
 )
 
 type CompileOptions struct {
-	UTF16 bool
+	UTF16Pos bool
 	// FS is the file system used for resolving imports in the d2 text.
 	// It should correspond to the root path.
 	FS fs.FS
 }
 
-func Compile(p string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph, *d2target.Config, error) {
+func Compile(p string, r io.Reader, opts *CompileOptions) (*d2graph.Graph, *d2target.Config, error) {
 	if opts == nil {
 		opts = &CompileOptions{}
 	}
 
 	ast, err := d2parser.Parse(p, r, &d2parser.ParseOptions{
-		UTF16: opts.UTF16,
+		UTF16Pos: opts.UTF16Pos,
 	})
 	if err != nil {
 		return nil, nil, err
 	}
 
 	ir, err := d2ir.Compile(ast, &d2ir.CompileOptions{
-		UTF16: opts.UTF16,
-		FS:    opts.FS,
+		UTF16Pos: opts.UTF16Pos,
+		FS:       opts.FS,
 	})
 	if err != nil {
 		return nil, nil, err

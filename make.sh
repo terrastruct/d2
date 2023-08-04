@@ -14,7 +14,7 @@ if ! go version | grep -qF '1.20'; then
   exit 1
 fi
 
-if [ "${DAILY-}" ]; then
+if [ "${CI:-}" ]; then
   export FORCE_COLOR=1
   npx playwright@1.31.1 install --with-deps chromium
 fi

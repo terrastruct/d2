@@ -9,6 +9,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"strings"
+	"sync"
 
 	"oss.terrastruct.com/d2/lib/font"
 	fontlib "oss.terrastruct.com/d2/lib/font"
@@ -41,6 +42,8 @@ func (f Font) GetEncodedSubset(corpus string) string {
 		}
 	}
 
+	FontFamiliesMu.Lock()
+	defer FontFamiliesMu.Unlock()
 	fontBuf := make([]byte, len(FontFaces[f]))
 	copy(fontBuf, FontFaces[f])
 	fontBuf = font.UTF8CutFont(fontBuf, uniqueChars)
@@ -95,6 +98,8 @@ var FontFamilies = []FontFamily{
 	SourceCodePro,
 	HandDrawn,
 }
+
+var FontFamiliesMu sync.Mutex
 
 //go:embed encoded/SourceSansPro-Regular.txt
 var sourceSansProRegularBase64 string
@@ -309,6 +314,8 @@ func AddFontStyle(font Font, style FontStyle, ttf []byte) error {
 }
 
 func AddFontFamily(name string, regularTTF, italicTTF, boldTTF, semiboldTTF []byte) (*FontFamily, error) {
+	FontFamiliesMu.Lock()
+	defer FontFamiliesMu.Unlock()
 	customFontFamily := FontFamily(name)
 
 	regularFont := Font{
