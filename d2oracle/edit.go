@@ -65,7 +65,7 @@ func Create(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 	if err != nil {
 		return nil, "", err
 	}
-	g, err = recompile(g.AST)
+	g, err = recompile(g)
 	if err != nil {
 		return nil, "", err
 	}
@@ -112,7 +112,7 @@ func Set(g *d2graph.Graph, boardPath []string, key string, tag, value *string) (
 		}
 	}
 
-	return recompile(g.AST)
+	return recompile(g)
 }
 
 func ReconnectEdge(g *d2graph.Graph, boardPath []string, edgeKey string, srcKey, dstKey *string) (_ *d2graph.Graph, err error) {
@@ -271,7 +271,7 @@ func ReconnectEdge(g *d2graph.Graph, boardPath []string, edgeKey string, srcKey,
 		}
 	}
 
-	return recompile(g.AST)
+	return recompile(g)
 }
 
 func pathFromScopeKey(g *d2graph.Graph, key *d2ast.Key, scopeak []string) ([]*d2ast.StringBox, error) {
@@ -303,13 +303,15 @@ func pathFromScopeObj(g *d2graph.Graph, key *d2ast.Key, fromScope *d2graph.Objec
 	return pathFromScopeKey(g, key, scopeak)
 }
 
-func recompile(ast *d2ast.Map) (*d2graph.Graph, error) {
-	s := d2format.Format(ast)
-	g, _, err := d2compiler.Compile(ast.Range.Path, strings.NewReader(s), nil)
+func recompile(g *d2graph.Graph) (*d2graph.Graph, error) {
+	s := d2format.Format(g.AST)
+	g2, _, err := d2compiler.Compile(g.AST.Range.Path, strings.NewReader(s), &d2compiler.CompileOptions{
+		FS: g.FS,
+	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to recompile:\n%s\n%w", s, err)
 	}
-	return g, nil
+	return g2, nil
 }
 
 // TODO merge flat styles
@@ -451,7 +453,9 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			return nil
 		}
 	}
-	ir, err := d2ir.Compile(g.AST, nil)
+	ir, err := d2ir.Compile(g.AST, &d2ir.CompileOptions{
+		FS: g.FS,
+	})
 	if err != nil {
 		return err
 	}
@@ -897,12 +901,12 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 			if !replaced {
 				return nil, fmt.Errorf("board %v AST not found", boardPath)
 			}
-			return recompile(g.AST)
+			return recompile(g)
 		}
-		return recompile(boardG.AST)
+		return recompile(boardG)
 	}
 
-	prevG, _ := recompile(boardG.AST)
+	prevG, _ := recompile(boardG)
 
 	boardG, err = renameConflictsToParent(boardG, mk.Key)
 	if err != nil {
@@ -939,10 +943,10 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 		if !replaced {
 			return nil, fmt.Errorf("board %v AST not found", boardPath)
 		}
-		return recompile(g.AST)
+		return recompile(g)
 	}
 
-	return recompile(boardG.AST)
+	return recompile(boardG)
 }
 
 func bumpChildrenUnderscores(m *d2ast.Map) {
@@ -1182,7 +1186,7 @@ func deleteReserved(g *d2graph.Graph, mk *d2ast.Key) (*d2graph.Graph, error) {
 		if err := deleteEdgeField(g, e, targetKey.Path[len(targetKey.Path)-1].Unbox().ScalarString()); err != nil {
 			return nil, err
 		}
-		return recompile(g.AST)
+		return recompile(g)
 	}
 
 	isStyleKey := false
@@ -1221,7 +1225,7 @@ func deleteReserved(g *d2graph.Graph, mk *d2ast.Key) (*d2graph.Graph, error) {
 		}
 	}
 
-	return recompile(g.AST)
+	return recompile(g)
 }
 
 func deleteMapField(m *d2ast.Map, field string) {
@@ -1285,7 +1289,7 @@ func deleteObjField(g *d2graph.Graph, obj *d2graph.Object, field string) error {
 			copy(tmpNodes, ref.Scope.Nodes)
 			// If I delete this, will the object still exist?
 			deleteFromMap(ref.Scope, ref.MapKey)
-			g2, err := recompile(g.AST)
+			g2, err := recompile(g)
 			if err != nil {
 				return err
 			}
@@ -1605,10 +1609,10 @@ func move(g *d2graph.Graph, boardPath []string, key, newKey string, includeDesce
 			ref.MapKey.Edges[ref.MapKeyEdgeIndex].SrcArrow = mk2.Edges[0].SrcArrow
 			ref.MapKey.Edges[ref.MapKeyEdgeIndex].DstArrow = mk2.Edges[0].DstArrow
 		}
-		return recompile(g.AST)
+		return recompile(g)
 	}
 
-	prevG, _ := recompile(boardG.AST)
+	prevG, _ := recompile(boardG)
 
 	ak := d2graph.Key(mk.Key)
 	ak2 := d2graph.Key(mk2.Key)
@@ -2026,10 +2030,10 @@ func move(g *d2graph.Graph, boardPath []string, key, newKey string, includeDesce
 		if !replaced {
 			return nil, fmt.Errorf("board %v AST not found", boardPath)
 		}
-		return recompile(g.AST)
+		return recompile(g)
 	}
 
-	return recompile(boardG.AST)
+	return recompile(boardG)
 }
 
 // filterReserved takes a Value and splits it into 2
@@ -2141,7 +2145,7 @@ func updateNear(prevG, g *d2graph.Graph, from, to *string, includeDescendants bo
 					if err != nil {
 						return err
 					}
-					tmpG, _ := recompile(prevG.AST)
+					tmpG, _ := recompile(prevG)
 					appendMapKey(tmpG.AST, valueMK)
 					if to == nil {
 						deltas, err := DeleteIDDeltas(tmpG, nil, *from)
@@ -2186,7 +2190,7 @@ func updateNear(prevG, g *d2graph.Graph, from, to *string, includeDescendants bo
 					if err != nil {
 						return err
 					}
-					tmpG, _ := recompile(prevG.AST)
+					tmpG, _ := recompile(prevG)
 					appendMapKey(tmpG.AST, valueMK)
 					if to == nil {
 						deltas, err := DeleteIDDeltas(tmpG, nil, *from)

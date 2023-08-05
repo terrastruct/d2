@@ -51,6 +51,7 @@ func Compile(p string, r io.Reader, opts *CompileOptions) (*d2graph.Graph, *d2ta
 	if err != nil {
 		return nil, nil, err
 	}
+	g.FS = opts.FS
 	g.SortObjectsByAST()
 	g.SortEdgesByAST()
 	return g, compileConfig(ir), nil

@@ -2,6 +2,9 @@ package d2oracle_test
 
 import (
 	"fmt"
+	"io"
+	"io/fs"
+	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -732,6 +735,7 @@ func TestSet(t *testing.T) {
 		boardPath []string
 		name      string
 		text      string
+		fsTexts   map[string]string
 		key       string
 		tag       *string
 		value     *string
@@ -1986,6 +1990,29 @@ scenarios: {
 }
 `,
 		},
+		{
+			name: "import/1",
+
+			text: `x: {
+  ...@meow.x
+  y
+}
+`,
+			fsTexts: map[string]string{
+				"meow": `x: {
+  style.fill: blue
+}
+`,
+			},
+			key:   `x.style.stroke`,
+			value: go2.Pointer(`red`),
+			exp: `x: {
+  ...@meow.x
+  y
+  style.stroke: red
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -1994,7 +2021,8 @@ scenarios: {
 			t.Parallel()
 
 			et := editTest{
-				text: tc.text,
+				text:    tc.text,
+				fsTexts: tc.fsTexts,
 				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
 					return d2oracle.Set(g, tc.boardPath, tc.key, tc.tag, tc.value)
 				},
@@ -2412,6 +2440,7 @@ func TestRename(t *testing.T) {
 		boardPath []string
 
 		text    string
+		fsTexts map[string]string
 		key     string
 		newName string
 
@@ -2922,7 +2951,8 @@ scenarios: {
 			t.Parallel()
 
 			et := editTest{
-				text: tc.text,
+				text:    tc.text,
+				fsTexts: tc.fsTexts,
 				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
 					objectsBefore := len(g.Objects)
 					var err error
@@ -2956,6 +2986,7 @@ func TestMove(t *testing.T) {
 		boardPath []string
 
 		text               string
+		fsTexts            map[string]string
 		key                string
 		newKey             string
 		includeDescendants bool
@@ -5190,7 +5221,8 @@ scenarios: {
 			t.Parallel()
 
 			et := editTest{
-				text: tc.text,
+				text:    tc.text,
+				fsTexts: tc.fsTexts,
 				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
 					objectsBefore := len(g.Objects)
 					var err error
@@ -5221,8 +5253,9 @@ func TestDelete(t *testing.T) {
 		name      string
 		boardPath []string
 
-		text string
-		key  string
+		text    string
+		fsTexts map[string]string
+		key     string
 
 		expErr     string
 		exp        string
@@ -6977,7 +7010,8 @@ scenarios: {
 			t.Parallel()
 
 			et := editTest{
-				text: tc.text,
+				text:    tc.text,
+				fsTexts: tc.fsTexts,
 				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
 					return d2oracle.Delete(g, tc.boardPath, tc.key)
 				},
@@ -6993,6 +7027,7 @@ scenarios: {
 
 type editTest struct {
 	text     string
+	fsTexts  map[string]string
 	testFunc func(*d2graph.Graph) (*d2graph.Graph, error)
 
 	exp        string
@@ -7002,7 +7037,13 @@ type editTest struct {
 
 func (tc editTest) run(t *testing.T) {
 	d2Path := fmt.Sprintf("d2/testdata/d2oracle/%v.d2", t.Name())
-	g, _, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), nil)
+	tfs := testFS(make(map[string]*testF))
+	for name, text := range tc.fsTexts {
+		tfs[name] = &testF{content: text}
+	}
+	g, _, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), &d2compiler.CompileOptions{
+		FS: tfs,
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -8359,4 +8400,39 @@ scenarios: {
 			}
 		})
 	}
+}
+
+type testF struct {
+	content   string
+	readIndex int
+}
+
+func (tf *testF) Close() error {
+	return nil
+}
+
+func (tf *testF) Read(p []byte) (int, error) {
+	data := []byte(tf.content)
+	if tf.readIndex >= len(data) {
+		tf.readIndex = 0
+		return 0, io.EOF
+	}
+	readBytes := copy(p, data[tf.readIndex:])
+	tf.readIndex += readBytes
+	return readBytes, nil
+}
+
+func (tf *testF) Stat() (os.FileInfo, error) {
+	return nil, nil
+}
+
+type testFS map[string]*testF
+
+func (tfs testFS) Open(name string) (fs.File, error) {
+	for k := range tfs {
+		if strings.HasSuffix(name[:len(name)-3], k) {
+			return tfs[k], nil
+		}
+	}
+	return nil, fs.ErrNotExist
 }
