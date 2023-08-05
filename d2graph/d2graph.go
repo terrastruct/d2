@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io/fs"
 	"math"
 	"net/url"
 	"sort"
@@ -36,6 +37,7 @@ const DEFAULT_SHAPE_SIZE = 100.
 const MIN_SHAPE_SIZE = 5
 
 type Graph struct {
+	FS     fs.FS  `json:"-"`
 	Parent *Graph `json:"-"`
 	Name   string `json:"name"`
 	// IsFolderOnly indicates a board or scenario itself makes no modifications from its
