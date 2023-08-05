@@ -2013,6 +2013,53 @@ scenarios: {
 }
 `,
 		},
+		{
+			name: "import/2",
+
+			text: `x: {
+  ...@meow.x
+  y
+}
+`,
+			fsTexts: map[string]string{
+				"meow": `x: {
+  style.fill: blue
+}
+`,
+			},
+			key:   `x.style.fill`,
+			value: go2.Pointer(`red`),
+			exp: `x: {
+  ...@meow.x
+  y
+  style.fill: red
+}
+`,
+		},
+		{
+			name: "import/3",
+
+			text: `x: {
+  ...@meow.x
+  y
+	style.fill: red
+}
+`,
+			fsTexts: map[string]string{
+				"meow": `x: {
+  style.fill: blue
+}
+`,
+			},
+			key:   `x.style.fill`,
+			value: go2.Pointer(`yellow`),
+			exp: `x: {
+  ...@meow.x
+  y
+  style.fill: yellow
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {

@@ -15,17 +15,29 @@ func GetBoardGraph(g *d2graph.Graph, boardPath []string) *d2graph.Graph {
 	}
 	for i, b := range g.Layers {
 		if b.Name == boardPath[0] {
-			return GetBoardGraph(g.Layers[i], boardPath[1:])
+			g2 := GetBoardGraph(g.Layers[i], boardPath[1:])
+			if g2 != nil {
+				g2.FS = g.FS
+			}
+			return g2
 		}
 	}
 	for i, b := range g.Scenarios {
 		if b.Name == boardPath[0] {
-			return GetBoardGraph(g.Scenarios[i], boardPath[1:])
+			g2 := GetBoardGraph(g.Scenarios[i], boardPath[1:])
+			if g2 != nil {
+				g2.FS = g.FS
+			}
+			return g2
 		}
 	}
 	for i, b := range g.Steps {
 		if b.Name == boardPath[0] {
-			return GetBoardGraph(g.Steps[i], boardPath[1:])
+			g2 := GetBoardGraph(g.Steps[i], boardPath[1:])
+			if g2 != nil {
+				g2.FS = g.FS
+			}
+			return g2
 		}
 	}
 	return nil

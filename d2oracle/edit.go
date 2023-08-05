@@ -559,6 +559,12 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 
 	if reserved {
 		inlined := func(s *d2graph.Scalar) bool {
+			if s != nil && s.MapKey != nil {
+				// The value was set outside of what's writeable
+				if s.MapKey.Range.Path != baseAST.Range.Path {
+					return false
+				}
+			}
 			return s != nil && s.MapKey != nil && !ir.InClass(s.MapKey)
 		}
 		reservedIndex := toSkip - 1
