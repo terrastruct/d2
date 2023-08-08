@@ -1374,6 +1374,12 @@ sugar -> c
 c: mixed together
 
 c -> solution: we get
+
+Linear program: {
+  formula: |latex
+    \\min_{ \\mathclap{\\substack{ x \\in \\mathbb{R}^n \\ x \\geq 0 \\ Ax \\leq b }}} c^T x
+  |
+}
 `,
 		},
 		{
