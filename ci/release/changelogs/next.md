@@ -5,6 +5,7 @@
 #### Improvements 🧹
 
 - Latex now includes Mathjax's ASM extension for more powerful Latex functionality [#1544](https://github.com/terrastruct/d2/pull/1544)
+- `font-color` works on Markdown [#1546](https://github.com/terrastruct/d2/pull/1546)
 
 #### Bugfixes ⛑️
 
