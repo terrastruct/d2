@@ -1312,9 +1312,20 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			mdEl := d2themes.NewThemableElement("div")
 			mdEl.ClassName = "md"
 			mdEl.Content = render
+
+			// We have to set with styles since within foreignObject, we're in html
+			// land and not SVG attributes
+			var styles []string
 			if targetShape.FontSize != textmeasure.MarkdownFontSize {
-				mdEl.Style = fmt.Sprintf("font-size:%vpx", targetShape.FontSize)
+				styles = append(styles, fmt.Sprintf("font-size:%vpx", targetShape.FontSize))
 			}
+
+			if !color.IsThemeColor(targetShape.Color) {
+				styles = append(styles, fmt.Sprintf(`color:%s`, targetShape.Color))
+			}
+
+			mdEl.Style = strings.Join(styles, ";")
+
 			fmt.Fprint(writer, mdEl.Render())
 			fmt.Fprint(writer, `</foreignObject></g>`)
 		} else {
