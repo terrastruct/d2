@@ -1349,6 +1349,11 @@ beta: {
 alpha -> beta: gamma {
 	style.font-color: green
 }
+c: |md
+  colored
+| {
+  style.font-color: blue
+}
 `,
 		},
 		{
