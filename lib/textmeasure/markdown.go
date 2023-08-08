@@ -232,7 +232,7 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 
 	switch n.Type {
 	case html.TextNode:
-		if strings.TrimSpace(n.Data) == "" {
+		if strings.Trim(n.Data, "\n\t\b") == "" {
 			return blockAttrs{}
 		}
 		str := n.Data

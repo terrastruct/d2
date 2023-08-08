@@ -1999,6 +1999,15 @@ i am bottom right: { shape: text; near: bottom-right }
 `,
 		},
 		{
+			name: "md_mixed",
+			script: `example: {
+  explanation: |md
+    *one* __two__ three!
+  |
+}
+`,
+		},
+		{
 			name: "constant_near_title",
 			script: `title: |md
   # A winning strategy
