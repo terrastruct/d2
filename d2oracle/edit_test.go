@@ -7014,10 +7014,9 @@ scenarios: {
 
 scenarios: {
   x: {
-    a: null
-
     b
     c
+    a: null
   }
 }
 `,
@@ -7041,10 +7040,9 @@ scenarios: {
 
 scenarios: {
   x: {
-    (a -> b)[0]: null
-
     b
     c
+    (a -> b)[0]: null
   }
 }
 `,

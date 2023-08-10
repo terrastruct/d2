@@ -807,11 +807,6 @@ func appendMapKey(m *d2ast.Map, mk *d2ast.Key) {
 	}
 }
 
-func prependMapKey(m *d2ast.Map, mk *d2ast.Key) {
-	appendMapKey(m, mk)
-	m.Nodes = append([]d2ast.MapNodeBox{m.Nodes[len(m.Nodes)-1]}, m.Nodes[:len(m.Nodes)-1]...)
-}
-
 func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph, err error) {
 	defer xdefer.Errorf(&err, "failed to delete %#v", key)
 
@@ -900,7 +895,8 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 				}
 			}
 		} else {
-			prependMapKey(baseAST, mk)
+			// NOTE: it only needs to be after the last ref, but perhaps simplest and cleanest to append all nulls at the end
+			appendMapKey(baseAST, mk)
 		}
 		if len(boardPath) > 0 {
 			replaced := ReplaceBoardNode(g.AST, baseAST, boardPath)
@@ -941,7 +937,7 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 			return nil, err
 		}
 	} else {
-		prependMapKey(baseAST, mk)
+		appendMapKey(baseAST, mk)
 	}
 
 	if len(boardPath) > 0 {
