@@ -180,10 +180,11 @@
                                                     "primary": {},
                                                     "value": {
                                                       "unquoted_string": {
-                                                        "range": ",0:0:0-0:0:0",
+                                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:20:69-6:32:81",
                                                         "value": [
                                                           {
-                                                            "string": "root.layers.x"
+                                                            "string": "_._.layers.x",
+                                                            "raw_string": "_._.layers.x"
                                                           }
                                                         ]
                                                       }
@@ -223,10 +224,11 @@
                                                     "primary": {},
                                                     "value": {
                                                       "unquoted_string": {
-                                                        "range": ",0:0:0-0:0:0",
+                                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:18:100-7:19:101",
                                                         "value": [
                                                           {
-                                                            "string": "root.layers.x"
+                                                            "string": "_",
+                                                            "raw_string": "_"
                                                           }
                                                         ]
                                                       }
