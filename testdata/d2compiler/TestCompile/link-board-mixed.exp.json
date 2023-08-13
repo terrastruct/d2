@@ -71,10 +71,11 @@
             "primary": {},
             "value": {
               "unquoted_string": {
-                "range": ",0:0:0-0:0:0",
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:15:46-1:25:56",
                 "value": [
                   {
-                    "string": "root.layers.cat"
+                    "string": "layers.cat",
+                    "raw_string": "layers.cat"
                   }
                 ]
               }

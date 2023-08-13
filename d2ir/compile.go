@@ -580,13 +580,13 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 			}
 		}
 	} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
-		// If the link is a board, we need to transform it into an absolute path.
-		if f.Name == "link" {
-			c.compileLink(refctx)
-		}
 		f.Primary_ = &Scalar{
 			parent: f,
 			Value:  refctx.Key.Value.ScalarBox().Unbox(),
+		}
+		// If the link is a board, we need to transform it into an absolute path.
+		if f.Name == "link" {
+			c.compileLink(f, refctx)
 		}
 	}
 }
@@ -624,7 +624,7 @@ func (c *compiler) updateLinks(m *Map) {
 	}
 }
 
-func (c *compiler) compileLink(refctx *RefContext) {
+func (c *compiler) compileLink(f *Field, refctx *RefContext) {
 	val := refctx.Key.Value.ScalarBox().Unbox().ScalarString()
 	link, err := d2parser.ParseKey(val)
 	if err != nil {
@@ -683,7 +683,7 @@ func (c *compiler) compileLink(refctx *RefContext) {
 	// Create the absolute path by appending scope path with value specified
 	scopeIDA = append(scopeIDA, linkIDA...)
 	kp := d2ast.MakeKeyPath(scopeIDA)
-	refctx.Key.Value = d2ast.MakeValueBox(d2ast.FlatUnquotedString(d2format.Format(kp)))
+	f.Primary_.Value = d2ast.FlatUnquotedString(d2format.Format(kp))
 }
 
 func (c *compiler) compileEdges(refctx *RefContext) {
