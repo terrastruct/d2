@@ -359,6 +359,20 @@ func (c *compiler) overlay(base *Map, f *Field) {
 	f.Composite = base
 }
 
+func (g *globContext) prefixed(dst *Map) *globContext {
+	g2 := *g
+	g2.refctx = g.refctx.Copy()
+	prefix := d2ast.MakeKeyPath(RelIDA(g2.refctx.ScopeMap, dst))
+	g2.refctx.Key = g2.refctx.Key.Copy()
+	if g2.refctx.Key.Key != nil {
+		prefix.Path = append(prefix.Path, g2.refctx.Key.Key.Path...)
+	}
+	if len(prefix.Path) > 0 {
+		g2.refctx.Key.Key = prefix
+	}
+	return &g2
+}
+
 func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 	var globs []*globContext
 	if len(c.globContextStack) > 0 {
@@ -366,36 +380,13 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 		if NodeBoardKind(dst) == BoardLayer {
 			for _, g := range previousGlobs {
 				if g.refctx.Key.HasTripleGlob() {
-					// Same as below but reset applied too.
-					g2 := *g
-					g2.refctx = g.refctx.Copy()
-					g2.appliedFields = make(map[string]struct{})
-					g2.appliedEdges = make(map[string]struct{})
-					prefix := d2ast.MakeKeyPath(RelIDA(g2.refctx.ScopeMap, dst))
-					g2.refctx.Key = g2.refctx.Key.Copy()
-					if g2.refctx.Key.Key != nil {
-						prefix.Path = append(prefix.Path, g2.refctx.Key.Key.Path...)
-					}
-					if len(prefix.Path) > 0 {
-						g2.refctx.Key.Key = prefix
-					}
-					globs = append(globs, &g2)
+					globs = append(globs, g.prefixed(dst))
 				}
 			}
 		} else if NodeBoardKind(dst) != "" {
 			// Make all globs relative to the scenario or step.
 			for _, g := range previousGlobs {
-				g2 := *g
-				g2.refctx = g.refctx.Copy()
-				prefix := d2ast.MakeKeyPath(RelIDA(g2.refctx.ScopeMap, dst))
-				g2.refctx.Key = g2.refctx.Key.Copy()
-				if g2.refctx.Key.Key != nil {
-					prefix.Path = append(prefix.Path, g2.refctx.Key.Key.Path...)
-				}
-				if len(prefix.Path) > 0 {
-					g2.refctx.Key.Key = prefix
-				}
-				globs = append(globs, &g2)
+				globs = append(globs, g.prefixed(dst))
 			}
 		} else {
 			globs = append(globs, previousGlobs...)
@@ -492,7 +483,7 @@ func (c *compiler) ensureGlobContext(refctx *RefContext) *globContext {
 
 func (c *compiler) compileKey(refctx *RefContext) {
 	if refctx.Key.HasGlob() {
-		// These three printlns are for debugging infinite loops.
+		// These printlns are for debugging infinite loops.
 		// println("og", refctx.Edge, refctx.Key, refctx.Scope, refctx.ScopeMap, refctx.ScopeAST)
 		for _, refctx2 := range c.globRefContextStack {
 			// println("st", refctx2.Edge, refctx2.Key, refctx2.Scope, refctx2.ScopeMap, refctx2.ScopeAST)
@@ -508,10 +499,18 @@ func (c *compiler) compileKey(refctx *RefContext) {
 		}()
 		c.ensureGlobContext(refctx)
 	}
+	oldFields := refctx.ScopeMap.FieldCountRecursive()
+	oldEdges := refctx.ScopeMap.EdgeCountRecursive()
 	if len(refctx.Key.Edges) == 0 {
 		c.compileField(refctx.ScopeMap, refctx.Key.Key, refctx)
 	} else {
 		c.compileEdges(refctx)
+	}
+	if oldFields != refctx.ScopeMap.FieldCountRecursive() || oldEdges != refctx.ScopeMap.EdgeCountRecursive() {
+		for _, gctx2 := range c.globContexts() {
+			// println(d2format.Format(gctx2.refctx.Key), d2format.Format(refctx.Key))
+			c.compileKey(gctx2.refctx)
+		}
 	}
 }
 

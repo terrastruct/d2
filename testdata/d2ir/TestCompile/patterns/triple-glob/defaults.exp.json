@@ -638,6 +638,67 @@
                                 }
                               }
                             }
+                          },
+                          {
+                            "string": {
+                              "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",
+                              "value": [
+                                {
+                                  "string": "shape",
+                                  "raw_string": "shape"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",
+                                    "value": [
+                                      {
+                                        "string": "shape",
+                                        "raw_string": "shape"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:12:19",
+                                "key": {
+                                  "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",
+                                        "value": [
+                                          {
+                                            "string": "shape",
+                                            "raw_string": "shape"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/triple-glob/defaults.d2,1:8:15-1:12:19",
+                                    "value": [
+                                      {
+                                        "string": "page",
+                                        "raw_string": "page"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
                           }
                         ]
                       }
@@ -716,6 +777,67 @@
                           }
                         },
                         "references": [
+                          {
+                            "string": {
+                              "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",
+                              "value": [
+                                {
+                                  "string": "shape",
+                                  "raw_string": "shape"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",
+                                    "value": [
+                                      {
+                                        "string": "shape",
+                                        "raw_string": "shape"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:12:19",
+                                "key": {
+                                  "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",
+                                        "value": [
+                                          {
+                                            "string": "shape",
+                                            "raw_string": "shape"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/triple-glob/defaults.d2,1:8:15-1:12:19",
+                                    "value": [
+                                      {
+                                        "string": "page",
+                                        "raw_string": "page"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          },
                           {
                             "string": {
                               "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",
@@ -914,6 +1036,67 @@
                                 }
                               }
                             }
+                          },
+                          {
+                            "string": {
+                              "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",
+                              "value": [
+                                {
+                                  "string": "shape",
+                                  "raw_string": "shape"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",
+                                    "value": [
+                                      {
+                                        "string": "shape",
+                                        "raw_string": "shape"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:12:19",
+                                "key": {
+                                  "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",
+                                        "value": [
+                                          {
+                                            "string": "shape",
+                                            "raw_string": "shape"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/triple-glob/defaults.d2,1:8:15-1:12:19",
+                                    "value": [
+                                      {
+                                        "string": "page",
+                                        "raw_string": "page"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
                           }
                         ]
                       }
@@ -992,6 +1175,67 @@
                           }
                         },
                         "references": [
+                          {
+                            "string": {
+                              "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",
+                              "value": [
+                                {
+                                  "string": "shape",
+                                  "raw_string": "shape"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",
+                                    "value": [
+                                      {
+                                        "string": "shape",
+                                        "raw_string": "shape"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:12:19",
+                                "key": {
+                                  "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",
+                                        "value": [
+                                          {
+                                            "string": "shape",
+                                            "raw_string": "shape"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/triple-glob/defaults.d2,1:8:15-1:12:19",
+                                    "value": [
+                                      {
+                                        "string": "page",
+                                        "raw_string": "page"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          },
                           {
                             "string": {
                               "range": "TestCompile/patterns/triple-glob/defaults.d2,1:1:8-1:6:13",

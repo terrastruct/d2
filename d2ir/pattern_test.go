@@ -482,6 +482,39 @@ c
 				assertQuery(t, m, 6, 0, nil, "")
 			},
 		},
+		{
+			name: "override/1",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+**.style.fill: yellow
+**.style.fill: red
+
+a
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 3, 0, nil, "")
+				assertQuery(t, m, 0, 0, "red", "a.style.fill")
+			},
+		},
+		{
+			name: "override/2",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+***.style.fill: yellow
+
+layers: {
+  hi: {
+    **.style.fill: red
+    # should be red, but it's yellow right now
+    a
+  }
+}
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 5, 0, nil, "")
+				assertQuery(t, m, 0, 0, "red", "layers.hi.a.style.fill")
+			},
+		},
 	}
 
 	runa(t, tca)

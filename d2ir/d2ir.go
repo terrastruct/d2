@@ -697,21 +697,18 @@ func (m *Map) EnsureField(kp *d2ast.KeyPath, refctx *RefContext, create bool, c 
 
 	var fa []*Field
 	err := m.ensureField(i, kp, refctx, create, gctx, c, &fa)
-	if err != nil {
-		return fa, err
-	}
-	if len(fa) > 0 && create && c != nil {
-		for _, gctx2 := range c.globContexts() {
-			c.compileKey(gctx2.refctx)
-		}
-	}
-	return fa, nil
+	return fa, err
 }
 
 func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create bool, gctx *globContext, c *compiler, fa *[]*Field) error {
 	filter := func(f *Field, passthrough bool) bool {
-		ks := d2format.Format(d2ast.MakeKeyPath(BoardIDA(f)))
 		if gctx != nil {
+			var ks string
+			if refctx.Key.HasTripleGlob() {
+				ks = d2format.Format(d2ast.MakeKeyPath(IDA(f)))
+			} else {
+				ks = d2format.Format(d2ast.MakeKeyPath(BoardIDA(f)))
+			}
 			// For globs with edges, we only ignore duplicate fields if the glob is not at the terminal of the keypath, the glob is on the common key or the glob is on the edge key.
 			if !kp.HasGlob() {
 				if !passthrough {
@@ -1031,15 +1028,7 @@ func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext, c *compiler) ([]*Edge,
 		gctx = c.ensureGlobContext(refctx)
 	}
 	err := m.createEdge(eid, refctx, gctx, c, &ea)
-	if err != nil {
-		return ea, err
-	}
-	if len(ea) > 0 && c != nil {
-		for _, gctx2 := range c.globContexts() {
-			c.compileKey(gctx2.refctx)
-		}
-	}
-	return ea, nil
+	return ea, err
 }
 
 func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, gctx *globContext, c *compiler, ea *[]*Edge) error {
@@ -1179,7 +1168,12 @@ func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, sr
 	}
 
 	if gctx != nil {
-		ks := d2format.Format(d2ast.MakeKeyPath(BoardIDA(e)))
+		var ks string
+		if refctx.Key.HasTripleGlob() {
+			ks = d2format.Format(d2ast.MakeKeyPath(IDA(e)))
+		} else {
+			ks = d2format.Format(d2ast.MakeKeyPath(BoardIDA(e)))
+		}
 		if _, ok := gctx.appliedEdges[ks]; ok {
 			return nil, nil
 		}

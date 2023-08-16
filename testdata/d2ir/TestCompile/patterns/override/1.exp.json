@@ -1,0 +1,782 @@
+{
+  "fields": [
+    {
+      "name": "a",
+      "composite": {
+        "fields": [
+          {
+            "name": "style",
+            "composite": {
+              "fields": [
+                {
+                  "name": "fill",
+                  "primary": {
+                    "value": {
+                      "range": "TestCompile/patterns/override/1.d2,2:15:38-2:18:41",
+                      "value": [
+                        {
+                          "string": "red",
+                          "raw_string": "red"
+                        }
+                      ]
+                    }
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/override/1.d2,1:9:10-1:13:14",
+                        "value": [
+                          {
+                            "string": "fill",
+                            "raw_string": "fill"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/override/1.d2,1:0:1-1:13:14",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/override/1.d2,1:0:1-1:2:3",
+                              "value": [
+                                {
+                                  "string": "**",
+                                  "raw_string": "**"
+                                }
+                              ],
+                              "pattern": [
+                                "*",
+                                "",
+                                "*"
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/override/1.d2,1:3:4-1:8:9",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/override/1.d2,1:9:10-1:13:14",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/patterns/override/1.d2,1:0:1-1:21:22",
+                          "key": {
+                            "range": "TestCompile/patterns/override/1.d2,1:0:1-1:13:14",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/override/1.d2,1:0:1-1:2:3",
+                                  "value": [
+                                    {
+                                      "string": "**",
+                                      "raw_string": "**"
+                                    }
+                                  ],
+                                  "pattern": [
+                                    "*",
+                                    "",
+                                    "*"
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/override/1.d2,1:3:4-1:8:9",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/override/1.d2,1:9:10-1:13:14",
+                                  "value": [
+                                    {
+                                      "string": "fill",
+                                      "raw_string": "fill"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/override/1.d2,1:15:16-1:21:22",
+                              "value": [
+                                {
+                                  "string": "yellow",
+                                  "raw_string": "yellow"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/override/1.d2,2:9:32-2:13:36",
+                        "value": [
+                          {
+                            "string": "fill",
+                            "raw_string": "fill"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/override/1.d2,2:0:23-2:13:36",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/override/1.d2,2:0:23-2:2:25",
+                              "value": [
+                                {
+                                  "string": "**",
+                                  "raw_string": "**"
+                                }
+                              ],
+                              "pattern": [
+                                "*",
+                                "",
+                                "*"
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/override/1.d2,2:3:26-2:8:31",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/override/1.d2,2:9:32-2:13:36",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/patterns/override/1.d2,2:0:23-2:18:41",
+                          "key": {
+                            "range": "TestCompile/patterns/override/1.d2,2:0:23-2:13:36",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/override/1.d2,2:0:23-2:2:25",
+                                  "value": [
+                                    {
+                                      "string": "**",
+                                      "raw_string": "**"
+                                    }
+                                  ],
+                                  "pattern": [
+                                    "*",
+                                    "",
+                                    "*"
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/override/1.d2,2:3:26-2:8:31",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/override/1.d2,2:9:32-2:13:36",
+                                  "value": [
+                                    {
+                                      "string": "fill",
+                                      "raw_string": "fill"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/override/1.d2,2:15:38-2:18:41",
+                              "value": [
+                                {
+                                  "string": "red",
+                                  "raw_string": "red"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/override/1.d2,2:9:32-2:13:36",
+                        "value": [
+                          {
+                            "string": "fill",
+                            "raw_string": "fill"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/override/1.d2,2:0:23-2:13:36",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/override/1.d2,2:0:23-2:2:25",
+                              "value": [
+                                {
+                                  "string": "**",
+                                  "raw_string": "**"
+                                }
+                              ],
+                              "pattern": [
+                                "*",
+                                "",
+                                "*"
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/override/1.d2,2:3:26-2:8:31",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/override/1.d2,2:9:32-2:13:36",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/patterns/override/1.d2,2:0:23-2:18:41",
+                          "key": {
+                            "range": "TestCompile/patterns/override/1.d2,2:0:23-2:13:36",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/override/1.d2,2:0:23-2:2:25",
+                                  "value": [
+                                    {
+                                      "string": "**",
+                                      "raw_string": "**"
+                                    }
+                                  ],
+                                  "pattern": [
+                                    "*",
+                                    "",
+                                    "*"
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/override/1.d2,2:3:26-2:8:31",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/override/1.d2,2:9:32-2:13:36",
+                                  "value": [
+                                    {
+                                      "string": "fill",
+                                      "raw_string": "fill"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/override/1.d2,2:15:38-2:18:41",
+                              "value": [
+                                {
+                                  "string": "red",
+                                  "raw_string": "red"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/patterns/override/1.d2,1:3:4-1:8:9",
+                  "value": [
+                    {
+                      "string": "style",
+                      "raw_string": "style"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/override/1.d2,1:0:1-1:13:14",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/override/1.d2,1:0:1-1:2:3",
+                        "value": [
+                          {
+                            "string": "**",
+                            "raw_string": "**"
+                          }
+                        ],
+                        "pattern": [
+                          "*",
+                          "",
+                          "*"
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/override/1.d2,1:3:4-1:8:9",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/override/1.d2,1:9:10-1:13:14",
+                        "value": [
+                          {
+                            "string": "fill",
+                            "raw_string": "fill"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/override/1.d2,1:0:1-1:21:22",
+                    "key": {
+                      "range": "TestCompile/patterns/override/1.d2,1:0:1-1:13:14",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/override/1.d2,1:0:1-1:2:3",
+                            "value": [
+                              {
+                                "string": "**",
+                                "raw_string": "**"
+                              }
+                            ],
+                            "pattern": [
+                              "*",
+                              "",
+                              "*"
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/override/1.d2,1:3:4-1:8:9",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/override/1.d2,1:9:10-1:13:14",
+                            "value": [
+                              {
+                                "string": "fill",
+                                "raw_string": "fill"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/override/1.d2,1:15:16-1:21:22",
+                        "value": [
+                          {
+                            "string": "yellow",
+                            "raw_string": "yellow"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "string": {
+                  "range": "TestCompile/patterns/override/1.d2,2:3:26-2:8:31",
+                  "value": [
+                    {
+                      "string": "style",
+                      "raw_string": "style"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/override/1.d2,2:0:23-2:13:36",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/override/1.d2,2:0:23-2:2:25",
+                        "value": [
+                          {
+                            "string": "**",
+                            "raw_string": "**"
+                          }
+                        ],
+                        "pattern": [
+                          "*",
+                          "",
+                          "*"
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/override/1.d2,2:3:26-2:8:31",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/override/1.d2,2:9:32-2:13:36",
+                        "value": [
+                          {
+                            "string": "fill",
+                            "raw_string": "fill"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/override/1.d2,2:0:23-2:18:41",
+                    "key": {
+                      "range": "TestCompile/patterns/override/1.d2,2:0:23-2:13:36",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/override/1.d2,2:0:23-2:2:25",
+                            "value": [
+                              {
+                                "string": "**",
+                                "raw_string": "**"
+                              }
+                            ],
+                            "pattern": [
+                              "*",
+                              "",
+                              "*"
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/override/1.d2,2:3:26-2:8:31",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/override/1.d2,2:9:32-2:13:36",
+                            "value": [
+                              {
+                                "string": "fill",
+                                "raw_string": "fill"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/override/1.d2,2:15:38-2:18:41",
+                        "value": [
+                          {
+                            "string": "red",
+                            "raw_string": "red"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "string": {
+                  "range": "TestCompile/patterns/override/1.d2,2:3:26-2:8:31",
+                  "value": [
+                    {
+                      "string": "style",
+                      "raw_string": "style"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/override/1.d2,2:0:23-2:13:36",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/override/1.d2,2:0:23-2:2:25",
+                        "value": [
+                          {
+                            "string": "**",
+                            "raw_string": "**"
+                          }
+                        ],
+                        "pattern": [
+                          "*",
+                          "",
+                          "*"
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/override/1.d2,2:3:26-2:8:31",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/override/1.d2,2:9:32-2:13:36",
+                        "value": [
+                          {
+                            "string": "fill",
+                            "raw_string": "fill"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/override/1.d2,2:0:23-2:18:41",
+                    "key": {
+                      "range": "TestCompile/patterns/override/1.d2,2:0:23-2:13:36",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/override/1.d2,2:0:23-2:2:25",
+                            "value": [
+                              {
+                                "string": "**",
+                                "raw_string": "**"
+                              }
+                            ],
+                            "pattern": [
+                              "*",
+                              "",
+                              "*"
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/override/1.d2,2:3:26-2:8:31",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/override/1.d2,2:9:32-2:13:36",
+                            "value": [
+                              {
+                                "string": "fill",
+                                "raw_string": "fill"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/override/1.d2,2:15:38-2:18:41",
+                        "value": [
+                          {
+                            "string": "red",
+                            "raw_string": "red"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/override/1.d2,4:0:43-4:1:44",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/override/1.d2,4:0:43-4:1:44",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/override/1.d2,4:0:43-4:1:44",
+                  "value": [
+                    {
+                      "string": "a",
+                      "raw_string": "a"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/override/1.d2,4:0:43-4:1:44",
+              "key": {
+                "range": "TestCompile/patterns/override/1.d2,4:0:43-4:1:44",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/override/1.d2,4:0:43-4:1:44",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": null
+}
