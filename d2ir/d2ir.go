@@ -575,7 +575,8 @@ func (rc *RefContext) EdgeIndex() int {
 
 func (rc *RefContext) Equal(rc2 *RefContext) bool {
 	// We intentionally ignore edges here because the same glob can produce multiple RefContexts that should be treated  the same with only the edge as the difference.
-	return rc.Key.Equals(rc2.Key) && rc.Scope == rc2.Scope && rc.ScopeMap == rc2.ScopeMap && rc.ScopeAST == rc2.ScopeAST
+	// Same with ScopeMap.
+	return rc.Key.Equals(rc2.Key) && rc.Scope == rc2.Scope && rc.ScopeAST == rc2.ScopeAST
 }
 
 func (m *Map) FieldCountRecursive() int {
@@ -708,19 +709,30 @@ func (m *Map) EnsureField(kp *d2ast.KeyPath, refctx *RefContext, create bool, c 
 }
 
 func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create bool, gctx *globContext, c *compiler, fa *[]*Field) error {
-	faAppend := func(fa2 ...*Field) {
-		for _, f := range fa2 {
-			if gctx != nil {
-				// Always match all commons, sources and destinations for edge globs.
-				if len(refctx.Key.Edges) == 0 || kp == refctx.Key.EdgeKey {
-					ks := d2format.Format(d2ast.MakeKeyPath(BoardIDA(f)))
-					if _, ok := gctx.appliedFields[ks]; ok {
-						continue
-					}
+	filter := func(f *Field, passthrough bool) bool {
+		if gctx != nil {
+			// For globs with edges, we only ignore duplicate fields if the glob is not at the terminal of the keypath, the glob is on the common key or the glob is on the edge key.
+			if !kp.HasGlob() {
+				return true
+			}
+			lastEl := kp.Path[len(kp.Path)-1]
+			if len(refctx.Key.Edges) == 0 || lastEl.UnquotedString == nil || len(lastEl.UnquotedString.Pattern) == 0 || kp == refctx.Key.Key || kp == refctx.Key.EdgeKey {
+				ks := d2format.Format(d2ast.MakeKeyPath(BoardIDA(f)))
+				if _, ok := gctx.appliedFields[ks]; ok {
+					return false
+				}
+				if !passthrough {
 					gctx.appliedFields[ks] = struct{}{}
 				}
 			}
-			*fa = append(*fa, f)
+		}
+		return true
+	}
+	faAppend := func(fa2 ...*Field) {
+		for _, f := range fa2 {
+			if filter(f, false) {
+				*fa = append(*fa, f)
+			}
 		}
 	}
 
@@ -732,6 +744,9 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 				faAppend(fa2...)
 			} else {
 				for _, f := range fa2 {
+					if !filter(f, true) {
+						return nil
+					}
 					if f.Map() == nil {
 						f.Composite = &Map{
 							parent: f,
@@ -750,6 +765,9 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 				if i == len(kp.Path)-1 {
 					faAppend(f)
 				} else {
+					if !filter(f, true) {
+						return nil
+					}
 					if f.Map() == nil {
 						f.Composite = &Map{
 							parent: f,
@@ -804,6 +822,9 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 			faAppend(f)
 			return nil
 		}
+		if !filter(f, true) {
+			return nil
+		}
 		if _, ok := f.Composite.(*Array); ok {
 			return d2parser.Errorf(kp.Path[i].Unbox(), "cannot index into array")
 		}
@@ -832,7 +853,10 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 	}
 	m.Fields = append(m.Fields, f)
 	if i+1 == len(kp.Path) {
-		*fa = append(*fa, f)
+		faAppend(f)
+		return nil
+	}
+	if !filter(f, true) {
 		return nil
 	}
 	if f.Composite == nil {

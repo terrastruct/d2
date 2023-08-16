@@ -492,11 +492,15 @@ func (c *compiler) ensureGlobContext(refctx *RefContext) *globContext {
 
 func (c *compiler) compileKey(refctx *RefContext) {
 	if refctx.Key.HasGlob() {
+		// These three printlns are for debugging infinite loops.
+		// println("og", refctx.Edge, refctx.Key, refctx.Scope, refctx.ScopeMap, refctx.ScopeAST)
 		for _, refctx2 := range c.globRefContextStack {
+			// println("st", refctx2.Edge, refctx2.Key, refctx2.Scope, refctx2.ScopeMap, refctx2.ScopeAST)
 			if refctx.Equal(refctx2) {
 				// Break the infinite loop.
 				return
 			}
+			// println("keys", d2format.Format(refctx2.Key), d2format.Format(refctx.Key))
 		}
 		c.globRefContextStack = append(c.globRefContextStack, refctx)
 		defer func() {

@@ -432,6 +432,7 @@ layers: {
 }
 `)
 				assert.Success(t, err)
+				t.Log(m)
 				assertQuery(t, m, 14, 0, nil, "")
 			},
 		},
@@ -448,6 +449,24 @@ c
 `)
 				assert.Success(t, err)
 				assertQuery(t, m, 4, 3, nil, "")
+			},
+		},
+		{
+			name: "alixander-review/3",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+a
+
+***.b -> c
+
+layers: {
+  z: {
+    d
+  }
+}
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 8, 2, nil, "")
 			},
 		},
 	}
