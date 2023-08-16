@@ -1151,7 +1151,7 @@ func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, sr
 	}
 
 	if gctx != nil {
-		ks := e.String()
+		ks := d2format.Format(d2ast.MakeKeyPath(BoardIDA(e)))
 		if _, ok := gctx.appliedEdges[ks]; ok {
 			return nil, nil
 		}
@@ -1389,60 +1389,65 @@ func parentPrimaryKey(n Node) *d2ast.Key {
 // BoardIDA returns the absolute path to n from the nearest board root.
 func BoardIDA(n Node) (ida []string) {
 	for {
-		f, ok := n.(*Field)
-		if ok {
-			if f.Root() || NodeBoardKind(f) != "" {
+		switch n := n.(type) {
+		case *Field:
+			if n.Root() || NodeBoardKind(n) != "" {
 				reverseIDA(ida)
 				return ida
 			}
-			ida = append(ida, f.Name)
+			ida = append(ida, n.Name)
+		case *Edge:
+			ida = append(ida, n.String())
 		}
-		f = ParentField(n)
-		if f == nil {
+		n = n.Parent()
+		if n == nil {
 			reverseIDA(ida)
 			return ida
 		}
-		n = f
 	}
 }
 
 // IDA returns the absolute path to n.
 func IDA(n Node) (ida []string) {
 	for {
-		f, ok := n.(*Field)
-		if ok {
-			ida = append(ida, f.Name)
-			if f.Root() {
+		switch n := n.(type) {
+		case *Field:
+			ida = append(ida, n.Name)
+			if n.Root() {
 				reverseIDA(ida)
 				return ida
 			}
+		case *Edge:
+			ida = append(ida, n.String())
 		}
-		f = ParentField(n)
-		if f == nil {
+		n = n.Parent()
+		if n == nil {
 			reverseIDA(ida)
 			return ida
 		}
-		n = f
 	}
 }
 
 // RelIDA returns the path to n relative to p.
 func RelIDA(p, n Node) (ida []string) {
 	for {
-		f, ok := n.(*Field)
-		if ok {
-			ida = append(ida, f.Name)
-			if f.Root() {
+		switch n := n.(type) {
+		case *Field:
+			ida = append(ida, n.Name)
+			if n.Root() {
 				reverseIDA(ida)
 				return ida
 			}
+		case *Edge:
+			ida = append(ida, n.String())
 		}
-		f = ParentField(n)
-		if f == nil || f.Root() || f == p || f.Composite == p {
+		n = ParentField(n)
+		f, fok := n.(*Field)
+		e, eok := n.(*Edge)
+		if n == nil || (fok && (f.Root() || f == p || f.Composite == p)) || (eok && (e == p || e.Map_ == p)) {
 			reverseIDA(ida)
 			return ida
 		}
-		n = f
 	}
 }
 
