@@ -380,7 +380,7 @@ scenarios.x: { p }
 layers.x: { p }
 `)
 				assert.Success(t, err)
-				assertQuery(t, m, 25, 0, nil, "")
+				assertQuery(t, m, 24, 0, nil, "")
 				assertQuery(t, m, 0, 0, "page", "a.shape")
 				assertQuery(t, m, 0, 0, "page", "b.shape")
 				assertQuery(t, m, 0, 0, "page", "c.shape")
@@ -432,7 +432,7 @@ layers: {
 }
 `)
 				assert.Success(t, err)
-				assertQuery(t, m, 16, 0, nil, "")
+				assertQuery(t, m, 14, 0, nil, "")
 			},
 		},
 		{

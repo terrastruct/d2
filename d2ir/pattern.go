@@ -49,6 +49,9 @@ func (m *Map) _tripleGlob(fa *[]*Field) {
 			}
 			continue
 		}
+		if NodeBoardKind(f) != "" {
+			continue
+		}
 		*fa = append(*fa, f)
 		if f.Map() != nil {
 			f.Map()._tripleGlob(fa)
