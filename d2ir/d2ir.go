@@ -710,20 +710,23 @@ func (m *Map) EnsureField(kp *d2ast.KeyPath, refctx *RefContext, create bool, c 
 
 func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create bool, gctx *globContext, c *compiler, fa *[]*Field) error {
 	filter := func(f *Field, passthrough bool) bool {
+		ks := d2format.Format(d2ast.MakeKeyPath(BoardIDA(f)))
 		if gctx != nil {
 			// For globs with edges, we only ignore duplicate fields if the glob is not at the terminal of the keypath, the glob is on the common key or the glob is on the edge key.
 			if !kp.HasGlob() {
+				if !passthrough {
+					gctx.appliedFields[ks] = struct{}{}
+				}
 				return true
 			}
 			lastEl := kp.Path[len(kp.Path)-1]
 			if len(refctx.Key.Edges) == 0 || lastEl.UnquotedString == nil || len(lastEl.UnquotedString.Pattern) == 0 || kp == refctx.Key.Key || kp == refctx.Key.EdgeKey {
-				ks := d2format.Format(d2ast.MakeKeyPath(BoardIDA(f)))
 				if _, ok := gctx.appliedFields[ks]; ok {
 					return false
 				}
-				if !passthrough {
-					gctx.appliedFields[ks] = struct{}{}
-				}
+			}
+			if !passthrough {
+				gctx.appliedFields[ks] = struct{}{}
 			}
 		}
 		return true
@@ -745,7 +748,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 			} else {
 				for _, f := range fa2 {
 					if !filter(f, true) {
-						return nil
+						continue
 					}
 					if f.Map() == nil {
 						f.Composite = &Map{
@@ -766,7 +769,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 					faAppend(f)
 				} else {
 					if !filter(f, true) {
-						return nil
+						continue
 					}
 					if f.Map() == nil {
 						f.Composite = &Map{
