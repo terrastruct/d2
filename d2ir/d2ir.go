@@ -574,7 +574,8 @@ func (rc *RefContext) EdgeIndex() int {
 }
 
 func (rc *RefContext) Equal(rc2 *RefContext) bool {
-	return rc.Edge == rc2.Edge && rc.Key.Equals(rc2.Key) && rc.Scope == rc2.Scope && rc.ScopeMap == rc2.ScopeMap && rc.ScopeAST == rc2.ScopeAST
+	// We intentionally ignore edges here because the same glob can produce multiple RefContexts that should be treated  the same with only the edge as the difference.
+	return rc.Key.Equals(rc2.Key) && rc.Scope == rc2.Scope && rc.ScopeMap == rc2.ScopeMap && rc.ScopeAST == rc2.ScopeAST
 }
 
 func (m *Map) FieldCountRecursive() int {
@@ -1000,7 +1001,7 @@ func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext, c *compiler) ([]*Edge,
 	var ea []*Edge
 	var gctx *globContext
 	if refctx != nil && refctx.Key.HasGlob() && c != nil {
-		gctx = c.getGlobContext(refctx)
+		gctx = c.ensureGlobContext(refctx)
 	}
 	err := m.createEdge(eid, refctx, gctx, c, &ea)
 	if err != nil {
@@ -1441,7 +1442,7 @@ func RelIDA(p, n Node) (ida []string) {
 		case *Edge:
 			ida = append(ida, n.String())
 		}
-		n = ParentField(n)
+		n = n.Parent()
 		f, fok := n.(*Field)
 		e, eok := n.(*Edge)
 		if n == nil || (fok && (f.Root() || f == p || f.Composite == p)) || (eok && (e == p || e.Map_ == p)) {

@@ -43,6 +43,11 @@ func (m *Map) _tripleGlob(fa *[]*Field) {
 			if _, ok := d2graph.BoardKeywords[f.Name]; !ok {
 				continue
 			}
+			// We don't ever want to append layers, scenarios or steps directly.
+			if f.Map() != nil {
+				f.Map()._tripleGlob(fa)
+			}
+			continue
 		}
 		*fa = append(*fa, f)
 		if f.Map() != nil {

@@ -380,7 +380,7 @@ scenarios.x: { p }
 layers.x: { p }
 `)
 				assert.Success(t, err)
-				assertQuery(t, m, 27, 0, nil, "")
+				assertQuery(t, m, 25, 0, nil, "")
 				assertQuery(t, m, 0, 0, "page", "a.shape")
 				assertQuery(t, m, 0, 0, "page", "b.shape")
 				assertQuery(t, m, 0, 0, "page", "c.shape")
@@ -411,6 +411,43 @@ layers.x: { j -> f }
 				assertQuery(t, m, 0, 0, "diamond", "scenarios.x.(p -> q)[0].target-arrowhead.shape")
 				assertQuery(t, m, 4, 1, nil, "layers.x")
 				assertQuery(t, m, 0, 0, "diamond", "layers.x.(j -> f)[0].target-arrowhead.shape")
+			},
+		},
+		{
+			name: "alixander-review/1",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+***.style.fill: yellow
+**.shape: circle
+*.style.multiple: true
+
+x: {
+  y
+}
+
+layers: {
+  next: {
+    a
+  }
+}
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 16, 0, nil, "")
+			},
+		},
+		{
+			name: "alixander-review/2",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+a
+
+* -> y
+
+b
+c
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 4, 3, nil, "")
 			},
 		},
 	}
