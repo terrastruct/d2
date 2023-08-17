@@ -414,6 +414,7 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 			}
 		}
 	}
+
 	for _, n := range ast.Nodes {
 		switch {
 		case n.MapKey != nil:
@@ -554,7 +555,30 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 		return false
 	}
 	if len(fa) == 0 {
-		return false
+		if refctx.Key.Key.Last().ScalarString() != "label" {
+			return false
+		}
+		kp := refctx.Key.Key.Copy()
+		kp.Path = kp.Path[:len(kp.Path)-1]
+		if len(kp.Path) == 0 {
+			fa = append(fa, ParentField(refctx.ScopeMap))
+		} else {
+			fa, err = refctx.ScopeMap.EnsureField(kp, refctx, false, c)
+			if err != nil {
+				c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
+				return false
+			}
+		}
+		for _, f := range fa {
+			label := f.Name
+			if f.Primary_ != nil {
+				label = f.Primary_.Value.ScalarString()
+			}
+			if label != refctx.Key.Value.ScalarBox().Unbox().ScalarString() {
+				return false
+			}
+		}
+		return true
 	}
 	for _, f := range fa {
 		ok := c._ampersandFilter(f, refctx)

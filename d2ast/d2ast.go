@@ -804,6 +804,10 @@ func (kp *KeyPath) Copy() *KeyPath {
 	return &kp2
 }
 
+func (kp *KeyPath) Last() *StringBox {
+	return kp.Path[len(kp.Path)-1]
+}
+
 func IsDoubleGlob(pattern []string) bool {
 	return len(pattern) == 3 && pattern[0] == "*" && pattern[1] == "" && pattern[2] == "*"
 }

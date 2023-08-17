@@ -96,6 +96,31 @@ x -> y
 				assertQuery(t, m, 0, 0, nil, "(x -> y)[1]")
 			},
 		},
+		{
+			name: "id-filter",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+x
+y
+p: p
+
+*.style.opacity: 0.1
+*: {
+  &label: x
+  style.opacity: 1
+}
+*: {
+  &label: p
+  style.opacity: 0.5
+}
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 9, 0, nil, "")
+				assertQuery(t, m, 0, 0, 1, "x.style.opacity")
+				assertQuery(t, m, 0, 0, 0.1, "y.style.opacity")
+				assertQuery(t, m, 0, 0, 0.5, "p.style.opacity")
+			},
+		},
 	}
 
 	runa(t, tca)
