@@ -2,32 +2,10 @@
   "fields": [
     {
       "name": "scenarios",
-      "primary": {
-        "value": {
-          "range": "TestCompile/patterns/scenarios.d2,16:4:57-16:13:66",
-          "value": [
-            {
-              "string": "something",
-              "raw_string": "something"
-            }
-          ]
-        }
-      },
       "composite": {
         "fields": [
           {
             "name": "meow",
-            "primary": {
-              "value": {
-                "range": "TestCompile/patterns/scenarios.d2,16:4:57-16:13:66",
-                "value": [
-                  {
-                    "string": "something",
-                    "raw_string": "something"
-                  }
-                ]
-              }
-            },
             "composite": {
               "fields": [
                 {

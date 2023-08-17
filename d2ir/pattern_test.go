@@ -355,7 +355,7 @@ scenarios.x: { p }
 layers.x: { p }
 `)
 				assert.Success(t, err)
-				assertQuery(t, m, 25, 0, nil, "")
+				assertQuery(t, m, 23, 0, nil, "")
 				assertQuery(t, m, 0, 0, "page", "a.shape")
 				assertQuery(t, m, 0, 0, "page", "b.shape")
 				assertQuery(t, m, 0, 0, "page", "c.shape")
@@ -483,6 +483,24 @@ c
 			},
 		},
 		{
+			name: "alixander-review/5",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+**.style.fill: red
+
+scenarios: {
+  b: {
+    a -> b
+  }
+}
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 8, 1, nil, "")
+				assertQuery(t, m, 0, 0, "red", "scenarios.b.a.style.fill")
+				assertQuery(t, m, 0, 0, "red", "scenarios.b.b.style.fill")
+			},
+		},
+		{
 			name: "override/1",
 			run: func(t testing.TB) {
 				m, err := compile(t, `
@@ -513,6 +531,33 @@ layers: {
 				assert.Success(t, err)
 				assertQuery(t, m, 5, 0, nil, "")
 				assertQuery(t, m, 0, 0, "red", "layers.hi.a.style.fill")
+			},
+		},
+		{
+			name: "override/3",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+(*** -> ***)[*].label: hi
+
+a -> b
+
+layers: {
+  hi: {
+    (*** -> ***)[*].label: bye
+
+    scenarios: {
+      b: {
+        # This label is "hi", but it should be "bye"
+        a -> b
+      }
+    }
+  }
+}
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 10, 2, nil, "")
+				assertQuery(t, m, 0, 0, "hi", "(a -> b)[0].label")
+				assertQuery(t, m, 0, 0, "bye", "layers.hi.scenarios.b.(a -> b)[0].label")
 			},
 		},
 	}

@@ -4042,7 +4042,7 @@ func testGlobs(t *testing.T) {
 		run  func(t *testing.T)
 	}{
 		{
-			name: "alixander-lazy-globs-review",
+			name: "alixander-lazy-globs-review/1",
 			run: func(t *testing.T) {
 				assertCompile(t, `
 ***.style.fill: yellow
@@ -4056,6 +4056,20 @@ x: {
 layers: {
   next: {
     a
+  }
+}
+`, "")
+			},
+		},
+		{
+			name: "alixander-lazy-globs-review/2",
+			run: func(t *testing.T) {
+				assertCompile(t, `
+**.style.fill: yellow
+
+scenarios: {
+  b: {
+    a -> b
   }
 }
 `, "")

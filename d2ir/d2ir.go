@@ -929,10 +929,14 @@ func (m *Map) DeleteField(ida ...string) *Field {
 	return nil
 }
 
-func (m *Map) GetEdges(eid *EdgeID, refctx *RefContext) []*Edge {
+func (m *Map) GetEdges(eid *EdgeID, refctx *RefContext, c *compiler) []*Edge {
 	if refctx != nil {
+		var gctx *globContext
+		if refctx.Key.HasGlob() && c != nil {
+			gctx = c.ensureGlobContext(refctx)
+		}
 		var ea []*Edge
-		m.getEdges(eid, refctx, &ea)
+		m.getEdges(eid, refctx, gctx, &ea)
 		return ea
 	}
 
@@ -946,7 +950,7 @@ func (m *Map) GetEdges(eid *EdgeID, refctx *RefContext) []*Edge {
 			return nil
 		}
 		if f.Map() != nil {
-			return f.Map().GetEdges(eid, nil)
+			return f.Map().GetEdges(eid, nil, nil)
 		}
 		return nil
 	}
@@ -960,7 +964,7 @@ func (m *Map) GetEdges(eid *EdgeID, refctx *RefContext) []*Edge {
 	return ea
 }
 
-func (m *Map) getEdges(eid *EdgeID, refctx *RefContext, ea *[]*Edge) error {
+func (m *Map) getEdges(eid *EdgeID, refctx *RefContext, gctx *globContext, ea *[]*Edge) error {
 	eid, m, common, err := eid.resolve(m)
 	if err != nil {
 		return err
@@ -991,7 +995,7 @@ func (m *Map) getEdges(eid *EdgeID, refctx *RefContext, ea *[]*Edge) error {
 					parent: f,
 				}
 			}
-			err = f.Map().getEdges(eid, refctx, ea)
+			err = f.Map().getEdges(eid, refctx, gctx, ea)
 			if err != nil {
 				return err
 			}
@@ -1014,8 +1018,22 @@ func (m *Map) getEdges(eid *EdgeID, refctx *RefContext, ea *[]*Edge) error {
 			eid2.SrcPath = RelIDA(m, src)
 			eid2.DstPath = RelIDA(m, dst)
 
-			ea2 := m.GetEdges(eid2, nil)
-			*ea = append(*ea, ea2...)
+			ea2 := m.GetEdges(eid2, nil, nil)
+			for _, e := range ea2 {
+				if gctx != nil {
+					var ks string
+					if refctx.Key.HasTripleGlob() {
+						ks = d2format.Format(d2ast.MakeKeyPath(IDA(e)))
+					} else {
+						ks = d2format.Format(d2ast.MakeKeyPath(BoardIDA(e)))
+					}
+					if _, ok := gctx.appliedEdges[ks]; ok {
+						continue
+					}
+					gctx.appliedEdges[ks] = struct{}{}
+				}
+				*ea = append(*ea, ea2...)
+			}
 		}
 	}
 	return nil
@@ -1155,7 +1173,7 @@ func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, sr
 
 	eid.Index = nil
 	eid.Glob = true
-	ea := m.GetEdges(eid, nil)
+	ea := m.GetEdges(eid, nil, nil)
 	index := len(ea)
 	eid.Index = &index
 	eid.Glob = false
@@ -1232,6 +1250,13 @@ func (e *Edge) AST() d2ast.Node {
 	}
 
 	return k
+}
+
+func (e *Edge) IDString() string {
+	ast := e.AST().(*d2ast.Key)
+	ast.Primary = d2ast.ScalarBox{}
+	ast.Value = d2ast.ValueBox{}
+	return d2format.Format(ast)
 }
 
 func (a *Array) AST() d2ast.Node {
@@ -1419,7 +1444,7 @@ func BoardIDA(n Node) (ida []string) {
 			}
 			ida = append(ida, n.Name)
 		case *Edge:
-			ida = append(ida, n.String())
+			ida = append(ida, n.IDString())
 		}
 		n = n.Parent()
 		if n == nil {
@@ -1440,7 +1465,7 @@ func IDA(n Node) (ida []string) {
 				return ida
 			}
 		case *Edge:
-			ida = append(ida, n.String())
+			ida = append(ida, n.IDString())
 		}
 		n = n.Parent()
 		if n == nil {

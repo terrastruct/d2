@@ -36,7 +36,7 @@ func (m *Map) QueryAll(idStr string) (na []Node, _ error) {
 			ScopeMap: m,
 			Edge:     k.Edges[i],
 		}
-		ea := m.GetEdges(eid, refctx)
+		ea := m.GetEdges(eid, refctx, nil)
 		for _, e := range ea {
 			if k.EdgeKey == nil {
 				na = append(na, e)

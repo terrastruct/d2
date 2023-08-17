@@ -15,7 +15,9 @@ import (
 )
 
 type globContext struct {
+	root   *globContext
 	refctx *RefContext
+
 	// Set of BoardIDA that this glob has already applied to.
 	appliedFields map[string]struct{}
 	// Set of Edge IDs that this glob has already applied to.
@@ -361,7 +363,7 @@ func (c *compiler) overlay(base *Map, f *Field) {
 
 func (g *globContext) prefixed(dst *Map) *globContext {
 	g2 := *g
-	g2.refctx = g.refctx.Copy()
+	g2.refctx = g.root.refctx.Copy()
 	prefix := d2ast.MakeKeyPath(RelIDA(g2.refctx.ScopeMap, dst))
 	g2.refctx.Key = g2.refctx.Key.Copy()
 	if g2.refctx.Key.Key != nil {
@@ -477,6 +479,7 @@ func (c *compiler) ensureGlobContext(refctx *RefContext) *globContext {
 		appliedFields: make(map[string]struct{}),
 		appliedEdges:  make(map[string]struct{}),
 	}
+	gctx.root = gctx
 	c.globContextStack[len(c.globContextStack)-1] = append(c.globContexts(), gctx)
 	return gctx
 }
@@ -829,7 +832,7 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 
 		var ea []*Edge
 		if eid.Index != nil || eid.Glob {
-			ea = refctx.ScopeMap.GetEdges(eid, refctx)
+			ea = refctx.ScopeMap.GetEdges(eid, refctx, c)
 			if len(ea) == 0 {
 				if !eid.Glob {
 					c.errorf(refctx.Edge, "indexed edge does not exist")
