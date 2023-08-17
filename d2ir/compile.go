@@ -561,7 +561,21 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 		kp := refctx.Key.Key.Copy()
 		kp.Path = kp.Path[:len(kp.Path)-1]
 		if len(kp.Path) == 0 {
-			fa = append(fa, ParentField(refctx.ScopeMap))
+			n := refctx.ScopeMap.Parent()
+			switch n := n.(type) {
+			case *Field:
+				fa = append(fa, n)
+			case *Edge:
+				if n.Primary_ == nil {
+					if refctx.Key.Value.ScalarBox().Unbox().ScalarString() == "" {
+						return true
+					}
+					return false
+				}
+				if n.Primary_.Value.ScalarString() != refctx.Key.Value.ScalarBox().Unbox().ScalarString() {
+					return false
+				}
+			}
 		} else {
 			fa, err = refctx.ScopeMap.EnsureField(kp, refctx, false, c)
 			if err != nil {
