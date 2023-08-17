@@ -560,6 +560,37 @@ layers: {
 				assertQuery(t, m, 0, 0, "bye", "layers.hi.scenarios.b.(a -> b)[0].label")
 			},
 		},
+		{
+			name: "override/4",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+(*** -> ***)[*].label: hi
+
+a -> b: {
+  label: bye
+}
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 3, 1, nil, "")
+				assertQuery(t, m, 0, 0, "bye", "(a -> b)[0].label")
+			},
+		},
+		{
+			name: "override/5",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+(*** -> ***)[*].label: hi
+
+# This is "hey" right now but should be "hi"?
+a -> b
+
+(*** -> ***)[*].label: hey
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 3, 1, nil, "")
+				assertQuery(t, m, 0, 0, "hey", "(a -> b)[0].label")
+			},
+		},
 	}
 
 	runa(t, tca)

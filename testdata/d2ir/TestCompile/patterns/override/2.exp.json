@@ -187,7 +187,8 @@
                                         }
                                       }
                                     }
-                                  }
+                                  },
+                                  "from_glob": true
                                 },
                                 {
                                   "string": {
@@ -302,7 +303,8 @@
                                         }
                                       }
                                     }
-                                  }
+                                  },
+                                  "from_glob": true
                                 },
                                 {
                                   "string": {
@@ -417,7 +419,8 @@
                                         }
                                       }
                                     }
-                                  }
+                                  },
+                                  "from_glob": true
                                 },
                                 {
                                   "string": {
@@ -536,7 +539,8 @@
                                         }
                                       }
                                     }
-                                  }
+                                  },
+                                  "from_glob": true
                                 },
                                 {
                                   "string": {
@@ -655,7 +659,8 @@
                                         }
                                       }
                                     }
-                                  }
+                                  },
+                                  "from_glob": true
                                 }
                               ]
                             }
@@ -820,7 +825,8 @@
                                   }
                                 }
                               }
-                            }
+                            },
+                            "from_glob": true
                           },
                           {
                             "string": {
@@ -935,7 +941,8 @@
                                   }
                                 }
                               }
-                            }
+                            },
+                            "from_glob": true
                           },
                           {
                             "string": {
@@ -1050,7 +1057,8 @@
                                   }
                                 }
                               }
-                            }
+                            },
+                            "from_glob": true
                           },
                           {
                             "string": {
@@ -1169,7 +1177,8 @@
                                   }
                                 }
                               }
-                            }
+                            },
+                            "from_glob": true
                           },
                           {
                             "string": {
@@ -1288,7 +1297,8 @@
                                   }
                                 }
                               }
-                            }
+                            },
+                            "from_glob": true
                           }
                         ]
                       }
@@ -1345,7 +1355,8 @@
                           "primary": {},
                           "value": {}
                         }
-                      }
+                      },
+                      "from_glob": false
                     }
                   ]
                 }
@@ -1497,7 +1508,8 @@
                       }
                     }
                   }
-                }
+                },
+                "from_glob": false
               },
               {
                 "string": {
@@ -1655,7 +1667,8 @@
                       }
                     }
                   }
-                }
+                },
+                "from_glob": true
               }
             ]
           }
@@ -1836,7 +1849,8 @@
                 }
               }
             }
-          }
+          },
+          "from_glob": false
         },
         {
           "string": {
@@ -1994,7 +2008,8 @@
                 }
               }
             }
-          }
+          },
+          "from_glob": true
         }
       ]
     }

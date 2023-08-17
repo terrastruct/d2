@@ -52,7 +52,8 @@
               "primary": {},
               "value": {}
             }
-          }
+          },
+          "from_glob": false
         }
       ]
     },
@@ -163,7 +164,8 @@
                                   }
                                 }
                               }
-                            }
+                            },
+                            "from_glob": false
                           }
                         ]
                       }
@@ -252,7 +254,8 @@
                             }
                           }
                         }
-                      }
+                      },
+                      "from_glob": false
                     }
                   ]
                 }
@@ -359,7 +362,8 @@
                       }
                     }
                   }
-                }
+                },
+                "from_glob": false
               }
             ]
           }
@@ -495,7 +499,8 @@
                 }
               }
             }
-          }
+          },
+          "from_glob": false
         }
       ]
     }

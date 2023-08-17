@@ -52,7 +52,8 @@
               "primary": {},
               "value": {}
             }
-          }
+          },
+          "from_glob": false
         }
       ]
     },
@@ -173,7 +174,8 @@
               "primary": {},
               "value": {}
             }
-          }
+          },
+          "from_glob": true
         },
         {
           "string": {
@@ -289,7 +291,8 @@
               "primary": {},
               "value": {}
             }
-          }
+          },
+          "from_glob": true
         },
         {
           "string": {
@@ -405,7 +408,8 @@
               "primary": {},
               "value": {}
             }
-          }
+          },
+          "from_glob": true
         }
       ]
     },
@@ -461,7 +465,8 @@
               "primary": {},
               "value": {}
             }
-          }
+          },
+          "from_glob": false
         }
       ]
     },
@@ -517,7 +522,8 @@
               "primary": {},
               "value": {}
             }
-          }
+          },
+          "from_glob": false
         }
       ]
     }
@@ -626,7 +632,8 @@
               "primary": {},
               "value": {}
             }
-          }
+          },
+          "from_glob": false
         }
       ]
     },
@@ -733,7 +740,8 @@
               "primary": {},
               "value": {}
             }
-          }
+          },
+          "from_glob": false
         }
       ]
     },
@@ -840,7 +848,8 @@
               "primary": {},
               "value": {}
             }
-          }
+          },
+          "from_glob": false
         }
       ]
     }

@@ -322,21 +322,21 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 	}
 	for _, fr := range f.References {
 		if fr.Primary() {
-			if fr.Context.Key.Value.Map != nil {
-				obj.Map = fr.Context.Key.Value.Map
+			if fr.Context_.Key.Value.Map != nil {
+				obj.Map = fr.Context_.Key.Value.Map
 			}
 		}
 		r := d2graph.Reference{
 			Key:          fr.KeyPath,
 			KeyPathIndex: fr.KeyPathIndex(),
 
-			MapKey:          fr.Context.Key,
-			MapKeyEdgeIndex: fr.Context.EdgeIndex(),
-			Scope:           fr.Context.Scope,
-			ScopeAST:        fr.Context.ScopeAST,
+			MapKey:          fr.Context_.Key,
+			MapKeyEdgeIndex: fr.Context_.EdgeIndex(),
+			Scope:           fr.Context_.Scope,
+			ScopeAST:        fr.Context_.ScopeAST,
 		}
-		if fr.Context.ScopeMap != nil && !d2ir.IsVar(fr.Context.ScopeMap) {
-			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(fr.Context.ScopeMap))
+		if fr.Context_.ScopeMap != nil && !d2ir.IsVar(fr.Context_.ScopeMap) {
+			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(fr.Context_.ScopeMap))
 			r.ScopeObj = obj.Graph.Root.EnsureChild(scopeObjIDA)
 		}
 		obj.References = append(obj.References, r)
@@ -725,14 +725,14 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 	edge.Label.MapKey = e.LastPrimaryKey()
 	for _, er := range e.References {
 		r := d2graph.EdgeReference{
-			Edge:            er.Context.Edge,
-			MapKey:          er.Context.Key,
-			MapKeyEdgeIndex: er.Context.EdgeIndex(),
-			Scope:           er.Context.Scope,
-			ScopeAST:        er.Context.ScopeAST,
+			Edge:            er.Context_.Edge,
+			MapKey:          er.Context_.Key,
+			MapKeyEdgeIndex: er.Context_.EdgeIndex(),
+			Scope:           er.Context_.Scope,
+			ScopeAST:        er.Context_.ScopeAST,
 		}
-		if er.Context.ScopeMap != nil && !d2ir.IsVar(er.Context.ScopeMap) {
-			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(er.Context.ScopeMap))
+		if er.Context_.ScopeMap != nil && !d2ir.IsVar(er.Context_.ScopeMap) {
+			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(er.Context_.ScopeMap))
 			r.ScopeObj = edge.Src.Graph.Root.EnsureChild(scopeObjIDA)
 		}
 		edge.References = append(edge.References, r)

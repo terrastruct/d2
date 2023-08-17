@@ -39,7 +39,8 @@ type compiler struct {
 	// Used to prevent field globs causing infinite loops.
 	globRefContextStack []*RefContext
 	// Used to check whether ampersands are allowed in the current map.
-	mapRefContextStack []*RefContext
+	mapRefContextStack   []*RefContext
+	lazyGlobBeingApplied bool
 }
 
 type CompileOptions struct {
@@ -65,8 +66,8 @@ func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, error) {
 	}
 	m := &Map{}
 	m.initRoot()
-	m.parent.(*Field).References[0].Context.Scope = ast
-	m.parent.(*Field).References[0].Context.ScopeAST = ast
+	m.parent.(*Field).References[0].Context_.Scope = ast
+	m.parent.(*Field).References[0].Context_.ScopeAST = ast
 
 	c.pushImportStack(&d2ast.Import{
 		Path: []*d2ast.StringBox{d2ast.RawStringBox(ast.GetRange().Path, true)},
@@ -99,7 +100,7 @@ func (c *compiler) overlayClasses(m *Map) {
 
 	for _, lf := range layers.Fields {
 		if lf.Map() == nil || lf.Primary() != nil {
-			c.errorf(lf.References[0].Context.Key, "invalid layer")
+			c.errorf(lf.References[0].Context_.Key, "invalid layer")
 			continue
 		}
 		l := lf.Map()
@@ -353,7 +354,7 @@ func (c *compiler) resolveSubstitution(vars *Map, substitution *d2ast.Substituti
 
 func (c *compiler) overlay(base *Map, f *Field) {
 	if f.Map() == nil || f.Primary() != nil {
-		c.errorf(f.References[0].Context.Key, "invalid %s", NodeBoardKind(f))
+		c.errorf(f.References[0].Context_.Key, "invalid %s", NodeBoardKind(f))
 		return
 	}
 	base = base.CopyBase(f)
@@ -512,7 +513,9 @@ func (c *compiler) compileKey(refctx *RefContext) {
 	if oldFields != refctx.ScopeMap.FieldCountRecursive() || oldEdges != refctx.ScopeMap.EdgeCountRecursive() {
 		for _, gctx2 := range c.globContexts() {
 			// println(d2format.Format(gctx2.refctx.Key), d2format.Format(refctx.Key))
+			c.lazyGlobBeingApplied = true
 			c.compileKey(gctx2.refctx)
+			c.lazyGlobBeingApplied = false
 		}
 	}
 }
@@ -600,6 +603,9 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 	}
 
 	if refctx.Key.Primary.Unbox() != nil {
+		if c.ignoreLazyGlob(f) {
+			return
+		}
 		f.Primary_ = &Scalar{
 			parent: f,
 			Value:  refctx.Key.Primary.Unbox(),
@@ -686,6 +692,9 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 			}
 		}
 	} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
+		if c.ignoreLazyGlob(f) {
+			return
+		}
 		f.Primary_ = &Scalar{
 			parent: f,
 			Value:  refctx.Key.Value.ScalarBox().Unbox(),
@@ -695,6 +704,17 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 			c.compileLink(f, refctx)
 		}
 	}
+}
+
+// Whether the current lazy glob being applied should not override the field
+// if already set by a non glob key.
+func (c *compiler) ignoreLazyGlob(n Node) bool {
+	if c.lazyGlobBeingApplied && n.Primary() != nil {
+		if ref := n.SecondLastPrimaryRef(); ref != nil && !ref.DueToGlob() {
+			return true
+		}
+	}
+	return false
 }
 
 func (c *compiler) updateLinks(m *Map) {
@@ -841,10 +861,10 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 			}
 			for _, e := range ea {
 				e.References = append(e.References, &EdgeReference{
-					Context: refctx,
+					Context_: refctx,
 				})
-				refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Src, refctx)
-				refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Dst, refctx)
+				refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Src, refctx, c)
+				refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Dst, refctx, c)
 			}
 		} else {
 			var err error
@@ -865,6 +885,9 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 				c.compileField(e.Map_, refctx.Key.EdgeKey, refctx)
 			} else {
 				if refctx.Key.Primary.Unbox() != nil {
+					if c.ignoreLazyGlob(e) {
+						return
+					}
 					e.Primary_ = &Scalar{
 						parent: e,
 						Value:  refctx.Key.Primary.Unbox(),
@@ -883,6 +906,9 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 					c.compileMap(e.Map_, refctx.Key.Value.Map, refctx.ScopeAST)
 					c.mapRefContextStack = c.mapRefContextStack[:len(c.mapRefContextStack)-1]
 				} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
+					if c.ignoreLazyGlob(e) {
+						return
+					}
 					e.Primary_ = &Scalar{
 						parent: e,
 						Value:  refctx.Key.Value.ScalarBox().Unbox(),

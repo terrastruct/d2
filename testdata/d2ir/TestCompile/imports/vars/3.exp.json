@@ -69,7 +69,8 @@
                       }
                     }
                   }
-                }
+                },
+                "from_glob": false
               },
               {
                 "string": {
@@ -126,7 +127,8 @@
                       }
                     }
                   }
-                }
+                },
+                "from_glob": false
               }
             ]
           }
@@ -218,7 +220,8 @@
                 }
               }
             }
-          }
+          },
+          "from_glob": false
         },
         {
           "string": {
@@ -304,7 +307,8 @@
                 }
               }
             }
-          }
+          },
+          "from_glob": false
         }
       ]
     },
@@ -392,7 +396,8 @@
                 }
               }
             }
-          }
+          },
+          "from_glob": false
         }
       ]
     }

@@ -170,7 +170,8 @@
                     "primary": {},
                     "value": {}
                   }
-                }
+                },
+                "from_glob": false
               }
             ]
           }
@@ -341,7 +342,8 @@
               "primary": {},
               "value": {}
             }
-          }
+          },
+          "from_glob": false
         }
       ]
     },
@@ -515,7 +517,8 @@
                     "primary": {},
                     "value": {}
                   }
-                }
+                },
+                "from_glob": false
               }
             ]
           }
@@ -686,7 +689,8 @@
               "primary": {},
               "value": {}
             }
-          }
+          },
+          "from_glob": false
         }
       ]
     }
@@ -835,7 +839,8 @@
               "primary": {},
               "value": {}
             }
-          }
+          },
+          "from_glob": false
         }
       ]
     }
