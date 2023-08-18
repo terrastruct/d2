@@ -97,7 +97,7 @@ x -> y
 			},
 		},
 		{
-			name: "label-filter",
+			name: "label-filter/1",
 			run: func(t testing.TB) {
 				m, err := compile(t, `
 x
@@ -127,6 +127,27 @@ a -> z: delta
 				assertQuery(t, m, 0, 0, 0.1, "a.style.opacity")
 				assertQuery(t, m, 0, 0, 0.1, "z.style.opacity")
 				assertQuery(t, m, 0, 0, "diamond", "(a -> z).target-arrowhead.shape")
+			},
+		},
+		{
+			name: "label-filter/2",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+(* -> *)[*].style.opacity: 0.1
+
+(* -> *)[*]: {
+  &label: hi
+  style.opacity: 1
+}
+
+x -> y: hi
+x -> y
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 6, 2, nil, "")
+				assertQuery(t, m, 2, 0, "hi", "(x -> y)[0]")
+				assertQuery(t, m, 0, 0, 1, "(x -> y)[0].style.opacity")
+				assertQuery(t, m, 0, 0, 0.1, "(x -> y)[1].style.opacity")
 			},
 		},
 	}

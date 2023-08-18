@@ -1237,10 +1237,14 @@ func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, sr
 
 	if gctx != nil {
 		var ks string
+		// We only ever want to create one of the edge per glob so we filter without the edge index.
+		e2 := e.Copy(e.Parent()).(*Edge)
+		e2.ID = e2.ID.Copy()
+		e2.ID.Index = nil
 		if refctx.Key.HasTripleGlob() {
-			ks = d2format.Format(d2ast.MakeKeyPath(IDA(e)))
+			ks = d2format.Format(d2ast.MakeKeyPath(IDA(e2)))
 		} else {
-			ks = d2format.Format(d2ast.MakeKeyPath(BoardIDA(e)))
+			ks = d2format.Format(d2ast.MakeKeyPath(BoardIDA(e2)))
 		}
 		if _, ok := gctx.appliedEdges[ks]; ok {
 			return nil, nil
@@ -1304,6 +1308,11 @@ func (e *Edge) AST() d2ast.Node {
 
 func (e *Edge) IDString() string {
 	ast := e.AST().(*d2ast.Key)
+	if e.ID.Index != nil {
+		ast.EdgeIndex = &d2ast.EdgeIndex{
+			Int: e.ID.Index,
+		}
+	}
 	ast.Primary = d2ast.ScalarBox{}
 	ast.Value = d2ast.ValueBox{}
 	return d2format.Format(ast)
