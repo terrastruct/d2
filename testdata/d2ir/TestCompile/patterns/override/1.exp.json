@@ -136,7 +136,8 @@
                           }
                         }
                       },
-                      "from_glob": true
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": true
                     },
                     {
                       "string": {
@@ -252,7 +253,8 @@
                           }
                         }
                       },
-                      "from_glob": true
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": true
                     },
                     {
                       "string": {
@@ -368,7 +370,8 @@
                           }
                         }
                       },
-                      "from_glob": true
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": true
                     }
                   ]
                 }
@@ -490,7 +493,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               },
               {
                 "string": {
@@ -606,7 +610,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               },
               {
                 "string": {
@@ -722,7 +727,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               }
             ]
           }
@@ -780,7 +786,8 @@
               "value": {}
             }
           },
-          "from_glob": false
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         }
       ]
     }

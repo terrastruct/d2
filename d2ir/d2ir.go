@@ -13,6 +13,7 @@ import (
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2parser"
+	"oss.terrastruct.com/d2/d2target"
 )
 
 // Most errors returned by a node should be created with d2parser.Errorf
@@ -30,7 +31,6 @@ type Node interface {
 
 	LastRef() Reference
 	LastPrimaryRef() Reference
-	SecondLastPrimaryRef() Reference
 	LastPrimaryKey() *d2ast.Key
 }
 
@@ -116,10 +116,6 @@ func (n *Scalar) LastPrimaryRef() Reference { return parentPrimaryRef(n) }
 func (n *Map) LastPrimaryRef() Reference    { return parentPrimaryRef(n) }
 func (n *Array) LastPrimaryRef() Reference  { return parentPrimaryRef(n) }
 
-func (n *Scalar) SecondLastPrimaryRef() Reference { return parentSecondPrimaryRef(n) }
-func (n *Map) SecondLastPrimaryRef() Reference    { return parentSecondPrimaryRef(n) }
-func (n *Array) SecondLastPrimaryRef() Reference  { return parentSecondPrimaryRef(n) }
-
 func (n *Scalar) LastPrimaryKey() *d2ast.Key { return parentPrimaryKey(n) }
 func (n *Map) LastPrimaryKey() *d2ast.Key    { return parentPrimaryKey(n) }
 func (n *Array) LastPrimaryKey() *d2ast.Key  { return parentPrimaryKey(n) }
@@ -132,6 +128,7 @@ type Reference interface {
 	Context() *RefContext
 	// Result of a glob in Context or from above.
 	DueToGlob() bool
+	DueToLazyGlob() bool
 }
 
 var _ Reference = &FieldReference{}
@@ -143,6 +140,8 @@ func (r *FieldReference) Context() *RefContext { return r.Context_ }
 func (r *EdgeReference) Context() *RefContext  { return r.Context_ }
 func (r *FieldReference) DueToGlob() bool      { return r.DueToGlob_ }
 func (r *EdgeReference) DueToGlob() bool       { return r.DueToGlob_ }
+func (r *FieldReference) DueToLazyGlob() bool  { return r.DueToLazyGlob_ }
+func (r *EdgeReference) DueToLazyGlob() bool   { return r.DueToLazyGlob_ }
 
 type Scalar struct {
 	parent Node
@@ -318,21 +317,7 @@ func (f *Field) Copy(newParent Node) Node {
 
 func (f *Field) LastPrimaryRef() Reference {
 	for i := len(f.References) - 1; i >= 0; i-- {
-		if f.References[i].Primary() {
-			return f.References[i]
-		}
-	}
-	return nil
-}
-
-func (f *Field) SecondLastPrimaryRef() Reference {
-	second := false
-	for i := len(f.References) - 1; i >= 0; i-- {
-		if f.References[i].Primary() {
-			if !second {
-				second = true
-				continue
-			}
+		if f.References[i].Primary() && !f.References[i].DueToLazyGlob() {
 			return f.References[i]
 		}
 	}
@@ -489,22 +474,7 @@ func (e *Edge) Copy(newParent Node) Node {
 func (e *Edge) LastPrimaryRef() Reference {
 	for i := len(e.References) - 1; i >= 0; i-- {
 		fr := e.References[i]
-		if fr.Context_.Key.EdgeKey == nil {
-			return fr
-		}
-	}
-	return nil
-}
-
-func (e *Edge) SecondLastPrimaryRef() Reference {
-	second := false
-	for i := len(e.References) - 1; i >= 0; i-- {
-		fr := e.References[i]
-		if fr.Context_.Key.EdgeKey == nil {
-			if !second {
-				second = true
-				continue
-			}
+		if fr.Context_.Key.EdgeKey == nil && !fr.DueToLazyGlob() {
 			return fr
 		}
 	}
@@ -544,8 +514,9 @@ type FieldReference struct {
 	String  d2ast.String   `json:"string"`
 	KeyPath *d2ast.KeyPath `json:"key_path"`
 
-	Context_   *RefContext `json:"context"`
-	DueToGlob_ bool        `json:"from_glob"`
+	Context_       *RefContext `json:"context"`
+	DueToGlob_     bool        `json:"due_to_glob"`
+	DueToLazyGlob_ bool        `json:"due_to_lazy_glob"`
 }
 
 // Primary returns true if the Value in Context.Key.Value corresponds to the Field
@@ -585,8 +556,9 @@ func (fr *FieldReference) AST() d2ast.Node {
 }
 
 type EdgeReference struct {
-	Context_   *RefContext `json:"context"`
-	DueToGlob_ bool        `json:"from_glob"`
+	Context_       *RefContext `json:"context"`
+	DueToGlob_     bool        `json:"due_to_glob"`
+	DueToLazyGlob_ bool        `json:"due_to_lazy_glob"`
 }
 
 func (er *EdgeReference) AST() d2ast.Node {
@@ -757,13 +729,13 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 			} else {
 				ks = d2format.Format(d2ast.MakeKeyPath(BoardIDA(f)))
 			}
-			// For globs with edges, we only ignore duplicate fields if the glob is not at the terminal of the keypath, the glob is on the common key or the glob is on the edge key.
 			if !kp.HasGlob() {
 				if !passthrough {
 					gctx.appliedFields[ks] = struct{}{}
 				}
 				return true
 			}
+			// For globs with edges, we only ignore duplicate fields if the glob is not at the terminal of the keypath, the glob is on the common key or the glob is on the edge key. And only for globs with edge indexes.
 			lastEl := kp.Path[len(kp.Path)-1]
 			if len(refctx.Key.Edges) == 0 || lastEl.UnquotedString == nil || len(lastEl.UnquotedString.Pattern) == 0 || kp == refctx.Key.Key || kp == refctx.Key.EdgeKey {
 				if _, ok := gctx.appliedFields[ks]; ok {
@@ -860,10 +832,11 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 		// Don't add references for fake common KeyPath from trimCommon in CreateEdge.
 		if refctx != nil {
 			f.References = append(f.References, &FieldReference{
-				String:     kp.Path[i].Unbox(),
-				KeyPath:    kp,
-				Context_:   refctx,
-				DueToGlob_: len(c.globRefContextStack) > 0,
+				String:         kp.Path[i].Unbox(),
+				KeyPath:        kp,
+				Context_:       refctx,
+				DueToGlob_:     len(c.globRefContextStack) > 0,
+				DueToLazyGlob_: c.lazyGlobBeingApplied,
 			})
 		}
 
@@ -888,17 +861,39 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 	if !create {
 		return nil
 	}
+	shape := ParentShape(m)
+	if _, ok := d2graph.ReservedKeywords[strings.ToLower(head)]; !ok && len(c.globRefContextStack) > 0 {
+		if shape == d2target.ShapeClass || shape == d2target.ShapeSQLTable {
+			return nil
+		}
+	}
 	f := &Field{
 		parent: m,
 		Name:   head,
 	}
+	defer func() {
+		if i < kp.FirstGlob() {
+			return
+		}
+		for _, grefctx := range c.globRefContextStack {
+			var ks string
+			if grefctx.Key.HasTripleGlob() {
+				ks = d2format.Format(d2ast.MakeKeyPath(IDA(f)))
+			} else {
+				ks = d2format.Format(d2ast.MakeKeyPath(BoardIDA(f)))
+			}
+			gctx2 := c.getGlobContext(grefctx)
+			gctx2.appliedFields[ks] = struct{}{}
+		}
+	}()
 	// Don't add references for fake common KeyPath from trimCommon in CreateEdge.
 	if refctx != nil {
 		f.References = append(f.References, &FieldReference{
-			String:     kp.Path[i].Unbox(),
-			KeyPath:    kp,
-			Context_:   refctx,
-			DueToGlob_: len(c.globRefContextStack) > 0,
+			String:         kp.Path[i].Unbox(),
+			KeyPath:        kp,
+			Context_:       refctx,
+			DueToGlob_:     len(c.globRefContextStack) > 0,
+			DueToLazyGlob_: c.lazyGlobBeingApplied,
 		})
 	}
 	m.Fields = append(m.Fields, f)
@@ -1198,7 +1193,7 @@ func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, gctx *globContext, c *
 			eid2.SrcPath = RelIDA(m, src)
 			eid2.DstPath = RelIDA(m, dst)
 
-			e, err := m.createEdge2(eid2, refctx, gctx, src, dst)
+			e, err := m.createEdge2(eid2, refctx, gctx, c, src, dst)
 			if err != nil {
 				return err
 			}
@@ -1210,7 +1205,7 @@ func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, gctx *globContext, c *
 	return nil
 }
 
-func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, src, dst *Field) (*Edge, error) {
+func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, c *compiler, src, dst *Field) (*Edge, error) {
 	if NodeBoardKind(src) != "" {
 		return nil, d2parser.Errorf(refctx.Edge.Src, "cannot create edges between boards")
 	}
@@ -1231,7 +1226,9 @@ func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, sr
 		parent: m,
 		ID:     eid,
 		References: []*EdgeReference{{
-			Context_: refctx,
+			Context_:       refctx,
+			DueToGlob_:     len(c.globRefContextStack) > 0,
+			DueToLazyGlob_: c.lazyGlobBeingApplied,
 		}},
 	}
 
@@ -1356,10 +1353,11 @@ func (m *Map) appendFieldReferences(i int, kp *d2ast.KeyPath, refctx *RefContext
 	}
 
 	f.References = append(f.References, &FieldReference{
-		String:     sb.Unbox(),
-		KeyPath:    kp,
-		Context_:   refctx,
-		DueToGlob_: len(c.globRefContextStack) > 0,
+		String:         sb.Unbox(),
+		KeyPath:        kp,
+		Context_:       refctx,
+		DueToGlob_:     len(c.globRefContextStack) > 0,
+		DueToLazyGlob_: c.lazyGlobBeingApplied,
 	})
 	if i+1 == len(kp.Path) {
 		return
@@ -1439,6 +1437,24 @@ func ParentEdge(n Node) *Edge {
 	}
 }
 
+func ParentShape(n Node) string {
+	for {
+		f, ok := n.(*Field)
+		if ok {
+			if f.Map() != nil {
+				shapef := f.Map().GetField("shape")
+				if shapef != nil && shapef.Primary() != nil {
+					return shapef.Primary().Value.ScalarString()
+				}
+			}
+		}
+		n = n.Parent()
+		if n == nil {
+			return ""
+		}
+	}
+}
+
 func countUnderscores(p []string) int {
 	for i, el := range p {
 		if el != "_" {
@@ -1489,18 +1505,6 @@ func parentPrimaryRef(n Node) Reference {
 	e := ParentEdge(n)
 	if e != nil {
 		return e.LastPrimaryRef()
-	}
-	return nil
-}
-
-func parentSecondPrimaryRef(n Node) Reference {
-	f := ParentField(n)
-	if f != nil {
-		return f.SecondLastPrimaryRef()
-	}
-	e := ParentEdge(n)
-	if e != nil {
-		return e.SecondLastPrimaryRef()
 	}
 	return nil
 }

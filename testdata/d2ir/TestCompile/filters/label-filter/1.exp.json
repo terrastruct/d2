@@ -124,7 +124,8 @@
                           }
                         }
                       },
-                      "from_glob": true
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": false
                     },
                     {
                       "string": {
@@ -204,223 +205,8 @@
                           }
                         }
                       },
-                      "from_glob": true
-                    },
-                    {
-                      "string": {
-                        "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                        "value": [
-                          {
-                            "string": "opacity",
-                            "raw_string": "opacity"
-                          }
-                        ]
-                      },
-                      "key_path": {
-                        "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:15:40",
-                        "path": [
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:1:26",
-                              "value": [
-                                {
-                                  "string": "*",
-                                  "raw_string": "*"
-                                }
-                              ],
-                              "pattern": [
-                                "*"
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
-                              "value": [
-                                {
-                                  "string": "style",
-                                  "raw_string": "style"
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                              "value": [
-                                {
-                                  "string": "opacity",
-                                  "raw_string": "opacity"
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      },
-                      "context": {
-                        "edge": null,
-                        "key": {
-                          "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:20:45",
-                          "key": {
-                            "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:15:40",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:1:26",
-                                  "value": [
-                                    {
-                                      "string": "*",
-                                      "raw_string": "*"
-                                    }
-                                  ],
-                                  "pattern": [
-                                    "*"
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
-                                  "value": [
-                                    {
-                                      "string": "style",
-                                      "raw_string": "style"
-                                    }
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                                  "value": [
-                                    {
-                                      "string": "opacity",
-                                      "raw_string": "opacity"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "number": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:17:42-6:20:45",
-                              "raw": "0.1",
-                              "value": "1/10"
-                            }
-                          }
-                        }
-                      },
-                      "from_glob": true
-                    },
-                    {
-                      "string": {
-                        "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                        "value": [
-                          {
-                            "string": "opacity",
-                            "raw_string": "opacity"
-                          }
-                        ]
-                      },
-                      "key_path": {
-                        "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:15:40",
-                        "path": [
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:1:26",
-                              "value": [
-                                {
-                                  "string": "*",
-                                  "raw_string": "*"
-                                }
-                              ],
-                              "pattern": [
-                                "*"
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
-                              "value": [
-                                {
-                                  "string": "style",
-                                  "raw_string": "style"
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                              "value": [
-                                {
-                                  "string": "opacity",
-                                  "raw_string": "opacity"
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      },
-                      "context": {
-                        "edge": null,
-                        "key": {
-                          "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:20:45",
-                          "key": {
-                            "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:15:40",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:1:26",
-                                  "value": [
-                                    {
-                                      "string": "*",
-                                      "raw_string": "*"
-                                    }
-                                  ],
-                                  "pattern": [
-                                    "*"
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
-                                  "value": [
-                                    {
-                                      "string": "style",
-                                      "raw_string": "style"
-                                    }
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                                  "value": [
-                                    {
-                                      "string": "opacity",
-                                      "raw_string": "opacity"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "number": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:17:42-6:20:45",
-                              "raw": "0.1",
-                              "value": "1/10"
-                            }
-                          }
-                        }
-                      },
-                      "from_glob": true
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": false
                     }
                   ]
                 }
@@ -534,7 +320,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
               },
               {
                 "string": {
@@ -614,7 +401,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
               },
               {
                 "string": {
@@ -722,7 +510,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               },
               {
                 "string": {
@@ -830,7 +619,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               }
             ]
           }
@@ -888,7 +678,8 @@
               "value": {}
             }
           },
-          "from_glob": false
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         }
       ]
     },
@@ -1016,223 +807,8 @@
                           }
                         }
                       },
-                      "from_glob": true
-                    },
-                    {
-                      "string": {
-                        "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                        "value": [
-                          {
-                            "string": "opacity",
-                            "raw_string": "opacity"
-                          }
-                        ]
-                      },
-                      "key_path": {
-                        "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:15:40",
-                        "path": [
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:1:26",
-                              "value": [
-                                {
-                                  "string": "*",
-                                  "raw_string": "*"
-                                }
-                              ],
-                              "pattern": [
-                                "*"
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
-                              "value": [
-                                {
-                                  "string": "style",
-                                  "raw_string": "style"
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                              "value": [
-                                {
-                                  "string": "opacity",
-                                  "raw_string": "opacity"
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      },
-                      "context": {
-                        "edge": null,
-                        "key": {
-                          "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:20:45",
-                          "key": {
-                            "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:15:40",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:1:26",
-                                  "value": [
-                                    {
-                                      "string": "*",
-                                      "raw_string": "*"
-                                    }
-                                  ],
-                                  "pattern": [
-                                    "*"
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
-                                  "value": [
-                                    {
-                                      "string": "style",
-                                      "raw_string": "style"
-                                    }
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                                  "value": [
-                                    {
-                                      "string": "opacity",
-                                      "raw_string": "opacity"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "number": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:17:42-6:20:45",
-                              "raw": "0.1",
-                              "value": "1/10"
-                            }
-                          }
-                        }
-                      },
-                      "from_glob": true
-                    },
-                    {
-                      "string": {
-                        "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                        "value": [
-                          {
-                            "string": "opacity",
-                            "raw_string": "opacity"
-                          }
-                        ]
-                      },
-                      "key_path": {
-                        "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:15:40",
-                        "path": [
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:1:26",
-                              "value": [
-                                {
-                                  "string": "*",
-                                  "raw_string": "*"
-                                }
-                              ],
-                              "pattern": [
-                                "*"
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
-                              "value": [
-                                {
-                                  "string": "style",
-                                  "raw_string": "style"
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                              "value": [
-                                {
-                                  "string": "opacity",
-                                  "raw_string": "opacity"
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      },
-                      "context": {
-                        "edge": null,
-                        "key": {
-                          "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:20:45",
-                          "key": {
-                            "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:15:40",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:1:26",
-                                  "value": [
-                                    {
-                                      "string": "*",
-                                      "raw_string": "*"
-                                    }
-                                  ],
-                                  "pattern": [
-                                    "*"
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
-                                  "value": [
-                                    {
-                                      "string": "style",
-                                      "raw_string": "style"
-                                    }
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                                  "value": [
-                                    {
-                                      "string": "opacity",
-                                      "raw_string": "opacity"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "number": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:17:42-6:20:45",
-                              "raw": "0.1",
-                              "value": "1/10"
-                            }
-                          }
-                        }
-                      },
-                      "from_glob": true
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": false
                     }
                   ]
                 }
@@ -1346,7 +922,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
               },
               {
                 "string": {
@@ -1454,7 +1031,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               },
               {
                 "string": {
@@ -1562,7 +1140,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               }
             ]
           }
@@ -1620,7 +1199,8 @@
               "value": {}
             }
           },
-          "from_glob": false
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         }
       ]
     },
@@ -1759,7 +1339,8 @@
                           }
                         }
                       },
-                      "from_glob": true
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": false
                     },
                     {
                       "string": {
@@ -1839,223 +1420,8 @@
                           }
                         }
                       },
-                      "from_glob": true
-                    },
-                    {
-                      "string": {
-                        "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                        "value": [
-                          {
-                            "string": "opacity",
-                            "raw_string": "opacity"
-                          }
-                        ]
-                      },
-                      "key_path": {
-                        "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:15:40",
-                        "path": [
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:1:26",
-                              "value": [
-                                {
-                                  "string": "*",
-                                  "raw_string": "*"
-                                }
-                              ],
-                              "pattern": [
-                                "*"
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
-                              "value": [
-                                {
-                                  "string": "style",
-                                  "raw_string": "style"
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                              "value": [
-                                {
-                                  "string": "opacity",
-                                  "raw_string": "opacity"
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      },
-                      "context": {
-                        "edge": null,
-                        "key": {
-                          "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:20:45",
-                          "key": {
-                            "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:15:40",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:1:26",
-                                  "value": [
-                                    {
-                                      "string": "*",
-                                      "raw_string": "*"
-                                    }
-                                  ],
-                                  "pattern": [
-                                    "*"
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
-                                  "value": [
-                                    {
-                                      "string": "style",
-                                      "raw_string": "style"
-                                    }
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                                  "value": [
-                                    {
-                                      "string": "opacity",
-                                      "raw_string": "opacity"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "number": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:17:42-6:20:45",
-                              "raw": "0.1",
-                              "value": "1/10"
-                            }
-                          }
-                        }
-                      },
-                      "from_glob": true
-                    },
-                    {
-                      "string": {
-                        "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                        "value": [
-                          {
-                            "string": "opacity",
-                            "raw_string": "opacity"
-                          }
-                        ]
-                      },
-                      "key_path": {
-                        "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:15:40",
-                        "path": [
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:1:26",
-                              "value": [
-                                {
-                                  "string": "*",
-                                  "raw_string": "*"
-                                }
-                              ],
-                              "pattern": [
-                                "*"
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
-                              "value": [
-                                {
-                                  "string": "style",
-                                  "raw_string": "style"
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                              "value": [
-                                {
-                                  "string": "opacity",
-                                  "raw_string": "opacity"
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      },
-                      "context": {
-                        "edge": null,
-                        "key": {
-                          "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:20:45",
-                          "key": {
-                            "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:15:40",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:1:26",
-                                  "value": [
-                                    {
-                                      "string": "*",
-                                      "raw_string": "*"
-                                    }
-                                  ],
-                                  "pattern": [
-                                    "*"
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
-                                  "value": [
-                                    {
-                                      "string": "style",
-                                      "raw_string": "style"
-                                    }
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                                  "value": [
-                                    {
-                                      "string": "opacity",
-                                      "raw_string": "opacity"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "number": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:17:42-6:20:45",
-                              "raw": "0.1",
-                              "value": "1/10"
-                            }
-                          }
-                        }
-                      },
-                      "from_glob": true
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": false
                     }
                   ]
                 }
@@ -2169,7 +1535,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
               },
               {
                 "string": {
@@ -2249,7 +1616,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
               },
               {
                 "string": {
@@ -2357,7 +1725,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               },
               {
                 "string": {
@@ -2465,7 +1834,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               }
             ]
           }
@@ -2533,7 +1903,8 @@
               }
             }
           },
-          "from_glob": false
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         }
       ]
     },
@@ -2661,223 +2032,8 @@
                           }
                         }
                       },
-                      "from_glob": true
-                    },
-                    {
-                      "string": {
-                        "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                        "value": [
-                          {
-                            "string": "opacity",
-                            "raw_string": "opacity"
-                          }
-                        ]
-                      },
-                      "key_path": {
-                        "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:15:40",
-                        "path": [
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:1:26",
-                              "value": [
-                                {
-                                  "string": "*",
-                                  "raw_string": "*"
-                                }
-                              ],
-                              "pattern": [
-                                "*"
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
-                              "value": [
-                                {
-                                  "string": "style",
-                                  "raw_string": "style"
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                              "value": [
-                                {
-                                  "string": "opacity",
-                                  "raw_string": "opacity"
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      },
-                      "context": {
-                        "edge": null,
-                        "key": {
-                          "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:20:45",
-                          "key": {
-                            "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:15:40",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:1:26",
-                                  "value": [
-                                    {
-                                      "string": "*",
-                                      "raw_string": "*"
-                                    }
-                                  ],
-                                  "pattern": [
-                                    "*"
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
-                                  "value": [
-                                    {
-                                      "string": "style",
-                                      "raw_string": "style"
-                                    }
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                                  "value": [
-                                    {
-                                      "string": "opacity",
-                                      "raw_string": "opacity"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "number": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:17:42-6:20:45",
-                              "raw": "0.1",
-                              "value": "1/10"
-                            }
-                          }
-                        }
-                      },
-                      "from_glob": true
-                    },
-                    {
-                      "string": {
-                        "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                        "value": [
-                          {
-                            "string": "opacity",
-                            "raw_string": "opacity"
-                          }
-                        ]
-                      },
-                      "key_path": {
-                        "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:15:40",
-                        "path": [
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:1:26",
-                              "value": [
-                                {
-                                  "string": "*",
-                                  "raw_string": "*"
-                                }
-                              ],
-                              "pattern": [
-                                "*"
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
-                              "value": [
-                                {
-                                  "string": "style",
-                                  "raw_string": "style"
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                              "value": [
-                                {
-                                  "string": "opacity",
-                                  "raw_string": "opacity"
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      },
-                      "context": {
-                        "edge": null,
-                        "key": {
-                          "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:20:45",
-                          "key": {
-                            "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:15:40",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:1:26",
-                                  "value": [
-                                    {
-                                      "string": "*",
-                                      "raw_string": "*"
-                                    }
-                                  ],
-                                  "pattern": [
-                                    "*"
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
-                                  "value": [
-                                    {
-                                      "string": "style",
-                                      "raw_string": "style"
-                                    }
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                                  "value": [
-                                    {
-                                      "string": "opacity",
-                                      "raw_string": "opacity"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "number": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:17:42-6:20:45",
-                              "raw": "0.1",
-                              "value": "1/10"
-                            }
-                          }
-                        }
-                      },
-                      "from_glob": true
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": false
                     }
                   ]
                 }
@@ -2991,7 +2147,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
               },
               {
                 "string": {
@@ -3099,7 +2256,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               },
               {
                 "string": {
@@ -3207,7 +2365,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               }
             ]
           }
@@ -3334,7 +2493,8 @@
               }
             }
           },
-          "from_glob": false
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         }
       ]
     },
@@ -3462,223 +2622,8 @@
                           }
                         }
                       },
-                      "from_glob": true
-                    },
-                    {
-                      "string": {
-                        "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                        "value": [
-                          {
-                            "string": "opacity",
-                            "raw_string": "opacity"
-                          }
-                        ]
-                      },
-                      "key_path": {
-                        "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:15:40",
-                        "path": [
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:1:26",
-                              "value": [
-                                {
-                                  "string": "*",
-                                  "raw_string": "*"
-                                }
-                              ],
-                              "pattern": [
-                                "*"
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
-                              "value": [
-                                {
-                                  "string": "style",
-                                  "raw_string": "style"
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                              "value": [
-                                {
-                                  "string": "opacity",
-                                  "raw_string": "opacity"
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      },
-                      "context": {
-                        "edge": null,
-                        "key": {
-                          "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:20:45",
-                          "key": {
-                            "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:15:40",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:1:26",
-                                  "value": [
-                                    {
-                                      "string": "*",
-                                      "raw_string": "*"
-                                    }
-                                  ],
-                                  "pattern": [
-                                    "*"
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
-                                  "value": [
-                                    {
-                                      "string": "style",
-                                      "raw_string": "style"
-                                    }
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                                  "value": [
-                                    {
-                                      "string": "opacity",
-                                      "raw_string": "opacity"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "number": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:17:42-6:20:45",
-                              "raw": "0.1",
-                              "value": "1/10"
-                            }
-                          }
-                        }
-                      },
-                      "from_glob": true
-                    },
-                    {
-                      "string": {
-                        "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                        "value": [
-                          {
-                            "string": "opacity",
-                            "raw_string": "opacity"
-                          }
-                        ]
-                      },
-                      "key_path": {
-                        "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:15:40",
-                        "path": [
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:1:26",
-                              "value": [
-                                {
-                                  "string": "*",
-                                  "raw_string": "*"
-                                }
-                              ],
-                              "pattern": [
-                                "*"
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
-                              "value": [
-                                {
-                                  "string": "style",
-                                  "raw_string": "style"
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                              "value": [
-                                {
-                                  "string": "opacity",
-                                  "raw_string": "opacity"
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      },
-                      "context": {
-                        "edge": null,
-                        "key": {
-                          "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:20:45",
-                          "key": {
-                            "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:15:40",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:0:25-6:1:26",
-                                  "value": [
-                                    {
-                                      "string": "*",
-                                      "raw_string": "*"
-                                    }
-                                  ],
-                                  "pattern": [
-                                    "*"
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
-                                  "value": [
-                                    {
-                                      "string": "style",
-                                      "raw_string": "style"
-                                    }
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
-                                  "value": [
-                                    {
-                                      "string": "opacity",
-                                      "raw_string": "opacity"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "number": {
-                              "range": "TestCompile/filters/label-filter/1.d2,6:17:42-6:20:45",
-                              "raw": "0.1",
-                              "value": "1/10"
-                            }
-                          }
-                        }
-                      },
-                      "from_glob": true
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": false
                     }
                   ]
                 }
@@ -3792,7 +2737,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
               },
               {
                 "string": {
@@ -3900,7 +2846,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               },
               {
                 "string": {
@@ -4008,7 +2955,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               }
             ]
           }
@@ -4135,7 +3083,8 @@
               }
             }
           },
-          "from_glob": false
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         }
       ]
     }
@@ -4267,7 +3216,8 @@
                           }
                         }
                       },
-                      "from_glob": true
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": false
                     }
                   ]
                 }
@@ -4357,7 +3307,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
               }
             ]
           }
@@ -4459,7 +3410,8 @@
               }
             }
           },
-          "from_glob": false
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         },
         {
           "context": {
@@ -4646,7 +3598,8 @@
               }
             }
           },
-          "from_glob": false
+          "due_to_glob": true,
+          "due_to_lazy_glob": false
         }
       ]
     }

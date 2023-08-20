@@ -188,7 +188,8 @@
                                       }
                                     }
                                   },
-                                  "from_glob": true
+                                  "due_to_glob": true,
+                                  "due_to_lazy_glob": true
                                 },
                                 {
                                   "string": {
@@ -304,7 +305,8 @@
                                       }
                                     }
                                   },
-                                  "from_glob": true
+                                  "due_to_glob": true,
+                                  "due_to_lazy_glob": true
                                 },
                                 {
                                   "string": {
@@ -420,247 +422,8 @@
                                       }
                                     }
                                   },
-                                  "from_glob": true
-                                },
-                                {
-                                  "string": {
-                                    "range": "TestCompile/patterns/override/2.d2,1:10:11-1:14:15",
-                                    "value": [
-                                      {
-                                        "string": "fill",
-                                        "raw_string": "fill"
-                                      }
-                                    ]
-                                  },
-                                  "key_path": {
-                                    "range": "TestCompile/patterns/override/2.d2,1:0:1-1:14:15",
-                                    "path": [
-                                      {
-                                        "unquoted_string": {
-                                          "range": "TestCompile/patterns/override/2.d2,1:0:1-1:3:4",
-                                          "value": [
-                                            {
-                                              "string": "***",
-                                              "raw_string": "***"
-                                            }
-                                          ],
-                                          "pattern": [
-                                            "*",
-                                            "",
-                                            "*",
-                                            "",
-                                            "*"
-                                          ]
-                                        }
-                                      },
-                                      {
-                                        "unquoted_string": {
-                                          "range": "TestCompile/patterns/override/2.d2,1:4:5-1:9:10",
-                                          "value": [
-                                            {
-                                              "string": "style",
-                                              "raw_string": "style"
-                                            }
-                                          ]
-                                        }
-                                      },
-                                      {
-                                        "unquoted_string": {
-                                          "range": "TestCompile/patterns/override/2.d2,1:10:11-1:14:15",
-                                          "value": [
-                                            {
-                                              "string": "fill",
-                                              "raw_string": "fill"
-                                            }
-                                          ]
-                                        }
-                                      }
-                                    ]
-                                  },
-                                  "context": {
-                                    "edge": null,
-                                    "key": {
-                                      "range": "TestCompile/patterns/override/2.d2,1:0:1-1:22:23",
-                                      "key": {
-                                        "range": "TestCompile/patterns/override/2.d2,1:0:1-1:14:15",
-                                        "path": [
-                                          {
-                                            "unquoted_string": {
-                                              "range": "TestCompile/patterns/override/2.d2,1:0:1-1:3:4",
-                                              "value": [
-                                                {
-                                                  "string": "***",
-                                                  "raw_string": "***"
-                                                }
-                                              ],
-                                              "pattern": [
-                                                "*",
-                                                "",
-                                                "*",
-                                                "",
-                                                "*"
-                                              ]
-                                            }
-                                          },
-                                          {
-                                            "unquoted_string": {
-                                              "range": "TestCompile/patterns/override/2.d2,1:4:5-1:9:10",
-                                              "value": [
-                                                {
-                                                  "string": "style",
-                                                  "raw_string": "style"
-                                                }
-                                              ]
-                                            }
-                                          },
-                                          {
-                                            "unquoted_string": {
-                                              "range": "TestCompile/patterns/override/2.d2,1:10:11-1:14:15",
-                                              "value": [
-                                                {
-                                                  "string": "fill",
-                                                  "raw_string": "fill"
-                                                }
-                                              ]
-                                            }
-                                          }
-                                        ]
-                                      },
-                                      "primary": {},
-                                      "value": {
-                                        "unquoted_string": {
-                                          "range": "TestCompile/patterns/override/2.d2,1:16:17-1:22:23",
-                                          "value": [
-                                            {
-                                              "string": "yellow",
-                                              "raw_string": "yellow"
-                                            }
-                                          ]
-                                        }
-                                      }
-                                    }
-                                  },
-                                  "from_glob": true
-                                },
-                                {
-                                  "string": {
-                                    "range": "TestCompile/patterns/override/2.d2,1:10:11-1:14:15",
-                                    "value": [
-                                      {
-                                        "string": "fill",
-                                        "raw_string": "fill"
-                                      }
-                                    ]
-                                  },
-                                  "key_path": {
-                                    "range": "TestCompile/patterns/override/2.d2,1:0:1-1:14:15",
-                                    "path": [
-                                      {
-                                        "unquoted_string": {
-                                          "range": "TestCompile/patterns/override/2.d2,1:0:1-1:3:4",
-                                          "value": [
-                                            {
-                                              "string": "***",
-                                              "raw_string": "***"
-                                            }
-                                          ],
-                                          "pattern": [
-                                            "*",
-                                            "",
-                                            "*",
-                                            "",
-                                            "*"
-                                          ]
-                                        }
-                                      },
-                                      {
-                                        "unquoted_string": {
-                                          "range": "TestCompile/patterns/override/2.d2,1:4:5-1:9:10",
-                                          "value": [
-                                            {
-                                              "string": "style",
-                                              "raw_string": "style"
-                                            }
-                                          ]
-                                        }
-                                      },
-                                      {
-                                        "unquoted_string": {
-                                          "range": "TestCompile/patterns/override/2.d2,1:10:11-1:14:15",
-                                          "value": [
-                                            {
-                                              "string": "fill",
-                                              "raw_string": "fill"
-                                            }
-                                          ]
-                                        }
-                                      }
-                                    ]
-                                  },
-                                  "context": {
-                                    "edge": null,
-                                    "key": {
-                                      "range": "TestCompile/patterns/override/2.d2,1:0:1-1:22:23",
-                                      "key": {
-                                        "range": "TestCompile/patterns/override/2.d2,1:0:1-1:14:15",
-                                        "path": [
-                                          {
-                                            "unquoted_string": {
-                                              "range": "TestCompile/patterns/override/2.d2,1:0:1-1:3:4",
-                                              "value": [
-                                                {
-                                                  "string": "***",
-                                                  "raw_string": "***"
-                                                }
-                                              ],
-                                              "pattern": [
-                                                "*",
-                                                "",
-                                                "*",
-                                                "",
-                                                "*"
-                                              ]
-                                            }
-                                          },
-                                          {
-                                            "unquoted_string": {
-                                              "range": "TestCompile/patterns/override/2.d2,1:4:5-1:9:10",
-                                              "value": [
-                                                {
-                                                  "string": "style",
-                                                  "raw_string": "style"
-                                                }
-                                              ]
-                                            }
-                                          },
-                                          {
-                                            "unquoted_string": {
-                                              "range": "TestCompile/patterns/override/2.d2,1:10:11-1:14:15",
-                                              "value": [
-                                                {
-                                                  "string": "fill",
-                                                  "raw_string": "fill"
-                                                }
-                                              ]
-                                            }
-                                          }
-                                        ]
-                                      },
-                                      "primary": {},
-                                      "value": {
-                                        "unquoted_string": {
-                                          "range": "TestCompile/patterns/override/2.d2,1:16:17-1:22:23",
-                                          "value": [
-                                            {
-                                              "string": "yellow",
-                                              "raw_string": "yellow"
-                                            }
-                                          ]
-                                        }
-                                      }
-                                    }
-                                  },
-                                  "from_glob": true
+                                  "due_to_glob": true,
+                                  "due_to_lazy_glob": true
                                 }
                               ]
                             }
@@ -826,7 +589,8 @@
                                 }
                               }
                             },
-                            "from_glob": true
+                            "due_to_glob": true,
+                            "due_to_lazy_glob": true
                           },
                           {
                             "string": {
@@ -942,7 +706,8 @@
                                 }
                               }
                             },
-                            "from_glob": true
+                            "due_to_glob": true,
+                            "due_to_lazy_glob": true
                           },
                           {
                             "string": {
@@ -1058,7 +823,8 @@
                                 }
                               }
                             },
-                            "from_glob": true
+                            "due_to_glob": true,
+                            "due_to_lazy_glob": true
                           },
                           {
                             "string": {
@@ -1178,7 +944,8 @@
                                 }
                               }
                             },
-                            "from_glob": true
+                            "due_to_glob": true,
+                            "due_to_lazy_glob": true
                           },
                           {
                             "string": {
@@ -1298,7 +1065,8 @@
                                 }
                               }
                             },
-                            "from_glob": true
+                            "due_to_glob": true,
+                            "due_to_lazy_glob": true
                           }
                         ]
                       }
@@ -1356,7 +1124,8 @@
                           "value": {}
                         }
                       },
-                      "from_glob": false
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
                     }
                   ]
                 }
@@ -1509,7 +1278,8 @@
                     }
                   }
                 },
-                "from_glob": false
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
               },
               {
                 "string": {
@@ -1668,7 +1438,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               }
             ]
           }
@@ -1850,7 +1621,8 @@
               }
             }
           },
-          "from_glob": false
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         },
         {
           "string": {
@@ -2009,7 +1781,8 @@
               }
             }
           },
-          "from_glob": true
+          "due_to_glob": true,
+          "due_to_lazy_glob": true
         }
       ]
     }

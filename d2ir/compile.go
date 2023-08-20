@@ -514,9 +514,10 @@ func (c *compiler) compileKey(refctx *RefContext) {
 	if oldFields != refctx.ScopeMap.FieldCountRecursive() || oldEdges != refctx.ScopeMap.EdgeCountRecursive() {
 		for _, gctx2 := range c.globContexts() {
 			// println(d2format.Format(gctx2.refctx.Key), d2format.Format(refctx.Key))
+			old := c.lazyGlobBeingApplied
 			c.lazyGlobBeingApplied = true
 			c.compileKey(gctx2.refctx)
-			c.lazyGlobBeingApplied = false
+			c.lazyGlobBeingApplied = old
 		}
 	}
 }
@@ -748,7 +749,7 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 // if already set by a non glob key.
 func (c *compiler) ignoreLazyGlob(n Node) bool {
 	if c.lazyGlobBeingApplied && n.Primary() != nil {
-		if ref := n.SecondLastPrimaryRef(); ref != nil && !ref.DueToGlob() {
+		if n.LastPrimaryRef() != nil {
 			return true
 		}
 	}
@@ -899,7 +900,9 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 			}
 			for _, e := range ea {
 				e.References = append(e.References, &EdgeReference{
-					Context_: refctx,
+					Context_:       refctx,
+					DueToGlob_:     len(c.globRefContextStack) > 0,
+					DueToLazyGlob_: c.lazyGlobBeingApplied,
 				})
 				refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Src, refctx, c)
 				refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Dst, refctx, c)

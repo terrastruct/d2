@@ -164,7 +164,8 @@
                     "value": {}
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
               }
             ]
           }
@@ -222,7 +223,8 @@
               "value": {}
             }
           },
-          "from_glob": false
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         }
       ]
     },
@@ -370,7 +372,8 @@
               "value": {}
             }
           },
-          "from_glob": true
+          "due_to_glob": true,
+          "due_to_lazy_glob": false
         }
       ]
     }
@@ -507,7 +510,8 @@
               "value": {}
             }
           },
-          "from_glob": false
+          "due_to_glob": true,
+          "due_to_lazy_glob": false
         }
       ]
     }

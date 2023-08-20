@@ -74,7 +74,8 @@
               }
             }
           },
-          "from_glob": false
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         }
       ]
     },
@@ -152,7 +153,8 @@
               }
             }
           },
-          "from_glob": false
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         }
       ]
     },
@@ -230,7 +232,8 @@
               }
             }
           },
-          "from_glob": false
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         }
       ]
     }

@@ -122,7 +122,8 @@
               }
             }
           },
-          "from_glob": false
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         },
         {
           "string": {
@@ -233,7 +234,8 @@
               "value": {}
             }
           },
-          "from_glob": false
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         }
       ]
     },
@@ -359,7 +361,8 @@
               }
             }
           },
-          "from_glob": false
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         },
         {
           "string": {
@@ -470,7 +473,8 @@
               "value": {}
             }
           },
-          "from_glob": false
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         }
       ]
     }
@@ -686,7 +690,8 @@
                           }
                         }
                       },
-                      "from_glob": true
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": true
                     },
                     {
                       "string": {
@@ -858,7 +863,8 @@
                           }
                         }
                       },
-                      "from_glob": true
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": true
                     }
                   ]
                 }
@@ -1036,7 +1042,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               },
               {
                 "string": {
@@ -1208,7 +1215,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               }
             ]
           }
@@ -1310,7 +1318,8 @@
               }
             }
           },
-          "from_glob": false
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         },
         {
           "context": {
@@ -1446,7 +1455,8 @@
               }
             }
           },
-          "from_glob": false
+          "due_to_glob": true,
+          "due_to_lazy_glob": true
         },
         {
           "context": {
@@ -1582,7 +1592,8 @@
               }
             }
           },
-          "from_glob": false
+          "due_to_glob": true,
+          "due_to_lazy_glob": true
         }
       ]
     },
@@ -1785,7 +1796,8 @@
                           }
                         }
                       },
-                      "from_glob": true
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": true
                     }
                   ]
                 }
@@ -1963,7 +1975,8 @@
                     }
                   }
                 },
-                "from_glob": true
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               }
             ]
           }
@@ -2055,7 +2068,8 @@
               "value": {}
             }
           },
-          "from_glob": false
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         },
         {
           "context": {
@@ -2191,7 +2205,8 @@
               }
             }
           },
-          "from_glob": false
+          "due_to_glob": true,
+          "due_to_lazy_glob": true
         }
       ]
     }

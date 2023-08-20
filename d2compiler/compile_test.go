@@ -4075,6 +4075,30 @@ scenarios: {
 `, "")
 			},
 		},
+		{
+			name: "alixander-lazy-globs-review/3",
+			run: func(t *testing.T) {
+				assertCompile(t, `
+***: {
+  c: d
+}
+
+***: {
+  style.fill: red
+}
+
+table: {
+  shape: sql_table
+  a: b
+}
+
+class: {
+  shape: class
+  a: b
+}
+`, "")
+			},
+		},
 	}
 
 	for _, tc := range tca {

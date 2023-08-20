@@ -128,7 +128,7 @@ an* -> an*`)
 				assert.Success(t, err)
 				assertQuery(t, m, 2, 2, nil, "")
 				assertQuery(t, m, 0, 0, nil, "(animate -> animal)[0]")
-				assertQuery(t, m, 0, 0, nil, "(animal -> animal)[0]")
+				assertQuery(t, m, 0, 0, nil, "(animal -> animate)[0]")
 			},
 		},
 		{
@@ -154,7 +154,7 @@ sh*.an* -> sh*.an*`)
 				assertQuery(t, m, 3, 2, nil, "")
 				assertQuery(t, m, 2, 2, nil, "shared")
 				assertQuery(t, m, 0, 0, nil, "shared.(animate -> animal)[0]")
-				assertQuery(t, m, 0, 0, nil, "shared.(animal -> animal)[0]")
+				assertQuery(t, m, 0, 0, nil, "shared.(animal -> animate)[0]")
 			},
 		},
 		{
@@ -516,6 +516,42 @@ x -> y
 			},
 		},
 		{
+			name: "alixander-review/7",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+*: {
+  style.fill: red
+}
+**: {
+  style.fill: red
+}
+
+table: {
+  style.fill: blue
+  shape: sql_table
+  a: b
+}
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 7, 0, nil, "")
+				assertQuery(t, m, 0, 0, "blue", "table.style.fill")
+			},
+		},
+		{
+			name: "alixander-review/8",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+(a -> *)[*].style.stroke: red
+(* -> *)[*].style.stroke: red
+
+b -> c
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 4, 1, nil, "")
+				assertQuery(t, m, 0, 0, "red", "(b -> c)[0].style.stroke")
+			},
+		},
+		{
 			name: "override/1",
 			run: func(t testing.TB) {
 				m, err := compile(t, `
@@ -604,6 +640,51 @@ a -> b
 				assert.Success(t, err)
 				assertQuery(t, m, 3, 1, nil, "")
 				assertQuery(t, m, 0, 0, "hey", "(a -> b)[0].label")
+			},
+		},
+		{
+			name: "table-class-exception",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+***: {
+  c: d
+}
+
+***: {
+  style.fill: red
+}
+
+table: {
+  shape: sql_table
+  a: b
+}
+
+class: {
+  shape: class
+  a: b
+}
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 10, 0, nil, "")
+			},
+		},
+		{
+			name: "prevent-chain-recursion",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+***: {
+  c: d
+}
+
+***: {
+  style.fill: red
+}
+
+one
+two
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 12, 0, nil, "")
 			},
 		},
 	}

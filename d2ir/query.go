@@ -14,17 +14,22 @@ func (m *Map) QueryAll(idStr string) (na []Node, _ error) {
 	}
 
 	if k.Key != nil {
-		f := m.GetField(k.Key.IDA()...)
-		if f == nil {
+		fa, err := m.EnsureField(k.Key, nil, false, nil)
+		if err != nil {
+			return nil, err
+		}
+		if len(fa) == 0 {
 			return nil, nil
 		}
-		if len(k.Edges) == 0 {
-			na = append(na, f)
-			return na, nil
-		}
-		m = f.Map()
-		if m == nil {
-			return nil, nil
+		for _, f := range fa {
+			if len(k.Edges) == 0 {
+				na = append(na, f)
+				return na, nil
+			}
+			m = f.Map()
+			if m == nil {
+				return nil, nil
+			}
 		}
 	}
 

@@ -493,7 +493,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			noVal2 := &tmp2
 			noVal1.Value = d2ast.ValueBox{}
 			noVal2.Value = d2ast.ValueBox{}
-			if noVal1.Equals(noVal2) {
+			if noVal1.D2OracleEquals(noVal2) {
 				ref.MapKey.Value = mk.Value
 				return nil
 			}
@@ -776,7 +776,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 
 func appendUniqueMapKey(m *d2ast.Map, mk *d2ast.Key) {
 	for _, n := range m.Nodes {
-		if n.MapKey != nil && n.MapKey.Equals(mk) {
+		if n.MapKey != nil && n.MapKey.D2OracleEquals(mk) {
 			return
 		}
 	}
@@ -1471,7 +1471,7 @@ func ensureNode(g *d2graph.Graph, excludedEdges []*d2ast.Edge, scopeObj *d2graph
 	}
 
 	for _, n := range scope.Nodes {
-		if n.MapKey != nil && n.MapKey.Equals(mk) {
+		if n.MapKey != nil && n.MapKey.D2OracleEquals(mk) {
 			return
 		}
 	}
@@ -1922,7 +1922,7 @@ func move(g *d2graph.Graph, boardPath []string, key, newKey string, includeDesce
 					ref.Key.Path = ref.Key.Path[ref.KeyPathIndex:]
 					exists := false
 					for _, n := range toScope.Nodes {
-						if n.MapKey != nil && n.MapKey != ref.MapKey && n.MapKey.Equals(ref.MapKey) {
+						if n.MapKey != nil && n.MapKey != ref.MapKey && n.MapKey.D2OracleEquals(ref.MapKey) {
 							exists = true
 						}
 					}
