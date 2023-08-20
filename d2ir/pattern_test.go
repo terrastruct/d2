@@ -643,6 +643,30 @@ a -> b
 			},
 		},
 		{
+			name: "override/6",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+# Nulling glob doesn't work
+a
+*a.icon: https://icons.terrastruct.com/essentials%2F073-add.svg
+a.icon: null
+
+# Regular icon nulling works
+b.icon: https://icons.terrastruct.com/essentials%2F073-add.svg
+b.icon: null
+
+# Shape nulling works
+*.shape: circle
+a.shape: null
+b.shape: null
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 2, 0, nil, "")
+				assertQuery(t, m, 0, 0, nil, "a")
+				assertQuery(t, m, 0, 0, nil, "b")
+			},
+		},
+		{
 			name: "table-class-exception",
 			run: func(t testing.TB) {
 				m, err := compile(t, `

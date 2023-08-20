@@ -150,6 +150,26 @@ x -> y
 				assertQuery(t, m, 0, 0, 0.1, "(x -> y)[1].style.opacity")
 			},
 		},
+		{
+			name: "lazy-filter",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+*: {
+  &label: a
+  style.fill: yellow
+}
+
+a
+# if i remove this line, the glob applies as expected
+b
+b.label: a
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 7, 0, nil, "")
+				assertQuery(t, m, 0, 0, "yellow", "a.style.fill")
+				assertQuery(t, m, 0, 0, "yellow", "b.style.fill")
+			},
+		},
 	}
 
 	runa(t, tca)

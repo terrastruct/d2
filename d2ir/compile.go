@@ -410,6 +410,18 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 				ScopeAST: scopeAST,
 			})
 			if !ok {
+				// Unapply glob if appropriate.
+				gctx := c.getGlobContext(c.mapRefContextStack[len(c.mapRefContextStack)-1])
+				if gctx == nil {
+					return
+				}
+				var ks string
+				if gctx.refctx.Key.HasTripleGlob() {
+					ks = d2format.Format(d2ast.MakeKeyPath(IDA(dst)))
+				} else {
+					ks = d2format.Format(d2ast.MakeKeyPath(BoardIDA(dst)))
+				}
+				delete(gctx.appliedFields, ks)
 				return
 			}
 		}

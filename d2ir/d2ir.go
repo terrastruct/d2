@@ -896,12 +896,12 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 			DueToLazyGlob_: c.lazyGlobBeingApplied,
 		})
 	}
+	if !filter(f, true) {
+		return nil
+	}
 	m.Fields = append(m.Fields, f)
 	if i+1 == len(kp.Path) {
 		faAppend(f)
-		return nil
-	}
-	if !filter(f, true) {
 		return nil
 	}
 	if f.Composite == nil {
