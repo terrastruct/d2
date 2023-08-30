@@ -718,6 +718,8 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 				// If new board type, use that as the new scope AST, otherwise, carry on
 				scopeAST = refctx.ScopeAST
 			}
+		} else {
+			scopeAST = refctx.ScopeAST
 		}
 		c.mapRefContextStack = append(c.mapRefContextStack, refctx)
 		c.compileMap(f.Map(), refctx.Key.Value.Map, scopeAST)

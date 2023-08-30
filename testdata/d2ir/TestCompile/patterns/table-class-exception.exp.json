@@ -5,39 +5,240 @@
       "composite": {
         "fields": [
           {
-            "name": "shape",
+            "name": "c",
             "primary": {
               "value": {
-                "range": "TestCompile/patterns/table-class-exception.d2,10:9:64-10:18:73",
+                "range": "TestCompile/patterns/table-class-exception.d2,2:5:13-2:6:14",
                 "value": [
                   {
-                    "string": "sql_table",
-                    "raw_string": "sql_table"
+                    "string": "d",
+                    "raw_string": "d"
                   }
                 ]
               }
             },
+            "composite": {
+              "fields": [
+                {
+                  "name": "style",
+                  "composite": {
+                    "fields": [
+                      {
+                        "name": "fill",
+                        "primary": {
+                          "value": {
+                            "range": "TestCompile/patterns/table-class-exception.d2,6:14:39-6:17:42",
+                            "value": [
+                              {
+                                "string": "red",
+                                "raw_string": "red"
+                              }
+                            ]
+                          }
+                        },
+                        "references": [
+                          {
+                            "string": {
+                              "range": "TestCompile/patterns/table-class-exception.d2,6:8:33-6:12:37",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/patterns/table-class-exception.d2,6:2:27-6:12:37",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/table-class-exception.d2,6:2:27-6:7:32",
+                                    "value": [
+                                      {
+                                        "string": "style",
+                                        "raw_string": "style"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/table-class-exception.d2,6:8:33-6:12:37",
+                                    "value": [
+                                      {
+                                        "string": "fill",
+                                        "raw_string": "fill"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/patterns/table-class-exception.d2,6:2:27-6:17:42",
+                                "key": {
+                                  "range": "TestCompile/patterns/table-class-exception.d2,6:2:27-6:12:37",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/table-class-exception.d2,6:2:27-6:7:32",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/table-class-exception.d2,6:8:33-6:12:37",
+                                        "value": [
+                                          {
+                                            "string": "fill",
+                                            "raw_string": "fill"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/table-class-exception.d2,6:14:39-6:17:42",
+                                    "value": [
+                                      {
+                                        "string": "red",
+                                        "raw_string": "red"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            "due_to_glob": true,
+                            "due_to_lazy_glob": true
+                          }
+                        ]
+                      }
+                    ],
+                    "edges": null
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/table-class-exception.d2,6:2:27-6:7:32",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/table-class-exception.d2,6:2:27-6:12:37",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/table-class-exception.d2,6:2:27-6:7:32",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/table-class-exception.d2,6:8:33-6:12:37",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/patterns/table-class-exception.d2,6:2:27-6:17:42",
+                          "key": {
+                            "range": "TestCompile/patterns/table-class-exception.d2,6:2:27-6:12:37",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/table-class-exception.d2,6:2:27-6:7:32",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/table-class-exception.d2,6:8:33-6:12:37",
+                                  "value": [
+                                    {
+                                      "string": "fill",
+                                      "raw_string": "fill"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/table-class-exception.d2,6:14:39-6:17:42",
+                              "value": [
+                                {
+                                  "string": "red",
+                                  "raw_string": "red"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": true
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
             "references": [
               {
                 "string": {
-                  "range": "TestCompile/patterns/table-class-exception.d2,10:2:57-10:7:62",
+                  "range": "TestCompile/patterns/table-class-exception.d2,2:2:10-2:3:11",
                   "value": [
                     {
-                      "string": "shape",
-                      "raw_string": "shape"
+                      "string": "c",
+                      "raw_string": "c"
                     }
                   ]
                 },
                 "key_path": {
-                  "range": "TestCompile/patterns/table-class-exception.d2,10:2:57-10:7:62",
+                  "range": "TestCompile/patterns/table-class-exception.d2,2:2:10-2:3:11",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "TestCompile/patterns/table-class-exception.d2,10:2:57-10:7:62",
+                        "range": "TestCompile/patterns/table-class-exception.d2,2:2:10-2:3:11",
                         "value": [
                           {
-                            "string": "shape",
-                            "raw_string": "shape"
+                            "string": "c",
+                            "raw_string": "c"
                           }
                         ]
                       }
@@ -47,17 +248,17 @@
                 "context": {
                   "edge": null,
                   "key": {
-                    "range": "TestCompile/patterns/table-class-exception.d2,10:2:57-10:18:73",
+                    "range": "TestCompile/patterns/table-class-exception.d2,2:2:10-2:6:14",
                     "key": {
-                      "range": "TestCompile/patterns/table-class-exception.d2,10:2:57-10:7:62",
+                      "range": "TestCompile/patterns/table-class-exception.d2,2:2:10-2:3:11",
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": "TestCompile/patterns/table-class-exception.d2,10:2:57-10:7:62",
+                            "range": "TestCompile/patterns/table-class-exception.d2,2:2:10-2:3:11",
                             "value": [
                               {
-                                "string": "shape",
-                                "raw_string": "shape"
+                                "string": "c",
+                                "raw_string": "c"
                               }
                             ]
                           }
@@ -67,19 +268,19 @@
                     "primary": {},
                     "value": {
                       "unquoted_string": {
-                        "range": "TestCompile/patterns/table-class-exception.d2,10:9:64-10:18:73",
+                        "range": "TestCompile/patterns/table-class-exception.d2,2:5:13-2:6:14",
                         "value": [
                           {
-                            "string": "sql_table",
-                            "raw_string": "sql_table"
+                            "string": "d",
+                            "raw_string": "d"
                           }
                         ]
                       }
                     }
                   }
                 },
-                "due_to_glob": false,
-                "due_to_lazy_glob": false
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               }
             ]
           },
@@ -276,6 +477,85 @@
                 },
                 "due_to_glob": true,
                 "due_to_lazy_glob": true
+              }
+            ]
+          },
+          {
+            "name": "shape",
+            "primary": {
+              "value": {
+                "range": "TestCompile/patterns/table-class-exception.d2,10:9:64-10:18:73",
+                "value": [
+                  {
+                    "string": "sql_table",
+                    "raw_string": "sql_table"
+                  }
+                ]
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/patterns/table-class-exception.d2,10:2:57-10:7:62",
+                  "value": [
+                    {
+                      "string": "shape",
+                      "raw_string": "shape"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/table-class-exception.d2,10:2:57-10:7:62",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/table-class-exception.d2,10:2:57-10:7:62",
+                        "value": [
+                          {
+                            "string": "shape",
+                            "raw_string": "shape"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/table-class-exception.d2,10:2:57-10:18:73",
+                    "key": {
+                      "range": "TestCompile/patterns/table-class-exception.d2,10:2:57-10:7:62",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/table-class-exception.d2,10:2:57-10:7:62",
+                            "value": [
+                              {
+                                "string": "shape",
+                                "raw_string": "shape"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/table-class-exception.d2,10:9:64-10:18:73",
+                        "value": [
+                          {
+                            "string": "sql_table",
+                            "raw_string": "sql_table"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
               }
             ]
           },

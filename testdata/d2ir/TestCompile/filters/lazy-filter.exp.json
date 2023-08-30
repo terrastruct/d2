@@ -489,6 +489,70 @@
                 },
                 "due_to_glob": true,
                 "due_to_lazy_glob": true
+              },
+              {
+                "string": {
+                  "range": "TestCompile/filters/lazy-filter.d2,2:3:9-2:8:14",
+                  "value": [
+                    {
+                      "string": "label",
+                      "raw_string": "label"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/lazy-filter.d2,2:3:9-2:8:14",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/lazy-filter.d2,2:3:9-2:8:14",
+                        "value": [
+                          {
+                            "string": "label",
+                            "raw_string": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/lazy-filter.d2,2:2:8-2:11:17",
+                    "ampersand": true,
+                    "key": {
+                      "range": "TestCompile/filters/lazy-filter.d2,2:3:9-2:8:14",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/lazy-filter.d2,2:3:9-2:8:14",
+                            "value": [
+                              {
+                                "string": "label",
+                                "raw_string": "label"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/lazy-filter.d2,2:10:16-2:11:17",
+                        "value": [
+                          {
+                            "string": "a",
+                            "raw_string": "a"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               }
             ]
           },

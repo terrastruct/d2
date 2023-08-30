@@ -345,69 +345,6 @@
             "references": [
               {
                 "string": {
-                  "range": "TestCompile/patterns/override/4.d2,4:2:40-4:7:45",
-                  "value": [
-                    {
-                      "string": "label",
-                      "raw_string": "label"
-                    }
-                  ]
-                },
-                "key_path": {
-                  "range": "TestCompile/patterns/override/4.d2,4:2:40-4:7:45",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "TestCompile/patterns/override/4.d2,4:2:40-4:7:45",
-                        "value": [
-                          {
-                            "string": "label",
-                            "raw_string": "label"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "context": {
-                  "edge": null,
-                  "key": {
-                    "range": "TestCompile/patterns/override/4.d2,4:2:40-4:12:50",
-                    "key": {
-                      "range": "TestCompile/patterns/override/4.d2,4:2:40-4:7:45",
-                      "path": [
-                        {
-                          "unquoted_string": {
-                            "range": "TestCompile/patterns/override/4.d2,4:2:40-4:7:45",
-                            "value": [
-                              {
-                                "string": "label",
-                                "raw_string": "label"
-                              }
-                            ]
-                          }
-                        }
-                      ]
-                    },
-                    "primary": {},
-                    "value": {
-                      "unquoted_string": {
-                        "range": "TestCompile/patterns/override/4.d2,4:9:47-4:12:50",
-                        "value": [
-                          {
-                            "string": "bye",
-                            "raw_string": "bye"
-                          }
-                        ]
-                      }
-                    }
-                  }
-                },
-                "due_to_glob": false,
-                "due_to_lazy_glob": false
-              },
-              {
-                "string": {
                   "range": "TestCompile/patterns/override/4.d2,1:16:17-1:21:22",
                   "value": [
                     {
@@ -576,6 +513,69 @@
                 },
                 "due_to_glob": true,
                 "due_to_lazy_glob": true
+              },
+              {
+                "string": {
+                  "range": "TestCompile/patterns/override/4.d2,4:2:40-4:7:45",
+                  "value": [
+                    {
+                      "string": "label",
+                      "raw_string": "label"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/override/4.d2,4:2:40-4:7:45",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/override/4.d2,4:2:40-4:7:45",
+                        "value": [
+                          {
+                            "string": "label",
+                            "raw_string": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/override/4.d2,4:2:40-4:12:50",
+                    "key": {
+                      "range": "TestCompile/patterns/override/4.d2,4:2:40-4:7:45",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/override/4.d2,4:2:40-4:7:45",
+                            "value": [
+                              {
+                                "string": "label",
+                                "raw_string": "label"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/override/4.d2,4:9:47-4:12:50",
+                        "value": [
+                          {
+                            "string": "bye",
+                            "raw_string": "bye"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
               }
             ]
           }

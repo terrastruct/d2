@@ -261,6 +261,261 @@
                 },
                 "due_to_glob": true,
                 "due_to_lazy_glob": true
+              },
+              {
+                "string": {
+                  "range": "TestCompile/patterns/alixander-review/4.d2,1:3:4-1:8:9",
+                  "value": [
+                    {
+                      "string": "child",
+                      "raw_string": "child"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:8:9",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:2:3",
+                        "value": [
+                          {
+                            "string": "**",
+                            "raw_string": "**"
+                          }
+                        ],
+                        "pattern": [
+                          "*",
+                          "",
+                          "*"
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/alixander-review/4.d2,1:3:4-1:8:9",
+                        "value": [
+                          {
+                            "string": "child",
+                            "raw_string": "child"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:8:9",
+                    "key": {
+                      "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:8:9",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:2:3",
+                            "value": [
+                              {
+                                "string": "**",
+                                "raw_string": "**"
+                              }
+                            ],
+                            "pattern": [
+                              "*",
+                              "",
+                              "*"
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/alixander-review/4.d2,1:3:4-1:8:9",
+                            "value": [
+                              {
+                                "string": "child",
+                                "raw_string": "child"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {}
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
+              },
+              {
+                "string": {
+                  "range": "TestCompile/patterns/alixander-review/4.d2,1:3:4-1:8:9",
+                  "value": [
+                    {
+                      "string": "child",
+                      "raw_string": "child"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:8:9",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:2:3",
+                        "value": [
+                          {
+                            "string": "**",
+                            "raw_string": "**"
+                          }
+                        ],
+                        "pattern": [
+                          "*",
+                          "",
+                          "*"
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/alixander-review/4.d2,1:3:4-1:8:9",
+                        "value": [
+                          {
+                            "string": "child",
+                            "raw_string": "child"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:8:9",
+                    "key": {
+                      "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:8:9",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:2:3",
+                            "value": [
+                              {
+                                "string": "**",
+                                "raw_string": "**"
+                              }
+                            ],
+                            "pattern": [
+                              "*",
+                              "",
+                              "*"
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/alixander-review/4.d2,1:3:4-1:8:9",
+                            "value": [
+                              {
+                                "string": "child",
+                                "raw_string": "child"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {}
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
+              },
+              {
+                "string": {
+                  "range": "TestCompile/patterns/alixander-review/4.d2,1:3:4-1:8:9",
+                  "value": [
+                    {
+                      "string": "child",
+                      "raw_string": "child"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:8:9",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:2:3",
+                        "value": [
+                          {
+                            "string": "**",
+                            "raw_string": "**"
+                          }
+                        ],
+                        "pattern": [
+                          "*",
+                          "",
+                          "*"
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/alixander-review/4.d2,1:3:4-1:8:9",
+                        "value": [
+                          {
+                            "string": "child",
+                            "raw_string": "child"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:8:9",
+                    "key": {
+                      "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:8:9",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:2:3",
+                            "value": [
+                              {
+                                "string": "**",
+                                "raw_string": "**"
+                              }
+                            ],
+                            "pattern": [
+                              "*",
+                              "",
+                              "*"
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/alixander-review/4.d2,1:3:4-1:8:9",
+                            "value": [
+                              {
+                                "string": "child",
+                                "raw_string": "child"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {}
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               }
             ]
           }
@@ -499,6 +754,176 @@
                 },
                 "due_to_glob": true,
                 "due_to_lazy_glob": true
+              },
+              {
+                "string": {
+                  "range": "TestCompile/patterns/alixander-review/4.d2,1:3:4-1:8:9",
+                  "value": [
+                    {
+                      "string": "child",
+                      "raw_string": "child"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:8:9",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:2:3",
+                        "value": [
+                          {
+                            "string": "**",
+                            "raw_string": "**"
+                          }
+                        ],
+                        "pattern": [
+                          "*",
+                          "",
+                          "*"
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/alixander-review/4.d2,1:3:4-1:8:9",
+                        "value": [
+                          {
+                            "string": "child",
+                            "raw_string": "child"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:8:9",
+                    "key": {
+                      "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:8:9",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:2:3",
+                            "value": [
+                              {
+                                "string": "**",
+                                "raw_string": "**"
+                              }
+                            ],
+                            "pattern": [
+                              "*",
+                              "",
+                              "*"
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/alixander-review/4.d2,1:3:4-1:8:9",
+                            "value": [
+                              {
+                                "string": "child",
+                                "raw_string": "child"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {}
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
+              },
+              {
+                "string": {
+                  "range": "TestCompile/patterns/alixander-review/4.d2,1:3:4-1:8:9",
+                  "value": [
+                    {
+                      "string": "child",
+                      "raw_string": "child"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:8:9",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:2:3",
+                        "value": [
+                          {
+                            "string": "**",
+                            "raw_string": "**"
+                          }
+                        ],
+                        "pattern": [
+                          "*",
+                          "",
+                          "*"
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/alixander-review/4.d2,1:3:4-1:8:9",
+                        "value": [
+                          {
+                            "string": "child",
+                            "raw_string": "child"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:8:9",
+                    "key": {
+                      "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:8:9",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:2:3",
+                            "value": [
+                              {
+                                "string": "**",
+                                "raw_string": "**"
+                              }
+                            ],
+                            "pattern": [
+                              "*",
+                              "",
+                              "*"
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/alixander-review/4.d2,1:3:4-1:8:9",
+                            "value": [
+                              {
+                                "string": "child",
+                                "raw_string": "child"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {}
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               }
             ]
           }
@@ -568,6 +993,91 @@
           {
             "name": "child",
             "references": [
+              {
+                "string": {
+                  "range": "TestCompile/patterns/alixander-review/4.d2,1:3:4-1:8:9",
+                  "value": [
+                    {
+                      "string": "child",
+                      "raw_string": "child"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:8:9",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:2:3",
+                        "value": [
+                          {
+                            "string": "**",
+                            "raw_string": "**"
+                          }
+                        ],
+                        "pattern": [
+                          "*",
+                          "",
+                          "*"
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/alixander-review/4.d2,1:3:4-1:8:9",
+                        "value": [
+                          {
+                            "string": "child",
+                            "raw_string": "child"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:8:9",
+                    "key": {
+                      "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:8:9",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/alixander-review/4.d2,1:0:1-1:2:3",
+                            "value": [
+                              {
+                                "string": "**",
+                                "raw_string": "**"
+                              }
+                            ],
+                            "pattern": [
+                              "*",
+                              "",
+                              "*"
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/alixander-review/4.d2,1:3:4-1:8:9",
+                            "value": [
+                              {
+                                "string": "child",
+                                "raw_string": "child"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {}
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
+              },
               {
                 "string": {
                   "range": "TestCompile/patterns/alixander-review/4.d2,1:3:4-1:8:9",

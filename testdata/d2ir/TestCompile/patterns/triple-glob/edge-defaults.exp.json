@@ -3664,6 +3664,540 @@
                 },
                 "due_to_glob": true,
                 "due_to_lazy_glob": true
+              },
+              {
+                "string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "x"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "scenarios"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:0:0-2:1:53",
+                    "key": {
+                      "range": ",0:0:0-0:0:0",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "scenarios"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "x"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "edges": [
+                      {
+                        "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:11:11",
+                        "src": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                                "value": [
+                                  {
+                                    "string": "***",
+                                    "raw_string": "***"
+                                  }
+                                ],
+                                "pattern": [
+                                  "*",
+                                  "",
+                                  "*",
+                                  "",
+                                  "*"
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "src_arrow": "",
+                        "dst": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                                "value": [
+                                  {
+                                    "string": "***",
+                                    "raw_string": "***"
+                                  }
+                                ],
+                                "pattern": [
+                                  "*",
+                                  "",
+                                  "*",
+                                  "",
+                                  "*"
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "dst_arrow": ">"
+                      }
+                    ],
+                    "edge_index": {
+                      "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:12:12-0:15:15",
+                      "int": null,
+                      "glob": true
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:17:17-2:1:53",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:32:51",
+                              "key": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:23:42",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:17:36",
+                                      "value": [
+                                        {
+                                          "string": "target-arrowhead",
+                                          "raw_string": "target-arrowhead"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:18:37-1:23:42",
+                                      "value": [
+                                        {
+                                          "string": "shape",
+                                          "raw_string": "shape"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:25:44-1:32:51",
+                                  "value": [
+                                    {
+                                      "string": "diamond",
+                                      "raw_string": "diamond"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
+              },
+              {
+                "string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "x"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "scenarios"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:0:0-2:1:53",
+                    "key": {
+                      "range": ",0:0:0-0:0:0",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "scenarios"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "x"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "edges": [
+                      {
+                        "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:11:11",
+                        "src": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                                "value": [
+                                  {
+                                    "string": "***",
+                                    "raw_string": "***"
+                                  }
+                                ],
+                                "pattern": [
+                                  "*",
+                                  "",
+                                  "*",
+                                  "",
+                                  "*"
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "src_arrow": "",
+                        "dst": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                                "value": [
+                                  {
+                                    "string": "***",
+                                    "raw_string": "***"
+                                  }
+                                ],
+                                "pattern": [
+                                  "*",
+                                  "",
+                                  "*",
+                                  "",
+                                  "*"
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "dst_arrow": ">"
+                      }
+                    ],
+                    "edge_index": {
+                      "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:12:12-0:15:15",
+                      "int": null,
+                      "glob": true
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:17:17-2:1:53",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:32:51",
+                              "key": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:23:42",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:17:36",
+                                      "value": [
+                                        {
+                                          "string": "target-arrowhead",
+                                          "raw_string": "target-arrowhead"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:18:37-1:23:42",
+                                      "value": [
+                                        {
+                                          "string": "shape",
+                                          "raw_string": "shape"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:25:44-1:32:51",
+                                  "value": [
+                                    {
+                                      "string": "diamond",
+                                      "raw_string": "diamond"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
+              },
+              {
+                "string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "x"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "scenarios"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:0:0-2:1:53",
+                    "key": {
+                      "range": ",0:0:0-0:0:0",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "scenarios"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "x"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "edges": [
+                      {
+                        "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:11:11",
+                        "src": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                                "value": [
+                                  {
+                                    "string": "***",
+                                    "raw_string": "***"
+                                  }
+                                ],
+                                "pattern": [
+                                  "*",
+                                  "",
+                                  "*",
+                                  "",
+                                  "*"
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "src_arrow": "",
+                        "dst": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                                "value": [
+                                  {
+                                    "string": "***",
+                                    "raw_string": "***"
+                                  }
+                                ],
+                                "pattern": [
+                                  "*",
+                                  "",
+                                  "*",
+                                  "",
+                                  "*"
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "dst_arrow": ">"
+                      }
+                    ],
+                    "edge_index": {
+                      "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:12:12-0:15:15",
+                      "int": null,
+                      "glob": true
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:17:17-2:1:53",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:32:51",
+                              "key": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:23:42",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:17:36",
+                                      "value": [
+                                        {
+                                          "string": "target-arrowhead",
+                                          "raw_string": "target-arrowhead"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:18:37-1:23:42",
+                                      "value": [
+                                        {
+                                          "string": "shape",
+                                          "raw_string": "shape"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:25:44-1:32:51",
+                                  "value": [
+                                    {
+                                      "string": "diamond",
+                                      "raw_string": "diamond"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               }
             ]
           }
@@ -3797,6 +4331,540 @@
           },
           "due_to_glob": false,
           "due_to_lazy_glob": false
+        },
+        {
+          "string": {
+            "range": ",0:0:0-0:0:0",
+            "value": [
+              {
+                "string": "scenarios"
+              }
+            ]
+          },
+          "key_path": {
+            "range": ",0:0:0-0:0:0",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "scenarios"
+                    }
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:0:0-2:1:53",
+              "key": {
+                "range": ",0:0:0-0:0:0",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": ",0:0:0-0:0:0",
+                      "value": [
+                        {
+                          "string": "scenarios"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": ",0:0:0-0:0:0",
+                      "value": [
+                        {
+                          "string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:11:11",
+                  "src": {
+                    "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                          "value": [
+                            {
+                              "string": "***",
+                              "raw_string": "***"
+                            }
+                          ],
+                          "pattern": [
+                            "*",
+                            "",
+                            "*",
+                            "",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                          "value": [
+                            {
+                              "string": "***",
+                              "raw_string": "***"
+                            }
+                          ],
+                          "pattern": [
+                            "*",
+                            "",
+                            "*",
+                            "",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "edge_index": {
+                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:12:12-0:15:15",
+                "int": null,
+                "glob": true
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:17:17-2:1:53",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:32:51",
+                        "key": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:23:42",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:17:36",
+                                "value": [
+                                  {
+                                    "string": "target-arrowhead",
+                                    "raw_string": "target-arrowhead"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:18:37-1:23:42",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:25:44-1:32:51",
+                            "value": [
+                              {
+                                "string": "diamond",
+                                "raw_string": "diamond"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": true,
+          "due_to_lazy_glob": true
+        },
+        {
+          "string": {
+            "range": ",0:0:0-0:0:0",
+            "value": [
+              {
+                "string": "scenarios"
+              }
+            ]
+          },
+          "key_path": {
+            "range": ",0:0:0-0:0:0",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "scenarios"
+                    }
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:0:0-2:1:53",
+              "key": {
+                "range": ",0:0:0-0:0:0",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": ",0:0:0-0:0:0",
+                      "value": [
+                        {
+                          "string": "scenarios"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": ",0:0:0-0:0:0",
+                      "value": [
+                        {
+                          "string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:11:11",
+                  "src": {
+                    "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                          "value": [
+                            {
+                              "string": "***",
+                              "raw_string": "***"
+                            }
+                          ],
+                          "pattern": [
+                            "*",
+                            "",
+                            "*",
+                            "",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                          "value": [
+                            {
+                              "string": "***",
+                              "raw_string": "***"
+                            }
+                          ],
+                          "pattern": [
+                            "*",
+                            "",
+                            "*",
+                            "",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "edge_index": {
+                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:12:12-0:15:15",
+                "int": null,
+                "glob": true
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:17:17-2:1:53",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:32:51",
+                        "key": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:23:42",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:17:36",
+                                "value": [
+                                  {
+                                    "string": "target-arrowhead",
+                                    "raw_string": "target-arrowhead"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:18:37-1:23:42",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:25:44-1:32:51",
+                            "value": [
+                              {
+                                "string": "diamond",
+                                "raw_string": "diamond"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": true,
+          "due_to_lazy_glob": true
+        },
+        {
+          "string": {
+            "range": ",0:0:0-0:0:0",
+            "value": [
+              {
+                "string": "scenarios"
+              }
+            ]
+          },
+          "key_path": {
+            "range": ",0:0:0-0:0:0",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "scenarios"
+                    }
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:0:0-2:1:53",
+              "key": {
+                "range": ",0:0:0-0:0:0",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": ",0:0:0-0:0:0",
+                      "value": [
+                        {
+                          "string": "scenarios"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": ",0:0:0-0:0:0",
+                      "value": [
+                        {
+                          "string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:11:11",
+                  "src": {
+                    "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                          "value": [
+                            {
+                              "string": "***",
+                              "raw_string": "***"
+                            }
+                          ],
+                          "pattern": [
+                            "*",
+                            "",
+                            "*",
+                            "",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                          "value": [
+                            {
+                              "string": "***",
+                              "raw_string": "***"
+                            }
+                          ],
+                          "pattern": [
+                            "*",
+                            "",
+                            "*",
+                            "",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "edge_index": {
+                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:12:12-0:15:15",
+                "int": null,
+                "glob": true
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:17:17-2:1:53",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:32:51",
+                        "key": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:23:42",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:17:36",
+                                "value": [
+                                  {
+                                    "string": "target-arrowhead",
+                                    "raw_string": "target-arrowhead"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:18:37-1:23:42",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:25:44-1:32:51",
+                            "value": [
+                              {
+                                "string": "diamond",
+                                "raw_string": "diamond"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": true,
+          "due_to_lazy_glob": true
         },
         {
           "string": {
@@ -5028,6 +6096,540 @@
                 },
                 "due_to_glob": true,
                 "due_to_lazy_glob": true
+              },
+              {
+                "string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "x"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "layers"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:0:0-2:1:53",
+                    "key": {
+                      "range": ",0:0:0-0:0:0",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "layers"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "x"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "edges": [
+                      {
+                        "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:11:11",
+                        "src": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                                "value": [
+                                  {
+                                    "string": "***",
+                                    "raw_string": "***"
+                                  }
+                                ],
+                                "pattern": [
+                                  "*",
+                                  "",
+                                  "*",
+                                  "",
+                                  "*"
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "src_arrow": "",
+                        "dst": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                                "value": [
+                                  {
+                                    "string": "***",
+                                    "raw_string": "***"
+                                  }
+                                ],
+                                "pattern": [
+                                  "*",
+                                  "",
+                                  "*",
+                                  "",
+                                  "*"
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "dst_arrow": ">"
+                      }
+                    ],
+                    "edge_index": {
+                      "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:12:12-0:15:15",
+                      "int": null,
+                      "glob": true
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:17:17-2:1:53",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:32:51",
+                              "key": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:23:42",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:17:36",
+                                      "value": [
+                                        {
+                                          "string": "target-arrowhead",
+                                          "raw_string": "target-arrowhead"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:18:37-1:23:42",
+                                      "value": [
+                                        {
+                                          "string": "shape",
+                                          "raw_string": "shape"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:25:44-1:32:51",
+                                  "value": [
+                                    {
+                                      "string": "diamond",
+                                      "raw_string": "diamond"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
+              },
+              {
+                "string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "x"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "layers"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:0:0-2:1:53",
+                    "key": {
+                      "range": ",0:0:0-0:0:0",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "layers"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "x"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "edges": [
+                      {
+                        "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:11:11",
+                        "src": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                                "value": [
+                                  {
+                                    "string": "***",
+                                    "raw_string": "***"
+                                  }
+                                ],
+                                "pattern": [
+                                  "*",
+                                  "",
+                                  "*",
+                                  "",
+                                  "*"
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "src_arrow": "",
+                        "dst": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                                "value": [
+                                  {
+                                    "string": "***",
+                                    "raw_string": "***"
+                                  }
+                                ],
+                                "pattern": [
+                                  "*",
+                                  "",
+                                  "*",
+                                  "",
+                                  "*"
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "dst_arrow": ">"
+                      }
+                    ],
+                    "edge_index": {
+                      "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:12:12-0:15:15",
+                      "int": null,
+                      "glob": true
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:17:17-2:1:53",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:32:51",
+                              "key": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:23:42",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:17:36",
+                                      "value": [
+                                        {
+                                          "string": "target-arrowhead",
+                                          "raw_string": "target-arrowhead"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:18:37-1:23:42",
+                                      "value": [
+                                        {
+                                          "string": "shape",
+                                          "raw_string": "shape"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:25:44-1:32:51",
+                                  "value": [
+                                    {
+                                      "string": "diamond",
+                                      "raw_string": "diamond"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
+              },
+              {
+                "string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "x"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "layers"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:0:0-2:1:53",
+                    "key": {
+                      "range": ",0:0:0-0:0:0",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "layers"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "x"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "edges": [
+                      {
+                        "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:11:11",
+                        "src": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                                "value": [
+                                  {
+                                    "string": "***",
+                                    "raw_string": "***"
+                                  }
+                                ],
+                                "pattern": [
+                                  "*",
+                                  "",
+                                  "*",
+                                  "",
+                                  "*"
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "src_arrow": "",
+                        "dst": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                                "value": [
+                                  {
+                                    "string": "***",
+                                    "raw_string": "***"
+                                  }
+                                ],
+                                "pattern": [
+                                  "*",
+                                  "",
+                                  "*",
+                                  "",
+                                  "*"
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "dst_arrow": ">"
+                      }
+                    ],
+                    "edge_index": {
+                      "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:12:12-0:15:15",
+                      "int": null,
+                      "glob": true
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:17:17-2:1:53",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:32:51",
+                              "key": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:23:42",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:17:36",
+                                      "value": [
+                                        {
+                                          "string": "target-arrowhead",
+                                          "raw_string": "target-arrowhead"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:18:37-1:23:42",
+                                      "value": [
+                                        {
+                                          "string": "shape",
+                                          "raw_string": "shape"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:25:44-1:32:51",
+                                  "value": [
+                                    {
+                                      "string": "diamond",
+                                      "raw_string": "diamond"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
               }
             ]
           }
@@ -5161,6 +6763,540 @@
           },
           "due_to_glob": false,
           "due_to_lazy_glob": false
+        },
+        {
+          "string": {
+            "range": ",0:0:0-0:0:0",
+            "value": [
+              {
+                "string": "layers"
+              }
+            ]
+          },
+          "key_path": {
+            "range": ",0:0:0-0:0:0",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "layers"
+                    }
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:0:0-2:1:53",
+              "key": {
+                "range": ",0:0:0-0:0:0",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": ",0:0:0-0:0:0",
+                      "value": [
+                        {
+                          "string": "layers"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": ",0:0:0-0:0:0",
+                      "value": [
+                        {
+                          "string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:11:11",
+                  "src": {
+                    "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                          "value": [
+                            {
+                              "string": "***",
+                              "raw_string": "***"
+                            }
+                          ],
+                          "pattern": [
+                            "*",
+                            "",
+                            "*",
+                            "",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                          "value": [
+                            {
+                              "string": "***",
+                              "raw_string": "***"
+                            }
+                          ],
+                          "pattern": [
+                            "*",
+                            "",
+                            "*",
+                            "",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "edge_index": {
+                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:12:12-0:15:15",
+                "int": null,
+                "glob": true
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:17:17-2:1:53",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:32:51",
+                        "key": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:23:42",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:17:36",
+                                "value": [
+                                  {
+                                    "string": "target-arrowhead",
+                                    "raw_string": "target-arrowhead"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:18:37-1:23:42",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:25:44-1:32:51",
+                            "value": [
+                              {
+                                "string": "diamond",
+                                "raw_string": "diamond"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": true,
+          "due_to_lazy_glob": true
+        },
+        {
+          "string": {
+            "range": ",0:0:0-0:0:0",
+            "value": [
+              {
+                "string": "layers"
+              }
+            ]
+          },
+          "key_path": {
+            "range": ",0:0:0-0:0:0",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "layers"
+                    }
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:0:0-2:1:53",
+              "key": {
+                "range": ",0:0:0-0:0:0",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": ",0:0:0-0:0:0",
+                      "value": [
+                        {
+                          "string": "layers"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": ",0:0:0-0:0:0",
+                      "value": [
+                        {
+                          "string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:11:11",
+                  "src": {
+                    "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                          "value": [
+                            {
+                              "string": "***",
+                              "raw_string": "***"
+                            }
+                          ],
+                          "pattern": [
+                            "*",
+                            "",
+                            "*",
+                            "",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                          "value": [
+                            {
+                              "string": "***",
+                              "raw_string": "***"
+                            }
+                          ],
+                          "pattern": [
+                            "*",
+                            "",
+                            "*",
+                            "",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "edge_index": {
+                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:12:12-0:15:15",
+                "int": null,
+                "glob": true
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:17:17-2:1:53",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:32:51",
+                        "key": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:23:42",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:17:36",
+                                "value": [
+                                  {
+                                    "string": "target-arrowhead",
+                                    "raw_string": "target-arrowhead"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:18:37-1:23:42",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:25:44-1:32:51",
+                            "value": [
+                              {
+                                "string": "diamond",
+                                "raw_string": "diamond"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": true,
+          "due_to_lazy_glob": true
+        },
+        {
+          "string": {
+            "range": ",0:0:0-0:0:0",
+            "value": [
+              {
+                "string": "layers"
+              }
+            ]
+          },
+          "key_path": {
+            "range": ",0:0:0-0:0:0",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "layers"
+                    }
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:0:0-2:1:53",
+              "key": {
+                "range": ",0:0:0-0:0:0",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": ",0:0:0-0:0:0",
+                      "value": [
+                        {
+                          "string": "layers"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": ",0:0:0-0:0:0",
+                      "value": [
+                        {
+                          "string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:11:11",
+                  "src": {
+                    "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:1:1-0:4:4",
+                          "value": [
+                            {
+                              "string": "***",
+                              "raw_string": "***"
+                            }
+                          ],
+                          "pattern": [
+                            "*",
+                            "",
+                            "*",
+                            "",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:8:8-0:11:11",
+                          "value": [
+                            {
+                              "string": "***",
+                              "raw_string": "***"
+                            }
+                          ],
+                          "pattern": [
+                            "*",
+                            "",
+                            "*",
+                            "",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "edge_index": {
+                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:12:12-0:15:15",
+                "int": null,
+                "glob": true
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,0:17:17-2:1:53",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:32:51",
+                        "key": {
+                          "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:23:42",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:1:20-1:17:36",
+                                "value": [
+                                  {
+                                    "string": "target-arrowhead",
+                                    "raw_string": "target-arrowhead"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:18:37-1:23:42",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/triple-glob/edge-defaults.d2,1:25:44-1:32:51",
+                            "value": [
+                              {
+                                "string": "diamond",
+                                "raw_string": "diamond"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": true,
+          "due_to_lazy_glob": true
         },
         {
           "string": {

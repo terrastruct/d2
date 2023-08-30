@@ -717,6 +717,14 @@ func (m *Map) EnsureField(kp *d2ast.KeyPath, refctx *RefContext, create bool, c 
 
 	var fa []*Field
 	err := m.ensureField(i, kp, refctx, create, gctx, c, &fa)
+	if len(fa) > 0 && c != nil && len(c.globRefContextStack) == 0 {
+		for _, gctx2 := range c.globContexts() {
+			old := c.lazyGlobBeingApplied
+			c.lazyGlobBeingApplied = true
+			c.compileKey(gctx2.refctx)
+			c.lazyGlobBeingApplied = old
+		}
+	}
 	return fa, err
 }
 
@@ -1091,6 +1099,14 @@ func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext, c *compiler) ([]*Edge,
 		gctx = c.ensureGlobContext(refctx)
 	}
 	err := m.createEdge(eid, refctx, gctx, c, &ea)
+	if len(ea) > 0 && c != nil && len(c.globRefContextStack) == 0 {
+		for _, gctx2 := range c.globContexts() {
+			old := c.lazyGlobBeingApplied
+			c.lazyGlobBeingApplied = true
+			c.compileKey(gctx2.refctx)
+			c.lazyGlobBeingApplied = old
+		}
+	}
 	return ea, err
 }
 
