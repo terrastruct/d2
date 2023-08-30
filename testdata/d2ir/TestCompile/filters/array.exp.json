@@ -177,6 +177,70 @@
                 },
                 "due_to_glob": true,
                 "due_to_lazy_glob": false
+              },
+              {
+                "string": {
+                  "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                  "value": [
+                    {
+                      "string": "class",
+                      "raw_string": "class"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                        "value": [
+                          {
+                            "string": "class",
+                            "raw_string": "class"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/array.d2,11:1:134-11:15:148",
+                    "ampersand": true,
+                    "key": {
+                      "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                            "value": [
+                              {
+                                "string": "class",
+                                "raw_string": "class"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/array.d2,11:9:142-11:15:148",
+                        "value": [
+                          {
+                            "string": "server",
+                            "raw_string": "server"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
               }
             ]
           },
@@ -885,6 +949,70 @@
                   }
                 },
                 "due_to_glob": false,
+                "due_to_lazy_glob": false
+              },
+              {
+                "string": {
+                  "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                  "value": [
+                    {
+                      "string": "class",
+                      "raw_string": "class"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                        "value": [
+                          {
+                            "string": "class",
+                            "raw_string": "class"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/array.d2,11:1:134-11:15:148",
+                    "ampersand": true,
+                    "key": {
+                      "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/array.d2,11:2:135-11:7:140",
+                            "value": [
+                              {
+                                "string": "class",
+                                "raw_string": "class"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/array.d2,11:9:142-11:15:148",
+                        "value": [
+                          {
+                            "string": "server",
+                            "raw_string": "server"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
                 "due_to_lazy_glob": false
               },
               {

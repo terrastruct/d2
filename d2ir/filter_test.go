@@ -170,6 +170,46 @@ b.label: a
 				assertQuery(t, m, 0, 0, "yellow", "b.style.fill")
 			},
 		},
+		{
+			name: "primary-filter",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+parent: {
+  a -> b1
+  a -> b2
+  a -> b3
+
+  b1 -> c1
+  b1 -> c2
+
+  c1: {
+    c1-child.class: hidden
+  }
+
+  c2: {
+    C2-child.class: hidden
+  }
+  c2.class: hidden
+  b2.class: hidden
+}
+
+classes: {
+  hidden: {
+    style: {
+      fill: red
+    }
+  }
+}
+
+# Error
+**: null {
+  &class: hidden
+}
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 9, 3, nil, "")
+			},
+		},
 	}
 
 	runa(t, tca)

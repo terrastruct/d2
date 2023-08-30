@@ -376,6 +376,36 @@ func (g *globContext) prefixed(dst *Map) *globContext {
 	return &g2
 }
 
+func (c *compiler) ampersandFilterMap(dst *Map, ast, scopeAST *d2ast.Map) bool {
+	for _, n := range ast.Nodes {
+		switch {
+		case n.MapKey != nil:
+			ok := c.ampersandFilter(&RefContext{
+				Key:      n.MapKey,
+				Scope:    ast,
+				ScopeMap: dst,
+				ScopeAST: scopeAST,
+			})
+			if !ok {
+				// Unapply glob if appropriate.
+				gctx := c.getGlobContext(c.mapRefContextStack[len(c.mapRefContextStack)-1])
+				if gctx == nil {
+					return false
+				}
+				var ks string
+				if gctx.refctx.Key.HasTripleGlob() {
+					ks = d2format.Format(d2ast.MakeKeyPath(IDA(dst)))
+				} else {
+					ks = d2format.Format(d2ast.MakeKeyPath(BoardIDA(dst)))
+				}
+				delete(gctx.appliedFields, ks)
+				return false
+			}
+		}
+	}
+	return true
+}
+
 func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 	var globs []*globContext
 	if len(c.globContextStack) > 0 {
@@ -400,31 +430,9 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 		c.globContextStack = c.globContextStack[:len(c.globContextStack)-1]
 	}()
 
-	for _, n := range ast.Nodes {
-		switch {
-		case n.MapKey != nil:
-			ok := c.ampersandFilter(&RefContext{
-				Key:      n.MapKey,
-				Scope:    ast,
-				ScopeMap: dst,
-				ScopeAST: scopeAST,
-			})
-			if !ok {
-				// Unapply glob if appropriate.
-				gctx := c.getGlobContext(c.mapRefContextStack[len(c.mapRefContextStack)-1])
-				if gctx == nil {
-					return
-				}
-				var ks string
-				if gctx.refctx.Key.HasTripleGlob() {
-					ks = d2format.Format(d2ast.MakeKeyPath(IDA(dst)))
-				} else {
-					ks = d2format.Format(d2ast.MakeKeyPath(BoardIDA(dst)))
-				}
-				delete(gctx.appliedFields, ks)
-				return
-			}
-		}
+	ok := c.ampersandFilterMap(dst, ast, scopeAST)
+	if !ok {
+		return
 	}
 
 	for _, n := range ast.Nodes {
@@ -644,7 +652,22 @@ func (c *compiler) _ampersandFilter(f *Field, refctx *RefContext) bool {
 }
 
 func (c *compiler) _compileField(f *Field, refctx *RefContext) {
-	if len(refctx.Key.Edges) == 0 && refctx.Key.Value.Null != nil {
+	// In case of filters, we need to pass filters before continuing
+	if refctx.Key.Value.Map != nil && refctx.Key.Value.Map.HasFilter() {
+		if f.Map() == nil {
+			f.Composite = &Map{
+				parent: f,
+			}
+		}
+		c.mapRefContextStack = append(c.mapRefContextStack, refctx)
+		ok := c.ampersandFilterMap(f.Map(), refctx.Key.Value.Map, refctx.ScopeAST)
+		c.mapRefContextStack = c.mapRefContextStack[:len(c.mapRefContextStack)-1]
+		if !ok {
+			return
+		}
+	}
+
+	if len(refctx.Key.Edges) == 0 && (refctx.Key.Primary.Null != nil || refctx.Key.Value.Null != nil) {
 		// For vars, if we delete the field, it may just resolve to an outer scope var of the same name
 		// Instead we keep it around, so that resolveSubstitutions can find it
 		if !IsVar(ParentMap(f)) {
@@ -662,6 +685,7 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 			Value:  refctx.Key.Primary.Unbox(),
 		}
 	}
+
 	if refctx.Key.Value.Array != nil {
 		a := &Array{
 			parent: f,

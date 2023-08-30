@@ -389,6 +389,70 @@
                 },
                 "due_to_glob": true,
                 "due_to_lazy_glob": false
+              },
+              {
+                "string": {
+                  "range": "TestCompile/filters/base.d2,7:2:63-7:7:68",
+                  "value": [
+                    {
+                      "string": "shape",
+                      "raw_string": "shape"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/base.d2,7:2:63-7:7:68",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/base.d2,7:2:63-7:7:68",
+                        "value": [
+                          {
+                            "string": "shape",
+                            "raw_string": "shape"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/base.d2,7:1:62-7:18:79",
+                    "ampersand": true,
+                    "key": {
+                      "range": "TestCompile/filters/base.d2,7:2:63-7:7:68",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/base.d2,7:2:63-7:7:68",
+                            "value": [
+                              {
+                                "string": "shape",
+                                "raw_string": "shape"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/base.d2,7:9:70-7:18:79",
+                        "value": [
+                          {
+                            "string": "rectangle",
+                            "raw_string": "rectangle"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
               }
             ]
           },

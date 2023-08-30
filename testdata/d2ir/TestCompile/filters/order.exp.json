@@ -389,6 +389,70 @@
                 },
                 "due_to_glob": true,
                 "due_to_lazy_glob": false
+              },
+              {
+                "string": {
+                  "range": "TestCompile/filters/order.d2,8:2:87-8:7:92",
+                  "value": [
+                    {
+                      "string": "shape",
+                      "raw_string": "shape"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/order.d2,8:2:87-8:7:92",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/order.d2,8:2:87-8:7:92",
+                        "value": [
+                          {
+                            "string": "shape",
+                            "raw_string": "shape"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/order.d2,8:1:86-8:18:103",
+                    "ampersand": true,
+                    "key": {
+                      "range": "TestCompile/filters/order.d2,8:2:87-8:7:92",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/order.d2,8:2:87-8:7:92",
+                            "value": [
+                              {
+                                "string": "shape",
+                                "raw_string": "shape"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/order.d2,8:9:94-8:18:103",
+                        "value": [
+                          {
+                            "string": "rectangle",
+                            "raw_string": "rectangle"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
               }
             ]
           },

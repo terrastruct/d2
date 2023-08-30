@@ -606,6 +606,15 @@ func (m *Map) IsFileMap() bool {
 	return m.Range.Start.Line == 0 && m.Range.Start.Column == 0
 }
 
+func (m *Map) HasFilter() bool {
+	for _, n := range m.Nodes {
+		if n.MapKey != nil && (n.MapKey.Ampersand || n.MapKey.NotAmpersand) {
+			return true
+		}
+	}
+	return false
+}
+
 // TODO: require @ on import values for readability
 type Key struct {
 	Range Range `json:"range"`
