@@ -693,31 +693,31 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 		c.compileArray(a, refctx.Key.Value.Array, refctx.ScopeAST)
 		f.Composite = a
 	} else if refctx.Key.Value.Map != nil {
+		scopeAST := refctx.Key.Value.Map
 		if f.Map() == nil {
 			f.Composite = &Map{
 				parent: f,
 			}
-		}
-		scopeAST := refctx.Key.Value.Map
-		switch NodeBoardKind(f) {
-		case BoardScenario:
-			c.overlay(ParentBoard(f).Map(), f)
-		case BoardStep:
-			stepsMap := ParentMap(f)
-			for i := range stepsMap.Fields {
-				if stepsMap.Fields[i] == f {
-					if i == 0 {
-						c.overlay(ParentBoard(f).Map(), f)
-					} else {
-						c.overlay(stepsMap.Fields[i-1].Map(), f)
+			switch NodeBoardKind(f) {
+			case BoardScenario:
+				c.overlay(ParentBoard(f).Map(), f)
+			case BoardStep:
+				stepsMap := ParentMap(f)
+				for i := range stepsMap.Fields {
+					if stepsMap.Fields[i] == f {
+						if i == 0 {
+							c.overlay(ParentBoard(f).Map(), f)
+						} else {
+							c.overlay(stepsMap.Fields[i-1].Map(), f)
+						}
+						break
 					}
-					break
 				}
+			case BoardLayer:
+			default:
+				// If new board type, use that as the new scope AST, otherwise, carry on
+				scopeAST = refctx.ScopeAST
 			}
-		case BoardLayer:
-		default:
-			// If new board type, use that as the new scope AST, otherwise, carry on
-			scopeAST = refctx.ScopeAST
 		}
 		c.mapRefContextStack = append(c.mapRefContextStack, refctx)
 		c.compileMap(f.Map(), refctx.Key.Value.Map, scopeAST)

@@ -1,0 +1,2609 @@
+{
+  "fields": [
+    {
+      "name": "a",
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                  "value": [
+                    {
+                      "string": "a",
+                      "raw_string": "a"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:30:30",
+              "edges": [
+                {
+                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:6:6",
+                  "src": {
+                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:8:8-0:30:30",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:29:29",
+                        "key": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:23:23",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:15:15",
+                                "value": [
+                                  {
+                                    "string": "style",
+                                    "raw_string": "style"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:16:16-0:23:23",
+                                "value": [
+                                  {
+                                    "string": "opacity",
+                                    "raw_string": "opacity"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "number": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:25:25-0:28:28",
+                            "raw": "0.3",
+                            "value": "3/10"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        }
+      ]
+    },
+    {
+      "name": "b",
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                  "value": [
+                    {
+                      "string": "b",
+                      "raw_string": "b"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:30:30",
+              "edges": [
+                {
+                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:6:6",
+                  "src": {
+                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:8:8-0:30:30",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:29:29",
+                        "key": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:23:23",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:15:15",
+                                "value": [
+                                  {
+                                    "string": "style",
+                                    "raw_string": "style"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:16:16-0:23:23",
+                                "value": [
+                                  {
+                                    "string": "opacity",
+                                    "raw_string": "opacity"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "number": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:25:25-0:28:28",
+                            "raw": "0.3",
+                            "value": "3/10"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        }
+      ]
+    },
+    {
+      "name": "scenarios",
+      "composite": {
+        "fields": [
+          {
+            "name": "1",
+            "composite": {
+              "fields": [
+                {
+                  "name": "a",
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "a",
+                            "raw_string": "a"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                              "value": [
+                                {
+                                  "string": "a",
+                                  "raw_string": "a"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:6:6",
+                          "src": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                                  "value": [
+                                    {
+                                      "string": "a",
+                                      "raw_string": "a"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                                  "value": [
+                                    {
+                                      "string": "b",
+                                      "raw_string": "b"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
+                        "key": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:30:30",
+                          "edges": [
+                            {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:6:6",
+                              "src": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                                      "value": [
+                                        {
+                                          "string": "a",
+                                          "raw_string": "a"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "src_arrow": "",
+                              "dst": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                                      "value": [
+                                        {
+                                          "string": "b",
+                                          "raw_string": "b"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "dst_arrow": ">"
+                            }
+                          ],
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:8:8-0:30:30",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:29:29",
+                                    "key": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:23:23",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:15:15",
+                                            "value": [
+                                              {
+                                                "string": "style",
+                                                "raw_string": "style"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          "unquoted_string": {
+                                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:16:16-0:23:23",
+                                            "value": [
+                                              {
+                                                "string": "opacity",
+                                                "raw_string": "opacity"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {},
+                                    "value": {
+                                      "number": {
+                                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:25:25-0:28:28",
+                                        "raw": "0.3",
+                                        "value": "3/10"
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    },
+                    {
+                      "string": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                        "value": [
+                          {
+                            "string": "a",
+                            "raw_string": "a"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                              "value": [
+                                {
+                                  "string": "a",
+                                  "raw_string": "a"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:11:62",
+                          "src": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                                  "value": [
+                                    {
+                                      "string": "a",
+                                      "raw_string": "a"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                                  "value": [
+                                    {
+                                      "string": "b",
+                                      "raw_string": "b"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
+                        "key": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:4:55-3:34:85",
+                          "edges": [
+                            {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:11:62",
+                              "src": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                                      "value": [
+                                        {
+                                          "string": "a",
+                                          "raw_string": "a"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "src_arrow": "",
+                              "dst": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                                      "value": [
+                                        {
+                                          "string": "b",
+                                          "raw_string": "b"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "dst_arrow": ">"
+                            }
+                          ],
+                          "edge_index": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:12:63-3:15:66",
+                            "int": 0,
+                            "glob": false
+                          },
+                          "edge_key": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:16:67-3:29:80",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:16:67-3:21:72",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:22:73-3:29:80",
+                                  "value": [
+                                    {
+                                      "string": "opacity",
+                                      "raw_string": "opacity"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "number": {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:31:82-3:34:85",
+                              "raw": "0.1",
+                              "value": "1/10"
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    }
+                  ]
+                },
+                {
+                  "name": "b",
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                        "value": [
+                          {
+                            "string": "b",
+                            "raw_string": "b"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                              "value": [
+                                {
+                                  "string": "b",
+                                  "raw_string": "b"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:6:6",
+                          "src": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                                  "value": [
+                                    {
+                                      "string": "a",
+                                      "raw_string": "a"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                                  "value": [
+                                    {
+                                      "string": "b",
+                                      "raw_string": "b"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
+                        "key": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:30:30",
+                          "edges": [
+                            {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:6:6",
+                              "src": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                                      "value": [
+                                        {
+                                          "string": "a",
+                                          "raw_string": "a"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "src_arrow": "",
+                              "dst": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                                      "value": [
+                                        {
+                                          "string": "b",
+                                          "raw_string": "b"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "dst_arrow": ">"
+                            }
+                          ],
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:8:8-0:30:30",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:29:29",
+                                    "key": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:23:23",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:15:15",
+                                            "value": [
+                                              {
+                                                "string": "style",
+                                                "raw_string": "style"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          "unquoted_string": {
+                                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:16:16-0:23:23",
+                                            "value": [
+                                              {
+                                                "string": "opacity",
+                                                "raw_string": "opacity"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {},
+                                    "value": {
+                                      "number": {
+                                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:25:25-0:28:28",
+                                        "raw": "0.3",
+                                        "value": "3/10"
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    },
+                    {
+                      "string": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                        "value": [
+                          {
+                            "string": "b",
+                            "raw_string": "b"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                              "value": [
+                                {
+                                  "string": "b",
+                                  "raw_string": "b"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:11:62",
+                          "src": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                                  "value": [
+                                    {
+                                      "string": "a",
+                                      "raw_string": "a"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                                  "value": [
+                                    {
+                                      "string": "b",
+                                      "raw_string": "b"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
+                        "key": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:4:55-3:34:85",
+                          "edges": [
+                            {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:11:62",
+                              "src": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                                      "value": [
+                                        {
+                                          "string": "a",
+                                          "raw_string": "a"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "src_arrow": "",
+                              "dst": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                                      "value": [
+                                        {
+                                          "string": "b",
+                                          "raw_string": "b"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "dst_arrow": ">"
+                            }
+                          ],
+                          "edge_index": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:12:63-3:15:66",
+                            "int": 0,
+                            "glob": false
+                          },
+                          "edge_key": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:16:67-3:29:80",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:16:67-3:21:72",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:22:73-3:29:80",
+                                  "value": [
+                                    {
+                                      "string": "opacity",
+                                      "raw_string": "opacity"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "number": {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:31:82-3:34:85",
+                              "raw": "0.1",
+                              "value": "1/10"
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    }
+                  ]
+                },
+                {
+                  "name": "z",
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,6:1:98-6:2:99",
+                        "value": [
+                          {
+                            "string": "z",
+                            "raw_string": "z"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,6:1:98-6:2:99",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,6:1:98-6:2:99",
+                              "value": [
+                                {
+                                  "string": "z",
+                                  "raw_string": "z"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,6:1:98-6:2:99",
+                          "key": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,6:1:98-6:2:99",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,6:1:98-6:2:99",
+                                  "value": [
+                                    {
+                                      "string": "z",
+                                      "raw_string": "z"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {}
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    }
+                  ]
+                }
+              ],
+              "edges": [
+                {
+                  "edge_id": {
+                    "src_path": [
+                      "a"
+                    ],
+                    "src_arrow": false,
+                    "dst_path": [
+                      "b"
+                    ],
+                    "dst_arrow": true,
+                    "index": 0,
+                    "glob": false
+                  },
+                  "map": {
+                    "fields": [
+                      {
+                        "name": "style",
+                        "composite": {
+                          "fields": [
+                            {
+                              "name": "opacity",
+                              "primary": {
+                                "value": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:31:82-3:34:85",
+                                  "raw": "0.1",
+                                  "value": "1/10"
+                                }
+                              },
+                              "references": [
+                                {
+                                  "string": {
+                                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:16:16-0:23:23",
+                                    "value": [
+                                      {
+                                        "string": "opacity",
+                                        "raw_string": "opacity"
+                                      }
+                                    ]
+                                  },
+                                  "key_path": {
+                                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:23:23",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:15:15",
+                                          "value": [
+                                            {
+                                              "string": "style",
+                                              "raw_string": "style"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:16:16-0:23:23",
+                                          "value": [
+                                            {
+                                              "string": "opacity",
+                                              "raw_string": "opacity"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "context": {
+                                    "edge": null,
+                                    "key": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:29:29",
+                                      "key": {
+                                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:23:23",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:15:15",
+                                              "value": [
+                                                {
+                                                  "string": "style",
+                                                  "raw_string": "style"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:16:16-0:23:23",
+                                              "value": [
+                                                {
+                                                  "string": "opacity",
+                                                  "raw_string": "opacity"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "primary": {},
+                                      "value": {
+                                        "number": {
+                                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:25:25-0:28:28",
+                                          "raw": "0.3",
+                                          "value": "3/10"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "due_to_glob": false,
+                                  "due_to_lazy_glob": false
+                                },
+                                {
+                                  "string": {
+                                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:22:73-3:29:80",
+                                    "value": [
+                                      {
+                                        "string": "opacity",
+                                        "raw_string": "opacity"
+                                      }
+                                    ]
+                                  },
+                                  "key_path": {
+                                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:16:67-3:29:80",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:16:67-3:21:72",
+                                          "value": [
+                                            {
+                                              "string": "style",
+                                              "raw_string": "style"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:22:73-3:29:80",
+                                          "value": [
+                                            {
+                                              "string": "opacity",
+                                              "raw_string": "opacity"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "context": {
+                                    "edge": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:11:62",
+                                      "src": {
+                                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                                              "value": [
+                                                {
+                                                  "string": "a",
+                                                  "raw_string": "a"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "src_arrow": "",
+                                      "dst": {
+                                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                                              "value": [
+                                                {
+                                                  "string": "b",
+                                                  "raw_string": "b"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "dst_arrow": ">"
+                                    },
+                                    "key": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:4:55-3:34:85",
+                                      "edges": [
+                                        {
+                                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:11:62",
+                                          "src": {
+                                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                                                  "value": [
+                                                    {
+                                                      "string": "a",
+                                                      "raw_string": "a"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "src_arrow": "",
+                                          "dst": {
+                                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                                                  "value": [
+                                                    {
+                                                      "string": "b",
+                                                      "raw_string": "b"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "dst_arrow": ">"
+                                        }
+                                      ],
+                                      "edge_index": {
+                                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:12:63-3:15:66",
+                                        "int": 0,
+                                        "glob": false
+                                      },
+                                      "edge_key": {
+                                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:16:67-3:29:80",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:16:67-3:21:72",
+                                              "value": [
+                                                {
+                                                  "string": "style",
+                                                  "raw_string": "style"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:22:73-3:29:80",
+                                              "value": [
+                                                {
+                                                  "string": "opacity",
+                                                  "raw_string": "opacity"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "primary": {},
+                                      "value": {
+                                        "number": {
+                                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:31:82-3:34:85",
+                                          "raw": "0.1",
+                                          "value": "1/10"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "due_to_glob": false,
+                                  "due_to_lazy_glob": false
+                                }
+                              ]
+                            }
+                          ],
+                          "edges": null
+                        },
+                        "references": [
+                          {
+                            "string": {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:15:15",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:23:23",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:15:15",
+                                    "value": [
+                                      {
+                                        "string": "style",
+                                        "raw_string": "style"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:16:16-0:23:23",
+                                    "value": [
+                                      {
+                                        "string": "opacity",
+                                        "raw_string": "opacity"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:29:29",
+                                "key": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:23:23",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:15:15",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:16:16-0:23:23",
+                                        "value": [
+                                          {
+                                            "string": "opacity",
+                                            "raw_string": "opacity"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:25:25-0:28:28",
+                                    "raw": "0.3",
+                                    "value": "3/10"
+                                  }
+                                }
+                              }
+                            },
+                            "due_to_glob": false,
+                            "due_to_lazy_glob": false
+                          },
+                          {
+                            "string": {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:16:67-3:21:72",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:16:67-3:29:80",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:16:67-3:21:72",
+                                    "value": [
+                                      {
+                                        "string": "style",
+                                        "raw_string": "style"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:22:73-3:29:80",
+                                    "value": [
+                                      {
+                                        "string": "opacity",
+                                        "raw_string": "opacity"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:11:62",
+                                "src": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                                        "value": [
+                                          {
+                                            "string": "a",
+                                            "raw_string": "a"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "src_arrow": "",
+                                "dst": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                                        "value": [
+                                          {
+                                            "string": "b",
+                                            "raw_string": "b"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "dst_arrow": ">"
+                              },
+                              "key": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:4:55-3:34:85",
+                                "edges": [
+                                  {
+                                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:11:62",
+                                    "src": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                                            "value": [
+                                              {
+                                                "string": "a",
+                                                "raw_string": "a"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "src_arrow": "",
+                                    "dst": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                                            "value": [
+                                              {
+                                                "string": "b",
+                                                "raw_string": "b"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "dst_arrow": ">"
+                                  }
+                                ],
+                                "edge_index": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:12:63-3:15:66",
+                                  "int": 0,
+                                  "glob": false
+                                },
+                                "edge_key": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:16:67-3:29:80",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:16:67-3:21:72",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:22:73-3:29:80",
+                                        "value": [
+                                          {
+                                            "string": "opacity",
+                                            "raw_string": "opacity"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:31:82-3:34:85",
+                                    "raw": "0.1",
+                                    "value": "1/10"
+                                  }
+                                }
+                              }
+                            },
+                            "due_to_glob": false,
+                            "due_to_lazy_glob": false
+                          }
+                        ]
+                      }
+                    ],
+                    "edges": null
+                  },
+                  "references": [
+                    {
+                      "context": {
+                        "edge": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:6:6",
+                          "src": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                                  "value": [
+                                    {
+                                      "string": "a",
+                                      "raw_string": "a"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                                  "value": [
+                                    {
+                                      "string": "b",
+                                      "raw_string": "b"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
+                        "key": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:30:30",
+                          "edges": [
+                            {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:6:6",
+                              "src": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                                      "value": [
+                                        {
+                                          "string": "a",
+                                          "raw_string": "a"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "src_arrow": "",
+                              "dst": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                                      "value": [
+                                        {
+                                          "string": "b",
+                                          "raw_string": "b"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "dst_arrow": ">"
+                            }
+                          ],
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:8:8-0:30:30",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:29:29",
+                                    "key": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:23:23",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:15:15",
+                                            "value": [
+                                              {
+                                                "string": "style",
+                                                "raw_string": "style"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          "unquoted_string": {
+                                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:16:16-0:23:23",
+                                            "value": [
+                                              {
+                                                "string": "opacity",
+                                                "raw_string": "opacity"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {},
+                                    "value": {
+                                      "number": {
+                                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:25:25-0:28:28",
+                                        "raw": "0.3",
+                                        "value": "3/10"
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    },
+                    {
+                      "context": {
+                        "edge": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:11:62",
+                          "src": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                                  "value": [
+                                    {
+                                      "string": "a",
+                                      "raw_string": "a"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                                  "value": [
+                                    {
+                                      "string": "b",
+                                      "raw_string": "b"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
+                        "key": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:4:55-3:34:85",
+                          "edges": [
+                            {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:11:62",
+                              "src": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                                      "value": [
+                                        {
+                                          "string": "a",
+                                          "raw_string": "a"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "src_arrow": "",
+                              "dst": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                                      "value": [
+                                        {
+                                          "string": "b",
+                                          "raw_string": "b"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "dst_arrow": ">"
+                            }
+                          ],
+                          "edge_index": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:12:63-3:15:66",
+                            "int": 0,
+                            "glob": false
+                          },
+                          "edge_key": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:16:67-3:29:80",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:16:67-3:21:72",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:22:73-3:29:80",
+                                  "value": [
+                                    {
+                                      "string": "opacity",
+                                      "raw_string": "opacity"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "number": {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:31:82-3:34:85",
+                              "raw": "0.1",
+                              "value": "1/10"
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    }
+                  ]
+                }
+              ]
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,2:2:46-2:3:47",
+                  "value": [
+                    {
+                      "string": "1",
+                      "raw_string": "1"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,2:2:46-2:3:47",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,2:2:46-2:3:47",
+                        "value": [
+                          {
+                            "string": "1",
+                            "raw_string": "1"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,2:2:46-4:3:89",
+                    "key": {
+                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,2:2:46-2:3:47",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,2:2:46-2:3:47",
+                            "value": [
+                              {
+                                "string": "1",
+                                "raw_string": "1"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,2:5:49-4:3:89",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:4:55-3:34:85",
+                              "edges": [
+                                {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:11:62",
+                                  "src": {
+                                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                                          "value": [
+                                            {
+                                              "string": "a",
+                                              "raw_string": "a"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "src_arrow": "",
+                                  "dst": {
+                                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                                          "value": [
+                                            {
+                                              "string": "b",
+                                              "raw_string": "b"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "dst_arrow": ">"
+                                }
+                              ],
+                              "edge_index": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:12:63-3:15:66",
+                                "int": 0,
+                                "glob": false
+                              },
+                              "edge_key": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:16:67-3:29:80",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:16:67-3:21:72",
+                                      "value": [
+                                        {
+                                          "string": "style",
+                                          "raw_string": "style"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:22:73-3:29:80",
+                                      "value": [
+                                        {
+                                          "string": "opacity",
+                                          "raw_string": "opacity"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "number": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:31:82-3:34:85",
+                                  "raw": "0.1",
+                                  "value": "1/10"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              },
+              {
+                "string": {
+                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,5:2:92-5:3:93",
+                  "value": [
+                    {
+                      "string": "1",
+                      "raw_string": "1"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,5:2:92-5:3:93",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,5:2:92-5:3:93",
+                        "value": [
+                          {
+                            "string": "1",
+                            "raw_string": "1"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,5:2:92-7:3:103",
+                    "key": {
+                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,5:2:92-5:3:93",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,5:2:92-5:3:93",
+                            "value": [
+                              {
+                                "string": "1",
+                                "raw_string": "1"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,5:5:95-7:3:103",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,6:1:98-6:2:99",
+                              "key": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,6:1:98-6:2:99",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,6:1:98-6:2:99",
+                                      "value": [
+                                        {
+                                          "string": "z",
+                                          "raw_string": "z"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {}
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/scenarios/multiple-scenario-map.d2,1:0:31-1:9:40",
+            "value": [
+              {
+                "string": "scenarios",
+                "raw_string": "scenarios"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/scenarios/multiple-scenario-map.d2,1:0:31-1:9:40",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,1:0:31-1:9:40",
+                  "value": [
+                    {
+                      "string": "scenarios",
+                      "raw_string": "scenarios"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/scenarios/multiple-scenario-map.d2,1:0:31-8:1:105",
+              "key": {
+                "range": "TestCompile/scenarios/multiple-scenario-map.d2,1:0:31-1:9:40",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,1:0:31-1:9:40",
+                      "value": [
+                        {
+                          "string": "scenarios",
+                          "raw_string": "scenarios"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,1:11:42-8:1:105",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,2:2:46-4:3:89",
+                        "key": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,2:2:46-2:3:47",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,2:2:46-2:3:47",
+                                "value": [
+                                  {
+                                    "string": "1",
+                                    "raw_string": "1"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "map": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,2:5:49-4:3:89",
+                            "nodes": [
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:4:55-3:34:85",
+                                  "edges": [
+                                    {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:11:62",
+                                      "src": {
+                                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:5:56-3:6:57",
+                                              "value": [
+                                                {
+                                                  "string": "a",
+                                                  "raw_string": "a"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "src_arrow": "",
+                                      "dst": {
+                                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:10:61-3:11:62",
+                                              "value": [
+                                                {
+                                                  "string": "b",
+                                                  "raw_string": "b"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "dst_arrow": ">"
+                                    }
+                                  ],
+                                  "edge_index": {
+                                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:12:63-3:15:66",
+                                    "int": 0,
+                                    "glob": false
+                                  },
+                                  "edge_key": {
+                                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:16:67-3:29:80",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:16:67-3:21:72",
+                                          "value": [
+                                            {
+                                              "string": "style",
+                                              "raw_string": "style"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:22:73-3:29:80",
+                                          "value": [
+                                            {
+                                              "string": "opacity",
+                                              "raw_string": "opacity"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {
+                                    "number": {
+                                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:31:82-3:34:85",
+                                      "raw": "0.1",
+                                      "value": "1/10"
+                                    }
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "map_key": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,5:2:92-7:3:103",
+                        "key": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,5:2:92-5:3:93",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,5:2:92-5:3:93",
+                                "value": [
+                                  {
+                                    "string": "1",
+                                    "raw_string": "1"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "map": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,5:5:95-7:3:103",
+                            "nodes": [
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,6:1:98-6:2:99",
+                                  "key": {
+                                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,6:1:98-6:2:99",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,6:1:98-6:2:99",
+                                          "value": [
+                                            {
+                                              "string": "z",
+                                              "raw_string": "z"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {}
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": {
+        "src_path": [
+          "a"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "b"
+        ],
+        "dst_arrow": true,
+        "index": 0,
+        "glob": false
+      },
+      "map": {
+        "fields": [
+          {
+            "name": "style",
+            "composite": {
+              "fields": [
+                {
+                  "name": "opacity",
+                  "primary": {
+                    "value": {
+                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:25:25-0:28:28",
+                      "raw": "0.3",
+                      "value": "3/10"
+                    }
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:16:16-0:23:23",
+                        "value": [
+                          {
+                            "string": "opacity",
+                            "raw_string": "opacity"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:23:23",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:15:15",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:16:16-0:23:23",
+                              "value": [
+                                {
+                                  "string": "opacity",
+                                  "raw_string": "opacity"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:29:29",
+                          "key": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:23:23",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:15:15",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:16:16-0:23:23",
+                                  "value": [
+                                    {
+                                      "string": "opacity",
+                                      "raw_string": "opacity"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "number": {
+                              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:25:25-0:28:28",
+                              "raw": "0.3",
+                              "value": "3/10"
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:15:15",
+                  "value": [
+                    {
+                      "string": "style",
+                      "raw_string": "style"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:23:23",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:15:15",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:16:16-0:23:23",
+                        "value": [
+                          {
+                            "string": "opacity",
+                            "raw_string": "opacity"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:29:29",
+                    "key": {
+                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:23:23",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:15:15",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:16:16-0:23:23",
+                            "value": [
+                              {
+                                "string": "opacity",
+                                "raw_string": "opacity"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "number": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:25:25-0:28:28",
+                        "raw": "0.3",
+                        "value": "3/10"
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:30:30",
+              "edges": [
+                {
+                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:6:6",
+                  "src": {
+                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:8:8-0:30:30",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:29:29",
+                        "key": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:23:23",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:15:15",
+                                "value": [
+                                  {
+                                    "string": "style",
+                                    "raw_string": "style"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:16:16-0:23:23",
+                                "value": [
+                                  {
+                                    "string": "opacity",
+                                    "raw_string": "opacity"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "number": {
+                            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:25:25-0:28:28",
+                            "raw": "0.3",
+                            "value": "3/10"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        }
+      ]
+    }
+  ]
+}
