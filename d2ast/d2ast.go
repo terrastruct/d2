@@ -613,6 +613,9 @@ type Key struct {
 	// Indicates this MapKey is a filter selector.
 	Ampersand bool `json:"ampersand,omitempty"`
 
+	// Indicates this MapKey is a not filter selector.
+	NotAmpersand bool `json:"not_ampersand,omitempty"`
+
 	// At least one of Key and Edges will be set but all four can also be set.
 	// The following are all valid MapKeys:
 	// Key:

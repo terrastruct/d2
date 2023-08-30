@@ -660,16 +660,27 @@ func (p *parser) parseMapKey() (mk *d2ast.Key) {
 		}
 	}()
 
-	// Check for ampersand/@.
+	// Check for not ampersand/@.
 	r, eof := p.peek()
 	if eof {
 		return mk
 	}
-	if r != '&' {
-		p.rewind()
-	} else {
+	if r == '!' {
+		r, eof := p.peek()
+		if eof {
+			return mk
+		}
+		if r == '&' {
+			p.commit()
+			mk.NotAmpersand = true
+		} else {
+			p.rewind()
+		}
+	} else if r == '&' {
 		p.commit()
 		mk.Ampersand = true
+	} else {
+		p.rewind()
 	}
 
 	r, eof = p.peek()

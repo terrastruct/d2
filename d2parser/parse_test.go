@@ -381,6 +381,18 @@ c-
 `,
 		},
 		{
+			name: "not-amper",
+			text: `
+&k: amper
+!&k: not amper
+`,
+			assert: func(t testing.TB, ast *d2ast.Map, err error) {
+				assert.Success(t, err)
+				assert.True(t, ast.Nodes[0].MapKey.Ampersand)
+				assert.True(t, ast.Nodes[1].MapKey.NotAmpersand)
+			},
+		},
+		{
 			name: "whitespace_range",
 			text: ` a -> b -> c `,
 			assert: func(t testing.TB, ast *d2ast.Map, err error) {
