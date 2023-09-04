@@ -475,9 +475,6 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 				if !gctx.refctx.Key.HasTripleGlob() {
 					continue
 				}
-				if gctx.refctx.ScopeMap != impn.Map() {
-					continue
-				}
 				gctx2 := gctx.copy()
 				gctx2.refctx.ScopeMap = dst
 				c.compileKey(gctx2.refctx)

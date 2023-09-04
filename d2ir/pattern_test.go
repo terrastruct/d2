@@ -735,7 +735,7 @@ two
 			},
 		},
 		{
-			name: "import-glob",
+			name: "import-glob/1",
 			run: func(t testing.TB) {
 				m, err := compileFS(t, "index.d2", map[string]string{
 					"index.d2": "before; ...@globs.d2; after",
@@ -748,6 +748,26 @@ two
 				assertQuery(t, m, 2, 0, nil, "")
 				assertQuery(t, m, 0, 0, "meow", "before")
 				assertQuery(t, m, 0, 0, "meow", "after")
+			},
+		},
+		{
+			name: "import-glob/2",
+			run: func(t testing.TB) {
+				m, err := compileFS(t, "index.d2", map[string]string{
+					"index.d2": `...@rules.d2
+hi
+`,
+					"rules.d2": `***.style.fill: red
+***: meow
+x`,
+				})
+				assert.Success(t, err)
+
+				assertQuery(t, m, 6, 0, nil, "")
+				assertQuery(t, m, 2, 0, "meow", "hi")
+				assertQuery(t, m, 2, 0, "meow", "x")
+				assertQuery(t, m, 0, 0, "red", "hi.style.fill")
+				assertQuery(t, m, 0, 0, "red", "x.style.fill")
 			},
 		},
 	}
