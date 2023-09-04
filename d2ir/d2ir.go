@@ -170,6 +170,8 @@ type Map struct {
 	parent Node
 	Fields []*Field `json:"fields"`
 	Edges  []*Edge  `json:"edges"`
+
+	globs []*globContext
 }
 
 func (m *Map) initRoot() {

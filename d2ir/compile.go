@@ -362,9 +362,14 @@ func (c *compiler) overlay(base *Map, f *Field) {
 	f.Composite = base
 }
 
-func (g *globContext) prefixed(dst *Map) *globContext {
+func (g *globContext) copy() *globContext {
 	g2 := *g
 	g2.refctx = g.root.refctx.Copy()
+	return &g2
+}
+
+func (g *globContext) prefixed(dst *Map) *globContext {
+	g2 := g.copy()
 	prefix := d2ast.MakeKeyPath(RelIDA(g2.refctx.ScopeMap, dst))
 	g2.refctx.Key = g2.refctx.Key.Copy()
 	if g2.refctx.Key.Key != nil {
@@ -373,7 +378,7 @@ func (g *globContext) prefixed(dst *Map) *globContext {
 	if len(prefix.Path) > 0 {
 		g2.refctx.Key.Key = prefix
 	}
-	return &g2
+	return g2
 }
 
 func (c *compiler) ampersandFilterMap(dst *Map, ast, scopeAST *d2ast.Map) bool {
@@ -427,6 +432,7 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 	}
 	c.globContextStack = append(c.globContextStack, globs)
 	defer func() {
+		dst.globs = c.globContexts()
 		c.globContextStack = c.globContextStack[:len(c.globContextStack)-1]
 	}()
 
@@ -464,6 +470,20 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 				c.errorf(n.Import, "cannot spread import non map into map")
 				continue
 			}
+
+			for _, gctx := range impn.Map().globs {
+				if !gctx.refctx.Key.HasTripleGlob() {
+					continue
+				}
+				if gctx.refctx.ScopeMap != impn.Map() {
+					continue
+				}
+				gctx2 := gctx.copy()
+				gctx2.refctx.ScopeMap = dst
+				c.compileKey(gctx2.refctx)
+				c.ensureGlobContext(gctx2.refctx)
+			}
+
 			OverlayMap(dst, impn.Map())
 
 			if impnf, ok := impn.(*Field); ok {

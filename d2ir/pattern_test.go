@@ -734,6 +734,22 @@ two
 				assertQuery(t, m, 12, 0, nil, "")
 			},
 		},
+		{
+			name: "import-glob",
+			run: func(t testing.TB) {
+				m, err := compileFS(t, "index.d2", map[string]string{
+					"index.d2": "before; ...@globs.d2; after",
+					"globs.d2": `*: jingle
+**: true
+***: meow`,
+				})
+				assert.Success(t, err)
+
+				assertQuery(t, m, 2, 0, nil, "")
+				assertQuery(t, m, 0, 0, "meow", "before")
+				assertQuery(t, m, 0, 0, "meow", "after")
+			},
+		},
 	}
 
 	runa(t, tca)
