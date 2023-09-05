@@ -41,6 +41,7 @@ func (g *Graph) ExtractAsNestedGraph(obj *Object) *Graph {
 	descendantObjects, edges := pluckObjAndEdges(g, obj)
 
 	tempGraph := NewGraph()
+	tempGraph.RootLevel = int(obj.Level()) - 1
 	tempGraph.Root.ChildrenArray = []*Object{obj}
 	tempGraph.Root.Children[strings.ToLower(obj.ID)] = obj
 
