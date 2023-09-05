@@ -2745,6 +2745,7 @@ func TestCompile2(t *testing.T) {
 	t.Run("seqdiagrams", testSeqDiagrams)
 	t.Run("nulls", testNulls)
 	t.Run("vars", testVars)
+	t.Run("globs", testGlobs)
 }
 
 func testBoards(t *testing.T) {
@@ -4030,6 +4031,86 @@ z: {
 			})
 		}
 	})
+}
+
+func testGlobs(t *testing.T) {
+	t.Parallel()
+
+	tca := []struct {
+		name string
+		skip bool
+		run  func(t *testing.T)
+	}{
+		{
+			name: "alixander-lazy-globs-review/1",
+			run: func(t *testing.T) {
+				assertCompile(t, `
+***.style.fill: yellow
+**.shape: circle
+*.style.multiple: true
+
+x: {
+  y
+}
+
+layers: {
+  next: {
+    a
+  }
+}
+`, "")
+			},
+		},
+		{
+			name: "alixander-lazy-globs-review/2",
+			run: func(t *testing.T) {
+				assertCompile(t, `
+**.style.fill: yellow
+
+scenarios: {
+  b: {
+    a -> b
+  }
+}
+`, "")
+			},
+		},
+		{
+			name: "alixander-lazy-globs-review/3",
+			run: func(t *testing.T) {
+				assertCompile(t, `
+***: {
+  c: d
+}
+
+***: {
+  style.fill: red
+}
+
+table: {
+  shape: sql_table
+  a: b
+}
+
+class: {
+  shape: class
+  a: b
+}
+`, "")
+			},
+		},
+	}
+
+	for _, tc := range tca {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			if tc.skip {
+				t.SkipNow()
+			}
+			tc.run(t)
+		})
+	}
 }
 
 func assertCompile(t *testing.T, text string, expErr string) (*d2graph.Graph, *d2target.Config) {

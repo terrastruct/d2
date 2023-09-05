@@ -205,7 +205,9 @@
                 }
               }
             }
-          }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         },
         {
           "string": {
@@ -315,7 +317,9 @@
               "primary": {},
               "value": {}
             }
-          }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         },
         {
           "string": {
@@ -565,7 +569,9 @@
                 }
               }
             }
-          }
+          },
+          "due_to_glob": true,
+          "due_to_lazy_glob": false
         },
         {
           "string": {
@@ -815,7 +821,513 @@
                 }
               }
             }
-          }
+          },
+          "due_to_glob": true,
+          "due_to_lazy_glob": false
+        },
+        {
+          "string": {
+            "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/filters/edge.d2,6:1:87-6:7:93",
+              "src": {
+                "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/filters/edge.d2,6:6:92-6:7:93",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/filters/edge.d2,6:6:92-6:7:93",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/filters/edge.d2,6:0:86-10:1:203",
+              "edges": [
+                {
+                  "range": "TestCompile/filters/edge.d2,6:1:87-6:7:93",
+                  "src": {
+                    "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+                          "value": [
+                            {
+                              "string": "x",
+                              "raw_string": "x"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/filters/edge.d2,6:6:92-6:7:93",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/filters/edge.d2,6:6:92-6:7:93",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "edge_index": {
+                "range": "TestCompile/filters/edge.d2,6:8:94-6:11:97",
+                "int": null,
+                "glob": true
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/filters/edge.d2,6:13:99-10:1:203",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/filters/edge.d2,7:1:102-7:33:134",
+                        "ampersand": true,
+                        "key": {
+                          "range": "TestCompile/filters/edge.d2,7:2:103-7:24:125",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/edge.d2,7:2:103-7:18:119",
+                                "value": [
+                                  {
+                                    "string": "source-arrowhead",
+                                    "raw_string": "source-arrowhead"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/edge.d2,7:19:120-7:24:125",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/edge.d2,7:26:127-7:33:134",
+                            "value": [
+                              {
+                                "string": "diamond",
+                                "raw_string": "diamond"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "map_key": {
+                        "range": "TestCompile/filters/edge.d2,8:1:136-8:33:168",
+                        "ampersand": true,
+                        "key": {
+                          "range": "TestCompile/filters/edge.d2,8:2:137-8:24:159",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/edge.d2,8:2:137-8:18:153",
+                                "value": [
+                                  {
+                                    "string": "target-arrowhead",
+                                    "raw_string": "target-arrowhead"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/edge.d2,8:19:154-8:24:159",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/edge.d2,8:26:161-8:33:168",
+                            "value": [
+                              {
+                                "string": "diamond",
+                                "raw_string": "diamond"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "map_key": {
+                        "range": "TestCompile/filters/edge.d2,9:1:170-9:32:201",
+                        "key": {
+                          "range": "TestCompile/filters/edge.d2,9:1:170-9:6:175",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/edge.d2,9:1:170-9:6:175",
+                                "value": [
+                                  {
+                                    "string": "label",
+                                    "raw_string": "label"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/edge.d2,9:8:177-9:32:201",
+                            "value": [
+                              {
+                                "string": "diamond shape arrowheads",
+                                "raw_string": "diamond shape arrowheads"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": true,
+          "due_to_lazy_glob": false
+        },
+        {
+          "string": {
+            "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/filters/edge.d2,6:1:87-6:7:93",
+              "src": {
+                "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/filters/edge.d2,6:6:92-6:7:93",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/filters/edge.d2,6:6:92-6:7:93",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/filters/edge.d2,6:0:86-10:1:203",
+              "edges": [
+                {
+                  "range": "TestCompile/filters/edge.d2,6:1:87-6:7:93",
+                  "src": {
+                    "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+                          "value": [
+                            {
+                              "string": "x",
+                              "raw_string": "x"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/filters/edge.d2,6:6:92-6:7:93",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/filters/edge.d2,6:6:92-6:7:93",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "edge_index": {
+                "range": "TestCompile/filters/edge.d2,6:8:94-6:11:97",
+                "int": null,
+                "glob": true
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/filters/edge.d2,6:13:99-10:1:203",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/filters/edge.d2,7:1:102-7:33:134",
+                        "ampersand": true,
+                        "key": {
+                          "range": "TestCompile/filters/edge.d2,7:2:103-7:24:125",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/edge.d2,7:2:103-7:18:119",
+                                "value": [
+                                  {
+                                    "string": "source-arrowhead",
+                                    "raw_string": "source-arrowhead"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/edge.d2,7:19:120-7:24:125",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/edge.d2,7:26:127-7:33:134",
+                            "value": [
+                              {
+                                "string": "diamond",
+                                "raw_string": "diamond"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "map_key": {
+                        "range": "TestCompile/filters/edge.d2,8:1:136-8:33:168",
+                        "ampersand": true,
+                        "key": {
+                          "range": "TestCompile/filters/edge.d2,8:2:137-8:24:159",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/edge.d2,8:2:137-8:18:153",
+                                "value": [
+                                  {
+                                    "string": "target-arrowhead",
+                                    "raw_string": "target-arrowhead"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/edge.d2,8:19:154-8:24:159",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/edge.d2,8:26:161-8:33:168",
+                            "value": [
+                              {
+                                "string": "diamond",
+                                "raw_string": "diamond"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "map_key": {
+                        "range": "TestCompile/filters/edge.d2,9:1:170-9:32:201",
+                        "key": {
+                          "range": "TestCompile/filters/edge.d2,9:1:170-9:6:175",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/edge.d2,9:1:170-9:6:175",
+                                "value": [
+                                  {
+                                    "string": "label",
+                                    "raw_string": "label"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/edge.d2,9:8:177-9:32:201",
+                            "value": [
+                              {
+                                "string": "diamond shape arrowheads",
+                                "raw_string": "diamond shape arrowheads"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": true,
+          "due_to_lazy_glob": false
         }
       ]
     },
@@ -1024,7 +1536,9 @@
                 }
               }
             }
-          }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         },
         {
           "string": {
@@ -1134,7 +1648,9 @@
               "primary": {},
               "value": {}
             }
-          }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         }
       ]
     }
@@ -1254,7 +1770,9 @@
                             }
                           }
                         }
-                      }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
                     },
                     {
                       "string": {
@@ -1338,7 +1856,95 @@
                             }
                           }
                         }
-                      }
+                      },
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": false
+                    },
+                    {
+                      "string": {
+                        "range": "TestCompile/filters/edge.d2,7:19:120-7:24:125",
+                        "value": [
+                          {
+                            "string": "shape",
+                            "raw_string": "shape"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/filters/edge.d2,7:2:103-7:24:125",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/filters/edge.d2,7:2:103-7:18:119",
+                              "value": [
+                                {
+                                  "string": "source-arrowhead",
+                                  "raw_string": "source-arrowhead"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/filters/edge.d2,7:19:120-7:24:125",
+                              "value": [
+                                {
+                                  "string": "shape",
+                                  "raw_string": "shape"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/filters/edge.d2,7:1:102-7:33:134",
+                          "ampersand": true,
+                          "key": {
+                            "range": "TestCompile/filters/edge.d2,7:2:103-7:24:125",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/filters/edge.d2,7:2:103-7:18:119",
+                                  "value": [
+                                    {
+                                      "string": "source-arrowhead",
+                                      "raw_string": "source-arrowhead"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/filters/edge.d2,7:19:120-7:24:125",
+                                  "value": [
+                                    {
+                                      "string": "shape",
+                                      "raw_string": "shape"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/filters/edge.d2,7:26:127-7:33:134",
+                              "value": [
+                                {
+                                  "string": "diamond",
+                                  "raw_string": "diamond"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": false
                     }
                   ]
                 }
@@ -1427,7 +2033,9 @@
                       }
                     }
                   }
-                }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
               },
               {
                 "string": {
@@ -1511,7 +2119,95 @@
                       }
                     }
                   }
-                }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
+              },
+              {
+                "string": {
+                  "range": "TestCompile/filters/edge.d2,7:2:103-7:18:119",
+                  "value": [
+                    {
+                      "string": "source-arrowhead",
+                      "raw_string": "source-arrowhead"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/edge.d2,7:2:103-7:24:125",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/edge.d2,7:2:103-7:18:119",
+                        "value": [
+                          {
+                            "string": "source-arrowhead",
+                            "raw_string": "source-arrowhead"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/edge.d2,7:19:120-7:24:125",
+                        "value": [
+                          {
+                            "string": "shape",
+                            "raw_string": "shape"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/edge.d2,7:1:102-7:33:134",
+                    "ampersand": true,
+                    "key": {
+                      "range": "TestCompile/filters/edge.d2,7:2:103-7:24:125",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/edge.d2,7:2:103-7:18:119",
+                            "value": [
+                              {
+                                "string": "source-arrowhead",
+                                "raw_string": "source-arrowhead"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/edge.d2,7:19:120-7:24:125",
+                            "value": [
+                              {
+                                "string": "shape",
+                                "raw_string": "shape"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/edge.d2,7:26:127-7:33:134",
+                        "value": [
+                          {
+                            "string": "diamond",
+                            "raw_string": "diamond"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
               }
             ]
           },
@@ -1614,7 +2310,9 @@
                             }
                           }
                         }
-                      }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
                     },
                     {
                       "string": {
@@ -1698,7 +2396,95 @@
                             }
                           }
                         }
-                      }
+                      },
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": false
+                    },
+                    {
+                      "string": {
+                        "range": "TestCompile/filters/edge.d2,8:19:154-8:24:159",
+                        "value": [
+                          {
+                            "string": "shape",
+                            "raw_string": "shape"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/filters/edge.d2,8:2:137-8:24:159",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/filters/edge.d2,8:2:137-8:18:153",
+                              "value": [
+                                {
+                                  "string": "target-arrowhead",
+                                  "raw_string": "target-arrowhead"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/filters/edge.d2,8:19:154-8:24:159",
+                              "value": [
+                                {
+                                  "string": "shape",
+                                  "raw_string": "shape"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/filters/edge.d2,8:1:136-8:33:168",
+                          "ampersand": true,
+                          "key": {
+                            "range": "TestCompile/filters/edge.d2,8:2:137-8:24:159",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/filters/edge.d2,8:2:137-8:18:153",
+                                  "value": [
+                                    {
+                                      "string": "target-arrowhead",
+                                      "raw_string": "target-arrowhead"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/filters/edge.d2,8:19:154-8:24:159",
+                                  "value": [
+                                    {
+                                      "string": "shape",
+                                      "raw_string": "shape"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/filters/edge.d2,8:26:161-8:33:168",
+                              "value": [
+                                {
+                                  "string": "diamond",
+                                  "raw_string": "diamond"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": false
                     }
                   ]
                 }
@@ -1787,7 +2573,9 @@
                       }
                     }
                   }
-                }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
               },
               {
                 "string": {
@@ -1871,7 +2659,95 @@
                       }
                     }
                   }
-                }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
+              },
+              {
+                "string": {
+                  "range": "TestCompile/filters/edge.d2,8:2:137-8:18:153",
+                  "value": [
+                    {
+                      "string": "target-arrowhead",
+                      "raw_string": "target-arrowhead"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/edge.d2,8:2:137-8:24:159",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/edge.d2,8:2:137-8:18:153",
+                        "value": [
+                          {
+                            "string": "target-arrowhead",
+                            "raw_string": "target-arrowhead"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/edge.d2,8:19:154-8:24:159",
+                        "value": [
+                          {
+                            "string": "shape",
+                            "raw_string": "shape"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/edge.d2,8:1:136-8:33:168",
+                    "ampersand": true,
+                    "key": {
+                      "range": "TestCompile/filters/edge.d2,8:2:137-8:24:159",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/edge.d2,8:2:137-8:18:153",
+                            "value": [
+                              {
+                                "string": "target-arrowhead",
+                                "raw_string": "target-arrowhead"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/edge.d2,8:19:154-8:24:159",
+                            "value": [
+                              {
+                                "string": "shape",
+                                "raw_string": "shape"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/edge.d2,8:26:161-8:33:168",
+                        "value": [
+                          {
+                            "string": "diamond",
+                            "raw_string": "diamond"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
               }
             ]
           },
@@ -1948,7 +2824,72 @@
                       }
                     }
                   }
-                }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
+              },
+              {
+                "string": {
+                  "range": "TestCompile/filters/edge.d2,9:1:170-9:6:175",
+                  "value": [
+                    {
+                      "string": "label",
+                      "raw_string": "label"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/edge.d2,9:1:170-9:6:175",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/edge.d2,9:1:170-9:6:175",
+                        "value": [
+                          {
+                            "string": "label",
+                            "raw_string": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/edge.d2,9:1:170-9:32:201",
+                    "key": {
+                      "range": "TestCompile/filters/edge.d2,9:1:170-9:6:175",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/edge.d2,9:1:170-9:6:175",
+                            "value": [
+                              {
+                                "string": "label",
+                                "raw_string": "label"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/edge.d2,9:8:177-9:32:201",
+                        "value": [
+                          {
+                            "string": "diamond shape arrowheads",
+                            "raw_string": "diamond shape arrowheads"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
               }
             ]
           }
@@ -2133,7 +3074,9 @@
                 }
               }
             }
-          }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         },
         {
           "context": {
@@ -2358,7 +3301,236 @@
                 }
               }
             }
-          }
+          },
+          "due_to_glob": true,
+          "due_to_lazy_glob": false
+        },
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/filters/edge.d2,6:1:87-6:7:93",
+              "src": {
+                "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/filters/edge.d2,6:6:92-6:7:93",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/filters/edge.d2,6:6:92-6:7:93",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/filters/edge.d2,6:0:86-10:1:203",
+              "edges": [
+                {
+                  "range": "TestCompile/filters/edge.d2,6:1:87-6:7:93",
+                  "src": {
+                    "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+                          "value": [
+                            {
+                              "string": "x",
+                              "raw_string": "x"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/filters/edge.d2,6:6:92-6:7:93",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/filters/edge.d2,6:6:92-6:7:93",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "edge_index": {
+                "range": "TestCompile/filters/edge.d2,6:8:94-6:11:97",
+                "int": null,
+                "glob": true
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/filters/edge.d2,6:13:99-10:1:203",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/filters/edge.d2,7:1:102-7:33:134",
+                        "ampersand": true,
+                        "key": {
+                          "range": "TestCompile/filters/edge.d2,7:2:103-7:24:125",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/edge.d2,7:2:103-7:18:119",
+                                "value": [
+                                  {
+                                    "string": "source-arrowhead",
+                                    "raw_string": "source-arrowhead"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/edge.d2,7:19:120-7:24:125",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/edge.d2,7:26:127-7:33:134",
+                            "value": [
+                              {
+                                "string": "diamond",
+                                "raw_string": "diamond"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "map_key": {
+                        "range": "TestCompile/filters/edge.d2,8:1:136-8:33:168",
+                        "ampersand": true,
+                        "key": {
+                          "range": "TestCompile/filters/edge.d2,8:2:137-8:24:159",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/edge.d2,8:2:137-8:18:153",
+                                "value": [
+                                  {
+                                    "string": "target-arrowhead",
+                                    "raw_string": "target-arrowhead"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/edge.d2,8:19:154-8:24:159",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/edge.d2,8:26:161-8:33:168",
+                            "value": [
+                              {
+                                "string": "diamond",
+                                "raw_string": "diamond"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "map_key": {
+                        "range": "TestCompile/filters/edge.d2,9:1:170-9:32:201",
+                        "key": {
+                          "range": "TestCompile/filters/edge.d2,9:1:170-9:6:175",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/edge.d2,9:1:170-9:6:175",
+                                "value": [
+                                  {
+                                    "string": "label",
+                                    "raw_string": "label"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/edge.d2,9:8:177-9:32:201",
+                            "value": [
+                              {
+                                "string": "diamond shape arrowheads",
+                                "raw_string": "diamond shape arrowheads"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": true,
+          "due_to_lazy_glob": false
         }
       ]
     },
@@ -2463,7 +3635,9 @@
               "primary": {},
               "value": {}
             }
-          }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         },
         {
           "context": {
@@ -2688,7 +3862,236 @@
                 }
               }
             }
-          }
+          },
+          "due_to_glob": true,
+          "due_to_lazy_glob": false
+        },
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/filters/edge.d2,6:1:87-6:7:93",
+              "src": {
+                "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/filters/edge.d2,6:6:92-6:7:93",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/filters/edge.d2,6:6:92-6:7:93",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/filters/edge.d2,6:0:86-10:1:203",
+              "edges": [
+                {
+                  "range": "TestCompile/filters/edge.d2,6:1:87-6:7:93",
+                  "src": {
+                    "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/filters/edge.d2,6:1:87-6:2:88",
+                          "value": [
+                            {
+                              "string": "x",
+                              "raw_string": "x"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/filters/edge.d2,6:6:92-6:7:93",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/filters/edge.d2,6:6:92-6:7:93",
+                          "value": [
+                            {
+                              "string": "*",
+                              "raw_string": "*"
+                            }
+                          ],
+                          "pattern": [
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "edge_index": {
+                "range": "TestCompile/filters/edge.d2,6:8:94-6:11:97",
+                "int": null,
+                "glob": true
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/filters/edge.d2,6:13:99-10:1:203",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/filters/edge.d2,7:1:102-7:33:134",
+                        "ampersand": true,
+                        "key": {
+                          "range": "TestCompile/filters/edge.d2,7:2:103-7:24:125",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/edge.d2,7:2:103-7:18:119",
+                                "value": [
+                                  {
+                                    "string": "source-arrowhead",
+                                    "raw_string": "source-arrowhead"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/edge.d2,7:19:120-7:24:125",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/edge.d2,7:26:127-7:33:134",
+                            "value": [
+                              {
+                                "string": "diamond",
+                                "raw_string": "diamond"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "map_key": {
+                        "range": "TestCompile/filters/edge.d2,8:1:136-8:33:168",
+                        "ampersand": true,
+                        "key": {
+                          "range": "TestCompile/filters/edge.d2,8:2:137-8:24:159",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/edge.d2,8:2:137-8:18:153",
+                                "value": [
+                                  {
+                                    "string": "target-arrowhead",
+                                    "raw_string": "target-arrowhead"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/edge.d2,8:19:154-8:24:159",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/edge.d2,8:26:161-8:33:168",
+                            "value": [
+                              {
+                                "string": "diamond",
+                                "raw_string": "diamond"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "map_key": {
+                        "range": "TestCompile/filters/edge.d2,9:1:170-9:32:201",
+                        "key": {
+                          "range": "TestCompile/filters/edge.d2,9:1:170-9:6:175",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/edge.d2,9:1:170-9:6:175",
+                                "value": [
+                                  {
+                                    "string": "label",
+                                    "raw_string": "label"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/edge.d2,9:8:177-9:32:201",
+                            "value": [
+                              {
+                                "string": "diamond shape arrowheads",
+                                "raw_string": "diamond shape arrowheads"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": true,
+          "due_to_lazy_glob": false
         }
       ]
     }

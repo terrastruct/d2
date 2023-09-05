@@ -3,28 +3,64 @@ package d2ir
 import (
 	"strings"
 
+	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2graph"
 )
 
-func (m *Map) doubleGlob(pattern []string) ([]*Field, bool) {
-	if !(len(pattern) == 3 && pattern[0] == "*" && pattern[1] == "" && pattern[2] == "*") {
-		return nil, false
-	}
+func (m *Map) multiGlob(pattern []string) ([]*Field, bool) {
 	var fa []*Field
-	m._doubleGlob(&fa)
-	return fa, true
+	if d2ast.IsDoubleGlob(pattern) {
+		m._doubleGlob(&fa)
+		return fa, true
+	}
+	if d2ast.IsTripleGlob(pattern) {
+		m._tripleGlob(&fa)
+		return fa, true
+	}
+	return nil, false
 }
 
 func (m *Map) _doubleGlob(fa *[]*Field) {
 	for _, f := range m.Fields {
 		if _, ok := d2graph.ReservedKeywords[f.Name]; ok {
+			if f.Name == "layers" {
+				continue
+			}
 			if _, ok := d2graph.BoardKeywords[f.Name]; !ok {
 				continue
 			}
+			// We don't ever want to append layers, scenarios or steps directly.
+			if f.Map() != nil {
+				f.Map()._tripleGlob(fa)
+			}
+			continue
 		}
-		*fa = append(*fa, f)
+		if NodeBoardKind(f) == "" {
+			*fa = append(*fa, f)
+		}
 		if f.Map() != nil {
 			f.Map()._doubleGlob(fa)
+		}
+	}
+}
+
+func (m *Map) _tripleGlob(fa *[]*Field) {
+	for _, f := range m.Fields {
+		if _, ok := d2graph.ReservedKeywords[f.Name]; ok {
+			if _, ok := d2graph.BoardKeywords[f.Name]; !ok {
+				continue
+			}
+			// We don't ever want to append layers, scenarios or steps directly.
+			if f.Map() != nil {
+				f.Map()._tripleGlob(fa)
+			}
+			continue
+		}
+		if NodeBoardKind(f) == "" {
+			*fa = append(*fa, f)
+		}
+		if f.Map() != nil {
+			f.Map()._tripleGlob(fa)
 		}
 	}
 }

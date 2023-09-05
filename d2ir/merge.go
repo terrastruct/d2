@@ -11,7 +11,7 @@ func OverlayMap(base, overlay *Map) {
 	}
 
 	for _, oe := range overlay.Edges {
-		bea := base.GetEdges(oe.ID, nil)
+		bea := base.GetEdges(oe.ID, nil, nil)
 		if len(bea) == 0 {
 			base.Edges = append(base.Edges, oe.Copy(base).(*Edge))
 			continue

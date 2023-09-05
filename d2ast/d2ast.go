@@ -606,6 +606,15 @@ func (m *Map) IsFileMap() bool {
 	return m.Range.Start.Line == 0 && m.Range.Start.Column == 0
 }
 
+func (m *Map) HasFilter() bool {
+	for _, n := range m.Nodes {
+		if n.MapKey != nil && (n.MapKey.Ampersand || n.MapKey.NotAmpersand) {
+			return true
+		}
+	}
+	return false
+}
+
 // TODO: require @ on import values for readability
 type Key struct {
 	Range Range `json:"range"`
@@ -641,8 +650,7 @@ type Key struct {
 	Value   ValueBox  `json:"value"`
 }
 
-// TODO maybe need to compare Primary
-func (mk1 *Key) Equals(mk2 *Key) bool {
+func (mk1 *Key) D2OracleEquals(mk2 *Key) bool {
 	if mk1.Ampersand != mk2.Ampersand {
 		return false
 	}
@@ -715,6 +723,98 @@ func (mk1 *Key) Equals(mk2 *Key) bool {
 	return true
 }
 
+func (mk1 *Key) Equals(mk2 *Key) bool {
+	if mk1.Ampersand != mk2.Ampersand {
+		return false
+	}
+	if (mk1.Key == nil) != (mk2.Key == nil) {
+		return false
+	}
+	if (mk1.EdgeIndex == nil) != (mk2.EdgeIndex == nil) {
+		return false
+	}
+	if mk1.EdgeIndex != nil {
+		if !mk1.EdgeIndex.Equals(mk2.EdgeIndex) {
+			return false
+		}
+	}
+	if (mk1.EdgeKey == nil) != (mk2.EdgeKey == nil) {
+		return false
+	}
+	if len(mk1.Edges) != len(mk2.Edges) {
+		return false
+	}
+	for i := range mk1.Edges {
+		if !mk1.Edges[i].Equals(mk2.Edges[i]) {
+			return false
+		}
+	}
+	if (mk1.Value.Map == nil) != (mk2.Value.Map == nil) {
+		if mk1.Value.Map != nil && len(mk1.Value.Map.Nodes) > 0 {
+			return false
+		}
+		if mk2.Value.Map != nil && len(mk2.Value.Map.Nodes) > 0 {
+			return false
+		}
+	} else if (mk1.Value.Unbox() == nil) != (mk2.Value.Unbox() == nil) {
+		return false
+	}
+
+	if mk1.Key != nil {
+		if len(mk1.Key.Path) != len(mk2.Key.Path) {
+			return false
+		}
+		for i, id := range mk1.Key.Path {
+			if id.Unbox().ScalarString() != mk2.Key.Path[i].Unbox().ScalarString() {
+				return false
+			}
+		}
+	}
+	if mk1.EdgeKey != nil {
+		if len(mk1.EdgeKey.Path) != len(mk2.EdgeKey.Path) {
+			return false
+		}
+		for i, id := range mk1.EdgeKey.Path {
+			if id.Unbox().ScalarString() != mk2.EdgeKey.Path[i].Unbox().ScalarString() {
+				return false
+			}
+		}
+	}
+
+	if mk1.Value.Map != nil && len(mk1.Value.Map.Nodes) > 0 {
+		if len(mk1.Value.Map.Nodes) != len(mk2.Value.Map.Nodes) {
+			return false
+		}
+		for i := range mk1.Value.Map.Nodes {
+			if !mk1.Value.Map.Nodes[i].MapKey.Equals(mk2.Value.Map.Nodes[i].MapKey) {
+				return false
+			}
+		}
+	}
+
+	if mk1.Value.Unbox() != nil {
+		if (mk1.Value.ScalarBox().Unbox() == nil) != (mk2.Value.ScalarBox().Unbox() == nil) {
+			return false
+		}
+		if mk1.Value.ScalarBox().Unbox() != nil {
+			if mk1.Value.ScalarBox().Unbox().ScalarString() != mk2.Value.ScalarBox().Unbox().ScalarString() {
+				return false
+			}
+		}
+	}
+
+	if mk1.Primary.Unbox() != nil {
+		if (mk1.Primary.Unbox() == nil) != (mk2.Primary.Unbox() == nil) {
+			return false
+		}
+		if mk1.Primary.ScalarString() != mk2.Primary.ScalarString() {
+			return false
+		}
+	}
+
+	return true
+}
+
 func (mk *Key) SetScalar(scalar ScalarBox) {
 	if mk.Value.Unbox() != nil && mk.Value.ScalarBox().Unbox() == nil {
 		mk.Primary = scalar
@@ -723,7 +823,43 @@ func (mk *Key) SetScalar(scalar ScalarBox) {
 	}
 }
 
-func (mk *Key) HasQueryGlob() bool {
+func (mk *Key) HasGlob() bool {
+	if mk.Key.HasGlob() {
+		return true
+	}
+	for _, e := range mk.Edges {
+		if e.Src.HasGlob() || e.Dst.HasGlob() {
+			return true
+		}
+	}
+	if mk.EdgeIndex != nil && mk.EdgeIndex.Glob {
+		return true
+	}
+	if mk.EdgeKey.HasGlob() {
+		return true
+	}
+	return false
+}
+
+func (mk *Key) HasTripleGlob() bool {
+	if mk.Key.HasTripleGlob() {
+		return true
+	}
+	for _, e := range mk.Edges {
+		if e.Src.HasTripleGlob() || e.Dst.HasTripleGlob() {
+			return true
+		}
+	}
+	if mk.EdgeIndex != nil && mk.EdgeIndex.Glob {
+		return true
+	}
+	if mk.EdgeKey.HasTripleGlob() {
+		return true
+	}
+	return false
+}
+
+func (mk *Key) SupportsGlobFilters() bool {
 	if mk.Key.HasGlob() && len(mk.Edges) == 0 {
 		return true
 	}
@@ -734,6 +870,11 @@ func (mk *Key) HasQueryGlob() bool {
 		return true
 	}
 	return false
+}
+
+func (mk *Key) Copy() *Key {
+	mk2 := *mk
+	return &mk2
 }
 
 type KeyPath struct {
@@ -763,16 +904,16 @@ func (kp *KeyPath) Copy() *KeyPath {
 	return &kp2
 }
 
-func (kp *KeyPath) HasDoubleGlob() bool {
-	if kp == nil {
-		return false
-	}
-	for _, el := range kp.Path {
-		if el.UnquotedString != nil && el.ScalarString() == "**" {
-			return true
-		}
-	}
-	return false
+func (kp *KeyPath) Last() *StringBox {
+	return kp.Path[len(kp.Path)-1]
+}
+
+func IsDoubleGlob(pattern []string) bool {
+	return len(pattern) == 3 && pattern[0] == "*" && pattern[1] == "" && pattern[2] == "*"
+}
+
+func IsTripleGlob(pattern []string) bool {
+	return len(pattern) == 5 && pattern[0] == "*" && pattern[1] == "" && pattern[2] == "*" && pattern[3] == "" && pattern[4] == "*"
 }
 
 func (kp *KeyPath) HasGlob() bool {
@@ -787,6 +928,54 @@ func (kp *KeyPath) HasGlob() bool {
 	return false
 }
 
+func (kp *KeyPath) FirstGlob() int {
+	if kp == nil {
+		return -1
+	}
+	for i, el := range kp.Path {
+		if el.UnquotedString != nil && len(el.UnquotedString.Pattern) > 0 {
+			return i
+		}
+	}
+	return -1
+}
+
+func (kp *KeyPath) HasTripleGlob() bool {
+	if kp == nil {
+		return false
+	}
+	for _, el := range kp.Path {
+		if el.UnquotedString != nil && IsTripleGlob(el.UnquotedString.Pattern) {
+			return true
+		}
+	}
+	return false
+}
+
+func (kp *KeyPath) HasMultiGlob() bool {
+	if kp == nil {
+		return false
+	}
+	for _, el := range kp.Path {
+		if el.UnquotedString != nil && (IsDoubleGlob(el.UnquotedString.Pattern) || IsTripleGlob(el.UnquotedString.Pattern)) {
+			return true
+		}
+	}
+	return false
+}
+
+func (kp1 *KeyPath) Equals(kp2 *KeyPath) bool {
+	if len(kp1.Path) != len(kp2.Path) {
+		return false
+	}
+	for i, id := range kp1.Path {
+		if id.Unbox().ScalarString() != kp2.Path[i].Unbox().ScalarString() {
+			return false
+		}
+	}
+	return true
+}
+
 type Edge struct {
 	Range Range `json:"range"`
 
@@ -799,12 +988,38 @@ type Edge struct {
 	DstArrow string `json:"dst_arrow"`
 }
 
+func (e1 *Edge) Equals(e2 *Edge) bool {
+	if !e1.Src.Equals(e2.Src) {
+		return false
+	}
+	if e1.SrcArrow != e2.SrcArrow {
+		return false
+	}
+	if !e1.Dst.Equals(e2.Dst) {
+		return false
+	}
+	if e1.DstArrow != e2.DstArrow {
+		return false
+	}
+	return true
+}
+
 type EdgeIndex struct {
 	Range Range `json:"range"`
 
 	// [n] or [*]
 	Int  *int `json:"int"`
 	Glob bool `json:"glob"`
+}
+
+func (ei1 *EdgeIndex) Equals(ei2 *EdgeIndex) bool {
+	if ei1.Int != ei2.Int {
+		return false
+	}
+	if ei1.Glob != ei2.Glob {
+		return false
+	}
+	return true
 }
 
 type Substitution struct {
@@ -1080,6 +1295,10 @@ func (sb ScalarBox) Unbox() Scalar {
 	default:
 		return nil
 	}
+}
+
+func (sb ScalarBox) ScalarString() string {
+	return sb.Unbox().ScalarString()
 }
 
 // StringBox is used to box String for JSON persistence.
