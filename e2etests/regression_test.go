@@ -1037,6 +1037,7 @@ cf many required: {
 		loadFromFile(t, "grid_with_latex"),
 		loadFromFile(t, "icons_on_top"),
 		loadFromFile(t, "dagre_disconnected_edge"),
+		loadFromFile(t, "outside_grid_label_position"),
 	}
 
 	runa(t, tcs)
