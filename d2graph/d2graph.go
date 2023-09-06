@@ -57,6 +57,9 @@ type Graph struct {
 	Steps     []*Graph `json:"steps,omitempty"`
 
 	Theme *d2themes.Theme `json:"theme,omitempty"`
+
+	// Object.Level uses the location of a nested graph
+	RootLevel int `json:"rootLevel,omitempty"`
 }
 
 func NewGraph() *Graph {
@@ -529,7 +532,7 @@ func (obj *Object) GetStroke(dashGapSize interface{}) string {
 
 func (obj *Object) Level() ContainerLevel {
 	if obj.Parent == nil {
-		return 0
+		return ContainerLevel(obj.Graph.RootLevel)
 	}
 	return 1 + obj.Parent.Level()
 }
