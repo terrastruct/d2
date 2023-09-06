@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"math"
 	"sort"
+	"strconv"
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2target"
@@ -65,6 +66,12 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.L
 				}
 			} else if len(child.ChildrenArray) > 0 {
 				tempGraph := g.ExtractAsNestedGraph(child)
+				// emulating setting font size with layout
+				fontSize := child.Text().FontSize
+				if child.Style.FontSize == nil {
+					child.Style.FontSize = &d2graph.Scalar{}
+				}
+				child.Style.FontSize.Value = strconv.Itoa(fontSize)
 				if err := layout(ctx, tempGraph); err != nil {
 					return err
 				}
