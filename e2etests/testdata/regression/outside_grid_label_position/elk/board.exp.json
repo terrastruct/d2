@@ -11,7 +11,7 @@
         "y": 12
       },
       "width": 841,
-      "height": 514,
+      "height": 498,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -52,7 +52,7 @@
         "y": 62
       },
       "width": 741,
-      "height": 414,
+      "height": 398,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -93,7 +93,7 @@
         "y": 112
       },
       "width": 641,
-      "height": 314,
+      "height": 298,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -131,7 +131,7 @@
       "type": "rectangle",
       "pos": {
         "x": 172,
-        "y": 200
+        "y": 184
       },
       "width": 180,
       "height": 166,
@@ -154,15 +154,15 @@
       "methods": null,
       "columns": null,
       "label": "first",
-      "fontSize": 28,
+      "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 48,
-      "labelHeight": 37,
+      "labelWidth": 27,
+      "labelHeight": 21,
       "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 4
@@ -172,7 +172,7 @@
       "type": "rectangle",
       "pos": {
         "x": 222,
-        "y": 250
+        "y": 234
       },
       "width": 80,
       "height": 66,
@@ -213,7 +213,7 @@
       "type": "rectangle",
       "pos": {
         "x": 392,
-        "y": 200
+        "y": 184
       },
       "width": 180,
       "height": 166,
@@ -236,15 +236,15 @@
       "methods": null,
       "columns": null,
       "label": "second",
-      "fontSize": 28,
+      "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 84,
-      "labelHeight": 37,
+      "labelWidth": 48,
+      "labelHeight": 21,
       "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 4
@@ -254,7 +254,7 @@
       "type": "rectangle",
       "pos": {
         "x": 442,
-        "y": 250
+        "y": 234
       },
       "width": 80,
       "height": 66,
@@ -295,7 +295,7 @@
       "type": "rectangle",
       "pos": {
         "x": 612,
-        "y": 200
+        "y": 184
       },
       "width": 81,
       "height": 166,
