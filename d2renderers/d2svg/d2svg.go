@@ -613,6 +613,15 @@ func renderArrowheadLabel(connection d2target.Connection, text string, isDst boo
 	textEl.X = baselineCenter.X
 	textEl.Y = baselineCenter.Y
 	textEl.Fill = d2target.FG_COLOR
+	if isDst {
+		if connection.DstLabel.Color != "" {
+			textEl.Fill = connection.DstLabel.Color
+		}
+	} else {
+		if connection.SrcLabel.Color != "" {
+			textEl.Fill = connection.SrcLabel.Color
+		}
+	}
 	textEl.ClassName = "text-italic"
 	textEl.Style = fmt.Sprintf("text-anchor:middle;font-size:%vpx", connection.FontSize)
 	textEl.Content = RenderText(text, textEl.X, height)
