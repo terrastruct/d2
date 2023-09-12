@@ -4,7 +4,7 @@ horizontal-gap: 20
 
 *.class: [text; blue]
 
-npm: {
+a: {
   label: "npm i -g\n@forge/cli"
   style: {
     fill: "#30304c"
@@ -103,4 +103,31 @@ classes: {
       stroke: transparent
     }
   }
+  arrow: {
+    target-arrowhead.shape: arrow
+    style: {
+      stroke: black
+      stroke-width: 2
+    }
+  }
+}
+
+a -> f -> g -> h -> i -> j: {
+  class: arrow
+}
+g -> b: {
+  class: arrow
+  style.stroke: "#cecece"
+}
+i -> d: {
+  class: arrow
+  style.stroke: "#cecece"
+}
+j -> e: Yes {
+  class: arrow
+  style.font-size: 10
+}
+j -> o: No {
+  class: arrow
+  style.font-size: 10
 }
