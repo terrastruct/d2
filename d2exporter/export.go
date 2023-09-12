@@ -213,6 +213,9 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 				LabelWidth:  edge.SrcArrowhead.LabelDimensions.Width,
 				LabelHeight: edge.SrcArrowhead.LabelDimensions.Height,
 			}
+			if edge.SrcArrowhead.Style.FontColor != nil {
+				connection.SrcLabel.Color = edge.SrcArrowhead.Style.FontColor.Value
+			}
 		}
 	}
 	if edge.DstArrow {
@@ -227,6 +230,9 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 				Label:       edge.DstArrowhead.Label.Value,
 				LabelWidth:  edge.DstArrowhead.LabelDimensions.Width,
 				LabelHeight: edge.DstArrowhead.LabelDimensions.Height,
+			}
+			if edge.DstArrowhead.Style.FontColor != nil {
+				connection.DstLabel.Color = edge.DstArrowhead.Style.FontColor.Value
 			}
 		}
 	}
