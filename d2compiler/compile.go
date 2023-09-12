@@ -1072,12 +1072,10 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 
 func (c *compiler) validateEdges(g *d2graph.Graph) {
 	for _, edge := range g.Edges {
-		if gd := edge.Src.Parent.ClosestGridDiagram(); gd != nil {
-			c.errorf(edge.GetAstEdge(), "edges in grid diagrams are not supported yet")
-			continue
-		}
-		if gd := edge.Dst.Parent.ClosestGridDiagram(); gd != nil {
-			c.errorf(edge.GetAstEdge(), "edges in grid diagrams are not supported yet")
+		srcGrid := edge.Src.Parent.ClosestGridDiagram()
+		dstGrid := edge.Dst.Parent.ClosestGridDiagram()
+		if (srcGrid != nil || dstGrid != nil) && srcGrid != dstGrid {
+			c.errorf(edge.GetAstEdge(), "edges into grid diagrams are not supported yet")
 			continue
 		}
 	}
