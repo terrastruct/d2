@@ -11,6 +11,7 @@ import (
 type gridDiagram struct {
 	root    *d2graph.Object
 	objects []*d2graph.Object
+	edges   []*d2graph.Edge
 	rows    int
 	columns int
 
@@ -121,5 +122,8 @@ func (gd *gridDiagram) cleanup(obj *d2graph.Object, graph *d2graph.Graph) {
 	for _, child := range gd.objects {
 		restore(obj, child)
 		child.IterDescendants(restore)
+	}
+	for _, e := range gd.edges {
+		graph.Edges = append(graph.Edges, e)
 	}
 }
