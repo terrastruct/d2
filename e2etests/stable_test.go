@@ -2833,6 +2833,7 @@ y: profits {
 		loadFromFile(t, "overlapping_child_label"),
 		loadFromFile(t, "dagre_spacing"),
 		loadFromFile(t, "dagre_spacing_right"),
+		loadFromFile(t, "simple_grid_edges"),
 	}
 
 	runa(t, tcs)

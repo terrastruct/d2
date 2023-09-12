@@ -1,0 +1,106 @@
+grid-rows: 3
+grid-columns: 5
+horizontal-gap: 20
+
+*.class: [text; blue]
+
+npm: {
+  label: "npm i -g\n@forge/cli"
+  style: {
+    fill: "#30304c"
+    stroke: transparent
+    font-color: white
+    font: mono
+    font-size: 10
+    bold: false
+  }
+}
+
+b: {
+  label: "Set up an\nAtlassian site"
+  class: [text; gray]
+}
+c.class: empty
+d: {
+  label: "View the hello\nworld app"
+  class: [text; gray]
+}
+e: forge\ntunnel
+f: forge\nlogin
+g: forge\ncreate
+h: forge\ndeploy
+i: forge\ninstall
+j: {
+  shape: diamond
+  label: "Hot reload\nchanges?"
+  class: [text; gray]
+}
+k: "" {
+  grid-rows: 3
+  grid-columns: 1
+  grid-gap: 0
+
+  class: []
+
+  style: {
+    fill: transparent
+    stroke: transparent
+  }
+
+  *.style: {
+    fill: transparent
+    stroke: transparent
+    font-color: "#30304c"
+    font-size: 10
+    bold: false
+  }
+  *.label.near: center-left
+  *.height: 20
+  a: ⬤ Forge CLI {
+    style.font-color: "#0033cc"
+  }
+
+  b: ⬤ Required {
+    style.font-color: "#30304c"
+  }
+  c: ⬤ Optional {
+    style.font-color: "#cecece"
+  }
+}
+l.class: empty
+m.class: empty
+n.class: empty
+o: forge\ndeploy
+
+classes: {
+  text.style: {
+    stroke: transparent
+    font-color: white
+    font: mono
+    font-size: 10
+    bold: false
+  }
+  text: {
+    width: 100
+    height: 60
+  }
+  blue.style: {
+    fill: "#0033cc"
+    stroke: "#0033cc"
+    border-radius: 10
+  }
+  gray.style: {
+    fill: "#cecece"
+    stroke: "#cecece"
+    border-radius: 10
+  }
+  empty: {
+    label: ""
+    width: 50
+    height: 50
+    style: {
+      fill: transparent
+      stroke: transparent
+    }
+  }
+}
