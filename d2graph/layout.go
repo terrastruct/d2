@@ -60,7 +60,7 @@ func (g *Graph) ExtractAsNestedGraph(obj *Object) *Graph {
 func pluckObjAndEdges(g *Graph, obj *Object) (descendantsObjects []*Object, edges []*Edge) {
 	for i := 0; i < len(g.Edges); i++ {
 		edge := g.Edges[i]
-		if edge.Src == obj || edge.Dst == obj {
+		if edge.Src.IsDescendantOf(obj) || edge.Dst.IsDescendantOf(obj) {
 			edges = append(edges, edge)
 			g.Edges = append(g.Edges[:i], g.Edges[i+1:]...)
 			i--
@@ -69,15 +69,10 @@ func pluckObjAndEdges(g *Graph, obj *Object) (descendantsObjects []*Object, edge
 
 	for i := 0; i < len(g.Objects); i++ {
 		temp := g.Objects[i]
-		if temp.AbsID() == obj.AbsID() {
+		if temp.IsDescendantOf(obj) {
 			descendantsObjects = append(descendantsObjects, obj)
 			g.Objects = append(g.Objects[:i], g.Objects[i+1:]...)
-			for _, child := range obj.ChildrenArray {
-				subObjects, subEdges := pluckObjAndEdges(g, child)
-				descendantsObjects = append(descendantsObjects, subObjects...)
-				edges = append(edges, subEdges...)
-			}
-			break
+			i--
 		}
 	}
 
