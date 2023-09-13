@@ -2489,6 +2489,18 @@ d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:2: edges into grid diagrams ar
 d2/testdata/d2compiler/TestCompile/grid_edge.d2:7:2: edges into grid diagrams are not supported yet`,
 		},
 		{
+			name: "grid_deeper_edge",
+			text: `hey: {
+	grid-rows: 1
+	a -> b: ok
+	b: {
+		c -> d: not yet
+	}
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:5:3: grid diagrams can only have edges between children right now`,
+		},
+		{
 			name: "grid_nested",
 			text: `hey: {
 	grid-rows: 200

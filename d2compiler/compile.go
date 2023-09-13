@@ -1074,9 +1074,16 @@ func (c *compiler) validateEdges(g *d2graph.Graph) {
 	for _, edge := range g.Edges {
 		srcGrid := edge.Src.Parent.ClosestGridDiagram()
 		dstGrid := edge.Dst.Parent.ClosestGridDiagram()
-		if (srcGrid != nil || dstGrid != nil) && srcGrid != dstGrid {
-			c.errorf(edge.GetAstEdge(), "edges into grid diagrams are not supported yet")
-			continue
+		if srcGrid != nil || dstGrid != nil {
+			if srcGrid != dstGrid {
+				c.errorf(edge.GetAstEdge(), "edges into grid diagrams are not supported yet")
+				continue
+			} else {
+				if srcGrid != edge.Src.Parent || dstGrid != edge.Dst.Parent {
+					c.errorf(edge.GetAstEdge(), "grid diagrams can only have edges between children right now")
+					continue
+				}
+			}
 		}
 	}
 }
