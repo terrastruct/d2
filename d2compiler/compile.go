@@ -1075,14 +1075,29 @@ func (c *compiler) validateEdges(g *d2graph.Graph) {
 		srcGrid := edge.Src.Parent.ClosestGridDiagram()
 		dstGrid := edge.Dst.Parent.ClosestGridDiagram()
 		if srcGrid != nil || dstGrid != nil {
+			if top := srcGrid.TopGridDiagram(); srcGrid != top {
+				// valid: grid.child1 -> grid.child2
+				// invalid: grid.childGrid.child1 -> grid.childGrid.child2
+				c.errorf(edge.GetAstEdge(), "edge must be on direct child of grid diagram %#v", top.AbsID())
+				continue
+			}
+			if top := dstGrid.TopGridDiagram(); dstGrid != top {
+				// valid: grid.child1 -> grid.child2
+				// invalid: grid.childGrid.child1 -> grid.childGrid.child2
+				c.errorf(edge.GetAstEdge(), "edge must be on direct child of grid diagram %#v", top.AbsID())
+				continue
+			}
 			if srcGrid != dstGrid {
+				// valid: a -> grid
+				// invalid: a -> grid.child
 				c.errorf(edge.GetAstEdge(), "edges into grid diagrams are not supported yet")
 				continue
-			} else {
-				if srcGrid != edge.Src.Parent || dstGrid != edge.Dst.Parent {
-					c.errorf(edge.GetAstEdge(), "grid diagrams can only have edges between children right now")
-					continue
-				}
+			}
+			if srcGrid != edge.Src.Parent || dstGrid != edge.Dst.Parent {
+				// valid: grid.child1 -> grid.child2
+				// invalid: grid.child1 -> grid.child2.child1
+				c.errorf(edge.GetAstEdge(), "grid diagrams can only have edges between children right now")
+				continue
 			}
 		}
 	}
