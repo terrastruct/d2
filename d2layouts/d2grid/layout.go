@@ -84,6 +84,9 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.L
 				sort.SliceStable(obj.ChildrenArray, func(i, j int) bool {
 					return objectOrder[obj.ChildrenArray[i].AbsID()] < objectOrder[obj.ChildrenArray[j].AbsID()]
 				})
+				sort.SliceStable(g.Edges, func(i, j int) bool {
+					return edgeOrder[g.Edges[i].AbsID()] < edgeOrder[g.Edges[j].AbsID()]
+				})
 
 				for _, o := range tempGraph.Objects {
 					toRemove[o] = struct{}{}

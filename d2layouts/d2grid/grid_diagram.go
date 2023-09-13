@@ -123,7 +123,5 @@ func (gd *gridDiagram) cleanup(obj *d2graph.Object, graph *d2graph.Graph) {
 		restore(obj, child)
 		child.IterDescendants(restore)
 	}
-	for _, e := range gd.edges {
-		graph.Edges = append(graph.Edges, e)
-	}
+	graph.Edges = append(graph.Edges, gd.edges...)
 }
