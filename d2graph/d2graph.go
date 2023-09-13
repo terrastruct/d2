@@ -1169,6 +1169,13 @@ func (e *Edge) Text() *d2target.MText {
 	}
 }
 
+func (e *Edge) Move(dx, dy float64) {
+	for _, p := range e.Route {
+		p.X += dx
+		p.Y += dy
+	}
+}
+
 func (e *Edge) AbsID() string {
 	srcIDA := e.Src.AbsIDArray()
 	dstIDA := e.Dst.AbsIDArray()

@@ -108,6 +108,9 @@ func (gd *gridDiagram) shift(dx, dy float64) {
 	for _, obj := range gd.objects {
 		obj.MoveWithDescendants(dx, dy)
 	}
+	for _, e := range gd.edges {
+		e.Move(dx, dy)
+	}
 }
 
 func (gd *gridDiagram) cleanup(obj *d2graph.Object, graph *d2graph.Graph) {

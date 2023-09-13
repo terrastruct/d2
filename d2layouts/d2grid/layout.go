@@ -212,16 +212,22 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.L
 		// simple straight line edge routing between grid objects
 		for i, e := range g.Edges {
 			edgeOrder[e.AbsID()] = i
-			if e.Dst.Parent.ClosestGridDiagram() != obj {
+			if !e.Src.Parent.IsDescendantOf(obj) && !e.Dst.Parent.IsDescendantOf(obj) {
 				continue
 			}
+			// if edge is within grid, remove it from outer layout
+			gd.edges = append(gd.edges, e)
+			edgeToRemove[e] = struct{}{}
+
+			if e.Src.Parent != obj || e.Dst.Parent != obj {
+				continue
+			}
+			// if edge is grid child, use simple routing
 			e.Route = []*geo.Point{e.Src.Center(), e.Dst.Center()}
 			e.TraceToShape(e.Route, 0, 1)
 			if e.Label.Value != "" {
 				e.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
 			}
-			gd.edges = append(gd.edges, e)
-			edgeToRemove[e] = struct{}{}
 		}
 
 		return nil
