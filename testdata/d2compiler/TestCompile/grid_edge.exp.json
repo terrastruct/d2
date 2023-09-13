@@ -3,12 +3,16 @@
   "err": {
     "errs": [
       {
-        "range": "d2/testdata/d2compiler/TestCompile/grid_edge.d2,4:1:32-4:11:42",
+        "range": "d2/testdata/d2compiler/TestCompile/grid_edge.d2,4:1:36-4:11:46",
         "errmsg": "d2/testdata/d2compiler/TestCompile/grid_edge.d2:5:2: edges into grid diagrams are not supported yet"
       },
       {
-        "range": "d2/testdata/d2compiler/TestCompile/grid_edge.d2,5:1:44-5:11:54",
+        "range": "d2/testdata/d2compiler/TestCompile/grid_edge.d2,5:1:48-5:11:58",
         "errmsg": "d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:2: edges into grid diagrams are not supported yet"
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/grid_edge.d2,6:1:60-6:13:72",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_edge.d2:7:2: edges into grid diagrams are not supported yet"
       }
     ]
   }

@@ -2476,15 +2476,17 @@ d2/testdata/d2compiler/TestCompile/grid_gap_negative.d2:3:16: vertical-gap must 
 			name: "grid_edge",
 			text: `hey: {
 	grid-rows: 1
-	a -> b
+	a -> b: ok
 }
 	c -> hey.b
 	hey.a -> c
+	hey -> hey.a
 
 	hey -> c: ok
 `,
 			expErr: `d2/testdata/d2compiler/TestCompile/grid_edge.d2:5:2: edges into grid diagrams are not supported yet
-d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:2: edges into grid diagrams are not supported yet`,
+d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:2: edges into grid diagrams are not supported yet
+d2/testdata/d2compiler/TestCompile/grid_edge.d2:7:2: edges into grid diagrams are not supported yet`,
 		},
 		{
 			name: "grid_nested",

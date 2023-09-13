@@ -209,7 +209,7 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.L
 		// simple straight line edge routing between grid objects
 		for i, e := range g.Edges {
 			edgeOrder[e.AbsID()] = i
-			if e.Dst.ClosestGridDiagram() != obj {
+			if e.Dst.Parent.ClosestGridDiagram() != obj {
 				continue
 			}
 			e.Route = []*geo.Point{e.Src.Center(), e.Dst.Center()}
