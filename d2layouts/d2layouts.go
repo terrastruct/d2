@@ -1,6 +1,8 @@
 package d2layouts
 
 import (
+	"strings"
+
 	"oss.terrastruct.com/d2/d2graph"
 )
 
@@ -63,8 +65,50 @@ func NestedGraphType(obj *d2graph.Object) GraphType {
 }
 
 func ExtractNested(container *d2graph.Object) *d2graph.Graph {
-	// TODO
-	return nil
+	tempGraph := d2graph.NewGraph()
+	tempGraph.RootLevel = int(container.Level())
+
+	// separate out nested edges
+	g := container.Graph
+	remainingEdges := make([]*d2graph.Edge, 0, len(g.Edges))
+	for _, edge := range g.Edges {
+		if edge.Src.Parent.IsDescendantOf(container) && edge.Dst.Parent.IsDescendantOf(container) {
+			tempGraph.Edges = append(tempGraph.Edges, edge)
+		} else {
+			remainingEdges = append(remainingEdges, edge)
+		}
+	}
+	g.Edges = remainingEdges
+
+	// separate out nested objects
+	remainingObjects := make([]*d2graph.Object, 0, len(g.Objects))
+	for _, obj := range g.Objects {
+		if obj.IsDescendantOf(container) {
+			tempGraph.Objects = append(tempGraph.Objects, obj)
+		} else {
+			remainingObjects = append(remainingObjects, obj)
+		}
+	}
+	g.Objects = remainingObjects
+
+	// update object and new root references
+	for _, o := range tempGraph.Objects {
+		o.Graph = tempGraph
+	}
+	// set root references
+	tempGraph.Root.ChildrenArray = append(tempGraph.Root.ChildrenArray, container.ChildrenArray...)
+	for _, child := range container.ChildrenArray {
+		child.Parent = tempGraph.Root
+		tempGraph.Root.Children[strings.ToLower(child.ID)] = child
+	}
+
+	// remove container's references
+	for k := range container.Children {
+		delete(container.Children, k)
+	}
+	container.ChildrenArray = nil
+
+	return tempGraph
 }
 
 func InjectNested(container *d2graph.Object, graph *d2graph.Graph) {
