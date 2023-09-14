@@ -1,0 +1,1227 @@
+{
+  "fields": [
+    {
+      "name": "a",
+      "composite": {
+        "fields": [
+          {
+            "name": "link",
+            "primary": {
+              "value": {
+                "range": ",0:0:0-0:0:0",
+                "value": [
+                  {
+                    "string": "root.layers.b"
+                  }
+                ]
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "index.d2,0:2:2-0:6:6",
+                  "value": [
+                    {
+                      "string": "link",
+                      "raw_string": "link"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "index.d2,0:0:0-0:6:6",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "index.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "a",
+                            "raw_string": "a"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "index.d2,0:2:2-0:6:6",
+                        "value": [
+                          {
+                            "string": "link",
+                            "raw_string": "link"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "index.d2,0:0:0-0:16:16",
+                    "key": {
+                      "range": "index.d2,0:0:0-0:6:6",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "index.d2,0:0:0-0:1:1",
+                            "value": [
+                              {
+                                "string": "a",
+                                "raw_string": "a"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "index.d2,0:2:2-0:6:6",
+                            "value": [
+                              {
+                                "string": "link",
+                                "raw_string": "link"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "index.d2,0:8:8-0:16:16",
+                        "value": [
+                          {
+                            "string": "layers.b",
+                            "raw_string": "layers.b"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "index.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "index.d2,0:0:0-0:6:6",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "index.d2,0:0:0-0:1:1",
+                  "value": [
+                    {
+                      "string": "a",
+                      "raw_string": "a"
+                    }
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": "index.d2,0:2:2-0:6:6",
+                  "value": [
+                    {
+                      "string": "link",
+                      "raw_string": "link"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "index.d2,0:0:0-0:16:16",
+              "key": {
+                "range": "index.d2,0:0:0-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "index.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "index.d2,0:2:2-0:6:6",
+                      "value": [
+                        {
+                          "string": "link",
+                          "raw_string": "link"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "index.d2,0:8:8-0:16:16",
+                  "value": [
+                    {
+                      "string": "layers.b",
+                      "raw_string": "layers.b"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        }
+      ]
+    },
+    {
+      "name": "layers",
+      "composite": {
+        "fields": [
+          {
+            "name": "b",
+            "composite": {
+              "fields": [
+                {
+                  "name": "b",
+                  "composite": {
+                    "fields": [
+                      {
+                        "name": "link",
+                        "primary": {
+                          "value": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "root.layers.b.layers.c"
+                              }
+                            ]
+                          }
+                        },
+                        "references": [
+                          {
+                            "string": {
+                              "range": "b.d2,0:2:2-0:6:6",
+                              "value": [
+                                {
+                                  "string": "link",
+                                  "raw_string": "link"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "b.d2,0:0:0-0:6:6",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "b.d2,0:0:0-0:1:1",
+                                    "value": [
+                                      {
+                                        "string": "b",
+                                        "raw_string": "b"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "b.d2,0:2:2-0:6:6",
+                                    "value": [
+                                      {
+                                        "string": "link",
+                                        "raw_string": "link"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "b.d2,0:0:0-0:16:16",
+                                "key": {
+                                  "range": "b.d2,0:0:0-0:6:6",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "b.d2,0:0:0-0:1:1",
+                                        "value": [
+                                          {
+                                            "string": "b",
+                                            "raw_string": "b"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "b.d2,0:2:2-0:6:6",
+                                        "value": [
+                                          {
+                                            "string": "link",
+                                            "raw_string": "link"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "b.d2,0:8:8-0:16:16",
+                                    "value": [
+                                      {
+                                        "string": "layers.c",
+                                        "raw_string": "layers.c"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            "due_to_glob": false,
+                            "due_to_lazy_glob": false
+                          }
+                        ]
+                      }
+                    ],
+                    "edges": null
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "b.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "b",
+                            "raw_string": "b"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "b.d2,0:0:0-0:6:6",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "b.d2,0:0:0-0:1:1",
+                              "value": [
+                                {
+                                  "string": "b",
+                                  "raw_string": "b"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "b.d2,0:2:2-0:6:6",
+                              "value": [
+                                {
+                                  "string": "link",
+                                  "raw_string": "link"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "b.d2,0:0:0-0:16:16",
+                          "key": {
+                            "range": "b.d2,0:0:0-0:6:6",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "b.d2,0:0:0-0:1:1",
+                                  "value": [
+                                    {
+                                      "string": "b",
+                                      "raw_string": "b"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "b.d2,0:2:2-0:6:6",
+                                  "value": [
+                                    {
+                                      "string": "link",
+                                      "raw_string": "link"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "b.d2,0:8:8-0:16:16",
+                              "value": [
+                                {
+                                  "string": "layers.c",
+                                  "raw_string": "layers.c"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    }
+                  ]
+                },
+                {
+                  "name": "layers",
+                  "composite": {
+                    "fields": [
+                      {
+                        "name": "c",
+                        "composite": {
+                          "fields": [
+                            {
+                              "name": "c",
+                              "composite": {
+                                "fields": [
+                                  {
+                                    "name": "link",
+                                    "primary": {
+                                      "value": {
+                                        "range": ",0:0:0-0:0:0",
+                                        "value": [
+                                          {
+                                            "string": "root.layers.b.layers.c.layers.d"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "references": [
+                                      {
+                                        "string": {
+                                          "range": "c.d2,0:2:2-0:6:6",
+                                          "value": [
+                                            {
+                                              "string": "link",
+                                              "raw_string": "link"
+                                            }
+                                          ]
+                                        },
+                                        "key_path": {
+                                          "range": "c.d2,0:0:0-0:6:6",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "c.d2,0:0:0-0:1:1",
+                                                "value": [
+                                                  {
+                                                    "string": "c",
+                                                    "raw_string": "c"
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            {
+                                              "unquoted_string": {
+                                                "range": "c.d2,0:2:2-0:6:6",
+                                                "value": [
+                                                  {
+                                                    "string": "link",
+                                                    "raw_string": "link"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "context": {
+                                          "edge": null,
+                                          "key": {
+                                            "range": "c.d2,0:0:0-0:16:16",
+                                            "key": {
+                                              "range": "c.d2,0:0:0-0:6:6",
+                                              "path": [
+                                                {
+                                                  "unquoted_string": {
+                                                    "range": "c.d2,0:0:0-0:1:1",
+                                                    "value": [
+                                                      {
+                                                        "string": "c",
+                                                        "raw_string": "c"
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  "unquoted_string": {
+                                                    "range": "c.d2,0:2:2-0:6:6",
+                                                    "value": [
+                                                      {
+                                                        "string": "link",
+                                                        "raw_string": "link"
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            "primary": {},
+                                            "value": {
+                                              "unquoted_string": {
+                                                "range": "c.d2,0:8:8-0:16:16",
+                                                "value": [
+                                                  {
+                                                    "string": "layers.d",
+                                                    "raw_string": "layers.d"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "due_to_glob": false,
+                                        "due_to_lazy_glob": false
+                                      }
+                                    ]
+                                  }
+                                ],
+                                "edges": null
+                              },
+                              "references": [
+                                {
+                                  "string": {
+                                    "range": "c.d2,0:0:0-0:1:1",
+                                    "value": [
+                                      {
+                                        "string": "c",
+                                        "raw_string": "c"
+                                      }
+                                    ]
+                                  },
+                                  "key_path": {
+                                    "range": "c.d2,0:0:0-0:6:6",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "c.d2,0:0:0-0:1:1",
+                                          "value": [
+                                            {
+                                              "string": "c",
+                                              "raw_string": "c"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "c.d2,0:2:2-0:6:6",
+                                          "value": [
+                                            {
+                                              "string": "link",
+                                              "raw_string": "link"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "context": {
+                                    "edge": null,
+                                    "key": {
+                                      "range": "c.d2,0:0:0-0:16:16",
+                                      "key": {
+                                        "range": "c.d2,0:0:0-0:6:6",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "c.d2,0:0:0-0:1:1",
+                                              "value": [
+                                                {
+                                                  "string": "c",
+                                                  "raw_string": "c"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "unquoted_string": {
+                                              "range": "c.d2,0:2:2-0:6:6",
+                                              "value": [
+                                                {
+                                                  "string": "link",
+                                                  "raw_string": "link"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "primary": {},
+                                      "value": {
+                                        "unquoted_string": {
+                                          "range": "c.d2,0:8:8-0:16:16",
+                                          "value": [
+                                            {
+                                              "string": "layers.d",
+                                              "raw_string": "layers.d"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "due_to_glob": false,
+                                  "due_to_lazy_glob": false
+                                }
+                              ]
+                            },
+                            {
+                              "name": "layers",
+                              "composite": {
+                                "fields": [
+                                  {
+                                    "name": "d",
+                                    "composite": {
+                                      "fields": [
+                                        {
+                                          "name": "d",
+                                          "references": [
+                                            {
+                                              "string": {
+                                                "range": "d.d2,0:0:0-0:1:1",
+                                                "value": [
+                                                  {
+                                                    "string": "d",
+                                                    "raw_string": "d"
+                                                  }
+                                                ]
+                                              },
+                                              "key_path": {
+                                                "range": "d.d2,0:0:0-0:1:1",
+                                                "path": [
+                                                  {
+                                                    "unquoted_string": {
+                                                      "range": "d.d2,0:0:0-0:1:1",
+                                                      "value": [
+                                                        {
+                                                          "string": "d",
+                                                          "raw_string": "d"
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                ]
+                                              },
+                                              "context": {
+                                                "edge": null,
+                                                "key": {
+                                                  "range": "d.d2,0:0:0-0:1:1",
+                                                  "key": {
+                                                    "range": "d.d2,0:0:0-0:1:1",
+                                                    "path": [
+                                                      {
+                                                        "unquoted_string": {
+                                                          "range": "d.d2,0:0:0-0:1:1",
+                                                          "value": [
+                                                            {
+                                                              "string": "d",
+                                                              "raw_string": "d"
+                                                            }
+                                                          ]
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "primary": {},
+                                                  "value": {}
+                                                }
+                                              },
+                                              "due_to_glob": false,
+                                              "due_to_lazy_glob": false
+                                            }
+                                          ]
+                                        }
+                                      ],
+                                      "edges": null
+                                    },
+                                    "references": [
+                                      {
+                                        "string": {
+                                          "range": "c.d2,0:28:28-0:29:29",
+                                          "value": [
+                                            {
+                                              "string": "d",
+                                              "raw_string": "d"
+                                            }
+                                          ]
+                                        },
+                                        "key_path": {
+                                          "range": "c.d2,0:28:28-0:29:29",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "c.d2,0:28:28-0:29:29",
+                                                "value": [
+                                                  {
+                                                    "string": "d",
+                                                    "raw_string": "d"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "context": {
+                                          "edge": null,
+                                          "key": {
+                                            "range": "c.d2,0:28:28-0:34:34",
+                                            "key": {
+                                              "range": "c.d2,0:28:28-0:29:29",
+                                              "path": [
+                                                {
+                                                  "unquoted_string": {
+                                                    "range": "c.d2,0:28:28-0:29:29",
+                                                    "value": [
+                                                      {
+                                                        "string": "d",
+                                                        "raw_string": "d"
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            "primary": {},
+                                            "value": {
+                                              "import": {
+                                                "range": "c.d2,0:31:31-0:34:34",
+                                                "spread": false,
+                                                "pre": "",
+                                                "path": [
+                                                  {
+                                                    "unquoted_string": {
+                                                      "range": "c.d2,0:32:32-0:33:33",
+                                                      "value": [
+                                                        {
+                                                          "string": "d",
+                                                          "raw_string": "d"
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "due_to_glob": false,
+                                        "due_to_lazy_glob": false
+                                      }
+                                    ]
+                                  }
+                                ],
+                                "edges": null
+                              },
+                              "references": [
+                                {
+                                  "string": {
+                                    "range": "c.d2,0:18:18-0:24:24",
+                                    "value": [
+                                      {
+                                        "string": "layers",
+                                        "raw_string": "layers"
+                                      }
+                                    ]
+                                  },
+                                  "key_path": {
+                                    "range": "c.d2,0:18:18-0:24:24",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "c.d2,0:18:18-0:24:24",
+                                          "value": [
+                                            {
+                                              "string": "layers",
+                                              "raw_string": "layers"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "context": {
+                                    "edge": null,
+                                    "key": {
+                                      "range": "c.d2,0:18:18-0:35:35",
+                                      "key": {
+                                        "range": "c.d2,0:18:18-0:24:24",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "c.d2,0:18:18-0:24:24",
+                                              "value": [
+                                                {
+                                                  "string": "layers",
+                                                  "raw_string": "layers"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "primary": {},
+                                      "value": {
+                                        "map": {
+                                          "range": "c.d2,0:26:26-0:35:35",
+                                          "nodes": [
+                                            {
+                                              "map_key": {
+                                                "range": "c.d2,0:28:28-0:34:34",
+                                                "key": {
+                                                  "range": "c.d2,0:28:28-0:29:29",
+                                                  "path": [
+                                                    {
+                                                      "unquoted_string": {
+                                                        "range": "c.d2,0:28:28-0:29:29",
+                                                        "value": [
+                                                          {
+                                                            "string": "d",
+                                                            "raw_string": "d"
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  ]
+                                                },
+                                                "primary": {},
+                                                "value": {
+                                                  "import": {
+                                                    "range": "c.d2,0:31:31-0:34:34",
+                                                    "spread": false,
+                                                    "pre": "",
+                                                    "path": [
+                                                      {
+                                                        "unquoted_string": {
+                                                          "range": "c.d2,0:32:32-0:33:33",
+                                                          "value": [
+                                                            {
+                                                              "string": "d",
+                                                              "raw_string": "d"
+                                                            }
+                                                          ]
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "due_to_glob": false,
+                                  "due_to_lazy_glob": false
+                                }
+                              ]
+                            }
+                          ],
+                          "edges": null
+                        },
+                        "references": [
+                          {
+                            "string": {
+                              "range": "b.d2,0:28:28-0:29:29",
+                              "value": [
+                                {
+                                  "string": "c",
+                                  "raw_string": "c"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "b.d2,0:28:28-0:29:29",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "b.d2,0:28:28-0:29:29",
+                                    "value": [
+                                      {
+                                        "string": "c",
+                                        "raw_string": "c"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "b.d2,0:28:28-0:34:34",
+                                "key": {
+                                  "range": "b.d2,0:28:28-0:29:29",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "b.d2,0:28:28-0:29:29",
+                                        "value": [
+                                          {
+                                            "string": "c",
+                                            "raw_string": "c"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "import": {
+                                    "range": "b.d2,0:31:31-0:34:34",
+                                    "spread": false,
+                                    "pre": "",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "b.d2,0:32:32-0:33:33",
+                                          "value": [
+                                            {
+                                              "string": "c",
+                                              "raw_string": "c"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            "due_to_glob": false,
+                            "due_to_lazy_glob": false
+                          }
+                        ]
+                      }
+                    ],
+                    "edges": null
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "b.d2,0:18:18-0:24:24",
+                        "value": [
+                          {
+                            "string": "layers",
+                            "raw_string": "layers"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "b.d2,0:18:18-0:24:24",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "b.d2,0:18:18-0:24:24",
+                              "value": [
+                                {
+                                  "string": "layers",
+                                  "raw_string": "layers"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "b.d2,0:18:18-0:35:35",
+                          "key": {
+                            "range": "b.d2,0:18:18-0:24:24",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "b.d2,0:18:18-0:24:24",
+                                  "value": [
+                                    {
+                                      "string": "layers",
+                                      "raw_string": "layers"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": "b.d2,0:26:26-0:35:35",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": "b.d2,0:28:28-0:34:34",
+                                    "key": {
+                                      "range": "b.d2,0:28:28-0:29:29",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "b.d2,0:28:28-0:29:29",
+                                            "value": [
+                                              {
+                                                "string": "c",
+                                                "raw_string": "c"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {},
+                                    "value": {
+                                      "import": {
+                                        "range": "b.d2,0:31:31-0:34:34",
+                                        "spread": false,
+                                        "pre": "",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "b.d2,0:32:32-0:33:33",
+                                              "value": [
+                                                {
+                                                  "string": "c",
+                                                  "raw_string": "c"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "index.d2,0:28:28-0:29:29",
+                  "value": [
+                    {
+                      "string": "b",
+                      "raw_string": "b"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "index.d2,0:28:28-0:29:29",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "index.d2,0:28:28-0:29:29",
+                        "value": [
+                          {
+                            "string": "b",
+                            "raw_string": "b"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "index.d2,0:28:28-0:34:34",
+                    "key": {
+                      "range": "index.d2,0:28:28-0:29:29",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "index.d2,0:28:28-0:29:29",
+                            "value": [
+                              {
+                                "string": "b",
+                                "raw_string": "b"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "import": {
+                        "range": "index.d2,0:31:31-0:34:34",
+                        "spread": false,
+                        "pre": "",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "index.d2,0:32:32-0:33:33",
+                              "value": [
+                                {
+                                  "string": "b",
+                                  "raw_string": "b"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "index.d2,0:18:18-0:24:24",
+            "value": [
+              {
+                "string": "layers",
+                "raw_string": "layers"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "index.d2,0:18:18-0:24:24",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "index.d2,0:18:18-0:24:24",
+                  "value": [
+                    {
+                      "string": "layers",
+                      "raw_string": "layers"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "index.d2,0:18:18-0:35:35",
+              "key": {
+                "range": "index.d2,0:18:18-0:24:24",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "index.d2,0:18:18-0:24:24",
+                      "value": [
+                        {
+                          "string": "layers",
+                          "raw_string": "layers"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "index.d2,0:26:26-0:35:35",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "index.d2,0:28:28-0:34:34",
+                        "key": {
+                          "range": "index.d2,0:28:28-0:29:29",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "index.d2,0:28:28-0:29:29",
+                                "value": [
+                                  {
+                                    "string": "b",
+                                    "raw_string": "b"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "import": {
+                            "range": "index.d2,0:31:31-0:34:34",
+                            "spread": false,
+                            "pre": "",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "index.d2,0:32:32-0:33:33",
+                                  "value": [
+                                    {
+                                      "string": "b",
+                                      "raw_string": "b"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        }
+      ]
+    }
+  ],
+  "edges": null
+}

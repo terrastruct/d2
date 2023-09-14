@@ -4,6 +4,7 @@
 
 #### Improvements 🧹
 
+- Globs are lazily-evaluated [#1552](https://github.com/terrastruct/d2/pull/1552)
 - Latex now includes Mathjax's ASM extension for more powerful Latex functionality [#1544](https://github.com/terrastruct/d2/pull/1544)
 - `font-color` works on Markdown [#1546](https://github.com/terrastruct/d2/pull/1546)
 - `font-color` works on arrowheads [#1582](https://github.com/terrastruct/d2/pull/1582)

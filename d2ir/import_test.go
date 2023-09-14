@@ -85,6 +85,19 @@ label: meow`,
 			},
 		},
 		{
+			name: "boards-deep",
+			run: func(t testing.TB) {
+				m, err := compileFS(t, "index.d2", map[string]string{
+					"index.d2": `a.link: layers.b; layers: { b: @b }`,
+					"b.d2":     `b.link: layers.c; layers: { c: @c }`,
+					"c.d2":     `c.link: layers.d; layers: { d: @d }`,
+					"d.d2":     `d`,
+				})
+				assert.Success(t, err)
+				assertQuery(t, m, 0, 0, "root.layers.b.layers.c.layers.d", "layers.b.layers.c.c.link")
+			},
+		},
+		{
 			name: "steps-inheritence",
 			run: func(t testing.TB) {
 				m, err := compileFS(t, "index.d2", map[string]string{
