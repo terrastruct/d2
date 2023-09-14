@@ -1,6 +1,7 @@
-grid-rows: 3
+grid-rows: 4
 grid-columns: 5
 horizontal-gap: 20
+vertical-gap: 5
 
 *.class: [text; blue]
 
@@ -15,7 +16,6 @@ horizontal-gap: 20
     bold: false
   }
 }
-
 0,1: {
   label: "Set up an\nAtlassian site"
   class: [text; gray]
@@ -26,16 +26,33 @@ horizontal-gap: 20
   class: [text; gray]
 }
 0,4: forge\ntunnel
-1,0: forge\nlogin
-1,1: forge\ncreate
-1,2: forge\ndeploy
-1,3: forge\ninstall
-1,4: {
+
+1*.class: note
+1*.label: ""
+1,0
+1,1
+1,2
+1,3
+1,4
+
+2,0: forge\nlogin
+2,1: forge\ncreate
+2,2: forge\ndeploy
+2,3: forge\ninstall
+2,4: {
   shape: diamond
   label: "Hot reload\nchanges?"
   class: [text; gray]
 }
-2,0: "" {
+
+3*.class: note
+3,0: Step 1
+3,1: Step 2
+3,2: Step 3
+3,3: Step 4
+3,4: ""
+
+4,0: "" {
   grid-rows: 3
   grid-columns: 1
   grid-gap: 0
@@ -67,27 +84,27 @@ horizontal-gap: 20
     style.font-color: "#cecece"
   }
 }
-2,1.class: empty
-2,2.class: empty
-2,3.class: empty
-2,4: forge\ndeploy
+4,1.class: empty
+4,2.class: empty
+4,3.class: empty
+4,4: forge\ndeploy
 
-0,0 -> 1,0 -> 1,1 -> 1,2 -> 1,3 -> 1,4: {
+0,0 -> 2,0 -> 2,1 -> 2,2 -> 2,3 -> 2,4: {
   class: arrow
 }
-1,1 -> 0,1: {
-  class: arrow
-  style.stroke: "#cecece"
-}
-1,3 -> 0,3: {
+2,1 -> 0,1: {
   class: arrow
   style.stroke: "#cecece"
 }
-1,4 -> 0,4: Yes {
+2,3 -> 0,3: {
+  class: arrow
+  style.stroke: "#cecece"
+}
+2,4 -> 0,4: Yes {
   class: arrow
   style.font-size: 10
 }
-1,4 -> 2,4: No {
+2,4 -> 4,4: No {
   class: arrow
   style.font-size: 10
 }
@@ -113,6 +130,16 @@ classes: {
     fill: "#cecece"
     stroke: "#cecece"
     border-radius: 10
+  }
+  note: {
+    height: 30
+    label.near: top-center
+    style: {
+      font-size: 10
+      bold: false
+      fill: transparent
+      stroke: transparent
+    }
   }
   empty: {
     label: ""
