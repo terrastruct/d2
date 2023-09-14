@@ -223,18 +223,3 @@ func boundingBox(g *d2graph.Graph) (tl, br *geo.Point) {
 
 	return geo.NewPoint(x1, y1), geo.NewPoint(x2, y2)
 }
-
-func IsConstantNear(obj *d2graph.Object) bool {
-	if obj.NearKey == nil {
-		return false
-	}
-	keyPath := d2graph.Key(obj.NearKey)
-
-	// interesting if there is a shape with id=top-left, then top-left isn't treated a constant near
-	_, isKey := obj.Graph.Root.HasChild(keyPath)
-	if isKey {
-		return false
-	}
-	_, isConst := d2graph.NearConstants[keyPath[0]]
-	return isConst
-}

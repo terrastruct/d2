@@ -2,7 +2,6 @@ package d2layouts
 
 import (
 	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2layouts/d2near"
 )
 
 type GraphType string
@@ -14,7 +13,7 @@ const (
 	SequenceDiagram   GraphType = "sequence-diagram"
 )
 
-func LayoutNested(g *d2graph.Graph, graphType GraphType, coreLayout d2graph.LayoutGraph, isRoot bool) {
+func LayoutNested(g *d2graph.Graph, graphType GraphType, coreLayout d2graph.LayoutGraph) {
 	// Before we can layout these nodes, we need to handle all nested diagrams first.
 	extracted := make(map[*d2graph.Object]*d2graph.Graph)
 
@@ -23,12 +22,12 @@ func LayoutNested(g *d2graph.Graph, graphType GraphType, coreLayout d2graph.Layo
 	queue = append(queue, g.Root.ChildrenArray...)
 
 	for _, child := range queue {
-		if graphType := NestedGraphType(child, isRoot); graphType != DefaultGraphType {
+		if graphType := NestedGraphType(child); graphType != DefaultGraphType {
 			// There is a nested diagram here, so extract its contents and process in the same way
 			nestedGraph := ExtractNested(child)
 
 			// Layout of nestedGraph is completed
-			LayoutNested(nestedGraph, graphType, coreLayout, false)
+			LayoutNested(nestedGraph, graphType, coreLayout)
 
 			// Fit child to size of nested layout
 			FitToGraph(child, nestedGraph)
@@ -50,14 +49,14 @@ func LayoutNested(g *d2graph.Graph, graphType GraphType, coreLayout d2graph.Layo
 	}
 }
 
-func NestedGraphType(container *d2graph.Object, isRoot bool) GraphType {
-	if isRoot && d2near.IsConstantNear(container) {
+func NestedGraphType(obj *d2graph.Object) GraphType {
+	if obj.Graph.RootLevel == 0 && obj.IsConstantNear() {
 		return ConstantNearGraph
 	}
-	if container.IsGridDiagram() {
+	if obj.IsGridDiagram() {
 		return GridDiagram
 	}
-	if container.IsSequenceDiagram() {
+	if obj.IsSequenceDiagram() {
 		return SequenceDiagram
 	}
 	return DefaultGraphType
