@@ -4,7 +4,7 @@ horizontal-gap: 20
 
 *.class: [text; blue]
 
-a: {
+0,0: {
   label: "npm i -g\n@forge/cli"
   style: {
     fill: "#30304c"
@@ -16,26 +16,26 @@ a: {
   }
 }
 
-b: {
+0,1: {
   label: "Set up an\nAtlassian site"
   class: [text; gray]
 }
-c.class: empty
-d: {
+0,2.class: empty
+0,3: {
   label: "View the hello\nworld app"
   class: [text; gray]
 }
-e: forge\ntunnel
-f: forge\nlogin
-g: forge\ncreate
-h: forge\ndeploy
-i: forge\ninstall
-j: {
+0,4: forge\ntunnel
+1,0: forge\nlogin
+1,1: forge\ncreate
+1,2: forge\ndeploy
+1,3: forge\ninstall
+1,4: {
   shape: diamond
   label: "Hot reload\nchanges?"
   class: [text; gray]
 }
-k: "" {
+2,0: "" {
   grid-rows: 3
   grid-columns: 1
   grid-gap: 0
@@ -67,10 +67,30 @@ k: "" {
     style.font-color: "#cecece"
   }
 }
-l.class: empty
-m.class: empty
-n.class: empty
-o: forge\ndeploy
+2,1.class: empty
+2,2.class: empty
+2,3.class: empty
+2,4: forge\ndeploy
+
+0,0 -> 1,0 -> 1,1 -> 1,2 -> 1,3 -> 1,4: {
+  class: arrow
+}
+1,1 -> 0,1: {
+  class: arrow
+  style.stroke: "#cecece"
+}
+1,3 -> 0,3: {
+  class: arrow
+  style.stroke: "#cecece"
+}
+1,4 -> 0,4: Yes {
+  class: arrow
+  style.font-size: 10
+}
+1,4 -> 2,4: No {
+  class: arrow
+  style.font-size: 10
+}
 
 classes: {
   text.style: {
@@ -110,24 +130,4 @@ classes: {
       stroke-width: 2
     }
   }
-}
-
-a -> f -> g -> h -> i -> j: {
-  class: arrow
-}
-g -> b: {
-  class: arrow
-  style.stroke: "#cecece"
-}
-i -> d: {
-  class: arrow
-  style.stroke: "#cecece"
-}
-j -> e: Yes {
-  class: arrow
-  style.font-size: 10
-}
-j -> o: No {
-  class: arrow
-  style.font-size: 10
 }

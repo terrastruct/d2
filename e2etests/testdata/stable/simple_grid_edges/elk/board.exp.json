@@ -4,7 +4,7 @@
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
-      "id": "a",
+      "id": "0,0",
       "type": "rectangle",
       "classes": [
         "text",
@@ -49,7 +49,7 @@
       "level": 1
     },
     {
-      "id": "b",
+      "id": "0,1",
       "type": "rectangle",
       "classes": [
         "text",
@@ -94,7 +94,7 @@
       "level": 1
     },
     {
-      "id": "c",
+      "id": "0,2",
       "type": "rectangle",
       "classes": [
         "empty"
@@ -138,7 +138,7 @@
       "level": 1
     },
     {
-      "id": "d",
+      "id": "0,3",
       "type": "rectangle",
       "classes": [
         "text",
@@ -183,7 +183,7 @@
       "level": 1
     },
     {
-      "id": "e",
+      "id": "0,4",
       "type": "rectangle",
       "classes": [
         "text",
@@ -228,7 +228,7 @@
       "level": 1
     },
     {
-      "id": "f",
+      "id": "1,0",
       "type": "rectangle",
       "classes": [
         "text",
@@ -273,7 +273,7 @@
       "level": 1
     },
     {
-      "id": "g",
+      "id": "1,1",
       "type": "rectangle",
       "classes": [
         "text",
@@ -318,7 +318,7 @@
       "level": 1
     },
     {
-      "id": "h",
+      "id": "1,2",
       "type": "rectangle",
       "classes": [
         "text",
@@ -363,7 +363,7 @@
       "level": 1
     },
     {
-      "id": "i",
+      "id": "1,3",
       "type": "rectangle",
       "classes": [
         "text",
@@ -408,7 +408,7 @@
       "level": 1
     },
     {
-      "id": "j",
+      "id": "1,4",
       "type": "diamond",
       "classes": [
         "text",
@@ -453,7 +453,7 @@
       "level": 1
     },
     {
-      "id": "k",
+      "id": "2,0",
       "type": "rectangle",
       "pos": {
         "x": 0,
@@ -494,7 +494,7 @@
       "level": 1
     },
     {
-      "id": "k.a",
+      "id": "2,0.a",
       "type": "rectangle",
       "pos": {
         "x": 0,
@@ -535,7 +535,7 @@
       "level": 2
     },
     {
-      "id": "k.b",
+      "id": "2,0.b",
       "type": "rectangle",
       "pos": {
         "x": 0,
@@ -576,7 +576,7 @@
       "level": 2
     },
     {
-      "id": "k.c",
+      "id": "2,0.c",
       "type": "rectangle",
       "pos": {
         "x": 0,
@@ -617,7 +617,7 @@
       "level": 2
     },
     {
-      "id": "l",
+      "id": "2,1",
       "type": "rectangle",
       "classes": [
         "empty"
@@ -661,7 +661,7 @@
       "level": 1
     },
     {
-      "id": "m",
+      "id": "2,2",
       "type": "rectangle",
       "classes": [
         "empty"
@@ -705,7 +705,7 @@
       "level": 1
     },
     {
-      "id": "n",
+      "id": "2,3",
       "type": "rectangle",
       "classes": [
         "empty"
@@ -749,7 +749,7 @@
       "level": 1
     },
     {
-      "id": "o",
+      "id": "2,4",
       "type": "rectangle",
       "classes": [
         "text",
@@ -796,13 +796,13 @@
   ],
   "connections": [
     {
-      "id": "(a -> f)[0]",
+      "id": "(0,0 -> 1,0)[0]",
       "classes": [
         "arrow"
       ],
-      "src": "a",
+      "src": "0,0",
       "srcArrow": "none",
-      "dst": "f",
+      "dst": "1,0",
       "dstArrow": "arrow",
       "opacity": 1,
       "strokeDash": 0,
@@ -837,13 +837,13 @@
       "zIndex": 0
     },
     {
-      "id": "(f -> g)[0]",
+      "id": "(1,0 -> 1,1)[0]",
       "classes": [
         "arrow"
       ],
-      "src": "f",
+      "src": "1,0",
       "srcArrow": "none",
-      "dst": "g",
+      "dst": "1,1",
       "dstArrow": "arrow",
       "opacity": 1,
       "strokeDash": 0,
@@ -878,13 +878,13 @@
       "zIndex": 0
     },
     {
-      "id": "(g -> h)[0]",
+      "id": "(1,1 -> 1,2)[0]",
       "classes": [
         "arrow"
       ],
-      "src": "g",
+      "src": "1,1",
       "srcArrow": "none",
-      "dst": "h",
+      "dst": "1,2",
       "dstArrow": "arrow",
       "opacity": 1,
       "strokeDash": 0,
@@ -919,13 +919,13 @@
       "zIndex": 0
     },
     {
-      "id": "(h -> i)[0]",
+      "id": "(1,2 -> 1,3)[0]",
       "classes": [
         "arrow"
       ],
-      "src": "h",
+      "src": "1,2",
       "srcArrow": "none",
-      "dst": "i",
+      "dst": "1,3",
       "dstArrow": "arrow",
       "opacity": 1,
       "strokeDash": 0,
@@ -960,13 +960,13 @@
       "zIndex": 0
     },
     {
-      "id": "(i -> j)[0]",
+      "id": "(1,3 -> 1,4)[0]",
       "classes": [
         "arrow"
       ],
-      "src": "i",
+      "src": "1,3",
       "srcArrow": "none",
-      "dst": "j",
+      "dst": "1,4",
       "dstArrow": "arrow",
       "opacity": 1,
       "strokeDash": 0,
@@ -1001,13 +1001,13 @@
       "zIndex": 0
     },
     {
-      "id": "(g -> b)[0]",
+      "id": "(1,1 -> 0,1)[0]",
       "classes": [
         "arrow"
       ],
-      "src": "g",
+      "src": "1,1",
       "srcArrow": "none",
-      "dst": "b",
+      "dst": "0,1",
       "dstArrow": "arrow",
       "opacity": 1,
       "strokeDash": 0,
@@ -1042,13 +1042,13 @@
       "zIndex": 0
     },
     {
-      "id": "(i -> d)[0]",
+      "id": "(1,3 -> 0,3)[0]",
       "classes": [
         "arrow"
       ],
-      "src": "i",
+      "src": "1,3",
       "srcArrow": "none",
-      "dst": "d",
+      "dst": "0,3",
       "dstArrow": "arrow",
       "opacity": 1,
       "strokeDash": 0,
@@ -1083,13 +1083,13 @@
       "zIndex": 0
     },
     {
-      "id": "(j -> e)[0]",
+      "id": "(1,4 -> 0,4)[0]",
       "classes": [
         "arrow"
       ],
-      "src": "j",
+      "src": "1,4",
       "srcArrow": "none",
-      "dst": "e",
+      "dst": "0,4",
       "dstArrow": "arrow",
       "opacity": 1,
       "strokeDash": 0,
@@ -1124,13 +1124,13 @@
       "zIndex": 0
     },
     {
-      "id": "(j -> o)[0]",
+      "id": "(1,4 -> 2,4)[0]",
       "classes": [
         "arrow"
       ],
-      "src": "j",
+      "src": "1,4",
       "srcArrow": "none",
-      "dst": "o",
+      "dst": "2,4",
       "dstArrow": "arrow",
       "opacity": 1,
       "strokeDash": 0,
