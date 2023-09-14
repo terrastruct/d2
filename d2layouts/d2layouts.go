@@ -1,8 +1,20 @@
 package d2layouts
 
-import "oss.terrastruct.com/d2/d2graph"
+import (
+	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2layouts/d2near"
+)
 
-func LayoutNested(g *d2graph.Graph, graphType string, coreLayout d2graph.LayoutGraph) {
+type GraphType string
+
+const (
+	DefaultGraphType  GraphType = ""
+	ConstantNearGraph GraphType = "constant-near"
+	GridDiagram       GraphType = "grid-diagram"
+	SequenceDiagram   GraphType = "sequence-diagram"
+)
+
+func LayoutNested(g *d2graph.Graph, graphType GraphType, coreLayout d2graph.LayoutGraph, isRoot bool) {
 	// Before we can layout these nodes, we need to handle all nested diagrams first.
 	extracted := make(map[*d2graph.Object]*d2graph.Graph)
 
@@ -11,12 +23,12 @@ func LayoutNested(g *d2graph.Graph, graphType string, coreLayout d2graph.LayoutG
 	queue = append(queue, g.Root.ChildrenArray...)
 
 	for _, child := range queue {
-		if graphType := NestedGraphType(child); graphType != nil {
+		if graphType := NestedGraphType(child, isRoot); graphType != DefaultGraphType {
 			// There is a nested diagram here, so extract its contents and process in the same way
 			nestedGraph := ExtractNested(child)
 
 			// Layout of nestedGraph is completed
-			LayoutNested(nestedGraph, *graphType, coreLayout)
+			LayoutNested(nestedGraph, graphType, coreLayout, false)
 
 			// Fit child to size of nested layout
 			FitToGraph(child, nestedGraph)
@@ -38,9 +50,17 @@ func LayoutNested(g *d2graph.Graph, graphType string, coreLayout d2graph.LayoutG
 	}
 }
 
-func NestedGraphType(container *d2graph.Object) *string {
-	// TODO
-	return nil
+func NestedGraphType(container *d2graph.Object, isRoot bool) GraphType {
+	if isRoot && d2near.IsConstantNear(container) {
+		return ConstantNearGraph
+	}
+	if container.IsGridDiagram() {
+		return GridDiagram
+	}
+	if container.IsSequenceDiagram() {
+		return SequenceDiagram
+	}
+	return DefaultGraphType
 }
 
 func ExtractNested(container *d2graph.Object) *d2graph.Graph {
@@ -56,6 +76,6 @@ func FitToGraph(container *d2graph.Object, graph *d2graph.Graph) {
 	// TODO
 }
 
-func LayoutDiagram(graph *d2graph.Graph, graphType string, coreLayout d2graph.LayoutGraph) {
+func LayoutDiagram(graph *d2graph.Graph, graphType GraphType, coreLayout d2graph.LayoutGraph) {
 	// TODO
 }
