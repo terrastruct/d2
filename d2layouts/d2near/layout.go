@@ -91,6 +91,10 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNearGraphs []*d2graph
 	return nil
 }
 
+func Place(obj *d2graph.Object) (float64, float64) {
+	return place(obj)
+}
+
 // place returns the position of obj, taking into consideration its near value and the diagram
 func place(obj *d2graph.Object) (float64, float64) {
 	tl, br := boundingBox(obj.Graph)

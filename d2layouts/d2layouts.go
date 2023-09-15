@@ -1,43 +1,80 @@
 package d2layouts
 
 import (
+	"context"
 	"math"
 	"strings"
 
 	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2layouts/d2grid"
+	"oss.terrastruct.com/d2/d2layouts/d2near"
+	"oss.terrastruct.com/d2/d2layouts/d2sequence"
 	"oss.terrastruct.com/d2/lib/geo"
 )
 
-type GraphType string
+type DiagramType string
 
+// a grid diagram at a constant near is
 const (
-	DefaultGraphType  GraphType = ""
-	ConstantNearGraph GraphType = "constant-near"
-	GridDiagram       GraphType = "grid-diagram"
-	SequenceDiagram   GraphType = "sequence-diagram"
+	DefaultGraphType  DiagramType = ""
+	ConstantNearGraph DiagramType = "constant-near"
+	GridDiagram       DiagramType = "grid-diagram"
+	SequenceDiagram   DiagramType = "sequence-diagram"
 )
 
-func LayoutNested(g *d2graph.Graph, graphType GraphType, coreLayout d2graph.LayoutGraph) geo.Spacing {
+type GraphInfo struct {
+	IsConstantNear bool
+	DiagramType    DiagramType
+}
+
+func (gi GraphInfo) isDefault() bool {
+	return !gi.IsConstantNear && gi.DiagramType == DefaultGraphType
+}
+
+func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, coreLayout d2graph.LayoutGraph) geo.Spacing {
+
 	// Before we can layout these nodes, we need to handle all nested diagrams first.
 	extracted := make(map[*d2graph.Object]*d2graph.Graph)
+	extractedInfo := make(map[*d2graph.Object]GraphInfo)
+
+	var constantNears []*d2graph.Graph
 
 	// Iterate top-down from Root so all nested diagrams can process their own contents
 	queue := make([]*d2graph.Object, 0, len(g.Root.ChildrenArray))
-	queue = append(queue, g.Root.ChildrenArray...)
+	if graphInfo.IsConstantNear {
+		near := g.Root.ChildrenArray[0]
+		if len(near.Children) > 0 {
+			queue = append(queue, near.ChildrenArray...)
+		}
+	} else {
+		queue = append(queue, g.Root.ChildrenArray...)
+	}
 
 	for _, child := range queue {
-		if graphType := NestedGraphType(child); graphType != DefaultGraphType {
-			// There is a nested diagram here, so extract its contents and process in the same way
-			nestedGraph := ExtractNested(child)
+		if gi := NestedGraphInfo(child); !gi.isDefault() {
+			extractedInfo[child] = gi
+
+			var nestedGraph *d2graph.Graph
+			if gi.IsConstantNear {
+				nestedGraph = ExtractSelf(child)
+			} else {
+				// There is a nested diagram here, so extract its contents and process in the same way
+				nestedGraph = ExtractDescendants(child)
+			}
 
 			// Layout of nestedGraph is completed
-			spacing := LayoutNested(nestedGraph, graphType, coreLayout)
-
-			// Fit child to size of nested layout
-			FitToGraph(child, nestedGraph, spacing)
+			spacing := LayoutNested(ctx, nestedGraph, gi, coreLayout)
+			if !gi.IsConstantNear {
+				// Fit child to size of nested layout
+				FitToGraph(child, nestedGraph, spacing)
+			}
 
 			// We will restore the contents after running layout with child as the placeholder
-			extracted[child] = nestedGraph
+			if gi.IsConstantNear {
+				constantNears = append(constantNears, nestedGraph)
+			} else {
+				extracted[child] = nestedGraph
+			}
 		} else if len(child.Children) > 0 {
 			queue = append(queue, child.ChildrenArray...)
 		}
@@ -45,30 +82,119 @@ func LayoutNested(g *d2graph.Graph, graphType GraphType, coreLayout d2graph.Layo
 
 	// We can now run layout with accurate sizes of nested layout containers
 	// Layout according to the type of diagram
-	spacing := LayoutDiagram(g, graphType, coreLayout)
+	LayoutDiagram := func(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, coreLayout d2graph.LayoutGraph) geo.Spacing {
+		spacing := geo.Spacing{}
+		var err error
+		// TODO
+
+		switch graphInfo.DiagramType {
+		case GridDiagram:
+			layoutWithGrids := d2grid.Layout(ctx, g, coreLayout)
+			if err = layoutWithGrids(ctx, g); err != nil {
+				panic(err)
+			}
+
+		case SequenceDiagram:
+			err = d2sequence.Layout(ctx, g, coreLayout)
+			if err != nil {
+				panic(err)
+			}
+		default:
+			err := coreLayout(ctx, g)
+			if err != nil {
+				panic(err)
+			}
+		}
+		return spacing
+	}
+	spacing := LayoutDiagram(ctx, g, graphInfo, coreLayout)
 
 	// With the layout set, inject all the extracted graphs
 	for n, nestedGraph := range extracted {
-		InjectNested(n, nestedGraph)
+		if !extractedInfo[n].IsConstantNear {
+			InjectNested(n, nestedGraph)
+			PositionNested(n, nestedGraph)
+		}
+	}
+
+	// if there are
+	if len(constantNears) > 0 {
+		err := d2near.Layout(ctx, g, constantNears)
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	return spacing
 }
 
-func NestedGraphType(obj *d2graph.Object) GraphType {
+// TODO multiple types at same (e.g. constant nears with grid at root level)
+// e.g. constant nears with sequence diagram at root level
+func NestedGraphInfo(obj *d2graph.Object) (gi GraphInfo) {
 	if obj.Graph.RootLevel == 0 && obj.IsConstantNear() {
-		return ConstantNearGraph
+		gi.IsConstantNear = true
 	}
-	if obj.IsGridDiagram() {
-		return GridDiagram
-	}
+	// if obj.Graph.RootLevel == -1 {
+	// 	for _, obj := range obj.Graph.Root.ChildrenArray {
+	// 		if obj.IsConstantNear() {
+	// 			return ConstantNearGraph
+	// 		}
+	// 	}
+	// }
 	if obj.IsSequenceDiagram() {
-		return SequenceDiagram
+		gi.DiagramType = SequenceDiagram
+	} else if obj.IsGridDiagram() {
+		gi.DiagramType = GridDiagram
 	}
-	return DefaultGraphType
+	return gi
 }
 
-func ExtractNested(container *d2graph.Object) *d2graph.Graph {
+func ExtractSelf(container *d2graph.Object) *d2graph.Graph {
+	nestedGraph := d2graph.NewGraph()
+	nestedGraph.RootLevel = int(container.Level()) - 1
+
+	// separate out nested edges
+	g := container.Graph
+	remainingEdges := make([]*d2graph.Edge, 0, len(g.Edges))
+	for _, edge := range g.Edges {
+		if edge.Src.IsDescendantOf(container) && edge.Dst.IsDescendantOf(container) {
+			nestedGraph.Edges = append(nestedGraph.Edges, edge)
+		} else {
+			remainingEdges = append(remainingEdges, edge)
+		}
+	}
+	g.Edges = remainingEdges
+
+	// separate out nested objects
+	remainingObjects := make([]*d2graph.Object, 0, len(g.Objects))
+	for _, obj := range g.Objects {
+		if obj.IsDescendantOf(container) {
+			nestedGraph.Objects = append(nestedGraph.Objects, obj)
+		} else {
+			remainingObjects = append(remainingObjects, obj)
+		}
+	}
+	g.Objects = remainingObjects
+
+	// update object and new root references
+	for _, o := range nestedGraph.Objects {
+		o.Graph = nestedGraph
+	}
+
+	// remove container parent's references
+	if container.Parent != nil {
+		container.Parent.RemoveChild(container)
+	}
+
+	// set root references
+	nestedGraph.Root.ChildrenArray = []*d2graph.Object{container}
+	container.Parent = nestedGraph.Root
+	nestedGraph.Root.Children[strings.ToLower(container.ID)] = container
+
+	return nestedGraph
+}
+
+func ExtractDescendants(container *d2graph.Object) *d2graph.Graph {
 	nestedGraph := d2graph.NewGraph()
 	nestedGraph.RootLevel = int(container.Level())
 
@@ -87,7 +213,7 @@ func ExtractNested(container *d2graph.Object) *d2graph.Graph {
 	// separate out nested objects
 	remainingObjects := make([]*d2graph.Object, 0, len(g.Objects))
 	for _, obj := range g.Objects {
-		if obj.IsDescendantOf(container) {
+		if obj.Parent.IsDescendantOf(container) {
 			nestedGraph.Objects = append(nestedGraph.Objects, obj)
 		} else {
 			remainingObjects = append(remainingObjects, obj)
@@ -112,16 +238,6 @@ func ExtractNested(container *d2graph.Object) *d2graph.Graph {
 	}
 	container.ChildrenArray = nil
 
-	// position contents relative to 0,0
-	dx := -container.TopLeft.X
-	dy := -container.TopLeft.Y
-	for _, o := range nestedGraph.Objects {
-		o.TopLeft.X += dx
-		o.TopLeft.Y += dy
-	}
-	for _, e := range nestedGraph.Edges {
-		e.Move(dx, dy)
-	}
 	return nestedGraph
 }
 
@@ -138,9 +254,13 @@ func InjectNested(container *d2graph.Object, nestedGraph *d2graph.Graph) {
 	g.Objects = append(g.Objects, nestedGraph.Objects...)
 	g.Edges = append(g.Edges, nestedGraph.Edges...)
 
+}
+
+func PositionNested(container *d2graph.Object, nestedGraph *d2graph.Graph) {
+	tl, _ := boundingBox(nestedGraph)
 	// Note: assumes nestedGraph's layout has contents positioned relative to 0,0
-	dx := container.TopLeft.X
-	dy := container.TopLeft.Y
+	dx := container.TopLeft.X - tl.X
+	dy := container.TopLeft.Y - tl.Y
 	for _, o := range nestedGraph.Objects {
 		o.TopLeft.X += dx
 		o.TopLeft.Y += dy
@@ -173,7 +293,41 @@ func FitToGraph(container *d2graph.Object, nestedGraph *d2graph.Graph, padding g
 	container.Height = padding.Top + br.Y - tl.Y + padding.Bottom
 }
 
-func LayoutDiagram(graph *d2graph.Graph, graphType GraphType, coreLayout d2graph.LayoutGraph) geo.Spacing {
-	// TODO
-	return geo.Spacing{}
-}
+// func LayoutDiagram(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, coreLayout d2graph.LayoutGraph) geo.Spacing {
+// 	spacing := geo.Spacing{}
+// 	var err error
+// 	// TODO
+
+// 	// Need subgraphs?
+
+// 	// if graphInfo.IsConstantNear
+// 	// case ConstantNearGraph:
+// 	// 	// constantNearGraphs := d2near.WithoutConstantNears(ctx, g)
+// 	// 	constantNearGraphs := d2near.WithoutConstantNears(ctx, g)
+
+// 	// 	err = d2near.Layout(ctx, g, constantNearGraphs)
+// 	// 	if err != nil {
+// 	// 		panic(err)
+// 	// 	}
+
+// 	switch graphInfo.DiagramType {
+// 	case GridDiagram:
+// 		layoutWithGrids := d2grid.Layout(ctx, g, coreLayout)
+// 		if err = layoutWithGrids(ctx, g); err != nil {
+// 			panic(err)
+// 		}
+
+// 	case SequenceDiagram:
+// 		err = d2sequence.Layout(ctx, g, coreLayout)
+// 		if err != nil {
+// 			panic(err)
+// 		}
+// 	default:
+// 		err := coreLayout(ctx, g)
+// 		if err != nil {
+// 			panic(err)
+// 		}
+// 	}
+
+// 	return spacing
+// }
