@@ -95,7 +95,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			}
 
 		case SequenceDiagram:
-			err = d2sequence.Layout(ctx, g, coreLayout)
+			err = d2sequence.Layout2(ctx, g, coreLayout)
 			if err != nil {
 				panic(err)
 			}
@@ -197,6 +197,7 @@ func ExtractSelf(container *d2graph.Object) *d2graph.Graph {
 func ExtractDescendants(container *d2graph.Object) *d2graph.Graph {
 	nestedGraph := d2graph.NewGraph()
 	nestedGraph.RootLevel = int(container.Level())
+	nestedGraph.Root.Box = &geo.Box{}
 
 	// separate out nested edges
 	g := container.Graph

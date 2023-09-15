@@ -40,6 +40,50 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) e
 	return nil
 }
 
+func Layout2(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) error {
+	// used in layout code
+	g.Root.Shape.Value = d2target.ShapeSequenceDiagram
+
+	sd, err := layoutSequenceDiagram(g, g.Root)
+	if err != nil {
+		return err
+	}
+	g.Root.Box = geo.NewBox(nil, sd.getWidth()+GROUP_CONTAINER_PADDING*2, sd.getHeight()+GROUP_CONTAINER_PADDING*2)
+
+	// the sequence diagram is the only layout engine if the whole diagram is
+	// shape: sequence_diagram
+	g.Root.TopLeft = geo.NewPoint(0, 0)
+
+	obj := g.Root
+
+	obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+
+	// shift the sequence diagrams as they are always placed at (0, 0) with some padding
+	sd.shift(
+		geo.NewPoint(
+			obj.TopLeft.X+GROUP_CONTAINER_PADDING,
+			obj.TopLeft.Y+GROUP_CONTAINER_PADDING,
+		),
+	)
+
+	obj.Children = make(map[string]*d2graph.Object)
+	obj.ChildrenArray = make([]*d2graph.Object, 0)
+	for _, child := range sd.actors {
+		obj.Children[strings.ToLower(child.ID)] = child
+		obj.ChildrenArray = append(obj.ChildrenArray, child)
+	}
+	for _, child := range sd.groups {
+		if child.Parent.AbsID() == obj.AbsID() {
+			obj.Children[strings.ToLower(child.ID)] = child
+			obj.ChildrenArray = append(obj.ChildrenArray, child)
+		}
+	}
+
+	g.Edges = append(g.Edges, sd.lifelines...)
+
+	return nil
+}
+
 func WithoutSequenceDiagrams(ctx context.Context, g *d2graph.Graph) (map[string]*sequenceDiagram, map[string]int, map[string]int, error) {
 	objectsToRemove := make(map[*d2graph.Object]struct{})
 	edgesToRemove := make(map[*d2graph.Edge]struct{})
