@@ -1,0 +1,43 @@
+direction: right
+outer-grid -> outer-container
+
+outer-grid: {
+  grid-columns: 1
+
+  inner-grid -> container -> etc
+
+  container: {
+    label.near: top-left
+    # edges not yet supported here since they must be direct grid children
+    a
+    b
+    c
+  }
+
+  inner-grid: {
+    grid-rows: 1
+    1
+    2
+    3
+    # edges here are not supported yet since this is inside another grid
+  }
+}
+
+outer-container: {
+  grid -> container
+
+  grid: {
+    grid-rows: 1
+    # direct child edges ok in least nested grid
+    1 -> 2 -> 3
+  }
+
+  container: {
+    # non grid edges ok
+    4 -> 5 -> 6
+    nested container: {
+      # nested non grid edges ok
+      7 -> 8
+    }
+  }
+}

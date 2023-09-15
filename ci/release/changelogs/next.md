@@ -1,6 +1,7 @@
 #### Features 🚀
 
 - UTF-16 files are automatically detected and supported [#1525](https://github.com/terrastruct/d2/pull/1525)
+- Grid diagrams can now have simple edges between cells [#1586](https://github.com/terrastruct/d2/pull/1586)
 
 #### Improvements 🧹
 

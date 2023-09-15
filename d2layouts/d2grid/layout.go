@@ -31,7 +31,7 @@ const (
 // 7. Put grid children back in correct location
 func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) d2graph.LayoutGraph {
 	return func(ctx context.Context, g *d2graph.Graph) error {
-		gridDiagrams, objectOrder, err := withoutGridDiagrams(ctx, g, layout)
+		gridDiagrams, objectOrder, edgeOrder, err := withoutGridDiagrams(ctx, g, layout)
 		if err != nil {
 			return err
 		}
@@ -42,18 +42,23 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) d
 			return err
 		}
 
-		cleanup(g, gridDiagrams, objectOrder)
+		cleanup(g, gridDiagrams, objectOrder, edgeOrder)
 		return nil
 	}
 }
 
-func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) (gridDiagrams map[string]*gridDiagram, objectOrder map[string]int, err error) {
+func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) (gridDiagrams map[string]*gridDiagram, objectOrder, edgeOrder map[string]int, err error) {
 	toRemove := make(map[*d2graph.Object]struct{})
+	edgeToRemove := make(map[*d2graph.Edge]struct{})
 	gridDiagrams = make(map[string]*gridDiagram)
 
 	objectOrder = make(map[string]int)
 	for i, obj := range g.Objects {
 		objectOrder[obj.AbsID()] = i
+	}
+	edgeOrder = make(map[string]int)
+	for i, edge := range g.Edges {
+		edgeOrder[edge.AbsID()] = i
 	}
 
 	var processGrid func(obj *d2graph.Object) error
@@ -78,6 +83,9 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.L
 				})
 				sort.SliceStable(obj.ChildrenArray, func(i, j int) bool {
 					return objectOrder[obj.ChildrenArray[i].AbsID()] < objectOrder[obj.ChildrenArray[j].AbsID()]
+				})
+				sort.SliceStable(g.Edges, func(i, j int) bool {
+					return edgeOrder[g.Edges[i].AbsID()] < edgeOrder[g.Edges[j].AbsID()]
 				})
 
 				for _, o := range tempGraph.Objects {
@@ -200,6 +208,28 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.L
 		for _, o := range gd.objects {
 			toRemove[o] = struct{}{}
 		}
+
+		// simple straight line edge routing between grid objects
+		for i, e := range g.Edges {
+			edgeOrder[e.AbsID()] = i
+			if !e.Src.Parent.IsDescendantOf(obj) && !e.Dst.Parent.IsDescendantOf(obj) {
+				continue
+			}
+			// if edge is within grid, remove it from outer layout
+			gd.edges = append(gd.edges, e)
+			edgeToRemove[e] = struct{}{}
+
+			if e.Src.Parent != obj || e.Dst.Parent != obj {
+				continue
+			}
+			// if edge is grid child, use simple routing
+			e.Route = []*geo.Point{e.Src.Center(), e.Dst.Center()}
+			e.TraceToShape(e.Route, 0, 1)
+			if e.Label.Value != "" {
+				e.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			}
+		}
+
 		return nil
 	}
 
@@ -218,7 +248,7 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.L
 			}
 
 			if err := processGrid(obj); err != nil {
-				return nil, nil, err
+				return nil, nil, nil, err
 			}
 		}
 	}
@@ -230,8 +260,15 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.L
 		}
 	}
 	g.Objects = layoutObjects
+	layoutEdges := make([]*d2graph.Edge, 0, len(edgeToRemove))
+	for _, e := range g.Edges {
+		if _, exists := edgeToRemove[e]; !exists {
+			layoutEdges = append(layoutEdges, e)
+		}
+	}
+	g.Edges = layoutEdges
 
-	return gridDiagrams, objectOrder, nil
+	return gridDiagrams, objectOrder, edgeOrder, nil
 }
 
 func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*gridDiagram, error) {
@@ -940,10 +977,13 @@ func getDistToTarget(layout [][]*d2graph.Object, targetSize float64, horizontalG
 // - translating the grid to its position placed by the core layout engine
 // - restore the children of the grid
 // - sorts objects to their original graph order
-func cleanup(graph *d2graph.Graph, gridDiagrams map[string]*gridDiagram, objectsOrder map[string]int) {
+func cleanup(graph *d2graph.Graph, gridDiagrams map[string]*gridDiagram, objectsOrder, edgeOrder map[string]int) {
 	defer func() {
 		sort.SliceStable(graph.Objects, func(i, j int) bool {
 			return objectsOrder[graph.Objects[i].AbsID()] < objectsOrder[graph.Objects[j].AbsID()]
+		})
+		sort.SliceStable(graph.Edges, func(i, j int) bool {
+			return edgeOrder[graph.Edges[i].AbsID()] < edgeOrder[graph.Edges[j].AbsID()]
 		})
 	}()
 

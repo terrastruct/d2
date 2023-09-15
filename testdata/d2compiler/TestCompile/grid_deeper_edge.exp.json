@@ -1,0 +1,15 @@
+{
+  "graph": null,
+  "err": {
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2,8:2:86-8:8:92",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:9:3: edge must be on direct child of grid diagram \"hey\""
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2,4:2:41-4:8:47",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:5:3: grid diagrams can only have edges between children right now"
+      }
+    ]
+  }
+}

@@ -11,6 +11,7 @@ import (
 type gridDiagram struct {
 	root    *d2graph.Object
 	objects []*d2graph.Object
+	edges   []*d2graph.Edge
 	rows    int
 	columns int
 
@@ -107,6 +108,9 @@ func (gd *gridDiagram) shift(dx, dy float64) {
 	for _, obj := range gd.objects {
 		obj.MoveWithDescendants(dx, dy)
 	}
+	for _, e := range gd.edges {
+		e.Move(dx, dy)
+	}
 }
 
 func (gd *gridDiagram) cleanup(obj *d2graph.Object, graph *d2graph.Graph) {
@@ -122,4 +126,5 @@ func (gd *gridDiagram) cleanup(obj *d2graph.Object, graph *d2graph.Graph) {
 		restore(obj, child)
 		child.IterDescendants(restore)
 	}
+	graph.Edges = append(graph.Edges, gd.edges...)
 }
