@@ -1925,7 +1925,7 @@ func (g *Graph) PrintString() string {
 	buf := &bytes.Buffer{}
 	fmt.Fprint(buf, "Objects: [")
 	for _, obj := range g.Objects {
-		fmt.Fprintf(buf, "%#v @(%v)", obj.AbsID(), obj.TopLeft.ToString())
+		fmt.Fprintf(buf, "%v, ", obj.AbsID())
 	}
 	fmt.Fprint(buf, "]")
 	return buf.String()
