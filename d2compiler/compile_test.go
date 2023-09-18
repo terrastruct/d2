@@ -2720,7 +2720,6 @@ object: {
 b: " \n " {
 	shape: text
 }
-
 c: "" {
 	shape: text
 }
@@ -2728,6 +2727,10 @@ d: "" {
 	shape: circle
 }
 e: " \n "
+f: |md  |
+g: |md
+
+|
 `,
 			expErr: `
 `,
