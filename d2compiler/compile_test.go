@@ -2732,8 +2732,10 @@ g: |md
 
 |
 `,
-			expErr: `
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/text_no_label.d2:14:1: block string cannot be empty
+d2/testdata/d2compiler/TestCompile/text_no_label.d2:15:1: block string cannot be empty
+d2/testdata/d2compiler/TestCompile/text_no_label.d2:4:1: shape text must have a non-empty label
+d2/testdata/d2compiler/TestCompile/text_no_label.d2:7:1: shape text must have a non-empty label`,
 		},
 	}
 
