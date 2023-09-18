@@ -2712,6 +2712,26 @@ object: {
 `,
 			expErr: `d2/testdata/d2compiler/TestCompile/reserved-composite.d2:1:1: reserved field shape does not accept composite`,
 		},
+		{
+			name: "text_no_label",
+			text: `a: "ok" {
+	shape: text
+}
+b: " \n " {
+	shape: text
+}
+
+c: "" {
+	shape: text
+}
+d: "" {
+	shape: circle
+}
+e: " \n "
+`,
+			expErr: `
+`,
+		},
 	}
 
 	for _, tc := range testCases {
