@@ -2712,6 +2712,31 @@ object: {
 `,
 			expErr: `d2/testdata/d2compiler/TestCompile/reserved-composite.d2:1:1: reserved field shape does not accept composite`,
 		},
+		{
+			name: "text_no_label",
+			text: `a: "ok" {
+	shape: text
+}
+b: " \n " {
+	shape: text
+}
+c: "" {
+	shape: text
+}
+d: "" {
+	shape: circle
+}
+e: " \n "
+f: |md  |
+g: |md
+
+|
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/text_no_label.d2:14:1: block string cannot be empty
+d2/testdata/d2compiler/TestCompile/text_no_label.d2:15:1: block string cannot be empty
+d2/testdata/d2compiler/TestCompile/text_no_label.d2:4:1: shape text must have a non-empty label
+d2/testdata/d2compiler/TestCompile/text_no_label.d2:7:1: shape text must have a non-empty label`,
+		},
 	}
 
 	for _, tc := range testCases {
