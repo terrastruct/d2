@@ -171,7 +171,7 @@ func NestedGraphInfo(obj *d2graph.Object) (gi GraphInfo) {
 func ExtractSelf(container *d2graph.Object) *d2graph.Graph {
 	nestedGraph := d2graph.NewGraph()
 	nestedGraph.RootLevel = int(container.Level()) - 1
-	// nestedGraph.Root.Box = &geo.Box{}
+	nestedGraph.Root.Box = &geo.Box{}
 
 	// separate out nested edges
 	g := container.Graph
@@ -217,6 +217,7 @@ func ExtractSelf(container *d2graph.Object) *d2graph.Graph {
 func ExtractDescendants(container *d2graph.Object) *d2graph.Graph {
 	nestedGraph := d2graph.NewGraph()
 	nestedGraph.RootLevel = int(container.Level())
+	nestedGraph.Root.Attributes = container.Attributes
 	nestedGraph.Root.Box = &geo.Box{}
 
 	// separate out nested edges
