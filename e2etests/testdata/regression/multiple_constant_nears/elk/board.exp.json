@@ -213,7 +213,7 @@
       "type": "rectangle",
       "pos": {
         "x": 85,
-        "y": 98
+        "y": 284
       },
       "width": 179,
       "height": 302,
@@ -254,7 +254,7 @@
       "type": "rectangle",
       "pos": {
         "x": 135,
-        "y": 148
+        "y": 334
       },
       "width": 78,
       "height": 66,
@@ -295,7 +295,7 @@
       "type": "rectangle",
       "pos": {
         "x": 135,
-        "y": 284
+        "y": 470
       },
       "width": 79,
       "height": 66,
@@ -435,11 +435,11 @@
       "route": [
         {
           "x": 174.5,
-          "y": 214
+          "y": 400
         },
         {
           "x": 174.5,
-          "y": 284
+          "y": 470
         }
       ],
       "animated": false,
