@@ -274,9 +274,10 @@ func InjectNested(container *d2graph.Object, nestedGraph *d2graph.Graph) {
 	g.Objects = append(g.Objects, nestedGraph.Objects...)
 	g.Edges = append(g.Edges, nestedGraph.Edges...)
 
-	if g.Root.LabelPosition != nil {
-		container.LabelPosition = g.Root.LabelPosition
+	if nestedGraph.Root.LabelPosition != nil {
+		container.LabelPosition = nestedGraph.Root.LabelPosition
 	}
+	container.Attributes = nestedGraph.Root.Attributes
 }
 
 func PositionNested(container *d2graph.Object, nestedGraph *d2graph.Graph) {
