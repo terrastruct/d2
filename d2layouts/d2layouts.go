@@ -72,8 +72,6 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			if gi.IsConstantNear {
 				nearGraph = ExtractSelf(child)
 				child.TopLeft = geo.NewPoint(0, 0)
-				child.Width = nestedGraph.Root.Width
-				child.Width = nestedGraph.Root.Height
 			}
 
 			// if gi.IsConstantNear {
@@ -282,7 +280,7 @@ func InjectNested(container *d2graph.Object, nestedGraph *d2graph.Graph) {
 }
 
 func PositionNested(container *d2graph.Object, nestedGraph *d2graph.Graph) {
-	// _, _ := boundingBox(nestedGraph)
+	// tl, _ := boundingBox(nestedGraph)
 	// Note: assumes nestedGraph's layout has contents positioned relative to 0,0
 	dx := container.TopLeft.X //- tl.X
 	dy := container.TopLeft.Y //- tl.Y

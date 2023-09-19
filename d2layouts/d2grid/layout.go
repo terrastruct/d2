@@ -201,7 +201,6 @@ func Layout2(ctx context.Context, g *d2graph.Graph) error {
 		obj.TopLeft.X+float64(horizontalPadding),
 		obj.TopLeft.Y+float64(verticalPadding),
 	)
-	gd.cleanup(obj, g)
 	return nil
 }
 
