@@ -14,6 +14,13 @@ import (
 
 const pad = 20
 
+var CenterNearConstants = map[string]struct{}{
+	"top-center":    {},
+	"center-left":   {},
+	"center-right":  {},
+	"bottom-center": {},
+}
+
 // Layout finds the shapes which are assigned constant near keywords and places them.
 func Layout(ctx context.Context, g *d2graph.Graph, constantNearGraphs []*d2graph.Graph) error {
 	if len(constantNearGraphs) == 0 {
@@ -33,7 +40,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNearGraphs []*d2graph
 	for _, processCenters := range []bool{true, false} {
 		for _, tempGraph := range constantNearGraphs {
 			obj := tempGraph.Root.ChildrenArray[0]
-			if processCenters == strings.Contains(d2graph.Key(obj.NearKey)[0], "-center") {
+			_, isCenterConstant := CenterNearConstants[d2graph.Key(obj.NearKey)[0]]
+			if processCenters == isCenterConstant {
 				prevX, prevY := obj.TopLeft.X, obj.TopLeft.Y
 				obj.TopLeft = geo.NewPoint(place(obj))
 				dx, dy := obj.TopLeft.X-prevX, obj.TopLeft.Y-prevY
@@ -56,7 +64,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNearGraphs []*d2graph
 		}
 		for _, tempGraph := range constantNearGraphs {
 			obj := tempGraph.Root.ChildrenArray[0]
-			if processCenters == strings.Contains(d2graph.Key(obj.NearKey)[0], "-center") {
+			_, isCenterConstant := CenterNearConstants[d2graph.Key(obj.NearKey)[0]]
+			if processCenters == isCenterConstant {
 				// The z-index for constant nears does not matter, as it will not collide
 				g.Objects = append(g.Objects, tempGraph.Objects...)
 				if obj.Parent.Children == nil {
