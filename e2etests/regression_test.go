@@ -1039,6 +1039,7 @@ cf many required: {
 		loadFromFile(t, "dagre_disconnected_edge"),
 		loadFromFile(t, "outside_grid_label_position"),
 		loadFromFile(t, "arrowhead_font_color"),
+		loadFromFile(t, "multiple_constant_nears"),
 	}
 
 	runa(t, tcs)
