@@ -1,48 +1,50 @@
 a
-# b
-# c
+b
+c
 
 a: {
-  grid-rows: 3
+  grid-columns: 3
 
   1
   2
   3
-  # 3: {
-  #   shape: sequence_diagram
-  #   x
-  #   y
-  #   # TODO x -> y
-  # }
+  3: {
+    shape: sequence_diagram
+    x
+    y
+    # TODO x -> y
+  }
 
-  near: top-right
+  1 -> 2 -> 3
+
+  near: center-right
 }
 
-# b: {
-#   shape: sequence_diagram
-#   1 -> 2
+b: {
+  shape: sequence_diagram
+  1 -> 2
 
-#   # TODO This should work
-#   near: bottom-right
-#   #
+  # # TODO This should work
+  # near: bottom-right
+  # #
 
-#   2: {
-#     # TODO compile error grid on sequence actor
-#     # grid-rows: 3
-#     x
-#     y
-#     z
-#   }
+  # 2: {
+  #   # TODO compile error grid on sequence actor
+  #   # grid-rows: 3
+  #   x
+  #   y
+  #   z
+  # }
 
-#   1: {
-#     x: {
-#       # TODO compile error grid in sequence (anywhere)
-#       #   grid-rows: 3
-#       u
-#       v
-#       w
-#     }
-#     y
-#     z
-#   }
-# }
+  # 1: {
+  #   x: {
+  #     # TODO compile error grid in sequence (anywhere)
+  #     #   grid-rows: 3
+  #     u
+  #     v
+  #     w
+  #   }
+  #   y
+  #   z
+  # }
+}
