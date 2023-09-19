@@ -44,14 +44,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 
 	// Iterate top-down from Root so all nested diagrams can process their own contents
 	queue := make([]*d2graph.Object, 0, len(g.Root.ChildrenArray))
-	if graphInfo.IsConstantNear {
-		near := g.Root.ChildrenArray[0]
-		if len(near.Children) > 0 {
-			queue = append(queue, near.ChildrenArray...)
-		}
-	} else {
-		queue = append(queue, g.Root.ChildrenArray...)
-	}
+	queue = append(queue, g.Root.ChildrenArray...)
 
 	for _, child := range queue {
 		if gi := NestedGraphInfo(child); !gi.isDefault() {
