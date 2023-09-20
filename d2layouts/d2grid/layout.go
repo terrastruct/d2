@@ -704,20 +704,14 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 			// if multiple nodes are too big, it isn't ok. but a single node can't shrink so only check here
 			if rowSize > okThreshold*targetSize {
 				skipCount++
-				if skipCount >= SKIP_LIMIT {
-					// there may even be too many to skip
-					return true
-				}
-				return false
+				// there may even be too many to skip
+				return skipCount >= SKIP_LIMIT
 			}
 		}
 		// row is too small to be good overall
 		if rowSize < targetSize/okThreshold {
 			skipCount++
-			if skipCount >= SKIP_LIMIT {
-				return true
-			}
-			return false
+			return skipCount >= SKIP_LIMIT
 		}
 		return true
 	}
