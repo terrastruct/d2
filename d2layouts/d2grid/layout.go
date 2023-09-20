@@ -64,11 +64,14 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.L
 	var processGrid func(obj *d2graph.Object) error
 	processGrid = func(obj *d2graph.Object) error {
 		for _, child := range obj.ChildrenArray {
+			if len(child.ChildrenArray) == 0 {
+				continue
+			}
 			if child.IsGridDiagram() {
 				if err := processGrid(child); err != nil {
 					return err
 				}
-			} else if len(child.ChildrenArray) > 0 {
+			} else {
 				tempGraph := g.ExtractAsNestedGraph(child)
 				if err := layout(ctx, tempGraph); err != nil {
 					return err
@@ -701,20 +704,14 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 			// if multiple nodes are too big, it isn't ok. but a single node can't shrink so only check here
 			if rowSize > okThreshold*targetSize {
 				skipCount++
-				if skipCount >= SKIP_LIMIT {
-					// there may even be too many to skip
-					return true
-				}
-				return false
+				// there may even be too many to skip
+				return skipCount >= SKIP_LIMIT
 			}
 		}
 		// row is too small to be good overall
 		if rowSize < targetSize/okThreshold {
 			skipCount++
-			if skipCount >= SKIP_LIMIT {
-				return true
-			}
-			return false
+			return skipCount >= SKIP_LIMIT
 		}
 		return true
 	}

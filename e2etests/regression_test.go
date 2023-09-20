@@ -1040,6 +1040,7 @@ cf many required: {
 		loadFromFile(t, "outside_grid_label_position"),
 		loadFromFile(t, "arrowhead_font_color"),
 		loadFromFile(t, "multiple_constant_nears"),
+		loadFromFile(t, "empty_nested_grid"),
 	}
 
 	runa(t, tcs)
