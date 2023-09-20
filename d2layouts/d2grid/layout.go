@@ -64,11 +64,14 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.L
 	var processGrid func(obj *d2graph.Object) error
 	processGrid = func(obj *d2graph.Object) error {
 		for _, child := range obj.ChildrenArray {
+			if len(child.ChildrenArray) == 0 {
+				continue
+			}
 			if child.IsGridDiagram() {
 				if err := processGrid(child); err != nil {
 					return err
 				}
-			} else if len(child.ChildrenArray) > 0 {
+			} else {
 				tempGraph := g.ExtractAsNestedGraph(child)
 				if err := layout(ctx, tempGraph); err != nil {
 					return err
