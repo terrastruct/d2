@@ -36,7 +36,7 @@ func (gi GraphInfo) isDefault() bool {
 func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, coreLayout d2graph.LayoutGraph) geo.Spacing {
 	g.Root.Box = &geo.Box{}
 
-	log.Warn(ctx, "ln info", slog.F("gi", graphInfo))
+	log.Warn(ctx, "ln info", slog.F("gi", graphInfo), slog.F("root level", g.RootLevel))
 	// Before we can layout these nodes, we need to handle all nested diagrams first.
 	extracted := make(map[*d2graph.Object]*d2graph.Graph)
 	extractedInfo := make(map[*d2graph.Object]GraphInfo)
@@ -53,12 +53,6 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 		gi := NestedGraphInfo(curr)
 		// if we are in a grid diagram, and our children have descendants
 		// we need to run layout on them first, even if they are not special diagram types
-
-		// !!
-		// when we have a constant near or a grid cell that is a container,
-		// we want to extract it as nested graph, not just its descendants,
-		// run layout, then re-inject it
-		// !!
 
 		if isGridCellContainer {
 			nestedGraph := ExtractSubgraph(curr, true)
@@ -78,26 +72,33 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			extractedInfo[curr] = gi
 
 			// There is a nested diagram here, so extract its contents and process in the same way
-			log.Warn(ctx, "extract descendants", slog.F("child", curr.AbsID()))
-			nestedGraph := ExtractSubgraph(curr, false)
+			nestedGraph := ExtractSubgraph(curr, gi.IsConstantNear)
 
-			// Layout of nestedGraph is completed
 			log.Info(ctx, "layout nested", slog.F("level", curr.Level()), slog.F("child", curr.AbsID()))
-			spacing := LayoutNested(ctx, nestedGraph, gi, coreLayout)
-			log.Warn(ctx, "fitting child", slog.F("child", curr.AbsID()))
-			// Fit child to size of nested layout
-			FitToGraph(curr, nestedGraph, spacing)
-
-			// for constant nears, we also extract the child after extracting descendants
-			// main layout is run, then near positions child, then descendants are injected with all others
+			nestedInfo := gi
+			nearKey := curr.NearKey
 			if gi.IsConstantNear {
-				nearGraph := ExtractSubgraph(curr, true)
-				constantNears = append(constantNears, nearGraph)
+				// layout nested as a non-near
+				nestedInfo = GraphInfo{}
+				curr.NearKey = nil
 			}
-			curr.TopLeft = geo.NewPoint(0, 0)
 
-			// We will restore the contents after running layout with child as the placeholder
-			extracted[curr] = nestedGraph
+			spacing := LayoutNested(ctx, nestedGraph, nestedInfo, coreLayout)
+
+			if gi.IsConstantNear {
+				curr.NearKey = nearKey
+			} else {
+				FitToGraph(curr, nestedGraph, spacing)
+				curr.TopLeft = geo.NewPoint(0, 0)
+			}
+
+			if gi.IsConstantNear {
+				// near layout will inject these nestedGraphs
+				constantNears = append(constantNears, nestedGraph)
+			} else {
+				// We will restore the contents after running layout with child as the placeholder
+				extracted[curr] = nestedGraph
+			}
 		} else if len(curr.Children) > 0 {
 			queue = append(queue, curr.ChildrenArray...)
 		}
@@ -150,19 +151,10 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 	return spacing
 }
 
-// TODO multiple types at same (e.g. constant nears with grid at root level)
-// e.g. constant nears with sequence diagram at root level
 func NestedGraphInfo(obj *d2graph.Object) (gi GraphInfo) {
 	if obj.Graph.RootLevel == 0 && obj.IsConstantNear() {
 		gi.IsConstantNear = true
 	}
-	// if obj.Graph.RootLevel == -1 {
-	// 	for _, obj := range obj.Graph.Root.ChildrenArray {
-	// 		if obj.IsConstantNear() {
-	// 			return ConstantNearGraph
-	// 		}
-	// 	}
-	// }
 	if obj.IsSequenceDiagram() {
 		gi.DiagramType = SequenceDiagram
 	} else if obj.IsGridDiagram() {
@@ -172,6 +164,8 @@ func NestedGraphInfo(obj *d2graph.Object) (gi GraphInfo) {
 }
 
 func ExtractSubgraph(container *d2graph.Object, includeSelf bool) *d2graph.Graph {
+	// includeSelf: when we have a constant near or a grid cell that is a container,
+	// we want to include itself in the nested graph, not just its descendants,
 	nestedGraph := d2graph.NewGraph()
 	nestedGraph.RootLevel = int(container.Level())
 	if includeSelf {
