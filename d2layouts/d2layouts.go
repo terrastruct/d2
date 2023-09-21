@@ -47,38 +47,62 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 	queue := make([]*d2graph.Object, 0, len(g.Root.ChildrenArray))
 	queue = append(queue, g.Root.ChildrenArray...)
 
-	for _, child := range queue {
-		isGridCellContainer := (graphInfo.DiagramType == GridDiagram && child.IsContainer())
-		gi := NestedGraphInfo(child)
+	for _, curr := range queue {
+		isGridCellContainer := graphInfo.DiagramType == GridDiagram &&
+			curr.IsContainer() && curr.Parent == g.Root
+		gi := NestedGraphInfo(curr)
 		// if we are in a grid diagram, and our children have descendants
 		// we need to run layout on them first, even if they are not special diagram types
-		if isGridCellContainer || !gi.isDefault() {
-			extractedInfo[child] = gi
+
+		// !!
+		// when we have a constant near or a grid cell that is a container,
+		// we want to extract it as nested graph, not just its descendants,
+		// run layout, then re-inject it
+		// !!
+
+		if isGridCellContainer {
+			nestedGraph := ExtractSubgraph(curr, true)
+			LayoutNested(ctx, nestedGraph, GraphInfo{}, coreLayout)
+			InjectNested(g.Root, nestedGraph, false)
+			dx := -curr.TopLeft.X
+			dy := -curr.TopLeft.Y
+			for _, o := range nestedGraph.Objects {
+				o.TopLeft.X += dx
+				o.TopLeft.Y += dy
+			}
+			for _, e := range nestedGraph.Edges {
+				e.Move(dx, dy)
+			}
+
+		} else if !gi.isDefault() {
+			extractedInfo[curr] = gi
 
 			// There is a nested diagram here, so extract its contents and process in the same way
-			nestedGraph := ExtractDescendants(child)
+			log.Warn(ctx, "extract descendants", slog.F("child", curr.AbsID()))
+			nestedGraph := ExtractSubgraph(curr, false)
 
 			// Layout of nestedGraph is completed
-			log.Info(ctx, "layout nested", slog.F("level", child.Level()), slog.F("child", child.AbsID()))
+			log.Info(ctx, "layout nested", slog.F("level", curr.Level()), slog.F("child", curr.AbsID()))
 			spacing := LayoutNested(ctx, nestedGraph, gi, coreLayout)
-			log.Warn(ctx, "fitting child", slog.F("child", child.AbsID()))
+			log.Warn(ctx, "fitting child", slog.F("child", curr.AbsID()))
 			// Fit child to size of nested layout
-			FitToGraph(child, nestedGraph, spacing)
+			FitToGraph(curr, nestedGraph, spacing)
 
 			// for constant nears, we also extract the child after extracting descendants
 			// main layout is run, then near positions child, then descendants are injected with all others
 			if gi.IsConstantNear {
-				nearGraph := ExtractSelf(child)
+				nearGraph := ExtractSubgraph(curr, true)
 				constantNears = append(constantNears, nearGraph)
 			}
-			child.TopLeft = geo.NewPoint(0, 0)
+			curr.TopLeft = geo.NewPoint(0, 0)
 
 			// We will restore the contents after running layout with child as the placeholder
-			extracted[child] = nestedGraph
-		} else if len(child.Children) > 0 {
-			queue = append(queue, child.ChildrenArray...)
+			extracted[curr] = nestedGraph
+		} else if len(curr.Children) > 0 {
+			queue = append(queue, curr.ChildrenArray...)
 		}
 	}
+	log.Warn(ctx, "finished descendants", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
 
 	// We can now run layout with accurate sizes of nested layout containers
 	// Layout according to the type of diagram
@@ -118,7 +142,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 
 	// With the layout set, inject all the extracted graphs
 	for n, nestedGraph := range extracted {
-		InjectNested(n, nestedGraph)
+		InjectNested(n, nestedGraph, true)
 		PositionNested(n, nestedGraph)
 	}
 
@@ -147,63 +171,27 @@ func NestedGraphInfo(obj *d2graph.Object) (gi GraphInfo) {
 	return gi
 }
 
-func ExtractSelf(container *d2graph.Object) *d2graph.Graph {
-	nestedGraph := d2graph.NewGraph()
-	nestedGraph.RootLevel = int(container.Level()) - 1
-	nestedGraph.Root.Box = &geo.Box{}
-
-	// separate out nested edges
-	g := container.Graph
-	remainingEdges := make([]*d2graph.Edge, 0, len(g.Edges))
-	for _, edge := range g.Edges {
-		if edge.Src.IsDescendantOf(container) && edge.Dst.IsDescendantOf(container) {
-			nestedGraph.Edges = append(nestedGraph.Edges, edge)
-		} else {
-			remainingEdges = append(remainingEdges, edge)
-		}
-	}
-	g.Edges = remainingEdges
-
-	// separate out nested objects
-	remainingObjects := make([]*d2graph.Object, 0, len(g.Objects))
-	for _, obj := range g.Objects {
-		if obj.IsDescendantOf(container) {
-			nestedGraph.Objects = append(nestedGraph.Objects, obj)
-		} else {
-			remainingObjects = append(remainingObjects, obj)
-		}
-	}
-	g.Objects = remainingObjects
-
-	// update object and new root references
-	for _, o := range nestedGraph.Objects {
-		o.Graph = nestedGraph
-	}
-
-	// remove container parent's references
-	if container.Parent != nil {
-		container.Parent.RemoveChild(container)
-	}
-
-	// set root references
-	nestedGraph.Root.ChildrenArray = []*d2graph.Object{container}
-	container.Parent = nestedGraph.Root
-	nestedGraph.Root.Children[strings.ToLower(container.ID)] = container
-
-	return nestedGraph
-}
-
-func ExtractDescendants(container *d2graph.Object) *d2graph.Graph {
+func ExtractSubgraph(container *d2graph.Object, includeSelf bool) *d2graph.Graph {
 	nestedGraph := d2graph.NewGraph()
 	nestedGraph.RootLevel = int(container.Level())
+	if includeSelf {
+		nestedGraph.RootLevel--
+	}
 	nestedGraph.Root.Attributes = container.Attributes
 	nestedGraph.Root.Box = &geo.Box{}
 
+	isNestedObject := func(obj *d2graph.Object) bool {
+		if includeSelf {
+			return obj.IsDescendantOf(container)
+		}
+		return obj.Parent.IsDescendantOf(container)
+	}
+
 	// separate out nested edges
 	g := container.Graph
 	remainingEdges := make([]*d2graph.Edge, 0, len(g.Edges))
 	for _, edge := range g.Edges {
-		if edge.Src.Parent.IsDescendantOf(container) && edge.Dst.Parent.IsDescendantOf(container) {
+		if isNestedObject(edge.Src) && isNestedObject(edge.Dst) {
 			nestedGraph.Edges = append(nestedGraph.Edges, edge)
 		} else {
 			remainingEdges = append(remainingEdges, edge)
@@ -214,7 +202,7 @@ func ExtractDescendants(container *d2graph.Object) *d2graph.Graph {
 	// separate out nested objects
 	remainingObjects := make([]*d2graph.Object, 0, len(g.Objects))
 	for _, obj := range g.Objects {
-		if obj.Parent.IsDescendantOf(container) {
+		if isNestedObject(obj) {
 			nestedGraph.Objects = append(nestedGraph.Objects, obj)
 		} else {
 			remainingObjects = append(remainingObjects, obj)
@@ -226,23 +214,37 @@ func ExtractDescendants(container *d2graph.Object) *d2graph.Graph {
 	for _, o := range nestedGraph.Objects {
 		o.Graph = nestedGraph
 	}
-	// set root references
-	nestedGraph.Root.ChildrenArray = append(nestedGraph.Root.ChildrenArray, container.ChildrenArray...)
-	for _, child := range container.ChildrenArray {
-		child.Parent = nestedGraph.Root
-		nestedGraph.Root.Children[strings.ToLower(child.ID)] = child
-	}
 
-	// remove container's references
-	for k := range container.Children {
-		delete(container.Children, k)
+	if includeSelf {
+		// remove container parent's references
+		if container.Parent != nil {
+			container.Parent.RemoveChild(container)
+		}
+
+		// set root references
+		nestedGraph.Root.ChildrenArray = []*d2graph.Object{container}
+		container.Parent = nestedGraph.Root
+		nestedGraph.Root.Children[strings.ToLower(container.ID)] = container
+	} else {
+		// set root references
+		nestedGraph.Root.ChildrenArray = append(nestedGraph.Root.ChildrenArray, container.ChildrenArray...)
+		for _, child := range container.ChildrenArray {
+			child.Parent = nestedGraph.Root
+			nestedGraph.Root.Children[strings.ToLower(child.ID)] = child
+		}
+
+		// remove container's references
+		for k := range container.Children {
+			delete(container.Children, k)
+		}
+		container.ChildrenArray = nil
 	}
-	container.ChildrenArray = nil
 
 	return nestedGraph
 }
 
-func InjectNested(container *d2graph.Object, nestedGraph *d2graph.Graph) {
+func InjectNested(container *d2graph.Object, nestedGraph *d2graph.Graph, isRoot bool) {
+	// TODO restore order of objects
 	g := container.Graph
 	for _, obj := range nestedGraph.Root.ChildrenArray {
 		obj.Parent = container
@@ -255,10 +257,12 @@ func InjectNested(container *d2graph.Object, nestedGraph *d2graph.Graph) {
 	g.Objects = append(g.Objects, nestedGraph.Objects...)
 	g.Edges = append(g.Edges, nestedGraph.Edges...)
 
-	if nestedGraph.Root.LabelPosition != nil {
-		container.LabelPosition = nestedGraph.Root.LabelPosition
+	if isRoot {
+		if nestedGraph.Root.LabelPosition != nil {
+			container.LabelPosition = nestedGraph.Root.LabelPosition
+		}
+		container.Attributes = nestedGraph.Root.Attributes
 	}
-	container.Attributes = nestedGraph.Root.Attributes
 }
 
 func PositionNested(container *d2graph.Object, nestedGraph *d2graph.Graph) {
