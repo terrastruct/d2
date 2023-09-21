@@ -255,6 +255,9 @@ func InjectNested(container *d2graph.Object, nestedGraph *d2graph.Graph, isRoot 
 		if nestedGraph.Root.LabelPosition != nil {
 			container.LabelPosition = nestedGraph.Root.LabelPosition
 		}
+		if nestedGraph.Root.IconPosition != nil {
+			container.IconPosition = nestedGraph.Root.IconPosition
+		}
 		container.Attributes = nestedGraph.Root.Attributes
 	}
 }
