@@ -24,27 +24,25 @@ b: {
   shape: sequence_diagram
   1 -> 2
 
-  # # TODO This should work
-  # near: bottom-right
-  # #
+  near: bottom-right
 
-  # 2: {
-  #   # TODO compile error grid on sequence actor
-  #   # grid-rows: 3
-  #   x
-  #   y
-  #   z
-  # }
+  2: {
+    # TODO compile error grid on sequence actor?
+    grid-columns: 3
+    x
+    y
+    z
+  }
 
-  # 1: {
-  #   x: {
-  #     # TODO compile error grid in sequence (anywhere)
-  #     #   grid-rows: 3
-  #     u
-  #     v
-  #     w
-  #   }
-  #   y
-  #   z
-  # }
+  1: {
+    x: {
+      # TODO compile error grid in sequence (group)
+      grid-columns: 3
+      u
+      v
+      w
+    }
+    y
+    z
+  }
 }
