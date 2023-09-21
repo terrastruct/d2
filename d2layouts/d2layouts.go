@@ -48,14 +48,18 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 	queue = append(queue, g.Root.ChildrenArray...)
 
 	for _, child := range queue {
-		if gi := NestedGraphInfo(child); !gi.isDefault() {
+		isGridCellContainer := (graphInfo.DiagramType == GridDiagram && child.IsContainer())
+		gi := NestedGraphInfo(child)
+		// if we are in a grid diagram, and our children have descendants
+		// we need to run layout on them first, even if they are not special diagram types
+		if isGridCellContainer || !gi.isDefault() {
 			extractedInfo[child] = gi
 
 			// There is a nested diagram here, so extract its contents and process in the same way
 			nestedGraph := ExtractDescendants(child)
 
 			// Layout of nestedGraph is completed
-			// log.Error(ctx, "recurse", slog.F("child", child.AbsID()), slog.F("level", child.Level()))
+			log.Info(ctx, "layout nested", slog.F("level", child.Level()), slog.F("child", child.AbsID()))
 			spacing := LayoutNested(ctx, nestedGraph, gi, coreLayout)
 			log.Warn(ctx, "fitting child", slog.F("child", child.AbsID()))
 			// Fit child to size of nested layout
@@ -65,9 +69,9 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			// main layout is run, then near positions child, then descendants are injected with all others
 			if gi.IsConstantNear {
 				nearGraph := ExtractSelf(child)
-				child.TopLeft = geo.NewPoint(0, 0)
 				constantNears = append(constantNears, nearGraph)
 			}
+			child.TopLeft = geo.NewPoint(0, 0)
 
 			// We will restore the contents after running layout with child as the placeholder
 			extracted[child] = nestedGraph
