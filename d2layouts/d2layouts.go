@@ -96,10 +96,10 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 		isGridCellContainer := graphInfo.DiagramType == GridDiagram &&
 			curr.IsContainer() && curr.Parent == g.Root
 		gi := NestedGraphInfo(curr)
-		// if we are in a grid diagram, and our children have descendants
-		// we need to run layout on them first, even if they are not special diagram types
 
-		if isGridCellContainer {
+		if isGridCellContainer && gi.isDefault() {
+			// if we are in a grid diagram, and our children have descendants
+			// we need to run layout on them first, even if they are not special diagram types
 			nestedGraph := ExtractSubgraph(curr, true)
 			err := LayoutNested(ctx, nestedGraph, GraphInfo{}, coreLayout)
 			if err != nil {
@@ -204,7 +204,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 		PositionNested(n, nestedGraph)
 	}
 
-	log.Warn(ctx, "done", slog.F("rootlevel", g.RootLevel))
+	log.Warn(ctx, "done", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
 	return err
 }
 
