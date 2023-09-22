@@ -86,7 +86,10 @@ func compile(ctx context.Context, g *d2graph.Graph, compileOpts *CompileOptions,
 		}
 
 		graphInfo := d2layouts.NestedGraphInfo(g.Root)
-		d2layouts.LayoutNested(ctx, g, graphInfo, coreLayout)
+		err = d2layouts.LayoutNested(ctx, g, graphInfo, coreLayout)
+		if err != nil {
+			return nil, err
+		}
 
 		if false {
 			constantNearGraphs := d2near.WithoutConstantNears(ctx, g)

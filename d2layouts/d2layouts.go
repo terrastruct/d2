@@ -68,7 +68,7 @@ func SaveOrder(g *d2graph.Graph) (restoreOrder func()) {
 	}
 }
 
-func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, coreLayout d2graph.LayoutGraph) geo.Spacing {
+func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, coreLayout d2graph.LayoutGraph) error {
 	g.Root.Box = &geo.Box{}
 
 	log.Warn(ctx, "ln info", slog.F("gi", graphInfo), slog.F("root level", g.RootLevel))
@@ -96,7 +96,10 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 
 		if isGridCellContainer {
 			nestedGraph := ExtractSubgraph(curr, true)
-			LayoutNested(ctx, nestedGraph, GraphInfo{}, coreLayout)
+			err := LayoutNested(ctx, nestedGraph, GraphInfo{}, coreLayout)
+			if err != nil {
+				return err
+			}
 			InjectNested(g.Root, nestedGraph, false)
 			restoreOrder()
 			dx := -curr.TopLeft.X
@@ -131,12 +134,15 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 				curr.NearKey = nil
 			}
 
-			spacing := LayoutNested(ctx, nestedGraph, nestedInfo, coreLayout)
+			err := LayoutNested(ctx, nestedGraph, nestedInfo, coreLayout)
+			if err != nil {
+				return err
+			}
 
 			if gi.IsConstantNear {
 				curr.NearKey = nearKey
 			} else {
-				FitToGraph(curr, nestedGraph, spacing)
+				FitToGraph(curr, nestedGraph, geo.Spacing{})
 				curr.TopLeft = geo.NewPoint(0, 0)
 			}
 
@@ -154,32 +160,31 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 
 	// We can now run layout with accurate sizes of nested layout containers
 	// Layout according to the type of diagram
-	LayoutDiagram := func(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, coreLayout d2graph.LayoutGraph) geo.Spacing {
-		spacing := geo.Spacing{}
+	LayoutDiagram := func(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, coreLayout d2graph.LayoutGraph) error {
 		var err error
 		switch graphInfo.DiagramType {
 		case GridDiagram:
 			log.Warn(ctx, "layout grid", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
 			if err = d2grid.Layout2(ctx, g); err != nil {
-				panic(err)
+				return err
 			}
 
 		case SequenceDiagram:
 			log.Warn(ctx, "layout sequence", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
 			err = d2sequence.Layout2(ctx, g, coreLayout)
 			if err != nil {
-				panic(err)
+				return err
 			}
 		default:
 			log.Warn(ctx, "default layout", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
 			err := coreLayout(ctx, g)
 			if err != nil {
-				panic(err)
+				return err
 			}
 		}
-		return spacing
+		return nil
 	}
-	spacing := LayoutDiagram(ctx, g, graphInfo, coreLayout)
+	err := LayoutDiagram(ctx, g, graphInfo, coreLayout)
 
 	if len(constantNears) > 0 {
 		err := d2near.Layout(ctx, g, constantNears)
@@ -195,7 +200,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 	}
 
 	log.Warn(ctx, "done", slog.F("rootlevel", g.RootLevel))
-	return spacing
+	return err
 }
 
 func NestedGraphInfo(obj *d2graph.Object) (gi GraphInfo) {
