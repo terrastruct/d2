@@ -79,7 +79,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 	log.Warn(ctx, "ln info", slog.F("gi", graphInfo), slog.F("root level", g.RootLevel))
 	// Before we can layout these nodes, we need to handle all nested diagrams first.
 	extracted := make(map[*d2graph.Object]*d2graph.Graph)
-	extractedInfo := make(map[*d2graph.Object]GraphInfo)
+	var extractedOrder []*d2graph.Object
 
 	var constantNears []*d2graph.Graph
 	restoreOrder := SaveOrder(g)
@@ -125,8 +125,6 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 				continue
 			}
 
-			extractedInfo[curr] = gi
-
 			// There is a nested diagram here, so extract its contents and process in the same way
 			nestedGraph := ExtractSubgraph(curr, gi.IsConstantNear)
 
@@ -157,6 +155,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			} else {
 				// We will restore the contents after running layout with child as the placeholder
 				extracted[curr] = nestedGraph
+				extractedOrder = append(extractedOrder, curr)
 			}
 		} else if len(curr.ChildrenArray) > 0 {
 			queue = append(queue, curr.ChildrenArray...)
@@ -199,7 +198,8 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 	}
 
 	// With the layout set, inject all the extracted graphs
-	for n, nestedGraph := range extracted {
+	for _, n := range extractedOrder {
+		nestedGraph := extracted[n]
 		InjectNested(n, nestedGraph, true)
 		PositionNested(n, nestedGraph)
 	}
