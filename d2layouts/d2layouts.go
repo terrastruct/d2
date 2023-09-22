@@ -120,8 +120,8 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 		}
 
 		if !gi.isDefault() {
-			// empty grid can have 0 objects..
-			if gi.DiagramType == GridDiagram && !gi.IsConstantNear && len(curr.Children) == 0 {
+			// empty grid or sequence can have 0 objects..
+			if !gi.IsConstantNear && len(curr.Children) == 0 {
 				continue
 			}
 
@@ -355,7 +355,6 @@ func boundingBox(g *d2graph.Graph) (tl, br *geo.Point) {
 
 func FitToGraph(container *d2graph.Object, nestedGraph *d2graph.Graph, padding geo.Spacing) {
 	var width, height float64
-	// if nestedGraph.Root.Box != nil {
 	width = nestedGraph.Root.Width
 	height = nestedGraph.Root.Height
 	if width == 0 || height == 0 {
@@ -366,42 +365,3 @@ func FitToGraph(container *d2graph.Object, nestedGraph *d2graph.Graph, padding g
 	container.Width = padding.Left + width + padding.Right
 	container.Height = padding.Top + height + padding.Bottom
 }
-
-// func LayoutDiagram(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, coreLayout d2graph.LayoutGraph) geo.Spacing {
-// 	spacing := geo.Spacing{}
-// 	var err error
-// 	// TODO
-
-// 	// Need subgraphs?
-
-// 	// if graphInfo.IsConstantNear
-// 	// case ConstantNearGraph:
-// 	// 	// constantNearGraphs := d2near.WithoutConstantNears(ctx, g)
-// 	// 	constantNearGraphs := d2near.WithoutConstantNears(ctx, g)
-
-// 	// 	err = d2near.Layout(ctx, g, constantNearGraphs)
-// 	// 	if err != nil {
-// 	// 		panic(err)
-// 	// 	}
-
-// 	switch graphInfo.DiagramType {
-// 	case GridDiagram:
-// 		layoutWithGrids := d2grid.Layout(ctx, g, coreLayout)
-// 		if err = layoutWithGrids(ctx, g); err != nil {
-// 			panic(err)
-// 		}
-
-// 	case SequenceDiagram:
-// 		err = d2sequence.Layout(ctx, g, coreLayout)
-// 		if err != nil {
-// 			panic(err)
-// 		}
-// 	default:
-// 		err := coreLayout(ctx, g)
-// 		if err != nil {
-// 			panic(err)
-// 		}
-// 	}
-
-// 	return spacing
-// }
