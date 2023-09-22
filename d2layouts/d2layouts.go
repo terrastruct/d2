@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"cdr.dev/slog"
+
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2grid"
 	"oss.terrastruct.com/d2/d2layouts/d2near"
@@ -83,7 +84,10 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 	queue := make([]*d2graph.Object, 0, len(g.Root.ChildrenArray))
 	queue = append(queue, g.Root.ChildrenArray...)
 
-	for _, curr := range queue {
+	for len(queue) > 0 {
+		curr := queue[0]
+		queue = queue[1:]
+
 		isGridCellContainer := graphInfo.DiagramType == GridDiagram &&
 			curr.IsContainer() && curr.Parent == g.Root
 		gi := NestedGraphInfo(curr)
@@ -140,11 +144,10 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 				// We will restore the contents after running layout with child as the placeholder
 				extracted[curr] = nestedGraph
 			}
-		} else if len(curr.Children) > 0 {
+		} else if len(curr.ChildrenArray) > 0 {
 			queue = append(queue, curr.ChildrenArray...)
 		}
 	}
-	log.Warn(ctx, "finished descendants", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
 
 	// We can now run layout with accurate sizes of nested layout containers
 	// Layout according to the type of diagram
