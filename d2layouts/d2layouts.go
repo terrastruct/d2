@@ -62,7 +62,12 @@ func SaveOrder(g *d2graph.Graph) (restoreOrder func()) {
 			return objectOrder[g.Objects[i].AbsID()] < objectOrder[g.Objects[j].AbsID()]
 		})
 		sort.SliceStable(g.Edges, func(i, j int) bool {
-			return edgeOrder[g.Edges[i].AbsID()] < edgeOrder[g.Edges[j].AbsID()]
+			iIndex, iHas := edgeOrder[g.Edges[i].AbsID()]
+			jIndex, jHas := edgeOrder[g.Edges[j].AbsID()]
+			if iHas && jHas {
+				return iIndex < jIndex
+			}
+			return iHas
 		})
 		restoreRootOrder()
 	}
