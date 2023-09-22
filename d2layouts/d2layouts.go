@@ -3,6 +3,7 @@ package d2layouts
 import (
 	"context"
 	"math"
+	"sort"
 	"strings"
 
 	"cdr.dev/slog"
@@ -33,6 +34,39 @@ func (gi GraphInfo) isDefault() bool {
 	return !gi.IsConstantNear && gi.DiagramType == DefaultGraphType
 }
 
+func SaveChildrenOrder(container *d2graph.Object) (restoreOrder func()) {
+	objectOrder := make(map[string]int, len(container.ChildrenArray))
+	for i, obj := range container.ChildrenArray {
+		objectOrder[obj.AbsID()] = i
+	}
+	return func() {
+		sort.SliceStable(container.ChildrenArray, func(i, j int) bool {
+			return objectOrder[container.ChildrenArray[i].AbsID()] < objectOrder[container.ChildrenArray[j].AbsID()]
+		})
+	}
+}
+
+func SaveOrder(g *d2graph.Graph) (restoreOrder func()) {
+	objectOrder := make(map[string]int, len(g.Objects))
+	for i, obj := range g.Objects {
+		objectOrder[obj.AbsID()] = i
+	}
+	edgeOrder := make(map[string]int, len(g.Edges))
+	for i, edge := range g.Edges {
+		edgeOrder[edge.AbsID()] = i
+	}
+	restoreRootOrder := SaveChildrenOrder(g.Root)
+	return func() {
+		sort.SliceStable(g.Objects, func(i, j int) bool {
+			return objectOrder[g.Objects[i].AbsID()] < objectOrder[g.Objects[j].AbsID()]
+		})
+		sort.SliceStable(g.Edges, func(i, j int) bool {
+			return edgeOrder[g.Edges[i].AbsID()] < edgeOrder[g.Edges[j].AbsID()]
+		})
+		restoreRootOrder()
+	}
+}
+
 func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, coreLayout d2graph.LayoutGraph) geo.Spacing {
 	g.Root.Box = &geo.Box{}
 
@@ -42,6 +76,8 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 	extractedInfo := make(map[*d2graph.Object]GraphInfo)
 
 	var constantNears []*d2graph.Graph
+	restoreOrder := SaveOrder(g)
+	defer restoreOrder()
 
 	// Iterate top-down from Root so all nested diagrams can process their own contents
 	queue := make([]*d2graph.Object, 0, len(g.Root.ChildrenArray))
@@ -58,6 +94,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			nestedGraph := ExtractSubgraph(curr, true)
 			LayoutNested(ctx, nestedGraph, GraphInfo{}, coreLayout)
 			InjectNested(g.Root, nestedGraph, false)
+			restoreOrder()
 			dx := -curr.TopLeft.X
 			dy := -curr.TopLeft.Y
 			for _, o := range nestedGraph.Objects {
