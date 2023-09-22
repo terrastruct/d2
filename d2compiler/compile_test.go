@@ -4061,6 +4061,20 @@ z: {
 `, `d2/testdata/d2compiler/TestCompile2/vars/errors/spread-non-solo.d2:8:2: cannot substitute composite variable "x" as part of a string`)
 				},
 			},
+			{
+				name: "spread-mid-string",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+  test: hello
+}
+
+mybox: {
+  label: prefix${test}suffix
+}
+`, "")
+				},
+			},
 		}
 
 		for _, tc := range tca {
