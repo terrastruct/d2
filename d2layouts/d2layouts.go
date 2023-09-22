@@ -76,7 +76,6 @@ func SaveOrder(g *d2graph.Graph) (restoreOrder func()) {
 func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, coreLayout d2graph.LayoutGraph) error {
 	g.Root.Box = &geo.Box{}
 
-	log.Warn(ctx, "ln info", slog.F("gi", graphInfo), slog.F("root level", g.RootLevel))
 	// Before we can layout these nodes, we need to handle all nested diagrams first.
 	extracted := make(map[*d2graph.Object]*d2graph.Graph)
 	var extractedOrder []*d2graph.Object
@@ -128,7 +127,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			// There is a nested diagram here, so extract its contents and process in the same way
 			nestedGraph := ExtractSubgraph(curr, gi.IsConstantNear)
 
-			log.Info(ctx, "layout nested", slog.F("level", curr.Level()), slog.F("child", curr.AbsID()))
+			log.Info(ctx, "layout nested", slog.F("level", curr.Level()), slog.F("child", curr.AbsID()), slog.F("gi", gi))
 			nestedInfo := gi
 			nearKey := curr.NearKey
 			if gi.IsConstantNear {
@@ -168,19 +167,19 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 		var err error
 		switch graphInfo.DiagramType {
 		case GridDiagram:
-			log.Warn(ctx, "layout grid", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
+			log.Debug(ctx, "layout grid", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
 			if err = d2grid.Layout2(ctx, g); err != nil {
 				return err
 			}
 
 		case SequenceDiagram:
-			log.Warn(ctx, "layout sequence", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
+			log.Debug(ctx, "layout sequence", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
 			err = d2sequence.Layout2(ctx, g, coreLayout)
 			if err != nil {
 				return err
 			}
 		default:
-			log.Warn(ctx, "default layout", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
+			log.Debug(ctx, "default layout", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
 			err := coreLayout(ctx, g)
 			if err != nil {
 				return err
@@ -204,7 +203,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 		PositionNested(n, nestedGraph)
 	}
 
-	log.Warn(ctx, "done", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
+	log.Debug(ctx, "done", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
 	return err
 }
 
