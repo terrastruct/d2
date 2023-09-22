@@ -21,8 +21,6 @@ import (
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
 	"oss.terrastruct.com/d2/d2layouts/d2elklayout"
-	"oss.terrastruct.com/d2/d2layouts/d2near"
-	"oss.terrastruct.com/d2/d2layouts/d2sequence"
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/d2renderers/d2animate"
@@ -108,8 +106,6 @@ func runa(t *testing.T, tcs []testCase) {
 // serde exercises serializing and deserializing the graph
 // We want to run all the steps leading up to serialization in the course of regular layout
 func serde(t *testing.T, tc testCase, ruler *textmeasure.Ruler) {
-	ctx := context.Background()
-	ctx = log.WithTB(ctx, t, nil)
 	g, _, err := d2compiler.Compile("", strings.NewReader(tc.script), &d2compiler.CompileOptions{
 		UTF16Pos: false,
 	})
@@ -117,8 +113,6 @@ func serde(t *testing.T, tc testCase, ruler *textmeasure.Ruler) {
 	if len(g.Objects) > 0 {
 		err = g.SetDimensions(nil, ruler, nil)
 		trequire.Nil(t, err)
-		d2near.WithoutConstantNears(ctx, g)
-		d2sequence.WithoutSequenceDiagrams(ctx, g)
 	}
 	b, err := d2graph.SerializeGraph(g)
 	trequire.Nil(t, err)

@@ -168,13 +168,13 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 		switch graphInfo.DiagramType {
 		case GridDiagram:
 			log.Debug(ctx, "layout grid", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
-			if err = d2grid.Layout2(ctx, g); err != nil {
+			if err = d2grid.Layout(ctx, g); err != nil {
 				return err
 			}
 
 		case SequenceDiagram:
 			log.Debug(ctx, "layout sequence", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
-			err = d2sequence.Layout2(ctx, g, coreLayout)
+			err = d2sequence.Layout(ctx, g, coreLayout)
 			if err != nil {
 				return err
 			}

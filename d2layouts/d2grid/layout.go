@@ -5,7 +5,6 @@ import (
 	"context"
 	"fmt"
 	"math"
-	"sort"
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2target"
@@ -21,42 +20,15 @@ const (
 
 // Layout runs the grid layout on containers with rows/columns
 // Note: children are not allowed edges or descendants
-//
-// 1. Traverse graph from root, skip objects with no rows/columns
-// 2. Construct a grid with the container children
-// 3. Remove the children from the main graph
-// 4. Run grid layout
-// 5. Set the resulting dimensions to the main graph shape
-// 6. Run core layouts (without grid children)
-// 7. Put grid children back in correct location
-func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) d2graph.LayoutGraph {
-	return func(ctx context.Context, g *d2graph.Graph) error {
-		gridDiagrams, objectOrder, edgeOrder, err := withoutGridDiagrams(ctx, g, layout)
-		if err != nil {
-			return err
-		}
-
-		if g.Root.IsGridDiagram() && len(g.Root.ChildrenArray) != 0 {
-			g.Root.TopLeft = geo.NewPoint(0, 0)
-		} else if err := layout(ctx, g); err != nil {
-			return err
-		}
-
-		cleanup(g, gridDiagrams, objectOrder, edgeOrder)
-		return nil
-	}
-}
-
-func Layout2(ctx context.Context, g *d2graph.Graph) error {
-
+// 1. Run grid layout on the graph root
+// 2. Set the resulting dimensions to the graph root
+func Layout(ctx context.Context, g *d2graph.Graph) error {
 	obj := g.Root
 
 	gd, err := layoutGrid(g, obj)
 	if err != nil {
 		return err
 	}
-	// obj.Children = make(map[string]*d2graph.Object)
-	// obj.ChildrenArray = nil
 
 	if obj.Box != nil {
 		// CONTAINER_PADDING is default, but use gap value if set
@@ -163,13 +135,11 @@ func Layout2(ctx context.Context, g *d2graph.Graph) error {
 
 	// simple straight line edge routing between grid objects
 	for _, e := range g.Edges {
-		// edgeOrder[e.AbsID()] = i
 		if !e.Src.Parent.IsDescendantOf(obj) && !e.Dst.Parent.IsDescendantOf(obj) {
 			continue
 		}
 		// if edge is within grid, remove it from outer layout
 		gd.edges = append(gd.edges, e)
-		// edgeToRemove[e] = struct{}{}
 
 		if e.Src.Parent != obj || e.Dst.Parent != obj {
 			continue
@@ -204,233 +174,6 @@ func Layout2(ctx context.Context, g *d2graph.Graph) error {
 		)
 	}
 	return nil
-}
-
-func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) (gridDiagrams map[string]*gridDiagram, objectOrder, edgeOrder map[string]int, err error) {
-	toRemove := make(map[*d2graph.Object]struct{})
-	edgeToRemove := make(map[*d2graph.Edge]struct{})
-	gridDiagrams = make(map[string]*gridDiagram)
-
-	objectOrder = make(map[string]int)
-	for i, obj := range g.Objects {
-		objectOrder[obj.AbsID()] = i
-	}
-	edgeOrder = make(map[string]int)
-	for i, edge := range g.Edges {
-		edgeOrder[edge.AbsID()] = i
-	}
-
-	var processGrid func(obj *d2graph.Object) error
-	processGrid = func(obj *d2graph.Object) error {
-		for _, child := range obj.ChildrenArray {
-			if len(child.ChildrenArray) == 0 {
-				continue
-			}
-			if child.IsGridDiagram() {
-				if err := processGrid(child); err != nil {
-					return err
-				}
-			} else {
-				tempGraph := g.ExtractAsNestedGraph(child)
-				if err := layout(ctx, tempGraph); err != nil {
-					return err
-				}
-				g.InjectNestedGraph(tempGraph, obj)
-
-				sort.SliceStable(g.Objects, func(i, j int) bool {
-					return objectOrder[g.Objects[i].AbsID()] < objectOrder[g.Objects[j].AbsID()]
-				})
-				sort.SliceStable(child.ChildrenArray, func(i, j int) bool {
-					return objectOrder[child.ChildrenArray[i].AbsID()] < objectOrder[child.ChildrenArray[j].AbsID()]
-				})
-				sort.SliceStable(obj.ChildrenArray, func(i, j int) bool {
-					return objectOrder[obj.ChildrenArray[i].AbsID()] < objectOrder[obj.ChildrenArray[j].AbsID()]
-				})
-				sort.SliceStable(g.Edges, func(i, j int) bool {
-					return edgeOrder[g.Edges[i].AbsID()] < edgeOrder[g.Edges[j].AbsID()]
-				})
-
-				for _, o := range tempGraph.Objects {
-					toRemove[o] = struct{}{}
-				}
-			}
-		}
-
-		gd, err := layoutGrid(g, obj)
-		if err != nil {
-			return err
-		}
-		obj.Children = make(map[string]*d2graph.Object)
-		obj.ChildrenArray = nil
-
-		if obj.Box != nil {
-			// CONTAINER_PADDING is default, but use gap value if set
-			horizontalPadding, verticalPadding := CONTAINER_PADDING, CONTAINER_PADDING
-			if obj.GridGap != nil || obj.HorizontalGap != nil {
-				horizontalPadding = gd.horizontalGap
-			}
-			if obj.GridGap != nil || obj.VerticalGap != nil {
-				verticalPadding = gd.verticalGap
-			}
-
-			// size shape according to grid
-			obj.SizeToContent(gd.width, gd.height, float64(2*horizontalPadding), float64(2*verticalPadding))
-
-			// compute where the grid should be placed inside shape
-			s := obj.ToShape()
-			innerBox := s.GetInnerBox()
-			if innerBox.TopLeft.X != 0 || innerBox.TopLeft.Y != 0 {
-				gd.shift(innerBox.TopLeft.X, innerBox.TopLeft.Y)
-			}
-
-			// compute how much space the label and icon occupy
-			var occupiedWidth, occupiedHeight float64
-			if obj.Icon != nil {
-				iconSpace := float64(d2target.MAX_ICON_SIZE + 2*label.PADDING)
-				occupiedWidth = iconSpace
-				occupiedHeight = iconSpace
-			}
-
-			var dx, dy float64
-			if obj.LabelDimensions.Height != 0 {
-				occupiedHeight = math.Max(
-					occupiedHeight,
-					float64(obj.LabelDimensions.Height)+2*label.PADDING,
-				)
-			}
-			if obj.LabelDimensions.Width != 0 {
-				// . ├────┤───────├────┤
-				// .  icon  label  icon
-				// with an icon in top left we need 2x the space to fit the label in the center
-				occupiedWidth *= 2
-				occupiedWidth += float64(obj.LabelDimensions.Width) + 2*label.PADDING
-				if occupiedWidth > obj.Width {
-					dx = (occupiedWidth - obj.Width) / 2
-					obj.Width = occupiedWidth
-				}
-			}
-
-			// also check for grid cells with outside top labels or icons
-			// the first grid object is at the top (and always exists)
-			topY := gd.objects[0].TopLeft.Y
-			highestOutside := topY
-			for _, o := range gd.objects {
-				// we only want to compute label positions for objects at the top of the grid
-				if o.TopLeft.Y > topY {
-					if gd.rowDirected {
-						// if the grid is rowDirected (row1, row2, etc) we can stop after finishing the first row
-						break
-					} else {
-						// otherwise we continue until the next column
-						continue
-					}
-				}
-				if o.LabelPosition != nil {
-					labelPosition := label.Position(*o.LabelPosition)
-					if labelPosition.IsOutside() {
-						labelTL := o.GetLabelTopLeft()
-						if labelTL.Y < highestOutside {
-							highestOutside = labelTL.Y
-						}
-					}
-				}
-				if o.IconPosition != nil {
-					switch label.Position(*o.IconPosition) {
-					case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
-						iconSpace := float64(d2target.MAX_ICON_SIZE + label.PADDING)
-						if topY-iconSpace < highestOutside {
-							highestOutside = topY - iconSpace
-						}
-					}
-				}
-			}
-			if highestOutside < topY {
-				occupiedHeight += topY - highestOutside + 2*label.PADDING
-			}
-			if occupiedHeight > float64(verticalPadding) {
-				// if the label doesn't fit within the padding, we need to add more
-				dy = occupiedHeight - float64(verticalPadding)
-				obj.Height += dy
-			}
-
-			// we need to center children if we have to expand to fit the container label
-			if dx != 0 || dy != 0 {
-				gd.shift(dx, dy)
-			}
-		}
-
-		if obj.HasLabel() {
-			obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-		}
-		if obj.Icon != nil {
-			obj.IconPosition = go2.Pointer(string(label.InsideTopLeft))
-		}
-		gridDiagrams[obj.AbsID()] = gd
-
-		for _, o := range gd.objects {
-			toRemove[o] = struct{}{}
-		}
-
-		// simple straight line edge routing between grid objects
-		for i, e := range g.Edges {
-			edgeOrder[e.AbsID()] = i
-			if !e.Src.Parent.IsDescendantOf(obj) && !e.Dst.Parent.IsDescendantOf(obj) {
-				continue
-			}
-			// if edge is within grid, remove it from outer layout
-			gd.edges = append(gd.edges, e)
-			edgeToRemove[e] = struct{}{}
-
-			if e.Src.Parent != obj || e.Dst.Parent != obj {
-				continue
-			}
-			// if edge is grid child, use simple routing
-			e.Route = []*geo.Point{e.Src.Center(), e.Dst.Center()}
-			e.TraceToShape(e.Route, 0, 1)
-			if e.Label.Value != "" {
-				e.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
-			}
-		}
-
-		return nil
-	}
-
-	if len(g.Objects) > 0 {
-		queue := make([]*d2graph.Object, 1, len(g.Objects))
-		queue[0] = g.Root
-		for len(queue) > 0 {
-			obj := queue[0]
-			queue = queue[1:]
-			if len(obj.ChildrenArray) == 0 {
-				continue
-			}
-			if !obj.IsGridDiagram() {
-				queue = append(queue, obj.ChildrenArray...)
-				continue
-			}
-
-			if err := processGrid(obj); err != nil {
-				return nil, nil, nil, err
-			}
-		}
-	}
-
-	layoutObjects := make([]*d2graph.Object, 0, len(toRemove))
-	for _, obj := range g.Objects {
-		if _, exists := toRemove[obj]; !exists {
-			layoutObjects = append(layoutObjects, obj)
-		}
-	}
-	g.Objects = layoutObjects
-	layoutEdges := make([]*d2graph.Edge, 0, len(edgeToRemove))
-	for _, e := range g.Edges {
-		if _, exists := edgeToRemove[e]; !exists {
-			layoutEdges = append(layoutEdges, e)
-		}
-	}
-	g.Edges = layoutEdges
-
-	return gridDiagrams, objectOrder, edgeOrder, nil
 }
 
 func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*gridDiagram, error) {
@@ -1127,58 +870,4 @@ func getDistToTarget(layout [][]*d2graph.Object, targetSize float64, horizontalG
 		totalDelta += math.Abs(rowSize - targetSize)
 	}
 	return totalDelta
-}
-
-// cleanup restores the graph after the core layout engine finishes
-// - translating the grid to its position placed by the core layout engine
-// - restore the children of the grid
-// - sorts objects to their original graph order
-func cleanup(graph *d2graph.Graph, gridDiagrams map[string]*gridDiagram, objectsOrder, edgeOrder map[string]int) {
-	defer func() {
-		sort.SliceStable(graph.Objects, func(i, j int) bool {
-			return objectsOrder[graph.Objects[i].AbsID()] < objectsOrder[graph.Objects[j].AbsID()]
-		})
-		sort.SliceStable(graph.Edges, func(i, j int) bool {
-			return edgeOrder[graph.Edges[i].AbsID()] < edgeOrder[graph.Edges[j].AbsID()]
-		})
-	}()
-
-	var restore func(obj *d2graph.Object)
-	restore = func(obj *d2graph.Object) {
-		gd, exists := gridDiagrams[obj.AbsID()]
-		if !exists {
-			return
-		}
-		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-
-		horizontalPadding, verticalPadding := CONTAINER_PADDING, CONTAINER_PADDING
-		if obj.GridGap != nil || obj.HorizontalGap != nil {
-			horizontalPadding = gd.horizontalGap
-		}
-		if obj.GridGap != nil || obj.VerticalGap != nil {
-			verticalPadding = gd.verticalGap
-		}
-
-		// shift the grid from (0, 0)
-		gd.shift(
-			obj.TopLeft.X+float64(horizontalPadding),
-			obj.TopLeft.Y+float64(verticalPadding),
-		)
-		gd.cleanup(obj, graph)
-
-		for _, child := range obj.ChildrenArray {
-			restore(child)
-		}
-	}
-
-	if graph.Root.IsGridDiagram() {
-		gd, exists := gridDiagrams[graph.Root.AbsID()]
-		if exists {
-			gd.cleanup(graph.Root, graph)
-		}
-	}
-
-	for _, obj := range graph.Objects {
-		restore(obj)
-	}
 }
