@@ -108,7 +108,10 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			for _, e := range nestedGraph.Edges {
 				e.Move(dx, dy)
 			}
-		} else if !gi.isDefault() {
+			continue
+		}
+
+		if !gi.isDefault() {
 			// empty grid can have 0 objects..
 			if gi.DiagramType == GridDiagram && !gi.IsConstantNear && len(curr.Children) == 0 {
 				continue

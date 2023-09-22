@@ -188,19 +188,21 @@ func Layout2(ctx context.Context, g *d2graph.Graph) error {
 
 	obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 
-	horizontalPadding, verticalPadding := CONTAINER_PADDING, CONTAINER_PADDING
-	if obj.GridGap != nil || obj.HorizontalGap != nil {
-		horizontalPadding = gd.horizontalGap
-	}
-	if obj.GridGap != nil || obj.VerticalGap != nil {
-		verticalPadding = gd.verticalGap
-	}
+	if g.RootLevel > 0 {
+		horizontalPadding, verticalPadding := CONTAINER_PADDING, CONTAINER_PADDING
+		if obj.GridGap != nil || obj.HorizontalGap != nil {
+			horizontalPadding = gd.horizontalGap
+		}
+		if obj.GridGap != nil || obj.VerticalGap != nil {
+			verticalPadding = gd.verticalGap
+		}
 
-	// shift the grid from (0, 0)
-	gd.shift(
-		obj.TopLeft.X+float64(horizontalPadding),
-		obj.TopLeft.Y+float64(verticalPadding),
-	)
+		// shift the grid from (0, 0)
+		gd.shift(
+			obj.TopLeft.X+float64(horizontalPadding),
+			obj.TopLeft.Y+float64(verticalPadding),
+		)
+	}
 	return nil
 }
 
