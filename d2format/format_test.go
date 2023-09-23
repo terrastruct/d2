@@ -812,6 +812,25 @@ steps: {
 }
 `,
 		},
+		{
+			name: "substitution_mid_string",
+			in: `vars: {
+  test: hello
+}
+
+mybox: {
+  label: prefix${test}suffix
+}
+`,
+			exp: `vars: {
+  test: hello
+}
+
+mybox: {
+  label: prefix${test}suffix
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
