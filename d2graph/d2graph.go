@@ -1090,6 +1090,21 @@ func (obj *Object) OuterNearContainer() *Object {
 	return nil
 }
 
+func (obj *Object) IsConstantNear() bool {
+	if obj.NearKey == nil {
+		return false
+	}
+	keyPath := Key(obj.NearKey)
+
+	// interesting if there is a shape with id=top-left, then top-left isn't treated a constant near
+	_, isKey := obj.Graph.Root.HasChild(keyPath)
+	if isKey {
+		return false
+	}
+	_, isConst := NearConstants[keyPath[0]]
+	return isConst
+}
+
 type Edge struct {
 	Index int `json:"index"`
 
@@ -1910,7 +1925,7 @@ func (g *Graph) PrintString() string {
 	buf := &bytes.Buffer{}
 	fmt.Fprint(buf, "Objects: [")
 	for _, obj := range g.Objects {
-		fmt.Fprintf(buf, "%#v @(%v)", obj.AbsID(), obj.TopLeft.ToString())
+		fmt.Fprintf(buf, "%v, ", obj.AbsID())
 	}
 	fmt.Fprint(buf, "]")
 	return buf.String()

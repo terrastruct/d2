@@ -145,28 +145,6 @@ func place(obj *d2graph.Object) (float64, float64) {
 	return x, y
 }
 
-// WithoutConstantNears plucks out the graph objects which have "near" set to a constant value
-// This is to be called before layout engines so they don't take part in regular positioning
-func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (constantNearGraphs []*d2graph.Graph) {
-	for i := 0; i < len(g.Objects); i++ {
-		obj := g.Objects[i]
-		if obj.NearKey == nil {
-			continue
-		}
-		_, isKey := g.Root.HasChild(d2graph.Key(obj.NearKey))
-		if isKey {
-			continue
-		}
-		_, isConst := d2graph.NearConstants[d2graph.Key(obj.NearKey)[0]]
-		if isConst {
-			tempGraph := g.ExtractAsNestedGraph(obj)
-			constantNearGraphs = append(constantNearGraphs, tempGraph)
-			i--
-		}
-	}
-	return constantNearGraphs
-}
-
 // boundingBox gets the center of the graph as defined by shapes
 // The bounds taking into consideration only shapes gives more of a feeling of true center
 // It differs from d2target.BoundingBox which needs to include every visible thing

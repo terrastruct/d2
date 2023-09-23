@@ -17,9 +17,8 @@ import (
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2exporter"
 	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2layouts"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
-	"oss.terrastruct.com/d2/d2layouts/d2grid"
-	"oss.terrastruct.com/d2/d2layouts/d2sequence"
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
@@ -235,7 +234,8 @@ func run(t *testing.T, tc testCase) {
 	err = g.SetDimensions(nil, ruler, nil)
 	assert.JSON(t, nil, err)
 
-	err = d2sequence.Layout(ctx, g, d2grid.Layout(ctx, g, d2dagrelayout.DefaultLayout))
+	graphInfo := d2layouts.NestedGraphInfo(g.Root)
+	err = d2layouts.LayoutNested(ctx, g, graphInfo, d2dagrelayout.DefaultLayout)
 	if err != nil {
 		t.Fatal(err)
 	}

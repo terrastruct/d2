@@ -26,7 +26,7 @@ func (obj *Object) MoveWithDescendantsTo(x, y float64) {
 	obj.MoveWithDescendants(dx, dy)
 }
 
-func (parent *Object) removeChild(child *Object) {
+func (parent *Object) RemoveChild(child *Object) {
 	delete(parent.Children, strings.ToLower(child.ID))
 	for i := 0; i < len(parent.ChildrenArray); i++ {
 		if parent.ChildrenArray[i] == child {
@@ -51,7 +51,7 @@ func (g *Graph) ExtractAsNestedGraph(obj *Object) *Graph {
 	tempGraph.Objects = descendantObjects
 	tempGraph.Edges = edges
 
-	obj.Parent.removeChild(obj)
+	obj.Parent.RemoveChild(obj)
 	obj.Parent = tempGraph.Root
 
 	return tempGraph
