@@ -1185,6 +1185,7 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 					rawv := rawb.String()
 					s.Value = append(s.Value, d2ast.InterpolationBox{String: &sv, StringRaw: &rawv})
 					sb.Reset()
+					rawb.Reset()
 				}
 				s.Value = append(s.Value, d2ast.InterpolationBox{Substitution: subst})
 				continue
