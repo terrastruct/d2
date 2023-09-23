@@ -163,31 +163,27 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 
 	// We can now run layout with accurate sizes of nested layout containers
 	// Layout according to the type of diagram
-	LayoutDiagram := func(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, coreLayout d2graph.LayoutGraph) error {
-		var err error
-		switch graphInfo.DiagramType {
-		case GridDiagram:
-			log.Debug(ctx, "layout grid", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
-			if err = d2grid.Layout(ctx, g); err != nil {
-				return err
-			}
-
-		case SequenceDiagram:
-			log.Debug(ctx, "layout sequence", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
-			err = d2sequence.Layout(ctx, g, coreLayout)
-			if err != nil {
-				return err
-			}
-		default:
-			log.Debug(ctx, "default layout", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
-			err := coreLayout(ctx, g)
-			if err != nil {
-				return err
-			}
+	var err error
+	switch graphInfo.DiagramType {
+	case GridDiagram:
+		log.Debug(ctx, "layout grid", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
+		if err = d2grid.Layout(ctx, g); err != nil {
+			return err
 		}
-		return nil
+
+	case SequenceDiagram:
+		log.Debug(ctx, "layout sequence", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
+		err = d2sequence.Layout(ctx, g, coreLayout)
+		if err != nil {
+			return err
+		}
+	default:
+		log.Debug(ctx, "default layout", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
+		err := coreLayout(ctx, g)
+		if err != nil {
+			return err
+		}
 	}
-	err := LayoutDiagram(ctx, g, graphInfo, coreLayout)
 
 	if len(constantNears) > 0 {
 		err := d2near.Layout(ctx, g, constantNears)
