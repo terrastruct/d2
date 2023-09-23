@@ -16,3 +16,4 @@
 - Fixes missing compile error for non-blockstring empty labels [#1590](https://github.com/terrastruct/d2/issues/1590)
 - Fixes multiple constant nears overlapping in some cases [#1591](https://github.com/terrastruct/d2/issues/1591)
 - Fixes error with an empty nested grid [#1594](https://github.com/terrastruct/d2/issues/1594)
+- Fixes incorrect `d2fmt` with variable substitution mid-string [#1611](https://github.com/terrastruct/d2/issues/1611)
