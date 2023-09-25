@@ -315,6 +315,9 @@ func InjectNested(container *d2graph.Object, nestedGraph *d2graph.Graph, isRoot 
 	g := container.Graph
 	for _, obj := range nestedGraph.Root.ChildrenArray {
 		obj.Parent = container
+		if container.Children == nil {
+			container.Children = make(map[string]*d2graph.Object)
+		}
 		container.Children[strings.ToLower(obj.ID)] = obj
 		container.ChildrenArray = append(container.ChildrenArray, obj)
 	}
