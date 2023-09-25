@@ -833,8 +833,35 @@ func (c *compiler) updateLinks(m *Map) {
 			aida := IDA(f)
 			if len(bida) != len(aida) {
 				prependIDA := aida[:len(aida)-len(bida)]
-				kp := d2ast.MakeKeyPath(prependIDA)
-				s := d2format.Format(kp) + strings.TrimPrefix(f.Primary_.Value.ScalarString(), "root")
+				fullIDA := []string{"root"}
+				// With nested imports, a value may already have been updated with part of the absolute path
+				// E.g.,
+				// The import prepends path a b c
+				// The existing path is b c d
+				// So the new path is
+				// a b c
+				//   b c d
+				// -------
+				// a b c d
+			OUTER:
+				for i := 1; i < len(prependIDA); i += 2 {
+					for j := 0; i+j < len(prependIDA); j++ {
+						if prependIDA[i+j] != linkIDA[1+j] {
+							break
+						}
+						// Reached the end and all common
+						if i+j == len(prependIDA)-1 {
+							break OUTER
+						}
+					}
+					fullIDA = append(fullIDA, prependIDA[i])
+					fullIDA = append(fullIDA, prependIDA[i+1])
+				}
+				// Chop off "root"
+				fullIDA = append(fullIDA, linkIDA[1:]...)
+
+				kp := d2ast.MakeKeyPath(fullIDA)
+				s := d2format.Format(kp)
 				f.Primary_.Value = d2ast.MakeValueBox(d2ast.FlatUnquotedString(s)).ScalarBox().Unbox()
 			}
 		}
