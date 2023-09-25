@@ -26,6 +26,10 @@ func main() {
 	js.Global().Set("d2Parse", js.FuncOf(jsParse))
 	js.Global().Set("d2Encode", js.FuncOf(jsEncode))
 	js.Global().Set("d2Decode", js.FuncOf(jsDecode))
+	initCallback := js.Global().Get("onWasmInitialized")
+	if !initCallback.IsUndefined() {
+		initCallback.Invoke()
+	}
 	select {}
 }
 
