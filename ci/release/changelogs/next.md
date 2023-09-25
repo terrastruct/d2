@@ -19,3 +19,4 @@
 - Fixes error with an empty nested grid [#1594](https://github.com/terrastruct/d2/issues/1594)
 - Fixes incorrect `d2fmt` with variable substitution mid-string [#1611](https://github.com/terrastruct/d2/issues/1611)
 - Fixes dagre error with child named id [#1610](https://github.com/terrastruct/d2/issues/1610)
+- Fixes font-size missing from rendered code shape [#1614](https://github.com/terrastruct/d2/issues/1614)
