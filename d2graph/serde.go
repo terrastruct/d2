@@ -10,9 +10,10 @@ import (
 )
 
 type SerializedGraph struct {
-	Root    SerializedObject   `json:"root"`
-	Edges   []SerializedEdge   `json:"edges"`
-	Objects []SerializedObject `json:"objects"`
+	Root      SerializedObject   `json:"root"`
+	Edges     []SerializedEdge   `json:"edges"`
+	Objects   []SerializedObject `json:"objects"`
+	RootLevel int                `json:"rootLevel"`
 }
 
 type SerializedObject map[string]interface{}
@@ -30,6 +31,7 @@ func DeserializeGraph(bytes []byte, g *Graph) error {
 	convert(sg.Root, &root)
 	g.Root = &root
 	root.Graph = g
+	g.RootLevel = sg.RootLevel
 
 	idToObj := make(map[string]*Object)
 	idToObj[""] = g.Root
@@ -91,6 +93,7 @@ func SerializeGraph(g *Graph) ([]byte, error) {
 		return nil, err
 	}
 	sg.Root = root
+	sg.RootLevel = g.RootLevel
 
 	var sobjects []SerializedObject
 	for _, o := range g.Objects {
