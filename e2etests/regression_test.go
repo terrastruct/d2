@@ -1031,6 +1031,10 @@ cf many required: {
 }
 `,
 		},
+		{
+			name:   "dagre_child_id_id",
+			script: `direction:right; id -> x.id -> y.z.id`,
+		},
 		loadFromFile(t, "slow_grid"),
 		loadFromFile(t, "grid_oom"),
 		loadFromFile(t, "cylinder_grid_label"),

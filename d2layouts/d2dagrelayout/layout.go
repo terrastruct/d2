@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
-	"regexp"
 	"sort"
 	"strings"
 
@@ -140,17 +139,13 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		return err
 	}
 
+	mapper := NewObjectMapper()
 	loadScript := ""
-	idToObj := make(map[string]*d2graph.Object)
 	for _, obj := range g.Objects {
-		id := obj.AbsID()
-		idToObj[id] = obj
-
-		width, height := obj.Width, obj.Height
-
-		loadScript += generateAddNodeLine(id, int(width), int(height))
+		mapper.Register(obj)
+		loadScript += mapper.generateAddNodeLine(obj, int(obj.Width), int(obj.Height))
 		if obj.Parent != g.Root {
-			loadScript += generateAddParentLine(id, obj.Parent.AbsID())
+			loadScript += mapper.generateAddParentLine(obj, obj.Parent)
 		}
 	}
 
@@ -178,7 +173,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 
-		loadScript += generateAddEdgeLine(src.AbsID(), dst.AbsID(), edge.AbsID(), width, height)
+		loadScript += mapper.generateAddEdgeLine(src, dst, edge.AbsID(), width, height)
 	}
 
 	if debugJS {
@@ -209,7 +204,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			log.Debug(ctx, "graph", slog.F("json", dn))
 		}
 
-		obj := idToObj[dn.ID]
+		obj := mapper.ToObj(dn.ID)
 
 		// dagre gives center of node
 		obj.TopLeft = geo.NewPoint(math.Round(dn.X-dn.Width/2), math.Round(dn.Y-dn.Height/2))
@@ -413,30 +408,6 @@ func setGraphAttrs(attrs dagreOpts) string {
 		attrs.ConfigurableOpts.NodeSep,
 		attrs.rankdir,
 	)
-}
-
-func escapeID(id string) string {
-	// fixes \\
-	id = strings.ReplaceAll(id, "\\", `\\`)
-	// replaces \n with \\n whenever \n is not preceded by \ (does not replace \\n)
-	re := regexp.MustCompile(`[^\\]\n`)
-	id = re.ReplaceAllString(id, `\\n`)
-	// avoid an unescaped \r becoming a \n in the layout result
-	id = strings.ReplaceAll(id, "\r", `\r`)
-	return id
-}
-
-func generateAddNodeLine(id string, width, height int) string {
-	id = escapeID(id)
-	return fmt.Sprintf("g.setNode(`%s`, { id: `%s`, width: %d, height: %d });\n", id, id, width, height)
-}
-
-func generateAddParentLine(childID, parentID string) string {
-	return fmt.Sprintf("g.setParent(`%s`, `%s`);\n", escapeID(childID), escapeID(parentID))
-}
-
-func generateAddEdgeLine(fromID, toID, edgeID string, width, height int) string {
-	return fmt.Sprintf("g.setEdge({v:`%s`, w:`%s`, name:`%s`}, { width:%d, height:%d, labelpos: `c` });\n", escapeID(fromID), escapeID(toID), escapeID(edgeID), width, height)
 }
 
 // getLongestEdgeChainHead finds the longest chain in a container and gets its head
