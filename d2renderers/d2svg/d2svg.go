@@ -1267,8 +1267,12 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				if !isLight {
 					class = "dark-code"
 				}
-				fmt.Fprintf(writer, `<g transform="translate(%f %f)" class="%s" style="font-size:%v">`,
-					box.TopLeft.X, box.TopLeft.Y, class, targetShape.FontSize,
+				var fontSize string
+				if targetShape.FontSize != d2fonts.FONT_SIZE_M {
+					fontSize = fmt.Sprintf(` style="font-size:%v"`, targetShape.FontSize)
+				}
+				fmt.Fprintf(writer, `<g transform="translate(%f %f)" class="%s"%s>`,
+					box.TopLeft.X, box.TopLeft.Y, class, fontSize,
 				)
 				rectEl := d2themes.NewThemableElement("rect")
 				rectEl.Width = float64(targetShape.Width)
