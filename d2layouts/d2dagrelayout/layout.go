@@ -140,9 +140,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 
 	mapper := NewObjectMapper()
-	loadScript := ""
 	for _, obj := range g.Objects {
 		mapper.Register(obj)
+	}
+	loadScript := ""
+	for _, obj := range g.Objects {
 		loadScript += mapper.generateAddNodeLine(obj, int(obj.Width), int(obj.Height))
 		if obj.Parent != g.Root {
 			loadScript += mapper.generateAddParentLine(obj, obj.Parent)
