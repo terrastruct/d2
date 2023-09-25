@@ -12,7 +12,7 @@
 
 #### Bugfixes ⛑️
 
-- Fixes `d2 fmt` to format all files passed as arguments rather than first non-formatted only [#1523](https://github.com/terrastruct/d2/issues/1523)
+- Fixes `d2 fmt` to format all files passed as arguments rather than first non-formatted only (thank you @maxbrunet) [#1523](https://github.com/terrastruct/d2/issues/1523)
 - Fixes Markdown cropping last element in mixed-element blocks (e.g. em and strong) [#1543](https://github.com/terrastruct/d2/issues/1543)
 - Fixes missing compile error for non-blockstring empty labels [#1590](https://github.com/terrastruct/d2/issues/1590)
 - Fixes multiple constant nears overlapping in some cases [#1591](https://github.com/terrastruct/d2/issues/1591)
