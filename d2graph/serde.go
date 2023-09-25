@@ -41,6 +41,7 @@ func DeserializeGraph(bytes []byte, g *Graph) error {
 		if err := convert(so, &o); err != nil {
 			return err
 		}
+		o.Graph = g
 		objects = append(objects, &o)
 		idToObj[so["AbsID"].(string)] = &o
 	}
