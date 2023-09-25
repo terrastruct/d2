@@ -101,12 +101,27 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			// if we are in a grid diagram, and our children have descendants
 			// we need to run layout on them first, even if they are not special diagram types
 			nestedGraph := ExtractSubgraph(curr, true)
+			id := curr.AbsID()
 			err := LayoutNested(ctx, nestedGraph, GraphInfo{}, coreLayout)
 			if err != nil {
 				return err
 			}
 			InjectNested(g.Root, nestedGraph, false)
 			restoreOrder()
+
+			// need to update curr *Object incase layout changed it
+			var obj *d2graph.Object
+			for _, o := range g.Objects {
+				if o.AbsID() == id {
+					obj = o
+					break
+				}
+			}
+			if obj == nil {
+				return fmt.Errorf("could not find object %#v after layout", id)
+			}
+			curr = obj
+
 			dx := -curr.TopLeft.X
 			dy := -curr.TopLeft.Y
 			for _, o := range nestedGraph.Objects {
