@@ -334,9 +334,9 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	_, written, err := compile(ctx, ms, plugins, layoutFlag, renderOpts, fontFamily, *animateIntervalFlag, inputPath, outputPath, "", *bundleFlag, *forceAppendixFlag, pw.Page)
 	if err != nil {
 		if written {
-			return fmt.Errorf("failed to fully compile (partial render written): %w", err)
+			return fmt.Errorf("failed to fully compile (partial render written) %s: %w", ms.HumanPath(inputPath), err)
 		}
-		return fmt.Errorf("failed to compile: %w", err)
+		return fmt.Errorf("failed to compile %s: %w", ms.HumanPath(inputPath), err)
 	}
 	return nil
 }
