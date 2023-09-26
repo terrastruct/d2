@@ -2,6 +2,7 @@ package d2layouts
 
 import (
 	"context"
+	"fmt"
 	"math"
 	"sort"
 	"strings"
@@ -77,8 +78,8 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 	g.Root.Box = &geo.Box{}
 
 	// Before we can layout these nodes, we need to handle all nested diagrams first.
-	extracted := make(map[*d2graph.Object]*d2graph.Graph)
-	var extractedOrder []*d2graph.Object
+	extracted := make(map[string]*d2graph.Graph)
+	var extractedOrder []string
 
 	var constantNears []*d2graph.Graph
 	restoreOrder := SaveOrder(g)
@@ -100,12 +101,27 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			// if we are in a grid diagram, and our children have descendants
 			// we need to run layout on them first, even if they are not special diagram types
 			nestedGraph := ExtractSubgraph(curr, true)
+			id := curr.AbsID()
 			err := LayoutNested(ctx, nestedGraph, GraphInfo{}, coreLayout)
 			if err != nil {
 				return err
 			}
 			InjectNested(g.Root, nestedGraph, false)
 			restoreOrder()
+
+			// need to update curr *Object incase layout changed it
+			var obj *d2graph.Object
+			for _, o := range g.Objects {
+				if o.AbsID() == id {
+					obj = o
+					break
+				}
+			}
+			if obj == nil {
+				return fmt.Errorf("could not find object %#v after layout", id)
+			}
+			curr = obj
+
 			dx := -curr.TopLeft.X
 			dy := -curr.TopLeft.Y
 			for _, o := range nestedGraph.Objects {
@@ -140,6 +156,11 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			if err != nil {
 				return err
 			}
+			// coreLayout can overwrite graph contents with newly created *Object pointers
+			// so we need to update `curr` with nestedGraph's value
+			if gi.IsConstantNear {
+				curr = nestedGraph.Root.ChildrenArray[0]
+			}
 
 			if gi.IsConstantNear {
 				curr.NearKey = nearKey
@@ -153,8 +174,10 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 				constantNears = append(constantNears, nestedGraph)
 			} else {
 				// We will restore the contents after running layout with child as the placeholder
-				extracted[curr] = nestedGraph
-				extractedOrder = append(extractedOrder, curr)
+				// We need to reference using ID because there may be a new object to use after coreLayout
+				id := curr.AbsID()
+				extracted[id] = nestedGraph
+				extractedOrder = append(extractedOrder, id)
 			}
 		} else if len(curr.ChildrenArray) > 0 {
 			queue = append(queue, curr.ChildrenArray...)
@@ -164,39 +187,52 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 	// We can now run layout with accurate sizes of nested layout containers
 	// Layout according to the type of diagram
 	var err error
-	switch graphInfo.DiagramType {
-	case GridDiagram:
-		log.Debug(ctx, "layout grid", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
-		if err = d2grid.Layout(ctx, g); err != nil {
-			return err
-		}
+	if len(g.Objects) > 0 {
+		switch graphInfo.DiagramType {
+		case GridDiagram:
+			log.Debug(ctx, "layout grid", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
+			if err = d2grid.Layout(ctx, g); err != nil {
+				return err
+			}
 
-	case SequenceDiagram:
-		log.Debug(ctx, "layout sequence", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
-		err = d2sequence.Layout(ctx, g, coreLayout)
-		if err != nil {
-			return err
-		}
-	default:
-		log.Debug(ctx, "default layout", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
-		err := coreLayout(ctx, g)
-		if err != nil {
-			return err
+		case SequenceDiagram:
+			log.Debug(ctx, "layout sequence", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
+			err = d2sequence.Layout(ctx, g, coreLayout)
+			if err != nil {
+				return err
+			}
+		default:
+			log.Debug(ctx, "default layout", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
+			err := coreLayout(ctx, g)
+			if err != nil {
+				return err
+			}
 		}
 	}
 
 	if len(constantNears) > 0 {
-		err := d2near.Layout(ctx, g, constantNears)
+		err = d2near.Layout(ctx, g, constantNears)
 		if err != nil {
-			panic(err)
+			return err
 		}
 	}
 
 	// With the layout set, inject all the extracted graphs
-	for _, n := range extractedOrder {
-		nestedGraph := extracted[n]
-		InjectNested(n, nestedGraph, true)
-		PositionNested(n, nestedGraph)
+	for _, id := range extractedOrder {
+		nestedGraph := extracted[id]
+		// we have to find the object by ID because coreLayout can replace the Objects in graph
+		var obj *d2graph.Object
+		for _, o := range g.Objects {
+			if o.AbsID() == id {
+				obj = o
+				break
+			}
+		}
+		if obj == nil {
+			return fmt.Errorf("could not find object %#v after layout", id)
+		}
+		InjectNested(obj, nestedGraph, true)
+		PositionNested(obj, nestedGraph)
 	}
 
 	log.Debug(ctx, "done", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
@@ -294,6 +330,9 @@ func InjectNested(container *d2graph.Object, nestedGraph *d2graph.Graph, isRoot 
 	g := container.Graph
 	for _, obj := range nestedGraph.Root.ChildrenArray {
 		obj.Parent = container
+		if container.Children == nil {
+			container.Children = make(map[string]*d2graph.Object)
+		}
 		container.Children[strings.ToLower(obj.ID)] = obj
 		container.ChildrenArray = append(container.ChildrenArray, obj)
 	}
