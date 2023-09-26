@@ -152,7 +152,6 @@ func ListPluginInfos(ctx context.Context, ps []Plugin) ([]*PluginInfo, error) {
 //  1. It first searches the bundled plugins in the global plugins slice.
 //  2. If not found, it then searches each directory in $PATH for a binary with the name
 //     d2plugin-<name>.
-//     **NOTE** When D2 upgrades to go 1.19, remember to ignore exec.ErrDot
 //  3. If such a binary is found, it builds an execPlugin in exec.go
 //     to get a plugin implementation around the binary and returns it.
 func FindPlugin(ctx context.Context, ps []Plugin, name string) (Plugin, error) {
