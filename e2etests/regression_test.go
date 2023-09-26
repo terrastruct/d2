@@ -1046,6 +1046,7 @@ cf many required: {
 		loadFromFile(t, "multiple_constant_nears"),
 		loadFromFile(t, "empty_nested_grid"),
 		loadFromFile(t, "code_font_size"),
+		loadFromFile(t, "disclaimer"),
 	}
 
 	runa(t, tcs)
