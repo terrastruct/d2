@@ -144,7 +144,7 @@ func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*gridDiagram, error) {
 
 	// to handle objects with outside labels, we adjust their dimensions before layout and
 	// after layout, we remove the label adjustment and reposition TopLeft if needed
-	revertTemporary := gd.sizeForOutsideLabels()
+	revertAdjustments := gd.sizeForOutsideLabels()
 
 	if gd.rows != 0 && gd.columns != 0 {
 		gd.layoutEvenly(g, obj)
@@ -152,7 +152,7 @@ func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*gridDiagram, error) {
 		gd.layoutDynamic(g, obj)
 	}
 
-	revertTemporary()
+	revertAdjustments()
 
 	// position labels and icons
 	for _, o := range gd.objects {
@@ -841,26 +841,15 @@ func getDistToTarget(layout [][]*d2graph.Object, targetSize float64, horizontalG
 	return totalDelta
 }
 
-func (gd *gridDiagram) sizeForOutsideLabels() (revertTemp func()) {
+func (gd *gridDiagram) sizeForOutsideLabels() (revert func()) {
 	margins := make(map[*d2graph.Object]geo.Spacing)
 
 	for _, o := range gd.objects {
 		margin := o.GetMargin()
-
-		if margin.Top > 0 {
-			o.Height += margin.Top
-		}
-		if margin.Bottom > 0 {
-			o.Height += margin.Bottom
-		}
-		if margin.Left > 0 {
-			o.Width += margin.Left
-		}
-		if margin.Right > 0 {
-			o.Width += margin.Right
-		}
-
 		margins[o] = margin
+
+		o.Height += margin.Top + margin.Bottom
+		o.Width += margin.Left + margin.Right
 	}
 
 	return func() {
