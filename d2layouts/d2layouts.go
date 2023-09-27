@@ -106,6 +106,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			if err != nil {
 				return err
 			}
+
 			InjectNested(g.Root, nestedGraph, false)
 			restoreOrder()
 
@@ -135,6 +136,12 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			for _, e := range nestedGraph.Edges {
 				e.Move(dx, dy)
 			}
+
+			// now we keep the descendants out until after grid layout
+			nestedGraph = ExtractSubgraph(curr, false)
+
+			extracted[id] = nestedGraph
+			extractedOrder = append(extractedOrder, id)
 			continue
 		}
 
@@ -330,7 +337,6 @@ func ExtractSubgraph(container *d2graph.Object, includeSelf bool) *d2graph.Graph
 }
 
 func InjectNested(container *d2graph.Object, nestedGraph *d2graph.Graph, isRoot bool) {
-	// TODO restore order of objects
 	g := container.Graph
 	for _, obj := range nestedGraph.Root.ChildrenArray {
 		obj.Parent = container
