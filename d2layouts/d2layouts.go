@@ -122,8 +122,9 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			}
 			curr = obj
 
-			dx := -curr.TopLeft.X
-			dy := -curr.TopLeft.Y
+			// position nested graph relative to curr
+			dx := 0 - curr.TopLeft.X
+			dy := 0 - curr.TopLeft.Y
 			for _, o := range nestedGraph.Objects {
 				o.TopLeft.X += dx
 				o.TopLeft.Y += dy
@@ -358,6 +359,9 @@ func PositionNested(container *d2graph.Object, nestedGraph *d2graph.Graph) {
 	// Note: assumes nestedGraph's layout has contents positioned relative to 0,0
 	dx := container.TopLeft.X //- tl.X
 	dy := container.TopLeft.Y //- tl.Y
+	if dx == 0 && dy == 0 {
+		return
+	}
 	for _, o := range nestedGraph.Objects {
 		o.TopLeft.X += dx
 		o.TopLeft.Y += dy
