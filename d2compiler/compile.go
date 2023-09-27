@@ -1110,10 +1110,13 @@ func (c *compiler) validateEdges(g *d2graph.Graph) {
 				c.errorf(edge.GetAstEdge(), "edges into grid diagrams are not supported yet")
 				continue
 			}
+
+			// TODO cleanup
 			if srcGrid != edge.Src.Parent || dstGrid != edge.Dst.Parent {
 				// valid: grid.child1 -> grid.child2
 				// invalid: grid.child1 -> grid.child2.child1
-				c.errorf(edge.GetAstEdge(), "grid diagrams can only have edges between children right now")
+
+				// c.errorf(edge.GetAstEdge(), "grid diagrams can only have edges between children right now")
 				continue
 			}
 		}
