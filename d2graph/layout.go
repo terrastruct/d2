@@ -1,6 +1,7 @@
 package d2graph
 
 import (
+	"math"
 	"sort"
 	"strings"
 
@@ -283,6 +284,49 @@ func (obj *Object) GetModifierElementAdjustments() (dx, dy float64) {
 		dx = d2target.MULTIPLE_OFFSET
 	}
 	return dx, dy
+}
+
+func (obj *Object) GetMargin() geo.Spacing {
+	margin := geo.Spacing{}
+
+	if obj.HasLabel() && obj.LabelPosition != nil {
+		position := label.Position(*obj.LabelPosition)
+
+		labelWidth := float64(obj.LabelDimensions.Width + label.PADDING)
+		labelHeight := float64(obj.LabelDimensions.Height + label.PADDING)
+
+		switch position {
+		case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
+			margin.Top = labelHeight
+		case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+			margin.Bottom = labelHeight
+		case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
+			margin.Left = labelWidth
+		case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+			margin.Right = labelWidth
+		}
+	}
+
+	if obj.Icon != nil && obj.IconPosition != nil && obj.Shape.Value != d2target.ShapeImage {
+		position := label.Position(*obj.IconPosition)
+
+		iconSize := float64(d2target.MAX_ICON_SIZE + label.PADDING)
+		switch position {
+		case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
+			margin.Top = math.Max(margin.Top, iconSize)
+		case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+			margin.Bottom = math.Max(margin.Bottom, iconSize)
+		case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
+			margin.Left = math.Max(margin.Left, iconSize)
+		case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+			margin.Right = math.Max(margin.Right, iconSize)
+		}
+	}
+
+	dx, dy := obj.GetModifierElementAdjustments()
+	margin.Right += dx
+	margin.Top += dy
+	return margin
 }
 
 func (obj *Object) ToShape() shape.Shape {

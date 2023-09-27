@@ -77,43 +77,6 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 			}
 		}
 
-		// also check for grid cells with outside top labels or icons
-		// the first grid object is at the top (and always exists)
-		topY := gd.objects[0].TopLeft.Y
-		highestOutside := topY
-		for _, o := range gd.objects {
-			// we only want to compute label positions for objects at the top of the grid
-			if o.TopLeft.Y > topY {
-				if gd.rowDirected {
-					// if the grid is rowDirected (row1, row2, etc) we can stop after finishing the first row
-					break
-				} else {
-					// otherwise we continue until the next column
-					continue
-				}
-			}
-			if o.LabelPosition != nil {
-				labelPosition := label.Position(*o.LabelPosition)
-				if labelPosition.IsOutside() {
-					labelTL := o.GetLabelTopLeft()
-					if labelTL.Y < highestOutside {
-						highestOutside = labelTL.Y
-					}
-				}
-			}
-			if o.IconPosition != nil {
-				switch label.Position(*o.IconPosition) {
-				case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
-					iconSpace := float64(d2target.MAX_ICON_SIZE + label.PADDING)
-					if topY-iconSpace < highestOutside {
-						highestOutside = topY - iconSpace
-					}
-				}
-			}
-		}
-		if highestOutside < topY {
-			occupiedHeight += topY - highestOutside + 2*label.PADDING
-		}
 		if occupiedHeight > float64(verticalPadding) {
 			// if the label doesn't fit within the padding, we need to add more
 			dy = occupiedHeight - float64(verticalPadding)
@@ -179,11 +142,17 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*gridDiagram, error) {
 	gd := newGridDiagram(obj)
 
+	// to handle objects with outside labels, we adjust their dimensions before layout and
+	// after layout, we remove the label adjustment and reposition TopLeft if needed
+	revertAdjustments := gd.sizeForOutsideLabels()
+
 	if gd.rows != 0 && gd.columns != 0 {
 		gd.layoutEvenly(g, obj)
 	} else {
 		gd.layoutDynamic(g, obj)
 	}
+
+	revertAdjustments()
 
 	// position labels and icons
 	for _, o := range gd.objects {
@@ -870,4 +839,32 @@ func getDistToTarget(layout [][]*d2graph.Object, targetSize float64, horizontalG
 		totalDelta += math.Abs(rowSize - targetSize)
 	}
 	return totalDelta
+}
+
+func (gd *gridDiagram) sizeForOutsideLabels() (revert func()) {
+	margins := make(map[*d2graph.Object]geo.Spacing)
+
+	for _, o := range gd.objects {
+		margin := o.GetMargin()
+		margins[o] = margin
+
+		o.Height += margin.Top + margin.Bottom
+		o.Width += margin.Left + margin.Right
+	}
+
+	return func() {
+		for _, o := range gd.objects {
+			margin, has := margins[o]
+			if !has {
+				continue
+			}
+
+			o.Height -= margin.Top + margin.Bottom
+			o.Width -= margin.Left + margin.Right
+
+			if margin.Left > 0 || margin.Top > 0 {
+				o.MoveWithDescendants(margin.Left, margin.Top)
+			}
+		}
+	}
 }

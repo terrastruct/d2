@@ -2836,6 +2836,7 @@ y: profits {
 		loadFromFile(t, "simple_grid_edges"),
 		loadFromFile(t, "grid_nested_simple_edges"),
 		loadFromFile(t, "nested_diagram_types"),
+		loadFromFile(t, "grid_outside_labels"),
 	}
 
 	runa(t, tcs)
