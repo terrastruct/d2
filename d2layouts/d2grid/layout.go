@@ -144,8 +144,7 @@ func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*gridDiagram, error) {
 
 	// to handle objects with outside labels, we adjust their dimensions before layout and
 	// after layout, we remove the label adjustment and reposition TopLeft if needed
-	// TODO
-	revertAdjustments := gd.sizeForOutsideLabels()
+	revertTemporary := gd.sizeForOutsideLabels()
 
 	if gd.rows != 0 && gd.columns != 0 {
 		gd.layoutEvenly(g, obj)
@@ -153,7 +152,7 @@ func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*gridDiagram, error) {
 		gd.layoutDynamic(g, obj)
 	}
 
-	revertAdjustments()
+	revertTemporary()
 
 	// position labels and icons
 	for _, o := range gd.objects {
@@ -842,61 +841,74 @@ func getDistToTarget(layout [][]*d2graph.Object, targetSize float64, horizontalG
 	return totalDelta
 }
 
-func (gd *gridDiagram) sizeForOutsideLabels() (revert func()) {
-	widthAdjustments := make(map[*d2graph.Object]float64)
-	heightAdjustments := make(map[*d2graph.Object]float64)
+func (gd *gridDiagram) sizeForOutsideLabels() (revertTemp func()) {
+	margins := make(map[*d2graph.Object]geo.Spacing)
 
-	// TODO icons!
 	for _, o := range gd.objects {
-		if !o.HasLabel() || o.LabelPosition == nil {
-			continue
-		}
-		position := label.Position(*o.LabelPosition)
+		margin := geo.Spacing{}
 
-		width := float64(o.LabelDimensions.Width + 2*label.PADDING)
-		height := float64(o.LabelDimensions.Height + 2*label.PADDING)
+		if o.HasLabel() && o.LabelPosition != nil {
+			position := label.Position(*o.LabelPosition)
 
-		switch position {
-		case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight,
-			label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
-			heightAdjustments[o] = height
-			if width > o.Width {
-				widthAdjustments[o] = width - o.Width
-			}
-		case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom,
-			label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
-			widthAdjustments[o] = width
-			if height > o.Height {
-				heightAdjustments[o] = height - o.Height
+			labelWidth := float64(o.LabelDimensions.Width + 2*label.PADDING)
+			labelHeight := float64(o.LabelDimensions.Height + 2*label.PADDING)
+
+			switch position {
+			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
+				margin.Top = labelHeight
+			case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+				margin.Bottom = labelHeight
+			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
+				margin.Left = labelWidth
+			case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+				margin.Right = labelWidth
 			}
 		}
+
+		if o.Icon != nil && o.IconPosition != nil && o.Shape.Value != d2target.ShapeImage {
+			position := label.Position(*o.IconPosition)
+
+			iconSize := float64(d2target.MAX_ICON_SIZE + 2*label.PADDING)
+			switch position {
+			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
+				margin.Top = math.Max(margin.Top, iconSize)
+			case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+				margin.Bottom = math.Max(margin.Bottom, iconSize)
+			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
+				margin.Left = math.Max(margin.Left, iconSize)
+			case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+				margin.Right = math.Max(margin.Right, iconSize)
+			}
+		}
+
+		if margin.Top > 0 {
+			o.Height += margin.Top
+		}
+		if margin.Bottom > 0 {
+			o.Height += margin.Bottom
+		}
+		if margin.Left > 0 {
+			o.Width += margin.Left
+		}
+		if margin.Right > 0 {
+			o.Width += margin.Right
+		}
+
+		margins[o] = margin
 	}
 
 	return func() {
 		for _, o := range gd.objects {
-			if !o.HasLabel() || o.LabelPosition == nil {
-				continue
-			}
-			widthAdjustment, hasW := widthAdjustments[o]
-			heightAdjustment, hasH := heightAdjustments[o]
-			if !hasW && !hasH {
+			margin, has := margins[o]
+			if !has {
 				continue
 			}
 
-			position := label.Position(*o.LabelPosition)
+			o.Height -= margin.Top + margin.Bottom
+			o.Width -= margin.Left + margin.Right
 
-			o.Height -= heightAdjustment
-			o.Width -= widthAdjustment
-
-			switch position {
-			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
-				if hasH {
-					o.TopLeft.Y += heightAdjustment
-				}
-			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
-				if hasW {
-					o.TopLeft.X += widthAdjustment
-				}
+			if margin.Top > 0 || margin.Left > 0 {
+				o.MoveWithDescendants(margin.Top, margin.Left)
 			}
 		}
 	}
