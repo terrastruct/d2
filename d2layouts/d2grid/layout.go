@@ -845,41 +845,7 @@ func (gd *gridDiagram) sizeForOutsideLabels() (revertTemp func()) {
 	margins := make(map[*d2graph.Object]geo.Spacing)
 
 	for _, o := range gd.objects {
-		margin := geo.Spacing{}
-
-		if o.HasLabel() && o.LabelPosition != nil {
-			position := label.Position(*o.LabelPosition)
-
-			labelWidth := float64(o.LabelDimensions.Width + 2*label.PADDING)
-			labelHeight := float64(o.LabelDimensions.Height + 2*label.PADDING)
-
-			switch position {
-			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
-				margin.Top = labelHeight
-			case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
-				margin.Bottom = labelHeight
-			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
-				margin.Left = labelWidth
-			case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
-				margin.Right = labelWidth
-			}
-		}
-
-		if o.Icon != nil && o.IconPosition != nil && o.Shape.Value != d2target.ShapeImage {
-			position := label.Position(*o.IconPosition)
-
-			iconSize := float64(d2target.MAX_ICON_SIZE + 2*label.PADDING)
-			switch position {
-			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
-				margin.Top = math.Max(margin.Top, iconSize)
-			case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
-				margin.Bottom = math.Max(margin.Bottom, iconSize)
-			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
-				margin.Left = math.Max(margin.Left, iconSize)
-			case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
-				margin.Right = math.Max(margin.Right, iconSize)
-			}
-		}
+		margin := o.GetMargin()
 
 		if margin.Top > 0 {
 			o.Height += margin.Top
@@ -907,8 +873,8 @@ func (gd *gridDiagram) sizeForOutsideLabels() (revertTemp func()) {
 			o.Height -= margin.Top + margin.Bottom
 			o.Width -= margin.Left + margin.Right
 
-			if margin.Top > 0 || margin.Left > 0 {
-				o.MoveWithDescendants(margin.Top, margin.Left)
+			if margin.Left > 0 || margin.Top > 0 {
+				o.MoveWithDescendants(margin.Left, margin.Top)
 			}
 		}
 	}
