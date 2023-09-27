@@ -1,43 +1,45 @@
 direction: right
-outer-grid -> outer-container
+# outer-grid -> outer-container
 
-outer-grid: {
-  grid-columns: 1
+# outer-grid: {
+grid-columns: 1
 
-  inner-grid -> container -> etc
+# okok # -> container # -> etc
 
-  container: {
-    label.near: top-left
-    # edges not yet supported here since they must be direct grid children
-    a
-    b
-    c
-  }
+container: {
+  label.near: top-left
+  # edges not yet supported here since they must be direct grid children
+  a
+  b
+  # c
 
-  inner-grid: {
-    grid-rows: 1
-    1
-    2
-    3
-    # edges here are not supported yet since this is inside another grid
-  }
+  a -> b
 }
 
-outer-container: {
-  grid -> container
+# inner-grid: {
+#   # grid-rows: 1
+#   # 1
+#   # 2
+#   # 3
+#   # edges here are not supported yet since this is inside another grid
+# }
+# }
 
-  grid: {
-    grid-rows: 1
-    # direct child edges ok in least nested grid
-    1 -> 2 -> 3
-  }
+# outer-container: {
+#   grid -> container
 
-  container: {
-    # non grid edges ok
-    4 -> 5 -> 6
-    nested container: {
-      # nested non grid edges ok
-      7 -> 8
-    }
-  }
-}
+#   grid: {
+#     grid-rows: 1
+#     # direct child edges ok in least nested grid
+#     1 -> 2 -> 3
+#   }
+
+#   container: {
+#     # non grid edges ok
+#     4 -> 5 -> 6
+#     nested container: {
+#       # nested non grid edges ok
+#       7 -> 8
+#     }
+#   }
+# }

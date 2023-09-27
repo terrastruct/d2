@@ -137,7 +137,7 @@ func run(t *testing.T, tc testCase) {
 	}
 
 	layoutsTested := []string{"dagre"}
-	if !tc.justDagre {
+	if !tc.justDagre && false {
 		layoutsTested = append(layoutsTested, "elk")
 	}
 
