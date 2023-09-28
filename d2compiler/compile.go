@@ -1137,8 +1137,8 @@ func (c *compiler) validateEdges(g *d2graph.Graph) {
 			}
 
 			if srcCell != dstCell && (!srcIsGridCell || !dstIsGridCell) {
-				c.errorf(edge.GetAstEdge(), "edge cannot exit grid cell %#v", srcCell.AbsID())
-				continue
+				// c.errorf(edge.GetAstEdge(), "edge cannot exit grid cell %#v", srcCell.AbsID())
+				// continue
 			}
 		}
 
