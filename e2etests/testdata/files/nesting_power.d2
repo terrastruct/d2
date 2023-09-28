@@ -55,6 +55,35 @@ l: Left Constant Near {
 
 center -> directions: default layout
 
+center: {
+  rectangle: {shape: "rectangle"}
+  square: {shape: "square"}
+  page: {shape: "page"}
+  parallelogram: {shape: "parallelogram"}
+  document: {shape: "document"}
+  cylinder: {shape: "cylinder"}
+  queue: {shape: "queue"}
+  package: {shape: "package"}
+  step: {shape: "step"}
+  callout: {shape: "callout"}
+  stored_data: {shape: "stored_data"}
+  person: {shape: "person"}
+  diamond: {shape: "diamond"}
+  oval: {shape: "oval"}
+  circle: {shape: "circle"}
+  hexagon: {shape: "hexagon"}
+  cloud: {shape: "cloud"}
+
+  rectangle -> square -> page
+  parallelogram -> document -> cylinder
+  queue -> package -> step
+  callout -> stored_data -> person
+  diamond -> oval -> circle
+  hexagon -> cloud
+
+  *.style.multiple: true
+}
+
 directions: {
   grid-rows: 3
 
@@ -90,8 +119,135 @@ r: Right Constant Near {
 
   grid-columns: 5
 
-  is -> constant.n -> and -> also.a -> grid
+  is -> constant.n -> and -> also.a -> grid: {class: green}
   constant.n: near
 }
 
-classes.green.style.stroke: green
+center -> seq: default layout
+
+seq: {
+  shape: sequence_diagram
+  scorer: {
+    style.stroke: red
+    style.stroke-width: 5
+  }
+
+  scorer.abc: {
+    style.fill: yellow
+    style.stroke-width: 7
+  }
+
+  scorer -> itemResponse.a: {
+    style.stroke-width: 10
+  }
+  itemResponse.a -> item.a.b
+  item.a.b -> essayRubric.a.b.c
+  essayRubric.a.b.c -> concept.a.b.c.d
+  item.a -> essayRubric.a.b
+  concept.a.b.c.d -> itemOutcome.a.b.c.d.e
+
+  scorer.abc -> item.a
+
+  itemOutcome.a.b.c.d.e -> scorer
+  scorer -> itemResponse.c
+}
+
+center -> more: default layout
+
+more: {
+  a_shape.shape: circle
+  a_sequence: {
+    shape: sequence_diagram
+
+    scorer.t -> itemResponse.t: getItem()
+    scorer.t <- itemResponse.t: item
+
+    scorer.t -> item.t1: getRubric()
+    scorer.t <- item.t1: rubric
+
+    scorer.t -> essayRubric.t: applyTo(essayResp)
+    itemResponse -> essayRubric.t.c
+    essayRubric.t.c -> concept.t: match(essayResponse)
+    scorer <- essayRubric.t: score
+  }
+
+  a_shape -> a_sequence
+  a_sequence -> sequence
+  a_shape -- finally
+
+  finally: {
+    shape: queue
+    sequence: {
+      shape: sequence_diagram
+      # items appear in this order
+      scorer: {
+        style.stroke: red
+        style.stroke-dash: 2
+      }
+      concept: {
+        style.stroke-width: 6
+      }
+      essayRubric
+      item
+      itemOutcome
+      itemResponse
+    }
+  }
+  finally -- sequence
+
+  # full path edges
+  finally.sequence.itemResponse.a -> finally.sequence.item.a.b
+  finally.sequence.item.a.b -> finally.sequence.essayRubric.a.b.c
+  finally.sequence.essayRubric.a.b.c -> finally.sequence.concept.a.b.c.d
+  finally.sequence.item.a -> finally.sequence.essayRubric.a.b
+  finally.sequence.concept.a.b.c.d -> finally.sequence.itemOutcome.a.b.c.d.e
+  finally.sequence.scorer.abc -> finally.sequence.item.a
+  finally.sequence.itemOutcome.a.b.c.d.e -> finally.sequence.scorer
+  finally.sequence.scorer -> finally.sequence.itemResponse.c
+
+  stylish: {
+    grid-rows: 2
+    vertical-gap: 50
+    x: {
+      style: {
+        opacity: 0.6
+        fill: orange
+        stroke: "#53C0D8"
+        stroke-width: 5
+        shadow: true
+      }
+    }
+
+    y: {
+      style: {
+        stroke-dash: 5
+        opacity: 0.6
+        fill: red
+        3d: true
+        stroke: black
+      }
+    }
+
+    x -> y: in style {
+      style: {
+        stroke: green
+        opacity: 0.5
+        stroke-width: 2
+        stroke-dash: 5
+        fill: lavender
+      }
+    }
+  }
+  stylish.y -> a_sequence: {class: green}
+}
+
+more.a_sequence -> directions.v.d.4: {class: green}
+directions.l.2 -> center.step: {class: green}
+center.step -> more.stylish.x: {class: green}
+
+center.cloud -> more.stylish
+
+classes.green.style: {
+  stroke: green
+  stroke-width: 5
+}
