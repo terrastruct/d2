@@ -1,3 +1,17 @@
-grid-columns: 2
+classes.red.style.stroke: red
+grid: {
+  grid-columns: 2
+  grid-gap: 10
 
-1.a -> 2.b
+  cell 1.a -> cell 2.b -> cell 3.c.d: {
+    class: red
+  }
+
+  cell 3: {
+    c -> e
+    c.d -> f.g
+  }
+  cell 3.f.g -> cell 1.a: {
+    class: red
+  }
+}
