@@ -14,7 +14,9 @@ import (
 	"oss.terrastruct.com/d2/d2layouts/d2near"
 	"oss.terrastruct.com/d2/d2layouts/d2sequence"
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/log"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type DiagramType string
@@ -80,6 +82,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 	// Before we can layout these nodes, we need to handle all nested diagrams first.
 	extracted := make(map[string]*d2graph.Graph)
 	var extractedOrder []string
+	var extractedEdges []*d2graph.Edge
 
 	var constantNears []*d2graph.Graph
 	restoreOrder := SaveOrder(g)
@@ -100,7 +103,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 		if isGridCellContainer && gi.isDefault() {
 			// if we are in a grid diagram, and our children have descendants
 			// we need to run layout on them first, even if they are not special diagram types
-			nestedGraph := ExtractSubgraph(curr, true)
+			nestedGraph, externalEdges := ExtractSubgraph(curr, true)
 			id := curr.AbsID()
 			err := LayoutNested(ctx, nestedGraph, GraphInfo{}, coreLayout)
 			if err != nil {
@@ -108,6 +111,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			}
 
 			InjectNested(g.Root, nestedGraph, false)
+			g.Edges = append(g.Edges, externalEdges...)
 			restoreOrder()
 
 			// need to update curr *Object incase layout changed it
@@ -138,7 +142,8 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			}
 
 			// now we keep the descendants out until after grid layout
-			nestedGraph = ExtractSubgraph(curr, false)
+			nestedGraph, externalEdges = ExtractSubgraph(curr, false)
+			extractedEdges = append(extractedEdges, externalEdges...)
 
 			extracted[id] = nestedGraph
 			extractedOrder = append(extractedOrder, id)
@@ -152,7 +157,8 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			}
 
 			// There is a nested diagram here, so extract its contents and process in the same way
-			nestedGraph := ExtractSubgraph(curr, gi.IsConstantNear)
+			nestedGraph, externalEdges := ExtractSubgraph(curr, gi.IsConstantNear)
+			extractedEdges = append(extractedEdges, externalEdges...)
 
 			log.Info(ctx, "layout nested", slog.F("level", curr.Level()), slog.F("child", curr.AbsID()), slog.F("gi", gi))
 			nestedInfo := gi
@@ -246,6 +252,17 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 		PositionNested(obj, nestedGraph)
 	}
 
+	// Restore cross-graph edges and route them
+	g.Edges = append(g.Edges, extractedEdges...)
+	for _, e := range extractedEdges {
+		// simple straight line edge routing when going across graphs
+		e.Route = []*geo.Point{e.Src.Center(), e.Dst.Center()}
+		e.TraceToShape(e.Route, 0, 1)
+		if e.Label.Value != "" {
+			e.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+		}
+	}
+
 	log.Debug(ctx, "done", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
 	return err
 }
@@ -262,10 +279,10 @@ func NestedGraphInfo(obj *d2graph.Object) (gi GraphInfo) {
 	return gi
 }
 
-func ExtractSubgraph(container *d2graph.Object, includeSelf bool) *d2graph.Graph {
+func ExtractSubgraph(container *d2graph.Object, includeSelf bool) (nestedGraph *d2graph.Graph, externalEdges []*d2graph.Edge) {
 	// includeSelf: when we have a constant near or a grid cell that is a container,
 	// we want to include itself in the nested graph, not just its descendants,
-	nestedGraph := d2graph.NewGraph()
+	nestedGraph = d2graph.NewGraph()
 	nestedGraph.RootLevel = int(container.Level())
 	if includeSelf {
 		nestedGraph.RootLevel--
@@ -284,8 +301,12 @@ func ExtractSubgraph(container *d2graph.Object, includeSelf bool) *d2graph.Graph
 	g := container.Graph
 	remainingEdges := make([]*d2graph.Edge, 0, len(g.Edges))
 	for _, edge := range g.Edges {
-		if isNestedObject(edge.Src) && isNestedObject(edge.Dst) {
+		srcIsNested := isNestedObject(edge.Src)
+		dstIsNested := isNestedObject(edge.Dst)
+		if srcIsNested && dstIsNested {
 			nestedGraph.Edges = append(nestedGraph.Edges, edge)
+		} else if srcIsNested || dstIsNested {
+			externalEdges = append(externalEdges, edge)
 		} else {
 			remainingEdges = append(remainingEdges, edge)
 		}
@@ -333,7 +354,7 @@ func ExtractSubgraph(container *d2graph.Object, includeSelf bool) *d2graph.Graph
 		container.ChildrenArray = nil
 	}
 
-	return nestedGraph
+	return nestedGraph, externalEdges
 }
 
 func InjectNested(container *d2graph.Object, nestedGraph *d2graph.Graph, isRoot bool) {
