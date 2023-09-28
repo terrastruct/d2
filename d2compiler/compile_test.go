@@ -2495,17 +2495,29 @@ d2/testdata/d2compiler/TestCompile/grid_edge.d2:7:2: edges into grid diagrams ar
 	a -> b: ok
 	b: {
 		c -> d: ok now
+		c.e -> c.f.g: ok
+		c.e -> d.h: ok
+		c -> d.h: ok
 	}
 	a: {
 		grid-columns: 1
 		e -> f: also ok now
+		e: {
+			g -> h: ok
+			g -> h.h: ok
+		}
+		e -> f.i: not ok
+		e.g -> f.i: not ok
 	}
 	a -> b.c: not yet
 	a.e -> b.c: also not yet
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:11:2: edges from grid diagram must be external
-d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:12:2: edges into grid diagrams are not supported yet`,
+			expErr: `
+d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:17:3: grid cell "hey.a.e" can only connect to another grid cell
+d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:18:2: edge cannot go outside of grid cell "hey.a.e"
+d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:20:2: grid cell "hey.a" can only connect to another grid cell
+d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:21:2: edges into grid diagrams are not supported yet`,
 		},
 		{
 			name: "grid_nested",

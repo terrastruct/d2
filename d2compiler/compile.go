@@ -1098,29 +1098,42 @@ func (c *compiler) validateEdges(g *d2graph.Graph) {
 				c.errorf(edge.GetAstEdge(), "edges into grid diagrams are not supported yet")
 				continue
 			}
+
+			// edges within a grid cell are ok now
+			//   grid.cell.a -> grid.cell.b : ok
+			//   grid.cell.a.c -> grid.cell.b.d : ok
+			// edges between grid cells themselves are ok
+			//   grid.cell -> grid.cell2 : ok
+			//   grid.cell -> grid.cell.inside : not ok
+			//   grid.cell -> grid.cell2.inside : not ok
+			srcIsGridCell := edge.Src.Parent.IsGridDiagram()
+			dstIsGridCell := edge.Dst.Parent.IsGridDiagram()
+			// if srcIsGridCell && dstIsGridCell {
+			// 	if edge.Src.Parent != edge.Dst.Parent {
+
+			// 	}
+			// }
+
+			if srcIsGridCell != dstIsGridCell {
+				if srcIsGridCell {
+					c.errorf(edge.GetAstEdge(), "grid cell %#v can only connect to another grid cell", edge.Src.AbsID())
+				} else {
+					c.errorf(edge.GetAstEdge(), "grid cell %#v can only connect to another grid cell", edge.Dst.AbsID())
+				}
+				continue
+			}
 		}
 
-		// edges within a grid cell are ok now
-		// edges between grid cells are ok now
 		// edges from a grid to something outside is ok
-		// but edges from a grid cell must be to another grid cell
-
-		// TODO
-		// grid -> outside : ok
-		// grid -> grid.cell : not ok
-		// grid.cell -> grid.cell2 : ok
-		// grid.cell -> grid.cell2.inside : not ok
-
-		if edge.Src.IsGridDiagram() {
-			// TODO
-			c.errorf(edge.GetAstEdge(), "edges from grid diagram must be external")
+		//   grid -> outside : ok
+		//   grid -> grid.cell : not ok
+		//   grid -> grid.cell.inner : not ok
+		if (edge.Src.IsGridDiagram() && edge.Dst.IsDescendantOf(edge.Src)) ||
+			(edge.Dst.IsGridDiagram() && edge.Src.IsDescendantOf(edge.Dst)) {
+			c.errorf(edge.GetAstEdge(), "edges from grid diagram container must be external")
 			continue
 		}
-		if edge.Dst.IsGridDiagram() {
-			// TODO
-			c.errorf(edge.GetAstEdge(), "edges from grid diagram must be external")
-			continue
-		}
+
 	}
 }
 
