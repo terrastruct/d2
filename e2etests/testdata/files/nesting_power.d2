@@ -1,12 +1,97 @@
-tl: Top Left Constant Near {
-  near: top-left
+l: Left Constant Near {
+  direction: right
+  near: center-left
 
   default -> layout -> here
+  default: {
+    direction: right
+    dagre -- elk -- tala: or
+  }
+  default.* -> layout: runs this
 
   here: {
     grid-columns: 3
 
     this -> is
-    is -> grid: a
+
+    this: {
+      grid-rows: 5
+      row 1 -> row 2 -> row 3 -> row 4 -> row 5
+    }
+
+    is -> grid: A {style.font-size: 24}
+
+    grid: {
+      shape: sequence_diagram
+
+      with -> a -> sequence diagram -> you can
+
+      you can: {
+        grid-rows: 2
+        grid-columns: 2
+        grid-gap: 0
+
+        have
+        another
+        grid: {
+          grid-rows: 3
+          horizontal-gap: 10
+          vertical-gap: 20
+          1 -> 2 -> 3
+        }
+
+        here and: {
+          shape: sequence_diagram
+          continue -> nesting
+        }
+      }
+    }
+    this.row 2 -> is.child of is.grandchild: {class: green}
+    # this.row 2 -> grid.you can
+  }
+  here.this.row 5 -> default.dagre: straight edge across {class: green}
+  here.this.row 1 <- default.tala: straight edge across nested types {class: green}
+}
+
+center -> directions: default layout
+
+directions: {
+  grid-rows: 3
+
+  r: right {
+    direction: right
+    1 -> 2 -> 3
+    2 -> 4
+  }
+  l: left {
+    direction: left
+    1 -> 2 -> 3
+    2 -> 4
+  }
+  v: "" {
+    grid-columns: 2
+    grid-gap: 0
+    u: up {
+      direction: up
+      1 -> 2 -> 3
+      2 -> 4
+    }
+    d: down {
+      direction: down
+      1 -> 2 -> 3
+      2 -> 4
+    }
   }
 }
+
+# center -> tl
+r: Right Constant Near {
+  near: center-right
+
+  grid-columns: 5
+
+  is -> constant.n -> and -> also.a -> grid
+  constant.n: near
+}
+
+classes.green.style.stroke: green
