@@ -2494,16 +2494,18 @@ d2/testdata/d2compiler/TestCompile/grid_edge.d2:7:2: edges into grid diagrams ar
 	grid-rows: 1
 	a -> b: ok
 	b: {
-		c -> d: not yet
+		c -> d: ok now
 	}
 	a: {
 		grid-columns: 1
-		e -> f: also not yet
+		e -> f: also ok now
 	}
+	a -> b.c: not yet
+	a.e -> b.c: also not yet
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:9:3: edge must be on direct child of grid diagram "hey"
-d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:5:3: grid diagrams can only have edges between children right now`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:11:2: edges from grid diagram must be external
+d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:12:2: edges into grid diagrams are not supported yet`,
 		},
 		{
 			name: "grid_nested",
