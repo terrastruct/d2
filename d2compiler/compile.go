@@ -1092,18 +1092,20 @@ func (c *compiler) validateEdges(g *d2graph.Graph) {
 		srcGrid := edge.Src.Parent.ClosestGridDiagram()
 		dstGrid := edge.Dst.Parent.ClosestGridDiagram()
 		if srcGrid != nil || dstGrid != nil {
-			if top := srcGrid.TopGridDiagram(); srcGrid != top {
-				// valid: grid.child1 -> grid.child2
-				// invalid: grid.childGrid.child1 -> grid.childGrid.child2
-				c.errorf(edge.GetAstEdge(), "edge must be on direct child of grid diagram %#v", top.AbsID())
-				continue
-			}
-			if top := dstGrid.TopGridDiagram(); dstGrid != top {
-				// valid: grid.child1 -> grid.child2
-				// invalid: grid.childGrid.child1 -> grid.childGrid.child2
-				c.errorf(edge.GetAstEdge(), "edge must be on direct child of grid diagram %#v", top.AbsID())
-				continue
-			}
+			// TODO cleanup
+			// if top := srcGrid.TopGridDiagram(); srcGrid != top {
+			// 	// valid: grid.child1 -> grid.child2
+			// 	// invalid: grid.childGrid.child1 -> grid.childGrid.child2
+			// 	c.errorf(edge.GetAstEdge(), "edge must be on direct child of grid diagram %#v", top.AbsID())
+			// 	continue
+			// }
+			// if top := dstGrid.TopGridDiagram(); dstGrid != top {
+			// 	// valid: grid.child1 -> grid.child2
+			// 	// invalid: grid.childGrid.child1 -> grid.childGrid.child2
+			// 	c.errorf(edge.GetAstEdge(), "edge must be on direct child of grid diagram %#v", top.AbsID())
+			// 	continue
+			// }
+
 			if srcGrid != dstGrid {
 				// valid: a -> grid
 				// invalid: a -> grid.child
