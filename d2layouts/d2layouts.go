@@ -234,27 +234,43 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 		}
 	}
 
+	idToObj := make(map[string]*d2graph.Object)
+	for _, o := range g.Objects {
+		idToObj[o.AbsID()] = o
+	}
+
 	// With the layout set, inject all the extracted graphs
 	for _, id := range extractedOrder {
 		nestedGraph := extracted[id]
 		// we have to find the object by ID because coreLayout can replace the Objects in graph
-		var obj *d2graph.Object
-		for _, o := range g.Objects {
-			if o.AbsID() == id {
-				obj = o
-				break
-			}
-		}
-		if obj == nil {
+		obj, exists := idToObj[id]
+		if !exists {
 			return fmt.Errorf("could not find object %#v after layout", id)
 		}
 		InjectNested(obj, nestedGraph, true)
 		PositionNested(obj, nestedGraph)
 	}
 
+	// update map with injected objects
+	for _, o := range g.Objects {
+		idToObj[o.AbsID()] = o
+	}
+
 	// Restore cross-graph edges and route them
 	g.Edges = append(g.Edges, extractedEdges...)
 	for _, e := range extractedEdges {
+		// update object references
+		src, exists := idToObj[e.Src.AbsID()]
+		if !exists {
+			return fmt.Errorf("could not find object %#v after layout", e.Src.AbsID())
+		}
+		e.Src = src
+		dst, exists := idToObj[e.Dst.AbsID()]
+		if !exists {
+			return fmt.Errorf("could not find object %#v after layout", e.Dst.AbsID())
+		}
+		e.Dst = dst
+
 		// simple straight line edge routing when going across graphs
 		e.Route = []*geo.Point{e.Src.Center(), e.Dst.Center()}
 		e.TraceToShape(e.Route, 0, 1)
