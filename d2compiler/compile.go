@@ -1092,35 +1092,34 @@ func (c *compiler) validateEdges(g *d2graph.Graph) {
 		srcGrid := edge.Src.Parent.ClosestGridDiagram()
 		dstGrid := edge.Dst.Parent.ClosestGridDiagram()
 		if srcGrid != nil || dstGrid != nil {
-			// TODO cleanup
-			// if top := srcGrid.TopGridDiagram(); srcGrid != top {
-			// 	// valid: grid.child1 -> grid.child2
-			// 	// invalid: grid.childGrid.child1 -> grid.childGrid.child2
-			// 	c.errorf(edge.GetAstEdge(), "edge must be on direct child of grid diagram %#v", top.AbsID())
-			// 	continue
-			// }
-			// if top := dstGrid.TopGridDiagram(); dstGrid != top {
-			// 	// valid: grid.child1 -> grid.child2
-			// 	// invalid: grid.childGrid.child1 -> grid.childGrid.child2
-			// 	c.errorf(edge.GetAstEdge(), "edge must be on direct child of grid diagram %#v", top.AbsID())
-			// 	continue
-			// }
-
 			if srcGrid != dstGrid {
 				// valid: a -> grid
 				// invalid: a -> grid.child
 				c.errorf(edge.GetAstEdge(), "edges into grid diagrams are not supported yet")
 				continue
 			}
+		}
 
-			// TODO cleanup
-			if srcGrid != edge.Src.Parent || dstGrid != edge.Dst.Parent {
-				// valid: grid.child1 -> grid.child2
-				// invalid: grid.child1 -> grid.child2.child1
+		// edges within a grid cell are ok now
+		// edges between grid cells are ok now
+		// edges from a grid to something outside is ok
+		// but edges from a grid cell must be to another grid cell
 
-				// c.errorf(edge.GetAstEdge(), "grid diagrams can only have edges between children right now")
-				continue
-			}
+		// TODO
+		// grid -> outside : ok
+		// grid -> grid.cell : not ok
+		// grid.cell -> grid.cell2 : ok
+		// grid.cell -> grid.cell2.inside : not ok
+
+		if edge.Src.IsGridDiagram() {
+			// TODO
+			c.errorf(edge.GetAstEdge(), "edges from grid diagram must be external")
+			continue
+		}
+		if edge.Dst.IsGridDiagram() {
+			// TODO
+			c.errorf(edge.GetAstEdge(), "edges from grid diagram must be external")
+			continue
 		}
 	}
 }
