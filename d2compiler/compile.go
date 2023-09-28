@@ -1108,11 +1108,11 @@ func (c *compiler) validateEdges(g *d2graph.Graph) {
 			if srcGrid != dstGrid {
 				// valid: a -> grid
 				// invalid: a -> grid.child
-				if dstGrid != nil && !(srcGrid != nil && srcGrid.IsDescendantOf(dstGrid)) {
-					c.errorf(edge.GetAstEdge(), "edge cannot enter grid diagram %#v", dstGrid.AbsID())
-				} else {
-					c.errorf(edge.GetAstEdge(), "edge cannot exit grid diagram %#v", srcGrid.AbsID())
-				}
+				// if dstGrid != nil && !(srcGrid != nil && srcGrid.IsDescendantOf(dstGrid)) {
+				// 	c.errorf(edge.GetAstEdge(), "edge cannot enter grid diagram %#v", dstGrid.AbsID())
+				// } else {
+				// 	c.errorf(edge.GetAstEdge(), "edge cannot exit grid diagram %#v", srcGrid.AbsID())
+				// }
 				continue
 			}
 
@@ -1128,12 +1128,12 @@ func (c *compiler) validateEdges(g *d2graph.Graph) {
 			srcIsGridCell := edge.Src == srcCell
 			dstIsGridCell := edge.Dst == dstCell
 			if srcIsGridCell != dstIsGridCell {
-				if srcIsGridCell {
-					c.errorf(edge.GetAstEdge(), "grid cell %#v can only connect to another grid cell", edge.Src.AbsID())
-				} else {
-					c.errorf(edge.GetAstEdge(), "grid cell %#v can only connect to another grid cell", edge.Dst.AbsID())
-				}
-				continue
+				// if srcIsGridCell {
+				// 	c.errorf(edge.GetAstEdge(), "grid cell %#v can only connect to another grid cell", edge.Src.AbsID())
+				// } else {
+				// 	c.errorf(edge.GetAstEdge(), "grid cell %#v can only connect to another grid cell", edge.Dst.AbsID())
+				// }
+				// continue
 			}
 
 			if srcCell != dstCell && (!srcIsGridCell || !dstIsGridCell) {
