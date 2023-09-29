@@ -318,6 +318,15 @@ func ExtractSubgraph(container *d2graph.Object, includeSelf bool) (nestedGraph *
 	remainingEdges := make([]*d2graph.Edge, 0, len(g.Edges))
 	for _, edge := range g.Edges {
 		srcIsNested := isNestedObject(edge.Src)
+		if d2sequence.IsLifelineEnd(edge.Dst) {
+			// special handling for lifelines since their edge.Dst is a special Object
+			if srcIsNested {
+				nestedGraph.Edges = append(nestedGraph.Edges, edge)
+			} else {
+				remainingEdges = append(remainingEdges, edge)
+			}
+			continue
+		}
 		dstIsNested := isNestedObject(edge.Dst)
 		if srcIsNested && dstIsNested {
 			nestedGraph.Edges = append(nestedGraph.Edges, edge)
