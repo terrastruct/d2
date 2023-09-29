@@ -1102,6 +1102,14 @@ func (c *compiler) validateEdges(g *d2graph.Graph) {
 			c.errorf(edge.GetAstEdge(), "edge from grid cell %#v cannot enter itself", edge.Dst.AbsID())
 			continue
 		}
+		if edge.Src.IsSequenceDiagram() && edge.Dst.IsDescendantOf(edge.Src) {
+			c.errorf(edge.GetAstEdge(), "edge from sequence diagram %#v cannot enter itself", edge.Src.AbsID())
+			continue
+		}
+		if edge.Dst.IsSequenceDiagram() && edge.Src.IsDescendantOf(edge.Dst) {
+			c.errorf(edge.GetAstEdge(), "edge from sequence diagram %#v cannot enter itself", edge.Dst.AbsID())
+			continue
+		}
 	}
 }
 
