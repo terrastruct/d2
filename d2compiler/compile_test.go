@@ -2515,6 +2515,38 @@ hey -> c: ok
 			expErr: `d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:22:2: edge from grid diagram "hey.a" cannot enter itself`,
 		},
 		{
+			name: "parent_graph_edge_to_descendant",
+			text: `tl: {
+	near: top-left
+	a.b
+}
+grid: {
+	grid-rows: 1
+	cell.c.d
+}
+seq: {
+	shape: sequence_diagram
+	e.f
+}
+tl -> tl.a: no
+tl -> tl.a.b: no
+grid-> grid.cell: no
+grid-> grid.cell.c: no
+grid.cell -> grid.cell.c: no
+grid.cell -> grid.cell.c.d: no
+seq -> seq.e: no
+seq -> seq.e.f: no
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:13:1: edge from constant near "tl" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:14:1: edge from constant near "tl" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:17:1: edge from grid cell "grid.cell" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:18:1: edge from grid cell "grid.cell" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:15:1: edge from grid diagram "grid" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:16:1: edge from grid diagram "grid" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:19:1: edge from sequence diagram "seq" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:20:1: edge from sequence diagram "seq" cannot enter itself`,
+		},
+		{
 			name: "grid_nested",
 			text: `hey: {
 	grid-rows: 200
