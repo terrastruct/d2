@@ -24,7 +24,7 @@ l: Left Constant Near {
     grid: {
       shape: sequence_diagram
 
-      with -> a -> sequence diagram -> you can
+      with -> a -> sequence diagram.x -> you can
 
       you can: {
         grid-rows: 2
@@ -45,6 +45,7 @@ l: Left Constant Near {
           continue -> nesting
         }
       }
+      you can.here and.nesting -> sequence diagram.x: {class: green}
     }
     this.row 2 -> is.child of is.grandchild: {class: green}
     # this.row 2 -> grid.you can
@@ -246,6 +247,9 @@ more: {
 more.container.a_sequence -> directions.v.d.4: {class: green}
 directions.l.2 -> center.step: {class: green}
 center.step -> more.stylish.x: {class: green}
+directions.l.1 -> seq.item.a.b: to inside sequence diagram {class: green}
+directions.l.1 -> seq.itemResponse.a: to inside sequence diagram {class: green}
+directions.v.d.2 -> seq.scorer.abc: to inside sequence diagram {class: green}
 
 center.cloud -> more.stylish: {class: green}
 more.container.a_shape -> r.is: to constant near {class: green}

@@ -1226,7 +1226,7 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 	dst := obj.ensureChildEdge(dstID)
 
 	if src.OuterSequenceDiagram() != dst.OuterSequenceDiagram() {
-		return nil, errors.New("connections within sequence diagrams can connect only to other objects within the same sequence diagram")
+		// return nil, errors.New("connections within sequence diagrams can connect only to other objects within the same sequence diagram")
 	}
 
 	e := &Edge{

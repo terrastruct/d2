@@ -1083,6 +1083,14 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 		if (isSrcNearConst || isDstNearConst) && srcNearContainer != dstNearContainer {
 			// c.errorf(edge.References[0].Edge, "cannot connect objects from within a container, that has near constant set, to objects outside that container")
 		}
+		if edge.Src.IsConstantNear() && edge.Dst.IsDescendantOf(edge.Src) {
+			c.errorf(edge.GetAstEdge(), "edge from constant near %#v cannot enter itself", edge.Src.AbsID())
+			continue
+		}
+		if edge.Dst.IsConstantNear() && edge.Src.IsDescendantOf(edge.Dst) {
+			c.errorf(edge.GetAstEdge(), "edge from constant near %#v cannot enter itself", edge.Dst.AbsID())
+			continue
+		}
 	}
 
 }
