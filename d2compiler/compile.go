@@ -1081,7 +1081,7 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 		}
 
 		if (isSrcNearConst || isDstNearConst) && srcNearContainer != dstNearContainer {
-			c.errorf(edge.References[0].Edge, "cannot connect objects from within a container, that has near constant set, to objects outside that container")
+			// c.errorf(edge.References[0].Edge, "cannot connect objects from within a container, that has near constant set, to objects outside that container")
 		}
 	}
 
@@ -1099,6 +1099,14 @@ func (c *compiler) validateEdges(g *d2graph.Graph) {
 		}
 		if edge.Dst.IsGridDiagram() && edge.Src.IsDescendantOf(edge.Dst) {
 			c.errorf(edge.GetAstEdge(), "edge from grid diagram %#v cannot enter itself", edge.Dst.AbsID())
+			continue
+		}
+		if edge.Src.Parent.IsGridDiagram() && edge.Dst.IsDescendantOf(edge.Src) {
+			c.errorf(edge.GetAstEdge(), "edge from grid cell %#v cannot enter itself", edge.Src.AbsID())
+			continue
+		}
+		if edge.Dst.Parent.IsGridDiagram() && edge.Src.IsDescendantOf(edge.Dst) {
+			c.errorf(edge.GetAstEdge(), "edge from grid cell %#v cannot enter itself", edge.Dst.AbsID())
 			continue
 		}
 
