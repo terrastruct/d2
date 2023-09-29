@@ -1225,10 +1225,6 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 	src := obj.ensureChildEdge(srcID)
 	dst := obj.ensureChildEdge(dstID)
 
-	if src.OuterSequenceDiagram() != dst.OuterSequenceDiagram() {
-		// return nil, errors.New("connections within sequence diagrams can connect only to other objects within the same sequence diagram")
-	}
-
 	e := &Edge{
 		Attributes: Attributes{
 			Label: Scalar{

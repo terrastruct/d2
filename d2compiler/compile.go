@@ -1068,21 +1068,6 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 	}
 
 	for _, edge := range g.Edges {
-		srcNearContainer := edge.Src.OuterNearContainer()
-		dstNearContainer := edge.Dst.OuterNearContainer()
-
-		var isSrcNearConst, isDstNearConst bool
-
-		if srcNearContainer != nil {
-			_, isSrcNearConst = d2graph.NearConstants[d2graph.Key(srcNearContainer.NearKey)[0]]
-		}
-		if dstNearContainer != nil {
-			_, isDstNearConst = d2graph.NearConstants[d2graph.Key(dstNearContainer.NearKey)[0]]
-		}
-
-		if (isSrcNearConst || isDstNearConst) && srcNearContainer != dstNearContainer {
-			// c.errorf(edge.References[0].Edge, "cannot connect objects from within a container, that has near constant set, to objects outside that container")
-		}
 		if edge.Src.IsConstantNear() && edge.Dst.IsDescendantOf(edge.Src) {
 			c.errorf(edge.GetAstEdge(), "edge from constant near %#v cannot enter itself", edge.Src.AbsID())
 			continue
@@ -1117,47 +1102,6 @@ func (c *compiler) validateEdges(g *d2graph.Graph) {
 			c.errorf(edge.GetAstEdge(), "edge from grid cell %#v cannot enter itself", edge.Dst.AbsID())
 			continue
 		}
-
-		srcGrid := edge.Src.Parent.ClosestGridDiagram()
-		dstGrid := edge.Dst.Parent.ClosestGridDiagram()
-		if srcGrid != nil || dstGrid != nil {
-			if srcGrid != dstGrid {
-				// valid: a -> grid
-				// invalid: a -> grid.child
-				// if dstGrid != nil && !(srcGrid != nil && srcGrid.IsDescendantOf(dstGrid)) {
-				// 	c.errorf(edge.GetAstEdge(), "edge cannot enter grid diagram %#v", dstGrid.AbsID())
-				// } else {
-				// 	c.errorf(edge.GetAstEdge(), "edge cannot exit grid diagram %#v", srcGrid.AbsID())
-				// }
-				continue
-			}
-
-			srcCell := edge.Src.ClosestGridCell()
-			dstCell := edge.Dst.ClosestGridCell()
-			// edges within a grid cell are ok now
-			//   grid.cell.a -> grid.cell.b : ok
-			//   grid.cell.a.c -> grid.cell.b.d : ok
-			// edges between grid cells themselves are ok
-			//   grid.cell -> grid.cell2 : ok
-			//   grid.cell -> grid.cell.inside : not ok
-			//   grid.cell -> grid.cell2.inside : not ok
-			srcIsGridCell := edge.Src == srcCell
-			dstIsGridCell := edge.Dst == dstCell
-			if srcIsGridCell != dstIsGridCell {
-				// if srcIsGridCell {
-				// 	c.errorf(edge.GetAstEdge(), "grid cell %#v can only connect to another grid cell", edge.Src.AbsID())
-				// } else {
-				// 	c.errorf(edge.GetAstEdge(), "grid cell %#v can only connect to another grid cell", edge.Dst.AbsID())
-				// }
-				// continue
-			}
-
-			if srcCell != dstCell && (!srcIsGridCell || !dstIsGridCell) {
-				// c.errorf(edge.GetAstEdge(), "edge cannot exit grid cell %#v", srcCell.AbsID())
-				// continue
-			}
-		}
-
 	}
 }
 
