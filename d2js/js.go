@@ -210,7 +210,9 @@ func jsParse(this js.Value, args []js.Value) interface{} {
 		}
 	}
 
-	m, err := d2parser.Parse("", strings.NewReader(dsl), nil)
+	m, err := d2parser.Parse("", strings.NewReader(dsl), &d2parser.ParseOptions{
+		UTF16Pos: true,
+	})
 	if err != nil {
 		return err
 	}
