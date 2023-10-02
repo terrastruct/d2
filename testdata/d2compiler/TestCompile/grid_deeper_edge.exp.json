@@ -3,12 +3,24 @@
   "err": {
     "errs": [
       {
-        "range": "d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2,8:2:86-8:8:92",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:9:3: edge must be on direct child of grid diagram \"hey\""
+        "range": "d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2,16:2:199-16:10:207",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:17:3: grid cell \"hey.a.e\" can only connect to another grid cell"
       },
       {
-        "range": "d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2,4:2:41-4:8:47",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:5:3: grid diagrams can only have edges between children right now"
+        "range": "d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2,17:2:218-17:12:228",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:18:3: edge cannot exit grid cell \"hey.a.e\""
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2,19:1:241-19:9:249",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:20:2: grid cell \"hey.a\" can only connect to another grid cell"
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2,20:1:260-20:11:270",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:21:2: edge cannot exit grid diagram \"hey.a\""
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2,21:1:286-21:9:294",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:22:2: edge from grid diagram \"hey.a\" cannot enter itself"
       }
     ]
   }

@@ -2478,15 +2478,15 @@ d2/testdata/d2compiler/TestCompile/grid_gap_negative.d2:3:16: vertical-gap must 
 	grid-rows: 1
 	a -> b: ok
 }
-	c -> hey.b
-	hey.a -> c
-	hey -> hey.a
+c -> hey.b
+hey.a -> c
+hey -> hey.a
 
-	hey -> c: ok
+hey -> c: ok
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/grid_edge.d2:5:2: edges into grid diagrams are not supported yet
-d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:2: edges into grid diagrams are not supported yet
-d2/testdata/d2compiler/TestCompile/grid_edge.d2:7:2: edges into grid diagrams are not supported yet`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_edge.d2:5:1: edge cannot enter grid diagram "hey"
+d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:1: edge cannot exit grid diagram "hey"
+d2/testdata/d2compiler/TestCompile/grid_edge.d2:7:1: edge from grid diagram "hey" cannot enter itself`,
 		},
 		{
 			name: "grid_deeper_edge",
@@ -2494,16 +2494,31 @@ d2/testdata/d2compiler/TestCompile/grid_edge.d2:7:2: edges into grid diagrams ar
 	grid-rows: 1
 	a -> b: ok
 	b: {
-		c -> d: not yet
+		c -> d: ok now
+		c.e -> c.f.g: ok
+		c.e -> d.h: ok
+		c -> d.h: ok
 	}
 	a: {
 		grid-columns: 1
-		e -> f: also not yet
+		e -> f: also ok now
+		e: {
+			g -> h: ok
+			g -> h.h: ok
+		}
+		e -> f.i: not ok
+		e.g -> f.i: not ok
 	}
+	a -> b.c: not yet
+	a.e -> b.c: also not yet
+	a -> a.e: not ok
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:9:3: edge must be on direct child of grid diagram "hey"
-d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:5:3: grid diagrams can only have edges between children right now`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:17:3: grid cell "hey.a.e" can only connect to another grid cell
+d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:18:3: edge cannot exit grid cell "hey.a.e"
+d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:20:2: grid cell "hey.a" can only connect to another grid cell
+d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:21:2: edge cannot exit grid diagram "hey.a"
+d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:22:2: edge from grid diagram "hey.a" cannot enter itself`,
 		},
 		{
 			name: "grid_nested",

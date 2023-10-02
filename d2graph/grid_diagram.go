@@ -15,6 +15,17 @@ func (obj *Object) ClosestGridDiagram() *Object {
 	return obj.Parent.ClosestGridDiagram()
 }
 
+func (obj *Object) ClosestGridCell() *Object {
+	if obj == nil {
+		return nil
+	}
+	// grid cells can be a nested grid diagram
+	if obj.Parent.IsGridDiagram() {
+		return obj
+	}
+	return obj.Parent.ClosestGridCell()
+}
+
 // TopGridDiagram returns the least nested (outermost) grid diagram
 func (obj *Object) TopGridDiagram() *Object {
 	if obj == nil {

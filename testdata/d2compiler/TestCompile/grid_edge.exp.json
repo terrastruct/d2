@@ -3,16 +3,16 @@
   "err": {
     "errs": [
       {
-        "range": "d2/testdata/d2compiler/TestCompile/grid_edge.d2,4:1:36-4:11:46",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_edge.d2:5:2: edges into grid diagrams are not supported yet"
+        "range": "d2/testdata/d2compiler/TestCompile/grid_edge.d2,4:0:35-4:10:45",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_edge.d2:5:1: edge cannot enter grid diagram \"hey\""
       },
       {
-        "range": "d2/testdata/d2compiler/TestCompile/grid_edge.d2,5:1:48-5:11:58",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:2: edges into grid diagrams are not supported yet"
+        "range": "d2/testdata/d2compiler/TestCompile/grid_edge.d2,5:0:46-5:10:56",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:1: edge cannot exit grid diagram \"hey\""
       },
       {
-        "range": "d2/testdata/d2compiler/TestCompile/grid_edge.d2,6:1:60-6:13:72",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_edge.d2:7:2: edges into grid diagrams are not supported yet"
+        "range": "d2/testdata/d2compiler/TestCompile/grid_edge.d2,6:0:57-6:12:69",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_edge.d2:7:1: edge from grid diagram \"hey\" cannot enter itself"
       }
     ]
   }

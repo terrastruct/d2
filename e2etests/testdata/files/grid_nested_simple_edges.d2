@@ -8,18 +8,18 @@ outer-grid: {
 
   container: {
     label.near: top-left
-    # edges not yet supported here since they must be direct grid children
-    a
-    b
-    c
+    (** -> **)[*].class: red
+    # edges on grid descendant now supported
+    a -> b -> c -> a
+    d -> e -> g.h.i
+    d -> f -> g.h
+    b -> g
   }
 
   inner-grid: {
     grid-rows: 1
-    1
-    2
-    3
-    # edges here are not supported yet since this is inside another grid
+    # edges inside another grid now supported
+    1 -> 2 -> 3: {class: red}
   }
 }
 
@@ -41,3 +41,5 @@ outer-container: {
     }
   }
 }
+
+classes.red.style.stroke: red

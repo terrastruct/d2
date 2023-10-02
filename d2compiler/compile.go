@@ -1089,34 +1089,59 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 
 func (c *compiler) validateEdges(g *d2graph.Graph) {
 	for _, edge := range g.Edges {
+		// edges from a grid to something outside is ok
+		//   grid -> outside : ok
+		//   grid -> grid.cell : not ok
+		//   grid -> grid.cell.inner : not ok
+		if edge.Src.IsGridDiagram() && edge.Dst.IsDescendantOf(edge.Src) {
+			c.errorf(edge.GetAstEdge(), "edge from grid diagram %#v cannot enter itself", edge.Src.AbsID())
+			continue
+		}
+		if edge.Dst.IsGridDiagram() && edge.Src.IsDescendantOf(edge.Dst) {
+			c.errorf(edge.GetAstEdge(), "edge from grid diagram %#v cannot enter itself", edge.Dst.AbsID())
+			continue
+		}
+
 		srcGrid := edge.Src.Parent.ClosestGridDiagram()
 		dstGrid := edge.Dst.Parent.ClosestGridDiagram()
 		if srcGrid != nil || dstGrid != nil {
-			if top := srcGrid.TopGridDiagram(); srcGrid != top {
-				// valid: grid.child1 -> grid.child2
-				// invalid: grid.childGrid.child1 -> grid.childGrid.child2
-				c.errorf(edge.GetAstEdge(), "edge must be on direct child of grid diagram %#v", top.AbsID())
-				continue
-			}
-			if top := dstGrid.TopGridDiagram(); dstGrid != top {
-				// valid: grid.child1 -> grid.child2
-				// invalid: grid.childGrid.child1 -> grid.childGrid.child2
-				c.errorf(edge.GetAstEdge(), "edge must be on direct child of grid diagram %#v", top.AbsID())
-				continue
-			}
 			if srcGrid != dstGrid {
 				// valid: a -> grid
 				// invalid: a -> grid.child
-				c.errorf(edge.GetAstEdge(), "edges into grid diagrams are not supported yet")
+				if dstGrid != nil && !(srcGrid != nil && srcGrid.IsDescendantOf(dstGrid)) {
+					c.errorf(edge.GetAstEdge(), "edge cannot enter grid diagram %#v", dstGrid.AbsID())
+				} else {
+					c.errorf(edge.GetAstEdge(), "edge cannot exit grid diagram %#v", srcGrid.AbsID())
+				}
 				continue
 			}
-			if srcGrid != edge.Src.Parent || dstGrid != edge.Dst.Parent {
-				// valid: grid.child1 -> grid.child2
-				// invalid: grid.child1 -> grid.child2.child1
-				c.errorf(edge.GetAstEdge(), "grid diagrams can only have edges between children right now")
+
+			srcCell := edge.Src.ClosestGridCell()
+			dstCell := edge.Dst.ClosestGridCell()
+			// edges within a grid cell are ok now
+			//   grid.cell.a -> grid.cell.b : ok
+			//   grid.cell.a.c -> grid.cell.b.d : ok
+			// edges between grid cells themselves are ok
+			//   grid.cell -> grid.cell2 : ok
+			//   grid.cell -> grid.cell.inside : not ok
+			//   grid.cell -> grid.cell2.inside : not ok
+			srcIsGridCell := edge.Src == srcCell
+			dstIsGridCell := edge.Dst == dstCell
+			if srcIsGridCell != dstIsGridCell {
+				if srcIsGridCell {
+					c.errorf(edge.GetAstEdge(), "grid cell %#v can only connect to another grid cell", edge.Src.AbsID())
+				} else {
+					c.errorf(edge.GetAstEdge(), "grid cell %#v can only connect to another grid cell", edge.Dst.AbsID())
+				}
+				continue
+			}
+
+			if srcCell != dstCell && (!srcIsGridCell || !dstIsGridCell) {
+				c.errorf(edge.GetAstEdge(), "edge cannot exit grid cell %#v", srcCell.AbsID())
 				continue
 			}
 		}
+
 	}
 }
 
