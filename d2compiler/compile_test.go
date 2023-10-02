@@ -1616,7 +1616,7 @@ d2/testdata/d2compiler/TestCompile/near-invalid.d2:14:9: near keys cannot be set
 				}
 				x -> y
 			`,
-			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_connected.d2:5:5: cannot connect objects from within a container, that has near constant set, to objects outside that container`,
+			expErr: ``,
 		},
 		{
 			name: "near_descendant_connect_to_outside",
@@ -1627,7 +1627,7 @@ d2/testdata/d2compiler/TestCompile/near-invalid.d2:14:9: near keys cannot be set
 				}
 				x.y -> z
 			`,
-			expErr: "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2:6:5: cannot connect objects from within a container, that has near constant set, to objects outside that container",
+			expErr: "",
 		},
 		{
 			name: "nested_near_constant",
@@ -2040,7 +2040,7 @@ b
 }
 b -> x.a
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/leaky_sequence.d2:5:1: connections within sequence diagrams can connect only to other objects within the same sequence diagram`,
+			expErr: ``,
 		},
 		{
 			name: "sequence_scoping",
@@ -2484,9 +2484,7 @@ hey -> hey.a
 
 hey -> c: ok
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/grid_edge.d2:5:1: edge cannot enter grid diagram "hey"
-d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:1: edge cannot exit grid diagram "hey"
-d2/testdata/d2compiler/TestCompile/grid_edge.d2:7:1: edge from grid diagram "hey" cannot enter itself`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_edge.d2:7:1: edge from grid diagram "hey" cannot enter itself`,
 		},
 		{
 			name: "grid_deeper_edge",
@@ -2506,19 +2504,47 @@ d2/testdata/d2compiler/TestCompile/grid_edge.d2:7:1: edge from grid diagram "hey
 			g -> h: ok
 			g -> h.h: ok
 		}
-		e -> f.i: not ok
-		e.g -> f.i: not ok
+		e -> f.i: ok now
+		e.g -> f.i: ok now
 	}
-	a -> b.c: not yet
-	a.e -> b.c: also not yet
+	a -> b.c: ok now
+	a.e -> b.c: ok now
 	a -> a.e: not ok
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:17:3: grid cell "hey.a.e" can only connect to another grid cell
-d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:18:3: edge cannot exit grid cell "hey.a.e"
-d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:20:2: grid cell "hey.a" can only connect to another grid cell
-d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:21:2: edge cannot exit grid diagram "hey.a"
-d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:22:2: edge from grid diagram "hey.a" cannot enter itself`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:22:2: edge from grid diagram "hey.a" cannot enter itself`,
+		},
+		{
+			name: "parent_graph_edge_to_descendant",
+			text: `tl: {
+	near: top-left
+	a.b
+}
+grid: {
+	grid-rows: 1
+	cell.c.d
+}
+seq: {
+	shape: sequence_diagram
+	e.f
+}
+tl -> tl.a: no
+tl -> tl.a.b: no
+grid-> grid.cell: no
+grid-> grid.cell.c: no
+grid.cell -> grid.cell.c: no
+grid.cell -> grid.cell.c.d: no
+seq -> seq.e: no
+seq -> seq.e.f: no
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:13:1: edge from constant near "tl" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:14:1: edge from constant near "tl" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:17:1: edge from grid cell "grid.cell" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:18:1: edge from grid cell "grid.cell" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:15:1: edge from grid diagram "grid" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:16:1: edge from grid diagram "grid" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:19:1: edge from sequence diagram "seq" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:20:1: edge from sequence diagram "seq" cannot enter itself`,
 		},
 		{
 			name: "grid_nested",

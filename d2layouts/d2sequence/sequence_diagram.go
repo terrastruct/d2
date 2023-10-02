@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"sort"
+	"strconv"
 	"strings"
 
 	"oss.terrastruct.com/util-go/go2"
@@ -409,6 +410,25 @@ func (sd *sequenceDiagram) addLifelineEdges() {
 			ZIndex:   LIFELINE_Z_INDEX,
 		})
 	}
+}
+
+func IsLifelineEnd(obj *d2graph.Object) bool {
+	// lifeline ends only have ID and no graph parent or box set
+	if obj.Graph != nil || obj.Parent != nil || obj.Box != nil {
+		return false
+	}
+	if !strings.Contains(obj.ID, "-lifeline-end-") {
+		return false
+	}
+	parts := strings.Split(obj.ID, "-lifeline-end-")
+	if len(parts) > 1 {
+		hash := parts[len(parts)-1]
+		actorID := strings.Join(parts[:len(parts)-1], "-lifeline-end-")
+		if strconv.Itoa(go2.StringToIntHash(actorID+"-lifeline-end")) == hash {
+			return true
+		}
+	}
+	return false
 }
 
 func (sd *sequenceDiagram) placeNotes() {
