@@ -724,6 +724,12 @@ func (mk1 *Key) D2OracleEquals(mk2 *Key) bool {
 }
 
 func (mk1 *Key) Equals(mk2 *Key) bool {
+	if mk1 == nil && mk2 == nil {
+		return true
+	}
+	if (mk1 == nil) || (mk2 == nil) {
+		return false
+	}
 	if mk1.Ampersand != mk2.Ampersand {
 		return false
 	}
