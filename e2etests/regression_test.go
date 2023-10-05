@@ -1047,6 +1047,7 @@ cf many required: {
 		loadFromFile(t, "empty_nested_grid"),
 		loadFromFile(t, "code_font_size"),
 		loadFromFile(t, "disclaimer"),
+		loadFromFile(t, "var_in_glob"),
 	}
 
 	runa(t, tcs)
