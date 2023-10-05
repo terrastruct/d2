@@ -8,3 +8,4 @@
 #### Bugfixes ⛑️
 
 - Grid layout now accounts for each cell's outside labels and icons [#1624](https://github.com/terrastruct/d2/pull/1624)
+- Fixes a panic with a spread substitution in a glob map [#1643](https://github.com/terrastruct/d2/pull/1643)
