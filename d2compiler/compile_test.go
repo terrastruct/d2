@@ -2685,6 +2685,28 @@ a -> b: { class: [association; one target] }
 			},
 		},
 		{
+			name: "var_in_glob",
+			text: `vars: {
+  v: {
+    ok
+  }
+}
+
+x1 -> x2
+
+x*: {
+  ...${v}
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 4, len(g.Objects))
+				tassert.Equal(t, "x1.ok", g.Objects[0].AbsID())
+				tassert.Equal(t, "x2.ok", g.Objects[1].AbsID())
+				tassert.Equal(t, "x1", g.Objects[2].AbsID())
+				tassert.Equal(t, "x2", g.Objects[3].AbsID())
+			},
+		},
+		{
 			name: "class-shape-class",
 			text: `classes: {
   classClass: {
