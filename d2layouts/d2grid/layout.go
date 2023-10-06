@@ -397,7 +397,7 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			cursor.X = 0
 			cursor.Y += rowHeight + verticalGap
 		}
-		maxY = cursor.Y - horizontalGap
+		maxY = cursor.Y - verticalGap
 	} else {
 		// measure column heights
 		colHeights := []float64{}
