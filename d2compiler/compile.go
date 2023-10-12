@@ -443,7 +443,12 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 				if arr, ok := f.Composite.(*d2ir.Array); ok {
 					for _, constraint := range arr.Values {
 						if scalar, ok := constraint.(*d2ir.Scalar); ok {
-							attrs.Constraint = append(attrs.Constraint, scalar.Value.ScalarString())
+							switch scalar.Value.(type) {
+							case *d2ast.Null:
+								attrs.Constraint = append(attrs.Constraint, "null")
+							default:
+								attrs.Constraint = append(attrs.Constraint, scalar.Value.ScalarString())
+							}
 						}
 					}
 				}
