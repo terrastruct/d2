@@ -2200,6 +2200,19 @@ ok: {
 			},
 		},
 		{
+			name: "sql-null-constraint",
+			text: `x: {
+  shape: sql_table
+  a: int {constraint: null}
+  b: int {constraint: [null]}
+}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				table := g.Objects[0].SQLTable
+				tassert.Nil(t, table.Columns[0].Constraint)
+				tassert.Equal(t, []string{"null"}, table.Columns[1].Constraint)
+			},
+		},
+		{
 			name: "wrong_column_index",
 			text: `Chinchillas: {
   shape: sql_table
