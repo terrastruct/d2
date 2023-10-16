@@ -1048,6 +1048,7 @@ cf many required: {
 		loadFromFile(t, "code_font_size"),
 		loadFromFile(t, "disclaimer"),
 		loadFromFile(t, "grid_rows_gap_bug"),
+		loadFromFile(t, "grid_image_label_position"),
 	}
 
 	runa(t, tcs)
