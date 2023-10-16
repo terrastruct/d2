@@ -10,8 +10,8 @@
         "x": 0,
         "y": 0
       },
-      "width": 279,
-      "height": 302,
+      "width": 297,
+      "height": 466,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -48,11 +48,11 @@
       "id": "Processing.flink",
       "type": "image",
       "pos": {
-        "x": 0,
+        "x": 1,
         "y": 46
       },
-      "width": 128,
-      "height": 128,
+      "width": 144,
+      "height": 184,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -93,7 +93,7 @@
       "underline": false,
       "labelWidth": 124,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -101,11 +101,11 @@
       "id": "Processing.sdb",
       "type": "image",
       "pos": {
-        "x": 0,
-        "y": 174
+        "x": 9,
+        "y": 256
       },
       "width": 128,
-      "height": 128,
+      "height": 184,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -146,7 +146,7 @@
       "underline": false,
       "labelWidth": 141,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -154,8 +154,8 @@
       "id": "Processing.o",
       "type": "image",
       "pos": {
-        "x": 128,
-        "y": 46
+        "x": 146,
+        "y": 115
       },
       "width": 128,
       "height": 128,
@@ -207,10 +207,10 @@
       "id": "Processing.k",
       "type": "image",
       "pos": {
-        "x": 128,
-        "y": 174
+        "x": 155,
+        "y": 312
       },
-      "width": 151,
+      "width": 133,
       "height": 128,
       "opacity": 1,
       "strokeDash": 0,
@@ -252,7 +252,7 @@
       "underline": false,
       "labelWidth": 141,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 2
     }
