@@ -156,16 +156,27 @@ func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*gridDiagram, error) {
 
 	// position labels and icons
 	for _, o := range gd.objects {
-		if o.Icon != nil {
-			// don't overwrite position if nested graph layout positioned label/icon
-			if o.LabelPosition == nil {
-				o.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-			}
-			if o.IconPosition == nil {
+		positionedLabel := false
+		if o.Icon != nil && o.IconPosition == nil {
+			if len(o.ChildrenArray) > 0 {
+				o.IconPosition = go2.Pointer(string(label.OutsideTopLeft))
+				// don't overwrite position if nested graph layout positioned label/icon
+				if o.LabelPosition == nil {
+					o.LabelPosition = go2.Pointer(string(label.OutsideTopRight))
+					positionedLabel = true
+				}
+			} else {
 				o.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
 			}
-		} else {
-			if o.LabelPosition == nil {
+		}
+		if !positionedLabel && o.HasLabel() && o.LabelPosition == nil {
+			if len(o.ChildrenArray) > 0 {
+				o.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
+			} else if o.HasOutsideBottomLabel() {
+				o.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
+			} else if o.Icon != nil {
+				o.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+			} else {
 				o.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
 			}
 		}
