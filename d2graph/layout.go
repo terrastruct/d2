@@ -305,6 +305,33 @@ func (obj *Object) GetMargin() geo.Spacing {
 		case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
 			margin.Right = labelWidth
 		}
+
+		// if an outside label is larger than the object add margin accordingly
+		if labelWidth > obj.Width {
+			dx := labelWidth - obj.Width
+			switch position {
+			case label.OutsideTopLeft, label.OutsideBottomLeft:
+				// label fixed at left will overflow on right
+				margin.Right = dx
+			case label.OutsideTopCenter, label.OutsideBottomCenter:
+				margin.Left = math.Ceil(dx / 2)
+				margin.Right = math.Ceil(dx / 2)
+			case label.OutsideTopRight, label.OutsideBottomRight:
+				margin.Left = dx
+			}
+		}
+		if labelHeight > obj.Height {
+			dy := labelHeight - obj.Height
+			switch position {
+			case label.OutsideLeftTop, label.OutsideRightTop:
+				margin.Bottom = dy
+			case label.OutsideLeftMiddle, label.OutsideRightMiddle:
+				margin.Top = math.Ceil(dy / 2)
+				margin.Bottom = math.Ceil(dy / 2)
+			case label.OutsideLeftBottom, label.OutsideRightBottom:
+				margin.Top = dy
+			}
+		}
 	}
 
 	if obj.Icon != nil && obj.IconPosition != nil && obj.Shape.Value != d2target.ShapeImage {

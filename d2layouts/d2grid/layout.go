@@ -142,18 +142,6 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*gridDiagram, error) {
 	gd := newGridDiagram(obj)
 
-	// to handle objects with outside labels, we adjust their dimensions before layout and
-	// after layout, we remove the label adjustment and reposition TopLeft if needed
-	revertAdjustments := gd.sizeForOutsideLabels()
-
-	if gd.rows != 0 && gd.columns != 0 {
-		gd.layoutEvenly(g, obj)
-	} else {
-		gd.layoutDynamic(g, obj)
-	}
-
-	revertAdjustments()
-
 	// position labels and icons
 	for _, o := range gd.objects {
 		positionedLabel := false
@@ -181,6 +169,18 @@ func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*gridDiagram, error) {
 			}
 		}
 	}
+
+	// to handle objects with outside labels, we adjust their dimensions before layout and
+	// after layout, we remove the label adjustment and reposition TopLeft if needed
+	revertAdjustments := gd.sizeForOutsideLabels()
+
+	if gd.rows != 0 && gd.columns != 0 {
+		gd.layoutEvenly(g, obj)
+	} else {
+		gd.layoutDynamic(g, obj)
+	}
+
+	revertAdjustments()
 
 	return gd, nil
 }
