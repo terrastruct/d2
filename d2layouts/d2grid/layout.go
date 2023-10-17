@@ -853,11 +853,19 @@ func getDistToTarget(layout [][]*d2graph.Object, targetSize float64, horizontalG
 }
 
 func (gd *gridDiagram) sizeForOutsideLabels() (revert func()) {
-	margins := make(map[*d2graph.Object]geo.Spacing)
+	type sizing struct {
+		width, height float64
+		margin        geo.Spacing
+	}
+	sizings := make(map[*d2graph.Object]sizing)
 
 	for _, o := range gd.objects {
 		margin := o.GetMargin()
-		margins[o] = margin
+		sizings[o] = sizing{
+			width:  o.Width,
+			height: o.Height,
+			margin: margin,
+		}
 
 		o.Height += margin.Top + margin.Bottom
 		o.Width += margin.Left + margin.Right
@@ -865,13 +873,24 @@ func (gd *gridDiagram) sizeForOutsideLabels() (revert func()) {
 
 	return func() {
 		for _, o := range gd.objects {
-			margin, has := margins[o]
+			sizing, has := sizings[o]
 			if !has {
 				continue
 			}
+			dy := sizing.margin.Top + sizing.margin.Bottom
+			dx := sizing.margin.Left + sizing.margin.Right
+			o.Height -= dy
+			o.Width -= dx
 
-			o.Height -= margin.Top + margin.Bottom
-			o.Width -= margin.Left + margin.Right
+			// layout may have resized the object changing the margins necessary
+			margin := o.GetMargin()
+			if margin.Top+margin.Bottom < dy {
+				// layout grew height and now we need less of a margin
+				o.Height += dy - (margin.Top + margin.Bottom)
+			}
+			if margin.Left+margin.Right < dx {
+				o.Width += dx - (margin.Left + margin.Right)
+			}
 
 			if margin.Left > 0 || margin.Top > 0 {
 				o.MoveWithDescendants(margin.Left, margin.Top)
