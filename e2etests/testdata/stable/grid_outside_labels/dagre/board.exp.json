@@ -129,10 +129,10 @@
       "id": "container.braket plugin",
       "type": "rectangle",
       "pos": {
-        "x": 40,
+        "x": 20,
         "y": 285
       },
-      "width": 290,
+      "width": 330,
       "height": 79,
       "opacity": 1,
       "strokeDash": 0,
@@ -170,7 +170,7 @@
       "id": "container.braket plugin.ex",
       "type": "text",
       "pos": {
-        "x": 70,
+        "x": 50,
         "y": 315
       },
       "width": 37,
@@ -384,10 +384,10 @@
       "id": "container.gensymb plugin",
       "type": "rectangle",
       "pos": {
-        "x": 389,
+        "x": 385,
         "y": 241
       },
-      "width": 316,
+      "width": 324,
       "height": 103,
       "opacity": 1,
       "strokeDash": 0,
@@ -425,7 +425,7 @@
       "id": "container.gensymb plugin.ex",
       "type": "text",
       "pos": {
-        "x": 419,
+        "x": 415,
         "y": 271
       },
       "width": 96,
