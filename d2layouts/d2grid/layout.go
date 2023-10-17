@@ -853,43 +853,104 @@ func getDistToTarget(layout [][]*d2graph.Object, targetSize float64, horizontalG
 }
 
 func (gd *gridDiagram) sizeForOutsideLabels() (revert func()) {
-	type sizing struct {
-		width, height float64
-		margin        geo.Spacing
-	}
-	sizings := make(map[*d2graph.Object]sizing)
+	margins := make(map[*d2graph.Object]geo.Spacing)
 
 	for _, o := range gd.objects {
 		margin := o.GetMargin()
-		sizings[o] = sizing{
-			width:  o.Width,
-			height: o.Height,
-			margin: margin,
-		}
+		margins[o] = margin
 
 		o.Height += margin.Top + margin.Bottom
 		o.Width += margin.Left + margin.Right
 	}
 
+	// Example: a single column with 3 shapes and
+	// `x.label: long label {near: outside-bottom-left}`
+	// `y.label: outsider {near: outside-right-center}`
+	// . ┌───────────────────┐
+	// . │ widest shape here │
+	// . └───────────────────┘
+	// . ┌───┐
+	// . │ x │
+	// . └───┘
+	// . long label
+	// . ├─────────┤ x's new width
+	// .     ├─mr──┤ margin.right added to width during layout
+	// . ┌───┐
+	// . │ y │ outsider
+	// . └───┘
+	// . ├─────────────┤ y's new width
+	// .     ├───mr────┤ margin.right added to width during layout
+
+	// BEFORE LAYOUT
+	// . ┌───────────────────┐
+	// . │ widest shape here │
+	// . └───────────────────┘
+	// . ┌─────────┐
+	// . │ x       │
+	// . └─────────┘
+	// . ┌─────────────┐
+	// . │ y           │
+	// . └─────────────┘
+
+	// AFTER LAYOUT
+	// . ┌───────────────────┐
+	// . │ widest shape here │
+	// . └───────────────────┘
+	// . ┌───────────────────┐
+	// . │ x                 │
+	// . └───────────────────┘
+	// . ┌───────────────────┐
+	// . │ y                 │
+	// . └───────────────────┘
+
+	// CLEANUP 1/2
+	// . ┌───────────────────┐
+	// . │ widest shape here │
+	// . └───────────────────┘
+	// . ┌─────────────┐
+	// . │ x           │
+	// . └─────────────┘
+	// . long label    ├─mr──┤ remove margin we added
+	// . ┌─────────┐
+	// . │ y       │ outsider
+	// . └─────────┘
+	// .           ├───mr────┤ remove margin we added
+	// CLEANUP 2/2
+	// . ┌───────────────────┐
+	// . │ widest shape here │
+	// . └───────────────────┘
+	// . ┌───────────────────┐
+	// . │ x                 │
+	// . └───────────────────┘
+	// . long label    ├─mr──┤ we removed too much so add back margin we subtracted, then subtract new margin
+	// . ┌─────────┐
+	// . │ y       │ outsider
+	// . └─────────┘
+	// .           ├───mr────┤ margin.right is still needed
+
 	return func() {
 		for _, o := range gd.objects {
-			sizing, has := sizings[o]
+			m, has := margins[o]
 			if !has {
 				continue
 			}
-			dy := sizing.margin.Top + sizing.margin.Bottom
-			dx := sizing.margin.Left + sizing.margin.Right
+			dy := m.Top + m.Bottom
+			dx := m.Left + m.Right
 			o.Height -= dy
 			o.Width -= dx
 
-			// layout may have resized the object changing the margins necessary
+			// less margin may be needed if layout grew the object
+			// compute the new margin after removing the old margin we added
 			margin := o.GetMargin()
-			if margin.Top+margin.Bottom < dy {
-				// layout grew height and now we need less of a margin
-				o.Height += dy - (margin.Top + margin.Bottom)
+			marginX := margin.Left + margin.Right
+			marginY := margin.Top + margin.Bottom
+			if marginX < dx {
+				// layout grew width and now we need less of a margin (but we subtracted too much)
+				// add back dx and subtract the new amount
+				o.Width += dx - marginX
 			}
-			if margin.Left+margin.Right < dx {
-				o.Width += dx - (margin.Left + margin.Right)
+			if marginY < dy {
+				o.Height += dy - marginY
 			}
 
 			if margin.Left > 0 || margin.Top > 0 {
