@@ -142,6 +142,34 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*gridDiagram, error) {
 	gd := newGridDiagram(obj)
 
+	// position labels and icons
+	for _, o := range gd.objects {
+		positionedLabel := false
+		if o.Icon != nil && o.IconPosition == nil {
+			if len(o.ChildrenArray) > 0 {
+				o.IconPosition = go2.Pointer(string(label.OutsideTopLeft))
+				// don't overwrite position if nested graph layout positioned label/icon
+				if o.LabelPosition == nil {
+					o.LabelPosition = go2.Pointer(string(label.OutsideTopRight))
+					positionedLabel = true
+				}
+			} else {
+				o.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			}
+		}
+		if !positionedLabel && o.HasLabel() && o.LabelPosition == nil {
+			if len(o.ChildrenArray) > 0 {
+				o.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
+			} else if o.HasOutsideBottomLabel() {
+				o.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
+			} else if o.Icon != nil {
+				o.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+			} else {
+				o.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			}
+		}
+	}
+
 	// to handle objects with outside labels, we adjust their dimensions before layout and
 	// after layout, we remove the label adjustment and reposition TopLeft if needed
 	revertAdjustments := gd.sizeForOutsideLabels()
@@ -153,23 +181,6 @@ func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*gridDiagram, error) {
 	}
 
 	revertAdjustments()
-
-	// position labels and icons
-	for _, o := range gd.objects {
-		if o.Icon != nil {
-			// don't overwrite position if nested graph layout positioned label/icon
-			if o.LabelPosition == nil {
-				o.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-			}
-			if o.IconPosition == nil {
-				o.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
-			}
-		} else {
-			if o.LabelPosition == nil {
-				o.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
-			}
-		}
-	}
 
 	return gd, nil
 }
@@ -852,15 +863,95 @@ func (gd *gridDiagram) sizeForOutsideLabels() (revert func()) {
 		o.Width += margin.Left + margin.Right
 	}
 
+	// Example: a single column with 3 shapes and
+	// `x.label: long label {near: outside-bottom-left}`
+	// `y.label: outsider {near: outside-right-center}`
+	// . ┌───────────────────┐
+	// . │ widest shape here │
+	// . └───────────────────┘
+	// . ┌───┐
+	// . │ x │
+	// . └───┘
+	// . long label
+	// . ├─────────┤ x's new width
+	// .     ├─mr──┤ margin.right added to width during layout
+	// . ┌───┐
+	// . │ y │ outsider
+	// . └───┘
+	// . ├─────────────┤ y's new width
+	// .     ├───mr────┤ margin.right added to width during layout
+
+	// BEFORE LAYOUT
+	// . ┌───────────────────┐
+	// . │ widest shape here │
+	// . └───────────────────┘
+	// . ┌─────────┐
+	// . │ x       │
+	// . └─────────┘
+	// . ┌─────────────┐
+	// . │ y           │
+	// . └─────────────┘
+
+	// AFTER LAYOUT
+	// . ┌───────────────────┐
+	// . │ widest shape here │
+	// . └───────────────────┘
+	// . ┌───────────────────┐
+	// . │ x                 │
+	// . └───────────────────┘
+	// . ┌───────────────────┐
+	// . │ y                 │
+	// . └───────────────────┘
+
+	// CLEANUP 1/2
+	// . ┌───────────────────┐
+	// . │ widest shape here │
+	// . └───────────────────┘
+	// . ┌─────────────┐
+	// . │ x           │
+	// . └─────────────┘
+	// . long label    ├─mr──┤ remove margin we added
+	// . ┌─────────┐
+	// . │ y       │ outsider
+	// . └─────────┘
+	// .           ├───mr────┤ remove margin we added
+	// CLEANUP 2/2
+	// . ┌───────────────────┐
+	// . │ widest shape here │
+	// . └───────────────────┘
+	// . ┌───────────────────┐
+	// . │ x                 │
+	// . └───────────────────┘
+	// . long label    ├─mr──┤ we removed too much so add back margin we subtracted, then subtract new margin
+	// . ┌─────────┐
+	// . │ y       │ outsider
+	// . └─────────┘
+	// .           ├───mr────┤ margin.right is still needed
+
 	return func() {
 		for _, o := range gd.objects {
-			margin, has := margins[o]
+			m, has := margins[o]
 			if !has {
 				continue
 			}
+			dy := m.Top + m.Bottom
+			dx := m.Left + m.Right
+			o.Height -= dy
+			o.Width -= dx
 
-			o.Height -= margin.Top + margin.Bottom
-			o.Width -= margin.Left + margin.Right
+			// less margin may be needed if layout grew the object
+			// compute the new margin after removing the old margin we added
+			margin := o.GetMargin()
+			marginX := margin.Left + margin.Right
+			marginY := margin.Top + margin.Bottom
+			if marginX < dx {
+				// layout grew width and now we need less of a margin (but we subtracted too much)
+				// add back dx and subtract the new amount
+				o.Width += dx - marginX
+			}
+			if marginY < dy {
+				o.Height += dy - marginY
+			}
 
 			if margin.Left > 0 || margin.Top > 0 {
 				o.MoveWithDescendants(margin.Left, margin.Top)
