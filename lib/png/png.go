@@ -5,7 +5,6 @@ import (
 	"encoding/base64"
 	"fmt"
 	"strings"
-	"time"
 
 	_ "embed"
 
@@ -14,9 +13,7 @@ import (
 	pngstruct "github.com/dsoprea/go-png-image-structure/v2"
 	"github.com/playwright-community/playwright-go"
 
-	"oss.terrastruct.com/d2/lib/background"
 	"oss.terrastruct.com/d2/lib/version"
-	"oss.terrastruct.com/util-go/xmain"
 )
 
 // ConvertSVG scales the image by 2x
@@ -88,12 +85,7 @@ const pngPrefix = "data:image/png;base64,"
 
 // ConvertSVG converts the given SVG into a PNG.
 // Note that the resulting PNG has 2x the size (width and height) of the original SVG (see generate_png.js)
-func ConvertSVG(ms *xmain.State, page playwright.Page, svg []byte) ([]byte, error) {
-	cancel := background.Repeat(func() {
-		ms.Log.Info.Printf("converting to PNG...")
-	}, time.Second*5)
-	defer cancel()
-
+func ConvertSVG(page playwright.Page, svg []byte) ([]byte, error) {
 	encodedSVG := base64.StdEncoding.EncodeToString(svg)
 	pngInterface, err := page.Evaluate(genPNGScript, map[string]interface{}{
 		"imgString": "data:image/svg+xml;charset=utf-8;base64," + encodedSVG,

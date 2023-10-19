@@ -434,7 +434,7 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, la
 		if err != nil {
 			return nil, false, err
 		}
-		out, err := xgif.AnimatePNGs(ms, pngs, int(animateInterval))
+		out, err := AnimatePNGs(ms, pngs, int(animateInterval))
 		if err != nil {
 			return nil, false, err
 		}
@@ -769,7 +769,7 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 			bundleErr = multierr.Combine(bundleErr, bundleErr2)
 		}
 
-		out, err = png.ConvertSVG(ms, page, svg)
+		out, err = ConvertSVG(ms, page, svg)
 		if err != nil {
 			return svg, err
 		}
@@ -843,7 +843,7 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 		}
 		svg = appendix.Append(diagram, ruler, svg)
 
-		pngImg, err := png.ConvertSVG(ms, page, svg)
+		pngImg, err := ConvertSVG(ms, page, svg)
 		if err != nil {
 			return svg, err
 		}
@@ -945,7 +945,7 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 
 		svg = appendix.Append(diagram, ruler, svg)
 
-		pngImg, err := png.ConvertSVG(ms, page, svg)
+		pngImg, err := ConvertSVG(ms, page, svg)
 		if err != nil {
 			return nil, err
 		}
@@ -1191,7 +1191,7 @@ func renderPNGsForGIF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plug
 
 		svg = appendix.Append(diagram, ruler, svg)
 
-		pngImg, err := png.ConvertSVG(ms, page, svg)
+		pngImg, err := ConvertSVG(ms, page, svg)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -1221,4 +1221,22 @@ func renderPNGsForGIF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plug
 	}
 
 	return svg, pngs, nil
+}
+
+func ConvertSVG(ms *xmain.State, page playwright.Page, svg []byte) ([]byte, error) {
+	cancel := background.Repeat(func() {
+		ms.Log.Info.Printf("converting to PNG...")
+	}, time.Second*5)
+	defer cancel()
+
+	return png.ConvertSVG(page, svg)
+}
+
+func AnimatePNGs(ms *xmain.State, pngs [][]byte, animIntervalMs int) ([]byte, error) {
+	cancel := background.Repeat(func() {
+		ms.Log.Info.Printf("generating GIF...")
+	}, time.Second*5)
+	defer cancel()
+
+	return xgif.AnimatePNGs(pngs, animIntervalMs)
 }
