@@ -19,8 +19,8 @@ import (
 
 	"golang.org/x/xerrors"
 
+	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/util-go/xdefer"
-	"oss.terrastruct.com/util-go/xmain"
 )
 
 var imgCache sync.Map
@@ -29,12 +29,12 @@ const maxImageSize int64 = 1 << 25 // 33_554_432
 
 var imageRegex = regexp.MustCompile(`<image href="([^"]+)"`)
 
-func BundleLocal(ctx context.Context, ms *xmain.State, in []byte) ([]byte, error) {
-	return bundle(ctx, ms, in, false)
+func BundleLocal(ctx context.Context, in []byte, cacheImages bool) ([]byte, error) {
+	return bundle(ctx, in, false, cacheImages)
 }
 
-func BundleRemote(ctx context.Context, ms *xmain.State, in []byte) ([]byte, error) {
-	return bundle(ctx, ms, in, true)
+func BundleRemote(ctx context.Context, in []byte, cacheImages bool) ([]byte, error) {
+	return bundle(ctx, in, true, cacheImages)
 }
 
 type repl struct {
@@ -42,7 +42,7 @@ type repl struct {
 	to   []byte
 }
 
-func bundle(ctx context.Context, ms *xmain.State, svg []byte, isRemote bool) (_ []byte, err error) {
+func bundle(ctx context.Context, svg []byte, isRemote, cacheImages bool) (_ []byte, err error) {
 	if isRemote {
 		defer xdefer.Errorf(&err, "failed to bundle remote images")
 	} else {
@@ -54,7 +54,7 @@ func bundle(ctx context.Context, ms *xmain.State, svg []byte, isRemote bool) (_ 
 	ctx, cancel := context.WithTimeout(ctx, time.Minute*5)
 	defer cancel()
 
-	return runWorkers(ctx, ms, svg, imgs, isRemote)
+	return runWorkers(ctx, svg, imgs, isRemote, cacheImages)
 }
 
 // filterImageElements finds all unique image elements in imgs that are
@@ -84,7 +84,7 @@ func filterImageElements(imgs [][][]byte, isRemote bool) [][][]byte {
 	return imgs2
 }
 
-func runWorkers(ctx context.Context, ms *xmain.State, svg []byte, imgs [][][]byte, isRemote bool) (_ []byte, err error) {
+func runWorkers(ctx context.Context, svg []byte, imgs [][][]byte, isRemote, cacheImages bool) (_ []byte, err error) {
 	var wg sync.WaitGroup
 	replc := make(chan repl)
 
@@ -111,9 +111,9 @@ func runWorkers(ctx context.Context, ms *xmain.State, svg []byte, imgs [][][]byt
 					<-sema
 				}()
 
-				bundledImage, err := worker(ctx, ms, img[1], isRemote)
+				bundledImage, err := worker(ctx, img[1], isRemote, cacheImages)
 				if err != nil {
-					ms.Log.Error.Printf("failed to bundle %s: %v", img[1], err)
+					log.Error(ctx, fmt.Sprintf("failed to bundle %s: %v", img[1], err))
 					errhrefsMu.Lock()
 					errhrefs = append(errhrefs, string(img[1]))
 					errhrefsMu.Unlock()
@@ -137,7 +137,7 @@ func runWorkers(ctx context.Context, ms *xmain.State, svg []byte, imgs [][][]byt
 		case <-ctx.Done():
 			return svg, xerrors.Errorf("failed to wait for workers: %w", ctx.Err())
 		case <-t.C:
-			ms.Log.Info.Printf("fetching images...")
+			log.Info(ctx, "fetching images...")
 		case repl, ok := <-replc:
 			if !ok {
 				if len(errhrefs) > 0 {
@@ -150,8 +150,8 @@ func runWorkers(ctx context.Context, ms *xmain.State, svg []byte, imgs [][][]byt
 	}
 }
 
-func worker(ctx context.Context, ms *xmain.State, href []byte, isRemote bool) ([]byte, error) {
-	if ms.Env.Getenv("IMG_CACHE") == "1" {
+func worker(ctx context.Context, href []byte, isRemote, cacheImages bool) ([]byte, error) {
+	if cacheImages {
 		if hit, ok := imgCache.Load(string(href)); ok {
 			return hit.([]byte), nil
 		}
@@ -160,10 +160,10 @@ func worker(ctx context.Context, ms *xmain.State, href []byte, isRemote bool) ([
 	var mimeType string
 	var err error
 	if isRemote {
-		ms.Log.Debug.Printf("fetching %s remotely", string(href))
+		log.Debug(ctx, fmt.Sprintf("fetching %s remotely", string(href)))
 		buf, mimeType, err = httpGet(ctx, html.UnescapeString(string(href)))
 	} else {
-		ms.Log.Debug.Printf("reading %s from disk", string(href))
+		log.Debug(ctx, fmt.Sprintf("reading %s from disk", string(href)))
 		buf, err = os.ReadFile(html.UnescapeString(string(href)))
 	}
 	if err != nil {
@@ -177,7 +177,7 @@ func worker(ctx context.Context, ms *xmain.State, href []byte, isRemote bool) ([
 	b64 := base64.StdEncoding.EncodeToString(buf)
 
 	out := []byte(fmt.Sprintf(`<image href="data:%s;base64,%s"`, mimeType, b64))
-	if ms.Env.Getenv("IMG_CACHE") == "1" {
+	if cacheImages {
 		imgCache.Store(string(href), out)
 	}
 	return out, nil

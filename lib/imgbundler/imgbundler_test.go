@@ -109,7 +109,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		return respRecorder.Result()
 	})
 
-	out, err := BundleRemote(ctx, ms, []byte(sampleSVG))
+	out, err := BundleRemote(ctx, []byte(sampleSVG), false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -133,7 +133,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		respRecorder.WriteHeader(200)
 		return respRecorder.Result()
 	})
-	_, err = BundleRemote(ctx, ms, []byte(sampleSVG))
+	_, err = BundleRemote(ctx, []byte(sampleSVG), false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -148,7 +148,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		respRecorder.WriteHeader(200)
 		return respRecorder.Result()
 	})
-	_, err = BundleRemote(ctx, ms, []byte(sampleSVG))
+	_, err = BundleRemote(ctx, []byte(sampleSVG), false)
 	if err == nil {
 		t.Fatal("expected error")
 	}
@@ -160,7 +160,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		respRecorder.WriteHeader(500)
 		return respRecorder.Result()
 	})
-	_, err = BundleRemote(ctx, ms, []byte(sampleSVG))
+	_, err = BundleRemote(ctx, []byte(sampleSVG), false)
 	if err == nil {
 		t.Fatal("expected error")
 	}
@@ -215,7 +215,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		Env: xos.NewEnv(os.Environ()),
 	}
 	ms.Log = cmdlog.NewTB(ms.Env, t)
-	out, err := BundleLocal(ctx, ms, []byte(sampleSVG))
+	out, err := BundleLocal(ctx, []byte(sampleSVG), false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -285,7 +285,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		return respRecorder.Result()
 	})
 
-	out, err := BundleRemote(ctx, ms, []byte(sampleSVG))
+	out, err := BundleRemote(ctx, []byte(sampleSVG), false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -351,25 +351,23 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 	})
 
 	// Using a cache, imgs are not refetched on multiple runs
-	ms.Env.Setenv("IMG_CACHE", "1")
-	_, err := BundleRemote(ctx, ms, []byte(sampleSVG))
+	_, err := BundleRemote(ctx, []byte(sampleSVG), true)
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = BundleRemote(ctx, ms, []byte(sampleSVG))
+	_, err = BundleRemote(ctx, []byte(sampleSVG), true)
 	if err != nil {
 		t.Fatal(err)
 	}
 	tassert.Equal(t, 1, count)
 
 	// With cache disabled, it refetches
-	ms.Env.Setenv("IMG_CACHE", "0")
 	count = 0
-	_, err = BundleRemote(ctx, ms, []byte(sampleSVG))
+	_, err = BundleRemote(ctx, []byte(sampleSVG), false)
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = BundleRemote(ctx, ms, []byte(sampleSVG))
+	_, err = BundleRemote(ctx, []byte(sampleSVG), false)
 	if err != nil {
 		t.Fatal(err)
 	}

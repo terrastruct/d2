@@ -748,10 +748,11 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 		return svg, err
 	}
 
-	svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
+	cacheImages := ms.Env.Getenv("IMG_CACHE") == "1"
+	svg, bundleErr := imgbundler.BundleLocal(ctx, svg, cacheImages)
 	if bundle {
 		var bundleErr2 error
-		svg, bundleErr2 = imgbundler.BundleRemote(ctx, ms, svg)
+		svg, bundleErr2 = imgbundler.BundleRemote(ctx, svg, cacheImages)
 		bundleErr = multierr.Combine(bundleErr, bundleErr2)
 	}
 	if forceAppendix && !toPNG {
@@ -764,7 +765,7 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 
 		if !bundle {
 			var bundleErr2 error
-			svg, bundleErr2 = imgbundler.BundleRemote(ctx, ms, svg)
+			svg, bundleErr2 = imgbundler.BundleRemote(ctx, svg, cacheImages)
 			bundleErr = multierr.Combine(bundleErr, bundleErr2)
 		}
 
@@ -833,8 +834,9 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 			return svg, err
 		}
 
-		svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
-		svg, bundleErr2 := imgbundler.BundleRemote(ctx, ms, svg)
+		cacheImages := ms.Env.Getenv("IMG_CACHE") == "1"
+		svg, bundleErr := imgbundler.BundleLocal(ctx, svg, cacheImages)
+		svg, bundleErr2 := imgbundler.BundleRemote(ctx, svg, cacheImages)
 		bundleErr = multierr.Combine(bundleErr, bundleErr2)
 		if bundleErr != nil {
 			return svg, bundleErr
@@ -933,8 +935,9 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 			return nil, err
 		}
 
-		svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
-		svg, bundleErr2 := imgbundler.BundleRemote(ctx, ms, svg)
+		cacheImages := ms.Env.Getenv("IMG_CACHE") == "1"
+		svg, bundleErr := imgbundler.BundleLocal(ctx, svg, cacheImages)
+		svg, bundleErr2 := imgbundler.BundleRemote(ctx, svg, cacheImages)
 		bundleErr = multierr.Combine(bundleErr, bundleErr2)
 		if bundleErr != nil {
 			return nil, bundleErr
@@ -1178,8 +1181,9 @@ func renderPNGsForGIF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plug
 			return nil, nil, err
 		}
 
-		svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
-		svg, bundleErr2 := imgbundler.BundleRemote(ctx, ms, svg)
+		cacheImages := ms.Env.Getenv("IMG_CACHE") == "1"
+		svg, bundleErr := imgbundler.BundleLocal(ctx, svg, cacheImages)
+		svg, bundleErr2 := imgbundler.BundleRemote(ctx, svg, cacheImages)
 		bundleErr = multierr.Combine(bundleErr, bundleErr2)
 		if bundleErr != nil {
 			return nil, nil, bundleErr
