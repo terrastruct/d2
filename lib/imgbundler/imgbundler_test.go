@@ -12,6 +12,7 @@ import (
 	"sync"
 	"testing"
 
+	"cdr.dev/slog/sloggers/slogtest"
 	tassert "github.com/stretchr/testify/assert"
 
 	"oss.terrastruct.com/d2/lib/log"
@@ -49,7 +50,8 @@ func TestRegex(t *testing.T) {
 
 func TestInlineRemote(t *testing.T) {
 	imgCache = sync.Map{}
-	ctx := log.WithTB(context.Background(), t, nil)
+	// we don't want log.Error to cause this test to fail
+	ctx := log.WithTB(context.Background(), t, &slogtest.Options{IgnoreErrors: true})
 	svgURL := "https://icons.terrastruct.com/essentials/004-picture.svg"
 	pngURL := "https://cdn4.iconfinder.com/data/icons/smart-phones-technologies/512/android-phone.png"
 
