@@ -202,22 +202,24 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 
 	walk(g.Root, nil, func(obj, parent *d2graph.Object) {
-		if obj.Attributes.WidthAttr == nil || obj.Attributes.HeightAttr == nil {
-			incoming := 0.
-			outgoing := 0.
-			for _, e := range g.Edges {
-				if e.Src == obj {
-					outgoing++
-				}
-				if e.Dst == obj {
-					incoming++
-				}
+		incoming := 0.
+		outgoing := 0.
+		for _, e := range g.Edges {
+			if e.Src == obj {
+				outgoing++
 			}
-			if incoming >= 2 || outgoing >= 2 {
-				switch g.Root.Direction.Value {
-				case "right", "left":
+			if e.Dst == obj {
+				incoming++
+			}
+		}
+		if incoming >= 2 || outgoing >= 2 {
+			switch g.Root.Direction.Value {
+			case "right", "left":
+				if obj.Attributes.HeightAttr == nil {
 					obj.Height = math.Max(obj.Height, math.Max(incoming, outgoing)*port_spacing)
-				default:
+				}
+			default:
+				if obj.Attributes.WidthAttr == nil {
 					obj.Width = math.Max(obj.Width, math.Max(incoming, outgoing)*port_spacing)
 				}
 			}
