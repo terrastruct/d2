@@ -16,6 +16,7 @@ import (
 	tassert "github.com/stretchr/testify/assert"
 
 	"oss.terrastruct.com/d2/lib/log"
+	"oss.terrastruct.com/d2/lib/simplelog"
 )
 
 //go:embed test_png.png
@@ -96,7 +97,8 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		return respRecorder.Result()
 	})
 
-	out, err := BundleRemote(ctx, []byte(sampleSVG), false)
+	l := simplelog.FromLibLog(ctx)
+	out, err := BundleRemote(ctx, l, []byte(sampleSVG), false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -120,7 +122,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		respRecorder.WriteHeader(200)
 		return respRecorder.Result()
 	})
-	_, err = BundleRemote(ctx, []byte(sampleSVG), false)
+	_, err = BundleRemote(ctx, l, []byte(sampleSVG), false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -135,7 +137,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		respRecorder.WriteHeader(200)
 		return respRecorder.Result()
 	})
-	_, err = BundleRemote(ctx, []byte(sampleSVG), false)
+	_, err = BundleRemote(ctx, l, []byte(sampleSVG), false)
 	if err == nil {
 		t.Fatal("expected error")
 	}
@@ -147,7 +149,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		respRecorder.WriteHeader(500)
 		return respRecorder.Result()
 	})
-	_, err = BundleRemote(ctx, []byte(sampleSVG), false)
+	_, err = BundleRemote(ctx, l, []byte(sampleSVG), false)
 	if err == nil {
 		t.Fatal("expected error")
 	}
@@ -192,7 +194,8 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 }]]></style></svg>
 `, svgURL, pngURL)
 
-	out, err := BundleLocal(ctx, []byte(sampleSVG), false)
+	l := simplelog.FromLibLog(ctx)
+	out, err := BundleLocal(ctx, l, []byte(sampleSVG), false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -251,7 +254,8 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		return respRecorder.Result()
 	})
 
-	out, err := BundleRemote(ctx, []byte(sampleSVG), false)
+	l := simplelog.FromLibLog(ctx)
+	out, err := BundleRemote(ctx, l, []byte(sampleSVG), false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -305,12 +309,13 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		return respRecorder.Result()
 	})
 
+	l := simplelog.FromLibLog(ctx)
 	// Using a cache, imgs are not refetched on multiple runs
-	_, err := BundleRemote(ctx, []byte(sampleSVG), true)
+	_, err := BundleRemote(ctx, l, []byte(sampleSVG), true)
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = BundleRemote(ctx, []byte(sampleSVG), true)
+	_, err = BundleRemote(ctx, l, []byte(sampleSVG), true)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -318,11 +323,11 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 
 	// With cache disabled, it refetches
 	count = 0
-	_, err = BundleRemote(ctx, []byte(sampleSVG), false)
+	_, err = BundleRemote(ctx, l, []byte(sampleSVG), false)
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = BundleRemote(ctx, []byte(sampleSVG), false)
+	_, err = BundleRemote(ctx, l, []byte(sampleSVG), false)
 	if err != nil {
 		t.Fatal(err)
 	}

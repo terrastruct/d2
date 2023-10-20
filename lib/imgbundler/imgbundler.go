@@ -19,7 +19,7 @@ import (
 
 	"golang.org/x/xerrors"
 
-	"oss.terrastruct.com/d2/lib/log"
+	"oss.terrastruct.com/d2/lib/simplelog"
 	"oss.terrastruct.com/util-go/xdefer"
 )
 
@@ -29,12 +29,12 @@ const maxImageSize int64 = 1 << 25 // 33_554_432
 
 var imageRegex = regexp.MustCompile(`<image href="([^"]+)"`)
 
-func BundleLocal(ctx context.Context, in []byte, cacheImages bool) ([]byte, error) {
-	return bundle(ctx, in, false, cacheImages)
+func BundleLocal(ctx context.Context, l simplelog.Logger, in []byte, cacheImages bool) ([]byte, error) {
+	return bundle(ctx, l, in, false, cacheImages)
 }
 
-func BundleRemote(ctx context.Context, in []byte, cacheImages bool) ([]byte, error) {
-	return bundle(ctx, in, true, cacheImages)
+func BundleRemote(ctx context.Context, l simplelog.Logger, in []byte, cacheImages bool) ([]byte, error) {
+	return bundle(ctx, l, in, true, cacheImages)
 }
 
 type repl struct {
@@ -42,7 +42,7 @@ type repl struct {
 	to   []byte
 }
 
-func bundle(ctx context.Context, svg []byte, isRemote, cacheImages bool) (_ []byte, err error) {
+func bundle(ctx context.Context, l simplelog.Logger, svg []byte, isRemote, cacheImages bool) (_ []byte, err error) {
 	if isRemote {
 		defer xdefer.Errorf(&err, "failed to bundle remote images")
 	} else {
@@ -54,7 +54,7 @@ func bundle(ctx context.Context, svg []byte, isRemote, cacheImages bool) (_ []by
 	ctx, cancel := context.WithTimeout(ctx, time.Minute*5)
 	defer cancel()
 
-	return runWorkers(ctx, svg, imgs, isRemote, cacheImages)
+	return runWorkers(ctx, l, svg, imgs, isRemote, cacheImages)
 }
 
 // filterImageElements finds all unique image elements in imgs that are
@@ -84,7 +84,7 @@ func filterImageElements(imgs [][][]byte, isRemote bool) [][][]byte {
 	return imgs2
 }
 
-func runWorkers(ctx context.Context, svg []byte, imgs [][][]byte, isRemote, cacheImages bool) (_ []byte, err error) {
+func runWorkers(ctx context.Context, l simplelog.Logger, svg []byte, imgs [][][]byte, isRemote, cacheImages bool) (_ []byte, err error) {
 	var wg sync.WaitGroup
 	replc := make(chan repl)
 
@@ -111,9 +111,9 @@ func runWorkers(ctx context.Context, svg []byte, imgs [][][]byte, isRemote, cach
 					<-sema
 				}()
 
-				bundledImage, err := worker(ctx, img[1], isRemote, cacheImages)
+				bundledImage, err := worker(ctx, l, img[1], isRemote, cacheImages)
 				if err != nil {
-					log.Error(ctx, fmt.Sprintf("failed to bundle %s: %v", img[1], err))
+					l.Error(fmt.Sprintf("failed to bundle %s: %v", img[1], err))
 					errhrefsMu.Lock()
 					errhrefs = append(errhrefs, string(img[1]))
 					errhrefsMu.Unlock()
@@ -137,7 +137,7 @@ func runWorkers(ctx context.Context, svg []byte, imgs [][][]byte, isRemote, cach
 		case <-ctx.Done():
 			return svg, xerrors.Errorf("failed to wait for workers: %w", ctx.Err())
 		case <-t.C:
-			log.Info(ctx, "fetching images...")
+			l.Info("fetching images...")
 		case repl, ok := <-replc:
 			if !ok {
 				if len(errhrefs) > 0 {
@@ -150,7 +150,7 @@ func runWorkers(ctx context.Context, svg []byte, imgs [][][]byte, isRemote, cach
 	}
 }
 
-func worker(ctx context.Context, href []byte, isRemote, cacheImages bool) ([]byte, error) {
+func worker(ctx context.Context, l simplelog.Logger, href []byte, isRemote, cacheImages bool) ([]byte, error) {
 	if cacheImages {
 		if hit, ok := imgCache.Load(string(href)); ok {
 			return hit.([]byte), nil
@@ -160,10 +160,10 @@ func worker(ctx context.Context, href []byte, isRemote, cacheImages bool) ([]byt
 	var mimeType string
 	var err error
 	if isRemote {
-		log.Debug(ctx, fmt.Sprintf("fetching %s remotely", string(href)))
+		l.Debug(fmt.Sprintf("fetching %s remotely", string(href)))
 		buf, mimeType, err = httpGet(ctx, html.UnescapeString(string(href)))
 	} else {
-		log.Debug(ctx, fmt.Sprintf("reading %s from disk", string(href)))
+		l.Debug(fmt.Sprintf("reading %s from disk", string(href)))
 		buf, err = os.ReadFile(html.UnescapeString(string(href)))
 	}
 	if err != nil {
