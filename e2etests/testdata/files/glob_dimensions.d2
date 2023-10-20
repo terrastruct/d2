@@ -1,0 +1,48 @@
+**: {
+  style.border-radius: 16
+}
+
+**: {
+  &label: end
+  label: ⬤
+  shape: circle
+  height: 10
+  width: 10
+}
+
+**: {
+  &label: start
+  label: ⬤
+  label.near: center-center
+  style.fill: black
+  shape: circle
+  height: 10
+  width: 10
+}
+
+**: {
+  &shape: diamond
+  label: ""
+  height: 20
+  width: 20
+}
+
+start -> Check PIN
+
+Check PIN: {
+  direction: right
+
+  start -> Enter PIN
+  choice.shape: diamond
+
+  Enter PIN -> choice: "/check PIN"
+  choice -> Enter PIN: "[pin invalid]"
+  choice -> end: "[pin OK]"
+}
+
+Check PIN -> Search Network: "[pin OK]"
+Search Network -> Ready: network found
+
+Check PIN -> Off: power off
+Search Network -> Off: power off
+Ready -> Off: power off
