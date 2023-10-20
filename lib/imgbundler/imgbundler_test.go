@@ -7,18 +7,16 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"path/filepath"
 	"strings"
 	"sync"
 	"testing"
 
+	"cdr.dev/slog/sloggers/slogtest"
 	tassert "github.com/stretchr/testify/assert"
 
-	"oss.terrastruct.com/util-go/cmdlog"
-	"oss.terrastruct.com/util-go/xos"
-
-	"oss.terrastruct.com/util-go/xmain"
+	"oss.terrastruct.com/d2/lib/log"
+	"oss.terrastruct.com/d2/lib/simplelog"
 )
 
 //go:embed test_png.png
@@ -53,7 +51,8 @@ func TestRegex(t *testing.T) {
 
 func TestInlineRemote(t *testing.T) {
 	imgCache = sync.Map{}
-	ctx := context.Background()
+	// we don't want log.Error to cause this test to fail
+	ctx := log.WithTB(context.Background(), t, &slogtest.Options{IgnoreErrors: true})
 	svgURL := "https://icons.terrastruct.com/essentials/004-picture.svg"
 	pngURL := "https://cdn4.iconfinder.com/data/icons/smart-phones-technologies/512/android-phone.png"
 
@@ -84,17 +83,6 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 }]]></style></svg>
 `, svgURL, pngURL)
 
-	ms := &xmain.State{
-		Name: "test",
-
-		Stdin:  os.Stdin,
-		Stdout: os.Stdout,
-		Stderr: os.Stderr,
-
-		Env: xos.NewEnv(os.Environ()),
-	}
-	ms.Log = cmdlog.NewTB(ms.Env, t)
-
 	httpClient.Transport = roundTripFunc(func(req *http.Request) *http.Response {
 		respRecorder := httptest.NewRecorder()
 		switch req.URL.String() {
@@ -109,7 +97,8 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		return respRecorder.Result()
 	})
 
-	out, err := BundleRemote(ctx, ms, []byte(sampleSVG))
+	l := simplelog.FromLibLog(ctx)
+	out, err := BundleRemote(ctx, l, []byte(sampleSVG), false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -133,7 +122,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		respRecorder.WriteHeader(200)
 		return respRecorder.Result()
 	})
-	_, err = BundleRemote(ctx, ms, []byte(sampleSVG))
+	_, err = BundleRemote(ctx, l, []byte(sampleSVG), false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -148,7 +137,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		respRecorder.WriteHeader(200)
 		return respRecorder.Result()
 	})
-	_, err = BundleRemote(ctx, ms, []byte(sampleSVG))
+	_, err = BundleRemote(ctx, l, []byte(sampleSVG), false)
 	if err == nil {
 		t.Fatal("expected error")
 	}
@@ -160,7 +149,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		respRecorder.WriteHeader(500)
 		return respRecorder.Result()
 	})
-	_, err = BundleRemote(ctx, ms, []byte(sampleSVG))
+	_, err = BundleRemote(ctx, l, []byte(sampleSVG), false)
 	if err == nil {
 		t.Fatal("expected error")
 	}
@@ -168,7 +157,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 
 func TestInlineLocal(t *testing.T) {
 	imgCache = sync.Map{}
-	ctx := context.Background()
+	ctx := log.WithTB(context.Background(), t, nil)
 	svgURL, err := filepath.Abs("./test_svg.svg")
 	if err != nil {
 		t.Fatal(err)
@@ -205,17 +194,8 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 }]]></style></svg>
 `, svgURL, pngURL)
 
-	ms := &xmain.State{
-		Name: "test",
-
-		Stdin:  os.Stdin,
-		Stdout: os.Stdout,
-		Stderr: os.Stderr,
-
-		Env: xos.NewEnv(os.Environ()),
-	}
-	ms.Log = cmdlog.NewTB(ms.Env, t)
-	out, err := BundleLocal(ctx, ms, []byte(sampleSVG))
+	l := simplelog.FromLibLog(ctx)
+	out, err := BundleLocal(ctx, l, []byte(sampleSVG), false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -233,7 +213,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 // TestDuplicateURL ensures that we don't fetch the same image twice
 func TestDuplicateURL(t *testing.T) {
 	imgCache = sync.Map{}
-	ctx := context.Background()
+	ctx := log.WithTB(context.Background(), t, nil)
 	url1 := "https://icons.terrastruct.com/essentials/004-picture.svg"
 	url2 := "https://icons.terrastruct.com/essentials/004-picture.svg"
 
@@ -264,17 +244,6 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 }]]></style></svg>
 `, url1, url2)
 
-	ms := &xmain.State{
-		Name: "test",
-
-		Stdin:  os.Stdin,
-		Stdout: os.Stdout,
-		Stderr: os.Stderr,
-
-		Env: xos.NewEnv(os.Environ()),
-	}
-	ms.Log = cmdlog.NewTB(ms.Env, t)
-
 	count := 0
 
 	httpClient.Transport = roundTripFunc(func(req *http.Request) *http.Response {
@@ -285,7 +254,8 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		return respRecorder.Result()
 	})
 
-	out, err := BundleRemote(ctx, ms, []byte(sampleSVG))
+	l := simplelog.FromLibLog(ctx)
+	out, err := BundleRemote(ctx, l, []byte(sampleSVG), false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -298,7 +268,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 
 func TestImgCache(t *testing.T) {
 	imgCache = sync.Map{}
-	ctx := context.Background()
+	ctx := log.WithTB(context.Background(), t, nil)
 	url1 := "https://icons.terrastruct.com/essentials/004-picture.svg"
 	url2 := "https://icons.terrastruct.com/essentials/004-picture.svg"
 
@@ -329,17 +299,6 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 }]]></style></svg>
 `, url1, url2)
 
-	ms := &xmain.State{
-		Name: "test",
-
-		Stdin:  os.Stdin,
-		Stdout: os.Stdout,
-		Stderr: os.Stderr,
-
-		Env: xos.NewEnv(os.Environ()),
-	}
-	ms.Log = cmdlog.NewTB(ms.Env, t)
-
 	count := 0
 
 	httpClient.Transport = roundTripFunc(func(req *http.Request) *http.Response {
@@ -350,26 +309,25 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		return respRecorder.Result()
 	})
 
+	l := simplelog.FromLibLog(ctx)
 	// Using a cache, imgs are not refetched on multiple runs
-	ms.Env.Setenv("IMG_CACHE", "1")
-	_, err := BundleRemote(ctx, ms, []byte(sampleSVG))
+	_, err := BundleRemote(ctx, l, []byte(sampleSVG), true)
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = BundleRemote(ctx, ms, []byte(sampleSVG))
+	_, err = BundleRemote(ctx, l, []byte(sampleSVG), true)
 	if err != nil {
 		t.Fatal(err)
 	}
 	tassert.Equal(t, 1, count)
 
 	// With cache disabled, it refetches
-	ms.Env.Setenv("IMG_CACHE", "0")
 	count = 0
-	_, err = BundleRemote(ctx, ms, []byte(sampleSVG))
+	_, err = BundleRemote(ctx, l, []byte(sampleSVG), false)
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = BundleRemote(ctx, ms, []byte(sampleSVG))
+	_, err = BundleRemote(ctx, l, []byte(sampleSVG), false)
 	if err != nil {
 		t.Fatal(err)
 	}
