@@ -215,9 +215,13 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		if incoming >= 2 || outgoing >= 2 {
 			switch g.Root.Direction.Value {
 			case "right", "left":
-				obj.Height = math.Max(obj.Height, math.Max(incoming, outgoing)*port_spacing)
+				if obj.Attributes.HeightAttr == nil {
+					obj.Height = math.Max(obj.Height, math.Max(incoming, outgoing)*port_spacing)
+				}
 			default:
-				obj.Width = math.Max(obj.Width, math.Max(incoming, outgoing)*port_spacing)
+				if obj.Attributes.WidthAttr == nil {
+					obj.Width = math.Max(obj.Width, math.Max(incoming, outgoing)*port_spacing)
+				}
 			}
 		}
 
