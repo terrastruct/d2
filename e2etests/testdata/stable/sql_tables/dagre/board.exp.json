@@ -55,7 +55,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": null,
+          "constraint": [
+            "primary_key"
+          ],
           "reference": ""
         },
         {
@@ -167,9 +169,7 @@
             "labelWidth": 77,
             "labelHeight": 26
           },
-          "constraint": [
-            "primary_key"
-          ],
+          "constraint": null,
           "reference": ""
         }
       ],
@@ -193,10 +193,10 @@
       "id": "products",
       "type": "sql_table",
       "pos": {
-        "x": 311,
-        "y": 18
+        "x": 22,
+        "y": 276
       },
-      "width": 164,
+      "width": 207,
       "height": 180,
       "opacity": 1,
       "strokeDash": 0,
@@ -241,7 +241,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": null,
+          "constraint": [
+            "primary_key"
+          ],
           "reference": ""
         },
         {
@@ -349,10 +351,10 @@
       "id": "orders",
       "type": "sql_table",
       "pos": {
-        "x": 311,
-        "y": 316
+        "x": 351,
+        "y": 165
       },
-      "width": 164,
+      "width": 207,
       "height": 144,
       "opacity": 1,
       "strokeDash": 0,
@@ -397,7 +399,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": null,
+          "constraint": [
+            "primary_key"
+          ],
           "reference": ""
         },
         {
@@ -425,7 +429,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": null,
+          "constraint": [
+            "foreign_key"
+          ],
           "reference": ""
         },
         {
@@ -453,7 +459,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": null,
+          "constraint": [
+            "foreign_key"
+          ],
           "reference": ""
         }
       ],
@@ -477,10 +485,10 @@
       "id": "shipments",
       "type": "sql_table",
       "pos": {
-        "x": 535,
-        "y": 18
+        "x": 658,
+        "y": 147
       },
-      "width": 244,
+      "width": 287,
       "height": 180,
       "opacity": 1,
       "strokeDash": 0,
@@ -525,7 +533,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": null,
+          "constraint": [
+            "primary_key"
+          ],
           "reference": ""
         },
         {
@@ -553,7 +563,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": null,
+          "constraint": [
+            "foreign_key"
+          ],
           "reference": ""
         },
         {
@@ -632,10 +644,10 @@
   ],
   "connections": [
     {
-      "id": "(users <-> orders)[0]",
-      "src": "users",
-      "srcArrow": "triangle",
-      "dst": "orders",
+      "id": "(orders -> users)[0]",
+      "src": "orders",
+      "srcArrow": "none",
+      "dst": "users",
       "dstArrow": "triangle",
       "opacity": 1,
       "strokeDash": 0,
@@ -656,20 +668,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 125.5,
-          "y": 216
+          "x": 369,
+          "y": 165
         },
         {
-          "x": 125.5,
-          "y": 256
+          "x": 314.6000061035156,
+          "y": 119.4000015258789
         },
         {
-          "x": 162.6999969482422,
-          "y": 283
+          "x": 291,
+          "y": 108
         },
         {
-          "x": 311.5,
-          "y": 351
+          "x": 251,
+          "y": 108
         }
       ],
       "isCurve": true,
@@ -679,10 +691,10 @@
       "zIndex": 0
     },
     {
-      "id": "(products <-> orders)[0]",
-      "src": "products",
-      "srcArrow": "triangle",
-      "dst": "orders",
+      "id": "(orders -> products)[0]",
+      "src": "orders",
+      "srcArrow": "none",
+      "dst": "products",
       "dstArrow": "triangle",
       "opacity": 1,
       "strokeDash": 0,
@@ -703,20 +715,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 393,
-          "y": 198
+          "x": 369,
+          "y": 309
         },
         {
-          "x": 393,
-          "y": 252.39999389648438
+          "x": 314.6000061035156,
+          "y": 354.6000061035156
         },
         {
-          "x": 393,
-          "y": 276
+          "x": 286.6000061035156,
+          "y": 366
         },
         {
-          "x": 393,
-          "y": 316
+          "x": 229,
+          "y": 366
         }
       ],
       "isCurve": true,
@@ -726,9 +738,9 @@
       "zIndex": 0
     },
     {
-      "id": "(shipments <-> orders)[0]",
+      "id": "(shipments -> orders)[0]",
       "src": "shipments",
-      "srcArrow": "triangle",
+      "srcArrow": "none",
       "dst": "orders",
       "dstArrow": "triangle",
       "opacity": 1,
@@ -750,20 +762,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 657,
-          "y": 198
+          "x": 658,
+          "y": 237
         },
         {
-          "x": 657,
-          "y": 252.39999389648438
+          "x": 618,
+          "y": 237
         },
         {
-          "x": 620.5999755859375,
-          "y": 282.79998779296875
+          "x": 598,
+          "y": 237
         },
         {
-          "x": 475,
-          "y": 350
+          "x": 558,
+          "y": 237
         }
       ],
       "isCurve": true,
