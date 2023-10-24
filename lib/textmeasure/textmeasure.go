@@ -126,11 +126,12 @@ func NewRuler() (*Ruler, error) {
 				Style:  fontStyle,
 			}
 			// Note: FontFaces lookup is size-agnostic
-			if _, ok := d2fonts.FontFaces[font]; !ok {
+			face, has := d2fonts.FontFaces.Load(font)
+			if !has {
 				continue
 			}
 			if _, loaded := r.ttfs[font]; !loaded {
-				ttf, err := truetype.Parse(d2fonts.FontFaces[font])
+				ttf, err := truetype.Parse(face.([]byte))
 				if err != nil {
 					return nil, err
 				}
