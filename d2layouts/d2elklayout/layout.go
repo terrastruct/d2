@@ -673,9 +673,11 @@ func deleteBends(g *d2graph.Graph) {
 			// Make sure it's still attached
 			switch {
 			case columnIndex != nil:
-				maxRowOffset := endpoint.Height / float64(len(endpoint.SQLTable.Columns)+1) / 3
-				rowCenter := endpoint.TopLeft.Y + maxRowOffset*float64(*columnIndex+1)*2 + maxRowOffset
-				if math.Abs(end.Y-rowCenter) > maxRowOffset {
+				rowHeight := endpoint.Height / float64(len(endpoint.SQLTable.Columns)+1)
+				rowCenter := endpoint.TopLeft.Y + rowHeight*float64(*columnIndex+1) + rowHeight/2
+
+				// for row connections new Y coordinate should be within 1/3 row height from the row center
+				if math.Abs(end.Y-rowCenter) > rowHeight/3 {
 					continue
 				}
 			case isHorizontal:
