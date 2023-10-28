@@ -2813,6 +2813,15 @@ d2/testdata/d2compiler/TestCompile/text_no_label.d2:15:1: block string cannot be
 d2/testdata/d2compiler/TestCompile/text_no_label.d2:4:1: shape text must have a non-empty label
 d2/testdata/d2compiler/TestCompile/text_no_label.d2:7:1: shape text must have a non-empty label`,
 		},
+		{
+			name: "no_arrowheads_in_shape",
+
+			text: `x.target-arrowhead.shape: cf-one
+y.source-arrowhead.shape: cf-one
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no_arrowheads_in_shape.d2:1:3: "target-arrowhead" can only be used on connections
+d2/testdata/d2compiler/TestCompile/no_arrowheads_in_shape.d2:2:3: "source-arrowhead" can only be used on connections`,
+		},
 	}
 
 	for _, tc := range testCases {
