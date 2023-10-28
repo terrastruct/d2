@@ -284,6 +284,10 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 		return
 	} else if f.Name == "vars" {
 		return
+	} else if f.Name == "source-arrowhead" || f.Name == "target-arrowhead" {
+		c.errorf(f.LastRef().AST(), `%#v can only be used on connections`, f.Name)
+		return
+
 	} else if isReserved {
 		c.compileReserved(&obj.Attributes, f)
 		return
