@@ -14,11 +14,7 @@ func TestCutFont(t *testing.T) {
 		Family: SourceCodePro,
 		Style:  FONT_STYLE_BOLD,
 	}
-	var face []byte
-	{
-		ff, _ := FontFaces.Load(f)
-		face = ff.([]byte)
-	}
+	face := FontFaces.Get(f)
 	fontBuf := make([]byte, len(face))
 	copy(fontBuf, face)
 	fontBuf = font.UTF8CutFont(fontBuf, " 1")

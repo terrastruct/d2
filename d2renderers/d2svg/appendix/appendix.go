@@ -121,7 +121,6 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 	}
 
 	if !strings.Contains(svg, `font-family: "font-regular"`) {
-		font, _ := d2fonts.FontEncodings.Load(d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_REGULAR))
 		appendix += fmt.Sprintf(`<style type="text/css"><![CDATA[
 .text {
 	font-family: "font-regular";
@@ -130,10 +129,9 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 	font-family: font-regular;
 	src: url("%s");
 }
-]]></style>`, font.(string))
+]]></style>`, d2fonts.FontEncodings.Get(d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_REGULAR)))
 	}
 	if !strings.Contains(svg, `font-family: "font-bold"`) {
-		font, _ := d2fonts.FontEncodings.Load(d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_BOLD))
 		appendix += fmt.Sprintf(`<style type="text/css"><![CDATA[
 .text-bold {
 	font-family: "font-bold";
@@ -142,7 +140,7 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 	font-family: font-bold;
 	src: url("%s");
 }
-]]></style>`, font.(string))
+]]></style>`, d2fonts.FontEncodings.Get(d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_BOLD)))
 	}
 
 	closingIndex := strings.LastIndex(svg, "</svg></svg>")
