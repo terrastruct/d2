@@ -126,7 +126,7 @@ func NewRuler() (*Ruler, error) {
 				Style:  fontStyle,
 			}
 			// Note: FontFaces lookup is size-agnostic
-			face, has := d2fonts.FontFaces.Get(font)
+			face, has := d2fonts.FontFaces.Lookup(font)
 			if !has {
 				continue
 			}

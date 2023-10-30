@@ -16,7 +16,7 @@ func (sm SyncMap[K, V]) Set(key K, value V) {
 	sm._map.Store(key, value)
 }
 
-func (sm SyncMap[K, V]) Get(key K) (value V, ok bool) {
+func (sm SyncMap[K, V]) Lookup(key K) (value V, ok bool) {
 	v, has := sm._map.Load(key)
 	if !has {
 		return value, false
@@ -24,8 +24,8 @@ func (sm SyncMap[K, V]) Get(key K) (value V, ok bool) {
 	return v.(V), true
 }
 
-func (sm SyncMap[K, V]) MustGet(key K) (value V) {
-	v, _ := sm.Get(key)
+func (sm SyncMap[K, V]) Get(key K) (value V) {
+	v, _ := sm.Lookup(key)
 	return v
 }
 

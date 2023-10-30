@@ -45,7 +45,7 @@ func (f Font) GetEncodedSubset(corpus string) string {
 
 	FontFamiliesMu.Lock()
 	defer FontFamiliesMu.Unlock()
-	face := FontFaces.MustGet(f)
+	face := FontFaces.Get(f)
 	fontBuf := make([]byte, len(face))
 	copy(fontBuf, face)
 	fontBuf = font.UTF8CutFont(fontBuf, uniqueChars)
@@ -53,7 +53,7 @@ func (f Font) GetEncodedSubset(corpus string) string {
 	fontBuf, err := fontlib.Sfnt2Woff(fontBuf)
 	if err != nil {
 		// If subset fails, return full encoding
-		return FontEncodings.MustGet(f)
+		return FontEncodings.Get(f)
 	}
 
 	return fmt.Sprintf("data:application/font-woff;base64,%v", base64.StdEncoding.EncodeToString(fontBuf))
@@ -366,8 +366,8 @@ func AddFontFamily(name string, regularTTF, italicTTF, boldTTF, semiboldTTF []by
 			Family: SourceSansPro,
 			Style:  FONT_STYLE_REGULAR,
 		}
-		FontFaces.Set(regularFont, FontFaces.MustGet(fallbackFont))
-		FontEncodings.Set(regularFont, FontEncodings.MustGet(fallbackFont))
+		FontFaces.Set(regularFont, FontFaces.Get(fallbackFont))
+		FontEncodings.Set(regularFont, FontEncodings.Get(fallbackFont))
 	}
 
 	italicFont := Font{
@@ -384,8 +384,8 @@ func AddFontFamily(name string, regularTTF, italicTTF, boldTTF, semiboldTTF []by
 			Family: SourceSansPro,
 			Style:  FONT_STYLE_ITALIC,
 		}
-		FontFaces.Set(italicFont, FontFaces.MustGet(fallbackFont))
-		FontEncodings.Set(italicFont, FontEncodings.MustGet(fallbackFont))
+		FontFaces.Set(italicFont, FontFaces.Get(fallbackFont))
+		FontEncodings.Set(italicFont, FontEncodings.Get(fallbackFont))
 	}
 
 	boldFont := Font{
@@ -402,8 +402,8 @@ func AddFontFamily(name string, regularTTF, italicTTF, boldTTF, semiboldTTF []by
 			Family: SourceSansPro,
 			Style:  FONT_STYLE_BOLD,
 		}
-		FontFaces.Set(boldFont, FontFaces.MustGet(fallbackFont))
-		FontEncodings.Set(boldFont, FontEncodings.MustGet(fallbackFont))
+		FontFaces.Set(boldFont, FontFaces.Get(fallbackFont))
+		FontEncodings.Set(boldFont, FontEncodings.Get(fallbackFont))
 	}
 
 	semiboldFont := Font{
@@ -420,8 +420,8 @@ func AddFontFamily(name string, regularTTF, italicTTF, boldTTF, semiboldTTF []by
 			Family: SourceSansPro,
 			Style:  FONT_STYLE_SEMIBOLD,
 		}
-		FontFaces.Set(semiboldFont, FontFaces.MustGet(fallbackFont))
-		FontEncodings.Set(semiboldFont, FontEncodings.MustGet(fallbackFont))
+		FontFaces.Set(semiboldFont, FontFaces.Get(fallbackFont))
+		FontEncodings.Set(semiboldFont, FontEncodings.Get(fallbackFont))
 	}
 
 	FontFamilies = append(FontFamilies, customFontFamily)
