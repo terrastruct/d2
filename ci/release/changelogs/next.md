@@ -14,3 +14,4 @@
 - Fixes use of `null` in `sql_table` constraints (ty @landmaj) [#1660](https://github.com/terrastruct/d2/pull/1660)
 - Fixes elk growing shapes with width/height set [#1679](https://github.com/terrastruct/d2/pull/1679)
 - Adds a compiler error when accidentally using an arrowhead on a shape [#1686](https://github.com/terrastruct/d2/pull/1686)
+- Correctly reports errors from invalid values set by globs. [#1691](https://github.com/terrastruct/d2/pull/1691)

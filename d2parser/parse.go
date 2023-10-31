@@ -161,7 +161,9 @@ type parser struct {
 
 // TODO: rename to Error and make existing Error a private type errorWithRange
 type ParseError struct {
-	Errors []d2ast.Error `json:"errs"`
+	// Errors from globs need to be deduplicated
+	ErrorsLookup map[d2ast.Error]struct{} `json:"-"`
+	Errors       []d2ast.Error            `json:"errs"`
 }
 
 func Errorf(n d2ast.Node, f string, v ...interface{}) error {

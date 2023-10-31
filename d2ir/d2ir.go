@@ -319,7 +319,7 @@ func (f *Field) Copy(newParent Node) Node {
 
 func (f *Field) LastPrimaryRef() Reference {
 	for i := len(f.References) - 1; i >= 0; i-- {
-		if f.References[i].Primary() && !f.References[i].DueToLazyGlob() {
+		if f.References[i].Primary() {
 			return f.References[i]
 		}
 	}
