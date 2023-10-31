@@ -129,7 +129,7 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 	font-family: font-regular;
 	src: url("%s");
 }
-]]></style>`, d2fonts.FontEncodings[d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_REGULAR)])
+]]></style>`, d2fonts.FontEncodings.Get(d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_REGULAR)))
 	}
 	if !strings.Contains(svg, `font-family: "font-bold"`) {
 		appendix += fmt.Sprintf(`<style type="text/css"><![CDATA[
@@ -140,7 +140,7 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 	font-family: font-bold;
 	src: url("%s");
 }
-]]></style>`, d2fonts.FontEncodings[d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_BOLD)])
+]]></style>`, d2fonts.FontEncodings.Get(d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_BOLD)))
 	}
 
 	closingIndex := strings.LastIndex(svg, "</svg></svg>")
