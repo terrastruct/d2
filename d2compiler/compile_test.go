@@ -4241,6 +4241,38 @@ class: {
 `, "")
 			},
 		},
+		{
+			name: "double-glob-err-val",
+			run: func(t *testing.T) {
+				assertCompile(t, `
+**: {
+  label: hi
+  label.near: center
+}
+
+x: {
+  a -> b
+}
+`, `d2/testdata/d2compiler/TestCompile2/globs/double-glob-err-val.d2:4:3: invalid "near" field`)
+			},
+		},
+		{
+			name: "double-glob-override-err-val",
+			run: func(t *testing.T) {
+				assertCompile(t, `
+(** -> **)[*]: {
+	label.near: top-center
+}
+(** -> **)[*]: {
+	label.near: invalid
+}
+
+x: {
+  a -> b
+}
+`, `d2/testdata/d2compiler/TestCompile2/globs/double-glob-override-err-val.d2:6:2: invalid "near" field`)
+			},
+		},
 	}
 
 	for _, tc := range tca {

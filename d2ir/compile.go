@@ -804,7 +804,8 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 // if already set by a non glob key.
 func (c *compiler) ignoreLazyGlob(n Node) bool {
 	if c.lazyGlobBeingApplied && n.Primary() != nil {
-		if n.LastPrimaryRef() != nil {
+		lastPrimaryRef := n.LastPrimaryRef()
+		if lastPrimaryRef != nil && !lastPrimaryRef.DueToLazyGlob() {
 			return true
 		}
 	}

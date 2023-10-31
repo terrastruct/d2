@@ -177,7 +177,14 @@ type compiler struct {
 }
 
 func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
-	c.err.Errors = append(c.err.Errors, d2parser.Errorf(n, f, v...).(d2ast.Error))
+	err := d2parser.Errorf(n, f, v...).(d2ast.Error)
+	if c.err.ErrorsLookup == nil {
+		c.err.ErrorsLookup = make(map[d2ast.Error]struct{})
+	}
+	if _, ok := c.err.ErrorsLookup[err]; !ok {
+		c.err.Errors = append(c.err.Errors, err)
+		c.err.ErrorsLookup[err] = struct{}{}
+	}
 }
 
 func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
