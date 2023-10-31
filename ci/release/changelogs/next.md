@@ -20,3 +20,4 @@
 - Correctly reports errors from invalid values set by globs. [#1691](https://github.com/terrastruct/d2/pull/1691)
 - Fixes panic when spread substitution referenced a nonexistant var. [#1695](https://github.com/terrastruct/d2/pull/1695)
 - Fixes incorrect appendix icon numbering. [#1704](https://github.com/terrastruct/d2/pull/1704)
+- Fixes crash when using `--watch` and navigating to an invalid board path [#1693](https://github.com/terrastruct/d2/pull/1693)

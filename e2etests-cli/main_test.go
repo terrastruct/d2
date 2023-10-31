@@ -3,12 +3,17 @@ package e2etests_cli
 import (
 	"bytes"
 	"context"
+	"fmt"
+	"net/http"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/davecgh/go-spew/spew"
+	"nhooyr.io/websocket"
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
 	"oss.terrastruct.com/util-go/xmain"
@@ -542,6 +547,77 @@ i used to read
 				gotBar := readFile(t, dir, "bar.d2")
 				assert.Equal(t, "a -> b\n", string(gotFoo))
 				assert.Equal(t, "x -> y\n", string(gotBar))
+			},
+		},
+		{
+			name: "watch",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "index.d2", `
+a -> b
+b.link: cream
+
+layers: {
+    cream: {
+        c -> b
+    }
+}`)
+				stderr := &bytes.Buffer{}
+				tms := testMain(dir, env, "--watch", "--browser=0", "index.d2")
+				tms.Stderr = stderr
+
+				doneChan := make(chan struct{}, 1)
+
+				tms.Start(t, ctx)
+				defer tms.Cleanup(t)
+
+				go tms.Wait(ctx)
+
+				ticker := time.NewTicker(100 * time.Millisecond)
+				urlRE := regexp.MustCompile(`127.0.0.1:([0-9]+)`)
+				compiled := false
+				go func() {
+					var url string
+					for i := 0; i < 10 && url == ""; i++ {
+						select {
+						case <-ticker.C:
+							out := string(stderr.Bytes())
+							url = urlRE.FindString(out)
+							compiled, _ = regexp.MatchString(`failed to recompile`, out)
+							println("\033[1;31m--- DEBUG:", compiled, "\033[m")
+						case <-ctx.Done():
+							ticker.Stop()
+							return
+						}
+					}
+
+					if url != "" {
+						c, _, err := websocket.Dial(ctx, fmt.Sprintf("ws://%s/watch", url), nil)
+						assert.Success(t, err)
+
+						req, err := http.NewRequestWithContext(ctx, "GET", fmt.Sprintf("http://%s/cream", url), nil)
+						assert.Success(t, err)
+						var httpClient = &http.Client{}
+						resp, err := httpClient.Do(req)
+						assert.Success(t, err)
+						defer resp.Body.Close()
+						assert.Equal(t, 200, resp.StatusCode)
+
+						time.Sleep(1000)
+						spew.Dump(string(stderr.Bytes()))
+
+						_, _, err = c.Read(ctx)
+						spew.Dump(err)
+
+						defer c.Close(websocket.StatusNormalClosure, "")
+					}
+
+					doneChan <- struct{}{}
+				}()
+
+				<-doneChan
+
+				err := tms.Signal(ctx, os.Interrupt)
+				assert.Error(t, err)
 			},
 		},
 	}

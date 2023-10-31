@@ -2,6 +2,7 @@ package d2cli
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -490,6 +491,8 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, la
 	default:
 		compileDur := time.Since(start)
 		if animateInterval <= 0 {
+			b, _ := json.MarshalIndent(diagram, "", "  ")
+			println("\033[1;31m--- DEBUG:", string(b), "\033[m")
 			// Rename all the "root.layers.x" to the paths that the boards get output to
 			linkToOutput, err := resolveLinks("root", outputPath, diagram)
 			if err != nil {
@@ -503,7 +506,7 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, la
 
 		board := diagram.GetBoard(boardPath)
 		if board == nil {
-			return nil, false, fmt.Errorf("Diagram with path %s not found", boardPath)
+			return nil, false, fmt.Errorf(`Diagram with path "%s" not found. Did you mean to specify a board like "layers.%s"?`, boardPath, boardPath)
 		}
 
 		boards, err := render(ctx, ms, compileDur, plugin, renderOpts, inputPath, outputPath, bundle, forceAppendix, page, ruler, board)
