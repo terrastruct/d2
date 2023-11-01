@@ -465,6 +465,7 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 					Context_: &RefContext{
 						Scope:    ast,
 						ScopeMap: dst,
+						ScopeAST: scopeAST,
 					},
 				}},
 			}
