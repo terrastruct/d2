@@ -4160,6 +4160,30 @@ mybox: {
 `, "")
 				},
 			},
+			{
+				name: "undeclared-var-usage",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+x: { ...${v} }
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/undeclared-var-usage.d2:2:4: could not resolve variable "v"`)
+				},
+			},
+			{
+				name: "split-var-usage",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+x1
+
+vars: {
+  v: {
+    style.fill: green
+  }
+}
+
+x1: { ...${v} }
+`, ``)
+				},
+			},
 		}
 
 		for _, tc := range tca {

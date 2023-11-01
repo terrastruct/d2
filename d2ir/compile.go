@@ -125,6 +125,8 @@ func (c *compiler) compileSubstitutions(m *Map, varsStack []*Map) {
 		if f.Name == "vars" && f.Map() != nil {
 			varsStack = append([]*Map{f.Map()}, varsStack...)
 		}
+	}
+	for _, f := range m.Fields {
 		if f.Primary() != nil {
 			c.resolveSubstitutions(varsStack, f)
 		}
@@ -459,6 +461,13 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 						Value: []d2ast.InterpolationBox{{Substitution: n.Substitution}},
 					},
 				},
+				References: []*FieldReference{{
+					Context_: &RefContext{
+						Scope:    ast,
+						ScopeMap: dst,
+						ScopeAST: scopeAST,
+					},
+				}},
 			}
 			dst.Fields = append(dst.Fields, f)
 		case n.Import != nil:
