@@ -4,88 +4,14 @@
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
-      "id": "x",
-      "type": "sql_table",
-      "pos": {
-        "x": 12,
-        "y": 12
-      },
-      "width": 103,
-      "height": 72,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "N1",
-      "stroke": "N7",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "double-border": false,
-      "tooltip": "I like turtles",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": [
-        {
-          "name": {
-            "label": "y",
-            "fontSize": 0,
-            "fontFamily": "",
-            "language": "",
-            "color": "",
-            "italic": false,
-            "bold": false,
-            "underline": false,
-            "labelWidth": 10,
-            "labelHeight": 26
-          },
-          "type": {
-            "label": "",
-            "fontSize": 0,
-            "fontFamily": "",
-            "language": "",
-            "color": "",
-            "italic": false,
-            "bold": false,
-            "underline": false,
-            "labelWidth": 0,
-            "labelHeight": 0
-          },
-          "constraint": [
-            "primary_key"
-          ],
-          "reference": ""
-        }
-      ],
-      "label": "x",
-      "fontSize": 20,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "N1",
-      "italic": false,
-      "bold": true,
-      "underline": false,
-      "labelWidth": 12,
-      "labelHeight": 31,
-      "zIndex": 0,
-      "level": 1,
-      "primaryAccentColor": "B2",
-      "secondaryAccentColor": "AA2",
-      "neutralAccentColor": "N2"
-    },
-    {
       "id": "a",
       "type": "sql_table",
       "pos": {
-        "x": 185,
-        "y": 12
+        "x": 12,
+        "y": 42
       },
-      "width": 101,
-      "height": 72,
+      "width": 131,
+      "height": 80,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -106,7 +32,7 @@
       "columns": [
         {
           "name": {
-            "label": "b",
+            "label": "id",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -114,11 +40,11 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 10,
+            "labelWidth": 15,
             "labelHeight": 26
           },
           "type": {
-            "label": "",
+            "label": "int",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -126,11 +52,11 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 0,
-            "labelHeight": 0
+            "labelWidth": 23,
+            "labelHeight": 26
           },
           "constraint": [
-            "foreign_key"
+            "primary_key"
           ],
           "reference": ""
         }
@@ -150,15 +76,149 @@
       "primaryAccentColor": "B2",
       "secondaryAccentColor": "AA2",
       "neutralAccentColor": "N2"
+    },
+    {
+      "id": "b",
+      "type": "sql_table",
+      "pos": {
+        "x": 223,
+        "y": 12
+      },
+      "width": 146,
+      "height": 144,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N1",
+      "stroke": "N7",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": [
+        {
+          "name": {
+            "label": "id",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 15,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "int",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 23,
+            "labelHeight": 26
+          },
+          "constraint": [
+            "primary_key"
+          ],
+          "reference": ""
+        },
+        {
+          "name": {
+            "label": "a_1",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 29,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "int",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 23,
+            "labelHeight": 26
+          },
+          "constraint": [
+            "foreign_key"
+          ],
+          "reference": ""
+        },
+        {
+          "name": {
+            "label": "a_2",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 30,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "int",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 23,
+            "labelHeight": 26
+          },
+          "constraint": [
+            "foreign_key"
+          ],
+          "reference": ""
+        }
+      ],
+      "label": "b",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 12,
+      "labelHeight": 31,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
     }
   ],
   "connections": [
     {
-      "id": "(a <-> x)[0]",
-      "src": "a",
-      "srcArrow": "cf-many",
-      "dst": "x",
-      "dstArrow": "cf-one",
+      "id": "(b -> a)[0]",
+      "src": "b",
+      "srcArrow": "none",
+      "dst": "a",
+      "dstArrow": "triangle",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -178,15 +238,61 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 185,
-          "y": 66
+          "x": 223,
+          "y": 102
         },
         {
-          "x": 115,
-          "y": 66
+          "x": 143,
+          "y": 102
         }
       ],
-      "animated": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(b -> a)[1]",
+      "src": "b",
+      "srcArrow": "none",
+      "dst": "a",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 223,
+          "y": 138
+        },
+        {
+          "x": 183,
+          "y": 138
+        },
+        {
+          "x": 183,
+          "y": 102
+        },
+        {
+          "x": 143,
+          "y": 102
+        }
+      ],
+      "animated": false,
       "tooltip": "",
       "icon": null,
       "zIndex": 0
