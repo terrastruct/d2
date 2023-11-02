@@ -1,5 +1,7 @@
 #### Features 🚀
 
+- ELK now routes `sql_table` edges to the exact columns (ty @landmaj) [#1681](https://github.com/terrastruct/d2/pull/1681)
+
 #### Improvements 🧹
 
 - Grid cells can now contain nested edges [#1629](https://github.com/terrastruct/d2/pull/1629)
