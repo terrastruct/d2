@@ -1,0 +1,143 @@
+{
+  "fields": [
+    {
+      "name": "before",
+      "primary": {
+        "value": {
+          "range": "globs.d2,2:5:24-2:9:28",
+          "value": [
+            {
+              "string": "meow",
+              "raw_string": "meow"
+            }
+          ]
+        }
+      },
+      "references": [
+        {
+          "string": {
+            "range": "index.d2,0:0:0-0:6:6",
+            "value": [
+              {
+                "string": "before",
+                "raw_string": "before"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "index.d2,0:0:0-0:6:6",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "index.d2,0:0:0-0:6:6",
+                  "value": [
+                    {
+                      "string": "before",
+                      "raw_string": "before"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "index.d2,0:0:0-0:6:6",
+              "key": {
+                "range": "index.d2,0:0:0-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "index.d2,0:0:0-0:6:6",
+                      "value": [
+                        {
+                          "string": "before",
+                          "raw_string": "before"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {}
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        }
+      ]
+    },
+    {
+      "name": "after",
+      "primary": {
+        "value": {
+          "range": "globs.d2,2:5:24-2:9:28",
+          "value": [
+            {
+              "string": "meow",
+              "raw_string": "meow"
+            }
+          ]
+        }
+      },
+      "references": [
+        {
+          "string": {
+            "range": "index.d2,0:22:22-0:27:27",
+            "value": [
+              {
+                "string": "after",
+                "raw_string": "after"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "index.d2,0:22:22-0:27:27",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "index.d2,0:22:22-0:27:27",
+                  "value": [
+                    {
+                      "string": "after",
+                      "raw_string": "after"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "index.d2,0:22:22-0:27:27",
+              "key": {
+                "range": "index.d2,0:22:22-0:27:27",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "index.d2,0:22:22-0:27:27",
+                      "value": [
+                        {
+                          "string": "after",
+                          "raw_string": "after"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {}
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        }
+      ]
+    }
+  ],
+  "edges": null
+}

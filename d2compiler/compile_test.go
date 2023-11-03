@@ -1616,7 +1616,7 @@ d2/testdata/d2compiler/TestCompile/near-invalid.d2:14:9: near keys cannot be set
 				}
 				x -> y
 			`,
-			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_connected.d2:5:5: cannot connect objects from within a container, that has near constant set, to objects outside that container`,
+			expErr: ``,
 		},
 		{
 			name: "near_descendant_connect_to_outside",
@@ -1627,7 +1627,7 @@ d2/testdata/d2compiler/TestCompile/near-invalid.d2:14:9: near keys cannot be set
 				}
 				x.y -> z
 			`,
-			expErr: "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2:6:5: cannot connect objects from within a container, that has near constant set, to objects outside that container",
+			expErr: "",
 		},
 		{
 			name: "nested_near_constant",
@@ -2040,7 +2040,7 @@ b
 }
 b -> x.a
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/leaky_sequence.d2:5:1: connections within sequence diagrams can connect only to other objects within the same sequence diagram`,
+			expErr: ``,
 		},
 		{
 			name: "sequence_scoping",
@@ -2197,6 +2197,19 @@ ok: {
 				table := g.Objects[0].SQLTable
 				tassert.Equal(t, []string{"primary_key"}, table.Columns[0].Constraint)
 				tassert.Equal(t, []string{"primary_key", "foreign_key"}, table.Columns[1].Constraint)
+			},
+		},
+		{
+			name: "sql-null-constraint",
+			text: `x: {
+  shape: sql_table
+  a: int {constraint: null}
+  b: int {constraint: [null]}
+}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				table := g.Objects[0].SQLTable
+				tassert.Nil(t, table.Columns[0].Constraint)
+				tassert.Equal(t, []string{"null"}, table.Columns[1].Constraint)
 			},
 		},
 		{
@@ -2476,16 +2489,75 @@ d2/testdata/d2compiler/TestCompile/grid_gap_negative.d2:3:16: vertical-gap must 
 			name: "grid_edge",
 			text: `hey: {
 	grid-rows: 1
-	a -> b
+	a -> b: ok
 }
-	c -> hey.b
-	hey.a -> c
+c -> hey.b
+hey.a -> c
+hey -> hey.a
 
-	hey -> c: ok
+hey -> c: ok
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/grid_edge.d2:3:2: edges in grid diagrams are not supported yet
-d2/testdata/d2compiler/TestCompile/grid_edge.d2:5:2: edges in grid diagrams are not supported yet
-d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:2: edges in grid diagrams are not supported yet`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_edge.d2:7:1: edge from grid diagram "hey" cannot enter itself`,
+		},
+		{
+			name: "grid_deeper_edge",
+			text: `hey: {
+	grid-rows: 1
+	a -> b: ok
+	b: {
+		c -> d: ok now
+		c.e -> c.f.g: ok
+		c.e -> d.h: ok
+		c -> d.h: ok
+	}
+	a: {
+		grid-columns: 1
+		e -> f: also ok now
+		e: {
+			g -> h: ok
+			g -> h.h: ok
+		}
+		e -> f.i: ok now
+		e.g -> f.i: ok now
+	}
+	a -> b.c: ok now
+	a.e -> b.c: ok now
+	a -> a.e: not ok
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_deeper_edge.d2:22:2: edge from grid diagram "hey.a" cannot enter itself`,
+		},
+		{
+			name: "parent_graph_edge_to_descendant",
+			text: `tl: {
+	near: top-left
+	a.b
+}
+grid: {
+	grid-rows: 1
+	cell.c.d
+}
+seq: {
+	shape: sequence_diagram
+	e.f
+}
+tl -> tl.a: no
+tl -> tl.a.b: no
+grid-> grid.cell: no
+grid-> grid.cell.c: no
+grid.cell -> grid.cell.c: no
+grid.cell -> grid.cell.c.d: no
+seq -> seq.e: no
+seq -> seq.e.f: no
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:13:1: edge from constant near "tl" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:14:1: edge from constant near "tl" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:17:1: edge from grid cell "grid.cell" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:18:1: edge from grid cell "grid.cell" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:15:1: edge from grid diagram "grid" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:16:1: edge from grid diagram "grid" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:19:1: edge from sequence diagram "seq" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:20:1: edge from sequence diagram "seq" cannot enter itself`,
 		},
 		{
 			name: "grid_nested",
@@ -2626,6 +2698,28 @@ a -> b: { class: [association; one target] }
 			},
 		},
 		{
+			name: "var_in_glob",
+			text: `vars: {
+  v: {
+    ok
+  }
+}
+
+x1 -> x2
+
+x*: {
+  ...${v}
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 4, len(g.Objects))
+				tassert.Equal(t, "x1.ok", g.Objects[0].AbsID())
+				tassert.Equal(t, "x2.ok", g.Objects[1].AbsID())
+				tassert.Equal(t, "x1", g.Objects[2].AbsID())
+				tassert.Equal(t, "x2", g.Objects[3].AbsID())
+			},
+		},
+		{
 			name: "class-shape-class",
 			text: `classes: {
   classClass: {
@@ -2694,6 +2788,40 @@ object: {
 `,
 			expErr: `d2/testdata/d2compiler/TestCompile/reserved-composite.d2:1:1: reserved field shape does not accept composite`,
 		},
+		{
+			name: "text_no_label",
+			text: `a: "ok" {
+	shape: text
+}
+b: " \n " {
+	shape: text
+}
+c: "" {
+	shape: text
+}
+d: "" {
+	shape: circle
+}
+e: " \n "
+f: |md  |
+g: |md
+
+|
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/text_no_label.d2:14:1: block string cannot be empty
+d2/testdata/d2compiler/TestCompile/text_no_label.d2:15:1: block string cannot be empty
+d2/testdata/d2compiler/TestCompile/text_no_label.d2:4:1: shape text must have a non-empty label
+d2/testdata/d2compiler/TestCompile/text_no_label.d2:7:1: shape text must have a non-empty label`,
+		},
+		{
+			name: "no_arrowheads_in_shape",
+
+			text: `x.target-arrowhead.shape: cf-one
+y.source-arrowhead.shape: cf-one
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no_arrowheads_in_shape.d2:1:3: "target-arrowhead" can only be used on connections
+d2/testdata/d2compiler/TestCompile/no_arrowheads_in_shape.d2:2:3: "source-arrowhead" can only be used on connections`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -2745,6 +2873,7 @@ func TestCompile2(t *testing.T) {
 	t.Run("seqdiagrams", testSeqDiagrams)
 	t.Run("nulls", testNulls)
 	t.Run("vars", testVars)
+	t.Run("globs", testGlobs)
 }
 
 func testBoards(t *testing.T) {
@@ -4017,6 +4146,44 @@ z: {
 `, `d2/testdata/d2compiler/TestCompile2/vars/errors/spread-non-solo.d2:8:2: cannot substitute composite variable "x" as part of a string`)
 				},
 			},
+			{
+				name: "spread-mid-string",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+  test: hello
+}
+
+mybox: {
+  label: prefix${test}suffix
+}
+`, "")
+				},
+			},
+			{
+				name: "undeclared-var-usage",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+x: { ...${v} }
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/undeclared-var-usage.d2:2:4: could not resolve variable "v"`)
+				},
+			},
+			{
+				name: "split-var-usage",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+x1
+
+vars: {
+  v: {
+    style.fill: green
+  }
+}
+
+x1: { ...${v} }
+`, ``)
+				},
+			},
 		}
 
 		for _, tc := range tca {
@@ -4030,6 +4197,118 @@ z: {
 			})
 		}
 	})
+}
+
+func testGlobs(t *testing.T) {
+	t.Parallel()
+
+	tca := []struct {
+		name string
+		skip bool
+		run  func(t *testing.T)
+	}{
+		{
+			name: "alixander-lazy-globs-review/1",
+			run: func(t *testing.T) {
+				assertCompile(t, `
+***.style.fill: yellow
+**.shape: circle
+*.style.multiple: true
+
+x: {
+  y
+}
+
+layers: {
+  next: {
+    a
+  }
+}
+`, "")
+			},
+		},
+		{
+			name: "alixander-lazy-globs-review/2",
+			run: func(t *testing.T) {
+				assertCompile(t, `
+**.style.fill: yellow
+
+scenarios: {
+  b: {
+    a -> b
+  }
+}
+`, "")
+			},
+		},
+		{
+			name: "alixander-lazy-globs-review/3",
+			run: func(t *testing.T) {
+				assertCompile(t, `
+***: {
+  c: d
+}
+
+***: {
+  style.fill: red
+}
+
+table: {
+  shape: sql_table
+  a: b
+}
+
+class: {
+  shape: class
+  a: b
+}
+`, "")
+			},
+		},
+		{
+			name: "double-glob-err-val",
+			run: func(t *testing.T) {
+				assertCompile(t, `
+**: {
+  label: hi
+  label.near: center
+}
+
+x: {
+  a -> b
+}
+`, `d2/testdata/d2compiler/TestCompile2/globs/double-glob-err-val.d2:4:3: invalid "near" field`)
+			},
+		},
+		{
+			name: "double-glob-override-err-val",
+			run: func(t *testing.T) {
+				assertCompile(t, `
+(** -> **)[*]: {
+	label.near: top-center
+}
+(** -> **)[*]: {
+	label.near: invalid
+}
+
+x: {
+  a -> b
+}
+`, `d2/testdata/d2compiler/TestCompile2/globs/double-glob-override-err-val.d2:6:2: invalid "near" field`)
+			},
+		},
+	}
+
+	for _, tc := range tca {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			if tc.skip {
+				t.SkipNow()
+			}
+			tc.run(t)
+		})
+	}
 }
 
 func assertCompile(t *testing.T, text string, expErr string) (*d2graph.Graph, *d2target.Config) {

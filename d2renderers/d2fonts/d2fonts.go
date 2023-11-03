@@ -13,6 +13,7 @@ import (
 
 	"oss.terrastruct.com/d2/lib/font"
 	fontlib "oss.terrastruct.com/d2/lib/font"
+	"oss.terrastruct.com/d2/lib/syncmap"
 )
 
 type FontFamily string
@@ -44,14 +45,15 @@ func (f Font) GetEncodedSubset(corpus string) string {
 
 	FontFamiliesMu.Lock()
 	defer FontFamiliesMu.Unlock()
-	fontBuf := make([]byte, len(FontFaces[f]))
-	copy(fontBuf, FontFaces[f])
+	face := FontFaces.Get(f)
+	fontBuf := make([]byte, len(face))
+	copy(fontBuf, face)
 	fontBuf = font.UTF8CutFont(fontBuf, uniqueChars)
 
 	fontBuf, err := fontlib.Sfnt2Woff(fontBuf)
 	if err != nil {
 		// If subset fails, return full encoding
-		return FontEncodings[f]
+		return FontEncodings.Get(f)
 	}
 
 	return fmt.Sprintf("data:application/font-woff;base64,%v", base64.StdEncoding.EncodeToString(fontBuf))
@@ -134,165 +136,197 @@ var fuzzyBubblesBoldBase64 string
 //go:embed ttf/*
 var fontFacesFS embed.FS
 
-var FontEncodings map[Font]string
-var FontFaces map[Font][]byte
+var FontEncodings syncmap.SyncMap[Font, string]
+var FontFaces syncmap.SyncMap[Font, []byte]
 
 func init() {
-	FontEncodings = map[Font]string{
-		{
+	FontEncodings = syncmap.New[Font, string]()
+
+	FontEncodings.Set(
+		Font{
 			Family: SourceSansPro,
 			Style:  FONT_STYLE_REGULAR,
-		}: sourceSansProRegularBase64,
-		{
+		},
+		sourceSansProRegularBase64)
+
+	FontEncodings.Set(
+		Font{
 			Family: SourceSansPro,
 			Style:  FONT_STYLE_BOLD,
-		}: sourceSansProBoldBase64,
-		{
+		},
+		sourceSansProBoldBase64)
+
+	FontEncodings.Set(
+		Font{
 			Family: SourceSansPro,
 			Style:  FONT_STYLE_SEMIBOLD,
-		}: sourceSansProSemiboldBase64,
-		{
+		},
+		sourceSansProSemiboldBase64)
+
+	FontEncodings.Set(
+		Font{
 			Family: SourceSansPro,
 			Style:  FONT_STYLE_ITALIC,
-		}: sourceSansProItalicBase64,
-		{
+		},
+		sourceSansProItalicBase64)
+
+	FontEncodings.Set(
+		Font{
 			Family: SourceCodePro,
 			Style:  FONT_STYLE_REGULAR,
-		}: sourceCodeProRegularBase64,
-		{
+		},
+		sourceCodeProRegularBase64)
+
+	FontEncodings.Set(
+		Font{
 			Family: SourceCodePro,
 			Style:  FONT_STYLE_BOLD,
-		}: sourceCodeProBoldBase64,
-		{
+		},
+		sourceCodeProBoldBase64)
+
+	FontEncodings.Set(
+		Font{
 			Family: SourceCodePro,
 			Style:  FONT_STYLE_SEMIBOLD,
-		}: sourceCodeProSemiboldBase64,
-		{
+		},
+		sourceCodeProSemiboldBase64)
+
+	FontEncodings.Set(
+		Font{
 			Family: SourceCodePro,
 			Style:  FONT_STYLE_ITALIC,
-		}: sourceCodeProItalicBase64,
-		{
+		},
+		sourceCodeProItalicBase64)
+
+	FontEncodings.Set(
+		Font{
 			Family: HandDrawn,
 			Style:  FONT_STYLE_REGULAR,
-		}: fuzzyBubblesRegularBase64,
-		{
+		},
+		fuzzyBubblesRegularBase64)
+
+	FontEncodings.Set(
+		Font{
 			Family: HandDrawn,
 			Style:  FONT_STYLE_ITALIC,
 			// This font has no italic, so just reuse regular
-		}: fuzzyBubblesRegularBase64,
-		{
+		}, fuzzyBubblesRegularBase64)
+	FontEncodings.Set(
+		Font{
 			Family: HandDrawn,
 			Style:  FONT_STYLE_BOLD,
-		}: fuzzyBubblesBoldBase64,
-		{
+		}, fuzzyBubblesBoldBase64)
+	FontEncodings.Set(
+		Font{
 			Family: HandDrawn,
 			Style:  FONT_STYLE_SEMIBOLD,
 			// This font has no semibold, so just reuse bold
-		}: fuzzyBubblesBoldBase64,
-	}
+		}, fuzzyBubblesBoldBase64)
 
-	for k, v := range FontEncodings {
-		FontEncodings[k] = strings.TrimSuffix(v, "\n")
-	}
+	FontEncodings.Range(func(k Font, v string) bool {
+		FontEncodings.Set(k, strings.TrimSuffix(v, "\n"))
+		return true
+	})
 
-	FontFaces = map[Font][]byte{}
+	FontFaces = syncmap.New[Font, []byte]()
+
 	b, err := fontFacesFS.ReadFile("ttf/SourceSansPro-Regular.ttf")
 	if err != nil {
 		panic(err)
 	}
-	FontFaces[Font{
+	FontFaces.Set(Font{
 		Family: SourceSansPro,
 		Style:  FONT_STYLE_REGULAR,
-	}] = b
+	}, b)
 
 	b, err = fontFacesFS.ReadFile("ttf/SourceCodePro-Regular.ttf")
 	if err != nil {
 		panic(err)
 	}
-	FontFaces[Font{
+	FontFaces.Set(Font{
 		Family: SourceCodePro,
 		Style:  FONT_STYLE_REGULAR,
-	}] = b
+	}, b)
 
 	b, err = fontFacesFS.ReadFile("ttf/SourceCodePro-Bold.ttf")
 	if err != nil {
 		panic(err)
 	}
-	FontFaces[Font{
+	FontFaces.Set(Font{
 		Family: SourceCodePro,
 		Style:  FONT_STYLE_BOLD,
-	}] = b
+	}, b)
 
 	b, err = fontFacesFS.ReadFile("ttf/SourceCodePro-Semibold.ttf")
 	if err != nil {
 		panic(err)
 	}
-	FontFaces[Font{
+	FontFaces.Set(Font{
 		Family: SourceCodePro,
 		Style:  FONT_STYLE_SEMIBOLD,
-	}] = b
+	}, b)
 
 	b, err = fontFacesFS.ReadFile("ttf/SourceCodePro-Italic.ttf")
 	if err != nil {
 		panic(err)
 	}
-	FontFaces[Font{
+	FontFaces.Set(Font{
 		Family: SourceCodePro,
 		Style:  FONT_STYLE_ITALIC,
-	}] = b
+	}, b)
 
 	b, err = fontFacesFS.ReadFile("ttf/SourceSansPro-Bold.ttf")
 	if err != nil {
 		panic(err)
 	}
-	FontFaces[Font{
+	FontFaces.Set(Font{
 		Family: SourceSansPro,
 		Style:  FONT_STYLE_BOLD,
-	}] = b
+	}, b)
 
 	b, err = fontFacesFS.ReadFile("ttf/SourceSansPro-Semibold.ttf")
 	if err != nil {
 		panic(err)
 	}
-	FontFaces[Font{
+	FontFaces.Set(Font{
 		Family: SourceSansPro,
 		Style:  FONT_STYLE_SEMIBOLD,
-	}] = b
+	}, b)
 
 	b, err = fontFacesFS.ReadFile("ttf/SourceSansPro-Italic.ttf")
 	if err != nil {
 		panic(err)
 	}
-	FontFaces[Font{
+	FontFaces.Set(Font{
 		Family: SourceSansPro,
 		Style:  FONT_STYLE_ITALIC,
-	}] = b
+	}, b)
 
 	b, err = fontFacesFS.ReadFile("ttf/FuzzyBubbles-Regular.ttf")
 	if err != nil {
 		panic(err)
 	}
-	FontFaces[Font{
+	FontFaces.Set(Font{
 		Family: HandDrawn,
 		Style:  FONT_STYLE_REGULAR,
-	}] = b
-	FontFaces[Font{
+	}, b)
+	FontFaces.Set(Font{
 		Family: HandDrawn,
 		Style:  FONT_STYLE_ITALIC,
-	}] = b
+	}, b)
 
 	b, err = fontFacesFS.ReadFile("ttf/FuzzyBubbles-Bold.ttf")
 	if err != nil {
 		panic(err)
 	}
-	FontFaces[Font{
+	FontFaces.Set(Font{
 		Family: HandDrawn,
 		Style:  FONT_STYLE_BOLD,
-	}] = b
-	FontFaces[Font{
+	}, b)
+	FontFaces.Set(Font{
 		Family: HandDrawn,
 		Style:  FONT_STYLE_SEMIBOLD,
-	}] = b
+	}, b)
 }
 
 var D2_FONT_TO_FAMILY = map[string]FontFamily{
@@ -301,14 +335,14 @@ var D2_FONT_TO_FAMILY = map[string]FontFamily{
 }
 
 func AddFontStyle(font Font, style FontStyle, ttf []byte) error {
-	FontFaces[font] = ttf
+	FontFaces.Set(font, ttf)
 
 	woff, err := fontlib.Sfnt2Woff(ttf)
 	if err != nil {
 		return fmt.Errorf("failed to encode ttf to woff: %v", err)
 	}
 	encodedWoff := fmt.Sprintf("data:application/font-woff;base64,%v", base64.StdEncoding.EncodeToString(woff))
-	FontEncodings[font] = encodedWoff
+	FontEncodings.Set(font, encodedWoff)
 
 	return nil
 }
@@ -332,8 +366,8 @@ func AddFontFamily(name string, regularTTF, italicTTF, boldTTF, semiboldTTF []by
 			Family: SourceSansPro,
 			Style:  FONT_STYLE_REGULAR,
 		}
-		FontFaces[regularFont] = FontFaces[fallbackFont]
-		FontEncodings[regularFont] = FontEncodings[fallbackFont]
+		FontFaces.Set(regularFont, FontFaces.Get(fallbackFont))
+		FontEncodings.Set(regularFont, FontEncodings.Get(fallbackFont))
 	}
 
 	italicFont := Font{
@@ -350,8 +384,8 @@ func AddFontFamily(name string, regularTTF, italicTTF, boldTTF, semiboldTTF []by
 			Family: SourceSansPro,
 			Style:  FONT_STYLE_ITALIC,
 		}
-		FontFaces[italicFont] = FontFaces[fallbackFont]
-		FontEncodings[italicFont] = FontEncodings[fallbackFont]
+		FontFaces.Set(italicFont, FontFaces.Get(fallbackFont))
+		FontEncodings.Set(italicFont, FontEncodings.Get(fallbackFont))
 	}
 
 	boldFont := Font{
@@ -368,8 +402,8 @@ func AddFontFamily(name string, regularTTF, italicTTF, boldTTF, semiboldTTF []by
 			Family: SourceSansPro,
 			Style:  FONT_STYLE_BOLD,
 		}
-		FontFaces[boldFont] = FontFaces[fallbackFont]
-		FontEncodings[boldFont] = FontEncodings[fallbackFont]
+		FontFaces.Set(boldFont, FontFaces.Get(fallbackFont))
+		FontEncodings.Set(boldFont, FontEncodings.Get(fallbackFont))
 	}
 
 	semiboldFont := Font{
@@ -386,8 +420,8 @@ func AddFontFamily(name string, regularTTF, italicTTF, boldTTF, semiboldTTF []by
 			Family: SourceSansPro,
 			Style:  FONT_STYLE_SEMIBOLD,
 		}
-		FontFaces[semiboldFont] = FontFaces[fallbackFont]
-		FontEncodings[semiboldFont] = FontEncodings[fallbackFont]
+		FontFaces.Set(semiboldFont, FontFaces.Get(fallbackFont))
+		FontEncodings.Set(semiboldFont, FontEncodings.Get(fallbackFont))
 	}
 
 	FontFamilies = append(FontFamilies, customFontFamily)

@@ -2,7 +2,6 @@ package d2grid
 
 import (
 	"strconv"
-	"strings"
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/lib/geo"
@@ -11,6 +10,7 @@ import (
 type gridDiagram struct {
 	root    *d2graph.Object
 	objects []*d2graph.Object
+	edges   []*d2graph.Edge
 	rows    int
 	columns int
 
@@ -107,19 +107,7 @@ func (gd *gridDiagram) shift(dx, dy float64) {
 	for _, obj := range gd.objects {
 		obj.MoveWithDescendants(dx, dy)
 	}
-}
-
-func (gd *gridDiagram) cleanup(obj *d2graph.Object, graph *d2graph.Graph) {
-	obj.Children = make(map[string]*d2graph.Object)
-	obj.ChildrenArray = make([]*d2graph.Object, 0)
-
-	restore := func(parent, child *d2graph.Object) {
-		parent.Children[strings.ToLower(child.ID)] = child
-		parent.ChildrenArray = append(parent.ChildrenArray, child)
-		graph.Objects = append(graph.Objects, child)
-	}
-	for _, child := range gd.objects {
-		restore(obj, child)
-		child.IterDescendants(restore)
+	for _, e := range gd.edges {
+		e.Move(dx, dy)
 	}
 }

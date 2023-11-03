@@ -10,7 +10,7 @@
         "x": 12,
         "y": 12
       },
-      "width": 60,
+      "width": 103,
       "height": 72,
       "opacity": 1,
       "strokeDash": 0,
@@ -55,7 +55,9 @@
             "labelWidth": 0,
             "labelHeight": 0
           },
-          "constraint": null,
+          "constraint": [
+            "primary_key"
+          ],
           "reference": ""
         }
       ],
@@ -79,10 +81,10 @@
       "id": "a",
       "type": "sql_table",
       "pos": {
-        "x": 12,
-        "y": 154
+        "x": 185,
+        "y": 12
       },
-      "width": 60,
+      "width": 101,
       "height": 72,
       "opacity": 1,
       "strokeDash": 0,
@@ -127,7 +129,9 @@
             "labelWidth": 0,
             "labelHeight": 0
           },
-          "constraint": null,
+          "constraint": [
+            "foreign_key"
+          ],
           "reference": ""
         }
       ],
@@ -150,11 +154,11 @@
   ],
   "connections": [
     {
-      "id": "(x -> a)[0]",
-      "src": "x",
-      "srcArrow": "none",
-      "dst": "a",
-      "dstArrow": "cf-many",
+      "id": "(a <-> x)[0]",
+      "src": "a",
+      "srcArrow": "cf-many",
+      "dst": "x",
+      "dstArrow": "cf-one",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -174,12 +178,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 42,
-          "y": 84
+          "x": 185,
+          "y": 66
         },
         {
-          "x": 42,
-          "y": 154
+          "x": 115,
+          "y": 66
         }
       ],
       "animated": true,

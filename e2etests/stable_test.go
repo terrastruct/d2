@@ -1190,18 +1190,21 @@ a -> md -> b
 `,
 		}, {
 			name: "sql_tables",
-			script: `users: {
+			script: `
+direction: left
+
+users: {
 	shape: sql_table
-	id: int
+	id: int { constraint: primary_key }
 	name: string
 	email: string
 	password: string
-	last_login: datetime { constraint: primary_key }
+	last_login: datetime
 }
 
 products: {
 	shape: sql_table
-	id: int
+	id: int { constraint: primary_key }
 	price: decimal
 	sku: string
 	name: string
@@ -1209,22 +1212,41 @@ products: {
 
 orders: {
 	shape: sql_table
-	id: int
-	user_id: int
-	product_id: int
+	id: int { constraint: primary_key }
+	user_id: int { constraint: foreign_key }
+	product_id: int { constraint: foreign_key }
 }
 
 shipments: {
 	shape: sql_table
-	id: int
-	order_id: int
+	id: int { constraint: primary_key }
+	order_id: int { constraint: foreign_key }
 	tracking_number: string
 	status: string
 }
 
-users.id <-> orders.user_id
-products.id <-> orders.product_id
-shipments.order_id <-> orders.id`,
+orders.user_id -> users.id
+orders.product_id -> products.id
+shipments.order_id -> orders.id`,
+		}, {
+			name: "sql_table_row_connections",
+			script: `
+direction: left
+
+a: {
+	shape: sql_table
+	id: int { constraint: primary_key }
+}
+
+b: {
+	shape: sql_table
+	id: int { constraint: primary_key }
+	a_1: int { constraint: foreign_key }
+	a_2: int { constraint: foreign_key }
+}
+
+b.a_1 -> a.id
+b.a_2 -> a.id`,
 		}, {
 			name: "images",
 			script: `a: {
@@ -1349,6 +1371,11 @@ beta: {
 alpha -> beta: gamma {
 	style.font-color: green
 }
+c: |md
+  colored
+| {
+  style.font-color: blue
+}
 `,
 		},
 		{
@@ -1374,6 +1401,12 @@ sugar -> c
 c: mixed together
 
 c -> solution: we get
+
+Linear program: {
+  formula: |latex
+    \\min_{ \\mathclap{\\substack{ x \\in \\mathbb{R}^n \\ x \\geq 0 \\ Ax \\leq b }}} c^T x
+  |
+}
 `,
 		},
 		{
@@ -1999,6 +2032,15 @@ i am bottom right: { shape: text; near: bottom-right }
 `,
 		},
 		{
+			name: "md_mixed",
+			script: `example: {
+  explanation: |md
+    *one* __two__ three!
+  |
+}
+`,
+		},
+		{
 			name: "constant_near_title",
 			script: `title: |md
   # A winning strategy
@@ -2344,20 +2386,27 @@ a -> b
 		{
 			name: "sql_table_tooltip_animated",
 			script: `
+direction: left
+
 x: {
   shape: sql_table
-	y
+	y { constraint: primary_key }
 	tooltip: I like turtles
 }
 
 a: {
   shape: sql_table
-	b
+	b { constraint: foreign_key }
 }
 
-x.y -> a.b: {
+a.b <-> x.y: {
   style.animated: true
-	target-arrowhead.shape: cf-many
+    source-arrowhead: {
+      shape: cf-many
+    }
+  target-arrowhead: {
+      shape: cf-one
+  }
 }
 `,
 		},
@@ -2813,6 +2862,12 @@ y: profits {
 		loadFromFile(t, "overlapping_child_label"),
 		loadFromFile(t, "dagre_spacing"),
 		loadFromFile(t, "dagre_spacing_right"),
+		loadFromFile(t, "simple_grid_edges"),
+		loadFromFile(t, "grid_nested_simple_edges"),
+		loadFromFile(t, "nested_diagram_types"),
+		loadFromFile(t, "grid_outside_labels"),
+		loadFromFile(t, "grid_edge_across_cell"),
+		loadFromFile(t, "nesting_power"),
 	}
 
 	runa(t, tcs)

@@ -613,6 +613,15 @@ func renderArrowheadLabel(connection d2target.Connection, text string, isDst boo
 	textEl.X = baselineCenter.X
 	textEl.Y = baselineCenter.Y
 	textEl.Fill = d2target.FG_COLOR
+	if isDst {
+		if connection.DstLabel.Color != "" {
+			textEl.Fill = connection.DstLabel.Color
+		}
+	} else {
+		if connection.SrcLabel.Color != "" {
+			textEl.Fill = connection.SrcLabel.Color
+		}
+	}
 	textEl.ClassName = "text-italic"
 	textEl.Style = fmt.Sprintf("text-anchor:middle;font-size:%vpx", connection.FontSize)
 	textEl.Content = RenderText(text, textEl.X, height)
@@ -1258,7 +1267,13 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				if !isLight {
 					class = "dark-code"
 				}
-				fmt.Fprintf(writer, `<g transform="translate(%f %f)" class="%s">`, box.TopLeft.X, box.TopLeft.Y, class)
+				var fontSize string
+				if targetShape.FontSize != d2fonts.FONT_SIZE_M {
+					fontSize = fmt.Sprintf(` style="font-size:%v"`, targetShape.FontSize)
+				}
+				fmt.Fprintf(writer, `<g transform="translate(%f %f)" class="%s"%s>`,
+					box.TopLeft.X, box.TopLeft.Y, class, fontSize,
+				)
 				rectEl := d2themes.NewThemableElement("rect")
 				rectEl.Width = float64(targetShape.Width)
 				rectEl.Height = float64(targetShape.Height)
@@ -1312,9 +1327,20 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			mdEl := d2themes.NewThemableElement("div")
 			mdEl.ClassName = "md"
 			mdEl.Content = render
+
+			// We have to set with styles since within foreignObject, we're in html
+			// land and not SVG attributes
+			var styles []string
 			if targetShape.FontSize != textmeasure.MarkdownFontSize {
-				mdEl.Style = fmt.Sprintf("font-size:%vpx", targetShape.FontSize)
+				styles = append(styles, fmt.Sprintf("font-size:%vpx", targetShape.FontSize))
 			}
+
+			if !color.IsThemeColor(targetShape.Color) {
+				styles = append(styles, fmt.Sprintf(`color:%s`, targetShape.Color))
+			}
+
+			mdEl.Style = strings.Join(styles, ";")
+
 			fmt.Fprint(writer, mdEl.Render())
 			fmt.Fprint(writer, `</foreignObject></g>`)
 		} else {

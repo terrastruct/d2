@@ -96,6 +96,120 @@ x -> y
 				assertQuery(t, m, 0, 0, nil, "(x -> y)[1]")
 			},
 		},
+		{
+			name: "label-filter/1",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+x
+y
+p: p
+a -> z: delta
+
+*.style.opacity: 0.1
+*: {
+  &label: x
+  style.opacity: 1
+}
+*: {
+  &label: p
+  style.opacity: 0.5
+}
+(* -> *)[*]: {
+	&label: delta
+	target-arrowhead.shape: diamond
+}
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 17, 1, nil, "")
+				assertQuery(t, m, 0, 0, 1, "x.style.opacity")
+				assertQuery(t, m, 0, 0, 0.1, "y.style.opacity")
+				assertQuery(t, m, 0, 0, 0.5, "p.style.opacity")
+				assertQuery(t, m, 0, 0, 0.1, "a.style.opacity")
+				assertQuery(t, m, 0, 0, 0.1, "z.style.opacity")
+				assertQuery(t, m, 0, 0, "diamond", "(a -> z).target-arrowhead.shape")
+			},
+		},
+		{
+			name: "label-filter/2",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+(* -> *)[*].style.opacity: 0.1
+
+(* -> *)[*]: {
+  &label: hi
+  style.opacity: 1
+}
+
+x -> y: hi
+x -> y
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 6, 2, nil, "")
+				assertQuery(t, m, 2, 0, "hi", "(x -> y)[0]")
+				assertQuery(t, m, 0, 0, 1, "(x -> y)[0].style.opacity")
+				assertQuery(t, m, 0, 0, 0.1, "(x -> y)[1].style.opacity")
+			},
+		},
+		{
+			name: "lazy-filter",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+*: {
+  &label: a
+  style.fill: yellow
+}
+
+a
+# if i remove this line, the glob applies as expected
+b
+b.label: a
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 7, 0, nil, "")
+				assertQuery(t, m, 0, 0, "yellow", "a.style.fill")
+				assertQuery(t, m, 0, 0, "yellow", "b.style.fill")
+			},
+		},
+		{
+			name: "primary-filter",
+			run: func(t testing.TB) {
+				m, err := compile(t, `
+parent: {
+  a -> b1
+  a -> b2
+  a -> b3
+
+  b1 -> c1
+  b1 -> c2
+
+  c1: {
+    c1-child.class: hidden
+  }
+
+  c2: {
+    C2-child.class: hidden
+  }
+  c2.class: hidden
+  b2.class: hidden
+}
+
+classes: {
+  hidden: {
+    style: {
+      fill: red
+    }
+  }
+}
+
+# Error
+**: null {
+  &class: hidden
+}
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 9, 3, nil, "")
+			},
+		},
 	}
 
 	runa(t, tca)

@@ -8,7 +8,7 @@
       "type": "text",
       "pos": {
         "x": 12,
-        "y": 143
+        "y": 224
       },
       "width": 382,
       "height": 101,
@@ -48,7 +48,7 @@
       "type": "text",
       "pos": {
         "x": 414,
-        "y": 184
+        "y": 265
       },
       "width": 65,
       "height": 18,
@@ -88,7 +88,7 @@
       "type": "text",
       "pos": {
         "x": 235,
-        "y": 12
+        "y": 93
       },
       "width": 179,
       "height": 51,
@@ -127,8 +127,8 @@
       "id": "c",
       "type": "rectangle",
       "pos": {
-        "x": 369,
-        "y": 324
+        "x": 315,
+        "y": 455
       },
       "width": 154,
       "height": 66,
@@ -169,7 +169,7 @@
       "type": "rectangle",
       "pos": {
         "x": 499,
-        "y": 178
+        "y": 259
       },
       "width": 86,
       "height": 66,
@@ -209,8 +209,8 @@
       "id": "solution",
       "type": "rectangle",
       "pos": {
-        "x": 394,
-        "y": 551
+        "x": 340,
+        "y": 682
       },
       "width": 104,
       "height": 66,
@@ -245,6 +245,87 @@
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
+    },
+    {
+      "id": "Linear program",
+      "type": "rectangle",
+      "pos": {
+        "x": 434,
+        "y": 12
+      },
+      "width": 223,
+      "height": 132,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B4",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Linear program",
+      "fontSize": 28,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 178,
+      "labelHeight": 36,
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "Linear program.formula",
+      "type": "text",
+      "pos": {
+        "x": 514,
+        "y": 62
+      },
+      "width": 62,
+      "height": 32,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "transparent",
+      "stroke": "N1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "\\\\min_{ \\\\mathclap{\\\\substack{ x \\\\in \\\\mathbb{R}^n \\\\ x \\\\geq 0 \\\\ Ax \\\\leq b }}} c^T x",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "latex",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 62,
+      "labelHeight": 32,
+      "zIndex": 0,
+      "level": 2
     }
   ],
   "connections": [
@@ -274,11 +355,11 @@
       "route": [
         {
           "x": 294.9159851074219,
-          "y": 63
+          "y": 144
         },
         {
           "x": 294.9159851074219,
-          "y": 143
+          "y": 224
         }
       ],
       "animated": false,
@@ -312,19 +393,19 @@
       "route": [
         {
           "x": 354.5830078125,
-          "y": 63
+          "y": 144
         },
         {
           "x": 354.5830078125,
-          "y": 103
+          "y": 184
         },
         {
           "x": 446.5,
-          "y": 103
+          "y": 184
         },
         {
           "x": 446.5,
-          "y": 185
+          "y": 266
         }
       ],
       "animated": false,
@@ -357,20 +438,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 203,
-          "y": 244
+          "x": 354.4159851074219,
+          "y": 325
         },
         {
-          "x": 203,
-          "y": 284
-        },
-        {
-          "x": 408,
-          "y": 284
-        },
-        {
-          "x": 408,
-          "y": 324
+          "x": 354.4159851074219,
+          "y": 455
         }
       ],
       "animated": false,
@@ -404,11 +477,19 @@
       "route": [
         {
           "x": 446.5,
-          "y": 202
+          "y": 283
         },
         {
           "x": 446.5,
-          "y": 324
+          "y": 365
+        },
+        {
+          "x": 392.9159851074219,
+          "y": 365
+        },
+        {
+          "x": 392.9159851074219,
+          "y": 455
         }
       ],
       "animated": false,
@@ -442,19 +523,19 @@
       "route": [
         {
           "x": 542,
-          "y": 244
+          "y": 325
         },
         {
           "x": 542,
-          "y": 284
+          "y": 415
         },
         {
-          "x": 485,
-          "y": 284
+          "x": 431.4159851074219,
+          "y": 415
         },
         {
-          "x": 485,
-          "y": 324
+          "x": 431.4159851074219,
+          "y": 455
         }
       ],
       "animated": false,
@@ -487,12 +568,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 446.5,
-          "y": 390
+          "x": 392.9159851074219,
+          "y": 521
         },
         {
-          "x": 446.5,
-          "y": 551
+          "x": 392.9159851074219,
+          "y": 682
         }
       ],
       "animated": false,

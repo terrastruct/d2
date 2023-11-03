@@ -14,6 +14,23 @@ import (
 
 const pad = 20
 
+type set map[string]struct{}
+
+var HorizontalCenterNears = set{
+	"center-left":  {},
+	"center-right": {},
+}
+var VerticalCenterNears = set{
+	"top-center":    {},
+	"bottom-center": {},
+}
+var NonCenterNears = set{
+	"top-left":     {},
+	"top-right":    {},
+	"bottom-left":  {},
+	"bottom-right": {},
+}
+
 // Layout finds the shapes which are assigned constant near keywords and places them.
 func Layout(ctx context.Context, g *d2graph.Graph, constantNearGraphs []*d2graph.Graph) error {
 	if len(constantNearGraphs) == 0 {
@@ -30,10 +47,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNearGraphs []*d2graph
 	// Imagine the graph has two long texts, one at top center and one at top left.
 	// Top left should go left enough to not collide with center.
 	// So place the center ones first, then the later ones will consider them for bounding box
-	for _, processCenters := range []bool{true, false} {
+	for _, currentSet := range []set{VerticalCenterNears, HorizontalCenterNears, NonCenterNears} {
 		for _, tempGraph := range constantNearGraphs {
 			obj := tempGraph.Root.ChildrenArray[0]
-			if processCenters == strings.Contains(d2graph.Key(obj.NearKey)[0], "-center") {
+			_, in := currentSet[d2graph.Key(obj.NearKey)[0]]
+			if in {
 				prevX, prevY := obj.TopLeft.X, obj.TopLeft.Y
 				obj.TopLeft = geo.NewPoint(place(obj))
 				dx, dy := obj.TopLeft.X-prevX, obj.TopLeft.Y-prevY
@@ -56,7 +74,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNearGraphs []*d2graph
 		}
 		for _, tempGraph := range constantNearGraphs {
 			obj := tempGraph.Root.ChildrenArray[0]
-			if processCenters == strings.Contains(d2graph.Key(obj.NearKey)[0], "-center") {
+			_, in := currentSet[d2graph.Key(obj.NearKey)[0]]
+			if in {
 				// The z-index for constant nears does not matter, as it will not collide
 				g.Objects = append(g.Objects, tempGraph.Objects...)
 				if obj.Parent.Children == nil {
@@ -83,28 +102,20 @@ func place(obj *d2graph.Object) (float64, float64) {
 	switch nearKeyStr {
 	case "top-left":
 		x, y = tl.X-obj.Width-pad, tl.Y-obj.Height-pad
-		break
 	case "top-center":
 		x, y = tl.X+w/2-obj.Width/2, tl.Y-obj.Height-pad
-		break
 	case "top-right":
 		x, y = br.X+pad, tl.Y-obj.Height-pad
-		break
 	case "center-left":
 		x, y = tl.X-obj.Width-pad, tl.Y+h/2-obj.Height/2
-		break
 	case "center-right":
 		x, y = br.X+pad, tl.Y+h/2-obj.Height/2
-		break
 	case "bottom-left":
 		x, y = tl.X-obj.Width-pad, br.Y+pad
-		break
 	case "bottom-center":
 		x, y = br.X-w/2-obj.Width/2, br.Y+pad
-		break
 	case "bottom-right":
 		x, y = br.X+pad, br.Y+pad
-		break
 	}
 
 	if obj.LabelPosition != nil && !strings.Contains(*obj.LabelPosition, "INSIDE") {
@@ -132,28 +143,6 @@ func place(obj *d2graph.Object) (float64, float64) {
 	}
 
 	return x, y
-}
-
-// WithoutConstantNears plucks out the graph objects which have "near" set to a constant value
-// This is to be called before layout engines so they don't take part in regular positioning
-func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (constantNearGraphs []*d2graph.Graph) {
-	for i := 0; i < len(g.Objects); i++ {
-		obj := g.Objects[i]
-		if obj.NearKey == nil {
-			continue
-		}
-		_, isKey := g.Root.HasChild(d2graph.Key(obj.NearKey))
-		if isKey {
-			continue
-		}
-		_, isConst := d2graph.NearConstants[d2graph.Key(obj.NearKey)[0]]
-		if isConst {
-			tempGraph := g.ExtractAsNestedGraph(obj)
-			constantNearGraphs = append(constantNearGraphs, tempGraph)
-			i--
-		}
-	}
-	return constantNearGraphs
 }
 
 // boundingBox gets the center of the graph as defined by shapes

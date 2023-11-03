@@ -38,10 +38,11 @@
             "primary": {},
             "value": {
               "unquoted_string": {
-                "range": ",0:0:0-0:0:0",
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-nested.d2,0:8:8-0:25:25",
                 "value": [
                   {
-                    "string": "root.layers.x.layers.x"
+                    "string": "layers.x.layers.x",
+                    "raw_string": "layers.x.layers.x"
                   }
                 ]
               }

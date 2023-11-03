@@ -37,6 +37,7 @@ import (
 	"oss.terrastruct.com/d2/lib/pdf"
 	"oss.terrastruct.com/d2/lib/png"
 	"oss.terrastruct.com/d2/lib/pptx"
+	"oss.terrastruct.com/d2/lib/simplelog"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 	timelib "oss.terrastruct.com/d2/lib/time"
 	"oss.terrastruct.com/d2/lib/version"
@@ -334,9 +335,9 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	_, written, err := compile(ctx, ms, plugins, layoutFlag, renderOpts, fontFamily, *animateIntervalFlag, inputPath, outputPath, "", *bundleFlag, *forceAppendixFlag, pw.Page)
 	if err != nil {
 		if written {
-			return fmt.Errorf("failed to fully compile (partial render written): %w", err)
+			return fmt.Errorf("failed to fully compile (partial render written) %s: %w", ms.HumanPath(inputPath), err)
 		}
-		return fmt.Errorf("failed to compile: %w", err)
+		return fmt.Errorf("failed to compile %s: %w", ms.HumanPath(inputPath), err)
 	}
 	return nil
 }
@@ -434,7 +435,7 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, la
 		if err != nil {
 			return nil, false, err
 		}
-		out, err := xgif.AnimatePNGs(ms, pngs, int(animateInterval))
+		out, err := AnimatePNGs(ms, pngs, int(animateInterval))
 		if err != nil {
 			return nil, false, err
 		}
@@ -748,10 +749,12 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 		return svg, err
 	}
 
-	svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
+	cacheImages := ms.Env.Getenv("IMG_CACHE") == "1"
+	l := simplelog.FromCmdLog(ms.Log)
+	svg, bundleErr := imgbundler.BundleLocal(ctx, l, svg, cacheImages)
 	if bundle {
 		var bundleErr2 error
-		svg, bundleErr2 = imgbundler.BundleRemote(ctx, ms, svg)
+		svg, bundleErr2 = imgbundler.BundleRemote(ctx, l, svg, cacheImages)
 		bundleErr = multierr.Combine(bundleErr, bundleErr2)
 	}
 	if forceAppendix && !toPNG {
@@ -764,11 +767,11 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 
 		if !bundle {
 			var bundleErr2 error
-			svg, bundleErr2 = imgbundler.BundleRemote(ctx, ms, svg)
+			svg, bundleErr2 = imgbundler.BundleRemote(ctx, l, svg, cacheImages)
 			bundleErr = multierr.Combine(bundleErr, bundleErr2)
 		}
 
-		out, err = png.ConvertSVG(ms, page, svg)
+		out, err = ConvertSVG(ms, page, svg)
 		if err != nil {
 			return svg, err
 		}
@@ -833,15 +836,17 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 			return svg, err
 		}
 
-		svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
-		svg, bundleErr2 := imgbundler.BundleRemote(ctx, ms, svg)
+		cacheImages := ms.Env.Getenv("IMG_CACHE") == "1"
+		l := simplelog.FromCmdLog(ms.Log)
+		svg, bundleErr := imgbundler.BundleLocal(ctx, l, svg, cacheImages)
+		svg, bundleErr2 := imgbundler.BundleRemote(ctx, l, svg, cacheImages)
 		bundleErr = multierr.Combine(bundleErr, bundleErr2)
 		if bundleErr != nil {
 			return svg, bundleErr
 		}
 		svg = appendix.Append(diagram, ruler, svg)
 
-		pngImg, err := png.ConvertSVG(ms, page, svg)
+		pngImg, err := ConvertSVG(ms, page, svg)
 		if err != nil {
 			return svg, err
 		}
@@ -933,8 +938,10 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 			return nil, err
 		}
 
-		svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
-		svg, bundleErr2 := imgbundler.BundleRemote(ctx, ms, svg)
+		cacheImages := ms.Env.Getenv("IMG_CACHE") == "1"
+		l := simplelog.FromCmdLog(ms.Log)
+		svg, bundleErr := imgbundler.BundleLocal(ctx, l, svg, cacheImages)
+		svg, bundleErr2 := imgbundler.BundleRemote(ctx, l, svg, cacheImages)
 		bundleErr = multierr.Combine(bundleErr, bundleErr2)
 		if bundleErr != nil {
 			return nil, bundleErr
@@ -942,7 +949,7 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 
 		svg = appendix.Append(diagram, ruler, svg)
 
-		pngImg, err := png.ConvertSVG(ms, page, svg)
+		pngImg, err := ConvertSVG(ms, page, svg)
 		if err != nil {
 			return nil, err
 		}
@@ -1178,8 +1185,10 @@ func renderPNGsForGIF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plug
 			return nil, nil, err
 		}
 
-		svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
-		svg, bundleErr2 := imgbundler.BundleRemote(ctx, ms, svg)
+		cacheImages := ms.Env.Getenv("IMG_CACHE") == "1"
+		l := simplelog.FromCmdLog(ms.Log)
+		svg, bundleErr := imgbundler.BundleLocal(ctx, l, svg, cacheImages)
+		svg, bundleErr2 := imgbundler.BundleRemote(ctx, l, svg, cacheImages)
 		bundleErr = multierr.Combine(bundleErr, bundleErr2)
 		if bundleErr != nil {
 			return nil, nil, bundleErr
@@ -1187,7 +1196,7 @@ func renderPNGsForGIF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plug
 
 		svg = appendix.Append(diagram, ruler, svg)
 
-		pngImg, err := png.ConvertSVG(ms, page, svg)
+		pngImg, err := ConvertSVG(ms, page, svg)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -1217,4 +1226,22 @@ func renderPNGsForGIF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plug
 	}
 
 	return svg, pngs, nil
+}
+
+func ConvertSVG(ms *xmain.State, page playwright.Page, svg []byte) ([]byte, error) {
+	cancel := background.Repeat(func() {
+		ms.Log.Info.Printf("converting to PNG...")
+	}, time.Second*5)
+	defer cancel()
+
+	return png.ConvertSVG(page, svg)
+}
+
+func AnimatePNGs(ms *xmain.State, pngs [][]byte, animIntervalMs int) ([]byte, error) {
+	cancel := background.Repeat(func() {
+		ms.Log.Info.Printf("generating GIF...")
+	}, time.Second*5)
+	defer cancel()
+
+	return xgif.AnimatePNGs(pngs, animIntervalMs)
 }

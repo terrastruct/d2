@@ -1031,12 +1031,25 @@ cf many required: {
 }
 `,
 		},
+		{
+			name:   "dagre_child_id_id",
+			script: `direction:right; id -> x.id -> y.z.id`,
+		},
 		loadFromFile(t, "slow_grid"),
 		loadFromFile(t, "grid_oom"),
 		loadFromFile(t, "cylinder_grid_label"),
 		loadFromFile(t, "grid_with_latex"),
 		loadFromFile(t, "icons_on_top"),
 		loadFromFile(t, "dagre_disconnected_edge"),
+		loadFromFile(t, "outside_grid_label_position"),
+		loadFromFile(t, "arrowhead_font_color"),
+		loadFromFile(t, "multiple_constant_nears"),
+		loadFromFile(t, "empty_nested_grid"),
+		loadFromFile(t, "code_font_size"),
+		loadFromFile(t, "disclaimer"),
+		loadFromFile(t, "grid_rows_gap_bug"),
+		loadFromFile(t, "grid_image_label_position"),
+		loadFromFile(t, "glob_dimensions"),
 	}
 
 	runa(t, tcs)

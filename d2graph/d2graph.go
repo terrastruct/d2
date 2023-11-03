@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io/fs"
 	"math"
 	"net/url"
 	"sort"
@@ -36,6 +37,7 @@ const DEFAULT_SHAPE_SIZE = 100.
 const MIN_SHAPE_SIZE = 5
 
 type Graph struct {
+	FS     fs.FS  `json:"-"`
 	Parent *Graph `json:"-"`
 	Name   string `json:"name"`
 	// IsFolderOnly indicates a board or scenario itself makes no modifications from its
@@ -55,6 +57,9 @@ type Graph struct {
 	Steps     []*Graph `json:"steps,omitempty"`
 
 	Theme *d2themes.Theme `json:"theme,omitempty"`
+
+	// Object.Level uses the location of a nested graph
+	RootLevel int `json:"rootLevel,omitempty"`
 }
 
 func NewGraph() *Graph {
@@ -527,7 +532,7 @@ func (obj *Object) GetStroke(dashGapSize interface{}) string {
 
 func (obj *Object) Level() ContainerLevel {
 	if obj.Parent == nil {
-		return 0
+		return ContainerLevel(obj.Graph.RootLevel)
 	}
 	return 1 + obj.Parent.Level()
 }
@@ -1085,6 +1090,21 @@ func (obj *Object) OuterNearContainer() *Object {
 	return nil
 }
 
+func (obj *Object) IsConstantNear() bool {
+	if obj.NearKey == nil {
+		return false
+	}
+	keyPath := Key(obj.NearKey)
+
+	// interesting if there is a shape with id=top-left, then top-left isn't treated a constant near
+	_, isKey := obj.Graph.Root.HasChild(keyPath)
+	if isKey {
+		return false
+	}
+	_, isConst := NearConstants[keyPath[0]]
+	return isConst
+}
+
 type Edge struct {
 	Index int `json:"index"`
 
@@ -1164,6 +1184,13 @@ func (e *Edge) Text() *d2target.MText {
 	}
 }
 
+func (e *Edge) Move(dx, dy float64) {
+	for _, p := range e.Route {
+		p.X += dx
+		p.Y += dy
+	}
+}
+
 func (e *Edge) AbsID() string {
 	srcIDA := e.Src.AbsIDArray()
 	dstIDA := e.Dst.AbsIDArray()
@@ -1197,10 +1224,6 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 
 	src := obj.ensureChildEdge(srcID)
 	dst := obj.ensureChildEdge(dstID)
-
-	if src.OuterSequenceDiagram() != dst.OuterSequenceDiagram() {
-		return nil, errors.New("connections within sequence diagrams can connect only to other objects within the same sequence diagram")
-	}
 
 	e := &Edge{
 		Attributes: Attributes{
@@ -1898,7 +1921,7 @@ func (g *Graph) PrintString() string {
 	buf := &bytes.Buffer{}
 	fmt.Fprint(buf, "Objects: [")
 	for _, obj := range g.Objects {
-		fmt.Fprintf(buf, "%#v @(%v)", obj.AbsID(), obj.TopLeft.ToString())
+		fmt.Fprintf(buf, "%v, ", obj.AbsID())
 	}
 	fmt.Fprint(buf, "]")
 	return buf.String()
