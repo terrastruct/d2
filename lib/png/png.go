@@ -16,8 +16,7 @@ import (
 	"oss.terrastruct.com/d2/lib/version"
 )
 
-// ConvertSVG scales the image by 2x
-const SCALE = 2.
+const DEFAULT_PNG_SCALE = 2
 
 type Playwright struct {
 	PW      *playwright.Playwright
@@ -85,11 +84,11 @@ const pngPrefix = "data:image/png;base64,"
 
 // ConvertSVG converts the given SVG into a PNG.
 // Note that the resulting PNG has 2x the size (width and height) of the original SVG (see generate_png.js)
-func ConvertSVG(page playwright.Page, svg []byte) ([]byte, error) {
+func ConvertSVG(page playwright.Page, svg []byte, pngScale int64) ([]byte, error) {
 	encodedSVG := base64.StdEncoding.EncodeToString(svg)
 	pngInterface, err := page.Evaluate(genPNGScript, map[string]interface{}{
 		"imgString": "data:image/svg+xml;charset=utf-8;base64," + encodedSVG,
-		"scale":     int(SCALE),
+		"scale":     int(pngScale),
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to generate png: %w", err)

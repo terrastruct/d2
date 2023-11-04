@@ -40,6 +40,17 @@ func TestCLI_E2E(t *testing.T) {
 			},
 		},
 		{
+			name:   "hello_world_png_scale",
+			skipCI: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "--png-scale=2", "hello-world.d2", "hello-world.png")
+				assert.Success(t, err)
+				png := readFile(t, dir, "hello-world.png")
+				testdataIgnoreDiff(t, ".png", png)
+			},
+		},
+		{
 			name:   "hello_world_png_pad",
 			skipCI: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
