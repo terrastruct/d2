@@ -1,6 +1,7 @@
 #### Features 🚀
 
 - ELK now routes `sql_table` edges to the exact columns (ty @landmaj) [#1681](https://github.com/terrastruct/d2/pull/1681)
+- CLI now supports `--png-scale` flag to scale the output PNG. [#1701](https://github.com/terrastruct/d2/pull/1701)
 
 #### Improvements 🧹
 
