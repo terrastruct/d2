@@ -74,7 +74,8 @@ type Diagram struct {
 }
 
 // boardPath comes in the form of "x/layers/z/scenarios/a"
-// or in the form of "layers/z/scenarios/a"
+// or "layers/z/scenarios/a"
+// or "x/z/a"
 func (d *Diagram) GetBoard(boardPath string) *Diagram {
 	path := strings.Split(boardPath, string(os.PathSeparator))
 	if len(path) == 0 || len(boardPath) == 0 {
@@ -127,17 +128,17 @@ func (d *Diagram) getBoard(boardPath []string) *Diagram {
 
 	for _, b := range d.Layers {
 		if b.Name == head {
-			return b.getBoard(boardPath[2:])
+			return b.getBoard(boardPath[1:])
 		}
 	}
 	for _, b := range d.Scenarios {
 		if b.Name == head {
-			return b.getBoard(boardPath[2:])
+			return b.getBoard(boardPath[1:])
 		}
 	}
 	for _, b := range d.Steps {
 		if b.Name == head {
-			return b.getBoard(boardPath[2:])
+			return b.getBoard(boardPath[1:])
 		}
 	}
 	return nil
