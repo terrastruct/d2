@@ -5,29 +5,10 @@ import (
 	"compress/flate"
 	"encoding/base64"
 	"io"
-	"sort"
 	"strings"
 
 	"oss.terrastruct.com/util-go/xdefer"
-
-	"oss.terrastruct.com/d2/d2graph"
 )
-
-var compressionDict = "->" +
-	"<-" +
-	"--" +
-	"<->"
-
-func init() {
-	var common []string
-	for k := range d2graph.ReservedKeywords {
-		common = append(common, k)
-	}
-	sort.Strings(common)
-	for _, k := range common {
-		compressionDict += k
-	}
-}
 
 // Encode takes a D2 script and encodes it as a compressed base64 string for embedding in URLs.
 func Encode(raw string) (_ string, err error) {
@@ -35,7 +16,7 @@ func Encode(raw string) (_ string, err error) {
 
 	b := &bytes.Buffer{}
 
-	zw, err := flate.NewWriterDict(b, flate.DefaultCompression, []byte(compressionDict))
+	zw, err := flate.NewWriterDict(b, flate.BestCompression, nil)
 	if err != nil {
 		return "", err
 	}
@@ -59,7 +40,7 @@ func Decode(encoded string) (_ string, err error) {
 		return "", err
 	}
 
-	zr := flate.NewReaderDict(bytes.NewReader(b64Decoded), []byte(compressionDict))
+	zr := flate.NewReaderDict(bytes.NewReader(b64Decoded), nil)
 	var b bytes.Buffer
 	if _, err := io.Copy(&b, zr); err != nil {
 		return "", err
