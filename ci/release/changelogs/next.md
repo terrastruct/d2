@@ -8,6 +8,7 @@
 - Edges can now go across constant nears, sequence diagrams, and grids including nested ones. [#1631](https://github.com/terrastruct/d2/pull/1631)
 - All vars defined in a scope are accessible everywhere in that scope, i.e., an object can use a var defined after itself. [#1695](https://github.com/terrastruct/d2/pull/1695)
 - Encoding API switches to standard zlib encoding so that decoding doesn't depend on source. [#1709](https://github.com/terrastruct/d2/pull/1709)
+- `currentcolor` is accepted as a color option to inherit parent colors. (ty @hboomsma) [#1700](https://github.com/terrastruct/d2/pull/1700)
 
 #### Bugfixes ⛑️
 
