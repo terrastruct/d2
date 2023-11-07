@@ -578,7 +578,7 @@ layers: {
 				watchURL := waitLogs(ctx, stderr, urlRE)
 
 				if watchURL == "" {
-					t.Error(errors.New(string(stderr.Bytes())))
+					t.Error(errors.New(stderr.String()))
 				}
 				stderr.Reset()
 
@@ -634,7 +634,7 @@ layers: {
 				watchURL := waitLogs(ctx, stderr, urlRE)
 
 				if watchURL == "" {
-					t.Error(errors.New(string(stderr.Bytes())))
+					t.Error(errors.New(stderr.String()))
 				}
 				stderr.Reset()
 
@@ -688,7 +688,7 @@ layers: {
 				watchURL := waitLogs(ctx, stderr, urlRE)
 
 				if watchURL == "" {
-					t.Error(errors.New(string(stderr.Bytes())))
+					t.Error(errors.New(stderr.String()))
 				}
 				stderr.Reset()
 
@@ -812,11 +812,12 @@ func getNumBoards(svg string) int {
 
 func waitLogs(ctx context.Context, buf *bytes.Buffer, pattern *regexp.Regexp) string {
 	ticker := time.NewTicker(10 * time.Millisecond)
+	defer ticker.Stop()
 	var match string
 	for i := 0; i < 100 && match == ""; i++ {
 		select {
 		case <-ticker.C:
-			out := string(buf.Bytes())
+			out := buf.String()
 			match = pattern.FindString(out)
 		case <-ctx.Done():
 			ticker.Stop()
