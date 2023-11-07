@@ -17,7 +17,7 @@ import (
 func fmtCmd(ctx context.Context, ms *xmain.State) (err error) {
 	defer xdefer.Errorf(&err, "failed to fmt")
 
-	ms.Opts = xmain.NewOpts(ms.Env, ms.Log, ms.Opts.Flags.Args()[1:])
+	ms.Opts = xmain.NewOpts(ms.Env, ms.Opts.Flags.Args()[1:])
 	if len(ms.Opts.Args) == 0 {
 		return xmain.UsageErrorf("fmt must be passed at least one file to be formatted")
 	}

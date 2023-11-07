@@ -503,7 +503,7 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, la
 
 		board := diagram.GetBoard(boardPath)
 		if board == nil {
-			return nil, false, fmt.Errorf("Diagram with path %s not found", boardPath)
+			return nil, false, fmt.Errorf(`Diagram with path "%s" not found. Did you mean to specify a board like "layers.%s"?`, boardPath, boardPath)
 		}
 
 		boards, err := render(ctx, ms, compileDur, plugin, renderOpts, inputPath, outputPath, bundle, forceAppendix, page, ruler, board)
