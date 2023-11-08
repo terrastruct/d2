@@ -2869,6 +2869,7 @@ y: profits {
 		loadFromFile(t, "grid_edge_across_cell"),
 		loadFromFile(t, "nesting_power"),
 		loadFromFile(t, "unfilled_triangle"),
+		loadFromFile(t, "grid_label_positions"),
 	}
 
 	runa(t, tcs)
