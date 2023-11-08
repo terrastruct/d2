@@ -14,41 +14,168 @@ const RIGHT_LABEL_POSITION = 3.0 / 4.0
 // This is the space between a node border and its outside label
 const PADDING = 5
 
-type Position string
+type Position int8
 
 const (
-	OutsideTopLeft   Position = "OUTSIDE_TOP_LEFT"
-	OutsideTopCenter Position = "OUTSIDE_TOP_CENTER"
-	OutsideTopRight  Position = "OUTSIDE_TOP_RIGHT"
+	Unset Position = iota
 
-	OutsideLeftTop    Position = "OUTSIDE_LEFT_TOP"
-	OutsideLeftMiddle Position = "OUTSIDE_LEFT_MIDDLE"
-	OutsideLeftBottom Position = "OUTSIDE_LEFT_BOTTOM"
+	OutsideTopLeft
+	OutsideTopCenter
+	OutsideTopRight
 
-	OutsideRightTop    Position = "OUTSIDE_RIGHT_TOP"
-	OutsideRightMiddle Position = "OUTSIDE_RIGHT_MIDDLE"
-	OutsideRightBottom Position = "OUTSIDE_RIGHT_BOTTOM"
+	OutsideLeftTop
+	OutsideLeftMiddle
+	OutsideLeftBottom
 
-	OutsideBottomLeft   Position = "OUTSIDE_BOTTOM_LEFT"
-	OutsideBottomCenter Position = "OUTSIDE_BOTTOM_CENTER"
-	OutsideBottomRight  Position = "OUTSIDE_BOTTOM_RIGHT"
+	OutsideRightTop
+	OutsideRightMiddle
+	OutsideRightBottom
 
-	InsideTopLeft   Position = "INSIDE_TOP_LEFT"
-	InsideTopCenter Position = "INSIDE_TOP_CENTER"
-	InsideTopRight  Position = "INSIDE_TOP_RIGHT"
+	OutsideBottomLeft
+	OutsideBottomCenter
+	OutsideBottomRight
 
-	InsideMiddleLeft   Position = "INSIDE_MIDDLE_LEFT"
-	InsideMiddleCenter Position = "INSIDE_MIDDLE_CENTER"
-	InsideMiddleRight  Position = "INSIDE_MIDDLE_RIGHT"
+	InsideTopLeft
+	InsideTopCenter
+	InsideTopRight
 
-	InsideBottomLeft   Position = "INSIDE_BOTTOM_LEFT"
-	InsideBottomCenter Position = "INSIDE_BOTTOM_CENTER"
-	InsideBottomRight  Position = "INSIDE_BOTTOM_RIGHT"
+	InsideMiddleLeft
+	InsideMiddleCenter
+	InsideMiddleRight
 
-	UnlockedTop    Position = "UNLOCKED_TOP"
-	UnlockedMiddle Position = "UNLOCKED_MIDDLE"
-	UnlockedBottom Position = "UNLOCKED_BOTTOM"
+	InsideBottomLeft
+	InsideBottomCenter
+	InsideBottomRight
+
+	UnlockedTop
+	UnlockedMiddle
+	UnlockedBottom
 )
+
+func FromString(s string) Position {
+	switch s {
+	case "OUTSIDE_TOP_LEFT":
+		return OutsideTopLeft
+	case "OUTSIDE_TOP_CENTER":
+		return OutsideTopCenter
+	case "OUTSIDE_TOP_RIGHT":
+		return OutsideTopRight
+
+	case "OUTSIDE_LEFT_TOP":
+		return OutsideLeftTop
+	case "OUTSIDE_LEFT_MIDDLE":
+		return OutsideLeftMiddle
+	case "OUTSIDE_LEFT_BOTTOM":
+		return OutsideLeftBottom
+
+	case "OUTSIDE_RIGHT_TOP":
+		return OutsideRightTop
+	case "OUTSIDE_RIGHT_MIDDLE":
+		return OutsideRightMiddle
+	case "OUTSIDE_RIGHT_BOTTOM":
+		return OutsideRightBottom
+
+	case "OUTSIDE_BOTTOM_LEFT":
+		return OutsideBottomLeft
+	case "OUTSIDE_BOTTOM_CENTER":
+		return OutsideBottomCenter
+	case "OUTSIDE_BOTTOM_RIGHT":
+		return OutsideBottomRight
+
+	case "INSIDE_TOP_LEFT":
+		return InsideTopLeft
+	case "INSIDE_TOP_CENTER":
+		return InsideTopCenter
+	case "INSIDE_TOP_RIGHT":
+		return InsideTopRight
+
+	case "INSIDE_MIDDLE_LEFT":
+		return InsideMiddleLeft
+	case "INSIDE_MIDDLE_CENTER":
+		return InsideMiddleCenter
+	case "INSIDE_MIDDLE_RIGHT":
+		return InsideMiddleRight
+
+	case "INSIDE_BOTTOM_LEFT":
+		return InsideBottomLeft
+	case "INSIDE_BOTTOM_CENTER":
+		return InsideBottomCenter
+	case "INSIDE_BOTTOM_RIGHT":
+		return InsideBottomRight
+
+	case "UNLOCKED_TOP":
+		return UnlockedTop
+	case "UNLOCKED_MIDDLE":
+		return UnlockedMiddle
+	case "UNLOCKED_BOTTOM":
+		return UnlockedBottom
+	default:
+		return Unset
+	}
+}
+
+func (position Position) String() string {
+	switch position {
+	case OutsideTopLeft:
+		return "OUTSIDE_TOP_LEFT"
+	case OutsideTopCenter:
+		return "OUTSIDE_TOP_CENTER"
+	case OutsideTopRight:
+		return "OUTSIDE_TOP_RIGHT"
+
+	case OutsideLeftTop:
+		return "OUTSIDE_LEFT_TOP"
+	case OutsideLeftMiddle:
+		return "OUTSIDE_LEFT_MIDDLE"
+	case OutsideLeftBottom:
+		return "OUTSIDE_LEFT_BOTTOM"
+
+	case OutsideRightTop:
+		return "OUTSIDE_RIGHT_TOP"
+	case OutsideRightMiddle:
+		return "OUTSIDE_RIGHT_MIDDLE"
+	case OutsideRightBottom:
+		return "OUTSIDE_RIGHT_BOTTOM"
+
+	case OutsideBottomLeft:
+		return "OUTSIDE_BOTTOM_LEFT"
+	case OutsideBottomCenter:
+		return "OUTSIDE_BOTTOM_CENTER"
+	case OutsideBottomRight:
+		return "OUTSIDE_BOTTOM_RIGHT"
+
+	case InsideTopLeft:
+		return "INSIDE_TOP_LEFT"
+	case InsideTopCenter:
+		return "INSIDE_TOP_CENTER"
+	case InsideTopRight:
+		return "INSIDE_TOP_RIGHT"
+
+	case InsideMiddleLeft:
+		return "INSIDE_MIDDLE_LEFT"
+	case InsideMiddleCenter:
+		return "INSIDE_MIDDLE_CENTER"
+	case InsideMiddleRight:
+		return "INSIDE_MIDDLE_RIGHT"
+
+	case InsideBottomLeft:
+		return "INSIDE_BOTTOM_LEFT"
+	case InsideBottomCenter:
+		return "INSIDE_BOTTOM_CENTER"
+	case InsideBottomRight:
+		return "INSIDE_BOTTOM_RIGHT"
+
+	case UnlockedTop:
+		return "UNLOCKED_TOP"
+	case UnlockedMiddle:
+		return "UNLOCKED_MIDDLE"
+	case UnlockedBottom:
+		return "UNLOCKED_BOTTOM"
+
+	default:
+		return ""
+	}
+}
 
 func (position Position) IsShapePosition() bool {
 	switch position {
@@ -167,7 +294,7 @@ func (position Position) Mirrored() Position {
 		return UnlockedMiddle
 
 	default:
-		return ""
+		return Unset
 	}
 }
 

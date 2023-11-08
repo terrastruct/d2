@@ -275,7 +275,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 		e.Route = []*geo.Point{e.Src.Center(), e.Dst.Center()}
 		e.TraceToShape(e.Route, 0, 1)
 		if e.Label.Value != "" {
-			e.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			e.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
 		}
 	}
 

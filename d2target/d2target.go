@@ -291,7 +291,7 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 			x2 = go2.Max(x2, targetShape.Pos.X+MULTIPLE_OFFSET+targetShape.Width+targetShape.StrokeWidth)
 		}
 
-		if targetShape.Icon != nil && label.Position(targetShape.IconPosition).IsOutside() {
+		if targetShape.Icon != nil && label.FromString(targetShape.IconPosition).IsOutside() {
 			contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(targetShape.Width), float64(targetShape.Height))
 			s := shape.NewShape(targetShape.Type, contentBox)
 			size := GetIconSize(s.GetInnerBox(), targetShape.IconPosition)
@@ -308,7 +308,7 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 		}
 
 		if targetShape.Label != "" {
-			labelPosition := label.Position(targetShape.LabelPosition)
+			labelPosition := label.FromString(targetShape.LabelPosition)
 			if !labelPosition.IsOutside() {
 				continue
 			}
@@ -637,7 +637,7 @@ func (c Connection) CSSStyle() string {
 }
 
 func (c *Connection) GetLabelTopLeft() *geo.Point {
-	point, _ := label.Position(c.LabelPosition).GetPointOnRoute(
+	point, _ := label.FromString(c.LabelPosition).GetPointOnRoute(
 		c.Route,
 		float64(c.StrokeWidth),
 		c.LabelPercentage,
@@ -968,7 +968,7 @@ func init() {
 }
 
 func GetIconSize(box *geo.Box, position string) int {
-	iconPosition := label.Position(position)
+	iconPosition := label.FromString(position)
 
 	minDimension := int(math.Min(box.Width, box.Height))
 	halfMinDimension := int(math.Ceil(0.5 * float64(minDimension)))

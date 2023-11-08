@@ -141,12 +141,12 @@ n2 -> n1
 	}
 
 	// check label positions
-	if *g.Edges[0].LabelPosition != string(label.InsideMiddleCenter) {
-		t.Fatalf("expected edge label to be placed on %s, got %s", string(label.InsideMiddleCenter), *g.Edges[0].LabelPosition)
+	if *g.Edges[0].LabelPosition != label.InsideMiddleCenter.String() {
+		t.Fatalf("expected edge label to be placed on %s, got %s", label.InsideMiddleCenter, *g.Edges[0].LabelPosition)
 	}
 
-	if *g.Edges[1].LabelPosition != string(label.InsideMiddleCenter) {
-		t.Fatalf("expected edge label to be placed on %s, got %s", string(label.InsideMiddleCenter), *g.Edges[0].LabelPosition)
+	if *g.Edges[1].LabelPosition != label.InsideMiddleCenter.String() {
+		t.Fatalf("expected edge label to be placed on %s, got %s", label.InsideMiddleCenter, *g.Edges[0].LabelPosition)
 	}
 }
 

@@ -1410,12 +1410,12 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		if obj.HasLabel() && obj.Attributes.LabelPosition != nil {
 			scalar := *obj.Attributes.LabelPosition
 			position := LabelPositionsMapping[scalar.Value]
-			obj.LabelPosition = go2.Pointer(string(position))
+			obj.LabelPosition = go2.Pointer(position.String())
 		}
 		if obj.Icon != nil && obj.Attributes.IconPosition != nil {
 			scalar := *obj.Attributes.IconPosition
 			position := LabelPositionsMapping[scalar.Value]
-			obj.IconPosition = go2.Pointer(string(position))
+			obj.IconPosition = go2.Pointer(position.String())
 		}
 
 		var desiredWidth int

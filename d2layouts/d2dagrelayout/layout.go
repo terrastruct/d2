@@ -361,7 +361,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		edge.Route = path
 		// compile needs to assign edge label positions
 		if edge.Label.Value != "" {
-			edge.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			edge.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
 		}
 
 		// undo 3d/multiple offset
@@ -554,7 +554,7 @@ func getSpacing(obj *d2graph.Object) (margin, padding spacing) {
 	if obj.HasLabel() {
 		var position label.Position
 		if obj.LabelPosition != nil {
-			position = label.Position(*obj.LabelPosition)
+			position = label.FromString(*obj.LabelPosition)
 		} else if len(obj.ChildrenArray) == 0 && obj.HasOutsideBottomLabel() {
 			position = label.OutsideBottomCenter
 		}
@@ -585,7 +585,7 @@ func getSpacing(obj *d2graph.Object) (margin, padding spacing) {
 	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
 		var position label.Position
 		if obj.IconPosition != nil {
-			position = label.Position(*obj.IconPosition)
+			position = label.FromString(*obj.IconPosition)
 		}
 
 		iconSize := float64(d2target.MAX_ICON_SIZE + 2*label.PADDING)
@@ -619,24 +619,24 @@ func getSpacing(obj *d2graph.Object) (margin, padding spacing) {
 func positionLabelsIcons(obj *d2graph.Object) {
 	if obj.Icon != nil && obj.IconPosition == nil {
 		if len(obj.ChildrenArray) > 0 {
-			obj.IconPosition = go2.Pointer(string(label.OutsideTopLeft))
+			obj.IconPosition = go2.Pointer(label.OutsideTopLeft.String())
 			if obj.LabelPosition == nil {
-				obj.LabelPosition = go2.Pointer(string(label.OutsideTopRight))
+				obj.LabelPosition = go2.Pointer(label.OutsideTopRight.String())
 				return
 			}
 		} else {
-			obj.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			obj.IconPosition = go2.Pointer(label.InsideMiddleCenter.String())
 		}
 	}
 	if obj.HasLabel() && obj.LabelPosition == nil {
 		if len(obj.ChildrenArray) > 0 {
-			obj.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
+			obj.LabelPosition = go2.Pointer(label.OutsideTopCenter.String())
 		} else if obj.HasOutsideBottomLabel() {
-			obj.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
+			obj.LabelPosition = go2.Pointer(label.OutsideBottomCenter.String())
 		} else if obj.Icon != nil {
-			obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+			obj.LabelPosition = go2.Pointer(label.InsideTopCenter.String())
 		} else {
-			obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			obj.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
 		}
 	}
 }
@@ -1408,7 +1408,7 @@ func fitPadding(obj *d2graph.Object) {
 	var labelPosition, iconPosition label.Position
 	var labelBox, iconBox *geo.Box
 	if obj.HasLabel() && obj.LabelPosition != nil {
-		labelPosition = label.Position(*obj.LabelPosition)
+		labelPosition = label.FromString(*obj.LabelPosition)
 		switch labelPosition {
 		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight,
 			label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight,
@@ -1420,7 +1420,7 @@ func fitPadding(obj *d2graph.Object) {
 		}
 	}
 	if obj.Icon != nil && shapeType != shape.IMAGE_TYPE && obj.IconPosition != nil {
-		iconPosition = label.Position(*obj.IconPosition)
+		iconPosition = label.FromString(*obj.IconPosition)
 		switch iconPosition {
 		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight,
 			label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight,
@@ -1442,7 +1442,7 @@ func fitPadding(obj *d2graph.Object) {
 			var childLabelBox *geo.Box
 			var childLabelPosition, childIconPosition label.Position
 			if child.HasLabel() && child.LabelPosition != nil {
-				childLabelPosition = label.Position(*child.LabelPosition)
+				childLabelPosition = label.FromString(*child.LabelPosition)
 				if childLabelPosition.IsOutside() {
 					childLabelTL := child.GetLabelTopLeft()
 
@@ -1455,7 +1455,7 @@ func fitPadding(obj *d2graph.Object) {
 				}
 			}
 			if child.Icon != nil && child.Shape.Value != d2target.ShapeImage && child.IconPosition != nil {
-				childIconPosition = label.Position(*child.IconPosition)
+				childIconPosition = label.FromString(*child.IconPosition)
 				if childIconPosition.IsOutside() {
 					childIconTL := child.GetIconTopLeft()
 
@@ -1480,7 +1480,7 @@ func fitPadding(obj *d2graph.Object) {
 		if edge.Label.Value != "" {
 			labelPosition := label.InsideMiddleCenter
 			if edge.LabelPosition != nil {
-				labelPosition = label.Position(*edge.LabelPosition)
+				labelPosition = label.FromString(*edge.LabelPosition)
 			}
 			labelWidth := float64(edge.LabelDimensions.Width)
 			labelHeight := float64(edge.LabelDimensions.Height)
