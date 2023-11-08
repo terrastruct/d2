@@ -77,10 +77,28 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 			}
 		}
 
-		if occupiedHeight > float64(verticalPadding) {
-			// if the label doesn't fit within the padding, we need to add more
-			dy = occupiedHeight - float64(verticalPadding)
-			obj.Height += dy
+		if obj.LabelPosition != nil {
+			labelPosition := label.FromString(*obj.LabelPosition)
+			if !labelPosition.IsOutside() {
+				labelOverflowY := occupiedHeight - float64(verticalPadding)
+				// if the label doesn't fit within the padding, we need to add more
+				if labelOverflowY > 0 {
+					obj.Height += labelOverflowY
+					// if label is top, need to shift contents down
+					switch labelPosition {
+					case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
+						dy = labelOverflowY
+					}
+				}
+
+				labelOverflowX := occupiedWidth - float64(horizontalPadding)
+				if labelOverflowX > 0 {
+					obj.Width += labelOverflowX
+					if labelPosition == label.InsideMiddleLeft {
+						dx = labelOverflowX
+					}
+				}
+			}
 		}
 
 		// we need to center children if we have to expand to fit the container label
