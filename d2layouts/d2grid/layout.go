@@ -89,10 +89,10 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 		}
 	}
 
-	if obj.HasLabel() {
+	if obj.HasLabel() && obj.LabelPosition == nil {
 		obj.LabelPosition = go2.Pointer(label.InsideTopCenter.String())
 	}
-	if obj.Icon != nil {
+	if obj.Icon != nil && obj.IconPosition == nil {
 		obj.IconPosition = go2.Pointer(label.InsideTopLeft.String())
 	}
 
@@ -118,8 +118,6 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 	if g.Root.IsGridDiagram() && len(g.Root.ChildrenArray) != 0 {
 		g.Root.TopLeft = geo.NewPoint(0, 0)
 	}
-
-	obj.LabelPosition = go2.Pointer(label.InsideTopCenter.String())
 
 	if g.RootLevel > 0 {
 		horizontalPadding, verticalPadding := CONTAINER_PADDING, CONTAINER_PADDING
