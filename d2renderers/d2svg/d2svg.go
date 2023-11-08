@@ -138,6 +138,29 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 			)
 		}
 		path = polygonEl.Render()
+	case d2target.UnfilledTriangleArrowhead:
+		polygonEl := d2themes.NewThemableElement("polygon")
+		polygonEl.Fill = d2target.BG_COLOR
+		polygonEl.Stroke = connection.Stroke
+		polygonEl.ClassName = "connection"
+		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+
+		inset := strokeWidth / 2
+		if isTarget {
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f",
+				inset, inset,
+				width-inset, height/2.0,
+				inset, height-inset,
+			)
+		} else {
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f",
+				width-inset, inset,
+				inset, height/2.0,
+				width-inset, height-inset,
+			)
+		}
+		path = polygonEl.Render()
+
 	case d2target.TriangleArrowhead:
 		polygonEl := d2themes.NewThemableElement("polygon")
 		polygonEl.Fill = connection.Stroke

@@ -202,7 +202,7 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 
 	if edge.SrcArrow {
 		connection.SrcArrow = d2target.DefaultArrowhead
-		if edge.SrcArrowhead != nil && edge.SrcArrowhead.Shape.Value != "" {
+		if edge.SrcArrowhead != nil {
 			connection.SrcArrow = edge.SrcArrowhead.ToArrowhead()
 		}
 	}
@@ -220,7 +220,7 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 	}
 	if edge.DstArrow {
 		connection.DstArrow = d2target.DefaultArrowhead
-		if edge.DstArrowhead != nil && edge.DstArrowhead.Shape.Value != "" {
+		if edge.DstArrowhead != nil {
 			connection.DstArrow = edge.DstArrowhead.ToArrowhead()
 		}
 	}

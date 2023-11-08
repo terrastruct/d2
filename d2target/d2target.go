@@ -720,13 +720,14 @@ func (c Connection) GetID() string {
 type Arrowhead string
 
 const (
-	NoArrowhead            Arrowhead = "none"
-	ArrowArrowhead         Arrowhead = "arrow"
-	TriangleArrowhead      Arrowhead = "triangle"
-	DiamondArrowhead       Arrowhead = "diamond"
-	FilledDiamondArrowhead Arrowhead = "filled-diamond"
-	CircleArrowhead        Arrowhead = "circle"
-	FilledCircleArrowhead  Arrowhead = "filled-circle"
+	NoArrowhead               Arrowhead = "none"
+	ArrowArrowhead            Arrowhead = "arrow"
+	UnfilledTriangleArrowhead Arrowhead = "unfilled-triangle"
+	TriangleArrowhead         Arrowhead = "triangle"
+	DiamondArrowhead          Arrowhead = "diamond"
+	FilledDiamondArrowhead    Arrowhead = "filled-diamond"
+	CircleArrowhead           Arrowhead = "circle"
+	FilledCircleArrowhead     Arrowhead = "filled-circle"
 
 	// For fat arrows
 	LineArrowhead Arrowhead = "line"
@@ -740,29 +741,28 @@ const (
 	DefaultArrowhead Arrowhead = TriangleArrowhead
 )
 
+// valid values for arrowhead.shape
 var Arrowheads = map[string]struct{}{
-	string(NoArrowhead):            {},
-	string(ArrowArrowhead):         {},
-	string(TriangleArrowhead):      {},
-	string(DiamondArrowhead):       {},
-	string(FilledDiamondArrowhead): {},
-	string(CircleArrowhead):        {},
-	string(FilledCircleArrowhead):  {},
-	string(CfOne):                  {},
-	string(CfMany):                 {},
-	string(CfOneRequired):          {},
-	string(CfManyRequired):         {},
+	string(NoArrowhead):       {},
+	string(ArrowArrowhead):    {},
+	string(TriangleArrowhead): {},
+	string(DiamondArrowhead):  {},
+	string(CircleArrowhead):   {},
+	string(CfOne):             {},
+	string(CfMany):            {},
+	string(CfOneRequired):     {},
+	string(CfManyRequired):    {},
 }
 
-func ToArrowhead(arrowheadType string, filled bool) Arrowhead {
+func ToArrowhead(arrowheadType string, filled *bool) Arrowhead {
 	switch arrowheadType {
 	case string(DiamondArrowhead):
-		if filled {
+		if filled != nil && *filled {
 			return FilledDiamondArrowhead
 		}
 		return DiamondArrowhead
 	case string(CircleArrowhead):
-		if filled {
+		if filled != nil && *filled {
 			return FilledCircleArrowhead
 		}
 		return CircleArrowhead
@@ -771,6 +771,9 @@ func ToArrowhead(arrowheadType string, filled bool) Arrowhead {
 	case string(ArrowArrowhead):
 		return ArrowArrowhead
 	case string(TriangleArrowhead):
+		if filled != nil && !(*filled) {
+			return UnfilledTriangleArrowhead
+		}
 		return TriangleArrowhead
 	case string(CfOne):
 		return CfOne
@@ -781,6 +784,10 @@ func ToArrowhead(arrowheadType string, filled bool) Arrowhead {
 	case string(CfManyRequired):
 		return CfManyRequired
 	default:
+		if DefaultArrowhead == TriangleArrowhead &&
+			filled != nil && !(*filled) {
+			return UnfilledTriangleArrowhead
+		}
 		return DefaultArrowhead
 	}
 }
@@ -797,6 +804,11 @@ func (arrowhead Arrowhead) Dimensions(strokeWidth float64) (width, height float6
 	case TriangleArrowhead:
 		baseWidth = 4
 		baseHeight = 4
+		widthMultiplier = 3
+		heightMultiplier = 4
+	case UnfilledTriangleArrowhead:
+		baseWidth = 7
+		baseHeight = 7
 		widthMultiplier = 3
 		heightMultiplier = 4
 	case LineArrowhead:
