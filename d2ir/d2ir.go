@@ -435,7 +435,7 @@ func (eid *EdgeID) resolve(m *Map) (_ *EdgeID, _ *Map, common []string, _ error)
 	}
 
 	for len(eid.SrcPath) > 1 && len(eid.DstPath) > 1 {
-		if !strings.EqualFold(eid.SrcPath[0], eid.DstPath[0]) {
+		if !strings.EqualFold(eid.SrcPath[0], eid.DstPath[0]) || eid.SrcPath[0] == "*" {
 			return eid, m, common, nil
 		}
 		common = append(common, eid.SrcPath[0])

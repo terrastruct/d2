@@ -4297,6 +4297,23 @@ x: {
 `, `d2/testdata/d2compiler/TestCompile2/globs/double-glob-override-err-val.d2:6:2: invalid "near" field`)
 			},
 		},
+		{
+			name: "creating-node-bug",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*.*a -> *.*b
+
+container_1: {
+	a
+}
+
+container_2: {
+	b
+}
+`, ``)
+				assert.Equal(t, 4, len(g.Objects))
+			},
+		},
 	}
 
 	for _, tc := range tca {
