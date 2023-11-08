@@ -145,17 +145,18 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 		polygonEl.ClassName = "connection"
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
+		inset := strokeWidth / 2
 		if isTarget {
 			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f",
-				0., 0.,
-				width, height/2.0,
-				0., height,
+				inset, inset,
+				width-inset, height/2.0,
+				inset, height-inset,
 			)
 		} else {
 			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f",
-				width, 0.,
-				0., height/2.0,
-				width, height,
+				width-inset, inset,
+				inset, height/2.0,
+				width-inset, height-inset,
 			)
 		}
 		path = polygonEl.Render()

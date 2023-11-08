@@ -784,6 +784,10 @@ func ToArrowhead(arrowheadType string, filled *bool) Arrowhead {
 	case string(CfManyRequired):
 		return CfManyRequired
 	default:
+		if DefaultArrowhead == TriangleArrowhead &&
+			filled != nil && !(*filled) {
+			return UnfilledTriangleArrowhead
+		}
 		return DefaultArrowhead
 	}
 }
@@ -797,9 +801,14 @@ func (arrowhead Arrowhead) Dimensions(strokeWidth float64) (width, height float6
 		baseHeight = 4
 		widthMultiplier = 4
 		heightMultiplier = 4
-	case TriangleArrowhead, UnfilledTriangleArrowhead:
+	case TriangleArrowhead:
 		baseWidth = 4
 		baseHeight = 4
+		widthMultiplier = 3
+		heightMultiplier = 4
+	case UnfilledTriangleArrowhead:
+		baseWidth = 7
+		baseHeight = 7
 		widthMultiplier = 3
 		heightMultiplier = 4
 	case LineArrowhead:

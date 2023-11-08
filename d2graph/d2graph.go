@@ -177,10 +177,6 @@ func (a *Attributes) ApplyTextTransform() {
 }
 
 func (a *Attributes) ToArrowhead() d2target.Arrowhead {
-	if a.Shape.Value == "" {
-		return d2target.NoArrowhead
-	}
-
 	var filled *bool
 	if a.Style.Filled != nil {
 		v, _ := strconv.ParseBool(a.Style.Filled.Value)
