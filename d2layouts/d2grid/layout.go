@@ -30,6 +30,13 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 		return err
 	}
 
+	if obj.HasLabel() && obj.LabelPosition == nil {
+		obj.LabelPosition = go2.Pointer(label.InsideTopCenter.String())
+	}
+	if obj.Icon != nil && obj.IconPosition == nil {
+		obj.IconPosition = go2.Pointer(label.InsideTopLeft.String())
+	}
+
 	if obj.Box != nil {
 		// CONTAINER_PADDING is default, but use gap value if set
 		horizontalPadding, verticalPadding := CONTAINER_PADDING, CONTAINER_PADDING
@@ -50,50 +57,91 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 			gd.shift(innerBox.TopLeft.X, innerBox.TopLeft.Y)
 		}
 
+		var labelPosition, iconPosition label.Position
+		if obj.LabelPosition != nil {
+			labelPosition = label.FromString(*obj.LabelPosition)
+		}
+		if obj.IconPosition != nil {
+			iconPosition = label.FromString(*obj.IconPosition)
+		}
+
 		// compute how much space the label and icon occupy
-		var occupiedWidth, occupiedHeight float64
-		if obj.Icon != nil {
-			iconSpace := float64(d2target.MAX_ICON_SIZE + 2*label.PADDING)
-			occupiedWidth = iconSpace
-			occupiedHeight = iconSpace
+		_, padding := obj.Spacing()
+
+		var labelWidth, labelHeight float64
+		if obj.LabelDimensions.Width > 0 {
+			labelWidth = float64(obj.LabelDimensions.Width) + 2*label.PADDING
+		}
+		if obj.LabelDimensions.Height > 0 {
+			labelHeight = float64(obj.LabelDimensions.Height) + 2*label.PADDING
 		}
 
 		var dx, dy float64
-		if obj.LabelDimensions.Height != 0 {
-			occupiedHeight = math.Max(
-				occupiedHeight,
-				float64(obj.LabelDimensions.Height)+2*label.PADDING,
-			)
+		if labelWidth > 0 {
+			switch labelPosition {
+			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight,
+				label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight,
+				label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight,
+				label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+				overflow := labelWidth - (obj.Width - float64(2*horizontalPadding))
+				if overflow > 0 {
+					padding.Left += overflow / 2
+					padding.Right += overflow / 2
+				}
+			}
 		}
-		if obj.LabelDimensions.Width != 0 {
-			// . ├────┤───────├────┤
-			// .  icon  label  icon
-			// with an icon in top left we need 2x the space to fit the label in the center
-			occupiedWidth *= 2
-			occupiedWidth += float64(obj.LabelDimensions.Width) + 2*label.PADDING
-			if occupiedWidth > obj.Width {
-				dx = (occupiedWidth - obj.Width) / 2
-				obj.Width = occupiedWidth
+		if labelHeight > 0 {
+			switch labelPosition {
+			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom,
+				label.InsideMiddleLeft, label.InsideMiddleCenter, label.InsideMiddleRight,
+				label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+				overflow := labelHeight - (obj.Height - float64(2*verticalPadding))
+				if overflow > 0 {
+					padding.Top += overflow / 2
+					padding.Bottom += overflow / 2
+				}
 			}
 		}
 
-		if occupiedHeight > float64(verticalPadding) {
-			// if the label doesn't fit within the padding, we need to add more
-			dy = occupiedHeight - float64(verticalPadding)
-			obj.Height += dy
+		// configure spacing for default label+icon
+		if iconPosition == label.InsideTopLeft && labelPosition == label.InsideTopCenter {
+			// . ├────┤───────├────┤
+			// .  icon  label  icon
+			// with an icon in top left we need 2x the space to fit the label in the center
+			iconSize := float64(d2target.MAX_ICON_SIZE) + 2*label.PADDING
+			padding.Left = math.Max(padding.Left, iconSize)
+			padding.Right = math.Max(padding.Right, iconSize)
+			minWidth := 2*iconSize + float64(obj.LabelDimensions.Width) + 2*label.PADDING
+			overflow := minWidth - (obj.Width - float64(2*horizontalPadding))
+			if overflow > 0 {
+				padding.Left = math.Max(padding.Left, overflow/2)
+				padding.Right = math.Max(padding.Right, overflow/2)
+			}
+		}
+
+		overflowTop := padding.Top - float64(verticalPadding)
+		if overflowTop > 0 {
+			obj.Height += overflowTop
+			dy += overflowTop
+		}
+		overflowBottom := padding.Bottom - float64(verticalPadding)
+		if overflowBottom > 0 {
+			obj.Height += overflowBottom
+		}
+		overflowLeft := padding.Left - float64(horizontalPadding)
+		if overflowLeft > 0 {
+			obj.Width += overflowLeft
+			dx += overflowLeft
+		}
+		overflowRight := padding.Right - float64(horizontalPadding)
+		if overflowRight > 0 {
+			obj.Width += overflowRight
 		}
 
 		// we need to center children if we have to expand to fit the container label
 		if dx != 0 || dy != 0 {
 			gd.shift(dx, dy)
 		}
-	}
-
-	if obj.HasLabel() {
-		obj.LabelPosition = go2.Pointer(label.InsideTopCenter.String())
-	}
-	if obj.Icon != nil {
-		obj.IconPosition = go2.Pointer(label.InsideTopLeft.String())
 	}
 
 	// simple straight line edge routing between grid objects
@@ -118,8 +166,6 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 	if g.Root.IsGridDiagram() && len(g.Root.ChildrenArray) != 0 {
 		g.Root.TopLeft = geo.NewPoint(0, 0)
 	}
-
-	obj.LabelPosition = go2.Pointer(label.InsideTopCenter.String())
 
 	if g.RootLevel > 0 {
 		horizontalPadding, verticalPadding := CONTAINER_PADDING, CONTAINER_PADDING

@@ -546,76 +546,6 @@ func inContainer(obj, container *d2graph.Object) *d2graph.Object {
 	return inContainer(obj.Parent, container)
 }
 
-type spacing struct {
-	top, bottom, left, right float64
-}
-
-func getSpacing(obj *d2graph.Object) (margin, padding spacing) {
-	if obj.HasLabel() {
-		var position label.Position
-		if obj.LabelPosition != nil {
-			position = label.FromString(*obj.LabelPosition)
-		} else if len(obj.ChildrenArray) == 0 && obj.HasOutsideBottomLabel() {
-			position = label.OutsideBottomCenter
-		}
-
-		labelWidth := float64(obj.LabelDimensions.Width) + 2*label.PADDING
-		labelHeight := float64(obj.LabelDimensions.Height) + 2*label.PADDING
-
-		switch position {
-		case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
-			margin.top = labelHeight
-		case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
-			margin.bottom = labelHeight
-		case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
-			margin.left = labelWidth
-		case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
-			margin.right = labelWidth
-		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
-			padding.top = labelHeight
-		case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
-			padding.bottom = labelHeight
-		case label.InsideMiddleLeft:
-			padding.left = labelWidth
-		case label.InsideMiddleRight:
-			padding.right = labelWidth
-		}
-	}
-
-	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
-		var position label.Position
-		if obj.IconPosition != nil {
-			position = label.FromString(*obj.IconPosition)
-		}
-
-		iconSize := float64(d2target.MAX_ICON_SIZE + 2*label.PADDING)
-		switch position {
-		case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
-			margin.top = math.Max(margin.top, iconSize)
-		case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
-			margin.bottom = math.Max(margin.bottom, iconSize)
-		case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
-			margin.left = math.Max(margin.left, iconSize)
-		case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
-			margin.right = math.Max(margin.right, iconSize)
-		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
-			padding.top = math.Max(padding.top, iconSize)
-		case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
-			padding.bottom = math.Max(padding.bottom, iconSize)
-		case label.InsideMiddleLeft:
-			padding.left = math.Max(padding.left, iconSize)
-		case label.InsideMiddleRight:
-			padding.right = math.Max(padding.right, iconSize)
-		}
-	}
-
-	dx, dy := obj.GetModifierElementAdjustments()
-	margin.right += dx
-	margin.top += dy
-
-	return
-}
-
 func positionLabelsIcons(obj *d2graph.Object) {
 	if obj.Icon != nil && obj.IconPosition == nil {
 		if len(obj.ChildrenArray) > 0 {
@@ -1136,16 +1066,16 @@ func adjustRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
 		for len(startingParents) > 0 {
 			var ancestors []*d2graph.Object
 			for _, parent := range startingParents {
-				_, padding := getSpacing(parent)
+				_, padding := parent.Spacing()
 				if _, has := startingAncestorPositions[parent]; !has {
 					startingAncestorPositions[parent] = math.Inf(1)
 				}
 				var startPosition float64
 				if isHorizontal {
-					paddingIncrease := math.Max(0, padding.left-rankSep/2)
+					paddingIncrease := math.Max(0, padding.Left-rankSep/2)
 					startPosition = parent.TopLeft.X - paddingIncrease
 				} else {
-					paddingIncrease := math.Max(0, padding.top-rankSep/2)
+					paddingIncrease := math.Max(0, padding.Top-rankSep/2)
 					startPosition = parent.TopLeft.Y - paddingIncrease
 				}
 				startingAncestorPositions[parent] = math.Min(startingAncestorPositions[parent], startPosition)
@@ -1159,11 +1089,11 @@ func adjustRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
 							continue
 						}
 					}
-					margin, _ := getSpacing(child)
+					margin, _ := child.Spacing()
 					if isHorizontal {
-						startPosition = child.TopLeft.X - margin.left - padding.left
+						startPosition = child.TopLeft.X - margin.Left - padding.Left
 					} else {
-						startPosition = child.TopLeft.Y - margin.top - padding.top
+						startPosition = child.TopLeft.Y - margin.Top - padding.Top
 					}
 					startingAncestorPositions[parent] = math.Min(startingAncestorPositions[parent], startPosition)
 				}
@@ -1178,15 +1108,15 @@ func adjustRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
 		for len(endingParents) > 0 {
 			var ancestors []*d2graph.Object
 			for _, parent := range endingParents {
-				_, padding := getSpacing(parent)
+				_, padding := parent.Spacing()
 				if _, has := endingAncestorPositions[parent]; !has {
 					endingAncestorPositions[parent] = math.Inf(-1)
 				}
 				var endPosition float64
 				if isHorizontal {
-					endPosition = parent.TopLeft.X + parent.Width + padding.right - rankSep/2.
+					endPosition = parent.TopLeft.X + parent.Width + padding.Right - rankSep/2.
 				} else {
-					endPosition = parent.TopLeft.Y + parent.Height + padding.bottom - rankSep/2.
+					endPosition = parent.TopLeft.Y + parent.Height + padding.Bottom - rankSep/2.
 				}
 
 				endingAncestorPositions[parent] = math.Max(endingAncestorPositions[parent], endPosition)
@@ -1200,12 +1130,12 @@ func adjustRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
 							continue
 						}
 					}
-					margin, _ := getSpacing(child)
+					margin, _ := child.Spacing()
 
 					if isHorizontal {
-						endPosition = child.TopLeft.X + child.Width + margin.right + padding.right
+						endPosition = child.TopLeft.X + child.Width + margin.Right + padding.Right
 					} else {
-						endPosition = child.TopLeft.Y + child.Height + margin.bottom + padding.bottom
+						endPosition = child.TopLeft.Y + child.Height + margin.Bottom + padding.Bottom
 					}
 					endingAncestorPositions[parent] = math.Max(endingAncestorPositions[parent], endPosition)
 				}
@@ -1309,60 +1239,60 @@ func adjustCrossRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool
 		if obj.IsGridDiagram() {
 			continue
 		}
-		margin, padding := getSpacing(obj)
+		margin, padding := obj.Spacing()
 		if !isHorizontal {
 			if prevShift, has := prevMarginBottom[obj]; has {
-				margin.bottom -= prevShift
+				margin.Bottom -= prevShift
 			}
-			if margin.bottom > 0 {
-				increased := shiftReachableDown(g, obj, obj.TopLeft.Y+obj.Height, margin.bottom, isHorizontal, true)
+			if margin.Bottom > 0 {
+				increased := shiftReachableDown(g, obj, obj.TopLeft.Y+obj.Height, margin.Bottom, isHorizontal, true)
 				for o := range increased {
-					prevMarginBottom[o] = math.Max(prevMarginBottom[o], margin.bottom)
+					prevMarginBottom[o] = math.Max(prevMarginBottom[o], margin.Bottom)
 				}
 			}
-			if padding.bottom > 0 {
-				shiftReachableDown(g, obj, obj.TopLeft.Y+obj.Height, padding.bottom, isHorizontal, false)
-				obj.Height += padding.bottom
+			if padding.Bottom > 0 {
+				shiftReachableDown(g, obj, obj.TopLeft.Y+obj.Height, padding.Bottom, isHorizontal, false)
+				obj.Height += padding.Bottom
 			}
 			if prevShift, has := prevMarginTop[obj]; has {
-				margin.top -= prevShift
+				margin.Top -= prevShift
 			}
-			if margin.top > 0 {
-				increased := shiftReachableDown(g, obj, obj.TopLeft.Y, margin.top, isHorizontal, true)
+			if margin.Top > 0 {
+				increased := shiftReachableDown(g, obj, obj.TopLeft.Y, margin.Top, isHorizontal, true)
 				for o := range increased {
-					prevMarginTop[o] = math.Max(prevMarginTop[o], margin.top)
+					prevMarginTop[o] = math.Max(prevMarginTop[o], margin.Top)
 				}
 			}
-			if padding.top > 0 {
-				shiftReachableDown(g, obj, obj.TopLeft.Y, padding.top, isHorizontal, false)
-				obj.Height += padding.top
+			if padding.Top > 0 {
+				shiftReachableDown(g, obj, obj.TopLeft.Y, padding.Top, isHorizontal, false)
+				obj.Height += padding.Top
 			}
 		} else {
 			if prevShift, has := prevMarginRight[obj]; has {
-				margin.right -= prevShift
+				margin.Right -= prevShift
 			}
-			if margin.right > 0 {
-				increased := shiftReachableDown(g, obj, obj.TopLeft.X+obj.Width, margin.right, isHorizontal, true)
+			if margin.Right > 0 {
+				increased := shiftReachableDown(g, obj, obj.TopLeft.X+obj.Width, margin.Right, isHorizontal, true)
 				for o := range increased {
-					prevMarginRight[o] = math.Max(prevMarginRight[o], margin.right)
+					prevMarginRight[o] = math.Max(prevMarginRight[o], margin.Right)
 				}
 			}
-			if padding.right > 0 {
-				shiftReachableDown(g, obj, obj.TopLeft.X+obj.Width, padding.right, isHorizontal, false)
-				obj.Width += padding.right
+			if padding.Right > 0 {
+				shiftReachableDown(g, obj, obj.TopLeft.X+obj.Width, padding.Right, isHorizontal, false)
+				obj.Width += padding.Right
 			}
 			if prevShift, has := prevMarginLeft[obj]; has {
-				margin.left -= prevShift
+				margin.Left -= prevShift
 			}
-			if margin.left > 0 {
-				increased := shiftReachableDown(g, obj, obj.TopLeft.X, margin.left, isHorizontal, true)
+			if margin.Left > 0 {
+				increased := shiftReachableDown(g, obj, obj.TopLeft.X, margin.Left, isHorizontal, true)
 				for o := range increased {
-					prevMarginLeft[o] = math.Max(prevMarginLeft[o], margin.left)
+					prevMarginLeft[o] = math.Max(prevMarginLeft[o], margin.Left)
 				}
 			}
-			if padding.left > 0 {
-				shiftReachableDown(g, obj, obj.TopLeft.X, padding.left, isHorizontal, false)
-				obj.Width += padding.left
+			if padding.Left > 0 {
+				shiftReachableDown(g, obj, obj.TopLeft.X, padding.Left, isHorizontal, false)
+				obj.Width += padding.Left
 			}
 		}
 	}
@@ -1387,11 +1317,11 @@ func fitPadding(obj *d2graph.Object) {
 
 	// we will compute a perfectly fit innerBox merging our padding with children's margin,
 	// but we need to add padding and margin together if an outside child label will overlap with our inside label
-	_, padding := getSpacing(obj)
-	padding.top = math.Max(padding.top, DEFAULT_PADDING)
-	padding.bottom = math.Max(padding.bottom, DEFAULT_PADDING)
-	padding.left = math.Max(padding.left, DEFAULT_PADDING)
-	padding.right = math.Max(padding.right, DEFAULT_PADDING)
+	_, padding := obj.Spacing()
+	padding.Top = math.Max(padding.Top, DEFAULT_PADDING)
+	padding.Bottom = math.Max(padding.Bottom, DEFAULT_PADDING)
+	padding.Left = math.Max(padding.Left, DEFAULT_PADDING)
+	padding.Right = math.Max(padding.Right, DEFAULT_PADDING)
 
 	// where we are (current*) vs where we want to fit each side to (inner*)
 	currentTop := obj.TopLeft.Y
@@ -1435,7 +1365,7 @@ func fitPadding(obj *d2graph.Object) {
 	// update the inner positions for children's margin and collect the outside boxes that we cannot overlap with
 	var innerBoxes []geo.Box
 	for _, child := range obj.ChildrenArray {
-		margin, _ := getSpacing(child)
+		margin, _ := child.Spacing()
 		dx, dy := child.GetModifierElementAdjustments()
 
 		if labelBox != nil || iconBox != nil {
@@ -1465,10 +1395,10 @@ func fitPadding(obj *d2graph.Object) {
 			}
 		}
 
-		innerTop = math.Min(innerTop, child.TopLeft.Y-dy-math.Max(margin.top, padding.top))
-		innerBottom = math.Max(innerBottom, child.TopLeft.Y+child.Height+math.Max(margin.bottom, padding.bottom))
-		innerLeft = math.Min(innerLeft, child.TopLeft.X-math.Max(margin.left, padding.left))
-		innerRight = math.Max(innerRight, child.TopLeft.X+child.Width+dx+math.Max(margin.right, padding.right))
+		innerTop = math.Min(innerTop, child.TopLeft.Y-dy-math.Max(margin.Top, padding.Top))
+		innerBottom = math.Max(innerBottom, child.TopLeft.Y+child.Height+math.Max(margin.Bottom, padding.Bottom))
+		innerLeft = math.Min(innerLeft, child.TopLeft.X-math.Max(margin.Left, padding.Left))
+		innerRight = math.Max(innerRight, child.TopLeft.X+child.Width+dx+math.Max(margin.Right, padding.Right))
 	}
 
 	// collect edge label boxes and update inner box for internal edges
@@ -1490,16 +1420,16 @@ func fitPadding(obj *d2graph.Object) {
 				innerBoxes = append(innerBoxes, geo.Box{TopLeft: point, Width: labelWidth, Height: labelHeight})
 			}
 
-			innerTop = math.Min(innerTop, point.Y-padding.top)
-			innerBottom = math.Max(innerBottom, point.Y+labelHeight+padding.bottom)
-			innerLeft = math.Min(innerLeft, point.X-padding.left)
-			innerRight = math.Max(innerRight, point.X+labelWidth+padding.right)
+			innerTop = math.Min(innerTop, point.Y-padding.Top)
+			innerBottom = math.Max(innerBottom, point.Y+labelHeight+padding.Bottom)
+			innerLeft = math.Min(innerLeft, point.X-padding.Left)
+			innerRight = math.Max(innerRight, point.X+labelWidth+padding.Right)
 		}
 		for _, point := range edge.Route {
-			innerTop = math.Min(innerTop, point.Y-padding.top)
-			innerBottom = math.Max(innerBottom, point.Y+padding.bottom)
-			innerLeft = math.Min(innerLeft, point.X-padding.left)
-			innerRight = math.Max(innerRight, point.X+padding.right)
+			innerTop = math.Min(innerTop, point.Y-padding.Top)
+			innerBottom = math.Max(innerBottom, point.Y+padding.Bottom)
+			innerLeft = math.Min(innerLeft, point.X-padding.Left)
+			innerRight = math.Max(innerRight, point.X+padding.Right)
 		}
 	}
 

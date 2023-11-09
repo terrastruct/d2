@@ -305,6 +305,8 @@ func ExtractSubgraph(container *d2graph.Object, includeSelf bool) (nestedGraph *
 	}
 	nestedGraph.Root.Attributes = container.Attributes
 	nestedGraph.Root.Box = &geo.Box{}
+	nestedGraph.Root.LabelPosition = container.LabelPosition
+	nestedGraph.Root.IconPosition = container.IconPosition
 
 	isNestedObject := func(obj *d2graph.Object) bool {
 		if includeSelf {
