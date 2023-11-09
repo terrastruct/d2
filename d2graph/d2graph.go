@@ -1938,3 +1938,72 @@ func (obj *Object) IsMultiple() bool {
 func (obj *Object) Is3D() bool {
 	return obj.Style.ThreeDee != nil && obj.Style.ThreeDee.Value == "true"
 }
+
+func (obj *Object) Spacing() (margin, padding geo.Spacing) {
+	if obj.HasLabel() {
+		var position label.Position
+		if obj.LabelPosition != nil {
+			position = label.FromString(*obj.LabelPosition)
+		}
+
+		var labelWidth, labelHeight float64
+		if obj.LabelDimensions.Width > 0 {
+			labelWidth = float64(obj.LabelDimensions.Width) + 2*label.PADDING
+		}
+		if obj.LabelDimensions.Height > 0 {
+			labelHeight = float64(obj.LabelDimensions.Height) + 2*label.PADDING
+		}
+
+		switch position {
+		case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
+			margin.Top = labelHeight
+		case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+			margin.Bottom = labelHeight
+		case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
+			margin.Left = labelWidth
+		case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+			margin.Right = labelWidth
+		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
+			padding.Top = labelHeight
+		case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
+			padding.Bottom = labelHeight
+		case label.InsideMiddleLeft:
+			padding.Left = labelWidth
+		case label.InsideMiddleRight:
+			padding.Right = labelWidth
+		}
+	}
+
+	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
+		var position label.Position
+		if obj.IconPosition != nil {
+			position = label.FromString(*obj.IconPosition)
+		}
+
+		iconSize := float64(d2target.MAX_ICON_SIZE + 2*label.PADDING)
+		switch position {
+		case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
+			margin.Top = math.Max(margin.Top, iconSize)
+		case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+			margin.Bottom = math.Max(margin.Bottom, iconSize)
+		case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
+			margin.Left = math.Max(margin.Left, iconSize)
+		case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+			margin.Right = math.Max(margin.Right, iconSize)
+		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
+			padding.Top = math.Max(padding.Top, iconSize)
+		case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
+			padding.Bottom = math.Max(padding.Bottom, iconSize)
+		case label.InsideMiddleLeft:
+			padding.Left = math.Max(padding.Left, iconSize)
+		case label.InsideMiddleRight:
+			padding.Right = math.Max(padding.Right, iconSize)
+		}
+	}
+
+	dx, dy := obj.GetModifierElementAdjustments()
+	margin.Right += dx
+	margin.Top += dy
+
+	return
+}

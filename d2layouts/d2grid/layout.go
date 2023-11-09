@@ -66,72 +66,43 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 		}
 
 		// compute how much space the label and icon occupy
-		var occupiedWidth, occupiedHeight float64
-		if obj.Icon != nil && !iconPosition.IsOutside() {
-			iconSpace := float64(d2target.MAX_ICON_SIZE + 2*label.PADDING)
-			occupiedWidth = iconSpace
-			occupiedHeight = iconSpace
-		}
+		_, padding := obj.Spacing()
 
-		var dx, dy float64
-		if obj.LabelDimensions.Height != 0 {
-			occupiedHeight = math.Max(
-				occupiedHeight,
-				float64(obj.LabelDimensions.Height)+2*label.PADDING,
-			)
-			if occupiedHeight > obj.Height {
-				switch labelPosition {
-				case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight,
-					label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
-				default:
-					dy = (occupiedHeight - obj.Height) / 2
-					obj.Height = occupiedHeight
-				}
-			}
-		}
-		if obj.LabelDimensions.Width != 0 {
+		if iconPosition == label.InsideTopLeft && labelPosition == label.InsideTopCenter {
 			// . ├────┤───────├────┤
 			// .  icon  label  icon
 			// with an icon in top left we need 2x the space to fit the label in the center
-			occupiedWidth *= 2
-			occupiedWidth += float64(obj.LabelDimensions.Width) + 2*label.PADDING
-			if occupiedWidth > obj.Width {
-				switch labelPosition {
-				case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom,
-					label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
-				default:
-					dx = (occupiedWidth - obj.Width) / 2
-					obj.Width = occupiedWidth
-				}
+			iconSize := float64(d2target.MAX_ICON_SIZE) + 2*label.PADDING
+			padding.Left = math.Max(padding.Left, iconSize)
+			padding.Right = math.Max(padding.Right, iconSize)
+			minWidth := 2*iconSize + float64(obj.LabelDimensions.Width) + 2*label.PADDING
+			if minWidth > obj.Width {
+				overflow := minWidth - obj.Width
+				padding.Left = math.Max(padding.Left, overflow/2)
+				padding.Right = math.Max(padding.Right, overflow/2)
 			}
 		}
 
-		labelOverflowY := occupiedHeight - float64(verticalPadding)
-		// if the label doesn't fit within the padding, we need to add more
-		if labelOverflowY > 0 {
-			switch labelPosition {
-			case
-				label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight,
-				label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
-				obj.Height += labelOverflowY
-			}
-			// if label is top, need to shift contents down
-			switch labelPosition {
-			case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
-				dy = labelOverflowY
-			}
+		var dx, dy float64
+		overflowTop := padding.Top - float64(verticalPadding)
+		if overflowTop > 0 {
+			obj.Height += overflowTop
+			dy = overflowTop
+		}
+		overflowBottom := padding.Bottom - float64(verticalPadding)
+		if overflowBottom > 0 {
+			obj.Height += overflowBottom
+		}
+		overflowLeft := padding.Left - float64(horizontalPadding)
+		if overflowLeft > 0 {
+			obj.Width += overflowLeft
+			dx = overflowLeft
+		}
+		overflowRight := padding.Right - float64(horizontalPadding)
+		if overflowRight > 0 {
+			obj.Width += overflowRight
 		}
 
-		labelOverflowX := occupiedWidth - float64(horizontalPadding)
-		if labelOverflowX > 0 {
-			switch labelPosition {
-			case label.InsideMiddleLeft, label.InsideMiddleRight:
-				obj.Width += labelOverflowX
-			}
-			if labelPosition == label.InsideMiddleLeft {
-				dx = labelOverflowX
-			}
-		}
 		// we need to center children if we have to expand to fit the container label
 		if dx != 0 || dy != 0 {
 			gd.shift(dx, dy)
