@@ -68,6 +68,42 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 		// compute how much space the label and icon occupy
 		_, padding := obj.Spacing()
 
+		var labelWidth, labelHeight float64
+		if obj.LabelDimensions.Width > 0 {
+			labelWidth = float64(obj.LabelDimensions.Width) + 2*label.PADDING
+		}
+		if obj.LabelDimensions.Height > 0 {
+			labelHeight = float64(obj.LabelDimensions.Height) + 2*label.PADDING
+		}
+
+		var dx, dy float64
+		if labelWidth > 0 {
+			switch labelPosition {
+			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight,
+				label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight,
+				label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight,
+				label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+				overflow := labelWidth - (obj.Width - float64(2*horizontalPadding))
+				if overflow > 0 {
+					padding.Left += overflow / 2
+					padding.Right += overflow / 2
+				}
+			}
+		}
+		if labelHeight > 0 {
+			switch labelPosition {
+			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom,
+				label.InsideMiddleLeft, label.InsideMiddleCenter, label.InsideMiddleRight,
+				label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+				overflow := labelHeight - (obj.Height - float64(2*verticalPadding))
+				if overflow > 0 {
+					padding.Top += overflow / 2
+					padding.Bottom += overflow / 2
+				}
+			}
+		}
+
+		// configure spacing for default label+icon
 		if iconPosition == label.InsideTopLeft && labelPosition == label.InsideTopCenter {
 			// . ├────┤───────├────┤
 			// .  icon  label  icon
@@ -76,18 +112,17 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 			padding.Left = math.Max(padding.Left, iconSize)
 			padding.Right = math.Max(padding.Right, iconSize)
 			minWidth := 2*iconSize + float64(obj.LabelDimensions.Width) + 2*label.PADDING
-			if minWidth > obj.Width {
-				overflow := minWidth - obj.Width
+			overflow := minWidth - (obj.Width - float64(2*horizontalPadding))
+			if overflow > 0 {
 				padding.Left = math.Max(padding.Left, overflow/2)
 				padding.Right = math.Max(padding.Right, overflow/2)
 			}
 		}
 
-		var dx, dy float64
 		overflowTop := padding.Top - float64(verticalPadding)
 		if overflowTop > 0 {
 			obj.Height += overflowTop
-			dy = overflowTop
+			dy += overflowTop
 		}
 		overflowBottom := padding.Bottom - float64(verticalPadding)
 		if overflowBottom > 0 {
@@ -96,7 +131,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 		overflowLeft := padding.Left - float64(horizontalPadding)
 		if overflowLeft > 0 {
 			obj.Width += overflowLeft
-			dx = overflowLeft
+			dx += overflowLeft
 		}
 		overflowRight := padding.Right - float64(horizontalPadding)
 		if overflowRight > 0 {
