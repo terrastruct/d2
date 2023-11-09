@@ -30,6 +30,13 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 		return err
 	}
 
+	if obj.HasLabel() && obj.LabelPosition == nil {
+		obj.LabelPosition = go2.Pointer(label.InsideTopCenter.String())
+	}
+	if obj.Icon != nil && obj.IconPosition == nil {
+		obj.IconPosition = go2.Pointer(label.InsideTopLeft.String())
+	}
+
 	if obj.Box != nil {
 		// CONTAINER_PADDING is default, but use gap value if set
 		horizontalPadding, verticalPadding := CONTAINER_PADDING, CONTAINER_PADDING
@@ -50,9 +57,17 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 			gd.shift(innerBox.TopLeft.X, innerBox.TopLeft.Y)
 		}
 
+		var labelPosition, iconPosition label.Position
+		if obj.LabelPosition != nil {
+			labelPosition = label.FromString(*obj.LabelPosition)
+		}
+		if obj.IconPosition != nil {
+			iconPosition = label.FromString(*obj.IconPosition)
+		}
+
 		// compute how much space the label and icon occupy
 		var occupiedWidth, occupiedHeight float64
-		if obj.Icon != nil {
+		if obj.Icon != nil && !iconPosition.IsOutside() {
 			iconSpace := float64(d2target.MAX_ICON_SIZE + 2*label.PADDING)
 			occupiedWidth = iconSpace
 			occupiedHeight = iconSpace
@@ -64,6 +79,15 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 				occupiedHeight,
 				float64(obj.LabelDimensions.Height)+2*label.PADDING,
 			)
+			if occupiedHeight > obj.Height {
+				switch labelPosition {
+				case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight,
+					label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+				default:
+					dy = (occupiedHeight - obj.Height) / 2
+					obj.Height = occupiedHeight
+				}
+			}
 		}
 		if obj.LabelDimensions.Width != 0 {
 			// . ├────┤───────├────┤
@@ -72,46 +96,46 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 			occupiedWidth *= 2
 			occupiedWidth += float64(obj.LabelDimensions.Width) + 2*label.PADDING
 			if occupiedWidth > obj.Width {
-				dx = (occupiedWidth - obj.Width) / 2
-				obj.Width = occupiedWidth
-			}
-		}
-
-		if obj.LabelPosition != nil {
-			labelPosition := label.FromString(*obj.LabelPosition)
-			if !labelPosition.IsOutside() {
-				labelOverflowY := occupiedHeight - float64(verticalPadding)
-				// if the label doesn't fit within the padding, we need to add more
-				if labelOverflowY > 0 {
-					obj.Height += labelOverflowY
-					// if label is top, need to shift contents down
-					switch labelPosition {
-					case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
-						dy = labelOverflowY
-					}
-				}
-
-				labelOverflowX := occupiedWidth - float64(horizontalPadding)
-				if labelOverflowX > 0 {
-					obj.Width += labelOverflowX
-					if labelPosition == label.InsideMiddleLeft {
-						dx = labelOverflowX
-					}
+				switch labelPosition {
+				case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom,
+					label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+				default:
+					dx = (occupiedWidth - obj.Width) / 2
+					obj.Width = occupiedWidth
 				}
 			}
 		}
 
+		labelOverflowY := occupiedHeight - float64(verticalPadding)
+		// if the label doesn't fit within the padding, we need to add more
+		if labelOverflowY > 0 {
+			switch labelPosition {
+			case
+				label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight,
+				label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
+				obj.Height += labelOverflowY
+			}
+			// if label is top, need to shift contents down
+			switch labelPosition {
+			case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
+				dy = labelOverflowY
+			}
+		}
+
+		labelOverflowX := occupiedWidth - float64(horizontalPadding)
+		if labelOverflowX > 0 {
+			switch labelPosition {
+			case label.InsideMiddleLeft, label.InsideMiddleRight:
+				obj.Width += labelOverflowX
+			}
+			if labelPosition == label.InsideMiddleLeft {
+				dx = labelOverflowX
+			}
+		}
 		// we need to center children if we have to expand to fit the container label
 		if dx != 0 || dy != 0 {
 			gd.shift(dx, dy)
 		}
-	}
-
-	if obj.HasLabel() && obj.LabelPosition == nil {
-		obj.LabelPosition = go2.Pointer(label.InsideTopCenter.String())
-	}
-	if obj.Icon != nil && obj.IconPosition == nil {
-		obj.IconPosition = go2.Pointer(label.InsideTopLeft.String())
 	}
 
 	// simple straight line edge routing between grid objects
