@@ -74,6 +74,7 @@ type watcher struct {
 	l                net.Listener
 	staticFileServer http.Handler
 
+	boardpathMu sync.Mutex
 	wsclientsMu sync.Mutex
 	closing     bool
 	wsclientsWG sync.WaitGroup
@@ -424,7 +425,9 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 		}
 
 		fs := trackedFS{}
+		w.boardpathMu.Lock()
 		svg, _, err := compile(ctx, w.ms, w.plugins, &fs, w.layout, w.renderOpts, w.fontFamily, w.animateInterval, w.inputPath, w.outputPath, w.boardPath, w.bundle, w.forceAppendix, w.pw.Page)
+		w.boardpathMu.Unlock()
 		errs := ""
 		if err != nil {
 			if len(svg) > 0 {
@@ -507,13 +510,18 @@ func (w *watcher) handleRoot(hw http.ResponseWriter, r *http.Request) {
 </body>
 </html>`, filepath.Base(w.outputPath), w.devMode)
 
+	w.boardpathMu.Lock()
 	// if path is "/x.svg", we just want "x"
 	boardPath := strings.TrimPrefix(r.URL.Path, "/")
 	if idx := strings.LastIndexByte(boardPath, '.'); idx != -1 {
 		boardPath = boardPath[:idx]
 	}
+	recompile := false
 	if boardPath != w.boardPath {
 		w.boardPath = boardPath
+	}
+	w.boardpathMu.Unlock()
+	if recompile {
 		w.requestCompile()
 	}
 }
