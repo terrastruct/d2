@@ -648,12 +648,15 @@ func wsHeartbeat(ctx context.Context, c *websocket.Conn) {
 	}
 }
 
-// trackedFS is OS's FS with the addition that it tracks which files are opened
+// trackedFS is OS's FS with the addition that it tracks which files are opened successfully
 type trackedFS struct {
 	opened []string
 }
 
 func (tfs *trackedFS) Open(name string) (fs.File, error) {
-	tfs.opened = append(tfs.opened, name)
-	return os.Open(name)
+	f, err := os.Open(name)
+	if err == nil {
+		tfs.opened = append(tfs.opened, name)
+	}
+	return f, err
 }
