@@ -18,7 +18,7 @@ import (
 
 var _default = slog.Make(sloghuman.Sink(os.Stderr)).Named("default")
 
-func init() {
+func Init() {
 	stdlib := slog.Stdlib(context.Background(), _default, slog.LevelInfo)
 	log.SetOutput(stdlib.Writer())
 }

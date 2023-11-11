@@ -1245,3 +1245,7 @@ func AnimatePNGs(ms *xmain.State, pngs [][]byte, animIntervalMs int) ([]byte, er
 
 	return xgif.AnimatePNGs(pngs, animIntervalMs)
 }
+
+func init() {
+	ctxlog.Init()
+}
