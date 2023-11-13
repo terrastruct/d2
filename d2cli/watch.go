@@ -519,6 +519,7 @@ func (w *watcher) handleRoot(hw http.ResponseWriter, r *http.Request) {
 	recompile := false
 	if boardPath != w.boardPath {
 		w.boardPath = boardPath
+		recompile = true
 	}
 	w.boardpathMu.Unlock()
 	if recompile {
