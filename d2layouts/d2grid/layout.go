@@ -47,15 +47,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 			verticalPadding = gd.verticalGap
 		}
 
-		// size shape according to grid
-		obj.SizeToContent(gd.width, gd.height, float64(2*horizontalPadding), float64(2*verticalPadding))
-
-		// compute where the grid should be placed inside shape
-		s := obj.ToShape()
-		innerBox := s.GetInnerBox()
-		if innerBox.TopLeft.X != 0 || innerBox.TopLeft.Y != 0 {
-			gd.shift(innerBox.TopLeft.X, innerBox.TopLeft.Y)
-		}
+		contentWidth, contentHeight := gd.width, gd.height
 
 		var labelPosition, iconPosition label.Position
 		if obj.LabelPosition != nil {
@@ -83,7 +75,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 				label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight,
 				label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight,
 				label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
-				overflow := labelWidth - (obj.Width - float64(2*horizontalPadding))
+				overflow := labelWidth - contentWidth
 				if overflow > 0 {
 					padding.Left += overflow / 2
 					padding.Right += overflow / 2
@@ -95,7 +87,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom,
 				label.InsideMiddleLeft, label.InsideMiddleCenter, label.InsideMiddleRight,
 				label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
-				overflow := labelHeight - (obj.Height - float64(2*verticalPadding))
+				overflow := labelHeight - contentHeight
 				if overflow > 0 {
 					padding.Top += overflow / 2
 					padding.Bottom += overflow / 2
@@ -112,7 +104,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 			padding.Left = math.Max(padding.Left, iconSize)
 			padding.Right = math.Max(padding.Right, iconSize)
 			minWidth := 2*iconSize + float64(obj.LabelDimensions.Width) + 2*label.PADDING
-			overflow := minWidth - (obj.Width - float64(2*horizontalPadding))
+			overflow := minWidth - contentWidth
 			if overflow > 0 {
 				padding.Left = math.Max(padding.Left, overflow/2)
 				padding.Right = math.Max(padding.Right, overflow/2)
@@ -121,24 +113,31 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 
 		overflowTop := padding.Top - float64(verticalPadding)
 		if overflowTop > 0 {
-			obj.Height += overflowTop
+			contentHeight += overflowTop
 			dy += overflowTop
 		}
 		overflowBottom := padding.Bottom - float64(verticalPadding)
 		if overflowBottom > 0 {
-			obj.Height += overflowBottom
+			contentHeight += overflowBottom
 		}
 		overflowLeft := padding.Left - float64(horizontalPadding)
 		if overflowLeft > 0 {
-			obj.Width += overflowLeft
+			contentWidth += overflowLeft
 			dx += overflowLeft
 		}
 		overflowRight := padding.Right - float64(horizontalPadding)
 		if overflowRight > 0 {
-			obj.Width += overflowRight
+			contentWidth += overflowRight
 		}
 
-		// we need to center children if we have to expand to fit the container label
+		// size shape according to grid
+		obj.SizeToContent(contentWidth, contentHeight, float64(2*horizontalPadding), float64(2*verticalPadding))
+
+		// compute where the grid should be placed inside shape
+		s := obj.ToShape()
+		innerBox := s.GetInnerBox()
+		dx = innerBox.TopLeft.X + dx
+		dy = innerBox.TopLeft.Y + dy
 		if dx != 0 || dy != 0 {
 			gd.shift(dx, dy)
 		}
