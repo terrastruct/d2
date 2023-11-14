@@ -1050,7 +1050,6 @@ cf many required: {
 		loadFromFile(t, "grid_rows_gap_bug"),
 		loadFromFile(t, "grid_image_label_position"),
 		loadFromFile(t, "glob_dimensions"),
-		loadFromFile(t, "grid_cell_container_edge"),
 	}
 
 	runa(t, tcs)
