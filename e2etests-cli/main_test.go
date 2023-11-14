@@ -240,6 +240,66 @@ You provided: .png`)
 			},
 		},
 		{
+			name: "target-root",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "target-root.d2", `title: {
+	label: Main Plan
+}
+scenarios: {
+	b: {
+	title.label: Backup Plan
+	}
+}`)
+				err := runTestMain(t, ctx, dir, env, "--target", "", "target-root.d2", "target-root.svg")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "target-root.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
+			name: "target-b",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "target-b.d2", `title: {
+	label: Main Plan
+}
+scenarios: {
+	b: {
+	title.label: Backup Plan
+	}
+}`)
+				err := runTestMain(t, ctx, dir, env, "--target", "b", "target-b.d2", "target-b.svg")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "target-b.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
+			name: "target-nested-with-special-chars",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "target-nested-with-special-chars.d2", `layers: {
+	a: {
+		layers: {
+			"x / y . z": {
+				mad
+			}
+		}
+	}
+}`)
+				err := runTestMain(t, ctx, dir, env, "--target", `layers.a.layers."x / y . z"`, "target-nested-with-special-chars.d2", "target-nested-with-special-chars.svg")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "target-nested-with-special-chars.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
+			name: "target-invalid",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "target-invalid.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "--target", "b", "target-invalid.d2", "target-invalid.svg")
+				assert.ErrorString(t, err, `failed to wait xmain test: e2etests-cli/d2: failed to compile target-invalid.d2: render target "b" not found`)
+			},
+		},
+		{
 			name: "multiboard/life",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "life.d2", `x -> y

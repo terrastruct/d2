@@ -6,7 +6,6 @@ import (
 	"hash/fnv"
 	"math"
 	"net/url"
-	"os"
 	"strings"
 
 	"oss.terrastruct.com/util-go/go2"
@@ -73,19 +72,7 @@ type Diagram struct {
 	Steps     []*Diagram `json:"steps,omitempty"`
 }
 
-// boardPath comes in the form of "x/layers/z/scenarios/a"
-// or "layers/z/scenarios/a"
-// or "x/z/a"
-func (d *Diagram) GetBoard(boardPath string) *Diagram {
-	path := strings.Split(boardPath, string(os.PathSeparator))
-	if len(path) == 0 || len(boardPath) == 0 {
-		return d
-	}
-
-	return d.getBoard(path)
-}
-
-func (d *Diagram) getBoard(boardPath []string) *Diagram {
+func (d *Diagram) GetBoard(boardPath []string) *Diagram {
 	if len(boardPath) == 0 {
 		return d
 	}
@@ -103,7 +90,7 @@ func (d *Diagram) getBoard(boardPath []string) *Diagram {
 		}
 		for _, b := range d.Layers {
 			if b.Name == boardPath[1] {
-				return b.getBoard(boardPath[2:])
+				return b.GetBoard(boardPath[2:])
 			}
 		}
 	case "scenarios":
@@ -112,7 +99,7 @@ func (d *Diagram) getBoard(boardPath []string) *Diagram {
 		}
 		for _, b := range d.Scenarios {
 			if b.Name == boardPath[1] {
-				return b.getBoard(boardPath[2:])
+				return b.GetBoard(boardPath[2:])
 			}
 		}
 	case "steps":
@@ -121,24 +108,24 @@ func (d *Diagram) getBoard(boardPath []string) *Diagram {
 		}
 		for _, b := range d.Steps {
 			if b.Name == boardPath[1] {
-				return b.getBoard(boardPath[2:])
+				return b.GetBoard(boardPath[2:])
 			}
 		}
 	}
 
 	for _, b := range d.Layers {
 		if b.Name == head {
-			return b.getBoard(boardPath[1:])
+			return b.GetBoard(boardPath[1:])
 		}
 	}
 	for _, b := range d.Scenarios {
 		if b.Name == head {
-			return b.getBoard(boardPath[1:])
+			return b.GetBoard(boardPath[1:])
 		}
 	}
 	for _, b := range d.Steps {
 		if b.Name == head {
-			return b.getBoard(boardPath[1:])
+			return b.GetBoard(boardPath[1:])
 		}
 	}
 	return nil
