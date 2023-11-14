@@ -48,8 +48,8 @@
       "id": "grid.a",
       "type": "rectangle",
       "pos": {
-        "x": 0,
-        "y": 46
+        "x": 46,
+        "y": 57
       },
       "width": 53,
       "height": 66,
@@ -89,8 +89,8 @@
       "id": "grid.b",
       "type": "rectangle",
       "pos": {
-        "x": 53,
-        "y": 46
+        "x": 99,
+        "y": 57
       },
       "width": 54,
       "height": 66,
@@ -130,8 +130,8 @@
       "id": "grid.c",
       "type": "rectangle",
       "pos": {
-        "x": 0,
-        "y": 112
+        "x": 46,
+        "y": 123
       },
       "width": 53,
       "height": 66,
@@ -171,8 +171,8 @@
       "id": "grid.d",
       "type": "rectangle",
       "pos": {
-        "x": 53,
-        "y": 112
+        "x": 99,
+        "y": 123
       },
       "width": 54,
       "height": 66,
