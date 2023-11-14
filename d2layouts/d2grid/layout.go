@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"math"
+	"strconv"
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2target"
@@ -130,12 +131,46 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 			contentWidth += overflowRight
 		}
 
+		// manually handle desiredWidth/Height so we can center the grid
+		var desiredWidth, desiredHeight int
+		var originalWidthAttr, originalHeightAttr *d2graph.Scalar
+		if obj.WidthAttr != nil {
+			desiredWidth, _ = strconv.Atoi(obj.WidthAttr.Value)
+			// SizeToContent without desired width
+			originalWidthAttr = obj.WidthAttr
+			obj.WidthAttr = nil
+		}
+		if obj.HeightAttr != nil {
+			desiredHeight, _ = strconv.Atoi(obj.HeightAttr.Value)
+			originalHeightAttr = obj.HeightAttr
+			obj.HeightAttr = nil
+		}
 		// size shape according to grid
 		obj.SizeToContent(contentWidth, contentHeight, float64(2*horizontalPadding), float64(2*verticalPadding))
+		if originalWidthAttr != nil {
+			obj.WidthAttr = originalWidthAttr
+		}
+		if originalHeightAttr != nil {
+			obj.HeightAttr = originalHeightAttr
+		}
+
+		if desiredWidth > 0 {
+			ddx := float64(desiredWidth) - obj.Width
+			if ddx > 0 {
+				dx += ddx / 2
+				obj.Width = float64(desiredWidth)
+			}
+		}
+		if desiredHeight > 0 {
+			ddy := float64(desiredHeight) - obj.Height
+			if ddy > 0 {
+				dy += ddy / 2
+				obj.Height = float64(desiredHeight)
+			}
+		}
 
 		// compute where the grid should be placed inside shape
-		s := obj.ToShape()
-		innerBox := s.GetInnerBox()
+		innerBox := obj.ToShape().GetInnerBox()
 		dx = innerBox.TopLeft.X + dx
 		dy = innerBox.TopLeft.Y + dy
 		if dx != 0 || dy != 0 {
