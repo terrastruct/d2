@@ -111,7 +111,49 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			}
 
 			InjectNested(g.Root, nestedGraph, false)
-			g.Edges = append(g.Edges, externalEdges...)
+			for _, e := range externalEdges {
+				if e.Src.AbsID() == id || e.Dst.AbsID() == id {
+					// We need to keep this edge extracted to route after grid layout.
+					// When we extracted curr(grid cell container) externalEdges=[A, C] and nestedGraph.Edges=[B]
+					// With includeSelf=true
+					// ┌grid(g.Root)───────────────────┐    ┌grid(g.Root)───────────────────┐
+					// │ ┌────┐      ┌curr───────────┐ │    │ ┌────┐                        │
+					// │ │    │      │  ┌──┐    ┌──┐ │ │    │ │    │                        │
+					// │ │    ├──A──►│  │  ├─B─►│  │ │ │ => │ │    │                        │
+					// │ │    ├──────┼C─┼──┼───►│  │ │ │    │ │    │                        │
+					// │ │    │      │  └──┘    └──┘ │ │    │ │    │                        │
+					// │ └────┘      └───────────────┘ │    │ └────┘                        │
+					// └───────────────────────────────┘    └───────────────────────────────┘
+					//
+					// If we add back all external edges, when we extract curr with includeSelf=false,
+					// externalEdges would be [C], nestedGraph.Edges=[B], and graph.Edges=[A].
+					// This would incorrectly leave A in the graph and it wouldn't be routed after grid layout
+					// With includeSelf=false
+					// ┌grid(g.Root)───────────────────┐    ┌grid(g.Root)───────────────────┐
+					// │ ┌────┐      ┌curr───────────┐ │    │ ┌────┐      ┌curr───────────┐ │
+					// │ │    │      │  ┌──┐    ┌──┐ │ │    │ │    │      │               │ │
+					// │ │    ├──A──►│  │  ├─B─►│  │ │ │ => │ │    ├──A──►│               │ │
+					// │ │    ├──────┼C─┼──┼───►│  │ │ │    │ │    │      │               │ │
+					// │ │    │      │  └──┘    └──┘ │ │    │ │    │      │               │ │
+					// │ └────┘      └───────────────┘ │    │ └────┘      └───────────────┘ │
+					// └───────────────────────────────┘    └───────────────────────────────┘
+					//
+					// Therefore we only add [B, C] since they will be correctly extracted with includeSelf=false
+					// as externalEdges=[C] and nestedGraph.Edges=[B].
+					// With includeSelf=false
+					// ┌grid(g.Root)───────────────────┐    ┌grid(g.Root)───────────────────┐
+					// │ ┌────┐      ┌curr───────────┐ │    │ ┌────┐      ┌curr───────────┐ │
+					// │ │    │      │  ┌──┐    ┌──┐ │ │    │ │    │      │               │ │
+					// │ │    │      │  │  ├─B─►│  │ │ │ => │ │    │      │               │ │
+					// │ │    ├──────┼C─┼──┼───►│  │ │ │    │ │    │      │               │ │
+					// │ │    │      │  └──┘    └──┘ │ │    │ │    │      │               │ │
+					// │ └────┘      └───────────────┘ │    │ └────┘      └───────────────┘ │
+					// └───────────────────────────────┘    └───────────────────────────────┘
+					extractedEdges = append(extractedEdges, e)
+				} else {
+					g.Edges = append(g.Edges, e)
+				}
+			}
 			restoreOrder()
 
 			// need to update curr *Object incase layout changed it
