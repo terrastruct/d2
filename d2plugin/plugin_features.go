@@ -38,7 +38,8 @@ func FeatureSupportCheck(info *PluginInfo, g *d2graph.Graph) error {
 				return fmt.Errorf(`Object "%s" has attribute "top" and/or "left" set, but layout engine "%s" does not support locked positions. See https://d2lang.com/tour/layouts/#layout-specific-functionality for more.`, obj.AbsID(), info.Name)
 			}
 		}
-		if (obj.WidthAttr != nil || obj.HeightAttr != nil) && len(obj.ChildrenArray) > 0 {
+		if (obj.WidthAttr != nil || obj.HeightAttr != nil) &&
+			len(obj.ChildrenArray) > 0 && !obj.IsGridDiagram() {
 			if _, ok := featureMap[CONTAINER_DIMENSIONS]; !ok {
 				return fmt.Errorf(`Object "%s" has attribute "width" and/or "height" set, but layout engine "%s" does not support dimensions set on containers. See https://d2lang.com/tour/layouts/#layout-specific-functionality for more.`, obj.AbsID(), info.Name)
 			}
