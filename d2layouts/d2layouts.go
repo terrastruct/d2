@@ -103,35 +103,63 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 		if isGridCellContainer && gi.isDefault() {
 			// if we are in a grid diagram, and our children have descendants
 			// we need to run layout on them first, even if they are not special diagram types
+
+			// First we extract the grid cell container as a nested graph with includeSelf=true
+			// resulting in externalEdges=[A, C] and nestedGraph.Edges=[B]
+			// ┌grid(g.Root)───────────────────┐    ┌grid(g.Root)───────────────────┐
+			// │ ┌────┐      ┌curr───────────┐ │    │ ┌────┐                        │
+			// │ │    │      │  ┌──┐    ┌──┐ │ │    │ │    │                        │
+			// │ │    ├──A──►│  │  ├─B─►│  │ │ │ => │ │    │                        │
+			// │ │    ├──────┼C─┼──┼───►│  │ │ │    │ │    │                        │
+			// │ │    │      │  └──┘    └──┘ │ │    │ │    │                        │
+			// │ └────┘      └───────────────┘ │    │ └────┘                        │
+			// └───────────────────────────────┘    └───────────────────────────────┘
 			nestedGraph, externalEdges := ExtractSubgraph(curr, true)
+
+			// Then we layout curr as a nested graph and re-inject it
 			id := curr.AbsID()
 			err := LayoutNested(ctx, nestedGraph, GraphInfo{}, coreLayout)
 			if err != nil {
 				return err
 			}
-
 			InjectNested(g.Root, nestedGraph, false)
 			g.Edges = append(g.Edges, externalEdges...)
 			restoreOrder()
 
-			// need to update curr *Object incase layout changed it
-			var obj *d2graph.Object
+			// layout can replace Objects so we need to update the references we are holding onto (curr + externalEdges)
+			idToObj := make(map[string]*d2graph.Object)
 			for _, o := range g.Objects {
-				if o.AbsID() == id {
-					obj = o
-					break
+				idToObj[o.AbsID()] = o
+			}
+			lookup := func(idStr string) (*d2graph.Object, error) {
+				o, exists := idToObj[idStr]
+				if !exists {
+					return nil, fmt.Errorf("could not find object %#v after layout", idStr)
 				}
+				return o, nil
 			}
-			if obj == nil {
-				return fmt.Errorf("could not find object %#v after layout", id)
+			curr, err = lookup(id)
+			if err != nil {
+				return err
 			}
-			curr = obj
+			for _, e := range externalEdges {
+				src, err := lookup(e.Src.AbsID())
+				if err != nil {
+					return err
+				}
+				e.Src = src
+				dst, err := lookup(e.Dst.AbsID())
+				if err != nil {
+					return err
+				}
+				e.Dst = dst
+			}
 
 			// position nested graph (excluding curr) relative to curr
 			dx := 0 - curr.TopLeft.X
 			dy := 0 - curr.TopLeft.Y
 			for _, o := range nestedGraph.Objects {
-				if o.AbsID() == curr.AbsID() {
+				if o == curr {
 					continue
 				}
 				o.TopLeft.X += dx
@@ -141,7 +169,19 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 				e.Move(dx, dy)
 			}
 
-			// now we keep the descendants out until after grid layout
+			// Then after re-injecting everything, we extract curr with includeSelf=false,
+			// and externalEdges=[C], nestedGraph.Edges=[B], and graph.Edges=[A].
+			// This will leave A in the graph to be routed by grid layout, and C will have cross-graph edge routing
+			// Note: currently grid layout's cell-cell edge routing, and cross-graph edge routing behave the same,
+			// but these are simple placeholder routings and they may be different in the future
+			// ┌grid(g.Root)───────────────────┐    ┌grid(g.Root)───────────────────┐
+			// │ ┌────┐      ┌curr───────────┐ │    │ ┌────┐      ┌curr───────────┐ │
+			// │ │    │      │  ┌──┐    ┌──┐ │ │    │ │    │      │               │ │
+			// │ │    ├──A──►│  │  ├─B─►│  │ │ │ => │ │    ├──A──►│               │ │
+			// │ │    ├──────┼C─┼──┼───►│  │ │ │    │ │    │      │               │ │
+			// │ │    │      │  └──┘    └──┘ │ │    │ │    │      │               │ │
+			// │ └────┘      └───────────────┘ │    │ └────┘      └───────────────┘ │
+			// └───────────────────────────────┘    └───────────────────────────────┘
 			nestedGraph, externalEdges = ExtractSubgraph(curr, false)
 			extractedEdges = append(extractedEdges, externalEdges...)
 
