@@ -138,6 +138,29 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 			)
 		}
 		path = polygonEl.Render()
+	case d2target.UnfilledTriangleArrowhead:
+		polygonEl := d2themes.NewThemableElement("polygon")
+		polygonEl.Fill = d2target.BG_COLOR
+		polygonEl.Stroke = connection.Stroke
+		polygonEl.ClassName = "connection"
+		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+
+		inset := strokeWidth / 2
+		if isTarget {
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f",
+				inset, inset,
+				width-inset, height/2.0,
+				inset, height-inset,
+			)
+		} else {
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f",
+				width-inset, inset,
+				inset, height/2.0,
+				width-inset, height-inset,
+			)
+		}
+		path = polygonEl.Render()
+
 	case d2target.TriangleArrowhead:
 		polygonEl := d2themes.NewThemableElement("polygon")
 		polygonEl.Fill = connection.Stroke
@@ -514,7 +537,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		labelTL.X = math.Round(labelTL.X)
 		labelTL.Y = math.Round(labelTL.Y)
 
-		if label.Position(connection.LabelPosition).IsOnEdge() {
+		if label.FromString(connection.LabelPosition).IsOnEdge() {
 			labelMask = makeLabelMask(labelTL, connection.LabelWidth, connection.LabelHeight, 1)
 		} else {
 			labelMask = makeLabelMask(labelTL, connection.LabelWidth, connection.LabelHeight, 0.75)
@@ -1178,7 +1201,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	fmt.Fprint(writer, `</g>`)
 
 	if targetShape.Icon != nil && targetShape.Type != d2target.ShapeImage {
-		iconPosition := label.Position(targetShape.IconPosition)
+		iconPosition := label.FromString(targetShape.IconPosition)
 		var box *geo.Box
 		if iconPosition.IsOutside() {
 			box = s.GetBox()
@@ -1199,7 +1222,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	}
 
 	if targetShape.Label != "" {
-		labelPosition := label.Position(targetShape.LabelPosition)
+		labelPosition := label.FromString(targetShape.LabelPosition)
 		var box *geo.Box
 		if labelPosition.IsOutside() {
 			box = s.GetBox().Copy()

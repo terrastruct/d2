@@ -3,11 +3,17 @@ package e2etests_cli
 import (
 	"bytes"
 	"context"
+	"errors"
+	"fmt"
+	"net/http"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"testing"
 	"time"
+
+	"nhooyr.io/websocket"
 
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
@@ -544,6 +550,235 @@ i used to read
 				assert.Equal(t, "x -> y\n", string(gotBar))
 			},
 		},
+		{
+			name: "watch-regular",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "index.d2", `
+a -> b
+b.link: layers.cream
+
+layers: {
+    cream: {
+        c -> b
+    }
+}`)
+				stderr := &bytes.Buffer{}
+				tms := testMain(dir, env, "--watch", "--browser=0", "index.d2")
+				tms.Stderr = stderr
+
+				tms.Start(t, ctx)
+				defer func() {
+					// Manually close, since watcher is daemon
+					err := tms.Signal(ctx, os.Interrupt)
+					assert.Success(t, err)
+				}()
+
+				// Wait for watch server to spin up and listen
+				urlRE := regexp.MustCompile(`127.0.0.1:([0-9]+)`)
+				watchURL, err := waitLogs(ctx, stderr, urlRE)
+				assert.Success(t, err)
+				stderr.Reset()
+
+				// Start a client
+				c, _, err := websocket.Dial(ctx, fmt.Sprintf("ws://%s/watch", watchURL), nil)
+				assert.Success(t, err)
+				defer c.CloseNow()
+
+				// Get the link
+				_, msg, err := c.Read(ctx)
+				assert.Success(t, err)
+				aRE := regexp.MustCompile(`href=\\"([^\"]*)\\"`)
+				match := aRE.FindSubmatch(msg)
+				assert.Equal(t, 2, len(match))
+				linkedPath := match[1]
+
+				err = getWatchPage(ctx, t, fmt.Sprintf("http://%s/%s", watchURL, linkedPath))
+				assert.Success(t, err)
+
+				successRE := regexp.MustCompile(`broadcasting update to 1 client`)
+				_, err = waitLogs(ctx, stderr, successRE)
+				assert.Success(t, err)
+			},
+		},
+		{
+			name: "watch-ok-link",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				// This link technically works because D2 interprets it as a URL,
+				// and on local filesystem, that is whe path where the compilation happens
+				// to output it to.
+				writeFile(t, dir, "index.d2", `
+a -> b
+b.link: cream
+
+layers: {
+    cream: {
+        c -> b
+    }
+}`)
+				stderr := &bytes.Buffer{}
+				tms := testMain(dir, env, "--watch", "--browser=0", "index.d2")
+				tms.Stderr = stderr
+
+				tms.Start(t, ctx)
+				defer func() {
+					// Manually close, since watcher is daemon
+					err := tms.Signal(ctx, os.Interrupt)
+					assert.Success(t, err)
+				}()
+
+				// Wait for watch server to spin up and listen
+				urlRE := regexp.MustCompile(`127.0.0.1:([0-9]+)`)
+				watchURL, err := waitLogs(ctx, stderr, urlRE)
+				assert.Success(t, err)
+
+				stderr.Reset()
+
+				// Start a client
+				c, _, err := websocket.Dial(ctx, fmt.Sprintf("ws://%s/watch", watchURL), nil)
+				assert.Success(t, err)
+				defer c.CloseNow()
+
+				// Get the link
+				_, msg, err := c.Read(ctx)
+				assert.Success(t, err)
+				aRE := regexp.MustCompile(`href=\\"([^\"]*)\\"`)
+				match := aRE.FindSubmatch(msg)
+				assert.Equal(t, 2, len(match))
+				linkedPath := match[1]
+
+				err = getWatchPage(ctx, t, fmt.Sprintf("http://%s/%s", watchURL, linkedPath))
+				assert.Success(t, err)
+
+				successRE := regexp.MustCompile(`broadcasting update to 1 client`)
+				_, err = waitLogs(ctx, stderr, successRE)
+				assert.Success(t, err)
+			},
+		},
+		{
+			name: "watch-bad-link",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				// Just verify we don't crash even with a bad link (it's treated as a URL, which users might have locally)
+				writeFile(t, dir, "index.d2", `
+a -> b
+b.link: dream
+
+layers: {
+    cream: {
+        c -> b
+    }
+}`)
+				stderr := &bytes.Buffer{}
+				tms := testMain(dir, env, "--watch", "--browser=0", "index.d2")
+				tms.Stderr = stderr
+
+				tms.Start(t, ctx)
+				defer func() {
+					// Manually close, since watcher is daemon
+					err := tms.Signal(ctx, os.Interrupt)
+					assert.Success(t, err)
+				}()
+
+				// Wait for watch server to spin up and listen
+				urlRE := regexp.MustCompile(`127.0.0.1:([0-9]+)`)
+				watchURL, err := waitLogs(ctx, stderr, urlRE)
+				assert.Success(t, err)
+				stderr.Reset()
+
+				// Start a client
+				c, _, err := websocket.Dial(ctx, fmt.Sprintf("ws://%s/watch", watchURL), nil)
+				assert.Success(t, err)
+				defer c.CloseNow()
+
+				// Get the link
+				_, msg, err := c.Read(ctx)
+				assert.Success(t, err)
+				aRE := regexp.MustCompile(`href=\\"([^\"]*)\\"`)
+				match := aRE.FindSubmatch(msg)
+				assert.Equal(t, 2, len(match))
+				linkedPath := match[1]
+
+				err = getWatchPage(ctx, t, fmt.Sprintf("http://%s/%s", watchURL, linkedPath))
+				assert.Success(t, err)
+
+				successRE := regexp.MustCompile(`broadcasting update to 1 client`)
+				_, err = waitLogs(ctx, stderr, successRE)
+				assert.Success(t, err)
+			},
+		},
+		{
+			name: "watch-imported-file",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "a.d2", `
+...@b
+`)
+				writeFile(t, dir, "b.d2", `
+x
+`)
+				stderr := &bytes.Buffer{}
+				tms := testMain(dir, env, "--watch", "--browser=0", "a.d2")
+				tms.Stderr = stderr
+
+				tms.Start(t, ctx)
+				defer func() {
+					err := tms.Signal(ctx, os.Interrupt)
+					assert.Success(t, err)
+				}()
+
+				// Wait for first compilation to finish
+				doneRE := regexp.MustCompile(`successfully compiled a.d2`)
+				_, err := waitLogs(ctx, stderr, doneRE)
+				assert.Success(t, err)
+				stderr.Reset()
+
+				// Test that writing an imported file will cause recompilation
+				writeFile(t, dir, "b.d2", `
+x -> y
+`)
+				bRE := regexp.MustCompile(`detected change in b.d2`)
+				_, err = waitLogs(ctx, stderr, bRE)
+				assert.Success(t, err)
+				stderr.Reset()
+
+				// Test burst of both files changing
+				writeFile(t, dir, "a.d2", `
+...@b
+hey
+`)
+				writeFile(t, dir, "b.d2", `
+x
+hi
+`)
+				bothRE := regexp.MustCompile(`detected change in a.d2, b.d2`)
+				_, err = waitLogs(ctx, stderr, bothRE)
+				assert.Success(t, err)
+
+				// Wait for that compilation to fully finish
+				_, err = waitLogs(ctx, stderr, doneRE)
+				assert.Success(t, err)
+				stderr.Reset()
+
+				// Update the main file to no longer have that dependency
+				writeFile(t, dir, "a.d2", `
+a
+`)
+				_, err = waitLogs(ctx, stderr, doneRE)
+				assert.Success(t, err)
+				stderr.Reset()
+
+				// Change b
+				writeFile(t, dir, "b.d2", `
+y
+`)
+				// Change a to retrigger compilation
+				// The test works by seeing that the report only says "a" changed, otherwise testing for omission of compilation from "b" would require waiting
+				writeFile(t, dir, "a.d2", `
+c
+`)
+
+				_, err = waitLogs(ctx, stderr, doneRE)
+				assert.Success(t, err)
+			},
+		},
 	}
 
 	ctx := context.Background()
@@ -639,4 +874,49 @@ func testdataIgnoreDiff(tb testing.TB, ext string, got []byte) {
 // If the renderer changes, this must change
 func getNumBoards(svg string) int {
 	return strings.Count(svg, `class="d2`)
+}
+
+var errRE = regexp.MustCompile(`err:`)
+
+func waitLogs(ctx context.Context, buf *bytes.Buffer, pattern *regexp.Regexp) (string, error) {
+	ticker := time.NewTicker(10 * time.Millisecond)
+	defer ticker.Stop()
+	var match string
+	for i := 0; i < 100 && match == ""; i++ {
+		select {
+		case <-ticker.C:
+			out := buf.String()
+			match = pattern.FindString(out)
+			errMatch := errRE.FindString(out)
+			if errMatch != "" {
+				return "", errors.New(buf.String())
+			}
+		case <-ctx.Done():
+			ticker.Stop()
+			return "", fmt.Errorf("could not match pattern in log. logs: %s", buf.String())
+		}
+	}
+	if match == "" {
+		return "", errors.New(buf.String())
+	}
+
+	return match, nil
+}
+
+func getWatchPage(ctx context.Context, t *testing.T, page string) error {
+	req, err := http.NewRequestWithContext(ctx, "GET", page, nil)
+	if err != nil {
+		return err
+	}
+
+	var httpClient = &http.Client{}
+	resp, err := httpClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		return fmt.Errorf("status code: %d", resp.StatusCode)
+	}
+	return nil
 }

@@ -360,7 +360,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				continue
 			}
 
-			switch label.Position(*child.IconPosition) {
+			switch label.FromString(*child.IconPosition) {
 			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
 				hasTop = true
 			case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
@@ -605,7 +605,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		points = points[startIndex : endIndex+1]
 
 		if edge.Label.Value != "" {
-			edge.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			edge.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
 		}
 
 		edge.Route = points
@@ -1003,7 +1003,7 @@ func adjustPadding(obj *d2graph.Object, width, height float64, padding shapePadd
 	if obj.HasLabel() && obj.LabelPosition != nil {
 		labelHeight := obj.LabelDimensions.Height + 2*label.PADDING
 		labelWidth := obj.LabelDimensions.Width + 2*label.PADDING
-		switch label.Position(*obj.LabelPosition) {
+		switch label.FromString(*obj.LabelPosition) {
 		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
 			// Note: for corners we only add height
 			extraTop = labelHeight
@@ -1017,7 +1017,7 @@ func adjustPadding(obj *d2graph.Object, width, height float64, padding shapePadd
 	}
 	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage && obj.IconPosition != nil {
 		iconSize := d2target.MAX_ICON_SIZE + 2*label.PADDING
-		switch label.Position(*obj.IconPosition) {
+		switch label.FromString(*obj.IconPosition) {
 		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
 			extraTop = go2.Max(extraTop, iconSize)
 		case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
@@ -1093,7 +1093,7 @@ func adjustDimensions(obj *d2graph.Object) (width, height float64) {
 	if obj.HasLabel() {
 		var position label.Position
 		if obj.LabelPosition != nil {
-			position = label.Position(*obj.LabelPosition)
+			position = label.FromString(*obj.LabelPosition)
 		} else if len(obj.ChildrenArray) == 0 && obj.HasOutsideBottomLabel() {
 			position = label.OutsideBottomCenter
 		}
@@ -1118,7 +1118,7 @@ func adjustDimensions(obj *d2graph.Object) (width, height float64) {
 	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
 		var position label.Position
 		if obj.IconPosition != nil {
-			position = label.Position(*obj.IconPosition)
+			position = label.FromString(*obj.IconPosition)
 		}
 
 		if position.IsShapePosition() {
@@ -1143,7 +1143,7 @@ func adjustDimensions(obj *d2graph.Object) (width, height float64) {
 func cleanupAdjustment(obj *d2graph.Object) {
 	// adjust size and position to account for space reserved for labels
 	if obj.HasLabel() {
-		position := label.Position(*obj.LabelPosition)
+		position := label.FromString(*obj.LabelPosition)
 		if position.IsShapePosition() {
 			var labelWidth float64
 			switch position {
@@ -1162,7 +1162,7 @@ func cleanupAdjustment(obj *d2graph.Object) {
 		}
 	}
 	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
-		position := label.Position(*obj.IconPosition)
+		position := label.FromString(*obj.IconPosition)
 		if position.IsShapePosition() {
 			var iconWidth float64
 			switch position {
@@ -1202,24 +1202,24 @@ func cleanupAdjustment(obj *d2graph.Object) {
 func positionLabelsIcons(obj *d2graph.Object) {
 	if obj.Icon != nil && obj.IconPosition == nil {
 		if len(obj.ChildrenArray) > 0 {
-			obj.IconPosition = go2.Pointer(string(label.InsideTopLeft))
+			obj.IconPosition = go2.Pointer(label.InsideTopLeft.String())
 			if obj.LabelPosition == nil {
-				obj.LabelPosition = go2.Pointer(string(label.InsideTopRight))
+				obj.LabelPosition = go2.Pointer(label.InsideTopRight.String())
 				return
 			}
 		} else {
-			obj.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			obj.IconPosition = go2.Pointer(label.InsideMiddleCenter.String())
 		}
 	}
 	if obj.HasLabel() && obj.LabelPosition == nil {
 		if len(obj.ChildrenArray) > 0 {
-			obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+			obj.LabelPosition = go2.Pointer(label.InsideTopCenter.String())
 		} else if obj.HasOutsideBottomLabel() {
-			obj.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
+			obj.LabelPosition = go2.Pointer(label.OutsideBottomCenter.String())
 		} else if obj.Icon != nil {
-			obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+			obj.LabelPosition = go2.Pointer(label.InsideTopCenter.String())
 		} else {
-			obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			obj.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
 		}
 	}
 }

@@ -290,7 +290,7 @@ func (obj *Object) GetMargin() geo.Spacing {
 	margin := geo.Spacing{}
 
 	if obj.HasLabel() && obj.LabelPosition != nil {
-		position := label.Position(*obj.LabelPosition)
+		position := label.FromString(*obj.LabelPosition)
 
 		labelWidth := float64(obj.LabelDimensions.Width + label.PADDING)
 		labelHeight := float64(obj.LabelDimensions.Height + label.PADDING)
@@ -335,7 +335,7 @@ func (obj *Object) GetMargin() geo.Spacing {
 	}
 
 	if obj.Icon != nil && obj.IconPosition != nil && obj.Shape.Value != d2target.ShapeImage {
-		position := label.Position(*obj.IconPosition)
+		position := label.FromString(*obj.IconPosition)
 
 		iconSize := float64(d2target.MAX_ICON_SIZE + label.PADDING)
 		switch position {
@@ -373,7 +373,7 @@ func (obj *Object) GetLabelTopLeft() *geo.Point {
 	}
 
 	s := obj.ToShape()
-	labelPosition := label.Position(*obj.LabelPosition)
+	labelPosition := label.FromString(*obj.LabelPosition)
 
 	var box *geo.Box
 	if labelPosition.IsOutside() {
@@ -395,7 +395,7 @@ func (obj *Object) GetIconTopLeft() *geo.Point {
 	}
 
 	s := obj.ToShape()
-	iconPosition := label.Position(*obj.IconPosition)
+	iconPosition := label.FromString(*obj.IconPosition)
 
 	var box *geo.Box
 	if iconPosition.IsOutside() {
@@ -416,7 +416,7 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 	overlapsOutsideLabel := false
 	if edge.Src.HasLabel() {
 		// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
-		labelPosition := label.Position(*edge.Src.LabelPosition)
+		labelPosition := label.FromString(*edge.Src.LabelPosition)
 		if labelPosition.IsOutside() {
 			labelWidth := float64(edge.Src.LabelDimensions.Width)
 			labelHeight := float64(edge.Src.LabelDimensions.Height)
@@ -467,7 +467,7 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 	overlapsOutsideLabel = false
 	if edge.Dst.HasLabel() {
 		// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
-		labelPosition := label.Position(*edge.Dst.LabelPosition)
+		labelPosition := label.FromString(*edge.Dst.LabelPosition)
 		if labelPosition.IsOutside() {
 			labelWidth := float64(edge.Dst.LabelDimensions.Width)
 			labelHeight := float64(edge.Dst.LabelDimensions.Height)

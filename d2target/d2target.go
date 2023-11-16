@@ -74,7 +74,8 @@ type Diagram struct {
 }
 
 // boardPath comes in the form of "x/layers/z/scenarios/a"
-// or in the form of "layers/z/scenarios/a"
+// or "layers/z/scenarios/a"
+// or "x/z/a"
 func (d *Diagram) GetBoard(boardPath string) *Diagram {
 	path := strings.Split(boardPath, string(os.PathSeparator))
 	if len(path) == 0 || len(boardPath) == 0 {
@@ -127,17 +128,17 @@ func (d *Diagram) getBoard(boardPath []string) *Diagram {
 
 	for _, b := range d.Layers {
 		if b.Name == head {
-			return b.getBoard(boardPath[2:])
+			return b.getBoard(boardPath[1:])
 		}
 	}
 	for _, b := range d.Scenarios {
 		if b.Name == head {
-			return b.getBoard(boardPath[2:])
+			return b.getBoard(boardPath[1:])
 		}
 	}
 	for _, b := range d.Steps {
 		if b.Name == head {
-			return b.getBoard(boardPath[2:])
+			return b.getBoard(boardPath[1:])
 		}
 	}
 	return nil
@@ -290,7 +291,7 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 			x2 = go2.Max(x2, targetShape.Pos.X+MULTIPLE_OFFSET+targetShape.Width+targetShape.StrokeWidth)
 		}
 
-		if targetShape.Icon != nil && label.Position(targetShape.IconPosition).IsOutside() {
+		if targetShape.Icon != nil && label.FromString(targetShape.IconPosition).IsOutside() {
 			contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(targetShape.Width), float64(targetShape.Height))
 			s := shape.NewShape(targetShape.Type, contentBox)
 			size := GetIconSize(s.GetInnerBox(), targetShape.IconPosition)
@@ -307,7 +308,7 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 		}
 
 		if targetShape.Label != "" {
-			labelPosition := label.Position(targetShape.LabelPosition)
+			labelPosition := label.FromString(targetShape.LabelPosition)
 			if !labelPosition.IsOutside() {
 				continue
 			}
@@ -636,7 +637,7 @@ func (c Connection) CSSStyle() string {
 }
 
 func (c *Connection) GetLabelTopLeft() *geo.Point {
-	point, _ := label.Position(c.LabelPosition).GetPointOnRoute(
+	point, _ := label.FromString(c.LabelPosition).GetPointOnRoute(
 		c.Route,
 		float64(c.StrokeWidth),
 		c.LabelPercentage,
@@ -719,13 +720,14 @@ func (c Connection) GetID() string {
 type Arrowhead string
 
 const (
-	NoArrowhead            Arrowhead = "none"
-	ArrowArrowhead         Arrowhead = "arrow"
-	TriangleArrowhead      Arrowhead = "triangle"
-	DiamondArrowhead       Arrowhead = "diamond"
-	FilledDiamondArrowhead Arrowhead = "filled-diamond"
-	CircleArrowhead        Arrowhead = "circle"
-	FilledCircleArrowhead  Arrowhead = "filled-circle"
+	NoArrowhead               Arrowhead = "none"
+	ArrowArrowhead            Arrowhead = "arrow"
+	UnfilledTriangleArrowhead Arrowhead = "unfilled-triangle"
+	TriangleArrowhead         Arrowhead = "triangle"
+	DiamondArrowhead          Arrowhead = "diamond"
+	FilledDiamondArrowhead    Arrowhead = "filled-diamond"
+	CircleArrowhead           Arrowhead = "circle"
+	FilledCircleArrowhead     Arrowhead = "filled-circle"
 
 	// For fat arrows
 	LineArrowhead Arrowhead = "line"
@@ -739,29 +741,28 @@ const (
 	DefaultArrowhead Arrowhead = TriangleArrowhead
 )
 
+// valid values for arrowhead.shape
 var Arrowheads = map[string]struct{}{
-	string(NoArrowhead):            {},
-	string(ArrowArrowhead):         {},
-	string(TriangleArrowhead):      {},
-	string(DiamondArrowhead):       {},
-	string(FilledDiamondArrowhead): {},
-	string(CircleArrowhead):        {},
-	string(FilledCircleArrowhead):  {},
-	string(CfOne):                  {},
-	string(CfMany):                 {},
-	string(CfOneRequired):          {},
-	string(CfManyRequired):         {},
+	string(NoArrowhead):       {},
+	string(ArrowArrowhead):    {},
+	string(TriangleArrowhead): {},
+	string(DiamondArrowhead):  {},
+	string(CircleArrowhead):   {},
+	string(CfOne):             {},
+	string(CfMany):            {},
+	string(CfOneRequired):     {},
+	string(CfManyRequired):    {},
 }
 
-func ToArrowhead(arrowheadType string, filled bool) Arrowhead {
+func ToArrowhead(arrowheadType string, filled *bool) Arrowhead {
 	switch arrowheadType {
 	case string(DiamondArrowhead):
-		if filled {
+		if filled != nil && *filled {
 			return FilledDiamondArrowhead
 		}
 		return DiamondArrowhead
 	case string(CircleArrowhead):
-		if filled {
+		if filled != nil && *filled {
 			return FilledCircleArrowhead
 		}
 		return CircleArrowhead
@@ -770,6 +771,9 @@ func ToArrowhead(arrowheadType string, filled bool) Arrowhead {
 	case string(ArrowArrowhead):
 		return ArrowArrowhead
 	case string(TriangleArrowhead):
+		if filled != nil && !(*filled) {
+			return UnfilledTriangleArrowhead
+		}
 		return TriangleArrowhead
 	case string(CfOne):
 		return CfOne
@@ -780,6 +784,10 @@ func ToArrowhead(arrowheadType string, filled bool) Arrowhead {
 	case string(CfManyRequired):
 		return CfManyRequired
 	default:
+		if DefaultArrowhead == TriangleArrowhead &&
+			filled != nil && !(*filled) {
+			return UnfilledTriangleArrowhead
+		}
 		return DefaultArrowhead
 	}
 }
@@ -796,6 +804,11 @@ func (arrowhead Arrowhead) Dimensions(strokeWidth float64) (width, height float6
 	case TriangleArrowhead:
 		baseWidth = 4
 		baseHeight = 4
+		widthMultiplier = 3
+		heightMultiplier = 4
+	case UnfilledTriangleArrowhead:
+		baseWidth = 7
+		baseHeight = 7
 		widthMultiplier = 3
 		heightMultiplier = 4
 	case LineArrowhead:
@@ -967,7 +980,7 @@ func init() {
 }
 
 func GetIconSize(box *geo.Box, position string) int {
-	iconPosition := label.Position(position)
+	iconPosition := label.FromString(position)
 
 	minDimension := int(math.Min(box.Width, box.Height))
 	halfMinDimension := int(math.Ceil(0.5 * float64(minDimension)))

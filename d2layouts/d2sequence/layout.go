@@ -32,7 +32,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) e
 
 	obj := g.Root
 
-	obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+	obj.LabelPosition = go2.Pointer(label.InsideTopCenter.String())
 
 	// shift the sequence diagrams as they are always placed at (0, 0) with some padding
 	sd.shift(

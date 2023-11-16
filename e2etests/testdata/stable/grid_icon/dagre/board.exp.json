@@ -274,7 +274,7 @@
         "x": 424,
         "y": 58
       },
-      "width": 278,
+      "width": 295,
       "height": 306,
       "opacity": 1,
       "strokeDash": 0,
@@ -324,7 +324,7 @@
       "id": "grid + icon.a",
       "type": "rectangle",
       "pos": {
-        "x": 489,
+        "x": 498,
         "y": 132
       },
       "width": 53,
@@ -365,7 +365,7 @@
       "id": "grid + icon.b",
       "type": "rectangle",
       "pos": {
-        "x": 582,
+        "x": 591,
         "y": 132
       },
       "width": 54,
@@ -406,7 +406,7 @@
       "id": "grid + icon.c",
       "type": "rectangle",
       "pos": {
-        "x": 489,
+        "x": 498,
         "y": 238
       },
       "width": 53,
@@ -447,7 +447,7 @@
       "id": "grid + icon.d",
       "type": "rectangle",
       "pos": {
-        "x": 582,
+        "x": 591,
         "y": 238
       },
       "width": 54,
@@ -491,7 +491,7 @@
         "2x2"
       ],
       "pos": {
-        "x": 762,
+        "x": 779,
         "y": 10
       },
       "width": 433,
@@ -544,7 +544,7 @@
       "id": "grid + icon w/ container.a",
       "type": "rectangle",
       "pos": {
-        "x": 856,
+        "x": 873,
         "y": 84
       },
       "width": 53,
@@ -585,7 +585,7 @@
       "id": "grid + icon w/ container.b",
       "type": "rectangle",
       "pos": {
-        "x": 949,
+        "x": 966,
         "y": 120
       },
       "width": 151,
@@ -626,7 +626,7 @@
       "id": "grid + icon w/ container.b.b child",
       "type": "rectangle",
       "pos": {
-        "x": 979,
+        "x": 996,
         "y": 150
       },
       "width": 91,
@@ -667,7 +667,7 @@
       "id": "grid + icon w/ container.c",
       "type": "rectangle",
       "pos": {
-        "x": 856,
+        "x": 873,
         "y": 286
       },
       "width": 53,
@@ -708,7 +708,7 @@
       "id": "grid + icon w/ container.d",
       "type": "rectangle",
       "pos": {
-        "x": 949,
+        "x": 966,
         "y": 286
       },
       "width": 151,
@@ -752,7 +752,7 @@
         "2x2"
       ],
       "pos": {
-        "x": 1255,
+        "x": 1272,
         "y": 0
       },
       "width": 364,
@@ -785,7 +785,6 @@
       "underline": false,
       "labelWidth": 0,
       "labelHeight": 0,
-      "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -793,7 +792,7 @@
       "id": "no label grid w/ container + icon.a",
       "type": "rectangle",
       "pos": {
-        "x": 1315,
+        "x": 1332,
         "y": 60
       },
       "width": 53,
@@ -834,7 +833,7 @@
       "id": "no label grid w/ container + icon.b",
       "type": "rectangle",
       "pos": {
-        "x": 1408,
+        "x": 1425,
         "y": 129
       },
       "width": 151,
@@ -887,7 +886,7 @@
       "id": "no label grid w/ container + icon.b.b child",
       "type": "rectangle",
       "pos": {
-        "x": 1438,
+        "x": 1455,
         "y": 159
       },
       "width": 91,
@@ -928,7 +927,7 @@
       "id": "no label grid w/ container + icon.c",
       "type": "rectangle",
       "pos": {
-        "x": 1315,
+        "x": 1332,
         "y": 295
       },
       "width": 53,
@@ -969,7 +968,7 @@
       "id": "no label grid w/ container + icon.d",
       "type": "rectangle",
       "pos": {
-        "x": 1408,
+        "x": 1425,
         "y": 295
       },
       "width": 151,
@@ -1013,7 +1012,7 @@
         "2x2"
       ],
       "pos": {
-        "x": 1679,
+        "x": 1696,
         "y": 58
       },
       "width": 267,
@@ -1058,7 +1057,6 @@
       "underline": false,
       "labelWidth": 0,
       "labelHeight": 0,
-      "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -1066,7 +1064,7 @@
       "id": "no label grid + icon.a",
       "type": "rectangle",
       "pos": {
-        "x": 1739,
+        "x": 1756,
         "y": 132
       },
       "width": 53,
@@ -1107,7 +1105,7 @@
       "id": "no label grid + icon.b",
       "type": "rectangle",
       "pos": {
-        "x": 1832,
+        "x": 1849,
         "y": 132
       },
       "width": 54,
@@ -1148,7 +1146,7 @@
       "id": "no label grid + icon.c",
       "type": "rectangle",
       "pos": {
-        "x": 1739,
+        "x": 1756,
         "y": 238
       },
       "width": 53,
@@ -1189,7 +1187,7 @@
       "id": "no label grid + icon.d",
       "type": "rectangle",
       "pos": {
-        "x": 1832,
+        "x": 1849,
         "y": 238
       },
       "width": 54,

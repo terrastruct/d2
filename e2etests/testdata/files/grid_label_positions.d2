@@ -1,0 +1,154 @@
+vars: {
+  grid: {
+    grid-rows: 2
+    grid-columns: 5
+    a
+    b
+    c
+    d
+    e
+    f
+    g
+    h
+    i
+    j
+    grid-gap: 0
+  }
+}
+direction: down
+
+**.blank*: {
+  label: ""
+  style: {
+    stroke: transparent
+    fill: transparent
+  }
+}
+blank*: {
+  label: ""
+  style: {
+    stroke: transparent
+    fill: transparent
+  }
+}
+
+blank_ot -> blank_t -> blank_c -> blank_b -> blank_ob
+
+blank_ot: {
+  blank1
+  OutsideTopLeft: {
+    label.near: outside-top-left
+    ...${grid}
+  }
+
+  OutsideTopCenter: {
+    label.near: outside-top-center
+    ...${grid}
+  }
+
+  OutsideTopRight: {
+    label.near: outside-top-right
+    ...${grid}
+  }
+  blank2
+}
+
+blank_t: {
+  OutsideLeftTop: {
+    label.near: outside-left-top
+    ...${grid}
+  }
+
+  TopLeft: {
+    label.near: top-left
+    ...${grid}
+  }
+
+  TopCenter: {
+    label.near: top-center
+    ...${grid}
+  }
+
+  TopRight: {
+    label.near: top-right
+    ...${grid}
+  }
+
+  OutsideRightTop: {
+    label.near: outside-right-top
+    ...${grid}
+  }
+}
+
+blank_c: {
+  OutsideLeftCenter: {
+    label.near: outside-left-center
+    ...${grid}
+  }
+
+  CenterLeft: {
+    label.near: center-left
+    ...${grid}
+  }
+
+  CenterCenter: {
+    label.near: center-center
+    ...${grid}
+  }
+
+  CenterRight: {
+    label.near: center-right
+    ...${grid}
+  }
+
+  OutsideRightCenter: {
+    label.near: outside-right-center
+    ...${grid}
+  }
+}
+
+blank_b: {
+  OutsideLeftBottom: {
+    label.near: outside-left-bottom
+    ...${grid}
+  }
+
+  BottomLeft: {
+    label.near: bottom-left
+    ...${grid}
+  }
+
+  BottomCenter: {
+    label.near: bottom-center
+    ...${grid}
+  }
+
+  BottomRight: {
+    label.near: bottom-right
+    ...${grid}
+  }
+
+  OutsideRightBottom: {
+    label.near: outside-right-bottom
+    ...${grid}
+  }
+}
+
+blank_ob: {
+  blank3
+  OutsideBottomLeft: {
+    label.near: outside-bottom-left
+    ...${grid}
+  }
+
+  OutsideBottomCenter: {
+    label.near: outside-bottom-center
+    ...${grid}
+  }
+
+  OutsideBottomRight: {
+    label.near: outside-bottom-right
+    ...${grid}
+  }
+  blank4
+}

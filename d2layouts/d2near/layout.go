@@ -178,7 +178,7 @@ func boundingBox(g *d2graph.Graph) (tl, br *geo.Point) {
 			x2 = math.Max(x2, obj.TopLeft.X+obj.Width)
 			y2 = math.Max(y2, obj.TopLeft.Y+obj.Height)
 			if obj.Label.Value != "" && obj.LabelPosition != nil {
-				labelPosition := label.Position(*obj.LabelPosition)
+				labelPosition := label.FromString(*obj.LabelPosition)
 				if labelPosition.IsOutside() {
 					labelTL := labelPosition.GetPointOnBox(obj.Box, label.PADDING, float64(obj.LabelDimensions.Width), float64(obj.LabelDimensions.Height))
 					x1 = math.Min(x1, labelTL.X)
