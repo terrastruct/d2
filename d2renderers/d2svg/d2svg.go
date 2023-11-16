@@ -1192,15 +1192,15 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		}
 	}
 
-	// to examine shape's innerBox
-	innerBox := s.GetInnerBox()
-	el := d2themes.NewThemableElement("rect")
-	el.X = float64(innerBox.TopLeft.X)
-	el.Y = float64(innerBox.TopLeft.Y)
-	el.Width = float64(innerBox.Width)
-	el.Height = float64(innerBox.Height)
-	el.Style = "fill:rgba(255,0,0,0.5);"
-	fmt.Fprint(writer, el.Render())
+	// // to examine shape's innerBox
+	// innerBox := s.GetInnerBox()
+	// el := d2themes.NewThemableElement("rect")
+	// el.X = float64(innerBox.TopLeft.X)
+	// el.Y = float64(innerBox.TopLeft.Y)
+	// el.Width = float64(innerBox.Width)
+	// el.Height = float64(innerBox.Height)
+	// el.Style = "fill:rgba(255,0,0,0.5);"
+	// fmt.Fprint(writer, el.Render())
 
 	// Closes the class=shape
 	fmt.Fprint(writer, `</g>`)
