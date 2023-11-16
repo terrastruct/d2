@@ -41,8 +41,36 @@ type ELKNode struct {
 	Width         float64     `json:"width"`
 	Height        float64     `json:"height"`
 	Children      []*ELKNode  `json:"children,omitempty"`
+	Ports         []*ELKPort  `json:"ports,omitempty"`
 	Labels        []*ELKLabel `json:"labels,omitempty"`
 	LayoutOptions *elkOpts    `json:"layoutOptions,omitempty"`
+}
+
+type PortSide string
+
+const (
+	South PortSide = "SOUTH"
+	North PortSide = "NORTH"
+	East  PortSide = "EAST"
+	West  PortSide = "WEST"
+)
+
+type Direction string
+
+const (
+	Down  Direction = "DOWN"
+	Up    Direction = "UP"
+	Right Direction = "RIGHT"
+	Left  Direction = "LEFT"
+)
+
+type ELKPort struct {
+	ID            string   `json:"id"`
+	X             float64  `json:"x"`
+	Y             float64  `json:"y"`
+	Width         float64  `json:"width"`
+	Height        float64  `json:"height"`
+	LayoutOptions *elkOpts `json:"layoutOptions,omitempty"`
 }
 
 type ELKLabel struct {
@@ -101,22 +129,25 @@ var port_spacing = 40.
 var edge_node_spacing = 40
 
 type elkOpts struct {
-	EdgeNode                     int    `json:"elk.spacing.edgeNode,omitempty"`
-	FixedAlignment               string `json:"elk.layered.nodePlacement.bk.fixedAlignment,omitempty"`
-	Thoroughness                 int    `json:"elk.layered.thoroughness,omitempty"`
-	EdgeEdgeBetweenLayersSpacing int    `json:"elk.layered.spacing.edgeEdgeBetweenLayers,omitempty"`
-	Direction                    string `json:"elk.direction"`
-	HierarchyHandling            string `json:"elk.hierarchyHandling,omitempty"`
-	InlineEdgeLabels             bool   `json:"elk.edgeLabels.inline,omitempty"`
-	ForceNodeModelOrder          bool   `json:"elk.layered.crossingMinimization.forceNodeModelOrder,omitempty"`
-	ConsiderModelOrder           string `json:"elk.layered.considerModelOrder.strategy,omitempty"`
-	CycleBreakingStrategy        string `json:"elk.layered.cycleBreaking.strategy,omitempty"`
+	EdgeNode                     int       `json:"elk.spacing.edgeNode,omitempty"`
+	FixedAlignment               string    `json:"elk.layered.nodePlacement.bk.fixedAlignment,omitempty"`
+	Thoroughness                 int       `json:"elk.layered.thoroughness,omitempty"`
+	EdgeEdgeBetweenLayersSpacing int       `json:"elk.layered.spacing.edgeEdgeBetweenLayers,omitempty"`
+	Direction                    Direction `json:"elk.direction"`
+	HierarchyHandling            string    `json:"elk.hierarchyHandling,omitempty"`
+	InlineEdgeLabels             bool      `json:"elk.edgeLabels.inline,omitempty"`
+	ForceNodeModelOrder          bool      `json:"elk.layered.crossingMinimization.forceNodeModelOrder,omitempty"`
+	ConsiderModelOrder           string    `json:"elk.layered.considerModelOrder.strategy,omitempty"`
+	CycleBreakingStrategy        string    `json:"elk.layered.cycleBreaking.strategy,omitempty"`
 
 	SelfLoopDistribution string `json:"elk.layered.edgeRouting.selfLoopDistribution,omitempty"`
 
 	NodeSizeConstraints string `json:"elk.nodeSize.constraints,omitempty"`
 	ContentAlignment    string `json:"elk.contentAlignment,omitempty"`
 	NodeSizeMinimum     string `json:"elk.nodeSize.minimum,omitempty"`
+
+	PortSide        PortSide `json:"elk.port.side,omitempty"`
+	PortConstraints string   `json:"elk.portConstraints,omitempty"`
 
 	ConfigurableOpts
 }
@@ -171,15 +202,15 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 	switch g.Root.Direction.Value {
 	case "down":
-		elkGraph.LayoutOptions.Direction = "DOWN"
+		elkGraph.LayoutOptions.Direction = Down
 	case "up":
-		elkGraph.LayoutOptions.Direction = "UP"
+		elkGraph.LayoutOptions.Direction = Up
 	case "right":
-		elkGraph.LayoutOptions.Direction = "RIGHT"
+		elkGraph.LayoutOptions.Direction = Right
 	case "left":
-		elkGraph.LayoutOptions.Direction = "LEFT"
+		elkGraph.LayoutOptions.Direction = Left
 	default:
-		elkGraph.LayoutOptions.Direction = "DOWN"
+		elkGraph.LayoutOptions.Direction = Down
 	}
 
 	// set label and icon positions for ELK
@@ -215,9 +246,13 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		if incoming >= 2 || outgoing >= 2 {
 			switch g.Root.Direction.Value {
 			case "right", "left":
-				obj.Height = math.Max(obj.Height, math.Max(incoming, outgoing)*port_spacing)
+				if obj.Attributes.HeightAttr == nil {
+					obj.Height = math.Max(obj.Height, math.Max(incoming, outgoing)*port_spacing)
+				}
 			default:
-				obj.Width = math.Max(obj.Width, math.Max(incoming, outgoing)*port_spacing)
+				if obj.Attributes.WidthAttr == nil {
+					obj.Width = math.Max(obj.Width, math.Max(incoming, outgoing)*port_spacing)
+				}
 			}
 		}
 
@@ -253,9 +288,9 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 
 			switch elkGraph.LayoutOptions.Direction {
-			case "DOWN", "UP":
+			case Down, Up:
 				n.LayoutOptions.NodeSizeMinimum = fmt.Sprintf("(%d, %d)", int(math.Ceil(height)), int(math.Ceil(width)))
-			case "RIGHT", "LEFT":
+			case Right, Left:
 				n.LayoutOptions.NodeSizeMinimum = fmt.Sprintf("(%d, %d)", int(math.Ceil(width)), int(math.Ceil(height)))
 			}
 		} else {
@@ -283,6 +318,33 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		} else {
 			elkNodes[parent].Children = append(elkNodes[parent].Children, n)
 		}
+
+		if obj.SQLTable != nil {
+			n.LayoutOptions.PortConstraints = "FIXED_POS"
+			columns := obj.SQLTable.Columns
+			colHeight := n.Height / float64(len(columns)+1)
+			n.Ports = make([]*ELKPort, 0, len(columns)*2)
+			var srcSide, dstSide PortSide
+			switch elkGraph.LayoutOptions.Direction {
+			case Left:
+				srcSide, dstSide = West, East
+			default:
+				srcSide, dstSide = East, West
+			}
+			for i, col := range columns {
+				n.Ports = append(n.Ports, &ELKPort{
+					ID:            srcPortID(obj, col.Name.Label),
+					Y:             float64(i+1)*colHeight + colHeight/2,
+					LayoutOptions: &elkOpts{PortSide: srcSide},
+				})
+				n.Ports = append(n.Ports, &ELKPort{
+					ID:            dstPortID(obj, col.Name.Label),
+					Y:             float64(i+1)*colHeight + colHeight/2,
+					LayoutOptions: &elkOpts{PortSide: dstSide},
+				})
+			}
+		}
+
 		elkNodes[obj] = n
 	})
 
@@ -298,7 +360,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				continue
 			}
 
-			switch label.Position(*child.IconPosition) {
+			switch label.FromString(*child.IconPosition) {
 			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
 				hasTop = true
 			case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
@@ -321,11 +383,64 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 	}
 
-	for _, edge := range g.Edges {
+	var srcSide, dstSide PortSide
+	switch elkGraph.LayoutOptions.Direction {
+	case Up:
+		srcSide, dstSide = North, South
+	default:
+		srcSide, dstSide = South, North
+	}
+
+	ports := map[struct {
+		obj  *d2graph.Object
+		side PortSide
+	}][]*ELKPort{}
+
+	for ei, edge := range g.Edges {
+		var src, dst string
+
+		switch {
+		case edge.SrcTableColumnIndex != nil:
+			src = srcPortID(edge.Src, edge.Src.SQLTable.Columns[*edge.SrcTableColumnIndex].Name.Label)
+		case edge.Src.SQLTable != nil:
+			p := &ELKPort{
+				ID:            fmt.Sprintf("%s.%d", srcPortID(edge.Src, "__root__"), ei),
+				LayoutOptions: &elkOpts{PortSide: srcSide},
+			}
+			src = p.ID
+			elkNodes[edge.Src].Ports = append(elkNodes[edge.Src].Ports, p)
+			k := struct {
+				obj  *d2graph.Object
+				side PortSide
+			}{edge.Src, srcSide}
+			ports[k] = append(ports[k], p)
+		default:
+			src = edge.Src.AbsID()
+		}
+
+		switch {
+		case edge.DstTableColumnIndex != nil:
+			dst = dstPortID(edge.Dst, edge.Dst.SQLTable.Columns[*edge.DstTableColumnIndex].Name.Label)
+		case edge.Dst.SQLTable != nil:
+			p := &ELKPort{
+				ID:            fmt.Sprintf("%s.%d", dstPortID(edge.Dst, "__root__"), ei),
+				LayoutOptions: &elkOpts{PortSide: dstSide},
+			}
+			dst = p.ID
+			elkNodes[edge.Dst].Ports = append(elkNodes[edge.Dst].Ports, p)
+			k := struct {
+				obj  *d2graph.Object
+				side PortSide
+			}{edge.Dst, dstSide}
+			ports[k] = append(ports[k], p)
+		default:
+			dst = edge.Dst.AbsID()
+		}
+
 		e := &ELKEdge{
 			ID:      edge.AbsID(),
-			Sources: []string{edge.Src.AbsID()},
-			Targets: []string{edge.Dst.AbsID()},
+			Sources: []string{src},
+			Targets: []string{dst},
 		}
 		if edge.Label.Value != "" {
 			e.Labels = append(e.Labels, &ELKLabel{
@@ -339,6 +454,14 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 		elkGraph.Edges = append(elkGraph.Edges, e)
 		elkEdges[edge] = e
+	}
+
+	for k, ports := range ports {
+		width := elkNodes[k.obj].Width
+		spacing := width / float64(len(ports)+1)
+		for i, p := range ports {
+			p.X = float64(i+1) * spacing
+		}
 	}
 
 	raw, err := json.Marshal(elkGraph)
@@ -482,7 +605,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		points = points[startIndex : endIndex+1]
 
 		if edge.Label.Value != "" {
-			edge.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			edge.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
 		}
 
 		edge.Route = points
@@ -503,6 +626,14 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	return nil
 }
 
+func srcPortID(obj *d2graph.Object, column string) string {
+	return fmt.Sprintf("%s.%s.src", obj.AbsID(), column)
+}
+
+func dstPortID(obj *d2graph.Object, column string) string {
+	return fmt.Sprintf("%s.%s.dst", obj.AbsID(), column)
+}
+
 // deleteBends is a shim for ELK to delete unnecessary bends
 // see https://github.com/terrastruct/d2/issues/1030
 func deleteBends(g *d2graph.Graph) {
@@ -521,30 +652,42 @@ func deleteBends(g *d2graph.Graph) {
 			var corner *geo.Point
 			var end *geo.Point
 
+			var columnIndex *int
 			if isSource {
 				start = e.Route[0]
 				corner = e.Route[1]
 				end = e.Route[2]
 				endpoint = e.Src
+				columnIndex = e.SrcTableColumnIndex
 			} else {
 				start = e.Route[len(e.Route)-1]
 				corner = e.Route[len(e.Route)-2]
 				end = e.Route[len(e.Route)-3]
 				endpoint = e.Dst
+				columnIndex = e.DstTableColumnIndex
 			}
 
 			isHorizontal := math.Ceil(start.Y) == math.Ceil(corner.Y)
 			dx, dy := endpoint.GetModifierElementAdjustments()
 
 			// Make sure it's still attached
-			if isHorizontal {
+			switch {
+			case columnIndex != nil:
+				rowHeight := endpoint.Height / float64(len(endpoint.SQLTable.Columns)+1)
+				rowCenter := endpoint.TopLeft.Y + rowHeight*float64(*columnIndex+1) + rowHeight/2
+
+				// for row connections new Y coordinate should be within 1/3 row height from the row center
+				if math.Abs(end.Y-rowCenter) > rowHeight/3 {
+					continue
+				}
+			case isHorizontal:
 				if end.Y <= endpoint.TopLeft.Y+10-dy {
 					continue
 				}
 				if end.Y >= endpoint.TopLeft.Y+endpoint.Height-10 {
 					continue
 				}
-			} else {
+			default:
 				if end.X <= endpoint.TopLeft.X+10 {
 					continue
 				}
@@ -606,12 +749,21 @@ func deleteBends(g *d2graph.Graph) {
 			}
 		}
 	}
+
 	// Get rid of ladders
 	// ELK likes to do these for some reason
 	// .   ┌─
 	// . ┌─┘
 	// . │
 	// We want to transform these into L-shapes
+
+	points := map[geo.Point]int{}
+	for _, e := range g.Edges {
+		for _, p := range e.Route {
+			points[*p]++
+		}
+	}
+
 	for ei, e := range g.Edges {
 		if len(e.Route) < 6 {
 			continue
@@ -626,6 +778,11 @@ func deleteBends(g *d2graph.Graph) {
 			corner := e.Route[i+1]
 			end := e.Route[i+2]
 			after := e.Route[i+3]
+
+			if c, _ := points[*corner]; c > 1 {
+				// If corner is shared with another edge, they merge
+				continue
+			}
 
 			// S-shape on sources only concerned one segment, since the other was just along the bound of endpoint
 			// These concern two segments
@@ -846,7 +1003,7 @@ func adjustPadding(obj *d2graph.Object, width, height float64, padding shapePadd
 	if obj.HasLabel() && obj.LabelPosition != nil {
 		labelHeight := obj.LabelDimensions.Height + 2*label.PADDING
 		labelWidth := obj.LabelDimensions.Width + 2*label.PADDING
-		switch label.Position(*obj.LabelPosition) {
+		switch label.FromString(*obj.LabelPosition) {
 		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
 			// Note: for corners we only add height
 			extraTop = labelHeight
@@ -860,7 +1017,7 @@ func adjustPadding(obj *d2graph.Object, width, height float64, padding shapePadd
 	}
 	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage && obj.IconPosition != nil {
 		iconSize := d2target.MAX_ICON_SIZE + 2*label.PADDING
-		switch label.Position(*obj.IconPosition) {
+		switch label.FromString(*obj.IconPosition) {
 		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
 			extraTop = go2.Max(extraTop, iconSize)
 		case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
@@ -936,7 +1093,7 @@ func adjustDimensions(obj *d2graph.Object) (width, height float64) {
 	if obj.HasLabel() {
 		var position label.Position
 		if obj.LabelPosition != nil {
-			position = label.Position(*obj.LabelPosition)
+			position = label.FromString(*obj.LabelPosition)
 		} else if len(obj.ChildrenArray) == 0 && obj.HasOutsideBottomLabel() {
 			position = label.OutsideBottomCenter
 		}
@@ -961,7 +1118,7 @@ func adjustDimensions(obj *d2graph.Object) (width, height float64) {
 	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
 		var position label.Position
 		if obj.IconPosition != nil {
-			position = label.Position(*obj.IconPosition)
+			position = label.FromString(*obj.IconPosition)
 		}
 
 		if position.IsShapePosition() {
@@ -986,7 +1143,7 @@ func adjustDimensions(obj *d2graph.Object) (width, height float64) {
 func cleanupAdjustment(obj *d2graph.Object) {
 	// adjust size and position to account for space reserved for labels
 	if obj.HasLabel() {
-		position := label.Position(*obj.LabelPosition)
+		position := label.FromString(*obj.LabelPosition)
 		if position.IsShapePosition() {
 			var labelWidth float64
 			switch position {
@@ -1005,7 +1162,7 @@ func cleanupAdjustment(obj *d2graph.Object) {
 		}
 	}
 	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
-		position := label.Position(*obj.IconPosition)
+		position := label.FromString(*obj.IconPosition)
 		if position.IsShapePosition() {
 			var iconWidth float64
 			switch position {
@@ -1045,24 +1202,24 @@ func cleanupAdjustment(obj *d2graph.Object) {
 func positionLabelsIcons(obj *d2graph.Object) {
 	if obj.Icon != nil && obj.IconPosition == nil {
 		if len(obj.ChildrenArray) > 0 {
-			obj.IconPosition = go2.Pointer(string(label.InsideTopLeft))
+			obj.IconPosition = go2.Pointer(label.InsideTopLeft.String())
 			if obj.LabelPosition == nil {
-				obj.LabelPosition = go2.Pointer(string(label.InsideTopRight))
+				obj.LabelPosition = go2.Pointer(label.InsideTopRight.String())
 				return
 			}
 		} else {
-			obj.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			obj.IconPosition = go2.Pointer(label.InsideMiddleCenter.String())
 		}
 	}
 	if obj.HasLabel() && obj.LabelPosition == nil {
 		if len(obj.ChildrenArray) > 0 {
-			obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+			obj.LabelPosition = go2.Pointer(label.InsideTopCenter.String())
 		} else if obj.HasOutsideBottomLabel() {
-			obj.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
+			obj.LabelPosition = go2.Pointer(label.OutsideBottomCenter.String())
 		} else if obj.Icon != nil {
-			obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+			obj.LabelPosition = go2.Pointer(label.InsideTopCenter.String())
 		} else {
-			obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			obj.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
 		}
 	}
 }

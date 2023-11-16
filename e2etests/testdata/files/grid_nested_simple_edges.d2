@@ -1,0 +1,45 @@
+direction: right
+outer-grid -> outer-container
+
+outer-grid: {
+  grid-columns: 1
+
+  inner-grid -> container -> etc
+
+  container: {
+    label.near: top-left
+    (** -> **)[*].class: red
+    # edges on grid descendant now supported
+    a -> b -> c -> a
+    d -> e -> g.h.i
+    d -> f -> g.h
+    b -> g
+  }
+
+  inner-grid: {
+    grid-rows: 1
+    # edges inside another grid now supported
+    1 -> 2 -> 3: {class: red}
+  }
+}
+
+outer-container: {
+  grid -> container
+
+  grid: {
+    grid-rows: 1
+    # direct child edges ok in least nested grid
+    1 -> 2 -> 3
+  }
+
+  container: {
+    # non grid edges ok
+    4 -> 5 -> 6
+    nested container: {
+      # nested non grid edges ok
+      7 -> 8
+    }
+  }
+}
+
+classes.red.style.stroke: red

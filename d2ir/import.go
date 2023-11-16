@@ -108,7 +108,7 @@ func (c *compiler) __import(imp *d2ast.Import) (*Map, bool) {
 
 	ir = &Map{}
 	ir.initRoot()
-	ir.parent.(*Field).References[0].Context.Scope = ast
+	ir.parent.(*Field).References[0].Context_.Scope = ast
 
 	c.compileMap(ir, ast, ast)
 
@@ -128,14 +128,14 @@ func nilScopeMap(n Node) {
 		}
 	case *Edge:
 		for _, r := range n.References {
-			r.Context.ScopeMap = nil
+			r.Context_.ScopeMap = nil
 		}
 		if n.Map() != nil {
 			nilScopeMap(n.Map())
 		}
 	case *Field:
 		for _, r := range n.References {
-			r.Context.ScopeMap = nil
+			r.Context_.ScopeMap = nil
 		}
 		if n.Map() != nil {
 			nilScopeMap(n.Map())

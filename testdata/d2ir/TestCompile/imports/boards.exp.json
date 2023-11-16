@@ -88,16 +88,19 @@
                     "primary": {},
                     "value": {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "index.d2,0:8:8-0:16:16",
                         "value": [
                           {
-                            "string": "root.layers.x"
+                            "string": "layers.x",
+                            "raw_string": "layers.x"
                           }
                         ]
                       }
                     }
                   }
-                }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
               }
             ]
           }
@@ -176,16 +179,19 @@
               "primary": {},
               "value": {
                 "unquoted_string": {
-                  "range": ",0:0:0-0:0:0",
+                  "range": "index.d2,0:8:8-0:16:16",
                   "value": [
                     {
-                      "string": "root.layers.x"
+                      "string": "layers.x",
+                      "raw_string": "layers.x"
                     }
                   ]
                 }
               }
             }
-          }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         }
       ]
     },
@@ -285,16 +291,19 @@
                                 "primary": {},
                                 "value": {
                                   "unquoted_string": {
-                                    "range": ",0:0:0-0:0:0",
+                                    "range": "x.d2,0:8:8-0:16:16",
                                     "value": [
                                       {
-                                        "string": "root.layers.y"
+                                        "string": "layers.y",
+                                        "raw_string": "layers.y"
                                       }
                                     ]
                                   }
                                 }
                               }
-                            }
+                            },
+                            "due_to_glob": false,
+                            "due_to_lazy_glob": false
                           }
                         ]
                       }
@@ -373,16 +382,19 @@
                           "primary": {},
                           "value": {
                             "unquoted_string": {
-                              "range": ",0:0:0-0:0:0",
+                              "range": "x.d2,0:8:8-0:16:16",
                               "value": [
                                 {
-                                  "string": "root.layers.y"
+                                  "string": "layers.y",
+                                  "raw_string": "layers.y"
                                 }
                               ]
                             }
                           }
                         }
-                      }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
                     }
                   ]
                 },
@@ -446,7 +458,9 @@
                                       "primary": {},
                                       "value": {}
                                     }
-                                  }
+                                  },
+                                  "due_to_glob": false,
+                                  "due_to_lazy_glob": false
                                 }
                               ]
                             }
@@ -522,7 +536,9 @@
                                   }
                                 }
                               }
-                            }
+                            },
+                            "due_to_glob": false,
+                            "due_to_lazy_glob": false
                           }
                         ]
                       }
@@ -627,7 +643,9 @@
                             }
                           }
                         }
-                      }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
                     }
                   ]
                 }
@@ -703,7 +721,9 @@
                       }
                     }
                   }
-                }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
               }
             ]
           }
@@ -808,7 +828,9 @@
                 }
               }
             }
-          }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         }
       ]
     }

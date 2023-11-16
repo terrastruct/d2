@@ -14,17 +14,22 @@ func (m *Map) QueryAll(idStr string) (na []Node, _ error) {
 	}
 
 	if k.Key != nil {
-		f := m.GetField(k.Key.IDA()...)
-		if f == nil {
+		fa, err := m.EnsureField(k.Key, nil, false, nil)
+		if err != nil {
+			return nil, err
+		}
+		if len(fa) == 0 {
 			return nil, nil
 		}
-		if len(k.Edges) == 0 {
-			na = append(na, f)
-			return na, nil
-		}
-		m = f.Map()
-		if m == nil {
-			return nil, nil
+		for _, f := range fa {
+			if len(k.Edges) == 0 {
+				na = append(na, f)
+				return na, nil
+			}
+			m = f.Map()
+			if m == nil {
+				return nil, nil
+			}
 		}
 	}
 
@@ -36,7 +41,7 @@ func (m *Map) QueryAll(idStr string) (na []Node, _ error) {
 			ScopeMap: m,
 			Edge:     k.Edges[i],
 		}
-		ea := m.GetEdges(eid, refctx)
+		ea := m.GetEdges(eid, refctx, nil)
 		for _, e := range ea {
 			if k.EdgeKey == nil {
 				na = append(na, e)

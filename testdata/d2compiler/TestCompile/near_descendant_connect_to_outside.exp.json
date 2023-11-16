@@ -1,11 +1,423 @@
 {
-  "graph": null,
-  "err": {
-    "errs": [
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,0:0:0-6:3:59",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,1:4:5-4:5:42",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,1:4:5-1:5:6",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,1:4:5-1:5:6",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,1:7:8-4:5:42",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,2:5:15-2:19:29",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,2:5:15-2:9:19",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,2:5:15-2:9:19",
+                              "value": [
+                                {
+                                  "string": "near",
+                                  "raw_string": "near"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,2:11:21-2:19:29",
+                          "value": [
+                            {
+                              "string": "top-left",
+                              "raw_string": "top-left"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,3:5:35-3:6:36",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,3:5:35-3:6:36",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,3:5:35-3:6:36",
+                              "value": [
+                                {
+                                  "string": "y",
+                                  "raw_string": "y"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,5:4:47-5:12:55",
+            "edges": [
+              {
+                "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,5:4:47-5:12:55",
+                "src": {
+                  "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,5:4:47-5:7:50",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,5:4:47-5:5:48",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,5:6:49-5:7:50",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,5:11:54-5:12:55",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,5:11:54-5:12:55",
+                        "value": [
+                          {
+                            "string": "z",
+                            "raw_string": "z"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "primary": {},
+            "value": {}
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": [
       {
-        "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,5:4:47-5:12:55",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2:6:5: cannot connect objects from within a container, that has near constant set, to objects outside that container"
+        "index": 0,
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ],
+    "objects": [
+      {
+        "id": "x",
+        "id_val": "x",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,1:4:5-1:5:6",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,1:4:5-1:5:6",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,5:4:47-5:7:50",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,5:4:47-5:5:48",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,5:6:49-5:7:50",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "x"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,2:11:21-2:19:29",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": ",0:0:0-0:8:8",
+                  "value": [
+                    {
+                      "string": "top-left",
+                      "raw_string": "top-left"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "y",
+        "id_val": "y",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,3:5:35-3:6:36",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,3:5:35-3:6:36",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,5:4:47-5:7:50",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,5:4:47-5:5:48",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,5:6:49-5:7:50",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 1,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "y"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "z",
+        "id_val": "z",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,5:11:54-5:12:55",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,5:11:54-5:12:55",
+                    "value": [
+                      {
+                        "string": "z",
+                        "raw_string": "z"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "z"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
       }
     ]
-  }
+  },
+  "err": null
 }

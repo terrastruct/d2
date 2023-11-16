@@ -61,7 +61,7 @@ func (p *dagrePlugin) HydrateOpts(opts []byte) error {
 func (p *dagrePlugin) Info(ctx context.Context) (*PluginInfo, error) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
-	opts := xmain.NewOpts(nil, nil, nil)
+	opts := xmain.NewOpts(nil, nil)
 	flags, err := p.Flags(ctx)
 	if err != nil {
 		return nil, err

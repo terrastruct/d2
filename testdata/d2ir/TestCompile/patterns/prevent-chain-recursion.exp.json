@@ -1,0 +1,1083 @@
+{
+  "fields": [
+    {
+      "name": "one",
+      "composite": {
+        "fields": [
+          {
+            "name": "c",
+            "primary": {
+              "value": {
+                "range": "TestCompile/patterns/prevent-chain-recursion.d2,2:5:13-2:6:14",
+                "value": [
+                  {
+                    "string": "d",
+                    "raw_string": "d"
+                  }
+                ]
+              }
+            },
+            "composite": {
+              "fields": [
+                {
+                  "name": "style",
+                  "composite": {
+                    "fields": [
+                      {
+                        "name": "fill",
+                        "primary": {
+                          "value": {
+                            "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:14:39-6:17:42",
+                            "value": [
+                              {
+                                "string": "red",
+                                "raw_string": "red"
+                              }
+                            ]
+                          }
+                        },
+                        "references": [
+                          {
+                            "string": {
+                              "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:12:37",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                                    "value": [
+                                      {
+                                        "string": "style",
+                                        "raw_string": "style"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                                    "value": [
+                                      {
+                                        "string": "fill",
+                                        "raw_string": "fill"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:17:42",
+                                "key": {
+                                  "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:12:37",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                                        "value": [
+                                          {
+                                            "string": "fill",
+                                            "raw_string": "fill"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:14:39-6:17:42",
+                                    "value": [
+                                      {
+                                        "string": "red",
+                                        "raw_string": "red"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            "due_to_glob": true,
+                            "due_to_lazy_glob": true
+                          }
+                        ]
+                      }
+                    ],
+                    "edges": null
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:12:37",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:17:42",
+                          "key": {
+                            "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:12:37",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                                  "value": [
+                                    {
+                                      "string": "fill",
+                                      "raw_string": "fill"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:14:39-6:17:42",
+                              "value": [
+                                {
+                                  "string": "red",
+                                  "raw_string": "red"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": true
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/patterns/prevent-chain-recursion.d2,2:2:10-2:3:11",
+                  "value": [
+                    {
+                      "string": "c",
+                      "raw_string": "c"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/prevent-chain-recursion.d2,2:2:10-2:3:11",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,2:2:10-2:3:11",
+                        "value": [
+                          {
+                            "string": "c",
+                            "raw_string": "c"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/prevent-chain-recursion.d2,2:2:10-2:6:14",
+                    "key": {
+                      "range": "TestCompile/patterns/prevent-chain-recursion.d2,2:2:10-2:3:11",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/prevent-chain-recursion.d2,2:2:10-2:3:11",
+                            "value": [
+                              {
+                                "string": "c",
+                                "raw_string": "c"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,2:5:13-2:6:14",
+                        "value": [
+                          {
+                            "string": "d",
+                            "raw_string": "d"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
+              }
+            ]
+          },
+          {
+            "name": "style",
+            "composite": {
+              "fields": [
+                {
+                  "name": "fill",
+                  "primary": {
+                    "value": {
+                      "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:14:39-6:17:42",
+                      "value": [
+                        {
+                          "string": "red",
+                          "raw_string": "red"
+                        }
+                      ]
+                    }
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                        "value": [
+                          {
+                            "string": "fill",
+                            "raw_string": "fill"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:12:37",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:17:42",
+                          "key": {
+                            "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:12:37",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                                  "value": [
+                                    {
+                                      "string": "fill",
+                                      "raw_string": "fill"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:14:39-6:17:42",
+                              "value": [
+                                {
+                                  "string": "red",
+                                  "raw_string": "red"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": true
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                  "value": [
+                    {
+                      "string": "style",
+                      "raw_string": "style"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:12:37",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                        "value": [
+                          {
+                            "string": "fill",
+                            "raw_string": "fill"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:17:42",
+                    "key": {
+                      "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:12:37",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                            "value": [
+                              {
+                                "string": "fill",
+                                "raw_string": "fill"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:14:39-6:17:42",
+                        "value": [
+                          {
+                            "string": "red",
+                            "raw_string": "red"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/prevent-chain-recursion.d2,9:0:46-9:3:49",
+            "value": [
+              {
+                "string": "one",
+                "raw_string": "one"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/prevent-chain-recursion.d2,9:0:46-9:3:49",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/prevent-chain-recursion.d2,9:0:46-9:3:49",
+                  "value": [
+                    {
+                      "string": "one",
+                      "raw_string": "one"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/prevent-chain-recursion.d2,9:0:46-9:3:49",
+              "key": {
+                "range": "TestCompile/patterns/prevent-chain-recursion.d2,9:0:46-9:3:49",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/prevent-chain-recursion.d2,9:0:46-9:3:49",
+                      "value": [
+                        {
+                          "string": "one",
+                          "raw_string": "one"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {}
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        }
+      ]
+    },
+    {
+      "name": "two",
+      "composite": {
+        "fields": [
+          {
+            "name": "c",
+            "primary": {
+              "value": {
+                "range": "TestCompile/patterns/prevent-chain-recursion.d2,2:5:13-2:6:14",
+                "value": [
+                  {
+                    "string": "d",
+                    "raw_string": "d"
+                  }
+                ]
+              }
+            },
+            "composite": {
+              "fields": [
+                {
+                  "name": "style",
+                  "composite": {
+                    "fields": [
+                      {
+                        "name": "fill",
+                        "primary": {
+                          "value": {
+                            "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:14:39-6:17:42",
+                            "value": [
+                              {
+                                "string": "red",
+                                "raw_string": "red"
+                              }
+                            ]
+                          }
+                        },
+                        "references": [
+                          {
+                            "string": {
+                              "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:12:37",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                                    "value": [
+                                      {
+                                        "string": "style",
+                                        "raw_string": "style"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                                    "value": [
+                                      {
+                                        "string": "fill",
+                                        "raw_string": "fill"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:17:42",
+                                "key": {
+                                  "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:12:37",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                                        "value": [
+                                          {
+                                            "string": "fill",
+                                            "raw_string": "fill"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:14:39-6:17:42",
+                                    "value": [
+                                      {
+                                        "string": "red",
+                                        "raw_string": "red"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            "due_to_glob": true,
+                            "due_to_lazy_glob": true
+                          }
+                        ]
+                      }
+                    ],
+                    "edges": null
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:12:37",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:17:42",
+                          "key": {
+                            "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:12:37",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                                  "value": [
+                                    {
+                                      "string": "fill",
+                                      "raw_string": "fill"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:14:39-6:17:42",
+                              "value": [
+                                {
+                                  "string": "red",
+                                  "raw_string": "red"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": true
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/patterns/prevent-chain-recursion.d2,2:2:10-2:3:11",
+                  "value": [
+                    {
+                      "string": "c",
+                      "raw_string": "c"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/prevent-chain-recursion.d2,2:2:10-2:3:11",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,2:2:10-2:3:11",
+                        "value": [
+                          {
+                            "string": "c",
+                            "raw_string": "c"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/prevent-chain-recursion.d2,2:2:10-2:6:14",
+                    "key": {
+                      "range": "TestCompile/patterns/prevent-chain-recursion.d2,2:2:10-2:3:11",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/prevent-chain-recursion.d2,2:2:10-2:3:11",
+                            "value": [
+                              {
+                                "string": "c",
+                                "raw_string": "c"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,2:5:13-2:6:14",
+                        "value": [
+                          {
+                            "string": "d",
+                            "raw_string": "d"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
+              }
+            ]
+          },
+          {
+            "name": "style",
+            "composite": {
+              "fields": [
+                {
+                  "name": "fill",
+                  "primary": {
+                    "value": {
+                      "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:14:39-6:17:42",
+                      "value": [
+                        {
+                          "string": "red",
+                          "raw_string": "red"
+                        }
+                      ]
+                    }
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                        "value": [
+                          {
+                            "string": "fill",
+                            "raw_string": "fill"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:12:37",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:17:42",
+                          "key": {
+                            "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:12:37",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                                  "value": [
+                                    {
+                                      "string": "fill",
+                                      "raw_string": "fill"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:14:39-6:17:42",
+                              "value": [
+                                {
+                                  "string": "red",
+                                  "raw_string": "red"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": true
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                  "value": [
+                    {
+                      "string": "style",
+                      "raw_string": "style"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:12:37",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                        "value": [
+                          {
+                            "string": "fill",
+                            "raw_string": "fill"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:17:42",
+                    "key": {
+                      "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:12:37",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                            "value": [
+                              {
+                                "string": "fill",
+                                "raw_string": "fill"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:14:39-6:17:42",
+                        "value": [
+                          {
+                            "string": "red",
+                            "raw_string": "red"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/prevent-chain-recursion.d2,10:0:50-10:3:53",
+            "value": [
+              {
+                "string": "two",
+                "raw_string": "two"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/prevent-chain-recursion.d2,10:0:50-10:3:53",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/prevent-chain-recursion.d2,10:0:50-10:3:53",
+                  "value": [
+                    {
+                      "string": "two",
+                      "raw_string": "two"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/prevent-chain-recursion.d2,10:0:50-10:3:53",
+              "key": {
+                "range": "TestCompile/patterns/prevent-chain-recursion.d2,10:0:50-10:3:53",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/prevent-chain-recursion.d2,10:0:50-10:3:53",
+                      "value": [
+                        {
+                          "string": "two",
+                          "raw_string": "two"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {}
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        }
+      ]
+    }
+  ],
+  "edges": null
+}

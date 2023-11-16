@@ -67,6 +67,7 @@ func Compile(p string, r io.Reader, opts *CompileOptions) (*d2graph.Graph, *d2ta
 	if err != nil {
 		return nil, nil, err
 	}
+	g.FS = opts.FS
 	g.SortObjectsByAST()
 	g.SortEdgesByAST()
 	return g, compileConfig(ir), nil
@@ -97,6 +98,7 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 	if len(c.err.Errors) == 0 {
 		c.validateKeys(g.Root, ir)
 	}
+	c.validateLabels(g)
 	c.validateNear(g)
 	c.validateEdges(g)
 
@@ -191,7 +193,14 @@ type compiler struct {
 }
 
 func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
-	c.err.Errors = append(c.err.Errors, d2parser.Errorf(n, f, v...).(d2ast.Error))
+	err := d2parser.Errorf(n, f, v...).(d2ast.Error)
+	if c.err.ErrorsLookup == nil {
+		c.err.ErrorsLookup = make(map[d2ast.Error]struct{})
+	}
+	if _, ok := c.err.ErrorsLookup[err]; !ok {
+		c.err.Errors = append(c.err.Errors, err)
+		c.err.ErrorsLookup[err] = struct{}{}
+	}
 }
 
 func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
@@ -298,6 +307,10 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 		return
 	} else if f.Name == "vars" {
 		return
+	} else if f.Name == "source-arrowhead" || f.Name == "target-arrowhead" {
+		c.errorf(f.LastRef().AST(), `%#v can only be used on connections`, f.Name)
+		return
+
 	} else if isReserved {
 		c.compileReserved(&obj.Attributes, f)
 		return
@@ -337,21 +350,21 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 	}
 	for _, fr := range f.References {
 		if fr.Primary() {
-			if fr.Context.Key.Value.Map != nil {
-				obj.Map = fr.Context.Key.Value.Map
+			if fr.Context_.Key.Value.Map != nil {
+				obj.Map = fr.Context_.Key.Value.Map
 			}
 		}
 		r := d2graph.Reference{
 			Key:          fr.KeyPath,
 			KeyPathIndex: fr.KeyPathIndex(),
 
-			MapKey:          fr.Context.Key,
-			MapKeyEdgeIndex: fr.Context.EdgeIndex(),
-			Scope:           fr.Context.Scope,
-			ScopeAST:        fr.Context.ScopeAST,
+			MapKey:          fr.Context_.Key,
+			MapKeyEdgeIndex: fr.Context_.EdgeIndex(),
+			Scope:           fr.Context_.Scope,
+			ScopeAST:        fr.Context_.ScopeAST,
 		}
-		if fr.Context.ScopeMap != nil && !d2ir.IsVar(fr.Context.ScopeMap) {
-			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(fr.Context.ScopeMap))
+		if fr.Context_.ScopeMap != nil && !d2ir.IsVar(fr.Context_.ScopeMap) {
+			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(fr.Context_.ScopeMap))
 			r.ScopeObj = obj.Graph.Root.EnsureChild(scopeObjIDA)
 		}
 		obj.References = append(obj.References, r)
@@ -457,7 +470,12 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 				if arr, ok := f.Composite.(*d2ir.Array); ok {
 					for _, constraint := range arr.Values {
 						if scalar, ok := constraint.(*d2ir.Scalar); ok {
-							attrs.Constraint = append(attrs.Constraint, scalar.Value.ScalarString())
+							switch scalar.Value.(type) {
+							case *d2ast.Null:
+								attrs.Constraint = append(attrs.Constraint, "null")
+							default:
+								attrs.Constraint = append(attrs.Constraint, scalar.Value.ScalarString())
+							}
 						}
 					}
 				}
@@ -740,14 +758,14 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 	edge.Label.MapKey = e.LastPrimaryKey()
 	for _, er := range e.References {
 		r := d2graph.EdgeReference{
-			Edge:            er.Context.Edge,
-			MapKey:          er.Context.Key,
-			MapKeyEdgeIndex: er.Context.EdgeIndex(),
-			Scope:           er.Context.Scope,
-			ScopeAST:        er.Context.ScopeAST,
+			Edge:            er.Context_.Edge,
+			MapKey:          er.Context_.Key,
+			MapKeyEdgeIndex: er.Context_.EdgeIndex(),
+			Scope:           er.Context_.Scope,
+			ScopeAST:        er.Context_.ScopeAST,
 		}
-		if er.Context.ScopeMap != nil && !d2ir.IsVar(er.Context.ScopeMap) {
-			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(er.Context.ScopeMap))
+		if er.Context_.ScopeMap != nil && !d2ir.IsVar(er.Context_.ScopeMap) {
+			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(er.Context_.ScopeMap))
 			r.ScopeObj = edge.Src.Graph.Root.EnsureChild(scopeObjIDA)
 		}
 		edge.References = append(edge.References, r)
@@ -1013,6 +1031,22 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 	}
 }
 
+func (c *compiler) validateLabels(g *d2graph.Graph) {
+	for _, obj := range g.Objects {
+		if obj.Shape.Value != d2target.ShapeText {
+			continue
+		}
+		if obj.Attributes.Language != "" {
+			// blockstrings have already been validated
+			continue
+		}
+		if strings.TrimSpace(obj.Label.Value) == "" {
+			c.errorf(obj.Label.MapKey, "shape text must have a non-empty label")
+			continue
+		}
+	}
+}
+
 func (c *compiler) validateNear(g *d2graph.Graph) {
 	for _, obj := range g.Objects {
 		if obj.NearKey != nil {
@@ -1066,20 +1100,13 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 	}
 
 	for _, edge := range g.Edges {
-		srcNearContainer := edge.Src.OuterNearContainer()
-		dstNearContainer := edge.Dst.OuterNearContainer()
-
-		var isSrcNearConst, isDstNearConst bool
-
-		if srcNearContainer != nil {
-			_, isSrcNearConst = d2graph.NearConstants[d2graph.Key(srcNearContainer.NearKey)[0]]
+		if edge.Src.IsConstantNear() && edge.Dst.IsDescendantOf(edge.Src) {
+			c.errorf(edge.GetAstEdge(), "edge from constant near %#v cannot enter itself", edge.Src.AbsID())
+			continue
 		}
-		if dstNearContainer != nil {
-			_, isDstNearConst = d2graph.NearConstants[d2graph.Key(dstNearContainer.NearKey)[0]]
-		}
-
-		if (isSrcNearConst || isDstNearConst) && srcNearContainer != dstNearContainer {
-			c.errorf(edge.References[0].Edge, "cannot connect objects from within a container, that has near constant set, to objects outside that container")
+		if edge.Dst.IsConstantNear() && edge.Src.IsDescendantOf(edge.Dst) {
+			c.errorf(edge.GetAstEdge(), "edge from constant near %#v cannot enter itself", edge.Dst.AbsID())
+			continue
 		}
 	}
 
@@ -1087,12 +1114,32 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 
 func (c *compiler) validateEdges(g *d2graph.Graph) {
 	for _, edge := range g.Edges {
-		if gd := edge.Src.Parent.ClosestGridDiagram(); gd != nil {
-			c.errorf(edge.GetAstEdge(), "edges in grid diagrams are not supported yet")
+		// edges from a grid to something outside is ok
+		//   grid -> outside : ok
+		//   grid -> grid.cell : not ok
+		//   grid -> grid.cell.inner : not ok
+		if edge.Src.IsGridDiagram() && edge.Dst.IsDescendantOf(edge.Src) {
+			c.errorf(edge.GetAstEdge(), "edge from grid diagram %#v cannot enter itself", edge.Src.AbsID())
 			continue
 		}
-		if gd := edge.Dst.Parent.ClosestGridDiagram(); gd != nil {
-			c.errorf(edge.GetAstEdge(), "edges in grid diagrams are not supported yet")
+		if edge.Dst.IsGridDiagram() && edge.Src.IsDescendantOf(edge.Dst) {
+			c.errorf(edge.GetAstEdge(), "edge from grid diagram %#v cannot enter itself", edge.Dst.AbsID())
+			continue
+		}
+		if edge.Src.Parent.IsGridDiagram() && edge.Dst.IsDescendantOf(edge.Src) {
+			c.errorf(edge.GetAstEdge(), "edge from grid cell %#v cannot enter itself", edge.Src.AbsID())
+			continue
+		}
+		if edge.Dst.Parent.IsGridDiagram() && edge.Src.IsDescendantOf(edge.Dst) {
+			c.errorf(edge.GetAstEdge(), "edge from grid cell %#v cannot enter itself", edge.Dst.AbsID())
+			continue
+		}
+		if edge.Src.IsSequenceDiagram() && edge.Dst.IsDescendantOf(edge.Src) {
+			c.errorf(edge.GetAstEdge(), "edge from sequence diagram %#v cannot enter itself", edge.Src.AbsID())
+			continue
+		}
+		if edge.Dst.IsSequenceDiagram() && edge.Src.IsDescendantOf(edge.Dst) {
+			c.errorf(edge.GetAstEdge(), "edge from sequence diagram %#v cannot enter itself", edge.Dst.AbsID())
 			continue
 		}
 	}

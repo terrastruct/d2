@@ -3,7 +3,7 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,0:0:0-10:0:69",
+      "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,0:0:0-9:0:68",
       "nodes": [
         {
           "map_key": {
@@ -53,7 +53,7 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,2:0:8-9:1:68",
+            "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,2:0:8-8:1:67",
             "key": {
               "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,2:0:8-2:9:17",
               "path": [
@@ -73,11 +73,11 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,2:11:19-9:1:68",
+                "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,2:11:19-8:1:67",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,3:2:23-8:3:66",
+                      "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,3:2:23-7:3:65",
                       "key": {
                         "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,3:2:23-3:3:24",
                         "path": [
@@ -97,72 +97,17 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,3:5:26-8:3:66",
+                          "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,3:5:26-7:3:65",
                           "nodes": [
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,4:4:32-4:21:49",
-                                "edges": [
-                                  {
-                                    "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,4:5:33-4:11:39",
-                                    "src": {
-                                      "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,4:5:33-4:6:34",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,4:5:33-4:6:34",
-                                            "value": [
-                                              {
-                                                "string": "a",
-                                                "raw_string": "a"
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "src_arrow": "",
-                                    "dst": {
-                                      "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,4:10:38-4:11:39",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,4:10:38-4:11:39",
-                                            "value": [
-                                              {
-                                                "string": "b",
-                                                "raw_string": "b"
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "dst_arrow": ">"
-                                  }
-                                ],
-                                "edge_index": {
-                                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,4:12:40-4:15:43",
-                                  "int": 0,
-                                  "glob": false
-                                },
-                                "primary": {},
-                                "value": {
-                                  "null": {
-                                    "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,4:17:45-4:21:49"
-                                  }
-                                }
-                              }
-                            },
-                            {
-                              "map_key": {
-                                "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,6:4:55-6:5:56",
+                                "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,4:4:32-4:5:33",
                                 "key": {
-                                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,6:4:55-6:5:56",
+                                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,4:4:32-4:5:33",
                                   "path": [
                                     {
                                       "unquoted_string": {
-                                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,6:4:55-6:5:56",
+                                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,4:4:32-4:5:33",
                                         "value": [
                                           {
                                             "string": "b",
@@ -179,13 +124,13 @@
                             },
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,7:4:61-7:5:62",
+                                "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,5:4:38-5:5:39",
                                 "key": {
-                                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,7:4:61-7:5:62",
+                                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,5:4:38-5:5:39",
                                   "path": [
                                     {
                                       "unquoted_string": {
-                                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,7:4:61-7:5:62",
+                                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,5:4:38-5:5:39",
                                         "value": [
                                           {
                                             "string": "c",
@@ -198,6 +143,61 @@
                                 },
                                 "primary": {},
                                 "value": {}
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,6:4:44-6:21:61",
+                                "edges": [
+                                  {
+                                    "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,6:5:45-6:11:51",
+                                    "src": {
+                                      "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,6:5:45-6:6:46",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,6:5:45-6:6:46",
+                                            "value": [
+                                              {
+                                                "string": "a",
+                                                "raw_string": "a"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "src_arrow": "",
+                                    "dst": {
+                                      "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,6:10:50-6:11:51",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,6:10:50-6:11:51",
+                                            "value": [
+                                              {
+                                                "string": "b",
+                                                "raw_string": "b"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "dst_arrow": ">"
+                                  }
+                                ],
+                                "edge_index": {
+                                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,6:12:52-6:15:55",
+                                  "int": 0,
+                                  "glob": false
+                                },
+                                "primary": {},
+                                "value": {
+                                  "null": {
+                                    "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,6:17:57-6:21:61"
+                                  }
+                                }
                               }
                             }
                           ]
@@ -530,11 +530,11 @@
               },
               {
                 "key": {
-                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,6:4:55-6:5:56",
+                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,4:4:32-4:5:33",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,6:4:55-6:5:56",
+                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,4:4:32-4:5:33",
                         "value": [
                           {
                             "string": "b",
@@ -575,11 +575,11 @@
             "references": [
               {
                 "key": {
-                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,7:4:61-7:5:62",
+                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,5:4:38-5:5:39",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,7:4:61-7:5:62",
+                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-edge-inherited.d2,5:4:38-5:5:39",
                         "value": [
                           {
                             "string": "c",

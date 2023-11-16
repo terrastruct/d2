@@ -52,7 +52,9 @@
               "primary": {},
               "value": {}
             }
-          }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         }
       ]
     },
@@ -163,7 +165,9 @@
                                   }
                                 }
                               }
-                            }
+                            },
+                            "due_to_glob": false,
+                            "due_to_lazy_glob": false
                           }
                         ]
                       }
@@ -252,7 +256,9 @@
                             }
                           }
                         }
-                      }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
                     }
                   ]
                 }
@@ -359,7 +365,9 @@
                       }
                     }
                   }
-                }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
               }
             ]
           }
@@ -495,7 +503,9 @@
                 }
               }
             }
-          }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         }
       ]
     }

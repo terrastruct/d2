@@ -1,0 +1,76 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/not-amper.d2,0:0:0-3:0:26",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/not-amper.d2,1:0:1-1:9:10",
+          "ampersand": true,
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/not-amper.d2,1:1:2-1:2:3",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/not-amper.d2,1:1:2-1:2:3",
+                  "value": [
+                    {
+                      "string": "k",
+                      "raw_string": "k"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {
+            "unquoted_string": {
+              "range": "d2/testdata/d2parser/TestParse/not-amper.d2,1:4:5-1:9:10",
+              "value": [
+                {
+                  "string": "amper",
+                  "raw_string": "amper"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/not-amper.d2,2:0:11-2:14:25",
+          "not_ampersand": true,
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/not-amper.d2,2:2:13-2:3:14",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/not-amper.d2,2:2:13-2:3:14",
+                  "value": [
+                    {
+                      "string": "k",
+                      "raw_string": "k"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {
+            "unquoted_string": {
+              "range": "d2/testdata/d2parser/TestParse/not-amper.d2,2:5:16-2:14:25",
+              "value": [
+                {
+                  "string": "not amper",
+                  "raw_string": "not amper"
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "err": null
+}

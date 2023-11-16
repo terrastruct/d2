@@ -138,6 +138,29 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 			)
 		}
 		path = polygonEl.Render()
+	case d2target.UnfilledTriangleArrowhead:
+		polygonEl := d2themes.NewThemableElement("polygon")
+		polygonEl.Fill = d2target.BG_COLOR
+		polygonEl.Stroke = connection.Stroke
+		polygonEl.ClassName = "connection"
+		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+
+		inset := strokeWidth / 2
+		if isTarget {
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f",
+				inset, inset,
+				width-inset, height/2.0,
+				inset, height-inset,
+			)
+		} else {
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f",
+				width-inset, inset,
+				inset, height/2.0,
+				width-inset, height-inset,
+			)
+		}
+		path = polygonEl.Render()
+
 	case d2target.TriangleArrowhead:
 		polygonEl := d2themes.NewThemableElement("polygon")
 		polygonEl.Fill = connection.Stroke
@@ -514,7 +537,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		labelTL.X = math.Round(labelTL.X)
 		labelTL.Y = math.Round(labelTL.Y)
 
-		if label.Position(connection.LabelPosition).IsOnEdge() {
+		if label.FromString(connection.LabelPosition).IsOnEdge() {
 			labelMask = makeLabelMask(labelTL, connection.LabelWidth, connection.LabelHeight, 1)
 		} else {
 			labelMask = makeLabelMask(labelTL, connection.LabelWidth, connection.LabelHeight, 0.75)
@@ -613,6 +636,15 @@ func renderArrowheadLabel(connection d2target.Connection, text string, isDst boo
 	textEl.X = baselineCenter.X
 	textEl.Y = baselineCenter.Y
 	textEl.Fill = d2target.FG_COLOR
+	if isDst {
+		if connection.DstLabel.Color != "" {
+			textEl.Fill = connection.DstLabel.Color
+		}
+	} else {
+		if connection.SrcLabel.Color != "" {
+			textEl.Fill = connection.SrcLabel.Color
+		}
+	}
 	textEl.ClassName = "text-italic"
 	textEl.Style = fmt.Sprintf("text-anchor:middle;font-size:%vpx", connection.FontSize)
 	textEl.Content = RenderText(text, textEl.X, height)
@@ -1169,7 +1201,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	fmt.Fprint(writer, `</g>`)
 
 	if targetShape.Icon != nil && targetShape.Type != d2target.ShapeImage {
-		iconPosition := label.Position(targetShape.IconPosition)
+		iconPosition := label.FromString(targetShape.IconPosition)
 		var box *geo.Box
 		if iconPosition.IsOutside() {
 			box = s.GetBox()
@@ -1190,7 +1222,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	}
 
 	if targetShape.Label != "" {
-		labelPosition := label.Position(targetShape.LabelPosition)
+		labelPosition := label.FromString(targetShape.LabelPosition)
 		var box *geo.Box
 		if labelPosition.IsOutside() {
 			box = s.GetBox().Copy()
@@ -1258,7 +1290,13 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				if !isLight {
 					class = "dark-code"
 				}
-				fmt.Fprintf(writer, `<g transform="translate(%f %f)" class="%s">`, box.TopLeft.X, box.TopLeft.Y, class)
+				var fontSize string
+				if targetShape.FontSize != d2fonts.FONT_SIZE_M {
+					fontSize = fmt.Sprintf(` style="font-size:%v"`, targetShape.FontSize)
+				}
+				fmt.Fprintf(writer, `<g transform="translate(%f %f)" class="%s"%s>`,
+					box.TopLeft.X, box.TopLeft.Y, class, fontSize,
+				)
 				rectEl := d2themes.NewThemableElement("rect")
 				rectEl.Width = float64(targetShape.Width)
 				rectEl.Height = float64(targetShape.Height)
@@ -1312,9 +1350,20 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			mdEl := d2themes.NewThemableElement("div")
 			mdEl.ClassName = "md"
 			mdEl.Content = render
+
+			// We have to set with styles since within foreignObject, we're in html
+			// land and not SVG attributes
+			var styles []string
 			if targetShape.FontSize != textmeasure.MarkdownFontSize {
-				mdEl.Style = fmt.Sprintf("font-size:%vpx", targetShape.FontSize)
+				styles = append(styles, fmt.Sprintf("font-size:%vpx", targetShape.FontSize))
 			}
+
+			if !color.IsThemeColor(targetShape.Color) {
+				styles = append(styles, fmt.Sprintf(`color:%s`, targetShape.Color))
+			}
+
+			mdEl.Style = strings.Join(styles, ";")
+
 			fmt.Fprint(writer, mdEl.Render())
 			fmt.Fprint(writer, `</foreignObject></g>`)
 		} else {

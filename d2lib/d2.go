@@ -10,10 +10,8 @@ import (
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2exporter"
 	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2layouts"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
-	"oss.terrastruct.com/d2/d2layouts/d2grid"
-	"oss.terrastruct.com/d2/d2layouts/d2near"
-	"oss.terrastruct.com/d2/d2layouts/d2sequence"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2target"
@@ -84,23 +82,8 @@ func compile(ctx context.Context, g *d2graph.Graph, compileOpts *CompileOptions,
 			return nil, err
 		}
 
-		constantNearGraphs := d2near.WithoutConstantNears(ctx, g)
-
-		layoutWithGrids := d2grid.Layout(ctx, g, coreLayout)
-
-		// run core layout for constantNears
-		for _, tempGraph := range constantNearGraphs {
-			if err = layoutWithGrids(ctx, tempGraph); err != nil {
-				return nil, err
-			}
-		}
-
-		err = d2sequence.Layout(ctx, g, layoutWithGrids)
-		if err != nil {
-			return nil, err
-		}
-
-		err = d2near.Layout(ctx, g, constantNearGraphs)
+		graphInfo := d2layouts.NestedGraphInfo(g.Root)
+		err = d2layouts.LayoutNested(ctx, g, graphInfo, coreLayout)
 		if err != nil {
 			return nil, err
 		}

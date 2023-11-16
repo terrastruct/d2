@@ -9,8 +9,8 @@ fi
 PATH="$(cd -- "$(dirname "$0")" && pwd)/ci/sub/bin:$PATH"
 cd -- "$(dirname "$0")"
 
-if ! go version | grep -qF '1.20'; then
-  echoerr "You need go 1.20 to build d2."
+if ! go version | grep -q '1.2[0-9]'; then
+  echoerr "You need go 1.2x to build d2."
   exit 1
 fi
 

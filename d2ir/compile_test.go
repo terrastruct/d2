@@ -107,7 +107,7 @@ func assertQuery(t testing.TB, n d2ir.Node, nfields, nedges int, primary interfa
 	}
 
 	if len(na) == 0 {
-		return nil
+		t.Fatalf("query didn't match anything")
 	}
 
 	return na[0]
@@ -416,8 +416,25 @@ scenarios: {
   }
 }`)
 				assert.Success(t, err)
-
+				assertQuery(t, m, 8, 2, nil, "")
 				assertQuery(t, m, 0, 0, nil, "(a -> b)[0]")
+			},
+		},
+		{
+			name: "multiple-scenario-map",
+			run: func(t testing.TB) {
+				m, err := compile(t, `a -> b: { style.opacity: 0.3 }
+scenarios: {
+  1: {
+    (a -> b)[0].style.opacity: 0.1
+  }
+  1: {
+	z
+  }
+}`)
+				assert.Success(t, err)
+				assertQuery(t, m, 11, 2, nil, "")
+				assertQuery(t, m, 0, 0, 0.1, "scenarios.1.(a -> b)[0].style.opacity")
 			},
 		},
 	}

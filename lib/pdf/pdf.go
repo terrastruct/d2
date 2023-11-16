@@ -31,8 +31,8 @@ func Init() *GoFPDF {
 		UnitStr: "pt",
 	})
 
-	newGofPDF.AddUTF8FontFromBytes("source", "", d2fonts.FontFaces[d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_REGULAR)])
-	newGofPDF.AddUTF8FontFromBytes("source", "B", d2fonts.FontFaces[d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_BOLD)])
+	newGofPDF.AddUTF8FontFromBytes("source", "", d2fonts.FontFaces.Get(d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_REGULAR)))
+	newGofPDF.AddUTF8FontFromBytes("source", "B", d2fonts.FontFaces.Get(d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_BOLD)))
 	newGofPDF.SetAutoPageBreak(false, 0)
 	newGofPDF.SetLineWidth(2)
 	newGofPDF.SetMargins(0, 0, 0)

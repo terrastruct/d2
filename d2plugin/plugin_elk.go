@@ -76,7 +76,7 @@ func (p *elkPlugin) HydrateOpts(opts []byte) error {
 }
 
 func (p elkPlugin) Info(ctx context.Context) (*PluginInfo, error) {
-	opts := xmain.NewOpts(nil, nil, nil)
+	opts := xmain.NewOpts(nil, nil)
 	flags, err := p.Flags(ctx)
 	if err != nil {
 		return nil, err

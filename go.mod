@@ -26,8 +26,8 @@ require (
 	golang.org/x/text v0.8.0
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2
 	gonum.org/v1/plot v0.12.0
-	nhooyr.io/websocket v1.8.7
-	oss.terrastruct.com/util-go v0.0.0-20230604222829-11c3c60fec14
+	nhooyr.io/websocket v1.8.10
+	oss.terrastruct.com/util-go v0.0.0-20231101220827-55b3812542c2
 )
 
 require (
@@ -44,7 +44,6 @@ require (
 	github.com/go-stack/stack v1.8.1 // indirect
 	github.com/golang/geo v0.0.0-20210211234256-740aa86cb551 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
-	github.com/klauspost/compress v1.10.3 // indirect
 	github.com/mattn/go-colorable v0.1.9 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 // indirect

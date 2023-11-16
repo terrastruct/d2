@@ -4,6 +4,7 @@ import "regexp"
 
 // namedColors is a list of valid CSS colors
 var namedColors = []string{
+	"currentcolor",
 	"transparent",
 	"aliceblue",
 	"antiquewhite",

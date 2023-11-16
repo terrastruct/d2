@@ -7,6 +7,7 @@ package appendix
 import (
 	"fmt"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -129,7 +130,7 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 	font-family: font-regular;
 	src: url("%s");
 }
-]]></style>`, d2fonts.FontEncodings[d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_REGULAR)])
+]]></style>`, d2fonts.FontEncodings.Get(d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_REGULAR)))
 	}
 	if !strings.Contains(svg, `font-family: "font-bold"`) {
 		appendix += fmt.Sprintf(`<style type="text/css"><![CDATA[
@@ -140,24 +141,53 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 	font-family: font-bold;
 	src: url("%s");
 }
-]]></style>`, d2fonts.FontEncodings[d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_BOLD)])
+]]></style>`, d2fonts.FontEncodings.Get(d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_BOLD)))
 	}
 
 	closingIndex := strings.LastIndex(svg, "</svg></svg>")
 	svg = svg[:closingIndex] + appendix + svg[closingIndex:]
 
+	// icons are numbered according to diagram.Shapes which is based on their order of definition,
+	// but they appear in the svg according to renderOrder so we have to replace in that order
+	type appendixIcon struct {
+		number    int
+		isTooltip bool
+		shape     d2target.Shape
+	}
+	var renderOrder []appendixIcon
+
 	i := 1
 	for _, s := range diagram.Shapes {
 		if s.Tooltip != "" {
-			// The clip-path has a unique ID, so this won't replace any user icons
-			// In the existing SVG, the transform places it top-left, so we adjust
-			svg = strings.Replace(svg, d2svg.TooltipIcon, generateNumberedIcon(i, 0, ICON_RADIUS), 1)
+			renderOrder = append(renderOrder, appendixIcon{i, true, s})
 			i++
 		}
 		if s.Link != "" {
-			svg = strings.Replace(svg, d2svg.LinkIcon, generateNumberedIcon(i, 0, ICON_RADIUS), 1)
+			renderOrder = append(renderOrder, appendixIcon{i, false, s})
 			i++
 		}
+	}
+	// sort to match render order
+	sort.SliceStable(renderOrder, func(i, j int) bool {
+		iZIndex := renderOrder[i].shape.GetZIndex()
+		jZIndex := renderOrder[j].shape.GetZIndex()
+		if iZIndex != jZIndex {
+			return iZIndex < jZIndex
+		}
+		return renderOrder[i].shape.Level < renderOrder[j].shape.Level
+	})
+
+	// replace each rendered svg icon
+	for _, icon := range renderOrder {
+		// The clip-path has a unique ID, so this won't replace any user icons
+		// In the existing SVG, the transform places it top-left, so we adjust
+		var iconStr string
+		if icon.isTooltip {
+			iconStr = d2svg.TooltipIcon
+		} else {
+			iconStr = d2svg.LinkIcon
+		}
+		svg = strings.Replace(svg, iconStr, generateNumberedIcon(icon.number, 0, ICON_RADIUS), 1)
 	}
 
 	return []byte(svg)

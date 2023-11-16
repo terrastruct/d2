@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io/fs"
 	"math"
 	"net/url"
 	"sort"
@@ -36,6 +37,7 @@ const DEFAULT_SHAPE_SIZE = 100.
 const MIN_SHAPE_SIZE = 5
 
 type Graph struct {
+	FS     fs.FS  `json:"-"`
 	Parent *Graph `json:"-"`
 	Name   string `json:"name"`
 	// IsFolderOnly indicates a board or scenario itself makes no modifications from its
@@ -55,6 +57,9 @@ type Graph struct {
 	Steps     []*Graph `json:"steps,omitempty"`
 
 	Theme *d2themes.Theme `json:"theme,omitempty"`
+
+	// Object.Level uses the location of a nested graph
+	RootLevel int `json:"rootLevel,omitempty"`
 }
 
 func NewGraph() *Graph {
@@ -172,13 +177,10 @@ func (a *Attributes) ApplyTextTransform() {
 }
 
 func (a *Attributes) ToArrowhead() d2target.Arrowhead {
-	if a.Shape.Value == "" {
-		return d2target.NoArrowhead
-	}
-
-	filled := false
+	var filled *bool
 	if a.Style.Filled != nil {
-		filled, _ = strconv.ParseBool(a.Style.Filled.Value)
+		v, _ := strconv.ParseBool(a.Style.Filled.Value)
+		filled = go2.Pointer(v)
 	}
 	return d2target.ToArrowhead(a.Shape.Value, filled)
 }
@@ -527,7 +529,7 @@ func (obj *Object) GetStroke(dashGapSize interface{}) string {
 
 func (obj *Object) Level() ContainerLevel {
 	if obj.Parent == nil {
-		return 0
+		return ContainerLevel(obj.Graph.RootLevel)
 	}
 	return 1 + obj.Parent.Level()
 }
@@ -1085,6 +1087,21 @@ func (obj *Object) OuterNearContainer() *Object {
 	return nil
 }
 
+func (obj *Object) IsConstantNear() bool {
+	if obj.NearKey == nil {
+		return false
+	}
+	keyPath := Key(obj.NearKey)
+
+	// interesting if there is a shape with id=top-left, then top-left isn't treated a constant near
+	_, isKey := obj.Graph.Root.HasChild(keyPath)
+	if isKey {
+		return false
+	}
+	_, isConst := NearConstants[keyPath[0]]
+	return isConst
+}
+
 type Edge struct {
 	Index int `json:"index"`
 
@@ -1164,6 +1181,13 @@ func (e *Edge) Text() *d2target.MText {
 	}
 }
 
+func (e *Edge) Move(dx, dy float64) {
+	for _, p := range e.Route {
+		p.X += dx
+		p.Y += dy
+	}
+}
+
 func (e *Edge) AbsID() string {
 	srcIDA := e.Src.AbsIDArray()
 	dstIDA := e.Dst.AbsIDArray()
@@ -1197,10 +1221,6 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 
 	src := obj.ensureChildEdge(srcID)
 	dst := obj.ensureChildEdge(dstID)
-
-	if src.OuterSequenceDiagram() != dst.OuterSequenceDiagram() {
-		return nil, errors.New("connections within sequence diagrams can connect only to other objects within the same sequence diagram")
-	}
 
 	e := &Edge{
 		Attributes: Attributes{
@@ -1387,12 +1407,12 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		if obj.HasLabel() && obj.Attributes.LabelPosition != nil {
 			scalar := *obj.Attributes.LabelPosition
 			position := LabelPositionsMapping[scalar.Value]
-			obj.LabelPosition = go2.Pointer(string(position))
+			obj.LabelPosition = go2.Pointer(position.String())
 		}
 		if obj.Icon != nil && obj.Attributes.IconPosition != nil {
 			scalar := *obj.Attributes.IconPosition
 			position := LabelPositionsMapping[scalar.Value]
-			obj.IconPosition = go2.Pointer(string(position))
+			obj.IconPosition = go2.Pointer(position.String())
 		}
 
 		var desiredWidth int
@@ -1898,7 +1918,7 @@ func (g *Graph) PrintString() string {
 	buf := &bytes.Buffer{}
 	fmt.Fprint(buf, "Objects: [")
 	for _, obj := range g.Objects {
-		fmt.Fprintf(buf, "%#v @(%v)", obj.AbsID(), obj.TopLeft.ToString())
+		fmt.Fprintf(buf, "%v, ", obj.AbsID())
 	}
 	fmt.Fprint(buf, "]")
 	return buf.String()
@@ -1917,4 +1937,73 @@ func (obj *Object) IsMultiple() bool {
 
 func (obj *Object) Is3D() bool {
 	return obj.Style.ThreeDee != nil && obj.Style.ThreeDee.Value == "true"
+}
+
+func (obj *Object) Spacing() (margin, padding geo.Spacing) {
+	if obj.HasLabel() {
+		var position label.Position
+		if obj.LabelPosition != nil {
+			position = label.FromString(*obj.LabelPosition)
+		}
+
+		var labelWidth, labelHeight float64
+		if obj.LabelDimensions.Width > 0 {
+			labelWidth = float64(obj.LabelDimensions.Width) + 2*label.PADDING
+		}
+		if obj.LabelDimensions.Height > 0 {
+			labelHeight = float64(obj.LabelDimensions.Height) + 2*label.PADDING
+		}
+
+		switch position {
+		case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
+			margin.Top = labelHeight
+		case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+			margin.Bottom = labelHeight
+		case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
+			margin.Left = labelWidth
+		case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+			margin.Right = labelWidth
+		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
+			padding.Top = labelHeight
+		case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
+			padding.Bottom = labelHeight
+		case label.InsideMiddleLeft:
+			padding.Left = labelWidth
+		case label.InsideMiddleRight:
+			padding.Right = labelWidth
+		}
+	}
+
+	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
+		var position label.Position
+		if obj.IconPosition != nil {
+			position = label.FromString(*obj.IconPosition)
+		}
+
+		iconSize := float64(d2target.MAX_ICON_SIZE + 2*label.PADDING)
+		switch position {
+		case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
+			margin.Top = math.Max(margin.Top, iconSize)
+		case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+			margin.Bottom = math.Max(margin.Bottom, iconSize)
+		case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
+			margin.Left = math.Max(margin.Left, iconSize)
+		case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+			margin.Right = math.Max(margin.Right, iconSize)
+		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
+			padding.Top = math.Max(padding.Top, iconSize)
+		case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
+			padding.Bottom = math.Max(padding.Bottom, iconSize)
+		case label.InsideMiddleLeft:
+			padding.Left = math.Max(padding.Left, iconSize)
+		case label.InsideMiddleRight:
+			padding.Right = math.Max(padding.Right, iconSize)
+		}
+	}
+
+	dx, dy := obj.GetModifierElementAdjustments()
+	margin.Right += dx
+	margin.Top += dy
+
+	return
 }

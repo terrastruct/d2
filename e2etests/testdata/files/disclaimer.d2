@@ -1,0 +1,16 @@
+vars: {
+  base-constraints: [NOT NULL; UNQ]
+  disclaimer: DISCLAIMER {
+    I am not a lawyer
+    near: top-center
+  }
+}
+
+data: {
+  shape: sql_table
+  a: int {constraint: [PK; ...${base-constraints}]}
+}
+
+custom-disclaimer: DRAFT DISCLAIMER {
+  ...${disclaimer}
+}

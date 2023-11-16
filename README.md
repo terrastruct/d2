@@ -221,6 +221,7 @@ let us know and we'll be happy to include it here!
 - **Python D2 diagram builder**: [https://github.com/MrBlenny/py-d2](https://github.com/MrBlenny/py-d2)
 - **Clojure D2 transpiler**: [https://github.com/judepayne/dictim](https://github.com/judepayne/dictim)
 - **JavaScript D2 diagram builder**: [https://github.com/Kreshnik/d2lang-js](https://github.com/Kreshnik/d2lang-js)
+- **C# & dotnet SDK**: [https://github.com/Stephanvs/d2lang-cs](https://github.com/Stephanvs/d2lang-cs)
 - **Maven plugin**: [https://github.com/andrinmeier/unofficial-d2lang-maven-plugin](https://github.com/andrinmeier/unofficial-d2lang-maven-plugin)
 - **Confluence plugin**: [https://github.com/andrinmeier/unofficial-d2lang-confluence-plugin](https://github.com/andrinmeier/unofficial-d2lang-confluence-plugin)
 - **CIL (C#, Visual Basic, F#, C++ CLR) to D2**: [https://github.com/HugoVG/AppDiagram](https://github.com/HugoVG/AppDiagram)
@@ -229,6 +230,7 @@ let us know and we'll be happy to include it here!
 - **Pandoc filter**: [https://github.com/ram02z/d2-filter](https://github.com/ram02z/d2-filter)
 - **Logseq-D2**: [https://github.com/b-yp/logseq-d2](https://github.com/b-yp/logseq-d2)
 - **ent2d2**: [https://github.com/tmc/ent2d2](https://github.com/tmc/ent2d2)
+- **MkDocs Plugin**: [https://github.com/landmaj/mkdocs-d2-plugin](https://github.com/landmaj/mkdocs-d2-plugin)
 
 ### Misc
 

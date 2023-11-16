@@ -14,8 +14,9 @@ func TestCutFont(t *testing.T) {
 		Family: SourceCodePro,
 		Style:  FONT_STYLE_BOLD,
 	}
-	fontBuf := make([]byte, len(FontFaces[f]))
-	copy(fontBuf, FontFaces[f])
+	face := FontFaces.Get(f)
+	fontBuf := make([]byte, len(face))
+	copy(fontBuf, face)
 	fontBuf = font.UTF8CutFont(fontBuf, " 1")
 	err := diff.Testdata(filepath.Join("testdata", "d2fonts", "cut"), ".txt", fontBuf)
 	assert.Success(t, err)

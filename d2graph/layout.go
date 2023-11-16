@@ -1,6 +1,7 @@
 package d2graph
 
 import (
+	"math"
 	"sort"
 	"strings"
 
@@ -26,7 +27,7 @@ func (obj *Object) MoveWithDescendantsTo(x, y float64) {
 	obj.MoveWithDescendants(dx, dy)
 }
 
-func (parent *Object) removeChild(child *Object) {
+func (parent *Object) RemoveChild(child *Object) {
 	delete(parent.Children, strings.ToLower(child.ID))
 	for i := 0; i < len(parent.ChildrenArray); i++ {
 		if parent.ChildrenArray[i] == child {
@@ -41,6 +42,7 @@ func (g *Graph) ExtractAsNestedGraph(obj *Object) *Graph {
 	descendantObjects, edges := pluckObjAndEdges(g, obj)
 
 	tempGraph := NewGraph()
+	tempGraph.RootLevel = int(obj.Level()) - 1
 	tempGraph.Root.ChildrenArray = []*Object{obj}
 	tempGraph.Root.Children[strings.ToLower(obj.ID)] = obj
 
@@ -50,7 +52,7 @@ func (g *Graph) ExtractAsNestedGraph(obj *Object) *Graph {
 	tempGraph.Objects = descendantObjects
 	tempGraph.Edges = edges
 
-	obj.Parent.removeChild(obj)
+	obj.Parent.RemoveChild(obj)
 	obj.Parent = tempGraph.Root
 
 	return tempGraph
@@ -59,7 +61,7 @@ func (g *Graph) ExtractAsNestedGraph(obj *Object) *Graph {
 func pluckObjAndEdges(g *Graph, obj *Object) (descendantsObjects []*Object, edges []*Edge) {
 	for i := 0; i < len(g.Edges); i++ {
 		edge := g.Edges[i]
-		if edge.Src == obj || edge.Dst == obj {
+		if edge.Src.IsDescendantOf(obj) && edge.Dst.IsDescendantOf(obj) {
 			edges = append(edges, edge)
 			g.Edges = append(g.Edges[:i], g.Edges[i+1:]...)
 			i--
@@ -68,15 +70,10 @@ func pluckObjAndEdges(g *Graph, obj *Object) (descendantsObjects []*Object, edge
 
 	for i := 0; i < len(g.Objects); i++ {
 		temp := g.Objects[i]
-		if temp.AbsID() == obj.AbsID() {
-			descendantsObjects = append(descendantsObjects, obj)
+		if temp.IsDescendantOf(obj) {
+			descendantsObjects = append(descendantsObjects, temp)
 			g.Objects = append(g.Objects[:i], g.Objects[i+1:]...)
-			for _, child := range obj.ChildrenArray {
-				subObjects, subEdges := pluckObjAndEdges(g, child)
-				descendantsObjects = append(descendantsObjects, subObjects...)
-				edges = append(edges, subEdges...)
-			}
-			break
+			i--
 		}
 	}
 
@@ -85,7 +82,12 @@ func pluckObjAndEdges(g *Graph, obj *Object) (descendantsObjects []*Object, edge
 
 func (g *Graph) InjectNestedGraph(tempGraph *Graph, parent *Object) {
 	obj := tempGraph.Root.ChildrenArray[0]
-	obj.MoveWithDescendantsTo(0, 0)
+	dx := 0 - obj.TopLeft.X
+	dy := 0 - obj.TopLeft.Y
+	obj.MoveWithDescendants(dx, dy)
+	for _, e := range tempGraph.Edges {
+		e.Move(dx, dy)
+	}
 	obj.Parent = parent
 	for _, obj := range tempGraph.Objects {
 		obj.Graph = g
@@ -284,6 +286,76 @@ func (obj *Object) GetModifierElementAdjustments() (dx, dy float64) {
 	return dx, dy
 }
 
+func (obj *Object) GetMargin() geo.Spacing {
+	margin := geo.Spacing{}
+
+	if obj.HasLabel() && obj.LabelPosition != nil {
+		position := label.FromString(*obj.LabelPosition)
+
+		labelWidth := float64(obj.LabelDimensions.Width + label.PADDING)
+		labelHeight := float64(obj.LabelDimensions.Height + label.PADDING)
+
+		switch position {
+		case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
+			margin.Top = labelHeight
+		case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+			margin.Bottom = labelHeight
+		case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
+			margin.Left = labelWidth
+		case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+			margin.Right = labelWidth
+		}
+
+		// if an outside label is larger than the object add margin accordingly
+		if labelWidth > obj.Width {
+			dx := labelWidth - obj.Width
+			switch position {
+			case label.OutsideTopLeft, label.OutsideBottomLeft:
+				// label fixed at left will overflow on right
+				margin.Right = dx
+			case label.OutsideTopCenter, label.OutsideBottomCenter:
+				margin.Left = math.Ceil(dx / 2)
+				margin.Right = math.Ceil(dx / 2)
+			case label.OutsideTopRight, label.OutsideBottomRight:
+				margin.Left = dx
+			}
+		}
+		if labelHeight > obj.Height {
+			dy := labelHeight - obj.Height
+			switch position {
+			case label.OutsideLeftTop, label.OutsideRightTop:
+				margin.Bottom = dy
+			case label.OutsideLeftMiddle, label.OutsideRightMiddle:
+				margin.Top = math.Ceil(dy / 2)
+				margin.Bottom = math.Ceil(dy / 2)
+			case label.OutsideLeftBottom, label.OutsideRightBottom:
+				margin.Top = dy
+			}
+		}
+	}
+
+	if obj.Icon != nil && obj.IconPosition != nil && obj.Shape.Value != d2target.ShapeImage {
+		position := label.FromString(*obj.IconPosition)
+
+		iconSize := float64(d2target.MAX_ICON_SIZE + label.PADDING)
+		switch position {
+		case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
+			margin.Top = math.Max(margin.Top, iconSize)
+		case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+			margin.Bottom = math.Max(margin.Bottom, iconSize)
+		case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
+			margin.Left = math.Max(margin.Left, iconSize)
+		case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+			margin.Right = math.Max(margin.Right, iconSize)
+		}
+	}
+
+	dx, dy := obj.GetModifierElementAdjustments()
+	margin.Right += dx
+	margin.Top += dy
+	return margin
+}
+
 func (obj *Object) ToShape() shape.Shape {
 	tl := obj.TopLeft
 	if tl == nil {
@@ -301,7 +373,7 @@ func (obj *Object) GetLabelTopLeft() *geo.Point {
 	}
 
 	s := obj.ToShape()
-	labelPosition := label.Position(*obj.LabelPosition)
+	labelPosition := label.FromString(*obj.LabelPosition)
 
 	var box *geo.Box
 	if labelPosition.IsOutside() {
@@ -323,7 +395,7 @@ func (obj *Object) GetIconTopLeft() *geo.Point {
 	}
 
 	s := obj.ToShape()
-	iconPosition := label.Position(*obj.IconPosition)
+	iconPosition := label.FromString(*obj.IconPosition)
 
 	var box *geo.Box
 	if iconPosition.IsOutside() {
@@ -344,7 +416,7 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 	overlapsOutsideLabel := false
 	if edge.Src.HasLabel() {
 		// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
-		labelPosition := label.Position(*edge.Src.LabelPosition)
+		labelPosition := label.FromString(*edge.Src.LabelPosition)
 		if labelPosition.IsOutside() {
 			labelWidth := float64(edge.Src.LabelDimensions.Width)
 			labelHeight := float64(edge.Src.LabelDimensions.Height)
@@ -395,7 +467,7 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 	overlapsOutsideLabel = false
 	if edge.Dst.HasLabel() {
 		// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
-		labelPosition := label.Position(*edge.Dst.LabelPosition)
+		labelPosition := label.FromString(*edge.Dst.LabelPosition)
 		if labelPosition.IsOutside() {
 			labelWidth := float64(edge.Dst.LabelDimensions.Width)
 			labelHeight := float64(edge.Dst.LabelDimensions.Height)

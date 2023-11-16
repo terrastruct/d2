@@ -161,7 +161,9 @@ type parser struct {
 
 // TODO: rename to Error and make existing Error a private type errorWithRange
 type ParseError struct {
-	Errors []d2ast.Error `json:"errs"`
+	// Errors from globs need to be deduplicated
+	ErrorsLookup map[d2ast.Error]struct{} `json:"-"`
+	Errors       []d2ast.Error            `json:"errs"`
 }
 
 func Errorf(n d2ast.Node, f string, v ...interface{}) error {
@@ -660,16 +662,27 @@ func (p *parser) parseMapKey() (mk *d2ast.Key) {
 		}
 	}()
 
-	// Check for ampersand/@.
+	// Check for not ampersand/@.
 	r, eof := p.peek()
 	if eof {
 		return mk
 	}
-	if r != '&' {
-		p.rewind()
-	} else {
+	if r == '!' {
+		r, eof := p.peek()
+		if eof {
+			return mk
+		}
+		if r == '&' {
+			p.commit()
+			mk.NotAmpersand = true
+		} else {
+			p.rewind()
+		}
+	} else if r == '&' {
 		p.commit()
 		mk.Ampersand = true
+	} else {
+		p.rewind()
 	}
 
 	r, eof = p.peek()
@@ -1174,6 +1187,7 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 					rawv := rawb.String()
 					s.Value = append(s.Value, d2ast.InterpolationBox{String: &sv, StringRaw: &rawv})
 					sb.Reset()
+					rawb.Reset()
 				}
 				s.Value = append(s.Value, d2ast.InterpolationBox{Substitution: subst})
 				continue
