@@ -43,6 +43,7 @@ func NewCloud(box *geo.Box) Shape {
 	return shape
 }
 
+// TODO this isn't always accurate since the content aspect ratio might be different from the final shape's
 func (s shapeCloud) GetInnerBox() *geo.Box {
 	width := s.Box.Width
 	height := s.Box.Height

@@ -6,12 +6,10 @@ import (
 	"fmt"
 	"math"
 
-	"cdr.dev/slog"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
-	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/util-go/go2"
 )
 
@@ -117,48 +115,9 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 		padding.Left = math.Max(padding.Left, float64(horizontalPadding))
 		padding.Right = math.Max(padding.Right, float64(horizontalPadding))
 
-		// TODO: rethink how this works with shapes and padding
-		// // manually handle desiredWidth/Height so we can center the grid
-		// var desiredWidth, desiredHeight int
-		// var originalWidthAttr, originalHeightAttr *d2graph.Scalar
-		// if obj.WidthAttr != nil {
-		// 	desiredWidth, _ = strconv.Atoi(obj.WidthAttr.Value)
-		// 	// SizeToContent without desired width
-		// 	originalWidthAttr = obj.WidthAttr
-		// 	obj.WidthAttr = nil
-		// }
-		// if obj.HeightAttr != nil {
-		// 	desiredHeight, _ = strconv.Atoi(obj.HeightAttr.Value)
-		// 	originalHeightAttr = obj.HeightAttr
-		// 	obj.HeightAttr = nil
-		// }
-
 		totalWidth := padding.Left + contentWidth + padding.Right
 		totalHeight := padding.Top + contentHeight + padding.Bottom
 		obj.SizeToContent(totalWidth, totalHeight, 0, 0)
-
-		// if originalWidthAttr != nil {
-		// 	obj.WidthAttr = originalWidthAttr
-		// }
-		// if originalHeightAttr != nil {
-		// 	obj.HeightAttr = originalHeightAttr
-		// }
-
-		// var offsetX, offsetY float64
-		// if desiredWidth > 0 {
-		// 	ddx := float64(desiredWidth) - obj.Width
-		// 	if ddx > 0 {
-		// 		offsetX = ddx / 2
-		// 		obj.Width = float64(desiredWidth)
-		// 	}
-		// }
-		// if desiredHeight > 0 {
-		// 	ddy := float64(desiredHeight) - obj.Height
-		// 	if ddy > 0 {
-		// 		offsetY = ddy / 2
-		// 		obj.Height = float64(desiredHeight)
-		// 	}
-		// }
 
 		// compute where the grid should be placed inside shape
 		s := obj.ToShape()
@@ -175,17 +134,8 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 			resizeDy = (innerBox.Height - totalHeight) / 2
 		}
 
-		log.Warn(ctx, obj.Shape.Value,
-			slog.F("box", obj.Box.ToString()),
-			slog.F("innerTL", innerTL.ToString()),
-			slog.F("contentWidth", contentWidth),
-			slog.F("contentHeight", contentHeight),
-			slog.F("labelWidth", labelWidth),
-			slog.F("labelHeight", labelHeight),
-			slog.F("padding", padding),
-		)
-
 		// move from horizontalPadding,verticalPadding to innerTL.X+padding.Left, innerTL.Y+padding.Top
+		// and if innerBox is larger than content dimensions, adjust to center within innerBox
 		dx := -float64(horizontalPadding) + innerTL.X + padding.Left + resizeDx
 		dy := -float64(verticalPadding) + innerTL.Y + padding.Top + resizeDy
 		if dx != 0 || dy != 0 {
