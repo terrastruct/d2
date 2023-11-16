@@ -10,7 +10,7 @@
         "dragon_ball"
       ],
       "pos": {
-        "x": 13,
+        "x": 22,
         "y": 12
       },
       "width": 50,
@@ -53,11 +53,11 @@
         "dragon_ball"
       ],
       "pos": {
-        "x": 13,
+        "x": 12,
         "y": 223
       },
-      "width": 50,
-      "height": 50,
+      "width": 70,
+      "height": 70,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -98,10 +98,10 @@
       ],
       "pos": {
         "x": 12,
-        "y": 434
+        "y": 454
       },
-      "width": 52,
-      "height": 52,
+      "width": 70,
+      "height": 70,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -164,11 +164,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 38,
+          "x": 47,
           "y": 62
         },
         {
-          "x": 38,
+          "x": 47,
           "y": 223
         }
       ],
@@ -205,12 +205,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 38,
-          "y": 273
+          "x": 47,
+          "y": 293
         },
         {
-          "x": 38,
-          "y": 434
+          "x": 47,
+          "y": 454
         }
       ],
       "animated": false,

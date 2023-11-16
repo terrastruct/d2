@@ -5,7 +5,6 @@ import (
 	"context"
 	"fmt"
 	"math"
-	"strconv"
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2target"
@@ -69,7 +68,6 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 			labelHeight = float64(obj.LabelDimensions.Height) + 2*label.PADDING
 		}
 
-		var dx, dy float64
 		if labelWidth > 0 {
 			switch labelPosition {
 			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight,
@@ -112,67 +110,34 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 			}
 		}
 
-		overflowTop := padding.Top - float64(verticalPadding)
-		if overflowTop > 0 {
-			contentHeight += overflowTop
-			dy += overflowTop
-		}
-		overflowBottom := padding.Bottom - float64(verticalPadding)
-		if overflowBottom > 0 {
-			contentHeight += overflowBottom
-		}
-		overflowLeft := padding.Left - float64(horizontalPadding)
-		if overflowLeft > 0 {
-			contentWidth += overflowLeft
-			dx += overflowLeft
-		}
-		overflowRight := padding.Right - float64(horizontalPadding)
-		if overflowRight > 0 {
-			contentWidth += overflowRight
-		}
+		padding.Top = math.Max(padding.Top, float64(verticalPadding))
+		padding.Bottom = math.Max(padding.Bottom, float64(verticalPadding))
+		padding.Left = math.Max(padding.Left, float64(horizontalPadding))
+		padding.Right = math.Max(padding.Right, float64(horizontalPadding))
 
-		// manually handle desiredWidth/Height so we can center the grid
-		var desiredWidth, desiredHeight int
-		var originalWidthAttr, originalHeightAttr *d2graph.Scalar
-		if obj.WidthAttr != nil {
-			desiredWidth, _ = strconv.Atoi(obj.WidthAttr.Value)
-			// SizeToContent without desired width
-			originalWidthAttr = obj.WidthAttr
-			obj.WidthAttr = nil
-		}
-		if obj.HeightAttr != nil {
-			desiredHeight, _ = strconv.Atoi(obj.HeightAttr.Value)
-			originalHeightAttr = obj.HeightAttr
-			obj.HeightAttr = nil
-		}
-		// size shape according to grid
-		obj.SizeToContent(contentWidth, contentHeight, float64(2*horizontalPadding), float64(2*verticalPadding))
-		if originalWidthAttr != nil {
-			obj.WidthAttr = originalWidthAttr
-		}
-		if originalHeightAttr != nil {
-			obj.HeightAttr = originalHeightAttr
-		}
-
-		if desiredWidth > 0 {
-			ddx := float64(desiredWidth) - obj.Width
-			if ddx > 0 {
-				dx += ddx / 2
-				obj.Width = float64(desiredWidth)
-			}
-		}
-		if desiredHeight > 0 {
-			ddy := float64(desiredHeight) - obj.Height
-			if ddy > 0 {
-				dy += ddy / 2
-				obj.Height = float64(desiredHeight)
-			}
-		}
+		totalWidth := padding.Left + contentWidth + padding.Right
+		totalHeight := padding.Top + contentHeight + padding.Bottom
+		obj.SizeToContent(totalWidth, totalHeight, 0, 0)
 
 		// compute where the grid should be placed inside shape
-		innerBox := obj.ToShape().GetInnerBox()
-		dx = innerBox.TopLeft.X + dx
-		dy = innerBox.TopLeft.Y + dy
+		s := obj.ToShape()
+		innerTL := s.GetInsidePlacement(totalWidth, totalHeight, 0, 0)
+		// depending on the shape innerBox may be larger than totalWidth, totalHeight
+		// if this is the case, we want to center the cells within the larger innerBox
+		innerBox := s.GetInnerBox()
+
+		var resizeDx, resizeDy float64
+		if innerBox.Width > totalWidth {
+			resizeDx = (innerBox.Width - totalWidth) / 2
+		}
+		if innerBox.Height > totalHeight {
+			resizeDy = (innerBox.Height - totalHeight) / 2
+		}
+
+		// move from horizontalPadding,verticalPadding to innerTL.X+padding.Left, innerTL.Y+padding.Top
+		// and if innerBox is larger than content dimensions, adjust to center within innerBox
+		dx := -float64(horizontalPadding) + innerTL.X + padding.Left + resizeDx
+		dy := -float64(verticalPadding) + innerTL.Y + padding.Top + resizeDy
 		if dx != 0 || dy != 0 {
 			gd.shift(dx, dy)
 		}
