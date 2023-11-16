@@ -163,6 +163,17 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 		// compute where the grid should be placed inside shape
 		s := obj.ToShape()
 		innerTL := s.GetInsidePlacement(totalWidth, totalHeight, 0, 0)
+		// depending on the shape innerBox may be larger than totalWidth, totalHeight
+		// if this is the case, we want to center the cells within the larger innerBox
+		innerBox := s.GetInnerBox()
+
+		var resizeDx, resizeDy float64
+		if innerBox.Width > totalWidth {
+			resizeDx = (innerBox.Width - totalWidth) / 2
+		}
+		if innerBox.Height > totalHeight {
+			resizeDy = (innerBox.Height - totalHeight) / 2
+		}
 
 		log.Warn(ctx, obj.Shape.Value,
 			slog.F("box", obj.Box.ToString()),
@@ -175,8 +186,8 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 		)
 
 		// move from horizontalPadding,verticalPadding to innerTL.X+padding.Left, innerTL.Y+padding.Top
-		dx := -float64(horizontalPadding) + innerTL.X + padding.Left
-		dy := -float64(verticalPadding) + innerTL.Y + padding.Top
+		dx := -float64(horizontalPadding) + innerTL.X + padding.Left + resizeDx
+		dy := -float64(verticalPadding) + innerTL.Y + padding.Top + resizeDy
 		if dx != 0 || dy != 0 {
 			gd.shift(dx, dy)
 		}
