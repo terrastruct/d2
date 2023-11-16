@@ -575,11 +575,8 @@ layers: {
 
 				// Wait for watch server to spin up and listen
 				urlRE := regexp.MustCompile(`127.0.0.1:([0-9]+)`)
-				watchURL := waitLogs(ctx, stderr, urlRE)
-
-				if watchURL == "" {
-					t.Error(errors.New(stderr.String()))
-				}
+				watchURL, err := waitLogs(ctx, stderr, urlRE)
+				assert.Success(t, err)
 				stderr.Reset()
 
 				// Start a client
@@ -599,8 +596,8 @@ layers: {
 				assert.Success(t, err)
 
 				successRE := regexp.MustCompile(`broadcasting update to 1 client`)
-				line := waitLogs(ctx, stderr, successRE)
-				assert.NotEqual(t, "", line)
+				_, err = waitLogs(ctx, stderr, successRE)
+				assert.Success(t, err)
 			},
 		},
 		{
@@ -631,11 +628,9 @@ layers: {
 
 				// Wait for watch server to spin up and listen
 				urlRE := regexp.MustCompile(`127.0.0.1:([0-9]+)`)
-				watchURL := waitLogs(ctx, stderr, urlRE)
+				watchURL, err := waitLogs(ctx, stderr, urlRE)
+				assert.Success(t, err)
 
-				if watchURL == "" {
-					t.Error(errors.New(stderr.String()))
-				}
 				stderr.Reset()
 
 				// Start a client
@@ -655,8 +650,8 @@ layers: {
 				assert.Success(t, err)
 
 				successRE := regexp.MustCompile(`broadcasting update to 1 client`)
-				line := waitLogs(ctx, stderr, successRE)
-				assert.NotEqual(t, "", line)
+				_, err = waitLogs(ctx, stderr, successRE)
+				assert.Success(t, err)
 			},
 		},
 		{
@@ -685,11 +680,8 @@ layers: {
 
 				// Wait for watch server to spin up and listen
 				urlRE := regexp.MustCompile(`127.0.0.1:([0-9]+)`)
-				watchURL := waitLogs(ctx, stderr, urlRE)
-
-				if watchURL == "" {
-					t.Error(errors.New(stderr.String()))
-				}
+				watchURL, err := waitLogs(ctx, stderr, urlRE)
+				assert.Success(t, err)
 				stderr.Reset()
 
 				// Start a client
@@ -709,8 +701,82 @@ layers: {
 				assert.Success(t, err)
 
 				successRE := regexp.MustCompile(`broadcasting update to 1 client`)
-				line := waitLogs(ctx, stderr, successRE)
-				assert.NotEqual(t, "", line)
+				_, err = waitLogs(ctx, stderr, successRE)
+				assert.Success(t, err)
+			},
+		},
+		{
+			name: "watch-imported-file",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "a.d2", `
+...@b
+`)
+				writeFile(t, dir, "b.d2", `
+x
+`)
+				stderr := &bytes.Buffer{}
+				tms := testMain(dir, env, "--watch", "--browser=0", "a.d2")
+				tms.Stderr = stderr
+
+				tms.Start(t, ctx)
+				defer func() {
+					err := tms.Signal(ctx, os.Interrupt)
+					assert.Success(t, err)
+				}()
+
+				// Wait for first compilation to finish
+				doneRE := regexp.MustCompile(`successfully compiled a.d2`)
+				_, err := waitLogs(ctx, stderr, doneRE)
+				assert.Success(t, err)
+				stderr.Reset()
+
+				// Test that writing an imported file will cause recompilation
+				writeFile(t, dir, "b.d2", `
+x -> y
+`)
+				bRE := regexp.MustCompile(`detected change in b.d2`)
+				_, err = waitLogs(ctx, stderr, bRE)
+				assert.Success(t, err)
+				stderr.Reset()
+
+				// Test burst of both files changing
+				writeFile(t, dir, "a.d2", `
+...@b
+hey
+`)
+				writeFile(t, dir, "b.d2", `
+x
+hi
+`)
+				bothRE := regexp.MustCompile(`detected change in a.d2, b.d2`)
+				_, err = waitLogs(ctx, stderr, bothRE)
+				assert.Success(t, err)
+
+				// Wait for that compilation to fully finish
+				_, err = waitLogs(ctx, stderr, doneRE)
+				assert.Success(t, err)
+				stderr.Reset()
+
+				// Update the main file to no longer have that dependency
+				writeFile(t, dir, "a.d2", `
+a
+`)
+				_, err = waitLogs(ctx, stderr, doneRE)
+				assert.Success(t, err)
+				stderr.Reset()
+
+				// Change b
+				writeFile(t, dir, "b.d2", `
+y
+`)
+				// Change a to retrigger compilation
+				// The test works by seeing that the report only says "a" changed, otherwise testing for omission of compilation from "b" would require waiting
+				writeFile(t, dir, "a.d2", `
+c
+`)
+
+				_, err = waitLogs(ctx, stderr, doneRE)
+				assert.Success(t, err)
 			},
 		},
 	}
@@ -810,7 +876,9 @@ func getNumBoards(svg string) int {
 	return strings.Count(svg, `class="d2`)
 }
 
-func waitLogs(ctx context.Context, buf *bytes.Buffer, pattern *regexp.Regexp) string {
+var errRE = regexp.MustCompile(`err:`)
+
+func waitLogs(ctx context.Context, buf *bytes.Buffer, pattern *regexp.Regexp) (string, error) {
 	ticker := time.NewTicker(10 * time.Millisecond)
 	defer ticker.Stop()
 	var match string
@@ -819,13 +887,20 @@ func waitLogs(ctx context.Context, buf *bytes.Buffer, pattern *regexp.Regexp) st
 		case <-ticker.C:
 			out := buf.String()
 			match = pattern.FindString(out)
+			errMatch := errRE.FindString(out)
+			if errMatch != "" {
+				return "", errors.New(buf.String())
+			}
 		case <-ctx.Done():
 			ticker.Stop()
-			return ""
+			return "", fmt.Errorf("could not match pattern in log. logs: %s", buf.String())
 		}
 	}
+	if match == "" {
+		return "", errors.New(buf.String())
+	}
 
-	return match
+	return match, nil
 }
 
 func getWatchPage(ctx context.Context, t *testing.T, page string) error {

@@ -12,6 +12,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"sort"
 	"strings"
 	"sync"
 	"time"
@@ -73,6 +74,7 @@ type watcher struct {
 	l                net.Listener
 	staticFileServer http.Handler
 
+	boardpathMu sync.Mutex
 	wsclientsMu sync.Mutex
 	closing     bool
 	wsclientsWG sync.WaitGroup
@@ -218,10 +220,13 @@ func (w *watcher) goFunc(fn func(context.Context) error) {
  * TODO: Abstract out file system and fsnotify to test this with 100% coverage. See comment in main_test.go
  */
 func (w *watcher) watchLoop(ctx context.Context) error {
-	lastModified, err := w.ensureAddWatch(ctx)
+	lastModified := make(map[string]time.Time)
+
+	mt, err := w.ensureAddWatch(ctx, w.inputPath)
 	if err != nil {
 		return err
 	}
+	lastModified[w.inputPath] = mt
 	w.ms.Log.Info.Printf("compiling %v...", w.ms.HumanPath(w.inputPath))
 	w.requestCompile()
 
@@ -230,6 +235,8 @@ func (w *watcher) watchLoop(ctx context.Context) error {
 	pollTicker := time.NewTicker(time.Second * 10)
 	defer pollTicker.Stop()
 
+	changed := make(map[string]struct{})
+
 	for {
 		select {
 		case <-pollTicker.C:
@@ -237,13 +244,18 @@ func (w *watcher) watchLoop(ctx context.Context) error {
 			// getting any more events.
 			// File notification APIs are notoriously unreliable. I've personally experienced
 			// many quirks and so feel this check is justified even if excessive.
-			mt, err := w.ensureAddWatch(ctx)
-			if err != nil {
-				return err
+			missedChanges := false
+			for _, watched := range w.fw.WatchList() {
+				mt, err := w.ensureAddWatch(ctx, watched)
+				if err != nil {
+					return err
+				}
+				if mt2, ok := lastModified[watched]; !ok || !mt.Equal(mt2) {
+					missedChanges = true
+					lastModified[watched] = mt
+				}
 			}
-			if !mt.Equal(lastModified) {
-				// We missed changes.
-				lastModified = mt
+			if missedChanges {
 				w.requestCompile()
 			}
 		case ev, ok := <-w.fw.Events:
@@ -251,19 +263,20 @@ func (w *watcher) watchLoop(ctx context.Context) error {
 				return errors.New("fsnotify watcher closed")
 			}
 			w.ms.Log.Debug.Printf("received file system event %v", ev)
-			mt, err := w.ensureAddWatch(ctx)
+			mt, err := w.ensureAddWatch(ctx, ev.Name)
 			if err != nil {
 				return err
 			}
 			if ev.Op == fsnotify.Chmod {
-				if mt.Equal(lastModified) {
+				if mt.Equal(lastModified[ev.Name]) {
 					// Benign Chmod.
 					// See https://github.com/fsnotify/fsnotify/issues/15
 					continue
 				}
 				// We missed changes.
-				lastModified = mt
+				lastModified[ev.Name] = mt
 			}
+			changed[ev.Name] = struct{}{}
 			// The purpose of eatBurstTimer is to wait at least 16 milliseconds after a sequence of
 			// events to ensure that whomever is editing the file is now done.
 			//
@@ -276,8 +289,18 @@ func (w *watcher) watchLoop(ctx context.Context) error {
 			// misleading error.
 			eatBurstTimer.Reset(time.Millisecond * 16)
 		case <-eatBurstTimer.C:
-			w.ms.Log.Info.Printf("detected change in %v: recompiling...", w.ms.HumanPath(w.inputPath))
+			var changedList []string
+			for k := range changed {
+				changedList = append(changedList, k)
+			}
+			sort.Strings(changedList)
+			changedStr := w.ms.HumanPath(changedList[0])
+			for i := 1; i < len(changed); i++ {
+				changedStr += fmt.Sprintf(", %s", w.ms.HumanPath(changedList[i]))
+			}
+			w.ms.Log.Info.Printf("detected change in %s: recompiling...", changedStr)
 			w.requestCompile()
+			changed = make(map[string]struct{})
 		case err, ok := <-w.fw.Errors:
 			if !ok {
 				return errors.New("fsnotify watcher closed")
@@ -296,17 +319,17 @@ func (w *watcher) requestCompile() {
 	}
 }
 
-func (w *watcher) ensureAddWatch(ctx context.Context) (time.Time, error) {
+func (w *watcher) ensureAddWatch(ctx context.Context, path string) (time.Time, error) {
 	interval := time.Millisecond * 16
 	tc := time.NewTimer(0)
 	<-tc.C
 	for {
-		mt, err := w.addWatch(ctx)
+		mt, err := w.addWatch(ctx, path)
 		if err == nil {
 			return mt, nil
 		}
 		if interval >= time.Second {
-			w.ms.Log.Error.Printf("failed to watch inputPath %q: %v (retrying in %v)", w.ms.HumanPath(w.inputPath), err, interval)
+			w.ms.Log.Error.Printf("failed to watch %q: %v (retrying in %v)", w.ms.HumanPath(path), err, interval)
 		}
 
 		tc.Reset(interval)
@@ -324,17 +347,54 @@ func (w *watcher) ensureAddWatch(ctx context.Context) (time.Time, error) {
 	}
 }
 
-func (w *watcher) addWatch(ctx context.Context) (time.Time, error) {
-	err := w.fw.Add(w.inputPath)
+func (w *watcher) addWatch(ctx context.Context, path string) (time.Time, error) {
+	err := w.fw.Add(path)
 	if err != nil {
 		return time.Time{}, err
 	}
 	var d os.FileInfo
-	d, err = os.Stat(w.inputPath)
+	d, err = os.Stat(path)
 	if err != nil {
 		return time.Time{}, err
 	}
 	return d.ModTime(), nil
+}
+
+func (w *watcher) replaceWatchList(ctx context.Context, paths []string) error {
+	// First remove the files no longer being watched
+	for _, watched := range w.fw.WatchList() {
+		if watched == w.inputPath {
+			continue
+		}
+		found := false
+		for _, p := range paths {
+			if watched == p {
+				found = true
+				break
+			}
+		}
+		if !found {
+			// Don't mind errors here
+			w.fw.Remove(watched)
+		}
+	}
+	// Then add the files newly being watched
+	for _, p := range paths {
+		found := false
+		for _, watched := range w.fw.WatchList() {
+			if watched == p {
+				found = true
+				break
+			}
+		}
+		if !found {
+			_, err := w.ensureAddWatch(ctx, p)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
 
 func (w *watcher) compileLoop(ctx context.Context) error {
@@ -364,7 +424,10 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			w.pw = newPW
 		}
 
-		svg, _, err := compile(ctx, w.ms, w.plugins, w.layout, w.renderOpts, w.fontFamily, w.animateInterval, w.inputPath, w.outputPath, w.boardPath, w.bundle, w.forceAppendix, w.pw.Page)
+		fs := trackedFS{}
+		w.boardpathMu.Lock()
+		svg, _, err := compile(ctx, w.ms, w.plugins, &fs, w.layout, w.renderOpts, w.fontFamily, w.animateInterval, w.inputPath, w.outputPath, w.boardPath, w.bundle, w.forceAppendix, w.pw.Page)
+		w.boardpathMu.Unlock()
 		errs := ""
 		if err != nil {
 			if len(svg) > 0 {
@@ -375,6 +438,11 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			errs = err.Error()
 			w.ms.Log.Error.Print(errs)
 		}
+		err = w.replaceWatchList(ctx, fs.opened)
+		if err != nil {
+			return err
+		}
+
 		w.broadcast(&compileResult{
 			SVG:   string(svg),
 			Scale: w.renderOpts.Scale,
@@ -442,13 +510,19 @@ func (w *watcher) handleRoot(hw http.ResponseWriter, r *http.Request) {
 </body>
 </html>`, filepath.Base(w.outputPath), w.devMode)
 
+	w.boardpathMu.Lock()
 	// if path is "/x.svg", we just want "x"
 	boardPath := strings.TrimPrefix(r.URL.Path, "/")
 	if idx := strings.LastIndexByte(boardPath, '.'); idx != -1 {
 		boardPath = boardPath[:idx]
 	}
+	recompile := false
 	if boardPath != w.boardPath {
 		w.boardPath = boardPath
+		recompile = true
+	}
+	w.boardpathMu.Unlock()
+	if recompile {
 		w.requestCompile()
 	}
 }
@@ -573,4 +647,17 @@ func wsHeartbeat(ctx context.Context, c *websocket.Conn) {
 			return
 		}
 	}
+}
+
+// trackedFS is OS's FS with the addition that it tracks which files are opened successfully
+type trackedFS struct {
+	opened []string
+}
+
+func (tfs *trackedFS) Open(name string) (fs.File, error) {
+	f, err := os.Open(name)
+	if err == nil {
+		tfs.opened = append(tfs.opened, name)
+	}
+	return f, err
 }
