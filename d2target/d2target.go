@@ -469,6 +469,8 @@ type Shape struct {
 	Class
 	SQLTable
 
+	ContentAspectRatio *float64 `json:"contentAspectRatio,omitempty"`
+
 	Text
 
 	LabelPosition string `json:"labelPosition,omitempty"`
