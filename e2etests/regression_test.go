@@ -1051,6 +1051,7 @@ cf many required: {
 		loadFromFile(t, "grid_image_label_position"),
 		loadFromFile(t, "glob_dimensions"),
 		loadFromFile(t, "shaped_grid_positioning"),
+		loadFromFile(t, "cloud_shaped_grid"),
 	}
 
 	runa(t, tcs)
