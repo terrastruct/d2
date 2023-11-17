@@ -43,12 +43,16 @@ func NewCloud(box *geo.Box) Shape {
 	return shape
 }
 
-// TODO this isn't always accurate since the content aspect ratio might be different from the final shape's https://github.com/terrastruct/d2/issues/1735
 func (s shapeCloud) GetInnerBox() *geo.Box {
-	width := s.Box.Width
-	height := s.Box.Height
+	return s.GetInnerBoxForContent(s.Box.Width, s.Box.Height)
+}
+
+// we need this since the content's aspect ratio determines which placement is used
+func (s shapeCloud) GetInnerBoxForContent(width, height float64) *geo.Box {
 	insideTL := s.GetInsidePlacement(width, height, 0, 0)
 	aspectRatio := width / height
+	// aspect ratio and position are computed with given dimensions, but final box size is determined by shape size
+	width, height = s.Box.Width, s.Box.Height
 	if aspectRatio > CLOUD_WIDE_ASPECT_BOUNDARY {
 		width *= CLOUD_WIDE_INNER_WIDTH
 		height *= CLOUD_WIDE_INNER_HEIGHT

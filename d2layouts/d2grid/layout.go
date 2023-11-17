@@ -124,8 +124,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 		innerTL := s.GetInsidePlacement(totalWidth, totalHeight, 0, 0)
 		// depending on the shape innerBox may be larger than totalWidth, totalHeight
 		// if this is the case, we want to center the cells within the larger innerBox
-		innerBox := s.GetInnerBox()
-
+		innerBox := s.GetInnerBoxForContent(totalWidth, totalHeight)
 		var resizeDx, resizeDy float64
 		if innerBox.Width > totalWidth {
 			resizeDx = (innerBox.Width - totalWidth) / 2
