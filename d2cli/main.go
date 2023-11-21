@@ -368,6 +368,46 @@ func LayoutResolver(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plu
 	}
 }
 
+func RouterResolver(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin) func(engine string) (d2graph.RouteEdges, error) {
+	cached := make(map[string]d2graph.RouteEdges)
+	return func(engine string) (d2graph.RouteEdges, error) {
+		if c, ok := cached[engine]; ok {
+			return c, nil
+		}
+
+		plugin, err := d2plugin.FindPlugin(ctx, plugins, engine)
+		if err != nil {
+			if errors.Is(err, exec.ErrNotFound) {
+				return nil, layoutNotFound(ctx, plugins, engine)
+			}
+			return nil, err
+		}
+
+		pluginInfo, err := plugin.Info(ctx)
+		if err != nil {
+			return nil, err
+		}
+		hasRouter := false
+		for _, feat := range pluginInfo.Features {
+			if feat == d2plugin.ROUTES_EDGES {
+				hasRouter = true
+				break
+			}
+		}
+		if !hasRouter {
+			return nil, nil
+		}
+		routingPlugin, ok := plugin.(d2plugin.RoutingPlugin)
+		if !ok {
+			return nil, fmt.Errorf("plugin has routing feature but does not implement RoutingPlugin")
+		}
+
+		routeEdges := d2graph.RouteEdges(routingPlugin.RouteEdges)
+		cached[engine] = routeEdges
+		return routeEdges, nil
+	}
+}
+
 func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs fs.FS, layout *string, renderOpts d2svg.RenderOpts, fontFamily *d2fonts.FontFamily, animateInterval int64, inputPath, outputPath, boardPath string, bundle, forceAppendix bool, page playwright.Page) (_ []byte, written bool, _ error) {
 	start := time.Now()
 	input, err := ms.ReadPath(inputPath)
@@ -386,6 +426,7 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs
 		InputPath:      inputPath,
 		LayoutResolver: LayoutResolver(ctx, ms, plugins),
 		Layout:         layout,
+		RouterResolver: RouterResolver(ctx, ms, plugins),
 		FS:             fs,
 	}
 

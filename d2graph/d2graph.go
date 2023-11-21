@@ -80,6 +80,7 @@ func (g *Graph) RootBoard() *Graph {
 }
 
 type LayoutGraph func(context.Context, *Graph) error
+type RouteEdges func(context.Context, *Graph, []*Edge) error
 
 // TODO consider having different Scalar types
 // Right now we'll hold any types in Value and just convert, e.g. floats
