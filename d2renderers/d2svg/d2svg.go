@@ -932,6 +932,9 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[targetShape.Type]
 
 	s := shape.NewShape(shapeType, geo.NewBox(tl, width, height))
+	if shapeType == shape.CLOUD_TYPE && targetShape.ContentAspectRatio != nil {
+		s.SetInnerBoxAspectRatio(*targetShape.ContentAspectRatio)
+	}
 
 	var shadowAttr string
 	if targetShape.Shadow {

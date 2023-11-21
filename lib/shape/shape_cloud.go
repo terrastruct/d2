@@ -30,6 +30,7 @@ const CLOUD_SQUARE_INNER_HEIGHT = 0.663
 
 type shapeCloud struct {
 	*baseShape
+	innerBoxAspectRatio *float64
 }
 
 func NewCloud(box *geo.Box) Shape {
@@ -38,17 +39,26 @@ func NewCloud(box *geo.Box) Shape {
 			Type: CLOUD_TYPE,
 			Box:  box,
 		},
+		innerBoxAspectRatio: go2.Pointer(0.),
 	}
 	shape.FullShape = go2.Pointer(Shape(shape))
 	return shape
 }
 
-// TODO this isn't always accurate since the content aspect ratio might be different from the final shape's https://github.com/terrastruct/d2/issues/1735
 func (s shapeCloud) GetInnerBox() *geo.Box {
-	width := s.Box.Width
-	height := s.Box.Height
+	if s.innerBoxAspectRatio != nil && *s.innerBoxAspectRatio != 0. {
+		return s.GetInnerBoxForContent(*s.innerBoxAspectRatio, 1)
+	} else {
+		return s.GetInnerBoxForContent(s.Box.Width, s.Box.Height)
+	}
+}
+
+// we need this since the content's aspect ratio determines which placement is used
+func (s shapeCloud) GetInnerBoxForContent(width, height float64) *geo.Box {
 	insideTL := s.GetInsidePlacement(width, height, 0, 0)
 	aspectRatio := width / height
+	// aspect ratio and position are computed with given dimensions, but final box size is determined by shape size
+	width, height = s.Box.Width, s.Box.Height
 	if aspectRatio > CLOUD_WIDE_ASPECT_BOUNDARY {
 		width *= CLOUD_WIDE_INNER_WIDTH
 		height *= CLOUD_WIDE_INNER_HEIGHT
@@ -60,6 +70,11 @@ func (s shapeCloud) GetInnerBox() *geo.Box {
 		height *= CLOUD_SQUARE_INNER_HEIGHT
 	}
 	return geo.NewBox(&insideTL, width, height)
+}
+
+func (s shapeCloud) SetInnerBoxAspectRatio(aspectRatio float64) {
+	// only used for cloud
+	*s.innerBoxAspectRatio = aspectRatio
 }
 
 func (s shapeCloud) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {

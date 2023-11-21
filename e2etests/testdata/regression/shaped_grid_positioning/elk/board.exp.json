@@ -90,7 +90,7 @@
       "type": "rectangle",
       "pos": {
         "x": 3289,
-        "y": 363
+        "y": 333
       },
       "width": 53,
       "height": 66,
@@ -336,7 +336,7 @@
       "type": "rectangle",
       "pos": {
         "x": 3382,
-        "y": 363
+        "y": 333
       },
       "width": 54,
       "height": 66,
@@ -582,7 +582,7 @@
       "type": "rectangle",
       "pos": {
         "x": 3289,
-        "y": 469
+        "y": 439
       },
       "width": 53,
       "height": 66,
@@ -951,7 +951,7 @@
       "type": "rectangle",
       "pos": {
         "x": 3382,
-        "y": 469
+        "y": 439
       },
       "width": 54,
       "height": 66,
@@ -1219,6 +1219,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
+      "contentAspectRatio": 15.747196012106103,
       "label": "aaaaaaaaaaaaaaa aaaaaaaaaaaaaaa",
       "fontSize": 28,
       "fontFamily": "DEFAULT",

@@ -107,6 +107,8 @@ type Object struct {
 	LabelPosition *string `json:"labelPosition,omitempty"`
 	IconPosition  *string `json:"iconPosition,omitempty"`
 
+	ContentAspectRatio *float64 `json:"contentAspectRatio,omitempty"`
+
 	Class    *d2target.Class    `json:"class,omitempty"`
 	SQLTable *d2target.SQLTable `json:"sql_table,omitempty"`
 
@@ -1068,12 +1070,16 @@ func (obj *Object) SizeToContent(contentWidth, contentHeight, paddingX, paddingY
 		obj.Width = sideLength
 		obj.Height = sideLength
 	} else if desiredHeight == 0 || desiredWidth == 0 {
-		switch s.GetType() {
+		switch shapeType {
 		case shape.PERSON_TYPE:
 			obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.PERSON_AR_LIMIT)
 		case shape.OVAL_TYPE:
 			obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.OVAL_AR_LIMIT)
 		}
+	}
+	if shapeType == shape.CLOUD_TYPE {
+		innerBox := s.GetInnerBoxForContent(contentWidth, contentHeight)
+		obj.ContentAspectRatio = go2.Pointer(innerBox.Width / innerBox.Height)
 	}
 }
 

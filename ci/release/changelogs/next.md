@@ -30,3 +30,4 @@
 - Fixes edge case where nested edge globs were creating excess shapes [#1713](https://github.com/terrastruct/d2/pull/1713)
 - Fixes a panic with a connection to a grid cell that is a container in TALA [#1729](https://github.com/terrastruct/d2/pull/1729)
 - Fixes incorrect grid cell positioning when the grid has a shape set and fixes content sometimes escaping circle shapes. [#1734](https://github.com/terrastruct/d2/pull/1734)
+- Fixes content sometimes escaping cloud shapes. [#1736](https://github.com/terrastruct/d2/pull/1736)
