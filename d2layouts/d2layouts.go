@@ -76,7 +76,7 @@ func SaveOrder(g *d2graph.Graph) (restoreOrder func()) {
 	}
 }
 
-func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, coreLayout d2graph.LayoutGraph) error {
+func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, coreLayout d2graph.LayoutGraph, edgeRouter d2graph.RouteEdges) error {
 	g.Root.Box = &geo.Box{}
 
 	// Before we can layout these nodes, we need to handle all nested diagrams first.
@@ -118,7 +118,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 
 			// Then we layout curr as a nested graph and re-inject it
 			id := curr.AbsID()
-			err := LayoutNested(ctx, nestedGraph, GraphInfo{}, coreLayout)
+			err := LayoutNested(ctx, nestedGraph, GraphInfo{}, coreLayout, edgeRouter)
 			if err != nil {
 				return err
 			}
@@ -209,7 +209,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 				curr.NearKey = nil
 			}
 
-			err := LayoutNested(ctx, nestedGraph, nestedInfo, coreLayout)
+			err := LayoutNested(ctx, nestedGraph, nestedInfo, coreLayout, edgeRouter)
 			if err != nil {
 				return err
 			}
@@ -291,36 +291,61 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 		PositionNested(obj, nestedGraph)
 	}
 
-	// update map with injected objects
-	for _, o := range g.Objects {
-		idToObj[o.AbsID()] = o
+	if len(extractedEdges) > 0 {
+		// update map with injected objects
+		for _, o := range g.Objects {
+			idToObj[o.AbsID()] = o
+		}
+
+		// Restore cross-graph edges and route them
+		g.Edges = append(g.Edges, extractedEdges...)
+		for _, e := range extractedEdges {
+			// update object references
+			src, exists := idToObj[e.Src.AbsID()]
+			if !exists {
+				return fmt.Errorf("could not find object %#v after layout", e.Src.AbsID())
+			}
+			e.Src = src
+			dst, exists := idToObj[e.Dst.AbsID()]
+			if !exists {
+				return fmt.Errorf("could not find object %#v after layout", e.Dst.AbsID())
+			}
+			e.Dst = dst
+		}
+
+		err = edgeRouter(ctx, g, extractedEdges)
+		if err != nil {
+			return err
+		}
+		// need to update pointers if plugin performs edge routing
+		for _, e := range extractedEdges {
+			src, exists := idToObj[e.Src.AbsID()]
+			if !exists {
+				return fmt.Errorf("could not find object %#v after routing", e.Src.AbsID())
+			}
+			e.Src = src
+			dst, exists := idToObj[e.Dst.AbsID()]
+			if !exists {
+				return fmt.Errorf("could not find object %#v after routing", e.Dst.AbsID())
+			}
+			e.Dst = dst
+		}
 	}
 
-	// Restore cross-graph edges and route them
-	g.Edges = append(g.Edges, extractedEdges...)
-	for _, e := range extractedEdges {
-		// update object references
-		src, exists := idToObj[e.Src.AbsID()]
-		if !exists {
-			return fmt.Errorf("could not find object %#v after layout", e.Src.AbsID())
-		}
-		e.Src = src
-		dst, exists := idToObj[e.Dst.AbsID()]
-		if !exists {
-			return fmt.Errorf("could not find object %#v after layout", e.Dst.AbsID())
-		}
-		e.Dst = dst
+	log.Debug(ctx, "done", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
+	return err
+}
 
-		// simple straight line edge routing when going across graphs
+func DefaultRouter(ctx context.Context, graph *d2graph.Graph, edges []*d2graph.Edge) error {
+	for _, e := range edges {
+		// TODO replace simple straight line edge routing
 		e.Route = []*geo.Point{e.Src.Center(), e.Dst.Center()}
 		e.TraceToShape(e.Route, 0, 1)
 		if e.Label.Value != "" {
 			e.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
 		}
 	}
-
-	log.Debug(ctx, "done", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
-	return err
+	return nil
 }
 
 func NestedGraphInfo(obj *d2graph.Object) (gi GraphInfo) {

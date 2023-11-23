@@ -21,6 +21,9 @@ const TOP_LEFT PluginFeature = "top_left"
 // When this is true, containers can have connections to descendants
 const DESCENDANT_EDGES PluginFeature = "descendant_edges"
 
+// When this is true, the plugin also implements RoutingPlugin interface to route edges
+const ROUTES_EDGES PluginFeature = "routes_edges"
+
 func FeatureSupportCheck(info *PluginInfo, g *d2graph.Graph) error {
 	// Older version of plugin. Skip checking.
 	if info.Features == nil {
