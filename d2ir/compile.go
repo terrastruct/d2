@@ -394,6 +394,9 @@ func (c *compiler) ampersandFilterMap(dst *Map, ast, scopeAST *d2ast.Map) bool {
 				ScopeAST: scopeAST,
 			})
 			if !ok {
+				if len(c.mapRefContextStack) == 0 {
+					return false
+				}
 				// Unapply glob if appropriate.
 				gctx := c.getGlobContext(c.mapRefContextStack[len(c.mapRefContextStack)-1])
 				if gctx == nil {
