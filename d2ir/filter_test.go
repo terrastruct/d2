@@ -234,6 +234,18 @@ TestCompile/filters/errors/bad-syntax.d2:9:1: unexpected map termination charact
 				},
 			},
 			{
+				name: "outside-glob",
+				run: func(t testing.TB) {
+					_, err := compile(t, `jacob.style: {
+	fill: red
+	multiple: true
+}
+&a
+`)
+					assert.ErrorString(t, err, `TestCompile/filters/errors/outside-glob.d2:5:1: glob filters cannot be used outside globs`)
+				},
+			},
+			{
 				name: "no-glob",
 				run: func(t testing.TB) {
 					_, err := compile(t, `jacob.style: {
