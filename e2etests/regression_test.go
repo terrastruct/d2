@@ -1052,6 +1052,7 @@ cf many required: {
 		loadFromFile(t, "glob_dimensions"),
 		loadFromFile(t, "shaped_grid_positioning"),
 		loadFromFile(t, "cloud_shaped_grid"),
+		loadFromFileWithOptions(t, "nested_layout_bug", testCase{testSerialization: true}),
 	}
 
 	runa(t, tcs)
