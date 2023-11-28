@@ -117,6 +117,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
+	targetFlag := ms.Opts.String("", "target", "", "*", "target board to render. Pass an empty string to target root board. If target ends with '*', it will be rendered with all of its scenarios, steps, and layers. Otherwise, only the target board will be rendered. E.g. --target='' to render root board only or --target='layers.x.*' to render layer 'x' with all of its children.")
 
 	fontRegularFlag := ms.Opts.String("D2_FONT_REGULAR", "font-regular", "", "", "path to .ttf file to use for the regular font. If none provided, Source Sans Pro Regular is used.")
 	fontItalicFlag := ms.Opts.String("D2_FONT_ITALIC", "font-italic", "", "", "path to .ttf file to use for the italic font. If none provided, Source Sans Pro Regular-Italic is used.")
@@ -312,6 +313,9 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		if inputPath == "-" {
 			return xmain.UsageErrorf("-w[atch] cannot be combined with reading input from stdin")
 		}
+		if *targetFlag != "*" {
+			return xmain.UsageErrorf("-w[atch] cannot be combined with --target")
+		}
 		w, err := newWatcher(ctx, ms, watcherOpts{
 			plugins:         plugins,
 			layout:          layoutFlag,
@@ -332,10 +336,30 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		return w.run()
 	}
 
+	var boardPath []string
+	var noChildren bool
+	switch *targetFlag {
+	case "*":
+	case "":
+		noChildren = true
+	default:
+		target := *targetFlag
+		if strings.HasSuffix(target, ".*") {
+			target = target[:len(target)-2]
+		} else {
+			noChildren = true
+		}
+		key, err := d2parser.ParseKey(target)
+		if err != nil {
+			return xmain.UsageErrorf("invalid target: %s", *targetFlag)
+		}
+		boardPath = key.IDA()
+	}
+
 	ctx, cancel := timelib.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
-	_, written, err := compile(ctx, ms, plugins, nil, layoutFlag, renderOpts, fontFamily, *animateIntervalFlag, inputPath, outputPath, "", *bundleFlag, *forceAppendixFlag, pw.Page)
+	_, written, err := compile(ctx, ms, plugins, nil, layoutFlag, renderOpts, fontFamily, *animateIntervalFlag, inputPath, outputPath, boardPath, noChildren, *bundleFlag, *forceAppendixFlag, pw.Page)
 	if err != nil {
 		if written {
 			return fmt.Errorf("failed to fully compile (partial render written) %s: %w", ms.HumanPath(inputPath), err)
@@ -410,7 +434,7 @@ func RouterResolver(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plu
 	}
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs fs.FS, layout *string, renderOpts d2svg.RenderOpts, fontFamily *d2fonts.FontFamily, animateInterval int64, inputPath, outputPath, boardPath string, bundle, forceAppendix bool, page playwright.Page) (_ []byte, written bool, _ error) {
+func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs fs.FS, layout *string, renderOpts d2svg.RenderOpts, fontFamily *d2fonts.FontFamily, animateInterval int64, inputPath, outputPath string, boardPath []string, noChildren, bundle, forceAppendix bool, page playwright.Page) (_ []byte, written bool, _ error) {
 	start := time.Now()
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
@@ -462,6 +486,16 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs
 		return nil, false, err
 	}
 	cancel()
+
+	diagram = diagram.GetBoard(boardPath)
+	if diagram == nil {
+		return nil, false, fmt.Errorf(`render target "%s" not found`, strings.Join(boardPath, "."))
+	}
+	if noChildren {
+		diagram.Layers = nil
+		diagram.Scenarios = nil
+		diagram.Steps = nil
+	}
 
 	plugin, _ := d2plugin.FindPlugin(ctx, plugins, *opts.Layout)
 
@@ -566,12 +600,13 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs
 			}
 		}
 
-		board := diagram.GetBoard(boardPath)
-		if board == nil {
-			return nil, false, fmt.Errorf(`Diagram with path "%s" not found. Did you mean to specify a board like "layers.%s"?`, boardPath, boardPath)
+		var boards [][]byte
+		var err error
+		if noChildren {
+			boards, err = renderSingle(ctx, ms, compileDur, plugin, renderOpts, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
+		} else {
+			boards, err = render(ctx, ms, compileDur, plugin, renderOpts, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
 		}
-
-		boards, err := render(ctx, ms, compileDur, plugin, renderOpts, inputPath, outputPath, bundle, forceAppendix, page, ruler, board)
 		if err != nil {
 			return nil, false, err
 		}
@@ -786,6 +821,19 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 	}
 
 	return boards, nil
+}
+
+func renderSingle(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([][]byte, error) {
+	start := time.Now()
+	out, err := _render(ctx, ms, plugin, opts, outputPath, bundle, forceAppendix, page, ruler, diagram)
+	if err != nil {
+		return [][]byte{}, err
+	}
+	dur := compileDur + time.Since(start)
+	if opts.MasterID == "" {
+		ms.Log.Success.Printf("successfully compiled %s to %s in %s", ms.HumanPath(inputPath), ms.HumanPath(outputPath), dur)
+	}
+	return [][]byte{out}, nil
 }
 
 func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {

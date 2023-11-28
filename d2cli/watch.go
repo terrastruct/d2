@@ -426,7 +426,11 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 
 		fs := trackedFS{}
 		w.boardpathMu.Lock()
-		svg, _, err := compile(ctx, w.ms, w.plugins, &fs, w.layout, w.renderOpts, w.fontFamily, w.animateInterval, w.inputPath, w.outputPath, w.boardPath, w.bundle, w.forceAppendix, w.pw.Page)
+		var boardPath []string
+		if w.boardPath != "" {
+			boardPath = strings.Split(w.boardPath, string(os.PathSeparator))
+		}
+		svg, _, err := compile(ctx, w.ms, w.plugins, &fs, w.layout, w.renderOpts, w.fontFamily, w.animateInterval, w.inputPath, w.outputPath, boardPath, false, w.bundle, w.forceAppendix, w.pw.Page)
 		w.boardpathMu.Unlock()
 		errs := ""
 		if err != nil {

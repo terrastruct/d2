@@ -111,6 +111,11 @@ Bundle all assets and layers into the output svg
 .It Fl -force-appendix Ar false
 An appendix for tooltips and links is added to PNG exports since they are not interactive. Setting this to true adds an appendix to SVG exports as well
 .Ns .
+.It Fl -target
+Target board to render. Pass an empty string to target root board. If target ends with '*', it will be rendered
+with all of its scenarios, steps, and layers. Otherwise, only the target board will be rendered. E.g. --target=''
+to render root board only or --target='layers.x.*' to render layer 'x' with all of its children
+.Ns .
 .It Fl d , -debug
 Print debug logs
 .Ns .

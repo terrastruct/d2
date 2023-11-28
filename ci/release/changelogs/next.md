@@ -3,6 +3,7 @@
 - ELK now routes `sql_table` edges to the exact columns (ty @landmaj) [#1681](https://github.com/terrastruct/d2/pull/1681)
 - Adds new unfilled triangle arrowhead. [#1711](https://github.com/terrastruct/d2/pull/1711)
 - Grid containers can now have custom label positions. [#1715](https://github.com/terrastruct/d2/pull/1715)
+- A single board from a multi-board diagram can now be rendered with `--target` flag. [#1725](https://github.com/terrastruct/d2/pull/1725)
 
 #### Improvements 🧹
 
