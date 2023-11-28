@@ -80,6 +80,11 @@ type Plugin interface {
 	PostProcess(context.Context, []byte) ([]byte, error)
 }
 
+type RoutingPlugin interface {
+	// RouteEdges runs the plugin's edge routing algorithm for the given edges in the input graph
+	RouteEdges(context.Context, *d2graph.Graph, []*d2graph.Edge) error
+}
+
 // PluginInfo is the current info information of a plugin.
 // note: The two fields Type and Path are not set by the plugin
 // itself but only in ListPlugins.

@@ -364,7 +364,11 @@ func (obj *Object) ToShape() shape.Shape {
 	dslShape := strings.ToLower(obj.Shape.Value)
 	shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
 	contentBox := geo.NewBox(tl, obj.Width, obj.Height)
-	return shape.NewShape(shapeType, contentBox)
+	s := shape.NewShape(shapeType, contentBox)
+	if shapeType == shape.CLOUD_TYPE && obj.ContentAspectRatio != nil {
+		s.SetInnerBoxAspectRatio(*obj.ContentAspectRatio)
+	}
+	return s
 }
 
 func (obj *Object) GetLabelTopLeft() *geo.Point {

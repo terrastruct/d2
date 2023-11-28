@@ -581,11 +581,11 @@
       "id": "circle",
       "type": "oval",
       "pos": {
-        "x": 716,
+        "x": 710,
         "y": 368
       },
-      "width": 91,
-      "height": 91,
+      "width": 103,
+      "height": 103,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -686,6 +686,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
+      "contentAspectRatio": 2.586678832116788,
       "label": "cloud",
       "fontSize": 16,
       "fontFamily": "DEFAULT",

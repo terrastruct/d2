@@ -25,6 +25,7 @@ type CompileOptions struct {
 	FS             fs.FS
 	MeasuredTexts  []*d2target.MText
 	Ruler          *textmeasure.Ruler
+	RouterResolver func(engine string) (d2graph.RouteEdges, error)
 	LayoutResolver func(engine string) (d2graph.LayoutGraph, error)
 
 	Layout *string
@@ -81,9 +82,13 @@ func compile(ctx context.Context, g *d2graph.Graph, compileOpts *CompileOptions,
 		if err != nil {
 			return nil, err
 		}
+		edgeRouter, err := getEdgeRouter(compileOpts)
+		if err != nil {
+			return nil, err
+		}
 
 		graphInfo := d2layouts.NestedGraphInfo(g.Root)
-		err = d2layouts.LayoutNested(ctx, g, graphInfo, coreLayout)
+		err = d2layouts.LayoutNested(ctx, g, graphInfo, coreLayout, edgeRouter)
 		if err != nil {
 			return nil, err
 		}
@@ -129,6 +134,19 @@ func getLayout(opts *CompileOptions) (d2graph.LayoutGraph, error) {
 	} else {
 		return nil, errors.New("no available layout")
 	}
+}
+
+func getEdgeRouter(opts *CompileOptions) (d2graph.RouteEdges, error) {
+	if opts.Layout != nil && opts.RouterResolver != nil {
+		router, err := opts.RouterResolver(*opts.Layout)
+		if err != nil {
+			return nil, err
+		}
+		if router != nil {
+			return router, nil
+		}
+	}
+	return d2layouts.DefaultRouter, nil
 }
 
 // applyConfigs applies the configs read from D2 and applies it to passed in opts

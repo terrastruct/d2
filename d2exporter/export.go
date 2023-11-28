@@ -167,6 +167,10 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	case d2target.ShapeSQLTable:
 		shape.SQLTable = *obj.SQLTable
 		shape.FontSize -= d2target.HeaderFontAdd
+	case d2target.ShapeCloud:
+		if obj.ContentAspectRatio != nil {
+			shape.ContentAspectRatio = go2.Pointer(*obj.ContentAspectRatio)
+		}
 	}
 	shape.Label = text.Text
 	shape.LabelWidth = text.Dimensions.Width

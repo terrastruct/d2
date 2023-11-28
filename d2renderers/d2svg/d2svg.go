@@ -932,6 +932,9 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[targetShape.Type]
 
 	s := shape.NewShape(shapeType, geo.NewBox(tl, width, height))
+	if shapeType == shape.CLOUD_TYPE && targetShape.ContentAspectRatio != nil {
+		s.SetInnerBoxAspectRatio(*targetShape.ContentAspectRatio)
+	}
 
 	var shadowAttr string
 	if targetShape.Shadow {
@@ -1192,10 +1195,15 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		}
 	}
 
-	// to examine GetInsidePlacement
-	// padX, padY := s.GetDefaultPadding()
-	// innerTL := s.GetInsidePlacement(s.GetInnerBox().Width, s.GetInnerBox().Height, padX, padY)
-	// fmt.Fprint(writer, renderOval(&innerTL, 5, 5, "fill:red;"))
+	// // to examine shape's innerBox
+	// innerBox := s.GetInnerBox()
+	// el := d2themes.NewThemableElement("rect")
+	// el.X = float64(innerBox.TopLeft.X)
+	// el.Y = float64(innerBox.TopLeft.Y)
+	// el.Width = float64(innerBox.Width)
+	// el.Height = float64(innerBox.Height)
+	// el.Style = "fill:rgba(255,0,0,0.5);"
+	// fmt.Fprint(writer, el.Render())
 
 	// Closes the class=shape
 	fmt.Fprint(writer, `</g>`)
