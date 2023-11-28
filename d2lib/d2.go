@@ -7,11 +7,13 @@ import (
 	"os"
 	"strings"
 
+	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2exporter"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
+	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2target"
@@ -38,6 +40,17 @@ type CompileOptions struct {
 	FontFamily *d2fonts.FontFamily
 
 	InputPath string
+}
+
+func Parse(ctx context.Context, input string, compileOpts *CompileOptions) (*d2ast.Map, error) {
+	if compileOpts == nil {
+		compileOpts = &CompileOptions{}
+	}
+
+	ast, err := d2parser.Parse(compileOpts.InputPath, strings.NewReader(input), &d2parser.ParseOptions{
+		UTF16Pos: compileOpts.UTF16Pos,
+	})
+	return ast, err
 }
 
 func Compile(ctx context.Context, input string, compileOpts *CompileOptions, renderOpts *d2svg.RenderOpts) (*d2target.Diagram, *d2graph.Graph, error) {
