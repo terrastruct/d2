@@ -1,13 +1,11 @@
 package d2compiler
 
 import (
-	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io"
 	"io/fs"
 	"net/url"
-	"os"
 	"strconv"
 	"strings"
 
@@ -29,12 +27,6 @@ type CompileOptions struct {
 	FS fs.FS
 }
 
-// Changes for Language Server 'mode'
-type LspOutputData struct {
-	Ast *d2ast.Map
-	Err error
-}
-
 func Compile(p string, r io.Reader, opts *CompileOptions) (*d2graph.Graph, *d2target.Config, error) {
 	if opts == nil {
 		opts = &CompileOptions{}
@@ -43,14 +35,6 @@ func Compile(p string, r io.Reader, opts *CompileOptions) (*d2graph.Graph, *d2ta
 	ast, err := d2parser.Parse(p, r, &d2parser.ParseOptions{
 		UTF16Pos: opts.UTF16Pos,
 	})
-
-	if os.Getenv("D2_LSP_MODE") == "1" {
-		jsonOutput, _ := json.Marshal(LspOutputData{Ast: ast, Err: err})
-		fmt.Print(string(jsonOutput))
-		os.Exit(42)
-		return nil, nil, err
-	}
-
 	if err != nil {
 		return nil, nil, err
 	}

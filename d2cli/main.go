@@ -2,6 +2,7 @@ package d2cli
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -21,6 +22,7 @@ import (
 	"oss.terrastruct.com/util-go/go2"
 	"oss.terrastruct.com/util-go/xmain"
 
+	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2parser"
@@ -387,6 +389,26 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs
 		LayoutResolver: LayoutResolver(ctx, ms, plugins),
 		Layout:         layout,
 		FS:             fs,
+	}
+
+	if os.Getenv("D2_LSP_MODE") == "1" {
+		// only the parse result is needed if running d2 for lsp
+		ast, err := d2lib.Parse(ctx, string(input), opts)
+		if err != nil {
+			return nil, false, err
+		}
+
+		type LspOutputData struct {
+			Ast *d2ast.Map
+			Err error
+		}
+		jsonOutput, err := json.Marshal(LspOutputData{Ast: ast, Err: err})
+		if err != nil {
+			return nil, false, err
+		}
+		fmt.Print(string(jsonOutput))
+		os.Exit(42)
+		return nil, false, nil
 	}
 
 	cancel := background.Repeat(func() {
