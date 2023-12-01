@@ -538,7 +538,7 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs
 		if err != nil {
 			return nil, false, err
 		}
-		err = os.MkdirAll(filepath.Dir(outputPath), 0755)
+		err = os.MkdirAll(filepath.Dir(outputPath), 0o755)
 		if err != nil {
 			return nil, false, err
 		}
@@ -618,7 +618,7 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs
 				if err != nil {
 					return nil, false, err
 				}
-				err = os.MkdirAll(filepath.Dir(outputPath), 0755)
+				err = os.MkdirAll(filepath.Dir(outputPath), 0o755)
 				if err != nil {
 					return nil, false, err
 				}
@@ -899,7 +899,7 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 	}
 
 	if opts.MasterID == "" {
-		err = os.MkdirAll(filepath.Dir(outputPath), 0755)
+		err = os.MkdirAll(filepath.Dir(outputPath), 0o755)
 		if err != nil {
 			return svg, err
 		}
@@ -1245,9 +1245,11 @@ func loadFonts(ms *xmain.State, pathToRegular, pathToItalic, pathToBold, pathToS
 	return d2fonts.AddFontFamily("custom", regularTTF, italicTTF, boldTTF, semiboldTTF)
 }
 
-const LAYERS = "layers"
-const STEPS = "steps"
-const SCENARIOS = "scenarios"
+const (
+	LAYERS    = "layers"
+	STEPS     = "steps"
+	SCENARIOS = "scenarios"
+)
 
 // buildBoardIDToIndex returns a map from board path to page int
 // To map correctly, it must follow the same traversal of pdf/pptx building

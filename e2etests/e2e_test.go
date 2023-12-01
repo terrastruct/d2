@@ -26,6 +26,8 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/d2animate"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/internal/embeddedplugin/dagre"
+	"oss.terrastruct.com/d2/internal/embeddedplugin/elk"
 	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
@@ -174,13 +176,13 @@ func run(t *testing.T, tc testCase) {
 	for _, layoutName := range layoutsTested {
 		var plugin d2plugin.Plugin
 		if layoutName == "dagre" {
-			plugin = &d2plugin.DagrePlugin
+			plugin = &dagre.DagrePlugin{}
 		} else if layoutName == "elk" {
 			// If measured texts exists, we are specifically exercising text measurements, no need to run on both layouts
 			if tc.mtexts != nil {
 				continue
 			}
-			plugin = &d2plugin.ELKPlugin
+			plugin = &elk.ELKPlugin{}
 		}
 
 		compileOpts := &d2lib.CompileOptions{
@@ -250,9 +252,9 @@ func run(t *testing.T, tc testCase) {
 			assert.Success(t, err)
 		}
 
-		err = os.MkdirAll(dataPath, 0755)
+		err = os.MkdirAll(dataPath, 0o755)
 		assert.Success(t, err)
-		err = os.WriteFile(pathGotSVG, svgBytes, 0600)
+		err = os.WriteFile(pathGotSVG, svgBytes, 0o600)
 		assert.Success(t, err)
 
 		// Check that it's valid SVG
