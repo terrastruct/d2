@@ -83,6 +83,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 	extracted := make(map[string]*d2graph.Graph)
 	var extractedOrder []string
 	var extractedEdges []*d2graph.Edge
+	var extractedEdgeIDs []edgeIDs
 
 	var constantNears []*d2graph.Graph
 	restoreOrder := SaveOrder(g)
@@ -114,7 +115,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			// │ │    │      │  └──┘    └──┘ │ │    │ │    │                        │
 			// │ └────┘      └───────────────┘ │    │ └────┘                        │
 			// └───────────────────────────────┘    └───────────────────────────────┘
-			nestedGraph, externalEdges := ExtractSubgraph(curr, true)
+			nestedGraph, externalEdges, externalEdgeIDs := ExtractSubgraph(curr, true)
 
 			// Then we layout curr as a nested graph and re-inject it
 			id := curr.AbsID()
@@ -142,13 +143,13 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			if err != nil {
 				return err
 			}
-			for _, e := range externalEdges {
-				src, err := lookup(e.Src.AbsID())
+			for i, e := range externalEdges {
+				src, err := lookup(externalEdgeIDs[i].srcID)
 				if err != nil {
 					return err
 				}
 				e.Src = src
-				dst, err := lookup(e.Dst.AbsID())
+				dst, err := lookup(externalEdgeIDs[i].dstID)
 				if err != nil {
 					return err
 				}
@@ -182,8 +183,9 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			// │ │    │      │  └──┘    └──┘ │ │    │ │    │      │               │ │
 			// │ └────┘      └───────────────┘ │    │ └────┘      └───────────────┘ │
 			// └───────────────────────────────┘    └───────────────────────────────┘
-			nestedGraph, externalEdges = ExtractSubgraph(curr, false)
+			nestedGraph, externalEdges, externalEdgeIDs = ExtractSubgraph(curr, false)
 			extractedEdges = append(extractedEdges, externalEdges...)
+			extractedEdgeIDs = append(extractedEdgeIDs, externalEdgeIDs...)
 
 			extracted[id] = nestedGraph
 			extractedOrder = append(extractedOrder, id)
@@ -197,8 +199,9 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			}
 
 			// There is a nested diagram here, so extract its contents and process in the same way
-			nestedGraph, externalEdges := ExtractSubgraph(curr, gi.IsConstantNear)
+			nestedGraph, externalEdges, externalEdgeIDs := ExtractSubgraph(curr, gi.IsConstantNear)
 			extractedEdges = append(extractedEdges, externalEdges...)
+			extractedEdgeIDs = append(extractedEdgeIDs, externalEdgeIDs...)
 
 			log.Info(ctx, "layout nested", slog.F("level", curr.Level()), slog.F("child", curr.AbsID()), slog.F("gi", gi))
 			nestedInfo := gi
@@ -299,16 +302,17 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 
 		// Restore cross-graph edges and route them
 		g.Edges = append(g.Edges, extractedEdges...)
-		for _, e := range extractedEdges {
+		for i, e := range extractedEdges {
+			ids := extractedEdgeIDs[i]
 			// update object references
-			src, exists := idToObj[e.Src.AbsID()]
+			src, exists := idToObj[ids.srcID]
 			if !exists {
-				return fmt.Errorf("could not find object %#v after layout", e.Src.AbsID())
+				return fmt.Errorf("could not find object %#v after layout", ids.srcID)
 			}
 			e.Src = src
-			dst, exists := idToObj[e.Dst.AbsID()]
+			dst, exists := idToObj[ids.dstID]
 			if !exists {
-				return fmt.Errorf("could not find object %#v after layout", e.Dst.AbsID())
+				return fmt.Errorf("could not find object %#v after layout", ids.dstID)
 			}
 			e.Dst = dst
 		}
@@ -318,15 +322,16 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			return err
 		}
 		// need to update pointers if plugin performs edge routing
-		for _, e := range extractedEdges {
-			src, exists := idToObj[e.Src.AbsID()]
+		for i, e := range extractedEdges {
+			ids := extractedEdgeIDs[i]
+			src, exists := idToObj[ids.srcID]
 			if !exists {
-				return fmt.Errorf("could not find object %#v after routing", e.Src.AbsID())
+				return fmt.Errorf("could not find object %#v after routing", ids.srcID)
 			}
 			e.Src = src
-			dst, exists := idToObj[e.Dst.AbsID()]
+			dst, exists := idToObj[ids.dstID]
 			if !exists {
-				return fmt.Errorf("could not find object %#v after routing", e.Dst.AbsID())
+				return fmt.Errorf("could not find object %#v after routing", ids.dstID)
 			}
 			e.Dst = dst
 		}
@@ -360,7 +365,11 @@ func NestedGraphInfo(obj *d2graph.Object) (gi GraphInfo) {
 	return gi
 }
 
-func ExtractSubgraph(container *d2graph.Object, includeSelf bool) (nestedGraph *d2graph.Graph, externalEdges []*d2graph.Edge) {
+type edgeIDs struct {
+	srcID, dstID string
+}
+
+func ExtractSubgraph(container *d2graph.Object, includeSelf bool) (nestedGraph *d2graph.Graph, externalEdges []*d2graph.Edge, externalEdgeIDs []edgeIDs) {
 	// includeSelf: when we have a constant near or a grid cell that is a container,
 	// we want to include itself in the nested graph, not just its descendants,
 	nestedGraph = d2graph.NewGraph()
@@ -399,6 +408,11 @@ func ExtractSubgraph(container *d2graph.Object, includeSelf bool) (nestedGraph *
 			nestedGraph.Edges = append(nestedGraph.Edges, edge)
 		} else if srcIsNested || dstIsNested {
 			externalEdges = append(externalEdges, edge)
+			// we need these AbsIDs when reconnecting since parent references may become stale
+			externalEdgeIDs = append(externalEdgeIDs, edgeIDs{
+				srcID: edge.Src.AbsID(),
+				dstID: edge.Dst.AbsID(),
+			})
 		} else {
 			remainingEdges = append(remainingEdges, edge)
 		}
@@ -446,7 +460,7 @@ func ExtractSubgraph(container *d2graph.Object, includeSelf bool) (nestedGraph *
 		container.ChildrenArray = nil
 	}
 
-	return nestedGraph, externalEdges
+	return nestedGraph, externalEdges, externalEdgeIDs
 }
 
 func InjectNested(container *d2graph.Object, nestedGraph *d2graph.Graph, isRoot bool) {

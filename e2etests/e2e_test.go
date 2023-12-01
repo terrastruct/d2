@@ -79,6 +79,7 @@ type testCase struct {
 	name string
 	// if the test is just testing a render/style thing, no need to exercise both engines
 	justDagre         bool
+	testSerialization bool
 	script            string
 	mtexts            []*d2target.MText
 	assertions        func(t *testing.T, diagram *d2target.Diagram)
@@ -142,10 +143,32 @@ func run(t *testing.T, tc testCase) {
 	}
 
 	layoutResolver := func(engine string) (d2graph.LayoutGraph, error) {
+		layout := d2dagrelayout.DefaultLayout
 		if strings.EqualFold(engine, "elk") {
-			return d2elklayout.DefaultLayout, nil
+			layout = d2elklayout.DefaultLayout
 		}
-		return d2dagrelayout.DefaultLayout, nil
+		if tc.testSerialization {
+			return func(ctx context.Context, g *d2graph.Graph) error {
+				bytes, err := d2graph.SerializeGraph(g)
+				if err != nil {
+					return err
+				}
+				err = d2graph.DeserializeGraph(bytes, g)
+				if err != nil {
+					return err
+				}
+				err = layout(ctx, g)
+				if err != nil {
+					return err
+				}
+				bytes, err = d2graph.SerializeGraph(g)
+				if err != nil {
+					return err
+				}
+				return d2graph.DeserializeGraph(bytes, g)
+			}, nil
+		}
+		return layout, nil
 	}
 
 	for _, layoutName := range layoutsTested {
@@ -267,4 +290,11 @@ func loadFromFile(t *testing.T, name string) testCase {
 		name:   name,
 		script: string(d2Text),
 	}
+}
+
+func loadFromFileWithOptions(t *testing.T, name string, options testCase) testCase {
+	tc := options
+	tc.name = name
+	tc.script = loadFromFile(t, name).script
+	return tc
 }
