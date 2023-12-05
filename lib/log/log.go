@@ -47,32 +47,35 @@ func WithTB(ctx context.Context, t testing.TB, opts *slogtest.Options) context.C
 	return With(ctx, l)
 }
 
-func Debug(ctx context.Context, msg string, fields ...slog.Field) {
+// see slog.Logger's Info; it is now possible to do the following
+// log.Debug(ctx, msg, keyString1, valueAny1, slog.Field, keyString2, valueAny2, slog.Map)
+// Warning: it will panic when using key, value as separate args if key is not a string or value arg is missing
+func Debug(ctx context.Context, msg string, fields ...any) {
 	slog.Helper()
 	from(ctx).Debug(ctx, msg, fields...)
 }
 
-func Info(ctx context.Context, msg string, fields ...slog.Field) {
+func Info(ctx context.Context, msg string, fields ...any) {
 	slog.Helper()
 	from(ctx).Info(ctx, msg, fields...)
 }
 
-func Warn(ctx context.Context, msg string, fields ...slog.Field) {
+func Warn(ctx context.Context, msg string, fields ...any) {
 	slog.Helper()
 	from(ctx).Warn(ctx, msg, fields...)
 }
 
-func Error(ctx context.Context, msg string, fields ...slog.Field) {
+func Error(ctx context.Context, msg string, fields ...any) {
 	slog.Helper()
 	from(ctx).Error(ctx, msg, fields...)
 }
 
-func Critical(ctx context.Context, msg string, fields ...slog.Field) {
+func Critical(ctx context.Context, msg string, fields ...any) {
 	slog.Helper()
 	from(ctx).Critical(ctx, msg, fields...)
 }
 
-func Fatal(ctx context.Context, msg string, fields ...slog.Field) {
+func Fatal(ctx context.Context, msg string, fields ...any) {
 	slog.Helper()
 	from(ctx).Fatal(ctx, msg, fields...)
 }
