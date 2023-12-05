@@ -5,7 +5,7 @@ go 1.20
 require (
 	cdr.dev/slog v1.4.2-0.20221206192828-e4803b10ae17
 	github.com/PuerkitoBio/goquery v1.8.1
-	github.com/alecthomas/chroma/v2 v2.12.0
+	github.com/alecthomas/chroma/v2 v2.5.0
 	github.com/dop251/goja v0.0.0-20231027120936-b396bb4c349d
 	github.com/dsoprea/go-exif/v3 v3.0.1
 	github.com/dsoprea/go-png-image-structure/v2 v2.0.0-20210512210324-29b889a6093d
