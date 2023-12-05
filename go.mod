@@ -15,7 +15,7 @@ require (
 	github.com/jung-kurt/gofpdf v1.16.2
 	github.com/lucasb-eyer/go-colorful v1.2.0
 	github.com/mazznoer/csscolorparser v0.1.3
-	github.com/playwright-community/playwright-go v0.3900.1
+	github.com/playwright-community/playwright-go v0.2000.1
 	github.com/rivo/uniseg v0.4.4
 	github.com/spf13/pflag v1.0.5
 	github.com/stretchr/testify v1.8.4
@@ -40,7 +40,6 @@ require (
 	github.com/dsoprea/go-utility/v2 v2.0.0-20221003172846-a3e1774ef349 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/go-errors/errors v1.5.1 // indirect
-	github.com/go-jose/go-jose/v3 v3.0.1 // indirect
 	github.com/go-sourcemap/sourcemap v2.1.3+incompatible // indirect
 	github.com/go-stack/stack v1.8.1 // indirect
 	github.com/golang/geo v0.0.0-20230421003525-6adc56603217 // indirect
@@ -56,6 +55,7 @@ require (
 	golang.org/x/exp v0.0.0-20231127185646-65229373498e // indirect
 	golang.org/x/sys v0.15.0 // indirect
 	golang.org/x/term v0.15.0 // indirect
+	gopkg.in/square/go-jose.v2 v2.6.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
