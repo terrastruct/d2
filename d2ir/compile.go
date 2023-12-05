@@ -419,8 +419,10 @@ func (c *compiler) ampersandFilterMap(dst *Map, ast, scopeAST *d2ast.Map) bool {
 func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 	var globs []*globContext
 	if len(c.globContextStack) > 0 {
-		previousGlobs := c.globContextStack[len(c.globContextStack)-1]
-		if NodeBoardKind(dst) == BoardLayer {
+		previousGlobs := c.globContexts()
+		// A root layer with existing glob context stack implies it's an import
+		// In which case, the previous globs should be inherited (the else block)
+		if NodeBoardKind(dst) == BoardLayer && !dst.Root() {
 			for _, g := range previousGlobs {
 				if g.refctx.Key.HasTripleGlob() {
 					globs = append(globs, g.prefixed(dst))

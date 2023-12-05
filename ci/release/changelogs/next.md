@@ -33,3 +33,4 @@
 - Fixes incorrect grid cell positioning when the grid has a shape set and fixes content sometimes escaping circle shapes. [#1734](https://github.com/terrastruct/d2/pull/1734)
 - Fixes content sometimes escaping cloud shapes. [#1736](https://github.com/terrastruct/d2/pull/1736)
 - Fixes panic using a glob filter (e.g. `&a`) outside globs. [#1748](https://github.com/terrastruct/d2/pull/1748)
+- Fixes glob keys with import values (e.g. `user*: @lib/user`). [#1755](https://github.com/terrastruct/d2/pull/1755)
