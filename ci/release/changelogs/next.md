@@ -1,8 +1,20 @@
 D2 0.6.2 makes grid diagrams significantly more powerful. Namely, connections can now be made from grid elements to other grid elements. This enables diagrams like the following.
 
+![vector-grid](https://raw.githubusercontent.com/terrastruct/d2/af841720b48864f5240ae4fb9cb0cb87bcfef038/docs/examples/vector-grid/vector-grid.svg)
+
+> [Source code](https://github.com/terrastruct/d2/blob/master/docs/examples/vector-grid/vector-grid.d2)
+
+> [Playground link](https://play.d2lang.com/?script=xFVNb9swDL37VxDqTgVs-CMfjTAMaJt5p12GYXfFVhOjthTIzNKuyH8fLEu27DpYGxTYoaj5KJHUI_mSlayueU3hxQPg1R6f20-Akm14SYEQbdX4XHLrAngoypICKibqPVNcoMFrVPKR-8cixx2FUKMnr_1D_oQ2wgeEy8pDjVxdFjFn9Y7CbABSIFf3i3WyTskg0VYVuQ3cfPuZLA-VqClEbyXquCuQv-FNSh4HmZQ8vifNewg8ed5vpkzjS_6A_ohQm0_4dfGH5_CLZyhVm11PDbUt0FB4HeiagrYUcrVOv6bpLRk6LdObkmWP0-_UwJbtbbm6jkBwpijIA9ZFzn2Ue7-p2dMnSBgsYmI_o3n7qYc5Ckyp2tK4sFAzj_3J-PVJEgarqIs7uyGekwM--yDA_9Kf0g0struzTFYXMrmM03ma_lcmn3GCyerjmKxGTJ48z3lO7HlNnd12mPhKHq1ojVO2oBn7KArDJuEPJnJZwXeGqniCb1xwxVB2bTKnk7Bla8ebXlKIlmG_ccGDFKjbSCEe4KZXt8u7u_vU2dGJRrX4RqqcK1-xvDg0LQvtwzcSUVZnXqs31VUk422gltSIwqcXd6FPGo6n4WQKPjWRcol-JgWyQvSj_KqzU4J4bvNyiRTWEmGvZH7IsFOv8RgBZIXKGn0jpDsEUO_YnlPj61GH_57jMf9DCXTaHfeI7XgHncz_qcUxXcq4sHvbMVfpAbuQvPYyhZ9MbTlCXlRc1IUUxtHRcW6ZnYIGkjBzIUcUAK67PQl7qJt-BxtOehqli3RFRt7X096ufER6I4kdY-UaUWKUQVvLmeuaO8Y8cYw4ci-tlo5r5l6K3BrCuXtp4bqWboT5yjFuEjLs9IT2dD8C_17SwY-Fs6UTeDKJT05bo6R9BY2gGO0Mzuhfc6HXnGAczwDe3wAAAP__&sketch=1&)
+>
+> Credit: this diagram is based off of a manually-drawn one from a [blog post](https://github.com/terrastruct/d2/issues/1299)
+
 In addition, another significant feature is that using the ELK layout engine will now route SQL diagrams to their exact columns.
 
-Note that all previous playground links will be broken given the encoding change. The encoding used to use the keyword set as compression dictionary, but it no longer does, so this will be the last time playground links break.
+<img width="576" alt="Screen Shot 2023-12-06 at 3 26 39 PM" src="https://github.com/terrastruct/d2/assets/3120367/5b153748-22ed-4bad-bd05-70dfd6e7d3e0">
+
+> [Playground link](https://play.d2lang.com/?script=pI9BroMwDAX3PsW7wOcAWfyrIJdYYDUJaWxaIcTdKyrYV-rS0jzNeJjNlywWsBFgE1cJsEfqnW9JCNAYoMWxDXMxb6zFA2rTzG3t77Lux0xT0iJmH5SAfLDSrjOxeb_UyC4xwDWLOedKO9FJ_ubP81OPmTctIwEv0XHyL-zX992Zgb__q906jfQOAAD__w%3D%3D&sketch=1&layout=elk&)
+
+**Note** that all previous playground links will be broken given the encoding change. The encoding before 0.6.2 used the keyword set as compression dictionary, but it no longer does, so this will be the last time playground links break.
 
 #### Features 🚀
 
