@@ -1,0 +1,171 @@
+classes: {
+  empty: {
+    label: ""
+    style: {
+      fill: transparent
+      stroke-width: 0
+    }
+  }
+  text: {
+    style: {
+      fill: transparent
+      stroke-width: 0
+    }
+  }
+  cluster: {
+    style: {
+      fill: transparent
+      stroke-dash: 4
+      stroke: "#C6D3DF"
+    }
+  }
+  grid: {
+    grid-columns: 1
+    label: ""
+    style: {
+      fill: white
+      stroke-width: 0
+    }
+  }
+  row: {
+    grid-rows: 1
+    label: ""
+    style: {
+      fill: transparent
+      stroke-width: 0
+    }
+  }
+}
+
+vars: {
+  left-cluster: {
+    label: "n-sized Vector"
+    class: cluster
+    0*.style.fill: "#DFEFFA"
+    0*.style.stroke: black
+    grid-rows: 1
+    grid-gap: 0
+    label.near: outside-top-left
+
+    "0.62"
+    "0.15"
+    empty1.class: empty
+    n.class: text
+    empty2.class: empty
+    "0.91"
+    "0.48"
+
+    "0.15" <- n -> "0.91"
+  }
+  right-cluster: {
+    label: "m-sized Vector"
+    class: cluster
+    0*.style.fill: "#72F5FF"
+    0*.style.stroke: black
+    grid-rows: 1
+    grid-gap: 0
+    label.near: outside-top-left
+
+    "0.62"
+    "0.15"
+    empyt1.class: empty
+    m.class: text
+    empty2.class: empty
+    "0.91"
+    "0.48"
+
+    "0.15" <- m -> "0.91"
+  }
+}
+
+grid-rows: 2
+
+top-row: {
+  class: row
+  empty.class: empty
+  empty.width: 1100
+
+  Random Matrix Generator: {
+    width: 300
+    height: 170
+    style.font-size: 20
+    style.fill: "#A7BBCF"
+    style.stroke: black
+    style.border-radius: 10
+  }
+}
+
+bottom-row: {
+  class: row
+  left-grid: {
+    class: grid
+
+    1: ${left-cluster}
+    2: ${left-cluster}
+    3: ${left-cluster}
+  }
+
+  dot-container: {
+    class: empty
+    grid-columns: 1
+    empty1.class: empty
+    dot: Dot product{
+      class: text
+      circle: "" {
+        shape: circle
+        style.fill: black
+        style.stroke-width: 0
+        width: 20
+        height: 20
+      }
+      label.near: outside-bottom-center
+    }
+  }
+
+  matrix-container: {
+    class: empty
+    grid-columns: 1
+    matrix: Target dimension matrix {
+      label.near: outside-top-center
+      grid-rows: 4
+      grid-gap: 0
+      *.width: 100
+      *.height: 100
+      *.style.fill: "#F1F6F9"
+      *.style.stroke: black
+      "0.41"
+      "0.32"
+      "0.92"
+      "0.13"
+
+      "0.74"
+      "0.15"
+      "0.53"
+      "0.21"
+
+      "0.97"
+      "0.45"
+      "0.11"
+      "0.05"
+
+      "0.61"
+      "0.77"
+      "0.59"
+      "0.83"
+    }
+  }
+
+  empty.class: empty
+
+  right-grid: {
+    class: grid
+
+    1: ${right-cluster}
+    2: ${right-cluster}
+    3: ${right-cluster}
+  }
+
+  matrix-container -> right-grid
+}
+
+top-row.Random Matrix Generator -> bottom-row.matrix-container.matrix
