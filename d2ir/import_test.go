@@ -199,6 +199,18 @@ label: meow`,
 				assert.Success(t, err)
 			},
 		},
+		{
+			name: "merge-arrays",
+			run: func(t testing.TB) {
+				_, err := compileFS(t, "index.d2", map[string]string{
+					"index.d2": `x.class: [a]
+...@d
+`,
+					"d.d2": `x.class: [b]`,
+				})
+				assert.Success(t, err)
+			},
+		},
 	}
 
 	runa(t, tca)
