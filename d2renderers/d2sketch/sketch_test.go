@@ -3,7 +3,6 @@ package d2sketch_test
 import (
 	"context"
 	"encoding/xml"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -1304,6 +1303,26 @@ a -> b: {
 }
 `,
 		},
+		{
+			name: "unfilled_triangle",
+			script: `
+direction: right
+
+A <-> B: default {
+  source-arrowhead.style.filled: false
+  target-arrowhead.style.filled: false
+}
+C <-> D: triangle {
+  source-arrowhead: {
+    shape: triangle
+    style.filled: false
+  }
+  target-arrowhead: {
+    shape: triangle
+    style.filled: false
+  }
+}`,
+		},
 	}
 	runa(t, tcs)
 }
@@ -1367,7 +1386,7 @@ func run(t *testing.T, tc testCase) {
 	assert.Success(t, err)
 	err = os.MkdirAll(dataPath, 0755)
 	assert.Success(t, err)
-	err = ioutil.WriteFile(pathGotSVG, svgBytes, 0600)
+	err = os.WriteFile(pathGotSVG, svgBytes, 0600)
 	assert.Success(t, err)
 	defer os.Remove(pathGotSVG)
 
