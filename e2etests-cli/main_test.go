@@ -300,6 +300,56 @@ scenarios: {
 			},
 		},
 		{
+			name: "target-nested-index",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "target-nested-index.d2", `a
+layers: {
+	l1: {
+		b
+		layers: {
+			index: {
+				c
+				layers: {
+					l3: {
+						d
+					}
+				}
+			}
+		}
+	}
+}`)
+				err := runTestMain(t, ctx, dir, env, "--target", `l1.index.l3`, "target-nested-index.d2", "target-nested-index.svg")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "target-nested-index.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
+			name: "target-nested-index2",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "target-nested-index2.d2", `a
+layers: {
+	index: {
+		b
+		layers: {
+			nest1: {
+				c
+				scenarios: {
+					nest2: {
+						d
+					}
+				}
+			}
+		}
+	}
+}`)
+				err := runTestMain(t, ctx, dir, env, "--target", `index.nest1.nest2`, "target-nested-index2.d2", "target-nested-index2.svg")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "target-nested-index2.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
 			name: "multiboard/life",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "life.d2", `x -> y
