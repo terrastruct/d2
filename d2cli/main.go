@@ -552,9 +552,9 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs
 	case PDF:
 		pageMap := buildBoardIDToIndex(diagram, nil, nil)
 		path := []pdf.BoardTitle{
-			{Name: "root", BoardID: "root"},
+			{Name: diagram.Root.Label, BoardID: "root"},
 		}
-		pdf, err := renderPDF(ctx, ms, plugin, renderOpts, outputPath, page, ruler, diagram, nil, path, pageMap)
+		pdf, err := renderPDF(ctx, ms, plugin, renderOpts, outputPath, page, ruler, diagram, nil, path, pageMap, diagram.Root.Label != "")
 		if err != nil {
 			return pdf, false, err
 		}
@@ -566,10 +566,10 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs
 		if user, err := user.Current(); err == nil {
 			username = user.Username
 		}
-		description := "Presentation generated with D2 - https://d2lang.com/"
+		description := "Presentation generated with D2 - https://d2lang.com"
 		rootName := getFileName(outputPath)
 		// version must be only numbers to avoid issues with PowerPoint
-		p := pptx.NewPresentation(rootName, description, rootName, username, version.OnlyNumbers())
+		p := pptx.NewPresentation(rootName, description, rootName, username, version.OnlyNumbers(), diagram.Root.Label != "")
 
 		boardIdToIndex := buildBoardIDToIndex(diagram, nil, nil)
 		path := []pptx.BoardTitle{
@@ -914,7 +914,7 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 	return svg, nil
 }
 
-func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, doc *pdf.GoFPDF, boardPath []pdf.BoardTitle, pageMap map[string]int) (svg []byte, err error) {
+func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, doc *pdf.GoFPDF, boardPath []pdf.BoardTitle, pageMap map[string]int, includeNav bool) (svg []byte, err error) {
 	var isRoot bool
 	if doc == nil {
 		doc = pdf.Init()
@@ -973,7 +973,7 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 		if err != nil {
 			return svg, err
 		}
-		err = doc.AddPDFPage(pngImg, boardPath, *opts.ThemeID, rootFill, diagram.Shapes, *opts.Pad, viewboxX, viewboxY, pageMap)
+		err = doc.AddPDFPage(pngImg, boardPath, *opts.ThemeID, rootFill, diagram.Shapes, *opts.Pad, viewboxX, viewboxY, pageMap, includeNav)
 		if err != nil {
 			return svg, err
 		}
@@ -981,30 +981,30 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 
 	for _, dl := range diagram.Layers {
 		path := append(boardPath, pdf.BoardTitle{
-			Name:    dl.Name,
+			Name:    dl.Root.Label,
 			BoardID: strings.Join([]string{boardPath[len(boardPath)-1].BoardID, LAYERS, dl.Name}, "."),
 		})
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, doc, path, pageMap)
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, doc, path, pageMap, includeNav)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Scenarios {
 		path := append(boardPath, pdf.BoardTitle{
-			Name:    dl.Name,
+			Name:    dl.Root.Label,
 			BoardID: strings.Join([]string{boardPath[len(boardPath)-1].BoardID, SCENARIOS, dl.Name}, "."),
 		})
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, doc, path, pageMap)
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, doc, path, pageMap, includeNav)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Steps {
 		path := append(boardPath, pdf.BoardTitle{
-			Name:    dl.Name,
+			Name:    dl.Root.Label,
 			BoardID: strings.Join([]string{boardPath[len(boardPath)-1].BoardID, STEPS, dl.Name}, "."),
 		})
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, doc, path, pageMap)
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, doc, path, pageMap, includeNav)
 		if err != nil {
 			return nil, err
 		}

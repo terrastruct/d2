@@ -66,7 +66,7 @@ func (g *GoFPDF) GetFillRGB(themeID int64, fill string) (color.RGB, error) {
 	return color.Hex2RGB(fill)
 }
 
-func (g *GoFPDF) AddPDFPage(png []byte, titlePath []BoardTitle, themeID int64, fill string, shapes []d2target.Shape, pad int64, viewboxX, viewboxY float64, pageMap map[string]int) error {
+func (g *GoFPDF) AddPDFPage(png []byte, titlePath []BoardTitle, themeID int64, fill string, shapes []d2target.Shape, pad int64, viewboxX, viewboxY float64, pageMap map[string]int, includeNav bool) error {
 	var opt gofpdf.ImageOptions
 	opt.ImageType = "png"
 	boardPath := make([]string, len(titlePath))
@@ -88,6 +88,12 @@ func (g *GoFPDF) AddPDFPage(png []byte, titlePath []BoardTitle, themeID int64, f
 	pathString := strings.Join(boardPath, "  /  ")
 	headerMargin := 28.0
 	headerWidth := g.pdf.GetStringWidth(pathString) + 2*headerMargin
+	headerHeight := 72.0
+	if !includeNav {
+		headerMargin = 0.
+		headerWidth = 0.
+		headerHeight = 0.
+	}
 
 	minPageDimension := 576.0
 	pageWidth = math.Max(math.Max(minPageDimension, imageWidth), headerWidth)
@@ -99,45 +105,46 @@ func (g *GoFPDF) AddPDFPage(png []byte, titlePath []BoardTitle, themeID int64, f
 	}
 
 	// Add page
-	headerHeight := 72.0
 	g.pdf.AddPageFormat("", gofpdf.SizeType{Wd: pageWidth, Ht: pageHeight + headerHeight})
 
-	// Draw header
-	g.pdf.SetFillColor(int(fillRGB.Red), int(fillRGB.Green), int(fillRGB.Blue))
-	g.pdf.Rect(0, 0, pageWidth, pageHeight+headerHeight, "F")
-	if fillRGB.IsLight() {
-		g.pdf.SetTextColor(10, 15, 37) // steel-900
-	} else {
-		g.pdf.SetTextColor(255, 255, 255)
-	}
-	g.pdf.SetFont("source", "", 14)
-
-	// Draw board path prefix
-	prefixWidth := headerMargin
-	if len(titlePath) > 1 {
-		for _, t := range titlePath[:len(titlePath)-1] {
-			g.pdf.SetXY(prefixWidth, 0)
-			w := g.pdf.GetStringWidth(t.Name)
-			var linkID int
-			if pageNum, ok := pageMap[t.BoardID]; ok {
-				linkID = g.pdf.AddLink()
-				g.pdf.SetLink(linkID, 0, pageNum+1)
-			}
-			g.pdf.CellFormat(w, headerHeight, t.Name, "", 0, "", false, linkID, "")
-			prefixWidth += w
-
-			g.pdf.SetXY(prefixWidth, 0)
-			w = g.pdf.GetStringWidth(TITLE_SEP)
-			g.pdf.CellFormat(prefixWidth, headerHeight, TITLE_SEP, "", 0, "", false, 0, "")
-			prefixWidth += w
+	if includeNav {
+		// Draw header
+		g.pdf.SetFillColor(int(fillRGB.Red), int(fillRGB.Green), int(fillRGB.Blue))
+		g.pdf.Rect(0, 0, pageWidth, pageHeight+headerHeight, "F")
+		if fillRGB.IsLight() {
+			g.pdf.SetTextColor(10, 15, 37) // steel-900
+		} else {
+			g.pdf.SetTextColor(255, 255, 255)
 		}
-	}
+		g.pdf.SetFont("source", "", 14)
 
-	// Draw board name
-	boardName := boardPath[len(boardPath)-1]
-	g.pdf.SetFont("source", "B", 14)
-	g.pdf.SetXY(prefixWidth, 0)
-	g.pdf.CellFormat(pageWidth-prefixWidth-headerMargin, headerHeight, boardName, "", 0, "", false, 0, "")
+		// Draw board path prefix
+		prefixWidth := headerMargin
+		if len(titlePath) > 1 {
+			for _, t := range titlePath[:len(titlePath)-1] {
+				g.pdf.SetXY(prefixWidth, 0)
+				w := g.pdf.GetStringWidth(t.Name)
+				var linkID int
+				if pageNum, ok := pageMap[t.BoardID]; ok {
+					linkID = g.pdf.AddLink()
+					g.pdf.SetLink(linkID, 0, pageNum+1)
+				}
+				g.pdf.CellFormat(w, headerHeight, t.Name, "", 0, "", false, linkID, "")
+				prefixWidth += w
+
+				g.pdf.SetXY(prefixWidth, 0)
+				w = g.pdf.GetStringWidth(TITLE_SEP)
+				g.pdf.CellFormat(prefixWidth, headerHeight, TITLE_SEP, "", 0, "", false, 0, "")
+				prefixWidth += w
+			}
+		}
+
+		// Draw board name
+		boardName := boardPath[len(boardPath)-1]
+		g.pdf.SetFont("source", "B", 14)
+		g.pdf.SetXY(prefixWidth, 0)
+		g.pdf.CellFormat(pageWidth-prefixWidth-headerMargin, headerHeight, boardName, "", 0, "", false, 0, "")
+	}
 
 	// Draw image
 	imageX := (pageWidth - imageWidth) / 2
