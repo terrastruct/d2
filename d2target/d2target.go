@@ -79,7 +79,7 @@ func (d *Diagram) GetBoard(boardPath []string) *Diagram {
 
 	head := boardPath[0]
 
-	if head == "index" {
+	if len(boardPath) == 1 && d.Name == head {
 		return d
 	}
 
