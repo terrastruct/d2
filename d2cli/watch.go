@@ -292,15 +292,15 @@ func (w *watcher) watchLoop(ctx context.Context) error {
 			var changedList []string
 			for k := range changed {
 				changedList = append(changedList, k)
+				delete(changed, k)
 			}
 			sort.Strings(changedList)
 			changedStr := w.ms.HumanPath(changedList[0])
-			for i := 1; i < len(changed); i++ {
+			for i := 1; i < len(changedList); i++ {
 				changedStr += fmt.Sprintf(", %s", w.ms.HumanPath(changedList[i]))
 			}
 			w.ms.Log.Info.Printf("detected change in %s: recompiling...", changedStr)
 			w.requestCompile()
-			changed = make(map[string]struct{})
 		case err, ok := <-w.fw.Errors:
 			if !ok {
 				return errors.New("fsnotify watcher closed")
