@@ -30,6 +30,7 @@ func TestCLI_E2E(t *testing.T) {
 
 	tca := []struct {
 		name   string
+		serial bool
 		skipCI bool
 		skip   bool
 		run    func(t *testing.T, ctx context.Context, dir string, env *xos.Env)
@@ -661,7 +662,8 @@ i used to read
 			},
 		},
 		{
-			name: "watch-regular",
+			name:   "watch-regular",
+			serial: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "index.d2", `
 a -> b
@@ -711,7 +713,8 @@ layers: {
 			},
 		},
 		{
-			name: "watch-ok-link",
+			name:   "watch-ok-link",
+			serial: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				// This link technically works because D2 interprets it as a URL,
 				// and on local filesystem, that is whe path where the compilation happens
@@ -765,7 +768,8 @@ layers: {
 			},
 		},
 		{
-			name: "watch-bad-link",
+			name:   "watch-bad-link",
+			serial: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				// Just verify we don't crash even with a bad link (it's treated as a URL, which users might have locally)
 				writeFile(t, dir, "index.d2", `
@@ -816,7 +820,8 @@ layers: {
 			},
 		},
 		{
-			name: "watch-imported-file",
+			name:   "watch-imported-file",
+			serial: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "a.d2", `
 ...@b
@@ -895,7 +900,9 @@ c
 	for _, tc := range tca {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			t.Parallel()
+			if !tc.serial {
+				t.Parallel()
+			}
 
 			if tc.skipCI && os.Getenv("CI") != "" {
 				t.SkipNow()
