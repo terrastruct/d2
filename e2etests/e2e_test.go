@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"cdr.dev/slog"
+	"golang.org/x/tools/txtar"
 
 	trequire "github.com/stretchr/testify/require"
 
@@ -42,6 +43,7 @@ func TestE2E(t *testing.T) {
 	t.Run("unicode", testUnicode)
 	t.Run("root", testRoot)
 	t.Run("themes", testThemes)
+	t.Run("txtar", testTxtar)
 }
 
 func testSanity(t *testing.T) {
@@ -71,6 +73,19 @@ a -> c
 			script: `a -> b: hello
 `,
 		},
+	}
+	runa(t, tcs)
+}
+
+func testTxtar(t *testing.T) {
+	var tcs []testCase
+	archive, err := txtar.ParseFile("./testdata/txtar.txt")
+	assert.Success(t, err)
+	for _, f := range archive.Files {
+		tcs = append(tcs, testCase{
+			name:   f.Name,
+			script: string(f.Data),
+		})
 	}
 	runa(t, tcs)
 }

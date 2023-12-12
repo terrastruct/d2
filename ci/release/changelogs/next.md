@@ -1,5 +1,7 @@
 #### Features 🚀
 
+- Icons can be added for special objects (sql_table, class, code, markdown, latex). [#1774](https://github.com/terrastruct/d2/pull/1774)
+
 #### Improvements 🧹
 
 #### Bugfixes ⛑️

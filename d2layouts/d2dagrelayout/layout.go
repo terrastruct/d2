@@ -554,6 +554,8 @@ func positionLabelsIcons(obj *d2graph.Object) {
 				obj.LabelPosition = go2.Pointer(label.OutsideTopRight.String())
 				return
 			}
+		} else if obj.SQLTable != nil || obj.Class != nil || obj.Language != "" {
+			obj.IconPosition = go2.Pointer(label.OutsideTopLeft.String())
 		} else {
 			obj.IconPosition = go2.Pointer(label.InsideMiddleCenter.String())
 		}

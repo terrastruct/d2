@@ -2,6 +2,7 @@ package d2svg
 
 import (
 	"fmt"
+	"html"
 	"io"
 
 	"oss.terrastruct.com/d2/d2target"
@@ -140,5 +141,20 @@ func drawClass(writer io.Writer, diagramHash string, targetShape d2target.Shape)
 			classRow(targetShape, rowBox, m.VisibilityToken(), m.Name, m.Return, float64(targetShape.FontSize)),
 		)
 		rowBox.TopLeft.Y += rowHeight
+	}
+
+	if targetShape.Icon != nil && targetShape.Type != d2target.ShapeImage {
+		iconPosition := label.FromString(targetShape.IconPosition)
+		iconSize := d2target.GetIconSize(box, targetShape.IconPosition)
+
+		tl := iconPosition.GetPointOnBox(box, label.PADDING, float64(iconSize), float64(iconSize))
+
+		fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" />`,
+			html.EscapeString(targetShape.Icon.String()),
+			tl.X,
+			tl.Y,
+			iconSize,
+			iconSize,
+		)
 	}
 }

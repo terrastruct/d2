@@ -374,6 +374,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		if hasTop || hasBottom {
 			padding := parsePadding(elkNodes[obj].LayoutOptions.Padding)
 			if hasTop {
+				// TODO I think this fails to account for a potential inner label of container
 				padding.top = go2.Max(padding.top, d2target.MAX_ICON_SIZE+2*label.PADDING)
 			}
 			if hasBottom {
@@ -1207,6 +1208,8 @@ func positionLabelsIcons(obj *d2graph.Object) {
 				obj.LabelPosition = go2.Pointer(label.InsideTopRight.String())
 				return
 			}
+		} else if obj.SQLTable != nil || obj.Class != nil || obj.Language != "" {
+			obj.IconPosition = go2.Pointer(label.OutsideTopLeft.String())
 		} else {
 			obj.IconPosition = go2.Pointer(label.InsideMiddleCenter.String())
 		}
