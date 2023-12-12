@@ -452,7 +452,8 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 				}
 			}
 		}
-	} else if edge.Src.Icon != nil && !srcShape.Is(shape.IMAGE_TYPE) {
+	}
+	if !overlapsOutsideLabel && edge.Src.Icon != nil && !srcShape.Is(shape.IMAGE_TYPE) {
 		// assumes IconPosition is set if there is an Icon
 		iconPosition := label.FromString(*edge.Src.IconPosition)
 		if iconPosition.IsOutside() {
@@ -538,12 +539,14 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 				}
 			}
 		}
-	} else if edge.Dst.Icon != nil && !dstShape.Is(shape.IMAGE_TYPE) {
+	}
+	if !overlapsOutsideLabel && edge.Dst.Icon != nil && !dstShape.Is(shape.IMAGE_TYPE) {
 		// assumes IconPosition is set if there is an Icon
 		iconPosition := label.FromString(*edge.Dst.IconPosition)
 		if iconPosition.IsOutside() {
-			iconWidth := float64(d2target.MAX_ICON_SIZE)
-			iconHeight := float64(d2target.MAX_ICON_SIZE)
+			iconSize := d2target.GetIconSize(edge.Dst.Box, iconPosition.String())
+			iconWidth := float64(iconSize)
+			iconHeight := float64(iconSize)
 			labelTL := iconPosition.GetPointOnBox(edge.Dst.Box, label.PADDING, iconWidth, iconHeight)
 
 			iconBox := geo.NewBox(labelTL, iconWidth, iconHeight)
