@@ -374,18 +374,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		if hasTop || hasBottom {
 			padding := parsePadding(elkNodes[obj].LayoutOptions.Padding)
 			if hasTop {
-				ownLabelHeight := 0
-				if obj.LabelPosition != nil && strings.HasPrefix(*obj.LabelPosition, "INSIDE_TOP") {
-					ownLabelHeight = obj.LabelDimensions.Height + label.PADDING
-				}
-				padding.top = go2.Max(padding.top, d2target.MAX_ICON_SIZE+2*label.PADDING+ownLabelHeight)
+				// TODO I think this fails to account for a potential inner label of container
+				padding.top = go2.Max(padding.top, d2target.MAX_ICON_SIZE+2*label.PADDING)
 			}
 			if hasBottom {
-				ownLabelHeight := 0
-				if obj.LabelPosition != nil && strings.HasPrefix(*obj.LabelPosition, "INSIDE_BOTTOM") {
-					ownLabelHeight = obj.LabelDimensions.Height + label.PADDING
-				}
-				padding.bottom = go2.Max(padding.bottom, d2target.MAX_ICON_SIZE+2*label.PADDING+ownLabelHeight)
+				padding.bottom = go2.Max(padding.bottom, d2target.MAX_ICON_SIZE+2*label.PADDING)
 			}
 			elkNodes[obj].LayoutOptions.Padding = padding.String()
 		}
