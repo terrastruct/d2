@@ -639,6 +639,86 @@ i used to read
 			},
 		},
 		{
+			name:   "renamed-board",
+			skipCI: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `cat: how does the cat go? {
+  link: layers.cat
+}
+a.link: "https://www.google.com/maps/place/Smoked+Out+BBQ/@37.3848007,-121.9513887,17z/data=!3m1!4b1!4m6!3m5!1s0x808fc9182ad4d38d:0x8e2f39c3e927b296!8m2!3d37.3848007!4d-121.9492!16s%2Fg%2F11gjt85zvf"
+label: blah
+layers: {
+  cat: {
+    label: dog
+    home: {
+      link: _
+    }
+    the cat -> meow: goes
+  }
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "in.d2", "out.pdf")
+				assert.Success(t, err)
+
+				pdf := readFile(t, dir, "out.pdf")
+				testdataIgnoreDiff(t, ".pdf", pdf)
+			},
+		},
+		{
+			name:   "no-nav-pdf",
+			skipCI: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `cat: how does the cat go? {
+  link: layers.cat
+}
+a.link: "https://www.google.com/maps/place/Smoked+Out+BBQ/@37.3848007,-121.9513887,17z/data=!3m1!4b1!4m6!3m5!1s0x808fc9182ad4d38d:0x8e2f39c3e927b296!8m2!3d37.3848007!4d-121.9492!16s%2Fg%2F11gjt85zvf"
+label: ""
+layers: {
+  cat: {
+    label: dog
+    home: {
+      link: _
+    }
+    the cat -> meow: goes
+  }
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "in.d2", "out.pdf")
+				assert.Success(t, err)
+
+				pdf := readFile(t, dir, "out.pdf")
+				testdataIgnoreDiff(t, ".pdf", pdf)
+			},
+		},
+		{
+			name:   "no-nav-pptx",
+			skipCI: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `cat: how does the cat go? {
+  link: layers.cat
+}
+a.link: "https://www.google.com/maps/place/Smoked+Out+BBQ/@37.3848007,-121.9513887,17z/data=!3m1!4b1!4m6!3m5!1s0x808fc9182ad4d38d:0x8e2f39c3e927b296!8m2!3d37.3848007!4d-121.9492!16s%2Fg%2F11gjt85zvf"
+label: ""
+layers: {
+  cat: {
+    label: dog
+    home: {
+      link: _
+    }
+    the cat -> meow: goes
+  }
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "in.d2", "out.pptx")
+				assert.Success(t, err)
+
+				file := readFile(t, dir, "out.pptx")
+				// err = pptx.Validate(file, 2)
+				assert.Success(t, err)
+				testdataIgnoreDiff(t, ".pptx", file)
+			},
+		},
+		{
 			name: "basic-fmt",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `x ---> y`)

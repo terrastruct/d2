@@ -381,6 +381,7 @@ func (diagram Diagram) GetCorpus() string {
 			appendixCount++
 			corpus += fmt.Sprint(appendixCount)
 		}
+		corpus += s.PrettyLink
 		if s.Type == ShapeClass {
 			for _, cf := range s.Fields {
 				corpus += cf.Text(0).Text + cf.VisibilityToken()
@@ -446,6 +447,7 @@ type Shape struct {
 
 	Tooltip      string   `json:"tooltip"`
 	Link         string   `json:"link"`
+	PrettyLink   string   `json:"prettyLink,omitempty"`
 	Icon         *url.URL `json:"icon"`
 	IconPosition string   `json:"iconPosition"`
 
