@@ -540,25 +540,70 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		edge.Route = points
 	}
 
+	objEdges := make(map[*d2graph.Object][]*d2graph.Edge)
+	for _, e := range g.Edges {
+		objEdges[e.Src] = append(objEdges[e.Src], e)
+		if e.Dst != e.Src {
+			objEdges[e.Dst] = append(objEdges[e.Dst], e)
+		}
+	}
+
 	for _, obj := range g.Objects {
 		if margin, has := adjustments[obj]; has {
-			// TODO adjust edges on the shrinking sides or trace to shape from outside box
+			edges := objEdges[obj]
+			// also move edges with the shrinking sides
 			if margin.Left > 0 {
+				for _, e := range edges {
+					l := len(e.Route)
+					if e.Src == obj && e.Route[0].X == obj.TopLeft.X {
+						e.Route[0].X += margin.Left
+					}
+					if e.Dst == obj && e.Route[l-1].X == obj.TopLeft.X {
+						e.Route[l-1].X += margin.Left
+					}
+				}
 				obj.TopLeft.X += margin.Left
 				obj.ShiftDescendants(margin.Left, 0)
 				obj.Width -= margin.Left
 			}
 			if margin.Right > 0 {
+				for _, e := range edges {
+					l := len(e.Route)
+					if e.Src == obj && e.Route[0].X == obj.TopLeft.X+obj.Width {
+						e.Route[0].X -= margin.Right
+					}
+					if e.Dst == obj && e.Route[l-1].X == obj.TopLeft.X+obj.Width {
+						e.Route[l-1].X -= margin.Right
+					}
+				}
 				// TODO is this right?
 				obj.ShiftDescendants(-margin.Right/2, 0)
 				obj.Width -= margin.Right
 			}
 			if margin.Top > 0 {
+				for _, e := range edges {
+					l := len(e.Route)
+					if e.Src == obj && e.Route[0].Y == obj.TopLeft.Y {
+						e.Route[0].Y += margin.Top
+					}
+					if e.Dst == obj && e.Route[l-1].Y == obj.TopLeft.Y {
+						e.Route[l-1].Y += margin.Top
+					}
+				}
 				obj.TopLeft.Y += margin.Top
 				obj.ShiftDescendants(margin.Top, 0)
 				obj.Height -= margin.Top
 			}
 			if margin.Bottom > 0 {
+				for _, e := range edges {
+					l := len(e.Route)
+					if e.Src == obj && e.Route[0].Y == obj.TopLeft.Y+obj.Height {
+						e.Route[0].Y -= margin.Bottom
+					}
+					if e.Dst == obj && e.Route[l-1].Y == obj.TopLeft.Y+obj.Height {
+						e.Route[l-1].Y -= margin.Bottom
+					}
+				}
 				obj.ShiftDescendants(-margin.Bottom/2, 0)
 				obj.Height -= margin.Bottom
 			}
