@@ -1116,11 +1116,6 @@ func adjustDimensions(obj *d2graph.Object) (width, height float64) {
 				width = go2.Max(width, float64(obj.LabelDimensions.Width))
 			}
 		}
-
-		// special handling
-		if obj.HasOutsideBottomLabel() || obj.Icon != nil {
-			height += float64(obj.LabelDimensions.Height) + label.PADDING
-		}
 	}
 
 	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
@@ -1187,11 +1182,6 @@ func cleanupAdjustment(obj *d2graph.Object) {
 				obj.ShiftDescendants(-iconWidth/2, 0)
 			}
 		}
-	}
-
-	// special handling to start/end connections below label
-	if obj.HasOutsideBottomLabel() {
-		obj.Height -= float64(obj.LabelDimensions.Height) + label.PADDING
 	}
 
 	// remove the extra width/height we added for 3d/multiple after all objects/connections are placed
