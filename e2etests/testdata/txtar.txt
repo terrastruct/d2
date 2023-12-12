@@ -1,0 +1,49 @@
+-- sql-icon --
+without: {
+  tableEx: {
+    shape: sql_table
+    a: b
+  }
+  classEx: {
+    shape: class
+    a: b
+  }
+  codeEx: |go
+    a := 1
+  |
+  mdEx: |md
+    # This is for all ill-treated fellows
+
+    You will live a long, healthy, happy life and make bags of money.
+  |
+}
+
+with: {
+  tableEx: {
+    shape: sql_table
+    a: b
+    icon: https://icons.terrastruct.com/essentials%2F213-alarm.svg
+  }
+  classEx: {
+    shape: class
+    a: b
+    icon: https://icons.terrastruct.com/essentials%2F213-alarm.svg
+  }
+  codeEx: |go
+    a := 1
+  | {
+    icon: https://icons.terrastruct.com/essentials%2F213-alarm.svg
+  }
+  mdEx: |md
+    # This is for all ill-treated fellows
+
+    You will live a long, healthy, happy life and make bags of money.
+  | {
+    icon: https://icons.terrastruct.com/essentials%2F213-alarm.svg
+  }
+}
+
+without.tableEx -> with.tableEx
+without.classEx -> with.classEx
+without.codeEx -> with.codeEx
+without.mdEx -> with.mdEx

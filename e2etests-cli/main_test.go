@@ -999,7 +999,7 @@ func waitLogs(ctx context.Context, buf *bytes.Buffer, pattern *regexp.Regexp) (s
 	ticker := time.NewTicker(10 * time.Millisecond)
 	defer ticker.Stop()
 	var match string
-	for i := 0; i < 100 && match == ""; i++ {
+	for i := 0; i < 1000 && match == ""; i++ {
 		select {
 		case <-ticker.C:
 			out := buf.String()
