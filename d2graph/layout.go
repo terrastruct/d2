@@ -462,11 +462,6 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 			iconTL := iconPosition.GetPointOnBox(edge.Src.Box, label.PADDING, iconWidth, iconHeight)
 
 			iconBox := geo.NewBox(iconTL, iconWidth, iconHeight)
-			// TODO not for icons
-			// add left/right padding to box
-			iconBox.TopLeft.X -= label.PADDING
-			iconBox.Width += 2 * label.PADDING
-
 			for iconBox.Contains(startingSegment.End) && startIndex+1 > endIndex {
 				startingSegment.Start = startingSegment.End
 				startingSegment.End = points[startIndex+2]
@@ -550,10 +545,6 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 			labelTL := iconPosition.GetPointOnBox(edge.Dst.Box, label.PADDING, iconWidth, iconHeight)
 
 			iconBox := geo.NewBox(labelTL, iconWidth, iconHeight)
-			// TODO not for icons
-			// add left/right padding to box
-			iconBox.TopLeft.X -= label.PADDING
-			iconBox.Width += 2 * label.PADDING
 			for iconBox.Contains(endingSegment.Start) && endIndex-1 > startIndex {
 				endingSegment.End = endingSegment.Start
 				endingSegment.Start = points[endIndex-2]

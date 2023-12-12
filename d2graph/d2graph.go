@@ -1951,6 +1951,10 @@ func (obj *Object) Is3D() bool {
 }
 
 func (obj *Object) Spacing() (margin, padding geo.Spacing) {
+	return obj.SpacingOpt(2*label.PADDING, 2*label.PADDING, true)
+}
+
+func (obj *Object) SpacingOpt(labelPadding, iconPadding float64, maxIconSize bool) (margin, padding geo.Spacing) {
 	if obj.HasLabel() {
 		var position label.Position
 		if obj.LabelPosition != nil {
@@ -1959,10 +1963,10 @@ func (obj *Object) Spacing() (margin, padding geo.Spacing) {
 
 		var labelWidth, labelHeight float64
 		if obj.LabelDimensions.Width > 0 {
-			labelWidth = float64(obj.LabelDimensions.Width) + 2*label.PADDING
+			labelWidth = float64(obj.LabelDimensions.Width) + labelPadding
 		}
 		if obj.LabelDimensions.Height > 0 {
-			labelHeight = float64(obj.LabelDimensions.Height) + 2*label.PADDING
+			labelHeight = float64(obj.LabelDimensions.Height) + labelPadding
 		}
 
 		switch position {
@@ -1991,7 +1995,10 @@ func (obj *Object) Spacing() (margin, padding geo.Spacing) {
 			position = label.FromString(*obj.IconPosition)
 		}
 
-		iconSize := float64(d2target.MAX_ICON_SIZE + 2*label.PADDING)
+		iconSize := float64(d2target.MAX_ICON_SIZE + iconPadding)
+		if !maxIconSize {
+			iconSize = float64(d2target.GetIconSize(obj.Box, position.String())) + iconPadding
+		}
 		switch position {
 		case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
 			margin.Top = math.Max(margin.Top, iconSize)

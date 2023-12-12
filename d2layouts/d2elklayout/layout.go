@@ -218,6 +218,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		positionLabelsIcons(obj)
 	}
 
+	adjustments := make(map[*d2graph.Object]geo.Spacing)
 	elkNodes := make(map[*d2graph.Object]*ELKNode)
 	elkEdges := make(map[*d2graph.Edge]*ELKEdge)
 
@@ -256,7 +257,10 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 
-		width, height := adjustDimensions(obj)
+		margin, _ := obj.SpacingOpt(2*label.PADDING, 0, false)
+		width := margin.Left + obj.Width + margin.Right
+		height := margin.Top + obj.Height + margin.Bottom
+		adjustments[obj] = margin
 
 		n := &ELKNode{
 			ID:     obj.AbsID(),
@@ -537,7 +541,28 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 
 	for _, obj := range g.Objects {
-		cleanupAdjustment(obj)
+		if margin, has := adjustments[obj]; has {
+			// TODO adjust edges on the shrinking sides or trace to shape from outside box
+			if margin.Left > 0 {
+				obj.TopLeft.X += margin.Left
+				obj.ShiftDescendants(margin.Left, 0)
+				obj.Width -= margin.Left
+			}
+			if margin.Right > 0 {
+				// TODO is this right?
+				obj.ShiftDescendants(-margin.Right/2, 0)
+				obj.Width -= margin.Right
+			}
+			if margin.Top > 0 {
+				obj.TopLeft.Y += margin.Top
+				obj.ShiftDescendants(margin.Top, 0)
+				obj.Height -= margin.Top
+			}
+			if margin.Bottom > 0 {
+				obj.ShiftDescendants(-margin.Bottom/2, 0)
+				obj.Height -= margin.Bottom
+			}
+		}
 	}
 
 	for _, edge := range g.Edges {
@@ -1048,143 +1073,6 @@ func adjustPadding(obj *d2graph.Object, width, height float64, padding shapePadd
 	padding.right = go2.Max(padding.right, innerRight+extraRight)
 
 	return padding
-}
-
-func adjustDimensions(obj *d2graph.Object) (width, height float64) {
-	width = obj.Width
-	height = obj.Height
-
-	// reserve spacing for labels
-	if obj.HasLabel() {
-		var position label.Position
-		if obj.LabelPosition != nil {
-			position = label.FromString(*obj.LabelPosition)
-		} else if len(obj.ChildrenArray) == 0 && obj.HasOutsideBottomLabel() {
-			position = label.OutsideBottomCenter
-		}
-
-		if position.IsShapePosition() {
-			switch position {
-			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom,
-				label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
-				width += float64(obj.LabelDimensions.Width) + label.PADDING
-			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight,
-				label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
-				height += float64(obj.LabelDimensions.Height) + label.PADDING
-			default:
-				width = go2.Max(width, float64(obj.LabelDimensions.Width)+2*label.PADDING)
-				height = go2.Max(height, float64(obj.LabelDimensions.Height)+2*label.PADDING)
-			}
-		}
-
-		// // special handling
-		// if obj.Icon != nil {
-		// 	height += float64(obj.LabelDimensions.Height) + label.PADDING
-		// }
-	}
-
-	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
-		var position label.Position
-		if obj.IconPosition != nil {
-			position = label.FromString(*obj.IconPosition)
-		}
-
-		if position.IsShapePosition() {
-			switch position {
-			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom,
-				label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
-				width += d2target.MAX_ICON_SIZE + label.PADDING
-			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight,
-				label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
-				height += d2target.MAX_ICON_SIZE + label.PADDING
-			default:
-				width = go2.Max(width, d2target.MAX_ICON_SIZE+2*label.PADDING)
-				height = go2.Max(height, d2target.MAX_ICON_SIZE+2*label.PADDING)
-			}
-		}
-	}
-
-	// reserve extra space for 3d/multiple by providing elk the larger dimensions
-	dx, dy := obj.GetModifierElementAdjustments()
-	width += dx
-	height += dy
-
-	return
-}
-
-func cleanupAdjustment(obj *d2graph.Object) {
-	// adjust size and position to account for space reserved for labels
-	if obj.HasLabel() {
-		position := label.FromString(*obj.LabelPosition)
-		if position.IsShapePosition() {
-			var labelWidth, labelHeight float64
-			switch position {
-			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom,
-				label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
-				labelWidth = float64(obj.LabelDimensions.Width) + label.PADDING
-				obj.Width -= labelWidth
-			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight,
-				label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
-				labelHeight = float64(obj.LabelDimensions.Height) + label.PADDING
-				obj.Height -= labelHeight
-			}
-			switch position {
-			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
-				obj.TopLeft.X += labelWidth
-				obj.ShiftDescendants(labelWidth/2, 0)
-			case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
-				obj.ShiftDescendants(-labelWidth/2, 0)
-			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
-				obj.TopLeft.Y += labelHeight
-				obj.ShiftDescendants(0, labelHeight/2)
-			case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
-				obj.ShiftDescendants(0, -labelHeight/2)
-			}
-		}
-	}
-	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
-		position := label.FromString(*obj.IconPosition)
-		if position.IsShapePosition() {
-			iconSize := float64(d2target.MAX_ICON_SIZE + label.PADDING)
-			switch position {
-			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom,
-				label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
-				obj.Width -= iconSize
-			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight,
-				label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
-				obj.Height -= iconSize
-			}
-			switch position {
-			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
-				obj.TopLeft.X += iconSize
-				obj.ShiftDescendants(iconSize/2, 0)
-			case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
-				obj.ShiftDescendants(-iconSize/2, 0)
-			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
-				obj.TopLeft.Y += iconSize
-				obj.ShiftDescendants(0, iconSize/2)
-			case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
-				obj.ShiftDescendants(0, -iconSize/2)
-			}
-		}
-	}
-
-	// // special handling to start/end connections below label
-	// if obj.HasOutsideBottomLabel() {
-	// 	obj.Height -= float64(obj.LabelDimensions.Height) + label.PADDING
-	// }
-
-	// remove the extra width/height we added for 3d/multiple after all objects/connections are placed
-	// and shift the shapes down accordingly
-	dx, dy := obj.GetModifierElementAdjustments()
-	if dx != 0 || dy != 0 {
-		obj.TopLeft.Y += dy
-		obj.ShiftDescendants(0, dy)
-		if !obj.IsContainer() {
-			obj.Width -= dx
-			obj.Height -= dy
-		}
-	}
 }
 
 func positionLabelsIcons(obj *d2graph.Object) {
