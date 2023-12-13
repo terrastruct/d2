@@ -1053,6 +1053,7 @@ cf many required: {
 		loadFromFile(t, "shaped_grid_positioning"),
 		loadFromFile(t, "cloud_shaped_grid"),
 		loadFromFileWithOptions(t, "nested_layout_bug", testCase{testSerialization: true}),
+		loadFromFile(t, "disconnect_direction_right"),
 	}
 
 	runa(t, tcs)
