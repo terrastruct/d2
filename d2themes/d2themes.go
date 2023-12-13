@@ -2,7 +2,10 @@
 // Color codes: darkest (N1) -> lightest (N7)
 package d2themes
 
-import "oss.terrastruct.com/d2/lib/color"
+import (
+	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/lib/color"
+)
 
 type Theme struct {
 	ID     int64        `json:"id"`
@@ -24,6 +27,70 @@ type SpecialRules struct {
 
 func (t *Theme) IsDark() bool {
 	return t.ID >= 200 && t.ID < 300
+}
+
+func (t *Theme) ApplyOverrides(overrides *d2target.ThemeOverrides) {
+	if overrides == nil {
+		return
+	}
+
+	if overrides.B1 != nil {
+		t.Colors.B1 = *overrides.B1
+	}
+	if overrides.B2 != nil {
+		t.Colors.B2 = *overrides.B2
+	}
+	if overrides.B3 != nil {
+		t.Colors.B3 = *overrides.B3
+	}
+	if overrides.B4 != nil {
+		t.Colors.B4 = *overrides.B4
+	}
+	if overrides.B5 != nil {
+		t.Colors.B5 = *overrides.B5
+	}
+	if overrides.B5 != nil {
+		t.Colors.B5 = *overrides.B5
+	}
+	if overrides.B6 != nil {
+		t.Colors.B6 = *overrides.B6
+	}
+	if overrides.AA2 != nil {
+		t.Colors.AA2 = *overrides.AA2
+	}
+	if overrides.AA4 != nil {
+		t.Colors.AA4 = *overrides.AA4
+	}
+	if overrides.AA5 != nil {
+		t.Colors.AA5 = *overrides.AA5
+	}
+	if overrides.AB4 != nil {
+		t.Colors.AB4 = *overrides.AB4
+	}
+	if overrides.AB5 != nil {
+		t.Colors.AB5 = *overrides.AB5
+	}
+	if overrides.N1 != nil {
+		t.Colors.Neutrals.N1 = *overrides.N1
+	}
+	if overrides.N2 != nil {
+		t.Colors.Neutrals.N2 = *overrides.N2
+	}
+	if overrides.N3 != nil {
+		t.Colors.Neutrals.N3 = *overrides.N3
+	}
+	if overrides.N4 != nil {
+		t.Colors.Neutrals.N4 = *overrides.N4
+	}
+	if overrides.N5 != nil {
+		t.Colors.Neutrals.N5 = *overrides.N5
+	}
+	if overrides.N6 != nil {
+		t.Colors.Neutrals.N6 = *overrides.N6
+	}
+	if overrides.N7 != nil {
+		t.Colors.Neutrals.N7 = *overrides.N7
+	}
 }
 
 type Neutral struct {

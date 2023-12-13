@@ -39,18 +39,35 @@ const (
 var BorderOffset = geo.NewVector(5, 5)
 
 type Config struct {
-	Sketch         *bool           `json:"sketch"`
-	ThemeID        *int64          `json:"themeID"`
-	DarkThemeID    *int64          `json:"darkThemeID"`
-	Pad            *int64          `json:"pad"`
-	Center         *bool           `json:"center"`
-	LayoutEngine   *string         `json:"layoutEngine"`
-	ThemeOverrides *ThemeOverrides `json:"themeOverrides"`
+	Sketch             *bool           `json:"sketch"`
+	ThemeID            *int64          `json:"themeID"`
+	DarkThemeID        *int64          `json:"darkThemeID"`
+	Pad                *int64          `json:"pad"`
+	Center             *bool           `json:"center"`
+	LayoutEngine       *string         `json:"layoutEngine"`
+	ThemeOverrides     *ThemeOverrides `json:"themeOverrides,omitempty"`
+	DarkThemeOverrides *ThemeOverrides `json:"darkThemeOverrides,omitempty"`
 }
 
 type ThemeOverrides struct {
-	N1 *string `json:"n1"`
-	// TODO
+	N1  *string `json:"n1"`
+	N2  *string `json:"n2"`
+	N3  *string `json:"n3"`
+	N4  *string `json:"n4"`
+	N5  *string `json:"n5"`
+	N6  *string `json:"n6"`
+	N7  *string `json:"n7"`
+	B1  *string `json:"b1"`
+	B2  *string `json:"b2"`
+	B3  *string `json:"b3"`
+	B4  *string `json:"b4"`
+	B5  *string `json:"b5"`
+	B6  *string `json:"b6"`
+	AA2 *string `json:"aa2"`
+	AA4 *string `json:"aa4"`
+	AA5 *string `json:"aa5"`
+	AB4 *string `json:"ab4"`
+	AB5 *string `json:"ab5"`
 }
 
 type Diagram struct {

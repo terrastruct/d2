@@ -69,12 +69,14 @@ var grain string
 var paper string
 
 type RenderOpts struct {
-	Pad         *int64
-	Sketch      *bool
-	Center      *bool
-	ThemeID     *int64
-	DarkThemeID *int64
-	Font        string
+	Pad                *int64
+	Sketch             *bool
+	Center             *bool
+	ThemeID            *int64
+	DarkThemeID        *int64
+	ThemeOverrides     *d2target.ThemeOverrides
+	DarkThemeOverrides *d2target.ThemeOverrides
+	Font               string
 	// the svg will be scaled by this factor, if unset the svg will fit to screen
 	Scale *float64
 
@@ -1854,7 +1856,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	upperBuf := &bytes.Buffer{}
 	if opts.MasterID == "" {
 		EmbedFonts(upperBuf, diagramHash, buf.String(), diagram.FontFamily, diagram.GetCorpus()) // EmbedFonts *must* run before `d2sketch.DefineFillPatterns`, but after all elements are appended to `buf`
-		themeStylesheet, err := ThemeCSS(diagramHash, &themeID, darkThemeID)
+		themeStylesheet, err := ThemeCSS(diagramHash, &themeID, darkThemeID, opts.ThemeOverrides, opts.DarkThemeOverrides)
 		if err != nil {
 			return nil, err
 		}
@@ -2016,17 +2018,17 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 }
 
 // TODO include only colors that are being used to reduce size
-func ThemeCSS(diagramHash string, themeID *int64, darkThemeID *int64) (stylesheet string, err error) {
+func ThemeCSS(diagramHash string, themeID *int64, darkThemeID *int64, overrides, darkOverrides *d2target.ThemeOverrides) (stylesheet string, err error) {
 	if themeID == nil {
 		themeID = &d2themescatalog.NeutralDefault.ID
 	}
-	out, err := singleThemeRulesets(diagramHash, *themeID)
+	out, err := singleThemeRulesets(diagramHash, *themeID, overrides)
 	if err != nil {
 		return "", err
 	}
 
 	if darkThemeID != nil {
-		darkOut, err := singleThemeRulesets(diagramHash, *darkThemeID)
+		darkOut, err := singleThemeRulesets(diagramHash, *darkThemeID, darkOverrides)
 		if err != nil {
 			return "", err
 		}
@@ -2036,9 +2038,10 @@ func ThemeCSS(diagramHash string, themeID *int64, darkThemeID *int64) (styleshee
 	return out, nil
 }
 
-func singleThemeRulesets(diagramHash string, themeID int64) (rulesets string, err error) {
+func singleThemeRulesets(diagramHash string, themeID int64, overrides *d2target.ThemeOverrides) (rulesets string, err error) {
 	out := ""
 	theme := d2themescatalog.Find(themeID)
+	theme.ApplyOverrides(overrides)
 
 	// Global theme colors
 	for _, property := range []string{"fill", "stroke", "background-color", "color"} {

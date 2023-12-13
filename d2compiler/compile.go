@@ -1375,5 +1375,84 @@ func compileConfig(ir *d2ir.Map) *d2target.Config {
 		config.LayoutEngine = go2.Pointer(f.Primary().Value.ScalarString())
 	}
 
+	f = configMap.GetField("theme-overrides")
+	if f != nil {
+		config.ThemeOverrides = compileThemeOverrides(f.Map())
+	}
+	f = configMap.GetField("dark-theme-overrides")
+	if f != nil {
+		config.DarkThemeOverrides = compileThemeOverrides(f.Map())
+	}
+
 	return config
+}
+
+func compileThemeOverrides(m *d2ir.Map) *d2target.ThemeOverrides {
+	if m == nil {
+		return nil
+	}
+	themeOverrides := d2target.ThemeOverrides{}
+
+	if m.GetField("N1") != nil {
+		themeOverrides.N1 = go2.Pointer(m.GetField("N1").Primary().Value.ScalarString())
+	}
+	if m.GetField("B1") != nil {
+		themeOverrides.B1 = go2.Pointer(m.GetField("B1").Primary().Value.ScalarString())
+	}
+	if m.GetField("B2") != nil {
+		themeOverrides.B2 = go2.Pointer(m.GetField("B2").Primary().Value.ScalarString())
+	}
+	if m.GetField("B3") != nil {
+		themeOverrides.B3 = go2.Pointer(m.GetField("B3").Primary().Value.ScalarString())
+	}
+	if m.GetField("B4") != nil {
+		themeOverrides.B4 = go2.Pointer(m.GetField("B4").Primary().Value.ScalarString())
+	}
+	if m.GetField("B5") != nil {
+		themeOverrides.B5 = go2.Pointer(m.GetField("B5").Primary().Value.ScalarString())
+	}
+	if m.GetField("B6") != nil {
+		themeOverrides.B6 = go2.Pointer(m.GetField("B6").Primary().Value.ScalarString())
+	}
+	if m.GetField("AA2") != nil {
+		themeOverrides.AA2 = go2.Pointer(m.GetField("AA2").Primary().Value.ScalarString())
+	}
+	if m.GetField("AA4") != nil {
+		themeOverrides.AA4 = go2.Pointer(m.GetField("AA4").Primary().Value.ScalarString())
+	}
+	if m.GetField("AA5") != nil {
+		themeOverrides.AA5 = go2.Pointer(m.GetField("AA5").Primary().Value.ScalarString())
+	}
+	if m.GetField("AB4") != nil {
+		themeOverrides.AB4 = go2.Pointer(m.GetField("AB4").Primary().Value.ScalarString())
+	}
+	if m.GetField("AB5") != nil {
+		themeOverrides.AB5 = go2.Pointer(m.GetField("AB5").Primary().Value.ScalarString())
+	}
+	if m.GetField("N1") != nil {
+		themeOverrides.N1 = go2.Pointer(m.GetField("N1").Primary().Value.ScalarString())
+	}
+	if m.GetField("N2") != nil {
+		themeOverrides.N2 = go2.Pointer(m.GetField("N2").Primary().Value.ScalarString())
+	}
+	if m.GetField("N3") != nil {
+		themeOverrides.N3 = go2.Pointer(m.GetField("N3").Primary().Value.ScalarString())
+	}
+	if m.GetField("N4") != nil {
+		themeOverrides.N4 = go2.Pointer(m.GetField("N4").Primary().Value.ScalarString())
+	}
+	if m.GetField("N5") != nil {
+		themeOverrides.N5 = go2.Pointer(m.GetField("N5").Primary().Value.ScalarString())
+	}
+	if m.GetField("N6") != nil {
+		themeOverrides.N6 = go2.Pointer(m.GetField("N6").Primary().Value.ScalarString())
+	}
+	if m.GetField("N7") != nil {
+		themeOverrides.N7 = go2.Pointer(m.GetField("N7").Primary().Value.ScalarString())
+	}
+
+	if themeOverrides != (d2target.ThemeOverrides{}) {
+		return &themeOverrides
+	}
+	return nil
 }
