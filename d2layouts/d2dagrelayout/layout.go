@@ -1351,7 +1351,7 @@ func fitPadding(obj *d2graph.Object) {
 			}
 		}
 	}
-	if obj.Icon != nil && shapeType != shape.IMAGE_TYPE && obj.IconPosition != nil {
+	if obj.HasIcon() && obj.IconPosition != nil {
 		iconPosition = label.FromString(*obj.IconPosition)
 		switch iconPosition {
 		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight,
@@ -1386,7 +1386,7 @@ func fitPadding(obj *d2graph.Object) {
 					innerBoxes = append(innerBoxes, *childLabelBox)
 				}
 			}
-			if child.Icon != nil && child.Shape.Value != d2target.ShapeImage && child.IconPosition != nil {
+			if child.HasIcon() && child.IconPosition != nil {
 				childIconPosition = label.FromString(*child.IconPosition)
 				if childIconPosition.IsOutside() {
 					childIconTL := child.GetIconTopLeft()

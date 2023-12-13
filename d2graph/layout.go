@@ -334,7 +334,7 @@ func (obj *Object) GetMargin() geo.Spacing {
 		}
 	}
 
-	if obj.Icon != nil && obj.IconPosition != nil && obj.Shape.Value != d2target.ShapeImage {
+	if obj.HasIcon() && obj.IconPosition != nil {
 		position := label.FromString(*obj.IconPosition)
 
 		iconSize := float64(d2target.MAX_ICON_SIZE + label.PADDING)
@@ -453,7 +453,7 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 			}
 		}
 	}
-	if !overlapsOutsideLabel && edge.Src.Icon != nil && !srcShape.Is(shape.IMAGE_TYPE) {
+	if !overlapsOutsideLabel && edge.Src.HasIcon() {
 		// assumes IconPosition is set if there is an Icon
 		iconPosition := label.FromString(*edge.Src.IconPosition)
 		if iconPosition.IsOutside() {
@@ -535,7 +535,7 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 			}
 		}
 	}
-	if !overlapsOutsideLabel && edge.Dst.Icon != nil && !dstShape.Is(shape.IMAGE_TYPE) {
+	if !overlapsOutsideLabel && edge.Dst.HasIcon() {
 		// assumes IconPosition is set if there is an Icon
 		iconPosition := label.FromString(*edge.Dst.IconPosition)
 		if iconPosition.IsOutside() {
