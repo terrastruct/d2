@@ -257,6 +257,13 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 
+		if obj.HasLabel() && obj.HasIcon() && obj.IconPosition != nil {
+			if !label.FromString(*obj.IconPosition).IsOutside() {
+				// this gives shapes extra height for their label if they also have an icon
+				obj.Height += float64(obj.LabelDimensions.Height + label.PADDING)
+			}
+		}
+
 		margin, _ := obj.SpacingOpt(2*label.PADDING, 0, false)
 		width := margin.Left + obj.Width + margin.Right
 		height := margin.Top + obj.Height + margin.Bottom
@@ -1050,7 +1057,7 @@ func adjustPadding(obj *d2graph.Object, width, height float64, padding shapePadd
 			extraRight = labelWidth
 		}
 	}
-	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage && obj.IconPosition != nil {
+	if obj.HasIcon() && obj.IconPosition != nil {
 		iconSize := d2target.MAX_ICON_SIZE + 2*label.PADDING
 		switch label.FromString(*obj.IconPosition) {
 		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:

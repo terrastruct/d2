@@ -565,6 +565,10 @@ func (obj *Object) HasLabel() bool {
 	}
 }
 
+func (obj *Object) HasIcon() bool {
+	return obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage
+}
+
 func (obj *Object) AbsID() string {
 	if obj.Parent != nil && obj.Parent.ID != "" {
 		return obj.Parent.AbsID() + "." + obj.ID
@@ -1989,7 +1993,7 @@ func (obj *Object) SpacingOpt(labelPadding, iconPadding float64, maxIconSize boo
 		}
 	}
 
-	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
+	if obj.HasIcon() {
 		var position label.Position
 		if obj.IconPosition != nil {
 			position = label.FromString(*obj.IconPosition)
