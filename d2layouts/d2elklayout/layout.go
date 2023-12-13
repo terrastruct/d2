@@ -257,11 +257,9 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 
-		if obj.HasLabel() && obj.HasIcon() && obj.IconPosition != nil {
-			if !label.FromString(*obj.IconPosition).IsOutside() {
-				// this gives shapes extra height for their label if they also have an icon
-				obj.Height += float64(obj.LabelDimensions.Height + label.PADDING)
-			}
+		if obj.HasLabel() && obj.HasIcon() {
+			// this gives shapes extra height for their label if they also have an icon
+			obj.Height += float64(obj.LabelDimensions.Height + label.PADDING)
 		}
 
 		margin, _ := obj.SpacingOpt(2*label.PADDING, 0, false)
@@ -570,7 +568,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 					}
 				}
 				obj.TopLeft.X += margin.Left
-				obj.ShiftDescendants(margin.Left, 0)
+				obj.ShiftDescendants(margin.Left/2, 0)
 				obj.Width -= margin.Left
 			}
 			if margin.Right > 0 {
@@ -583,8 +581,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 						e.Route[l-1].X -= margin.Right
 					}
 				}
-				// TODO is this right?
-				obj.ShiftDescendants(-margin.Right, 0)
+				obj.ShiftDescendants(-margin.Right/2, 0)
 				obj.Width -= margin.Right
 			}
 			if margin.Top > 0 {
@@ -598,7 +595,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 					}
 				}
 				obj.TopLeft.Y += margin.Top
-				obj.ShiftDescendants(0, margin.Top)
+				obj.ShiftDescendants(0, margin.Top/2)
 				obj.Height -= margin.Top
 			}
 			if margin.Bottom > 0 {
@@ -611,7 +608,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 						e.Route[l-1].Y -= margin.Bottom
 					}
 				}
-				obj.ShiftDescendants(0, -margin.Bottom)
+				obj.ShiftDescendants(0, -margin.Bottom/2)
 				obj.Height -= margin.Bottom
 			}
 		}
