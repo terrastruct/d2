@@ -262,7 +262,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			obj.Height += float64(obj.LabelDimensions.Height + label.PADDING)
 		}
 
-		margin, _ := obj.SpacingOpt(2*label.PADDING, 0, false)
+		margin, _ := obj.SpacingOpt(label.PADDING, label.PADDING, false)
 		width := margin.Left + obj.Width + margin.Right
 		height := margin.Top + obj.Height + margin.Bottom
 		adjustments[obj] = margin
