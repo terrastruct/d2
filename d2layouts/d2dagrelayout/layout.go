@@ -902,14 +902,27 @@ func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance f
 						}
 					}
 					queue(e.Dst)
+					first := e.Route[0]
+					startIndex := 0
+					_, wasShifted := shifted[curr]
 					if isHorizontal {
-						for _, p := range e.Route {
+						if wasShifted && first.X < curr.TopLeft.X && first.X < start {
+							first.X += distance
+							startIndex++
+						}
+						for i := startIndex; i < len(e.Route); i++ {
+							p := e.Route[i]
 							if start <= p.X {
 								p.X += distance
 							}
 						}
 					} else {
-						for _, p := range e.Route {
+						if wasShifted && first.Y < curr.TopLeft.Y && first.Y < start {
+							first.Y += distance
+							startIndex++
+						}
+						for i := startIndex; i < len(e.Route); i++ {
+							p := e.Route[i]
 							if start <= p.Y {
 								p.Y += distance
 							}
@@ -930,14 +943,27 @@ func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance f
 						}
 					}
 					queue(e.Src)
+					last := e.Route[len(e.Route)-1]
+					endIndex := len(e.Route)
+					_, wasShifted := shifted[curr]
 					if isHorizontal {
-						for _, p := range e.Route {
+						if wasShifted && last.X < curr.TopLeft.X && last.X < start {
+							last.X += distance
+							endIndex--
+						}
+						for i := 0; i < endIndex; i++ {
+							p := e.Route[i]
 							if start <= p.X {
 								p.X += distance
 							}
 						}
 					} else {
-						for _, p := range e.Route {
+						if wasShifted && last.Y < curr.TopLeft.Y && last.Y < start {
+							last.Y += distance
+							endIndex--
+						}
+						for i := 0; i < endIndex; i++ {
+							p := e.Route[i]
 							if start <= p.Y {
 								p.Y += distance
 							}
