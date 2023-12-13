@@ -577,7 +577,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 					}
 				}
 				// TODO is this right?
-				obj.ShiftDescendants(-margin.Right/2, 0)
+				obj.ShiftDescendants(-margin.Right, 0)
 				obj.Width -= margin.Right
 			}
 			if margin.Top > 0 {
@@ -591,7 +591,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 					}
 				}
 				obj.TopLeft.Y += margin.Top
-				obj.ShiftDescendants(margin.Top, 0)
+				obj.ShiftDescendants(0, margin.Top)
 				obj.Height -= margin.Top
 			}
 			if margin.Bottom > 0 {
@@ -604,7 +604,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 						e.Route[l-1].Y -= margin.Bottom
 					}
 				}
-				obj.ShiftDescendants(-margin.Bottom/2, 0)
+				obj.ShiftDescendants(0, -margin.Bottom)
 				obj.Height -= margin.Bottom
 			}
 		}
