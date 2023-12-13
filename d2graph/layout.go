@@ -334,7 +334,7 @@ func (obj *Object) GetMargin() geo.Spacing {
 		}
 	}
 
-	if obj.Icon != nil && obj.IconPosition != nil && obj.Shape.Value != d2target.ShapeImage {
+	if obj.HasIcon() && obj.IconPosition != nil {
 		position := label.FromString(*obj.IconPosition)
 
 		iconSize := float64(d2target.MAX_ICON_SIZE + label.PADDING)
@@ -417,7 +417,7 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 
 	startingSegment := geo.Segment{Start: points[startIndex+1], End: points[startIndex]}
 	// if an edge runs into an outside label, stop the edge at the label instead
-	overlapsOutsideLabel := false
+	var overlapsOutsideLabel, overlapsOutsideIcon bool
 	if edge.Src.HasLabel() {
 		// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
 		labelPosition := label.FromString(*edge.Src.LabelPosition)
@@ -453,7 +453,38 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 			}
 		}
 	}
-	if !overlapsOutsideLabel {
+	if !overlapsOutsideLabel && edge.Src.HasIcon() {
+		// assumes IconPosition is set if there is an Icon
+		iconPosition := label.FromString(*edge.Src.IconPosition)
+		if iconPosition.IsOutside() {
+			iconWidth := float64(d2target.MAX_ICON_SIZE)
+			iconHeight := float64(d2target.MAX_ICON_SIZE)
+			iconTL := iconPosition.GetPointOnBox(edge.Src.Box, label.PADDING, iconWidth, iconHeight)
+
+			iconBox := geo.NewBox(iconTL, iconWidth, iconHeight)
+			for iconBox.Contains(startingSegment.End) && startIndex+1 > endIndex {
+				startingSegment.Start = startingSegment.End
+				startingSegment.End = points[startIndex+2]
+				startIndex++
+			}
+			if intersections := iconBox.Intersections(startingSegment); len(intersections) > 0 {
+				overlapsOutsideIcon = true
+				p := intersections[0]
+				if len(intersections) > 1 {
+					p = findOuterIntersection(iconPosition, intersections)
+				}
+				// move starting segment to icon intersection point
+				points[startIndex] = p
+				startingSegment.End = p
+				// if the segment becomes too short, just merge it with the next segment
+				if startIndex+1 < endIndex && startingSegment.Length() < MIN_SEGMENT_LEN {
+					points[startIndex+1] = points[startIndex]
+					startIndex++
+				}
+			}
+		}
+	}
+	if !overlapsOutsideLabel && !overlapsOutsideIcon {
 		if intersections := edge.Src.Intersections(startingSegment); len(intersections) > 0 {
 			// move starting segment to intersection point
 			points[startIndex] = intersections[0]
@@ -469,6 +500,7 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 	}
 	endingSegment := geo.Segment{Start: points[endIndex-1], End: points[endIndex]}
 	overlapsOutsideLabel = false
+	overlapsOutsideIcon = false
 	if edge.Dst.HasLabel() {
 		// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
 		labelPosition := label.FromString(*edge.Dst.LabelPosition)
@@ -503,7 +535,39 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 			}
 		}
 	}
-	if !overlapsOutsideLabel {
+	if !overlapsOutsideLabel && edge.Dst.HasIcon() {
+		// assumes IconPosition is set if there is an Icon
+		iconPosition := label.FromString(*edge.Dst.IconPosition)
+		if iconPosition.IsOutside() {
+			iconSize := d2target.GetIconSize(edge.Dst.Box, iconPosition.String())
+			iconWidth := float64(iconSize)
+			iconHeight := float64(iconSize)
+			labelTL := iconPosition.GetPointOnBox(edge.Dst.Box, label.PADDING, iconWidth, iconHeight)
+
+			iconBox := geo.NewBox(labelTL, iconWidth, iconHeight)
+			for iconBox.Contains(endingSegment.Start) && endIndex-1 > startIndex {
+				endingSegment.End = endingSegment.Start
+				endingSegment.Start = points[endIndex-2]
+				endIndex--
+			}
+			if intersections := iconBox.Intersections(endingSegment); len(intersections) > 0 {
+				overlapsOutsideIcon = true
+				p := intersections[0]
+				if len(intersections) > 1 {
+					p = findOuterIntersection(iconPosition, intersections)
+				}
+				// move ending segment to icon intersection point
+				points[endIndex] = p
+				endingSegment.End = p
+				// if the segment becomes too short, just merge it with the previous segment
+				if endIndex-1 > startIndex && endingSegment.Length() < MIN_SEGMENT_LEN {
+					points[endIndex-1] = points[endIndex]
+					endIndex--
+				}
+			}
+		}
+	}
+	if !overlapsOutsideLabel && !overlapsOutsideIcon {
 		if intersections := edge.Dst.Intersections(endingSegment); len(intersections) > 0 {
 			// move ending segment to intersection point
 			points[endIndex] = intersections[0]
