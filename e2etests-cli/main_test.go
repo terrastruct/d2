@@ -351,6 +351,133 @@ layers: {
 			},
 		},
 		{
+			name: "theme-override",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "theme-override.d2", `
+direction: right
+vars: {
+  d2-config: {
+    theme-overrides: {
+      B1: "#2E7D32"
+      B2: "#66BB6A"
+      B3: "#A5D6A7"
+      B4: "#C5E1A5"
+      B5: "#E6EE9C"
+      B6: "#FFF59D"
+
+      AA2: "#0D47A1"
+      AA4: "#42A5F5"
+      AA5: "#90CAF9"
+
+      AB4: "#F44336"
+      AB5: "#FFCDD2"
+
+      N1: "#2E2E2E"
+      N2: "#2E2E2E"
+      N3: "#595959"
+      N4: "#858585"
+      N5: "#B1B1B1"
+      N6: "#DCDCDC"
+      N7: "#DCDCDC"
+    }
+    dark-theme-overrides: {
+      B1: "#2E7D32"
+      B2: "#66BB6A"
+      B3: "#A5D6A7"
+      B4: "#C5E1A5"
+      B5: "#E6EE9C"
+      B6: "#FFF59D"
+
+      AA2: "#0D47A1"
+      AA4: "#42A5F5"
+      AA5: "#90CAF9"
+
+      AB4: "#F44336"
+      AB5: "#FFCDD2"
+
+      N1: "#2E2E2E"
+      N2: "#2E2E2E"
+      N3: "#595959"
+      N4: "#858585"
+      N5: "#B1B1B1"
+      N6: "#DCDCDC"
+      N7: "#DCDCDC"
+    }
+  }
+}
+
+logs: {
+  shape: page
+  style.multiple: true
+}
+user: User {shape: person}
+network: Network {
+  tower: Cell Tower {
+    satellites: {
+      shape: stored_data
+      style.multiple: true
+    }
+
+    satellites -> transmitter
+    satellites -> transmitter
+    satellites -> transmitter
+    transmitter
+  }
+  processor: Data Processor {
+    storage: Storage {
+      shape: cylinder
+      style.multiple: true
+    }
+  }
+  portal: Online Portal {
+    UI
+  }
+
+  tower.transmitter -> processor: phone logs
+}
+server: API Server
+
+user -> network.tower: Make call
+network.processor -> server
+network.processor -> server
+network.processor -> server
+
+server -> logs
+server -> logs
+server -> logs: persist
+
+server -> network.portal.UI: display
+user -> network.portal.UI: access {
+  style.stroke-dash: 3
+}
+
+costumes: {
+  shape: sql_table
+  id: int {constraint: primary_key}
+  silliness: int
+  monster: int
+  last_updated: timestamp
+}
+
+monsters: {
+  shape: sql_table
+  id: int {constraint: primary_key}
+  movie: string
+  weight: int
+  last_updated: timestamp
+}
+
+costumes.monster -> monsters.id
+`)
+				err := runTestMain(t, ctx, dir, env, "theme-override.d2", "theme-override.svg")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "theme-override.svg")
+				assert.Testdata(t, ".svg", svg)
+				// theme color is used in SVG
+				assert.NotEqual(t, -1, strings.Index(string(svg), "#2E2E2E"))
+			},
+		},
+		{
 			name: "multiboard/life",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "life.d2", `x -> y

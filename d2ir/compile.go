@@ -169,7 +169,7 @@ func (c *compiler) validateConfigs(configs *Field) {
 	for _, f := range configs.Map().Fields {
 		var val string
 		if f.Primary() == nil {
-			if f.Name != "theme-colors" {
+			if f.Name != "theme-overrides" && f.Name != "dark-theme-overrides" {
 				c.errorf(f.LastRef().AST(), `"%s" needs a value`, f.Name)
 				continue
 			}
@@ -184,7 +184,7 @@ func (c *compiler) validateConfigs(configs *Field) {
 				c.errorf(f.LastRef().AST(), `expected a boolean for "%s", got "%s"`, f.Name, val)
 				continue
 			}
-		case "theme-colors":
+		case "theme-overrides", "dark-theme-overrides":
 			if f.Map() == nil {
 				c.errorf(f.LastRef().AST(), `"%s" needs a map`, f.Name)
 				continue

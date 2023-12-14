@@ -1,5 +1,6 @@
 #### Features 🚀
 
+- Themes can be customized via `d2-config` vars. [#1777](https://github.com/terrastruct/d2/pull/1777)
 - Icons can be added for special objects (sql_table, class, code, markdown, latex). [#1774](https://github.com/terrastruct/d2/pull/1774)
 
 #### Improvements 🧹

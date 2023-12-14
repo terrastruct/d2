@@ -1,0 +1,1690 @@
+{
+  "name": "",
+  "config": {
+    "sketch": null,
+    "themeID": null,
+    "darkThemeID": null,
+    "pad": null,
+    "center": null,
+    "layoutEngine": null,
+    "themeOverrides": {
+      "n1": "#2E2E2E",
+      "n2": "#2E2E2E",
+      "n3": "#595959",
+      "n4": "#858585",
+      "n5": "#B1B1B1",
+      "n6": "#DCDCDC",
+      "n7": "#DCDCDC",
+      "b1": "#2E7D32",
+      "b2": "#66BB6A",
+      "b3": "#A5D6A7",
+      "b4": "#C5E1A5",
+      "b5": "#E6EE9C",
+      "b6": "#FFF59D",
+      "aa2": "#0D47A1",
+      "aa4": "#42A5F5",
+      "aa5": "#90CAF9",
+      "ab4": "#F44336",
+      "ab5": "#FFCDD2"
+    },
+    "darkThemeOverrides": {
+      "n1": "#2E2E2E",
+      "n2": "#2E2E2E",
+      "n3": "#595959",
+      "n4": "#858585",
+      "n5": "#B1B1B1",
+      "n6": "#DCDCDC",
+      "n7": "#DCDCDC",
+      "b1": "#2E7D32",
+      "b2": "#66BB6A",
+      "b3": "#A5D6A7",
+      "b4": "#C5E1A5",
+      "b5": "#E6EE9C",
+      "b6": "#FFF59D",
+      "aa2": "#0D47A1",
+      "aa4": "#42A5F5",
+      "aa5": "#90CAF9",
+      "ab4": "#F44336",
+      "ab5": "#FFCDD2"
+    }
+  },
+  "isFolderOnly": false,
+  "fontFamily": "SourceSansPro",
+  "shapes": [
+    {
+      "id": "logs",
+      "type": "page",
+      "pos": {
+        "x": 2033,
+        "y": 10
+      },
+      "width": 73,
+      "height": 87,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "AB4",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": true,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "logs",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 28,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "user",
+      "type": "person",
+      "pos": {
+        "x": 123,
+        "y": 470
+      },
+      "width": 48,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B3",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "User",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 33,
+      "labelHeight": 21,
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "network",
+      "type": "rectangle",
+      "pos": {
+        "x": 606,
+        "y": 222
+      },
+      "width": 1553,
+      "height": 399,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B4",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Network",
+      "fontSize": 28,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 99,
+      "labelHeight": 36,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "network.tower",
+      "type": "rectangle",
+      "pos": {
+        "x": 636,
+        "y": 327
+      },
+      "width": 514,
+      "height": 143,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B5",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Cell Tower",
+      "fontSize": 24,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 106,
+      "labelHeight": 31,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 2
+    },
+    {
+      "id": "network.tower.satellites",
+      "type": "stored_data",
+      "pos": {
+        "x": 666,
+        "y": 371
+      },
+      "width": 130,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "AA5",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": true,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "satellites",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 65,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 3
+    },
+    {
+      "id": "network.tower.transmitter",
+      "type": "rectangle",
+      "pos": {
+        "x": 992,
+        "y": 360
+      },
+      "width": 128,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B6",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "transmitter",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 83,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 3
+    },
+    {
+      "id": "network.processor",
+      "type": "rectangle",
+      "pos": {
+        "x": 1392,
+        "y": 263
+      },
+      "width": 171,
+      "height": 188,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B5",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Data Processor",
+      "fontSize": 24,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 150,
+      "labelHeight": 31,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 2
+    },
+    {
+      "id": "network.processor.storage",
+      "type": "cylinder",
+      "pos": {
+        "x": 1422,
+        "y": 303
+      },
+      "width": 101,
+      "height": 118,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "AA5",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": true,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Storage",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 56,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 3
+    },
+    {
+      "id": "network.portal",
+      "type": "rectangle",
+      "pos": {
+        "x": 2010,
+        "y": 465
+      },
+      "width": 119,
+      "height": 126,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B5",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Online Portal",
+      "fontSize": 24,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 132,
+      "labelHeight": 31,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 2
+    },
+    {
+      "id": "network.portal.UI",
+      "type": "rectangle",
+      "pos": {
+        "x": 2040,
+        "y": 495
+      },
+      "width": 59,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B6",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "UI",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 14,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 3
+    },
+    {
+      "id": "server",
+      "type": "rectangle",
+      "pos": {
+        "x": 1694,
+        "y": 26
+      },
+      "width": 120,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B6",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "API Server",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 75,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "costumes",
+      "type": "sql_table",
+      "pos": {
+        "x": 0,
+        "y": 712
+      },
+      "width": 294,
+      "height": 180,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N1",
+      "stroke": "N7",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": [
+        {
+          "name": {
+            "label": "id",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 15,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "int",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 23,
+            "labelHeight": 26
+          },
+          "constraint": [
+            "primary_key"
+          ],
+          "reference": ""
+        },
+        {
+          "name": {
+            "label": "silliness",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 66,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "int",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 23,
+            "labelHeight": 26
+          },
+          "constraint": null,
+          "reference": ""
+        },
+        {
+          "name": {
+            "label": "monster",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 70,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "int",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 23,
+            "labelHeight": 26
+          },
+          "constraint": null,
+          "reference": ""
+        },
+        {
+          "name": {
+            "label": "last_updated",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 110,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "timestamp",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 91,
+            "labelHeight": 26
+          },
+          "constraint": null,
+          "reference": ""
+        }
+      ],
+      "label": "costumes",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 101,
+      "labelHeight": 31,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
+    },
+    {
+      "id": "monsters",
+      "type": "sql_table",
+      "pos": {
+        "x": 584,
+        "y": 712
+      },
+      "width": 294,
+      "height": 180,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N1",
+      "stroke": "N7",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": [
+        {
+          "name": {
+            "label": "id",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 15,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "int",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 23,
+            "labelHeight": 26
+          },
+          "constraint": [
+            "primary_key"
+          ],
+          "reference": ""
+        },
+        {
+          "name": {
+            "label": "movie",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 51,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "string",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 48,
+            "labelHeight": 26
+          },
+          "constraint": null,
+          "reference": ""
+        },
+        {
+          "name": {
+            "label": "weight",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 58,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "int",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 23,
+            "labelHeight": 26
+          },
+          "constraint": null,
+          "reference": ""
+        },
+        {
+          "name": {
+            "label": "last_updated",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 110,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "timestamp",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 91,
+            "labelHeight": 26
+          },
+          "constraint": null,
+          "reference": ""
+        }
+      ],
+      "label": "monsters",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 99,
+      "labelHeight": 31,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
+    }
+  ],
+  "connections": [
+    {
+      "id": "network.tower.(satellites -> transmitter)[0]",
+      "src": "network.tower.satellites",
+      "srcArrow": "none",
+      "dst": "network.tower.transmitter",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 791,
+          "y": 393
+        },
+        {
+          "x": 906.2000122070312,
+          "y": 364.6000061035156
+        },
+        {
+          "x": 946.4000244140625,
+          "y": 362.8999938964844
+        },
+        {
+          "x": 992,
+          "y": 384.5
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "network.tower.(satellites -> transmitter)[1]",
+      "src": "network.tower.satellites",
+      "srcArrow": "none",
+      "dst": "network.tower.transmitter",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 792,
+          "y": 404
+        },
+        {
+          "x": 906.4000244140625,
+          "y": 404
+        },
+        {
+          "x": 946.4000244140625,
+          "y": 403.79998779296875
+        },
+        {
+          "x": 992,
+          "y": 403
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "network.tower.(satellites -> transmitter)[2]",
+      "src": "network.tower.satellites",
+      "srcArrow": "none",
+      "dst": "network.tower.transmitter",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 797,
+          "y": 416
+        },
+        {
+          "x": 907.4000244140625,
+          "y": 435.6000061035156
+        },
+        {
+          "x": 946.4000244140625,
+          "y": 436.8999938964844
+        },
+        {
+          "x": 992,
+          "y": 422.5
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "network.(tower.transmitter -> processor)[0]",
+      "src": "network.tower.transmitter",
+      "srcArrow": "none",
+      "dst": "network.processor",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "phone logs",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 74,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1120,
+          "y": 392.75
+        },
+        {
+          "x": 1165.5999755859375,
+          "y": 392.75
+        },
+        {
+          "x": 1295.199951171875,
+          "y": 392.75
+        },
+        {
+          "x": 1392,
+          "y": 392.75
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(user -> network.tower)[0]",
+      "src": "user",
+      "srcArrow": "none",
+      "dst": "network.tower",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "Make call",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 62,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 163,
+          "y": 500
+        },
+        {
+          "x": 338.20001220703125,
+          "y": 415.20001220703125
+        },
+        {
+          "x": 503.20001220703125,
+          "y": 394
+        },
+        {
+          "x": 636,
+          "y": 394
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(network.processor -> server)[0]",
+      "src": "network.processor",
+      "srcArrow": "none",
+      "dst": "server",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1563,
+          "y": 312.25
+        },
+        {
+          "x": 1622.199951171875,
+          "y": 312.25
+        },
+        {
+          "x": 1655.800048828125,
+          "y": 268.25
+        },
+        {
+          "x": 1731,
+          "y": 92.25
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(network.processor -> server)[1]",
+      "src": "network.processor",
+      "srcArrow": "none",
+      "dst": "server",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1563,
+          "y": 351.75
+        },
+        {
+          "x": 1622.199951171875,
+          "y": 351.75
+        },
+        {
+          "x": 1656.5999755859375,
+          "y": 299.75
+        },
+        {
+          "x": 1735,
+          "y": 91.75
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(network.processor -> server)[2]",
+      "src": "network.processor",
+      "srcArrow": "none",
+      "dst": "server",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1563,
+          "y": 401.25
+        },
+        {
+          "x": 1622.199951171875,
+          "y": 401.25
+        },
+        {
+          "x": 1657.4000244140625,
+          "y": 339.45001220703125
+        },
+        {
+          "x": 1739,
+          "y": 92.25
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(server -> logs)[0]",
+      "src": "server",
+      "srcArrow": "none",
+      "dst": "logs",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1814,
+          "y": 45.5
+        },
+        {
+          "x": 1878.800048828125,
+          "y": 31.899999618530273
+        },
+        {
+          "x": 1987.4000244140625,
+          "y": 31.399999618530273
+        },
+        {
+          "x": 2033,
+          "y": 43
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(server -> logs)[1]",
+      "src": "server",
+      "srcArrow": "none",
+      "dst": "logs",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1814,
+          "y": 54.5
+        },
+        {
+          "x": 1878.800048828125,
+          "y": 49.70000076293945
+        },
+        {
+          "x": 1987.4000244140625,
+          "y": 49.20000076293945
+        },
+        {
+          "x": 2033,
+          "y": 52
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(server -> logs)[2]",
+      "src": "server",
+      "srcArrow": "none",
+      "dst": "logs",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "persist",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 46,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1814,
+          "y": 72
+        },
+        {
+          "x": 1878.800048828125,
+          "y": 85.5999984741211
+        },
+        {
+          "x": 1987.4000244140625,
+          "y": 84.5999984741211
+        },
+        {
+          "x": 2033,
+          "y": 67
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(server -> network.portal.UI)[0]",
+      "src": "server",
+      "srcArrow": "none",
+      "dst": "network.portal.UI",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "display",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 48,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1771,
+          "y": 91.75
+        },
+        {
+          "x": 1870.199951171875,
+          "y": 426.1499938964844
+        },
+        {
+          "x": 1988.800048828125,
+          "y": 512.1500244140625
+        },
+        {
+          "x": 2040,
+          "y": 521.75
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(user -> network.portal.UI)[0]",
+      "src": "user",
+      "srcArrow": "none",
+      "dst": "network.portal.UI",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 3,
+      "strokeWidth": 2,
+      "stroke": "B2",
+      "borderRadius": 10,
+      "label": "access",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 44,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 161,
+          "y": 505
+        },
+        {
+          "x": 337.79998779296875,
+          "y": 568
+        },
+        {
+          "x": 399.6000061035156,
+          "y": 583.75
+        },
+        {
+          "x": 426,
+          "y": 583.75
+        },
+        {
+          "x": 452.3999938964844,
+          "y": 583.75
+        },
+        {
+          "x": 481.3999938964844,
+          "y": 583.75
+        },
+        {
+          "x": 498.5,
+          "y": 583.75
+        },
+        {
+          "x": 515.5999755859375,
+          "y": 583.75
+        },
+        {
+          "x": 567.7999877929688,
+          "y": 583.75
+        },
+        {
+          "x": 629,
+          "y": 583.75
+        },
+        {
+          "x": 690.2000122070312,
+          "y": 583.75
+        },
+        {
+          "x": 771.7999877929688,
+          "y": 583.75
+        },
+        {
+          "x": 833,
+          "y": 583.75
+        },
+        {
+          "x": 894.2000122070312,
+          "y": 583.75
+        },
+        {
+          "x": 959.2000122070312,
+          "y": 583.75
+        },
+        {
+          "x": 995.5,
+          "y": 583.75
+        },
+        {
+          "x": 1031.800048828125,
+          "y": 583.75
+        },
+        {
+          "x": 1080.199951171875,
+          "y": 583.75
+        },
+        {
+          "x": 1116.5,
+          "y": 583.75
+        },
+        {
+          "x": 1152.800048828125,
+          "y": 583.75
+        },
+        {
+          "x": 1195.800048828125,
+          "y": 583.75
+        },
+        {
+          "x": 1224,
+          "y": 583.75
+        },
+        {
+          "x": 1252.199951171875,
+          "y": 583.75
+        },
+        {
+          "x": 1289.800048828125,
+          "y": 583.75
+        },
+        {
+          "x": 1318,
+          "y": 583.75
+        },
+        {
+          "x": 1346.199951171875,
+          "y": 583.75
+        },
+        {
+          "x": 1386.5,
+          "y": 583.75
+        },
+        {
+          "x": 1418.75,
+          "y": 583.75
+        },
+        {
+          "x": 1451,
+          "y": 583.75
+        },
+        {
+          "x": 1494,
+          "y": 583.75
+        },
+        {
+          "x": 1526.25,
+          "y": 583.75
+        },
+        {
+          "x": 1558.5,
+          "y": 583.75
+        },
+        {
+          "x": 1591.4000244140625,
+          "y": 583.75
+        },
+        {
+          "x": 1608.5,
+          "y": 583.75
+        },
+        {
+          "x": 1625.5999755859375,
+          "y": 583.75
+        },
+        {
+          "x": 1660.4000244140625,
+          "y": 583.75
+        },
+        {
+          "x": 1695.5,
+          "y": 583.75
+        },
+        {
+          "x": 1730.5999755859375,
+          "y": 583.75
+        },
+        {
+          "x": 1782.199951171875,
+          "y": 583.75
+        },
+        {
+          "x": 1824.5,
+          "y": 583.75
+        },
+        {
+          "x": 1866.800048828125,
+          "y": 583.75
+        },
+        {
+          "x": 1988.800048828125,
+          "y": 574.1500244140625
+        },
+        {
+          "x": 2040,
+          "y": 535.75
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(costumes -> monsters)[0]",
+      "src": "costumes",
+      "srcArrow": "none",
+      "dst": "monsters",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 294,
+          "y": 801.5
+        },
+        {
+          "x": 364.3999938964844,
+          "y": 801.5
+        },
+        {
+          "x": 399.6000061035156,
+          "y": 801.5
+        },
+        {
+          "x": 426,
+          "y": 801.5
+        },
+        {
+          "x": 452.3999938964844,
+          "y": 801.5
+        },
+        {
+          "x": 538.4000244140625,
+          "y": 801.5
+        },
+        {
+          "x": 584,
+          "y": 801.5
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    }
+  ],
+  "root": {
+    "id": "",
+    "type": "",
+    "pos": {
+      "x": 0,
+      "y": 0
+    },
+    "width": 0,
+    "height": 0,
+    "opacity": 0,
+    "strokeDash": 0,
+    "strokeWidth": 0,
+    "borderRadius": 0,
+    "fill": "N7",
+    "stroke": "",
+    "shadow": false,
+    "3d": false,
+    "multiple": false,
+    "double-border": false,
+    "tooltip": "",
+    "link": "",
+    "icon": null,
+    "iconPosition": "",
+    "blend": false,
+    "fields": null,
+    "methods": null,
+    "columns": null,
+    "label": "",
+    "fontSize": 0,
+    "fontFamily": "",
+    "language": "",
+    "color": "",
+    "italic": false,
+    "bold": false,
+    "underline": false,
+    "labelWidth": 0,
+    "labelHeight": 0,
+    "zIndex": 0,
+    "level": 0
+  }
+}
