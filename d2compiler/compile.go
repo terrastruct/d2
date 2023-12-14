@@ -17,6 +17,7 @@ import (
 	"oss.terrastruct.com/d2/d2ir"
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
@@ -54,7 +55,11 @@ func Compile(p string, r io.Reader, opts *CompileOptions) (*d2graph.Graph, *d2ta
 	g.FS = opts.FS
 	g.SortObjectsByAST()
 	g.SortEdgesByAST()
-	return g, compileConfig(ir), nil
+	config, err := compileConfig(ir)
+	if err != nil {
+		return nil, nil, err
+	}
+	return g, config, nil
 }
 
 func compileIR(ast *d2ast.Map, m *d2ir.Map) (*d2graph.Graph, error) {
@@ -1336,10 +1341,10 @@ func parentSeqDiagram(n d2ir.Node) *d2ir.Map {
 	}
 }
 
-func compileConfig(ir *d2ir.Map) *d2target.Config {
+func compileConfig(ir *d2ir.Map) (*d2target.Config, error) {
 	f := ir.GetField("vars", "d2-config")
 	if f == nil || f.Map() == nil {
-		return nil
+		return nil, nil
 	}
 
 	configMap := f.Map()
@@ -1377,82 +1382,85 @@ func compileConfig(ir *d2ir.Map) *d2target.Config {
 
 	f = configMap.GetField("theme-overrides")
 	if f != nil {
-		config.ThemeOverrides = compileThemeOverrides(f.Map())
+		overrides, err := compileThemeOverrides(f.Map())
+		if err != nil {
+			return nil, err
+		}
+		config.ThemeOverrides = overrides
 	}
 	f = configMap.GetField("dark-theme-overrides")
 	if f != nil {
-		config.DarkThemeOverrides = compileThemeOverrides(f.Map())
+		overrides, err := compileThemeOverrides(f.Map())
+		if err != nil {
+			return nil, err
+		}
+		config.DarkThemeOverrides = overrides
 	}
 
-	return config
+	return config, nil
 }
 
-func compileThemeOverrides(m *d2ir.Map) *d2target.ThemeOverrides {
+func compileThemeOverrides(m *d2ir.Map) (*d2target.ThemeOverrides, error) {
 	if m == nil {
-		return nil
+		return nil, nil
 	}
 	themeOverrides := d2target.ThemeOverrides{}
 
-	if m.GetField("N1") != nil {
-		themeOverrides.N1 = go2.Pointer(m.GetField("N1").Primary().Value.ScalarString())
+	err := &d2parser.ParseError{}
+FOR:
+	for _, f := range m.Fields {
+		switch strings.ToUpper(f.Name) {
+		case "N1":
+			themeOverrides.N1 = go2.Pointer(f.Primary().Value.ScalarString())
+		case "N2":
+			themeOverrides.N2 = go2.Pointer(f.Primary().Value.ScalarString())
+		case "N3":
+			themeOverrides.N3 = go2.Pointer(f.Primary().Value.ScalarString())
+		case "N4":
+			themeOverrides.N4 = go2.Pointer(f.Primary().Value.ScalarString())
+		case "N5":
+			themeOverrides.N5 = go2.Pointer(f.Primary().Value.ScalarString())
+		case "N6":
+			themeOverrides.N6 = go2.Pointer(f.Primary().Value.ScalarString())
+		case "N7":
+			themeOverrides.N7 = go2.Pointer(f.Primary().Value.ScalarString())
+		case "B1":
+			themeOverrides.B1 = go2.Pointer(f.Primary().Value.ScalarString())
+		case "B2":
+			themeOverrides.B2 = go2.Pointer(f.Primary().Value.ScalarString())
+		case "B3":
+			themeOverrides.B3 = go2.Pointer(f.Primary().Value.ScalarString())
+		case "B4":
+			themeOverrides.B4 = go2.Pointer(f.Primary().Value.ScalarString())
+		case "B5":
+			themeOverrides.B5 = go2.Pointer(f.Primary().Value.ScalarString())
+		case "B6":
+			themeOverrides.B6 = go2.Pointer(f.Primary().Value.ScalarString())
+		case "AA2":
+			themeOverrides.AA2 = go2.Pointer(f.Primary().Value.ScalarString())
+		case "AA4":
+			themeOverrides.AA4 = go2.Pointer(f.Primary().Value.ScalarString())
+		case "AA5":
+			themeOverrides.AA5 = go2.Pointer(f.Primary().Value.ScalarString())
+		case "AB4":
+			themeOverrides.AB4 = go2.Pointer(f.Primary().Value.ScalarString())
+		case "AB5":
+			themeOverrides.AB5 = go2.Pointer(f.Primary().Value.ScalarString())
+		default:
+			err.Errors = append(err.Errors, d2parser.Errorf(f.LastPrimaryKey(), fmt.Sprintf(`"%s" is not a valid theme code`, f.Name)).(d2ast.Error))
+			continue FOR
+		}
+		if !go2.Contains(color.NamedColors, strings.ToLower(f.Primary().Value.ScalarString())) && !color.ColorHexRegex.MatchString(f.Primary().Value.ScalarString()) {
+			err.Errors = append(err.Errors, d2parser.Errorf(f.LastPrimaryKey(), fmt.Sprintf(`expected "%s" to be a valid named color ("orange") or a hex code ("#f0ff3a")`, f.Name)).(d2ast.Error))
+		}
 	}
-	if m.GetField("B1") != nil {
-		themeOverrides.B1 = go2.Pointer(m.GetField("B1").Primary().Value.ScalarString())
-	}
-	if m.GetField("B2") != nil {
-		themeOverrides.B2 = go2.Pointer(m.GetField("B2").Primary().Value.ScalarString())
-	}
-	if m.GetField("B3") != nil {
-		themeOverrides.B3 = go2.Pointer(m.GetField("B3").Primary().Value.ScalarString())
-	}
-	if m.GetField("B4") != nil {
-		themeOverrides.B4 = go2.Pointer(m.GetField("B4").Primary().Value.ScalarString())
-	}
-	if m.GetField("B5") != nil {
-		themeOverrides.B5 = go2.Pointer(m.GetField("B5").Primary().Value.ScalarString())
-	}
-	if m.GetField("B6") != nil {
-		themeOverrides.B6 = go2.Pointer(m.GetField("B6").Primary().Value.ScalarString())
-	}
-	if m.GetField("AA2") != nil {
-		themeOverrides.AA2 = go2.Pointer(m.GetField("AA2").Primary().Value.ScalarString())
-	}
-	if m.GetField("AA4") != nil {
-		themeOverrides.AA4 = go2.Pointer(m.GetField("AA4").Primary().Value.ScalarString())
-	}
-	if m.GetField("AA5") != nil {
-		themeOverrides.AA5 = go2.Pointer(m.GetField("AA5").Primary().Value.ScalarString())
-	}
-	if m.GetField("AB4") != nil {
-		themeOverrides.AB4 = go2.Pointer(m.GetField("AB4").Primary().Value.ScalarString())
-	}
-	if m.GetField("AB5") != nil {
-		themeOverrides.AB5 = go2.Pointer(m.GetField("AB5").Primary().Value.ScalarString())
-	}
-	if m.GetField("N1") != nil {
-		themeOverrides.N1 = go2.Pointer(m.GetField("N1").Primary().Value.ScalarString())
-	}
-	if m.GetField("N2") != nil {
-		themeOverrides.N2 = go2.Pointer(m.GetField("N2").Primary().Value.ScalarString())
-	}
-	if m.GetField("N3") != nil {
-		themeOverrides.N3 = go2.Pointer(m.GetField("N3").Primary().Value.ScalarString())
-	}
-	if m.GetField("N4") != nil {
-		themeOverrides.N4 = go2.Pointer(m.GetField("N4").Primary().Value.ScalarString())
-	}
-	if m.GetField("N5") != nil {
-		themeOverrides.N5 = go2.Pointer(m.GetField("N5").Primary().Value.ScalarString())
-	}
-	if m.GetField("N6") != nil {
-		themeOverrides.N6 = go2.Pointer(m.GetField("N6").Primary().Value.ScalarString())
-	}
-	if m.GetField("N7") != nil {
-		themeOverrides.N7 = go2.Pointer(m.GetField("N7").Primary().Value.ScalarString())
+
+	if !err.Empty() {
+		return nil, err
 	}
 
 	if themeOverrides != (d2target.ThemeOverrides{}) {
-		return &themeOverrides
+		return &themeOverrides, nil
 	}
-	return nil
+	return nil, nil
 }

@@ -252,7 +252,7 @@ func (s *Style) Apply(key, value string) error {
 		if s.Stroke == nil {
 			break
 		}
-		if !go2.Contains(namedColors, strings.ToLower(value)) && !colorHexRegex.MatchString(value) {
+		if !go2.Contains(color.NamedColors, strings.ToLower(value)) && !color.ColorHexRegex.MatchString(value) {
 			return errors.New(`expected "stroke" to be a valid named color ("orange") or a hex code ("#f0ff3a")`)
 		}
 		s.Stroke.Value = value
@@ -260,7 +260,7 @@ func (s *Style) Apply(key, value string) error {
 		if s.Fill == nil {
 			break
 		}
-		if !go2.Contains(namedColors, strings.ToLower(value)) && !colorHexRegex.MatchString(value) {
+		if !go2.Contains(color.NamedColors, strings.ToLower(value)) && !color.ColorHexRegex.MatchString(value) {
 			return errors.New(`expected "fill" to be a valid named color ("orange") or a hex code ("#f0ff3a")`)
 		}
 		s.Fill.Value = value
@@ -347,7 +347,7 @@ func (s *Style) Apply(key, value string) error {
 		if s.FontColor == nil {
 			break
 		}
-		if !go2.Contains(namedColors, strings.ToLower(value)) && !colorHexRegex.MatchString(value) {
+		if !go2.Contains(color.NamedColors, strings.ToLower(value)) && !color.ColorHexRegex.MatchString(value) {
 			return errors.New(`expected "font-color" to be a valid named color ("orange") or a hex code ("#f0ff3a")`)
 		}
 		s.FontColor.Value = value
