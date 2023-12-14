@@ -845,13 +845,15 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 		scale = go2.Pointer(1.)
 	}
 	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
-		Pad:         opts.Pad,
-		Sketch:      opts.Sketch,
-		Center:      opts.Center,
-		ThemeID:     opts.ThemeID,
-		DarkThemeID: opts.DarkThemeID,
-		MasterID:    opts.MasterID,
-		Scale:       scale,
+		Pad:                opts.Pad,
+		Sketch:             opts.Sketch,
+		Center:             opts.Center,
+		ThemeID:            opts.ThemeID,
+		DarkThemeID:        opts.DarkThemeID,
+		MasterID:           opts.MasterID,
+		ThemeOverrides:     opts.ThemeOverrides,
+		DarkThemeOverrides: opts.DarkThemeOverrides,
+		Scale:              scale,
 	})
 	if err != nil {
 		return nil, err
