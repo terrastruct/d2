@@ -2814,6 +2814,21 @@ d2/testdata/d2compiler/TestCompile/text_no_label.d2:4:1: shape text must have a 
 d2/testdata/d2compiler/TestCompile/text_no_label.d2:7:1: shape text must have a non-empty label`,
 		},
 		{
+			name: "var-not-color",
+			text: `vars: {
+  d2-config: {
+    theme-overrides: {
+      B1: potato
+			potato: B1
+    }
+  }
+}
+a
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/var-not-color.d2:4:7: expected "B1" to be a valid named color ("orange") or a hex code ("#f0ff3a")
+d2/testdata/d2compiler/TestCompile/var-not-color.d2:5:4: "potato" is not a valid theme code`,
+		},
+		{
 			name: "no_arrowheads_in_shape",
 
 			text: `x.target-arrowhead.shape: cf-one

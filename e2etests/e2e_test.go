@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"cdr.dev/slog"
+	"golang.org/x/tools/txtar"
 
 	trequire "github.com/stretchr/testify/require"
 
@@ -42,6 +43,7 @@ func TestE2E(t *testing.T) {
 	t.Run("unicode", testUnicode)
 	t.Run("root", testRoot)
 	t.Run("themes", testThemes)
+	t.Run("txtar", testTxtar)
 }
 
 func testSanity(t *testing.T) {
@@ -75,10 +77,24 @@ a -> c
 	runa(t, tcs)
 }
 
+func testTxtar(t *testing.T) {
+	var tcs []testCase
+	archive, err := txtar.ParseFile("./testdata/txtar.txt")
+	assert.Success(t, err)
+	for _, f := range archive.Files {
+		tcs = append(tcs, testCase{
+			name:   f.Name,
+			script: string(f.Data),
+		})
+	}
+	runa(t, tcs)
+}
+
 type testCase struct {
 	name string
 	// if the test is just testing a render/style thing, no need to exercise both engines
 	justDagre         bool
+	testSerialization bool
 	script            string
 	mtexts            []*d2target.MText
 	assertions        func(t *testing.T, diagram *d2target.Diagram)
@@ -142,10 +158,32 @@ func run(t *testing.T, tc testCase) {
 	}
 
 	layoutResolver := func(engine string) (d2graph.LayoutGraph, error) {
+		layout := d2dagrelayout.DefaultLayout
 		if strings.EqualFold(engine, "elk") {
-			return d2elklayout.DefaultLayout, nil
+			layout = d2elklayout.DefaultLayout
 		}
-		return d2dagrelayout.DefaultLayout, nil
+		if tc.testSerialization {
+			return func(ctx context.Context, g *d2graph.Graph) error {
+				bytes, err := d2graph.SerializeGraph(g)
+				if err != nil {
+					return err
+				}
+				err = d2graph.DeserializeGraph(bytes, g)
+				if err != nil {
+					return err
+				}
+				err = layout(ctx, g)
+				if err != nil {
+					return err
+				}
+				bytes, err = d2graph.SerializeGraph(g)
+				if err != nil {
+					return err
+				}
+				return d2graph.DeserializeGraph(bytes, g)
+			}, nil
+		}
+		return layout, nil
 	}
 
 	for _, layoutName := range layoutsTested {
@@ -267,4 +305,11 @@ func loadFromFile(t *testing.T, name string) testCase {
 		name:   name,
 		script: string(d2Text),
 	}
+}
+
+func loadFromFileWithOptions(t *testing.T, name string, options testCase) testCase {
+	tc := options
+	tc.name = name
+	tc.script = loadFromFile(t, name).script
+	return tc
 }

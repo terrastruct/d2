@@ -169,7 +169,7 @@ func (c *compiler) validateConfigs(configs *Field) {
 	for _, f := range configs.Map().Fields {
 		var val string
 		if f.Primary() == nil {
-			if f.Name != "theme-colors" {
+			if f.Name != "theme-overrides" && f.Name != "dark-theme-overrides" {
 				c.errorf(f.LastRef().AST(), `"%s" needs a value`, f.Name)
 				continue
 			}
@@ -184,7 +184,7 @@ func (c *compiler) validateConfigs(configs *Field) {
 				c.errorf(f.LastRef().AST(), `expected a boolean for "%s", got "%s"`, f.Name, val)
 				continue
 			}
-		case "theme-colors":
+		case "theme-overrides", "dark-theme-overrides":
 			if f.Map() == nil {
 				c.errorf(f.LastRef().AST(), `"%s" needs a map`, f.Name)
 				continue
@@ -394,6 +394,9 @@ func (c *compiler) ampersandFilterMap(dst *Map, ast, scopeAST *d2ast.Map) bool {
 				ScopeAST: scopeAST,
 			})
 			if !ok {
+				if len(c.mapRefContextStack) == 0 {
+					return false
+				}
 				// Unapply glob if appropriate.
 				gctx := c.getGlobContext(c.mapRefContextStack[len(c.mapRefContextStack)-1])
 				if gctx == nil {
@@ -416,8 +419,10 @@ func (c *compiler) ampersandFilterMap(dst *Map, ast, scopeAST *d2ast.Map) bool {
 func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 	var globs []*globContext
 	if len(c.globContextStack) > 0 {
-		previousGlobs := c.globContextStack[len(c.globContextStack)-1]
-		if NodeBoardKind(dst) == BoardLayer {
+		previousGlobs := c.globContexts()
+		// A root layer with existing glob context stack implies it's an import
+		// In which case, the previous globs should be inherited (the else block)
+		if NodeBoardKind(dst) == BoardLayer && !dst.Root() {
 			for _, g := range previousGlobs {
 				if g.refctx.Key.HasTripleGlob() {
 					globs = append(globs, g.prefixed(dst))

@@ -581,11 +581,11 @@
       "id": "circle",
       "type": "oval",
       "pos": {
-        "x": 825,
-        "y": 400
+        "x": 819,
+        "y": 394
       },
-      "width": 91,
-      "height": 91,
+      "width": 103,
+      "height": 103,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -686,6 +686,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
+      "contentAspectRatio": 2.586678832116788,
       "label": "cloud",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -1159,11 +1160,11 @@
         },
         {
           "x": 870,
-          "y": 348.79998779296875
+          "y": 347.6000061035156
         },
         {
           "x": 870,
-          "y": 400
+          "y": 394
         }
       ],
       "isCurve": true,

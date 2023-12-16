@@ -581,11 +581,11 @@
       "id": "circle",
       "type": "oval",
       "pos": {
-        "x": 716,
+        "x": 710,
         "y": 368
       },
-      "width": 91,
-      "height": 91,
+      "width": 103,
+      "height": 103,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -686,6 +686,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
+      "contentAspectRatio": 2.586678832116788,
       "label": "cloud",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -883,7 +884,7 @@
           "y": 114
         },
         {
-          "x": 455,
+          "x": 454,
           "y": 195
         }
       ],
@@ -921,7 +922,7 @@
           "y": 278
         },
         {
-          "x": 455,
+          "x": 454,
           "y": 358
         }
       ],
@@ -959,7 +960,7 @@
           "y": 107
         },
         {
-          "x": 611,
+          "x": 612,
           "y": 198
         }
       ],
@@ -997,8 +998,8 @@
           "y": 274
         },
         {
-          "x": 612,
-          "y": 358
+          "x": 611,
+          "y": 359
         }
       ],
       "animated": false,

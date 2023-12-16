@@ -11,7 +11,7 @@
         "y": 12
       },
       "width": 1276,
-      "height": 576,
+      "height": 606,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -68,6 +68,7 @@
       "double-border": false,
       "tooltip": "",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -112,6 +113,7 @@
       "double-border": false,
       "tooltip": "",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -156,6 +158,7 @@
       "double-border": false,
       "tooltip": "",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -200,6 +203,7 @@
       "double-border": false,
       "tooltip": "",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -244,6 +248,7 @@
       "double-border": false,
       "tooltip": "",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -288,6 +293,7 @@
       "double-border": false,
       "tooltip": "",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -332,6 +338,7 @@
       "double-border": false,
       "tooltip": "",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -376,6 +383,7 @@
       "double-border": false,
       "tooltip": "",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -420,6 +428,7 @@
       "double-border": false,
       "tooltip": "",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -464,6 +473,7 @@
       "double-border": false,
       "tooltip": "",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -508,6 +518,7 @@
       "double-border": false,
       "tooltip": "",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -552,6 +563,7 @@
       "double-border": false,
       "tooltip": "",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -596,6 +608,7 @@
       "double-border": false,
       "tooltip": "",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -640,6 +653,7 @@
       "double-border": false,
       "tooltip": "",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -667,11 +681,11 @@
         "linked"
       ],
       "pos": {
-        "x": 993,
+        "x": 978,
         "y": 420
       },
-      "width": 118,
-      "height": 118,
+      "width": 148,
+      "height": 148,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -684,6 +698,7 @@
       "double-border": false,
       "tooltip": "",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -728,6 +743,7 @@
       "double-border": false,
       "tooltip": "",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -772,12 +788,14 @@
       "double-border": false,
       "tooltip": "",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
+      "contentAspectRatio": 2.586678832116788,
       "label": "cloud",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -797,10 +815,10 @@
       "type": "rectangle",
       "pos": {
         "x": 132,
-        "y": 658
+        "y": 688
       },
       "width": 1276,
-      "height": 576,
+      "height": 606,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -841,7 +859,7 @@
       ],
       "pos": {
         "x": 182,
-        "y": 734
+        "y": 764
       },
       "width": 143,
       "height": 66,
@@ -885,7 +903,7 @@
       ],
       "pos": {
         "x": 190,
-        "y": 870
+        "y": 900
       },
       "width": 126,
       "height": 126,
@@ -929,7 +947,7 @@
       ],
       "pos": {
         "x": 198,
-        "y": 1066
+        "y": 1096
       },
       "width": 111,
       "height": 87,
@@ -973,7 +991,7 @@
       ],
       "pos": {
         "x": 345,
-        "y": 734
+        "y": 764
       },
       "width": 228,
       "height": 66,
@@ -1017,7 +1035,7 @@
       ],
       "pos": {
         "x": 384,
-        "y": 895
+        "y": 925
       },
       "width": 149,
       "height": 76,
@@ -1061,7 +1079,7 @@
       ],
       "pos": {
         "x": 391,
-        "y": 1066
+        "y": 1096
       },
       "width": 136,
       "height": 118,
@@ -1105,7 +1123,7 @@
       ],
       "pos": {
         "x": 593,
-        "y": 734
+        "y": 764
       },
       "width": 173,
       "height": 66,
@@ -1149,7 +1167,7 @@
       ],
       "pos": {
         "x": 612,
-        "y": 896
+        "y": 926
       },
       "width": 135,
       "height": 73,
@@ -1193,7 +1211,7 @@
       ],
       "pos": {
         "x": 605,
-        "y": 1066
+        "y": 1096
       },
       "width": 148,
       "height": 101,
@@ -1237,7 +1255,7 @@
       ],
       "pos": {
         "x": 795,
-        "y": 709
+        "y": 739
       },
       "width": 127,
       "height": 91,
@@ -1281,7 +1299,7 @@
       ],
       "pos": {
         "x": 767,
-        "y": 900
+        "y": 930
       },
       "width": 183,
       "height": 66,
@@ -1325,7 +1343,7 @@
       ],
       "pos": {
         "x": 811,
-        "y": 1066
+        "y": 1096
       },
       "width": 95,
       "height": 66,
@@ -1369,7 +1387,7 @@
       ],
       "pos": {
         "x": 942,
-        "y": 708
+        "y": 738
       },
       "width": 220,
       "height": 92,
@@ -1413,7 +1431,7 @@
       ],
       "pos": {
         "x": 985,
-        "y": 898
+        "y": 928
       },
       "width": 134,
       "height": 70,
@@ -1456,11 +1474,11 @@
         "tooltipped"
       ],
       "pos": {
-        "x": 993,
-        "y": 1066
+        "x": 978,
+        "y": 1096
       },
-      "width": 118,
-      "height": 118,
+      "width": 148,
+      "height": 148,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1501,7 +1519,7 @@
       ],
       "pos": {
         "x": 1182,
-        "y": 731
+        "y": 761
       },
       "width": 176,
       "height": 69,
@@ -1545,7 +1563,7 @@
       ],
       "pos": {
         "x": 1198,
-        "y": 870
+        "y": 900
       },
       "width": 143,
       "height": 84,
@@ -1567,6 +1585,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
+      "contentAspectRatio": 2.586678832116788,
       "label": "cloud",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -1586,10 +1605,10 @@
       "type": "rectangle",
       "pos": {
         "x": 12,
-        "y": 1304
+        "y": 1364
       },
       "width": 1516,
-      "height": 637,
+      "height": 683,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1631,7 +1650,7 @@
       ],
       "pos": {
         "x": 62,
-        "y": 1380
+        "y": 1440
       },
       "width": 175,
       "height": 66,
@@ -1647,6 +1666,7 @@
       "double-border": false,
       "tooltip": "example",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -1676,7 +1696,7 @@
       ],
       "pos": {
         "x": 70,
-        "y": 1516
+        "y": 1576
       },
       "width": 158,
       "height": 158,
@@ -1692,6 +1712,7 @@
       "double-border": false,
       "tooltip": "example",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -1721,7 +1742,7 @@
       ],
       "pos": {
         "x": 78,
-        "y": 1744
+        "y": 1804
       },
       "width": 143,
       "height": 87,
@@ -1737,6 +1758,7 @@
       "double-border": false,
       "tooltip": "example",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -1766,7 +1788,7 @@
       ],
       "pos": {
         "x": 257,
-        "y": 1380
+        "y": 1440
       },
       "width": 260,
       "height": 66,
@@ -1782,6 +1804,7 @@
       "double-border": false,
       "tooltip": "example",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -1811,7 +1834,7 @@
       ],
       "pos": {
         "x": 296,
-        "y": 1557
+        "y": 1617
       },
       "width": 181,
       "height": 76,
@@ -1827,6 +1850,7 @@
       "double-border": false,
       "tooltip": "example",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -1856,7 +1880,7 @@
       ],
       "pos": {
         "x": 303,
-        "y": 1744
+        "y": 1804
       },
       "width": 168,
       "height": 118,
@@ -1872,6 +1896,7 @@
       "double-border": false,
       "tooltip": "example",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -1901,7 +1926,7 @@
       ],
       "pos": {
         "x": 537,
-        "y": 1380
+        "y": 1440
       },
       "width": 205,
       "height": 66,
@@ -1917,6 +1942,7 @@
       "double-border": false,
       "tooltip": "example",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -1946,7 +1972,7 @@
       ],
       "pos": {
         "x": 556,
-        "y": 1558
+        "y": 1618
       },
       "width": 167,
       "height": 73,
@@ -1962,6 +1988,7 @@
       "double-border": false,
       "tooltip": "example",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -1991,7 +2018,7 @@
       ],
       "pos": {
         "x": 549,
-        "y": 1744
+        "y": 1804
       },
       "width": 180,
       "height": 101,
@@ -2007,6 +2034,7 @@
       "double-border": false,
       "tooltip": "example",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -2036,7 +2064,7 @@
       ],
       "pos": {
         "x": 771,
-        "y": 1355
+        "y": 1415
       },
       "width": 159,
       "height": 91,
@@ -2052,6 +2080,7 @@
       "double-border": false,
       "tooltip": "example",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -2081,7 +2110,7 @@
       ],
       "pos": {
         "x": 743,
-        "y": 1562
+        "y": 1622
       },
       "width": 215,
       "height": 66,
@@ -2097,6 +2126,7 @@
       "double-border": false,
       "tooltip": "example",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -2126,7 +2156,7 @@
       ],
       "pos": {
         "x": 787,
-        "y": 1744
+        "y": 1804
       },
       "width": 127,
       "height": 85,
@@ -2142,6 +2172,7 @@
       "double-border": false,
       "tooltip": "example",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -2171,7 +2202,7 @@
       ],
       "pos": {
         "x": 950,
-        "y": 1354
+        "y": 1414
       },
       "width": 284,
       "height": 92,
@@ -2187,6 +2218,7 @@
       "double-border": false,
       "tooltip": "example",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -2216,7 +2248,7 @@
       ],
       "pos": {
         "x": 1006,
-        "y": 1560
+        "y": 1620
       },
       "width": 171,
       "height": 70,
@@ -2232,6 +2264,7 @@
       "double-border": false,
       "tooltip": "example",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -2260,11 +2293,11 @@
         "tooltipped"
       ],
       "pos": {
-        "x": 1018,
-        "y": 1744
+        "x": 995,
+        "y": 1804
       },
-      "width": 147,
-      "height": 147,
+      "width": 193,
+      "height": 193,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -2277,6 +2310,7 @@
       "double-border": false,
       "tooltip": "example",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -2306,7 +2340,7 @@
       ],
       "pos": {
         "x": 1254,
-        "y": 1377
+        "y": 1437
       },
       "width": 224,
       "height": 69,
@@ -2322,6 +2356,7 @@
       "double-border": false,
       "tooltip": "example",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -2351,7 +2386,7 @@
       ],
       "pos": {
         "x": 1275,
-        "y": 1516
+        "y": 1576
       },
       "width": 182,
       "height": 84,
@@ -2367,12 +2402,14 @@
       "double-border": false,
       "tooltip": "example",
       "link": "example.com",
+      "prettyLink": "example.com",
       "icon": null,
       "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
+      "contentAspectRatio": 2.586678832116788,
       "label": "cloud",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -2833,11 +2870,11 @@
       "route": [
         {
           "x": 253.5,
-          "y": 800
+          "y": 830
         },
         {
           "x": 253.5,
-          "y": 870
+          "y": 900
         }
       ],
       "animated": false,
@@ -2871,11 +2908,11 @@
       "route": [
         {
           "x": 253.5,
-          "y": 996
+          "y": 1026
         },
         {
           "x": 254,
-          "y": 1066
+          "y": 1096
         }
       ],
       "animated": false,
@@ -2909,11 +2946,11 @@
       "route": [
         {
           "x": 459,
-          "y": 800
+          "y": 830
         },
         {
           "x": 459,
-          "y": 895
+          "y": 925
         }
       ],
       "animated": false,
@@ -2947,11 +2984,11 @@
       "route": [
         {
           "x": 459,
-          "y": 960
+          "y": 990
         },
         {
           "x": 459,
-          "y": 1066
+          "y": 1096
         }
       ],
       "animated": false,
@@ -2985,11 +3022,11 @@
       "route": [
         {
           "x": 679,
-          "y": 800
+          "y": 830
         },
         {
           "x": 680,
-          "y": 911
+          "y": 941
         }
       ],
       "animated": false,
@@ -3023,11 +3060,11 @@
       "route": [
         {
           "x": 679,
-          "y": 970
+          "y": 1000
         },
         {
           "x": 680,
-          "y": 1066
+          "y": 1096
         }
       ],
       "animated": false,
@@ -3061,11 +3098,11 @@
       "route": [
         {
           "x": 859,
-          "y": 755
+          "y": 785
         },
         {
           "x": 858,
-          "y": 900
+          "y": 930
         }
       ],
       "animated": false,
@@ -3099,11 +3136,11 @@
       "route": [
         {
           "x": 859,
-          "y": 966
+          "y": 996
         },
         {
           "x": 858,
-          "y": 1066
+          "y": 1096
         }
       ],
       "animated": false,
@@ -3137,11 +3174,11 @@
       "route": [
         {
           "x": 1052,
-          "y": 800
+          "y": 830
         },
         {
           "x": 1052,
-          "y": 898
+          "y": 928
         }
       ],
       "animated": false,
@@ -3175,11 +3212,11 @@
       "route": [
         {
           "x": 1052,
-          "y": 968
+          "y": 998
         },
         {
           "x": 1052,
-          "y": 1066
+          "y": 1096
         }
       ],
       "animated": false,
@@ -3213,11 +3250,11 @@
       "route": [
         {
           "x": 1270,
-          "y": 800
+          "y": 830
         },
         {
           "x": 1270,
-          "y": 871
+          "y": 901
         }
       ],
       "animated": false,
@@ -3251,11 +3288,11 @@
       "route": [
         {
           "x": 149.5,
-          "y": 1446
+          "y": 1506
         },
         {
           "x": 149.5,
-          "y": 1516
+          "y": 1576
         }
       ],
       "animated": false,
@@ -3289,11 +3326,11 @@
       "route": [
         {
           "x": 149.5,
-          "y": 1674
+          "y": 1734
         },
         {
           "x": 150,
-          "y": 1744
+          "y": 1804
         }
       ],
       "animated": false,
@@ -3327,11 +3364,11 @@
       "route": [
         {
           "x": 387,
-          "y": 1446
+          "y": 1506
         },
         {
           "x": 387,
-          "y": 1557
+          "y": 1617
         }
       ],
       "animated": false,
@@ -3365,11 +3402,11 @@
       "route": [
         {
           "x": 387,
-          "y": 1622
+          "y": 1682
         },
         {
           "x": 387,
-          "y": 1744
+          "y": 1804
         }
       ],
       "animated": false,
@@ -3403,11 +3440,11 @@
       "route": [
         {
           "x": 639,
-          "y": 1446
+          "y": 1506
         },
         {
           "x": 640,
-          "y": 1573
+          "y": 1633
         }
       ],
       "animated": false,
@@ -3441,11 +3478,11 @@
       "route": [
         {
           "x": 639,
-          "y": 1632
+          "y": 1692
         },
         {
           "x": 640,
-          "y": 1744
+          "y": 1804
         }
       ],
       "animated": false,
@@ -3479,11 +3516,11 @@
       "route": [
         {
           "x": 851,
-          "y": 1401
+          "y": 1461
         },
         {
           "x": 850,
-          "y": 1562
+          "y": 1622
         }
       ],
       "animated": false,
@@ -3517,11 +3554,11 @@
       "route": [
         {
           "x": 850,
-          "y": 1628
+          "y": 1688
         },
         {
           "x": 851,
-          "y": 1744
+          "y": 1804
         }
       ],
       "animated": false,
@@ -3555,11 +3592,11 @@
       "route": [
         {
           "x": 1092,
-          "y": 1446
+          "y": 1506
         },
         {
           "x": 1092,
-          "y": 1560
+          "y": 1620
         }
       ],
       "animated": false,
@@ -3593,11 +3630,11 @@
       "route": [
         {
           "x": 1092,
-          "y": 1630
+          "y": 1690
         },
         {
           "x": 1092,
-          "y": 1744
+          "y": 1804
         }
       ],
       "animated": false,
@@ -3631,11 +3668,11 @@
       "route": [
         {
           "x": 1366,
-          "y": 1446
+          "y": 1506
         },
         {
           "x": 1366,
-          "y": 1517
+          "y": 1577
         }
       ],
       "animated": false,
@@ -3669,11 +3706,11 @@
       "route": [
         {
           "x": 770,
-          "y": 588
+          "y": 618
         },
         {
           "x": 770,
-          "y": 658
+          "y": 688
         }
       ],
       "animated": false,
@@ -3707,11 +3744,11 @@
       "route": [
         {
           "x": 770,
-          "y": 1234
+          "y": 1294
         },
         {
           "x": 770,
-          "y": 1304
+          "y": 1364
         }
       ],
       "animated": false,

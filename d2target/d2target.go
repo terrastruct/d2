@@ -6,7 +6,6 @@ import (
 	"hash/fnv"
 	"math"
 	"net/url"
-	"os"
 	"strings"
 
 	"oss.terrastruct.com/util-go/go2"
@@ -40,18 +39,35 @@ const (
 var BorderOffset = geo.NewVector(5, 5)
 
 type Config struct {
-	Sketch         *bool           `json:"sketch"`
-	ThemeID        *int64          `json:"themeID"`
-	DarkThemeID    *int64          `json:"darkThemeID"`
-	Pad            *int64          `json:"pad"`
-	Center         *bool           `json:"center"`
-	LayoutEngine   *string         `json:"layoutEngine"`
-	ThemeOverrides *ThemeOverrides `json:"themeOverrides"`
+	Sketch             *bool           `json:"sketch"`
+	ThemeID            *int64          `json:"themeID"`
+	DarkThemeID        *int64          `json:"darkThemeID"`
+	Pad                *int64          `json:"pad"`
+	Center             *bool           `json:"center"`
+	LayoutEngine       *string         `json:"layoutEngine"`
+	ThemeOverrides     *ThemeOverrides `json:"themeOverrides,omitempty"`
+	DarkThemeOverrides *ThemeOverrides `json:"darkThemeOverrides,omitempty"`
 }
 
 type ThemeOverrides struct {
-	N1 *string `json:"n1"`
-	// TODO
+	N1  *string `json:"n1"`
+	N2  *string `json:"n2"`
+	N3  *string `json:"n3"`
+	N4  *string `json:"n4"`
+	N5  *string `json:"n5"`
+	N6  *string `json:"n6"`
+	N7  *string `json:"n7"`
+	B1  *string `json:"b1"`
+	B2  *string `json:"b2"`
+	B3  *string `json:"b3"`
+	B4  *string `json:"b4"`
+	B5  *string `json:"b5"`
+	B6  *string `json:"b6"`
+	AA2 *string `json:"aa2"`
+	AA4 *string `json:"aa4"`
+	AA5 *string `json:"aa5"`
+	AB4 *string `json:"ab4"`
+	AB5 *string `json:"ab5"`
 }
 
 type Diagram struct {
@@ -73,26 +89,14 @@ type Diagram struct {
 	Steps     []*Diagram `json:"steps,omitempty"`
 }
 
-// boardPath comes in the form of "x/layers/z/scenarios/a"
-// or "layers/z/scenarios/a"
-// or "x/z/a"
-func (d *Diagram) GetBoard(boardPath string) *Diagram {
-	path := strings.Split(boardPath, string(os.PathSeparator))
-	if len(path) == 0 || len(boardPath) == 0 {
-		return d
-	}
-
-	return d.getBoard(path)
-}
-
-func (d *Diagram) getBoard(boardPath []string) *Diagram {
+func (d *Diagram) GetBoard(boardPath []string) *Diagram {
 	if len(boardPath) == 0 {
 		return d
 	}
 
 	head := boardPath[0]
 
-	if head == "index" {
+	if len(boardPath) == 1 && d.Name == head {
 		return d
 	}
 
@@ -103,7 +107,7 @@ func (d *Diagram) getBoard(boardPath []string) *Diagram {
 		}
 		for _, b := range d.Layers {
 			if b.Name == boardPath[1] {
-				return b.getBoard(boardPath[2:])
+				return b.GetBoard(boardPath[2:])
 			}
 		}
 	case "scenarios":
@@ -112,7 +116,7 @@ func (d *Diagram) getBoard(boardPath []string) *Diagram {
 		}
 		for _, b := range d.Scenarios {
 			if b.Name == boardPath[1] {
-				return b.getBoard(boardPath[2:])
+				return b.GetBoard(boardPath[2:])
 			}
 		}
 	case "steps":
@@ -121,24 +125,24 @@ func (d *Diagram) getBoard(boardPath []string) *Diagram {
 		}
 		for _, b := range d.Steps {
 			if b.Name == boardPath[1] {
-				return b.getBoard(boardPath[2:])
+				return b.GetBoard(boardPath[2:])
 			}
 		}
 	}
 
 	for _, b := range d.Layers {
 		if b.Name == head {
-			return b.getBoard(boardPath[1:])
+			return b.GetBoard(boardPath[1:])
 		}
 	}
 	for _, b := range d.Scenarios {
 		if b.Name == head {
-			return b.getBoard(boardPath[1:])
+			return b.GetBoard(boardPath[1:])
 		}
 	}
 	for _, b := range d.Steps {
 		if b.Name == head {
-			return b.getBoard(boardPath[1:])
+			return b.GetBoard(boardPath[1:])
 		}
 	}
 	return nil
@@ -394,6 +398,7 @@ func (diagram Diagram) GetCorpus() string {
 			appendixCount++
 			corpus += fmt.Sprint(appendixCount)
 		}
+		corpus += s.PrettyLink
 		if s.Type == ShapeClass {
 			for _, cf := range s.Fields {
 				corpus += cf.Text(0).Text + cf.VisibilityToken()
@@ -459,6 +464,7 @@ type Shape struct {
 
 	Tooltip      string   `json:"tooltip"`
 	Link         string   `json:"link"`
+	PrettyLink   string   `json:"prettyLink,omitempty"`
 	Icon         *url.URL `json:"icon"`
 	IconPosition string   `json:"iconPosition"`
 
@@ -468,6 +474,8 @@ type Shape struct {
 
 	Class
 	SQLTable
+
+	ContentAspectRatio *float64 `json:"contentAspectRatio,omitempty"`
 
 	Text
 

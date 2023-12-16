@@ -34,7 +34,8 @@ type Presentation struct {
 	Creator     string
 	// D2Version can't have letters, only numbers (`[0-9]`) and `.`
 	// Otherwise, it may fail to open in PowerPoint
-	D2Version string
+	D2Version  string
+	includeNav bool
 
 	Slides []*Slide
 }
@@ -73,14 +74,30 @@ type Link struct {
 	Tooltip     string
 }
 
-func NewPresentation(title, description, subject, creator, d2Version string) *Presentation {
+func NewPresentation(title, description, subject, creator, d2Version string, includeNav bool) *Presentation {
 	return &Presentation{
 		Title:       title,
 		Description: description,
 		Subject:     subject,
 		Creator:     creator,
 		D2Version:   d2Version,
+		includeNav:  includeNav,
 	}
+}
+
+func (p *Presentation) headerHeight() int {
+	if p.includeNav {
+		return HEADER_HEIGHT
+	}
+	return 0
+}
+
+func (p *Presentation) height() int {
+	return SLIDE_HEIGHT - p.headerHeight()
+}
+
+func (p *Presentation) aspectRatio() float64 {
+	return float64(IMAGE_WIDTH) / float64(p.height())
 }
 
 func (p *Presentation) AddSlide(pngContent []byte, titlePath []BoardTitle) (*Slide, error) {
@@ -111,7 +128,7 @@ func (p *Presentation) AddSlide(pngContent []byte, titlePath []BoardTitle) (*Sli
 	// └──┴────────────────────────────────────────────┴──┘   ─┴─        ─┴─
 	// ├────────────────────SLIDE WIDTH───────────────────┤
 	//    ├─────────────────IMAGE WIDTH────────────────┤
-	if srcWidth/srcHeight >= IMAGE_ASPECT_RATIO {
+	if srcWidth/srcHeight >= p.aspectRatio() {
 		// here, the image aspect ratio is, at least, equal to the slide aspect ratio
 		// so, it makes sense to expand the image horizontally to use as much as space as possible
 		width = SLIDE_WIDTH
@@ -119,7 +136,7 @@ func (p *Presentation) AddSlide(pngContent []byte, titlePath []BoardTitle) (*Sli
 		// first, try to make the image as wide as the slide
 		// but, if this results in a tall image, use only the
 		// image adjusted width to avoid overlapping with the header
-		if height > IMAGE_HEIGHT {
+		if height > p.height() {
 			width = IMAGE_WIDTH
 			height = int(float64(width) * (srcHeight / srcWidth))
 		}
@@ -127,10 +144,10 @@ func (p *Presentation) AddSlide(pngContent []byte, titlePath []BoardTitle) (*Sli
 		// here, the aspect ratio could be 4x3, in which the image is still wider than taller,
 		// but expanding horizontally would result in an overflow
 		// so, we expand to make it fit the available vertical space
-		height = IMAGE_HEIGHT
+		height = p.height()
 		width = int(float64(height) * (srcWidth / srcHeight))
 	}
-	top := HEADER_HEIGHT + ((IMAGE_HEIGHT - height) / 2)
+	top := p.headerHeight() + ((p.height() - height) / 2)
 	left := (SLIDE_WIDTH - width) / 2
 
 	slide := &Slide{
@@ -186,7 +203,7 @@ func (p *Presentation) SaveTo(filePath string) error {
 			return err
 		}
 
-		err = addFileFromTemplate(zipWriter, fmt.Sprintf("ppt/slides/%s.xml", slideFileName), SLIDE_XML, getSlideXmlContent(imageID, slide))
+		err = addFileFromTemplate(zipWriter, fmt.Sprintf("ppt/slides/%s.xml", slideFileName), SLIDE_XML, p.getSlideXmlContent(imageID, slide))
 		if err != nil {
 			return err
 		}
@@ -248,11 +265,8 @@ const SLIDE_WIDTH = 9_144_000
 const SLIDE_HEIGHT = 5_143_500
 const HEADER_HEIGHT = 392_471
 
-const IMAGE_HEIGHT = SLIDE_HEIGHT - HEADER_HEIGHT
-
 // keep the right aspect ratio: SLIDE_WIDTH / SLIDE_HEIGHT = IMAGE_WIDTH / IMAGE_HEIGHT
 const IMAGE_WIDTH = 8_446_273
-const IMAGE_ASPECT_RATIO = float64(IMAGE_WIDTH) / float64(IMAGE_HEIGHT)
 
 //go:embed template.pptx
 var PPTX_TEMPLATE []byte
@@ -344,7 +358,7 @@ type SlideXmlContent struct {
 	Links []SlideLinkXmlContent
 }
 
-func getSlideXmlContent(imageID string, slide *Slide) SlideXmlContent {
+func (p *Presentation) getSlideXmlContent(imageID string, slide *Slide) SlideXmlContent {
 	title := make([]SlideXmlTitlePathContent, len(slide.BoardTitle)-1)
 	for i := 0; i < len(slide.BoardTitle)-1; i++ {
 		t := slide.BoardTitle[i]
@@ -354,15 +368,17 @@ func getSlideXmlContent(imageID string, slide *Slide) SlideXmlContent {
 		}
 	}
 	content := SlideXmlContent{
-		Title:        slide.BoardTitle[len(slide.BoardTitle)-1].Name,
-		TitlePrefix:  title,
 		Description:  slide.BoardTitle[len(slide.BoardTitle)-1].BoardID,
-		HeaderHeight: HEADER_HEIGHT,
+		HeaderHeight: p.headerHeight(),
 		ImageID:      imageID,
 		ImageLeft:    slide.ImageLeft,
 		ImageTop:     slide.ImageTop,
 		ImageWidth:   slide.ImageWidth,
 		ImageHeight:  slide.ImageHeight,
+	}
+	if p.includeNav {
+		content.Title = slide.BoardTitle[len(slide.BoardTitle)-1].Name
+		content.TitlePrefix = title
 	}
 
 	for _, link := range slide.Links {

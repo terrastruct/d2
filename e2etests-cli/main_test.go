@@ -30,6 +30,7 @@ func TestCLI_E2E(t *testing.T) {
 
 	tca := []struct {
 		name   string
+		serial bool
 		skipCI bool
 		skip   bool
 		run    func(t *testing.T, ctx context.Context, dir string, env *xos.Env)
@@ -237,6 +238,243 @@ You provided: .png`)
 				png := readFile(t, dir, "hello-world.png")
 				// https://github.com/terrastruct/d2/pull/963#pullrequestreview-1323089392
 				testdataIgnoreDiff(t, ".png", png)
+			},
+		},
+		{
+			name: "target-root",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "target-root.d2", `title: {
+	label: Main Plan
+}
+scenarios: {
+	b: {
+	title.label: Backup Plan
+	}
+}`)
+				err := runTestMain(t, ctx, dir, env, "--target", "", "target-root.d2", "target-root.svg")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "target-root.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
+			name: "target-b",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "target-b.d2", `title: {
+	label: Main Plan
+}
+scenarios: {
+	b: {
+	title.label: Backup Plan
+	}
+}`)
+				err := runTestMain(t, ctx, dir, env, "--target", "b", "target-b.d2", "target-b.svg")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "target-b.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
+			name: "target-nested-with-special-chars",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "target-nested-with-special-chars.d2", `layers: {
+	a: {
+		layers: {
+			"x / y . z": {
+				mad
+			}
+		}
+	}
+}`)
+				err := runTestMain(t, ctx, dir, env, "--target", `layers.a.layers."x / y . z"`, "target-nested-with-special-chars.d2", "target-nested-with-special-chars.svg")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "target-nested-with-special-chars.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
+			name: "target-invalid",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "target-invalid.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "--target", "b", "target-invalid.d2", "target-invalid.svg")
+				assert.ErrorString(t, err, `failed to wait xmain test: e2etests-cli/d2: failed to compile target-invalid.d2: render target "b" not found`)
+			},
+		},
+		{
+			name: "target-nested-index",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "target-nested-index.d2", `a
+layers: {
+	l1: {
+		b
+		layers: {
+			index: {
+				c
+				layers: {
+					l3: {
+						d
+					}
+				}
+			}
+		}
+	}
+}`)
+				err := runTestMain(t, ctx, dir, env, "--target", `l1.index.l3`, "target-nested-index.d2", "target-nested-index.svg")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "target-nested-index.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
+			name: "target-nested-index2",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "target-nested-index2.d2", `a
+layers: {
+	index: {
+		b
+		layers: {
+			nest1: {
+				c
+				scenarios: {
+					nest2: {
+						d
+					}
+				}
+			}
+		}
+	}
+}`)
+				err := runTestMain(t, ctx, dir, env, "--target", `index.nest1.nest2`, "target-nested-index2.d2", "target-nested-index2.svg")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "target-nested-index2.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
+			name: "theme-override",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "theme-override.d2", `
+direction: right
+vars: {
+  d2-config: {
+    theme-overrides: {
+      B1: "#2E7D32"
+      B2: "#66BB6A"
+      B3: "#A5D6A7"
+      B4: "#C5E1A5"
+      B5: "#E6EE9C"
+      B6: "#FFF59D"
+
+      AA2: "#0D47A1"
+      AA4: "#42A5F5"
+      AA5: "#90CAF9"
+
+      AB4: "#F44336"
+      AB5: "#FFCDD2"
+
+      N1: "#2E2E2E"
+      N2: "#2E2E2E"
+      N3: "#595959"
+      N4: "#858585"
+      N5: "#B1B1B1"
+      N6: "#DCDCDC"
+      N7: "#DCDCDC"
+    }
+    dark-theme-overrides: {
+      B1: "#2E7D32"
+      B2: "#66BB6A"
+      B3: "#A5D6A7"
+      B4: "#C5E1A5"
+      B5: "#E6EE9C"
+      B6: "#FFF59D"
+
+      AA2: "#0D47A1"
+      AA4: "#42A5F5"
+      AA5: "#90CAF9"
+
+      AB4: "#F44336"
+      AB5: "#FFCDD2"
+
+      N1: "#2E2E2E"
+      N2: "#2E2E2E"
+      N3: "#595959"
+      N4: "#858585"
+      N5: "#B1B1B1"
+      N6: "#DCDCDC"
+      N7: "#DCDCDC"
+    }
+  }
+}
+
+logs: {
+  shape: page
+  style.multiple: true
+}
+user: User {shape: person}
+network: Network {
+  tower: Cell Tower {
+    satellites: {
+      shape: stored_data
+      style.multiple: true
+    }
+
+    satellites -> transmitter
+    satellites -> transmitter
+    satellites -> transmitter
+    transmitter
+  }
+  processor: Data Processor {
+    storage: Storage {
+      shape: cylinder
+      style.multiple: true
+    }
+  }
+  portal: Online Portal {
+    UI
+  }
+
+  tower.transmitter -> processor: phone logs
+}
+server: API Server
+
+user -> network.tower: Make call
+network.processor -> server
+network.processor -> server
+network.processor -> server
+
+server -> logs
+server -> logs
+server -> logs: persist
+
+server -> network.portal.UI: display
+user -> network.portal.UI: access {
+  style.stroke-dash: 3
+}
+
+costumes: {
+  shape: sql_table
+  id: int {constraint: primary_key}
+  silliness: int
+  monster: int
+  last_updated: timestamp
+}
+
+monsters: {
+  shape: sql_table
+  id: int {constraint: primary_key}
+  movie: string
+  weight: int
+  last_updated: timestamp
+}
+
+costumes.monster -> monsters.id
+`)
+				err := runTestMain(t, ctx, dir, env, "theme-override.d2", "theme-override.svg")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "theme-override.svg")
+				assert.Testdata(t, ".svg", svg)
+				// theme color is used in SVG
+				assert.NotEqual(t, -1, strings.Index(string(svg), "#2E2E2E"))
 			},
 		},
 		{
@@ -528,6 +766,86 @@ i used to read
 			},
 		},
 		{
+			name:   "renamed-board",
+			skipCI: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `cat: how does the cat go? {
+  link: layers.cat
+}
+a.link: "https://www.google.com/maps/place/Smoked+Out+BBQ/@37.3848007,-121.9513887,17z/data=!3m1!4b1!4m6!3m5!1s0x808fc9182ad4d38d:0x8e2f39c3e927b296!8m2!3d37.3848007!4d-121.9492!16s%2Fg%2F11gjt85zvf"
+label: blah
+layers: {
+  cat: {
+    label: dog
+    home: {
+      link: _
+    }
+    the cat -> meow: goes
+  }
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "in.d2", "out.pdf")
+				assert.Success(t, err)
+
+				pdf := readFile(t, dir, "out.pdf")
+				testdataIgnoreDiff(t, ".pdf", pdf)
+			},
+		},
+		{
+			name:   "no-nav-pdf",
+			skipCI: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `cat: how does the cat go? {
+  link: layers.cat
+}
+a.link: "https://www.google.com/maps/place/Smoked+Out+BBQ/@37.3848007,-121.9513887,17z/data=!3m1!4b1!4m6!3m5!1s0x808fc9182ad4d38d:0x8e2f39c3e927b296!8m2!3d37.3848007!4d-121.9492!16s%2Fg%2F11gjt85zvf"
+label: ""
+layers: {
+  cat: {
+    label: dog
+    home: {
+      link: _
+    }
+    the cat -> meow: goes
+  }
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "in.d2", "out.pdf")
+				assert.Success(t, err)
+
+				pdf := readFile(t, dir, "out.pdf")
+				testdataIgnoreDiff(t, ".pdf", pdf)
+			},
+		},
+		{
+			name:   "no-nav-pptx",
+			skipCI: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `cat: how does the cat go? {
+  link: layers.cat
+}
+a.link: "https://www.google.com/maps/place/Smoked+Out+BBQ/@37.3848007,-121.9513887,17z/data=!3m1!4b1!4m6!3m5!1s0x808fc9182ad4d38d:0x8e2f39c3e927b296!8m2!3d37.3848007!4d-121.9492!16s%2Fg%2F11gjt85zvf"
+label: ""
+layers: {
+  cat: {
+    label: dog
+    home: {
+      link: _
+    }
+    the cat -> meow: goes
+  }
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "in.d2", "out.pptx")
+				assert.Success(t, err)
+
+				file := readFile(t, dir, "out.pptx")
+				// err = pptx.Validate(file, 2)
+				assert.Success(t, err)
+				testdataIgnoreDiff(t, ".pptx", file)
+			},
+		},
+		{
 			name: "basic-fmt",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `x ---> y`)
@@ -551,7 +869,8 @@ i used to read
 			},
 		},
 		{
-			name: "watch-regular",
+			name:   "watch-regular",
+			serial: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "index.d2", `
 a -> b
@@ -601,7 +920,8 @@ layers: {
 			},
 		},
 		{
-			name: "watch-ok-link",
+			name:   "watch-ok-link",
+			serial: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				// This link technically works because D2 interprets it as a URL,
 				// and on local filesystem, that is whe path where the compilation happens
@@ -655,7 +975,8 @@ layers: {
 			},
 		},
 		{
-			name: "watch-bad-link",
+			name:   "watch-bad-link",
+			serial: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				// Just verify we don't crash even with a bad link (it's treated as a URL, which users might have locally)
 				writeFile(t, dir, "index.d2", `
@@ -706,7 +1027,8 @@ layers: {
 			},
 		},
 		{
-			name: "watch-imported-file",
+			name:   "watch-imported-file",
+			serial: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "a.d2", `
 ...@b
@@ -785,7 +1107,9 @@ c
 	for _, tc := range tca {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			t.Parallel()
+			if !tc.serial {
+				t.Parallel()
+			}
 
 			if tc.skipCI && os.Getenv("CI") != "" {
 				t.SkipNow()
@@ -882,7 +1206,7 @@ func waitLogs(ctx context.Context, buf *bytes.Buffer, pattern *regexp.Regexp) (s
 	ticker := time.NewTicker(10 * time.Millisecond)
 	defer ticker.Stop()
 	var match string
-	for i := 0; i < 100 && match == ""; i++ {
+	for i := 0; i < 1000 && match == ""; i++ {
 		select {
 		case <-ticker.C:
 			out := buf.String()

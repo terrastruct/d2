@@ -235,7 +235,7 @@ func run(t *testing.T, tc testCase) {
 	assert.JSON(t, nil, err)
 
 	graphInfo := d2layouts.NestedGraphInfo(g.Root)
-	err = d2layouts.LayoutNested(ctx, g, graphInfo, d2dagrelayout.DefaultLayout)
+	err = d2layouts.LayoutNested(ctx, g, graphInfo, d2dagrelayout.DefaultLayout, d2layouts.DefaultRouter)
 	if err != nil {
 		t.Fatal(err)
 	}

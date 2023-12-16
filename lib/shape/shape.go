@@ -45,6 +45,9 @@ type Shape interface {
 
 	GetBox() *geo.Box
 	GetInnerBox() *geo.Box
+	// cloud shape has different innerBoxes depending on content's aspect ratio
+	GetInnerBoxForContent(width, height float64) *geo.Box
+	SetInnerBoxAspectRatio(aspectRatio float64)
 
 	// placing a rectangle of the given size and padding inside the shape, return the position relative to the shape's TopLeft
 	GetInsidePlacement(width, height, paddingX, paddingY float64) geo.Point
@@ -86,6 +89,15 @@ func (s baseShape) GetBox() *geo.Box {
 
 func (s baseShape) GetInnerBox() *geo.Box {
 	return s.Box
+}
+
+// only cloud shape needs this right now
+func (s baseShape) GetInnerBoxForContent(width, height float64) *geo.Box {
+	return nil
+}
+
+func (s baseShape) SetInnerBoxAspectRatio(aspectRatio float64) {
+	// only used for cloud
 }
 
 func (s baseShape) GetInsidePlacement(_, _, paddingX, paddingY float64) geo.Point {

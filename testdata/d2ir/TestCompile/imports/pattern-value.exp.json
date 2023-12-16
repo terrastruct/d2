@@ -1,0 +1,447 @@
+{
+  "fields": [
+    {
+      "name": "userWebsite",
+      "composite": {
+        "fields": [
+          {
+            "name": "shape",
+            "primary": {
+              "value": {
+                "range": "x.d2,0:7:7-0:13:13",
+                "value": [
+                  {
+                    "string": "person",
+                    "raw_string": "person"
+                  }
+                ]
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "x.d2,0:0:0-0:5:5",
+                  "value": [
+                    {
+                      "string": "shape",
+                      "raw_string": "shape"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "x.d2,0:0:0-0:5:5",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "x.d2,0:0:0-0:5:5",
+                        "value": [
+                          {
+                            "string": "shape",
+                            "raw_string": "shape"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "x.d2,0:0:0-0:13:13",
+                    "key": {
+                      "range": "x.d2,0:0:0-0:5:5",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "x.d2,0:0:0-0:5:5",
+                            "value": [
+                              {
+                                "string": "shape",
+                                "raw_string": "shape"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "x.d2,0:7:7-0:13:13",
+                        "value": [
+                          {
+                            "string": "person",
+                            "raw_string": "person"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
+              }
+            ]
+          },
+          {
+            "name": "label",
+            "primary": {
+              "value": {
+                "range": "x.d2,1:7:21-1:11:25",
+                "value": [
+                  {
+                    "string": "meow",
+                    "raw_string": "meow"
+                  }
+                ]
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "x.d2,1:0:14-1:5:19",
+                  "value": [
+                    {
+                      "string": "label",
+                      "raw_string": "label"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "x.d2,1:0:14-1:5:19",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "x.d2,1:0:14-1:5:19",
+                        "value": [
+                          {
+                            "string": "label",
+                            "raw_string": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "x.d2,1:0:14-1:11:25",
+                    "key": {
+                      "range": "x.d2,1:0:14-1:5:19",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "x.d2,1:0:14-1:5:19",
+                            "value": [
+                              {
+                                "string": "label",
+                                "raw_string": "label"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "x.d2,1:7:21-1:11:25",
+                        "value": [
+                          {
+                            "string": "meow",
+                            "raw_string": "meow"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "index.d2,0:0:0-0:11:11",
+            "value": [
+              {
+                "string": "userWebsite",
+                "raw_string": "userWebsite"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "index.d2,0:0:0-0:11:11",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "index.d2,0:0:0-0:11:11",
+                  "value": [
+                    {
+                      "string": "userWebsite",
+                      "raw_string": "userWebsite"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "index.d2,0:0:0-0:11:11",
+              "key": {
+                "range": "index.d2,0:0:0-0:11:11",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "index.d2,0:0:0-0:11:11",
+                      "value": [
+                        {
+                          "string": "userWebsite",
+                          "raw_string": "userWebsite"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {}
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        }
+      ]
+    },
+    {
+      "name": "userMobile",
+      "composite": {
+        "fields": [
+          {
+            "name": "shape",
+            "primary": {
+              "value": {
+                "range": "x.d2,0:7:7-0:13:13",
+                "value": [
+                  {
+                    "string": "person",
+                    "raw_string": "person"
+                  }
+                ]
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "x.d2,0:0:0-0:5:5",
+                  "value": [
+                    {
+                      "string": "shape",
+                      "raw_string": "shape"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "x.d2,0:0:0-0:5:5",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "x.d2,0:0:0-0:5:5",
+                        "value": [
+                          {
+                            "string": "shape",
+                            "raw_string": "shape"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "x.d2,0:0:0-0:13:13",
+                    "key": {
+                      "range": "x.d2,0:0:0-0:5:5",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "x.d2,0:0:0-0:5:5",
+                            "value": [
+                              {
+                                "string": "shape",
+                                "raw_string": "shape"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "x.d2,0:7:7-0:13:13",
+                        "value": [
+                          {
+                            "string": "person",
+                            "raw_string": "person"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
+              }
+            ]
+          },
+          {
+            "name": "label",
+            "primary": {
+              "value": {
+                "range": "x.d2,1:7:21-1:11:25",
+                "value": [
+                  {
+                    "string": "meow",
+                    "raw_string": "meow"
+                  }
+                ]
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "x.d2,1:0:14-1:5:19",
+                  "value": [
+                    {
+                      "string": "label",
+                      "raw_string": "label"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "x.d2,1:0:14-1:5:19",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "x.d2,1:0:14-1:5:19",
+                        "value": [
+                          {
+                            "string": "label",
+                            "raw_string": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "x.d2,1:0:14-1:11:25",
+                    "key": {
+                      "range": "x.d2,1:0:14-1:5:19",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "x.d2,1:0:14-1:5:19",
+                            "value": [
+                              {
+                                "string": "label",
+                                "raw_string": "label"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "x.d2,1:7:21-1:11:25",
+                        "value": [
+                          {
+                            "string": "meow",
+                            "raw_string": "meow"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "index.d2,1:0:12-1:10:22",
+            "value": [
+              {
+                "string": "userMobile",
+                "raw_string": "userMobile"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "index.d2,1:0:12-1:10:22",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "index.d2,1:0:12-1:10:22",
+                  "value": [
+                    {
+                      "string": "userMobile",
+                      "raw_string": "userMobile"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "index.d2,1:0:12-1:10:22",
+              "key": {
+                "range": "index.d2,1:0:12-1:10:22",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "index.d2,1:0:12-1:10:22",
+                      "value": [
+                        {
+                          "string": "userMobile",
+                          "raw_string": "userMobile"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {}
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        }
+      ]
+    }
+  ],
+  "edges": null
+}

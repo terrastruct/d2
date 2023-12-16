@@ -30,7 +30,7 @@ func OverlayField(bf, of *Field) {
 		if bf.Map() != nil && of.Map() != nil {
 			OverlayMap(bf.Map(), of.Map())
 		} else {
-			bf.Composite = of.Composite.Copy(bf).(*Map)
+			bf.Composite = of.Composite.Copy(bf).(Composite)
 		}
 	}
 

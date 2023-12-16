@@ -733,6 +733,14 @@ func ArrowheadJS(r *Runner, arrowhead d2target.Arrowhead, stroke string, strokeW
 			stroke,
 			stroke,
 		)
+	case d2target.UnfilledTriangleArrowhead:
+		arrowJS = fmt.Sprintf(
+			`node = rc.polygon(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", seed: 2 })`,
+			`[[-10, -4], [0, 0], [-10, 4]]`,
+			strokeWidth,
+			stroke,
+			BG_COLOR,
+		)
 	case d2target.DiamondArrowhead:
 		arrowJS = fmt.Sprintf(
 			`node = rc.polygon(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", seed: 1 })`,

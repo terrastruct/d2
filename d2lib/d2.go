@@ -7,11 +7,13 @@ import (
 	"os"
 	"strings"
 
+	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2exporter"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
+	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2target"
@@ -25,6 +27,7 @@ type CompileOptions struct {
 	FS             fs.FS
 	MeasuredTexts  []*d2target.MText
 	Ruler          *textmeasure.Ruler
+	RouterResolver func(engine string) (d2graph.RouteEdges, error)
 	LayoutResolver func(engine string) (d2graph.LayoutGraph, error)
 
 	Layout *string
@@ -37,6 +40,17 @@ type CompileOptions struct {
 	FontFamily *d2fonts.FontFamily
 
 	InputPath string
+}
+
+func Parse(ctx context.Context, input string, compileOpts *CompileOptions) (*d2ast.Map, error) {
+	if compileOpts == nil {
+		compileOpts = &CompileOptions{}
+	}
+
+	ast, err := d2parser.Parse(compileOpts.InputPath, strings.NewReader(input), &d2parser.ParseOptions{
+		UTF16Pos: compileOpts.UTF16Pos,
+	})
+	return ast, err
 }
 
 func Compile(ctx context.Context, input string, compileOpts *CompileOptions, renderOpts *d2svg.RenderOpts) (*d2target.Diagram, *d2graph.Graph, error) {
@@ -81,9 +95,13 @@ func compile(ctx context.Context, g *d2graph.Graph, compileOpts *CompileOptions,
 		if err != nil {
 			return nil, err
 		}
+		edgeRouter, err := getEdgeRouter(compileOpts)
+		if err != nil {
+			return nil, err
+		}
 
 		graphInfo := d2layouts.NestedGraphInfo(g.Root)
-		err = d2layouts.LayoutNested(ctx, g, graphInfo, coreLayout)
+		err = d2layouts.LayoutNested(ctx, g, graphInfo, coreLayout, edgeRouter)
 		if err != nil {
 			return nil, err
 		}
@@ -131,6 +149,19 @@ func getLayout(opts *CompileOptions) (d2graph.LayoutGraph, error) {
 	}
 }
 
+func getEdgeRouter(opts *CompileOptions) (d2graph.RouteEdges, error) {
+	if opts.Layout != nil && opts.RouterResolver != nil {
+		router, err := opts.RouterResolver(*opts.Layout)
+		if err != nil {
+			return nil, err
+		}
+		if router != nil {
+			return router, nil
+		}
+	}
+	return d2layouts.DefaultRouter, nil
+}
+
 // applyConfigs applies the configs read from D2 and applies it to passed in opts
 // It will only write to opt fields that are nil, as passed-in opts have precedence
 func applyConfigs(config *d2target.Config, compileOpts *CompileOptions, renderOpts *d2svg.RenderOpts) {
@@ -157,6 +188,8 @@ func applyConfigs(config *d2target.Config, compileOpts *CompileOptions, renderOp
 	if renderOpts.Center == nil {
 		renderOpts.Center = config.Center
 	}
+	renderOpts.ThemeOverrides = config.ThemeOverrides
+	renderOpts.DarkThemeOverrides = config.DarkThemeOverrides
 }
 
 func applyDefaults(compileOpts *CompileOptions, renderOpts *d2svg.RenderOpts) {

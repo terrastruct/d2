@@ -184,6 +184,33 @@ label: meow`,
 				assertQuery(t, m, 0, 0, 1, "hi")
 			},
 		},
+		{
+			name: "pattern-value",
+			run: func(t testing.TB) {
+				_, err := compileFS(t, "index.d2", map[string]string{
+					"index.d2": `userWebsite
+userMobile
+
+user*: @x
+`,
+					"x.d2": `shape: person
+label: meow`,
+				})
+				assert.Success(t, err)
+			},
+		},
+		{
+			name: "merge-arrays",
+			run: func(t testing.TB) {
+				_, err := compileFS(t, "index.d2", map[string]string{
+					"index.d2": `x.class: [a]
+...@d
+`,
+					"d.d2": `x.class: [b]`,
+				})
+				assert.Success(t, err)
+			},
+		},
 	}
 
 	runa(t, tca)

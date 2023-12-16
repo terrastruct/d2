@@ -1050,6 +1050,10 @@ cf many required: {
 		loadFromFile(t, "grid_rows_gap_bug"),
 		loadFromFile(t, "grid_image_label_position"),
 		loadFromFile(t, "glob_dimensions"),
+		loadFromFile(t, "shaped_grid_positioning"),
+		loadFromFile(t, "cloud_shaped_grid"),
+		loadFromFileWithOptions(t, "nested_layout_bug", testCase{testSerialization: true}),
+		loadFromFile(t, "disconnect_direction_right"),
 	}
 
 	runa(t, tcs)

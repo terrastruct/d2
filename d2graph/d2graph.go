@@ -80,6 +80,7 @@ func (g *Graph) RootBoard() *Graph {
 }
 
 type LayoutGraph func(context.Context, *Graph) error
+type RouteEdges func(context.Context, *Graph, []*Edge) error
 
 // TODO consider having different Scalar types
 // Right now we'll hold any types in Value and just convert, e.g. floats
@@ -106,6 +107,8 @@ type Object struct {
 	*geo.Box      `json:"box,omitempty"`
 	LabelPosition *string `json:"labelPosition,omitempty"`
 	IconPosition  *string `json:"iconPosition,omitempty"`
+
+	ContentAspectRatio *float64 `json:"contentAspectRatio,omitempty"`
 
 	Class    *d2target.Class    `json:"class,omitempty"`
 	SQLTable *d2target.SQLTable `json:"sql_table,omitempty"`
@@ -249,7 +252,7 @@ func (s *Style) Apply(key, value string) error {
 		if s.Stroke == nil {
 			break
 		}
-		if !go2.Contains(namedColors, strings.ToLower(value)) && !colorHexRegex.MatchString(value) {
+		if !go2.Contains(color.NamedColors, strings.ToLower(value)) && !color.ColorHexRegex.MatchString(value) {
 			return errors.New(`expected "stroke" to be a valid named color ("orange") or a hex code ("#f0ff3a")`)
 		}
 		s.Stroke.Value = value
@@ -257,7 +260,7 @@ func (s *Style) Apply(key, value string) error {
 		if s.Fill == nil {
 			break
 		}
-		if !go2.Contains(namedColors, strings.ToLower(value)) && !colorHexRegex.MatchString(value) {
+		if !go2.Contains(color.NamedColors, strings.ToLower(value)) && !color.ColorHexRegex.MatchString(value) {
 			return errors.New(`expected "fill" to be a valid named color ("orange") or a hex code ("#f0ff3a")`)
 		}
 		s.Fill.Value = value
@@ -344,7 +347,7 @@ func (s *Style) Apply(key, value string) error {
 		if s.FontColor == nil {
 			break
 		}
-		if !go2.Contains(namedColors, strings.ToLower(value)) && !colorHexRegex.MatchString(value) {
+		if !go2.Contains(color.NamedColors, strings.ToLower(value)) && !color.ColorHexRegex.MatchString(value) {
 			return errors.New(`expected "font-color" to be a valid named color ("orange") or a hex code ("#f0ff3a")`)
 		}
 		s.FontColor.Value = value
@@ -560,6 +563,10 @@ func (obj *Object) HasLabel() bool {
 	default:
 		return obj.Label.Value != ""
 	}
+}
+
+func (obj *Object) HasIcon() bool {
+	return obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage
 }
 
 func (obj *Object) AbsID() string {
@@ -1068,12 +1075,16 @@ func (obj *Object) SizeToContent(contentWidth, contentHeight, paddingX, paddingY
 		obj.Width = sideLength
 		obj.Height = sideLength
 	} else if desiredHeight == 0 || desiredWidth == 0 {
-		switch s.GetType() {
+		switch shapeType {
 		case shape.PERSON_TYPE:
 			obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.PERSON_AR_LIMIT)
 		case shape.OVAL_TYPE:
 			obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.OVAL_AR_LIMIT)
 		}
+	}
+	if shapeType == shape.CLOUD_TYPE {
+		innerBox := s.GetInnerBoxForContent(contentWidth, contentHeight)
+		obj.ContentAspectRatio = go2.Pointer(innerBox.Width / innerBox.Height)
 	}
 }
 
@@ -1499,18 +1510,22 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 
 		// give shapes with icons extra padding to fit their label
 		if obj.Icon != nil {
-			labelHeight := float64(labelDims.Height + INNER_LABEL_PADDING)
-			// Evenly pad enough to fit label above icon
-			if desiredWidth == 0 {
-				paddingX += labelHeight
-			}
-			if desiredHeight == 0 {
-				paddingY += labelHeight
+			switch shapeType {
+			case shape.TABLE_TYPE, shape.CLASS_TYPE, shape.CODE_TYPE, shape.TEXT_TYPE:
+			default:
+				labelHeight := float64(labelDims.Height + INNER_LABEL_PADDING)
+				// Evenly pad enough to fit label above icon
+				if desiredWidth == 0 {
+					paddingX += labelHeight
+				}
+				if desiredHeight == 0 {
+					paddingY += labelHeight
+				}
 			}
 		}
 		if desiredWidth == 0 {
 			switch shapeType {
-			case shape.TABLE_TYPE, shape.CLASS_TYPE, shape.CODE_TYPE, shape.IMAGE_TYPE:
+			case shape.TABLE_TYPE, shape.CLASS_TYPE, shape.CODE_TYPE:
 			default:
 				if obj.Link != nil {
 					paddingX += 32
@@ -1940,6 +1955,10 @@ func (obj *Object) Is3D() bool {
 }
 
 func (obj *Object) Spacing() (margin, padding geo.Spacing) {
+	return obj.SpacingOpt(2*label.PADDING, 2*label.PADDING, true)
+}
+
+func (obj *Object) SpacingOpt(labelPadding, iconPadding float64, maxIconSize bool) (margin, padding geo.Spacing) {
 	if obj.HasLabel() {
 		var position label.Position
 		if obj.LabelPosition != nil {
@@ -1948,10 +1967,10 @@ func (obj *Object) Spacing() (margin, padding geo.Spacing) {
 
 		var labelWidth, labelHeight float64
 		if obj.LabelDimensions.Width > 0 {
-			labelWidth = float64(obj.LabelDimensions.Width) + 2*label.PADDING
+			labelWidth = float64(obj.LabelDimensions.Width) + labelPadding
 		}
 		if obj.LabelDimensions.Height > 0 {
-			labelHeight = float64(obj.LabelDimensions.Height) + 2*label.PADDING
+			labelHeight = float64(obj.LabelDimensions.Height) + labelPadding
 		}
 
 		switch position {
@@ -1974,13 +1993,16 @@ func (obj *Object) Spacing() (margin, padding geo.Spacing) {
 		}
 	}
 
-	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
+	if obj.HasIcon() {
 		var position label.Position
 		if obj.IconPosition != nil {
 			position = label.FromString(*obj.IconPosition)
 		}
 
-		iconSize := float64(d2target.MAX_ICON_SIZE + 2*label.PADDING)
+		iconSize := float64(d2target.MAX_ICON_SIZE + iconPadding)
+		if !maxIconSize {
+			iconSize = float64(d2target.GetIconSize(obj.Box, position.String())) + iconPadding
+		}
 		switch position {
 		case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
 			margin.Top = math.Max(margin.Top, iconSize)
