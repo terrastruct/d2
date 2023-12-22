@@ -881,7 +881,7 @@ layers: {
         c -> b
     }
 }`)
-				stderr := &bytes.Buffer{}
+				stderr := &stderrWrapper{}
 				tms := testMain(dir, env, "--watch", "--browser=0", "index.d2")
 				tms.Stderr = stderr
 
@@ -935,7 +935,7 @@ layers: {
         c -> b
     }
 }`)
-				stderr := &bytes.Buffer{}
+				stderr := &stderrWrapper{}
 				tms := testMain(dir, env, "--watch", "--browser=0", "index.d2")
 				tms.Stderr = stderr
 
@@ -988,7 +988,7 @@ layers: {
         c -> b
     }
 }`)
-				stderr := &bytes.Buffer{}
+				stderr := &stderrWrapper{}
 				tms := testMain(dir, env, "--watch", "--browser=0", "index.d2")
 				tms.Stderr = stderr
 
@@ -1036,7 +1036,7 @@ layers: {
 				writeFile(t, dir, "b.d2", `
 x
 `)
-				stderr := &bytes.Buffer{}
+				stderr := &stderrWrapper{}
 				tms := testMain(dir, env, "--watch", "--browser=0", "a.d2")
 				tms.Stderr = stderr
 
@@ -1202,26 +1202,26 @@ func getNumBoards(svg string) int {
 
 var errRE = regexp.MustCompile(`err:`)
 
-func waitLogs(ctx context.Context, buf *bytes.Buffer, pattern *regexp.Regexp) (string, error) {
+func waitLogs(ctx context.Context, stream *stderrWrapper, pattern *regexp.Regexp) (string, error) {
 	ticker := time.NewTicker(10 * time.Millisecond)
 	defer ticker.Stop()
 	var match string
 	for i := 0; i < 1000 && match == ""; i++ {
 		select {
 		case <-ticker.C:
-			out := buf.String()
+			out := stream.Read()
 			match = pattern.FindString(out)
 			errMatch := errRE.FindString(out)
 			if errMatch != "" {
-				return "", errors.New(buf.String())
+				return "", errors.New(out)
 			}
 		case <-ctx.Done():
 			ticker.Stop()
-			return "", fmt.Errorf("could not match pattern in log. logs: %s", buf.String())
+			return "", fmt.Errorf("could not match pattern in log. logs: %s", stream.Read())
 		}
 	}
 	if match == "" {
-		return "", errors.New(buf.String())
+		return "", errors.New(stream.Read())
 	}
 
 	return match, nil
