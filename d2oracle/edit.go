@@ -453,7 +453,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			return nil
 		}
 	}
-	ir, err := d2ir.Compile(g.AST, &d2ir.CompileOptions{
+	ir, _, err := d2ir.Compile(g.AST, &d2ir.CompileOptions{
 		FS: g.FS,
 	})
 	if err != nil {
