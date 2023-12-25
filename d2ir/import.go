@@ -80,6 +80,13 @@ func (c *compiler) __import(imp *d2ast.Import) (*Map, bool) {
 	}
 	defer c.popImportStack()
 
+	// Only get immediate imports.
+	if len(c.importStack) == 2 {
+		if _, ok := c.importCache[impPath]; !ok {
+			c.imports = append(c.imports, imp.PathWithPre())
+		}
+	}
+
 	ir, ok := c.importCache[impPath]
 	if ok {
 		return ir, true
