@@ -27,7 +27,8 @@ type globContext struct {
 type compiler struct {
 	err *d2parser.ParseError
 
-	fs fs.FS
+	fs      fs.FS
+	imports []string
 	// importStack is used to detect cyclic imports.
 	importStack []string
 	// importCache enables reuse of files imported multiple times.
@@ -80,7 +81,7 @@ func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, []string, error) {
 	if !c.err.Empty() {
 		return nil, nil, c.err
 	}
-	return m, c.importStack, nil
+	return m, c.imports, nil
 }
 
 func (c *compiler) overlayClasses(m *Map) {
