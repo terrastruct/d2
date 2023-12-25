@@ -40,7 +40,7 @@ func Compile(p string, r io.Reader, opts *CompileOptions) (*d2graph.Graph, *d2ta
 		return nil, nil, err
 	}
 
-	ir, err := d2ir.Compile(ast, &d2ir.CompileOptions{
+	ir, _, err := d2ir.Compile(ast, &d2ir.CompileOptions{
 		UTF16Pos: opts.UTF16Pos,
 		FS:       opts.FS,
 	})

@@ -53,7 +53,7 @@ func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
 	c.err.Errors = append(c.err.Errors, d2parser.Errorf(n, f, v...).(d2ast.Error))
 }
 
-func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, error) {
+func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, []string, error) {
 	if opts == nil {
 		opts = &CompileOptions{}
 	}
@@ -78,9 +78,9 @@ func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, error) {
 	c.compileSubstitutions(m, nil)
 	c.overlayClasses(m)
 	if !c.err.Empty() {
-		return nil, c.err
+		return nil, nil, c.err
 	}
-	return m, nil
+	return m, c.importStack, nil
 }
 
 func (c *compiler) overlayClasses(m *Map) {
