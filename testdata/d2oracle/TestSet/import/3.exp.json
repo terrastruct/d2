@@ -3,17 +3,17 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2oracle/TestSet/import/3.d2,0:0:0-5:0:45",
+      "range": "index.d2,0:0:0-5:0:45",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2oracle/TestSet/import/3.d2,0:0:0-4:1:44",
+            "range": "index.d2,0:0:0-4:1:44",
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/import/3.d2,0:0:0-0:1:1",
+              "range": "index.d2,0:0:0-0:1:1",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestSet/import/3.d2,0:0:0-0:1:1",
+                    "range": "index.d2,0:0:0-0:1:1",
                     "value": [
                       {
                         "string": "x",
@@ -27,17 +27,17 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestSet/import/3.d2,0:3:3-4:1:44",
+                "range": "index.d2,0:3:3-4:1:44",
                 "nodes": [
                   {
                     "import": {
-                      "range": "d2/testdata/d2oracle/TestSet/import/3.d2,1:2:7-1:12:17",
+                      "range": "index.d2,1:2:7-1:12:17",
                       "spread": true,
                       "pre": "",
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": "d2/testdata/d2oracle/TestSet/import/3.d2,1:6:11-1:10:15",
+                            "range": "index.d2,1:6:11-1:10:15",
                             "value": [
                               {
                                 "string": "meow",
@@ -48,7 +48,7 @@
                         },
                         {
                           "unquoted_string": {
-                            "range": "d2/testdata/d2oracle/TestSet/import/3.d2,1:11:16-1:12:17",
+                            "range": "index.d2,1:11:16-1:12:17",
                             "value": [
                               {
                                 "string": "x",
@@ -62,13 +62,13 @@
                   },
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2oracle/TestSet/import/3.d2,2:2:20-2:3:21",
+                      "range": "index.d2,2:2:20-2:3:21",
                       "key": {
-                        "range": "d2/testdata/d2oracle/TestSet/import/3.d2,2:2:20-2:3:21",
+                        "range": "index.d2,2:2:20-2:3:21",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2oracle/TestSet/import/3.d2,2:2:20-2:3:21",
+                              "range": "index.d2,2:2:20-2:3:21",
                               "value": [
                                 {
                                   "string": "y",
@@ -85,13 +85,13 @@
                   },
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2oracle/TestSet/import/3.d2,3:2:24-3:20:42",
+                      "range": "index.d2,3:2:24-3:20:42",
                       "key": {
-                        "range": "d2/testdata/d2oracle/TestSet/import/3.d2,3:2:24-3:12:34",
+                        "range": "index.d2,3:2:24-3:12:34",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2oracle/TestSet/import/3.d2,3:2:24-3:7:29",
+                              "range": "index.d2,3:2:24-3:7:29",
                               "value": [
                                 {
                                   "string": "style",
@@ -102,7 +102,7 @@
                           },
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2oracle/TestSet/import/3.d2,3:8:30-3:12:34",
+                              "range": "index.d2,3:8:30-3:12:34",
                               "value": [
                                 {
                                   "string": "fill",
@@ -116,7 +116,7 @@
                       "primary": {},
                       "value": {
                         "unquoted_string": {
-                          "range": "d2/testdata/d2oracle/TestSet/import/3.d2,3:14:36-3:20:42",
+                          "range": "index.d2,3:14:36-3:20:42",
                           "value": [
                             {
                               "string": "yellow",
@@ -165,11 +165,11 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/import/3.d2,0:0:0-0:1:1",
+              "range": "index.d2,0:0:0-0:1:1",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestSet/import/3.d2,0:0:0-0:1:1",
+                    "range": "index.d2,0:0:0-0:1:1",
                     "value": [
                       {
                         "string": "x",
@@ -214,11 +214,11 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/import/3.d2,2:2:20-2:3:21",
+              "range": "index.d2,2:2:20-2:3:21",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestSet/import/3.d2,2:2:20-2:3:21",
+                    "range": "index.d2,2:2:20-2:3:21",
                     "value": [
                       {
                         "string": "y",
