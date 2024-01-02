@@ -2,9 +2,6 @@ package d2oracle_test
 
 import (
 	"fmt"
-	"io"
-	"io/fs"
-	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -13,6 +10,7 @@ import (
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
 	"oss.terrastruct.com/util-go/go2"
+	"oss.terrastruct.com/util-go/mapfs"
 	"oss.terrastruct.com/util-go/xjson"
 
 	"oss.terrastruct.com/d2/d2compiler"
@@ -1999,7 +1997,7 @@ scenarios: {
 }
 `,
 			fsTexts: map[string]string{
-				"meow": `x: {
+				"meow.d2": `x: {
   style.fill: blue
 }
 `,
@@ -2022,7 +2020,7 @@ scenarios: {
 }
 `,
 			fsTexts: map[string]string{
-				"meow": `x: {
+				"meow.d2": `x: {
   style.fill: blue
 }
 `,
@@ -2046,7 +2044,7 @@ scenarios: {
 }
 `,
 			fsTexts: map[string]string{
-				"meow": `x: {
+				"meow.d2": `x: {
   style.fill: blue
 }
 `,
@@ -2058,6 +2056,55 @@ scenarios: {
   y
   style.fill: yellow
 }
+`,
+		},
+		{
+			name: "import/4",
+
+			text: `...@yo
+a`,
+			fsTexts: map[string]string{
+				"yo.d2": `b`,
+			},
+			key:   `b.style.fill`,
+			value: go2.Pointer(`red`),
+			exp: `...@yo
+a
+b.style.fill: red
+`,
+		},
+		{
+			name: "import/5",
+
+			text: `a
+x: {
+  ...@yo
+}`,
+			fsTexts: map[string]string{
+				"yo.d2": `b`,
+			},
+			key:   `x.b.style.fill`,
+			value: go2.Pointer(`red`),
+			exp: `a
+x: {
+  ...@yo
+  b.style.fill: red
+}
+`,
+		},
+		{
+			name: "import/6",
+
+			text: `a
+x: @yo`,
+			fsTexts: map[string]string{
+				"yo.d2": `b`,
+			},
+			key:   `x.b.style.fill`,
+			value: go2.Pointer(`red`),
+			exp: `a
+x: @yo
+x.b.style.fill: red
 `,
 		},
 	}
@@ -7081,17 +7128,23 @@ type editTest struct {
 }
 
 func (tc editTest) run(t *testing.T) {
+	var tfs *mapfs.FS
 	d2Path := fmt.Sprintf("d2/testdata/d2oracle/%v.d2", t.Name())
-	tfs := testFS(make(map[string]*testF))
-	for name, text := range tc.fsTexts {
-		tfs[name] = &testF{content: text}
+	if tc.fsTexts != nil {
+		tc.fsTexts["index.d2"] = tc.text
+		d2Path = "index.d2"
+		var err error
+		tfs, err = mapfs.New(tc.fsTexts)
+		assert.Success(t, err)
+		t.Cleanup(func() {
+			assert.Success(t, tfs.Close())
+		})
 	}
+
 	g, _, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), &d2compiler.CompileOptions{
 		FS: tfs,
 	})
-	if err != nil {
-		t.Fatal(err)
-	}
+	assert.Success(t, err)
 
 	g, err = tc.testFunc(g)
 	if tc.expErr != "" {
@@ -8445,39 +8498,4 @@ scenarios: {
 			}
 		})
 	}
-}
-
-type testF struct {
-	content   string
-	readIndex int
-}
-
-func (tf *testF) Close() error {
-	return nil
-}
-
-func (tf *testF) Read(p []byte) (int, error) {
-	data := []byte(tf.content)
-	if tf.readIndex >= len(data) {
-		tf.readIndex = 0
-		return 0, io.EOF
-	}
-	readBytes := copy(p, data[tf.readIndex:])
-	tf.readIndex += readBytes
-	return readBytes, nil
-}
-
-func (tf *testF) Stat() (os.FileInfo, error) {
-	return nil, nil
-}
-
-type testFS map[string]*testF
-
-func (tfs testFS) Open(name string) (fs.File, error) {
-	for k := range tfs {
-		if strings.HasSuffix(name[:len(name)-3], k) {
-			return tfs[k], nil
-		}
-	}
-	return nil, fs.ErrNotExist
 }
