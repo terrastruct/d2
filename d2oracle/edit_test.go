@@ -2073,6 +2073,40 @@ a
 b.style.fill: red
 `,
 		},
+		{
+			name: "import/5",
+
+			text: `a
+x: {
+  ...@yo
+}`,
+			fsTexts: map[string]string{
+				"yo.d2": `b`,
+			},
+			key:   `x.b.style.fill`,
+			value: go2.Pointer(`red`),
+			exp: `a
+x: {
+  ...@yo
+  b.style.fill: red
+}
+`,
+		},
+		{
+			name: "import/6",
+
+			text: `a
+x: @yo`,
+			fsTexts: map[string]string{
+				"yo.d2": `b`,
+			},
+			key:   `x.b.style.fill`,
+			value: go2.Pointer(`red`),
+			exp: `a
+x: @yo
+x.b.style.fill: red
+`,
+		},
 	}
 
 	for _, tc := range testCases {
