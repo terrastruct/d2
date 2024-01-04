@@ -207,6 +207,10 @@ func (r Reference) InEdge() bool {
 	return r.Key != r.MapKey.Key
 }
 
+// func (r Reference) IsSameBoard() bool {
+//   return r.Key != r.MapKey.Key
+// }
+
 type Style struct {
 	Opacity       *Scalar `json:"opacity,omitempty"`
 	Stroke        *Scalar `json:"stroke,omitempty"`

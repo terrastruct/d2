@@ -391,9 +391,6 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 						maybeNewScope = ref.MapKey.Value.Map
 					}
 				}
-			} else if IsImported(g, obj) {
-				appendMapKey(scope, mk)
-				return nil
 			} else {
 				maybeNewScope = obj.Map
 			}
@@ -412,6 +409,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			}
 		}
 
+		writeableLabelMK := true
 		var objK *d2ast.Key
 		if baseAST != g.AST {
 			writeableRefs := getWriteableRefs(obj, baseAST)
@@ -422,6 +420,13 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 				appendMapKey(scope, mk)
 				return nil
 			}
+			writeableLabelMK = false
+			for _, ref := range writeableRefs {
+				if ref.MapKey == obj.Label.MapKey {
+					writeableLabelMK = true
+					break
+				}
+			}
 		}
 		var m *d2ast.Map
 		if objK != nil {
@@ -430,7 +435,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			m = obj.Map
 		}
 
-		if obj.Label.MapKey != nil && m == nil && (!found || reserved || len(mk.Edges) > 0) {
+		if (obj.Label.MapKey != nil && writeableLabelMK) && m == nil && (!found || reserved || len(mk.Edges) > 0) {
 			m2 := &d2ast.Map{
 				Range: d2ast.MakeRange(",1:0:0-1:0:0"),
 			}
