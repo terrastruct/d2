@@ -1784,6 +1784,33 @@ scenarios: {
 `,
 		},
 		{
+			name: "scenarios-multiple",
+
+			text: `a
+
+scenarios: {
+  x: {
+		b
+    a.style.fill: red
+  }
+}
+`,
+			key:       `a.style.opacity`,
+			value:     go2.Pointer(`0.2`),
+			boardPath: []string{"x"},
+
+			exp: `a
+
+scenarios: {
+  x: {
+    b
+    a.style.fill: red
+    a.style.opacity: 0.2
+  }
+}
+`,
+		},
+		{
 			name: "scenarios-nested-usable-ref-style",
 
 			text: `a: {
@@ -2105,6 +2132,21 @@ x: @yo`,
 			exp: `a
 x: @yo
 x.b.style.fill: red
+`,
+		},
+		{
+			name: "import/7",
+
+			text: `...@yo
+b.style.fill: red`,
+			fsTexts: map[string]string{
+				"yo.d2": `b`,
+			},
+			key:   `b.style.opacity`,
+			value: go2.Pointer("0.5"),
+			exp: `...@yo
+b.style.fill: red
+b.style.opacity: 0.5
 `,
 		},
 	}
