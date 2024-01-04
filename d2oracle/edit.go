@@ -349,6 +349,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 	toSkip := 1
 
 	reserved := false
+	imported := false
 
 	// If you're setting `(x -> y)[0].style.opacity`
 	// There's 3 cases you need to handle:
@@ -382,18 +383,16 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 				break
 			}
 			obj = o
+			imported = IsImported(baseAST, obj)
 
 			var maybeNewScope *d2ast.Map
-			if baseAST != g.AST {
+			if baseAST != g.AST || imported {
 				writeableRefs := getWriteableRefs(obj, baseAST)
 				for _, ref := range writeableRefs {
 					if ref.MapKey != nil && ref.MapKey.Value.Map != nil {
 						maybeNewScope = ref.MapKey.Value.Map
 					}
 				}
-			} else if IsImported(g, obj) {
-				appendMapKey(scope, mk)
-				return nil
 			} else {
 				maybeNewScope = obj.Map
 			}
@@ -412,8 +411,9 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			}
 		}
 
+		writeableLabelMK := true
 		var objK *d2ast.Key
-		if baseAST != g.AST {
+		if baseAST != g.AST || imported {
 			writeableRefs := getWriteableRefs(obj, baseAST)
 			if len(writeableRefs) > 0 {
 				objK = writeableRefs[0].MapKey
@@ -421,6 +421,13 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			if objK == nil {
 				appendMapKey(scope, mk)
 				return nil
+			}
+			writeableLabelMK = false
+			for _, ref := range writeableRefs {
+				if ref.MapKey == obj.Label.MapKey {
+					writeableLabelMK = true
+					break
+				}
 			}
 		}
 		var m *d2ast.Map
@@ -430,7 +437,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			m = obj.Map
 		}
 
-		if obj.Label.MapKey != nil && m == nil && (!found || reserved || len(mk.Edges) > 0) {
+		if (obj.Label.MapKey != nil && writeableLabelMK) && m == nil && (!found || reserved || len(mk.Edges) > 0) {
 			m2 := &d2ast.Map{
 				Range: d2ast.MakeRange(",1:0:0-1:0:0"),
 			}
@@ -3107,7 +3114,7 @@ func filterReservedPath(path []*d2ast.StringBox) (filtered []*d2ast.StringBox) {
 
 func getWriteableRefs(obj *d2graph.Object, writeableAST *d2ast.Map) (out []d2graph.Reference) {
 	for i, ref := range obj.References {
-		if ref.ScopeAST == writeableAST {
+		if ref.ScopeAST == writeableAST && ref.Key.Range.Path == writeableAST.Range.Path {
 			out = append(out, obj.References[i])
 		}
 	}
