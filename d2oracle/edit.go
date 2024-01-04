@@ -349,6 +349,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 	toSkip := 1
 
 	reserved := false
+	imported := false
 
 	// If you're setting `(x -> y)[0].style.opacity`
 	// There's 3 cases you need to handle:
@@ -382,9 +383,10 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 				break
 			}
 			obj = o
+			imported = IsImported(baseAST, obj)
 
 			var maybeNewScope *d2ast.Map
-			if baseAST != g.AST {
+			if baseAST != g.AST || imported {
 				writeableRefs := getWriteableRefs(obj, baseAST)
 				for _, ref := range writeableRefs {
 					if ref.MapKey != nil && ref.MapKey.Value.Map != nil {
@@ -411,7 +413,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 
 		writeableLabelMK := true
 		var objK *d2ast.Key
-		if baseAST != g.AST {
+		if baseAST != g.AST || imported {
 			writeableRefs := getWriteableRefs(obj, baseAST)
 			if len(writeableRefs) > 0 {
 				objK = writeableRefs[0].MapKey
@@ -3112,7 +3114,7 @@ func filterReservedPath(path []*d2ast.StringBox) (filtered []*d2ast.StringBox) {
 
 func getWriteableRefs(obj *d2graph.Object, writeableAST *d2ast.Map) (out []d2graph.Reference) {
 	for i, ref := range obj.References {
-		if ref.ScopeAST == writeableAST {
+		if ref.ScopeAST == writeableAST && ref.Key.Range.Path == writeableAST.Range.Path {
 			out = append(out, obj.References[i])
 		}
 	}
