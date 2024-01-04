@@ -391,6 +391,9 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 						maybeNewScope = ref.MapKey.Value.Map
 					}
 				}
+			} else if IsImported(g, obj) {
+				appendMapKey(scope, mk)
+				return nil
 			} else {
 				maybeNewScope = obj.Map
 			}
