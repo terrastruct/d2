@@ -20,6 +20,7 @@ import (
 )
 
 func main() {
+	js.Global().Set("d2GetParentID", js.FuncOf(jsGetParentID))
 	js.Global().Set("d2GetObjOrder", js.FuncOf(jsGetObjOrder))
 	js.Global().Set("d2GetRefRanges", js.FuncOf(jsGetRefRanges))
 	js.Global().Set("d2Compile", js.FuncOf(jsCompile))
@@ -62,6 +63,26 @@ func jsGetObjOrder(this js.Value, args []js.Value) interface{} {
 
 	str, _ := json.Marshal(resp)
 	return string(str)
+}
+
+func jsGetParentID(this js.Value, args []js.Value) interface{} {
+	id := args[0].String()
+
+	mk, _ := d2parser.ParseMapKey(id)
+
+	if len(mk.Edges) > 0 {
+		return ""
+	}
+
+	if mk.Key != nil {
+		if len(mk.Key.Path) == 1 {
+			return "root"
+		}
+		mk.Key.Path = mk.Key.Path[:len(mk.Key.Path)-1]
+		return strings.Join(mk.Key.IDA(), ".")
+	}
+
+	return ""
 }
 
 type jsRefRanges struct {
