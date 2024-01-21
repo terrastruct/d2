@@ -164,6 +164,27 @@ func findFieldAST(ast *d2ast.Map, f *d2ir.Field) *d2ast.Map {
 			head2 := n.MapKey.Key.Path[0].Unbox().ScalarString()
 			if head == head2 {
 				currAST = n.MapKey.Value.Map
+				// The BaseAST is only used for making edits to the AST (through d2oracle)
+				// If there's no Map for a given board, either it's an empty layer or set to an import
+				// Either way, in order to make edits, it needs to be expanded into a Map to add lines to
+				if currAST == nil {
+					n.MapKey.Value.Map = &d2ast.Map{
+						Range: d2ast.MakeRange(",1:0:0-1:0:0"),
+					}
+					if n.MapKey.Value.Import != nil {
+						imp := &d2ast.Import{
+							Range:  d2ast.MakeRange(",1:0:0-1:0:0"),
+							Spread: true,
+							Pre:    n.MapKey.Value.Import.Pre,
+							Path:   n.MapKey.Value.Import.Path,
+						}
+						n.MapKey.Value.Map.Nodes = append(n.MapKey.Value.Map.Nodes, d2ast.MapNodeBox{
+							Import: imp,
+						})
+
+					}
+					currAST = n.MapKey.Value.Map
+				}
 				found = true
 				break
 			}
