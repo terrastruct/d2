@@ -2149,6 +2149,30 @@ b.style.fill: red
 b.style.opacity: 0.5
 `,
 		},
+		{
+			name: "import/8",
+
+			text: `a
+
+layers: {
+  x: @yo
+}`,
+			boardPath: []string{"x"},
+			fsTexts: map[string]string{
+				"yo.d2": `b`,
+			},
+			key:   `b.style.fill`,
+			value: go2.Pointer(`red`),
+			exp: `a
+
+layers: {
+  x: {
+    ...@yo
+    b.style.fill: red
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
