@@ -74,6 +74,7 @@ type RenderOpts struct {
 	Center             *bool
 	ThemeID            *int64
 	DarkThemeID        *int64
+	DarkThemeClass     string
 	ThemeOverrides     *d2target.ThemeOverrides
 	DarkThemeOverrides *d2target.ThemeOverrides
 	Font               string
@@ -1758,6 +1759,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	pad := DEFAULT_PADDING
 	themeID := d2themescatalog.NeutralDefault.ID
 	darkThemeID := DEFAULT_DARK_THEME
+	darkThemeClass := ""
 	var scale *float64
 	if opts != nil {
 		if opts.Pad != nil {
@@ -1774,6 +1776,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 			themeID = *opts.ThemeID
 		}
 		darkThemeID = opts.DarkThemeID
+		darkThemeClass = opts.DarkThemeClass
 		scale = opts.Scale
 	}
 
@@ -1856,7 +1859,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	upperBuf := &bytes.Buffer{}
 	if opts.MasterID == "" {
 		EmbedFonts(upperBuf, diagramHash, buf.String(), diagram.FontFamily, diagram.GetCorpus()) // EmbedFonts *must* run before `d2sketch.DefineFillPatterns`, but after all elements are appended to `buf`
-		themeStylesheet, err := ThemeCSS(diagramHash, &themeID, darkThemeID, opts.ThemeOverrides, opts.DarkThemeOverrides)
+		themeStylesheet, err := ThemeCSS(diagramHash, &themeID, darkThemeID, darkThemeClass, opts.ThemeOverrides, opts.DarkThemeOverrides)
 		if err != nil {
 			return nil, err
 		}
@@ -2018,27 +2021,38 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 }
 
 // TODO include only colors that are being used to reduce size
-func ThemeCSS(diagramHash string, themeID *int64, darkThemeID *int64, overrides, darkOverrides *d2target.ThemeOverrides) (stylesheet string, err error) {
+func ThemeCSS(diagramHash string, themeID *int64, darkThemeID *int64, darkThemeClass string, overrides, darkOverrides *d2target.ThemeOverrides) (stylesheet string, err error) {
 	if themeID == nil {
 		themeID = &d2themescatalog.NeutralDefault.ID
 	}
-	out, err := singleThemeRulesets(diagramHash, *themeID, overrides)
+
+	classPrefix := "." + diagramHash
+	out, err := singleThemeRulesets(classPrefix, *themeID, overrides)
 	if err != nil {
 		return "", err
 	}
 
 	if darkThemeID != nil {
-		darkOut, err := singleThemeRulesets(diagramHash, *darkThemeID, darkOverrides)
+		hasThemeClass := len(darkThemeClass) != 0
+		if hasThemeClass {
+			classPrefix = "." + darkThemeClass + " " + classPrefix
+		}
+		darkOut, err := singleThemeRulesets(classPrefix, *darkThemeID, darkOverrides)
 		if err != nil {
 			return "", err
 		}
-		out += fmt.Sprintf("@media screen and (prefers-color-scheme:dark){%s}", darkOut)
+
+		if hasThemeClass {
+			out += darkOut
+		} else {
+			out += fmt.Sprintf("@media screen and (prefers-color-scheme:dark){%s}", darkOut)
+		}
 	}
 
 	return out, nil
 }
 
-func singleThemeRulesets(diagramHash string, themeID int64, overrides *d2target.ThemeOverrides) (rulesets string, err error) {
+func singleThemeRulesets(classPrefix string, themeID int64, overrides *d2target.ThemeOverrides) (rulesets string, err error) {
 	out := ""
 	theme := d2themescatalog.Find(themeID)
 	theme.ApplyOverrides(overrides)
@@ -2046,68 +2060,69 @@ func singleThemeRulesets(diagramHash string, themeID int64, overrides *d2target.
 	// Global theme colors
 	for _, property := range []string{"fill", "stroke", "background-color", "color"} {
 		out += fmt.Sprintf(`
-		.%s .%s-N1{%s:%s;}
-		.%s .%s-N2{%s:%s;}
-		.%s .%s-N3{%s:%s;}
-		.%s .%s-N4{%s:%s;}
-		.%s .%s-N5{%s:%s;}
-		.%s .%s-N6{%s:%s;}
-		.%s .%s-N7{%s:%s;}
-		.%s .%s-B1{%s:%s;}
-		.%s .%s-B2{%s:%s;}
-		.%s .%s-B3{%s:%s;}
-		.%s .%s-B4{%s:%s;}
-		.%s .%s-B5{%s:%s;}
-		.%s .%s-B6{%s:%s;}
-		.%s .%s-AA2{%s:%s;}
-		.%s .%s-AA4{%s:%s;}
-		.%s .%s-AA5{%s:%s;}
-		.%s .%s-AB4{%s:%s;}
-		.%s .%s-AB5{%s:%s;}`,
-			diagramHash,
+		%s .%s-N1{%s:%s;}
+		%s .%s-N2{%s:%s;}
+		%s .%s-N3{%s:%s;}
+		%s .%s-N4{%s:%s;}
+		%s .%s-N5{%s:%s;}
+		%s .%s-N6{%s:%s;}
+		%s .%s-N7{%s:%s;}
+		%s .%s-B1{%s:%s;}
+		%s .%s-B2{%s:%s;}
+		%s .%s-B3{%s:%s;}
+		%s .%s-B4{%s:%s;}
+		%s .%s-B5{%s:%s;}
+		%s .%s-B6{%s:%s;}
+		%s .%s-AA2{%s:%s;}
+		%s .%s-AA4{%s:%s;}
+		%s .%s-AA5{%s:%s;}
+		%s .%s-AB4{%s:%s;}
+		%s .%s-AB5{%s:%s;}`,
+			classPrefix,
 			property, property, theme.Colors.Neutrals.N1,
-			diagramHash,
+			classPrefix,
 			property, property, theme.Colors.Neutrals.N2,
-			diagramHash,
+			classPrefix,
 			property, property, theme.Colors.Neutrals.N3,
-			diagramHash,
+			classPrefix,
 			property, property, theme.Colors.Neutrals.N4,
-			diagramHash,
+			classPrefix,
 			property, property, theme.Colors.Neutrals.N5,
-			diagramHash,
+			classPrefix,
 			property, property, theme.Colors.Neutrals.N6,
-			diagramHash,
+			classPrefix,
 			property, property, theme.Colors.Neutrals.N7,
-			diagramHash,
+			classPrefix,
 			property, property, theme.Colors.B1,
-			diagramHash,
+			classPrefix,
 			property, property, theme.Colors.B2,
-			diagramHash,
+			classPrefix,
 			property, property, theme.Colors.B3,
-			diagramHash,
+			classPrefix,
 			property, property, theme.Colors.B4,
-			diagramHash,
+			classPrefix,
 			property, property, theme.Colors.B5,
-			diagramHash,
+			classPrefix,
 			property, property, theme.Colors.B6,
-			diagramHash,
+			classPrefix,
 			property, property, theme.Colors.AA2,
-			diagramHash,
+			classPrefix,
 			property, property, theme.Colors.AA4,
-			diagramHash,
+			classPrefix,
 			property, property, theme.Colors.AA5,
-			diagramHash,
+			classPrefix,
 			property, property, theme.Colors.AB4,
-			diagramHash,
+			classPrefix,
 			property, property, theme.Colors.AB5,
 		)
 	}
 
 	// Appendix
-	out += fmt.Sprintf(".appendix text.text{fill:%s}", theme.Colors.Neutrals.N1)
+	out += fmt.Sprintf("%s .appendix text.text{fill:%s}", classPrefix, theme.Colors.Neutrals.N1)
 
 	// Markdown specific rulesets
-	out += fmt.Sprintf(".md{--color-fg-default:%s;--color-fg-muted:%s;--color-fg-subtle:%s;--color-canvas-default:%s;--color-canvas-subtle:%s;--color-border-default:%s;--color-border-muted:%s;--color-neutral-muted:%s;--color-accent-fg:%s;--color-accent-emphasis:%s;--color-attention-subtle:%s;--color-danger-fg:%s;}",
+	out += fmt.Sprintf("%s .md{--color-fg-default:%s;--color-fg-muted:%s;--color-fg-subtle:%s;--color-canvas-default:%s;--color-canvas-subtle:%s;--color-border-default:%s;--color-border-muted:%s;--color-neutral-muted:%s;--color-accent-fg:%s;--color-accent-emphasis:%s;--color-attention-subtle:%s;--color-danger-fg:%s;}",
+		classPrefix,
 		theme.Colors.Neutrals.N1, theme.Colors.Neutrals.N2, theme.Colors.Neutrals.N3,
 		theme.Colors.Neutrals.N7, theme.Colors.Neutrals.N6,
 		theme.Colors.B1, theme.Colors.B2,
@@ -2123,105 +2138,105 @@ func singleThemeRulesets(diagramHash string, themeID int64, overrides *d2target.
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B1, lc, blendMode(lc))
+	out += fmt.Sprintf("%s .sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", classPrefix, color.B1, lc, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.B2)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B2, lc, blendMode(lc))
+	out += fmt.Sprintf("%s .sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", classPrefix, color.B2, lc, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.B3)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B3, lc, blendMode(lc))
+	out += fmt.Sprintf("%s .sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", classPrefix, color.B3, lc, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.B4)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B4, lc, blendMode(lc))
+	out += fmt.Sprintf("%s .sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", classPrefix, color.B4, lc, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.B5)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B5, lc, blendMode(lc))
+	out += fmt.Sprintf("%s .sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", classPrefix, color.B5, lc, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.B6)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B6, lc, blendMode(lc))
+	out += fmt.Sprintf("%s .sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", classPrefix, color.B6, lc, blendMode(lc))
 
 	// AA
 	lc, err = color.LuminanceCategory(theme.Colors.AA2)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.AA2, lc, blendMode(lc))
+	out += fmt.Sprintf("%s .sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", classPrefix, color.AA2, lc, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.AA4)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.AA4, lc, blendMode(lc))
+	out += fmt.Sprintf("%s .sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", classPrefix, color.AA4, lc, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.AA5)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.AA5, lc, blendMode(lc))
+	out += fmt.Sprintf("%s .sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", classPrefix, color.AA5, lc, blendMode(lc))
 
 	// AB
 	lc, err = color.LuminanceCategory(theme.Colors.AB4)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.AB4, lc, blendMode(lc))
+	out += fmt.Sprintf("%s .sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", classPrefix, color.AB4, lc, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.AB5)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.AB5, lc, blendMode(lc))
+	out += fmt.Sprintf("%s .sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", classPrefix, color.AB5, lc, blendMode(lc))
 
 	// Neutrals
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N1)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N1, lc, blendMode(lc))
+	out += fmt.Sprintf("%s .sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", classPrefix, color.N1, lc, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N2)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N2, lc, blendMode(lc))
+	out += fmt.Sprintf("%s .sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", classPrefix, color.N2, lc, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N3)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N3, lc, blendMode(lc))
+	out += fmt.Sprintf("%s .sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", classPrefix, color.N3, lc, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N4)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N4, lc, blendMode(lc))
+	out += fmt.Sprintf("%s .sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", classPrefix, color.N4, lc, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N5)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N5, lc, blendMode(lc))
+	out += fmt.Sprintf("%s .sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", classPrefix, color.N5, lc, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N6)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N6, lc, blendMode(lc))
+	out += fmt.Sprintf("%s .sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", classPrefix, color.N6, lc, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N7)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N7, lc, blendMode(lc))
+	out += fmt.Sprintf("%s .sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", classPrefix, color.N7, lc, blendMode(lc))
 
 	if theme.IsDark() {
-		out += ".light-code{display: none}"
-		out += ".dark-code{display: block}"
+		out += classPrefix + " .light-code{display: none}"
+		out += classPrefix + " .dark-code{display: block}"
 	} else {
-		out += ".light-code{display: block}"
-		out += ".dark-code{display: none}"
+		out += classPrefix + " .light-code{display: block}"
+		out += classPrefix + " .dark-code{display: none}"
 	}
 
 	return out, nil
