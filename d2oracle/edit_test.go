@@ -7160,6 +7160,53 @@ scenarios: {
 }
 `,
 		},
+		{
+			name: "import/1",
+
+			text: `...@meow
+y
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `x: {
+  a
+}
+`,
+			},
+			key: `x`,
+			exp: `...@meow
+y
+x: null
+`,
+		},
+		{
+			name: "import/2",
+
+			text: `...@meow
+
+scenarios: {
+  y: {
+    c
+  }
+}
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `x: {
+  a
+}
+`,
+			},
+			boardPath: []string{"y"},
+			key:       `x`,
+			exp: `...@meow
+
+scenarios: {
+  y: {
+    c
+    x: null
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
