@@ -12,7 +12,7 @@ import (
 
 func (c *compiler) pushImportStack(imp *d2ast.Import) (string, bool) {
 	impPath := imp.PathWithPre()
-	if impPath == "" && imp.Range.Path != "" {
+	if impPath == "" && imp.Range != (d2ast.Range{}) {
 		c.errorf(imp, "imports must specify a path to import")
 		return "", false
 	}
