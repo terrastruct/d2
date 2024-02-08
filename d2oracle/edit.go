@@ -920,34 +920,45 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 
 	prevG, _ := recompile(boardG)
 
-	boardG, err = renameConflictsToParent(boardG, mk.Key)
-	if err != nil {
-		return nil, err
-	}
-
 	obj, ok := boardG.Root.HasChild(d2graph.Key(mk.Key))
 	if !ok {
 		return g, nil
 	}
 
-	if len(boardPath) > 0 {
-		writeableRefs := getWriteableRefs(obj, baseAST)
-		if len(writeableRefs) != len(obj.References) {
-			mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
-		}
-	}
+	imported := IsImported(baseAST, obj)
 
-	if _, ok := mk.Value.Unbox().(*d2ast.Null); !ok {
-		boardG, err = deleteObject(boardG, baseAST, mk.Key, obj)
+	if imported {
+		println(d2format.Format(boardG.AST))
+		mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
+		appendMapKey(baseAST, mk)
+	} else {
+		boardG, err = renameConflictsToParent(boardG, mk.Key)
 		if err != nil {
 			return nil, err
 		}
-
-		if err := updateNear(prevG, boardG, &key, nil, false); err != nil {
-			return nil, err
+		obj, ok = boardG.Root.HasChild(d2graph.Key(mk.Key))
+		if !ok {
+			return g, nil
 		}
-	} else {
-		appendMapKey(baseAST, mk)
+		if len(boardPath) > 0 {
+			writeableRefs := getWriteableRefs(obj, baseAST)
+			if len(writeableRefs) != len(obj.References) {
+				mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
+			}
+		}
+
+		if _, ok := mk.Value.Unbox().(*d2ast.Null); !ok {
+			boardG, err = deleteObject(boardG, baseAST, mk.Key, obj)
+			if err != nil {
+				return nil, err
+			}
+
+			if err := updateNear(prevG, boardG, &key, nil, false); err != nil {
+				return nil, err
+			}
+		} else {
+			appendMapKey(baseAST, mk)
+		}
 	}
 
 	if len(boardPath) > 0 {
