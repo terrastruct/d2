@@ -476,14 +476,14 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			appendMapKey(scope, mk)
 			return nil
 		}
-		// TODO what if the edge is imported, how does this work?
 		var ok bool
 		edge, ok = obj.HasEdge(mk)
 		if !ok {
 			return errors.New("edge not found")
 		}
+		imported = IsImportedEdge(baseAST, edge)
 		refs := edge.References
-		if baseAST != g.AST {
+		if baseAST != g.AST || imported {
 			refs = getWriteableEdgeRefs(edge, baseAST)
 		}
 		onlyInChain := true

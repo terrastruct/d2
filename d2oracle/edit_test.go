@@ -2181,10 +2181,10 @@ layers: {
 			fsTexts: map[string]string{
 				"yo.d2": `a -> b`,
 			},
-			key:   `(a -> b).style.stroke`,
+			key:   `(a -> b)[0].style.stroke`,
 			value: go2.Pointer(`red`),
 			exp: `...@yo
-(a -> b).style.stroke: red
+(a -> b)[0].style.stroke: red
 `,
 		},
 	}

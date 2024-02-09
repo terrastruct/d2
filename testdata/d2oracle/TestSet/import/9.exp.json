@@ -3,7 +3,7 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "index.d2,0:0:0-2:0:34",
+      "range": "index.d2,0:0:0-2:0:37",
       "nodes": [
         {
           "import": {
@@ -27,7 +27,7 @@
         },
         {
           "map_key": {
-            "range": "index.d2,1:0:7-1:26:33",
+            "range": "index.d2,1:0:7-1:29:36",
             "edges": [
               {
                 "range": "index.d2,1:1:8-1:7:14",
@@ -67,12 +67,17 @@
                 "dst_arrow": ">"
               }
             ],
+            "edge_index": {
+              "range": "index.d2,1:8:15-1:11:18",
+              "int": 0,
+              "glob": false
+            },
             "edge_key": {
-              "range": "index.d2,1:9:16-1:21:28",
+              "range": "index.d2,1:12:19-1:24:31",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "index.d2,1:9:16-1:14:21",
+                    "range": "index.d2,1:12:19-1:17:24",
                     "value": [
                       {
                         "string": "style",
@@ -83,7 +88,7 @@
                 },
                 {
                   "unquoted_string": {
-                    "range": "index.d2,1:15:22-1:21:28",
+                    "range": "index.d2,1:18:25-1:24:31",
                     "value": [
                       {
                         "string": "stroke",
@@ -97,7 +102,7 @@
             "primary": {},
             "value": {
               "unquoted_string": {
-                "range": "index.d2,1:23:30-1:26:33",
+                "range": "index.d2,1:26:33-1:29:36",
                 "value": [
                   {
                     "string": "red",
@@ -142,34 +147,7 @@
         "references": [
           {
             "map_key_edge_index": 0
-          }
-        ],
-        "attributes": {
-          "label": {
-            "value": ""
           },
-          "labelDimensions": {
-            "width": 0,
-            "height": 0
-          },
-          "style": {},
-          "near_key": null,
-          "shape": {
-            "value": ""
-          },
-          "direction": {
-            "value": ""
-          },
-          "constraint": null
-        },
-        "zIndex": 0
-      },
-      {
-        "index": 1,
-        "isCurve": false,
-        "src_arrow": false,
-        "dst_arrow": true,
-        "references": [
           {
             "map_key_edge_index": 0
           }
