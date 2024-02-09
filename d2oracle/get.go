@@ -140,9 +140,19 @@ func GetParentID(g *d2graph.Graph, boardPath []string, absID string) (string, er
 	return obj.Parent.AbsID(), nil
 }
 
-func IsImported(ast *d2ast.Map, obj *d2graph.Object) bool {
+func IsImportedObj(ast *d2ast.Map, obj *d2graph.Object) bool {
 	for _, ref := range obj.References {
 		if ref.Key.Range.Path != ast.Range.Path {
+			return true
+		}
+	}
+
+	return false
+}
+
+func IsImportedEdge(ast *d2ast.Map, edge *d2graph.Edge) bool {
+	for _, ref := range edge.References {
+		if ref.Edge.Range.Path != ast.Range.Path {
 			return true
 		}
 	}

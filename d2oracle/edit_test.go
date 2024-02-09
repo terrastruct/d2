@@ -2173,6 +2173,20 @@ layers: {
 }
 `,
 		},
+		{
+			name: "import/9",
+
+			text: `...@yo
+`,
+			fsTexts: map[string]string{
+				"yo.d2": `a -> b`,
+			},
+			key:   `(a -> b).style.stroke`,
+			value: go2.Pointer(`red`),
+			exp: `...@yo
+(a -> b).style.stroke: red
+`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -7205,6 +7219,20 @@ scenarios: {
     x: null
   }
 }
+`,
+		},
+		{
+			name: "import/3",
+
+			text: `...@meow
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `a -> b
+`,
+			},
+			key: `(a -> b)[0]`,
+			exp: `...@meow
+(a -> b)[0]: null
 `,
 		},
 	}

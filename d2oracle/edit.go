@@ -383,7 +383,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 				break
 			}
 			obj = o
-			imported = IsImported(baseAST, obj)
+			imported = IsImportedObj(baseAST, obj)
 
 			var maybeNewScope *d2ast.Map
 			if baseAST != g.AST || imported {
@@ -476,6 +476,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			appendMapKey(scope, mk)
 			return nil
 		}
+		// TODO what if the edge is imported, how does this work?
 		var ok bool
 		edge, ok = obj.HasEdge(mk)
 		if !ok {
@@ -868,45 +869,52 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 			return g, nil
 		}
 
-		refs := e.References
-		if len(boardPath) > 0 {
-			refs := getWriteableEdgeRefs(e, baseAST)
-			if len(refs) != len(e.References) {
-				mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
-			}
-		}
+		imported := IsImportedEdge(baseAST, e)
 
-		if _, ok := mk.Value.Unbox().(*d2ast.Null); !ok {
-			ref := refs[0]
-			var refEdges []*d2ast.Edge
-			for _, ref := range refs {
-				refEdges = append(refEdges, ref.Edge)
-			}
-			ensureNode(g, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, ref.MapKey.Edges[ref.MapKeyEdgeIndex].Src, true)
-			ensureNode(g, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, ref.MapKey.Edges[ref.MapKeyEdgeIndex].Dst, false)
-
-			for i := len(e.References) - 1; i >= 0; i-- {
-				ref := e.References[i]
-				deleteEdge(g, ref.Scope, ref.MapKey, ref.MapKeyEdgeIndex)
+		if imported {
+			mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
+			appendMapKey(baseAST, mk)
+		} else {
+			refs := e.References
+			if len(boardPath) > 0 {
+				refs := getWriteableEdgeRefs(e, baseAST)
+				if len(refs) != len(e.References) {
+					mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
+				}
 			}
 
-			edges, ok := obj.FindEdges(mk)
-			if ok {
-				for _, e2 := range edges {
-					if e2.Index <= e.Index {
-						continue
-					}
-					for i := len(e2.References) - 1; i >= 0; i-- {
-						ref := e2.References[i]
-						if ref.MapKey.EdgeIndex != nil {
-							*ref.MapKey.EdgeIndex.Int--
+			if _, ok := mk.Value.Unbox().(*d2ast.Null); !ok {
+				ref := refs[0]
+				var refEdges []*d2ast.Edge
+				for _, ref := range refs {
+					refEdges = append(refEdges, ref.Edge)
+				}
+				ensureNode(g, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, ref.MapKey.Edges[ref.MapKeyEdgeIndex].Src, true)
+				ensureNode(g, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, ref.MapKey.Edges[ref.MapKeyEdgeIndex].Dst, false)
+
+				for i := len(e.References) - 1; i >= 0; i-- {
+					ref := e.References[i]
+					deleteEdge(g, ref.Scope, ref.MapKey, ref.MapKeyEdgeIndex)
+				}
+
+				edges, ok := obj.FindEdges(mk)
+				if ok {
+					for _, e2 := range edges {
+						if e2.Index <= e.Index {
+							continue
+						}
+						for i := len(e2.References) - 1; i >= 0; i-- {
+							ref := e2.References[i]
+							if ref.MapKey.EdgeIndex != nil {
+								*ref.MapKey.EdgeIndex.Int--
+							}
 						}
 					}
 				}
+			} else {
+				// NOTE: it only needs to be after the last ref, but perhaps simplest and cleanest to append all nulls at the end
+				appendMapKey(baseAST, mk)
 			}
-		} else {
-			// NOTE: it only needs to be after the last ref, but perhaps simplest and cleanest to append all nulls at the end
-			appendMapKey(baseAST, mk)
 		}
 		if len(boardPath) > 0 {
 			replaced := ReplaceBoardNode(g.AST, baseAST, boardPath)
@@ -925,10 +933,9 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 		return g, nil
 	}
 
-	imported := IsImported(baseAST, obj)
+	imported := IsImportedObj(baseAST, obj)
 
 	if imported {
-		println(d2format.Format(boardG.AST))
 		mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
 		appendMapKey(baseAST, mk)
 	} else {
