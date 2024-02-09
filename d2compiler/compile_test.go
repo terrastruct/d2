@@ -3240,6 +3240,17 @@ y: null
 				},
 			},
 			{
+				name: "delete-nested-connection",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+a -> b.c
+b.c: null
+`, "")
+					assert.Equal(t, 2, len(g.Objects))
+					assert.Equal(t, 0, len(g.Edges))
+				},
+			},
+			{
 				name: "delete-multiple-connections",
 				run: func(t *testing.T) {
 					g, _ := assertCompile(t, `

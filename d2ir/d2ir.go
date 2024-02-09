@@ -950,13 +950,20 @@ func (m *Map) DeleteField(ida ...string) *Field {
 		}
 		if len(rest) == 0 {
 			for _, fr := range f.References {
-				for _, e := range m.Edges {
-					for _, er := range e.References {
-						if er.Context_ == fr.Context_ {
-							m.DeleteEdge(e.ID)
-							break
+				currM := m
+				for currM != nil {
+					for _, e := range currM.Edges {
+						for _, er := range e.References {
+							if er.Context_ == fr.Context_ {
+								currM.DeleteEdge(e.ID)
+								break
+							}
 						}
 					}
+					if NodeBoardKind(currM) != "" {
+						break
+					}
+					currM = ParentMap(currM)
 				}
 			}
 			m.Fields = append(m.Fields[:i], m.Fields[i+1:]...)
