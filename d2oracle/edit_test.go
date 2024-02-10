@@ -7235,6 +7235,50 @@ scenarios: {
 (a -> b)[0]: null
 `,
 		},
+		{
+			name: "import/4",
+
+			text: `...@meow
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `a.link: https://google.com
+`,
+			},
+			key: `a.link`,
+			exp: `...@meow
+a.link: null
+`,
+		},
+		{
+			name: "import/5",
+
+			text: `...@meow
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `a -> b: {
+	target-arrowhead: 1
+}
+`,
+			},
+			key: `(a -> b)[0].target-arrowhead`,
+			exp: `...@meow
+(a -> b)[0].target-arrowhead: null
+`,
+		},
+		{
+			name: "import/6",
+
+			text: `...@meow
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `a.style.fill: red
+`,
+			},
+			key: `a.style.fill`,
+			exp: `...@meow
+a.style.fill: null
+`,
+		},
 	}
 
 	for _, tc := range testCases {
