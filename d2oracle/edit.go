@@ -847,7 +847,7 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 		baseAST = boardG.BaseAST
 	}
 
-	g2, err := deleteReserved(g, mk)
+	g2, err := deleteReserved(g, baseAST, mk)
 	if err != nil {
 		return nil, err
 	}
@@ -1185,7 +1185,7 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 	return g, nil
 }
 
-func deleteReserved(g *d2graph.Graph, mk *d2ast.Key) (*d2graph.Graph, error) {
+func deleteReserved(g *d2graph.Graph, baseAST *d2ast.Map, mk *d2ast.Key) (*d2graph.Graph, error) {
 	targetKey := mk.Key
 	if len(mk.Edges) == 1 {
 		if mk.EdgeKey == nil {
@@ -1212,14 +1212,21 @@ func deleteReserved(g *d2graph.Graph, mk *d2ast.Key) (*d2graph.Graph, error) {
 		if !ok {
 			return g, nil
 		}
+		imported := IsImportedEdge(baseAST, e)
 
-		if err := deleteEdgeField(g, e, targetKey.Path[len(targetKey.Path)-1].Unbox().ScalarString()); err != nil {
-			return nil, err
+		if imported {
+			mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
+			appendMapKey(baseAST, mk)
+		} else {
+			if err := deleteEdgeField(g, e, targetKey.Path[len(targetKey.Path)-1].Unbox().ScalarString()); err != nil {
+				return nil, err
+			}
 		}
 		return recompile(g)
 	}
 
 	isStyleKey := false
+	imported := false
 	for _, id := range d2graph.Key(targetKey) {
 		_, ok := d2graph.ReservedKeywords[id]
 		if ok {
@@ -1228,9 +1235,14 @@ func deleteReserved(g *d2graph.Graph, mk *d2ast.Key) (*d2graph.Graph, error) {
 				continue
 			}
 			if isStyleKey {
-				err := deleteObjField(g, obj, id)
-				if err != nil {
-					return nil, err
+				if imported {
+					mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
+					appendMapKey(baseAST, mk)
+				} else {
+					err := deleteObjField(g, obj, id)
+					if err != nil {
+						return nil, err
+					}
 				}
 			}
 
@@ -1242,9 +1254,14 @@ func deleteReserved(g *d2graph.Graph, mk *d2ast.Key) (*d2graph.Graph, error) {
 				id == "left" ||
 				id == "top" ||
 				id == "link" {
-				err := deleteObjField(g, obj, id)
-				if err != nil {
-					return nil, err
+				if imported {
+					mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
+					appendMapKey(baseAST, mk)
+				} else {
+					err := deleteObjField(g, obj, id)
+					if err != nil {
+						return nil, err
+					}
 				}
 			}
 			break
@@ -1253,6 +1270,7 @@ func deleteReserved(g *d2graph.Graph, mk *d2ast.Key) (*d2graph.Graph, error) {
 		if !ok {
 			return nil, fmt.Errorf("object not found")
 		}
+		imported = IsImportedObj(baseAST, obj)
 	}
 
 	return recompile(g)
