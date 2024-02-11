@@ -27,6 +27,14 @@ import (
 )
 
 func TestDarkTheme(t *testing.T) {
+	testDarkTheme(t, false)
+}
+
+func TestCombinedLightAndDarkTheme(t *testing.T) {
+	testDarkTheme(t, true)
+}
+
+func testDarkTheme(t *testing.T, combined bool) {
 	t.Parallel()
 
 	tcs := []testCase{
@@ -394,7 +402,7 @@ code -- unknown
 `,
 		},
 	}
-	runa(t, tcs)
+	runa(t, tcs, combined)
 }
 
 type testCase struct {
@@ -403,7 +411,19 @@ type testCase struct {
 	skip   bool
 }
 
-func runa(t *testing.T, tcs []testCase) {
+func runa(t *testing.T, tcs []testCase, combined bool) {
+	var renderOpts d2svg.RenderOpts
+	if combined {
+		renderOpts = d2svg.RenderOpts{
+			ThemeID:     go2.Pointer(int64(0)),
+			DarkThemeID: go2.Pointer(int64(200)),
+		}
+	} else {
+		renderOpts = d2svg.RenderOpts{
+			ThemeID: go2.Pointer(int64(200)),
+		}
+	}
+
 	for _, tc := range tcs {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
@@ -412,12 +432,12 @@ func runa(t *testing.T, tcs []testCase) {
 			}
 			t.Parallel()
 
-			run(t, tc)
+			run(t, tc, &renderOpts)
 		})
 	}
 }
 
-func run(t *testing.T, tc testCase) {
+func run(t *testing.T, tc testCase, renderOpts *d2svg.RenderOpts) {
 	ctx := context.Background()
 	ctx = log.WithTB(ctx, t, nil)
 	ctx = log.Leveled(ctx, slog.LevelDebug)
@@ -427,9 +447,6 @@ func run(t *testing.T, tc testCase) {
 		return
 	}
 
-	renderOpts := &d2svg.RenderOpts{
-		ThemeID: go2.Pointer(int64(200)),
-	}
 	layoutResolver := func(engine string) (d2graph.LayoutGraph, error) {
 		return d2dagrelayout.DefaultLayout, nil
 	}
@@ -444,6 +461,10 @@ func run(t *testing.T, tc testCase) {
 	}
 
 	dataPath := filepath.Join("testdata", strings.TrimPrefix(t.Name(), "TestDarkTheme/"))
+	if renderOpts.DarkThemeID != nil {
+		dataPath += "/dark"
+	}
+
 	pathGotSVG := filepath.Join(dataPath, "dark_theme.got.svg")
 
 	svgBytes, err := d2svg.Render(diagram, renderOpts)

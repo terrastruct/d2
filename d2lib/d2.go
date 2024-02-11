@@ -179,6 +179,9 @@ func applyConfigs(config *d2target.Config, compileOpts *CompileOptions, renderOp
 	if renderOpts.DarkThemeID == nil {
 		renderOpts.DarkThemeID = config.DarkThemeID
 	}
+	if renderOpts.DarkThemeClass == "" {
+		renderOpts.DarkThemeClass = *config.DarkThemeClass
+	}
 	if renderOpts.Sketch == nil {
 		renderOpts.Sketch = config.Sketch
 	}

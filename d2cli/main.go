@@ -87,6 +87,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
+	darkThemeClassFlag := ms.Opts.String("D2_DARK_THEME_CLASS", "dark-theme-class", "", "", "the CSS class to enable dark mode. When left unset prefers-color-scheme media query is used. See https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme.")
 	padFlag, err := ms.Opts.Int64("D2_PAD", "pad", "", d2svg.DEFAULT_PADDING, "pixels padded around the rendered diagram")
 	if err != nil {
 		return err
@@ -285,6 +286,10 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 			ms.Log.Warn.Printf("--dark-theme cannot be used while exporting to another format other than .svg")
 			darkThemeFlag = nil
 		}
+		if darkThemeClassFlag != nil {
+			ms.Log.Warn.Printf("--dark-theme-class cannot be used while exporting to another format other than .svg")
+			darkThemeClassFlag = nil
+		}
 	}
 	var pw png.Playwright
 	if outputFormat.requiresPNGRenderer() {
@@ -301,12 +306,13 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 
 	renderOpts := d2svg.RenderOpts{
-		Pad:         padFlag,
-		Sketch:      sketchFlag,
-		Center:      centerFlag,
-		ThemeID:     themeFlag,
-		DarkThemeID: darkThemeFlag,
-		Scale:       scale,
+		Pad:            padFlag,
+		Sketch:         sketchFlag,
+		Center:         centerFlag,
+		ThemeID:        themeFlag,
+		DarkThemeID:    darkThemeFlag,
+		DarkThemeClass: *darkThemeClassFlag,
+		Scale:          scale,
 	}
 
 	if *watchFlag {
@@ -849,6 +855,7 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 		Center:             opts.Center,
 		ThemeID:            opts.ThemeID,
 		DarkThemeID:        opts.DarkThemeID,
+		DarkThemeClass:     opts.DarkThemeClass,
 		MasterID:           opts.MasterID,
 		ThemeOverrides:     opts.ThemeOverrides,
 		DarkThemeOverrides: opts.DarkThemeOverrides,
