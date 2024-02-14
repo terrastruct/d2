@@ -771,9 +771,20 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 					}
 				}
 			case "label":
-				if inlined(&attrs.Label) {
-					attrs.Label.MapKey.SetScalar(mk.Value.ScalarBox())
-					return nil
+				if len(mk.Key.Path[reservedIndex:]) > 1 {
+					reservedTargetKey = mk.Key.Path[reservedIndex+1].Unbox().ScalarString()
+					switch reservedTargetKey {
+					case "near":
+						if inlined(attrs.LabelPosition) {
+							attrs.LabelPosition.MapKey.SetScalar(mk.Value.ScalarBox())
+							return nil
+						}
+					}
+				} else {
+					if inlined(&attrs.Label) {
+						attrs.Label.MapKey.SetScalar(mk.Value.ScalarBox())
+						return nil
+					}
 				}
 			}
 		}
