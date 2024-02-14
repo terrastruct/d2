@@ -2187,6 +2187,76 @@ layers: {
 (a -> b)[0].style.stroke: red
 `,
 		},
+		{
+			name: "label-near/1",
+
+			text: `x
+`,
+			key:   `x.label.near`,
+			value: go2.Pointer(`bottom-right`),
+			exp: `x: {label.near: bottom-right}
+`,
+		},
+		{
+			name: "label-near/2",
+
+			text: `x.label.near: bottom-left
+`,
+			key:   `x.label.near`,
+			value: go2.Pointer(`bottom-right`),
+			exp: `x.label.near: bottom-right
+`,
+		},
+		{
+			name: "label-near/3",
+
+			text: `x: {
+  label.near: bottom-left
+}
+`,
+			key:   `x.label.near`,
+			value: go2.Pointer(`bottom-right`),
+			exp: `x: {
+  label.near: bottom-right
+}
+`,
+		},
+		{
+			name: "label-near/4",
+
+			text: `x: {
+  label: hi {
+    near: bottom-left
+  }
+}
+`,
+			key:   `x.label.near`,
+			value: go2.Pointer(`bottom-right`),
+			exp: `x: {
+  label: hi {
+    near: bottom-right
+  }
+}
+`,
+		},
+		{
+			name: "label-near/5",
+
+			text: `x: hi {
+	label: {
+    near: bottom-left
+	}
+}
+`,
+			key:   `x.label.near`,
+			value: go2.Pointer(`bottom-right`),
+			exp: `x: hi {
+  label: {
+    near: bottom-right
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {

@@ -1,0 +1,187 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestSet/label-near/4.d2,0:0:0-5:0:48",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestSet/label-near/4.d2,0:0:0-4:1:47",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/label-near/4.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/label-near/4.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestSet/label-near/4.d2,0:3:3-4:1:47",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestSet/label-near/4.d2,1:2:7-3:3:45",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestSet/label-near/4.d2,1:2:7-1:7:12",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestSet/label-near/4.d2,1:2:7-1:7:12",
+                              "value": [
+                                {
+                                  "string": "label",
+                                  "raw_string": "label"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2oracle/TestSet/label-near/4.d2,1:9:14-1:11:16",
+                          "value": [
+                            {
+                              "string": "hi",
+                              "raw_string": "hi"
+                            }
+                          ]
+                        }
+                      },
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2oracle/TestSet/label-near/4.d2,1:12:17-3:3:45",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2oracle/TestSet/label-near/4.d2,2:4:23-2:22:41",
+                                "key": {
+                                  "range": "d2/testdata/d2oracle/TestSet/label-near/4.d2,2:4:23-2:8:27",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2oracle/TestSet/label-near/4.d2,2:4:23-2:8:27",
+                                        "value": [
+                                          {
+                                            "string": "near",
+                                            "raw_string": "near"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2oracle/TestSet/label-near/4.d2,2:10:29-2:22:41",
+                                    "value": [
+                                      {
+                                        "string": "bottom-right",
+                                        "raw_string": "bottom-right"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "x",
+        "id_val": "x",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/label-near/4.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/label-near/4.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "hi"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null,
+          "labelPosition": {
+            "value": "bottom-right"
+          }
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": "<nil>"
+}
