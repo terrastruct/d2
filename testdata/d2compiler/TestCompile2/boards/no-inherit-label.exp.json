@@ -1,0 +1,255 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": true,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile2/boards/no-inherit-label.d2,0:0:0-8:0:41",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/boards/no-inherit-label.d2,1:0:1-1:9:10",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/boards/no-inherit-label.d2,1:0:1-1:5:6",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/boards/no-inherit-label.d2,1:0:1-1:5:6",
+                    "value": [
+                      {
+                        "string": "label",
+                        "raw_string": "label"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "unquoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile2/boards/no-inherit-label.d2,1:7:8-1:9:10",
+                "value": [
+                  {
+                    "string": "hi",
+                    "raw_string": "hi"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/boards/no-inherit-label.d2,3:0:12-7:1:40",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/boards/no-inherit-label.d2,3:0:12-3:5:17",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/boards/no-inherit-label.d2,3:0:12-3:5:17",
+                    "value": [
+                      {
+                        "string": "steps",
+                        "raw_string": "steps"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile2/boards/no-inherit-label.d2,3:7:19-7:1:40",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/boards/no-inherit-label.d2,4:2:23-6:3:38",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/no-inherit-label.d2,4:2:23-4:3:24",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/boards/no-inherit-label.d2,4:2:23-4:3:24",
+                              "value": [
+                                {
+                                  "string": "1",
+                                  "raw_string": "1"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/boards/no-inherit-label.d2,4:5:26-6:3:38",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/boards/no-inherit-label.d2,5:4:32-5:6:34",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/no-inherit-label.d2,5:4:32-5:6:34",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/no-inherit-label.d2,5:4:32-5:6:34",
+                                        "value": [
+                                          {
+                                            "string": "RJ",
+                                            "raw_string": "RJ"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {}
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": "hi"
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": null,
+    "steps": [
+      {
+        "name": "1",
+        "isFolderOnly": false,
+        "ast": {
+          "range": ",1:0:0-2:0:0",
+          "nodes": [
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "RJ"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {}
+              }
+            }
+          ]
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "attributes": {
+            "label": {
+              "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "style": {},
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": null
+          },
+          "zIndex": 0
+        },
+        "edges": null,
+        "objects": [
+          {
+            "id": "RJ",
+            "id_val": "RJ",
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile2/boards/no-inherit-label.d2,5:4:32-5:6:34",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/no-inherit-label.d2,5:4:32-5:6:34",
+                        "value": [
+                          {
+                            "string": "RJ",
+                            "raw_string": "RJ"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "RJ"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          }
+        ]
+      }
+    ]
+  },
+  "err": null
+}

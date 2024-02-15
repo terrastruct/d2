@@ -2992,6 +2992,22 @@ steps: {
 			},
 		},
 		{
+			name: "no-inherit-label",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+label: hi
+
+steps: {
+  1: {
+    RJ
+  }
+}
+`, "")
+				assert.True(t, g.Root.Label.MapKey != nil)
+				assert.True(t, g.Steps[0].Root.Label.MapKey == nil)
+			},
+		},
+		{
 			name: "scenarios_edge_index",
 			run: func(t *testing.T) {
 				assertCompile(t, `a -> x

@@ -361,6 +361,9 @@ func (c *compiler) overlay(base *Map, f *Field) {
 		return
 	}
 	base = base.CopyBase(f)
+	// Certain fields should never carry forward.
+	// If you give your scenario a label, you don't want all steps in a scenario to be labeled the same.
+	base.DeleteField("label")
 	OverlayMap(base, f.Map())
 	f.Composite = base
 }
