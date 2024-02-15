@@ -164,3 +164,9 @@ monsters: {
 }
 
 costumes.monster -> monsters.id
+
+-- connection-underline --
+
+a -> b: hi {
+  style.underline: true
+}
