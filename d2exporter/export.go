@@ -345,6 +345,9 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 	if edge.Style.Bold != nil {
 		connection.Bold, _ = strconv.ParseBool(edge.Style.Bold.Value)
 	}
+	if edge.Style.Underline != nil {
+		connection.Underline, _ = strconv.ParseBool(edge.Style.Underline.Value)
+	}
 	if theme != nil && theme.SpecialRules.Mono {
 		connection.FontFamily = "mono"
 	}

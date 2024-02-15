@@ -588,6 +588,9 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		} else if connection.Italic {
 			fontClass += "-italic"
 		}
+		if connection.Underline {
+			fontClass += " text-underline"
+		}
 		if connection.Fill != color.Empty {
 			rectEl := d2themes.NewThemableElement("rect")
 			rectEl.X, rectEl.Y = labelTL.X, labelTL.Y
