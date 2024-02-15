@@ -4,6 +4,8 @@
 
 #### Improvements 🧹
 
+- Boards no longer inherit `label` fields from parents. [#1838](https://github.com/terrastruct/d2/pull/1838)
+
 #### Bugfixes ⛑️
 
 - Fixes `null` being set on a nested shape not working in certain cases when connections also pointed to that shape [#1830](https://github.com/terrastruct/d2/pull/1830)
