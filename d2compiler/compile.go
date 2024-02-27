@@ -1097,6 +1097,14 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 						continue
 					}
 				}
+				if nearObj.ClosestGridDiagram() != nil {
+					c.errorf(obj.NearKey, "near keys cannot be set to descendants of special objects, like grid cells")
+					continue
+				}
+				if nearObj.OuterSequenceDiagram() != nil {
+					c.errorf(obj.NearKey, "near keys cannot be set to descendants of special objects, like sequence diagram actors")
+					continue
+				}
 			} else if isConst {
 				if obj.Parent != g.Root {
 					c.errorf(obj.NearKey, "constant near keys can only be set on root level shapes")

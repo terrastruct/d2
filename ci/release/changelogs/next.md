@@ -4,7 +4,8 @@
 
 #### Improvements 🧹
 
-- Boards no longer inherit `label` fields from parents. [#1838](https://github.com/terrastruct/d2/pull/1838)
+- Boards no longer inherit `label` fields from parents [#1838](https://github.com/terrastruct/d2/pull/1838)
+- Prevents `near` targeting a child of a special object like grid cells, which wasn't doing anything [#1851](https://github.com/terrastruct/d2/pull/1851)
 
 #### Bugfixes ⛑️
 
