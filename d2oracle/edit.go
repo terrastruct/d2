@@ -647,8 +647,14 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			case "source-arrowhead", "target-arrowhead":
 				var arrowhead *d2graph.Attributes
 				if reservedKey == "source-arrowhead" {
+					if edge.SrcArrowhead != nil {
+						attrs = *edge.SrcArrowhead
+					}
 					arrowhead = edge.SrcArrowhead
 				} else {
+					if edge.DstArrowhead != nil {
+						attrs = *edge.DstArrowhead
+					}
 					arrowhead = edge.DstArrowhead
 				}
 				if arrowhead != nil {
@@ -667,6 +673,12 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 					case "label":
 						if inlined(&arrowhead.Label) {
 							arrowhead.Label.MapKey.SetScalar(mk.Value.ScalarBox())
+							return nil
+						}
+					case "style":
+						reservedTargetKey = mk.Key.Path[len(mk.Key.Path)-1].Unbox().ScalarString()
+						if inlined(attrs.Style.Filled) {
+							attrs.Style.Filled.MapKey.SetScalar(mk.Value.ScalarBox())
 							return nil
 						}
 					}
