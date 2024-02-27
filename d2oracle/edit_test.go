@@ -1521,6 +1521,50 @@ a.b -> a.c: {style.animated: true}
 `,
 		},
 		{
+			name: "edge-arrowhead-filled/1",
+			text: `x -> y
+`,
+			key:   `(x -> y)[0].target-arrowhead.style.filled`,
+			value: go2.Pointer(`true`),
+
+			exp: `x -> y: {target-arrowhead.style.filled: true}
+`,
+		},
+		{
+			name: "edge-arrowhead-filled/2",
+			text: `x -> y: {
+  target-arrowhead: * {
+    shape: diamond
+  }
+}
+`,
+			key:   `(x -> y)[0].target-arrowhead.style.filled`,
+			value: go2.Pointer(`true`),
+
+			exp: `x -> y: {
+  target-arrowhead: * {
+    shape: diamond
+    style.filled: true
+  }
+}
+`,
+		},
+		{
+			name: "edge-arrowhead-filled/3",
+			text: `x -> y: {
+	target-arrowhead.shape: diamond
+}
+`,
+			key:   `(x -> y)[0].target-arrowhead.style.filled`,
+			value: go2.Pointer(`true`),
+
+			exp: `x -> y: {
+  target-arrowhead.shape: diamond
+  target-arrowhead.style.filled: true
+}
+`,
+		},
+		{
 			name: "edge_replace_arrowhead",
 			text: `x -> y: {target-arrowhead.shape: circle}
 `,
