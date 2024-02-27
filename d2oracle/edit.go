@@ -653,8 +653,8 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 				}
 				if arrowhead != nil {
 					if reservedTargetKey == "" {
-						if len(mk.Key.Path[reservedIndex:]) != 2 {
-							return errors.New("malformed style setting, expected 2 part path")
+						if len(mk.Key.Path[reservedIndex:]) < 2 {
+							return errors.New("malformed style setting, expected >= 2 part path")
 						}
 						reservedTargetKey = mk.Key.Path[reservedIndex+1].Unbox().ScalarString()
 					}
