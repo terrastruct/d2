@@ -1608,6 +1608,17 @@ d2/testdata/d2compiler/TestCompile/near-invalid.d2:14:9: near keys cannot be set
 			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_constant.d2:1:9: near key "txop-center" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right`,
 		},
 		{
+			name: "near_special",
+
+			text: `x.near: z.x
+z: {
+  grid-rows: 1
+  x
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_special.d2:1:9: near keys cannot be set to descendants of special objects, like grid cells`,
+		},
+		{
 			name: "near_bad_connected",
 
 			text: `
