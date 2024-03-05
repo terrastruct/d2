@@ -2337,6 +2337,48 @@ layers: {
 }
 `,
 		},
+		{
+			name: "glob-field/1",
+
+			text: `*.style.fill: red
+a
+b
+`,
+			key:   `a.style.fill`,
+			value: go2.Pointer(`blue`),
+			exp: `*.style.fill: red
+a: {style.fill: blue}
+b
+`,
+		},
+		{
+			name: "glob-field/2",
+
+			text: `(* -> *)[*].style.stroke: red
+a -> b
+a -> b
+`,
+			key:   `(a -> b)[0].style.stroke`,
+			value: go2.Pointer(`blue`),
+			exp: `(* -> *)[*].style.stroke: red
+a -> b: {style.stroke: blue}
+a -> b
+`,
+		},
+		{
+			name: "glob-field/3",
+
+			text: `(* -> *)[*].style.stroke: red
+a -> b: {style.stroke: blue}
+a -> b
+`,
+			key:   `(a -> b)[0].style.stroke`,
+			value: go2.Pointer(`green`),
+			exp: `(* -> *)[*].style.stroke: red
+a -> b: {style.stroke: green}
+a -> b
+`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -7445,6 +7487,32 @@ a.style.fill: null
 `,
 			key: `yes.label.near`,
 			exp: `yes
+`,
+		},
+		{
+			name: "connection-glob",
+
+			text: `* -> *
+a
+b
+`,
+			key: `(a -> b)[0]`,
+			exp: `* -> *
+a
+b
+(a -> b)[0]: null
+`,
+		},
+		{
+			name: "glob-child/1",
+
+			text: `*.b
+a
+`,
+			key: `a.b`,
+			exp: `*.b
+a
+a.b: null
 `,
 		},
 	}

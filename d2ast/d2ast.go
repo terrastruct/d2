@@ -1025,6 +1025,7 @@ type EdgeIndex struct {
 }
 
 func (ei1 *EdgeIndex) Equals(ei2 *EdgeIndex) bool {
+	// TODO probably should be checking the values, but will wait until something breaks to change
 	if ei1.Int != ei2.Int {
 		return false
 	}

@@ -497,16 +497,19 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 					onlyInChain = false
 				}
 			}
-			// If a ref has an exact match on this key, just change the value
-			tmp1 := *ref.MapKey
-			tmp2 := *mk
-			noVal1 := &tmp1
-			noVal2 := &tmp2
-			noVal1.Value = d2ast.ValueBox{}
-			noVal2.Value = d2ast.ValueBox{}
-			if noVal1.D2OracleEquals(noVal2) {
-				ref.MapKey.Value = mk.Value
-				return nil
+
+			if ref.MapKey.EdgeIndex == nil || !ref.MapKey.EdgeIndex.Glob {
+				// If a ref has an exact match on this key, just change the value
+				tmp1 := *ref.MapKey
+				tmp2 := *mk
+				noVal1 := &tmp1
+				noVal2 := &tmp2
+				noVal1.Value = d2ast.ValueBox{}
+				noVal2.Value = d2ast.ValueBox{}
+				if noVal1.D2OracleEquals(noVal2) {
+					ref.MapKey.Value = mk.Value
+					return nil
+				}
 			}
 		}
 		if onlyInChain {
@@ -573,6 +576,10 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			if s != nil && s.MapKey != nil {
 				// The value was set outside of what's writeable
 				if s.MapKey.Range.Path != baseAST.Range.Path {
+					return false
+				}
+				// Globs are also not writeable
+				if s.MapKey.HasGlob() {
 					return false
 				}
 			}
