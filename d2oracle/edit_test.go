@@ -7429,6 +7429,24 @@ a.link: null
 a.style.fill: null
 `,
 		},
+		{
+			name: "label-near/1",
+
+			text: `yes: {label.near: center-center}
+`,
+			key: `yes.label.near`,
+			exp: `yes
+`,
+		},
+		{
+			name: "label-near/2",
+
+			text: `yes.label.near: center-center
+`,
+			key: `yes.label.near`,
+			exp: `yes
+`,
+		},
 	}
 
 	for _, tc := range testCases {

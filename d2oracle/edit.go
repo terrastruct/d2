@@ -1248,16 +1248,23 @@ func deleteReserved(g *d2graph.Graph, baseAST *d2ast.Map, mk *d2ast.Key) (*d2gra
 		return recompile(g)
 	}
 
-	isStyleKey := false
+	isNestedKey := false
 	imported := false
-	for _, id := range d2graph.Key(targetKey) {
+	parts := d2graph.Key(targetKey)
+	for i, id := range parts {
 		_, ok := d2graph.ReservedKeywords[id]
 		if ok {
 			if id == "style" {
-				isStyleKey = true
+				isNestedKey = true
 				continue
 			}
-			if isStyleKey {
+			if id == "label" || id == "icon" {
+				if i < len(parts)-1 {
+					isNestedKey = true
+					continue
+				}
+			}
+			if isNestedKey {
 				if imported {
 					mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
 					appendMapKey(baseAST, mk)
@@ -1306,6 +1313,8 @@ func deleteMapField(m *d2ast.Map, field string) {
 			if n.MapKey.Key.Path[0].Unbox().ScalarString() == field {
 				deleteFromMap(m, n.MapKey)
 			} else if n.MapKey.Key.Path[0].Unbox().ScalarString() == "style" ||
+				n.MapKey.Key.Path[0].Unbox().ScalarString() == "label" ||
+				n.MapKey.Key.Path[0].Unbox().ScalarString() == "icon" ||
 				n.MapKey.Key.Path[0].Unbox().ScalarString() == "source-arrowhead" ||
 				n.MapKey.Key.Path[0].Unbox().ScalarString() == "target-arrowhead" {
 				if n.MapKey.Value.Map != nil {
@@ -1354,7 +1363,9 @@ func deleteObjField(g *d2graph.Graph, obj *d2graph.Object, field string) error {
 			ref.Key.Path[len(ref.Key.Path)-2].Unbox().ScalarString() == obj.ID) ||
 			(len(ref.Key.Path) >= 3 &&
 				ref.Key.Path[len(ref.Key.Path)-1].Unbox().ScalarString() == field &&
-				ref.Key.Path[len(ref.Key.Path)-2].Unbox().ScalarString() == "style" &&
+				(ref.Key.Path[len(ref.Key.Path)-2].Unbox().ScalarString() == "style" ||
+					ref.Key.Path[len(ref.Key.Path)-2].Unbox().ScalarString() == "label" ||
+					ref.Key.Path[len(ref.Key.Path)-2].Unbox().ScalarString() == "icon") &&
 				ref.Key.Path[len(ref.Key.Path)-3].Unbox().ScalarString() == obj.ID) {
 			tmpNodes := make([]d2ast.MapNodeBox, len(ref.Scope.Nodes))
 			copy(tmpNodes, ref.Scope.Nodes)
