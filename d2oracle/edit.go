@@ -1244,13 +1244,13 @@ func deleteReserved(g *d2graph.Graph, baseAST *d2ast.Map, mk *d2ast.Key) (*d2gra
 		}
 		imported := IsImportedEdge(baseAST, e)
 
-		if imported {
+		deleted, err := deleteEdgeField(g, baseAST, e, targetKey.Path[len(targetKey.Path)-1].Unbox().ScalarString())
+		if err != nil {
+			return nil, err
+		}
+		if !deleted && imported {
 			mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
 			appendMapKey(baseAST, mk)
-		} else {
-			if err := deleteEdgeField(g, e, targetKey.Path[len(targetKey.Path)-1].Unbox().ScalarString()); err != nil {
-				return nil, err
-			}
 		}
 		return recompile(g)
 	}
@@ -1272,15 +1272,15 @@ func deleteReserved(g *d2graph.Graph, baseAST *d2ast.Map, mk *d2ast.Key) (*d2gra
 				}
 			}
 			if isNestedKey {
-				if imported {
+				deleted, err := deleteObjField(g, baseAST, obj, id)
+				if err != nil {
+					return nil, err
+				}
+				if !deleted && imported {
 					mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
 					appendMapKey(baseAST, mk)
-				} else {
-					err := deleteObjField(g, obj, id)
-					if err != nil {
-						return nil, err
-					}
 				}
+				continue
 			}
 
 			if id == "near" ||
@@ -1291,14 +1291,14 @@ func deleteReserved(g *d2graph.Graph, baseAST *d2ast.Map, mk *d2ast.Key) (*d2gra
 				id == "left" ||
 				id == "top" ||
 				id == "link" {
-				if imported {
+				deleted, err := deleteObjField(g, baseAST, obj, id)
+				if err != nil {
+					return nil, err
+				}
+				if !deleted && imported {
 					mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
 					appendMapKey(baseAST, mk)
 				} else {
-					err := deleteObjField(g, obj, id)
-					if err != nil {
-						return nil, err
-					}
 				}
 			}
 			break
@@ -1313,7 +1313,7 @@ func deleteReserved(g *d2graph.Graph, baseAST *d2ast.Map, mk *d2ast.Key) (*d2gra
 	return recompile(g)
 }
 
-func deleteMapField(m *d2ast.Map, field string) {
+func deleteMapField(m *d2ast.Map, field string) (deleted bool) {
 	for i := 0; i < len(m.Nodes); i++ {
 		n := m.Nodes[i]
 		if n.MapKey != nil && n.MapKey.Key != nil {
@@ -1325,42 +1325,64 @@ func deleteMapField(m *d2ast.Map, field string) {
 				n.MapKey.Key.Path[0].Unbox().ScalarString() == "source-arrowhead" ||
 				n.MapKey.Key.Path[0].Unbox().ScalarString() == "target-arrowhead" {
 				if n.MapKey.Value.Map != nil {
-					deleteMapField(n.MapKey.Value.Map, field)
+					deleted2 := deleteMapField(n.MapKey.Value.Map, field)
+					if deleted2 {
+						deleted = true
+					}
 					if len(n.MapKey.Value.Map.Nodes) == 0 {
-						deleteFromMap(m, n.MapKey)
+						deleted2 := deleteFromMap(m, n.MapKey)
+						if deleted2 {
+							deleted = true
+						}
 					}
 				} else if len(n.MapKey.Key.Path) == 2 && n.MapKey.Key.Path[1].Unbox().ScalarString() == field {
-					deleteFromMap(m, n.MapKey)
+					deleted2 := deleteFromMap(m, n.MapKey)
+					if deleted2 {
+						deleted = true
+					}
 				}
 			}
 		}
 	}
+	return deleted
 }
 
-func deleteEdgeField(g *d2graph.Graph, e *d2graph.Edge, field string) error {
+func deleteEdgeField(g *d2graph.Graph, ast *d2ast.Map, e *d2graph.Edge, field string) (deleted bool, _ error) {
 	for _, ref := range e.References {
 		// Edge chains can't have fields
 		if len(ref.MapKey.Edges) > 1 {
 			continue
 		}
+		if ref.MapKey.Range.Path != ast.Range.Path {
+			continue
+		}
 		if ref.MapKey.Value.Map != nil {
-			deleteMapField(ref.MapKey.Value.Map, field)
+			deleted2 := deleteMapField(ref.MapKey.Value.Map, field)
+			if deleted2 {
+				deleted = true
+			}
 		} else if ref.MapKey.EdgeKey != nil && ref.MapKey.EdgeKey.Path[len(ref.MapKey.EdgeKey.Path)-1].Unbox().ScalarString() == field {
 			// It's always safe to delete, since edge references must coexist with edge definition elsewhere
-			deleteFromMap(ref.Scope, ref.MapKey)
+			deleted2 := deleteFromMap(ref.Scope, ref.MapKey)
+			if deleted2 {
+				deleted = true
+			}
 		}
 	}
-	return nil
+	return deleted, nil
 }
 
-func deleteObjField(g *d2graph.Graph, obj *d2graph.Object, field string) error {
+func deleteObjField(g *d2graph.Graph, ast *d2ast.Map, obj *d2graph.Object, field string) (deleted bool, _ error) {
 	objK, err := d2parser.ParseKey(obj.AbsID())
 	if err != nil {
-		return err
+		return false, err
 	}
 	objGK := d2graph.Key(objK)
 	for _, ref := range obj.References {
 		if ref.InEdge() {
+			continue
+		}
+		if ref.Key.Range.Path != ast.Range.Path {
 			continue
 		}
 		if ref.MapKey.Value.Map != nil {
@@ -1377,10 +1399,13 @@ func deleteObjField(g *d2graph.Graph, obj *d2graph.Object, field string) error {
 			tmpNodes := make([]d2ast.MapNodeBox, len(ref.Scope.Nodes))
 			copy(tmpNodes, ref.Scope.Nodes)
 			// If I delete this, will the object still exist?
-			deleteFromMap(ref.Scope, ref.MapKey)
+			deleted2 := deleteFromMap(ref.Scope, ref.MapKey)
+			if deleted2 {
+				deleted = true
+			}
 			g2, err := recompile(g)
 			if err != nil {
-				return err
+				return false, err
 			}
 			if _, ok := g2.Root.HasChild(objGK); !ok {
 				// Nope, so can't delete it, just remove the field then
@@ -1391,7 +1416,7 @@ func deleteObjField(g *d2graph.Graph, obj *d2graph.Object, field string) error {
 
 		}
 	}
-	return nil
+	return deleted, nil
 }
 
 func deleteObject(g *d2graph.Graph, baseAST *d2ast.Map, key *d2ast.KeyPath, obj *d2graph.Object) (*d2graph.Graph, error) {
