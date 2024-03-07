@@ -4367,6 +4367,29 @@ container_2: {
 				assert.Equal(t, 4, len(g.Objects))
 			},
 		},
+		{
+			name: "override-edge/1",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+(* -> *)[*].style.stroke: red
+(* -> *)[*].style.stroke: green
+a -> b
+`, ``)
+				assert.Equal(t, "green", g.Edges[0].Attributes.Style.Stroke.Value)
+			},
+		},
+		{
+			name: "override-edge/2",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+(* -> *)[*].style.stroke: red
+a -> b: {style.stroke: green}
+a -> b
+`, ``)
+				assert.Equal(t, "green", g.Edges[0].Attributes.Style.Stroke.Value)
+				assert.Equal(t, "red", g.Edges[1].Attributes.Style.Stroke.Value)
+			},
+		},
 	}
 
 	for _, tc := range tca {

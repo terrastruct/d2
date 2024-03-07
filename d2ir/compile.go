@@ -413,6 +413,7 @@ func (c *compiler) ampersandFilterMap(dst *Map, ast, scopeAST *d2ast.Map) bool {
 					ks = d2format.Format(d2ast.MakeKeyPath(BoardIDA(dst)))
 				}
 				delete(gctx.appliedFields, ks)
+				delete(gctx.appliedEdges, ks)
 				return false
 			}
 		}

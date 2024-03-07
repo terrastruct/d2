@@ -142,6 +142,9 @@ func GetParentID(g *d2graph.Graph, boardPath []string, absID string) (string, er
 
 func IsImportedObj(ast *d2ast.Map, obj *d2graph.Object) bool {
 	for _, ref := range obj.References {
+		if ref.Key.HasGlob() {
+			return true
+		}
 		if ref.Key.Range.Path != ast.Range.Path {
 			return true
 		}
@@ -150,8 +153,13 @@ func IsImportedObj(ast *d2ast.Map, obj *d2graph.Object) bool {
 	return false
 }
 
+// Globs count as imported for now
+// TODO Probably rename later
 func IsImportedEdge(ast *d2ast.Map, edge *d2graph.Edge) bool {
 	for _, ref := range edge.References {
+		if ref.Edge.Src.HasGlob() || ref.Edge.Dst.HasGlob() {
+			return true
+		}
 		if ref.Edge.Range.Path != ast.Range.Path {
 			return true
 		}

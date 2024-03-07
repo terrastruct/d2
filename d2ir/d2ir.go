@@ -1094,7 +1094,7 @@ func (m *Map) getEdges(eid *EdgeID, refctx *RefContext, gctx *globContext, ea *[
 					}
 					gctx.appliedEdges[ks] = struct{}{}
 				}
-				*ea = append(*ea, ea2...)
+				*ea = append(*ea, e)
 			}
 		}
 	}
