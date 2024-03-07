@@ -7472,6 +7472,34 @@ a.style.fill: null
 `,
 		},
 		{
+			name: "import/7",
+
+			text: `...@meow
+a.label.near: center-center
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `a
+`,
+			},
+			key: `a.label.near`,
+			exp: `...@meow
+`,
+		},
+		{
+			name: "import/8",
+
+			text: `...@meow
+(a -> b)[0].style.stroke: red
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `a -> b
+`,
+			},
+			key: `(a -> b)[0].style.stroke`,
+			exp: `...@meow
+`,
+		},
+		{
 			name: "label-near/1",
 
 			text: `yes: {label.near: center-center}
