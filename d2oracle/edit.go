@@ -429,6 +429,19 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 					break
 				}
 			}
+		} else {
+			// Even if not imported or different board, a label can be not writeable if it's in a class or var or glob
+			// In those cases, the label is not a direct object reference
+			found := false
+			for _, ref := range obj.References {
+				if ref.MapKey == obj.Label.MapKey {
+					found = true
+					break
+				}
+			}
+			if !found {
+				writeableLabelMK = false
+			}
 		}
 		var m *d2ast.Map
 		if objK != nil {

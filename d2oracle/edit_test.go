@@ -1180,6 +1180,83 @@ b: {style.fill: green}
 `,
 		},
 		{
+			name: "class-with-label",
+			text: `classes: {
+  user: {
+    label: ""
+  }
+}
+
+a.class: user
+`,
+			key:   `a.style.opacity`,
+			value: go2.Pointer(`0.5`),
+			exp: `classes: {
+  user: {
+    label: ""
+  }
+}
+
+a.class: user
+a.style.opacity: 0.5
+`,
+		},
+		{
+			name: "edge-class-with-label",
+			text: `classes: {
+  user: {
+    label: ""
+  }
+}
+
+a -> b: {
+  class: user
+}
+`,
+			key:   `(a -> b)[0].style.opacity`,
+			value: go2.Pointer(`0.5`),
+			exp: `classes: {
+  user: {
+    label: ""
+  }
+}
+
+a -> b: {
+  class: user
+  style.opacity: 0.5
+}
+`,
+		},
+		{
+			name: "var-with-label",
+			text: `vars: {
+  user: ""
+}
+
+a: ${user}
+`,
+			key:   `a.style.opacity`,
+			value: go2.Pointer(`0.5`),
+			exp: `vars: {
+  user: ""
+}
+
+a: ${user} {style.opacity: 0.5}
+`,
+		},
+		{
+			name: "glob-with-label",
+			text: `*.label: ""
+a
+`,
+			key:   `a.style.opacity`,
+			value: go2.Pointer(`0.5`),
+			exp: `*.label: ""
+a
+a.style.opacity: 0.5
+`,
+		},
+		{
 			name: "label_unset",
 			text: `square: "Always try to do things in chronological order; it's less confusing that way."
 `,
