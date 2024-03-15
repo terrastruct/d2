@@ -2856,6 +2856,18 @@ d2/testdata/d2compiler/TestCompile/no_arrowheads_in_shape.d2:2:3: "source-arrowh
 }
 `,
 		},
+		{
+			name: "fixed-pos-shape-hierarchy",
+			text: `x: {
+  shape: hierarchy
+  a -> b
+	a.top: 20
+	a.left: 20
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/fixed-pos-shape-hierarchy.d2:4:2: position keywords cannot be used with shape "hierarchy"
+d2/testdata/d2compiler/TestCompile/fixed-pos-shape-hierarchy.d2:5:2: position keywords cannot be used with shape "hierarchy"`,
+		},
 	}
 
 	for _, tc := range testCases {

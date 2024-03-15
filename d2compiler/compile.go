@@ -90,6 +90,7 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 	c.validateLabels(g)
 	c.validateNear(g)
 	c.validateEdges(g)
+	c.validatePositionsCompatibility(g)
 
 	c.compileBoardsField(g, ir, "layers")
 	c.compileBoardsField(g, ir, "scenarios")
@@ -1128,6 +1129,26 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 		}
 	}
 
+}
+
+func (c *compiler) validatePositionsCompatibility(g *d2graph.Graph) {
+	for _, o := range g.Objects {
+		for _, pos := range []*d2graph.Scalar{o.Top, o.Left} {
+			if pos != nil {
+				if o.Parent != nil {
+					if strings.EqualFold(o.Parent.Shape.Value, d2target.ShapeHierarchy) {
+						c.errorf(pos.MapKey, `position keywords cannot be used with shape "hierarchy"`)
+					}
+					if o.OuterSequenceDiagram() != nil {
+						c.errorf(pos.MapKey, `position keywords cannot be used inside shape "sequence_diagram"`)
+					}
+					if o.Parent.GridColumns != nil || o.Parent.GridRows != nil {
+						c.errorf(pos.MapKey, `position keywords cannot be used with grids`)
+					}
+				}
+			}
+		}
+	}
 }
 
 func (c *compiler) validateEdges(g *d2graph.Graph) {

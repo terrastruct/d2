@@ -1,0 +1,15 @@
+{
+  "graph": null,
+  "err": {
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/fixed-pos-shape-hierarchy.d2,3:1:34-3:10:43",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/fixed-pos-shape-hierarchy.d2:4:2: position keywords cannot be used with shape \"hierarchy\""
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/fixed-pos-shape-hierarchy.d2,4:1:45-4:11:55",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/fixed-pos-shape-hierarchy.d2:5:2: position keywords cannot be used with shape \"hierarchy\""
+      }
+    ]
+  }
+}
