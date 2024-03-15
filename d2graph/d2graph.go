@@ -470,7 +470,7 @@ func (obj *Object) GetFill() string {
 		return color.N7
 	}
 
-	if shape == "" || strings.EqualFold(shape, d2target.ShapeSquare) || strings.EqualFold(shape, d2target.ShapeCircle) || strings.EqualFold(shape, d2target.ShapeOval) || strings.EqualFold(shape, d2target.ShapeRectangle) {
+	if shape == "" || strings.EqualFold(shape, d2target.ShapeSquare) || strings.EqualFold(shape, d2target.ShapeCircle) || strings.EqualFold(shape, d2target.ShapeOval) || strings.EqualFold(shape, d2target.ShapeRectangle) || strings.EqualFold(shape, d2target.ShapeHierarchy) {
 		if level == 1 {
 			if !obj.IsContainer() {
 				return color.B6
