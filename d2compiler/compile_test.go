@@ -2848,6 +2848,14 @@ y.source-arrowhead.shape: cf-one
 			expErr: `d2/testdata/d2compiler/TestCompile/no_arrowheads_in_shape.d2:1:3: "target-arrowhead" can only be used on connections
 d2/testdata/d2compiler/TestCompile/no_arrowheads_in_shape.d2:2:3: "source-arrowhead" can only be used on connections`,
 		},
+		{
+			name: "shape-hierarchy",
+			text: `x: {
+  shape: hierarchy
+  a -> b
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
