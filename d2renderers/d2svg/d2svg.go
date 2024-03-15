@@ -1036,7 +1036,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		fmt.Fprint(writer, el.Render())
 
 	// TODO should standardize "" to rectangle
-	case d2target.ShapeRectangle, d2target.ShapeSequenceDiagram, "":
+	case d2target.ShapeRectangle, d2target.ShapeSequenceDiagram, d2target.ShapeHierarchy, "":
 		borderRadius := math.MaxFloat64
 		if targetShape.BorderRadius != 0 {
 			borderRadius = float64(targetShape.BorderRadius)
