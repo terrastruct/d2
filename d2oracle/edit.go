@@ -199,7 +199,7 @@ func ReconnectEdge(g *d2graph.Graph, boardPath []string, edgeKey string, srcKey,
 
 	refs := edge.References
 	if baseAST != g.AST {
-		refs = getWriteableEdgeRefs(edge, baseAST)
+		refs = GetWriteableEdgeRefs(edge, baseAST)
 		if len(refs) == 0 || refs[0].ScopeAST != baseAST {
 			// TODO null
 			return nil, OutsideScopeError{}
@@ -387,7 +387,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 
 			var maybeNewScope *d2ast.Map
 			if baseAST != g.AST || imported {
-				writeableRefs := getWriteableRefs(obj, baseAST)
+				writeableRefs := GetWriteableRefs(obj, baseAST)
 				for _, ref := range writeableRefs {
 					if ref.MapKey != nil && ref.MapKey.Value.Map != nil {
 						maybeNewScope = ref.MapKey.Value.Map
@@ -414,7 +414,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 		writeableLabelMK := true
 		var objK *d2ast.Key
 		if baseAST != g.AST || imported {
-			writeableRefs := getWriteableRefs(obj, baseAST)
+			writeableRefs := GetWriteableRefs(obj, baseAST)
 			if len(writeableRefs) > 0 {
 				objK = writeableRefs[0].MapKey
 			}
@@ -497,7 +497,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 		imported = IsImportedEdge(baseAST, edge)
 		refs := edge.References
 		if baseAST != g.AST || imported {
-			refs = getWriteableEdgeRefs(edge, baseAST)
+			refs = GetWriteableEdgeRefs(edge, baseAST)
 		}
 		onlyInChain := true
 		for _, ref := range refs {
@@ -920,7 +920,7 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 		} else {
 			refs := e.References
 			if len(boardPath) > 0 {
-				refs := getWriteableEdgeRefs(e, baseAST)
+				refs := GetWriteableEdgeRefs(e, baseAST)
 				if len(refs) != len(e.References) {
 					mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
 				}
@@ -991,7 +991,7 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 			return g, nil
 		}
 		if len(boardPath) > 0 {
-			writeableRefs := getWriteableRefs(obj, baseAST)
+			writeableRefs := GetWriteableRefs(obj, baseAST)
 			if len(writeableRefs) != len(obj.References) {
 				mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
 			}
@@ -1759,7 +1759,7 @@ func move(g *d2graph.Graph, boardPath []string, key, newKey string, includeDesce
 	}
 
 	if len(boardPath) > 0 {
-		writeableRefs := getWriteableRefs(obj, baseAST)
+		writeableRefs := GetWriteableRefs(obj, baseAST)
 		if len(writeableRefs) != len(obj.References) {
 			return nil, OutsideScopeError{}
 		}
@@ -3223,24 +3223,6 @@ func filterReservedPath(path []*d2ast.StringBox) (filtered []*d2ast.StringBox) {
 			return
 		}
 		filtered = append(filtered, box)
-	}
-	return
-}
-
-func getWriteableRefs(obj *d2graph.Object, writeableAST *d2ast.Map) (out []d2graph.Reference) {
-	for i, ref := range obj.References {
-		if ref.ScopeAST == writeableAST && ref.Key.Range.Path == writeableAST.Range.Path {
-			out = append(out, obj.References[i])
-		}
-	}
-	return
-}
-
-func getWriteableEdgeRefs(edge *d2graph.Edge, writeableAST *d2ast.Map) (out []d2graph.EdgeReference) {
-	for i, ref := range edge.References {
-		if ref.ScopeAST == writeableAST {
-			out = append(out, edge.References[i])
-		}
 	}
 	return
 }
