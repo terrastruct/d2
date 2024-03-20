@@ -137,6 +137,9 @@ func (gs *dslGenState) edge() error {
 		if err != nil {
 			return err
 		}
+		if src == dst && gs.nodeShapes[dst] == d2target.ShapeSequenceDiagram {
+			break
+		}
 		if gs.findOuterSequenceDiagram(src) == gs.findOuterSequenceDiagram(dst) {
 			break
 		}
