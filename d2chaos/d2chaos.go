@@ -146,6 +146,10 @@ func (gs *dslGenState) edge() error {
 		}
 	}
 
+	if src == dst && gs.nodeShapes[dst] == d2target.ShapeSequenceDiagram {
+		return nil
+	}
+
 	srcArrow := "-"
 	if gs.randBool() {
 		srcArrow = "<"

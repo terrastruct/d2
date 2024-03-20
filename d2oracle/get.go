@@ -245,3 +245,21 @@ func GetID(key string) string {
 
 	return d2format.Format(d2ast.RawString(mk.Key.Path[len(mk.Key.Path)-1].Unbox().ScalarString(), true))
 }
+
+func GetWriteableRefs(obj *d2graph.Object, writeableAST *d2ast.Map) (out []d2graph.Reference) {
+	for i, ref := range obj.References {
+		if ref.ScopeAST == writeableAST && ref.Key.Range.Path == writeableAST.Range.Path {
+			out = append(out, obj.References[i])
+		}
+	}
+	return
+}
+
+func GetWriteableEdgeRefs(edge *d2graph.Edge, writeableAST *d2ast.Map) (out []d2graph.EdgeReference) {
+	for i, ref := range edge.References {
+		if ref.ScopeAST == writeableAST {
+			out = append(out, edge.References[i])
+		}
+	}
+	return
+}
