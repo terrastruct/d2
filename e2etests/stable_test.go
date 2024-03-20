@@ -1925,7 +1925,7 @@ a line of text and an
 
 walk into a bar.
 | {
-	style.stroke: darkorange
+	style.font-color: darkorange
 }
 
 container -> no container
@@ -1935,7 +1935,7 @@ they did it in style
 |
 
 no container.style: {
-	stroke: red
+	font-color: red
 	fill: "#CEEDEE"
 }
 `,

@@ -1370,7 +1370,9 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			if targetShape.FontSize != textmeasure.MarkdownFontSize {
 				styles = append(styles, fmt.Sprintf("font-size:%vpx", targetShape.FontSize))
 			}
-
+			if targetShape.Fill != "" && targetShape.Fill != "transparent" {
+				styles = append(styles, fmt.Sprintf(`background-color:%s`, targetShape.Fill))
+			}
 			if !color.IsThemeColor(targetShape.Color) {
 				styles = append(styles, fmt.Sprintf(`color:%s`, targetShape.Color))
 			}
