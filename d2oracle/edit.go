@@ -890,7 +890,7 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 		baseAST = boardG.BaseAST
 	}
 
-	g2, err := deleteReserved(g, baseAST, mk)
+	g2, err := deleteReserved(g, boardPath, baseAST, mk)
 	if err != nil {
 		return nil, err
 	}
@@ -1228,7 +1228,7 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 	return g, nil
 }
 
-func deleteReserved(g *d2graph.Graph, baseAST *d2ast.Map, mk *d2ast.Key) (*d2graph.Graph, error) {
+func deleteReserved(g *d2graph.Graph, boardPath []string, baseAST *d2ast.Map, mk *d2ast.Key) (*d2graph.Graph, error) {
 	targetKey := mk.Key
 	if len(mk.Edges) == 1 {
 		if mk.EdgeKey == nil {
@@ -1243,6 +1243,13 @@ func deleteReserved(g *d2graph.Graph, baseAST *d2ast.Map, mk *d2ast.Key) (*d2gra
 
 	var e *d2graph.Edge
 	obj := g.Root
+	if len(boardPath) > 0 {
+		boardG := GetBoardGraph(g, boardPath)
+		if boardG == nil {
+			return nil, fmt.Errorf("board %v not found", boardPath)
+		}
+		obj = boardG.Root
+	}
 	if len(mk.Edges) == 1 {
 		if mk.Key != nil {
 			var ok bool

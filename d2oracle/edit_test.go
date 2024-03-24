@@ -7620,6 +7620,24 @@ a
 a.b: null
 `,
 		},
+		{
+			name: "delete-layer-style",
+
+			text: `layers: {
+  x: {
+		a.style.fill: red
+  }
+}
+`,
+			boardPath: []string{"x"},
+			key:       `a.style.fill`,
+			exp: `layers: {
+  x: {
+    a
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
