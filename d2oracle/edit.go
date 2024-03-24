@@ -894,11 +894,11 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 		baseAST = boardG.BaseAST
 	}
 
-	g2, err := deleteReserved(g, baseAST, mk)
+	g2, err := deleteReserved(boardG, boardPath, g.AST, baseAST, mk)
 	if err != nil {
 		return nil, err
 	}
-	if g != g2 {
+	if boardG != g2 {
 		return g2, nil
 	}
 
@@ -1232,7 +1232,7 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 	return g, nil
 }
 
-func deleteReserved(g *d2graph.Graph, baseAST *d2ast.Map, mk *d2ast.Key) (*d2graph.Graph, error) {
+func deleteReserved(g *d2graph.Graph, boardPath []string, originalAST, baseAST *d2ast.Map, mk *d2ast.Key) (*d2graph.Graph, error) {
 	targetKey := mk.Key
 	if len(mk.Edges) == 1 {
 		if mk.EdgeKey == nil {
@@ -1289,7 +1289,7 @@ func deleteReserved(g *d2graph.Graph, baseAST *d2ast.Map, mk *d2ast.Key) (*d2gra
 				}
 			}
 			if isNestedKey {
-				deleted, err := deleteObjField(g, baseAST, obj, id)
+				deleted, err := deleteObjField(g, boardPath, originalAST, baseAST, obj, id)
 				if err != nil {
 					return nil, err
 				}
@@ -1308,14 +1308,13 @@ func deleteReserved(g *d2graph.Graph, baseAST *d2ast.Map, mk *d2ast.Key) (*d2gra
 				id == "left" ||
 				id == "top" ||
 				id == "link" {
-				deleted, err := deleteObjField(g, baseAST, obj, id)
+				deleted, err := deleteObjField(g, boardPath, originalAST, baseAST, obj, id)
 				if err != nil {
 					return nil, err
 				}
 				if !deleted && imported {
 					mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
 					appendMapKey(baseAST, mk)
-				} else {
 				}
 			}
 			break
@@ -1327,6 +1326,13 @@ func deleteReserved(g *d2graph.Graph, baseAST *d2ast.Map, mk *d2ast.Key) (*d2gra
 		imported = IsImportedObj(baseAST, obj)
 	}
 
+	if len(boardPath) > 0 {
+		replaced := ReplaceBoardNode(originalAST, baseAST, boardPath)
+		if !replaced {
+			return nil, fmt.Errorf("board %v AST not found", boardPath)
+		}
+		return recompile(g)
+	}
 	return recompile(g)
 }
 
@@ -1389,7 +1395,7 @@ func deleteEdgeField(g *d2graph.Graph, ast *d2ast.Map, e *d2graph.Edge, field st
 	return deleted, nil
 }
 
-func deleteObjField(g *d2graph.Graph, ast *d2ast.Map, obj *d2graph.Object, field string) (deleted bool, _ error) {
+func deleteObjField(g *d2graph.Graph, boardPath []string, originalAST, ast *d2ast.Map, obj *d2graph.Object, field string) (deleted bool, _ error) {
 	objK, err := d2parser.ParseKey(obj.AbsID())
 	if err != nil {
 		return false, err
@@ -1420,9 +1426,25 @@ func deleteObjField(g *d2graph.Graph, ast *d2ast.Map, obj *d2graph.Object, field
 			if deleted2 {
 				deleted = true
 			}
-			g2, err := recompile(g)
-			if err != nil {
-				return false, err
+			var g2 *d2graph.Graph
+			if len(boardPath) > 0 {
+				replaced := ReplaceBoardNode(originalAST, ast, boardPath)
+				if !replaced {
+					return false, fmt.Errorf("board %v AST not found", boardPath)
+				}
+				g2, err = recompile(g)
+				if err != nil {
+					return false, err
+				}
+				g2 = GetBoardGraph(g2, boardPath)
+				if g2 == nil {
+					return false, fmt.Errorf("board %v not found", boardPath)
+				}
+			} else {
+				g2, err = recompile(g)
+				if err != nil {
+					return false, err
+				}
 			}
 			if _, ok := g2.Root.HasChild(objGK); !ok {
 				// Nope, so can't delete it, just remove the field then
