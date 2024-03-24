@@ -7644,6 +7644,26 @@ a.b: null
 `,
 		},
 		{
+			name: "delete-not-layer-obj",
+
+			text: `b.style.fill: red
+layers: {
+  x: {
+		a
+  }
+}
+`,
+			key: `b.style.fill`,
+			exp: `b
+
+layers: {
+  x: {
+    a
+  }
+}
+`,
+		},
+		{
 			name: "delete-layer-obj",
 
 			text: `layers: {
