@@ -332,7 +332,11 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 	}
 
 	if value != nil {
-		mk.Value = d2ast.MakeValueBox(d2ast.RawString(*value, false))
+		if *value == "null" {
+			mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
+		} else {
+			mk.Value = d2ast.MakeValueBox(d2ast.RawString(*value, false))
+		}
 	} else {
 		mk.Value = d2ast.ValueBox{}
 	}

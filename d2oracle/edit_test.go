@@ -2456,6 +2456,16 @@ a -> b: {style.stroke: green}
 a -> b
 `,
 		},
+		{
+			name: "set-null",
+
+			text: `a
+`,
+			key:   `a.style.fill-pattern`,
+			value: go2.Pointer(`null`),
+			exp: `a: {style.fill-pattern: null}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
