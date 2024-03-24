@@ -3,7 +3,7 @@ set -eu
 cd "$(dirname "$0")/.."
 
 if [ "$*" = "" ]; then
-  set ./...
+	set ./...
 fi
 
-go test --timeout=30m "$@"
+go test -tags plugins_embed,plugins_embed_dagre,plugins_embed_elk --timeout=30m "$@"

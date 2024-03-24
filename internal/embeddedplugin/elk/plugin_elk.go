@@ -1,6 +1,4 @@
-//go:build !noelk
-
-package d2plugin
+package elk
 
 import (
 	"context"
@@ -9,21 +7,16 @@ import (
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2elklayout"
+	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/util-go/xmain"
 )
 
-var ELKPlugin = elkPlugin{}
-
-func init() {
-	plugins = append(plugins, &ELKPlugin)
-}
-
-type elkPlugin struct {
+type ELKPlugin struct {
 	opts *d2elklayout.ConfigurableOpts
 }
 
-func (p elkPlugin) Flags(context.Context) ([]PluginSpecificFlag, error) {
-	return []PluginSpecificFlag{
+func (p ELKPlugin) Flags(context.Context) ([]d2plugin.PluginSpecificFlag, error) {
+	return []d2plugin.PluginSpecificFlag{
 		{
 			Name:    "elk-algorithm",
 			Type:    "string",
@@ -62,7 +55,7 @@ func (p elkPlugin) Flags(context.Context) ([]PluginSpecificFlag, error) {
 	}, nil
 }
 
-func (p *elkPlugin) HydrateOpts(opts []byte) error {
+func (p *ELKPlugin) HydrateOpts(opts []byte) error {
 	if opts != nil {
 		var elkOpts d2elklayout.ConfigurableOpts
 		err := json.Unmarshal(opts, &elkOpts)
@@ -75,7 +68,7 @@ func (p *elkPlugin) HydrateOpts(opts []byte) error {
 	return nil
 }
 
-func (p elkPlugin) Info(ctx context.Context) (*PluginInfo, error) {
+func (p ELKPlugin) Info(ctx context.Context) (*d2plugin.PluginInfo, error) {
 	opts := xmain.NewOpts(nil, nil)
 	flags, err := p.Flags(ctx)
 	if err != nil {
@@ -84,12 +77,12 @@ func (p elkPlugin) Info(ctx context.Context) (*PluginInfo, error) {
 	for _, f := range flags {
 		f.AddToOpts(opts)
 	}
-	return &PluginInfo{
+	return &d2plugin.PluginInfo{
 		Name: "elk",
 		Type: "bundled",
-		Features: []PluginFeature{
-			CONTAINER_DIMENSIONS,
-			DESCENDANT_EDGES,
+		Features: []d2plugin.PluginFeature{
+			d2plugin.CONTAINER_DIMENSIONS,
+			d2plugin.DESCENDANT_EDGES,
 		},
 		ShortHelp: "Eclipse Layout Kernel (ELK) with the Layered algorithm.",
 		LongHelp: fmt.Sprintf(`ELK is a layout engine offered by Eclipse.
@@ -104,10 +97,10 @@ Flags:
 	}, nil
 }
 
-func (p elkPlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
+func (p ELKPlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
 	return d2elklayout.Layout(ctx, g, p.opts)
 }
 
-func (p elkPlugin) PostProcess(ctx context.Context, in []byte) ([]byte, error) {
+func (p ELKPlugin) PostProcess(ctx context.Context, in []byte) ([]byte, error) {
 	return in, nil
 }
