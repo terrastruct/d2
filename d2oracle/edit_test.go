@@ -7621,6 +7621,45 @@ a.b: null
 `,
 		},
 		{
+			name: "delete-imported-layer-obj",
+
+			text: `layers: {
+  x: {
+    ...@meow
+  }
+}
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `a
+`,
+			},
+			boardPath: []string{"x"},
+			key:       `a`,
+			exp: `layers: {
+  x: {
+    ...@meow
+    a: null
+  }
+}
+`,
+		},
+		{
+			name: "delete-layer-obj",
+
+			text: `layers: {
+  x: {
+		a
+  }
+}
+`,
+			boardPath: []string{"x"},
+			key:       `a`,
+			exp: `layers: {
+  x
+}
+`,
+		},
+		{
 			name: "delete-layer-style",
 
 			text: `layers: {
