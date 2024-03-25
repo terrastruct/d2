@@ -7620,6 +7620,83 @@ a
 a.b: null
 `,
 		},
+		{
+			name: "delete-imported-layer-obj",
+
+			text: `layers: {
+  x: {
+    ...@meow
+  }
+}
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `a
+`,
+			},
+			boardPath: []string{"x"},
+			key:       `a`,
+			exp: `layers: {
+  x: {
+    ...@meow
+    a: null
+  }
+}
+`,
+		},
+		{
+			name: "delete-not-layer-obj",
+
+			text: `b.style.fill: red
+layers: {
+  x: {
+		a
+  }
+}
+`,
+			key: `b.style.fill`,
+			exp: `b
+
+layers: {
+  x: {
+    a
+  }
+}
+`,
+		},
+		{
+			name: "delete-layer-obj",
+
+			text: `layers: {
+  x: {
+		a
+  }
+}
+`,
+			boardPath: []string{"x"},
+			key:       `a`,
+			exp: `layers: {
+  x
+}
+`,
+		},
+		{
+			name: "delete-layer-style",
+
+			text: `layers: {
+  x: {
+		a.style.fill: red
+  }
+}
+`,
+			boardPath: []string{"x"},
+			key:       `a.style.fill`,
+			exp: `layers: {
+  x: {
+    a
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
