@@ -46,34 +46,61 @@ https://user-images.githubusercontent.com/3120367/206125010-bd1fea8e-248a-43e7-8
 ## What does D2 look like?
 
 ```d2
-# Actors
-hans: Hans Niemann
+vars: {
+  d2-config: {
+    layout-engine: elk
+    # Terminal theme code
+    theme-id: 300
+  }
+}
+network: {
+  cell tower: {
+    satellites: {
+      shape: stored_data
+      style.multiple: true
+    }
 
-defendants: {
-  mc: Magnus Carlsen
-  playmagnus: Play Magnus Group
-  chesscom: Chess.com
-  naka: Hikaru Nakamura
+    transmitter
 
-  mc -> playmagnus: Owns majority
-  playmagnus <-> chesscom: Merger talks
-  chesscom -> naka: Sponsoring
+    satellites -> transmitter: send
+    satellites -> transmitter: send
+    satellites -> transmitter: send
+  }
+
+  online portal: {
+    ui: {shape: hexagon}
+  }
+
+  data processor: {
+    storage: {
+      shape: cylinder
+      style.multiple: true
+    }
+  }
+
+  cell tower.transmitter -> data processor.storage: phone logs
 }
 
-# Accusations
-hans -> defendants: 'sueing for $100M'
+user: {
+  shape: person
+  width: 130
+}
 
-# Claim
-defendants.naka -> hans: Accused of cheating on his stream
-defendants.mc -> hans: Lost then withdrew with accusations
-defendants.chesscom -> hans: 72 page report of cheating
+user -> network.cell tower: make call
+user -> network.online portal.ui: access {
+  style.stroke-dash: 3
+}
+
+api server -> network.online portal.ui: display
+api server -> logs: persist
+logs: {shape: page; style.multiple: true}
+
+network.data processor -> api server
 ```
 
 > There is syntax highlighting with the editor plugins linked below.
 
-<img src="./docs/assets/syntax.png" alt="D2 render example" />
-
-> Rendered with the TALA layout engine.
+<img src="./docs/assets/example.svg" alt="D2 render example" />
 
 > For more examples, see [./docs/examples](./docs/examples).
 
