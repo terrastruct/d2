@@ -4,7 +4,7 @@
     "errs": [
       {
         "range": "d2/testdata/d2compiler/TestCompile/invalid-fill-pattern.d2,2:18:33-2:23:38",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/invalid-fill-pattern.d2:3:19: expected \"fill-pattern\" to be one of: dots, lines, grain, paper"
+        "errmsg": "d2/testdata/d2compiler/TestCompile/invalid-fill-pattern.d2:3:19: expected \"fill-pattern\" to be one of: none, dots, lines, grain, paper"
       }
     ]
   }

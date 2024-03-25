@@ -170,3 +170,14 @@ costumes.monster -> monsters.id
 a -> b: hi {
   style.underline: true
 }
+
+-- none-fill --
+
+vars: {
+  d2-config: {
+    # Origami theme code
+    theme-id: 302
+  }
+}
+a.style.fill-pattern: none
+b

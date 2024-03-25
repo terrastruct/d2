@@ -1816,6 +1816,7 @@ var LabelPositionsMapping = map[string]label.Position{
 }
 
 var FillPatterns = []string{
+	"none",
 	"dots",
 	"lines",
 	"grain",
