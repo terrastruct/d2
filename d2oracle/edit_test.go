@@ -2456,6 +2456,29 @@ a -> b: {style.stroke: green}
 a -> b
 `,
 		},
+		{
+			name: "nested-edge-chained",
+
+			text: `a: {
+  b: {
+    c
+  }
+}
+
+x -> a.b -> a.b.c
+`,
+			key:   `(a.b -> a.b.c)[0].style.stroke`,
+			value: go2.Pointer(`green`),
+			exp: `a: {
+  b: {
+    c
+  }
+}
+
+x -> a.b -> a.b.c
+(a.b -> a.b.c)[0].style.stroke: green
+`,
+		},
 	}
 
 	for _, tc := range testCases {
