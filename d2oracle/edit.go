@@ -20,7 +20,6 @@ import (
 	"oss.terrastruct.com/d2/d2ir"
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 )
 
 type OutsideScopeError struct{}
@@ -1297,20 +1296,9 @@ func deleteReserved(g *d2graph.Graph, boardPath []string, baseAST *d2ast.Map, mk
 				if err != nil {
 					return nil, err
 				}
-				if !deleted {
-					if imported {
-						mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
-						appendMapKey(baseAST, mk)
-					} else {
-						switch id {
-						// Special cases where a value is set by theme, so is not found as a field
-						case "fill-pattern":
-							if g.Theme != nil && g.Theme.ID == d2themescatalog.Origami.ID {
-								mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
-								appendMapKey(baseAST, mk)
-							}
-						}
-					}
+				if !deleted && imported {
+					mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
+					appendMapKey(baseAST, mk)
 				}
 				continue
 			}

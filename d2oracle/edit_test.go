@@ -18,8 +18,6 @@ import (
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2oracle"
 	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/d2themes"
-	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 )
 
 // TODO: make assertions less specific
@@ -5697,7 +5695,6 @@ func TestDelete(t *testing.T) {
 	testCases := []struct {
 		name      string
 		boardPath []string
-		theme     *d2themes.Theme
 
 		text    string
 		fsTexts map[string]string
@@ -7691,47 +7688,8 @@ layers: {
   }
 }
 `,
-			theme:     &d2themescatalog.Origami,
 			boardPath: []string{"x"},
 			key:       `a.style.fill`,
-			exp: `layers: {
-  x: {
-    a
-  }
-}
-`,
-		},
-		{
-			name: "delete-theme-set/1",
-
-			text: `layers: {
-  x: {
-    a
-  }
-}
-`,
-			theme:     &d2themescatalog.Origami,
-			boardPath: []string{"x"},
-			key:       `a.style.fill-pattern`,
-			exp: `layers: {
-  x: {
-    a
-    a.style.fill-pattern: null
-  }
-}
-`,
-		},
-		{
-			name: "delete-theme-set/2",
-
-			text: `layers: {
-  x: {
-    a
-  }
-}
-`,
-			boardPath: []string{"x"},
-			key:       `a.style.fill-pattern`,
 			exp: `layers: {
   x: {
     a
@@ -7749,7 +7707,6 @@ layers: {
 			et := editTest{
 				text:    tc.text,
 				fsTexts: tc.fsTexts,
-				theme:   tc.theme,
 				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
 					return d2oracle.Delete(g, tc.boardPath, tc.key)
 				},
@@ -7765,7 +7722,6 @@ layers: {
 
 type editTest struct {
 	text     string
-	theme    *d2themes.Theme
 	fsTexts  map[string]string
 	testFunc func(*d2graph.Graph) (*d2graph.Graph, error)
 
@@ -7792,11 +7748,6 @@ func (tc editTest) run(t *testing.T) {
 		FS: tfs,
 	})
 	assert.Success(t, err)
-
-	if tc.theme != nil {
-		err := g.ApplyTheme(tc.theme.ID)
-		assert.Success(t, err)
-	}
 
 	g, err = tc.testFunc(g)
 	if tc.expErr != "" {

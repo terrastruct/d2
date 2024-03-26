@@ -1,6 +1,7 @@
 #### Features 🚀
 
 - `style.underline` works on connections [#1836](https://github.com/terrastruct/d2/pull/1836)
+- `none` is added as an accepted value for `fill-pattern`. Previously there was no way to cancel the `fill-pattern` on select objects set by a theme that applies it (Origami) [#1882](https://github.com/terrastruct/d2/pull/1882)
 
 #### Improvements 🧹
 
