@@ -500,7 +500,11 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			refs = GetWriteableEdgeRefs(edge, baseAST)
 		}
 		onlyInChain := true
-		for _, ref := range refs {
+		var earliestRef *d2graph.EdgeReference
+		for i, ref := range refs {
+			if earliestRef == nil || ref.MapKey.Range.Before(earliestRef.MapKey.Range) {
+				earliestRef = &refs[i]
+			}
 			// TODO merge flat edgekeys
 			// E.g. this can group into a map
 			// (y -> z)[0].style.opacity: 0.4
@@ -526,7 +530,15 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			}
 		}
 		if onlyInChain {
-			appendMapKey(scope, mk)
+			if earliestRef != nil && scope.Range.Before(earliestRef.MapKey.Range) {
+				// Since the original mk was trimmed to common, we set to the edge that
+				// the ref's scope is in
+				mk.Edges[0] = earliestRef.Edge
+				// We can't reference an edge before it's been defined
+				earliestRef.Scope.InsertAfter(earliestRef.MapKey, mk)
+			} else {
+				appendMapKey(scope, mk)
+			}
 			return nil
 		}
 		attrs = edge.Attributes

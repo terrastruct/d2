@@ -2457,7 +2457,7 @@ a -> b
 `,
 		},
 		{
-			name: "nested-edge-chained",
+			name: "nested-edge-chained/1",
 
 			text: `a: {
   b: {
@@ -2477,6 +2477,31 @@ x -> a.b -> a.b.c
 
 x -> a.b -> a.b.c
 (a.b -> a.b.c)[0].style.stroke: green
+`,
+		},
+		{
+			name: "nested-edge-chained/2",
+
+			text: `z: {
+  a: {
+    b: {
+      c
+    }
+  }
+  x -> a.b -> a.b.c
+}
+`,
+			key:   `(z.a.b -> z.a.b.c)[0].style.stroke`,
+			value: go2.Pointer(`green`),
+			exp: `z: {
+  a: {
+    b: {
+      c
+    }
+  }
+  x -> a.b -> a.b.c
+  (a.b -> a.b.c)[0].style.stroke: green
+}
 `,
 		},
 	}
