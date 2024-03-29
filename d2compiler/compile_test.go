@@ -3483,6 +3483,24 @@ hi: "1 ${x} 2"
 				},
 			},
 			{
+				name: "double-border",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+a.shape: Circle
+a.style.double-border: true
+`, "")
+				},
+			},
+			{
+				name: "invalid-double-border",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+a.shape: hexagon
+a.style.double-border: true
+`, `d2/testdata/d2compiler/TestCompile2/vars/basic/invalid-double-border.d2:3:1: key "double-border" can only be applied to squares, rectangles, circles, ovals`)
+				},
+			},
+			{
 				name: "single-quoted",
 				run: func(t *testing.T) {
 					g, _ := assertCompile(t, `

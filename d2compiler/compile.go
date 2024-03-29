@@ -338,11 +338,11 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 	}
 
 	if obj.Parent != nil {
-		if obj.Parent.Shape.Value == d2target.ShapeSQLTable {
+		if strings.EqualFold(obj.Parent.Shape.Value, d2target.ShapeSQLTable) {
 			c.errorf(f.LastRef().AST(), "sql_table columns cannot have children")
 			return
 		}
-		if obj.Parent.Shape.Value == d2target.ShapeClass {
+		if strings.EqualFold(obj.Parent.Shape.Value, d2target.ShapeClass) {
 			c.errorf(f.LastRef().AST(), "class fields cannot have children")
 			return
 		}
@@ -511,7 +511,7 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 			return
 		}
 		attrs.Shape.Value = scalar.ScalarString()
-		if attrs.Shape.Value == d2target.ShapeCode {
+		if strings.EqualFold(attrs.Shape.Value, d2target.ShapeCode) {
 			// Explicit code shape is plaintext.
 			attrs.Language = d2target.ShapeText
 		}
@@ -1009,12 +1009,12 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 				}
 			}
 			if obj.Style.DoubleBorder != nil {
-				if obj.Shape.Value != "" && obj.Shape.Value != d2target.ShapeSquare && obj.Shape.Value != d2target.ShapeRectangle && obj.Shape.Value != d2target.ShapeCircle && obj.Shape.Value != d2target.ShapeOval {
+				if obj.Shape.Value != "" && !strings.EqualFold(obj.Shape.Value, d2target.ShapeSquare) && !strings.EqualFold(obj.Shape.Value, d2target.ShapeRectangle) && !strings.EqualFold(obj.Shape.Value, d2target.ShapeCircle) && !strings.EqualFold(obj.Shape.Value, d2target.ShapeOval) {
 					c.errorf(obj.Style.DoubleBorder.MapKey, `key "double-border" can only be applied to squares, rectangles, circles, ovals`)
 				}
 			}
 		case "shape":
-			if obj.Shape.Value == d2target.ShapeImage && obj.Icon == nil {
+			if strings.EqualFold(obj.Shape.Value, d2target.ShapeImage) && obj.Icon == nil {
 				c.errorf(f.LastPrimaryKey(), `image shape must include an "icon" field`)
 			}
 
@@ -1024,14 +1024,14 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 				c.errorf(f.LastPrimaryKey(), fmt.Sprintf(`invalid shape, can only set "%s" for arrowheads`, obj.Shape.Value))
 			}
 		case "constraint":
-			if obj.Shape.Value != d2target.ShapeSQLTable {
+			if !strings.EqualFold(obj.Shape.Value, d2target.ShapeSQLTable) {
 				c.errorf(f.LastPrimaryKey(), `"constraint" keyword can only be used in "sql_table" shapes`)
 			}
 		}
 		return
 	}
 
-	if obj.Shape.Value == d2target.ShapeImage {
+	if strings.EqualFold(obj.Shape.Value, d2target.ShapeImage) {
 		c.errorf(f.LastRef().AST(), "image shapes cannot have children.")
 		return
 	}
@@ -1044,7 +1044,7 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 
 func (c *compiler) validateLabels(g *d2graph.Graph) {
 	for _, obj := range g.Objects {
-		if obj.Shape.Value != d2target.ShapeText {
+		if !strings.EqualFold(obj.Shape.Value, d2target.ShapeText) {
 			continue
 		}
 		if obj.Attributes.Language != "" {
