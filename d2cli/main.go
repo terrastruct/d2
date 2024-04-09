@@ -936,10 +936,11 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 		}
 
 		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
-			Pad:    opts.Pad,
-			Sketch: opts.Sketch,
-			Center: opts.Center,
-			Scale:  scale,
+			Pad:     opts.Pad,
+			Sketch:  opts.Sketch,
+			Center:  opts.Center,
+			Scale:   scale,
+			ThemeID: opts.ThemeID,
 		})
 		if err != nil {
 			return nil, err

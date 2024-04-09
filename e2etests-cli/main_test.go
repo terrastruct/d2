@@ -766,6 +766,18 @@ i used to read
 			},
 		},
 		{
+			name:   "theme-pdf",
+			skipCI: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "--theme=5", "in.d2", "out.pdf")
+				assert.Success(t, err)
+
+				pdf := readFile(t, dir, "out.pdf")
+				testdataIgnoreDiff(t, ".pdf", pdf)
+			},
+		},
+		{
 			name:   "renamed-board",
 			skipCI: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
