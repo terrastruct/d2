@@ -181,3 +181,10 @@ vars: {
 }
 a.style.fill-pattern: none
 b
+
+-- width-smaller-than-label --
+b: hello there cat {
+  shape: person
+  width: 64
+  height: 66
+}

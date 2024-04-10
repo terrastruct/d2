@@ -1048,15 +1048,6 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 // resizes the object to fit content of the given width and height in its inner box with the given padding.
 // this accounts for the shape of the object, and if there is a desired width or height set for the object
 func (obj *Object) SizeToContent(contentWidth, contentHeight, paddingX, paddingY float64) {
-	var desiredWidth int
-	var desiredHeight int
-	if obj.WidthAttr != nil {
-		desiredWidth, _ = strconv.Atoi(obj.WidthAttr.Value)
-	}
-	if obj.HeightAttr != nil {
-		desiredHeight, _ = strconv.Atoi(obj.HeightAttr.Value)
-	}
-
 	dslShape := strings.ToLower(obj.Shape.Value)
 	shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
 	s := shape.NewShape(shapeType, geo.NewBox(geo.NewPoint(0, 0), contentWidth, contentHeight))
@@ -1068,8 +1059,28 @@ func (obj *Object) SizeToContent(contentWidth, contentHeight, paddingX, paddingY
 	} else {
 		fitWidth, fitHeight = s.GetDimensionsToFit(contentWidth, contentHeight, paddingX, paddingY)
 	}
-	obj.Width = math.Max(float64(desiredWidth), fitWidth)
-	obj.Height = math.Max(float64(desiredHeight), fitHeight)
+
+	var desiredWidth int
+	if obj.WidthAttr != nil {
+		desiredWidth, _ = strconv.Atoi(obj.WidthAttr.Value)
+		obj.Width = float64(desiredWidth)
+	} else {
+		obj.Width = fitWidth
+	}
+
+	var desiredHeight int
+	if obj.HeightAttr != nil {
+		desiredHeight, _ = strconv.Atoi(obj.HeightAttr.Value)
+		obj.Height = float64(desiredHeight)
+	} else {
+		obj.Height = fitHeight
+	}
+
+	if obj.SQLTable != nil || obj.Class != nil || obj.Language != "" {
+		obj.Width = math.Max(float64(desiredWidth), fitWidth)
+		obj.Height = math.Max(float64(desiredHeight), fitHeight)
+	}
+
 	if s.AspectRatio1() {
 		sideLength := math.Max(obj.Width, obj.Height)
 		obj.Width = sideLength
