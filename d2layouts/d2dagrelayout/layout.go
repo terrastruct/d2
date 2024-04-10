@@ -571,6 +571,14 @@ func positionLabelsIcons(obj *d2graph.Object) {
 			obj.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
 		}
 	}
+
+	if float64(obj.LabelDimensions.Width) > obj.Width || float64(obj.LabelDimensions.Height) > obj.Height {
+		if len(obj.ChildrenArray) > 0 {
+			obj.LabelPosition = go2.Pointer(label.OutsideTopCenter.String())
+		} else {
+			obj.LabelPosition = go2.Pointer(label.OutsideBottomCenter.String())
+		}
+	}
 }
 
 func getRanks(g *d2graph.Graph, isHorizontal bool) (ranks [][]*d2graph.Object, objectRanks, startingParentRanks, endingParentRanks map[*d2graph.Object]int) {
