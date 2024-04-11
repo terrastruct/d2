@@ -241,8 +241,9 @@ create_windows_amd64() {
     'Name=instance-state-name,Values=pending,running,stopping,stopped' "Name=tag:Name,Values=$REMOTE_NAME" \
     | jq -r '.Reservations[].Instances[].State.Name')
   if [ -z "$state" ]; then
+    # public AMIs are deprecated every few months so just search the latest Windows Server one for recreating
     sh_c aws ec2 run-instances \
-      --image-id=ami-0c5300e833c2b32f3 \
+      --image-id=ami-03ea14ccbeab7b2d5 \
       --count=1 \
       --instance-type=t3.medium \
       --security-groups=windows \
@@ -441,19 +442,22 @@ init_remote_windows() {
   header "$REMOTE_NAME"
   wait_remote_host_windows
 
+  # rsync was broken in this script last ran on 4/10/24.
+  # had to upgrade with `pacman -Syyu rsync` after
+
   init_ps1=$(cat <<EOF
 \$ProgressPreference = 'SilentlyContinue'
 
 # Bootstrap PowerShell v7
 if ((\$PSVersionTable.PSVersion).Major -eq 5) {
-  Invoke-WebRequest -Uri https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3 -OutFile .\microsoft.ui.xaml.2.7.3.zip
-  Expand-Archive -Force .\microsoft.ui.xaml.2.7.3.zip
-  Add-AppxPackage .\microsoft.ui.xaml.2.7.3\tools\AppX\x64\Release\Microsoft.UI.Xaml.2.7.appx
+  Invoke-WebRequest -Uri https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.8.6 -OutFile .\microsoft.ui.xaml.2.8.6.zip
+  Expand-Archive -Force .\microsoft.ui.xaml.2.8.6.zip
+  Add-AppxPackage .\microsoft.ui.xaml.2.8.6\tools\AppX\x64\Release\Microsoft.UI.Xaml.2.8.appx
 
-  Invoke-WebRequest -Uri https://github.com/microsoft/winget-cli/releases/download/v1.3.2691/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -OutFile .\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
-  Invoke-WebRequest -Uri https://github.com/microsoft/winget-cli/releases/download/v1.3.2691/7bcb1a0ab33340daa57fa5b81faec616_License1.xml -OutFile .\7bcb1a0ab33340daa57fa5b81faec616_License1.xml
+  Invoke-WebRequest -Uri https://github.com/microsoft/winget-cli/releases/download/v1.7.10861/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -OutFile .\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
+  Invoke-WebRequest -Uri https://github.com/microsoft/winget-cli/releases/download/v1.7.10861/30fe89a9836a4cfbbd3fedce72a58680_License1.xml -OutFile .\30fe89a9836a4cfbbd3fedce72a58680_License1.xml
   Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile Microsoft.VCLibs.x64.14.00.Desktop.appx
-  Add-AppxProvisionedPackage -online -PackagePath .\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -LicensePath .\7bcb1a0ab33340daa57fa5b81faec616_License1.xml -DependencyPackagePath Microsoft.VCLibs.x64.14.00.Desktop.appx
+  Add-AppxProvisionedPackage -online -PackagePath .\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -LicensePath .\30fe89a9836a4cfbbd3fedce72a58680_License1.xml -DependencyPackagePath Microsoft.VCLibs.x64.14.00.Desktop.appx
   Add-AppxPackage .\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
 
   winget install --silent --accept-package-agreements --accept-source-agreements Microsoft.DotNet.SDK.7
@@ -551,6 +555,7 @@ EOF
 )
 
   # Windows and AWS SSM both defeated me.
+  # alixander: Step 3's output got mangled for me, so had to replace the line with `printf '%s\n' "$gen_init_ps1" > script` and then open it with vim
   FGCOLOR=3 bigheader "WARNING: WINDOWS INITIALIZATION MUST BE COMPLETED MANUALLY OVER RDP AND POWERSHELL!"
 
   warn '1. Obtain Windows RDP password with:'
