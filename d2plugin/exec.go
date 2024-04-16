@@ -223,8 +223,8 @@ func (p *execPlugin) RouteEdges(ctx context.Context, g *d2graph.Graph, edges []*
 	}
 
 	in := routeEdgesInput{
-		g:      graphBytes,
-		gedges: graphBytes2,
+		G:      graphBytes,
+		GEdges: graphBytes2,
 	}
 
 	b, err := json.Marshal(in)

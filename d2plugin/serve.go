@@ -157,12 +157,12 @@ func routeEdges(ctx context.Context, p RoutingPlugin, ms *xmain.State) error {
 	}
 
 	var g d2graph.Graph
-	if err := d2graph.DeserializeGraph(in.g, &g); err != nil {
+	if err := d2graph.DeserializeGraph(in.G, &g); err != nil {
 		return fmt.Errorf("failed to unmarshal input graph to graph: %s", in)
 	}
 
 	var gedges d2graph.Graph
-	if err := d2graph.DeserializeGraph(in.gedges, &gedges); err != nil {
+	if err := d2graph.DeserializeGraph(in.GEdges, &gedges); err != nil {
 		return fmt.Errorf("failed to unmarshal input edges graph to graph: %s", in)
 	}
 

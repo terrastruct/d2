@@ -86,8 +86,8 @@ type RoutingPlugin interface {
 }
 
 type routeEdgesInput struct {
-	g      []byte
-	gedges []byte
+	G      []byte `json:"g"`
+	GEdges []byte `json:"gEdges"`
 }
 
 // PluginInfo is the current info information of a plugin.
