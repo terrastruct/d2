@@ -150,9 +150,11 @@ func routeEdges(ctx context.Context, p RoutingPlugin, ms *xmain.State) error {
 		return err
 	}
 
-	in := routeEdgesInput{}
-
+	var in routeEdgesInput
 	err = json.Unmarshal(inRaw, &in)
+	if err != nil {
+		return err
+	}
 
 	var g d2graph.Graph
 	if err := d2graph.DeserializeGraph(in.g, &g); err != nil {
