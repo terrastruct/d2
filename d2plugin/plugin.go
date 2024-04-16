@@ -85,6 +85,11 @@ type RoutingPlugin interface {
 	RouteEdges(context.Context, *d2graph.Graph, []*d2graph.Edge) error
 }
 
+type routeEdgesInput struct {
+	g      []byte
+	gedges []byte
+}
+
 // PluginInfo is the current info information of a plugin.
 // note: The two fields Type and Path are not set by the plugin
 // itself but only in ListPlugins.
