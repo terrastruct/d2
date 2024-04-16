@@ -58,6 +58,12 @@ func Serve(p Plugin) xmain.RunFunc {
 			return layout(ctx, p, ms)
 		case "postprocess":
 			return postProcess(ctx, p, ms)
+		case "routeedges":
+			routingPlugin, ok := p.(RoutingPlugin)
+			if !ok {
+				return fmt.Errorf("plugin has routing feature but does not implement RoutingPlugin")
+			}
+			return routeEdges(ctx, routingPlugin, ms)
 		default:
 			return xmain.UsageErrorf("unrecognized command: %s", subcmd)
 		}
@@ -132,6 +138,42 @@ func postProcess(ctx context.Context, p Plugin, ms *xmain.State) error {
 	}
 
 	_, err = ms.Stdout.Write(out)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func routeEdges(ctx context.Context, p RoutingPlugin, ms *xmain.State) error {
+	inRaw, err := io.ReadAll(ms.Stdin)
+	if err != nil {
+		return err
+	}
+
+	in := routeEdgesInput{}
+
+	err = json.Unmarshal(inRaw, &in)
+
+	var g d2graph.Graph
+	if err := d2graph.DeserializeGraph(in.g, &g); err != nil {
+		return fmt.Errorf("failed to unmarshal input graph to graph: %s", in)
+	}
+
+	var gedges d2graph.Graph
+	if err := d2graph.DeserializeGraph(in.gedges, &gedges); err != nil {
+		return fmt.Errorf("failed to unmarshal input edges graph to graph: %s", in)
+	}
+
+	err = p.RouteEdges(ctx, &g, gedges.Edges)
+	if err != nil {
+		return err
+	}
+
+	b, err := d2graph.SerializeGraph(&g)
+	if err != nil {
+		return err
+	}
+	_, err = ms.Stdout.Write(b)
 	if err != nil {
 		return err
 	}

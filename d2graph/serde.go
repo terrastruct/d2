@@ -28,7 +28,7 @@ func DeserializeGraph(bytes []byte, g *Graph) error {
 	}
 
 	var root Object
-	convert(sg.Root, &root)
+	Convert(sg.Root, &root)
 	g.Root = &root
 	root.Graph = g
 	g.RootLevel = sg.RootLevel
@@ -38,7 +38,7 @@ func DeserializeGraph(bytes []byte, g *Graph) error {
 	var objects []*Object
 	for _, so := range sg.Objects {
 		var o Object
-		if err := convert(so, &o); err != nil {
+		if err := Convert(so, &o); err != nil {
 			return err
 		}
 		o.Graph = g
@@ -67,7 +67,7 @@ func DeserializeGraph(bytes []byte, g *Graph) error {
 	var edges []*Edge
 	for _, se := range sg.Edges {
 		var e Edge
-		if err := convert(se, &e); err != nil {
+		if err := Convert(se, &e); err != nil {
 			return err
 		}
 
@@ -108,7 +108,7 @@ func SerializeGraph(g *Graph) ([]byte, error) {
 
 	var sedges []SerializedEdge
 	for _, e := range g.Edges {
-		se, err := toSerializedEdge(e)
+		se, err := ToSerializedEdge(e)
 		if err != nil {
 			return nil, err
 		}
@@ -121,7 +121,7 @@ func SerializeGraph(g *Graph) ([]byte, error) {
 
 func toSerializedObject(o *Object) (SerializedObject, error) {
 	var so SerializedObject
-	if err := convert(o, &so); err != nil {
+	if err := Convert(o, &so); err != nil {
 		return nil, err
 	}
 
@@ -138,9 +138,9 @@ func toSerializedObject(o *Object) (SerializedObject, error) {
 	return so, nil
 }
 
-func toSerializedEdge(e *Edge) (SerializedEdge, error) {
+func ToSerializedEdge(e *Edge) (SerializedEdge, error) {
 	var se SerializedEdge
-	if err := convert(e, &se); err != nil {
+	if err := Convert(e, &se); err != nil {
 		return nil, err
 	}
 
@@ -154,7 +154,7 @@ func toSerializedEdge(e *Edge) (SerializedEdge, error) {
 	return se, nil
 }
 
-func convert[T, Q any](from T, to *Q) error {
+func Convert[T, Q any](from T, to *Q) error {
 	b, err := json.Marshal(from)
 	if err != nil {
 		return err
