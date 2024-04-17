@@ -188,3 +188,21 @@ b: hello there cat {
   width: 64
   height: 66
 }
+
+-- nested-spread-substitutions-regression --
+vars: {
+  dog1: Frido {
+    shape: circle
+  }
+  my-house: {
+    label: "Home"
+  }
+}
+
+ok: {
+  ...${my-house}
+  dog1: {
+    ...${dog1}
+  }
+  dog1 -> dog3
+}

@@ -127,14 +127,21 @@ func (c *compiler) compileSubstitutions(m *Map, varsStack []*Map) {
 			varsStack = append([]*Map{f.Map()}, varsStack...)
 		}
 	}
-	for _, f := range m.Fields {
+	for i := 0; i < len(m.Fields); i++ {
+		f := m.Fields[i]
 		if f.Primary() != nil {
-			c.resolveSubstitutions(varsStack, f)
+			removed := c.resolveSubstitutions(varsStack, f)
+			if removed {
+				i--
+			}
 		}
 		if arr, ok := f.Composite.(*Array); ok {
 			for _, val := range arr.Values {
 				if scalar, ok := val.(*Scalar); ok {
-					c.resolveSubstitutions(varsStack, scalar)
+					removed := c.resolveSubstitutions(varsStack, scalar)
+					if removed {
+						i--
+					}
 				}
 			}
 		} else if f.Map() != nil {
@@ -213,7 +220,7 @@ func (c *compiler) validateConfigs(configs *Field) {
 	}
 }
 
-func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) {
+func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) (removedField bool) {
 	var subbed bool
 	var resolvedField *Field
 
@@ -264,6 +271,7 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) {
 						for i, f2 := range m.Fields {
 							if n == f2 {
 								m.Fields = append(m.Fields[:i], m.Fields[i+1:]...)
+								removedField = true
 								break
 							}
 						}
@@ -334,6 +342,7 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) {
 			s.Coalesce()
 		}
 	}
+	return removedField
 }
 
 func (c *compiler) resolveSubstitution(vars *Map, substitution *d2ast.Substitution) *Field {
