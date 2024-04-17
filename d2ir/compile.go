@@ -31,8 +31,7 @@ type compiler struct {
 	imports []string
 	// importStack is used to detect cyclic imports.
 	importStack []string
-	// importCache enables reuse of files imported multiple times.
-	importCache map[string]*Map
+	seenImports map[string]struct{}
 	utf16Pos    bool
 
 	// Stack of globs that must be recomputed at each new object in and below the current scope.
@@ -62,7 +61,7 @@ func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, []string, error) {
 		err: &d2parser.ParseError{},
 		fs:  opts.FS,
 
-		importCache: make(map[string]*Map),
+		seenImports: make(map[string]struct{}),
 		utf16Pos:    opts.UTF16Pos,
 	}
 	m := &Map{}

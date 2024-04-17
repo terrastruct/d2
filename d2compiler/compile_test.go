@@ -10,6 +10,7 @@ import (
 
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
+	"oss.terrastruct.com/util-go/mapfs"
 
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2format"
@@ -23,6 +24,8 @@ func TestCompile(t *testing.T) {
 	testCases := []struct {
 		name string
 		text string
+		// For tests that use imports, define `index.d2` as text and other files here
+		files map[string]string
 
 		expErr     string
 		assertions func(t *testing.T, g *d2graph.Graph)
@@ -2868,15 +2871,60 @@ d2/testdata/d2compiler/TestCompile/no_arrowheads_in_shape.d2:2:3: "source-arrowh
 			expErr: `d2/testdata/d2compiler/TestCompile/fixed-pos-shape-hierarchy.d2:4:2: position keywords cannot be used with shape "hierarchy"
 d2/testdata/d2compiler/TestCompile/fixed-pos-shape-hierarchy.d2:5:2: position keywords cannot be used with shape "hierarchy"`,
 		},
+		{
+			name: "vars-in-imports",
+			text: `dev: {
+  vars: {
+    env: Dev
+  }
+  ...@template.d2
+}
+
+qa: {
+  vars: {
+    env: Qa
+  }
+  ...@template.d2
+}
+`,
+			files: map[string]string{
+				"template.d2": `env: {
+  label: ${env} Environment
+  vm: {
+    label: My Virtual machine!
+  }
+}`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "dev.env", g.Objects[1].AbsID())
+				tassert.Equal(t, "Dev Environment", g.Objects[1].Label.Value)
+				tassert.Equal(t, "qa.env", g.Objects[2].AbsID())
+				tassert.Equal(t, "Qa Environment", g.Objects[2].Label.Value)
+			},
+		},
 	}
 
 	for _, tc := range testCases {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-
+			opts := &d2compiler.CompileOptions{}
+			if tc.files != nil {
+				tc.files["index.d2"] = tc.text
+				renamed := make(map[string]string)
+				for file, content := range tc.files {
+					renamed[fmt.Sprintf("d2/testdata/d2compiler/TestCompile/%v", file)] = content
+				}
+				fs, err := mapfs.New(renamed)
+				assert.Success(t, err)
+				t.Cleanup(func() {
+					err = fs.Close()
+					assert.Success(t, err)
+				})
+				opts.FS = fs
+			}
 			d2Path := fmt.Sprintf("d2/testdata/d2compiler/%v.d2", t.Name())
-			g, _, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), nil)
+			g, _, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), opts)
 			if tc.expErr != "" {
 				if err == nil {
 					t.Fatalf("expected error with: %q", tc.expErr)
