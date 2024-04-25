@@ -562,7 +562,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 					foundMap = true
 					scope = ref.MapKey.Value.Map
 					for _, n := range scope.Nodes {
-						if n.MapKey.Value.Map == nil {
+						if n.MapKey == nil || n.MapKey.Value.Map == nil {
 							continue
 						}
 						if n.MapKey.Key == nil || len(n.MapKey.Key.Path) != 1 {
@@ -1059,7 +1059,7 @@ func bumpChildrenUnderscores(m *d2ast.Map) {
 }
 
 func hoistRefChildren(g *d2graph.Graph, key *d2ast.KeyPath, ref d2graph.Reference) {
-	if ref.MapKey.Value.Map == nil {
+	if ref.MapKey == nil || ref.MapKey.Value.Map == nil {
 		return
 	}
 
@@ -1115,7 +1115,7 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 		var absKeys []*d2ast.KeyPath
 
 		if len(ref.Key.Path)-1 == ref.KeyPathIndex {
-			if ref.MapKey.Value.Map == nil {
+			if ref.MapKey == nil || ref.MapKey.Value.Map == nil {
 				continue
 			}
 			var mapKeys []*d2ast.KeyPath
