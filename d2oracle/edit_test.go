@@ -2504,6 +2504,22 @@ x -> a.b -> a.b.c
 }
 `,
 		},
+		{
+			name: "edge-comment",
+
+			text: `x -> y: {
+  # hi
+  style.stroke: blue
+}
+`,
+			key:   `(x -> y)[0].style.stroke`,
+			value: go2.Pointer(`green`),
+			exp: `x -> y: {
+  # hi
+  style.stroke: green
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
