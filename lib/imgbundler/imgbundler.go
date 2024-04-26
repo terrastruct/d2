@@ -12,6 +12,7 @@ import (
 	"net/url"
 	"os"
 	"path"
+	"path/filepath"
 	"regexp"
 	"strings"
 	"sync"
@@ -29,12 +30,12 @@ const maxImageSize int64 = 1 << 25 // 33_554_432
 
 var imageRegex = regexp.MustCompile(`<image href="([^"]+)"`)
 
-func BundleLocal(ctx context.Context, l simplelog.Logger, in []byte, cacheImages bool) ([]byte, error) {
-	return bundle(ctx, l, in, false, cacheImages)
+func BundleLocal(ctx context.Context, l simplelog.Logger, inputPath string, in []byte, cacheImages bool) ([]byte, error) {
+	return bundle(ctx, l, inputPath, in, false, cacheImages)
 }
 
 func BundleRemote(ctx context.Context, l simplelog.Logger, in []byte, cacheImages bool) ([]byte, error) {
-	return bundle(ctx, l, in, true, cacheImages)
+	return bundle(ctx, l, "", in, true, cacheImages)
 }
 
 type repl struct {
@@ -42,7 +43,7 @@ type repl struct {
 	to   []byte
 }
 
-func bundle(ctx context.Context, l simplelog.Logger, svg []byte, isRemote, cacheImages bool) (_ []byte, err error) {
+func bundle(ctx context.Context, l simplelog.Logger, inputPath string, svg []byte, isRemote, cacheImages bool) (_ []byte, err error) {
 	if isRemote {
 		defer xdefer.Errorf(&err, "failed to bundle remote images")
 	} else {
@@ -54,7 +55,7 @@ func bundle(ctx context.Context, l simplelog.Logger, svg []byte, isRemote, cache
 	ctx, cancel := context.WithTimeout(ctx, time.Minute*5)
 	defer cancel()
 
-	return runWorkers(ctx, l, svg, imgs, isRemote, cacheImages)
+	return runWorkers(ctx, l, inputPath, svg, imgs, isRemote, cacheImages)
 }
 
 // filterImageElements finds all unique image elements in imgs that are
@@ -84,7 +85,7 @@ func filterImageElements(imgs [][][]byte, isRemote bool) [][][]byte {
 	return imgs2
 }
 
-func runWorkers(ctx context.Context, l simplelog.Logger, svg []byte, imgs [][][]byte, isRemote, cacheImages bool) (_ []byte, err error) {
+func runWorkers(ctx context.Context, l simplelog.Logger, inputPath string, svg []byte, imgs [][][]byte, isRemote, cacheImages bool) (_ []byte, err error) {
 	var wg sync.WaitGroup
 	replc := make(chan repl)
 
@@ -111,7 +112,7 @@ func runWorkers(ctx context.Context, l simplelog.Logger, svg []byte, imgs [][][]
 					<-sema
 				}()
 
-				bundledImage, err := worker(ctx, l, img[1], isRemote, cacheImages)
+				bundledImage, err := worker(ctx, l, inputPath, img[1], isRemote, cacheImages)
 				if err != nil {
 					l.Error(fmt.Sprintf("failed to bundle %s: %v", img[1], err))
 					errhrefsMu.Lock()
@@ -150,7 +151,7 @@ func runWorkers(ctx context.Context, l simplelog.Logger, svg []byte, imgs [][][]
 	}
 }
 
-func worker(ctx context.Context, l simplelog.Logger, href []byte, isRemote, cacheImages bool) ([]byte, error) {
+func worker(ctx context.Context, l simplelog.Logger, inputPath string, href []byte, isRemote, cacheImages bool) ([]byte, error) {
 	if cacheImages {
 		if hit, ok := imgCache.Load(string(href)); ok {
 			return hit.([]byte), nil
@@ -164,7 +165,11 @@ func worker(ctx context.Context, l simplelog.Logger, href []byte, isRemote, cach
 		buf, mimeType, err = httpGet(ctx, html.UnescapeString(string(href)))
 	} else {
 		l.Debug(fmt.Sprintf("reading %s from disk", string(href)))
-		buf, err = os.ReadFile(html.UnescapeString(string(href)))
+		path := html.UnescapeString(string(href))
+		if inputPath != "-" && !filepath.IsAbs(path) {
+			path = filepath.Join(filepath.Dir(inputPath), path)
+		}
+		buf, err = os.ReadFile(path)
 	}
 	if err != nil {
 		return nil, err
