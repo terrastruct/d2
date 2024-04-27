@@ -17,6 +17,7 @@ import (
 
 	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/simplelog"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 //go:embed test_png.png
@@ -167,7 +168,7 @@ func TestInlineLocal(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	sampleSVG := fmt.Sprintf(`<?xml version="1.0" encoding="utf-8"?>
+	template := `<?xml version="1.0" encoding="utf-8"?>
 <svg
 id="d2-svg"
 style="background: white;"
@@ -192,10 +193,12 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 	font-family: font-bold;
 	src: url("REMOVED");
 }]]></style></svg>
-`, svgURL, pngURL)
+`
+	sampleSVG := fmt.Sprintf(template, svgURL, pngURL)
 
 	l := simplelog.FromLibLog(ctx)
-	out, err := BundleLocal(ctx, l, []byte(sampleSVG), false)
+	// It doesn't matter what the inputPath is for absolute paths
+	out, err := BundleLocal(ctx, l, "asdf", []byte(sampleSVG), false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -207,6 +210,47 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 	}
 	if !strings.Contains(string(out), "image/png") {
 		t.Fatal("no png image inserted")
+	}
+
+	// Relative icon path should be relative to input path
+	svgURL = "./test_svg.svg"
+	sampleSVG = fmt.Sprintf(template, svgURL, pngURL)
+
+	var erred bool
+	l = simplelog.Make(
+		go2.Pointer(func(s string) {
+			log.Debug(ctx, s)
+		}),
+		go2.Pointer(func(s string) {
+			log.Info(ctx, s)
+		}),
+		go2.Pointer(func(s string) {
+			erred = true
+		}),
+	)
+
+	// Bogus directory not found
+	_, err = BundleLocal(ctx, l, "asdf/asdf/asdf", []byte(sampleSVG), false)
+	if err == nil {
+		t.Fatal("Expected error for invalid input path")
+	}
+	if !erred {
+		t.Fatal("expected failure")
+	}
+
+	// - is ignored
+	_, err = BundleLocal(ctx, l, "-", []byte(sampleSVG), false)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	svgURL = "./test_svg.svg"
+	sampleSVG = fmt.Sprintf(template, svgURL, pngURL)
+
+	// correct relative path
+	_, err = BundleLocal(ctx, l, "./nested/a.d2", []byte(sampleSVG), false)
+	if err != nil {
+		t.Fatal(err)
 	}
 }
 
