@@ -459,7 +459,7 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs
 	if os.Getenv("D2_LSP_MODE") == "1" {
 		// only the parse result is needed if running d2 for lsp,
 		// if this, "fails", the AST is still valid and can be sent
-		// to vscode extention
+		// to vscode extension
 		ast, err := d2lib.Parse(ctx, string(input), opts)
 
 		type LspOutputData struct {
