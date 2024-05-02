@@ -189,6 +189,13 @@ b: hello there cat {
   height: 66
 }
 
+-- width-smaller-than-label-custom-pos --
+x: {
+  width: 20
+  label: long label
+  label.near: center-center
+}
+
 -- nested-spread-substitutions-regression --
 vars: {
   dog1: Frido {

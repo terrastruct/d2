@@ -570,13 +570,12 @@ func positionLabelsIcons(obj *d2graph.Object) {
 		} else {
 			obj.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
 		}
-	}
-
-	if float64(obj.LabelDimensions.Width) > obj.Width || float64(obj.LabelDimensions.Height) > obj.Height {
-		if len(obj.ChildrenArray) > 0 {
-			obj.LabelPosition = go2.Pointer(label.OutsideTopCenter.String())
-		} else {
-			obj.LabelPosition = go2.Pointer(label.OutsideBottomCenter.String())
+		if float64(obj.LabelDimensions.Width) > obj.Width || float64(obj.LabelDimensions.Height) > obj.Height {
+			if len(obj.ChildrenArray) > 0 {
+				obj.LabelPosition = go2.Pointer(label.OutsideTopCenter.String())
+			} else {
+				obj.LabelPosition = go2.Pointer(label.OutsideBottomCenter.String())
+			}
 		}
 	}
 }
