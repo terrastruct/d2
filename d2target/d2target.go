@@ -313,9 +313,6 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 
 		if targetShape.Label != "" {
 			labelPosition := label.FromString(targetShape.LabelPosition)
-			if !labelPosition.IsOutside() {
-				continue
-			}
 
 			shapeType := DSL_SHAPE_TO_SHAPE_TYPE[targetShape.Type]
 			s := shape.NewShape(shapeType,

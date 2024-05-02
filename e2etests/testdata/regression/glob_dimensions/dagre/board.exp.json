@@ -40,7 +40,7 @@
       "underline": false,
       "labelWidth": 9,
       "labelHeight": 21,
-      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -122,7 +122,7 @@
       "underline": false,
       "labelWidth": 9,
       "labelHeight": 21,
-      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -399,11 +399,11 @@
       "route": [
         {
           "x": 153,
-          "y": 36
+          "y": 10
         },
         {
           "x": 153,
-          "y": 55.20000076293945
+          "y": 50
         },
         {
           "x": 153,
@@ -446,11 +446,11 @@
       "route": [
         {
           "x": 153,
-          "y": 196
+          "y": 170
         },
         {
           "x": 153,
-          "y": 215.1999969482422
+          "y": 210
         },
         {
           "x": 153,
