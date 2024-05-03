@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"math"
-	"net/url"
 	"regexp"
 	"strings"
 
@@ -81,22 +80,14 @@ func HeaderToFontSize(baseFontSize int, header string) int {
 }
 
 func preProcessMarkdown(m string) string {
-	// This is a simplified pattern; a more robust one would be complex
-	urlRegex := regexp.MustCompile(`\b((?:https?|ftp)://[^\s"']+&\S*)\b`)
+    urlRegex := regexp.MustCompile(`(?i)(?:href|src)="(https?|ftp)://[^\s"]+&\S*"`)
 
-	output := urlRegex.ReplaceAllStringFunc(m, func(urlStr string) string {
-		// Attempt to parse
-		parsedURL, err := url.Parse(urlStr)
-		if err != nil {
-			return urlStr
-		}
+    output := urlRegex.ReplaceAllStringFunc(m, func(match string) string {
+        modifiedURL := strings.ReplaceAll(match, "&", "%26")
+        return modifiedURL
+    })
 
-		// Escape only ampersands using strings.ReplaceAll
-		escapedURL := strings.ReplaceAll(parsedURL.String(), "&", "%26")
-		return escapedURL
-	})
-
-	return output
+    return output
 }
 
 func RenderMarkdown(m string) (string, error) {
