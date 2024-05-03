@@ -82,7 +82,7 @@ func HeaderToFontSize(baseFontSize int, header string) int {
 
 func preProcessMarkdown(m string) string {
 	// This is a simplified pattern; a more robust one would be complex
-	urlRegex := regexp.MustCompile(`\b((?:https?|ftp)://[^\s"']+)\b`)
+	urlRegex := regexp.MustCompile(`\b((?:https?|ftp)://[^\s"']+&\S*)\b`)
 
 	output := urlRegex.ReplaceAllStringFunc(m, func(urlStr string) string {
 		// Attempt to parse
