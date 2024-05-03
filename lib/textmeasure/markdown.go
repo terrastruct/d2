@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"fmt"
 	"math"
+	"net/url"
+	"regexp"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
@@ -78,9 +80,34 @@ func HeaderToFontSize(baseFontSize int, header string) int {
 	return 0
 }
 
+func preProcessMarkdown(m string) (string, error) {
+    // This is a simplified pattern; a more robust one would be complex
+    urlRegex := regexp.MustCompile(`\b((?:https?|ftp)://[^\s"']+)\b`) 
+
+    output := urlRegex.ReplaceAllStringFunc(m, func(urlStr string) string {
+        parsedURL, err := url.Parse(urlStr)
+        if err != nil {
+            // If parsing fails, return the original for basic error handling
+            return urlStr 
+        }
+
+        escapedURL := url.QueryEscape(parsedURL.String()) 
+        return escapedURL
+    })
+
+    return output, nil
+}
+
 func RenderMarkdown(m string) (string, error) {
 	var output bytes.Buffer
-	if err := markdownRenderer.Convert([]byte(m), &output); err != nil {
+
+	pre, err := preProcessMarkdown(m)
+
+	if err != nil {
+		return "", err
+	}
+
+	if err := markdownRenderer.Convert([]byte(pre), &output); err != nil {
 		return "", err
 	}
 	return output.String(), nil
