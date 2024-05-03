@@ -80,32 +80,29 @@ func HeaderToFontSize(baseFontSize int, header string) int {
 	return 0
 }
 
-func preProcessMarkdown(m string) (string, error) {
-    // This is a simplified pattern; a more robust one would be complex
-    urlRegex := regexp.MustCompile(`\b((?:https?|ftp)://[^\s"']+)\b`) 
+func preProcessMarkdown(m string) string {
+	// This is a simplified pattern; a more robust one would be complex
+	urlRegex := regexp.MustCompile(`\b((?:https?|ftp)://[^\s"']+)\b`)
 
-    output := urlRegex.ReplaceAllStringFunc(m, func(urlStr string) string {
-        parsedURL, err := url.Parse(urlStr)
-        if err != nil {
-            // If parsing fails, return the original for basic error handling
-            return urlStr 
-        }
+	output := urlRegex.ReplaceAllStringFunc(m, func(urlStr string) string {
+		// Attempt to parse
+		parsedURL, err := url.Parse(urlStr)
+		if err != nil {
+			return urlStr
+		}
 
-        escapedURL := url.QueryEscape(parsedURL.String()) 
-        return escapedURL
-    })
+		// Escape only ampersands using strings.ReplaceAll
+		escapedURL := strings.ReplaceAll(parsedURL.String(), "&", "%26")
+		return escapedURL
+	})
 
-    return output, nil
+	return output
 }
 
 func RenderMarkdown(m string) (string, error) {
 	var output bytes.Buffer
 
-	pre, err := preProcessMarkdown(m)
-
-	if err != nil {
-		return "", err
-	}
+	pre := preProcessMarkdown(m)
 
 	if err := markdownRenderer.Convert([]byte(pre), &output); err != nil {
 		return "", err
