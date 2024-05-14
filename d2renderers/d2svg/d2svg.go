@@ -562,7 +562,6 @@ func splitPath(path string, percentage float64) (string, string) {
 		prevPosition = geo.Point{X: x, Y: y};
 		i += increment;
 	}
-	fmt.Println(pathLength);
 		
 	i := 0
 	
@@ -680,9 +679,6 @@ func splitPath(path string, percentage float64) (string, string) {
 
 		i += increment
 	}
-
-	fmt.Println(path1);
-	fmt.Println(path2);
 	
 	return path1, path2
 }
