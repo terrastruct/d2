@@ -495,8 +495,8 @@ func makeLabelMask(labelTL *geo.Point, width, height int, opacity float64) strin
 	)
 }
 
+// Given control points p1, p2, p3, p4, calculate the segment of this bezier curve from t0 -> t1 where {0 <= t0 < t1 <= 1}
 func bezierCurveSegment(p1, p2, p3, p4 *geo.Point, t0, t1 float64) (geo.Point, geo.Point, geo.Point, geo.Point) {
-	// Given control points p1, p2, p3, p4, calculate the bezier segment from t0 -> t1 where {0 <= t0 < t1 <= 1}
 	u0, u1 := 1-t0, 1-t1
 
 	q1 := geo.Point{
@@ -519,29 +519,31 @@ func bezierCurveSegment(p1, p2, p3, p4 *geo.Point, t0, t1 float64) (geo.Point, g
 	return q1, q2, q3, q4
 }
 
-func addToPath(path *string, pathType *string, i int, pathData []string) int {
+// Adds a certain line/curve to an existing SVG path string. offsetIdx and pathData provides the points needed
+func addToPath(path *string, pathType *string, offsetIdx int, pathData []string) int {
 	var increment int
 
 	switch *pathType {
 	case "M":
-		*path += fmt.Sprintf("M %s %s ", pathData[i+1], pathData[i+2])
+		*path += fmt.Sprintf("M %s %s ", pathData[offsetIdx+1], pathData[offsetIdx+2])
 		increment = 3
 	case "L":
-		*path += fmt.Sprintf("L %s %s ", pathData[i+1], pathData[i+2])
+		*path += fmt.Sprintf("L %s %s ", pathData[offsetIdx+1], pathData[offsetIdx+2])
 		increment = 3
 	case "C":
-		*path += fmt.Sprintf("C %s %s %s %s %s %s ", pathData[i+1], pathData[i+2], pathData[i+3], pathData[i+4], pathData[i+5], pathData[i+6])
+		*path += fmt.Sprintf("C %s %s %s %s %s %s ", pathData[offsetIdx+1], pathData[offsetIdx+2], pathData[offsetIdx+3], pathData[offsetIdx+4], pathData[offsetIdx+5], pathData[offsetIdx+6])
 		increment = 7
 	case "S":
-		*path += fmt.Sprintf("S %s %s %s %s ", pathData[i+1], pathData[i+2], pathData[i+3], pathData[i+4])
+		*path += fmt.Sprintf("S %s %s %s %s ", pathData[offsetIdx+1], pathData[offsetIdx+2], pathData[offsetIdx+3], pathData[offsetIdx+4])
 		increment = 5
 	default:
-		panic(fmt.Sprintf("unknown svg path command \"%s\"", pathData[i]))
+		panic(fmt.Sprintf("unknown svg path command \"%s\"", pathData[offsetIdx]))
 	}
 
 	return increment
 }
 
+// This function finds the length of a path in SVG notation
 func pathLength(pathData []string) float64 {
 	var x, y, pathLength float64
 	var increment int
@@ -586,13 +588,14 @@ func pathLength(pathData []string) float64 {
 	return pathLength
 }
 
+// Splits a SVG path into two SVG paths, with the first path being ~{percentage}% of the path
 func splitPath(path string, percentage float64) (string, string) {
 	var sumPathLens, curPathLen, x, y float64
 	var prevPosition geo.Point
 	var path1, path2 string
 	var increment int
-	var pastHalf bool = false
 
+	pastHalf := false
 	pathData := strings.Split(path, " ")
 	pathLen := pathLength(pathData)
 
