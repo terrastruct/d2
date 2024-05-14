@@ -496,6 +496,7 @@ func makeLabelMask(labelTL *geo.Point, width, height int, opacity float64) strin
 }
 
 func splitBezierCurve(p1, p2, p3, p4 *geo.Point, t0, t1 float64) (geo.Point, geo.Point, geo.Point, geo.Point) {
+	// Given control points p1, p2, p3, p4, calculate the bezier segment from t0 -> t1 where {0 <= t0 < t1 <= 1}
 	u0, u1 := 1 - t0, 1 - t1
 	
 	q1 := geo.Point {
