@@ -497,189 +497,203 @@ func makeLabelMask(labelTL *geo.Point, width, height int, opacity float64) strin
 
 func splitBezierCurve(p1, p2, p3, p4 *geo.Point, t0, t1 float64) (geo.Point, geo.Point, geo.Point, geo.Point) {
 	// Given control points p1, p2, p3, p4, calculate the bezier segment from t0 -> t1 where {0 <= t0 < t1 <= 1}
-	u0, u1 := 1 - t0, 1 - t1
-	
-	q1 := geo.Point {
-		X: (u0 * u0 * u0) * p1.X + (3 * t0 * u0 * u0) * p2.X + (3 * t0 * t0 * u0) * p3.X + t0 * t0 * t0 * p4.X,
-		Y: (u0 * u0 * u0) * p1.Y + (3 * t0 * u0 * u0) * p2.Y + (3 * t0 * t0 * u0) * p3.Y + t0 * t0 * t0 * p4.Y,
+	u0, u1 := 1-t0, 1-t1
+
+	q1 := geo.Point{
+		X: (u0*u0*u0)*p1.X + (3*t0*u0*u0)*p2.X + (3*t0*t0*u0)*p3.X + t0*t0*t0*p4.X,
+		Y: (u0*u0*u0)*p1.Y + (3*t0*u0*u0)*p2.Y + (3*t0*t0*u0)*p3.Y + t0*t0*t0*p4.Y,
 	}
-	q2 := geo.Point {
-		X: (u0 * u0 * u1) * p1.X + (2 * t0 * u0 * u1 + u0 * u0 * t1) * p2.X + (t0 * t0 * u1 + 2 * u0 * t0 * t1) * p3.X + t0 * t0 * t1 * p4.X,
-		Y: (u0 * u0 * u1) * p1.Y + (2 * t0 * u0 * u1 + u0 * u0 * t1) * p2.Y + (t0 * t0 * u1 + 2 * u0 * t0 * t1) * p3.Y + t0 * t0 * t1 * p4.Y,
+	q2 := geo.Point{
+		X: (u0*u0*u1)*p1.X + (2*t0*u0*u1+u0*u0*t1)*p2.X + (t0*t0*u1+2*u0*t0*t1)*p3.X + t0*t0*t1*p4.X,
+		Y: (u0*u0*u1)*p1.Y + (2*t0*u0*u1+u0*u0*t1)*p2.Y + (t0*t0*u1+2*u0*t0*t1)*p3.Y + t0*t0*t1*p4.Y,
 	}
 	q3 := geo.Point{
-		X: (u0 * u1 * u1) * p1.X + (t0 * u1 * u1 + 2 * u0 * t1 * u1) * p2.X + (2 * t0 * t1 * u1 + u0 * t1 * t1) * p3.X + t0 * t1 * t1 * p4.X,
-		Y: (u0 * u1 * u1) * p1.Y + (t0 * u1 * u1 + 2 * u0 * t1 * u1) * p2.Y + (2 * t0 * t1 * u1 + u0 * t1 * t1) * p3.Y + t0 * t1 * t1 * p4.Y,
+		X: (u0*u1*u1)*p1.X + (t0*u1*u1+2*u0*t1*u1)*p2.X + (2*t0*t1*u1+u0*t1*t1)*p3.X + t0*t1*t1*p4.X,
+		Y: (u0*u1*u1)*p1.Y + (t0*u1*u1+2*u0*t1*u1)*p2.Y + (2*t0*t1*u1+u0*t1*t1)*p3.Y + t0*t1*t1*p4.Y,
 	}
 	q4 := geo.Point{
-		X: (u1 * u1 * u1) * p1.X + (3 * t1 * u1 * u1) * p2.X + (3 * t1 * t1 * u1) * p3.X + t1 * t1 * t1 * p4.X,
-		Y: (u1 * u1 * u1) * p1.Y + (3 * t1 * u1 * u1) * p2.Y + (3 * t1 * t1 * u1) * p3.Y + t1 * t1 * t1 * p4.Y,
+		X: (u1*u1*u1)*p1.X + (3*t1*u1*u1)*p2.X + (3*t1*t1*u1)*p3.X + t1*t1*t1*p4.X,
+		Y: (u1*u1*u1)*p1.Y + (3*t1*u1*u1)*p2.Y + (3*t1*t1*u1)*p3.Y + t1*t1*t1*p4.Y,
 	}
 
 	return q1, q2, q3, q4
 }
 
+func addToPath(path *string, pathType *string, i int, pathData []string) int {
+	var increment int
+
+	switch *pathType {
+	case "M":
+		*path += fmt.Sprintf("M %s %s ", pathData[i+1], pathData[i+2])
+		increment = 3
+	case "L":
+		*path += fmt.Sprintf("L %s %s ", pathData[i+1], pathData[i+2])
+		increment = 3
+	case "C":
+		*path += fmt.Sprintf("C %s %s %s %s %s %s ", pathData[i+1], pathData[i+2], pathData[i+3], pathData[i+4], pathData[i+5], pathData[i+6])
+		increment = 7
+	case "S":
+		*path += fmt.Sprintf("S %s %s %s %s ", pathData[i+1], pathData[i+2], pathData[i+3], pathData[i+4])
+		increment = 5
+	default:
+		panic(fmt.Sprintf("unknown svg path command \"%s\"", pathData[i]))
+	}
+
+	return increment
+}
+
+func pathLength(pathData []string) float64 {
+	var x, y, pathLength float64
+	var increment int
+	var prevPosition geo.Point
+
+	for i := 0; i < len(pathData); {
+		switch pathData[i] {
+		case "M":
+			x, _ = strconv.ParseFloat(pathData[i+1], 64)
+			y, _ = strconv.ParseFloat(pathData[i+2], 64)
+
+			increment = 3
+		case "L":
+			x, _ = strconv.ParseFloat(pathData[i+1], 64)
+			y, _ = strconv.ParseFloat(pathData[i+2], 64)
+
+			pathLength += geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
+
+			increment = 3
+		case "C":
+			x, _ = strconv.ParseFloat(pathData[i+5], 64)
+			y, _ = strconv.ParseFloat(pathData[i+6], 64)
+
+			pathLength += geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
+
+			increment = 7
+		case "S":
+			x, _ = strconv.ParseFloat(pathData[i+3], 64)
+			y, _ = strconv.ParseFloat(pathData[i+4], 64)
+
+			pathLength += geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
+
+			increment = 5
+		default:
+			panic(fmt.Sprintf("unknown svg path command \"%s\"", pathData[i]))
+		}
+
+		prevPosition = geo.Point{X: x, Y: y}
+		i += increment
+	}
+
+	return pathLength
+}
+
 func splitPath(path string, percentage float64) (string, string) {
-	var sumPathLens, curPathLen, x, y, pathLength float64
+	var sumPathLens, curPathLen, x, y float64
 	var prevPosition geo.Point
 	var path1, path2 string
 	var increment int
 
 	pathData := strings.Split(path, " ")
-	
-	for i := 0; i < len(pathData); {
-		switch pathData[i] {
-		case "M":
-			x, _ = strconv.ParseFloat(pathData[i + 1], 64)
-			y, _ = strconv.ParseFloat(pathData[i + 2], 64)
-			
-			increment = 3
-		case "L":
-			x, _ = strconv.ParseFloat(pathData[i + 1], 64)
-			y, _ = strconv.ParseFloat(pathData[i + 2], 64)
-			
-			pathLength += geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
-			
-			increment = 3
-		case "C":
-			x, _ = strconv.ParseFloat(pathData[i + 5], 64)
-			y, _ = strconv.ParseFloat(pathData[i + 6], 64)
-			
-			pathLength += geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
+	pathLen := pathLength(pathData)
 
-			increment = 7
-		case "S":
-			x, _ = strconv.ParseFloat(pathData[i + 3], 64)
-			y, _ = strconv.ParseFloat(pathData[i + 4], 64)
-			
-			pathLength += geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
-			
-			increment = 5
-		default:
-			panic(fmt.Sprintf("unknown svg path command \"%s\"", pathData[i]))
-		}
-		
-		prevPosition = geo.Point{X: x, Y: y};
-		i += increment;
-	}
-		
 	i := 0
-	
-	for ; i < len(pathData); {
+
+	for i < len(pathData) {
 		switch pathData[i] {
 		case "M":
-			x, _ = strconv.ParseFloat(pathData[i + 1], 64)
-			y, _ = strconv.ParseFloat(pathData[i + 2], 64)
+			x, _ = strconv.ParseFloat(pathData[i+1], 64)
+			y, _ = strconv.ParseFloat(pathData[i+2], 64)
 
-			if sumPathLens + curPathLen < pathLength * percentage {
-				path1 += fmt.Sprintf("M %s %s ", pathData[i + 1], pathData[i + 2])
+			if sumPathLens+curPathLen < pathLen*percentage {
+				path1 += fmt.Sprintf("M %s %s ", pathData[i+1], pathData[i+2])
 			}
-			
+
 			increment = 3
 		case "L":
-			x, _ = strconv.ParseFloat(pathData[i + 1], 64)
-			y, _ = strconv.ParseFloat(pathData[i + 2], 64)
-			
+			x, _ = strconv.ParseFloat(pathData[i+1], 64)
+			y, _ = strconv.ParseFloat(pathData[i+2], 64)
+
 			curPathLen = geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
 
-			if sumPathLens + curPathLen < pathLength * percentage {
-				path1 += fmt.Sprintf("L %s %s ", pathData[i + 1], pathData[i + 2])
+			if sumPathLens+curPathLen < pathLen*percentage {
+				path1 += fmt.Sprintf("L %s %s ", pathData[i+1], pathData[i+2])
 			}
-			
+
 			increment = 3
 		case "C":
-			x, _ = strconv.ParseFloat(pathData[i + 5], 64)
-			y, _ = strconv.ParseFloat(pathData[i + 6], 64)
+			x, _ = strconv.ParseFloat(pathData[i+5], 64)
+			y, _ = strconv.ParseFloat(pathData[i+6], 64)
 
 			curPathLen = geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
-			
-			if sumPathLens + curPathLen < pathLength * percentage {
-				path1 += fmt.Sprintf("C %s %s %s %s %s %s ", pathData[i + 1], pathData[i + 2], pathData[i + 3], pathData[i + 4], pathData[i + 5], pathData[i + 6]);
+
+			if sumPathLens+curPathLen < pathLen*percentage {
+				path1 += fmt.Sprintf("C %s %s %s %s %s %s ", pathData[i+1], pathData[i+2], pathData[i+3], pathData[i+4], pathData[i+5], pathData[i+6])
 			}
 
 			increment = 7
 		case "S":
-			x, _ = strconv.ParseFloat(pathData[i + 3], 64)
-			y, _ = strconv.ParseFloat(pathData[i + 4], 64)
-			
+			x, _ = strconv.ParseFloat(pathData[i+3], 64)
+			y, _ = strconv.ParseFloat(pathData[i+4], 64)
+
 			curPathLen = geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
-			
-			if sumPathLens + curPathLen < pathLength * percentage {
-				path1 += fmt.Sprintf("S %s %s %s %s ", pathData[i + 1], pathData[i + 2], pathData[i + 3], pathData[i + 4])
+
+			if sumPathLens+curPathLen < pathLen*percentage {
+				path1 += fmt.Sprintf("S %s %s %s %s ", pathData[i+1], pathData[i+2], pathData[i+3], pathData[i+4])
 			}
-			
+
 			increment = 5
 		default:
 			panic(fmt.Sprintf("unknown svg path command \"%s\"", pathData[i]))
 		}
-		
+
 		sumPathLens += curPathLen
 
-		if sumPathLens >= pathLength * percentage {
-			t := (pathLength * percentage - sumPathLens + curPathLen) / curPathLen
-			fmt.Println(t)
+		if sumPathLens >= pathLen*percentage {
+			t := (pathLen*percentage - sumPathLens + curPathLen) / curPathLen
 
-			switch(pathData[i]) {
+			switch pathData[i] {
 			case "L":
-				path1 += fmt.Sprintf("L %f %f ", (x - prevPosition.X) * t + prevPosition.X, (y - prevPosition.Y) * t + prevPosition.Y)
-				path2 += fmt.Sprintf("M %f %f L %f %f ", (x - prevPosition.X) * t + prevPosition.X, (y - prevPosition.Y) * t + prevPosition.Y, x, y)
+				path1 += fmt.Sprintf("L %f %f ", (x-prevPosition.X)*t+prevPosition.X, (y-prevPosition.Y)*t+prevPosition.Y)
+				path2 += fmt.Sprintf("M %f %f L %f %f ", (x-prevPosition.X)*t+prevPosition.X, (y-prevPosition.Y)*t+prevPosition.Y, x, y)
 			case "C":
-				h1x, _ := strconv.ParseFloat(pathData[i + 1], 64)
-				h1y, _ := strconv.ParseFloat(pathData[i + 2], 64)
-				h2x, _ := strconv.ParseFloat(pathData[i + 3], 64)
-				h2y, _ := strconv.ParseFloat(pathData[i + 4], 64)
-				p1x, _ := strconv.ParseFloat(pathData[i + 5], 64)
-				p1y, _ := strconv.ParseFloat(pathData[i + 6], 64)
+				h1x, _ := strconv.ParseFloat(pathData[i+1], 64)
+				h1y, _ := strconv.ParseFloat(pathData[i+2], 64)
+				h2x, _ := strconv.ParseFloat(pathData[i+3], 64)
+				h2y, _ := strconv.ParseFloat(pathData[i+4], 64)
 
 				heading1 := geo.Point{X: h1x, Y: h1y}
 				heading2 := geo.Point{X: h2x, Y: h2y}
-				nextPoint := geo.Point{X: p1x, Y: p1y}
-				
+				nextPoint := geo.Point{X: x, Y: y}
+
 				q1, q2, q3, q4 := splitBezierCurve(&prevPosition, &heading1, &heading2, &nextPoint, 0, 0.5)
-				
-				path1 += fmt.Sprintf("C %f %f %f %f %f %f ", q2.X, q2.Y, q3.X, q3.Y, q4.X, q4.Y);
-				
+				path1 += fmt.Sprintf("C %f %f %f %f %f %f ", q2.X, q2.Y, q3.X, q3.Y, q4.X, q4.Y)
+
 				q1, q2, q3, q4 = splitBezierCurve(&prevPosition, &heading1, &heading2, &nextPoint, 0.5, 1)
-				
-				path2 += fmt.Sprintf("M %f %f C %f %f %f %f %f %f ", q1.X, q1.Y, q2.X, q2.Y, q3.X, q3.Y, q4.X, q4.Y);
-				
+				path2 += fmt.Sprintf("M %f %f C %f %f %f %f %f %f ", q1.X, q1.Y, q2.X, q2.Y, q3.X, q3.Y, q4.X, q4.Y)
+
 			case "S":
-				path1 += fmt.Sprintf("S %s %s %s %s ", pathData[i + 1], pathData[i + 2], pathData[i + 3], pathData[i + 4])
-				path2 += fmt.Sprintf("M %s %s ", pathData[i + 3], pathData[i + 4])
+				// Skip S curves because they are shorter and we can split along the connection to the next path instead
+				path1 += fmt.Sprintf("S %s %s %s %s ", pathData[i+1], pathData[i+2], pathData[i+3], pathData[i+4])
+				path2 += fmt.Sprintf("M %s %s ", pathData[i+3], pathData[i+4])
 			default:
 				panic(fmt.Sprintf("unknown svg path command \"%s\"", pathData[i]))
 			}
-			
+
 			i += increment
 			prevPosition = geo.Point{X: x, Y: y}
 			break
-		} 
+		}
 
 		i += increment
 		prevPosition = geo.Point{X: x, Y: y}
 	}
 
-	for ; i < len(pathData); {
-		switch pathData[i] {
-		case "M":
-			path2 += fmt.Sprintf("M %s %s ", pathData[i + 1], pathData[i + 2])
-			increment = 3
-		case "L":
-			path2 += fmt.Sprintf("L %s %s ", pathData[i + 1], pathData[i + 2])
-			increment = 3
-		case "C":
-			path2 += fmt.Sprintf("C %s %s %s %s %s %s ", pathData[i + 1], pathData[i + 2], pathData[i + 3], pathData[i + 4], pathData[i + 5], pathData[i + 6]);
-			increment = 7
-		case "S":
-			path2 += fmt.Sprintf("S %s %s %s %s ", pathData[i + 1], pathData[i + 2], pathData[i + 3], pathData[i + 4])
-			increment = 5
-		default:
-			panic(fmt.Sprintf("unknown svg path command \"%s\"", pathData[i]))
-		}
+	for i < len(pathData) {
+		pathType := pathData[i]
+		increment := addToPath(&path2, &pathType, i, pathData)
 
 		i += increment
 	}
-	
+
 	return path1, path2
 }
 
@@ -738,7 +752,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 	srcAdj, dstAdj := getArrowheadAdjustments(connection, idToShape)
 	path := pathData(connection, srcAdj, dstAdj)
 	mask := fmt.Sprintf(`mask="url(#%s)"`, labelMaskID)
-	
+
 	if sketchRunner != nil {
 		out, err := d2sketch.Connection(sketchRunner, connection, path, mask)
 		if err != nil {
@@ -769,7 +783,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 			pathEl.Attributes = fmt.Sprintf("%s%s%s", markerStart, markerEnd, mask)
 			fmt.Fprint(writer, pathEl.Render())
 		} else {
-			path1, path2 := splitPath(path, 0.5);
+			path1, path2 := splitPath(path, 0.5)
 
 			pathEl1 := d2themes.NewThemableElement("path")
 			pathEl1.D = path1
