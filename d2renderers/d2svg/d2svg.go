@@ -495,7 +495,7 @@ func makeLabelMask(labelTL *geo.Point, width, height int, opacity float64) strin
 	)
 }
 
-func splitBezierCurve(p1, p2, p3, p4 *geo.Point, t0, t1 float64) (geo.Point, geo.Point, geo.Point, geo.Point) {
+func bezierCurveSegment(p1, p2, p3, p4 *geo.Point, t0, t1 float64) (geo.Point, geo.Point, geo.Point, geo.Point) {
 	// Given control points p1, p2, p3, p4, calculate the bezier segment from t0 -> t1 where {0 <= t0 < t1 <= 1}
 	u0, u1 := 1-t0, 1-t1
 
@@ -591,6 +591,7 @@ func splitPath(path string, percentage float64) (string, string) {
 	var prevPosition geo.Point
 	var path1, path2 string
 	var increment int
+	var pastHalf bool = false
 
 	pathData := strings.Split(path, " ")
 	pathLen := pathLength(pathData)
@@ -598,62 +599,47 @@ func splitPath(path string, percentage float64) (string, string) {
 	i := 0
 
 	for i < len(pathData) {
+
 		switch pathData[i] {
 		case "M":
 			x, _ = strconv.ParseFloat(pathData[i+1], 64)
 			y, _ = strconv.ParseFloat(pathData[i+2], 64)
-
-			if sumPathLens+curPathLen < pathLen*percentage {
-				path1 += fmt.Sprintf("M %s %s ", pathData[i+1], pathData[i+2])
-			}
-
-			increment = 3
 		case "L":
 			x, _ = strconv.ParseFloat(pathData[i+1], 64)
 			y, _ = strconv.ParseFloat(pathData[i+2], 64)
 
 			curPathLen = geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
-
-			if sumPathLens+curPathLen < pathLen*percentage {
-				path1 += fmt.Sprintf("L %s %s ", pathData[i+1], pathData[i+2])
-			}
-
-			increment = 3
 		case "C":
 			x, _ = strconv.ParseFloat(pathData[i+5], 64)
 			y, _ = strconv.ParseFloat(pathData[i+6], 64)
 
 			curPathLen = geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
-
-			if sumPathLens+curPathLen < pathLen*percentage {
-				path1 += fmt.Sprintf("C %s %s %s %s %s %s ", pathData[i+1], pathData[i+2], pathData[i+3], pathData[i+4], pathData[i+5], pathData[i+6])
-			}
-
-			increment = 7
 		case "S":
 			x, _ = strconv.ParseFloat(pathData[i+3], 64)
 			y, _ = strconv.ParseFloat(pathData[i+4], 64)
 
 			curPathLen = geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
-
-			if sumPathLens+curPathLen < pathLen*percentage {
-				path1 += fmt.Sprintf("S %s %s %s %s ", pathData[i+1], pathData[i+2], pathData[i+3], pathData[i+4])
-			}
-
-			increment = 5
 		default:
 			panic(fmt.Sprintf("unknown svg path command \"%s\"", pathData[i]))
 		}
 
+		if pastHalf {
+			increment = addToPath(&path2, &pathData[i], i, pathData)
+		} else if sumPathLens+curPathLen < pathLen*percentage {
+			increment = addToPath(&path1, &pathData[i], i, pathData)
+		}
+
 		sumPathLens += curPathLen
 
-		if sumPathLens >= pathLen*percentage {
+		if !pastHalf && sumPathLens >= pathLen*percentage {
 			t := (pathLen*percentage - sumPathLens + curPathLen) / curPathLen
 
 			switch pathData[i] {
 			case "L":
 				path1 += fmt.Sprintf("L %f %f ", (x-prevPosition.X)*t+prevPosition.X, (y-prevPosition.Y)*t+prevPosition.Y)
 				path2 += fmt.Sprintf("M %f %f L %f %f ", (x-prevPosition.X)*t+prevPosition.X, (y-prevPosition.Y)*t+prevPosition.Y, x, y)
+
+				increment = 3
 			case "C":
 				h1x, _ := strconv.ParseFloat(pathData[i+1], 64)
 				h1y, _ := strconv.ParseFloat(pathData[i+2], 64)
@@ -664,34 +650,28 @@ func splitPath(path string, percentage float64) (string, string) {
 				heading2 := geo.Point{X: h2x, Y: h2y}
 				nextPoint := geo.Point{X: x, Y: y}
 
-				q1, q2, q3, q4 := splitBezierCurve(&prevPosition, &heading1, &heading2, &nextPoint, 0, 0.5)
+				q1, q2, q3, q4 := bezierCurveSegment(&prevPosition, &heading1, &heading2, &nextPoint, 0, 0.5)
 				path1 += fmt.Sprintf("C %f %f %f %f %f %f ", q2.X, q2.Y, q3.X, q3.Y, q4.X, q4.Y)
 
-				q1, q2, q3, q4 = splitBezierCurve(&prevPosition, &heading1, &heading2, &nextPoint, 0.5, 1)
+				q1, q2, q3, q4 = bezierCurveSegment(&prevPosition, &heading1, &heading2, &nextPoint, 0.5, 1)
 				path2 += fmt.Sprintf("M %f %f C %f %f %f %f %f %f ", q1.X, q1.Y, q2.X, q2.Y, q3.X, q3.Y, q4.X, q4.Y)
 
+				increment = 7
 			case "S":
 				// Skip S curves because they are shorter and we can split along the connection to the next path instead
 				path1 += fmt.Sprintf("S %s %s %s %s ", pathData[i+1], pathData[i+2], pathData[i+3], pathData[i+4])
 				path2 += fmt.Sprintf("M %s %s ", pathData[i+3], pathData[i+4])
+
+				increment = 5
 			default:
 				panic(fmt.Sprintf("unknown svg path command \"%s\"", pathData[i]))
 			}
 
-			i += increment
-			prevPosition = geo.Point{X: x, Y: y}
-			break
+			pastHalf = true
 		}
 
 		i += increment
 		prevPosition = geo.Point{X: x, Y: y}
-	}
-
-	for i < len(pathData) {
-		pathType := pathData[i]
-		increment := addToPath(&path2, &pathType, i, pathData)
-
-		i += increment
 	}
 
 	return path1, path2
