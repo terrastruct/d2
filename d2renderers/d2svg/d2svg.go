@@ -11,6 +11,7 @@ import (
 	"html"
 	"io"
 	"sort"
+	"strconv"
 	"strings"
 
 	"math"
@@ -494,6 +495,192 @@ func makeLabelMask(labelTL *geo.Point, width, height int, opacity float64) strin
 	)
 }
 
+func splitBezierCurve(p1, p2, p3, p4 *geo.Point, t0, t1 float64) (geo.Point, geo.Point, geo.Point, geo.Point) {
+	u0, u1 := 1 - t0, 1 - t1
+	
+	q1 := geo.Point {
+		X: (u0 * u0 * u0) * p1.X + (3 * t0 * u0 * u0) * p2.X + (3 * t0 * t0 * u0) * p3.X + t0 * t0 * t0 * p4.X,
+		Y: (u0 * u0 * u0) * p1.Y + (3 * t0 * u0 * u0) * p2.Y + (3 * t0 * t0 * u0) * p3.Y + t0 * t0 * t0 * p4.Y,
+	}
+	q2 := geo.Point {
+		X: (u0 * u0 * u1) * p1.X + (2 * t0 * u0 * u1 + u0 * u0 * t1) * p2.X + (t0 * t0 * u1 + 2 * u0 * t0 * t1) * p3.X + t0 * t0 * t1 * p4.X,
+		Y: (u0 * u0 * u1) * p1.Y + (2 * t0 * u0 * u1 + u0 * u0 * t1) * p2.Y + (t0 * t0 * u1 + 2 * u0 * t0 * t1) * p3.Y + t0 * t0 * t1 * p4.Y,
+	}
+	q3 := geo.Point{
+		X: (u0 * u1 * u1) * p1.X + (t0 * u1 * u1 + 2 * u0 * t1 * u1) * p2.X + (2 * t0 * t1 * u1 + u0 * t1 * t1) * p3.X + t0 * t1 * t1 * p4.X,
+		Y: (u0 * u1 * u1) * p1.Y + (t0 * u1 * u1 + 2 * u0 * t1 * u1) * p2.Y + (2 * t0 * t1 * u1 + u0 * t1 * t1) * p3.Y + t0 * t1 * t1 * p4.Y,
+	}
+	q4 := geo.Point{
+		X: (u1 * u1 * u1) * p1.X + (3 * t1 * u1 * u1) * p2.X + (3 * t1 * t1 * u1) * p3.X + t1 * t1 * t1 * p4.X,
+		Y: (u1 * u1 * u1) * p1.Y + (3 * t1 * u1 * u1) * p2.Y + (3 * t1 * t1 * u1) * p3.Y + t1 * t1 * t1 * p4.Y,
+	}
+
+	return q1, q2, q3, q4
+}
+
+func splitPath(path string, percentage float64) (string, string) {
+	var sumPathLens, curPathLen, x, y, pathLength float64
+	var prevPosition geo.Point
+	var path1, path2 string
+	var increment int
+
+	pathData := strings.Split(path, " ")
+	
+	for i := 0; i < len(pathData); {
+		switch pathData[i] {
+		case "M":
+			x, _ = strconv.ParseFloat(pathData[i + 1], 64)
+			y, _ = strconv.ParseFloat(pathData[i + 2], 64)
+			
+			increment = 3
+		case "L":
+			x, _ = strconv.ParseFloat(pathData[i + 1], 64)
+			y, _ = strconv.ParseFloat(pathData[i + 2], 64)
+			
+			pathLength += geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
+			
+			increment = 3
+		case "C":
+			x, _ = strconv.ParseFloat(pathData[i + 5], 64)
+			y, _ = strconv.ParseFloat(pathData[i + 6], 64)
+			
+			pathLength += geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
+
+			increment = 7
+		case "S":
+			x, _ = strconv.ParseFloat(pathData[i + 3], 64)
+			y, _ = strconv.ParseFloat(pathData[i + 4], 64)
+			
+			pathLength += geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
+			
+			increment = 5
+		default:
+			panic(fmt.Sprintf("unknown svg path command \"%s\"", pathData[i]))
+		}
+		
+		prevPosition = geo.Point{X: x, Y: y};
+		i += increment;
+	}
+	fmt.Println(pathLength);
+		
+	i := 0
+	
+	for ; i < len(pathData); {
+		switch pathData[i] {
+		case "M":
+			x, _ = strconv.ParseFloat(pathData[i + 1], 64)
+			y, _ = strconv.ParseFloat(pathData[i + 2], 64)
+
+			if sumPathLens + curPathLen < pathLength * percentage {
+				path1 += fmt.Sprintf("M %s %s ", pathData[i + 1], pathData[i + 2])
+			}
+			
+			increment = 3
+		case "L":
+			x, _ = strconv.ParseFloat(pathData[i + 1], 64)
+			y, _ = strconv.ParseFloat(pathData[i + 2], 64)
+			
+			curPathLen = geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
+
+			if sumPathLens + curPathLen < pathLength * percentage {
+				path1 += fmt.Sprintf("L %s %s ", pathData[i + 1], pathData[i + 2])
+			}
+			
+			increment = 3
+		case "C":
+			x, _ = strconv.ParseFloat(pathData[i + 5], 64)
+			y, _ = strconv.ParseFloat(pathData[i + 6], 64)
+
+			curPathLen = geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
+			
+			if sumPathLens + curPathLen < pathLength * percentage {
+				path1 += fmt.Sprintf("C %s %s %s %s %s %s ", pathData[i + 1], pathData[i + 2], pathData[i + 3], pathData[i + 4], pathData[i + 5], pathData[i + 6]);
+			}
+
+			increment = 7
+		case "S":
+			x, _ = strconv.ParseFloat(pathData[i + 3], 64)
+			y, _ = strconv.ParseFloat(pathData[i + 4], 64)
+			
+			curPathLen = geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
+			
+			if sumPathLens + curPathLen < pathLength * percentage {
+				path1 += fmt.Sprintf("S %s %s %s %s ", pathData[i + 1], pathData[i + 2], pathData[i + 3], pathData[i + 4])
+			}
+			
+			increment = 5
+		default:
+			panic(fmt.Sprintf("unknown svg path command \"%s\"", pathData[i]))
+		}
+		
+		sumPathLens += curPathLen
+
+		if sumPathLens >= pathLength * percentage {
+			t := (pathLength * percentage - sumPathLens + curPathLen) / curPathLen
+			fmt.Println(t)
+
+			switch(pathData[i]) {
+			case "L":
+				path1 += fmt.Sprintf("L %f %f ", (x - prevPosition.X) * t + prevPosition.X, (y - prevPosition.Y) * t + prevPosition.Y)
+				path2 += fmt.Sprintf("M %f %f L %f %f ", (x - prevPosition.X) * t + prevPosition.X, (y - prevPosition.Y) * t + prevPosition.Y, x, y)
+			case "C":
+				h1x, _ := strconv.ParseFloat(pathData[i + 1], 64)
+				h1y, _ := strconv.ParseFloat(pathData[i + 2], 64)
+				h2x, _ := strconv.ParseFloat(pathData[i + 3], 64)
+				h2y, _ := strconv.ParseFloat(pathData[i + 4], 64)
+				p1x, _ := strconv.ParseFloat(pathData[i + 5], 64)
+				p1y, _ := strconv.ParseFloat(pathData[i + 6], 64)
+
+				heading1 := geo.Point{X: h1x, Y: h1y}
+				heading2 := geo.Point{X: h2x, Y: h2y}
+				nextPoint := geo.Point{X: p1x, Y: p1y}
+				
+				_, q2, q3, q4 := splitBezierCurve(&prevPosition, &heading1, &heading2, &nextPoint, 0, 0.5)
+				
+				path1 += fmt.Sprintf("C %f %f %f %f %f %f ", q2.X, q2.Y, q3.X, q3.Y, q4.X, q4.Y);
+				
+			case "S":
+				path1 += fmt.Sprintf("S %s %s %s %s ", pathData[i + 1], pathData[i + 2], pathData[i + 3], pathData[i + 4])
+			default:
+				panic(fmt.Sprintf("unknown svg path command \"%s\"", pathData[i]))
+			}
+			
+			i += increment
+			prevPosition = geo.Point{X: x, Y: y}
+			break
+		} 
+
+		i += increment
+		prevPosition = geo.Point{X: x, Y: y}
+	}
+
+	for ; i < len(pathData); {
+		switch pathData[i] {
+		case "M":
+			path2 += fmt.Sprintf("M %s %s ", pathData[i + 1], pathData[i + 2])
+			increment = 3
+		case "L":
+			path2 += fmt.Sprintf("L %s %s ", pathData[i + 1], pathData[i + 2])
+			increment = 3
+		case "C":
+			path2 += fmt.Sprintf("C %s %s %s %s %s %s ", pathData[i + 1], pathData[i + 2], pathData[i + 3], pathData[i + 4], pathData[i + 5], pathData[i + 6]);
+			increment = 7
+		case "S":
+			path2 += fmt.Sprintf("S %s %s %s %s ", pathData[i + 1], pathData[i + 2], pathData[i + 3], pathData[i + 4])
+			increment = 5
+		default:
+			panic(fmt.Sprintf("unknown svg path command \"%s\"", pathData[i]))
+		}
+
+		i += increment
+	}
+
+	fmt.Println(path1);
+	fmt.Println(path2);
+	
+	return path1, path2
+}
+
 func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, _ error) {
 	opacityStyle := ""
 	if connection.Opacity != 1.0 {
@@ -549,6 +736,9 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 	srcAdj, dstAdj := getArrowheadAdjustments(connection, idToShape)
 	path := pathData(connection, srcAdj, dstAdj)
 	mask := fmt.Sprintf(`mask="url(#%s)"`, labelMaskID)
+
+	path1, path2 := splitPath(path, 0.5);
+	
 	if sketchRunner != nil {
 		out, err := d2sketch.Connection(sketchRunner, connection, path, mask)
 		if err != nil {
@@ -575,7 +765,25 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		pathEl.ClassName = fmt.Sprintf("connection%s", animatedClass)
 		pathEl.Style = connection.CSSStyle()
 		pathEl.Attributes = fmt.Sprintf("%s%s%s", markerStart, markerEnd, mask)
-		fmt.Fprint(writer, pathEl.Render())
+		// fmt.Fprint(writer, pathEl.Render())
+
+		pathEl1 := d2themes.NewThemableElement("path")
+		pathEl1.D = path1
+		pathEl1.Fill = color.None
+		pathEl1.Stroke = connection.Stroke
+		pathEl1.ClassName = fmt.Sprintf("connection%s", animatedClass)
+		pathEl1.Style = connection.CSSStyle()
+		pathEl1.Attributes = fmt.Sprintf("%s%s%s", markerStart, markerEnd, mask)
+		fmt.Fprint(writer, pathEl1.Render())
+
+		pathEl2 := d2themes.NewThemableElement("path")
+		pathEl2.D = path2
+		pathEl2.Fill = color.None
+		pathEl2.Stroke = connection.Stroke
+		pathEl2.ClassName = fmt.Sprintf("connection%s", animatedClass)
+		pathEl2.Style = connection.CSSStyle()
+		pathEl2.Attributes = fmt.Sprintf("%s%s%s", markerStart, markerEnd, mask)
+		fmt.Fprint(writer, pathEl2.Render())
 	}
 
 	if connection.Label != "" {
