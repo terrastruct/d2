@@ -635,12 +635,17 @@ func splitPath(path string, percentage float64) (string, string) {
 				heading2 := geo.Point{X: h2x, Y: h2y}
 				nextPoint := geo.Point{X: p1x, Y: p1y}
 				
-				_, q2, q3, q4 := splitBezierCurve(&prevPosition, &heading1, &heading2, &nextPoint, 0, 0.5)
+				q1, q2, q3, q4 := splitBezierCurve(&prevPosition, &heading1, &heading2, &nextPoint, 0, 0.5)
 				
 				path1 += fmt.Sprintf("C %f %f %f %f %f %f ", q2.X, q2.Y, q3.X, q3.Y, q4.X, q4.Y);
 				
+				q1, q2, q3, q4 = splitBezierCurve(&prevPosition, &heading1, &heading2, &nextPoint, 0.5, 1)
+				
+				path2 += fmt.Sprintf("M %f %f C %f %f %f %f %f %f ", q1.X, q1.Y, q2.X, q2.Y, q3.X, q3.Y, q4.X, q4.Y);
+				
 			case "S":
 				path1 += fmt.Sprintf("S %s %s %s %s ", pathData[i + 1], pathData[i + 2], pathData[i + 3], pathData[i + 4])
+				path2 += fmt.Sprintf("M %s %s ", pathData[i + 3], pathData[i + 4])
 			default:
 				panic(fmt.Sprintf("unknown svg path command \"%s\"", pathData[i]))
 			}
@@ -736,8 +741,6 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 	srcAdj, dstAdj := getArrowheadAdjustments(connection, idToShape)
 	path := pathData(connection, srcAdj, dstAdj)
 	mask := fmt.Sprintf(`mask="url(#%s)"`, labelMaskID)
-
-	path1, path2 := splitPath(path, 0.5);
 	
 	if sketchRunner != nil {
 		out, err := d2sketch.Connection(sketchRunner, connection, path, mask)
@@ -758,32 +761,38 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 			animatedClass = " animated-connection"
 		}
 
-		pathEl := d2themes.NewThemableElement("path")
-		pathEl.D = path
-		pathEl.Fill = color.None
-		pathEl.Stroke = connection.Stroke
-		pathEl.ClassName = fmt.Sprintf("connection%s", animatedClass)
-		pathEl.Style = connection.CSSStyle()
-		pathEl.Attributes = fmt.Sprintf("%s%s%s", markerStart, markerEnd, mask)
-		// fmt.Fprint(writer, pathEl.Render())
+		// if connection is not animated or is a directed connection
+		if !connection.Animated || ((connection.DstArrow == d2target.NoArrowhead && connection.SrcArrow != d2target.NoArrowhead) || (connection.DstArrow != d2target.NoArrowhead && connection.SrcArrow == d2target.NoArrowhead)) {
+			pathEl := d2themes.NewThemableElement("path")
+			pathEl.D = path
+			pathEl.Fill = color.None
+			pathEl.Stroke = connection.Stroke
+			pathEl.ClassName = fmt.Sprintf("connection%s", animatedClass)
+			pathEl.Style = connection.CSSStyle()
+			pathEl.Attributes = fmt.Sprintf("%s%s%s", markerStart, markerEnd, mask)
+			fmt.Fprint(writer, pathEl.Render())
+		} else {
+			path1, path2 := splitPath(path, 0.5);
 
-		pathEl1 := d2themes.NewThemableElement("path")
-		pathEl1.D = path1
-		pathEl1.Fill = color.None
-		pathEl1.Stroke = connection.Stroke
-		pathEl1.ClassName = fmt.Sprintf("connection%s", animatedClass)
-		pathEl1.Style = connection.CSSStyle()
-		pathEl1.Attributes = fmt.Sprintf("%s%s%s", markerStart, markerEnd, mask)
-		fmt.Fprint(writer, pathEl1.Render())
+			pathEl1 := d2themes.NewThemableElement("path")
+			pathEl1.D = path1
+			pathEl1.Fill = color.None
+			pathEl1.Stroke = connection.Stroke
+			pathEl1.ClassName = fmt.Sprintf("connection%s", animatedClass)
+			pathEl1.Style = connection.CSSStyle()
+			pathEl1.Style += "animation-direction: reverse;"
+			pathEl1.Attributes = fmt.Sprintf("%s%s", markerStart, mask)
+			fmt.Fprint(writer, pathEl1.Render())
 
-		pathEl2 := d2themes.NewThemableElement("path")
-		pathEl2.D = path2
-		pathEl2.Fill = color.None
-		pathEl2.Stroke = connection.Stroke
-		pathEl2.ClassName = fmt.Sprintf("connection%s", animatedClass)
-		pathEl2.Style = connection.CSSStyle()
-		pathEl2.Attributes = fmt.Sprintf("%s%s%s", markerStart, markerEnd, mask)
-		fmt.Fprint(writer, pathEl2.Render())
+			pathEl2 := d2themes.NewThemableElement("path")
+			pathEl2.D = path2
+			pathEl2.Fill = color.None
+			pathEl2.Stroke = connection.Stroke
+			pathEl2.ClassName = fmt.Sprintf("connection%s", animatedClass)
+			pathEl2.Style = connection.CSSStyle()
+			pathEl2.Attributes = fmt.Sprintf("%s%s", markerEnd, mask)
+			fmt.Fprint(writer, pathEl2.Render())
+		}
 	}
 
 	if connection.Label != "" {
