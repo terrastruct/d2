@@ -220,3 +220,21 @@ a <-> c: {style.animated: true}
 a <-> d: {style.animated: true}
 a <-> e: {style.animated: true}
 f <-> g: {style.animated: true}
+
+-- opacity-zero-route --
+grid: {
+  *.style.opacity: 0
+  grid-columns: 3
+  a
+  b
+  c
+  d
+  e
+  f
+  g
+  h
+
+  d.style.opacity: 1
+}
+
+out -> grid.d

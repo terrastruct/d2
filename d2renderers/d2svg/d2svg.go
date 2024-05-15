@@ -1424,7 +1424,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	// Closes the class=shape
 	fmt.Fprint(writer, `</g>`)
 
-	if targetShape.Icon != nil && targetShape.Type != d2target.ShapeImage {
+	if targetShape.Icon != nil && targetShape.Type != d2target.ShapeImage && targetShape.Opacity != 0 {
 		iconPosition := label.FromString(targetShape.IconPosition)
 		var box *geo.Box
 		if iconPosition.IsOutside() {
@@ -1445,7 +1445,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		)
 	}
 
-	if targetShape.Label != "" {
+	if targetShape.Label != "" && targetShape.Opacity != 0 {
 		labelPosition := label.FromString(targetShape.LabelPosition)
 		var box *geo.Box
 		if labelPosition.IsOutside() {
