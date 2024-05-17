@@ -220,6 +220,7 @@ a <-> c: {style.animated: true}
 a <-> d: {style.animated: true}
 a <-> e: {style.animated: true}
 f <-> g: {style.animated: true}
+x -- x: {style.animated: true}
 
 -- opacity-zero-route --
 grid: {

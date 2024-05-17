@@ -114,3 +114,28 @@ func GetStrokeDashAttributes(strokeWidth, dashGapSize float64) (float64, float64
 	scaledGapSize := scale * scaledDashSize
 	return scaledDashSize, scaledGapSize
 }
+
+// Given control points p1, p2, p3, p4, calculate the segment of this bezier curve from t0 -> t1 where {0 <= t0 < t1 <= 1}.
+// Uses De Casteljau's algorithm, referenced: https://stackoverflow.com/questions/11703283/cubic-bezier-curve-segment/11704152#11704152
+func BezierCurveSegment(p1, p2, p3, p4 *geo.Point, t0, t1 float64) (geo.Point, geo.Point, geo.Point, geo.Point) {
+	u0, u1 := 1-t0, 1-t1
+
+	q1 := geo.Point{
+		X: (u0*u0*u0)*p1.X + (3*t0*u0*u0)*p2.X + (3*t0*t0*u0)*p3.X + t0*t0*t0*p4.X,
+		Y: (u0*u0*u0)*p1.Y + (3*t0*u0*u0)*p2.Y + (3*t0*t0*u0)*p3.Y + t0*t0*t0*p4.Y,
+	}
+	q2 := geo.Point{
+		X: (u0*u0*u1)*p1.X + (2*t0*u0*u1+u0*u0*t1)*p2.X + (t0*t0*u1+2*u0*t0*t1)*p3.X + t0*t0*t1*p4.X,
+		Y: (u0*u0*u1)*p1.Y + (2*t0*u0*u1+u0*u0*t1)*p2.Y + (t0*t0*u1+2*u0*t0*t1)*p3.Y + t0*t0*t1*p4.Y,
+	}
+	q3 := geo.Point{
+		X: (u0*u1*u1)*p1.X + (t0*u1*u1+2*u0*t1*u1)*p2.X + (2*t0*t1*u1+u0*t1*t1)*p3.X + t0*t1*t1*p4.X,
+		Y: (u0*u1*u1)*p1.Y + (t0*u1*u1+2*u0*t1*u1)*p2.Y + (2*t0*t1*u1+u0*t1*t1)*p3.Y + t0*t1*t1*p4.Y,
+	}
+	q4 := geo.Point{
+		X: (u1*u1*u1)*p1.X + (3*t1*u1*u1)*p2.X + (3*t1*t1*u1)*p3.X + t1*t1*t1*p4.X,
+		Y: (u1*u1*u1)*p1.Y + (3*t1*u1*u1)*p2.Y + (3*t1*t1*u1)*p3.Y + t1*t1*t1*p4.Y,
+	}
+
+	return q1, q2, q3, q4
+}
