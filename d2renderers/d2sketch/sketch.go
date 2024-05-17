@@ -802,6 +802,13 @@ func ArrowheadJS(r *Runner, arrowhead d2target.Arrowhead, stroke string, strokeW
 			stroke,
 			BG_COLOR,
 		)
+	case d2target.CircleArrowhead:
+		arrowJS = fmt.Sprintf(
+			`node = rc.circle(-2, 0, 8, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", fillWeight: 1, seed: 5 })`,
+			strokeWidth,
+			stroke,
+			BG_COLOR,
+		)
 	}
 	return
 }

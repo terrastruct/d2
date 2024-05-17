@@ -213,3 +213,19 @@ ok: {
   }
   dog1 -> dog3
 }
+
+-- sketch-mode-circle-arrowhead --
+vars: {
+  d2-config: {
+    sketch: true
+  }
+}
+
+a
+b
+a <-> b: {
+  source-arrowhead: {
+    shape: circle
+    style.filled: false
+  }
+}
