@@ -539,8 +539,9 @@ func getPathStringIncrement(pathType *string) (int, error) {
 func pathLength(pathData []string) (float64, error) {
 	var x, y, pathLength float64
 	var prevPosition geo.Point
+	var increment int
 
-	for i := 0; i < len(pathData); {
+	for i := 0; i < len(pathData); i += increment {
 		switch pathData[i] {
 		case "M":
 			x, _ = strconv.ParseFloat(pathData[i+1], 64)
@@ -565,13 +566,13 @@ func pathLength(pathData []string) (float64, error) {
 		}
 
 		prevPosition = geo.Point{X: x, Y: y}
-		increment, err := getPathStringIncrement(&pathData[i])
+
+		incr, err := getPathStringIncrement(&pathData[i])
+		increment = incr
 
 		if err != nil {
 			return 0, err
 		}
-
-		i += increment
 	}
 
 	return pathLength, nil
@@ -582,6 +583,7 @@ func splitPath(path string, percentage float64) (string, string, error) {
 	var sumPathLens, curPathLen, x, y float64
 	var prevPosition geo.Point
 	var path1, path2 string
+	var increment int
 
 	pastHalf := false
 	pathData := strings.Split(path, " ")
@@ -591,9 +593,7 @@ func splitPath(path string, percentage float64) (string, string, error) {
 		return "", "", err
 	}
 
-	i := 0
-
-	for i < len(pathData) {
+	for i := 0; i < len(pathData); i += increment {
 
 		switch pathData[i] {
 		case "M":
@@ -670,13 +670,13 @@ func splitPath(path string, percentage float64) (string, string, error) {
 			pastHalf = true
 		}
 
-		increment, err := getPathStringIncrement(&pathData[i])
+		incr, err := getPathStringIncrement(&pathData[i])
+		increment = incr
 
 		if err != nil {
 			return "", "", err
 		}
 
-		i += increment
 		prevPosition = geo.Point{X: x, Y: y}
 	}
 
