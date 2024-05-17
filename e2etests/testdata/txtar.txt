@@ -214,6 +214,24 @@ ok: {
   dog1 -> dog3
 }
 
+-- opacity-zero-route --
+grid: {
+  *.style.opacity: 0
+  grid-columns: 3
+  a
+  b
+  c
+  d
+  e
+  f
+  g
+  h
+
+  d.style.opacity: 1
+}
+
+out -> grid.d
+
 -- sketch-mode-circle-arrowhead --
 vars: {
   d2-config: {
@@ -229,3 +247,4 @@ a <-> b: {
     style.filled: false
   }
 }
+
