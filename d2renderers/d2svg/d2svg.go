@@ -496,23 +496,19 @@ func makeLabelMask(labelTL *geo.Point, width, height int, opacity float64) strin
 }
 
 // Gets a certain line/curve's SVG path string. offsetIdx and pathData provides the points needed
-func getSVGPathString(path *string, pathType *string, offsetIdx int, pathData []string) (string, error) {
-	var returnPath string
-
+func getSVGPathString(pathType *string, offsetIdx int, pathData []string) (string, error) {
 	switch *pathType {
 	case "M":
-		returnPath = fmt.Sprintf("M %s %s ", pathData[offsetIdx+1], pathData[offsetIdx+2])
+		return fmt.Sprintf("M %s %s ", pathData[offsetIdx+1], pathData[offsetIdx+2]), nil
 	case "L":
-		returnPath = fmt.Sprintf("L %s %s ", pathData[offsetIdx+1], pathData[offsetIdx+2])
+		return fmt.Sprintf("L %s %s ", pathData[offsetIdx+1], pathData[offsetIdx+2]), nil
 	case "C":
-		returnPath = fmt.Sprintf("C %s %s %s %s %s %s ", pathData[offsetIdx+1], pathData[offsetIdx+2], pathData[offsetIdx+3], pathData[offsetIdx+4], pathData[offsetIdx+5], pathData[offsetIdx+6])
+		return fmt.Sprintf("C %s %s %s %s %s %s ", pathData[offsetIdx+1], pathData[offsetIdx+2], pathData[offsetIdx+3], pathData[offsetIdx+4], pathData[offsetIdx+5], pathData[offsetIdx+6]), nil
 	case "S":
-		returnPath = fmt.Sprintf("S %s %s %s %s ", pathData[offsetIdx+1], pathData[offsetIdx+2], pathData[offsetIdx+3], pathData[offsetIdx+4])
+		return fmt.Sprintf("S %s %s %s %s ", pathData[offsetIdx+1], pathData[offsetIdx+2], pathData[offsetIdx+3], pathData[offsetIdx+4]), nil
 	default:
 		return "", fmt.Errorf("unknown svg path command \"%s\"", pathData[offsetIdx])
 	}
-
-	return returnPath, nil
 }
 
 // Gets how much to increment by on an SVG string to get to the next path command
@@ -568,17 +564,18 @@ func pathLength(pathData []string) (float64, error) {
 		prevPosition = geo.Point{X: x, Y: y}
 
 		incr, err := getPathStringIncrement(&pathData[i])
-		increment = incr
 
 		if err != nil {
 			return 0, err
 		}
+
+		increment = incr
 	}
 
 	return pathLength, nil
 }
 
-// Splits a SVG path into two SVG paths, with the first path being ~{percentage}% of the path
+// Splits an SVG path into two SVG paths, with the first path being ~{percentage}% of the path
 func splitPath(path string, percentage float64) (string, string, error) {
 	var sumPathLens, curPathLen, x, y float64
 	var prevPosition geo.Point
@@ -618,21 +615,15 @@ func splitPath(path string, percentage float64) (string, string, error) {
 			return "", "", fmt.Errorf("unknown svg path command \"%s\"", pathData[i])
 		}
 
+		curPath, err := getSVGPathString(&pathData[i], i, pathData)
+		if err != nil {
+			return "", "", err
+		}
+
 		if pastHalf {
-			curPath, err := getSVGPathString(&path2, &pathData[i], i, pathData)
 			path2 += curPath
-
-			if err != nil {
-				return "", "", err
-			}
-
 		} else if sumPathLens+curPathLen < pathLen*percentage {
-			curPath, err := getSVGPathString(&path2, &pathData[i], i, pathData)
 			path1 += curPath
-
-			if err != nil {
-				return "", "", err
-			}
 		}
 
 		sumPathLens += curPathLen
@@ -671,12 +662,12 @@ func splitPath(path string, percentage float64) (string, string, error) {
 		}
 
 		incr, err := getPathStringIncrement(&pathData[i])
-		increment = incr
 
 		if err != nil {
 			return "", "", err
 		}
 
+		increment = incr
 		prevPosition = geo.Point{X: x, Y: y}
 	}
 
@@ -758,17 +749,9 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 			animatedClass = " animated-connection"
 		}
 
-		// if connection is not animated or is a directed connection
-		if !connection.Animated || ((connection.DstArrow == d2target.NoArrowhead && connection.SrcArrow != d2target.NoArrowhead) || (connection.DstArrow != d2target.NoArrowhead && connection.SrcArrow == d2target.NoArrowhead)) {
-			pathEl := d2themes.NewThemableElement("path")
-			pathEl.D = path
-			pathEl.Fill = color.None
-			pathEl.Stroke = connection.Stroke
-			pathEl.ClassName = fmt.Sprintf("connection%s", animatedClass)
-			pathEl.Style = connection.CSSStyle()
-			pathEl.Attributes = fmt.Sprintf("%s%s%s", markerStart, markerEnd, mask)
-			fmt.Fprint(writer, pathEl.Render())
-		} else {
+		// If connection is animated and bidirectional
+		if connection.Animated && ((connection.DstArrow == d2target.NoArrowhead && connection.SrcArrow == d2target.NoArrowhead) || (connection.DstArrow != d2target.NoArrowhead && connection.SrcArrow != d2target.NoArrowhead)) {
+			// There is no pure CSS way to animate bidirectional connections in two directions, so we split it up
 			path1, path2, err := splitPath(path, 0.5)
 
 			if err != nil {
@@ -793,6 +776,15 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 			pathEl2.Style = connection.CSSStyle()
 			pathEl2.Attributes = fmt.Sprintf("%s%s", markerEnd, mask)
 			fmt.Fprint(writer, pathEl2.Render())
+		} else {
+			pathEl := d2themes.NewThemableElement("path")
+			pathEl.D = path
+			pathEl.Fill = color.None
+			pathEl.Stroke = connection.Stroke
+			pathEl.ClassName = fmt.Sprintf("connection%s", animatedClass)
+			pathEl.Style = connection.CSSStyle()
+			pathEl.Attributes = fmt.Sprintf("%s%s%s", markerStart, markerEnd, mask)
+			fmt.Fprint(writer, pathEl.Render())
 		}
 	}
 
