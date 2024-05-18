@@ -248,3 +248,13 @@ a <-> b: {
   }
 }
 
+x
+y
+z
+x <-> y <-> z: {
+  source-arrowhead: {
+    shape: circle
+    style.filled: false
+  }
+  direction: right
+}
