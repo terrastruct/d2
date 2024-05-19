@@ -231,3 +231,30 @@ grid: {
 }
 
 out -> grid.d
+
+-- sketch-mode-circle-arrowhead --
+vars: {
+  d2-config: {
+    sketch: true
+  }
+}
+
+a
+b
+a <-> b: {
+  source-arrowhead: {
+    shape: circle
+    style.filled: false
+  }
+}
+
+x
+y
+z
+x <-> y <-> z: {
+  source-arrowhead: {
+    shape: circle
+    style.filled: false
+  }
+  direction: right
+}
