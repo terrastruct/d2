@@ -496,8 +496,8 @@ func makeLabelMask(labelTL *geo.Point, width, height int, opacity float64) strin
 }
 
 // Gets a certain line/curve's SVG path string. offsetIdx and pathData provides the points needed
-func getSVGPathString(pathType *string, offsetIdx int, pathData []string) (string, error) {
-	switch *pathType {
+func getSVGPathString(pathType string, offsetIdx int, pathData []string) (string, error) {
+	switch pathType {
 	case "M":
 		return fmt.Sprintf("M %s %s ", pathData[offsetIdx+1], pathData[offsetIdx+2]), nil
 	case "L":
@@ -512,23 +512,19 @@ func getSVGPathString(pathType *string, offsetIdx int, pathData []string) (strin
 }
 
 // Gets how much to increment by on an SVG string to get to the next path command
-func getPathStringIncrement(pathType *string) (int, error) {
-	var increment int
-
-	switch *pathType {
+func getPathStringIncrement(pathType string) (int, error) {
+	switch pathType {
 	case "M":
-		increment = 3
+		return 3, nil
 	case "L":
-		increment = 3
+		return 3, nil
 	case "C":
-		increment = 7
+		return 7, nil
 	case "S":
-		increment = 5
+		return 5, nil
 	default:
-		return 0, fmt.Errorf("unknown svg path command \"%s\"", *pathType)
+		return 0, fmt.Errorf("unknown svg path command \"%s\"", pathType)
 	}
-
-	return increment, nil
 }
 
 // This function finds the length of a path in SVG notation
@@ -563,7 +559,7 @@ func pathLength(pathData []string) (float64, error) {
 
 		prevPosition = geo.Point{X: x, Y: y}
 
-		incr, err := getPathStringIncrement(&pathData[i])
+		incr, err := getPathStringIncrement(pathData[i])
 
 		if err != nil {
 			return 0, err
@@ -591,7 +587,6 @@ func splitPath(path string, percentage float64) (string, string, error) {
 	}
 
 	for i := 0; i < len(pathData); i += increment {
-
 		switch pathData[i] {
 		case "M":
 			x, _ = strconv.ParseFloat(pathData[i+1], 64)
@@ -615,20 +610,18 @@ func splitPath(path string, percentage float64) (string, string, error) {
 			return "", "", fmt.Errorf("unknown svg path command \"%s\"", pathData[i])
 		}
 
-		curPath, err := getSVGPathString(&pathData[i], i, pathData)
+		curPath, err := getSVGPathString(pathData[i], i, pathData)
 		if err != nil {
 			return "", "", err
 		}
 
-		if pastHalf {
-			path2 += curPath
-		} else if sumPathLens+curPathLen < pathLen*percentage {
-			path1 += curPath
-		}
-
 		sumPathLens += curPathLen
 
-		if !pastHalf && sumPathLens >= pathLen*percentage {
+		if pastHalf { // add to path2
+			path2 += curPath
+		} else if sumPathLens < pathLen*percentage { // add to path1
+			path1 += curPath
+		} else { // transition from path1 -> path2
 			t := (pathLen*percentage - sumPathLens + curPathLen) / curPathLen
 
 			switch pathData[i] {
@@ -661,7 +654,7 @@ func splitPath(path string, percentage float64) (string, string, error) {
 			pastHalf = true
 		}
 
-		incr, err := getPathStringIncrement(&pathData[i])
+		incr, err := getPathStringIncrement(pathData[i])
 
 		if err != nil {
 			return "", "", err
