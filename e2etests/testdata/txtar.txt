@@ -214,6 +214,14 @@ ok: {
   dog1 -> dog3
 }
 
+-- bidirectional_connection_animation --
+a <-> b: {style.animated: true}
+a <-> c: {style.animated: true}
+a <-> d: {style.animated: true}
+a <-> e: {style.animated: true}
+f <-> g: {style.animated: true}
+x -- x: {style.animated: true}
+
 -- opacity-zero-route --
 grid: {
   *.style.opacity: 0
