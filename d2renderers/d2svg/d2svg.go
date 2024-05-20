@@ -11,7 +11,6 @@ import (
 	"html"
 	"io"
 	"sort"
-	"strconv"
 	"strings"
 
 	"math"
@@ -495,178 +494,6 @@ func makeLabelMask(labelTL *geo.Point, width, height int, opacity float64) strin
 	)
 }
 
-// Gets a certain line/curve's SVG path string. offsetIdx and pathData provides the points needed
-func getSVGPathString(pathType string, offsetIdx int, pathData []string) (string, error) {
-	switch pathType {
-	case "M":
-		return fmt.Sprintf("M %s %s ", pathData[offsetIdx+1], pathData[offsetIdx+2]), nil
-	case "L":
-		return fmt.Sprintf("L %s %s ", pathData[offsetIdx+1], pathData[offsetIdx+2]), nil
-	case "C":
-		return fmt.Sprintf("C %s %s %s %s %s %s ", pathData[offsetIdx+1], pathData[offsetIdx+2], pathData[offsetIdx+3], pathData[offsetIdx+4], pathData[offsetIdx+5], pathData[offsetIdx+6]), nil
-	case "S":
-		return fmt.Sprintf("S %s %s %s %s ", pathData[offsetIdx+1], pathData[offsetIdx+2], pathData[offsetIdx+3], pathData[offsetIdx+4]), nil
-	default:
-		return "", fmt.Errorf("unknown svg path command \"%s\"", pathData[offsetIdx])
-	}
-}
-
-// Gets how much to increment by on an SVG string to get to the next path command
-func getPathStringIncrement(pathType string) (int, error) {
-	switch pathType {
-	case "M":
-		return 3, nil
-	case "L":
-		return 3, nil
-	case "C":
-		return 7, nil
-	case "S":
-		return 5, nil
-	default:
-		return 0, fmt.Errorf("unknown svg path command \"%s\"", pathType)
-	}
-}
-
-// This function finds the length of a path in SVG notation
-func pathLength(pathData []string) (float64, error) {
-	var x, y, pathLength float64
-	var prevPosition geo.Point
-	var increment int
-
-	for i := 0; i < len(pathData); i += increment {
-		switch pathData[i] {
-		case "M":
-			x, _ = strconv.ParseFloat(pathData[i+1], 64)
-			y, _ = strconv.ParseFloat(pathData[i+2], 64)
-		case "L":
-			x, _ = strconv.ParseFloat(pathData[i+1], 64)
-			y, _ = strconv.ParseFloat(pathData[i+2], 64)
-
-			pathLength += geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
-		case "C":
-			x, _ = strconv.ParseFloat(pathData[i+5], 64)
-			y, _ = strconv.ParseFloat(pathData[i+6], 64)
-
-			pathLength += geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
-		case "S":
-			x, _ = strconv.ParseFloat(pathData[i+3], 64)
-			y, _ = strconv.ParseFloat(pathData[i+4], 64)
-
-			pathLength += geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
-		default:
-			return 0, fmt.Errorf("unknown svg path command \"%s\"", pathData[i])
-		}
-
-		prevPosition = geo.Point{X: x, Y: y}
-
-		incr, err := getPathStringIncrement(pathData[i])
-
-		if err != nil {
-			return 0, err
-		}
-
-		increment = incr
-	}
-
-	return pathLength, nil
-}
-
-// Splits an SVG path into two SVG paths, with the first path being ~{percentage}% of the path
-func splitPath(path string, percentage float64) (string, string, error) {
-	var sumPathLens, curPathLen, x, y float64
-	var prevPosition geo.Point
-	var path1, path2 string
-	var increment int
-
-	pastHalf := false
-	pathData := strings.Split(path, " ")
-	pathLen, err := pathLength(pathData)
-
-	if err != nil {
-		return "", "", err
-	}
-
-	for i := 0; i < len(pathData); i += increment {
-		switch pathData[i] {
-		case "M":
-			x, _ = strconv.ParseFloat(pathData[i+1], 64)
-			y, _ = strconv.ParseFloat(pathData[i+2], 64)
-		case "L":
-			x, _ = strconv.ParseFloat(pathData[i+1], 64)
-			y, _ = strconv.ParseFloat(pathData[i+2], 64)
-
-			curPathLen = geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
-		case "C":
-			x, _ = strconv.ParseFloat(pathData[i+5], 64)
-			y, _ = strconv.ParseFloat(pathData[i+6], 64)
-
-			curPathLen = geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
-		case "S":
-			x, _ = strconv.ParseFloat(pathData[i+3], 64)
-			y, _ = strconv.ParseFloat(pathData[i+4], 64)
-
-			curPathLen = geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
-		default:
-			return "", "", fmt.Errorf("unknown svg path command \"%s\"", pathData[i])
-		}
-
-		curPath, err := getSVGPathString(pathData[i], i, pathData)
-		if err != nil {
-			return "", "", err
-		}
-
-		sumPathLens += curPathLen
-
-		if pastHalf { // add to path2
-			path2 += curPath
-		} else if sumPathLens < pathLen*percentage { // add to path1
-			path1 += curPath
-		} else { // transition from path1 -> path2
-			t := (pathLen*percentage - sumPathLens + curPathLen) / curPathLen
-
-			switch pathData[i] {
-			case "L":
-				path1 += fmt.Sprintf("L %f %f ", (x-prevPosition.X)*t+prevPosition.X, (y-prevPosition.Y)*t+prevPosition.Y)
-				path2 += fmt.Sprintf("M %f %f L %f %f ", (x-prevPosition.X)*t+prevPosition.X, (y-prevPosition.Y)*t+prevPosition.Y, x, y)
-			case "C":
-				h1x, _ := strconv.ParseFloat(pathData[i+1], 64)
-				h1y, _ := strconv.ParseFloat(pathData[i+2], 64)
-				h2x, _ := strconv.ParseFloat(pathData[i+3], 64)
-				h2y, _ := strconv.ParseFloat(pathData[i+4], 64)
-
-				heading1 := geo.Point{X: h1x, Y: h1y}
-				heading2 := geo.Point{X: h2x, Y: h2y}
-				nextPoint := geo.Point{X: x, Y: y}
-
-				q1, q2, q3, q4 := svg.BezierCurveSegment(&prevPosition, &heading1, &heading2, &nextPoint, 0, 0.5)
-				path1 += fmt.Sprintf("C %f %f %f %f %f %f ", q2.X, q2.Y, q3.X, q3.Y, q4.X, q4.Y)
-
-				q1, q2, q3, q4 = svg.BezierCurveSegment(&prevPosition, &heading1, &heading2, &nextPoint, 0.5, 1)
-				path2 += fmt.Sprintf("M %f %f C %f %f %f %f %f %f ", q1.X, q1.Y, q2.X, q2.Y, q3.X, q3.Y, q4.X, q4.Y)
-			case "S":
-				// Skip S curves because they are shorter and we can split along the connection to the next path instead
-				path1 += fmt.Sprintf("S %s %s %s %s ", pathData[i+1], pathData[i+2], pathData[i+3], pathData[i+4])
-				path2 += fmt.Sprintf("M %s %s ", pathData[i+3], pathData[i+4])
-			default:
-				return "", "", fmt.Errorf("unknown svg path command \"%s\"", pathData[i])
-			}
-
-			pastHalf = true
-		}
-
-		incr, err := getPathStringIncrement(pathData[i])
-
-		if err != nil {
-			return "", "", err
-		}
-
-		increment = incr
-		prevPosition = geo.Point{X: x, Y: y}
-	}
-
-	return path1, path2, nil
-}
-
 func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, _ error) {
 	opacityStyle := ""
 	if connection.Opacity != 1.0 {
@@ -745,7 +572,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		// If connection is animated and bidirectional
 		if connection.Animated && ((connection.DstArrow == d2target.NoArrowhead && connection.SrcArrow == d2target.NoArrowhead) || (connection.DstArrow != d2target.NoArrowhead && connection.SrcArrow != d2target.NoArrowhead)) {
 			// There is no pure CSS way to animate bidirectional connections in two directions, so we split it up
-			path1, path2, err := splitPath(path, 0.5)
+			path1, path2, err := svg.SplitPath(path, 0.5)
 
 			if err != nil {
 				return "", err
