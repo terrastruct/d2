@@ -326,8 +326,8 @@ func Connection(r *Runner, connection d2target.Connection, path, attrs string) (
 		animatedClass = " animated-connection"
 	}
 
-	// If connection is animated and bidirectional
 	if connection.Animated {
+		// If connection is animated and bidirectional
 		if (connection.DstArrow == d2target.NoArrowhead && connection.SrcArrow == d2target.NoArrowhead) || (connection.DstArrow != d2target.NoArrowhead && connection.SrcArrow != d2target.NoArrowhead) {
 			// There is no pure CSS way to animate bidirectional connections in two directions, so we split it up
 			path1, path2, err := svg.SplitPath(path, 0.5)
