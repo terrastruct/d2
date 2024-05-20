@@ -200,7 +200,6 @@ func pathLength(pathData []string) (float64, error) {
 
 			pathLength += geo.EuclideanDistance(prevPosition.X, prevPosition.Y, x, y)
 		default:
-			fmt.Println("hello", pathData[i])
 			return 0, fmt.Errorf("unknown svg path command \"%s\"", pathData[i])
 		}
 
@@ -228,7 +227,6 @@ func SplitPath(path string, percentage float64) (string, string, error) {
 	pastHalf := false
 	pathData := strings.Split(path, " ")
 	pathLen, err := pathLength(pathData)
-	fmt.Println("pathLen:", pathLen)
 
 	if err != nil {
 		return "", "", err

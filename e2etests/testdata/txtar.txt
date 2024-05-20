@@ -214,13 +214,7 @@ ok: {
   dog1 -> dog3
 }
 
--- bidirectional_connection_animation --
-vars: {
-  d2-config: {
-    sketch: true
-  }
-}
-
+-- bidirectional-connection-animation --
 a <-> b: {style.animated: true}
 a <-> c: {style.animated: true}
 a <-> d: {style.animated: true}
@@ -272,3 +266,17 @@ x <-> y <-> z: {
   }
   direction: right
 }
+
+-- sketch-bidirectional-connection-animation --
+vars: {
+  d2-config: {
+    sketch: true
+  }
+}
+
+a <-> b: {style.animated: true}
+a <-> c: {style.animated: true}
+a <-> d: {style.animated: true}
+a <-> e
+f <-> g: {style.animated: true}
+x -- x: {style.animated: true}
