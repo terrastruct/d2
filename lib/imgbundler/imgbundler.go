@@ -52,6 +52,10 @@ func bundle(ctx context.Context, l simplelog.Logger, inputPath string, svg []byt
 	imgs := imageRegex.FindAllSubmatch(svg, -1)
 	imgs = filterImageElements(imgs, isRemote)
 
+	if len(imgs) == 0 {
+		return svg, nil
+	}
+
 	ctx, cancel := context.WithTimeout(ctx, time.Minute*5)
 	defer cancel()
 
