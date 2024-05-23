@@ -321,29 +321,70 @@ func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
 }
 
 func Connection(r *Runner, connection d2target.Connection, path, attrs string) (string, error) {
-	roughness := 0.5
-	js := fmt.Sprintf(`node = rc.path("%s", {roughness: %f, seed: 1});`, path, roughness)
-	paths, err := computeRoughPathData(r, js)
-	if err != nil {
-		return "", err
-	}
-	output := ""
 	animatedClass := ""
 	if connection.Animated {
 		animatedClass = " animated-connection"
 	}
 
-	pathEl := d2themes.NewThemableElement("path")
-	pathEl.Fill = color.None
-	pathEl.Stroke = connection.Stroke
-	pathEl.ClassName = fmt.Sprintf("connection%s", animatedClass)
-	pathEl.Style = connection.CSSStyle()
-	pathEl.Attributes = attrs
-	for _, p := range paths {
-		pathEl.D = p
-		output += pathEl.Render()
+	if connection.Animated {
+		// If connection is animated and bidirectional
+		if (connection.DstArrow == d2target.NoArrowhead && connection.SrcArrow == d2target.NoArrowhead) || (connection.DstArrow != d2target.NoArrowhead && connection.SrcArrow != d2target.NoArrowhead) {
+			// There is no pure CSS way to animate bidirectional connections in two directions, so we split it up
+			path1, path2, err := svg.SplitPath(path, 0.5)
+
+			if err != nil {
+				return "", err
+			}
+
+			pathEl1 := d2themes.NewThemableElement("path")
+			pathEl1.D = path1
+			pathEl1.Fill = color.None
+			pathEl1.Stroke = connection.Stroke
+			pathEl1.ClassName = fmt.Sprintf("connection%s", animatedClass)
+			pathEl1.Style = connection.CSSStyle()
+			pathEl1.Style += "animation-direction: reverse;"
+			pathEl1.Attributes = attrs
+
+			pathEl2 := d2themes.NewThemableElement("path")
+			pathEl2.D = path2
+			pathEl2.Fill = color.None
+			pathEl2.Stroke = connection.Stroke
+			pathEl2.ClassName = fmt.Sprintf("connection%s", animatedClass)
+			pathEl2.Style = connection.CSSStyle()
+			pathEl2.Attributes = attrs
+			return pathEl1.Render() + " " + pathEl2.Render(), nil
+		} else {
+			pathEl := d2themes.NewThemableElement("path")
+			pathEl.D = path
+			pathEl.Fill = color.None
+			pathEl.Stroke = connection.Stroke
+			pathEl.ClassName = fmt.Sprintf("connection%s", animatedClass)
+			pathEl.Style = connection.CSSStyle()
+			pathEl.Attributes = attrs
+			return pathEl.Render(), nil
+		}
+	} else {
+		roughness := 0.5
+		js := fmt.Sprintf(`node = rc.path("%s", {roughness: %f, seed: 1});`, path, roughness)
+		paths, err := computeRoughPathData(r, js)
+		if err != nil {
+			return "", err
+		}
+
+		output := ""
+
+		pathEl := d2themes.NewThemableElement("path")
+		pathEl.Fill = color.None
+		pathEl.Stroke = connection.Stroke
+		pathEl.ClassName = fmt.Sprintf("connection%s", animatedClass)
+		pathEl.Style = connection.CSSStyle()
+		pathEl.Attributes = attrs
+		for _, p := range paths {
+			pathEl.D = p
+			output += pathEl.Render()
+		}
+		return output, nil
 	}
-	return output, nil
 }
 
 // TODO cleanup
