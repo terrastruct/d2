@@ -1265,7 +1265,7 @@ func deleteReserved(g *d2graph.Graph, boardPath []string, baseAST *d2ast.Map, mk
 	if len(mk.Edges) == 1 {
 		if mk.Key != nil {
 			var ok bool
-			obj, ok = g.Root.HasChild(d2graph.Key(mk.Key))
+			obj, ok = obj.HasChild(d2graph.Key(mk.Key))
 			if !ok {
 				return g, nil
 			}
