@@ -7761,6 +7761,41 @@ layers: {
 }
 `,
 		},
+		{
+			name: "edge-out-layer",
+
+			text: `x: {
+	a -> b
+}
+`,
+			key: `x.(a -> b)[0].style.stroke`,
+			exp: `x: {
+  a -> b
+}
+`,
+		},
+		{
+			name: "edge-in-layer",
+
+			text: `layers: {
+  test: {
+    x: {
+			a -> b
+    }
+  }
+}
+`,
+			boardPath: []string{"test"},
+			key:       `x.(a -> b)[0].style.stroke`,
+			exp: `layers: {
+  test: {
+    x: {
+      a -> b
+    }
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
