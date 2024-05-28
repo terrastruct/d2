@@ -455,6 +455,7 @@ bob -> alice: The ability to play bridge or\ngolf as if they were games.
 ◎: |md
   ◎ foo bar
 |
+<<<<<<< HEAD
 
 -- gradient --
 style.fill: "radial-gradient(circle, white 0%, #8A2BE2 60%, #4B0082 100%)"
@@ -669,3 +670,16 @@ formula: {
     \end{equation}
   |
 }
+||||||| parent of a468259f1 (html links are working on connections)
+=======
+
+
+-- link-on-connections --
+a: {
+  link: https://twitter.com
+}
+
+a <-> b: {
+  link: https://google.com
+}
+>>>>>>> a468259f1 (html links are working on connections)

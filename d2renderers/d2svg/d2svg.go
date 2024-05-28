@@ -502,6 +502,13 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		opacityStyle = fmt.Sprintf(" style='opacity:%f'", connection.Opacity)
 	}
 
+	closingTag := ""
+	if connection.Link != "" {
+		fmt.Fprintf(writer, `<a href="%s" xlink:href="%[1]s">`, svg.EscapeText(connection.Link))
+		fmt.Println("Hello")
+		closingTag += "</a>"
+	}
+
 	classStr := ""
 	if len(connection.Classes) > 0 {
 		classStr = fmt.Sprintf(` class="%s"`, strings.Join(connection.Classes, " "))
@@ -649,6 +656,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.DstLabel.Label, true, inlineTheme))
 	}
 	fmt.Fprintf(writer, `</g>`)
+	fmt.Fprintf(writer, "%s", closingTag)
 	return
 }
 
