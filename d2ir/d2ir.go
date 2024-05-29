@@ -1355,11 +1355,8 @@ func (m *Map) AST() d2ast.Node {
 	if m == nil {
 		return nil
 	}
-	astMap := &d2ast.Map{}
-	if m.Root() {
-		astMap.Range = d2ast.MakeRange(",0:0:0-1:0:0")
-	} else {
-		astMap.Range = d2ast.MakeRange(",1:0:0-2:0:0")
+	astMap := &d2ast.Map{
+		Range: d2ast.MakeRange(",0:0:0-1:0:0"),
 	}
 	for _, f := range m.Fields {
 		astMap.Nodes = append(astMap.Nodes, d2ast.MakeMapNodeBox(f.AST().(d2ast.MapNode)))
