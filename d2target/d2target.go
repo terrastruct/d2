@@ -599,8 +599,7 @@ type Connection struct {
 	LabelPosition   string  `json:"labelPosition"`
 	LabelPercentage float64 `json:"labelPercentage"`
 
-	Link       string `json:"link"`
-	PrettyLink string `json:"prettyLink,omitempty"`
+	Link string `json:"link"`
 
 	Route   []*geo.Point `json:"route"`
 	IsCurve bool         `json:"isCurve,omitempty"`

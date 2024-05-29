@@ -356,7 +356,6 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 	}
 	if edge.Link != nil {
 		connection.Link = edge.Link.Value
-		connection.PrettyLink = toPrettyLink(edge.Dst.Graph, edge.Link.Value)
 	}
 	connection.Label = text.Text
 	connection.LabelWidth = text.Dimensions.Width
