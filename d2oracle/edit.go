@@ -981,7 +981,10 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 		return recompile(boardG)
 	}
 
-	prevG, _ := recompile(boardG)
+	prevG, err := recompile(boardG)
+	if err != nil {
+		return nil, err
+	}
 
 	obj, ok := boardG.Root.HasChild(d2graph.Key(mk.Key))
 	if !ok {
@@ -1758,7 +1761,10 @@ func move(g *d2graph.Graph, boardPath []string, key, newKey string, includeDesce
 		return recompile(g)
 	}
 
-	prevG, _ := recompile(boardG)
+	prevG, err := recompile(boardG)
+	if err != nil {
+		return nil, err
+	}
 
 	ak := d2graph.Key(mk.Key)
 	ak2 := d2graph.Key(mk2.Key)
@@ -2282,8 +2288,17 @@ func updateNear(prevG, g *d2graph.Graph, from, to *string, includeDescendants bo
 			if len(n.MapKey.Key.Path) == 0 {
 				continue
 			}
+			if len(n.MapKey.Key.Path) > 1 {
+				if n.MapKey.Key.Path[len(n.MapKey.Key.Path)-2].Unbox().ScalarString() == "label" ||
+					n.MapKey.Key.Path[len(n.MapKey.Key.Path)-2].Unbox().ScalarString() == "icon" {
+					continue
+				}
+			}
 			if n.MapKey.Key.Path[len(n.MapKey.Key.Path)-1].Unbox().ScalarString() == "near" {
 				k := n.MapKey.Value.ScalarBox().Unbox().ScalarString()
+				if _, ok := d2graph.NearConstants[k]; ok {
+					continue
+				}
 				if strings.EqualFold(k, *from) && to == nil {
 					deleteFromMap(obj.Map, n.MapKey)
 				} else {

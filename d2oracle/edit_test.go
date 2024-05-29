@@ -7796,6 +7796,48 @@ layers: {
 }
 `,
 		},
+		{
+			name: "label-near-in-layer",
+
+			text: `layers: {
+  x: {
+    y: {
+      label.near: center-center
+    }
+    a
+  }
+}
+`,
+			boardPath: []string{"x"},
+			key:       `y`,
+			exp: `layers: {
+  x: {
+    a
+  }
+}
+`,
+		},
+		{
+			name: "update-near-in-layer",
+
+			text: `layers: {
+  x: {
+    y: {
+      near: a
+    }
+    a
+  }
+}
+`,
+			boardPath: []string{"x"},
+			key:       `y`,
+			exp: `layers: {
+  x: {
+    a
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {

@@ -318,7 +318,7 @@
         "name": "one",
         "isFolderOnly": false,
         "ast": {
-          "range": ",1:0:0-2:0:0",
+          "range": ",0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -420,7 +420,7 @@
         "name": "two",
         "isFolderOnly": false,
         "ast": {
-          "range": ",1:0:0-2:0:0",
+          "range": ",0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -465,7 +465,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": ",1:0:0-2:0:0",
+                    "range": ",0:0:0-1:0:0",
                     "nodes": [
                       {
                         "map_key": {
@@ -488,7 +488,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": ",1:0:0-2:0:0",
+                              "range": ",0:0:0-1:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -538,7 +538,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": ",1:0:0-2:0:0",
+                              "range": ",0:0:0-1:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -583,7 +583,7 @@
                                     "primary": {},
                                     "value": {
                                       "map": {
-                                        "range": ",1:0:0-2:0:0",
+                                        "range": ",0:0:0-1:0:0",
                                         "nodes": [
                                           {
                                             "map_key": {
@@ -710,7 +710,7 @@
             "name": "seinfeld",
             "isFolderOnly": false,
             "ast": {
-              "range": ",1:0:0-2:0:0",
+              "range": ",0:0:0-1:0:0",
               "nodes": [
                 {
                   "map_key": {
@@ -812,7 +812,7 @@
             "name": "missoula",
             "isFolderOnly": false,
             "ast": {
-              "range": ",1:0:0-2:0:0",
+              "range": ",0:0:0-1:0:0",
               "nodes": [
                 {
                   "map_key": {
@@ -857,7 +857,7 @@
                     "primary": {},
                     "value": {
                       "map": {
-                        "range": ",1:0:0-2:0:0",
+                        "range": ",0:0:0-1:0:0",
                         "nodes": [
                           {
                             "map_key": {
