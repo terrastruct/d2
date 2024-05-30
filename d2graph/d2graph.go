@@ -1620,7 +1620,11 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 
 		obj.SizeToContent(contentBox.Width, contentBox.Height, paddingX, paddingY)
 	}
-	for _, edge := range g.Edges {
+	for i, edge := range g.Edges {
+		if edge.Link != nil {
+			g.Edges[i].Label.Value = edge.Link.Value
+		}
+
 		usedFont := fontFamily
 		if edge.Style.Font != nil {
 			f := d2fonts.D2_FONT_TO_FAMILY[edge.Style.Font.Value]

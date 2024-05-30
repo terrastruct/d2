@@ -1,4 +1,5 @@
 #### Features 🚀
+- Connections now support `link` in SVGs [#1955](https://github.com/terrastruct/d2/pull/1955)
 
 - Vars: vars in markdown blocks are substituted [#2218](https://github.com/terrastruct/d2/pull/2218)
 - Markdown: Github-flavored tables work in `md` blocks [#2221](https://github.com/terrastruct/d2/pull/2221)
@@ -32,8 +33,13 @@
 - Sequence diagram: the padding between message labels and message endpoints are slightly increased [#2096](https://github.com/terrastruct/d2/pull/2096)
 - Opacity 0 shapes no longer have a label mask which made any segment of connections going through them lower opacity [#1940](https://github.com/terrastruct/d2/pull/1940)
 - Bidirectional connections are now animated in opposite directions rather than one direction [#1939](https://github.com/terrastruct/d2/pull/1939)
+<<<<<<< HEAD
 - Connections now support `link` in SVGs [#1955](https://github.com/terrastruct/d2/pull/1955)
 >>>>>>> 703bcd388 (update next.md)
+||||||| parent of ba86dc990 (link on connections are now labels)
+- Connections now support `link` in SVGs [#1955](https://github.com/terrastruct/d2/pull/1955)
+=======
+>>>>>>> ba86dc990 (link on connections are now labels)
 
 #### Bugfixes ⛑️
 

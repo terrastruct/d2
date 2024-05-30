@@ -675,11 +675,17 @@ formula: {
 
 
 -- link-on-connections --
-a: {
-  link: https://twitter.com
+a <-> b: {
+  link: https://google.com/
 }
 
-a <-> b: {
-  link: https://google.com
+b -> c: {
+  link: layers.d
+}
+
+layers: {
+  d: {
+    d
+  }
 }
 >>>>>>> a468259f1 (html links are working on connections)
