@@ -635,16 +635,16 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		textEl := d2themes.NewThemableElement("text", inlineTheme)
 		textEl.X = labelTL.X + float64(connection.LabelWidth)/2
 		textEl.Y = labelTL.Y + float64(connection.FontSize)
-		textEl.Fill = connection.GetFontColor()
 		textEl.ClassName = fontClass
 		textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "middle", connection.FontSize)
 		textEl.Content = RenderText(connection.Label, textEl.X, float64(connection.LabelHeight))
 
 		if connection.Link != "" {
-			textEl.Fill = "blue"
-			textEl.ClassName += " text-underline"
+			textEl.ClassName += " text-underline text-link"
 
 			fmt.Fprintf(writer, `<a href="%s" xlink:href="%[1]s">`, svg.EscapeText(connection.Link))
+		} else {
+			textEl.Fill = connection.GetFontColor()
 		}
 
 		fmt.Fprint(writer, textEl.Render())
@@ -1599,6 +1599,22 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		`
 .text-underline {
 	text-decoration: underline;
+}`,
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
+			`text-link`,
+		},
+		`
+.text-link {
+	fill: blue;
+}
+		
+.text-link:visited {
+	fill: #1a0dab;
 }`,
 	)
 
