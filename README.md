@@ -293,6 +293,9 @@ this selected list of featured projects using D2.
 - [ElasticSearch](https://github.com/elastic/beats/blob/main/libbeat/publisher/queue/proxy/diagrams/broker.d2)
 - [Sourcegraph](https://handbook.sourcegraph.com/departments/engineering/managed-services/telemetry-gateway/#dev-architecture-diagram)
 - [Temporal](https://github.com/temporalio/temporal/blob/0be2681c994470c7c61ea88e4fcef89bb4024e58/docs/_assets/matching-context.d2)
+- [Tauri](https://v2.tauri.app/concept/inter-process-communication/)
+    - Rust GUI framework (78.5k stars)
+- [Intellij](https://github.com/JetBrains/intellij-community/blob/45bcfc17a3f3e0d8548bc69e922d4ca97ac21b2b/platform/settings/docs/topics/overview.md)
 - [Coder](https://coder.com/blog/managing-templates-in-coder)
 - [UC
   Berkeley](https://github.com/ucb-bar/hammer/blob/2b5c04d7b7d9ee3c73575efcd7ee0698bd5bfa88/doc/Hammer-Use/hier.d2)
