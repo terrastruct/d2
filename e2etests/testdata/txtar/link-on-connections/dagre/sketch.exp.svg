@@ -2,13 +2,13 @@
 .text-underline {
 	text-decoration: underline;
 }
-	.text-link {
-		fill: blue;
-	}
+.text-link {
+	fill: blue;
+}
 
-	.text-link:visited {
-		fill: purple;
-	}
+.text-link:visited {
+	fill: purple;
+}
 .d2-3645967407 .text-bold {
 	font-family: "d2-3645967407-font-bold";
 }
