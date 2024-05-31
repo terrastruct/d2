@@ -597,16 +597,6 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Link = &d2graph.Scalar{}
 		attrs.Link.Value = scalar.ScalarString()
 		attrs.Link.MapKey = f.LastPrimaryKey()
-
-		if attrs.Label.Value == "" {
-			attrs.Label.Value = attrs.Link.Value
-		} else {
-			// this works because the Label attribute is set before the Link attribute
-			u, err := url.ParseRequestURI(attrs.Label.Value)
-			if err == nil && u.Host != "" {
-				c.errorf(f.Primary_.Value, "Label cannot be set to URL when link is also set (for security)")
-			}
-		}
 	case "direction":
 		dirs := []string{"up", "down", "right", "left"}
 		if !go2.Contains(dirs, scalar.ScalarString()) {
@@ -856,6 +846,19 @@ func (c *compiler) compileEdgeField(edge *d2graph.Edge, f *d2ir.Field) {
 	_, isReserved := d2ast.SimpleReservedKeywords[keyword]
 	if isReserved {
 		c.compileReserved(&edge.Attributes, f)
+
+		if f.Name != "link" {
+			return
+		}
+
+		if edge.Label.Value == "" {
+			edge.Label.Value = edge.Link.Value
+		} else {
+			u, err := url.ParseRequestURI(edge.Label.Value)
+			if err == nil && u.Host != "" {
+				c.errorf(f.Primary_.Value, "Label cannot be set to URL when link is also set (for security)")
+			}
+		}
 		return
 	} else if f.Name.ScalarString() == "style" {
 		if f.Map() == nil {
