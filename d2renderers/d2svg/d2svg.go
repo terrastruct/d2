@@ -1609,13 +1609,13 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			`text-link`,
 		},
 		`
-.text-link {
-	fill: blue;
-}
-		
-.text-link:visited {
-	fill: #1a0dab;
-}`,
+	.text-link {
+		fill: blue;
+	}
+
+	.text-link:visited {
+		fill: purple;
+	}`,
 	)
 
 	appendOnTrigger(

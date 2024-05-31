@@ -775,6 +775,13 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 	if e.Primary() != nil {
 		c.compileLabel(&edge.Attributes, e)
 	}
+
+	for _, field := range e.Map_.Fields {
+		if field.Name == "link" && edge.Label.Value == "" {
+			edge.Label.Value = field.Primary_.String()
+		}
+	}
+
 	if e.Map() != nil {
 		c.compileEdgeMap(edge, e.Map())
 	}
