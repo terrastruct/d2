@@ -776,13 +776,8 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 		c.compileLabel(&edge.Attributes, e)
 	}
 
-	for _, field := range e.Map_.Fields {
-		if field.Name == "link" && edge.Label.Value == "" {
-			edge.Label.Value = field.Primary_.String()
-		}
-	}
-
 	if e.Map() != nil {
+		c.compileEdgeLinks(edge, e.Map())
 		c.compileEdgeMap(edge, e.Map())
 	}
 
@@ -838,6 +833,17 @@ func (c *compiler) compileEdgeMap(edge *d2graph.Edge, m *d2ir.Map) {
 			continue
 		}
 		c.compileEdgeField(edge, f)
+	}
+}
+
+func (c *compiler) compileEdgeLinks(edge *d2graph.Edge, m *d2ir.Map) {
+	if m == nil {
+		return
+	}
+	for _, field := range m.Fields {
+		if field.Name == "link" && edge.Label.Value == "" {
+			edge.Label.Value = field.Primary_.String()
+		}
 	}
 }
 
