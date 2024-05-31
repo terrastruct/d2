@@ -841,8 +841,15 @@ func (c *compiler) compileEdgeLinks(edge *d2graph.Edge, m *d2ir.Map) {
 		return
 	}
 	for _, field := range m.Fields {
-		if field.Name == "link" && edge.Label.Value == "" {
-			edge.Label.Value = field.Primary_.String()
+		if field.Name == "link" && field.Primary_ != nil {
+			if edge.Label.Value == "" {
+				edge.Label.Value = field.Primary_.String()
+			} else if edge.Label.Value != "" {
+				u, err := url.ParseRequestURI(edge.Label.Value)
+				if err == nil && u.Host != "" {
+					c.errorf(field.Primary_.Value, "Label cannot be set to URL when link is also set (for security)")
+				}
+			}
 		}
 	}
 }
