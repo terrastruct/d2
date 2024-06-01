@@ -1501,7 +1501,6 @@ func addAppendixItems(writer io.Writer, targetShape d2target.Shape, s shape.Shap
 		}
 		x := int(math.Ceil(p2.X))
 		y := int(math.Ceil(p2.Y))
-		fmt.Println(targetShape.LinkIcon)
 		if targetShape.LinkIcon != nil {
 			fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" />`,
 				html.EscapeString(targetShape.LinkIcon.String()),
