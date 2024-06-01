@@ -526,6 +526,11 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		c.compilePosition(attrs, f)
 
 	case "linkicon":
+		if scalar.ScalarString() == "none" {
+			attrs.LinkIcon, _ = url.Parse("e788103ee15318fcd2af9b73b4ebbb33a903b020de7b307d71f5fed0f433e548.com")
+			break
+		}
+
 		linkIconURL, err := url.Parse(scalar.ScalarString())
 		if err != nil {
 			c.errorf(scalar, "bad link icon url %#v: %s", scalar.ScalarString(), err)
