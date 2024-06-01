@@ -125,10 +125,11 @@ type Attributes struct {
 	Label           Scalar                  `json:"label"`
 	LabelDimensions d2target.TextDimensions `json:"labelDimensions"`
 
-	Style   Style    `json:"style"`
-	Icon    *url.URL `json:"icon,omitempty"`
-	Tooltip *Scalar  `json:"tooltip,omitempty"`
-	Link    *Scalar  `json:"link,omitempty"`
+	Style    Style    `json:"style"`
+	Icon     *url.URL `json:"icon,omitempty"`
+	Tooltip  *Scalar  `json:"tooltip,omitempty"`
+	Link     *Scalar  `json:"link,omitempty"`
+	LinkIcon *url.URL `json:"linkIcon,omitempty"`
 
 	WidthAttr  *Scalar `json:"width,omitempty"`
 	HeightAttr *Scalar `json:"height,omitempty"`
@@ -1685,6 +1686,7 @@ var SimpleReservedKeywords = map[string]struct{}{
 	"constraint":     {},
 	"tooltip":        {},
 	"link":           {},
+	"linkicon":       {},
 	"near":           {},
 	"width":          {},
 	"height":         {},

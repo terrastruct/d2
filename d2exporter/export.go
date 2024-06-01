@@ -198,6 +198,8 @@ func toShape(obj *d2graph.Object, g *d2graph.Graph) d2target.Shape {
 		shape.Link = obj.Link.Value
 		shape.PrettyLink = toPrettyLink(g, obj.Link.Value)
 	}
+
+	shape.LinkIcon = obj.LinkIcon
 	shape.Icon = obj.Icon
 	if obj.IconPosition != nil {
 		shape.IconPosition = *obj.IconPosition
