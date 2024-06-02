@@ -2520,6 +2520,38 @@ x -> a.b -> a.b.c
 }
 `,
 		},
+		{
+			name: "scenario-grandchild",
+
+			text: `a -> b
+
+scenarios: {
+  x: {
+    scenarios: {
+      c: {
+        (a -> b)[0].style.bold: true
+      }
+    }
+  }
+}
+`,
+			key:       `(a -> b)[0].style.stroke-width`,
+			value:     go2.Pointer(`3`),
+			boardPath: []string{"x", "c"},
+			exp: `a -> b
+
+scenarios: {
+  x: {
+    scenarios: {
+      c: {
+        (a -> b)[0].style.bold: true
+        (a -> b)[0].style.stroke-width: 3
+      }
+    }
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
