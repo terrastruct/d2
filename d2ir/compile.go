@@ -1009,6 +1009,10 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 				continue
 			}
 			for _, e := range ea {
+				if refctx.Key.Primary.Null != nil || refctx.Key.Value.Null != nil {
+					refctx.ScopeMap.DeleteEdge(e.ID)
+					continue
+				}
 				e.References = append(e.References, &EdgeReference{
 					Context_:       refctx,
 					DueToGlob_:     len(c.globRefContextStack) > 0,
@@ -1016,11 +1020,6 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 				})
 				refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Src, refctx, c)
 				refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Dst, refctx, c)
-
-				if refctx.Key.Primary.Null != nil || refctx.Key.Value.Null != nil {
-					refctx.ScopeMap.DeleteEdge(e.ID)
-					continue
-				}
 			}
 		} else {
 			var err error
