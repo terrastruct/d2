@@ -991,7 +991,7 @@ func (c *compiler) compileEdges(refctx *RefContext) {
 func (c *compiler) _compileEdges(refctx *RefContext) {
 	eida := NewEdgeIDs(refctx.Key)
 	for i, eid := range eida {
-		if refctx.Key != nil && refctx.Key.Value.Null != nil {
+		if !eid.Glob && (refctx.Key.Primary.Null != nil || refctx.Key.Value.Null != nil) {
 			refctx.ScopeMap.DeleteEdge(eid)
 			continue
 		}
@@ -1016,6 +1016,11 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 				})
 				refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Src, refctx, c)
 				refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Dst, refctx, c)
+
+				if refctx.Key.Primary.Null != nil || refctx.Key.Value.Null != nil {
+					refctx.ScopeMap.DeleteEdge(e.ID)
+					continue
+				}
 			}
 		} else {
 			var err error
