@@ -311,6 +311,18 @@ layers.x: { wrapper.p }
 			},
 		},
 		{
+			name: "edge-glob-null",
+			run: func(t testing.TB) {
+				m, err := compile(t, `a -> b
+(* -> *)[*]: null
+x -> y
+`)
+				assert.Success(t, err)
+				// 4 fields and 0 edges
+				assertQuery(t, m, 4, 0, nil, "")
+			},
+		},
+		{
 			name: "double-glob/edge/1",
 			run: func(t testing.TB) {
 				m, err := compile(t, `fast: {
