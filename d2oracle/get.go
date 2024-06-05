@@ -153,11 +153,12 @@ func IsImportedObj(ast *d2ast.Map, obj *d2graph.Object) bool {
 	return false
 }
 
-// Globs count as imported for now
+// Glob creations count as imported for now
 // TODO Probably rename later
 func IsImportedEdge(ast *d2ast.Map, edge *d2graph.Edge) bool {
 	for _, ref := range edge.References {
-		if ref.Edge.Src.HasGlob() || ref.Edge.Dst.HasGlob() {
+		// If edge index, the glob is just setting something, not responsible for creating the edge
+		if (ref.Edge.Src.HasGlob() || ref.Edge.Dst.HasGlob()) && ref.MapKey.EdgeIndex == nil {
 			return true
 		}
 		if ref.Edge.Range.Path != ast.Range.Path {

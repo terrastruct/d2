@@ -1,0 +1,264 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,0:0:0-4:0:36",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,0:0:0-0:1:1",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,1:0:2-1:1:3",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,1:0:2-1:1:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,1:0:2-1:1:3",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,3:0:5-3:30:35",
+            "edges": [
+              {
+                "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,3:1:6-3:7:12",
+                "src": {
+                  "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,3:1:6-3:2:7",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,3:1:6-3:2:7",
+                        "value": [
+                          {
+                            "string": "*",
+                            "raw_string": "*"
+                          }
+                        ],
+                        "pattern": [
+                          "*"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,3:6:11-3:7:12",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,3:6:11-3:7:12",
+                        "value": [
+                          {
+                            "string": "*",
+                            "raw_string": "*"
+                          }
+                        ],
+                        "pattern": [
+                          "*"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "edge_index": {
+              "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,3:8:13-3:11:16",
+              "int": null,
+              "glob": true
+            },
+            "edge_key": {
+              "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,3:12:17-3:25:30",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,3:12:17-3:17:22",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,3:18:23-3:25:30",
+                    "value": [
+                      {
+                        "string": "opacity",
+                        "raw_string": "opacity"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "number": {
+                "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,3:27:32-3:30:35",
+                "raw": "0.8",
+                "value": "4/5"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "x",
+        "id_val": "x",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "x"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "y",
+        "id_val": "y",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,1:0:2-1:1:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge-with-glob.d2,1:0:2-1:1:3",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "y"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": "<nil>"
+}
