@@ -7894,6 +7894,21 @@ layers: {
 }
 `,
 		},
+		{
+			name: "edge-with-glob",
+
+			text: `x -> y
+y
+
+(* -> *)[*].style.opacity: 0.8
+`,
+			key: `(x -> y)[0]`,
+			exp: `x
+y
+
+(* -> *)[*].style.opacity: 0.8
+`,
+		},
 	}
 
 	for _, tc := range testCases {

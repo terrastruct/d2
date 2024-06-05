@@ -949,7 +949,10 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 
 				for i := len(e.References) - 1; i >= 0; i-- {
 					ref := e.References[i]
-					deleteEdge(g, ref.Scope, ref.MapKey, ref.MapKeyEdgeIndex)
+					// Leave glob setters alone
+					if !(ref.MapKey.EdgeIndex != nil && ref.MapKey.EdgeIndex.Glob) {
+						deleteEdge(g, ref.Scope, ref.MapKey, ref.MapKeyEdgeIndex)
+					}
 				}
 
 				edges, ok := obj.FindEdges(mk)
