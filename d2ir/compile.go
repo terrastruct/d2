@@ -392,6 +392,9 @@ func (g *globContext) prefixed(dst *Map) *globContext {
 	if len(prefix.Path) > 0 {
 		g2.refctx.Key.Key = prefix
 	}
+	if !g2.refctx.Key.HasTripleGlob() && g2.refctx.Key.EdgeKey != nil {
+		prefix.Path = append(prefix.Path, g2.refctx.Key.EdgeKey.Path...)
+	}
 	return g2
 }
 

@@ -1,0 +1,2828 @@
+{
+  "fields": [
+    {
+      "name": "x",
+      "composite": {
+        "fields": [
+          {
+            "name": "style",
+            "composite": {
+              "fields": [
+                {
+                  "name": "opacity",
+                  "primary": {
+                    "value": {
+                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:17:41-2:18:42",
+                      "raw": "1",
+                      "value": "1"
+                    }
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                        "value": [
+                          {
+                            "string": "opacity",
+                            "raw_string": "opacity"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                              "value": [
+                                {
+                                  "string": "*",
+                                  "raw_string": "*"
+                                }
+                              ],
+                              "pattern": [
+                                "*"
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                              "value": [
+                                {
+                                  "string": "opacity",
+                                  "raw_string": "opacity"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:18:18",
+                          "key": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                                  "value": [
+                                    {
+                                      "string": "*",
+                                      "raw_string": "*"
+                                    }
+                                  ],
+                                  "pattern": [
+                                    "*"
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                                  "value": [
+                                    {
+                                      "string": "opacity",
+                                      "raw_string": "opacity"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "number": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:17:17-0:18:18",
+                              "raw": "0",
+                              "value": "0"
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": true
+                    },
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:8:32-2:15:39",
+                        "value": [
+                          {
+                            "string": "opacity",
+                            "raw_string": "opacity"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:15:39",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:7:31",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:8:32-2:15:39",
+                              "value": [
+                                {
+                                  "string": "opacity",
+                                  "raw_string": "opacity"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:18:42",
+                          "key": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:15:39",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:7:31",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:8:32-2:15:39",
+                                  "value": [
+                                    {
+                                      "string": "opacity",
+                                      "raw_string": "opacity"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "number": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:17:41-2:18:42",
+                              "raw": "1",
+                              "value": "1"
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                  "value": [
+                    {
+                      "string": "style",
+                      "raw_string": "style"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "*",
+                            "raw_string": "*"
+                          }
+                        ],
+                        "pattern": [
+                          "*"
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                        "value": [
+                          {
+                            "string": "opacity",
+                            "raw_string": "opacity"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:18:18",
+                    "key": {
+                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                            "value": [
+                              {
+                                "string": "*",
+                                "raw_string": "*"
+                              }
+                            ],
+                            "pattern": [
+                              "*"
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                            "value": [
+                              {
+                                "string": "opacity",
+                                "raw_string": "opacity"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "number": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:17:17-0:18:18",
+                        "raw": "0",
+                        "value": "0"
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
+              },
+              {
+                "string": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:7:31",
+                  "value": [
+                    {
+                      "string": "style",
+                      "raw_string": "style"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:15:39",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:7:31",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:8:32-2:15:39",
+                        "value": [
+                          {
+                            "string": "opacity",
+                            "raw_string": "opacity"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:18:42",
+                    "key": {
+                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:15:39",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:7:31",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:8:32-2:15:39",
+                            "value": [
+                              {
+                                "string": "opacity",
+                                "raw_string": "opacity"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "number": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:17:41-2:18:42",
+                        "raw": "1",
+                        "value": "1"
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              },
+              {
+                "string": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                  "value": [
+                    {
+                      "string": "style",
+                      "raw_string": "style"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "*",
+                            "raw_string": "*"
+                          }
+                        ],
+                        "pattern": [
+                          "*"
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                        "value": [
+                          {
+                            "string": "opacity",
+                            "raw_string": "opacity"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:18:18",
+                    "key": {
+                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                            "value": [
+                              {
+                                "string": "*",
+                                "raw_string": "*"
+                              }
+                            ],
+                            "pattern": [
+                              "*"
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                            "value": [
+                              {
+                                "string": "opacity",
+                                "raw_string": "opacity"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "number": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:17:17-0:18:18",
+                        "raw": "0",
+                        "value": "0"
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
+              },
+              {
+                "string": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                  "value": [
+                    {
+                      "string": "style",
+                      "raw_string": "style"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "*",
+                            "raw_string": "*"
+                          }
+                        ],
+                        "pattern": [
+                          "*"
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                        "value": [
+                          {
+                            "string": "opacity",
+                            "raw_string": "opacity"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:18:18",
+                    "key": {
+                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                            "value": [
+                              {
+                                "string": "*",
+                                "raw_string": "*"
+                              }
+                            ],
+                            "pattern": [
+                              "*"
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                            "value": [
+                              {
+                                "string": "opacity",
+                                "raw_string": "opacity"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "number": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:17:17-0:18:18",
+                        "raw": "0",
+                        "value": "0"
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
+              },
+              {
+                "string": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                  "value": [
+                    {
+                      "string": "style",
+                      "raw_string": "style"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "*",
+                            "raw_string": "*"
+                          }
+                        ],
+                        "pattern": [
+                          "*"
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                        "value": [
+                          {
+                            "string": "opacity",
+                            "raw_string": "opacity"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:18:18",
+                    "key": {
+                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                            "value": [
+                              {
+                                "string": "*",
+                                "raw_string": "*"
+                              }
+                            ],
+                            "pattern": [
+                              "*"
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                            "value": [
+                              {
+                                "string": "opacity",
+                                "raw_string": "opacity"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "number": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:17:17-0:18:18",
+                        "raw": "0",
+                        "value": "0"
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
+              },
+              {
+                "string": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                  "value": [
+                    {
+                      "string": "style",
+                      "raw_string": "style"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "*",
+                            "raw_string": "*"
+                          }
+                        ],
+                        "pattern": [
+                          "*"
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                        "value": [
+                          {
+                            "string": "opacity",
+                            "raw_string": "opacity"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:18:18",
+                    "key": {
+                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                            "value": [
+                              {
+                                "string": "*",
+                                "raw_string": "*"
+                              }
+                            ],
+                            "pattern": [
+                              "*"
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                            "value": [
+                              {
+                                "string": "opacity",
+                                "raw_string": "opacity"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "number": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:17:17-0:18:18",
+                        "raw": "0",
+                        "value": "0"
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
+              },
+              {
+                "string": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                  "value": [
+                    {
+                      "string": "style",
+                      "raw_string": "style"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "*",
+                            "raw_string": "*"
+                          }
+                        ],
+                        "pattern": [
+                          "*"
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                        "value": [
+                          {
+                            "string": "opacity",
+                            "raw_string": "opacity"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:18:18",
+                    "key": {
+                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                            "value": [
+                              {
+                                "string": "*",
+                                "raw_string": "*"
+                              }
+                            ],
+                            "pattern": [
+                              "*"
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                            "value": [
+                              {
+                                "string": "opacity",
+                                "raw_string": "opacity"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "number": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:17:17-0:18:18",
+                        "raw": "0",
+                        "value": "0"
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
+              },
+              {
+                "string": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                  "value": [
+                    {
+                      "string": "style",
+                      "raw_string": "style"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "*",
+                            "raw_string": "*"
+                          }
+                        ],
+                        "pattern": [
+                          "*"
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                        "value": [
+                          {
+                            "string": "opacity",
+                            "raw_string": "opacity"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:18:18",
+                    "key": {
+                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                            "value": [
+                              {
+                                "string": "*",
+                                "raw_string": "*"
+                              }
+                            ],
+                            "pattern": [
+                              "*"
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                            "value": [
+                              {
+                                "string": "opacity",
+                                "raw_string": "opacity"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "number": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:17:17-0:18:18",
+                        "raw": "0",
+                        "value": "0"
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/field-glob-style-inherit.d2,1:0:19-1:1:20",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/field-glob-style-inherit.d2,1:0:19-1:1:20",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,1:0:19-1:1:20",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/field-glob-style-inherit.d2,1:0:19-3:1:44",
+              "key": {
+                "range": "TestCompile/patterns/field-glob-style-inherit.d2,1:0:19-1:1:20",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,1:0:19-1:1:20",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,1:3:22-3:1:44",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:18:42",
+                        "key": {
+                          "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:15:39",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:7:31",
+                                "value": [
+                                  {
+                                    "string": "style",
+                                    "raw_string": "style"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:8:32-2:15:39",
+                                "value": [
+                                  {
+                                    "string": "opacity",
+                                    "raw_string": "opacity"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "number": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:17:41-2:18:42",
+                            "raw": "1",
+                            "value": "1"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        }
+      ]
+    },
+    {
+      "name": "scenarios",
+      "composite": {
+        "fields": [
+          {
+            "name": "1",
+            "composite": {
+              "fields": [
+                {
+                  "name": "x",
+                  "composite": {
+                    "fields": [
+                      {
+                        "name": "style",
+                        "composite": {
+                          "fields": [
+                            {
+                              "name": "opacity",
+                              "primary": {
+                                "value": {
+                                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:17:41-2:18:42",
+                                  "raw": "1",
+                                  "value": "1"
+                                }
+                              },
+                              "references": [
+                                {
+                                  "string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                                    "value": [
+                                      {
+                                        "string": "opacity",
+                                        "raw_string": "opacity"
+                                      }
+                                    ]
+                                  },
+                                  "key_path": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                                          "value": [
+                                            {
+                                              "string": "*",
+                                              "raw_string": "*"
+                                            }
+                                          ],
+                                          "pattern": [
+                                            "*"
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                                          "value": [
+                                            {
+                                              "string": "style",
+                                              "raw_string": "style"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                                          "value": [
+                                            {
+                                              "string": "opacity",
+                                              "raw_string": "opacity"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "context": {
+                                    "edge": null,
+                                    "key": {
+                                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:18:18",
+                                      "key": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                                              "value": [
+                                                {
+                                                  "string": "*",
+                                                  "raw_string": "*"
+                                                }
+                                              ],
+                                              "pattern": [
+                                                "*"
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                                              "value": [
+                                                {
+                                                  "string": "style",
+                                                  "raw_string": "style"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                                              "value": [
+                                                {
+                                                  "string": "opacity",
+                                                  "raw_string": "opacity"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "primary": {},
+                                      "value": {
+                                        "number": {
+                                          "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:17:17-0:18:18",
+                                          "raw": "0",
+                                          "value": "0"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "due_to_glob": true,
+                                  "due_to_lazy_glob": true
+                                },
+                                {
+                                  "string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:8:32-2:15:39",
+                                    "value": [
+                                      {
+                                        "string": "opacity",
+                                        "raw_string": "opacity"
+                                      }
+                                    ]
+                                  },
+                                  "key_path": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:15:39",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:7:31",
+                                          "value": [
+                                            {
+                                              "string": "style",
+                                              "raw_string": "style"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:8:32-2:15:39",
+                                          "value": [
+                                            {
+                                              "string": "opacity",
+                                              "raw_string": "opacity"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "context": {
+                                    "edge": null,
+                                    "key": {
+                                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:18:42",
+                                      "key": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:15:39",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:7:31",
+                                              "value": [
+                                                {
+                                                  "string": "style",
+                                                  "raw_string": "style"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:8:32-2:15:39",
+                                              "value": [
+                                                {
+                                                  "string": "opacity",
+                                                  "raw_string": "opacity"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "primary": {},
+                                      "value": {
+                                        "number": {
+                                          "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:17:41-2:18:42",
+                                          "raw": "1",
+                                          "value": "1"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "due_to_glob": false,
+                                  "due_to_lazy_glob": false
+                                }
+                              ]
+                            }
+                          ],
+                          "edges": null
+                        },
+                        "references": [
+                          {
+                            "string": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                                    "value": [
+                                      {
+                                        "string": "*",
+                                        "raw_string": "*"
+                                      }
+                                    ],
+                                    "pattern": [
+                                      "*"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                                    "value": [
+                                      {
+                                        "string": "style",
+                                        "raw_string": "style"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                                    "value": [
+                                      {
+                                        "string": "opacity",
+                                        "raw_string": "opacity"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:18:18",
+                                "key": {
+                                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                                        "value": [
+                                          {
+                                            "string": "*",
+                                            "raw_string": "*"
+                                          }
+                                        ],
+                                        "pattern": [
+                                          "*"
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                                        "value": [
+                                          {
+                                            "string": "opacity",
+                                            "raw_string": "opacity"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:17:17-0:18:18",
+                                    "raw": "0",
+                                    "value": "0"
+                                  }
+                                }
+                              }
+                            },
+                            "due_to_glob": true,
+                            "due_to_lazy_glob": true
+                          },
+                          {
+                            "string": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:7:31",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:15:39",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:7:31",
+                                    "value": [
+                                      {
+                                        "string": "style",
+                                        "raw_string": "style"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:8:32-2:15:39",
+                                    "value": [
+                                      {
+                                        "string": "opacity",
+                                        "raw_string": "opacity"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:18:42",
+                                "key": {
+                                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:15:39",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:7:31",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:8:32-2:15:39",
+                                        "value": [
+                                          {
+                                            "string": "opacity",
+                                            "raw_string": "opacity"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:17:41-2:18:42",
+                                    "raw": "1",
+                                    "value": "1"
+                                  }
+                                }
+                              }
+                            },
+                            "due_to_glob": false,
+                            "due_to_lazy_glob": false
+                          },
+                          {
+                            "string": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                                    "value": [
+                                      {
+                                        "string": "*",
+                                        "raw_string": "*"
+                                      }
+                                    ],
+                                    "pattern": [
+                                      "*"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                                    "value": [
+                                      {
+                                        "string": "style",
+                                        "raw_string": "style"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                                    "value": [
+                                      {
+                                        "string": "opacity",
+                                        "raw_string": "opacity"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:18:18",
+                                "key": {
+                                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                                        "value": [
+                                          {
+                                            "string": "*",
+                                            "raw_string": "*"
+                                          }
+                                        ],
+                                        "pattern": [
+                                          "*"
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                                        "value": [
+                                          {
+                                            "string": "opacity",
+                                            "raw_string": "opacity"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:17:17-0:18:18",
+                                    "raw": "0",
+                                    "value": "0"
+                                  }
+                                }
+                              }
+                            },
+                            "due_to_glob": true,
+                            "due_to_lazy_glob": true
+                          },
+                          {
+                            "string": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                                    "value": [
+                                      {
+                                        "string": "*",
+                                        "raw_string": "*"
+                                      }
+                                    ],
+                                    "pattern": [
+                                      "*"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                                    "value": [
+                                      {
+                                        "string": "style",
+                                        "raw_string": "style"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                                    "value": [
+                                      {
+                                        "string": "opacity",
+                                        "raw_string": "opacity"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:18:18",
+                                "key": {
+                                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                                        "value": [
+                                          {
+                                            "string": "*",
+                                            "raw_string": "*"
+                                          }
+                                        ],
+                                        "pattern": [
+                                          "*"
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                                        "value": [
+                                          {
+                                            "string": "opacity",
+                                            "raw_string": "opacity"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:17:17-0:18:18",
+                                    "raw": "0",
+                                    "value": "0"
+                                  }
+                                }
+                              }
+                            },
+                            "due_to_glob": true,
+                            "due_to_lazy_glob": true
+                          },
+                          {
+                            "string": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                                    "value": [
+                                      {
+                                        "string": "*",
+                                        "raw_string": "*"
+                                      }
+                                    ],
+                                    "pattern": [
+                                      "*"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                                    "value": [
+                                      {
+                                        "string": "style",
+                                        "raw_string": "style"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                                    "value": [
+                                      {
+                                        "string": "opacity",
+                                        "raw_string": "opacity"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:18:18",
+                                "key": {
+                                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                                        "value": [
+                                          {
+                                            "string": "*",
+                                            "raw_string": "*"
+                                          }
+                                        ],
+                                        "pattern": [
+                                          "*"
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                                        "value": [
+                                          {
+                                            "string": "opacity",
+                                            "raw_string": "opacity"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:17:17-0:18:18",
+                                    "raw": "0",
+                                    "value": "0"
+                                  }
+                                }
+                              }
+                            },
+                            "due_to_glob": true,
+                            "due_to_lazy_glob": true
+                          },
+                          {
+                            "string": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                                    "value": [
+                                      {
+                                        "string": "*",
+                                        "raw_string": "*"
+                                      }
+                                    ],
+                                    "pattern": [
+                                      "*"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                                    "value": [
+                                      {
+                                        "string": "style",
+                                        "raw_string": "style"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                                    "value": [
+                                      {
+                                        "string": "opacity",
+                                        "raw_string": "opacity"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:18:18",
+                                "key": {
+                                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                                        "value": [
+                                          {
+                                            "string": "*",
+                                            "raw_string": "*"
+                                          }
+                                        ],
+                                        "pattern": [
+                                          "*"
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                                        "value": [
+                                          {
+                                            "string": "opacity",
+                                            "raw_string": "opacity"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:17:17-0:18:18",
+                                    "raw": "0",
+                                    "value": "0"
+                                  }
+                                }
+                              }
+                            },
+                            "due_to_glob": true,
+                            "due_to_lazy_glob": true
+                          },
+                          {
+                            "string": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": ",0:0:0-0:0:0",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": ",0:0:0-0:0:0",
+                                    "value": [
+                                      {
+                                        "string": "scenarios"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": ",0:0:0-0:0:0",
+                                    "value": [
+                                      {
+                                        "string": "1"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                                    "value": [
+                                      {
+                                        "string": "*",
+                                        "raw_string": "*"
+                                      }
+                                    ],
+                                    "pattern": [
+                                      "*"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                                    "value": [
+                                      {
+                                        "string": "style",
+                                        "raw_string": "style"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                                    "value": [
+                                      {
+                                        "string": "opacity",
+                                        "raw_string": "opacity"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:18:18",
+                                "key": {
+                                  "range": ",0:0:0-0:0:0",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": ",0:0:0-0:0:0",
+                                        "value": [
+                                          {
+                                            "string": "scenarios"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": ",0:0:0-0:0:0",
+                                        "value": [
+                                          {
+                                            "string": "1"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                                        "value": [
+                                          {
+                                            "string": "*",
+                                            "raw_string": "*"
+                                          }
+                                        ],
+                                        "pattern": [
+                                          "*"
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                                        "value": [
+                                          {
+                                            "string": "opacity",
+                                            "raw_string": "opacity"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:17:17-0:18:18",
+                                    "raw": "0",
+                                    "value": "0"
+                                  }
+                                }
+                              }
+                            },
+                            "due_to_glob": true,
+                            "due_to_lazy_glob": true
+                          }
+                        ]
+                      }
+                    ],
+                    "edges": null
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,1:0:19-1:1:20",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,1:0:19-1:1:20",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,1:0:19-1:1:20",
+                              "value": [
+                                {
+                                  "string": "x",
+                                  "raw_string": "x"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/patterns/field-glob-style-inherit.d2,1:0:19-3:1:44",
+                          "key": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,1:0:19-1:1:20",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,1:0:19-1:1:20",
+                                  "value": [
+                                    {
+                                      "string": "x",
+                                      "raw_string": "x"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,1:3:22-3:1:44",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:18:42",
+                                    "key": {
+                                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:15:39",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:2:26-2:7:31",
+                                            "value": [
+                                              {
+                                                "string": "style",
+                                                "raw_string": "style"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          "unquoted_string": {
+                                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:8:32-2:15:39",
+                                            "value": [
+                                              {
+                                                "string": "opacity",
+                                                "raw_string": "opacity"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {},
+                                    "value": {
+                                      "number": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:17:41-2:18:42",
+                                        "raw": "1",
+                                        "value": "1"
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    },
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,7:4:70-7:5:71",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,7:4:70-7:5:71",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,7:4:70-7:5:71",
+                              "value": [
+                                {
+                                  "string": "x",
+                                  "raw_string": "x"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/patterns/field-glob-style-inherit.d2,7:4:70-7:5:71",
+                          "key": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,7:4:70-7:5:71",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,7:4:70-7:5:71",
+                                  "value": [
+                                    {
+                                      "string": "x",
+                                      "raw_string": "x"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {}
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,6:2:61-6:3:62",
+                  "value": [
+                    {
+                      "string": "1",
+                      "raw_string": "1"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,6:2:61-6:3:62",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,6:2:61-6:3:62",
+                        "value": [
+                          {
+                            "string": "1",
+                            "raw_string": "1"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,6:2:61-8:3:75",
+                    "key": {
+                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,6:2:61-6:3:62",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,6:2:61-6:3:62",
+                            "value": [
+                              {
+                                "string": "1",
+                                "raw_string": "1"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,6:5:64-8:3:75",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,7:4:70-7:5:71",
+                              "key": {
+                                "range": "TestCompile/patterns/field-glob-style-inherit.d2,7:4:70-7:5:71",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,7:4:70-7:5:71",
+                                      "value": [
+                                        {
+                                          "string": "x",
+                                          "raw_string": "x"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {}
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              },
+              {
+                "string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "1"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "scenarios"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "1"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "*",
+                            "raw_string": "*"
+                          }
+                        ],
+                        "pattern": [
+                          "*"
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                        "value": [
+                          {
+                            "string": "opacity",
+                            "raw_string": "opacity"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:18:18",
+                    "key": {
+                      "range": ",0:0:0-0:0:0",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "scenarios"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "1"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                            "value": [
+                              {
+                                "string": "*",
+                                "raw_string": "*"
+                              }
+                            ],
+                            "pattern": [
+                              "*"
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                            "value": [
+                              {
+                                "string": "opacity",
+                                "raw_string": "opacity"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "number": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:17:17-0:18:18",
+                        "raw": "0",
+                        "value": "0"
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": true
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/field-glob-style-inherit.d2,5:0:46-5:9:55",
+            "value": [
+              {
+                "string": "scenarios",
+                "raw_string": "scenarios"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/field-glob-style-inherit.d2,5:0:46-5:9:55",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,5:0:46-5:9:55",
+                  "value": [
+                    {
+                      "string": "scenarios",
+                      "raw_string": "scenarios"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/field-glob-style-inherit.d2,5:0:46-9:1:77",
+              "key": {
+                "range": "TestCompile/patterns/field-glob-style-inherit.d2,5:0:46-5:9:55",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,5:0:46-5:9:55",
+                      "value": [
+                        {
+                          "string": "scenarios",
+                          "raw_string": "scenarios"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,5:11:57-9:1:77",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,6:2:61-8:3:75",
+                        "key": {
+                          "range": "TestCompile/patterns/field-glob-style-inherit.d2,6:2:61-6:3:62",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/patterns/field-glob-style-inherit.d2,6:2:61-6:3:62",
+                                "value": [
+                                  {
+                                    "string": "1",
+                                    "raw_string": "1"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "map": {
+                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,6:5:64-8:3:75",
+                            "nodes": [
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,7:4:70-7:5:71",
+                                  "key": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,7:4:70-7:5:71",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/patterns/field-glob-style-inherit.d2,7:4:70-7:5:71",
+                                          "value": [
+                                            {
+                                              "string": "x",
+                                              "raw_string": "x"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {}
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        },
+        {
+          "string": {
+            "range": ",0:0:0-0:0:0",
+            "value": [
+              {
+                "string": "scenarios"
+              }
+            ]
+          },
+          "key_path": {
+            "range": ",0:0:0-0:0:0",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "scenarios"
+                    }
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "1"
+                    }
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                  "value": [
+                    {
+                      "string": "*",
+                      "raw_string": "*"
+                    }
+                  ],
+                  "pattern": [
+                    "*"
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                  "value": [
+                    {
+                      "string": "style",
+                      "raw_string": "style"
+                    }
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                  "value": [
+                    {
+                      "string": "opacity",
+                      "raw_string": "opacity"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:18:18",
+              "key": {
+                "range": ",0:0:0-0:0:0",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": ",0:0:0-0:0:0",
+                      "value": [
+                        {
+                          "string": "scenarios"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": ",0:0:0-0:0:0",
+                      "value": [
+                        {
+                          "string": "1"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "*",
+                          "raw_string": "*"
+                        }
+                      ],
+                      "pattern": [
+                        "*"
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                      "value": [
+                        {
+                          "string": "style",
+                          "raw_string": "style"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                      "value": [
+                        {
+                          "string": "opacity",
+                          "raw_string": "opacity"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "number": {
+                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:17:17-0:18:18",
+                  "raw": "0",
+                  "value": "0"
+                }
+              }
+            }
+          },
+          "due_to_glob": true,
+          "due_to_lazy_glob": true
+        }
+      ]
+    }
+  ],
+  "edges": null
+}

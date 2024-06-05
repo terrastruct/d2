@@ -11,3 +11,4 @@
 - Custom label positions weren't being read when the width was smaller than the label [#1928](https://github.com/terrastruct/d2/pull/1928)
 - Using `shape: circle` for arrowheads no longer removes all arrowheads along path in sketch mode [#1942](https://github.com/terrastruct/d2/pull/1942)
 - Globs to null connections work [#1965](https://github.com/terrastruct/d2/pull/1965)
+- Edge globs setting styles inherit correctly in child boards [#1967](https://github.com/terrastruct/d2/pull/1967)

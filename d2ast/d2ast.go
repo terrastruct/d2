@@ -862,9 +862,6 @@ func (mk *Key) HasTripleGlob() bool {
 			return true
 		}
 	}
-	if mk.EdgeIndex != nil && mk.EdgeIndex.Glob {
-		return true
-	}
 	if mk.EdgeKey.HasTripleGlob() {
 		return true
 	}
