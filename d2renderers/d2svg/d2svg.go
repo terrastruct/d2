@@ -1501,11 +1501,21 @@ func addAppendixItems(writer io.Writer, targetShape d2target.Shape, s shape.Shap
 		}
 		x := int(math.Ceil(p2.X))
 		y := int(math.Ceil(p2.Y))
-		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
-			x-appendixIconRadius,
-			y-appendixIconRadius,
-			LinkIcon,
-		)
+		if targetShape.LinkIcon != nil {
+			fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" />`,
+				html.EscapeString(targetShape.LinkIcon.String()),
+				float64(x)-16,
+				float64(y)-16,
+				32,
+				32,
+			)
+		} else {
+			fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
+				x-appendixIconRadius,
+				y-appendixIconRadius,
+				LinkIcon,
+			)
+		}
 	}
 }
 

@@ -461,6 +461,7 @@ type Shape struct {
 
 	Tooltip      string   `json:"tooltip"`
 	Link         string   `json:"link"`
+	LinkIcon     *url.URL `json:"linkIcon"`
 	PrettyLink   string   `json:"prettyLink,omitempty"`
 	Icon         *url.URL `json:"icon"`
 	IconPosition string   `json:"iconPosition"`

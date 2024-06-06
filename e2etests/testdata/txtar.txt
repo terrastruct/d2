@@ -280,3 +280,24 @@ a <-> d: {style.animated: true}
 a <-> e
 f <-> g: {style.animated: true}
 x -- x: {style.animated: true}
+
+-- link-icon --
+x: hello {
+  link: https://github.com
+  linkIcon: https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png
+  shape: circle
+}
+
+y: hello {
+  link: https://google.com
+  linkIcon: none
+  shape: rectangle
+}
+
+z: hello {
+  link: https://github.com
+  linkIcon: https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png
+  shape: cylinder
+}
+
+x -> y -> z
