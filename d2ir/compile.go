@@ -512,6 +512,7 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 			}
 
 			OverlayMap(dst, impn.Map())
+			c.updateLinks(dst)
 
 			if impnf, ok := impn.(*Field); ok {
 				if impnf.Primary_ != nil {

@@ -3,7 +3,7 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile/spread-import-link.d2,0:0:0-4:1:22",
+      "range": "d2/testdata/d2compiler/TestCompile/spread-import-link.d2,0:0:0-4:1:27",
       "nodes": [
         {
           "map_key": {
@@ -30,7 +30,7 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile/spread-import-link.d2,2:0:3-4:1:22",
+            "range": "d2/testdata/d2compiler/TestCompile/spread-import-link.d2,2:0:3-4:1:27",
             "key": {
               "range": "d2/testdata/d2compiler/TestCompile/spread-import-link.d2,2:0:3-2:6:9",
               "path": [
@@ -50,11 +50,11 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/spread-import-link.d2,2:8:11-4:1:22",
+                "range": "d2/testdata/d2compiler/TestCompile/spread-import-link.d2,2:8:11-4:1:27",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/spread-import-link.d2,3:2:15-3:7:20",
+                      "range": "d2/testdata/d2compiler/TestCompile/spread-import-link.d2,3:2:15-3:12:25",
                       "key": {
                         "range": "d2/testdata/d2compiler/TestCompile/spread-import-link.d2,3:2:15-3:3:16",
                         "path": [
@@ -74,17 +74,17 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": ",1:0:0-1:0:0",
+                          "range": "d2/testdata/d2compiler/TestCompile/spread-import-link.d2,3:5:18-3:12:25",
                           "nodes": [
                             {
                               "import": {
-                                "range": ",1:0:0-1:0:0",
+                                "range": "d2/testdata/d2compiler/TestCompile/spread-import-link.d2,3:6:19-3:11:24",
                                 "spread": true,
                                 "pre": "",
                                 "path": [
                                   {
                                     "unquoted_string": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/spread-import-link.d2,3:6:19-3:7:20",
+                                      "range": "d2/testdata/d2compiler/TestCompile/spread-import-link.d2,3:10:23-3:11:24",
                                       "value": [
                                         {
                                           "string": "x",
@@ -92,24 +92,6 @@
                                         }
                                       ]
                                     }
-                                  }
-                                ]
-                              }
-                            }
-                          ]
-                        },
-                        "import": {
-                          "range": "d2/testdata/d2compiler/TestCompile/spread-import-link.d2,3:5:18-3:7:20",
-                          "spread": false,
-                          "pre": "",
-                          "path": [
-                            {
-                              "unquoted_string": {
-                                "range": "d2/testdata/d2compiler/TestCompile/spread-import-link.d2,3:6:19-3:7:20",
-                                "value": [
-                                  {
-                                    "string": "x",
-                                    "raw_string": "x"
                                   }
                                 ]
                               }
