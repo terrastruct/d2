@@ -1544,6 +1544,32 @@ x -> y: {
 			},
 		},
 		{
+			name:   "no_url_link_and_path_url_label_concurrently",
+			text:   `x -> y: https://google.com {link: https://not-google.com }`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no_url_link_and_path_url_label_concurrently.d2:1:35: Label cannot be set to URL when link is also set (for security)`,
+		},
+		{
+			name:   "url_link_and_path_url_label_ok",
+			text:   `x -> y note: {link: https://not-google.com}`,
+			expErr: ``,
+		},
+		{
+			name: "url_link_and_path_url_label_concurrently",
+			text: `x -> y: hello world {link: https://google.com}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if len(g.Edges) != 1 {
+					t.Fatal(len(g.Edges))
+				}
+				if g.Edges[0].Link.Value != "https://google.com" {
+					t.Fatal(g.Edges[0].Link.Value)
+				}
+
+				if g.Edges[0].Label.Value != "hello world" {
+					t.Fatal(g.Edges[0].Label.Value)
+				}
+			},
+		},
+		{
 			name: "nil_scope_obj_regression",
 
 			text: `a

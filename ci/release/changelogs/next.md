@@ -1,4 +1,5 @@
 #### Features 🚀
+- Connections now support `link` in SVGs [#1955](https://github.com/terrastruct/d2/pull/1955)
 
 #### Improvements 🧹
 
