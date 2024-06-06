@@ -12,3 +12,4 @@
 - Using `shape: circle` for arrowheads no longer removes all arrowheads along path in sketch mode [#1942](https://github.com/terrastruct/d2/pull/1942)
 - Globs to null connections work [#1965](https://github.com/terrastruct/d2/pull/1965)
 - Edge globs setting styles inherit correctly in child boards [#1967](https://github.com/terrastruct/d2/pull/1967)
+- Board links imported with spread imports work [#1972](https://github.com/terrastruct/d2/pull/1972)

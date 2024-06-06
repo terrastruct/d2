@@ -2902,6 +2902,22 @@ qa: {
 				tassert.Equal(t, "Qa Environment", g.Objects[2].Label.Value)
 			},
 		},
+		{
+			name: "spread-import-link",
+			text: `k
+
+layers: {
+  x: {...@x}
+}`,
+			files: map[string]string{
+				"x.d2": `a.link: layers.b
+layers: {
+  b: {
+    d
+  }
+}`,
+			},
+		},
 	}
 
 	for _, tc := range testCases {
