@@ -1,5 +1,7 @@
 #### Features 🚀
 
+- Dark theme maybe enabled via a custom CSS class: `--dark-theme-class theme-dark`.
+
 #### Improvements 🧹
 
 - Opacity 0 shapes no longer have a label mask which made any segment of connections going through them lower opacity [#1940](https://github.com/terrastruct/d2/pull/1940)

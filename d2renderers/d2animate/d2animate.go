@@ -76,7 +76,7 @@ func Wrap(rootDiagram *d2target.Diagram, svgs [][]byte, renderOpts d2svg.RenderO
 
 	d2svg.EmbedFonts(buf, diagramHash, svgsStr, rootDiagram.FontFamily, rootDiagram.GetNestedCorpus())
 
-	themeStylesheet, err := d2svg.ThemeCSS(diagramHash, renderOpts.ThemeID, renderOpts.DarkThemeID, renderOpts.ThemeOverrides, renderOpts.DarkThemeOverrides)
+	themeStylesheet, err := d2svg.ThemeCSS(diagramHash, renderOpts.ThemeID, renderOpts.DarkThemeID, renderOpts.DarkThemeClass, renderOpts.ThemeOverrides, renderOpts.DarkThemeOverrides)
 	if err != nil {
 		return nil, err
 	}

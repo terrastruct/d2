@@ -42,6 +42,7 @@ type Config struct {
 	Sketch             *bool           `json:"sketch"`
 	ThemeID            *int64          `json:"themeID"`
 	DarkThemeID        *int64          `json:"darkThemeID"`
+	DarkThemeClass     *string         `json:"darkThemeClass"`
 	Pad                *int64          `json:"pad"`
 	Center             *bool           `json:"center"`
 	LayoutEngine       *string         `json:"layoutEngine"`
