@@ -549,6 +549,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 	srcAdj, dstAdj := getArrowheadAdjustments(connection, idToShape)
 	path := pathData(connection, srcAdj, dstAdj)
 	mask := fmt.Sprintf(`mask="url(#%s)"`, labelMaskID)
+
 	if sketchRunner != nil {
 		out, err := d2sketch.Connection(sketchRunner, connection, path, mask)
 		if err != nil {
@@ -568,14 +569,43 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 			animatedClass = " animated-connection"
 		}
 
-		pathEl := d2themes.NewThemableElement("path")
-		pathEl.D = path
-		pathEl.Fill = color.None
-		pathEl.Stroke = connection.Stroke
-		pathEl.ClassName = fmt.Sprintf("connection%s", animatedClass)
-		pathEl.Style = connection.CSSStyle()
-		pathEl.Attributes = fmt.Sprintf("%s%s%s", markerStart, markerEnd, mask)
-		fmt.Fprint(writer, pathEl.Render())
+		// If connection is animated and bidirectional
+		if connection.Animated && ((connection.DstArrow == d2target.NoArrowhead && connection.SrcArrow == d2target.NoArrowhead) || (connection.DstArrow != d2target.NoArrowhead && connection.SrcArrow != d2target.NoArrowhead)) {
+			// There is no pure CSS way to animate bidirectional connections in two directions, so we split it up
+			path1, path2, err := svg.SplitPath(path, 0.5)
+
+			if err != nil {
+				return "", err
+			}
+
+			pathEl1 := d2themes.NewThemableElement("path")
+			pathEl1.D = path1
+			pathEl1.Fill = color.None
+			pathEl1.Stroke = connection.Stroke
+			pathEl1.ClassName = fmt.Sprintf("connection%s", animatedClass)
+			pathEl1.Style = connection.CSSStyle()
+			pathEl1.Style += "animation-direction: reverse;"
+			pathEl1.Attributes = fmt.Sprintf("%s%s", markerStart, mask)
+			fmt.Fprint(writer, pathEl1.Render())
+
+			pathEl2 := d2themes.NewThemableElement("path")
+			pathEl2.D = path2
+			pathEl2.Fill = color.None
+			pathEl2.Stroke = connection.Stroke
+			pathEl2.ClassName = fmt.Sprintf("connection%s", animatedClass)
+			pathEl2.Style = connection.CSSStyle()
+			pathEl2.Attributes = fmt.Sprintf("%s%s", markerEnd, mask)
+			fmt.Fprint(writer, pathEl2.Render())
+		} else {
+			pathEl := d2themes.NewThemableElement("path")
+			pathEl.D = path
+			pathEl.Fill = color.None
+			pathEl.Stroke = connection.Stroke
+			pathEl.ClassName = fmt.Sprintf("connection%s", animatedClass)
+			pathEl.Style = connection.CSSStyle()
+			pathEl.Attributes = fmt.Sprintf("%s%s%s", markerStart, markerEnd, mask)
+			fmt.Fprint(writer, pathEl.Render())
+		}
 	}
 
 	if connection.Label != "" {
@@ -587,6 +617,9 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 			fontClass += "-bold"
 		} else if connection.Italic {
 			fontClass += "-italic"
+		}
+		if connection.Underline {
+			fontClass += " text-underline"
 		}
 		if connection.Fill != color.Empty {
 			rectEl := d2themes.NewThemableElement("rect")
@@ -1033,7 +1066,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		fmt.Fprint(writer, el.Render())
 
 	// TODO should standardize "" to rectangle
-	case d2target.ShapeRectangle, d2target.ShapeSequenceDiagram, "":
+	case d2target.ShapeRectangle, d2target.ShapeSequenceDiagram, d2target.ShapeHierarchy, "":
 		borderRadius := math.MaxFloat64
 		if targetShape.BorderRadius != 0 {
 			borderRadius = float64(targetShape.BorderRadius)
@@ -1210,7 +1243,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	// Closes the class=shape
 	fmt.Fprint(writer, `</g>`)
 
-	if targetShape.Icon != nil && targetShape.Type != d2target.ShapeImage {
+	if targetShape.Icon != nil && targetShape.Type != d2target.ShapeImage && targetShape.Opacity != 0 {
 		iconPosition := label.FromString(targetShape.IconPosition)
 		var box *geo.Box
 		if iconPosition.IsOutside() {
@@ -1231,7 +1264,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		)
 	}
 
-	if targetShape.Label != "" {
+	if targetShape.Label != "" && targetShape.Opacity != 0 {
 		labelPosition := label.FromString(targetShape.LabelPosition)
 		var box *geo.Box
 		if labelPosition.IsOutside() {
@@ -1367,7 +1400,9 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			if targetShape.FontSize != textmeasure.MarkdownFontSize {
 				styles = append(styles, fmt.Sprintf("font-size:%vpx", targetShape.FontSize))
 			}
-
+			if targetShape.Fill != "" && targetShape.Fill != "transparent" {
+				styles = append(styles, fmt.Sprintf(`background-color:%s`, targetShape.Fill))
+			}
 			if !color.IsThemeColor(targetShape.Color) {
 				styles = append(styles, fmt.Sprintf(`color:%s`, targetShape.Color))
 			}

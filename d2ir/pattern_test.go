@@ -311,6 +311,79 @@ layers.x: { wrapper.p }
 			},
 		},
 		{
+			name: "edge-glob-null",
+			run: func(t testing.TB) {
+				m, err := compile(t, `a -> b
+(* -> *)[*]: null
+x -> y
+`)
+				assert.Success(t, err)
+				// 4 fields and 0 edges
+				assertQuery(t, m, 4, 0, nil, "")
+			},
+		},
+		{
+			name: "field-glob-style-inherit",
+			run: func(t testing.TB) {
+				m, err := compile(t, `*.style.opacity: 0
+x: {
+  style.opacity: 1
+}
+
+scenarios: {
+  1: {
+    x
+  }
+}
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 0, 0, 1, "x.style.opacity")
+				assertQuery(t, m, 0, 0, 1, "scenarios.1.x.style.opacity")
+			},
+		},
+		{
+			name: "edge-glob-style-inherit/1",
+			run: func(t testing.TB) {
+				m, err := compile(t, `(* -> *)[*].style.opacity: 0
+x -> y: {
+  style.opacity: 1
+}
+
+scenarios: {
+  1: {
+    x
+  }
+}
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 0, 0, 1, "(x -> y)[0].style.opacity")
+				assertQuery(t, m, 0, 0, 1, "scenarios.1.(x -> y)[0].style.opacity")
+			},
+		},
+		{
+			name: "edge-glob-style-inherit/2",
+			run: func(t testing.TB) {
+				m, err := compile(t, `*.style.opacity: 0
+(* -> *)[*].style.opacity: 0
+x -> y
+
+steps: {
+  1: {
+    x.style.opacity: 1
+  }
+  2: {
+    (x -> y)[0].style.opacity: 1
+  }
+  3: {
+    y.style.opacity: 1
+  }
+}
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 0, 0, 1, "steps.3.(x -> y)[0].style.opacity")
+			},
+		},
+		{
 			name: "double-glob/edge/1",
 			run: func(t testing.TB) {
 				m, err := compile(t, `fast: {

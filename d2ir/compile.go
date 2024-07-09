@@ -31,8 +31,7 @@ type compiler struct {
 	imports []string
 	// importStack is used to detect cyclic imports.
 	importStack []string
-	// importCache enables reuse of files imported multiple times.
-	importCache map[string]*Map
+	seenImports map[string]struct{}
 	utf16Pos    bool
 
 	// Stack of globs that must be recomputed at each new object in and below the current scope.
@@ -62,7 +61,7 @@ func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, []string, error) {
 		err: &d2parser.ParseError{},
 		fs:  opts.FS,
 
-		importCache: make(map[string]*Map),
+		seenImports: make(map[string]struct{}),
 		utf16Pos:    opts.UTF16Pos,
 	}
 	m := &Map{}
@@ -127,14 +126,21 @@ func (c *compiler) compileSubstitutions(m *Map, varsStack []*Map) {
 			varsStack = append([]*Map{f.Map()}, varsStack...)
 		}
 	}
-	for _, f := range m.Fields {
+	for i := 0; i < len(m.Fields); i++ {
+		f := m.Fields[i]
 		if f.Primary() != nil {
-			c.resolveSubstitutions(varsStack, f)
+			removed := c.resolveSubstitutions(varsStack, f)
+			if removed {
+				i--
+			}
 		}
 		if arr, ok := f.Composite.(*Array); ok {
 			for _, val := range arr.Values {
 				if scalar, ok := val.(*Scalar); ok {
-					c.resolveSubstitutions(varsStack, scalar)
+					removed := c.resolveSubstitutions(varsStack, scalar)
+					if removed {
+						i--
+					}
 				}
 			}
 		} else if f.Map() != nil {
@@ -213,7 +219,7 @@ func (c *compiler) validateConfigs(configs *Field) {
 	}
 }
 
-func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) {
+func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) (removedField bool) {
 	var subbed bool
 	var resolvedField *Field
 
@@ -264,6 +270,7 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) {
 						for i, f2 := range m.Fields {
 							if n == f2 {
 								m.Fields = append(m.Fields[:i], m.Fields[i+1:]...)
+								removedField = true
 								break
 							}
 						}
@@ -334,6 +341,7 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) {
 			s.Coalesce()
 		}
 	}
+	return removedField
 }
 
 func (c *compiler) resolveSubstitution(vars *Map, substitution *d2ast.Substitution) *Field {
@@ -361,6 +369,9 @@ func (c *compiler) overlay(base *Map, f *Field) {
 		return
 	}
 	base = base.CopyBase(f)
+	// Certain fields should never carry forward.
+	// If you give your scenario a label, you don't want all steps in a scenario to be labeled the same.
+	base.DeleteField("label")
 	OverlayMap(base, f.Map())
 	f.Composite = base
 }
@@ -380,6 +391,9 @@ func (g *globContext) prefixed(dst *Map) *globContext {
 	}
 	if len(prefix.Path) > 0 {
 		g2.refctx.Key.Key = prefix
+	}
+	if !g2.refctx.Key.HasTripleGlob() && g2.refctx.Key.EdgeKey != nil {
+		prefix.Path = append(prefix.Path, g2.refctx.Key.EdgeKey.Path...)
 	}
 	return g2
 }
@@ -410,6 +424,7 @@ func (c *compiler) ampersandFilterMap(dst *Map, ast, scopeAST *d2ast.Map) bool {
 					ks = d2format.Format(d2ast.MakeKeyPath(BoardIDA(dst)))
 				}
 				delete(gctx.appliedFields, ks)
+				delete(gctx.appliedEdges, ks)
 				return false
 			}
 		}
@@ -497,6 +512,7 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 			}
 
 			OverlayMap(dst, impn.Map())
+			c.updateLinks(dst)
 
 			if impnf, ok := impn.(*Field); ok {
 				if impnf.Primary_ != nil {
@@ -979,7 +995,7 @@ func (c *compiler) compileEdges(refctx *RefContext) {
 func (c *compiler) _compileEdges(refctx *RefContext) {
 	eida := NewEdgeIDs(refctx.Key)
 	for i, eid := range eida {
-		if refctx.Key != nil && refctx.Key.Value.Null != nil {
+		if !eid.Glob && (refctx.Key.Primary.Null != nil || refctx.Key.Value.Null != nil) {
 			refctx.ScopeMap.DeleteEdge(eid)
 			continue
 		}
@@ -997,6 +1013,10 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 				continue
 			}
 			for _, e := range ea {
+				if refctx.Key.Primary.Null != nil || refctx.Key.Value.Null != nil {
+					refctx.ScopeMap.DeleteEdge(e.ID)
+					continue
+				}
 				e.References = append(e.References, &EdgeReference{
 					Context_:       refctx,
 					DueToGlob_:     len(c.globRefContextStack) > 0,

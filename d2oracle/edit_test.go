@@ -1180,6 +1180,83 @@ b: {style.fill: green}
 `,
 		},
 		{
+			name: "class-with-label",
+			text: `classes: {
+  user: {
+    label: ""
+  }
+}
+
+a.class: user
+`,
+			key:   `a.style.opacity`,
+			value: go2.Pointer(`0.5`),
+			exp: `classes: {
+  user: {
+    label: ""
+  }
+}
+
+a.class: user
+a.style.opacity: 0.5
+`,
+		},
+		{
+			name: "edge-class-with-label",
+			text: `classes: {
+  user: {
+    label: ""
+  }
+}
+
+a -> b: {
+  class: user
+}
+`,
+			key:   `(a -> b)[0].style.opacity`,
+			value: go2.Pointer(`0.5`),
+			exp: `classes: {
+  user: {
+    label: ""
+  }
+}
+
+a -> b: {
+  class: user
+  style.opacity: 0.5
+}
+`,
+		},
+		{
+			name: "var-with-label",
+			text: `vars: {
+  user: ""
+}
+
+a: ${user}
+`,
+			key:   `a.style.opacity`,
+			value: go2.Pointer(`0.5`),
+			exp: `vars: {
+  user: ""
+}
+
+a: ${user} {style.opacity: 0.5}
+`,
+		},
+		{
+			name: "glob-with-label",
+			text: `*.label: ""
+a
+`,
+			key:   `a.style.opacity`,
+			value: go2.Pointer(`0.5`),
+			exp: `*.label: ""
+a
+a.style.opacity: 0.5
+`,
+		},
+		{
 			name: "label_unset",
 			text: `square: "Always try to do things in chronological order; it's less confusing that way."
 `,
@@ -1518,6 +1595,86 @@ a.b -> a.c: {style.animated: true}
 			value: go2.Pointer(`diamond`),
 
 			exp: `x -> y: {target-arrowhead.shape: diamond}
+`,
+		},
+		{
+			name: "edge-arrowhead-filled/1",
+			text: `x -> y
+`,
+			key:   `(x -> y)[0].target-arrowhead.style.filled`,
+			value: go2.Pointer(`true`),
+
+			exp: `x -> y: {target-arrowhead.style.filled: true}
+`,
+		},
+		{
+			name: "edge-arrowhead-filled/2",
+			text: `x -> y: {
+  target-arrowhead: * {
+    shape: diamond
+  }
+}
+`,
+			key:   `(x -> y)[0].target-arrowhead.style.filled`,
+			value: go2.Pointer(`true`),
+
+			exp: `x -> y: {
+  target-arrowhead: * {
+    shape: diamond
+    style.filled: true
+  }
+}
+`,
+		},
+		{
+			name: "edge-arrowhead-filled/3",
+			text: `x -> y: {
+	target-arrowhead.shape: diamond
+}
+`,
+			key:   `(x -> y)[0].target-arrowhead.style.filled`,
+			value: go2.Pointer(`true`),
+
+			exp: `x -> y: {
+  target-arrowhead.shape: diamond
+  target-arrowhead.style.filled: true
+}
+`,
+		},
+		{
+			name: "edge-arrowhead-filled/4",
+			text: `x -> y: {
+	target-arrowhead.shape: diamond
+  target-arrowhead.style.filled: true
+}
+`,
+			key:   `(x -> y)[0].target-arrowhead.style.filled`,
+			value: go2.Pointer(`false`),
+
+			exp: `x -> y: {
+  target-arrowhead.shape: diamond
+  target-arrowhead.style.filled: false
+}
+`,
+		},
+		{
+			name: "edge-arrowhead-filled/5",
+			text: `x -> y: {
+	target-arrowhead.shape: diamond
+	target-arrowhead.style: {
+    filled: false
+  }
+}
+`,
+			key:   `(x -> y)[0].target-arrowhead.style.filled`,
+			value: go2.Pointer(`true`),
+
+			exp: `x -> y: {
+  target-arrowhead.shape: diamond
+  target-arrowhead.style: {
+    filled: true
+  }
+}
 `,
 		},
 		{
@@ -2169,6 +2326,252 @@ layers: {
   x: {
     ...@yo
     b.style.fill: red
+  }
+}
+`,
+		},
+		{
+			name: "import/9",
+
+			text: `...@yo
+`,
+			fsTexts: map[string]string{
+				"yo.d2": `a -> b`,
+			},
+			key:   `(a -> b)[0].style.stroke`,
+			value: go2.Pointer(`red`),
+			exp: `...@yo
+(a -> b)[0].style.stroke: red
+`,
+		},
+		{
+			name: "label-near/1",
+
+			text: `x
+`,
+			key:   `x.label.near`,
+			value: go2.Pointer(`bottom-right`),
+			exp: `x: {label.near: bottom-right}
+`,
+		},
+		{
+			name: "label-near/2",
+
+			text: `x.label.near: bottom-left
+`,
+			key:   `x.label.near`,
+			value: go2.Pointer(`bottom-right`),
+			exp: `x.label.near: bottom-right
+`,
+		},
+		{
+			name: "label-near/3",
+
+			text: `x: {
+  label.near: bottom-left
+}
+`,
+			key:   `x.label.near`,
+			value: go2.Pointer(`bottom-right`),
+			exp: `x: {
+  label.near: bottom-right
+}
+`,
+		},
+		{
+			name: "label-near/4",
+
+			text: `x: {
+  label: hi {
+    near: bottom-left
+  }
+}
+`,
+			key:   `x.label.near`,
+			value: go2.Pointer(`bottom-right`),
+			exp: `x: {
+  label: hi {
+    near: bottom-right
+  }
+}
+`,
+		},
+		{
+			name: "label-near/5",
+
+			text: `x: hi {
+	label: {
+    near: bottom-left
+	}
+}
+`,
+			key:   `x.label.near`,
+			value: go2.Pointer(`bottom-right`),
+			exp: `x: hi {
+  label: {
+    near: bottom-right
+  }
+}
+`,
+		},
+		{
+			name: "glob-field/1",
+
+			text: `*.style.fill: red
+a
+b
+`,
+			key:   `a.style.fill`,
+			value: go2.Pointer(`blue`),
+			exp: `*.style.fill: red
+a: {style.fill: blue}
+b
+`,
+		},
+		{
+			name: "glob-field/2",
+
+			text: `(* -> *)[*].style.stroke: red
+a -> b
+a -> b
+`,
+			key:   `(a -> b)[0].style.stroke`,
+			value: go2.Pointer(`blue`),
+			exp: `(* -> *)[*].style.stroke: red
+a -> b: {style.stroke: blue}
+a -> b
+`,
+		},
+		{
+			name: "glob-field/3",
+
+			text: `(* -> *)[*].style.stroke: red
+a -> b: {style.stroke: blue}
+a -> b
+`,
+			key:   `(a -> b)[0].style.stroke`,
+			value: go2.Pointer(`green`),
+			exp: `(* -> *)[*].style.stroke: red
+a -> b: {style.stroke: green}
+a -> b
+`,
+		},
+		{
+			name: "nested-edge-chained/1",
+
+			text: `a: {
+  b: {
+    c
+  }
+}
+
+x -> a.b -> a.b.c
+`,
+			key:   `(a.b -> a.b.c)[0].style.stroke`,
+			value: go2.Pointer(`green`),
+			exp: `a: {
+  b: {
+    c
+  }
+}
+
+x -> a.b -> a.b.c
+(a.b -> a.b.c)[0].style.stroke: green
+`,
+		},
+		{
+			name: "nested-edge-chained/2",
+
+			text: `z: {
+  a: {
+    b: {
+      c
+    }
+  }
+  x -> a.b -> a.b.c
+}
+`,
+			key:   `(z.a.b -> z.a.b.c)[0].style.stroke`,
+			value: go2.Pointer(`green`),
+			exp: `z: {
+  a: {
+    b: {
+      c
+    }
+  }
+  x -> a.b -> a.b.c
+  (a.b -> a.b.c)[0].style.stroke: green
+}
+`,
+		},
+		{
+			name: "edge-comment",
+
+			text: `x -> y: {
+  # hi
+  style.stroke: blue
+}
+`,
+			key:   `(x -> y)[0].style.stroke`,
+			value: go2.Pointer(`green`),
+			exp: `x -> y: {
+  # hi
+  style.stroke: green
+}
+`,
+		},
+		{
+			name: "scenario-child",
+
+			text: `a -> b
+
+scenarios: {
+  x: {
+    hi
+  }
+}
+`,
+			key:       `(a -> b)[0].style.stroke-width`,
+			value:     go2.Pointer(`3`),
+			boardPath: []string{"x"},
+			exp: `a -> b
+
+scenarios: {
+  x: {
+    hi
+    (a -> b)[0].style.stroke-width: 3
+  }
+}
+`,
+		},
+		{
+			name: "scenario-grandchild",
+
+			text: `a -> b
+
+scenarios: {
+	x: {
+		scenarios: {
+			c: {
+				(a -> b)[0].style.bold: true
+			}
+		}
+	}
+}
+		`,
+			key:       `(a -> b)[0].style.stroke-width`,
+			value:     go2.Pointer(`3`),
+			boardPath: []string{"x", "c"},
+			exp: `a -> b
+
+scenarios: {
+  x: {
+    scenarios: {
+      c: {
+        (a -> b)[0].style.bold: true
+        (a -> b)[0].style.stroke-width: 3
+      }
+    }
   }
 }
 `,
@@ -7205,6 +7608,305 @@ scenarios: {
     x: null
   }
 }
+`,
+		},
+		{
+			name: "import/3",
+
+			text: `...@meow
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `a -> b
+`,
+			},
+			key: `(a -> b)[0]`,
+			exp: `...@meow
+(a -> b)[0]: null
+`,
+		},
+		{
+			name: "import/4",
+
+			text: `...@meow
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `a.link: https://google.com
+`,
+			},
+			key: `a.link`,
+			exp: `...@meow
+a.link: null
+`,
+		},
+		{
+			name: "import/5",
+
+			text: `...@meow
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `a -> b: {
+	target-arrowhead: 1
+}
+`,
+			},
+			key: `(a -> b)[0].target-arrowhead`,
+			exp: `...@meow
+(a -> b)[0].target-arrowhead: null
+`,
+		},
+		{
+			name: "import/6",
+
+			text: `...@meow
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `a.style.fill: red
+`,
+			},
+			key: `a.style.fill`,
+			exp: `...@meow
+a.style.fill: null
+`,
+		},
+		{
+			name: "import/7",
+
+			text: `...@meow
+a.label.near: center-center
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `a
+`,
+			},
+			key: `a.label.near`,
+			exp: `...@meow
+`,
+		},
+		{
+			name: "import/8",
+
+			text: `...@meow
+(a -> b)[0].style.stroke: red
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `a -> b
+`,
+			},
+			key: `(a -> b)[0].style.stroke`,
+			exp: `...@meow
+`,
+		},
+		{
+			name: "label-near/1",
+
+			text: `yes: {label.near: center-center}
+`,
+			key: `yes.label.near`,
+			exp: `yes
+`,
+		},
+		{
+			name: "label-near/2",
+
+			text: `yes.label.near: center-center
+`,
+			key: `yes.label.near`,
+			exp: `yes
+`,
+		},
+		{
+			name: "connection-glob",
+
+			text: `* -> *
+a
+b
+`,
+			key: `(a -> b)[0]`,
+			exp: `* -> *
+a
+b
+(a -> b)[0]: null
+`,
+		},
+		{
+			name: "glob-child/1",
+
+			text: `*.b
+a
+`,
+			key: `a.b`,
+			exp: `*.b
+a
+a.b: null
+`,
+		},
+		{
+			name: "delete-imported-layer-obj",
+
+			text: `layers: {
+  x: {
+    ...@meow
+  }
+}
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `a
+`,
+			},
+			boardPath: []string{"x"},
+			key:       `a`,
+			exp: `layers: {
+  x: {
+    ...@meow
+    a: null
+  }
+}
+`,
+		},
+		{
+			name: "delete-not-layer-obj",
+
+			text: `b.style.fill: red
+layers: {
+  x: {
+		a
+  }
+}
+`,
+			key: `b.style.fill`,
+			exp: `b
+
+layers: {
+  x: {
+    a
+  }
+}
+`,
+		},
+		{
+			name: "delete-layer-obj",
+
+			text: `layers: {
+  x: {
+		a
+  }
+}
+`,
+			boardPath: []string{"x"},
+			key:       `a`,
+			exp: `layers: {
+  x
+}
+`,
+		},
+		{
+			name: "delete-layer-style",
+
+			text: `layers: {
+  x: {
+		a.style.fill: red
+  }
+}
+`,
+			boardPath: []string{"x"},
+			key:       `a.style.fill`,
+			exp: `layers: {
+  x: {
+    a
+  }
+}
+`,
+		},
+		{
+			name: "edge-out-layer",
+
+			text: `x: {
+	a -> b
+}
+`,
+			key: `x.(a -> b)[0].style.stroke`,
+			exp: `x: {
+  a -> b
+}
+`,
+		},
+		{
+			name: "edge-in-layer",
+
+			text: `layers: {
+  test: {
+    x: {
+			a -> b
+    }
+  }
+}
+`,
+			boardPath: []string{"test"},
+			key:       `x.(a -> b)[0].style.stroke`,
+			exp: `layers: {
+  test: {
+    x: {
+      a -> b
+    }
+  }
+}
+`,
+		},
+		{
+			name: "label-near-in-layer",
+
+			text: `layers: {
+  x: {
+    y: {
+      label.near: center-center
+    }
+    a
+  }
+}
+`,
+			boardPath: []string{"x"},
+			key:       `y`,
+			exp: `layers: {
+  x: {
+    a
+  }
+}
+`,
+		},
+		{
+			name: "update-near-in-layer",
+
+			text: `layers: {
+  x: {
+    y: {
+      near: a
+    }
+    a
+  }
+}
+`,
+			boardPath: []string{"x"},
+			key:       `y`,
+			exp: `layers: {
+  x: {
+    a
+  }
+}
+`,
+		},
+		{
+			name: "edge-with-glob",
+
+			text: `x -> y
+y
+
+(* -> *)[*].style.opacity: 0.8
+`,
+			key: `(x -> y)[0]`,
+			exp: `x
+y
+
+(* -> *)[*].style.opacity: 0.8
 `,
 		},
 	}

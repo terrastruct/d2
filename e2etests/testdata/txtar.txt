@@ -164,3 +164,119 @@ monsters: {
 }
 
 costumes.monster -> monsters.id
+
+-- connection-underline --
+
+a -> b: hi {
+  style.underline: true
+}
+
+-- none-fill --
+
+vars: {
+  d2-config: {
+    # Origami theme code
+    theme-id: 302
+  }
+}
+a.style.fill-pattern: none
+b
+
+-- width-smaller-than-label --
+b: hello there cat {
+  shape: person
+  width: 64
+  height: 66
+}
+
+-- width-smaller-than-label-custom-pos --
+x: {
+  width: 20
+  label: long label
+  label.near: center-center
+}
+
+-- nested-spread-substitutions-regression --
+vars: {
+  dog1: Frido {
+    shape: circle
+  }
+  my-house: {
+    label: "Home"
+  }
+}
+
+ok: {
+  ...${my-house}
+  dog1: {
+    ...${dog1}
+  }
+  dog1 -> dog3
+}
+
+-- bidirectional-connection-animation --
+a <-> b: {style.animated: true}
+a <-> c: {style.animated: true}
+a <-> d: {style.animated: true}
+a <-> e: {style.animated: true}
+f <-> g: {style.animated: true}
+x -- x: {style.animated: true}
+
+-- opacity-zero-route --
+grid: {
+  *.style.opacity: 0
+  grid-columns: 3
+  a
+  b
+  c
+  d
+  e
+  f
+  g
+  h
+
+  d.style.opacity: 1
+}
+
+out -> grid.d
+
+-- sketch-mode-circle-arrowhead --
+vars: {
+  d2-config: {
+    sketch: true
+  }
+}
+
+a
+b
+a <-> b: {
+  source-arrowhead: {
+    shape: circle
+    style.filled: false
+  }
+}
+
+x
+y
+z
+x <-> y <-> z: {
+  source-arrowhead: {
+    shape: circle
+    style.filled: false
+  }
+  direction: right
+}
+
+-- sketch-bidirectional-connection-animation --
+vars: {
+  d2-config: {
+    sketch: true
+  }
+}
+
+a <-> b: {style.animated: true}
+a <-> c: {style.animated: true}
+a <-> d: {style.animated: true}
+a <-> e
+f <-> g: {style.animated: true}
+x -- x: {style.animated: true}

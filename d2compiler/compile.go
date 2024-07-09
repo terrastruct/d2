@@ -69,6 +69,7 @@ func compileIR(ast *d2ast.Map, m *d2ir.Map) (*d2graph.Graph, error) {
 
 	g := d2graph.NewGraph()
 	g.AST = ast
+	g.BaseAST = ast
 	c.compileBoard(g, m)
 	if len(c.err.Errors) > 0 {
 		return nil, c.err
@@ -90,6 +91,7 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 	c.validateLabels(g)
 	c.validateNear(g)
 	c.validateEdges(g)
+	c.validatePositionsCompatibility(g)
 
 	c.compileBoardsField(g, ir, "layers")
 	c.compileBoardsField(g, ir, "scenarios")
@@ -121,7 +123,7 @@ func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 		g2 := d2graph.NewGraph()
 		g2.Parent = g
 		g2.AST = f.Map().AST().(*d2ast.Map)
-		g2.BaseAST = findFieldAST(g.AST, f)
+		g2.BaseAST = findFieldAST(g.BaseAST, f)
 		c.compileBoard(g2, f.Map())
 		g2.Name = f.Name
 		switch fieldName {
@@ -337,11 +339,11 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 	}
 
 	if obj.Parent != nil {
-		if obj.Parent.Shape.Value == d2target.ShapeSQLTable {
+		if strings.EqualFold(obj.Parent.Shape.Value, d2target.ShapeSQLTable) {
 			c.errorf(f.LastRef().AST(), "sql_table columns cannot have children")
 			return
 		}
-		if obj.Parent.Shape.Value == d2target.ShapeClass {
+		if strings.EqualFold(obj.Parent.Shape.Value, d2target.ShapeClass) {
 			c.errorf(f.LastRef().AST(), "class fields cannot have children")
 			return
 		}
@@ -510,7 +512,7 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 			return
 		}
 		attrs.Shape.Value = scalar.ScalarString()
-		if attrs.Shape.Value == d2target.ShapeCode {
+		if strings.EqualFold(attrs.Shape.Value, d2target.ShapeCode) {
 			// Explicit code shape is plaintext.
 			attrs.Language = d2target.ShapeText
 		}
@@ -1008,12 +1010,12 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 				}
 			}
 			if obj.Style.DoubleBorder != nil {
-				if obj.Shape.Value != "" && obj.Shape.Value != d2target.ShapeSquare && obj.Shape.Value != d2target.ShapeRectangle && obj.Shape.Value != d2target.ShapeCircle && obj.Shape.Value != d2target.ShapeOval {
+				if obj.Shape.Value != "" && !strings.EqualFold(obj.Shape.Value, d2target.ShapeSquare) && !strings.EqualFold(obj.Shape.Value, d2target.ShapeRectangle) && !strings.EqualFold(obj.Shape.Value, d2target.ShapeCircle) && !strings.EqualFold(obj.Shape.Value, d2target.ShapeOval) {
 					c.errorf(obj.Style.DoubleBorder.MapKey, `key "double-border" can only be applied to squares, rectangles, circles, ovals`)
 				}
 			}
 		case "shape":
-			if obj.Shape.Value == d2target.ShapeImage && obj.Icon == nil {
+			if strings.EqualFold(obj.Shape.Value, d2target.ShapeImage) && obj.Icon == nil {
 				c.errorf(f.LastPrimaryKey(), `image shape must include an "icon" field`)
 			}
 
@@ -1023,14 +1025,14 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 				c.errorf(f.LastPrimaryKey(), fmt.Sprintf(`invalid shape, can only set "%s" for arrowheads`, obj.Shape.Value))
 			}
 		case "constraint":
-			if obj.Shape.Value != d2target.ShapeSQLTable {
+			if !strings.EqualFold(obj.Shape.Value, d2target.ShapeSQLTable) {
 				c.errorf(f.LastPrimaryKey(), `"constraint" keyword can only be used in "sql_table" shapes`)
 			}
 		}
 		return
 	}
 
-	if obj.Shape.Value == d2target.ShapeImage {
+	if strings.EqualFold(obj.Shape.Value, d2target.ShapeImage) {
 		c.errorf(f.LastRef().AST(), "image shapes cannot have children.")
 		return
 	}
@@ -1043,7 +1045,7 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 
 func (c *compiler) validateLabels(g *d2graph.Graph) {
 	for _, obj := range g.Objects {
-		if obj.Shape.Value != d2target.ShapeText {
+		if !strings.EqualFold(obj.Shape.Value, d2target.ShapeText) {
 			continue
 		}
 		if obj.Attributes.Language != "" {
@@ -1097,6 +1099,14 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 						continue
 					}
 				}
+				if nearObj.ClosestGridDiagram() != nil {
+					c.errorf(obj.NearKey, "near keys cannot be set to descendants of special objects, like grid cells")
+					continue
+				}
+				if nearObj.OuterSequenceDiagram() != nil {
+					c.errorf(obj.NearKey, "near keys cannot be set to descendants of special objects, like sequence diagram actors")
+					continue
+				}
 			} else if isConst {
 				if obj.Parent != g.Root {
 					c.errorf(obj.NearKey, "constant near keys can only be set on root level shapes")
@@ -1120,6 +1130,26 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 		}
 	}
 
+}
+
+func (c *compiler) validatePositionsCompatibility(g *d2graph.Graph) {
+	for _, o := range g.Objects {
+		for _, pos := range []*d2graph.Scalar{o.Top, o.Left} {
+			if pos != nil {
+				if o.Parent != nil {
+					if strings.EqualFold(o.Parent.Shape.Value, d2target.ShapeHierarchy) {
+						c.errorf(pos.MapKey, `position keywords cannot be used with shape "hierarchy"`)
+					}
+					if o.OuterSequenceDiagram() != nil {
+						c.errorf(pos.MapKey, `position keywords cannot be used inside shape "sequence_diagram"`)
+					}
+					if o.Parent.GridColumns != nil || o.Parent.GridRows != nil {
+						c.errorf(pos.MapKey, `position keywords cannot be used with grids`)
+					}
+				}
+			}
+		}
+	}
 }
 
 func (c *compiler) validateEdges(g *d2graph.Graph) {

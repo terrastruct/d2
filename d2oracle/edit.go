@@ -199,7 +199,7 @@ func ReconnectEdge(g *d2graph.Graph, boardPath []string, edgeKey string, srcKey,
 
 	refs := edge.References
 	if baseAST != g.AST {
-		refs = getWriteableEdgeRefs(edge, baseAST)
+		refs = GetWriteableEdgeRefs(edge, baseAST)
 		if len(refs) == 0 || refs[0].ScopeAST != baseAST {
 			// TODO null
 			return nil, OutsideScopeError{}
@@ -383,11 +383,11 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 				break
 			}
 			obj = o
-			imported = IsImported(baseAST, obj)
+			imported = IsImportedObj(baseAST, obj)
 
 			var maybeNewScope *d2ast.Map
 			if baseAST != g.AST || imported {
-				writeableRefs := getWriteableRefs(obj, baseAST)
+				writeableRefs := GetWriteableRefs(obj, baseAST)
 				for _, ref := range writeableRefs {
 					if ref.MapKey != nil && ref.MapKey.Value.Map != nil {
 						maybeNewScope = ref.MapKey.Value.Map
@@ -414,7 +414,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 		writeableLabelMK := true
 		var objK *d2ast.Key
 		if baseAST != g.AST || imported {
-			writeableRefs := getWriteableRefs(obj, baseAST)
+			writeableRefs := GetWriteableRefs(obj, baseAST)
 			if len(writeableRefs) > 0 {
 				objK = writeableRefs[0].MapKey
 			}
@@ -428,6 +428,19 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 					writeableLabelMK = true
 					break
 				}
+			}
+		} else {
+			// Even if not imported or different board, a label can be not writeable if it's in a class or var or glob
+			// In those cases, the label is not a direct object reference
+			found := false
+			for _, ref := range obj.References {
+				if ref.MapKey == obj.Label.MapKey {
+					found = true
+					break
+				}
+			}
+			if !found {
+				writeableLabelMK = false
 			}
 		}
 		var m *d2ast.Map
@@ -481,12 +494,17 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 		if !ok {
 			return errors.New("edge not found")
 		}
+		imported = IsImportedEdge(baseAST, edge)
 		refs := edge.References
-		if baseAST != g.AST {
-			refs = getWriteableEdgeRefs(edge, baseAST)
+		if baseAST != g.AST || imported {
+			refs = GetWriteableEdgeRefs(edge, baseAST)
 		}
 		onlyInChain := true
-		for _, ref := range refs {
+		var earliestRef *d2graph.EdgeReference
+		for i, ref := range refs {
+			if earliestRef == nil || ref.MapKey.Range.Before(earliestRef.MapKey.Range) {
+				earliestRef = &refs[i]
+			}
 			// TODO merge flat edgekeys
 			// E.g. this can group into a map
 			// (y -> z)[0].style.opacity: 0.4
@@ -496,20 +514,31 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 					onlyInChain = false
 				}
 			}
-			// If a ref has an exact match on this key, just change the value
-			tmp1 := *ref.MapKey
-			tmp2 := *mk
-			noVal1 := &tmp1
-			noVal2 := &tmp2
-			noVal1.Value = d2ast.ValueBox{}
-			noVal2.Value = d2ast.ValueBox{}
-			if noVal1.D2OracleEquals(noVal2) {
-				ref.MapKey.Value = mk.Value
-				return nil
+
+			if ref.MapKey.EdgeIndex == nil || !ref.MapKey.EdgeIndex.Glob {
+				// If a ref has an exact match on this key, just change the value
+				tmp1 := *ref.MapKey
+				tmp2 := *mk
+				noVal1 := &tmp1
+				noVal2 := &tmp2
+				noVal1.Value = d2ast.ValueBox{}
+				noVal2.Value = d2ast.ValueBox{}
+				if noVal1.D2OracleEquals(noVal2) {
+					ref.MapKey.Value = mk.Value
+					return nil
+				}
 			}
 		}
 		if onlyInChain {
-			appendMapKey(scope, mk)
+			if earliestRef != nil && scope.Range.Before(earliestRef.MapKey.Range) {
+				// Since the original mk was trimmed to common, we set to the edge that
+				// the ref's scope is in
+				mk.Edges[0] = earliestRef.Edge
+				// We can't reference an edge before it's been defined
+				earliestRef.Scope.InsertAfter(earliestRef.MapKey, mk)
+			} else {
+				appendMapKey(scope, mk)
+			}
 			return nil
 		}
 		attrs = edge.Attributes
@@ -533,7 +562,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 					foundMap = true
 					scope = ref.MapKey.Value.Map
 					for _, n := range scope.Nodes {
-						if n.MapKey.Value.Map == nil {
+						if n.MapKey == nil || n.MapKey.Value.Map == nil {
 							continue
 						}
 						if n.MapKey.Key == nil || len(n.MapKey.Key.Path) != 1 {
@@ -572,6 +601,10 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			if s != nil && s.MapKey != nil {
 				// The value was set outside of what's writeable
 				if s.MapKey.Range.Path != baseAST.Range.Path {
+					return false
+				}
+				// Globs are also not writeable
+				if s.MapKey.HasGlob() {
 					return false
 				}
 			}
@@ -646,14 +679,20 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			case "source-arrowhead", "target-arrowhead":
 				var arrowhead *d2graph.Attributes
 				if reservedKey == "source-arrowhead" {
+					if edge.SrcArrowhead != nil {
+						attrs = *edge.SrcArrowhead
+					}
 					arrowhead = edge.SrcArrowhead
 				} else {
+					if edge.DstArrowhead != nil {
+						attrs = *edge.DstArrowhead
+					}
 					arrowhead = edge.DstArrowhead
 				}
 				if arrowhead != nil {
 					if reservedTargetKey == "" {
-						if len(mk.Key.Path[reservedIndex:]) != 2 {
-							return errors.New("malformed style setting, expected 2 part path")
+						if len(mk.Key.Path[reservedIndex:]) < 2 {
+							return errors.New("malformed style setting, expected >= 2 part path")
 						}
 						reservedTargetKey = mk.Key.Path[reservedIndex+1].Unbox().ScalarString()
 					}
@@ -666,6 +705,12 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 					case "label":
 						if inlined(&arrowhead.Label) {
 							arrowhead.Label.MapKey.SetScalar(mk.Value.ScalarBox())
+							return nil
+						}
+					case "style":
+						reservedTargetKey = mk.Key.Path[len(mk.Key.Path)-1].Unbox().ScalarString()
+						if inlined(attrs.Style.Filled) {
+							attrs.Style.Filled.MapKey.SetScalar(mk.Value.ScalarBox())
 							return nil
 						}
 					}
@@ -770,9 +815,20 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 					}
 				}
 			case "label":
-				if inlined(&attrs.Label) {
-					attrs.Label.MapKey.SetScalar(mk.Value.ScalarBox())
-					return nil
+				if len(mk.Key.Path[reservedIndex:]) > 1 {
+					reservedTargetKey = mk.Key.Path[reservedIndex+1].Unbox().ScalarString()
+					switch reservedTargetKey {
+					case "near":
+						if inlined(attrs.LabelPosition) {
+							attrs.LabelPosition.MapKey.SetScalar(mk.Value.ScalarBox())
+							return nil
+						}
+					}
+				} else {
+					if inlined(&attrs.Label) {
+						attrs.Label.MapKey.SetScalar(mk.Value.ScalarBox())
+						return nil
+					}
 				}
 			}
 		}
@@ -846,7 +902,7 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 		baseAST = boardG.BaseAST
 	}
 
-	g2, err := deleteReserved(g, mk)
+	g2, err := deleteReserved(g, boardPath, baseAST, mk)
 	if err != nil {
 		return nil, err
 	}
@@ -868,45 +924,55 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 			return g, nil
 		}
 
-		refs := e.References
-		if len(boardPath) > 0 {
-			refs := getWriteableEdgeRefs(e, baseAST)
-			if len(refs) != len(e.References) {
-				mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
-			}
-		}
+		imported := IsImportedEdge(baseAST, e)
 
-		if _, ok := mk.Value.Unbox().(*d2ast.Null); !ok {
-			ref := refs[0]
-			var refEdges []*d2ast.Edge
-			for _, ref := range refs {
-				refEdges = append(refEdges, ref.Edge)
-			}
-			ensureNode(g, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, ref.MapKey.Edges[ref.MapKeyEdgeIndex].Src, true)
-			ensureNode(g, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, ref.MapKey.Edges[ref.MapKeyEdgeIndex].Dst, false)
-
-			for i := len(e.References) - 1; i >= 0; i-- {
-				ref := e.References[i]
-				deleteEdge(g, ref.Scope, ref.MapKey, ref.MapKeyEdgeIndex)
+		if imported {
+			mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
+			appendMapKey(baseAST, mk)
+		} else {
+			refs := e.References
+			if len(boardPath) > 0 {
+				refs := GetWriteableEdgeRefs(e, baseAST)
+				if len(refs) != len(e.References) {
+					mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
+				}
 			}
 
-			edges, ok := obj.FindEdges(mk)
-			if ok {
-				for _, e2 := range edges {
-					if e2.Index <= e.Index {
-						continue
+			if _, ok := mk.Value.Unbox().(*d2ast.Null); !ok {
+				ref := refs[0]
+				var refEdges []*d2ast.Edge
+				for _, ref := range refs {
+					refEdges = append(refEdges, ref.Edge)
+				}
+				ensureNode(g, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, ref.MapKey.Edges[ref.MapKeyEdgeIndex].Src, true)
+				ensureNode(g, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, ref.MapKey.Edges[ref.MapKeyEdgeIndex].Dst, false)
+
+				for i := len(e.References) - 1; i >= 0; i-- {
+					ref := e.References[i]
+					// Leave glob setters alone
+					if !(ref.MapKey.EdgeIndex != nil && ref.MapKey.EdgeIndex.Glob) {
+						deleteEdge(g, ref.Scope, ref.MapKey, ref.MapKeyEdgeIndex)
 					}
-					for i := len(e2.References) - 1; i >= 0; i-- {
-						ref := e2.References[i]
-						if ref.MapKey.EdgeIndex != nil {
-							*ref.MapKey.EdgeIndex.Int--
+				}
+
+				edges, ok := obj.FindEdges(mk)
+				if ok {
+					for _, e2 := range edges {
+						if e2.Index <= e.Index {
+							continue
+						}
+						for i := len(e2.References) - 1; i >= 0; i-- {
+							ref := e2.References[i]
+							if ref.MapKey.EdgeIndex != nil {
+								*ref.MapKey.EdgeIndex.Int--
+							}
 						}
 					}
 				}
+			} else {
+				// NOTE: it only needs to be after the last ref, but perhaps simplest and cleanest to append all nulls at the end
+				appendMapKey(baseAST, mk)
 			}
-		} else {
-			// NOTE: it only needs to be after the last ref, but perhaps simplest and cleanest to append all nulls at the end
-			appendMapKey(baseAST, mk)
 		}
 		if len(boardPath) > 0 {
 			replaced := ReplaceBoardNode(g.AST, baseAST, boardPath)
@@ -918,17 +984,19 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 		return recompile(boardG)
 	}
 
-	prevG, _ := recompile(boardG)
+	prevG, err := recompile(boardG)
+	if err != nil {
+		return nil, err
+	}
 
 	obj, ok := boardG.Root.HasChild(d2graph.Key(mk.Key))
 	if !ok {
 		return g, nil
 	}
 
-	imported := IsImported(baseAST, obj)
+	imported := IsImportedObj(baseAST, obj)
 
 	if imported {
-		println(d2format.Format(boardG.AST))
 		mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
 		appendMapKey(baseAST, mk)
 	} else {
@@ -941,7 +1009,7 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 			return g, nil
 		}
 		if len(boardPath) > 0 {
-			writeableRefs := getWriteableRefs(obj, baseAST)
+			writeableRefs := GetWriteableRefs(obj, baseAST)
 			if len(writeableRefs) != len(obj.References) {
 				mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
 			}
@@ -997,7 +1065,7 @@ func bumpChildrenUnderscores(m *d2ast.Map) {
 }
 
 func hoistRefChildren(g *d2graph.Graph, key *d2ast.KeyPath, ref d2graph.Reference) {
-	if ref.MapKey.Value.Map == nil {
+	if ref.MapKey == nil || ref.MapKey.Value.Map == nil {
 		return
 	}
 
@@ -1053,7 +1121,7 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 		var absKeys []*d2ast.KeyPath
 
 		if len(ref.Key.Path)-1 == ref.KeyPathIndex {
-			if ref.MapKey.Value.Map == nil {
+			if ref.MapKey == nil || ref.MapKey.Value.Map == nil {
 				continue
 			}
 			var mapKeys []*d2ast.KeyPath
@@ -1178,7 +1246,7 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 	return g, nil
 }
 
-func deleteReserved(g *d2graph.Graph, mk *d2ast.Key) (*d2graph.Graph, error) {
+func deleteReserved(g *d2graph.Graph, boardPath []string, baseAST *d2ast.Map, mk *d2ast.Key) (*d2graph.Graph, error) {
 	targetKey := mk.Key
 	if len(mk.Edges) == 1 {
 		if mk.EdgeKey == nil {
@@ -1193,10 +1261,17 @@ func deleteReserved(g *d2graph.Graph, mk *d2ast.Key) (*d2graph.Graph, error) {
 
 	var e *d2graph.Edge
 	obj := g.Root
+	if len(boardPath) > 0 {
+		boardG := GetBoardGraph(g, boardPath)
+		if boardG == nil {
+			return nil, fmt.Errorf("board %v not found", boardPath)
+		}
+		obj = boardG.Root
+	}
 	if len(mk.Edges) == 1 {
 		if mk.Key != nil {
 			var ok bool
-			obj, ok = g.Root.HasChild(d2graph.Key(mk.Key))
+			obj, ok = obj.HasChild(d2graph.Key(mk.Key))
 			if !ok {
 				return g, nil
 			}
@@ -1205,26 +1280,45 @@ func deleteReserved(g *d2graph.Graph, mk *d2ast.Key) (*d2graph.Graph, error) {
 		if !ok {
 			return g, nil
 		}
+		imported := IsImportedEdge(baseAST, e)
 
-		if err := deleteEdgeField(g, e, targetKey.Path[len(targetKey.Path)-1].Unbox().ScalarString()); err != nil {
+		deleted, err := deleteEdgeField(g, baseAST, e, targetKey.Path[len(targetKey.Path)-1].Unbox().ScalarString())
+		if err != nil {
 			return nil, err
+		}
+		if !deleted && imported {
+			mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
+			appendMapKey(baseAST, mk)
 		}
 		return recompile(g)
 	}
 
-	isStyleKey := false
-	for _, id := range d2graph.Key(targetKey) {
+	isNestedKey := false
+	imported := false
+	parts := d2graph.Key(targetKey)
+	for i, id := range parts {
 		_, ok := d2graph.ReservedKeywords[id]
 		if ok {
 			if id == "style" {
-				isStyleKey = true
+				isNestedKey = true
 				continue
 			}
-			if isStyleKey {
-				err := deleteObjField(g, obj, id)
+			if id == "label" || id == "icon" {
+				if i < len(parts)-1 {
+					isNestedKey = true
+					continue
+				}
+			}
+			if isNestedKey {
+				deleted, err := deleteObjField(g, baseAST, obj, id)
 				if err != nil {
 					return nil, err
 				}
+				if !deleted && imported {
+					mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
+					appendMapKey(baseAST, mk)
+				}
+				continue
 			}
 
 			if id == "near" ||
@@ -1235,9 +1329,14 @@ func deleteReserved(g *d2graph.Graph, mk *d2ast.Key) (*d2graph.Graph, error) {
 				id == "left" ||
 				id == "top" ||
 				id == "link" {
-				err := deleteObjField(g, obj, id)
+				deleted, err := deleteObjField(g, baseAST, obj, id)
 				if err != nil {
 					return nil, err
+				}
+				if !deleted && imported {
+					mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
+					appendMapKey(baseAST, mk)
+				} else {
 				}
 			}
 			break
@@ -1246,57 +1345,82 @@ func deleteReserved(g *d2graph.Graph, mk *d2ast.Key) (*d2graph.Graph, error) {
 		if !ok {
 			return nil, fmt.Errorf("object not found")
 		}
+		imported = IsImportedObj(baseAST, obj)
 	}
 
 	return recompile(g)
 }
 
-func deleteMapField(m *d2ast.Map, field string) {
+func deleteMapField(m *d2ast.Map, field string) (deleted bool) {
 	for i := 0; i < len(m.Nodes); i++ {
 		n := m.Nodes[i]
 		if n.MapKey != nil && n.MapKey.Key != nil {
 			if n.MapKey.Key.Path[0].Unbox().ScalarString() == field {
 				deleteFromMap(m, n.MapKey)
 			} else if n.MapKey.Key.Path[0].Unbox().ScalarString() == "style" ||
+				n.MapKey.Key.Path[0].Unbox().ScalarString() == "label" ||
+				n.MapKey.Key.Path[0].Unbox().ScalarString() == "icon" ||
 				n.MapKey.Key.Path[0].Unbox().ScalarString() == "source-arrowhead" ||
 				n.MapKey.Key.Path[0].Unbox().ScalarString() == "target-arrowhead" {
 				if n.MapKey.Value.Map != nil {
-					deleteMapField(n.MapKey.Value.Map, field)
+					deleted2 := deleteMapField(n.MapKey.Value.Map, field)
+					if deleted2 {
+						deleted = true
+					}
 					if len(n.MapKey.Value.Map.Nodes) == 0 {
-						deleteFromMap(m, n.MapKey)
+						deleted2 := deleteFromMap(m, n.MapKey)
+						if deleted2 {
+							deleted = true
+						}
 					}
 				} else if len(n.MapKey.Key.Path) == 2 && n.MapKey.Key.Path[1].Unbox().ScalarString() == field {
-					deleteFromMap(m, n.MapKey)
+					deleted2 := deleteFromMap(m, n.MapKey)
+					if deleted2 {
+						deleted = true
+					}
 				}
 			}
 		}
 	}
+	return deleted
 }
 
-func deleteEdgeField(g *d2graph.Graph, e *d2graph.Edge, field string) error {
+func deleteEdgeField(g *d2graph.Graph, ast *d2ast.Map, e *d2graph.Edge, field string) (deleted bool, _ error) {
 	for _, ref := range e.References {
 		// Edge chains can't have fields
 		if len(ref.MapKey.Edges) > 1 {
 			continue
 		}
+		if ref.MapKey.Range.Path != ast.Range.Path {
+			continue
+		}
 		if ref.MapKey.Value.Map != nil {
-			deleteMapField(ref.MapKey.Value.Map, field)
+			deleted2 := deleteMapField(ref.MapKey.Value.Map, field)
+			if deleted2 {
+				deleted = true
+			}
 		} else if ref.MapKey.EdgeKey != nil && ref.MapKey.EdgeKey.Path[len(ref.MapKey.EdgeKey.Path)-1].Unbox().ScalarString() == field {
 			// It's always safe to delete, since edge references must coexist with edge definition elsewhere
-			deleteFromMap(ref.Scope, ref.MapKey)
+			deleted2 := deleteFromMap(ref.Scope, ref.MapKey)
+			if deleted2 {
+				deleted = true
+			}
 		}
 	}
-	return nil
+	return deleted, nil
 }
 
-func deleteObjField(g *d2graph.Graph, obj *d2graph.Object, field string) error {
+func deleteObjField(g *d2graph.Graph, ast *d2ast.Map, obj *d2graph.Object, field string) (deleted bool, _ error) {
 	objK, err := d2parser.ParseKey(obj.AbsID())
 	if err != nil {
-		return err
+		return false, err
 	}
 	objGK := d2graph.Key(objK)
 	for _, ref := range obj.References {
 		if ref.InEdge() {
+			continue
+		}
+		if ref.Key.Range.Path != ast.Range.Path {
 			continue
 		}
 		if ref.MapKey.Value.Map != nil {
@@ -1306,15 +1430,20 @@ func deleteObjField(g *d2graph.Graph, obj *d2graph.Object, field string) error {
 			ref.Key.Path[len(ref.Key.Path)-2].Unbox().ScalarString() == obj.ID) ||
 			(len(ref.Key.Path) >= 3 &&
 				ref.Key.Path[len(ref.Key.Path)-1].Unbox().ScalarString() == field &&
-				ref.Key.Path[len(ref.Key.Path)-2].Unbox().ScalarString() == "style" &&
+				(ref.Key.Path[len(ref.Key.Path)-2].Unbox().ScalarString() == "style" ||
+					ref.Key.Path[len(ref.Key.Path)-2].Unbox().ScalarString() == "label" ||
+					ref.Key.Path[len(ref.Key.Path)-2].Unbox().ScalarString() == "icon") &&
 				ref.Key.Path[len(ref.Key.Path)-3].Unbox().ScalarString() == obj.ID) {
 			tmpNodes := make([]d2ast.MapNodeBox, len(ref.Scope.Nodes))
 			copy(tmpNodes, ref.Scope.Nodes)
 			// If I delete this, will the object still exist?
-			deleteFromMap(ref.Scope, ref.MapKey)
+			deleted2 := deleteFromMap(ref.Scope, ref.MapKey)
+			if deleted2 {
+				deleted = true
+			}
 			g2, err := recompile(g)
 			if err != nil {
-				return err
+				return false, err
 			}
 			if _, ok := g2.Root.HasChild(objGK); !ok {
 				// Nope, so can't delete it, just remove the field then
@@ -1325,7 +1454,7 @@ func deleteObjField(g *d2graph.Graph, obj *d2graph.Object, field string) error {
 
 		}
 	}
-	return nil
+	return deleted, nil
 }
 
 func deleteObject(g *d2graph.Graph, baseAST *d2ast.Map, key *d2ast.KeyPath, obj *d2graph.Object) (*d2graph.Graph, error) {
@@ -1635,7 +1764,10 @@ func move(g *d2graph.Graph, boardPath []string, key, newKey string, includeDesce
 		return recompile(g)
 	}
 
-	prevG, _ := recompile(boardG)
+	prevG, err := recompile(boardG)
+	if err != nil {
+		return nil, err
+	}
 
 	ak := d2graph.Key(mk.Key)
 	ak2 := d2graph.Key(mk2.Key)
@@ -1655,7 +1787,7 @@ func move(g *d2graph.Graph, boardPath []string, key, newKey string, includeDesce
 	}
 
 	if len(boardPath) > 0 {
-		writeableRefs := getWriteableRefs(obj, baseAST)
+		writeableRefs := GetWriteableRefs(obj, baseAST)
 		if len(writeableRefs) != len(obj.References) {
 			return nil, OutsideScopeError{}
 		}
@@ -2159,8 +2291,17 @@ func updateNear(prevG, g *d2graph.Graph, from, to *string, includeDescendants bo
 			if len(n.MapKey.Key.Path) == 0 {
 				continue
 			}
+			if len(n.MapKey.Key.Path) > 1 {
+				if n.MapKey.Key.Path[len(n.MapKey.Key.Path)-2].Unbox().ScalarString() == "label" ||
+					n.MapKey.Key.Path[len(n.MapKey.Key.Path)-2].Unbox().ScalarString() == "icon" {
+					continue
+				}
+			}
 			if n.MapKey.Key.Path[len(n.MapKey.Key.Path)-1].Unbox().ScalarString() == "near" {
 				k := n.MapKey.Value.ScalarBox().Unbox().ScalarString()
+				if _, ok := d2graph.NearConstants[k]; ok {
+					continue
+				}
 				if strings.EqualFold(k, *from) && to == nil {
 					deleteFromMap(obj.Map, n.MapKey)
 				} else {
@@ -3119,24 +3260,6 @@ func filterReservedPath(path []*d2ast.StringBox) (filtered []*d2ast.StringBox) {
 			return
 		}
 		filtered = append(filtered, box)
-	}
-	return
-}
-
-func getWriteableRefs(obj *d2graph.Object, writeableAST *d2ast.Map) (out []d2graph.Reference) {
-	for i, ref := range obj.References {
-		if ref.ScopeAST == writeableAST && ref.Key.Range.Path == writeableAST.Range.Path {
-			out = append(out, obj.References[i])
-		}
-	}
-	return
-}
-
-func getWriteableEdgeRefs(edge *d2graph.Edge, writeableAST *d2ast.Map) (out []d2graph.EdgeReference) {
-	for i, ref := range edge.References {
-		if ref.ScopeAST == writeableAST {
-			out = append(out, edge.References[i])
-		}
 	}
 	return
 }

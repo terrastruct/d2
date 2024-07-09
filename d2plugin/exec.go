@@ -201,3 +201,59 @@ func (p *execPlugin) PostProcess(ctx context.Context, in []byte) ([]byte, error)
 
 	return stdout, nil
 }
+
+func (p *execPlugin) RouteEdges(ctx context.Context, g *d2graph.Graph, edges []*d2graph.Edge) error {
+	ctx, cancel := timelib.WithTimeout(ctx, time.Minute*2)
+	defer cancel()
+
+	graphBytes, err := d2graph.SerializeGraph(g)
+	if err != nil {
+		return err
+	}
+
+	var g2 d2graph.Graph
+	err = d2graph.DeserializeGraph(graphBytes, &g2)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal json: %w", err)
+	}
+	g2.Edges = edges
+	graphBytes2, err := d2graph.SerializeGraph(&g2)
+	if err != nil {
+		return err
+	}
+
+	in := routeEdgesInput{
+		G:      graphBytes,
+		GEdges: graphBytes2,
+	}
+
+	b, err := json.Marshal(in)
+	if err != nil {
+		return err
+	}
+
+	args := []string{"routeedges"}
+	for k, v := range p.opts {
+		args = append(args, fmt.Sprintf("--%s", k), v)
+	}
+	cmd := exec.CommandContext(ctx, p.path, args...)
+
+	buffer := bytes.Buffer{}
+	buffer.Write(b)
+	cmd.Stdin = &buffer
+
+	stdout, err := cmd.Output()
+	if err != nil {
+		ee := &exec.ExitError{}
+		if errors.As(err, &ee) && len(ee.Stderr) > 0 {
+			return fmt.Errorf("%v\nstderr:\n%s", ee, ee.Stderr)
+		}
+		return err
+	}
+	err = d2graph.DeserializeGraph(stdout, g)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal json: %w", err)
+	}
+
+	return nil
+}

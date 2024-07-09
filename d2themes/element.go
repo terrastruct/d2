@@ -215,7 +215,7 @@ func (el *ThemableElement) Render() string {
 	}
 
 	out += " />"
-	if el.FillPattern != "" {
+	if el.FillPattern != "" && el.FillPattern != "none" {
 		patternEl := el.Copy()
 		patternEl.Fill = ""
 		patternEl.Stroke = ""

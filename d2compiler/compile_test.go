@@ -10,6 +10,7 @@ import (
 
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
+	"oss.terrastruct.com/util-go/mapfs"
 
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2format"
@@ -23,6 +24,8 @@ func TestCompile(t *testing.T) {
 	testCases := []struct {
 		name string
 		text string
+		// For tests that use imports, define `index.d2` as text and other files here
+		files map[string]string
 
 		expErr     string
 		assertions func(t *testing.T, g *d2graph.Graph)
@@ -259,7 +262,7 @@ containers: {
   }
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/invalid-fill-pattern.d2:3:19: expected "fill-pattern" to be one of: dots, lines, grain, paper`,
+			expErr: `d2/testdata/d2compiler/TestCompile/invalid-fill-pattern.d2:3:19: expected "fill-pattern" to be one of: none, dots, lines, grain, paper`,
 		},
 		{
 			name: "shape_unquoted_hex",
@@ -1608,6 +1611,17 @@ d2/testdata/d2compiler/TestCompile/near-invalid.d2:14:9: near keys cannot be set
 			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_constant.d2:1:9: near key "txop-center" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right`,
 		},
 		{
+			name: "near_special",
+
+			text: `x.near: z.x
+z: {
+  grid-rows: 1
+  x
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_special.d2:1:9: near keys cannot be set to descendants of special objects, like grid cells`,
+		},
+		{
 			name: "near_bad_connected",
 
 			text: `
@@ -2837,15 +2851,96 @@ y.source-arrowhead.shape: cf-one
 			expErr: `d2/testdata/d2compiler/TestCompile/no_arrowheads_in_shape.d2:1:3: "target-arrowhead" can only be used on connections
 d2/testdata/d2compiler/TestCompile/no_arrowheads_in_shape.d2:2:3: "source-arrowhead" can only be used on connections`,
 		},
+		{
+			name: "shape-hierarchy",
+			text: `x: {
+  shape: hierarchy
+  a -> b
+}
+`,
+		},
+		{
+			name: "fixed-pos-shape-hierarchy",
+			text: `x: {
+  shape: hierarchy
+  a -> b
+	a.top: 20
+	a.left: 20
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/fixed-pos-shape-hierarchy.d2:4:2: position keywords cannot be used with shape "hierarchy"
+d2/testdata/d2compiler/TestCompile/fixed-pos-shape-hierarchy.d2:5:2: position keywords cannot be used with shape "hierarchy"`,
+		},
+		{
+			name: "vars-in-imports",
+			text: `dev: {
+  vars: {
+    env: Dev
+  }
+  ...@template.d2
+}
+
+qa: {
+  vars: {
+    env: Qa
+  }
+  ...@template.d2
+}
+`,
+			files: map[string]string{
+				"template.d2": `env: {
+  label: ${env} Environment
+  vm: {
+    label: My Virtual machine!
+  }
+}`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "dev.env", g.Objects[1].AbsID())
+				tassert.Equal(t, "Dev Environment", g.Objects[1].Label.Value)
+				tassert.Equal(t, "qa.env", g.Objects[2].AbsID())
+				tassert.Equal(t, "Qa Environment", g.Objects[2].Label.Value)
+			},
+		},
+		{
+			name: "spread-import-link",
+			text: `k
+
+layers: {
+  x: {...@x}
+}`,
+			files: map[string]string{
+				"x.d2": `a.link: layers.b
+layers: {
+  b: {
+    d
+  }
+}`,
+			},
+		},
 	}
 
 	for _, tc := range testCases {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-
+			opts := &d2compiler.CompileOptions{}
+			if tc.files != nil {
+				tc.files["index.d2"] = tc.text
+				renamed := make(map[string]string)
+				for file, content := range tc.files {
+					renamed[fmt.Sprintf("d2/testdata/d2compiler/TestCompile/%v", file)] = content
+				}
+				fs, err := mapfs.New(renamed)
+				assert.Success(t, err)
+				t.Cleanup(func() {
+					err = fs.Close()
+					assert.Success(t, err)
+				})
+				opts.FS = fs
+			}
 			d2Path := fmt.Sprintf("d2/testdata/d2compiler/%v.d2", t.Name())
-			g, _, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), nil)
+			g, _, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), opts)
 			if tc.expErr != "" {
 				if err == nil {
 					t.Fatalf("expected error with: %q", tc.expErr)
@@ -2989,6 +3084,22 @@ steps: {
 }
 `, "")
 				assert.True(t, g.IsFolderOnly)
+			},
+		},
+		{
+			name: "no-inherit-label",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+label: hi
+
+steps: {
+  1: {
+    RJ
+  }
+}
+`, "")
+				assert.True(t, g.Root.Label.MapKey != nil)
+				assert.True(t, g.Steps[0].Root.Label.MapKey == nil)
 			},
 		},
 		{
@@ -3240,6 +3351,17 @@ y: null
 				},
 			},
 			{
+				name: "delete-nested-connection",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+a -> b.c
+b.c: null
+`, "")
+					assert.Equal(t, 2, len(g.Objects))
+					assert.Equal(t, 0, len(g.Edges))
+				},
+			},
+			{
 				name: "delete-multiple-connections",
 				run: func(t *testing.T) {
 					g, _ := assertCompile(t, `
@@ -3422,6 +3544,24 @@ vars: {
 hi: "1 ${x} 2"
 `, "")
 					assert.Equal(t, "1 im a var 2", g.Objects[0].Label.Value)
+				},
+			},
+			{
+				name: "double-border",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+a.shape: Circle
+a.style.double-border: true
+`, "")
+				},
+			},
+			{
+				name: "invalid-double-border",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+a.shape: hexagon
+a.style.double-border: true
+`, `d2/testdata/d2compiler/TestCompile2/vars/basic/invalid-double-border.d2:3:1: key "double-border" can only be applied to squares, rectangles, circles, ovals`)
 				},
 			},
 			{
@@ -4327,6 +4467,29 @@ container_2: {
 }
 `, ``)
 				assert.Equal(t, 4, len(g.Objects))
+			},
+		},
+		{
+			name: "override-edge/1",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+(* -> *)[*].style.stroke: red
+(* -> *)[*].style.stroke: green
+a -> b
+`, ``)
+				assert.Equal(t, "green", g.Edges[0].Attributes.Style.Stroke.Value)
+			},
+		},
+		{
+			name: "override-edge/2",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+(* -> *)[*].style.stroke: red
+a -> b: {style.stroke: green}
+a -> b
+`, ``)
+				assert.Equal(t, "green", g.Edges[0].Attributes.Style.Stroke.Value)
+				assert.Equal(t, "red", g.Edges[1].Attributes.Style.Stroke.Value)
 			},
 		},
 	}

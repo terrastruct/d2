@@ -140,9 +140,28 @@ func GetParentID(g *d2graph.Graph, boardPath []string, absID string) (string, er
 	return obj.Parent.AbsID(), nil
 }
 
-func IsImported(ast *d2ast.Map, obj *d2graph.Object) bool {
+func IsImportedObj(ast *d2ast.Map, obj *d2graph.Object) bool {
 	for _, ref := range obj.References {
+		if ref.Key.HasGlob() {
+			return true
+		}
 		if ref.Key.Range.Path != ast.Range.Path {
+			return true
+		}
+	}
+
+	return false
+}
+
+// Glob creations count as imported for now
+// TODO Probably rename later
+func IsImportedEdge(ast *d2ast.Map, edge *d2graph.Edge) bool {
+	for _, ref := range edge.References {
+		// If edge index, the glob is just setting something, not responsible for creating the edge
+		if (ref.Edge.Src.HasGlob() || ref.Edge.Dst.HasGlob()) && ref.MapKey.EdgeIndex == nil {
+			return true
+		}
+		if ref.Edge.Range.Path != ast.Range.Path {
 			return true
 		}
 	}
@@ -226,4 +245,22 @@ func GetID(key string) string {
 	}
 
 	return d2format.Format(d2ast.RawString(mk.Key.Path[len(mk.Key.Path)-1].Unbox().ScalarString(), true))
+}
+
+func GetWriteableRefs(obj *d2graph.Object, writeableAST *d2ast.Map) (out []d2graph.Reference) {
+	for i, ref := range obj.References {
+		if ref.ScopeAST == writeableAST && ref.Key.Range.Path == writeableAST.Range.Path {
+			out = append(out, obj.References[i])
+		}
+	}
+	return
+}
+
+func GetWriteableEdgeRefs(edge *d2graph.Edge, writeableAST *d2ast.Map) (out []d2graph.EdgeReference) {
+	for i, ref := range edge.References {
+		if ref.ScopeAST == writeableAST {
+			out = append(out, edge.References[i])
+		}
+	}
+	return
 }

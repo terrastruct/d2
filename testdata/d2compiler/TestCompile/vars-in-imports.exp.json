@@ -1,0 +1,530 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,0:0:0-13:0:107",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,0:0:0-5:1:53",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,0:0:0-0:3:3",
+                    "value": [
+                      {
+                        "string": "dev",
+                        "raw_string": "dev"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,0:5:5-5:1:53",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,1:2:9-3:3:33",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,1:2:9-1:6:13",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,1:2:9-1:6:13",
+                              "value": [
+                                {
+                                  "string": "vars",
+                                  "raw_string": "vars"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,1:8:15-3:3:33",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,2:4:21-2:12:29",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,2:4:21-2:7:24",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,2:4:21-2:7:24",
+                                        "value": [
+                                          {
+                                            "string": "env",
+                                            "raw_string": "env"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,2:9:26-2:12:29",
+                                    "value": [
+                                      {
+                                        "string": "Dev",
+                                        "raw_string": "Dev"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "import": {
+                      "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,4:2:36-4:17:51",
+                      "spread": true,
+                      "pre": "",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,4:6:40-4:14:48",
+                            "value": [
+                              {
+                                "string": "template",
+                                "raw_string": "template"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,7:0:55-12:1:106",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,7:0:55-7:2:57",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,7:0:55-7:2:57",
+                    "value": [
+                      {
+                        "string": "qa",
+                        "raw_string": "qa"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,7:4:59-12:1:106",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,8:2:63-10:3:86",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,8:2:63-8:6:67",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,8:2:63-8:6:67",
+                              "value": [
+                                {
+                                  "string": "vars",
+                                  "raw_string": "vars"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,8:8:69-10:3:86",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,9:4:75-9:11:82",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,9:4:75-9:7:78",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,9:4:75-9:7:78",
+                                        "value": [
+                                          {
+                                            "string": "env",
+                                            "raw_string": "env"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,9:9:80-9:11:82",
+                                    "value": [
+                                      {
+                                        "string": "Qa",
+                                        "raw_string": "Qa"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "import": {
+                      "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,11:2:89-11:17:104",
+                      "spread": true,
+                      "pre": "",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,11:6:93-11:14:101",
+                            "value": [
+                              {
+                                "string": "template",
+                                "raw_string": "template"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "dev",
+        "id_val": "dev",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,0:0:0-0:3:3",
+                    "value": [
+                      {
+                        "string": "dev",
+                        "raw_string": "dev"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "dev"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "env",
+        "id_val": "env",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/template.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/template.d2,0:0:0-0:3:3",
+                    "value": [
+                      {
+                        "string": "env",
+                        "raw_string": "env"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Dev Environment"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "env",
+        "id_val": "env",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/template.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/template.d2,0:0:0-0:3:3",
+                    "value": [
+                      {
+                        "string": "env",
+                        "raw_string": "env"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Qa Environment"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "vm",
+        "id_val": "vm",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/template.d2,2:2:37-2:4:39",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/template.d2,2:2:37-2:4:39",
+                    "value": [
+                      {
+                        "string": "vm",
+                        "raw_string": "vm"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "My Virtual machine!"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "vm",
+        "id_val": "vm",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/template.d2,2:2:37-2:4:39",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/template.d2,2:2:37-2:4:39",
+                    "value": [
+                      {
+                        "string": "vm",
+                        "raw_string": "vm"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "My Virtual machine!"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "qa",
+        "id_val": "qa",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,7:0:55-7:2:57",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/vars-in-imports.d2,7:0:55-7:2:57",
+                    "value": [
+                      {
+                        "string": "qa",
+                        "raw_string": "qa"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "qa"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

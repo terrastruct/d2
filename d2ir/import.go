@@ -82,14 +82,9 @@ func (c *compiler) __import(imp *d2ast.Import) (*Map, bool) {
 
 	// Only get immediate imports.
 	if len(c.importStack) == 2 {
-		if _, ok := c.importCache[impPath]; !ok {
+		if _, ok := c.seenImports[impPath]; !ok {
 			c.imports = append(c.imports, imp.PathWithPre())
 		}
-	}
-
-	ir, ok := c.importCache[impPath]
-	if ok {
-		return ir, true
 	}
 
 	var f fs.File
@@ -113,13 +108,13 @@ func (c *compiler) __import(imp *d2ast.Import) (*Map, bool) {
 		return nil, false
 	}
 
-	ir = &Map{}
+	ir := &Map{}
 	ir.initRoot()
 	ir.parent.(*Field).References[0].Context_.Scope = ast
 
 	c.compileMap(ir, ast, ast)
 
-	c.importCache[impPath] = ir
+	c.seenImports[impPath] = struct{}{}
 
 	return ir, true
 }

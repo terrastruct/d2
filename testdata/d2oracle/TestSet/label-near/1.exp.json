@@ -1,0 +1,159 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestSet/label-near/1.d2,0:0:0-1:0:30",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestSet/label-near/1.d2,0:0:0-0:29:29",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/label-near/1.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/label-near/1.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestSet/label-near/1.d2,0:3:3-0:29:29",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestSet/label-near/1.d2,0:4:4-0:28:28",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestSet/label-near/1.d2,0:4:4-0:14:14",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestSet/label-near/1.d2,0:4:4-0:9:9",
+                              "value": [
+                                {
+                                  "string": "label",
+                                  "raw_string": "label"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestSet/label-near/1.d2,0:10:10-0:14:14",
+                              "value": [
+                                {
+                                  "string": "near",
+                                  "raw_string": "near"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2oracle/TestSet/label-near/1.d2,0:16:16-0:28:28",
+                          "value": [
+                            {
+                              "string": "bottom-right",
+                              "raw_string": "bottom-right"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "x",
+        "id_val": "x",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/label-near/1.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/label-near/1.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "x"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null,
+          "labelPosition": {
+            "value": "bottom-right"
+          }
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": "<nil>"
+}

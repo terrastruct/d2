@@ -37,9 +37,11 @@ func main() {
 	vFlag := false
 	testCaseFlag := ""
 	testSetFlag := ""
+	testNameFlag := ""
 	cpuProfileFlag := false
 	memProfileFlag := false
 	flag.BoolVar(&deltaFlag, "delta", false, "Generate the report only for cases that changed.")
+	flag.StringVar(&testNameFlag, "test-name", "E2E", "Name of e2e tests. Defaults to E2E")
 	flag.StringVar(&testSetFlag, "test-set", "", "Only run set of tests matching this string. e.g. regressions")
 	flag.StringVar(&testCaseFlag, "test-case", "", "Only run tests matching this string. e.g. all_shapes")
 	flag.BoolVar(&cpuProfileFlag, "cpuprofile", false, "Profile test cpu usage. `go tool pprof out/cpu.prof`")
@@ -52,7 +54,7 @@ func main() {
 	if vFlag {
 		vString = "-v"
 	}
-	testMatchString := fmt.Sprintf("-run=TestE2E/%s/%s", testSetFlag, testCaseFlag)
+	testMatchString := fmt.Sprintf("-run=Test%s/%s/%s", testNameFlag, testSetFlag, testCaseFlag)
 
 	cpuProfileStr := ""
 	if cpuProfileFlag {

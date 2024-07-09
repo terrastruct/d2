@@ -950,13 +950,20 @@ func (m *Map) DeleteField(ida ...string) *Field {
 		}
 		if len(rest) == 0 {
 			for _, fr := range f.References {
-				for _, e := range m.Edges {
-					for _, er := range e.References {
-						if er.Context_ == fr.Context_ {
-							m.DeleteEdge(e.ID)
-							break
+				currM := m
+				for currM != nil {
+					for _, e := range currM.Edges {
+						for _, er := range e.References {
+							if er.Context_ == fr.Context_ {
+								currM.DeleteEdge(e.ID)
+								break
+							}
 						}
 					}
+					if NodeBoardKind(currM) != "" {
+						break
+					}
+					currM = ParentMap(currM)
 				}
 			}
 			m.Fields = append(m.Fields[:i], m.Fields[i+1:]...)
@@ -1087,7 +1094,7 @@ func (m *Map) getEdges(eid *EdgeID, refctx *RefContext, gctx *globContext, ea *[
 					}
 					gctx.appliedEdges[ks] = struct{}{}
 				}
-				*ea = append(*ea, ea2...)
+				*ea = append(*ea, e)
 			}
 		}
 	}
@@ -1348,11 +1355,8 @@ func (m *Map) AST() d2ast.Node {
 	if m == nil {
 		return nil
 	}
-	astMap := &d2ast.Map{}
-	if m.Root() {
-		astMap.Range = d2ast.MakeRange(",0:0:0-1:0:0")
-	} else {
-		astMap.Range = d2ast.MakeRange(",1:0:0-2:0:0")
+	astMap := &d2ast.Map{
+		Range: d2ast.MakeRange(",0:0:0-1:0:0"),
 	}
 	for _, f := range m.Fields {
 		astMap.Nodes = append(astMap.Nodes, d2ast.MakeMapNodeBox(f.AST().(d2ast.MapNode)))

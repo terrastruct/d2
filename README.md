@@ -46,34 +46,63 @@ https://user-images.githubusercontent.com/3120367/206125010-bd1fea8e-248a-43e7-8
 ## What does D2 look like?
 
 ```d2
-# Actors
-hans: Hans Niemann
+vars: {
+  d2-config: {
+    layout-engine: elk
+    # Terminal theme code
+    theme-id: 300
+  }
+}
+network: {
+  cell tower: {
+    satellites: {
+      shape: stored_data
+      style.multiple: true
+    }
 
-defendants: {
-  mc: Magnus Carlsen
-  playmagnus: Play Magnus Group
-  chesscom: Chess.com
-  naka: Hikaru Nakamura
+    transmitter
 
-  mc -> playmagnus: Owns majority
-  playmagnus <-> chesscom: Merger talks
-  chesscom -> naka: Sponsoring
+    satellites -> transmitter: send
+    satellites -> transmitter: send
+    satellites -> transmitter: send
+  }
+
+  online portal: {
+    ui: {shape: hexagon}
+  }
+
+  data processor: {
+    storage: {
+      shape: cylinder
+      style.multiple: true
+    }
+  }
+
+  cell tower.transmitter -> data processor.storage: phone logs
 }
 
-# Accusations
-hans -> defendants: 'sueing for $100M'
+user: {
+  shape: person
+  width: 130
+}
 
-# Claim
-defendants.naka -> hans: Accused of cheating on his stream
-defendants.mc -> hans: Lost then withdrew with accusations
-defendants.chesscom -> hans: 72 page report of cheating
+user -> network.cell tower: make call
+user -> network.online portal.ui: access {
+  style.stroke-dash: 3
+}
+
+api server -> network.online portal.ui: display
+api server -> logs: persist
+logs: {shape: page; style.multiple: true}
+
+network.data processor -> api server
 ```
 
-> There is syntax highlighting with the editor plugins linked below.
+<p align="center">
+    <img width="400px" src="./docs/assets/example.svg" alt="D2 render example" />
+</p>
 
-<img src="./docs/assets/syntax.png" alt="D2 render example" />
-
-> Rendered with the TALA layout engine.
+> Open in [playground](https://play.d2lang.com/?script=rVLLTsQwDLznKyJxbrWwtyLxFdyR1Zg2ahpHibvLCvXfcdqGfSHthVv8yIxn7APE1OhvpbV5qVryn7ZbQ60dnGjiCn1nPTYa3bCkn_Q7xtF6cJp7HFG3ZHCpLGFlTaP3u51kZjUrj3ykOKyYLTr5REeMhSMBS84yppKRXA9B-BJTRPNhgKEU-OSwHifHNjjp4DitxLNa-SP4NFpmjOoGXVdvl2VBR2_-sWeZgLwTp3SgyOCKnsnKa5PU4xd05OfyIWvTIVKLKdHZExEOHd4Z0p4E3oi2h25s8Ge764uZs4Rr4vqXMfQkAhx1SVanplQWtU0QMCbyEh-t4b7Rz_td6cuo267ryzWPMMiFgHN3XVdu1dkmaPM8K-EiLnGkASsDScj2mQqCFcvj4RGUsSnI_d70Z2GrCptYrVHZTRADXv80VWgL0bVvGfJMoH4A)
 
 > For more examples, see [./docs/examples](./docs/examples).
 
@@ -231,6 +260,7 @@ let us know and we'll be happy to include it here!
 - **Logseq-D2**: [https://github.com/b-yp/logseq-d2](https://github.com/b-yp/logseq-d2)
 - **ent2d2**: [https://github.com/tmc/ent2d2](https://github.com/tmc/ent2d2)
 - **MkDocs Plugin**: [https://github.com/landmaj/mkdocs-d2-plugin](https://github.com/landmaj/mkdocs-d2-plugin)
+- **Remark Plugin**: [https://github.com/mech-a/remark-d2](https://github.com/mech-a/remark-d2)
 
 ### Misc
 
@@ -261,6 +291,12 @@ Do you have or see an open-source project with `.d2` files? Please submit a PR a
 this selected list of featured projects using D2.
 
 - [ElasticSearch](https://github.com/elastic/beats/blob/main/libbeat/publisher/queue/proxy/diagrams/broker.d2)
+- [Sourcegraph](https://handbook.sourcegraph.com/departments/engineering/managed-services/telemetry-gateway/#dev-architecture-diagram)
+- [Temporal](https://github.com/temporalio/temporal/blob/0be2681c994470c7c61ea88e4fcef89bb4024e58/docs/_assets/matching-context.d2)
+- [Tauri](https://v2.tauri.app/concept/inter-process-communication/)
+    - Rust GUI framework (78.5k stars)
+- [Intellij](https://github.com/JetBrains/intellij-community/blob/45bcfc17a3f3e0d8548bc69e922d4ca97ac21b2b/platform/settings/docs/topics/overview.md)
+- [Coder](https://coder.com/blog/managing-templates-in-coder)
 - [UC
   Berkeley](https://github.com/ucb-bar/hammer/blob/2b5c04d7b7d9ee3c73575efcd7ee0698bd5bfa88/doc/Hammer-Use/hier.d2)
 - [Coronacheck](https://github.com/minvws/nl-covid19-coronacheck-app-ios/blob/e1567e9d1633b3273c537a105bff0e7d3a57ecfe/Diagrams/client-side-datamodel.d2)
