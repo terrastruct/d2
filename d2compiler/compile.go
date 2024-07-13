@@ -108,11 +108,11 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 }
 
 func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName string) {
-	layers := ir.GetField(fieldName)
-	if layers.Map() == nil {
+	boards := ir.GetField(fieldName)
+	if boards.Map() == nil {
 		return
 	}
-	for _, f := range layers.Map().Fields {
+	for _, f := range boards.Map().Fields {
 		if f.Map() == nil {
 			continue
 		}
@@ -123,7 +123,9 @@ func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 		g2 := d2graph.NewGraph()
 		g2.Parent = g
 		g2.AST = f.Map().AST().(*d2ast.Map)
-		g2.BaseAST = findFieldAST(g.BaseAST, f)
+		if g.BaseAST != nil {
+			g2.BaseAST = findFieldAST(g.BaseAST, f)
+		}
 		c.compileBoard(g2, f.Map())
 		g2.Name = f.Name
 		switch fieldName {
@@ -139,7 +141,7 @@ func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 
 func findFieldAST(ast *d2ast.Map, f *d2ir.Field) *d2ast.Map {
 	path := []string{}
-	var curr *d2ir.Field = f
+	curr := f
 	for {
 		path = append([]string{curr.Name}, path...)
 		boardKind := d2ir.NodeBoardKind(curr)

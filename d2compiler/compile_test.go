@@ -2918,6 +2918,28 @@ layers: {
 }`,
 			},
 		},
+		{
+			name: "import-nested-layers",
+			text: `k
+
+layers: {
+  x: {...@x}
+}`,
+			files: map[string]string{
+				"x.d2": `a
+layers: {
+  b: {
+		d
+
+		layers: {
+		  c: {
+			  c
+			}
+		}
+  }
+}`,
+			},
+		},
 	}
 
 	for _, tc := range testCases {
