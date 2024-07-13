@@ -2933,6 +2933,7 @@ layers: {
 layers: {
   b: {
     d.link: _
+		s.link: _.layers.k
 
     layers: {
       c: {
@@ -2942,6 +2943,9 @@ layers: {
       }
     }
   }
+  k: {
+    k
+  }
 }`,
 			},
 			assertions: func(t *testing.T, g *d2graph.Graph) {
@@ -2949,6 +2953,7 @@ layers: {
 				tassert.Equal(t, "root.layers.x.layers.b", g.Layers[0].Layers[0].Layers[0].Objects[0].Link.Value)
 				tassert.Equal(t, "root.layers.x", g.Layers[0].Layers[0].Layers[0].Objects[1].Link.Value)
 				tassert.Equal(t, "root.layers.x.layers.b", g.Layers[0].Layers[0].Layers[0].Objects[2].Link.Value)
+				tassert.Equal(t, "root.layers.x.layers.k", g.Layers[0].Layers[0].Objects[1].Link.Value)
 			},
 		},
 		{

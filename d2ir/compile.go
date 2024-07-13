@@ -873,6 +873,9 @@ func (c *compiler) updateLinks(m *Map) {
 				prependIDA := aida[:len(aida)-len(bida)]
 				if uplevels > 0 {
 					prependIDA = prependIDA[:len(prependIDA)-uplevels]
+				} else if uplevels == 0 {
+					// It's a sibling, so we go up one level to find it
+					prependIDA = prependIDA[:len(prependIDA)-2]
 				}
 				fullIDA := []string{"root"}
 				// With nested imports, a value may already have been updated with part of the absolute path
