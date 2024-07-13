@@ -13,3 +13,4 @@
 - Globs to null connections work [#1965](https://github.com/terrastruct/d2/pull/1965)
 - Edge globs setting styles inherit correctly in child boards [#1967](https://github.com/terrastruct/d2/pull/1967)
 - Board links imported with spread imports work [#1972](https://github.com/terrastruct/d2/pull/1972)
+- Fix importing a file with nested boards [#1998](https://github.com/terrastruct/d2/pull/1998)
