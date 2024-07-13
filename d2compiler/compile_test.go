@@ -2917,6 +2917,39 @@ layers: {
   }
 }`,
 			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.x.layers.b", g.Layers[0].Objects[0].Link.Value)
+			},
+		},
+		{
+			name: "import-link-underscore",
+			text: `k
+
+layers: {
+  x: {...@x}
+}`,
+			files: map[string]string{
+				"x.d2": `a
+layers: {
+  b: {
+    d.link: _
+
+    layers: {
+      c: {
+        c.link: _
+				z.link: _._
+				f.link: _._.layers.b
+      }
+    }
+  }
+}`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.x", g.Layers[0].Layers[0].Objects[0].Link.Value)
+				tassert.Equal(t, "root.layers.x.layers.b", g.Layers[0].Layers[0].Layers[0].Objects[0].Link.Value)
+				tassert.Equal(t, "root.layers.x", g.Layers[0].Layers[0].Layers[0].Objects[1].Link.Value)
+				tassert.Equal(t, "root.layers.x.layers.b", g.Layers[0].Layers[0].Layers[0].Objects[2].Link.Value)
+			},
 		},
 		{
 			name: "import-nested-layers",

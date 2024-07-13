@@ -14,3 +14,4 @@
 - Edge globs setting styles inherit correctly in child boards [#1967](https://github.com/terrastruct/d2/pull/1967)
 - Board links imported with spread imports work [#1972](https://github.com/terrastruct/d2/pull/1972)
 - Fix importing a file with nested boards [#1998](https://github.com/terrastruct/d2/pull/1998)
+- Fix importing a file with underscores in links [#1999](https://github.com/terrastruct/d2/pull/1999)

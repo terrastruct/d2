@@ -863,8 +863,17 @@ func (c *compiler) updateLinks(m *Map) {
 			}
 			bida := BoardIDA(f)
 			aida := IDA(f)
+
+			// The id path from that board to field
+			relaida := aida[len(bida)+1 : len(aida)-len(bida)]
+			// If the link value has underscores, the path length can be less than the path length of the field
+			uplevels := len(relaida) - len(linkIDA) + 1
+
 			if len(bida) != len(aida) {
 				prependIDA := aida[:len(aida)-len(bida)]
+				if uplevels > 0 {
+					prependIDA = prependIDA[:len(prependIDA)-uplevels]
+				}
 				fullIDA := []string{"root"}
 				// With nested imports, a value may already have been updated with part of the absolute path
 				// E.g.,
@@ -876,9 +885,11 @@ func (c *compiler) updateLinks(m *Map) {
 				// -------
 				// a b c d
 			OUTER:
+				// Starts at 1 assuming 0 is "root" for both
+				// +2 assuming layers/scenarios/steps is in between both
 				for i := 1; i < len(prependIDA); i += 2 {
 					for j := 0; i+j < len(prependIDA); j++ {
-						if prependIDA[i+j] != linkIDA[1+j] {
+						if 1+j >= len(linkIDA) || prependIDA[i+j] != linkIDA[1+j] {
 							break
 						}
 						// Reached the end and all common
