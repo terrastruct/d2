@@ -2978,6 +2978,22 @@ layers: {
 }`,
 			},
 		},
+		{
+			name: "multiple-import-nested-layers",
+			text: `k
+
+layers: {
+  x: {...@y/x}
+}`,
+			files: map[string]string{
+				"y/x.d2": `a.c.link: layers.b
+
+layers: {
+  b: {...@n}
+}`,
+				"y/n.d2": "p",
+			},
+		},
 	}
 
 	for _, tc := range testCases {

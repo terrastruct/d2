@@ -864,10 +864,13 @@ func (c *compiler) updateLinks(m *Map) {
 			bida := BoardIDA(f)
 			aida := IDA(f)
 
+			uplevels := -1
 			// The id path from that board to field
-			relaida := aida[len(bida)+1 : len(aida)-len(bida)]
-			// If the link value has underscores, the path length can be less than the path length of the field
-			uplevels := len(relaida) - len(linkIDA) + 1
+			if len(aida)-len(bida) > len(bida)+1 {
+				relaida := aida[len(bida)+1 : len(aida)-len(bida)]
+				// If the link value has underscores, the path length can be less than the path length of the field
+				uplevels = len(relaida) - len(linkIDA) + 1
+			}
 
 			if len(bida) != len(aida) {
 				prependIDA := aida[:len(aida)-len(bida)]
