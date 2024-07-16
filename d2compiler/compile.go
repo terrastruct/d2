@@ -1067,27 +1067,9 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 			nearObj, isKey := g.Root.HasChild(d2graph.Key(obj.NearKey))
 			_, isConst := d2graph.NearConstants[d2graph.Key(obj.NearKey)[0]]
 			if isKey {
-				// Doesn't make sense to set near to an ancestor or descendant
-				nearIsAncestor := false
-				for curr := obj; curr != nil; curr = curr.Parent {
-					if curr == nearObj {
-						nearIsAncestor = true
-						break
-					}
-				}
-				if nearIsAncestor {
-					c.errorf(obj.NearKey, "near keys cannot be set to an ancestor")
-					continue
-				}
-				nearIsDescendant := false
-				for curr := nearObj; curr != nil; curr = curr.Parent {
-					if curr == obj {
-						nearIsDescendant = true
-						break
-					}
-				}
-				if nearIsDescendant {
-					c.errorf(obj.NearKey, "near keys cannot be set to an descendant")
+				// Doesn't make sense to set near to a non-sibling
+				if obj.Parent != nearObj.Parent {
+					c.errorf(obj.NearKey, "near keys cannot be set to a non-sibling")
 					continue
 				}
 				if nearObj.OuterSequenceDiagram() != nil {
