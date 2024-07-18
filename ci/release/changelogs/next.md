@@ -1,6 +1,7 @@
 #### Features 🚀
 
 - Glob inverse filters are implemented (e.g. `*: {!&shape: circle; style.fill: red}` to turn all non-circles red) [#2008](https://github.com/terrastruct/d2/pull/2008)
+- Globs can be used in glob filter values, including checking for existence (e.g. `*: {&link: *; style.fill: red}` to turn all objects with a link red) [#2009](https://github.com/terrastruct/d2/pull/2009)
 
 #### Improvements 🧹
 
