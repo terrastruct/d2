@@ -4609,6 +4609,22 @@ a -> b
 
 x
 y.link: https://google.com
+`, ``)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Attributes.Style.Underline)
+				assert.Equal(t, "true", g.Objects[1].Attributes.Style.Underline.Value)
+			},
+		},
+		{
+			name: "glob-filter",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*: {
+  &link: *google*
+	style.underline: true
+}
+
+x
+y.link: https://google.com
 z.link: https://yahoo.com
 `, ``)
 				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Attributes.Style.Underline)
