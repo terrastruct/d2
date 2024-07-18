@@ -2352,6 +2352,36 @@ layers: {
 			},
 		},
 		{
+			name: "link-file-underscore",
+			text: `...@x`,
+			files: map[string]string{
+				"x.d2": `x
+
+layers: {
+  a: { c }
+  b: { d.link: _.layers.a }
+	e: {
+    l
+
+		layers: {
+			j: {
+			  k.link: _
+			  n.link: _._
+			  m.link: _._.layers.a
+			}
+		}
+  }
+}
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.a", g.Layers[1].Objects[0].Link.Value)
+				tassert.Equal(t, "root.layers.e", g.Layers[2].Layers[0].Objects[0].Link.Value)
+				tassert.Equal(t, "root", g.Layers[2].Layers[0].Objects[1].Link.Value)
+				tassert.Equal(t, "root.layers.a", g.Layers[2].Layers[0].Objects[2].Link.Value)
+			},
+		},
+		{
 			name: "link-board-underscore-not-found",
 			text: `x
 layers: {
