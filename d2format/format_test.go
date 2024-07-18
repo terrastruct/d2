@@ -831,6 +831,30 @@ mybox: {
 }
 `,
 		},
+		{
+			name: "not-filter",
+			in: `jacob: {
+	shape: circle
+}
+jeremy: {
+	shape: rectangle
+}
+*: {
+	!&shape: rectangle
+	label: I'm not a rectangle
+}`,
+			exp: `jacob: {
+  shape: circle
+}
+jeremy: {
+  shape: rectangle
+}
+*: {
+  !&shape: rectangle
+  label: I'm not a rectangle
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
