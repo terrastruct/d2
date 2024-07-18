@@ -408,6 +408,9 @@ func (c *compiler) ampersandFilterMap(dst *Map, ast, scopeAST *d2ast.Map) bool {
 				ScopeMap: dst,
 				ScopeAST: scopeAST,
 			})
+			if n.MapKey.NotAmpersand {
+				ok = !ok
+			}
 			if !ok {
 				if len(c.mapRefContextStack) == 0 {
 					return false
@@ -591,7 +594,7 @@ func (c *compiler) compileKey(refctx *RefContext) {
 }
 
 func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext) {
-	if refctx.Key.Ampersand {
+	if refctx.Key.Ampersand || refctx.Key.NotAmpersand {
 		return
 	}
 
@@ -607,7 +610,7 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 }
 
 func (c *compiler) ampersandFilter(refctx *RefContext) bool {
-	if !refctx.Key.Ampersand {
+	if !refctx.Key.Ampersand && !refctx.Key.NotAmpersand {
 		return true
 	}
 	if len(c.mapRefContextStack) == 0 || !c.mapRefContextStack[len(c.mapRefContextStack)-1].Key.SupportsGlobFilters() {

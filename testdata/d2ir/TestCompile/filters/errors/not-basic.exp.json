@@ -1,0 +1,653 @@
+{
+  "fields": [
+    {
+      "name": "jacob",
+      "composite": {
+        "fields": [
+          {
+            "name": "shape",
+            "primary": {
+              "value": {
+                "range": "TestCompile/filters/errors/not-basic.d2,7:10:71-7:19:80",
+                "value": [
+                  {
+                    "string": "rectangle",
+                    "raw_string": "rectangle"
+                  }
+                ]
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/filters/errors/not-basic.d2,1:1:10-1:6:15",
+                  "value": [
+                    {
+                      "string": "shape",
+                      "raw_string": "shape"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/errors/not-basic.d2,1:1:10-1:6:15",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/errors/not-basic.d2,1:1:10-1:6:15",
+                        "value": [
+                          {
+                            "string": "shape",
+                            "raw_string": "shape"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/errors/not-basic.d2,1:1:10-1:14:23",
+                    "key": {
+                      "range": "TestCompile/filters/errors/not-basic.d2,1:1:10-1:6:15",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/errors/not-basic.d2,1:1:10-1:6:15",
+                            "value": [
+                              {
+                                "string": "shape",
+                                "raw_string": "shape"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/errors/not-basic.d2,1:8:17-1:14:23",
+                        "value": [
+                          {
+                            "string": "circle",
+                            "raw_string": "circle"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              },
+              {
+                "string": {
+                  "range": "TestCompile/filters/errors/not-basic.d2,7:3:64-7:8:69",
+                  "value": [
+                    {
+                      "string": "shape",
+                      "raw_string": "shape"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/errors/not-basic.d2,7:3:64-7:8:69",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/errors/not-basic.d2,7:3:64-7:8:69",
+                        "value": [
+                          {
+                            "string": "shape",
+                            "raw_string": "shape"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/errors/not-basic.d2,7:1:62-7:19:80",
+                    "not_ampersand": true,
+                    "key": {
+                      "range": "TestCompile/filters/errors/not-basic.d2,7:3:64-7:8:69",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/errors/not-basic.d2,7:3:64-7:8:69",
+                            "value": [
+                              {
+                                "string": "shape",
+                                "raw_string": "shape"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/errors/not-basic.d2,7:10:71-7:19:80",
+                        "value": [
+                          {
+                            "string": "rectangle",
+                            "raw_string": "rectangle"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
+              }
+            ]
+          },
+          {
+            "name": "label",
+            "primary": {
+              "value": {
+                "range": "TestCompile/filters/errors/not-basic.d2,8:8:89-8:27:108",
+                "value": [
+                  {
+                    "string": "I'm not a rectangle",
+                    "raw_string": "I'm not a rectangle"
+                  }
+                ]
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/filters/errors/not-basic.d2,8:1:82-8:6:87",
+                  "value": [
+                    {
+                      "string": "label",
+                      "raw_string": "label"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/errors/not-basic.d2,8:1:82-8:6:87",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/errors/not-basic.d2,8:1:82-8:6:87",
+                        "value": [
+                          {
+                            "string": "label",
+                            "raw_string": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/errors/not-basic.d2,8:1:82-8:27:108",
+                    "key": {
+                      "range": "TestCompile/filters/errors/not-basic.d2,8:1:82-8:6:87",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/errors/not-basic.d2,8:1:82-8:6:87",
+                            "value": [
+                              {
+                                "string": "label",
+                                "raw_string": "label"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/errors/not-basic.d2,8:8:89-8:27:108",
+                        "value": [
+                          {
+                            "string": "I'm not a rectangle",
+                            "raw_string": "I'm not a rectangle"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/filters/errors/not-basic.d2,0:0:0-0:5:5",
+            "value": [
+              {
+                "string": "jacob",
+                "raw_string": "jacob"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/filters/errors/not-basic.d2,0:0:0-0:5:5",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/filters/errors/not-basic.d2,0:0:0-0:5:5",
+                  "value": [
+                    {
+                      "string": "jacob",
+                      "raw_string": "jacob"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/filters/errors/not-basic.d2,0:0:0-2:1:25",
+              "key": {
+                "range": "TestCompile/filters/errors/not-basic.d2,0:0:0-0:5:5",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/filters/errors/not-basic.d2,0:0:0-0:5:5",
+                      "value": [
+                        {
+                          "string": "jacob",
+                          "raw_string": "jacob"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/filters/errors/not-basic.d2,0:7:7-2:1:25",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/filters/errors/not-basic.d2,1:1:10-1:14:23",
+                        "key": {
+                          "range": "TestCompile/filters/errors/not-basic.d2,1:1:10-1:6:15",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/errors/not-basic.d2,1:1:10-1:6:15",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/errors/not-basic.d2,1:8:17-1:14:23",
+                            "value": [
+                              {
+                                "string": "circle",
+                                "raw_string": "circle"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        }
+      ]
+    },
+    {
+      "name": "jeremy",
+      "composite": {
+        "fields": [
+          {
+            "name": "shape",
+            "primary": {
+              "value": {
+                "range": "TestCompile/filters/errors/not-basic.d2,7:10:71-7:19:80",
+                "value": [
+                  {
+                    "string": "rectangle",
+                    "raw_string": "rectangle"
+                  }
+                ]
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/filters/errors/not-basic.d2,4:1:37-4:6:42",
+                  "value": [
+                    {
+                      "string": "shape",
+                      "raw_string": "shape"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/errors/not-basic.d2,4:1:37-4:6:42",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/errors/not-basic.d2,4:1:37-4:6:42",
+                        "value": [
+                          {
+                            "string": "shape",
+                            "raw_string": "shape"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/errors/not-basic.d2,4:1:37-4:17:53",
+                    "key": {
+                      "range": "TestCompile/filters/errors/not-basic.d2,4:1:37-4:6:42",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/errors/not-basic.d2,4:1:37-4:6:42",
+                            "value": [
+                              {
+                                "string": "shape",
+                                "raw_string": "shape"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/errors/not-basic.d2,4:8:44-4:17:53",
+                        "value": [
+                          {
+                            "string": "rectangle",
+                            "raw_string": "rectangle"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              },
+              {
+                "string": {
+                  "range": "TestCompile/filters/errors/not-basic.d2,7:3:64-7:8:69",
+                  "value": [
+                    {
+                      "string": "shape",
+                      "raw_string": "shape"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/errors/not-basic.d2,7:3:64-7:8:69",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/errors/not-basic.d2,7:3:64-7:8:69",
+                        "value": [
+                          {
+                            "string": "shape",
+                            "raw_string": "shape"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/errors/not-basic.d2,7:1:62-7:19:80",
+                    "not_ampersand": true,
+                    "key": {
+                      "range": "TestCompile/filters/errors/not-basic.d2,7:3:64-7:8:69",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/errors/not-basic.d2,7:3:64-7:8:69",
+                            "value": [
+                              {
+                                "string": "shape",
+                                "raw_string": "shape"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/errors/not-basic.d2,7:10:71-7:19:80",
+                        "value": [
+                          {
+                            "string": "rectangle",
+                            "raw_string": "rectangle"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
+              }
+            ]
+          },
+          {
+            "name": "label",
+            "primary": {
+              "value": {
+                "range": "TestCompile/filters/errors/not-basic.d2,8:8:89-8:27:108",
+                "value": [
+                  {
+                    "string": "I'm not a rectangle",
+                    "raw_string": "I'm not a rectangle"
+                  }
+                ]
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/filters/errors/not-basic.d2,8:1:82-8:6:87",
+                  "value": [
+                    {
+                      "string": "label",
+                      "raw_string": "label"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/filters/errors/not-basic.d2,8:1:82-8:6:87",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/errors/not-basic.d2,8:1:82-8:6:87",
+                        "value": [
+                          {
+                            "string": "label",
+                            "raw_string": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/filters/errors/not-basic.d2,8:1:82-8:27:108",
+                    "key": {
+                      "range": "TestCompile/filters/errors/not-basic.d2,8:1:82-8:6:87",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/errors/not-basic.d2,8:1:82-8:6:87",
+                            "value": [
+                              {
+                                "string": "label",
+                                "raw_string": "label"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/filters/errors/not-basic.d2,8:8:89-8:27:108",
+                        "value": [
+                          {
+                            "string": "I'm not a rectangle",
+                            "raw_string": "I'm not a rectangle"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": true,
+                "due_to_lazy_glob": false
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/filters/errors/not-basic.d2,3:0:26-3:6:32",
+            "value": [
+              {
+                "string": "jeremy",
+                "raw_string": "jeremy"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/filters/errors/not-basic.d2,3:0:26-3:6:32",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/filters/errors/not-basic.d2,3:0:26-3:6:32",
+                  "value": [
+                    {
+                      "string": "jeremy",
+                      "raw_string": "jeremy"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/filters/errors/not-basic.d2,3:0:26-5:1:55",
+              "key": {
+                "range": "TestCompile/filters/errors/not-basic.d2,3:0:26-3:6:32",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/filters/errors/not-basic.d2,3:0:26-3:6:32",
+                      "value": [
+                        {
+                          "string": "jeremy",
+                          "raw_string": "jeremy"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/filters/errors/not-basic.d2,3:8:34-5:1:55",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/filters/errors/not-basic.d2,4:1:37-4:17:53",
+                        "key": {
+                          "range": "TestCompile/filters/errors/not-basic.d2,4:1:37-4:6:42",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/filters/errors/not-basic.d2,4:1:37-4:6:42",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/filters/errors/not-basic.d2,4:8:44-4:17:53",
+                            "value": [
+                              {
+                                "string": "rectangle",
+                                "raw_string": "rectangle"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        }
+      ]
+    }
+  ],
+  "edges": null
+}
