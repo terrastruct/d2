@@ -695,8 +695,14 @@ func (c *compiler) _ampersandFilter(f *Field, refctx *RefContext) bool {
 		return false
 	}
 
-	if refctx.Key.Value.ScalarBox().Unbox().ScalarString() != f.Primary_.Value.ScalarString() {
-		return false
+	us, ok := refctx.Key.Value.ScalarBox().Unbox().(*d2ast.UnquotedString)
+
+	if ok && us.Pattern != nil {
+		return matchPattern(f.Primary_.Value.ScalarString(), us.Pattern)
+	} else {
+		if refctx.Key.Value.ScalarBox().Unbox().ScalarString() != f.Primary_.Value.ScalarString() {
+			return false
+		}
 	}
 
 	return true

@@ -1163,14 +1163,16 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 				sb.WriteRune(r)
 				rawb.WriteRune(r)
 				r = r2
-			case '*':
-				if sb.Len() == 0 {
-					s.Pattern = append(s.Pattern, "*")
-				} else {
-					s.Pattern = append(s.Pattern, sb.String()[lastPatternIndex:], "*")
-				}
-				lastPatternIndex = len(sb.String()) + 1
 			}
+		}
+
+		if r == '*' {
+			if sb.Len() == 0 {
+				s.Pattern = append(s.Pattern, "*")
+			} else {
+				s.Pattern = append(s.Pattern, sb.String()[lastPatternIndex:], "*")
+			}
+			lastPatternIndex = len(sb.String()) + 1
 		}
 
 		p.commit()

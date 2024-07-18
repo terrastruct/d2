@@ -79,6 +79,9 @@
                               "string": "*",
                               "raw_string": "*"
                             }
+                          ],
+                          "pattern": [
+                            "*"
                           ]
                         }
                       },
