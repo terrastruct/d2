@@ -4598,6 +4598,24 @@ a -> b
 				assert.Equal(t, "red", g.Edges[1].Attributes.Style.Stroke.Value)
 			},
 		},
+		{
+			name: "exists-filter",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*: {
+  &link: *
+	style.underline: true
+}
+
+x
+y.link: https://google.com
+z.link: https://yahoo.com
+`, ``)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Attributes.Style.Underline)
+				assert.Equal(t, "true", g.Objects[1].Attributes.Style.Underline.Value)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Underline)
+			},
+		},
 	}
 
 	for _, tc := range tca {
