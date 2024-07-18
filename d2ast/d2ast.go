@@ -660,6 +660,9 @@ func (mk1 *Key) D2OracleEquals(mk2 *Key) bool {
 	if mk1.Ampersand != mk2.Ampersand {
 		return false
 	}
+	if mk1.NotAmpersand != mk2.NotAmpersand {
+		return false
+	}
 	if (mk1.Key == nil) != (mk2.Key == nil) {
 		return false
 	}
@@ -737,6 +740,9 @@ func (mk1 *Key) Equals(mk2 *Key) bool {
 		return false
 	}
 	if mk1.Ampersand != mk2.Ampersand {
+		return false
+	}
+	if mk1.NotAmpersand != mk2.NotAmpersand {
 		return false
 	}
 	if (mk1.Key == nil) != (mk2.Key == nil) {

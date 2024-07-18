@@ -1,5 +1,7 @@
 #### Features 🚀
 
+- Glob inverse filters are implemented (e.g. `*: {!&shape: circle; style.fill: red}` to turn all non-circles red) [#2008](https://github.com/terrastruct/d2/pull/2008)
+
 #### Improvements 🧹
 
 - Opacity 0 shapes no longer have a label mask which made any segment of connections going through them lower opacity [#1940](https://github.com/terrastruct/d2/pull/1940)

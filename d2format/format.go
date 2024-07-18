@@ -358,6 +358,9 @@ func (p *printer) _map(m *d2ast.Map) {
 func (p *printer) mapKey(mk *d2ast.Key) {
 	if mk.Ampersand {
 		p.sb.WriteByte('&')
+	} else if mk.NotAmpersand {
+		p.sb.WriteByte('!')
+		p.sb.WriteByte('&')
 	}
 	if mk.Key != nil {
 		p.key(mk.Key)
