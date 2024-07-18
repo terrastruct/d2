@@ -512,7 +512,7 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 			}
 
 			OverlayMap(dst, impn.Map())
-			c.updateLinks(dst)
+			c.extendLinks(dst, ParentField(dst))
 
 			if impnf, ok := impn.(*Field); ok {
 				if impnf.Primary_ != nil {
@@ -843,6 +843,32 @@ func (c *compiler) ignoreLazyGlob(n Node) bool {
 	return false
 }
 
+// When importing a file, all of its board links need to be extended to reflect their new path
+func (c *compiler) extendLinks(m *Map, importF *Field) {
+	for _, f := range m.Fields {
+		if f.Name == "link" {
+			val := f.Primary().Value.ScalarString()
+			link, err := d2parser.ParseKey(val)
+			if err != nil {
+				continue
+			}
+			linkIDA := link.IDA()
+			if len(linkIDA) == 0 {
+				continue
+			}
+
+			importIDA := IDA(importF)
+			extendedIDA := append(importIDA, linkIDA[1:]...)
+			kp := d2ast.MakeKeyPath(extendedIDA)
+			s := d2format.Format(kp)
+			f.Primary_.Value = d2ast.MakeValueBox(d2ast.FlatUnquotedString(s)).ScalarBox().Unbox()
+		}
+		if f.Map() != nil {
+			c.extendLinks(f.Map(), importF)
+		}
+	}
+}
+
 func (c *compiler) updateLinks(m *Map) {
 	for _, f := range m.Fields {
 		if f.Name == "link" {
@@ -864,22 +890,8 @@ func (c *compiler) updateLinks(m *Map) {
 			bida := BoardIDA(f)
 			aida := IDA(f)
 
-			uplevels := -1
-			// The id path from that board to field
-			if len(aida)-len(bida) > len(bida)+1 {
-				relaida := aida[len(bida)+1 : len(aida)-len(bida)]
-				// If the link value has underscores, the path length can be less than the path length of the field
-				uplevels = len(relaida) - len(linkIDA) + 1
-			}
-
 			if len(bida) != len(aida) {
 				prependIDA := aida[:len(aida)-len(bida)]
-				if uplevels > 0 {
-					prependIDA = prependIDA[:len(prependIDA)-uplevels]
-				} else if uplevels == 0 {
-					// It's a sibling, so we go up one level to find it
-					prependIDA = prependIDA[:len(prependIDA)-2]
-				}
 				fullIDA := []string{"root"}
 				// With nested imports, a value may already have been updated with part of the absolute path
 				// E.g.,
