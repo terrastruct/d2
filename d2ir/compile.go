@@ -854,8 +854,13 @@ func (c *compiler) ignoreLazyGlob(n Node) bool {
 
 // When importing a file, all of its board links need to be extended to reflect their new path
 func (c *compiler) extendLinks(m *Map, importF *Field) {
+	nodeBoardKind := NodeBoardKind(m)
 	for _, f := range m.Fields {
 		if f.Name == "link" {
+			if nodeBoardKind != "" {
+				c.errorf(f.LastRef().AST(), "a board itself cannot be linked; only objects within a board can be linked")
+				continue
+			}
 			val := f.Primary().Value.ScalarString()
 			link, err := d2parser.ParseKey(val)
 			if err != nil {
@@ -879,8 +884,13 @@ func (c *compiler) extendLinks(m *Map, importF *Field) {
 }
 
 func (c *compiler) updateLinks(m *Map) {
+	nodeBoardKind := NodeBoardKind(m)
 	for _, f := range m.Fields {
 		if f.Name == "link" {
+			if nodeBoardKind != "" {
+				c.errorf(f.LastRef().AST(), "a board itself cannot be linked; only objects within a board can be linked")
+				continue
+			}
 			val := f.Primary().Value.ScalarString()
 			link, err := d2parser.ParseKey(val)
 			if err != nil {

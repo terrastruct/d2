@@ -1,0 +1,11 @@
+{
+  "graph": null,
+  "err": {
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/x.d2,2:4:16-2:8:20",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/x.d2:3:5: a board itself cannot be linked; only objects within a board can be linked"
+      }
+    ]
+  }
+}
