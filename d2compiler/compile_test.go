@@ -2987,6 +2987,38 @@ layers: {
 			},
 		},
 		{
+			name: "invalid-link-1",
+			text: `k
+
+layers: {
+  x: {...@x}
+}`,
+			files: map[string]string{
+				"x.d2": `k
+layers: {
+  y.link: @n
+}`,
+				"n.d2": `n`,
+			},
+			expErr: `d2/testdata/d2compiler/TestCompile/x.d2:3:5: a board itself cannot be linked; only objects within a board can be linked`,
+		},
+		{
+			name: "invalid-link-2",
+			text: `k
+
+layers: {
+  x: @x
+}`,
+			files: map[string]string{
+				"x.d2": `k
+layers: {
+  y.link: @n
+}`,
+				"n.d2": `n`,
+			},
+			expErr: `d2/testdata/d2compiler/TestCompile/x.d2:3:5: a board itself cannot be linked; only objects within a board can be linked`,
+		},
+		{
 			name: "import-nested-layers",
 			text: `k
 
