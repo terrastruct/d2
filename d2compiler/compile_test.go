@@ -2952,11 +2952,46 @@ layers: {
 			},
 		},
 		{
-			name: "import-link-underscore",
+			name: "import-link-underscore-1",
 			text: `k
 
 layers: {
   x: {...@x}
+}`,
+			files: map[string]string{
+				"x.d2": `a
+layers: {
+  b: {
+    d.link: _
+		s.link: _.layers.k
+
+    layers: {
+      c: {
+        c.link: _
+				z.link: _._
+				f.link: _._.layers.b
+      }
+    }
+  }
+  k: {
+    k
+  }
+}`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.x", g.Layers[0].Layers[0].Objects[0].Link.Value)
+				tassert.Equal(t, "root.layers.x.layers.b", g.Layers[0].Layers[0].Layers[0].Objects[0].Link.Value)
+				tassert.Equal(t, "root.layers.x", g.Layers[0].Layers[0].Layers[0].Objects[1].Link.Value)
+				tassert.Equal(t, "root.layers.x.layers.b", g.Layers[0].Layers[0].Layers[0].Objects[2].Link.Value)
+				tassert.Equal(t, "root.layers.x.layers.k", g.Layers[0].Layers[0].Objects[1].Link.Value)
+			},
+		},
+		{
+			name: "import-link-underscore-2",
+			text: `k
+
+layers: {
+  x: @x
 }`,
 			files: map[string]string{
 				"x.d2": `a
