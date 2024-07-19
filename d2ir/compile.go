@@ -819,7 +819,7 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 				}
 			}
 			OverlayMap(f.Map(), n)
-			c.updateLinks(f.Map())
+			c.extendLinks(f.Map(), f)
 			switch NodeBoardKind(f) {
 			case BoardScenario, BoardStep:
 				c.overlayClasses(f.Map())
@@ -879,74 +879,6 @@ func (c *compiler) extendLinks(m *Map, importF *Field) {
 		}
 		if f.Map() != nil {
 			c.extendLinks(f.Map(), importF)
-		}
-	}
-}
-
-func (c *compiler) updateLinks(m *Map) {
-	nodeBoardKind := NodeBoardKind(m)
-	for _, f := range m.Fields {
-		if f.Name == "link" {
-			if nodeBoardKind != "" {
-				c.errorf(f.LastRef().AST(), "a board itself cannot be linked; only objects within a board can be linked")
-				continue
-			}
-			val := f.Primary().Value.ScalarString()
-			link, err := d2parser.ParseKey(val)
-			if err != nil {
-				continue
-			}
-
-			linkIDA := link.IDA()
-			if len(linkIDA) == 0 {
-				continue
-			}
-
-			// When updateLinks is called, all valid board links are already compiled and changed to the qualified path beginning with "root"
-			if linkIDA[0] != "root" {
-				continue
-			}
-			bida := BoardIDA(f)
-			aida := IDA(f)
-
-			if len(bida) != len(aida) {
-				prependIDA := aida[:len(aida)-len(bida)]
-				fullIDA := []string{"root"}
-				// With nested imports, a value may already have been updated with part of the absolute path
-				// E.g.,
-				// The import prepends path a b c
-				// The existing path is b c d
-				// So the new path is
-				// a b c
-				//   b c d
-				// -------
-				// a b c d
-			OUTER:
-				// Starts at 1 assuming 0 is "root" for both
-				// +2 assuming layers/scenarios/steps is in between both
-				for i := 1; i < len(prependIDA); i += 2 {
-					for j := 0; i+j < len(prependIDA); j++ {
-						if 1+j >= len(linkIDA) || prependIDA[i+j] != linkIDA[1+j] {
-							break
-						}
-						// Reached the end and all common
-						if i+j == len(prependIDA)-1 {
-							break OUTER
-						}
-					}
-					fullIDA = append(fullIDA, prependIDA[i])
-					fullIDA = append(fullIDA, prependIDA[i+1])
-				}
-				// Chop off "root"
-				fullIDA = append(fullIDA, linkIDA[1:]...)
-
-				kp := d2ast.MakeKeyPath(fullIDA)
-				s := d2format.Format(kp)
-				f.Primary_.Value = d2ast.MakeValueBox(d2ast.FlatUnquotedString(s)).ScalarBox().Unbox()
-			}
-		}
-		if f.Map() != nil {
-			c.updateLinks(f.Map())
 		}
 	}
 }
