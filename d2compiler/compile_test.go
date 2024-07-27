@@ -4699,6 +4699,50 @@ z.link: https://yahoo.com
 				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Underline)
 			},
 		},
+		{
+			name: "reapply-scenario",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*.b*.shape: circle
+x: {
+  b
+}
+
+scenarios: {
+  k: {
+    x: {
+      b
+    }
+  }
+}
+`, ``)
+				assert.Equal(t, "circle", g.Objects[1].Attributes.Shape.Value)
+				assert.Equal(t, "circle", g.Scenarios[0].Objects[1].Attributes.Shape.Value)
+			},
+		},
+		{
+			name: "second-scenario",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*.b*.shape: circle
+
+scenarios: {
+  k: {
+    x: {
+      b
+    }
+  }
+  z: {
+    x: {
+      b
+    }
+  }
+}
+`, ``)
+				assert.Equal(t, "circle", g.Scenarios[0].Objects[1].Attributes.Shape.Value)
+				assert.Equal(t, "circle", g.Scenarios[1].Objects[1].Attributes.Shape.Value)
+			},
+		},
 	}
 
 	for _, tc := range tca {

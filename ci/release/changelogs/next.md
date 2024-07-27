@@ -19,3 +19,4 @@
 - Fix importing a file with nested boards [#1998](https://github.com/terrastruct/d2/pull/1998)
 - Fix importing a file with underscores in links [#1999](https://github.com/terrastruct/d2/pull/1999)
 - Replace a panic with an error message resulting from invalid `link` usage [#2011](https://github.com/terrastruct/d2/pull/2011)
+- Fix globs not applying to scenarios on keys that were applied in earlier scenarios [#2021](https://github.com/terrastruct/d2/pull/2021)

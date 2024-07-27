@@ -1224,6 +1224,69 @@
                             },
                             "due_to_glob": true,
                             "due_to_lazy_glob": true
+                          },
+                          {
+                            "string": {
+                              "range": "TestCompile/patterns/double-glob/defaults.d2,1:1:7-1:6:12",
+                              "value": [
+                                {
+                                  "string": "shape",
+                                  "raw_string": "shape"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/patterns/double-glob/defaults.d2,1:1:7-1:6:12",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/double-glob/defaults.d2,1:1:7-1:6:12",
+                                    "value": [
+                                      {
+                                        "string": "shape",
+                                        "raw_string": "shape"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/patterns/double-glob/defaults.d2,1:1:7-1:12:18",
+                                "key": {
+                                  "range": "TestCompile/patterns/double-glob/defaults.d2,1:1:7-1:6:12",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/double-glob/defaults.d2,1:1:7-1:6:12",
+                                        "value": [
+                                          {
+                                            "string": "shape",
+                                            "raw_string": "shape"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/double-glob/defaults.d2,1:8:14-1:12:18",
+                                    "value": [
+                                      {
+                                        "string": "page",
+                                        "raw_string": "page"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            "due_to_glob": true,
+                            "due_to_lazy_glob": true
                           }
                         ]
                       }
