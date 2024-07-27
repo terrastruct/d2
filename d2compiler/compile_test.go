@@ -4700,10 +4700,31 @@ z.link: https://yahoo.com
 			},
 		},
 		{
-			name: "double-glob-second-scenario",
+			name: "reapply-scenario",
 			run: func(t *testing.T) {
 				g, _ := assertCompile(t, `
-**.b*.shape: circle
+*.b*.shape: circle
+x: {
+  b
+}
+
+scenarios: {
+  k: {
+    x: {
+      b
+    }
+  }
+}
+`, ``)
+				assert.Equal(t, "circle", g.Objects[1].Attributes.Shape.Value)
+				assert.Equal(t, "circle", g.Scenarios[0].Objects[1].Attributes.Shape.Value)
+			},
+		},
+		{
+			name: "second-scenario",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*.b*.shape: circle
 
 scenarios: {
   k: {

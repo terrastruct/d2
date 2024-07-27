@@ -24,6 +24,17 @@ type globContext struct {
 	appliedEdges map[string]struct{}
 }
 
+func (g *globContext) copyApplied(from *globContext) {
+	g.appliedFields = make(map[string]struct{})
+	for k, v := range from.appliedFields {
+		g.appliedFields[k] = v
+	}
+	g.appliedEdges = make(map[string]struct{})
+	for k, v := range from.appliedEdges {
+		g.appliedEdges[k] = v
+	}
+}
+
 type compiler struct {
 	err *d2parser.ParseError
 
@@ -379,11 +390,13 @@ func (c *compiler) overlay(base *Map, f *Field) {
 func (g *globContext) copy() *globContext {
 	g2 := *g
 	g2.refctx = g.root.refctx.Copy()
+
 	return &g2
 }
 
 func (g *globContext) prefixed(dst *Map) *globContext {
 	g2 := g.copy()
+
 	prefix := d2ast.MakeKeyPath(RelIDA(g2.refctx.ScopeMap, dst))
 	g2.refctx.Key = g2.refctx.Key.Copy()
 	if g2.refctx.Key.Key != nil {
@@ -447,8 +460,19 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 					globs = append(globs, g.prefixed(dst))
 				}
 			}
-		} else if NodeBoardKind(dst) != "" {
-			// Make all globs relative to the scenario or step.
+		} else if NodeBoardKind(dst) == BoardScenario {
+			for _, g := range previousGlobs {
+				g2 := g.prefixed(dst)
+				// We don't want globs applied in a given scenario to affect future boards
+				// Copying the applied fields and edges keeps the applications scoped to this board
+				// Note that this is different from steps, where applications carry over
+				if !g.refctx.Key.HasTripleGlob() {
+					// Triple globs already apply independently to each board
+					g2.copyApplied(g)
+				}
+				globs = append(globs, g2)
+			}
+		} else if NodeBoardKind(dst) == BoardStep {
 			for _, g := range previousGlobs {
 				globs = append(globs, g.prefixed(dst))
 			}
