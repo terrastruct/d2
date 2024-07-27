@@ -24,17 +24,6 @@ type globContext struct {
 	appliedEdges map[string]struct{}
 }
 
-func (g *globContext) copyApplied(from *globContext) {
-	g.appliedFields = make(map[string]struct{})
-	for k, v := range from.appliedFields {
-		g.appliedFields[k] = v
-	}
-	g.appliedEdges = make(map[string]struct{})
-	for k, v := range from.appliedEdges {
-		g.appliedEdges[k] = v
-	}
-}
-
 type compiler struct {
 	err *d2parser.ParseError
 
@@ -390,13 +379,22 @@ func (c *compiler) overlay(base *Map, f *Field) {
 func (g *globContext) copy() *globContext {
 	g2 := *g
 	g2.refctx = g.root.refctx.Copy()
-
 	return &g2
+}
+
+func (g *globContext) copyApplied(from *globContext) {
+	g.appliedFields = make(map[string]struct{})
+	for k, v := range from.appliedFields {
+		g.appliedFields[k] = v
+	}
+	g.appliedEdges = make(map[string]struct{})
+	for k, v := range from.appliedEdges {
+		g.appliedEdges[k] = v
+	}
 }
 
 func (g *globContext) prefixed(dst *Map) *globContext {
 	g2 := g.copy()
-
 	prefix := d2ast.MakeKeyPath(RelIDA(g2.refctx.ScopeMap, dst))
 	g2.refctx.Key = g2.refctx.Key.Copy()
 	if g2.refctx.Key.Key != nil {
