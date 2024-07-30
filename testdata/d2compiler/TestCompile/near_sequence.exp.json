@@ -4,7 +4,7 @@
     "errs": [
       {
         "range": "d2/testdata/d2compiler/TestCompile/near_sequence.d2,4:8:45-4:11:48",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/near_sequence.d2:5:9: near keys cannot be set to an object within sequence diagrams"
+        "errmsg": "d2/testdata/d2compiler/TestCompile/near_sequence.d2:5:9: near keys cannot be set to a non-sibling"
       }
     ]
   }

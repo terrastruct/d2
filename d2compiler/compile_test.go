@@ -1598,10 +1598,12 @@ b: {
 a: {
   near: a.b
   b
+	c.near: mongodb
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/near-invalid.d2:9:11: near keys cannot be set to an ancestor
-d2/testdata/d2compiler/TestCompile/near-invalid.d2:14:9: near keys cannot be set to an descendant`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near-invalid.d2:9:11: near keys cannot be set to a non-sibling
+d2/testdata/d2compiler/TestCompile/near-invalid.d2:14:9: near keys cannot be set to a non-sibling
+d2/testdata/d2compiler/TestCompile/near-invalid.d2:16:10: near keys cannot be set to a non-sibling`,
 		},
 		{
 			name: "near_bad_constant",
@@ -1619,7 +1621,7 @@ z: {
   x
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/near_special.d2:1:9: near keys cannot be set to descendants of special objects, like grid cells`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_special.d2:1:9: near keys cannot be set to a non-sibling`,
 		},
 		{
 			name: "near_bad_connected",
@@ -2007,7 +2009,7 @@ dst.id <-> src.dst_id
 }
 b.near: x.a
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/near_sequence.d2:5:9: near keys cannot be set to an object within sequence diagrams`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_sequence.d2:5:9: near keys cannot be set to a non-sibling`,
 		},
 		{
 			name: "sequence-timestamp",
