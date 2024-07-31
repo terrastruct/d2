@@ -1,0 +1,11 @@
+{
+  "graph": null,
+  "err": {
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/no_url_link_and_path_url_label_concurrently.d2,0:34:34-0:56:56",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/no_url_link_and_path_url_label_concurrently.d2:1:35: Label cannot be set to URL when link is also set (for security)"
+      }
+    ]
+  }
+}

@@ -280,3 +280,18 @@ a <-> d: {style.animated: true}
 a <-> e
 f <-> g: {style.animated: true}
 x -- x: {style.animated: true}
+
+-- link-on-connections --
+a <-> b: {
+  link: https://google.com/
+}
+
+b -> c: test {
+  link: layers.d
+}
+
+layers: {
+  d: {
+    d
+  }
+}

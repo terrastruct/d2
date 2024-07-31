@@ -765,6 +765,7 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 	if e.Primary() != nil {
 		c.compileLabel(&edge.Attributes, e)
 	}
+
 	if e.Map() != nil {
 		c.compileEdgeMap(edge, e.Map())
 	}
@@ -833,6 +834,19 @@ func (c *compiler) compileEdgeField(edge *d2graph.Edge, f *d2ir.Field) {
 	_, isReserved := d2graph.SimpleReservedKeywords[keyword]
 	if isReserved {
 		c.compileReserved(&edge.Attributes, f)
+
+		if f.Name != "link" {
+			return
+		}
+
+		if edge.Label.Value == "" {
+			edge.Label.Value = edge.Link.Value
+		} else {
+			u, err := url.ParseRequestURI(edge.Label.Value)
+			if err == nil && u.Host != "" {
+				c.errorf(f.Primary_.Value, "Label cannot be set to URL when link is also set (for security)")
+			}
+		}
 		return
 	} else if f.Name == "style" {
 		if f.Map() == nil {
