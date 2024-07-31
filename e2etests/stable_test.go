@@ -2835,6 +2835,16 @@ y: profits {
 }
 `,
 		},
+		{
+			name: "shebang-codeblock",
+			script: `
+"test.sh": {
+  someid: |sh
+    #!/usr/bin/env bash
+    echo testing
+  |
+}`,
+		},
 		loadFromFile(t, "arrowhead_scaling"),
 		loadFromFile(t, "teleport_grid"),
 		loadFromFile(t, "dagger_grid"),
