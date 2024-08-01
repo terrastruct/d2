@@ -10,7 +10,7 @@ cd -- "$(dirname "$0")/../.."
 
 help() {
   cat <<EOF
-usage: $0 [--rebuild] [--local] [--dry-run] [--run=regex] [--host-only] [--lockfile-force]
+usage: $0 [--rebuild] [--dry-run] [--run=regex] [--host-only] [--lockfile-force]
           [--install] [--uninstall]
 
 $0 builds D2 release archives into ./ci/release/build/<version>/d2-<VERSION>-<OS>-<ARCH>.tar.gz
@@ -23,14 +23,6 @@ Flags:
 --rebuild
   By default build.sh will avoid rebuilding finished assets if they already exist but if you
   changed something and need to force rebuild, use this flag.
-
---local
-  By default build.sh uses \$CI_D2_LINUX_AMD64, \$CI_D2_LINUX_ARM64,
-  \$CI_D2_MACOS_AMD64 and \$CI_D2_MACOS_ARM64 to build the release
-  archives. It's required for now due to the following issue:
-  https://github.com/terrastruct/d2/issues/31
-  With --local, build.sh will cross compile locally. warning: This is only for testing
-  purposes, do not use in production!
 
 --host-only
   Use to build the release archive for the host OS-ARCH only. All logging is done to stderr
@@ -75,10 +67,6 @@ main() {
         flag_noarg && shift "$FLAGSHIFT"
         REBUILD=1
         ;;
-      local)
-        flag_noarg && shift "$FLAGSHIFT"
-        LOCAL=1
-        ;;
       dry-run)
         flag_noarg && shift "$FLAGSHIFT"
         DRY_RUN=1
@@ -90,7 +78,6 @@ main() {
       host-only)
         flag_noarg && shift "$FLAGSHIFT"
         HOST_ONLY=1
-        LOCAL=1
         ;;
       version)
         flag_nonemptyarg && shift "$FLAGSHIFT"
@@ -104,13 +91,11 @@ main() {
         flag_noarg && shift "$FLAGSHIFT"
         INSTALL=1
         HOST_ONLY=1
-        LOCAL=1
         ;;
       uninstall)
         flag_noarg && shift "$FLAGSHIFT"
         UNINSTALL=1
         HOST_ONLY=1
-        LOCAL=1
         ;;
       push-docker)
         flag_noarg && shift "$FLAGSHIFT"
@@ -170,45 +155,8 @@ build() {
     return 0
   fi
 
-  if [ -n "${LOCAL-}" ]; then
-    build_local
-    return 0
-  fi
-
-  case $OS in
-    macos)
-      case $ARCH in
-        amd64)
-          REMOTE_HOST=$CI_D2_MACOS_AMD64 build_remote_macos
-          ;;
-        arm64)
-          REMOTE_HOST=$CI_D2_MACOS_ARM64 build_remote_macos
-          ;;
-        *)
-          warn "no builder for OS=$OS ARCH=$ARCH, building locally..."
-          build_local
-          ;;
-      esac
-      ;;
-    linux)
-      case $ARCH in
-        amd64)
-          REMOTE_HOST=$CI_D2_LINUX_AMD64 build_remote_linux
-          ;;
-        arm64)
-          REMOTE_HOST=$CI_D2_LINUX_ARM64 build_remote_linux
-          ;;
-        *)
-          warn "no builder for OS=$OS ARCH=$ARCH, building locally..."
-          build_local
-          ;;
-      esac
-      ;;
-    *)
-      warn "no builder for OS=$OS, building locally..."
-      build_local
-      ;;
-  esac
+  build_local
+  return 0
 }
 
 build_local() {
@@ -220,39 +168,6 @@ build_local() {
     ARCHIVE
   sh_c ./ci/release/_build.sh
 }
-
-build_remote_macos() {(
-  sh_c lockfile_ssh "$REMOTE_HOST" .d2-build-lock
-  sh_c gitsync "$REMOTE_HOST" src/d2
-  sh_c ssh "$REMOTE_HOST" "COLOR=${COLOR-} \
-TERM=${TERM-} \
-DRY_RUN=${DRY_RUN-} \
-HW_BUILD_DIR=$HW_BUILD_DIR \
-VERSION=$VERSION \
-OS=$OS \
-ARCH=$ARCH \
-ARCHIVE=$ARCHIVE \
-PATH=\\\"/usr/local/bin:/usr/local/sbin:/opt/homebrew/bin:/opt/homebrew/sbin\\\${PATH+:\\\$PATH}\\\" \
-./src/d2/ci/release/_build.sh"
-  sh_c mkdir -p "$HW_BUILD_DIR"
-  sh_c rsync --archive --human-readable "$REMOTE_HOST:src/d2/$ARCHIVE" "$ARCHIVE"
-)}
-
-build_remote_linux() {(
-  sh_c lockfile_ssh "$REMOTE_HOST" .d2-build-lock
-  sh_c gitsync "$REMOTE_HOST" src/d2
-  sh_c ssh "$REMOTE_HOST" "COLOR=${COLOR-} \
-TERM=${TERM-} \
-DRY_RUN=${DRY_RUN-} \
-HW_BUILD_DIR=$HW_BUILD_DIR \
-VERSION=$VERSION \
-OS=$OS \
-ARCH=$ARCH \
-ARCHIVE=$ARCHIVE \
-./src/d2/ci/release/build_in_docker.sh"
-  sh_c mkdir -p "$HW_BUILD_DIR"
-  sh_c rsync --archive --human-readable "$REMOTE_HOST:src/d2/$ARCHIVE" "$ARCHIVE"
-)}
 
 build_docker() {
   if [ -n "${LOCAL-}" ]; then
