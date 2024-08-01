@@ -5,9 +5,9 @@ ARG TARGETARCH
 
 RUN apt-get update && apt-get install -y ca-certificates curl dumb-init sudo
 
-RUN curl -fsSL https://deb.nodesource.com/setup_19.x | bash -s - && \
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash -s - && \
   apt-get install -y nodejs
-RUN npx playwright@1.31.1 install --with-deps chromium
+RUN npx playwright@1.45.3 install --with-deps chromium
 
 RUN adduser --gecos '' --disabled-password debian \
   && echo "debian ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/nopasswd
