@@ -146,6 +146,7 @@ func toShape(obj *d2graph.Object, g *d2graph.Graph) d2target.Shape {
 	shape.Pos = d2target.NewPoint(int(obj.TopLeft.X), int(obj.TopLeft.Y))
 	shape.Width = int(obj.Width)
 	shape.Height = int(obj.Height)
+	shape.Language = obj.Language
 
 	text := obj.Text()
 	shape.Bold = text.IsBold
@@ -167,9 +168,6 @@ func toShape(obj *d2graph.Object, g *d2graph.Graph) d2target.Shape {
 	applyStyles(shape, obj)
 
 	switch strings.ToLower(obj.Shape.Value) {
-	case d2target.ShapeCode, d2target.ShapeText:
-		shape.Language = obj.Language
-		shape.Label = obj.Label.Value
 	case d2target.ShapeClass:
 		shape.Class = *obj.Class
 		// The label is the header for classes and tables, which is set in client to be 4 px larger than the object's set font size
@@ -180,10 +178,6 @@ func toShape(obj *d2graph.Object, g *d2graph.Graph) d2target.Shape {
 	case d2target.ShapeCloud:
 		if obj.ContentAspectRatio != nil {
 			shape.ContentAspectRatio = go2.Pointer(*obj.ContentAspectRatio)
-		}
-	case d2target.ShapePage:
-		if obj.IsSequenceDiagramNote() {
-			shape.Language = obj.Language
 		}
 	}
 	shape.Label = text.Text
