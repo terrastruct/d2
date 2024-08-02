@@ -166,7 +166,7 @@ func toShape(obj *d2graph.Object, g *d2graph.Graph) d2target.Shape {
 	shape.Color = text.GetColor(shape.Italic)
 	applyStyles(shape, obj)
 
-	switch obj.Shape.Value {
+	switch strings.ToLower(obj.Shape.Value) {
 	case d2target.ShapeCode, d2target.ShapeText:
 		shape.Language = obj.Language
 		shape.Label = obj.Label.Value
@@ -180,6 +180,10 @@ func toShape(obj *d2graph.Object, g *d2graph.Graph) d2target.Shape {
 	case d2target.ShapeCloud:
 		if obj.ContentAspectRatio != nil {
 			shape.ContentAspectRatio = go2.Pointer(*obj.ContentAspectRatio)
+		}
+	case d2target.ShapePage:
+		if obj.IsSequenceDiagramNote() {
+			shape.Language = obj.Language
 		}
 	}
 	shape.Label = text.Text

@@ -583,8 +583,7 @@ func (obj *Object) GetFill() string {
 
 func (obj *Object) GetStroke(dashGapSize interface{}) string {
 	shape := obj.Shape.Value
-	if strings.EqualFold(shape, d2target.ShapeCode) ||
-		strings.EqualFold(shape, d2target.ShapeText) {
+	if obj.Language != "" {
 		return color.N1
 	}
 	if strings.EqualFold(shape, d2target.ShapeClass) ||

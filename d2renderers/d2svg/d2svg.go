@@ -1414,7 +1414,49 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			fontClass += " text-underline"
 		}
 
-		if targetShape.Type == d2target.ShapeCode {
+		if targetShape.Language == "latex" {
+			render, err := d2latex.Render(targetShape.Label)
+			if err != nil {
+				return labelMask, err
+			}
+			gEl := d2themes.NewThemableElement("g", inlineTheme)
+			gEl.SetTranslate(float64(box.TopLeft.X), float64(box.TopLeft.Y))
+			gEl.Color = targetShape.Stroke
+			gEl.Content = render
+			fmt.Fprint(writer, gEl.Render())
+		} else if targetShape.Language == "markdown" {
+			render, err := textmeasure.RenderMarkdown(targetShape.Label)
+			if err != nil {
+				return labelMask, err
+			}
+			fmt.Fprintf(writer, `<g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="%f" y="%f" width="%d" height="%d">`,
+				box.TopLeft.X, box.TopLeft.Y, targetShape.Width, targetShape.Height,
+			)
+			// we need the self closing form in this svg/xhtml context
+			render = strings.ReplaceAll(render, "<hr>", "<hr />")
+
+			mdEl := d2themes.NewThemableElement("div")
+			mdEl.ClassName = "md"
+			mdEl.Content = render
+
+			// We have to set with styles since within foreignObject, we're in html
+			// land and not SVG attributes
+			var styles []string
+			if targetShape.FontSize != textmeasure.MarkdownFontSize {
+				styles = append(styles, fmt.Sprintf("font-size:%vpx", targetShape.FontSize))
+			}
+			if targetShape.Fill != "" && targetShape.Fill != "transparent" {
+				styles = append(styles, fmt.Sprintf(`background-color:%s`, targetShape.Fill))
+			}
+			if !color.IsThemeColor(targetShape.Color) {
+				styles = append(styles, fmt.Sprintf(`color:%s`, targetShape.Color))
+			}
+
+			mdEl.Style = strings.Join(styles, ";")
+
+			fmt.Fprint(writer, mdEl.Render())
+			fmt.Fprint(writer, `</foreignObject></g>`)
+		} else if targetShape.Language != "" {
 			lexer := lexers.Get(targetShape.Language)
 			if lexer == nil {
 				lexer = lexers.Fallback
@@ -1478,48 +1520,6 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				}
 				fmt.Fprint(writer, "</g></g>")
 			}
-		} else if targetShape.Type == d2target.ShapeText && targetShape.Language == "latex" {
-			render, err := d2latex.Render(targetShape.Label)
-			if err != nil {
-				return labelMask, err
-			}
-			gEl := d2themes.NewThemableElement("g", inlineTheme)
-			gEl.SetTranslate(float64(box.TopLeft.X), float64(box.TopLeft.Y))
-			gEl.Color = targetShape.Stroke
-			gEl.Content = render
-			fmt.Fprint(writer, gEl.Render())
-		} else if targetShape.Type == d2target.ShapeText && targetShape.Language != "" {
-			render, err := textmeasure.RenderMarkdown(targetShape.Label)
-			if err != nil {
-				return labelMask, err
-			}
-			fmt.Fprintf(writer, `<g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="%f" y="%f" width="%d" height="%d">`,
-				box.TopLeft.X, box.TopLeft.Y, targetShape.Width, targetShape.Height,
-			)
-			// we need the self closing form in this svg/xhtml context
-			render = strings.ReplaceAll(render, "<hr>", "<hr />")
-
-			mdEl := d2themes.NewThemableElement("div", inlineTheme)
-			mdEl.ClassName = "md"
-			mdEl.Content = render
-
-			// We have to set with styles since within foreignObject, we're in html
-			// land and not SVG attributes
-			var styles []string
-			if targetShape.FontSize != textmeasure.MarkdownFontSize {
-				styles = append(styles, fmt.Sprintf("font-size:%vpx", targetShape.FontSize))
-			}
-			if targetShape.Fill != "" && targetShape.Fill != "transparent" {
-				styles = append(styles, fmt.Sprintf(`background-color:%s`, targetShape.Fill))
-			}
-			if !color.IsThemeColor(targetShape.Color) {
-				styles = append(styles, fmt.Sprintf(`color:%s`, targetShape.Color))
-			}
-
-			mdEl.Style = strings.Join(styles, ";")
-
-			fmt.Fprint(writer, mdEl.Render())
-			fmt.Fprint(writer, `</foreignObject></g>`)
 		} else {
 			if targetShape.LabelFill != "" {
 				rectEl := d2themes.NewThemableElement("rect", inlineTheme)
@@ -2075,7 +2075,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 
 		hasMarkdown := false
 		for _, s := range diagram.Shapes {
-			if s.Label != "" && s.Type == d2target.ShapeText {
+			if s.Language == "markdown" {
 				hasMarkdown = true
 				break
 			}
