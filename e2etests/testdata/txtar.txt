@@ -280,3 +280,26 @@ a <-> d: {style.animated: true}
 a <-> e
 f <-> g: {style.animated: true}
 x -- x: {style.animated: true}
+
+-- sequence-edge-group-tall-edge-label --
+Sequence: {
+  shape: sequence_diagram
+  System: System
+  File: File
+  A
+
+  System Starts: {
+    System <- File: One\nTwo\nThree\nFour\nFive\nSix
+    System -> File: One\nTwo\nThree\nFour\nFive\nSix
+    System -> File: One
+    System -> File: Two
+    System <- File: One\nTwo\nThree\nFour\nFive\nSix
+    Alright: {
+      System <- File: One\nTwo\nThree\nFour\nFive\nSix
+    }
+  }
+
+  Okay: {
+    A -> File: One\nTwo\nThree\nFour\nFive\nSix
+  }
+}

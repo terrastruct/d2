@@ -229,10 +229,12 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 	for _, m := range sd.messages {
 		if m.ContainedBy(group) {
 			for _, p := range m.Route {
+				labelHeight := float64(m.LabelDimensions.Height) / 2.
+				edgePad := math.Max(labelHeight+GROUP_CONTAINER_PADDING, MIN_MESSAGE_DISTANCE/2.)
 				minX = math.Min(minX, p.X-HORIZONTAL_PAD)
-				minY = math.Min(minY, p.Y-MIN_MESSAGE_DISTANCE/2.)
+				minY = math.Min(minY, p.Y-edgePad)
 				maxX = math.Max(maxX, p.X+HORIZONTAL_PAD)
-				maxY = math.Max(maxY, p.Y+MIN_MESSAGE_DISTANCE/2.)
+				maxY = math.Max(maxY, p.Y+edgePad)
 			}
 		}
 	}
@@ -287,8 +289,8 @@ func (sd *sequenceDiagram) adjustGroupLabel(group *d2graph.Object) {
 		return
 	}
 
-	heightAdd := (group.LabelDimensions.Height + EDGE_GROUP_LABEL_PADDING) - GROUP_CONTAINER_PADDING
-	if heightAdd < 0 {
+	heightAdd := (group.LabelDimensions.Height + EDGE_GROUP_LABEL_PADDING/2.)
+	if heightAdd < GROUP_CONTAINER_PADDING {
 		return
 	}
 
@@ -329,7 +331,6 @@ func (sd *sequenceDiagram) adjustGroupLabel(group *d2graph.Object) {
 			n.TopLeft.Y += float64(heightAdd)
 		}
 	}
-
 }
 
 // placeActors places actors bottom aligned, side by side with centers spaced by sd.actorXStep
