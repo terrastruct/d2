@@ -646,7 +646,19 @@ func (sd *sequenceDiagram) isActor(obj *d2graph.Object) bool {
 func (sd *sequenceDiagram) getWidth() float64 {
 	// the layout is always placed starting at 0, so the width is just the last actor
 	lastActor := sd.actors[len(sd.actors)-1]
-	return lastActor.TopLeft.X + lastActor.Width
+	rightmost := lastActor.TopLeft.X + lastActor.Width
+
+	for _, m := range sd.messages {
+		for _, p := range m.Route {
+			rightmost = math.Max(rightmost, p.X)
+		}
+		// Self referential messages may have labels that extend further
+		if m.Src == m.Dst {
+			rightmost = math.Max(rightmost, m.Route[1].X+float64(m.LabelDimensions.Width)/2.)
+		}
+	}
+
+	return rightmost
 }
 
 func (sd *sequenceDiagram) getHeight() float64 {
