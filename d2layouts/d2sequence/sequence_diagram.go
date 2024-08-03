@@ -162,8 +162,6 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) (*s
 
 	for _, message := range sd.messages {
 		sd.verticalIndices[message.AbsID()] = getEdgeEarliestLineNum(message)
-		// TODO this should not be global yStep, only affect the neighbors
-		sd.yStep = math.Max(sd.yStep, float64(message.LabelDimensions.Height))
 
 		// ensures that long labels, spanning over multiple actors, don't make for large gaps between actors
 		// by distributing the label length across the actors rank difference
