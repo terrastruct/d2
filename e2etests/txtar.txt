@@ -313,3 +313,9 @@ x -> x: self referential long description which is\nmultirow\n3 rows
 x -> x: self referential long description which is\nmultirow
 x -> y: normal
 y -> y: self referential long description which is\nmultirow\n3 rows
+
+-- sequence-bounding-box --
+backend.client: {
+  shape: sequence_diagram
+  client -> client: BO_ID -> D2_ID
+}
