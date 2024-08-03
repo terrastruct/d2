@@ -303,3 +303,13 @@ Sequence: {
     A -> File: One\nTwo\nThree\nFour\nFive\nSix
   }
 }
+
+-- sequence-multiline-self-reference --
+shape: sequence_diagram
+x
+y
+
+x -> x: self referential long description which is\nmultirow\n3 rows
+x -> x: self referential long description which is\nmultirow
+x -> y: normal
+y -> y: self referential long description which is\nmultirow\n3 rows

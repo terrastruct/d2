@@ -162,8 +162,6 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) (*s
 
 	for _, message := range sd.messages {
 		sd.verticalIndices[message.AbsID()] = getEdgeEarliestLineNum(message)
-		// TODO this should not be global yStep, only affect the neighbors
-		sd.yStep = math.Max(sd.yStep, float64(message.LabelDimensions.Height))
 
 		// ensures that long labels, spanning over multiple actors, don't make for large gaps between actors
 		// by distributing the label length across the actors rank difference
@@ -585,7 +583,7 @@ func (sd *sequenceDiagram) routeMessages() error {
 
 		if isSelfMessage || isToDescendant || isFromDescendant || isToSibling {
 			midX := startX + SELF_MESSAGE_HORIZONTAL_TRAVEL
-			endY := startY + MIN_MESSAGE_DISTANCE*1.5
+			endY := startY + math.Max(float64(message.LabelDimensions.Height), MIN_MESSAGE_DISTANCE)*1.5
 			message.Route = []*geo.Point{
 				geo.NewPoint(startX, startY),
 				geo.NewPoint(midX, startY),
@@ -600,7 +598,7 @@ func (sd *sequenceDiagram) routeMessages() error {
 			}
 			prevIsLoop = false
 		}
-		messageOffset += sd.yStep
+		messageOffset += math.Max(sd.yStep, float64(message.LabelDimensions.Height)+MIN_MESSAGE_DISTANCE*1.5)
 
 		if message.Label.Value != "" {
 			message.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
