@@ -79,7 +79,7 @@ a -> c
 
 func testTxtar(t *testing.T) {
 	var tcs []testCase
-	archive, err := txtar.ParseFile("./testdata/txtar.txt")
+	archive, err := txtar.ParseFile("./txtar.txt")
 	assert.Success(t, err)
 	for _, f := range archive.Files {
 		tcs = append(tcs, testCase{
