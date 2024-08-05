@@ -319,3 +319,19 @@ backend.client: {
   shape: sequence_diagram
   client -> client: BO_ID -> D2_ID
 }
+
+-- sequence-bounding-box --
+backend.client: {
+  shape: sequence_diagram
+  client -> client: BO_ID -> D2_ID
+}
+
+-- sequence-multiline-alignment --
+shape: sequence_diagram
+a
+b
+
+b -> b: one\ntwo\nthree\nfour\nfive
+b -> b: one\ntwo\nthree\nfour\nfive
+
+a.req -> b: okay then
