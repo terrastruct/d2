@@ -442,7 +442,7 @@ func (sd *sequenceDiagram) placeNotes() {
 
 		for _, msg := range sd.messages {
 			if sd.verticalIndices[msg.AbsID()] < verticalIndex {
-				y += sd.yStep
+				y += sd.yStep + float64(msg.LabelDimensions.Height)
 			}
 		}
 		for _, otherNote := range sd.notes {
@@ -535,7 +535,6 @@ func (sd *sequenceDiagram) placeSpans() {
 // routeMessages routes horizontal edges (messages) from Src to Dst lifeline (actor/span center)
 // in another step, routes are adjusted to spans borders when necessary
 func (sd *sequenceDiagram) routeMessages() error {
-	var prevIsLoop bool
 	messageOffset := sd.maxActorHeight + sd.yStep
 	for _, message := range sd.messages {
 		message.ZIndex = MESSAGE_Z_INDEX
@@ -545,13 +544,6 @@ func (sd *sequenceDiagram) routeMessages() error {
 				noteOffset += note.Height + sd.yStep
 			}
 		}
-
-		// we need extra space if the previous message is a loop
-		if prevIsLoop {
-			messageOffset += MIN_MESSAGE_DISTANCE * 1.5
-		}
-
-		startY := messageOffset + noteOffset
 
 		var startX, endX float64
 		if startCenter := getCenter(message.Src); startCenter != nil {
@@ -580,6 +572,7 @@ func (sd *sequenceDiagram) routeMessages() error {
 
 		if isSelfMessage || isToDescendant || isFromDescendant || isToSibling {
 			midX := startX + SELF_MESSAGE_HORIZONTAL_TRAVEL
+			startY := messageOffset + noteOffset
 			endY := startY + math.Max(float64(message.LabelDimensions.Height), MIN_MESSAGE_DISTANCE)*1.5
 			message.Route = []*geo.Point{
 				geo.NewPoint(startX, startY),
@@ -587,15 +580,15 @@ func (sd *sequenceDiagram) routeMessages() error {
 				geo.NewPoint(midX, endY),
 				geo.NewPoint(endX, endY),
 			}
-			prevIsLoop = true
+			messageOffset = endY + sd.yStep - noteOffset
 		} else {
+			startY := messageOffset + noteOffset + float64(message.LabelDimensions.Height/2.)
 			message.Route = []*geo.Point{
 				geo.NewPoint(startX, startY),
 				geo.NewPoint(endX, startY),
 			}
-			prevIsLoop = false
+			messageOffset = startY + float64(message.LabelDimensions.Height/2.) + sd.yStep - noteOffset
 		}
-		messageOffset += math.Max(sd.yStep, float64(message.LabelDimensions.Height)+MIN_MESSAGE_DISTANCE*1.5)
 
 		if message.Label.Value != "" {
 			message.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
