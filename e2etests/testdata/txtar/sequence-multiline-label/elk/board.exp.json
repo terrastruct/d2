@@ -4,7 +4,7 @@
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
-      "id": "alice",
+      "id": "a",
       "type": "rectangle",
       "pos": {
         "x": 12,
@@ -30,7 +30,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "alice",
+      "label": "a",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -38,17 +38,17 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 32,
+      "labelWidth": 7,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
-      "id": "bob",
+      "id": "b",
       "type": "rectangle",
       "pos": {
-        "x": 404,
+        "x": 162,
         "y": 52
       },
       "width": 100,
@@ -71,7 +71,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "bob",
+      "label": "b",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -79,7 +79,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 26,
+      "labelWidth": 8,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -88,17 +88,17 @@
   ],
   "connections": [
     {
-      "id": "(alice -> bob)[0]",
-      "src": "alice",
+      "id": "(a -> b)[0]",
+      "src": "a",
       "srcArrow": "none",
-      "dst": "bob",
+      "dst": "b",
       "dstArrow": "triangle",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
       "borderRadius": 10,
-      "label": "what does it mean to be well-adjusted",
+      "label": "okay then",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -106,7 +106,7 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 249,
+      "labelWidth": 65,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
@@ -116,7 +116,7 @@
           "y": 198
         },
         {
-          "x": 454,
+          "x": 212,
           "y": 198
         }
       ],
@@ -126,17 +126,17 @@
       "zIndex": 4
     },
     {
-      "id": "(bob -> alice)[0]",
-      "src": "bob",
+      "id": "(a -> b)[1]",
+      "src": "a",
       "srcArrow": "none",
-      "dst": "alice",
+      "dst": "b",
       "dstArrow": "triangle",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
       "borderRadius": 10,
-      "label": "The ability to play bridge or golf as if they were games",
+      "label": "one\ntwo\nthree\nfour\nfive\nsix\nseven\neight\nnine\nten",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -144,18 +144,18 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 352,
-      "labelHeight": 21,
+      "labelWidth": 39,
+      "labelHeight": 165,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
       "route": [
         {
-          "x": 454,
-          "y": 288
+          "x": 62,
+          "y": 360
         },
         {
-          "x": 62,
-          "y": 288
+          "x": 212,
+          "y": 360
         }
       ],
       "animated": false,
@@ -164,10 +164,48 @@
       "zIndex": 4
     },
     {
-      "id": "(alice -- )[0]",
-      "src": "alice",
+      "id": "(a -> b)[2]",
+      "src": "a",
       "srcArrow": "none",
-      "dst": "alice-lifeline-end-3851299086",
+      "dst": "b",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "one\ntwo\nthree\nfour\nfive",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 35,
+      "labelHeight": 85,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 62,
+          "y": 554
+        },
+        {
+          "x": 212,
+          "y": 554
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 4
+    },
+    {
+      "id": "(a -- )[0]",
+      "src": "a",
+      "srcArrow": "none",
+      "dst": "a-lifeline-end-2251863791",
       "dstArrow": "none",
       "opacity": 1,
       "strokeDash": 6,
@@ -193,7 +231,7 @@
         },
         {
           "x": 62,
-          "y": 358
+          "y": 624
         }
       ],
       "animated": false,
@@ -202,10 +240,10 @@
       "zIndex": 1
     },
     {
-      "id": "(bob -- )[0]",
-      "src": "bob",
+      "id": "(b -- )[0]",
+      "src": "b",
       "srcArrow": "none",
-      "dst": "bob-lifeline-end-3036726343",
+      "dst": "b-lifeline-end-668380428",
       "dstArrow": "none",
       "opacity": 1,
       "strokeDash": 6,
@@ -226,12 +264,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 454,
+          "x": 212,
           "y": 118
         },
         {
-          "x": 454,
-          "y": 358
+          "x": 212,
+          "y": 624
         }
       ],
       "animated": false,

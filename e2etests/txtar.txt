@@ -320,12 +320,6 @@ backend.client: {
   client -> client: BO_ID -> D2_ID
 }
 
--- sequence-bounding-box --
-backend.client: {
-  shape: sequence_diagram
-  client -> client: BO_ID -> D2_ID
-}
-
 -- sequence-multiline-alignment --
 shape: sequence_diagram
 a
@@ -335,3 +329,12 @@ b -> b: one\ntwo\nthree\nfour\nfive
 b -> b: one\ntwo\nthree\nfour\nfive
 
 a.req -> b: okay then
+
+-- sequence-multiline-label --
+shape: sequence_diagram
+a
+b
+
+a -> b: okay then
+a -> b: one\ntwo\nthree\nfour\nfive\nsix\nseven\neight\nnine\nten
+a -> b: one\ntwo\nthree\nfour\nfive
