@@ -144,9 +144,8 @@ func (c *compiler) compileSubstitutions(m *Map, varsStack []*Map) {
 				}
 			}
 		} else if f.Map() != nil {
-			// don't resolve substitutions in vars with the current scope of vars
 			if f.Name == "vars" {
-				c.compileSubstitutions(f.Map(), varsStack[1:])
+				c.compileSubstitutions(f.Map(), varsStack)
 				c.validateConfigs(f.Map().GetField("d2-config"))
 			} else {
 				c.compileSubstitutions(f.Map(), varsStack)
@@ -227,8 +226,8 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) (removedFie
 	case *d2ast.UnquotedString:
 		for i, box := range s.Value {
 			if box.Substitution != nil {
-				for _, vars := range varsStack {
-					resolvedField = c.resolveSubstitution(vars, box.Substitution)
+				for i, vars := range varsStack {
+					resolvedField = c.resolveSubstitution(vars, node, box.Substitution, i == 0)
 					if resolvedField != nil {
 						if resolvedField.Primary() != nil {
 							if _, ok := resolvedField.Primary().Value.(*d2ast.Null); ok {
@@ -319,8 +318,8 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) (removedFie
 	case *d2ast.DoubleQuotedString:
 		for i, box := range s.Value {
 			if box.Substitution != nil {
-				for _, vars := range varsStack {
-					resolvedField = c.resolveSubstitution(vars, box.Substitution)
+				for i, vars := range varsStack {
+					resolvedField = c.resolveSubstitution(vars, node, box.Substitution, i == 0)
 					if resolvedField != nil {
 						break
 					}
@@ -344,14 +343,36 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) (removedFie
 	return removedField
 }
 
-func (c *compiler) resolveSubstitution(vars *Map, substitution *d2ast.Substitution) *Field {
+func (c *compiler) resolveSubstitution(vars *Map, node Node, substitution *d2ast.Substitution, isCurrentScopeVars bool) *Field {
 	if vars == nil {
 		return nil
 	}
 
+	fieldNode, fok := node.(*Field)
+	parent := ParentField(node)
+
 	for i, p := range substitution.Path {
 		f := vars.GetField(p.Unbox().ScalarString())
 		if f == nil {
+			return nil
+		}
+		// Consider this case:
+		//
+		// ```
+		// vars: {
+		//   x: a
+		// }
+		// hi: {
+		//   vars: {
+		//     x: ${x}-b
+		//   }
+		//   yo: ${x}
+		// }
+		// ```
+		//
+		// When resolving hi.vars.x, the vars stack includes itself.
+		// So this next if clause says, "ignore if we're using the current scope's vars to try to resolve a substitution that requires a var from further in the stack"
+		if fok && fieldNode.Name == p.Unbox().ScalarString() && isCurrentScopeVars && parent.Name == "vars" {
 			return nil
 		}
 

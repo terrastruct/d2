@@ -1,5 +1,7 @@
 #### Features 🚀
 
+- Variables definitions can now refer to other variables in the current scope [#2052](https://github.com/terrastruct/d2/pull/2052)
+
 #### Improvements 🧹
 
 - Sequence diagram edge groups account for edge label heights [#2038](https://github.com/terrastruct/d2/pull/2038)
