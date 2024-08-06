@@ -2764,6 +2764,29 @@ x*: {
 			},
 		},
 		{
+			name: "var_in_vars",
+			text: `vars: {
+    Apple: {
+        shape:circle
+        label:Granny Smith
+    }
+    Cherry: {
+        shape:circle
+        label:Rainier Cherry
+    }
+    SummerFruit: {
+        xx: ${Apple}
+        cc: ${Cherry}
+        xx -> cc
+    }
+}
+
+x: ${Apple}
+c: ${Cherry}
+sf: ${SummerFruit}
+`,
+		},
+		{
 			name: "class-shape-class",
 			text: `classes: {
   classClass: {
@@ -4071,11 +4094,14 @@ vars: {
 hi: {
   vars: {
     x: ${x}-b
+		b: ${x}
   }
   yo: ${x}
+  hey: ${b}
 }
 `, "")
 					assert.Equal(t, "a-b", g.Objects[1].Label.Value)
+					assert.Equal(t, "a-b", g.Objects[2].Label.Value)
 				},
 			},
 			{
