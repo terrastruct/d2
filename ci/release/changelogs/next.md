@@ -9,3 +9,4 @@
 #### Bugfixes ⛑️
 
 - Sequence diagram multi-line edge labels no longer can collide with other elements [#2049](https://github.com/terrastruct/d2/pull/2049)
+- Sequence diagram long self-referential edge labels no longer can collide neighboring actors (or its own) lifeline edges [#2050](https://github.com/terrastruct/d2/pull/2050)

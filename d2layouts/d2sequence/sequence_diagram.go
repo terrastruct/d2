@@ -50,6 +50,9 @@ func getObjEarliestLineNum(o *d2graph.Object) int {
 		if ref.MapKey == nil {
 			continue
 		}
+		if ref.Key.HasGlob() {
+			continue
+		}
 		min = go2.IntMin(min, ref.MapKey.Range.Start.Line)
 	}
 	return min
@@ -59,6 +62,9 @@ func getEdgeEarliestLineNum(e *d2graph.Edge) int {
 	min := int(math.MaxInt32)
 	for _, ref := range e.References {
 		if ref.MapKey == nil {
+			continue
+		}
+		if ref.Edge.Src.HasGlob() || ref.Edge.Dst.HasGlob() {
 			continue
 		}
 		min = go2.IntMin(min, ref.MapKey.Range.Start.Line)
@@ -167,10 +173,16 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) (*s
 		// by distributing the label length across the actors rank difference
 		rankDiff := math.Abs(float64(sd.objectRank[message.Src]) - float64(sd.objectRank[message.Dst]))
 		if rankDiff != 0 {
-			// rankDiff = 0 for self edges
 			distributedLabelWidth := float64(message.LabelDimensions.Width) / rankDiff
 			for rank := go2.IntMin(sd.objectRank[message.Src], sd.objectRank[message.Dst]); rank <= go2.IntMax(sd.objectRank[message.Src], sd.objectRank[message.Dst])-1; rank++ {
 				sd.actorXStep[rank] = math.Max(sd.actorXStep[rank], distributedLabelWidth+HORIZONTAL_PAD)
+			}
+		} else {
+			// self edge
+			nextRank := sd.objectRank[message.Src]
+			if nextRank < len(sd.actorXStep) {
+				labelAdjust := float64(message.LabelDimensions.Width) + label.PADDING*4
+				sd.actorXStep[nextRank] = math.Max(sd.actorXStep[nextRank], labelAdjust)
 			}
 		}
 		sd.lastMessage[message.Src] = message
@@ -240,6 +252,9 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 	for _, n := range sd.notes {
 		inGroup := false
 		for _, ref := range n.References {
+			if ref.Key.HasGlob() {
+				continue
+			}
 			curr := ref.ScopeObj
 			for curr != nil {
 				if curr == group {
@@ -571,7 +586,7 @@ func (sd *sequenceDiagram) routeMessages() error {
 		isToSibling := currSrc == currDst
 
 		if isSelfMessage || isToDescendant || isFromDescendant || isToSibling {
-			midX := startX + SELF_MESSAGE_HORIZONTAL_TRAVEL
+			midX := startX + math.Max(SELF_MESSAGE_HORIZONTAL_TRAVEL, float64(message.LabelDimensions.Width)/2.+label.PADDING*2)
 			startY := messageOffset + noteOffset
 			endY := startY + math.Max(float64(message.LabelDimensions.Height), MIN_MESSAGE_DISTANCE)*1.5
 			message.Route = []*geo.Point{

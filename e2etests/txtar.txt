@@ -338,3 +338,15 @@ b
 a -> b: okay then
 a -> b: one\ntwo\nthree\nfour\nfive\nsix\nseven\neight\nnine\nten
 a -> b: one\ntwo\nthree\nfour\nfive
+
+-- sequence-fontsize --
+shape: sequence_diagram
+(** -> **)[*].style.font-size: 24
+(** -> **)[*].style.font-color: black
+Front-End
+Libreria
+CD
+
+Front-End.t1 -> Libreria.t1: generatePresentationPayload()
+Libreria.t1 -> Libreria.t1: Generar y Firmar\nPrueba de TitularidadPrueba de TitularidadPrueba de TitularidadPrueba de Titularidad
+Libreria.t1 -> Front-End.t1: Presentacion Firmada
