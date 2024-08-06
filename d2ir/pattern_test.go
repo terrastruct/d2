@@ -158,6 +158,24 @@ sh*.an* -> sh*.an*`)
 			},
 		},
 		{
+			name: "edge/4",
+			run: func(t testing.TB) {
+				m, err := compile(t, `app_a: {
+   x
+ }
+
+ app_b: {
+   y
+ }
+
+ app_*.x -> app_*.y`)
+				assert.Success(t, err)
+				assertQuery(t, m, 6, 4, nil, "")
+				assertQuery(t, m, 2, 1, nil, "app_a")
+				assertQuery(t, m, 2, 1, nil, "app_b")
+			},
+		},
+		{
 			name: "edge-glob-index",
 			run: func(t testing.TB) {
 				m, err := compile(t, `a -> b
