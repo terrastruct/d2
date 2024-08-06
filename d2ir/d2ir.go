@@ -435,7 +435,7 @@ func (eid *EdgeID) resolve(m *Map) (_ *EdgeID, _ *Map, common []string, _ error)
 	}
 
 	for len(eid.SrcPath) > 1 && len(eid.DstPath) > 1 {
-		if !strings.EqualFold(eid.SrcPath[0], eid.DstPath[0]) || eid.SrcPath[0] == "*" {
+		if !strings.EqualFold(eid.SrcPath[0], eid.DstPath[0]) || strings.Contains(eid.SrcPath[0], "*") {
 			return eid, m, common, nil
 		}
 		common = append(common, eid.SrcPath[0])
@@ -1218,11 +1218,11 @@ func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, gctx *globContext, c *
 			eid2.SrcPath = RelIDA(m, src)
 			eid2.DstPath = RelIDA(m, dst)
 
-			e, err := m.createEdge2(eid2, refctx, gctx, c, src, dst)
+			es, err := m.createEdge2(eid2, refctx, gctx, c, src, dst)
 			if err != nil {
 				return err
 			}
-			if e != nil {
+			for _, e := range es {
 				*ea = append(*ea, e)
 			}
 		}
@@ -1230,7 +1230,7 @@ func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, gctx *globContext, c *
 	return nil
 }
 
-func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, c *compiler, src, dst *Field) (*Edge, error) {
+func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, c *compiler, src, dst *Field) ([]*Edge, error) {
 	if NodeBoardKind(src) != "" {
 		return nil, d2parser.Errorf(refctx.Edge.Src, "cannot create edges between boards")
 	}
@@ -1239,6 +1239,45 @@ func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, c 
 	}
 	if ParentBoard(src) != ParentBoard(dst) {
 		return nil, d2parser.Errorf(refctx.Edge, "cannot create edges between boards")
+	}
+
+	eid, m, common, err := eid.resolve(m)
+	if err != nil {
+		return nil, d2parser.Errorf(refctx.Edge, err.Error())
+	}
+	if len(common) > 0 {
+		commonKP := d2ast.MakeKeyPath(common)
+		lastMatch := 0
+		for i, el := range commonKP.Path {
+			for j := lastMatch; j < len(refctx.Edge.Src.Path); j++ {
+				realEl := refctx.Edge.Src.Path[j]
+				if el.ScalarString() == realEl.ScalarString() {
+					commonKP.Path[i] = realEl
+					lastMatch += j + 1
+				}
+			}
+		}
+		fa, err := m.EnsureField(commonKP, nil, true, c)
+		if err != nil {
+			return nil, err
+		}
+		var edges []*Edge
+		for _, f := range fa {
+			if _, ok := f.Composite.(*Array); ok {
+				return nil, d2parser.Errorf(refctx.Edge.Src, "cannot index into array")
+			}
+			if f.Map() == nil {
+				f.Composite = &Map{
+					parent: f,
+				}
+			}
+			edges2, err := f.Map().createEdge2(eid, refctx, gctx, c, src, dst)
+			if err != nil {
+				return nil, err
+			}
+			edges = append(edges, edges2...)
+		}
+		return edges, nil
 	}
 
 	eid.Index = nil
@@ -1276,7 +1315,7 @@ func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, c 
 
 	m.Edges = append(m.Edges, e)
 
-	return e, nil
+	return []*Edge{e}, nil
 }
 
 func (s *Scalar) AST() d2ast.Node {
