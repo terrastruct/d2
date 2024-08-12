@@ -1,0 +1,396 @@
+{
+  "name": "",
+  "isFolderOnly": false,
+  "fontFamily": "SourceSansPro",
+  "shapes": [
+    {
+      "id": "A",
+      "type": "class",
+      "pos": {
+        "x": 12,
+        "y": 25
+      },
+      "width": 319,
+      "height": 276,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N1",
+      "stroke": "N7",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": [
+        {
+          "name": "LeftAligned",
+          "type": "",
+          "visibility": "public"
+        },
+        {
+          "name": "CenterAligned",
+          "type": "",
+          "visibility": "public"
+        },
+        {
+          "name": "RightAligned",
+          "type": "",
+          "visibility": "public"
+        },
+        {
+          "name": "Justified",
+          "type": "",
+          "visibility": "public"
+        }
+      ],
+      "methods": null,
+      "columns": null,
+      "label": "<<enumeration>>\nAlignment",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 214,
+      "labelHeight": 55,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
+    },
+    {
+      "id": "B",
+      "type": "sql_table",
+      "pos": {
+        "x": 351,
+        "y": 13
+      },
+      "width": 214,
+      "height": 300,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N1",
+      "stroke": "N7",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": [
+        {
+          "name": {
+            "label": "LeftAligned",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 94,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 0,
+            "labelHeight": 0
+          },
+          "constraint": null,
+          "reference": ""
+        },
+        {
+          "name": {
+            "label": "CenterAligned",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 117,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 0,
+            "labelHeight": 0
+          },
+          "constraint": null,
+          "reference": ""
+        },
+        {
+          "name": {
+            "label": "RightAligned",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 105,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 0,
+            "labelHeight": 0
+          },
+          "constraint": null,
+          "reference": ""
+        },
+        {
+          "name": {
+            "label": "Justified",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 72,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 0,
+            "labelHeight": 0
+          },
+          "constraint": null,
+          "reference": ""
+        }
+      ],
+      "label": "<<enumeration>>\nAlignment",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 189,
+      "labelHeight": 55,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
+    },
+    {
+      "id": "C",
+      "type": "class",
+      "pos": {
+        "x": 585,
+        "y": 25
+      },
+      "width": 254,
+      "height": 276,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N1",
+      "stroke": "N7",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": [
+        {
+          "name": "LeftAligned",
+          "type": "",
+          "visibility": "public"
+        },
+        {
+          "name": "CenterAligned",
+          "type": "",
+          "visibility": "public"
+        },
+        {
+          "name": "RightAligned",
+          "type": "",
+          "visibility": "public"
+        },
+        {
+          "name": "Justified",
+          "type": "",
+          "visibility": "public"
+        }
+      ],
+      "methods": null,
+      "columns": null,
+      "label": "Alignment",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 130,
+      "labelHeight": 31,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
+    },
+    {
+      "id": "D",
+      "type": "class",
+      "pos": {
+        "x": 859,
+        "y": 12
+      },
+      "width": 254,
+      "height": 302,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N1",
+      "stroke": "N7",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": [
+        {
+          "name": "LeftAligned",
+          "type": "",
+          "visibility": "public"
+        },
+        {
+          "name": "CenterAligned",
+          "type": "",
+          "visibility": "public"
+        },
+        {
+          "name": "RightAligned",
+          "type": "",
+          "visibility": "public"
+        },
+        {
+          "name": "Justified",
+          "type": "",
+          "visibility": "public"
+        }
+      ],
+      "methods": null,
+      "columns": null,
+      "label": "Alignment\nOf\nAlignment\nOf",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 130,
+      "labelHeight": 103,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
+    }
+  ],
+  "connections": [],
+  "root": {
+    "id": "",
+    "type": "",
+    "pos": {
+      "x": 0,
+      "y": 0
+    },
+    "width": 0,
+    "height": 0,
+    "opacity": 0,
+    "strokeDash": 0,
+    "strokeWidth": 0,
+    "borderRadius": 0,
+    "fill": "N7",
+    "stroke": "",
+    "shadow": false,
+    "3d": false,
+    "multiple": false,
+    "double-border": false,
+    "tooltip": "",
+    "link": "",
+    "icon": null,
+    "iconPosition": "",
+    "blend": false,
+    "fields": null,
+    "methods": null,
+    "columns": null,
+    "label": "",
+    "fontSize": 0,
+    "fontFamily": "",
+    "language": "",
+    "color": "",
+    "italic": false,
+    "bold": false,
+    "underline": false,
+    "labelWidth": 0,
+    "labelHeight": 0,
+    "zIndex": 0,
+    "level": 0
+  }
+}

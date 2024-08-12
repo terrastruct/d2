@@ -350,3 +350,31 @@ CD
 Front-End.t1 -> Libreria.t1: generatePresentationPayload()
 Libreria.t1 -> Libreria.t1: Generar y Firmar\nPrueba de TitularidadPrueba de TitularidadPrueba de TitularidadPrueba de Titularidad
 Libreria.t1 -> Front-End.t1: Presentacion Firmada
+
+-- multiline-class-headers --
+A: "<<enumeration>>\nAlignment"{
+    shape: class
+
+    LeftAligned
+    CenterAligned
+    RightAligned
+    Justified
+}
+
+C: "Alignment"{
+    shape: class
+
+    LeftAligned
+    CenterAligned
+    RightAligned
+    Justified
+}
+
+D: "Alignment\nOf\nAlignment\nOf"{
+    shape: class
+
+    LeftAligned
+    CenterAligned
+    RightAligned
+    Justified
+}

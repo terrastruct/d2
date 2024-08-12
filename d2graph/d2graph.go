@@ -986,7 +986,7 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 		}
 		if anyRowText != nil {
 			rowHeight := GetTextDimensions(mtexts, ruler, anyRowText, go2.Pointer(d2fonts.SourceCodePro)).Height + d2target.VerticalPadding
-			dims.Height = rowHeight * (len(obj.Class.Fields) + len(obj.Class.Methods) + 2)
+			dims.Height = rowHeight*(len(obj.Class.Fields)+len(obj.Class.Methods)) + go2.Max(2*rowHeight, labelDims.Height+2*label.PADDING)
 		} else {
 			dims.Height = 2*go2.Max(12, labelDims.Height) + d2target.VerticalPadding
 		}
