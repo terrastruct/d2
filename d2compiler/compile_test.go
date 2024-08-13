@@ -3114,6 +3114,21 @@ layers: {
 				"y/n.d2": "p",
 			},
 		},
+		{
+			name: "sql-table-header-newline",
+			text: `x: {
+  shape: sql_table
+  label: hello\nworld
+}
+
+y: "hello\nworld" {
+  shape: sql_table
+	hi: there
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/sql-table-header-newline.d2:3:3: shape sql_table cannot have newlines
+d2/testdata/d2compiler/TestCompile/sql-table-header-newline.d2:6:1: shape sql_table cannot have newlines`,
+		},
 	}
 
 	for _, tc := range testCases {

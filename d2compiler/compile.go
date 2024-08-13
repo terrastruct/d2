@@ -1047,16 +1047,18 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 
 func (c *compiler) validateLabels(g *d2graph.Graph) {
 	for _, obj := range g.Objects {
-		if !strings.EqualFold(obj.Shape.Value, d2target.ShapeText) {
-			continue
-		}
-		if obj.Attributes.Language != "" {
-			// blockstrings have already been validated
-			continue
-		}
-		if strings.TrimSpace(obj.Label.Value) == "" {
-			c.errorf(obj.Label.MapKey, "shape text must have a non-empty label")
-			continue
+		if strings.EqualFold(obj.Shape.Value, d2target.ShapeText) {
+			if obj.Attributes.Language != "" {
+				// blockstrings have already been validated
+				continue
+			}
+			if strings.TrimSpace(obj.Label.Value) == "" {
+				c.errorf(obj.Label.MapKey, "shape text must have a non-empty label")
+			}
+		} else if strings.EqualFold(obj.Shape.Value, d2target.ShapeSQLTable) {
+			if strings.Contains(obj.Label.Value, "\n") {
+				c.errorf(obj.Label.MapKey, "shape sql_table cannot have newlines")
+			}
 		}
 	}
 }
