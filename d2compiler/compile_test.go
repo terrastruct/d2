@@ -3126,8 +3126,8 @@ y: "hello\nworld" {
 	hi: there
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/sql-table-header-newline.d2:3:3: shape sql_table cannot have newlines
-d2/testdata/d2compiler/TestCompile/sql-table-header-newline.d2:6:1: shape sql_table cannot have newlines`,
+			expErr: `d2/testdata/d2compiler/TestCompile/sql-table-header-newline.d2:3:3: shape sql_table cannot have newlines in label
+d2/testdata/d2compiler/TestCompile/sql-table-header-newline.d2:6:1: shape sql_table cannot have newlines in label`,
 		},
 	}
 

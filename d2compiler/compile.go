@@ -1057,7 +1057,7 @@ func (c *compiler) validateLabels(g *d2graph.Graph) {
 			}
 		} else if strings.EqualFold(obj.Shape.Value, d2target.ShapeSQLTable) {
 			if strings.Contains(obj.Label.Value, "\n") {
-				c.errorf(obj.Label.MapKey, "shape sql_table cannot have newlines")
+				c.errorf(obj.Label.MapKey, "shape sql_table cannot have newlines in label")
 			}
 		}
 	}

@@ -68,166 +68,10 @@
       "neutralAccentColor": "N2"
     },
     {
-      "id": "B",
-      "type": "sql_table",
-      "pos": {
-        "x": 379,
-        "y": 1
-      },
-      "width": 214,
-      "height": 300,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "N1",
-      "stroke": "N7",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "double-border": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": [
-        {
-          "name": {
-            "label": "LeftAligned",
-            "fontSize": 0,
-            "fontFamily": "",
-            "language": "",
-            "color": "",
-            "italic": false,
-            "bold": false,
-            "underline": false,
-            "labelWidth": 94,
-            "labelHeight": 26
-          },
-          "type": {
-            "label": "",
-            "fontSize": 0,
-            "fontFamily": "",
-            "language": "",
-            "color": "",
-            "italic": false,
-            "bold": false,
-            "underline": false,
-            "labelWidth": 0,
-            "labelHeight": 0
-          },
-          "constraint": null,
-          "reference": ""
-        },
-        {
-          "name": {
-            "label": "CenterAligned",
-            "fontSize": 0,
-            "fontFamily": "",
-            "language": "",
-            "color": "",
-            "italic": false,
-            "bold": false,
-            "underline": false,
-            "labelWidth": 117,
-            "labelHeight": 26
-          },
-          "type": {
-            "label": "",
-            "fontSize": 0,
-            "fontFamily": "",
-            "language": "",
-            "color": "",
-            "italic": false,
-            "bold": false,
-            "underline": false,
-            "labelWidth": 0,
-            "labelHeight": 0
-          },
-          "constraint": null,
-          "reference": ""
-        },
-        {
-          "name": {
-            "label": "RightAligned",
-            "fontSize": 0,
-            "fontFamily": "",
-            "language": "",
-            "color": "",
-            "italic": false,
-            "bold": false,
-            "underline": false,
-            "labelWidth": 105,
-            "labelHeight": 26
-          },
-          "type": {
-            "label": "",
-            "fontSize": 0,
-            "fontFamily": "",
-            "language": "",
-            "color": "",
-            "italic": false,
-            "bold": false,
-            "underline": false,
-            "labelWidth": 0,
-            "labelHeight": 0
-          },
-          "constraint": null,
-          "reference": ""
-        },
-        {
-          "name": {
-            "label": "Justified",
-            "fontSize": 0,
-            "fontFamily": "",
-            "language": "",
-            "color": "",
-            "italic": false,
-            "bold": false,
-            "underline": false,
-            "labelWidth": 72,
-            "labelHeight": 26
-          },
-          "type": {
-            "label": "",
-            "fontSize": 0,
-            "fontFamily": "",
-            "language": "",
-            "color": "",
-            "italic": false,
-            "bold": false,
-            "underline": false,
-            "labelWidth": 0,
-            "labelHeight": 0
-          },
-          "constraint": null,
-          "reference": ""
-        }
-      ],
-      "label": "<<enumeration>>\nAlignment",
-      "fontSize": 20,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "N1",
-      "italic": false,
-      "bold": true,
-      "underline": false,
-      "labelWidth": 189,
-      "labelHeight": 55,
-      "zIndex": 0,
-      "level": 1,
-      "primaryAccentColor": "B2",
-      "secondaryAccentColor": "AA2",
-      "neutralAccentColor": "N2"
-    },
-    {
       "id": "C",
       "type": "class",
       "pos": {
-        "x": 653,
+        "x": 379,
         "y": 13
       },
       "width": 254,
@@ -291,7 +135,7 @@
       "id": "D",
       "type": "class",
       "pos": {
-        "x": 967,
+        "x": 693,
         "y": 0
       },
       "width": 254,
