@@ -520,6 +520,10 @@ func (w *watcher) handleRoot(hw http.ResponseWriter, r *http.Request) {
 	if idx := strings.LastIndexByte(boardPath, '.'); idx != -1 {
 		boardPath = boardPath[:idx]
 	}
+	// if path is "/index", we just want "/"
+	if boardPath == "index" {
+		boardPath = ""
+	}
 	recompile := false
 	if boardPath != w.boardPath {
 		w.boardPath = boardPath

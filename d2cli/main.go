@@ -480,13 +480,13 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs
 	}, time.Second*5)
 	defer cancel()
 
-	diagram, g, err := d2lib.Compile(ctx, string(input), opts, &renderOpts)
+	rootDiagram, g, err := d2lib.Compile(ctx, string(input), opts, &renderOpts)
 	if err != nil {
 		return nil, false, err
 	}
 	cancel()
 
-	diagram = diagram.GetBoard(boardPath)
+	diagram := rootDiagram.GetBoard(boardPath)
 	if diagram == nil {
 		return nil, false, fmt.Errorf(`render target "%s" not found`, strings.Join(boardPath, "."))
 	}
@@ -589,11 +589,11 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs
 		compileDur := time.Since(start)
 		if animateInterval <= 0 {
 			// Rename all the "root.layers.x" to the paths that the boards get output to
-			linkToOutput, err := resolveLinks("root", outputPath, diagram)
+			linkToOutput, err := resolveLinks("root", outputPath, rootDiagram)
 			if err != nil {
 				return nil, false, err
 			}
-			err = relink("root", diagram, linkToOutput)
+			err = relink("root", rootDiagram, linkToOutput)
 			if err != nil {
 				return nil, false, err
 			}
