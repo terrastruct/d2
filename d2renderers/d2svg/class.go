@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html"
 	"io"
+	"math"
 
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
@@ -34,13 +35,13 @@ func classHeader(diagramHash string, shape d2target.Shape, box *geo.Box, text st
 
 		textEl := d2themes.NewThemableElement("text")
 		textEl.X = tl.X + textWidth/2
-		textEl.Y = tl.Y + textHeight*3/4
+		textEl.Y = tl.Y + fontSize
 		textEl.Fill = shape.GetFontColor()
 		textEl.ClassName = "text-mono"
 		textEl.Style = fmt.Sprintf(`text-anchor:%s;font-size:%vpx;`,
 			"middle", 4+fontSize,
 		)
-		textEl.Content = svg.EscapeText(text)
+		textEl.Content = RenderText(text, textEl.X, textHeight)
 		str += textEl.Render()
 	}
 	return str
@@ -107,7 +108,7 @@ func drawClass(writer io.Writer, diagramHash string, targetShape d2target.Shape)
 		float64(targetShape.Height),
 	)
 	rowHeight := box.Height / float64(2+len(targetShape.Class.Fields)+len(targetShape.Class.Methods))
-	headerBox := geo.NewBox(box.TopLeft, box.Width, 2*rowHeight)
+	headerBox := geo.NewBox(box.TopLeft, box.Width, math.Max(2*rowHeight, float64(targetShape.LabelHeight)+2*label.PADDING))
 
 	fmt.Fprint(writer,
 		classHeader(diagramHash, targetShape, headerBox, targetShape.Label, float64(targetShape.LabelWidth), float64(targetShape.LabelHeight), float64(targetShape.FontSize)),
