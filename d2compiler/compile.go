@@ -1034,7 +1034,7 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 		return
 	}
 
-	if strings.EqualFold(obj.Shape.Value, d2target.ShapeImage) {
+	if strings.EqualFold(obj.Shape.Value, d2target.ShapeImage) && obj.OuterSequenceDiagram() == nil {
 		c.errorf(f.LastRef().AST(), "image shapes cannot have children.")
 		return
 	}
