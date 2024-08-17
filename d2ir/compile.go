@@ -261,11 +261,11 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) (removedFie
 							}
 						}
 					case *Field:
+						m := ParentMap(n)
 						if resolvedField.Map() != nil {
-							OverlayMap(ParentMap(n), resolvedField.Map())
+							ExpandSubstitution(m, resolvedField.Map(), n)
 						}
 						// Remove the placeholder field
-						m := n.parent.(*Map)
 						for i, f2 := range m.Fields {
 							if n == f2 {
 								m.Fields = append(m.Fields[:i], m.Fields[i+1:]...)
