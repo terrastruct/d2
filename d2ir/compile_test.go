@@ -28,6 +28,7 @@ func TestCompile(t *testing.T) {
 	t.Run("imports", testCompileImports)
 	t.Run("patterns", testCompilePatterns)
 	t.Run("filters", testCompileFilters)
+	t.Run("vars", testCompileVars)
 }
 
 type testCase struct {
@@ -693,6 +694,35 @@ layers: {
 				assert.Success(t, err)
 				assertQuery(t, m, 0, 0, "yellow", "layers.x.classes.orb.style.fill")
 				assertQuery(t, m, 0, 0, "red", "layers.x.classes.orb.style.stroke")
+			},
+		},
+	}
+	runa(t, tca)
+}
+
+func testCompileVars(t *testing.T) {
+	t.Parallel()
+	tca := []testCase{
+		{
+			name: "spread-in-place",
+			run: func(t testing.TB) {
+				m, err := compile(t, `vars: {
+  person-shape: {
+    grid-columns: 1
+    grid-rows: 2
+    grid-gap: 0
+    head
+    body
+  }
+}
+
+dora: {
+  ...${person-shape}
+  body
+}
+`)
+				assert.Success(t, err)
+				assert.Equal(t, "grid-columns", m.Fields[1].Map().Fields[0].Name)
 			},
 		},
 	}
