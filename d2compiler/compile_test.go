@@ -3129,6 +3129,22 @@ y: "hello\nworld" {
 			expErr: `d2/testdata/d2compiler/TestCompile/sql-table-header-newline.d2:3:3: shape sql_table cannot have newlines in label
 d2/testdata/d2compiler/TestCompile/sql-table-header-newline.d2:6:1: shape sql_table cannot have newlines in label`,
 		},
+		{
+			name: "sequence-diagram-icons",
+			text: `shape: sequence_diagram
+svc_1: {
+  icon: https://icons.terrastruct.com/dev%2Fdocker.svg
+  shape: image
+}
+
+a: A
+b: B
+
+svc_1.t1 -> a: do with A
+svc_1."think about A"
+svc_1.t2 -> b: do with B
+`,
+		},
 	}
 
 	for _, tc := range testCases {
