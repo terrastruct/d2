@@ -1,6 +1,4 @@
-//go:build !nodagre
-
-package d2plugin
+package dagre
 
 import (
 	"context"
@@ -10,22 +8,17 @@ import (
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
+	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/util-go/xmain"
 )
 
-var DagrePlugin = dagrePlugin{}
-
-func init() {
-	plugins = append(plugins, &DagrePlugin)
-}
-
-type dagrePlugin struct {
+type DagrePlugin struct {
 	mu   sync.Mutex
 	opts *d2dagrelayout.ConfigurableOpts
 }
 
-func (p *dagrePlugin) Flags(context.Context) ([]PluginSpecificFlag, error) {
-	return []PluginSpecificFlag{
+func (p *DagrePlugin) Flags(context.Context) ([]d2plugin.PluginSpecificFlag, error) {
+	return []d2plugin.PluginSpecificFlag{
 		{
 			Name:    "dagre-nodesep",
 			Type:    "int64",
@@ -43,7 +36,7 @@ func (p *dagrePlugin) Flags(context.Context) ([]PluginSpecificFlag, error) {
 	}, nil
 }
 
-func (p *dagrePlugin) HydrateOpts(opts []byte) error {
+func (p *DagrePlugin) HydrateOpts(opts []byte) error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 	if opts != nil {
@@ -58,7 +51,7 @@ func (p *dagrePlugin) HydrateOpts(opts []byte) error {
 	return nil
 }
 
-func (p *dagrePlugin) Info(ctx context.Context) (*PluginInfo, error) {
+func (p *DagrePlugin) Info(ctx context.Context) (*d2plugin.PluginInfo, error) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 	opts := xmain.NewOpts(nil, nil)
@@ -70,10 +63,10 @@ func (p *dagrePlugin) Info(ctx context.Context) (*PluginInfo, error) {
 		f.AddToOpts(opts)
 	}
 
-	return &PluginInfo{
+	return &d2plugin.PluginInfo{
 		Name:      "dagre",
 		Type:      "bundled",
-		Features:  []PluginFeature{},
+		Features:  []d2plugin.PluginFeature{},
 		ShortHelp: "The directed graph layout library Dagre",
 		LongHelp: fmt.Sprintf(`dagre is a directed graph layout library for JavaScript.
 See https://d2lang.com/tour/dagre for more.
@@ -86,13 +79,13 @@ Flags:
 	}, nil
 }
 
-func (p *dagrePlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
+func (p *DagrePlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
 	p.mu.Lock()
 	optsCopy := *p.opts
 	p.mu.Unlock()
 	return d2dagrelayout.Layout(ctx, g, &optsCopy)
 }
 
-func (p *dagrePlugin) PostProcess(ctx context.Context, in []byte) ([]byte, error) {
+func (p *DagrePlugin) PostProcess(ctx context.Context, in []byte) ([]byte, error) {
 	return in, nil
 }
