@@ -712,6 +712,18 @@ steps: {
 			},
 		},
 		{
+			name: "import_icon_relative",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `...@asdf/x`)
+				writeFile(t, filepath.Join(dir, "asdf"), "x.d2", `y: { icon: ./blah.svg }`)
+				writeFile(t, filepath.Join(dir, "asdf"), "blah.svg", ``)
+				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
+				assert.Success(t, err)
+				svg := readFile(t, dir, "hello-world.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
 			name: "chain_import",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `...@x`)
