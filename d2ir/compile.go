@@ -1,7 +1,10 @@
 package d2ir
 
 import (
+	"html"
 	"io/fs"
+	"net/url"
+	"path"
 	"strconv"
 	"strings"
 
@@ -558,7 +561,8 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 			}
 
 			OverlayMap(dst, impn.Map())
-			c.extendLinks(dst, ParentField(dst))
+			impDir := n.Import.Dir()
+			c.extendLinks(dst, ParentField(dst), impDir)
 
 			if impnf, ok := impn.(*Field); ok {
 				if impnf.Primary_ != nil {
@@ -862,7 +866,8 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 				}
 			}
 			OverlayMap(f.Map(), n)
-			c.extendLinks(f.Map(), f)
+			impDir := refctx.Key.Value.Import.Dir()
+			c.extendLinks(f.Map(), f, impDir)
 			switch NodeBoardKind(f) {
 			case BoardScenario, BoardStep:
 				c.overlayClasses(f.Map())
@@ -895,9 +900,10 @@ func (c *compiler) ignoreLazyGlob(n Node) bool {
 	return false
 }
 
-// When importing a file, all of its board links need to be extended to reflect their new path
-func (c *compiler) extendLinks(m *Map, importF *Field) {
+// When importing a file, all of its board and icon links need to be extended to reflect their new path
+func (c *compiler) extendLinks(m *Map, importF *Field, importDir string) {
 	nodeBoardKind := NodeBoardKind(m)
+	importIDA := IDA(importF)
 	for _, f := range m.Fields {
 		if f.Name == "link" {
 			if nodeBoardKind != "" {
@@ -914,14 +920,23 @@ func (c *compiler) extendLinks(m *Map, importF *Field) {
 				continue
 			}
 
-			importIDA := IDA(importF)
 			extendedIDA := append(importIDA, linkIDA[1:]...)
 			kp := d2ast.MakeKeyPath(extendedIDA)
 			s := d2format.Format(kp)
 			f.Primary_.Value = d2ast.MakeValueBox(d2ast.FlatUnquotedString(s)).ScalarBox().Unbox()
 		}
+		if f.Name == "icon" {
+			val := f.Primary().Value.ScalarString()
+			u, err := url.Parse(html.UnescapeString(val))
+			isRemoteImg := err == nil && strings.HasPrefix(u.Scheme, "http")
+			if isRemoteImg {
+				continue
+			}
+			val = path.Join(importDir, val)
+			f.Primary_.Value = d2ast.MakeValueBox(d2ast.FlatUnquotedString(val)).ScalarBox().Unbox()
+		}
 		if f.Map() != nil {
-			c.extendLinks(f.Map(), importF)
+			c.extendLinks(f.Map(), importF, importDir)
 		}
 	}
 }

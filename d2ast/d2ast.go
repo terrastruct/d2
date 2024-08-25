@@ -1431,3 +1431,7 @@ func (i *Import) PathWithPre() string {
 	}
 	return path.Join(i.Pre, i.Path[0].Unbox().ScalarString())
 }
+
+func (i *Import) Dir() string {
+	return path.Dir(i.PathWithPre())
+}
