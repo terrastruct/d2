@@ -18,3 +18,4 @@
 - Render: Multi-line class labels/headers are rendered correctly [#2057](https://github.com/terrastruct/d2/pull/2057)
 - CLI: Watch mode uses correct backlinks (`_` usages) [#2058](https://github.com/terrastruct/d2/pull/2058)
 - Vars: Spread variables are inserted in place instead of appending to end of scope [#2062](https://github.com/terrastruct/d2/pull/2062)
+- Imports: fix local icon imports from files that are imported [#2066](https://github.com/terrastruct/d2/pull/2066)
