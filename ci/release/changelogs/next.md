@@ -20,3 +20,5 @@
 - Vars: Spread variables are inserted in place instead of appending to end of scope [#2062](https://github.com/terrastruct/d2/pull/2062)
 - Imports: fix local icon imports from files that are imported [#2066](https://github.com/terrastruct/d2/pull/2066)
 - CLI: fixes edge case of watch mode links to nested board that had more nested boards not working [#2070](https://github.com/terrastruct/d2/pull/2070)
+- CLI: fixes theme flag not being passed to GIF outputs [#2071](https://github.com/terrastruct/d2/pull/2071)
+- CLI: fixes scale flag not being passed to animated SVG outputs [#2071](https://github.com/terrastruct/d2/pull/2071)

@@ -847,9 +847,9 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 		Pad:                opts.Pad,
 		Sketch:             opts.Sketch,
 		Center:             opts.Center,
+		MasterID:           opts.MasterID,
 		ThemeID:            opts.ThemeID,
 		DarkThemeID:        opts.DarkThemeID,
-		MasterID:           opts.MasterID,
 		ThemeOverrides:     opts.ThemeOverrides,
 		DarkThemeOverrides: opts.DarkThemeOverrides,
 		Scale:              scale,
@@ -936,11 +936,14 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 		}
 
 		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
-			Pad:     opts.Pad,
-			Sketch:  opts.Sketch,
-			Center:  opts.Center,
-			Scale:   scale,
-			ThemeID: opts.ThemeID,
+			Pad:                opts.Pad,
+			Sketch:             opts.Sketch,
+			Center:             opts.Center,
+			Scale:              scale,
+			ThemeID:            opts.ThemeID,
+			DarkThemeID:        opts.DarkThemeID,
+			ThemeOverrides:     opts.ThemeOverrides,
+			DarkThemeOverrides: opts.DarkThemeOverrides,
 		})
 		if err != nil {
 			return nil, err
@@ -1286,10 +1289,14 @@ func renderPNGsForGIF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plug
 			scale = go2.Pointer(1.)
 		}
 		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
-			Pad:    opts.Pad,
-			Sketch: opts.Sketch,
-			Center: opts.Center,
-			Scale:  scale,
+			Pad:                opts.Pad,
+			Sketch:             opts.Sketch,
+			Center:             opts.Center,
+			Scale:              scale,
+			ThemeID:            opts.ThemeID,
+			DarkThemeID:        opts.DarkThemeID,
+			ThemeOverrides:     opts.ThemeOverrides,
+			DarkThemeOverrides: opts.DarkThemeOverrides,
 		})
 		if err != nil {
 			return nil, nil, err
