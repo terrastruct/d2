@@ -521,6 +521,7 @@ func (w *watcher) handleRoot(hw http.ResponseWriter, r *http.Request) {
 		boardPath = boardPath[:idx]
 	}
 	// if path is "/index", we just want "/"
+	boardPath = strings.TrimSuffix(boardPath, "/index")
 	if boardPath == "index" {
 		boardPath = ""
 	}
