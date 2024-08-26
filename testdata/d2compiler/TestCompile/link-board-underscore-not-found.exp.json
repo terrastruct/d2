@@ -3,8 +3,8 @@
   "err": {
     "errs": [
       {
-        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2,6:8:59-6:18:69",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2:7:9: invalid underscore usage"
+        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2,6:8:59-6:25:76",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2:7:9: linked board not found"
       }
     ]
   }

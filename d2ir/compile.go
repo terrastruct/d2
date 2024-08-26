@@ -920,6 +920,15 @@ func (c *compiler) extendLinks(m *Map, importF *Field, importDir string) {
 				continue
 			}
 
+			for _, id := range linkIDA[1:] {
+				if id == "_" {
+					linkIDA = append([]string{linkIDA[0]}, linkIDA[2:]...)
+					importIDA = importIDA[:len(importIDA)-2]
+				} else {
+					break
+				}
+			}
+
 			extendedIDA := append(importIDA, linkIDA[1:]...)
 			kp := d2ast.MakeKeyPath(extendedIDA)
 			s := d2format.Format(kp)
@@ -984,10 +993,9 @@ func (c *compiler) compileLink(f *Field, refctx *RefContext) {
 	// Resolve underscores
 	for len(linkIDA) > 0 && linkIDA[0] == "_" {
 		if len(scopeIDA) < 2 {
-			// IR compiler only validates bad underscore usage
-			// The compiler will validate if the target board actually exists
-			c.errorf(refctx.Key.Key, "invalid underscore usage")
-			return
+			// Leave the underscore. It will fail in compiler as a standalone board,
+			// but if imported, will get further resolved in extendLinks
+			break
 		}
 		// pop 2 off path per one underscore
 		scopeIDA = scopeIDA[:len(scopeIDA)-2]
