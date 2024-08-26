@@ -2288,7 +2288,9 @@ scenarios: {
 			name: "link-board-not-found",
 			text: `x.link: layers.x
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/link-board-not-found.d2:1:1: linked board not found`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Link)
+			},
 		},
 		{
 			name: "link-board-not-board",
@@ -2299,7 +2301,10 @@ layers: {
     y
   }
 }`,
-			expErr: `d2/testdata/d2compiler/TestCompile/link-board-not-board.d2:2:1: linked board not found`,
+
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Link)
+			},
 		},
 		{
 			name: "link-board-nested",
@@ -2394,7 +2399,9 @@ layers: {
     }
   }
 }`,
-			expErr: `d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2:7:9: linked board not found`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Layers[0].Layers[0].Objects[0].Link)
+			},
 		},
 		{
 			name: "import-icon-near",
