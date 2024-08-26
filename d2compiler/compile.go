@@ -1205,7 +1205,7 @@ func (c *compiler) validateBoardLinks(g *d2graph.Graph) {
 		}
 
 		if !hasBoard(g.RootBoard(), linkKey.IDA()) {
-			c.errorf(obj.Link.MapKey, "linked board not found")
+			obj.Link = nil
 			continue
 		}
 	}
