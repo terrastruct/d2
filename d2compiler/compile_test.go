@@ -2397,6 +2397,16 @@ layers: {
 			expErr: `d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2:7:9: linked board not found`,
 		},
 		{
+			name: "import-icon-near",
+			text: `y: @y
+`,
+			files: map[string]string{
+				"y.d2": `syslog
+*.icon.near: center-left
+`,
+			},
+		},
+		{
 			name: "border-radius-negative",
 			text: `x
 x: {
