@@ -934,7 +934,7 @@ func (c *compiler) extendLinks(m *Map, importF *Field, importDir string) {
 			s := d2format.Format(kp)
 			f.Primary_.Value = d2ast.MakeValueBox(d2ast.FlatUnquotedString(s)).ScalarBox().Unbox()
 		}
-		if f.Name == "icon" {
+		if f.Name == "icon" && f.Primary() != nil {
 			val := f.Primary().Value.ScalarString()
 			u, err := url.Parse(html.UnescapeString(val))
 			isRemoteImg := err == nil && strings.HasPrefix(u.Scheme, "http")
