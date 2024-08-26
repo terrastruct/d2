@@ -2394,7 +2394,7 @@ layers: {
     }
   }
 }`,
-			expErr: `d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2:7:9: invalid underscore usage`,
+			expErr: `d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2:7:9: linked board not found`,
 		},
 		{
 			name: "border-radius-negative",
@@ -3112,6 +3112,80 @@ layers: {
   b: {...@n}
 }`,
 				"y/n.d2": "p",
+			},
+		},
+		{
+			name: "import-link-layer-1",
+			text: `k
+
+layers: {
+  x: {...@y}
+  z: { hi }
+}`,
+			files: map[string]string{
+				"y.d2": `a.link: _.layers.z
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.z", g.Layers[0].Objects[0].Link.Value)
+			},
+		},
+		{
+			name: "import-link-layer-2",
+			text: `...@y
+
+layers: {
+  z: { hi }
+}`,
+			files: map[string]string{
+				"y.d2": `a.link: layers.z
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.z", g.Objects[0].Link.Value)
+			},
+		},
+		{
+			name: "import-link-layer-3",
+			text: `k
+
+layers: {
+  x: {...@y}
+  z: { hi }
+}`,
+			files: map[string]string{
+				"y.d2": `a
+layers: {
+  lol: {
+    asdf.link: _._.layers.z
+  }
+}
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.z", g.Layers[0].Layers[0].Objects[0].Link.Value)
+			},
+		},
+		{
+			name: "import-link-layer-4",
+			text: `k
+
+layers: {
+  x: @y
+  z: { hi }
+}`,
+			files: map[string]string{
+				"y.d2": `a
+layers: {
+  lol: {
+    asdf.link: _.layers.z
+  }
+	z: { fjf }
+}
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.x.layers.z", g.Layers[0].Layers[0].Objects[0].Link.Value)
 			},
 		},
 		{
