@@ -2387,6 +2387,17 @@ layers: {
 			},
 		},
 		{
+			name: "link-beyond-import-root",
+			text: `...@x`,
+			files: map[string]string{
+				"x.d2": `x.link: _.layers.z
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Link)
+			},
+		},
+		{
 			name: "link-board-underscore-not-found",
 			text: `x
 layers: {

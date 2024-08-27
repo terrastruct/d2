@@ -1,0 +1,114 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/link-beyond-import-root.d2,0:0:0-0:5:5",
+      "nodes": [
+        {
+          "import": {
+            "range": "d2/testdata/d2compiler/TestCompile/link-beyond-import-root.d2,0:0:0-0:5:5",
+            "spread": true,
+            "pre": "",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2compiler/TestCompile/link-beyond-import-root.d2,0:4:4-0:5:5",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "x",
+        "id_val": "x",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:0:0-0:6:6",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:2:2-0:6:6",
+                    "value": [
+                      {
+                        "string": "link",
+                        "raw_string": "link"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "x"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}
