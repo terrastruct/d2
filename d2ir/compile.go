@@ -904,6 +904,7 @@ func (c *compiler) ignoreLazyGlob(n Node) bool {
 func (c *compiler) extendLinks(m *Map, importF *Field, importDir string) {
 	nodeBoardKind := NodeBoardKind(m)
 	importIDA := IDA(importF)
+FIELDS_LOOP:
 	for _, f := range m.Fields {
 		if f.Name == "link" {
 			if nodeBoardKind != "" {
@@ -922,6 +923,9 @@ func (c *compiler) extendLinks(m *Map, importF *Field, importDir string) {
 
 			for _, id := range linkIDA[1:] {
 				if id == "_" {
+					if len(linkIDA) < 2 || len(importIDA) < 2 {
+						continue FIELDS_LOOP
+					}
 					linkIDA = append([]string{linkIDA[0]}, linkIDA[2:]...)
 					importIDA = importIDA[:len(importIDA)-2]
 				} else {
