@@ -17,6 +17,7 @@ import (
 	"oss.terrastruct.com/d2/d2oracle"
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/lib/urlenc"
+	"oss.terrastruct.com/d2/lib/version"
 )
 
 func main() {
@@ -27,6 +28,7 @@ func main() {
 	js.Global().Set("d2Parse", js.FuncOf(jsParse))
 	js.Global().Set("d2Encode", js.FuncOf(jsEncode))
 	js.Global().Set("d2Decode", js.FuncOf(jsDecode))
+	js.Global().Set("d2Version", js.FuncOf(jsVersion))
 	initCallback := js.Global().Get("onWasmInitialized")
 	if !initCallback.IsUndefined() {
 		initCallback.Invoke()
@@ -309,4 +311,8 @@ func jsDecode(this js.Value, args []js.Value) interface{} {
 	ret := jsObject{Result: script}
 	str, _ := json.Marshal(ret)
 	return string(str)
+}
+
+func jsVersion(this js.Value, args []js.Value) interface{} {
+	return version.Version
 }
