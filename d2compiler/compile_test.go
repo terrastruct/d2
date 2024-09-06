@@ -3073,6 +3073,28 @@ layers: {
 			},
 		},
 		{
+			name: "import-link-underscore-3",
+			text: `k
+
+layers: {
+  x: @x
+	b: {
+    b
+  }
+}`,
+			files: map[string]string{
+				"x.d2": `a
+layers: {
+  y: @y
+}`,
+				"y.d2": `o.link: _._.layers.b
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.b", g.Layers[0].Layers[0].Objects[0].Link.Value)
+			},
+		},
+		{
 			name: "invalid-link-1",
 			text: `k
 
