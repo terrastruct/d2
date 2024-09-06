@@ -617,6 +617,10 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs
 				if err != nil {
 					return nil, false, err
 				}
+				out, err = plugin.PostProcess(ctx, out)
+				if err != nil {
+					return nil, false, err
+				}
 				err = os.MkdirAll(filepath.Dir(outputPath), 0755)
 				if err != nil {
 					return nil, false, err
@@ -858,9 +862,11 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 		return nil, err
 	}
 
-	svg, err = plugin.PostProcess(ctx, svg)
-	if err != nil {
-		return svg, err
+	if opts.MasterID == "" {
+		svg, err = plugin.PostProcess(ctx, svg)
+		if err != nil {
+			return svg, err
+		}
 	}
 
 	cacheImages := ms.Env.Getenv("IMG_CACHE") == "1"
