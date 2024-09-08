@@ -53,6 +53,11 @@ func testSanity(t *testing.T) {
 			script: ``,
 		},
 		{
+			name: "shape",
+			script: `a
+`,
+		},
+		{
 			name: "basic",
 			script: `a -> b
 `,
