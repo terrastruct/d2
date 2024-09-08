@@ -10,3 +10,5 @@ global), and tries to do global calls like `$wnd.Math()`.
 This is not found when run in goja. But `Math()` is indeed set on global.
 
 So I just find and replace all instances to not use a `$wnd` object.
+
+I also remove references to `goog`, seems useless.
