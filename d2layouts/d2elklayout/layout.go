@@ -281,7 +281,6 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				HierarchyHandling:            "INCLUDE_CHILDREN",
 				FixedAlignment:               "BALANCED",
 				EdgeNode:                     edge_node_spacing,
-				ConsiderModelOrder:           "NODES_AND_EDGES",
 				CycleBreakingStrategy:        "GREEDY_MODEL_ORDER",
 				NodeSizeConstraints:          "MINIMUM_SIZE",
 				ContentAlignment:             "H_CENTER V_CENTER",
