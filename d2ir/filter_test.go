@@ -175,7 +175,6 @@ x -> y: hi
 }
 
 a
-# if i remove this line, the glob applies as expected
 b
 b.label: a
 `)

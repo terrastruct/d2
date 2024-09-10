@@ -674,44 +674,78 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 		return false
 	}
 	if len(fa) == 0 {
-		if refctx.Key.Key.Last().ScalarString() != "label" {
+		if refctx.Key.Value.ScalarBox().Unbox().ScalarString() == "*" {
 			return false
 		}
-		kp := refctx.Key.Key.Copy()
-		kp.Path = kp.Path[:len(kp.Path)-1]
-		if len(kp.Path) == 0 {
+		// The field/edge has no value for this filter
+		// But the filter might still match default, e.g. opacity 1
+		// So we make a fake field for the default
+		// NOTE: this does not apply to things that themes control, like stroke and fill
+		// Nor does it apply to layout things like width and height
+		switch refctx.Key.Key.Last().ScalarString() {
+		case "shape":
+			f := &Field{
+				Primary_: &Scalar{
+					Value: d2ast.FlatUnquotedString("rectangle"),
+				},
+			}
+			return c._ampersandFilter(f, refctx)
+		case "border-radius", "stroke-dash":
+			f := &Field{
+				Primary_: &Scalar{
+					Value: d2ast.FlatUnquotedString("0"),
+				},
+			}
+			return c._ampersandFilter(f, refctx)
+		case "opacity":
+			f := &Field{
+				Primary_: &Scalar{
+					Value: d2ast.FlatUnquotedString("1"),
+				},
+			}
+			return c._ampersandFilter(f, refctx)
+		case "stroke-width":
+			f := &Field{
+				Primary_: &Scalar{
+					Value: d2ast.FlatUnquotedString("2"),
+				},
+			}
+			return c._ampersandFilter(f, refctx)
+		case "icon", "tooltip", "link":
+			f := &Field{
+				Primary_: &Scalar{
+					Value: d2ast.FlatUnquotedString(""),
+				},
+			}
+			return c._ampersandFilter(f, refctx)
+		case "shadow", "multiple", "3d", "animated", "filled":
+			f := &Field{
+				Primary_: &Scalar{
+					Value: d2ast.FlatUnquotedString("false"),
+				},
+			}
+			return c._ampersandFilter(f, refctx)
+		case "label":
+			f := &Field{}
 			n := refctx.ScopeMap.Parent()
-			switch n := n.(type) {
-			case *Field:
-				fa = append(fa, n)
-			case *Edge:
-				if n.Primary_ == nil {
-					if refctx.Key.Value.ScalarBox().Unbox().ScalarString() == "" {
-						return true
+			if n.Primary() == nil {
+				switch n := n.(type) {
+				case *Field:
+					// The label value for fields is their key value
+					f.Primary_ = &Scalar{
+						Value: d2ast.FlatUnquotedString(n.Name),
 					}
+				case *Edge:
+					// But for edges, it's nothing
 					return false
 				}
-				if n.Primary_.Value.ScalarString() != refctx.Key.Value.ScalarBox().Unbox().ScalarString() {
-					return false
-				}
+			} else {
+				f.Primary_ = n.Primary()
 			}
-		} else {
-			fa, err = refctx.ScopeMap.EnsureField(kp, refctx, false, c)
-			if err != nil {
-				c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
-				return false
-			}
+			return c._ampersandFilter(f, refctx)
+		default:
+			return false
 		}
-		for _, f := range fa {
-			label := f.Name
-			if f.Primary_ != nil {
-				label = f.Primary_.Value.ScalarString()
-			}
-			if label != refctx.Key.Value.ScalarBox().Unbox().ScalarString() {
-				return false
-			}
-		}
-		return true
 	}
 	for _, f := range fa {
 		ok := c._ampersandFilter(f, refctx)

@@ -4924,6 +4924,77 @@ scenarios: {
 				assert.Equal(t, "circle", g.Scenarios[1].Objects[1].Attributes.Shape.Value)
 			},
 		},
+		{
+			name: "default-glob-filter/1",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*: {
+	&shape: rectangle
+  style.fill: red
+}
+*: {
+  &style.opacity: 1
+  style.stroke: blue
+}
+a
+b.shape: circle
+c.shape: rectangle
+`, ``)
+				assert.Equal(t, "red", g.Objects[0].Style.Fill.Value)
+				assert.Equal(t, "blue", g.Objects[0].Style.Stroke.Value)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[1].Style.Fill)
+				assert.Equal(t, "red", g.Objects[2].Style.Fill.Value)
+			},
+		},
+		{
+			name: "default-glob-filter/2",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*: {
+	&shape: rectangle
+  style.opacity: 0.2
+}
+a
+b -> c
+`, ``)
+				assert.Equal(t, "0.2", g.Objects[0].Style.Opacity.Value)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[0].Style.Opacity)
+			},
+		},
+		{
+			name: "default-glob-filter/3",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*: {
+	&icon: ""
+  style.opacity: 0.2
+}
+a
+b.icon: https://google.com/cat.jpg
+`, ``)
+				assert.Equal(t, "0.2", g.Objects[0].Style.Opacity.Value)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[1].Style.Opacity)
+			},
+		},
+		{
+			name: "default-glob-filter/4",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*: {
+	&opacity: 1
+  style.stroke: red
+}
+(* -> *)[*]: {
+	&opacity: 1
+  style.stroke: red
+}
+a
+b -> c
+`, ``)
+				assert.Equal(t, "red", g.Objects[0].Style.Stroke.Value)
+				assert.Equal(t, "red", g.Edges[0].Style.Stroke.Value)
+			},
+		},
 	}
 
 	for _, tc := range tca {
