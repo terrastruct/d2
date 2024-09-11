@@ -2979,8 +2979,8 @@ qa: {
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				tassert.Equal(t, "dev.env", g.Objects[1].AbsID())
 				tassert.Equal(t, "Dev Environment", g.Objects[1].Label.Value)
-				tassert.Equal(t, "qa.env", g.Objects[2].AbsID())
-				tassert.Equal(t, "Qa Environment", g.Objects[2].Label.Value)
+				tassert.Equal(t, "qa.env", g.Objects[4].AbsID())
+				tassert.Equal(t, "Qa Environment", g.Objects[4].Label.Value)
 			},
 		},
 		{

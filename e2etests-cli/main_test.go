@@ -95,6 +95,30 @@ func TestCLI_E2E(t *testing.T) {
 			},
 		},
 		{
+			name: "sequence-layer",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "index.d2", `k; layers: { seq: @seq.d2 }`)
+				writeFile(t, dir, "seq.d2", `shape: sequence_diagram
+a: me
+b: github.com/terrastruct/d2
+
+a -> b: issue about a bug
+a."some note about the bug"
+
+if i'm right: {
+	a <- b: fix
+}
+
+if i'm wrong: {
+	a <- b: nah, intended
+}`)
+				err := runTestMain(t, ctx, dir, env, "index.d2")
+				assert.Success(t, err)
+
+				assert.TestdataDir(t, filepath.Join(dir, "index"))
+			},
+		},
+		{
 			// Skip the empty base board so the animation doesn't show blank for 1400ms
 			name: "empty-base",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
