@@ -1,9 +1,11 @@
 package d2sequence
 
 import (
+	"cmp"
 	"errors"
 	"fmt"
 	"math"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -75,6 +77,13 @@ func getEdgeEarliestLineNum(e *d2graph.Edge) int {
 func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) (*sequenceDiagram, error) {
 	var actors []*d2graph.Object
 	var groups []*d2graph.Object
+
+	slices.SortFunc(objects, func(a, b *d2graph.Object) int {
+		return cmp.Compare(getObjEarliestLineNum(a), getObjEarliestLineNum(b))
+	})
+	slices.SortFunc(messages, func(a, b *d2graph.Edge) int {
+		return cmp.Compare(getEdgeEarliestLineNum(a), getEdgeEarliestLineNum(b))
+	})
 
 	for _, obj := range objects {
 		if obj.IsSequenceDiagramGroup() {
