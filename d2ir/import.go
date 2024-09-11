@@ -61,15 +61,18 @@ func (c *compiler) _import(imp *d2ast.Import) (Node, bool) {
 	if !ok {
 		return nil, false
 	}
-	nilScopeMap(ir)
 	if len(imp.IDA()) > 0 {
 		f := ir.GetField(imp.IDA()...)
 		if f == nil {
 			c.errorf(imp, "import key %q doesn't exist inside import", imp.IDA())
 			return nil, false
 		}
+		if f.Map() != nil {
+			nilScopeMap(f.Map())
+		}
 		return f, true
 	}
+	nilScopeMap(ir)
 	return ir, true
 }
 
@@ -132,15 +135,9 @@ func nilScopeMap(n Node) {
 		for _, r := range n.References {
 			r.Context_.ScopeMap = nil
 		}
-		if n.Map() != nil {
-			nilScopeMap(n.Map())
-		}
 	case *Field:
 		for _, r := range n.References {
 			r.Context_.ScopeMap = nil
-		}
-		if n.Map() != nil {
-			nilScopeMap(n.Map())
 		}
 	}
 }
