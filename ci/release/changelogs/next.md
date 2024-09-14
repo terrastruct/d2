@@ -13,6 +13,7 @@
 - Sequence diagram: Image shape actors can use spans and notes [#2056](https://github.com/terrastruct/d2/issues/2056)
 - Globs: Filters work with default values (e.g. `&opacity: 1` will capture everything without opacity explicitly set) [#2090](https://github.com/terrastruct/d2/pull/2090)
 - Render: connection label fills have a bit of padding and border-radius for better aesthetics [#2094](https://github.com/terrastruct/d2/pull/2094)
+- Sequence diagram: the padding between message labels and message endpoints are slightly increased [#2096](https://github.com/terrastruct/d2/pull/2096)
 
 #### Bugfixes ⛑️
 
