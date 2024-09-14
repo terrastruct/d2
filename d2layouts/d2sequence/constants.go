@@ -2,6 +2,7 @@ package d2sequence
 
 // units of space on the left/right when computing the space required between actors
 const HORIZONTAL_PAD = 40.
+const LABEL_HORIZONTAL_PAD = 60.
 
 // units of space on the top/bottom when computing the space required between messages
 // TODO lower
