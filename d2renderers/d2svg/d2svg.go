@@ -623,9 +623,9 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		}
 		if connection.Fill != color.Empty {
 			rectEl := d2themes.NewThemableElement("rect")
-			rectEl.Rx = 999
-			rectEl.X, rectEl.Y = labelTL.X-4, labelTL.Y-2
-			rectEl.Width, rectEl.Height = float64(connection.LabelWidth)+8, float64(connection.LabelHeight)+4
+			rectEl.Rx = 10
+			rectEl.X, rectEl.Y = labelTL.X-4, labelTL.Y-3
+			rectEl.Width, rectEl.Height = float64(connection.LabelWidth)+8, float64(connection.LabelHeight)+6
 			rectEl.Fill = connection.Fill
 			fmt.Fprint(writer, rectEl.Render())
 		}

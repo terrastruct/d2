@@ -48,7 +48,7 @@
       "id": "employee",
       "type": "rectangle",
       "pos": {
-        "x": 171,
+        "x": 161,
         "y": 52
       },
       "width": 112,
@@ -89,7 +89,7 @@
       "id": "rental",
       "type": "rectangle",
       "pos": {
-        "x": 327,
+        "x": 317,
         "y": 52
       },
       "width": 100,
@@ -130,7 +130,7 @@
       "id": "item",
       "type": "rectangle",
       "pos": {
-        "x": 477,
+        "x": 467,
         "y": 52
       },
       "width": 100,
@@ -162,6 +162,88 @@
       "bold": false,
       "underline": false,
       "labelWidth": 30,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "alice",
+      "type": "rectangle",
+      "pos": {
+        "x": 617,
+        "y": 52
+      },
+      "width": 100,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B5",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "alice",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 32,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "bob",
+      "type": "rectangle",
+      "pos": {
+        "x": 838,
+        "y": 52
+      },
+      "width": 100,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B5",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "bob",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 26,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -199,7 +281,7 @@
           "y": 198
         },
         {
-          "x": 227,
+          "x": 217,
           "y": 198
         }
       ],
@@ -234,11 +316,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 227,
+          "x": 217,
           "y": 288
         },
         {
-          "x": 377,
+          "x": 367,
           "y": 288
         }
       ],
@@ -273,11 +355,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 377,
+          "x": 367,
           "y": 368
         },
         {
-          "x": 227,
+          "x": 217,
           "y": 368
         }
       ],
@@ -312,11 +394,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 227,
+          "x": 217,
           "y": 448
         },
         {
-          "x": 377,
+          "x": 367,
           "y": 448
         }
       ],
@@ -351,11 +433,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 377,
+          "x": 367,
           "y": 538
         },
         {
-          "x": 527,
+          "x": 517,
           "y": 538
         }
       ],
@@ -390,7 +472,7 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 527,
+          "x": 517,
           "y": 628
         },
         {
@@ -433,8 +515,86 @@
           "y": 718
         },
         {
-          "x": 527,
+          "x": 517,
           "y": 718
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 4
+    },
+    {
+      "id": "(alice -> bob)[0]",
+      "src": "alice",
+      "srcArrow": "none",
+      "dst": "bob",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "fill": "black",
+      "borderRadius": 10,
+      "label": "What does it mean\nto be well-adjusted?",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "white",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 133,
+      "labelHeight": 37,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 667,
+          "y": 816
+        },
+        {
+          "x": 888,
+          "y": 816
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 4
+    },
+    {
+      "id": "(bob -> alice)[0]",
+      "src": "bob",
+      "srcArrow": "none",
+      "dst": "alice",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "fill": "black",
+      "borderRadius": 10,
+      "label": "The ability to play bridge or\ngolf as if they were games.",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "white",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 181,
+      "labelHeight": 37,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 888,
+          "y": 922
+        },
+        {
+          "x": 667,
+          "y": 922
         }
       ],
       "animated": false,
@@ -472,7 +632,7 @@
         },
         {
           "x": 66.5,
-          "y": 788
+          "y": 992
         }
       ],
       "animated": false,
@@ -505,12 +665,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 227,
+          "x": 217,
           "y": 118
         },
         {
-          "x": 227,
-          "y": 788
+          "x": 217,
+          "y": 992
         }
       ],
       "animated": false,
@@ -543,12 +703,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 377,
+          "x": 367,
           "y": 118
         },
         {
-          "x": 377,
-          "y": 788
+          "x": 367,
+          "y": 992
         }
       ],
       "animated": false,
@@ -581,12 +741,88 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 527,
+          "x": 517,
           "y": 118
         },
         {
-          "x": 527,
-          "y": 788
+          "x": 517,
+          "y": 992
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 1
+    },
+    {
+      "id": "(alice -- )[0]",
+      "src": "alice",
+      "srcArrow": "none",
+      "dst": "alice-lifeline-end-3851299086",
+      "dstArrow": "none",
+      "opacity": 1,
+      "strokeDash": 6,
+      "strokeWidth": 2,
+      "stroke": "B2",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 667,
+          "y": 118
+        },
+        {
+          "x": 667,
+          "y": 992
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 1
+    },
+    {
+      "id": "(bob -- )[0]",
+      "src": "bob",
+      "srcArrow": "none",
+      "dst": "bob-lifeline-end-3036726343",
+      "dstArrow": "none",
+      "opacity": 1,
+      "strokeDash": 6,
+      "strokeWidth": 2,
+      "stroke": "B2",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 888,
+          "y": 118
+        },
+        {
+          "x": 888,
+          "y": 992
         }
       ],
       "animated": false,

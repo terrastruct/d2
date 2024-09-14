@@ -386,6 +386,9 @@ employee
 rental
 item
 
+alice
+bob
+
 (* -> *)[*].style.fill: black
 (* -> *)[*].style.font-color: white
 
@@ -396,3 +399,6 @@ employee -> rental: isValid()
 rental -> item: isRentable(c)
 item -> customer: is(Adult)
 customer -> item: true
+
+alice -> bob: What does it mean\nto be well-adjusted?
+bob -> alice: The ability to play bridge or\ngolf as if they were games.
