@@ -7,8 +7,8 @@
       "id": "size XS",
       "type": "rectangle",
       "pos": {
-        "x": 804,
-        "y": 299
+        "x": 346,
+        "y": 359
       },
       "width": 85,
       "height": 62,
@@ -48,7 +48,7 @@
       "id": "size S",
       "type": "rectangle",
       "pos": {
-        "x": 15,
+        "x": 12,
         "y": 35
       },
       "width": 80,
@@ -89,8 +89,8 @@
       "id": "size M",
       "type": "rectangle",
       "pos": {
-        "x": 12,
-        "y": 299
+        "x": 451,
+        "y": 359
       },
       "width": 87,
       "height": 66,
@@ -130,7 +130,7 @@
       "id": "size L",
       "type": "rectangle",
       "pos": {
-        "x": 115,
+        "x": 112,
         "y": 19
       },
       "width": 93,
@@ -171,7 +171,7 @@
       "id": "size XL",
       "type": "rectangle",
       "pos": {
-        "x": 228,
+        "x": 225,
         "y": 17
       },
       "width": 117,
@@ -212,7 +212,7 @@
       "id": "size XXL",
       "type": "rectangle",
       "pos": {
-        "x": 365,
+        "x": 362,
         "y": 14
       },
       "width": 144,
@@ -253,7 +253,7 @@
       "id": "size XXXL",
       "type": "rectangle",
       "pos": {
-        "x": 529,
+        "x": 526,
         "y": 12
       },
       "width": 177,
@@ -294,7 +294,7 @@
       "id": "custom 8",
       "type": "rectangle",
       "pos": {
-        "x": 808,
+        "x": 723,
         "y": 42
       },
       "width": 77,
@@ -335,7 +335,7 @@
       "id": "custom 12",
       "type": "rectangle",
       "pos": {
-        "x": 905,
+        "x": 820,
         "y": 24
       },
       "width": 100,
@@ -376,7 +376,7 @@
       "id": "custom 18",
       "type": "rectangle",
       "pos": {
-        "x": 1025,
+        "x": 940,
         "y": 21
       },
       "width": 126,
@@ -417,7 +417,7 @@
       "id": "custom 21",
       "type": "rectangle",
       "pos": {
-        "x": 1171,
+        "x": 1086,
         "y": 19
       },
       "width": 140,
@@ -458,8 +458,8 @@
       "id": "custom 64",
       "type": "rectangle",
       "pos": {
-        "x": 451,
-        "y": 299
+        "x": 724,
+        "y": 359
       },
       "width": 333,
       "height": 126,
@@ -522,12 +522,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 847,
+          "x": 761.5,
           "y": 98
         },
         {
-          "x": 847,
-          "y": 299
+          "x": 761.5,
+          "y": 138
+        },
+        {
+          "x": 389,
+          "y": 138
+        },
+        {
+          "x": 389,
+          "y": 359
         }
       ],
       "animated": false,
@@ -560,12 +568,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 55.5,
+          "x": 52,
           "y": 98
         },
         {
-          "x": 55.5,
-          "y": 299
+          "x": 52,
+          "y": 188
+        },
+        {
+          "x": 495,
+          "y": 188
+        },
+        {
+          "x": 495,
+          "y": 359
         }
       ],
       "animated": false,
@@ -599,12 +615,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 618,
+          "x": 614.5,
           "y": 98
         },
         {
-          "x": 618,
-          "y": 299
+          "x": 614.5,
+          "y": 188
+        },
+        {
+          "x": 891.25,
+          "y": 188
+        },
+        {
+          "x": 891.25,
+          "y": 359
         }
       ],
       "animated": false,
