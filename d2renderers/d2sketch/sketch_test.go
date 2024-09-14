@@ -1323,6 +1323,27 @@ C <-> D: triangle {
   }
 }`,
 		},
+		{
+			name: "connection-style-fill",
+			script: `
+shape: sequence_diagram
+customer
+employee
+rental
+item
+
+(* -> *)[*].style.fill: black
+(* -> *)[*].style.font-color: white
+
+customer -> employee: "rent(this, i, p)"
+employee -> rental: "new(this, i, p)"
+rental -> employee
+employee -> rental: isValid()
+rental -> item: isRentable(c)
+item -> customer: is(Adult)
+customer -> item: true
+`,
+		},
 	}
 	runa(t, tcs)
 }
