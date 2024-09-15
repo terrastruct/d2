@@ -10,7 +10,7 @@
         "x": 12,
         "y": 12
       },
-      "width": 351,
+      "width": 371,
       "height": 679,
       "opacity": 1,
       "strokeDash": 0,
@@ -89,7 +89,7 @@
       "id": "Office chatter.bob",
       "type": "rectangle",
       "pos": {
-        "x": 251,
+        "x": 271,
         "y": 100
       },
       "width": 100,
@@ -173,7 +173,7 @@
         "x": 22,
         "y": 223
       },
-      "width": 331,
+      "width": 351,
       "height": 420,
       "opacity": 1,
       "strokeDash": 0,
@@ -215,7 +215,7 @@
         "x": 34,
         "y": 434
       },
-      "width": 307,
+      "width": 327,
       "height": 76,
       "opacity": 1,
       "strokeDash": 0,
@@ -257,7 +257,7 @@
         "x": 40,
         "y": 555
       },
-      "width": 295,
+      "width": 315,
       "height": 76,
       "opacity": 1,
       "strokeDash": 0,
@@ -296,7 +296,7 @@
       "id": "Office chatter.bob.a",
       "type": "rectangle",
       "pos": {
-        "x": 295,
+        "x": 315,
         "y": 599
       },
       "width": 12,
@@ -363,7 +363,7 @@
           "y": 277
         },
         {
-          "x": 301,
+          "x": 321,
           "y": 277
         }
       ],
@@ -397,7 +397,7 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 301,
+          "x": 321,
           "y": 367
         },
         {
@@ -439,7 +439,7 @@
           "y": 488
         },
         {
-          "x": 301,
+          "x": 321,
           "y": 488
         }
       ],
@@ -473,7 +473,7 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 295,
+          "x": 315,
           "y": 609
         },
         {
@@ -549,11 +549,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 301,
+          "x": 321,
           "y": 166
         },
         {
-          "x": 301,
+          "x": 321,
           "y": 679
         }
       ],

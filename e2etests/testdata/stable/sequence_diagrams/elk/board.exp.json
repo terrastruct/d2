@@ -7,7 +7,7 @@
       "id": "a_shape",
       "type": "oval",
       "pos": {
-        "x": 1447,
+        "x": 1477,
         "y": 12
       },
       "width": 131,
@@ -51,7 +51,7 @@
         "x": 12,
         "y": 275
       },
-      "width": 954,
+      "width": 974,
       "height": 1376,
       "opacity": 1,
       "strokeDash": 0,
@@ -453,7 +453,7 @@
       "id": "a_sequence.concept",
       "type": "rectangle",
       "pos": {
-        "x": 677,
+        "x": 697,
         "y": 363
       },
       "width": 100,
@@ -494,7 +494,7 @@
       "id": "a_sequence.concept.t",
       "type": "rectangle",
       "pos": {
-        "x": 721,
+        "x": 741,
         "y": 1019
       },
       "width": 12,
@@ -534,7 +534,7 @@
       "id": "a_sequence.itemOutcome",
       "type": "rectangle",
       "pos": {
-        "x": 817,
+        "x": 837,
         "y": 363
       },
       "width": 137,
@@ -575,7 +575,7 @@
       "id": "a_sequence.itemOutcome.t1",
       "type": "rectangle",
       "pos": {
-        "x": 879,
+        "x": 899,
         "y": 1199
       },
       "width": 12,
@@ -695,7 +695,7 @@
       "id": "a_sequence.itemOutcome.t2",
       "type": "rectangle",
       "pos": {
-        "x": 879,
+        "x": 899,
         "y": 1469
       },
       "width": 12,
@@ -735,7 +735,7 @@
       "id": "a_sequence.itemOutcome.t3",
       "type": "rectangle",
       "pos": {
-        "x": 879,
+        "x": 899,
         "y": 1559
       },
       "width": 12,
@@ -775,10 +775,10 @@
       "id": "another",
       "type": "rectangle",
       "pos": {
-        "x": 986,
+        "x": 1006,
         "y": 228
       },
-      "width": 1054,
+      "width": 1074,
       "height": 1471,
       "opacity": 1,
       "strokeDash": 0,
@@ -816,10 +816,10 @@
       "id": "another.sequence",
       "type": "sequence_diagram",
       "pos": {
-        "x": 1036,
+        "x": 1056,
         "y": 278
       },
-      "width": 954,
+      "width": 974,
       "height": 1371,
       "opacity": 1,
       "strokeDash": 0,
@@ -857,7 +857,7 @@
       "id": "another.sequence.scorer",
       "type": "rectangle",
       "pos": {
-        "x": 1048,
+        "x": 1068,
         "y": 361
       },
       "width": 100,
@@ -898,7 +898,7 @@
       "id": "another.sequence.scorer.t",
       "type": "rectangle",
       "pos": {
-        "x": 1092,
+        "x": 1112,
         "y": 497
       },
       "width": 12,
@@ -938,7 +938,7 @@
       "id": "another.sequence.itemResponse",
       "type": "rectangle",
       "pos": {
-        "x": 1188,
+        "x": 1208,
         "y": 361
       },
       "width": 140,
@@ -979,7 +979,7 @@
       "id": "another.sequence.itemResponse.t",
       "type": "rectangle",
       "pos": {
-        "x": 1252,
+        "x": 1272,
         "y": 497
       },
       "width": 12,
@@ -1019,7 +1019,7 @@
       "id": "another.sequence.item",
       "type": "rectangle",
       "pos": {
-        "x": 1358,
+        "x": 1378,
         "y": 361
       },
       "width": 100,
@@ -1060,7 +1060,7 @@
       "id": "another.sequence.item.t1",
       "type": "rectangle",
       "pos": {
-        "x": 1402,
+        "x": 1422,
         "y": 677
       },
       "width": 12,
@@ -1100,7 +1100,7 @@
       "id": "another.sequence.essayRubric",
       "type": "rectangle",
       "pos": {
-        "x": 1498,
+        "x": 1518,
         "y": 361
       },
       "width": 126,
@@ -1141,7 +1141,7 @@
       "id": "another.sequence.essayRubric.t",
       "type": "rectangle",
       "pos": {
-        "x": 1555,
+        "x": 1575,
         "y": 857
       },
       "width": 12,
@@ -1181,7 +1181,7 @@
       "id": "another.sequence.essayRubric.t.c",
       "type": "rectangle",
       "pos": {
-        "x": 1551,
+        "x": 1571,
         "y": 937
       },
       "width": 20,
@@ -1221,7 +1221,7 @@
       "id": "another.sequence.concept",
       "type": "rectangle",
       "pos": {
-        "x": 1701,
+        "x": 1741,
         "y": 361
       },
       "width": 100,
@@ -1262,7 +1262,7 @@
       "id": "another.sequence.concept.t",
       "type": "rectangle",
       "pos": {
-        "x": 1745,
+        "x": 1785,
         "y": 1017
       },
       "width": 12,
@@ -1302,7 +1302,7 @@
       "id": "another.sequence.itemOutcome",
       "type": "rectangle",
       "pos": {
-        "x": 1841,
+        "x": 1881,
         "y": 361
       },
       "width": 137,
@@ -1343,7 +1343,7 @@
       "id": "another.sequence.itemOutcome.t1",
       "type": "rectangle",
       "pos": {
-        "x": 1903,
+        "x": 1943,
         "y": 1197
       },
       "width": 12,
@@ -1383,7 +1383,7 @@
       "id": "another.sequence.item.t2",
       "type": "rectangle",
       "pos": {
-        "x": 1402,
+        "x": 1422,
         "y": 1287
       },
       "width": 12,
@@ -1423,7 +1423,7 @@
       "id": "another.sequence.item.t3",
       "type": "rectangle",
       "pos": {
-        "x": 1402,
+        "x": 1422,
         "y": 1377
       },
       "width": 12,
@@ -1463,7 +1463,7 @@
       "id": "another.sequence.itemOutcome.t2",
       "type": "rectangle",
       "pos": {
-        "x": 1903,
+        "x": 1943,
         "y": 1467
       },
       "width": 12,
@@ -1503,7 +1503,7 @@
       "id": "another.sequence.itemOutcome.t3",
       "type": "rectangle",
       "pos": {
-        "x": 1903,
+        "x": 1943,
         "y": 1557
       },
       "width": 12,
@@ -1543,7 +1543,7 @@
       "id": "sequence",
       "type": "rectangle",
       "pos": {
-        "x": 433,
+        "x": 443,
         "y": 1789
       },
       "width": 112,
@@ -1584,7 +1584,7 @@
       "id": "finally",
       "type": "queue",
       "pos": {
-        "x": 1274,
+        "x": 1309,
         "y": 1789
       },
       "width": 1034,
@@ -1625,7 +1625,7 @@
       "id": "finally.sequence",
       "type": "sequence_diagram",
       "pos": {
-        "x": 1324,
+        "x": 1359,
         "y": 1839
       },
       "width": 934,
@@ -1666,7 +1666,7 @@
       "id": "finally.sequence.scorer",
       "type": "rectangle",
       "pos": {
-        "x": 1336,
+        "x": 1371,
         "y": 1922
       },
       "width": 100,
@@ -1707,7 +1707,7 @@
       "id": "finally.sequence.concept",
       "type": "rectangle",
       "pos": {
-        "x": 1486,
+        "x": 1521,
         "y": 1922
       },
       "width": 100,
@@ -1748,7 +1748,7 @@
       "id": "finally.sequence.essayRubric",
       "type": "rectangle",
       "pos": {
-        "x": 1626,
+        "x": 1661,
         "y": 1922
       },
       "width": 126,
@@ -1789,7 +1789,7 @@
       "id": "finally.sequence.item",
       "type": "rectangle",
       "pos": {
-        "x": 1789,
+        "x": 1824,
         "y": 1922
       },
       "width": 100,
@@ -1830,7 +1830,7 @@
       "id": "finally.sequence.itemOutcome",
       "type": "rectangle",
       "pos": {
-        "x": 1929,
+        "x": 1964,
         "y": 1922
       },
       "width": 137,
@@ -1871,7 +1871,7 @@
       "id": "finally.sequence.itemResponse",
       "type": "rectangle",
       "pos": {
-        "x": 2106,
+        "x": 2141,
         "y": 1922
       },
       "width": 140,
@@ -1912,7 +1912,7 @@
       "id": "finally.sequence.itemResponse.a",
       "type": "rectangle",
       "pos": {
-        "x": 2170,
+        "x": 2205,
         "y": 2048
       },
       "width": 12,
@@ -1952,7 +1952,7 @@
       "id": "finally.sequence.item.a",
       "type": "rectangle",
       "pos": {
-        "x": 1833,
+        "x": 1868,
         "y": 2038
       },
       "width": 12,
@@ -1992,7 +1992,7 @@
       "id": "finally.sequence.item.a.b",
       "type": "rectangle",
       "pos": {
-        "x": 1829,
+        "x": 1864,
         "y": 2048
       },
       "width": 20,
@@ -2032,7 +2032,7 @@
       "id": "finally.sequence.essayRubric.a",
       "type": "rectangle",
       "pos": {
-        "x": 1683,
+        "x": 1718,
         "y": 2098
       },
       "width": 12,
@@ -2072,7 +2072,7 @@
       "id": "finally.sequence.essayRubric.a.b",
       "type": "rectangle",
       "pos": {
-        "x": 1679,
+        "x": 1714,
         "y": 2108
       },
       "width": 20,
@@ -2112,7 +2112,7 @@
       "id": "finally.sequence.essayRubric.a.b.c",
       "type": "rectangle",
       "pos": {
-        "x": 1675,
+        "x": 1710,
         "y": 2118
       },
       "width": 28,
@@ -2152,7 +2152,7 @@
       "id": "finally.sequence.concept.a",
       "type": "rectangle",
       "pos": {
-        "x": 1530,
+        "x": 1565,
         "y": 2158
       },
       "width": 12,
@@ -2192,7 +2192,7 @@
       "id": "finally.sequence.concept.a.b",
       "type": "rectangle",
       "pos": {
-        "x": 1526,
+        "x": 1561,
         "y": 2168
       },
       "width": 20,
@@ -2232,7 +2232,7 @@
       "id": "finally.sequence.concept.a.b.c",
       "type": "rectangle",
       "pos": {
-        "x": 1522,
+        "x": 1557,
         "y": 2178
       },
       "width": 28,
@@ -2272,7 +2272,7 @@
       "id": "finally.sequence.concept.a.b.c.d",
       "type": "rectangle",
       "pos": {
-        "x": 1518,
+        "x": 1553,
         "y": 2188
       },
       "width": 36,
@@ -2312,7 +2312,7 @@
       "id": "finally.sequence.itemOutcome.a",
       "type": "rectangle",
       "pos": {
-        "x": 1992,
+        "x": 2027,
         "y": 2288
       },
       "width": 12,
@@ -2352,7 +2352,7 @@
       "id": "finally.sequence.itemOutcome.a.b",
       "type": "rectangle",
       "pos": {
-        "x": 1988,
+        "x": 2023,
         "y": 2298
       },
       "width": 20,
@@ -2392,7 +2392,7 @@
       "id": "finally.sequence.itemOutcome.a.b.c",
       "type": "rectangle",
       "pos": {
-        "x": 1984,
+        "x": 2019,
         "y": 2308
       },
       "width": 28,
@@ -2432,7 +2432,7 @@
       "id": "finally.sequence.itemOutcome.a.b.c.d",
       "type": "rectangle",
       "pos": {
-        "x": 1980,
+        "x": 2015,
         "y": 2318
       },
       "width": 36,
@@ -2472,7 +2472,7 @@
       "id": "finally.sequence.itemOutcome.a.b.c.d.e",
       "type": "rectangle",
       "pos": {
-        "x": 1976,
+        "x": 2011,
         "y": 2328
       },
       "width": 44,
@@ -2512,7 +2512,7 @@
       "id": "finally.sequence.scorer.abc",
       "type": "rectangle",
       "pos": {
-        "x": 1380,
+        "x": 1415,
         "y": 2398
       },
       "width": 12,
@@ -2552,7 +2552,7 @@
       "id": "finally.sequence.itemResponse.c",
       "type": "rectangle",
       "pos": {
-        "x": 2170,
+        "x": 2205,
         "y": 2538
       },
       "width": 12,
@@ -2847,7 +2847,7 @@
           "y": 1029.5
         },
         {
-          "x": 721,
+          "x": 741,
           "y": 1029.5
         }
       ],
@@ -2923,7 +2923,7 @@
           "y": 1209.5
         },
         {
-          "x": 879.5,
+          "x": 899.5,
           "y": 1209.5
         }
       ],
@@ -3037,7 +3037,7 @@
           "y": 1479.5
         },
         {
-          "x": 879.5,
+          "x": 899.5,
           "y": 1479.5
         }
       ],
@@ -3075,7 +3075,7 @@
           "y": 1569.5
         },
         {
-          "x": 879.5,
+          "x": 899.5,
           "y": 1569.5
         }
       ],
@@ -3109,11 +3109,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1104,
+          "x": 1124,
           "y": 507
         },
         {
-          "x": 1252,
+          "x": 1272,
           "y": 507
         }
       ],
@@ -3147,11 +3147,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1104,
+          "x": 1124,
           "y": 597
         },
         {
-          "x": 1252,
+          "x": 1272,
           "y": 597
         }
       ],
@@ -3185,11 +3185,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1104,
+          "x": 1124,
           "y": 687
         },
         {
-          "x": 1402,
+          "x": 1422,
           "y": 687
         }
       ],
@@ -3223,11 +3223,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1104,
+          "x": 1124,
           "y": 777
         },
         {
-          "x": 1402,
+          "x": 1422,
           "y": 777
         }
       ],
@@ -3261,11 +3261,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1104,
+          "x": 1124,
           "y": 867
         },
         {
-          "x": 1555,
+          "x": 1575,
           "y": 867
         }
       ],
@@ -3299,11 +3299,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1258,
+          "x": 1278,
           "y": 947
         },
         {
-          "x": 1551,
+          "x": 1571,
           "y": 947
         }
       ],
@@ -3337,11 +3337,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1571,
+          "x": 1591,
           "y": 1027
         },
         {
-          "x": 1745,
+          "x": 1785,
           "y": 1027
         }
       ],
@@ -3375,11 +3375,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1098,
+          "x": 1118,
           "y": 1117
         },
         {
-          "x": 1555,
+          "x": 1575,
           "y": 1117
         }
       ],
@@ -3413,11 +3413,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1104,
+          "x": 1124,
           "y": 1207
         },
         {
-          "x": 1903.5,
+          "x": 1943.5,
           "y": 1207
         }
       ],
@@ -3451,11 +3451,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1104,
+          "x": 1124,
           "y": 1297
         },
         {
-          "x": 1402,
+          "x": 1422,
           "y": 1297
         }
       ],
@@ -3489,11 +3489,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1104,
+          "x": 1124,
           "y": 1387
         },
         {
-          "x": 1402,
+          "x": 1422,
           "y": 1387
         }
       ],
@@ -3527,11 +3527,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1104,
+          "x": 1124,
           "y": 1477
         },
         {
-          "x": 1903.5,
+          "x": 1943.5,
           "y": 1477
         }
       ],
@@ -3565,11 +3565,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1104,
+          "x": 1124,
           "y": 1567
         },
         {
-          "x": 1903.5,
+          "x": 1943.5,
           "y": 1567
         }
       ],
@@ -3603,19 +3603,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1480,
+          "x": 1510,
           "y": 134
         },
         {
-          "x": 1480.25,
+          "x": 1510.25,
           "y": 183
         },
         {
-          "x": 489,
+          "x": 499,
           "y": 183
         },
         {
-          "x": 489,
+          "x": 499,
           "y": 276
         }
       ],
@@ -3649,11 +3649,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1513,
+          "x": 1543,
           "y": 143
         },
         {
-          "x": 1513,
+          "x": 1543,
           "y": 278
         }
       ],
@@ -3687,11 +3687,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 489,
+          "x": 499,
           "y": 1651
         },
         {
-          "x": 489,
+          "x": 499,
           "y": 1789
         }
       ],
@@ -3725,11 +3725,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1791.5,
+          "x": 1826.5,
           "y": 1649
         },
         {
-          "x": 1791.5,
+          "x": 1826.5,
           "y": 1839
         }
       ],
@@ -3763,19 +3763,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1546,
+          "x": 1576,
           "y": 134
         },
         {
-          "x": 1545.75,
+          "x": 1575.75,
           "y": 183
         },
         {
-          "x": 2080,
+          "x": 2120,
           "y": 183
         },
         {
-          "x": 2080,
+          "x": 2120,
           "y": 1789
         }
       ],
@@ -3809,11 +3809,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 2170.5,
+          "x": 2205.5,
           "y": 2058
         },
         {
-          "x": 1849.5,
+          "x": 1884.5,
           "y": 2058
         }
       ],
@@ -3847,11 +3847,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1829.5,
+          "x": 1864.5,
           "y": 2128
         },
         {
-          "x": 1703.5,
+          "x": 1738.5,
           "y": 2128
         }
       ],
@@ -3885,11 +3885,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1675.5,
+          "x": 1710.5,
           "y": 2198
         },
         {
-          "x": 1554.5,
+          "x": 1589.5,
           "y": 2198
         }
       ],
@@ -3923,11 +3923,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1833.5,
+          "x": 1868.5,
           "y": 2268
         },
         {
-          "x": 1699.5,
+          "x": 1734.5,
           "y": 2268
         }
       ],
@@ -3961,11 +3961,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1554.5,
+          "x": 1589.5,
           "y": 2338
         },
         {
-          "x": 1976,
+          "x": 2011,
           "y": 2338
         }
       ],
@@ -3999,11 +3999,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1392.5,
+          "x": 1427.5,
           "y": 2408
         },
         {
-          "x": 1833.5,
+          "x": 1868.5,
           "y": 2408
         }
       ],
@@ -4037,11 +4037,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1976,
+          "x": 2011,
           "y": 2478
         },
         {
-          "x": 1386.5,
+          "x": 1421.5,
           "y": 2478
         }
       ],
@@ -4075,11 +4075,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1386.5,
+          "x": 1421.5,
           "y": 2548
         },
         {
-          "x": 2170.5,
+          "x": 2205.5,
           "y": 2548
         }
       ],
@@ -4265,11 +4265,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 727,
+          "x": 747,
           "y": 429.5
         },
         {
-          "x": 727,
+          "x": 747,
           "y": 1639.5
         }
       ],
@@ -4303,11 +4303,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 885.5,
+          "x": 905.5,
           "y": 429.5
         },
         {
-          "x": 885.5,
+          "x": 905.5,
           "y": 1639.5
         }
       ],
@@ -4341,11 +4341,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1098,
+          "x": 1118,
           "y": 427
         },
         {
-          "x": 1098,
+          "x": 1118,
           "y": 1637
         }
       ],
@@ -4379,11 +4379,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1258,
+          "x": 1278,
           "y": 427
         },
         {
-          "x": 1258,
+          "x": 1278,
           "y": 1637
         }
       ],
@@ -4417,11 +4417,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1408,
+          "x": 1428,
           "y": 427
         },
         {
-          "x": 1408,
+          "x": 1428,
           "y": 1637
         }
       ],
@@ -4455,11 +4455,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1561,
+          "x": 1581,
           "y": 427
         },
         {
-          "x": 1561,
+          "x": 1581,
           "y": 1637
         }
       ],
@@ -4493,11 +4493,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1751,
+          "x": 1791,
           "y": 427
         },
         {
-          "x": 1751,
+          "x": 1791,
           "y": 1637
         }
       ],
@@ -4531,11 +4531,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1909.5,
+          "x": 1949.5,
           "y": 427
         },
         {
-          "x": 1909.5,
+          "x": 1949.5,
           "y": 1637
         }
       ],
@@ -4569,11 +4569,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1386.5,
+          "x": 1421.5,
           "y": 1988
         },
         {
-          "x": 1386.5,
+          "x": 1421.5,
           "y": 2618
         }
       ],
@@ -4607,11 +4607,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1536.5,
+          "x": 1571.5,
           "y": 1988
         },
         {
-          "x": 1536.5,
+          "x": 1571.5,
           "y": 2618
         }
       ],
@@ -4645,11 +4645,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1689.5,
+          "x": 1724.5,
           "y": 1988
         },
         {
-          "x": 1689.5,
+          "x": 1724.5,
           "y": 2618
         }
       ],
@@ -4683,11 +4683,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1839.5,
+          "x": 1874.5,
           "y": 1988
         },
         {
-          "x": 1839.5,
+          "x": 1874.5,
           "y": 2618
         }
       ],
@@ -4721,11 +4721,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1998,
+          "x": 2033,
           "y": 1988
         },
         {
-          "x": 1998,
+          "x": 2033,
           "y": 2618
         }
       ],
@@ -4759,11 +4759,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 2176.5,
+          "x": 2211.5,
           "y": 1988
         },
         {
-          "x": 2176.5,
+          "x": 2211.5,
           "y": 2618
         }
       ],

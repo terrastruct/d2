@@ -184,7 +184,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) (*s
 		if rankDiff != 0 {
 			distributedLabelWidth := float64(message.LabelDimensions.Width) / rankDiff
 			for rank := go2.IntMin(sd.objectRank[message.Src], sd.objectRank[message.Dst]); rank <= go2.IntMax(sd.objectRank[message.Src], sd.objectRank[message.Dst])-1; rank++ {
-				sd.actorXStep[rank] = math.Max(sd.actorXStep[rank], distributedLabelWidth+HORIZONTAL_PAD)
+				sd.actorXStep[rank] = math.Max(sd.actorXStep[rank], distributedLabelWidth+LABEL_HORIZONTAL_PAD)
 			}
 		} else {
 			// self edge
