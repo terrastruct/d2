@@ -4,7 +4,6 @@ import (
 	"strings"
 
 	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2graph"
 )
 
 func (m *Map) multiGlob(pattern []string) ([]*Field, bool) {
@@ -22,11 +21,11 @@ func (m *Map) multiGlob(pattern []string) ([]*Field, bool) {
 
 func (m *Map) _doubleGlob(fa *[]*Field) {
 	for _, f := range m.Fields {
-		if _, ok := d2graph.ReservedKeywords[f.Name]; ok {
+		if _, ok := d2ast.ReservedKeywords[f.Name]; ok {
 			if f.Name == "layers" {
 				continue
 			}
-			if _, ok := d2graph.BoardKeywords[f.Name]; !ok {
+			if _, ok := d2ast.BoardKeywords[f.Name]; !ok {
 				continue
 			}
 			// We don't ever want to append layers, scenarios or steps directly.
@@ -46,8 +45,8 @@ func (m *Map) _doubleGlob(fa *[]*Field) {
 
 func (m *Map) _tripleGlob(fa *[]*Field) {
 	for _, f := range m.Fields {
-		if _, ok := d2graph.ReservedKeywords[f.Name]; ok {
-			if _, ok := d2graph.BoardKeywords[f.Name]; !ok {
+		if _, ok := d2ast.ReservedKeywords[f.Name]; ok {
+			if _, ok := d2ast.BoardKeywords[f.Name]; !ok {
 				continue
 			}
 			// We don't ever want to append layers, scenarios or steps directly.
@@ -69,7 +68,7 @@ func matchPattern(s string, pattern []string) bool {
 	if len(pattern) == 0 {
 		return true
 	}
-	if _, ok := d2graph.ReservedKeywords[s]; ok {
+	if _, ok := d2ast.ReservedKeywords[s]; ok {
 		return false
 	}
 

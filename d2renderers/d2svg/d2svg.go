@@ -20,6 +20,7 @@ import (
 	"github.com/alecthomas/chroma/v2/lexers"
 	"github.com/alecthomas/chroma/v2/styles"
 
+	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2latex"
@@ -1975,7 +1976,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 
 	bufStr := buf.String()
 	patternDefs := ""
-	for _, pattern := range d2graph.FillPatterns {
+	for _, pattern := range d2ast.FillPatterns {
 		if strings.Contains(bufStr, fmt.Sprintf("%s-overlay", pattern)) || diagram.Root.FillPattern == pattern {
 			if patternDefs == "" {
 				fmt.Fprint(upperBuf, `<style type="text/css"><![CDATA[`)

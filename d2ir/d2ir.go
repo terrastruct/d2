@@ -11,7 +11,6 @@ import (
 
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2format"
-	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2target"
 )
@@ -624,7 +623,7 @@ func (m *Map) IsContainer() bool {
 		return false
 	}
 	for _, f := range m.Fields {
-		_, isReserved := d2graph.ReservedKeywords[f.Name]
+		_, isReserved := d2ast.ReservedKeywords[f.Name]
 		if !isReserved {
 			return true
 		}
@@ -815,9 +814,9 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 
 	head := kp.Path[i].Unbox().ScalarString()
 
-	if _, ok := d2graph.ReservedKeywords[strings.ToLower(head)]; ok {
+	if _, ok := d2ast.ReservedKeywords[strings.ToLower(head)]; ok {
 		head = strings.ToLower(head)
-		if _, ok := d2graph.CompositeReservedKeywords[head]; !ok && i < len(kp.Path)-1 {
+		if _, ok := d2ast.CompositeReservedKeywords[head]; !ok && i < len(kp.Path)-1 {
 			return d2parser.Errorf(kp.Path[i].Unbox(), fmt.Sprintf(`"%s" must be the last part of the key`, head))
 		}
 	}
@@ -872,7 +871,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 		return nil
 	}
 	shape := ParentShape(m)
-	if _, ok := d2graph.ReservedKeywords[strings.ToLower(head)]; !ok && len(c.globRefContextStack) > 0 {
+	if _, ok := d2ast.ReservedKeywords[strings.ToLower(head)]; !ok && len(c.globRefContextStack) > 0 {
 		if shape == d2target.ShapeClass || shape == d2target.ShapeSQLTable {
 			return nil
 		}
@@ -971,7 +970,7 @@ func (m *Map) DeleteField(ida ...string) *Field {
 			// If a field was deleted from a keyword-holder keyword and that holder is empty,
 			// then that holder becomes meaningless and should be deleted too
 			parent := ParentField(f)
-			for keywordHolder := range d2graph.ReservedKeywordHolders {
+			for keywordHolder := range d2ast.ReservedKeywordHolders {
 				if parent != nil && parent.Name == keywordHolder && len(parent.Map().Fields) == 0 {
 					keywordHolderParentMap := ParentMap(parent)
 					for i, f := range keywordHolderParentMap.Fields {
@@ -1527,7 +1526,7 @@ func countUnderscores(p []string) int {
 
 func findBoardKeyword(ida ...string) int {
 	for i := range ida {
-		if _, ok := d2graph.BoardKeywords[ida[i]]; ok {
+		if _, ok := d2ast.BoardKeywords[ida[i]]; ok {
 			return i
 		}
 	}
@@ -1536,10 +1535,10 @@ func findBoardKeyword(ida ...string) int {
 
 func findProhibitedEdgeKeyword(ida ...string) int {
 	for i := range ida {
-		if _, ok := d2graph.SimpleReservedKeywords[ida[i]]; ok {
+		if _, ok := d2ast.SimpleReservedKeywords[ida[i]]; ok {
 			return i
 		}
-		if _, ok := d2graph.ReservedKeywordHolders[ida[i]]; ok {
+		if _, ok := d2ast.ReservedKeywordHolders[ida[i]]; ok {
 			return i
 		}
 	}
