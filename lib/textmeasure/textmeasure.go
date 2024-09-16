@@ -6,7 +6,6 @@ package textmeasure
 import (
 	"math"
 	"strings"
-	"unicode"
 	"unicode/utf8"
 
 	"github.com/golang/freetype/truetype"
@@ -20,13 +19,23 @@ const TAB_SIZE = 4
 const SIZELESS_FONT_SIZE = 0
 const CODE_LINE_HEIGHT = 1.3
 
-// ASCII is a set of all ASCII runes. These runes are codepoints from 32 to 127 inclusive.
-var ASCII []rune
+// Runes encompasses ASCII, Latin-1, and geometric shapes like black square
+var Runes []rune
 
 func init() {
-	ASCII = make([]rune, unicode.MaxASCII-32)
-	for i := range ASCII {
-		ASCII[i] = rune(32 + i)
+	// ASCII range (U+0000 to U+007F)
+	for r := rune(0x0000); r <= rune(0x007F); r++ {
+		Runes = append(Runes, r)
+	}
+
+	// Latin-1 Supplement (U+0080 to U+00FF)
+	for r := rune(0x0080); r <= rune(0x00FF); r++ {
+		Runes = append(Runes, r)
+	}
+
+	// Geometric Shapes (U+25A0 to U+25FF)
+	for r := rune(0x25A0); r <= rune(0x25FF); r++ {
+		Runes = append(Runes, r)
 	}
 }
 
@@ -167,7 +176,7 @@ func (r *Ruler) addFontSize(font d2fonts.Font) {
 	face := truetype.NewFace(r.ttfs[sizeless], &truetype.Options{
 		Size: float64(font.Size),
 	})
-	atlas := NewAtlas(face, ASCII)
+	atlas := NewAtlas(face, Runes)
 	r.atlases[font] = atlas
 	r.lineHeights[font] = atlas.lineHeight
 	r.tabWidths[font] = atlas.glyph(' ').advance * TAB_SIZE
