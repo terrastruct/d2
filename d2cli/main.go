@@ -1048,10 +1048,14 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 		var err error
 
 		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
-			Pad:    opts.Pad,
-			Sketch: opts.Sketch,
-			Center: opts.Center,
-			Scale:  scale,
+			Pad:                opts.Pad,
+			Sketch:             opts.Sketch,
+			Center:             opts.Center,
+			Scale:              scale,
+			ThemeID:            opts.ThemeID,
+			DarkThemeID:        opts.DarkThemeID,
+			ThemeOverrides:     opts.ThemeOverrides,
+			DarkThemeOverrides: opts.DarkThemeOverrides,
 		})
 		if err != nil {
 			return nil, err
