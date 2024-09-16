@@ -4,6 +4,7 @@
 - Composition: Imported boards can use underscores to reference boards beyond its own
   scope (e.g. to a sibling board at the scope its imported to) [#2075](https://github.com/terrastruct/d2/pull/2075)
 - Autoformat: Reserved keywords are formatted to be lowercase [#2098](https://github.com/terrastruct/d2/pull/2098)
+- Misc: characters in the unicode range for Latin-1 and geometric shapes are measured more accurately [#2100](https://github.com/terrastruct/d2/pull/2100)
 
 #### Improvements 🧹
 

@@ -130,10 +130,10 @@
       "id": "d",
       "type": "rectangle",
       "pos": {
-        "x": 29,
+        "x": 32,
         "y": 498
       },
-      "width": 244,
+      "width": 238,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -161,7 +161,7 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 199,
+      "labelWidth": 193,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -294,10 +294,10 @@
       "id": "h",
       "type": "rectangle",
       "pos": {
-        "x": 368,
+        "x": 370,
         "y": 498
       },
-      "width": 173,
+      "width": 170,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -325,7 +325,7 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 128,
+      "labelWidth": 125,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -338,7 +338,7 @@
         "x": 633,
         "y": 0
       },
-      "width": 282,
+      "width": 273,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -366,7 +366,7 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 237,
+      "labelWidth": 228,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -376,7 +376,7 @@
       "id": "j",
       "type": "rectangle",
       "pos": {
-        "x": 662,
+        "x": 658,
         "y": 166
       },
       "width": 224,
@@ -417,7 +417,7 @@
       "id": "k",
       "type": "rectangle",
       "pos": {
-        "x": 642,
+        "x": 637,
         "y": 332
       },
       "width": 265,
@@ -458,7 +458,7 @@
       "id": "l",
       "type": "rectangle",
       "pos": {
-        "x": 675,
+        "x": 670,
         "y": 498
       },
       "width": 199,
@@ -499,7 +499,7 @@
       "id": "m",
       "type": "rectangle",
       "pos": {
-        "x": 975,
+        "x": 966,
         "y": 0
       },
       "width": 255,
@@ -540,7 +540,7 @@
       "id": "n",
       "type": "rectangle",
       "pos": {
-        "x": 996,
+        "x": 987,
         "y": 166
       },
       "width": 213,
@@ -581,7 +581,7 @@
       "id": "o",
       "type": "rectangle",
       "pos": {
-        "x": 1024,
+        "x": 1015,
         "y": 332
       },
       "width": 158,
@@ -622,7 +622,7 @@
       "id": "p",
       "type": "rectangle",
       "pos": {
-        "x": 984,
+        "x": 975,
         "y": 498
       },
       "width": 238,
@@ -663,7 +663,7 @@
       "id": "\"မင်္ဂလာပါ (mingalaba) - Burmese\"",
       "type": "rectangle",
       "pos": {
-        "x": 1290,
+        "x": 1281,
         "y": 0
       },
       "width": 307,
@@ -704,7 +704,7 @@
       "id": "\"сайн уу (sain uu) - Mongolian\"",
       "type": "rectangle",
       "pos": {
-        "x": 1657,
+        "x": 1648,
         "y": 0
       },
       "width": 264,
@@ -745,7 +745,7 @@
       "id": "\"ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ (sat sri akal) - Punjabi\"",
       "type": "rectangle",
       "pos": {
-        "x": 1981,
+        "x": 1972,
         "y": 0
       },
       "width": 328,
@@ -786,10 +786,10 @@
       "id": "\"你吃了吗 (ní chī le ma) - Mandarin Chinese\"",
       "type": "rectangle",
       "pos": {
-        "x": 2369,
+        "x": 2360,
         "y": 0
       },
-      "width": 370,
+      "width": 363,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -817,7 +817,7 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 325,
+      "labelWidth": 318,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -827,7 +827,7 @@
       "id": "\"饭 (fan) - Zhuang\"",
       "type": "rectangle",
       "pos": {
-        "x": 2799,
+        "x": 2783,
         "y": 0
       },
       "width": 167,
@@ -868,7 +868,7 @@
       "id": "مەن سىزنى ياخشى ئۈمىد ق",
       "type": "rectangle",
       "pos": {
-        "x": 3026,
+        "x": 3010,
         "y": 0
       },
       "width": 266,
@@ -1214,19 +1214,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 774,
+          "x": 769.5,
           "y": 66
         },
         {
-          "x": 774,
+          "x": 769.5,
           "y": 106
         },
         {
-          "x": 774,
+          "x": 769.5,
           "y": 126
         },
         {
-          "x": 774,
+          "x": 769.5,
           "y": 166
         }
       ],
@@ -1261,19 +1261,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 774,
+          "x": 769.5,
           "y": 232
         },
         {
-          "x": 774,
+          "x": 769.5,
           "y": 272
         },
         {
-          "x": 774,
+          "x": 769.5,
           "y": 292
         },
         {
-          "x": 774,
+          "x": 769.5,
           "y": 332
         }
       ],
@@ -1308,19 +1308,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 774,
+          "x": 769.5,
           "y": 398
         },
         {
-          "x": 774,
+          "x": 769.5,
           "y": 438
         },
         {
-          "x": 774,
+          "x": 769.5,
           "y": 458
         },
         {
-          "x": 774,
+          "x": 769.5,
           "y": 498
         }
       ],
@@ -1355,19 +1355,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1102.5,
+          "x": 1093.5,
           "y": 66
         },
         {
-          "x": 1102.5,
+          "x": 1093.5,
           "y": 106
         },
         {
-          "x": 1102.5,
+          "x": 1093.5,
           "y": 126
         },
         {
-          "x": 1102.5,
+          "x": 1093.5,
           "y": 166
         }
       ],
@@ -1402,19 +1402,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1102.5,
+          "x": 1093.5,
           "y": 232
         },
         {
-          "x": 1102.5,
+          "x": 1093.5,
           "y": 272
         },
         {
-          "x": 1102.5,
+          "x": 1093.5,
           "y": 292
         },
         {
-          "x": 1102.5,
+          "x": 1093.5,
           "y": 332
         }
       ],
@@ -1449,19 +1449,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1102.5,
+          "x": 1093.5,
           "y": 398
         },
         {
-          "x": 1102.5,
+          "x": 1093.5,
           "y": 438
         },
         {
-          "x": 1102.5,
+          "x": 1093.5,
           "y": 458
         },
         {
-          "x": 1102.5,
+          "x": 1093.5,
           "y": 498
         }
       ],

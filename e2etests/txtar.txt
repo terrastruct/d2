@@ -402,3 +402,56 @@ customer -> item: true
 
 alice -> bob: What does it mean\nto be well-adjusted?
 bob -> alice: The ability to play bridge or\ngolf as if they were games.
+
+-- extended-ascii --
+1: |md
+  ÇéþüðæØÅßñò
+|
+2: |md
+  òØõùßÍÿåÆ
+|
+3: |md
+  çÆÐÞ©ßþúí
+|
+4: |md
+  ÉáøÿÑö
+|
+1 -> 2 -> 3 -> 4 -> 1
+
+-- unicode --
+■: |md
+  ■ foo bar
+|
+□: |md
+  □ foo bar
+|
+●: |md
+  ● foo bar
+|
+○: |md
+  ○ foo bar
+|
+◆: |md
+  ◆ foo bar
+|
+◇: |md
+  ◇ foo bar
+|
+▲: |md
+  ▲ foo bar
+|
+△: |md
+  △ foo bar
+|
+▼: |md
+  ▼ foo bar
+|
+▽: |md
+  ▽ foo bar
+|
+※: |md
+  ※ foo bar
+|
+◎: |md
+  ◎ foo bar
+|
