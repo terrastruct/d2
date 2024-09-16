@@ -3,6 +3,7 @@
 - Vars: Variable definitions can now refer to other variables in the current scope [#2052](https://github.com/terrastruct/d2/pull/2052)
 - Composition: Imported boards can use underscores to reference boards beyond its own
   scope (e.g. to a sibling board at the scope its imported to) [#2075](https://github.com/terrastruct/d2/pull/2075)
+- Autoformat: Reserved keywords are formatted to be lowercase [#2098](https://github.com/terrastruct/d2/pull/2098)
 
 #### Improvements 🧹
 

@@ -135,6 +135,12 @@ func (p *printer) interpolationBoxes(boxes []d2ast.InterpolationBox, isDoubleStr
 			}
 			b.StringRaw = &s
 		}
+		if !isDoubleString {
+			if _, ok := d2ast.ReservedKeywords[strings.ToLower(*b.StringRaw)]; ok {
+				s := strings.ToLower(*b.StringRaw)
+				b.StringRaw = &s
+			}
+		}
 		p.sb.WriteString(*b.StringRaw)
 	}
 }

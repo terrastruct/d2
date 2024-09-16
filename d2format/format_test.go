@@ -27,7 +27,6 @@ x  ->  y
 			exp: `x -> y
 `,
 		},
-
 		{
 			name: "complex",
 			in: `
@@ -852,6 +851,35 @@ jeremy: {
 *: {
   !&shape: rectangle
   label: I'm not a rectangle
+}
+`,
+		},
+		{
+			name: "lowercase-reserved",
+			in: `jacob: {
+	SHAPE: circle
+}
+jeremy.SHAPE: rectangle
+alice.STYLE.fill: red
+bob.style.FILL: red
+carmen.STYLE.FILL: red
+coop: {
+  STYLE: {
+    FILL: blue
+  }
+}
+`,
+			exp: `jacob: {
+  shape: circle
+}
+jeremy.shape: rectangle
+alice.style.fill: red
+bob.style.fill: red
+carmen.style.fill: red
+coop: {
+  style: {
+    fill: blue
+  }
 }
 `,
 		},
