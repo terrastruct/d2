@@ -662,6 +662,43 @@ steps: {
 			},
 		},
 		{
+			name:   "pptx-theme-overrides",
+			skipCI: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `vars:{
+  d2-config: {
+    theme-overrides: {
+			# All red
+      N1:  "#ff0000"
+      B1:  "#ff0000"
+      B2:  "#ff0000"
+      AA2: "#ff0000"
+      N2:  "#ff0000"
+      N6:  "#ff0000"
+      B4:  "#ff0000"
+      B5:  "#ff0000"
+      B3:  "#ff0000"
+      N4:  "#ff0000"
+      N5:  "#ff0000"
+      AA4: "#ff0000"
+      AB4: "#ff0000"
+      B6:  "#ff0000"
+      N7:  "#ff0000"
+      AA5: "#ff0000"
+      AB5: "#ff0000"
+    }
+  }
+}
+a->z
+a.b.c.d
+`)
+				err := runTestMain(t, ctx, dir, env, "in.d2", "all_red.pptx")
+				assert.Success(t, err)
+				pptx := readFile(t, dir, "all_red.pptx")
+				testdataIgnoreDiff(t, ".pptx", pptx)
+			},
+		},
+		{
 			name:   "one-layer-gif",
 			skipCI: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
