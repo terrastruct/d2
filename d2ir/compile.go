@@ -945,6 +945,13 @@ func (c *compiler) extendLinks(m *Map, importF *Field, importDir string) {
 				continue
 			}
 			val := f.Primary().Value.ScalarString()
+
+			u, err := url.Parse(html.UnescapeString(val))
+			isRemote := err == nil && strings.HasPrefix(u.Scheme, "http")
+			if isRemote {
+				continue
+			}
+
 			link, err := d2parser.ParseKey(val)
 			if err != nil {
 				continue
