@@ -7,7 +7,7 @@
       "id": "a",
       "type": "rectangle",
       "pos": {
-        "x": 52,
+        "x": 12,
         "y": 12
       },
       "width": 53,
@@ -48,8 +48,8 @@
       "id": "b",
       "type": "rectangle",
       "pos": {
-        "x": 52,
-        "y": 239
+        "x": 12,
+        "y": 148
       },
       "width": 53,
       "height": 66,
@@ -89,8 +89,8 @@
       "id": "c",
       "type": "rectangle",
       "pos": {
-        "x": 52,
-        "y": 466
+        "x": 12,
+        "y": 375
       },
       "width": 53,
       "height": 66,
@@ -139,7 +139,7 @@
       "strokeWidth": 2,
       "stroke": "B1",
       "borderRadius": 10,
-      "label": "https://google.com/",
+      "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -147,19 +147,19 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 133,
-      "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
       "labelPercentage": 0,
       "link": "https://google.com/",
       "route": [
         {
-          "x": 78.5,
+          "x": 38.5,
           "y": 78
         },
         {
-          "x": 78.5,
-          "y": 239
+          "x": 38.5,
+          "y": 148
         }
       ],
       "animated": false,
@@ -193,12 +193,12 @@
       "link": "root.layers.d",
       "route": [
         {
-          "x": 78.5,
-          "y": 305
+          "x": 38.5,
+          "y": 214
         },
         {
-          "x": 78.5,
-          "y": 466
+          "x": 38.5,
+          "y": 375
         }
       ],
       "animated": false,

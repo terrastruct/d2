@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="v0.6.8-HEAD" preserveAspectRatio="xMinYMin meet" viewBox="0 0 130 383"><svg id="d2-svg" class="d2-4027458821" width="130" height="383" viewBox="-1 -1 130 383"><rect x="-1.000000" y="-1.000000" width="130.000000" height="383.000000" rx="0.000000" fill="#FFFFFF" class=" fill-N7" stroke-width="0" /><style type="text/css"><![CDATA[
 .d2-4027458821 .text-bold {
 	font-family: "d2-4027458821-font-bold";
@@ -8,6 +9,11 @@
 	font-family: "d2-4027458821-font-bold";
 =======
 <?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="v0.6.5-HEAD" preserveAspectRatio="xMinYMin meet" viewBox="0 0 130 383"><svg id="d2-svg" class="d2-1273604111" width="130" height="383" viewBox="-1 -1 130 383"><rect x="-1.000000" y="-1.000000" width="130.000000" height="383.000000" rx="0.000000" class=" fill-N7" stroke-width="0" /><style type="text/css"><![CDATA[
+||||||| parent of cb2f2823c (Fix changes)
+<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="v0.6.5-HEAD" preserveAspectRatio="xMinYMin meet" viewBox="0 0 130 383"><svg id="d2-svg" class="d2-1273604111" width="130" height="383" viewBox="-1 -1 130 383"><rect x="-1.000000" y="-1.000000" width="130.000000" height="383.000000" rx="0.000000" class=" fill-N7" stroke-width="0" /><style type="text/css"><![CDATA[
+=======
+<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="v0.6.6-HEAD" preserveAspectRatio="xMinYMin meet" viewBox="0 0 130 383"><svg id="d2-svg" class="d2-1273604111" width="130" height="383" viewBox="-1 -1 130 383"><rect x="-1.000000" y="-1.000000" width="130.000000" height="383.000000" rx="0.000000" class=" fill-N7" stroke-width="0" /><style type="text/css"><![CDATA[
+>>>>>>> cb2f2823c (Fix changes)
 .d2-1273604111 .text-bold {
 	font-family: "d2-1273604111-font-bold";
 >>>>>>> 33280fed5 (fixed e2e tests)

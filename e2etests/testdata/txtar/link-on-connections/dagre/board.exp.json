@@ -7,7 +7,7 @@
       "id": "a",
       "type": "rectangle",
       "pos": {
-        "x": 40,
+        "x": 0,
         "y": 0
       },
       "width": 53,
@@ -48,8 +48,8 @@
       "id": "b",
       "type": "rectangle",
       "pos": {
-        "x": 40,
-        "y": 187
+        "x": 0,
+        "y": 166
       },
       "width": 53,
       "height": 66,
@@ -89,8 +89,8 @@
       "id": "c",
       "type": "rectangle",
       "pos": {
-        "x": 40,
-        "y": 374
+        "x": 0,
+        "y": 353
       },
       "width": 53,
       "height": 66,
@@ -139,7 +139,7 @@
       "strokeWidth": 2,
       "stroke": "B1",
       "borderRadius": 10,
-      "label": "https://google.com/",
+      "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -147,27 +147,27 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 133,
-      "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
       "labelPercentage": 0,
       "link": "https://google.com/",
       "route": [
         {
-          "x": 66.5,
-          "y": 65.5
+          "x": 26.5,
+          "y": 66
         },
         {
-          "x": 66.5,
-          "y": 114.30000305175781
+          "x": 26.5,
+          "y": 106
         },
         {
-          "x": 66.5,
-          "y": 138.6999969482422
+          "x": 26.5,
+          "y": 126
         },
         {
-          "x": 66.5,
-          "y": 187.5
+          "x": 26.5,
+          "y": 166
         }
       ],
       "isCurve": true,
@@ -202,20 +202,20 @@
       "link": "root.layers.d",
       "route": [
         {
-          "x": 66.5,
-          "y": 252.5
+          "x": 26.5,
+          "y": 231.5
         },
         {
-          "x": 66.5,
-          "y": 301.29998779296875
+          "x": 26.5,
+          "y": 280.29998779296875
         },
         {
-          "x": 66.5,
-          "y": 325.70001220703125
+          "x": 26.5,
+          "y": 304.70001220703125
         },
         {
-          "x": 66.5,
-          "y": 374.5
+          "x": 26.5,
+          "y": 353.5
         }
       ],
       "isCurve": true,
