@@ -1505,6 +1505,25 @@ x -> y: {
 			},
 		},
 		{
+			name: "import_url_link",
+
+			text: `...@test
+`,
+			files: map[string]string{
+				"test.d2": `elem: elem {
+  link: https://google.com
+}`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if len(g.Objects) != 1 {
+					t.Fatal(g.Objects)
+				}
+				if g.Objects[0].Link.Value != "https://google.com" {
+					t.Fatal(g.Objects[0].Link.Value)
+				}
+			},
+		},
+		{
 			name: "url_tooltip",
 			text: `x: {tooltip: https://google.com}`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {

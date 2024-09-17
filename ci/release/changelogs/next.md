@@ -31,3 +31,4 @@
 - CLI: fixes theme flag not being passed to GIF outputs [#2071](https://github.com/terrastruct/d2/pull/2071)
 - CLI: fixes scale flag not being passed to animated SVG outputs [#2071](https://github.com/terrastruct/d2/pull/2071)
 - CLI: pptx exports use theme flags correctly [#2099](https://github.com/terrastruct/d2/pull/2099)
+- Imports: importing files with url links is fixed [#2105](https://github.com/terrastruct/d2/pull/2105)
