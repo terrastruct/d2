@@ -351,6 +351,7 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 		}
 	}
 
+	parent := obj
 	obj = obj.EnsureChild(d2graphIDA([]string{f.Name}))
 	if f.Primary() != nil {
 		c.compileLabel(&obj.Attributes, f)
@@ -376,6 +377,7 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 			MapKeyEdgeIndex: fr.Context_.EdgeIndex(),
 			Scope:           fr.Context_.Scope,
 			ScopeAST:        fr.Context_.ScopeAST,
+			ScopeObj:        parent,
 		}
 		if fr.Context_.ScopeMap != nil && !d2ir.IsVar(fr.Context_.ScopeMap) {
 			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(fr.Context_.ScopeMap))
@@ -777,6 +779,7 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 			MapKeyEdgeIndex: er.Context_.EdgeIndex(),
 			Scope:           er.Context_.Scope,
 			ScopeAST:        er.Context_.ScopeAST,
+			ScopeObj:        obj,
 		}
 		if er.Context_.ScopeMap != nil && !d2ir.IsVar(er.Context_.ScopeMap) {
 			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(er.Context_.ScopeMap))

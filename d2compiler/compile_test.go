@@ -1524,6 +1524,36 @@ x -> y: {
 			},
 		},
 		{
+			name: "nested-scope-1",
+
+			text: `...@second
+`,
+			files: map[string]string{
+				"second.d2": `second: {
+  ...@third
+}`,
+				"third.d2": `third: {
+  elem
+}`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 3, len(g.Objects))
+			},
+		},
+		{
+			name: "nested-scope-2",
+
+			text: `...@second
+a.style.fill: null
+`,
+			files: map[string]string{
+				"second.d2": `a.style.fill: red`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 1, len(g.Objects))
+			},
+		},
+		{
 			name: "url_tooltip",
 			text: `x: {tooltip: https://google.com}`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
@@ -2998,8 +3028,8 @@ qa: {
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				tassert.Equal(t, "dev.env", g.Objects[1].AbsID())
 				tassert.Equal(t, "Dev Environment", g.Objects[1].Label.Value)
-				tassert.Equal(t, "qa.env", g.Objects[4].AbsID())
-				tassert.Equal(t, "Qa Environment", g.Objects[4].Label.Value)
+				tassert.Equal(t, "qa.env", g.Objects[2].AbsID())
+				tassert.Equal(t, "Qa Environment", g.Objects[2].Label.Value)
 			},
 		},
 		{
