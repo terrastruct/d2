@@ -5,6 +5,7 @@
   scope (e.g. to a sibling board at the scope its imported to) [#2075](https://github.com/terrastruct/d2/pull/2075)
 - Autoformat: Reserved keywords are formatted to be lowercase [#2098](https://github.com/terrastruct/d2/pull/2098)
 - Misc: characters in the unicode range for Latin-1 and geometric shapes are measured more accurately [#2100](https://github.com/terrastruct/d2/pull/2100)
+- Imports: can now import from absolute file paths [#2113](https://github.com/terrastruct/d2/pull/2113)
 
 #### Improvements 🧹
 

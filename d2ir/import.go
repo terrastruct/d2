@@ -17,17 +17,13 @@ func (c *compiler) pushImportStack(imp *d2ast.Import) (string, bool) {
 		return "", false
 	}
 	if len(c.importStack) > 0 {
-		if path.IsAbs(impPath) {
-			c.errorf(imp, "import paths must be relative")
-			return "", false
-		}
-
 		if path.Ext(impPath) != ".d2" {
 			impPath += ".d2"
 		}
 
-		// Imports are always relative to the importing file.
-		impPath = path.Join(path.Dir(c.importStack[len(c.importStack)-1]), impPath)
+		if !path.IsAbs(impPath) {
+			impPath = path.Join(path.Dir(c.importStack[len(c.importStack)-1]), impPath)
+		}
 	}
 
 	for i, p := range c.importStack {
