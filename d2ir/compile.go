@@ -541,6 +541,7 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 			}
 			dst.Fields = append(dst.Fields, f)
 		case n.Import != nil:
+			// Spread import
 			impn, ok := c._import(n.Import)
 			if !ok {
 				continue
@@ -867,6 +868,7 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 			c.overlayClasses(f.Map())
 		}
 	} else if refctx.Key.Value.Import != nil {
+		// Non-spread import
 		n, ok := c._import(refctx.Key.Value.Import)
 		if !ok {
 			return

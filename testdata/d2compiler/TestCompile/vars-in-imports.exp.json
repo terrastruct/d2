@@ -345,74 +345,6 @@
         "zIndex": 0
       },
       {
-        "id": "vm",
-        "id_val": "vm",
-        "references": [
-          {
-            "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/template.d2,2:2:37-2:4:39",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/template.d2,2:2:37-2:4:39",
-                    "value": [
-                      {
-                        "string": "vm",
-                        "raw_string": "vm"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "key_path_index": 0,
-            "map_key_edge_index": -1
-          }
-        ],
-        "attributes": {
-          "label": {
-            "value": "My Virtual machine!"
-          },
-          "labelDimensions": {
-            "width": 0,
-            "height": 0
-          },
-          "style": {},
-          "near_key": null,
-          "shape": {
-            "value": "rectangle"
-          },
-          "direction": {
-            "value": ""
-          },
-          "constraint": null
-        },
-        "zIndex": 0
-      },
-      {
-        "id": "env",
-        "id_val": "env",
-        "attributes": {
-          "label": {
-            "value": "env"
-          },
-          "labelDimensions": {
-            "width": 0,
-            "height": 0
-          },
-          "style": {},
-          "near_key": null,
-          "shape": {
-            "value": "rectangle"
-          },
-          "direction": {
-            "value": ""
-          },
-          "constraint": null
-        },
-        "zIndex": 0
-      },
-      {
         "id": "env",
         "id_val": "env",
         "references": [
@@ -440,6 +372,51 @@
         "attributes": {
           "label": {
             "value": "Qa Environment"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "vm",
+        "id_val": "vm",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/template.d2,2:2:37-2:4:39",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/template.d2,2:2:37-2:4:39",
+                    "value": [
+                      {
+                        "string": "vm",
+                        "raw_string": "vm"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "My Virtual machine!"
           },
           "labelDimensions": {
             "width": 0,
