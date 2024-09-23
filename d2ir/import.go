@@ -4,6 +4,7 @@ import (
 	"io/fs"
 	"os"
 	"path"
+	"path/filepath"
 	"strings"
 
 	"oss.terrastruct.com/d2/d2ast"
@@ -21,7 +22,7 @@ func (c *compiler) pushImportStack(imp *d2ast.Import) (string, bool) {
 			impPath += ".d2"
 		}
 
-		if !path.IsAbs(impPath) {
+		if !filepath.IsAbs(impPath) {
 			impPath = path.Join(path.Dir(c.importStack[len(c.importStack)-1]), impPath)
 		}
 	}
