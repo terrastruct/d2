@@ -3,6 +3,7 @@ package d2compiler
 import (
 	"encoding/xml"
 	"fmt"
+	"html"
 	"io"
 	"io/fs"
 	"net/url"
@@ -1204,7 +1205,14 @@ func (c *compiler) validateBoardLinks(g *d2graph.Graph) {
 			continue
 		}
 
+		u, err := url.Parse(html.UnescapeString(obj.Link.Value))
+		isRemote := err == nil && strings.HasPrefix(u.Scheme, "http")
+		if isRemote {
+			continue
+		}
+
 		if linkKey.Path[0].Unbox().ScalarString() != "root" {
+			obj.Link = nil
 			continue
 		}
 
