@@ -197,6 +197,7 @@ type Reference struct {
 	Scope           *d2ast.Map `json:"-"`
 	ScopeObj        *Object    `json:"-"`
 	ScopeAST        *d2ast.Map `json:"-"`
+	IsVar           bool       `json:"-"`
 }
 
 func (r Reference) MapKeyEdgeDest() bool {
@@ -1702,6 +1703,11 @@ func (g *Graph) SortObjectsByAST() {
 		}
 		r1 := o1.References[0]
 		r2 := o2.References[0]
+		// If they are variable substitutions, leave them alone, as their
+		// references reflect where the variable is, not where the substitution is
+		if r1.IsVar || r2.IsVar {
+			return i < j
+		}
 		return r1.Key.Path[r1.KeyPathIndex].Unbox().GetRange().Before(r2.Key.Path[r2.KeyPathIndex].Unbox().GetRange())
 	})
 	g.Objects = objects

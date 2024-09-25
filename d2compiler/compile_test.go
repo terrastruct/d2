@@ -2864,6 +2864,27 @@ sf: ${SummerFruit}
 `,
 		},
 		{
+			name: "spread_var_order",
+			text: `vars: {
+  before_elem: {
+    "before_elem"
+  }
+  after_elem: {
+    "after_elem"
+  }
+}
+
+...${before_elem}
+elem
+...${after_elem}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "before_elem", g.Objects[0].AbsID())
+				tassert.Equal(t, "elem", g.Objects[1].AbsID())
+				tassert.Equal(t, "after_elem", g.Objects[2].AbsID())
+			},
+		},
+		{
 			name: "class-shape-class",
 			text: `classes: {
   classClass: {
