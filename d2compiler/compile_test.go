@@ -2834,10 +2834,10 @@ x*: {
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				tassert.Equal(t, 4, len(g.Objects))
-				tassert.Equal(t, "x1.ok", g.Objects[0].AbsID())
-				tassert.Equal(t, "x2.ok", g.Objects[1].AbsID())
-				tassert.Equal(t, "x1", g.Objects[2].AbsID())
-				tassert.Equal(t, "x2", g.Objects[3].AbsID())
+				tassert.Equal(t, "x1", g.Objects[0].AbsID())
+				tassert.Equal(t, "x1.ok", g.Objects[1].AbsID())
+				tassert.Equal(t, "x2", g.Objects[2].AbsID())
+				tassert.Equal(t, "x2.ok", g.Objects[3].AbsID())
 			},
 		},
 		{
@@ -2862,6 +2862,27 @@ x: ${Apple}
 c: ${Cherry}
 sf: ${SummerFruit}
 `,
+		},
+		{
+			name: "spread_var_order",
+			text: `vars: {
+  before_elem: {
+    "before_elem"
+  }
+  after_elem: {
+    "after_elem"
+  }
+}
+
+...${before_elem}
+elem
+...${after_elem}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "before_elem", g.Objects[0].AbsID())
+				tassert.Equal(t, "elem", g.Objects[1].AbsID())
+				tassert.Equal(t, "after_elem", g.Objects[2].AbsID())
+			},
 		},
 		{
 			name: "class-shape-class",
@@ -4086,9 +4107,9 @@ vars: {
 }
 z: ${x}
 `, "")
-					assert.Equal(t, "z", g.Objects[1].ID)
-					assert.Equal(t, "all", g.Objects[1].Label.Value)
-					assert.Equal(t, 1, len(g.Objects[1].Children))
+					assert.Equal(t, "z", g.Objects[0].ID)
+					assert.Equal(t, "all", g.Objects[0].Label.Value)
+					assert.Equal(t, 1, len(g.Objects[0].Children))
 				},
 			},
 			{
@@ -4106,9 +4127,9 @@ z: {
   c
 }
 `, "")
-					assert.Equal(t, "z", g.Objects[2].ID)
+					assert.Equal(t, "z", g.Objects[0].ID)
 					assert.Equal(t, 4, len(g.Objects))
-					assert.Equal(t, 3, len(g.Objects[2].Children))
+					assert.Equal(t, 3, len(g.Objects[0].Children))
 				},
 			},
 			{

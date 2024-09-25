@@ -378,6 +378,7 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 			Scope:           fr.Context_.Scope,
 			ScopeAST:        fr.Context_.ScopeAST,
 			ScopeObj:        parent,
+			IsVar:           d2ir.IsVar(fr.Context_.ScopeMap),
 		}
 		if fr.Context_.ScopeMap != nil && !d2ir.IsVar(fr.Context_.ScopeMap) {
 			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(fr.Context_.ScopeMap))

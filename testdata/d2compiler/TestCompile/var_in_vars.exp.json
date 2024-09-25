@@ -598,136 +598,6 @@
     ],
     "objects": [
       {
-        "id": "xx",
-        "id_val": "xx",
-        "references": [
-          {
-            "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,10:8:172-10:10:174",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,10:8:172-10:10:174",
-                    "value": [
-                      {
-                        "string": "xx",
-                        "raw_string": "xx"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "key_path_index": 0,
-            "map_key_edge_index": -1
-          },
-          {
-            "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,12:8:215-12:10:217",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,12:8:215-12:10:217",
-                    "value": [
-                      {
-                        "string": "xx",
-                        "raw_string": "xx"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "key_path_index": 0,
-            "map_key_edge_index": 0
-          }
-        ],
-        "attributes": {
-          "label": {
-            "value": "Granny Smith"
-          },
-          "labelDimensions": {
-            "width": 0,
-            "height": 0
-          },
-          "style": {},
-          "near_key": null,
-          "shape": {
-            "value": "circle"
-          },
-          "direction": {
-            "value": ""
-          },
-          "constraint": null
-        },
-        "zIndex": 0
-      },
-      {
-        "id": "cc",
-        "id_val": "cc",
-        "references": [
-          {
-            "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,11:8:193-11:10:195",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,11:8:193-11:10:195",
-                    "value": [
-                      {
-                        "string": "cc",
-                        "raw_string": "cc"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "key_path_index": 0,
-            "map_key_edge_index": -1
-          },
-          {
-            "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,12:14:221-12:16:223",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,12:14:221-12:16:223",
-                    "value": [
-                      {
-                        "string": "cc",
-                        "raw_string": "cc"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "key_path_index": 0,
-            "map_key_edge_index": 0
-          }
-        ],
-        "attributes": {
-          "label": {
-            "value": "Rainier Cherry"
-          },
-          "labelDimensions": {
-            "width": 0,
-            "height": 0
-          },
-          "style": {},
-          "near_key": null,
-          "shape": {
-            "value": "circle"
-          },
-          "direction": {
-            "value": ""
-          },
-          "constraint": null
-        },
-        "zIndex": 0
-      },
-      {
         "id": "x",
         "id_val": "x",
         "references": [
@@ -854,6 +724,136 @@
           "near_key": null,
           "shape": {
             "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "xx",
+        "id_val": "xx",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,10:8:172-10:10:174",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,10:8:172-10:10:174",
+                    "value": [
+                      {
+                        "string": "xx",
+                        "raw_string": "xx"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,12:8:215-12:10:217",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,12:8:215-12:10:217",
+                    "value": [
+                      {
+                        "string": "xx",
+                        "raw_string": "xx"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Granny Smith"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "circle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "cc",
+        "id_val": "cc",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,11:8:193-11:10:195",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,11:8:193-11:10:195",
+                    "value": [
+                      {
+                        "string": "cc",
+                        "raw_string": "cc"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,12:14:221-12:16:223",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,12:14:221-12:16:223",
+                    "value": [
+                      {
+                        "string": "cc",
+                        "raw_string": "cc"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Rainier Cherry"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "circle"
           },
           "direction": {
             "value": ""
