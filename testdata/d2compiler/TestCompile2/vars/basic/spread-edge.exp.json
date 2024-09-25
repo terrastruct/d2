@@ -216,6 +216,51 @@
     ],
     "objects": [
       {
+        "id": "hi",
+        "id_val": "hi",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-edge.d2,6:0:43-6:2:45",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-edge.d2,6:0:43-6:2:45",
+                    "value": [
+                      {
+                        "string": "hi",
+                        "raw_string": "hi"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "hi"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
         "id": "x",
         "id_val": "x",
         "references": [
@@ -288,51 +333,6 @@
         "attributes": {
           "label": {
             "value": "a"
-          },
-          "labelDimensions": {
-            "width": 0,
-            "height": 0
-          },
-          "style": {},
-          "near_key": null,
-          "shape": {
-            "value": "rectangle"
-          },
-          "direction": {
-            "value": ""
-          },
-          "constraint": null
-        },
-        "zIndex": 0
-      },
-      {
-        "id": "hi",
-        "id_val": "hi",
-        "references": [
-          {
-            "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-edge.d2,6:0:43-6:2:45",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-edge.d2,6:0:43-6:2:45",
-                    "value": [
-                      {
-                        "string": "hi",
-                        "raw_string": "hi"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "key_path_index": 0,
-            "map_key_edge_index": -1
-          }
-        ],
-        "attributes": {
-          "label": {
-            "value": "hi"
           },
           "labelDimensions": {
             "width": 0,

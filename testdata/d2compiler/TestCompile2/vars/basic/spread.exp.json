@@ -238,6 +238,51 @@
     "edges": null,
     "objects": [
       {
+        "id": "z",
+        "id_val": "z",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread.d2,7:0:41-7:1:42",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread.d2,7:0:41-7:1:42",
+                    "value": [
+                      {
+                        "string": "z",
+                        "raw_string": "z"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "z"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
         "id": "a",
         "id_val": "a",
         "references": [
@@ -310,51 +355,6 @@
         "attributes": {
           "label": {
             "value": "c"
-          },
-          "labelDimensions": {
-            "width": 0,
-            "height": 0
-          },
-          "style": {},
-          "near_key": null,
-          "shape": {
-            "value": "rectangle"
-          },
-          "direction": {
-            "value": ""
-          },
-          "constraint": null
-        },
-        "zIndex": 0
-      },
-      {
-        "id": "z",
-        "id_val": "z",
-        "references": [
-          {
-            "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread.d2,7:0:41-7:1:42",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread.d2,7:0:41-7:1:42",
-                    "value": [
-                      {
-                        "string": "z",
-                        "raw_string": "z"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "key_path_index": 0,
-            "map_key_edge_index": -1
-          }
-        ],
-        "attributes": {
-          "label": {
-            "value": "z"
           },
           "labelDimensions": {
             "width": 0,

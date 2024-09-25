@@ -262,6 +262,9 @@ func NodeBoardKind(n Node) BoardKind {
 		}
 		f = ParentField(n)
 	case *Map:
+		if n == nil {
+			return ""
+		}
 		var ok bool
 		f, ok = n.parent.(*Field)
 		if !ok {
@@ -1468,6 +1471,9 @@ func IsVar(n Node) bool {
 		}
 		if f, ok := n.(*Field); ok && f.Name == "vars" {
 			return true
+		}
+		if n == (*Map)(nil) {
+			return false
 		}
 		n = n.Parent()
 	}
