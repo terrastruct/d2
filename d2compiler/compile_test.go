@@ -1608,22 +1608,6 @@ b: {
 			},
 		},
 		{
-			name: "path_link",
-
-			text: `x: {
-  link: Overview.Untitled board 7.zzzzz
-}
-`,
-			assertions: func(t *testing.T, g *d2graph.Graph) {
-				if len(g.Objects) != 1 {
-					t.Fatal(g.Objects)
-				}
-				if g.Objects[0].Link.Value != "Overview.Untitled board 7.zzzzz" {
-					t.Fatal(g.Objects[0].Link.Value)
-				}
-			},
-		},
-		{
 			name: "near_constant",
 
 			text: `x.near: top-center
@@ -2334,11 +2318,31 @@ scenarios: {
 			},
 		},
 		{
-			name: "link-board-not-found",
+			name: "link-board-not-found-1",
 			text: `x.link: layers.x
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Link)
+			},
+		},
+		{
+			name: "link-board-not-found-2",
+			text: `layers: {
+    one: {
+        ping: {
+            link: two
+        }
+    }
+    two: {
+        pong: {
+            link: one
+        }
+    }
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Layers[0].Objects[0].Link)
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Layers[1].Objects[0].Link)
 			},
 		},
 		{
