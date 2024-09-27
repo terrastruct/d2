@@ -706,6 +706,11 @@ func renderDoubleOval(tl *geo.Point, width, height float64, fill, fillStroke, st
 	return renderOval(tl, width, height, fill, fillStroke, stroke, style) + renderOval(innerTL, width-10, height-10, fill, "", stroke, style)
 }
 
+func defineGradients(writer io.Writer, cssGradient string) {
+	gradient, _ := color.ParseGradient(cssGradient)
+	fmt.Fprint(writer, fmt.Sprintf(`<defs>%s</defs>`, color.GradientToSVG(gradient)))
+}
+
 func defineShadowFilter(writer io.Writer) {
 	fmt.Fprint(writer, `<defs>
 	<filter id="shadow-filter" width="200%" height="200%" x="-50%" y="-50%">
@@ -1821,6 +1826,29 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		if s.Shadow {
 			defineShadowFilter(buf)
 			break
+		}
+	}
+
+	if color.IsGradient(diagram.Root.Fill) {
+		defineGradients(buf, diagram.Root.Fill)
+	}
+	if color.IsGradient(diagram.Root.Stroke) {
+		defineGradients(buf, diagram.Root.Stroke)
+	}
+	for _, s := range diagram.Shapes {
+		if color.IsGradient(s.Fill) {
+			defineGradients(buf, s.Fill)
+		}
+		if color.IsGradient(s.Stroke) {
+			defineGradients(buf, s.Stroke)
+		}
+		if color.IsGradient(s.Color) {
+			defineGradients(buf, s.Color)
+		}
+	}
+	for _, c := range diagram.Connections {
+		if color.IsGradient(c.Stroke) {
+			defineGradients(buf, c.Stroke)
 		}
 	}
 

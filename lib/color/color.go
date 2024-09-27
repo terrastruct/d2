@@ -9,6 +9,7 @@ import (
 
 	"github.com/lucasb-eyer/go-colorful"
 	"github.com/mazznoer/csscolorparser"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 var themeColorRegex = regexp.MustCompile(`^(N[1-7]|B[1-6]|AA[245]|AB[45])$`)
@@ -503,3 +504,11 @@ var NamedColors = []string{
 }
 
 var ColorHexRegex = regexp.MustCompile(`^#(([0-9a-fA-F]{2}){3}|([0-9a-fA-F]){3})$`)
+
+func ValidColor(color string) bool {
+	if !go2.Contains(NamedColors, strings.ToLower(color)) && !ColorHexRegex.MatchString(color) && !IsGradient(color) {
+		return false
+	}
+
+	return true
+}
