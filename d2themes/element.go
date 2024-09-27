@@ -178,11 +178,17 @@ func (el *ThemableElement) Render() string {
 	if color.IsThemeColor(el.Stroke) {
 		class += fmt.Sprintf(" stroke-%s", el.Stroke)
 	} else if len(el.Stroke) > 0 {
+		if color.IsGradient(el.Stroke) {
+			el.Stroke = fmt.Sprintf("url('#%s')", color.UniqueGradientID(el.Stroke))
+		}
 		out += fmt.Sprintf(` stroke="%s"`, el.Stroke)
 	}
 	if color.IsThemeColor(el.Fill) {
 		class += fmt.Sprintf(" fill-%s", el.Fill)
 	} else if len(el.Fill) > 0 {
+		if color.IsGradient(el.Fill) {
+			el.Fill = fmt.Sprintf("url('#%s')", color.UniqueGradientID(el.Fill))
+		}
 		out += fmt.Sprintf(` fill="%s"`, el.Fill)
 	}
 	if color.IsThemeColor(el.BackgroundColor) {

@@ -455,3 +455,17 @@ bob -> alice: The ability to play bridge or\ngolf as if they were games.
 ◎: |md
   ◎ foo bar
 |
+
+-- gradient --
+style.fill: "radial-gradient(circle, white 0%, #8A2BE2 60%, #4B0082 100%)"
+gradient: {
+  style.fill: "linear-gradient(#f69d3c, #3f87a6)"
+  style.stroke: "linear-gradient(to top right, red, blue)"
+  style.font-color: "radial-gradient(red, yellow, green, cyan, blue)"
+}
+colors: {
+  style.fill: "linear-gradient(45deg, rgba(255,0,0,0.5) 0%, rgba(0,0,255,0.5) 100%)"
+  style.stroke: "linear-gradient(to right, red, blue, green)"
+  style.font-color: "linear-gradient(to bottom right, red 0%, yellow 25%, green 50%, cyan 75%, blue 100%)"
+}
+gradient -> colors

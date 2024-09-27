@@ -253,16 +253,16 @@ func (s *Style) Apply(key, value string) error {
 		if s.Stroke == nil {
 			break
 		}
-		if !go2.Contains(color.NamedColors, strings.ToLower(value)) && !color.ColorHexRegex.MatchString(value) {
-			return errors.New(`expected "stroke" to be a valid named color ("orange") or a hex code ("#f0ff3a")`)
+		if !color.ValidColor(value) {
+			return errors.New(`expected "stroke" to be a valid named color ("orange"), a hex code ("#f0ff3a"), or a gradient ("linear-gradient(red, blue)")`)
 		}
 		s.Stroke.Value = value
 	case "fill":
 		if s.Fill == nil {
 			break
 		}
-		if !go2.Contains(color.NamedColors, strings.ToLower(value)) && !color.ColorHexRegex.MatchString(value) {
-			return errors.New(`expected "fill" to be a valid named color ("orange") or a hex code ("#f0ff3a")`)
+		if !color.ValidColor(value) {
+			return errors.New(`expected "fill" to be a valid named color ("orange"), a hex code ("#f0ff3a"), or a gradient ("linear-gradient(red, blue)")`)
 		}
 		s.Fill.Value = value
 	case "fill-pattern":
@@ -348,8 +348,8 @@ func (s *Style) Apply(key, value string) error {
 		if s.FontColor == nil {
 			break
 		}
-		if !go2.Contains(color.NamedColors, strings.ToLower(value)) && !color.ColorHexRegex.MatchString(value) {
-			return errors.New(`expected "font-color" to be a valid named color ("orange") or a hex code ("#f0ff3a")`)
+		if !color.ValidColor(value) {
+			return errors.New(`expected "font-color" to be a valid named color ("orange"), a hex code ("#f0ff3a"), or a gradient ("linear-gradient(red, blue)")`)
 		}
 		s.FontColor.Value = value
 	case "animated":
