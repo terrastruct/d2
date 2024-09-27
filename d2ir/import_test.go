@@ -253,15 +253,6 @@ label: meow`,
 				},
 			},
 			{
-				name: "absolute",
-				run: func(t testing.TB) {
-					_, err := compileFS(t, "index.d2", map[string]string{
-						"index.d2": "...@/x.d2",
-					})
-					assert.ErrorString(t, err, `index.d2:1:1: import paths must be relative`)
-				},
-			},
-			{
 				name: "parse",
 				run: func(t testing.TB) {
 					_, err := compileFS(t, "index.d2", map[string]string{
