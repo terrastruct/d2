@@ -1,10 +1,9 @@
 #### Features 🚀
 
-- Vars: Variable definitions can now refer to other variables in the current scope [#2052](https://github.com/terrastruct/d2/pull/2052)
-- Composition: Imported boards can use underscores to reference boards beyond its own
-  scope (e.g. to a sibling board at the scope its imported to) [#2075](https://github.com/terrastruct/d2/pull/2075)
+- Vars: Variable definitions can refer to other variables in the current scope [#2052](https://github.com/terrastruct/d2/pull/2052)
+- Composition: Imported boards can use underscores to reference boards beyond its own scope (e.g. to a sibling board at the scope its imported to) [#2075](https://github.com/terrastruct/d2/pull/2075)
 - Autoformat: Reserved keywords are formatted to be lowercase [#2098](https://github.com/terrastruct/d2/pull/2098)
-- Misc: characters in the unicode range for Latin-1 and geometric shapes are measured more accurately [#2100](https://github.com/terrastruct/d2/pull/2100)
+- Misc: support for characters in the Latin-1 and geometric shapes unicode range [#2100](https://github.com/terrastruct/d2/pull/2100)
 - Imports: can now import from absolute file paths [#2113](https://github.com/terrastruct/d2/pull/2113)
 - Render: linear and radial gradients are now available for `fill`, `stroke` and `font-color` [#2120](https://github.com/terrastruct/d2/pull/2120)
 
