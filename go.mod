@@ -4,10 +4,8 @@ go 1.23
 
 toolchain go1.23.0
 
-replace cdr.dev/slog => cdr.dev/slog v1.4.2
-
 require (
-	cdr.dev/slog v1.6.1
+	cdr.dev/slog v1.4.2
 	github.com/PuerkitoBio/goquery v1.10.0
 	github.com/alecthomas/chroma/v2 v2.14.0
 	github.com/dop251/goja v0.0.0-20240927123429-241b342198c2
