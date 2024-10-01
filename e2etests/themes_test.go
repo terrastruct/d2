@@ -342,6 +342,24 @@ logs: ログ { shape: page; style.multiple: true }
 network.data processor -> api server
 `,
 		},
+		{
+			name:    "3d-sides",
+			themeID: &d2themescatalog.Terminal.ID,
+			script: `
+beats: Beats {
+  Explanation: Beats is a family of "data shippers," distinct services that send a single type of data from machines {
+    grid-columns: 1
+    style.stroke-width: 0
+    Image: "" {
+      icon: https://www.pngkey.com/png/full/75-752805_elastic-beats-logo-png-transparent-design.png
+      shape: image
+    }
+  }
+
+  style.3d: true
+}
+`,
+		},
 	}
 
 	runa(t, tcs)

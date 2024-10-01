@@ -324,6 +324,18 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 			)
 
 			labelTL := labelPosition.GetPointOnBox(s.GetBox(), label.PADDING, float64(targetShape.LabelWidth), float64(targetShape.LabelHeight))
+			if targetShape.ThreeDee {
+				offset := THREE_DEE_OFFSET
+				if targetShape.Type == ShapeHexagon {
+					offset /= 2
+				}
+				if strings.HasPrefix(targetShape.LabelPosition, "OUTSIDE_RIGHT") {
+					labelTL.X += float64(offset)
+				}
+				if strings.HasPrefix(targetShape.LabelPosition, "OUTSIDE_TOP") {
+					labelTL.Y -= float64(offset)
+				}
+			}
 			x1 = go2.Min(x1, int(labelTL.X))
 			y1 = go2.Min(y1, int(labelTL.Y))
 			x2 = go2.Max(x2, int(labelTL.X)+targetShape.LabelWidth)
