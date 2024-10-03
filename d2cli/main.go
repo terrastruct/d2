@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"io/fs"
+	"log/slog"
 	"os"
 	"os/exec"
 	"os/user"
@@ -36,7 +36,7 @@ import (
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/background"
 	"oss.terrastruct.com/d2/lib/imgbundler"
-	ctxlog "oss.terrastruct.com/d2/lib/log"
+	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/pdf"
 	"oss.terrastruct.com/d2/lib/png"
 	"oss.terrastruct.com/d2/lib/pptx"
@@ -45,15 +45,10 @@ import (
 	timelib "oss.terrastruct.com/d2/lib/time"
 	"oss.terrastruct.com/d2/lib/version"
 	"oss.terrastruct.com/d2/lib/xgif"
-
-	"cdr.dev/slog"
-	"cdr.dev/slog/sloggers/sloghuman"
 )
 
 func Run(ctx context.Context, ms *xmain.State) (err error) {
-	// :(
-	ctx = DiscardSlog(ctx)
-
+	ctx = log.WithDefault(ctx)
 	// These should be kept up-to-date with the d2 man page
 	watchFlag, err := ms.Opts.Bool("D2_WATCH", "watch", "w", false, "watch for changes to input and live reload. Use $HOST and $PORT to specify the listening address.\n(default localhost:0, which is will open on a randomly available local port).")
 	if err != nil {
@@ -169,6 +164,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 
 	if *debugFlag {
+		ctx = log.Leveled(ctx, slog.LevelDebug)
 		ms.Env.Setenv("DEBUG", "1")
 	}
 	if *imgCacheFlag {
@@ -1181,11 +1177,6 @@ func getFileName(path string) string {
 	return strings.TrimSuffix(filepath.Base(path), ext)
 }
 
-// TODO: remove after removing slog
-func DiscardSlog(ctx context.Context) context.Context {
-	return ctxlog.With(ctx, slog.Make(sloghuman.Sink(io.Discard)))
-}
-
 func populateLayoutOpts(ctx context.Context, ms *xmain.State, ps []d2plugin.Plugin) error {
 	pluginFlags, err := d2plugin.ListPluginFlags(ctx, ps)
 	if err != nil {
@@ -1379,5 +1370,5 @@ func AnimatePNGs(ms *xmain.State, pngs [][]byte, animIntervalMs int) ([]byte, er
 }
 
 func init() {
-	ctxlog.Init()
+	log.Init()
 }

@@ -71,7 +71,7 @@ func main() {
 	}
 
 	if !*skipTests {
-		ctx := log.Stderr(context.Background())
+		ctx := context.Background()
 
 		ctx, cancel := timelib.WithTimeout(ctx, 2*time.Minute)
 		defer cancel()
