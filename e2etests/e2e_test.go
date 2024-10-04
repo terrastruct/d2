@@ -4,12 +4,12 @@ import (
 	"context"
 	"encoding/xml"
 	"fmt"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 
-	"cdr.dev/slog"
 	"golang.org/x/tools/txtar"
 
 	trequire "github.com/stretchr/testify/require"
@@ -140,7 +140,7 @@ func serde(t *testing.T, tc testCase, ruler *textmeasure.Ruler) {
 
 func run(t *testing.T, tc testCase) {
 	ctx := context.Background()
-	ctx = log.WithTB(ctx, t, nil)
+	ctx = log.WithTB(ctx, t)
 	ctx = log.Leveled(ctx, slog.LevelDebug)
 
 	var ruler *textmeasure.Ruler

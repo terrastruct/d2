@@ -115,7 +115,7 @@ func test(t *testing.T, textPath, text string) {
 			}
 		}()
 
-		ctx := log.WithTB(context.Background(), t, nil)
+		ctx := log.WithTB(context.Background(), t)
 
 		ruler, err := textmeasure.NewRuler()
 		assert.Nil(t, err)

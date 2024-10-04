@@ -9,7 +9,8 @@ import (
 	"sort"
 	"strings"
 
-	"cdr.dev/slog"
+	"log/slog"
+
 	"github.com/dop251/goja"
 
 	"oss.terrastruct.com/util-go/xdefer"
@@ -179,7 +180,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 
 	if debugJS {
-		log.Debug(ctx, "script", slog.F("all", setupJS+configJS+loadScript))
+		log.Debug(ctx, "script", slog.Any("all", setupJS+configJS+loadScript))
 	}
 
 	if _, err := vm.RunString(loadScript); err != nil {
@@ -188,7 +189,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 	if _, err := vm.RunString(`dagre.layout(g)`); err != nil {
 		if debugJS {
-			log.Warn(ctx, "layout error", slog.F("err", err))
+			log.Warn(ctx, "layout error", slog.Any("err", err))
 		}
 		return err
 	}
@@ -203,7 +204,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			return err
 		}
 		if debugJS {
-			log.Debug(ctx, "graph", slog.F("json", dn))
+			log.Debug(ctx, "graph", slog.Any("json", dn))
 		}
 
 		obj := mapper.ToObj(dn.ID)
@@ -224,7 +225,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			return err
 		}
 		if debugJS {
-			log.Debug(ctx, "graph", slog.F("json", de))
+			log.Debug(ctx, "graph", slog.Any("json", de))
 		}
 
 		points := make([]*geo.Point, len(de.Points))
