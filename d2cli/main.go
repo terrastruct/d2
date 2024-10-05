@@ -537,7 +537,7 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs
 		if err != nil {
 			return nil, false, err
 		}
-		err = ms.WritePath(outputPath, out)
+		err = Write(ms, outputPath, out)
 		if err != nil {
 			return nil, false, err
 		}
@@ -621,7 +621,7 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs
 				if err != nil {
 					return nil, false, err
 				}
-				err = ms.WritePath(outputPath, out)
+				err = Write(ms, outputPath, out)
 				if err != nil {
 					return nil, false, err
 				}
@@ -906,7 +906,7 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 		if err != nil {
 			return svg, err
 		}
-		err = ms.WritePath(outputPath, out)
+		err = Write(ms, outputPath, out)
 		if err != nil {
 			return svg, err
 		}
@@ -1367,6 +1367,15 @@ func AnimatePNGs(ms *xmain.State, pngs [][]byte, animIntervalMs int) ([]byte, er
 	defer cancel()
 
 	return xgif.AnimatePNGs(pngs, animIntervalMs)
+}
+
+func Write(ms *xmain.State, path string, out []byte) error {
+	err := ms.AtomicWritePath(path, out)
+	if err == nil {
+		return nil
+	}
+	ms.Log.Debug.Printf("atomic write failed: %s, trying non-atomic write", err.Error())
+	return ms.WritePath(path, out)
 }
 
 func init() {
