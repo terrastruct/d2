@@ -261,6 +261,7 @@ let us know and we'll be happy to include it here!
 - **ent2d2**: [https://github.com/tmc/ent2d2](https://github.com/tmc/ent2d2)
 - **MkDocs Plugin**: [https://github.com/landmaj/mkdocs-d2-plugin](https://github.com/landmaj/mkdocs-d2-plugin)
 - **Remark Plugin**: [https://github.com/mech-a/remark-d2](https://github.com/mech-a/remark-d2)
+- **VitePress Plugin**: [https://github.com/BadgerHobbs/vitepress-plugin-d2](https://github.com/BadgerHobbs/vitepress-plugin-d2)
 
 ### Misc
 
