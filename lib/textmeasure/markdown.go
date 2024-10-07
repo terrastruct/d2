@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"math"
+	"regexp"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
@@ -78,9 +79,23 @@ func HeaderToFontSize(baseFontSize int, header string) int {
 	return 0
 }
 
+func preProcessMarkdown(m string) string {
+    urlRegex := regexp.MustCompile(`(?i)(?:href|src)="(https?|ftp)://[^\s"]+&\S*"`)
+
+    output := urlRegex.ReplaceAllStringFunc(m, func(match string) string {
+        modifiedURL := strings.ReplaceAll(match, "&", "%26")
+        return modifiedURL
+    })
+
+    return output
+}
+
 func RenderMarkdown(m string) (string, error) {
 	var output bytes.Buffer
-	if err := markdownRenderer.Convert([]byte(m), &output); err != nil {
+
+	pre := preProcessMarkdown(m)
+
+	if err := markdownRenderer.Convert([]byte(pre), &output); err != nil {
 		return "", err
 	}
 	return output.String(), nil
