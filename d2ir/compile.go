@@ -304,7 +304,11 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) (removedFie
 				if resolvedField.Composite != nil {
 					switch n := node.(type) {
 					case *Field:
-						n.Composite = resolvedField.Composite
+						if n.Composite != nil {
+							n.Composite = n.Composite.Copy(resolvedField.Composite).(Composite)
+						} else {
+							n.Composite = resolvedField.Composite
+						}
 					case *Edge:
 						if resolvedField.Composite.Map() == nil {
 							c.errorf(node.LastRef().AST(), `cannot substitute array variable "%s" to an edge`, strings.Join(box.Substitution.IDA(), "."))

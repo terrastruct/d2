@@ -4296,6 +4296,21 @@ a: {
 				},
 			},
 			{
+				name: "label-map",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+vars: {
+  x: {
+    label: hi
+  }
+}
+a: ${x}
+a.label: hello
+`, "")
+					assert.Equal(t, "hello", g.Objects[0].Label.Value)
+				},
+			},
+			{
 				name: "var-in-var",
 				run: func(t *testing.T) {
 					g, _ := assertCompile(t, `
