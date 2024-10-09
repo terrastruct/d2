@@ -1,5 +1,7 @@
 #### Features 🚀
 
+- Render: SVG files render in non-browser contexts (e.g. Inkscape, LaTeX) [#2147](https://github.com/terrastruct/d2/pull/2147)
+
 #### Improvements 🧹
 
 - Lib: removes a dependency on external slog that was causing troubles with installation [#2137](https://github.com/terrastruct/d2/pull/2137)
