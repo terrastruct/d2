@@ -49,9 +49,11 @@ type ThemableElement struct {
 	ClipPath string
 
 	FillPattern string
+
+	inlineTheme *Theme
 }
 
-func NewThemableElement(tag string) *ThemableElement {
+func NewThemableElement(tag string, inlineTheme *Theme) *ThemableElement {
 	xmlns := ""
 	if tag == "div" {
 		xmlns = "http://www.w3.org/1999/xhtml"
@@ -89,6 +91,7 @@ func NewThemableElement(tag string) *ThemableElement {
 		"",
 		"",
 		"",
+		inlineTheme,
 	}
 }
 
@@ -177,6 +180,9 @@ func (el *ThemableElement) Render() string {
 	// Add class {property}-{theme color} if the color is from a theme, set the property otherwise
 	if color.IsThemeColor(el.Stroke) {
 		class += fmt.Sprintf(" stroke-%s", el.Stroke)
+		if el.inlineTheme != nil {
+			out += fmt.Sprintf(` stroke="%s"`, ResolveThemeColor(*el.inlineTheme, el.Stroke))
+		}
 	} else if len(el.Stroke) > 0 {
 		if color.IsGradient(el.Stroke) {
 			el.Stroke = fmt.Sprintf("url('#%s')", color.UniqueGradientID(el.Stroke))
@@ -185,6 +191,9 @@ func (el *ThemableElement) Render() string {
 	}
 	if color.IsThemeColor(el.Fill) {
 		class += fmt.Sprintf(" fill-%s", el.Fill)
+		if el.inlineTheme != nil {
+			out += fmt.Sprintf(` fill="%s"`, ResolveThemeColor(*el.inlineTheme, el.Fill))
+		}
 	} else if len(el.Fill) > 0 {
 		if color.IsGradient(el.Fill) {
 			el.Fill = fmt.Sprintf("url('#%s')", color.UniqueGradientID(el.Fill))
@@ -193,11 +202,17 @@ func (el *ThemableElement) Render() string {
 	}
 	if color.IsThemeColor(el.BackgroundColor) {
 		class += fmt.Sprintf(" background-color-%s", el.BackgroundColor)
+		if el.inlineTheme != nil {
+			out += fmt.Sprintf(` background-color="%s"`, ResolveThemeColor(*el.inlineTheme, el.BackgroundColor))
+		}
 	} else if len(el.BackgroundColor) > 0 {
 		out += fmt.Sprintf(` background-color="%s"`, el.BackgroundColor)
 	}
 	if color.IsThemeColor(el.Color) {
 		class += fmt.Sprintf(" color-%s", el.Color)
+		if el.inlineTheme != nil {
+			out += fmt.Sprintf(` color="%s"`, ResolveThemeColor(*el.inlineTheme, el.Color))
+		}
 	} else if len(el.Color) > 0 {
 		out += fmt.Sprintf(` color="%s"`, el.Color)
 	}

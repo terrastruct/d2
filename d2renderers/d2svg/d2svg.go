@@ -35,6 +35,7 @@ import (
 	"oss.terrastruct.com/d2/lib/svg"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 	"oss.terrastruct.com/d2/lib/version"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 const (
@@ -109,7 +110,7 @@ func arrowheadMarkerID(isTarget bool, connection d2target.Connection) string {
 	)))
 }
 
-func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) string {
+func arrowheadMarker(isTarget bool, id string, connection d2target.Connection, inlineTheme *d2themes.Theme) string {
 	arrowhead := connection.DstArrow
 	if !isTarget {
 		arrowhead = connection.SrcArrow
@@ -120,7 +121,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 	var path string
 	switch arrowhead {
 	case d2target.ArrowArrowhead:
-		polygonEl := d2themes.NewThemableElement("polygon")
+		polygonEl := d2themes.NewThemableElement("polygon", inlineTheme)
 		polygonEl.Fill = connection.Stroke
 		polygonEl.ClassName = "connection"
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
@@ -142,7 +143,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 		}
 		path = polygonEl.Render()
 	case d2target.UnfilledTriangleArrowhead:
-		polygonEl := d2themes.NewThemableElement("polygon")
+		polygonEl := d2themes.NewThemableElement("polygon", inlineTheme)
 		polygonEl.Fill = d2target.BG_COLOR
 		polygonEl.Stroke = connection.Stroke
 		polygonEl.ClassName = "connection"
@@ -165,7 +166,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 		path = polygonEl.Render()
 
 	case d2target.TriangleArrowhead:
-		polygonEl := d2themes.NewThemableElement("polygon")
+		polygonEl := d2themes.NewThemableElement("polygon", inlineTheme)
 		polygonEl.Fill = connection.Stroke
 		polygonEl.ClassName = "connection"
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
@@ -185,7 +186,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 		}
 		path = polygonEl.Render()
 	case d2target.LineArrowhead:
-		polylineEl := d2themes.NewThemableElement("polyline")
+		polylineEl := d2themes.NewThemableElement("polyline", inlineTheme)
 		polylineEl.Fill = color.None
 		polylineEl.ClassName = "connection"
 		polylineEl.Stroke = connection.Stroke
@@ -206,7 +207,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 		}
 		path = polylineEl.Render()
 	case d2target.FilledDiamondArrowhead:
-		polygonEl := d2themes.NewThemableElement("polygon")
+		polygonEl := d2themes.NewThemableElement("polygon", inlineTheme)
 		polygonEl.ClassName = "connection"
 		polygonEl.Fill = connection.Stroke
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
@@ -228,7 +229,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 		}
 		path = polygonEl.Render()
 	case d2target.DiamondArrowhead:
-		polygonEl := d2themes.NewThemableElement("polygon")
+		polygonEl := d2themes.NewThemableElement("polygon", inlineTheme)
 		polygonEl.ClassName = "connection"
 		polygonEl.Fill = d2target.BG_COLOR
 		polygonEl.Stroke = connection.Stroke
@@ -253,7 +254,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 	case d2target.FilledCircleArrowhead:
 		radius := width / 2
 
-		circleEl := d2themes.NewThemableElement("circle")
+		circleEl := d2themes.NewThemableElement("circle", inlineTheme)
 		circleEl.Cy = radius
 		circleEl.R = radius - strokeWidth/2
 		circleEl.Fill = connection.Stroke
@@ -270,7 +271,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 	case d2target.CircleArrowhead:
 		radius := width / 2
 
-		circleEl := d2themes.NewThemableElement("circle")
+		circleEl := d2themes.NewThemableElement("circle", inlineTheme)
 		circleEl.Cy = radius
 		circleEl.R = radius - strokeWidth
 		circleEl.Fill = d2target.BG_COLOR
@@ -289,7 +290,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 
 		var modifierEl *d2themes.ThemableElement
 		if arrowhead == d2target.CfOneRequired || arrowhead == d2target.CfManyRequired {
-			modifierEl = d2themes.NewThemableElement("path")
+			modifierEl = d2themes.NewThemableElement("path", inlineTheme)
 			modifierEl.D = fmt.Sprintf("M%f,%f %f,%f",
 				offset, 0.,
 				offset, height,
@@ -299,7 +300,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 			modifierEl.ClassName = "connection"
 			modifierEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 		} else {
-			modifierEl = d2themes.NewThemableElement("circle")
+			modifierEl = d2themes.NewThemableElement("circle", inlineTheme)
 			modifierEl.Cx = offset/2.0 + 2.0
 			modifierEl.Cy = height / 2.0
 			modifierEl.R = offset / 2.0
@@ -309,7 +310,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 			modifierEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 		}
 
-		childPathEl := d2themes.NewThemableElement("path")
+		childPathEl := d2themes.NewThemableElement("path", inlineTheme)
 		if arrowhead == d2target.CfMany || arrowhead == d2target.CfManyRequired {
 			childPathEl.D = fmt.Sprintf("M%f,%f %f,%f M%f,%f %f,%f M%f,%f %f,%f",
 				width-3.0, height/2.0,
@@ -328,7 +329,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 			)
 		}
 
-		gEl := d2themes.NewThemableElement("g")
+		gEl := d2themes.NewThemableElement("g", inlineTheme)
 		if !isTarget {
 			gEl.Transform = fmt.Sprintf("scale(-1) translate(-%f, -%f)", width, height)
 		}
@@ -495,7 +496,7 @@ func makeLabelMask(labelTL *geo.Point, width, height int, opacity float64) strin
 	)
 }
 
-func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, _ error) {
+func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, sketchRunner *d2sketch.Runner, inlineTheme *d2themes.Theme) (labelMask string, _ error) {
 	opacityStyle := ""
 	if connection.Opacity != 1.0 {
 		opacityStyle = fmt.Sprintf(" style='opacity:%f'", connection.Opacity)
@@ -510,7 +511,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 	if connection.SrcArrow != d2target.NoArrowhead {
 		id := arrowheadMarkerID(false, connection)
 		if _, in := markers[id]; !in {
-			marker := arrowheadMarker(false, id, connection)
+			marker := arrowheadMarker(false, id, connection, inlineTheme)
 			if marker == "" {
 				panic(fmt.Sprintf("received empty arrow head marker for: %#v", connection))
 			}
@@ -524,7 +525,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 	if connection.DstArrow != d2target.NoArrowhead {
 		id := arrowheadMarkerID(true, connection)
 		if _, in := markers[id]; !in {
-			marker := arrowheadMarker(true, id, connection)
+			marker := arrowheadMarker(true, id, connection, inlineTheme)
 			if marker == "" {
 				panic(fmt.Sprintf("received empty arrow head marker for: %#v", connection))
 			}
@@ -579,7 +580,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 				return "", err
 			}
 
-			pathEl1 := d2themes.NewThemableElement("path")
+			pathEl1 := d2themes.NewThemableElement("path", inlineTheme)
 			pathEl1.D = path1
 			pathEl1.Fill = color.None
 			pathEl1.Stroke = connection.Stroke
@@ -589,7 +590,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 			pathEl1.Attributes = fmt.Sprintf("%s%s", markerStart, mask)
 			fmt.Fprint(writer, pathEl1.Render())
 
-			pathEl2 := d2themes.NewThemableElement("path")
+			pathEl2 := d2themes.NewThemableElement("path", inlineTheme)
 			pathEl2.D = path2
 			pathEl2.Fill = color.None
 			pathEl2.Stroke = connection.Stroke
@@ -598,7 +599,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 			pathEl2.Attributes = fmt.Sprintf("%s%s", markerEnd, mask)
 			fmt.Fprint(writer, pathEl2.Render())
 		} else {
-			pathEl := d2themes.NewThemableElement("path")
+			pathEl := d2themes.NewThemableElement("path", inlineTheme)
 			pathEl.D = path
 			pathEl.Fill = color.None
 			pathEl.Stroke = connection.Stroke
@@ -623,7 +624,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 			fontClass += " text-underline"
 		}
 		if connection.Fill != color.Empty {
-			rectEl := d2themes.NewThemableElement("rect")
+			rectEl := d2themes.NewThemableElement("rect", inlineTheme)
 			rectEl.Rx = 10
 			rectEl.X, rectEl.Y = labelTL.X-4, labelTL.Y-3
 			rectEl.Width, rectEl.Height = float64(connection.LabelWidth)+8, float64(connection.LabelHeight)+6
@@ -631,7 +632,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 			fmt.Fprint(writer, rectEl.Render())
 		}
 
-		textEl := d2themes.NewThemableElement("text")
+		textEl := d2themes.NewThemableElement("text", inlineTheme)
 		textEl.X = labelTL.X + float64(connection.LabelWidth)/2
 		textEl.Y = labelTL.Y + float64(connection.FontSize)
 		textEl.Fill = connection.GetFontColor()
@@ -642,16 +643,16 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 	}
 
 	if connection.SrcLabel != nil && connection.SrcLabel.Label != "" {
-		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.SrcLabel.Label, false))
+		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.SrcLabel.Label, false, inlineTheme))
 	}
 	if connection.DstLabel != nil && connection.DstLabel.Label != "" {
-		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.DstLabel.Label, true))
+		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.DstLabel.Label, true, inlineTheme))
 	}
 	fmt.Fprintf(writer, `</g>`)
 	return
 }
 
-func renderArrowheadLabel(connection d2target.Connection, text string, isDst bool) string {
+func renderArrowheadLabel(connection d2target.Connection, text string, isDst bool, inlineTheme *d2themes.Theme) string {
 	var width, height float64
 	if isDst {
 		width = float64(connection.DstLabel.LabelWidth)
@@ -669,7 +670,7 @@ func renderArrowheadLabel(connection d2target.Connection, text string, isDst boo
 		Y: labelTL.Y + float64(connection.FontSize),
 	}
 
-	textEl := d2themes.NewThemableElement("text")
+	textEl := d2themes.NewThemableElement("text", inlineTheme)
 	textEl.X = baselineCenter.X
 	textEl.Y = baselineCenter.Y
 	textEl.Fill = d2target.FG_COLOR
@@ -688,8 +689,8 @@ func renderArrowheadLabel(connection d2target.Connection, text string, isDst boo
 	return textEl.Render()
 }
 
-func renderOval(tl *geo.Point, width, height float64, fill, fillPattern, stroke, style string) string {
-	el := d2themes.NewThemableElement("ellipse")
+func renderOval(tl *geo.Point, width, height float64, fill, fillPattern, stroke, style string, inlineTheme *d2themes.Theme) string {
+	el := d2themes.NewThemableElement("ellipse", inlineTheme)
 	el.Rx = width / 2
 	el.Ry = height / 2
 	el.Cx = tl.X + el.Rx
@@ -701,9 +702,9 @@ func renderOval(tl *geo.Point, width, height float64, fill, fillPattern, stroke,
 	return el.Render()
 }
 
-func renderDoubleOval(tl *geo.Point, width, height float64, fill, fillStroke, stroke, style string) string {
+func renderDoubleOval(tl *geo.Point, width, height float64, fill, fillStroke, stroke, style string, inlineTheme *d2themes.Theme) string {
 	var innerTL *geo.Point = tl.AddVector(geo.NewVector(d2target.INNER_BORDER_OFFSET, d2target.INNER_BORDER_OFFSET))
-	return renderOval(tl, width, height, fill, fillStroke, stroke, style) + renderOval(innerTL, width-10, height-10, fill, "", stroke, style)
+	return renderOval(tl, width, height, fill, fillStroke, stroke, style, inlineTheme) + renderOval(innerTL, width-10, height-10, fill, "", stroke, style, inlineTheme)
 }
 
 func defineGradients(writer io.Writer, cssGradient string) {
@@ -723,7 +724,7 @@ func defineShadowFilter(writer io.Writer) {
 </defs>`)
 }
 
-func render3DRect(targetShape d2target.Shape) string {
+func render3DRect(targetShape d2target.Shape, inlineTheme *d2themes.Theme) string {
 	moveTo := func(p d2target.Point) string {
 		return fmt.Sprintf("M%d,%d", p.X+targetShape.Pos.X, p.Y+targetShape.Pos.Y)
 	}
@@ -755,7 +756,7 @@ func render3DRect(targetShape d2target.Shape) string {
 	borderSegments = append(borderSegments,
 		lineTo(d2target.Point{X: targetShape.Width + d2target.THREE_DEE_OFFSET, Y: -d2target.THREE_DEE_OFFSET}),
 	)
-	border := d2themes.NewThemableElement("path")
+	border := d2themes.NewThemableElement("path", inlineTheme)
 	border.D = strings.Join(borderSegments, " ")
 	border.Fill = color.None
 	_, borderStroke := d2themes.ShapeTheme(targetShape)
@@ -778,7 +779,7 @@ func render3DRect(targetShape d2target.Shape) string {
 	}, "\n")
 
 	// render the main rectangle without stroke and the border mask
-	mainShape := d2themes.NewThemableElement("rect")
+	mainShape := d2themes.NewThemableElement("rect", inlineTheme)
 	mainShape.X = float64(targetShape.Pos.X)
 	mainShape.Y = float64(targetShape.Pos.Y)
 	mainShape.Width = float64(targetShape.Width)
@@ -809,7 +810,7 @@ func render3DRect(targetShape d2target.Shape) string {
 	if err != nil {
 		darkerColor = targetShape.Fill
 	}
-	sideShape := d2themes.NewThemableElement("polygon")
+	sideShape := d2themes.NewThemableElement("polygon", inlineTheme)
 	sideShape.Fill = darkerColor
 	sideShape.Points = strings.Join(sidePoints, " ")
 	sideShape.SetMaskUrl(maskID)
@@ -819,7 +820,7 @@ func render3DRect(targetShape d2target.Shape) string {
 	return borderMask + mainShapeRendered + renderedSides + renderedBorder
 }
 
-func render3DHexagon(targetShape d2target.Shape) string {
+func render3DHexagon(targetShape d2target.Shape, inlineTheme *d2themes.Theme) string {
 	moveTo := func(p d2target.Point) string {
 		return fmt.Sprintf("M%d,%d", p.X+targetShape.Pos.X, p.Y+targetShape.Pos.Y)
 	}
@@ -864,7 +865,7 @@ func render3DHexagon(targetShape d2target.Shape) string {
 			d2target.Point{X: v.X + d2target.THREE_DEE_OFFSET, Y: v.Y - Y_OFFSET},
 		))
 	}
-	border := d2themes.NewThemableElement("path")
+	border := d2themes.NewThemableElement("path", inlineTheme)
 	border.D = strings.Join(borderSegments, " ")
 	border.Fill = color.None
 	_, borderStroke := d2themes.ShapeTheme(targetShape)
@@ -901,7 +902,7 @@ func render3DHexagon(targetShape d2target.Shape) string {
 			strings.Join(borderSegments, ""), borderStyle),
 	}, "\n")
 	// render the main hexagon without stroke and the border mask
-	mainShape := d2themes.NewThemableElement("polygon")
+	mainShape := d2themes.NewThemableElement("polygon", inlineTheme)
 	mainShape.X = float64(targetShape.Pos.X)
 	mainShape.Y = float64(targetShape.Pos.Y)
 	mainShape.Points = mainPointsPoly
@@ -934,7 +935,7 @@ func render3DHexagon(targetShape d2target.Shape) string {
 	if err != nil {
 		darkerColor = targetShape.Fill
 	}
-	sideShape := d2themes.NewThemableElement("polygon")
+	sideShape := d2themes.NewThemableElement("polygon", inlineTheme)
 	sideShape.Fill = darkerColor
 	sideShape.Points = strings.Join(sidePoints, " ")
 	sideShape.SetMaskUrl(maskID)
@@ -944,7 +945,7 @@ func render3DHexagon(targetShape d2target.Shape) string {
 	return borderMask + mainShapeRendered + renderedSides + renderedBorder
 }
 
-func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, err error) {
+func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape d2target.Shape, sketchRunner *d2sketch.Runner, inlineTheme *d2themes.Theme) (labelMask string, err error) {
 	closingTag := "</g>"
 	if targetShape.Link != "" {
 
@@ -1011,7 +1012,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			}
 			fmt.Fprint(writer, out)
 		} else {
-			drawClass(writer, diagramHash, targetShape)
+			drawClass(writer, diagramHash, targetShape, inlineTheme)
 		}
 		addAppendixItems(appendixWriter, targetShape, s)
 		fmt.Fprint(writer, `</g>`)
@@ -1025,7 +1026,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			}
 			fmt.Fprint(writer, out)
 		} else {
-			drawTable(writer, diagramHash, targetShape)
+			drawTable(writer, diagramHash, targetShape, inlineTheme)
 		}
 		addAppendixItems(appendixWriter, targetShape, s)
 		fmt.Fprint(writer, `</g>`)
@@ -1034,7 +1035,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	case d2target.ShapeOval:
 		if targetShape.DoubleBorder {
 			if targetShape.Multiple {
-				fmt.Fprint(writer, renderDoubleOval(multipleTL, width, height, fill, "", stroke, style))
+				fmt.Fprint(writer, renderDoubleOval(multipleTL, width, height, fill, "", stroke, style, inlineTheme))
 			}
 			if sketchRunner != nil {
 				out, err := d2sketch.DoubleOval(sketchRunner, targetShape)
@@ -1043,11 +1044,11 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				}
 				fmt.Fprint(writer, out)
 			} else {
-				fmt.Fprint(writer, renderDoubleOval(tl, width, height, fill, targetShape.FillPattern, stroke, style))
+				fmt.Fprint(writer, renderDoubleOval(tl, width, height, fill, targetShape.FillPattern, stroke, style, inlineTheme))
 			}
 		} else {
 			if targetShape.Multiple {
-				fmt.Fprint(writer, renderOval(multipleTL, width, height, fill, "", stroke, style))
+				fmt.Fprint(writer, renderOval(multipleTL, width, height, fill, "", stroke, style, inlineTheme))
 			}
 			if sketchRunner != nil {
 				out, err := d2sketch.Oval(sketchRunner, targetShape)
@@ -1056,12 +1057,12 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				}
 				fmt.Fprint(writer, out)
 			} else {
-				fmt.Fprint(writer, renderOval(tl, width, height, fill, targetShape.FillPattern, stroke, style))
+				fmt.Fprint(writer, renderOval(tl, width, height, fill, targetShape.FillPattern, stroke, style, inlineTheme))
 			}
 		}
 
 	case d2target.ShapeImage:
-		el := d2themes.NewThemableElement("image")
+		el := d2themes.NewThemableElement("image", inlineTheme)
 		el.X = float64(targetShape.Pos.X)
 		el.Y = float64(targetShape.Pos.Y)
 		el.Width = float64(targetShape.Width)
@@ -1079,11 +1080,11 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			borderRadius = float64(targetShape.BorderRadius)
 		}
 		if targetShape.ThreeDee {
-			fmt.Fprint(writer, render3DRect(targetShape))
+			fmt.Fprint(writer, render3DRect(targetShape, inlineTheme))
 		} else {
 			if !targetShape.DoubleBorder {
 				if targetShape.Multiple {
-					el := d2themes.NewThemableElement("rect")
+					el := d2themes.NewThemableElement("rect", inlineTheme)
 					el.X = float64(targetShape.Pos.X + 10)
 					el.Y = float64(targetShape.Pos.Y - 10)
 					el.Width = float64(targetShape.Width)
@@ -1101,7 +1102,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					}
 					fmt.Fprint(writer, out)
 				} else {
-					el := d2themes.NewThemableElement("rect")
+					el := d2themes.NewThemableElement("rect", inlineTheme)
 					el.X = float64(targetShape.Pos.X)
 					el.Y = float64(targetShape.Pos.Y)
 					el.Width = float64(targetShape.Width)
@@ -1115,7 +1116,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				}
 			} else {
 				if targetShape.Multiple {
-					el := d2themes.NewThemableElement("rect")
+					el := d2themes.NewThemableElement("rect", inlineTheme)
 					el.X = float64(targetShape.Pos.X + 10)
 					el.Y = float64(targetShape.Pos.Y - 10)
 					el.Width = float64(targetShape.Width)
@@ -1127,7 +1128,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					el.Rx = borderRadius
 					fmt.Fprint(writer, el.Render())
 
-					el = d2themes.NewThemableElement("rect")
+					el = d2themes.NewThemableElement("rect", inlineTheme)
 					el.X = float64(targetShape.Pos.X + 10 + d2target.INNER_BORDER_OFFSET)
 					el.Y = float64(targetShape.Pos.Y - 10 + d2target.INNER_BORDER_OFFSET)
 					el.Width = float64(targetShape.Width - 2*d2target.INNER_BORDER_OFFSET)
@@ -1145,7 +1146,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					}
 					fmt.Fprint(writer, out)
 				} else {
-					el := d2themes.NewThemableElement("rect")
+					el := d2themes.NewThemableElement("rect", inlineTheme)
 					el.X = float64(targetShape.Pos.X)
 					el.Y = float64(targetShape.Pos.Y)
 					el.Width = float64(targetShape.Width)
@@ -1157,7 +1158,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					el.Rx = borderRadius
 					fmt.Fprint(writer, el.Render())
 
-					el = d2themes.NewThemableElement("rect")
+					el = d2themes.NewThemableElement("rect", inlineTheme)
 					el.X = float64(targetShape.Pos.X + d2target.INNER_BORDER_OFFSET)
 					el.Y = float64(targetShape.Pos.Y + d2target.INNER_BORDER_OFFSET)
 					el.Width = float64(targetShape.Width - 2*d2target.INNER_BORDER_OFFSET)
@@ -1172,11 +1173,11 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		}
 	case d2target.ShapeHexagon:
 		if targetShape.ThreeDee {
-			fmt.Fprint(writer, render3DHexagon(targetShape))
+			fmt.Fprint(writer, render3DHexagon(targetShape, inlineTheme))
 		} else {
 			if targetShape.Multiple {
 				multiplePathData := shape.NewShape(shapeType, geo.NewBox(multipleTL, width, height)).GetSVGPathData()
-				el := d2themes.NewThemableElement("path")
+				el := d2themes.NewThemableElement("path", inlineTheme)
 				el.Fill = fill
 				el.Stroke = stroke
 				el.Style = style
@@ -1193,7 +1194,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				}
 				fmt.Fprint(writer, out)
 			} else {
-				el := d2themes.NewThemableElement("path")
+				el := d2themes.NewThemableElement("path", inlineTheme)
 				el.Fill = fill
 				el.FillPattern = targetShape.FillPattern
 				el.Stroke = stroke
@@ -1208,7 +1209,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	default:
 		if targetShape.Multiple {
 			multiplePathData := shape.NewShape(shapeType, geo.NewBox(multipleTL, width, height)).GetSVGPathData()
-			el := d2themes.NewThemableElement("path")
+			el := d2themes.NewThemableElement("path", inlineTheme)
 			el.Fill = fill
 			el.Stroke = stroke
 			el.Style = style
@@ -1225,7 +1226,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			}
 			fmt.Fprint(writer, out)
 		} else {
-			el := d2themes.NewThemableElement("path")
+			el := d2themes.NewThemableElement("path", inlineTheme)
 			el.Fill = fill
 			el.FillPattern = targetShape.FillPattern
 			el.Stroke = stroke
@@ -1239,7 +1240,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 
 	// // to examine shape's innerBox
 	// innerBox := s.GetInnerBox()
-	// el := d2themes.NewThemableElement("rect")
+	// el := d2themes.NewThemableElement("rect", inlineTheme)
 	// el.X = float64(innerBox.TopLeft.X)
 	// el.Y = float64(innerBox.TopLeft.Y)
 	// el.Width = float64(innerBox.Width)
@@ -1347,7 +1348,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				fmt.Fprintf(writer, `<g transform="translate(%f %f)" class="%s"%s>`,
 					box.TopLeft.X, box.TopLeft.Y, class, fontSize,
 				)
-				rectEl := d2themes.NewThemableElement("rect")
+				rectEl := d2themes.NewThemableElement("rect", inlineTheme)
 				rectEl.Width = float64(targetShape.Width)
 				rectEl.Height = float64(targetShape.Height)
 				rectEl.Stroke = targetShape.Stroke
@@ -1381,7 +1382,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			if err != nil {
 				return labelMask, err
 			}
-			gEl := d2themes.NewThemableElement("g")
+			gEl := d2themes.NewThemableElement("g", inlineTheme)
 			gEl.SetTranslate(float64(box.TopLeft.X), float64(box.TopLeft.Y))
 			gEl.Color = targetShape.Stroke
 			gEl.Content = render
@@ -1397,7 +1398,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			// we need the self closing form in this svg/xhtml context
 			render = strings.ReplaceAll(render, "<hr>", "<hr />")
 
-			mdEl := d2themes.NewThemableElement("div")
+			mdEl := d2themes.NewThemableElement("div", inlineTheme)
 			mdEl.ClassName = "md"
 			mdEl.Content = render
 
@@ -1420,7 +1421,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			fmt.Fprint(writer, `</foreignObject></g>`)
 		} else {
 			if targetShape.LabelFill != "" {
-				rectEl := d2themes.NewThemableElement("rect")
+				rectEl := d2themes.NewThemableElement("rect", inlineTheme)
 				rectEl.X = labelTL.X
 				rectEl.Y = labelTL.Y
 				rectEl.Width = float64(targetShape.LabelWidth)
@@ -1428,7 +1429,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				rectEl.Fill = targetShape.LabelFill
 				fmt.Fprint(writer, rectEl.Render())
 			}
-			textEl := d2themes.NewThemableElement("text")
+			textEl := d2themes.NewThemableElement("text", inlineTheme)
 			textEl.X = labelTL.X + float64(targetShape.LabelWidth)/2
 			// text is vertically positioned at its baseline which is at labelTL+FontSize
 			textEl.Y = labelTL.Y + float64(targetShape.FontSize)
@@ -1881,9 +1882,15 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 
 	var labelMasks []string
 	markers := map[string]struct{}{}
+	var inlineTheme *d2themes.Theme
+	// We only want to inline when no dark theme is specified, otherwise the inline style will override the CSS
+	if darkThemeID == nil {
+		inlineTheme = go2.Pointer(d2themescatalog.Find(themeID))
+		inlineTheme.ApplyOverrides(opts.ThemeOverrides)
+	}
 	for _, obj := range allObjects {
 		if c, is := obj.(d2target.Connection); is {
-			labelMask, err := drawConnection(buf, isolatedDiagramHash, c, markers, idToShape, sketchRunner)
+			labelMask, err := drawConnection(buf, isolatedDiagramHash, c, markers, idToShape, sketchRunner, inlineTheme)
 			if err != nil {
 				return nil, err
 			}
@@ -1891,7 +1898,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 				labelMasks = append(labelMasks, labelMask)
 			}
 		} else if s, is := obj.(d2target.Shape); is {
-			labelMask, err := drawShape(buf, appendixItemBuf, diagramHash, s, sketchRunner)
+			labelMask, err := drawShape(buf, appendixItemBuf, diagramHash, s, sketchRunner, inlineTheme)
 			if err != nil {
 				return nil, err
 			} else if labelMask != "" {
@@ -1955,7 +1962,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	top -= int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
 	w += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
 	h += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
-	backgroundEl := d2themes.NewThemableElement("rect")
+	backgroundEl := d2themes.NewThemableElement("rect", inlineTheme)
 	// We don't want to change the document viewbox, only the background el
 	backgroundEl.X = float64(left)
 	backgroundEl.Y = float64(top)
