@@ -51,7 +51,7 @@ type ThemableElement struct {
 	FillPattern string
 }
 
-func NewThemableElement(tag string) *ThemableElement {
+func NewThemableElement(tag string, inlineTheme *Theme) *ThemableElement {
 	xmlns := ""
 	if tag == "div" {
 		xmlns = "http://www.w3.org/1999/xhtml"

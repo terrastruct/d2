@@ -95,7 +95,7 @@ func Rect(r *Runner, shape d2target.Shape) (string, error) {
 		return "", err
 	}
 	output := ""
-	pathEl := d2themes.NewThemableElement("path")
+	pathEl := d2themes.NewThemableElement("path", nil)
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	pathEl.FillPattern = shape.FillPattern
@@ -106,7 +106,7 @@ func Rect(r *Runner, shape d2target.Shape) (string, error) {
 		output += pathEl.Render()
 	}
 
-	sketchOEl := d2themes.NewThemableElement("rect")
+	sketchOEl := d2themes.NewThemableElement("rect", nil)
 	sketchOEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	sketchOEl.Width = float64(shape.Width)
 	sketchOEl.Height = float64(shape.Height)
@@ -143,7 +143,7 @@ func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
 
 	output := ""
 
-	pathEl := d2themes.NewThemableElement("path")
+	pathEl := d2themes.NewThemableElement("path", nil)
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	pathEl.FillPattern = shape.FillPattern
@@ -154,7 +154,7 @@ func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
 		output += pathEl.Render()
 	}
 
-	pathEl = d2themes.NewThemableElement("path")
+	pathEl = d2themes.NewThemableElement("path", nil)
 	pathEl.SetTranslate(float64(shape.Pos.X+d2target.INNER_BORDER_OFFSET), float64(shape.Pos.Y+d2target.INNER_BORDER_OFFSET))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	// No need for inner to double paint
@@ -166,7 +166,7 @@ func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
 		output += pathEl.Render()
 	}
 
-	sketchOEl := d2themes.NewThemableElement("rect")
+	sketchOEl := d2themes.NewThemableElement("rect", nil)
 	sketchOEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	sketchOEl.Width = float64(shape.Width)
 	sketchOEl.Height = float64(shape.Height)
@@ -191,7 +191,7 @@ func Oval(r *Runner, shape d2target.Shape) (string, error) {
 		return "", err
 	}
 	output := ""
-	pathEl := d2themes.NewThemableElement("path")
+	pathEl := d2themes.NewThemableElement("path", nil)
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	pathEl.FillPattern = shape.FillPattern
@@ -202,7 +202,7 @@ func Oval(r *Runner, shape d2target.Shape) (string, error) {
 		output += pathEl.Render()
 	}
 
-	soElement := d2themes.NewThemableElement("ellipse")
+	soElement := d2themes.NewThemableElement("ellipse", nil)
 	soElement.SetTranslate(float64(shape.Pos.X+shape.Width/2), float64(shape.Pos.Y+shape.Height/2))
 	soElement.Rx = float64(shape.Width / 2)
 	soElement.Ry = float64(shape.Height / 2)
@@ -242,7 +242,7 @@ func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
 
 	output := ""
 
-	pathEl := d2themes.NewThemableElement("path")
+	pathEl := d2themes.NewThemableElement("path", nil)
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	pathEl.FillPattern = shape.FillPattern
@@ -253,7 +253,7 @@ func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
 		output += pathEl.Render()
 	}
 
-	pathEl = d2themes.NewThemableElement("path")
+	pathEl = d2themes.NewThemableElement("path", nil)
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	// No need for inner to double paint
@@ -264,7 +264,7 @@ func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
 		pathEl.D = p
 		output += pathEl.Render()
 	}
-	soElement := d2themes.NewThemableElement("ellipse")
+	soElement := d2themes.NewThemableElement("ellipse", nil)
 	soElement.SetTranslate(float64(shape.Pos.X+shape.Width/2), float64(shape.Pos.Y+shape.Height/2))
 	soElement.Rx = float64(shape.Width / 2)
 	soElement.Ry = float64(shape.Height / 2)
@@ -294,7 +294,7 @@ func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		pathEl := d2themes.NewThemableElement("path")
+		pathEl := d2themes.NewThemableElement("path", nil)
 		pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 		pathEl.FillPattern = shape.FillPattern
 		pathEl.ClassName = "shape"
@@ -304,7 +304,7 @@ func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
 			output += pathEl.Render()
 		}
 
-		soElement := d2themes.NewThemableElement("path")
+		soElement := d2themes.NewThemableElement("path", nil)
 		for _, p := range sketchPaths {
 			soElement.D = p
 			renderedSO, err := d2themes.NewThemableSketchOverlay(
@@ -336,7 +336,7 @@ func Connection(r *Runner, connection d2target.Connection, path, attrs string) (
 				return "", err
 			}
 
-			pathEl1 := d2themes.NewThemableElement("path")
+			pathEl1 := d2themes.NewThemableElement("path", nil)
 			pathEl1.D = path1
 			pathEl1.Fill = color.None
 			pathEl1.Stroke = connection.Stroke
@@ -345,7 +345,7 @@ func Connection(r *Runner, connection d2target.Connection, path, attrs string) (
 			pathEl1.Style += "animation-direction: reverse;"
 			pathEl1.Attributes = attrs
 
-			pathEl2 := d2themes.NewThemableElement("path")
+			pathEl2 := d2themes.NewThemableElement("path", nil)
 			pathEl2.D = path2
 			pathEl2.Fill = color.None
 			pathEl2.Stroke = connection.Stroke
@@ -354,7 +354,7 @@ func Connection(r *Runner, connection d2target.Connection, path, attrs string) (
 			pathEl2.Attributes = attrs
 			return pathEl1.Render() + " " + pathEl2.Render(), nil
 		} else {
-			pathEl := d2themes.NewThemableElement("path")
+			pathEl := d2themes.NewThemableElement("path", nil)
 			pathEl.D = path
 			pathEl.Fill = color.None
 			pathEl.Stroke = connection.Stroke
@@ -373,7 +373,7 @@ func Connection(r *Runner, connection d2target.Connection, path, attrs string) (
 
 		output := ""
 
-		pathEl := d2themes.NewThemableElement("path")
+		pathEl := d2themes.NewThemableElement("path", nil)
 		pathEl.Fill = color.None
 		pathEl.Stroke = connection.Stroke
 		pathEl.ClassName = fmt.Sprintf("connection%s", animatedClass)
@@ -400,7 +400,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	pathEl := d2themes.NewThemableElement("path")
+	pathEl := d2themes.NewThemableElement("path", nil)
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	pathEl.FillPattern = shape.FillPattern
@@ -427,7 +427,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	pathEl = d2themes.NewThemableElement("path")
+	pathEl = d2themes.NewThemableElement("path", nil)
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill = shape.Fill
 	pathEl.FillPattern = shape.FillPattern
@@ -445,7 +445,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 			float64(shape.LabelHeight),
 		)
 
-		textEl := d2themes.NewThemableElement("text")
+		textEl := d2themes.NewThemableElement("text", nil)
 		textEl.X = tl.X
 		textEl.Y = tl.Y + float64(shape.LabelHeight)*3/4
 		textEl.Fill = shape.GetFontColor()
@@ -478,7 +478,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 			float64(shape.FontSize),
 		)
 
-		textEl := d2themes.NewThemableElement("text")
+		textEl := d2themes.NewThemableElement("text", nil)
 		textEl.X = nameTL.X
 		textEl.Y = nameTL.Y + float64(shape.FontSize)*3/4
 		textEl.Fill = shape.PrimaryAccentColor
@@ -508,7 +508,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		pathEl := d2themes.NewThemableElement("path")
+		pathEl := d2themes.NewThemableElement("path", nil)
 		pathEl.Fill = shape.Fill
 		pathEl.FillPattern = shape.FillPattern
 		for _, p := range paths {
@@ -517,7 +517,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 		}
 	}
 
-	sketchOEl := d2themes.NewThemableElement("rect")
+	sketchOEl := d2themes.NewThemableElement("rect", nil)
 	sketchOEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	sketchOEl.Width = float64(shape.Width)
 	sketchOEl.Height = float64(shape.Height)
@@ -542,7 +542,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	pathEl := d2themes.NewThemableElement("path")
+	pathEl := d2themes.NewThemableElement("path", nil)
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	pathEl.FillPattern = shape.FillPattern
@@ -570,7 +570,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	pathEl = d2themes.NewThemableElement("path")
+	pathEl = d2themes.NewThemableElement("path", nil)
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill = shape.Fill
 	pathEl.FillPattern = shape.FillPattern
@@ -580,7 +580,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 		output += pathEl.Render()
 	}
 
-	sketchOEl := d2themes.NewThemableElement("rect")
+	sketchOEl := d2themes.NewThemableElement("rect", nil)
 	sketchOEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	sketchOEl.Width = float64(shape.Width)
 	sketchOEl.Height = headerBox.Height
@@ -598,7 +598,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 			float64(shape.LabelHeight),
 		)
 
-		textEl := d2themes.NewThemableElement("text")
+		textEl := d2themes.NewThemableElement("text", nil)
 		textEl.X = tl.X + float64(shape.LabelWidth)/2
 		textEl.Y = tl.Y + float64(shape.LabelHeight)*3/4
 		textEl.Fill = shape.GetFontColor()
@@ -625,7 +625,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	pathEl = d2themes.NewThemableElement("path")
+	pathEl = d2themes.NewThemableElement("path", nil)
 	pathEl.Fill = shape.Fill
 	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "class_header"
@@ -657,7 +657,7 @@ func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText str
 		fontSize,
 	)
 
-	textEl := d2themes.NewThemableElement("text")
+	textEl := d2themes.NewThemableElement("text", nil)
 	textEl.X = prefixTL.X
 	textEl.Y = prefixTL.Y + fontSize*3/4
 	textEl.Fill = shape.PrimaryAccentColor
@@ -883,7 +883,7 @@ func Arrowheads(r *Runner, connection d2target.Connection, srcAdj, dstAdj *geo.P
 			roughPaths = append(roughPaths, extraPaths...)
 		}
 
-		pathEl := d2themes.NewThemableElement("path")
+		pathEl := d2themes.NewThemableElement("path", nil)
 		pathEl.ClassName = "connection"
 		pathEl.Attributes = transform
 		for _, rp := range roughPaths {
@@ -922,7 +922,7 @@ func Arrowheads(r *Runner, connection d2target.Connection, srcAdj, dstAdj *geo.P
 			roughPaths = append(roughPaths, extraPaths...)
 		}
 
-		pathEl := d2themes.NewThemableElement("path")
+		pathEl := d2themes.NewThemableElement("path", nil)
 		pathEl.ClassName = "connection"
 		pathEl.Attributes = transform
 		for _, rp := range roughPaths {

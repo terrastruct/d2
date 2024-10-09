@@ -41,8 +41,8 @@ func clipPathForBorderRadius(diagramHash string, shape d2target.Shape) string {
 	return out + `fill="none" /> </clipPath>`
 }
 
-func tableHeader(diagramHash string, shape d2target.Shape, box *geo.Box, text string, textWidth, textHeight, fontSize float64) string {
-	rectEl := d2themes.NewThemableElement("rect")
+func tableHeader(diagramHash string, shape d2target.Shape, box *geo.Box, text string, textWidth, textHeight, fontSize float64, inlineTheme *d2themes.Theme) string {
+	rectEl := d2themes.NewThemableElement("rect", inlineTheme)
 	rectEl.X, rectEl.Y = box.TopLeft.X, box.TopLeft.Y
 	rectEl.Width, rectEl.Height = box.Width, box.Height
 	rectEl.Fill = shape.Fill
@@ -61,7 +61,7 @@ func tableHeader(diagramHash string, shape d2target.Shape, box *geo.Box, text st
 			textHeight,
 		)
 
-		textEl := d2themes.NewThemableElement("text")
+		textEl := d2themes.NewThemableElement("text", inlineTheme)
 		textEl.X = tl.X
 		textEl.Y = tl.Y + textHeight*3/4
 		textEl.Fill = shape.GetFontColor()
@@ -75,7 +75,7 @@ func tableHeader(diagramHash string, shape d2target.Shape, box *geo.Box, text st
 	return str
 }
 
-func tableRow(shape d2target.Shape, box *geo.Box, nameText, typeText, constraintText string, fontSize, longestNameWidth, longestTypeWidth float64) string {
+func tableRow(shape d2target.Shape, box *geo.Box, nameText, typeText, constraintText string, fontSize, longestNameWidth, longestTypeWidth float64, inlineTheme *d2themes.Theme) string {
 	// Row is made up of name, type, and constraint
 	// e.g. | diagram   int   FK |
 	nameTL := label.InsideMiddleLeft.GetPointOnBox(
@@ -85,7 +85,7 @@ func tableRow(shape d2target.Shape, box *geo.Box, nameText, typeText, constraint
 		fontSize,
 	)
 
-	textEl := d2themes.NewThemableElement("text")
+	textEl := d2themes.NewThemableElement("text", inlineTheme)
 	textEl.X = nameTL.X
 	textEl.Y = nameTL.Y + fontSize*3/4
 	textEl.Fill = shape.PrimaryAccentColor
@@ -108,8 +108,8 @@ func tableRow(shape d2target.Shape, box *geo.Box, nameText, typeText, constraint
 	return out
 }
 
-func drawTable(writer io.Writer, diagramHash string, targetShape d2target.Shape) {
-	rectEl := d2themes.NewThemableElement("rect")
+func drawTable(writer io.Writer, diagramHash string, targetShape d2target.Shape, inlineTheme *d2themes.Theme) {
+	rectEl := d2themes.NewThemableElement("rect", inlineTheme)
 	rectEl.X = float64(targetShape.Pos.X)
 	rectEl.Y = float64(targetShape.Pos.Y)
 	rectEl.Width = float64(targetShape.Width)
@@ -134,7 +134,7 @@ func drawTable(writer io.Writer, diagramHash string, targetShape d2target.Shape)
 
 	fmt.Fprint(writer,
 		tableHeader(diagramHash, targetShape, headerBox, targetShape.Label,
-			float64(targetShape.LabelWidth), float64(targetShape.LabelHeight), float64(targetShape.FontSize)),
+			float64(targetShape.LabelWidth), float64(targetShape.LabelHeight), float64(targetShape.FontSize), inlineTheme),
 	)
 
 	var longestNameWidth int
@@ -148,11 +148,11 @@ func drawTable(writer io.Writer, diagramHash string, targetShape d2target.Shape)
 	rowBox.TopLeft.Y += headerBox.Height
 	for idx, f := range targetShape.Columns {
 		fmt.Fprint(writer,
-			tableRow(targetShape, rowBox, f.Name.Label, f.Type.Label, f.ConstraintAbbr(), float64(targetShape.FontSize), float64(longestNameWidth), float64(longestTypeWidth)),
+			tableRow(targetShape, rowBox, f.Name.Label, f.Type.Label, f.ConstraintAbbr(), float64(targetShape.FontSize), float64(longestNameWidth), float64(longestTypeWidth), inlineTheme),
 		)
 		rowBox.TopLeft.Y += rowHeight
 
-		lineEl := d2themes.NewThemableElement("line")
+		lineEl := d2themes.NewThemableElement("line", inlineTheme)
 		if idx == len(targetShape.Columns)-1 && targetShape.BorderRadius != 0 {
 			lineEl.X1, lineEl.Y1 = rowBox.TopLeft.X+float64(targetShape.BorderRadius), rowBox.TopLeft.Y
 			lineEl.X2, lineEl.Y2 = rowBox.TopLeft.X+rowBox.Width-float64(targetShape.BorderRadius), rowBox.TopLeft.Y

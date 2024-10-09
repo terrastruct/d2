@@ -13,8 +13,8 @@ import (
 	"oss.terrastruct.com/d2/lib/svg"
 )
 
-func classHeader(diagramHash string, shape d2target.Shape, box *geo.Box, text string, textWidth, textHeight, fontSize float64) string {
-	rectEl := d2themes.NewThemableElement("rect")
+func classHeader(diagramHash string, shape d2target.Shape, box *geo.Box, text string, textWidth, textHeight, fontSize float64, inlineTheme *d2themes.Theme) string {
+	rectEl := d2themes.NewThemableElement("rect", inlineTheme)
 	rectEl.X, rectEl.Y = box.TopLeft.X, box.TopLeft.Y
 	rectEl.Width, rectEl.Height = box.Width, box.Height
 	rectEl.Fill = shape.Fill
@@ -33,7 +33,7 @@ func classHeader(diagramHash string, shape d2target.Shape, box *geo.Box, text st
 			textHeight,
 		)
 
-		textEl := d2themes.NewThemableElement("text")
+		textEl := d2themes.NewThemableElement("text", inlineTheme)
 		textEl.X = tl.X + textWidth/2
 		textEl.Y = tl.Y + fontSize
 		textEl.Fill = shape.GetFontColor()
@@ -47,7 +47,7 @@ func classHeader(diagramHash string, shape d2target.Shape, box *geo.Box, text st
 	return str
 }
 
-func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText string, fontSize float64) string {
+func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText string, fontSize float64, inlineTheme *d2themes.Theme) string {
 	// Row is made up of prefix, name, and type
 	// e.g. | + firstName   string  |
 	prefixTL := label.InsideMiddleLeft.GetPointOnBox(
@@ -63,7 +63,7 @@ func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText str
 		fontSize,
 	)
 
-	textEl := d2themes.NewThemableElement("text")
+	textEl := d2themes.NewThemableElement("text", inlineTheme)
 	textEl.X = prefixTL.X
 	textEl.Y = prefixTL.Y + fontSize*3/4
 	textEl.Fill = shape.PrimaryAccentColor
@@ -87,8 +87,8 @@ func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText str
 	return out
 }
 
-func drawClass(writer io.Writer, diagramHash string, targetShape d2target.Shape) {
-	el := d2themes.NewThemableElement("rect")
+func drawClass(writer io.Writer, diagramHash string, targetShape d2target.Shape, inlineTheme *d2themes.Theme) {
+	el := d2themes.NewThemableElement("rect", inlineTheme)
 	el.X = float64(targetShape.Pos.X)
 	el.Y = float64(targetShape.Pos.Y)
 	el.Width = float64(targetShape.Width)
@@ -111,19 +111,19 @@ func drawClass(writer io.Writer, diagramHash string, targetShape d2target.Shape)
 	headerBox := geo.NewBox(box.TopLeft, box.Width, math.Max(2*rowHeight, float64(targetShape.LabelHeight)+2*label.PADDING))
 
 	fmt.Fprint(writer,
-		classHeader(diagramHash, targetShape, headerBox, targetShape.Label, float64(targetShape.LabelWidth), float64(targetShape.LabelHeight), float64(targetShape.FontSize)),
+		classHeader(diagramHash, targetShape, headerBox, targetShape.Label, float64(targetShape.LabelWidth), float64(targetShape.LabelHeight), float64(targetShape.FontSize), inlineTheme),
 	)
 
 	rowBox := geo.NewBox(box.TopLeft.Copy(), box.Width, rowHeight)
 	rowBox.TopLeft.Y += headerBox.Height
 	for _, f := range targetShape.Fields {
 		fmt.Fprint(writer,
-			classRow(targetShape, rowBox, f.VisibilityToken(), f.Name, f.Type, float64(targetShape.FontSize)),
+			classRow(targetShape, rowBox, f.VisibilityToken(), f.Name, f.Type, float64(targetShape.FontSize), inlineTheme),
 		)
 		rowBox.TopLeft.Y += rowHeight
 	}
 
-	lineEl := d2themes.NewThemableElement("line")
+	lineEl := d2themes.NewThemableElement("line", inlineTheme)
 
 	if targetShape.BorderRadius != 0 && len(targetShape.Methods) == 0 {
 		lineEl.X1, lineEl.Y1 = rowBox.TopLeft.X+float64(targetShape.BorderRadius), rowBox.TopLeft.Y
@@ -139,7 +139,7 @@ func drawClass(writer io.Writer, diagramHash string, targetShape d2target.Shape)
 
 	for _, m := range targetShape.Methods {
 		fmt.Fprint(writer,
-			classRow(targetShape, rowBox, m.VisibilityToken(), m.Name, m.Return, float64(targetShape.FontSize)),
+			classRow(targetShape, rowBox, m.VisibilityToken(), m.Name, m.Return, float64(targetShape.FontSize), inlineTheme),
 		)
 		rowBox.TopLeft.Y += rowHeight
 	}
