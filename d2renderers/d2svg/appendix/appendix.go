@@ -81,7 +81,7 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 	viewboxHeight, _ := strconv.Atoi(viewboxSlice[3])
 
 	tl, br := diagram.BoundingBox()
-	separatorEl := d2themes.NewThemableElement("line")
+	separatorEl := d2themes.NewThemableElement("line", nil)
 	separatorEl.X1 = float64(tl.X - PAD_SIDES)
 	separatorEl.Y1 = float64(br.Y + PAD_TOP)
 	separatorEl.X2 = float64(go2.IntMax(w, br.X) + PAD_SIDES)

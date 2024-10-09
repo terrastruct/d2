@@ -1882,9 +1882,9 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 
 	var labelMasks []string
 	markers := map[string]struct{}{}
-	// We only want to inline when no dark theme is specified, otherwise the inline style will override the CSS
 	var inlineTheme *d2themes.Theme
-	if darkThemeID != nil {
+	// We only want to inline when no dark theme is specified, otherwise the inline style will override the CSS
+	if darkThemeID == nil {
 		inlineTheme = go2.Pointer(d2themescatalog.Find(themeID))
 		inlineTheme.ApplyOverrides(opts.ThemeOverrides)
 	}
