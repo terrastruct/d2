@@ -97,7 +97,8 @@ type jsRefRanges struct {
 
 func jsGetRefRanges(this js.Value, args []js.Value) interface{} {
 	fsRaw := args[0].String()
-	key := args[1].String()
+	file := args[1].String()
+	key := args[2].String()
 
 	var fs map[string]string
 	err := json.Unmarshal([]byte(fsRaw), &fs)
@@ -114,7 +115,7 @@ func jsGetRefRanges(this js.Value, args []js.Value) interface{} {
 		return string(str)
 	}
 
-	refs, err := d2lsp.GetFieldRefs("", fs, key)
+	refs, err := d2lsp.GetFieldRefs("", file, fs, key)
 	if err != nil {
 		ret := jsRefRanges{D2Error: err.Error()}
 		str, _ := json.Marshal(ret)
