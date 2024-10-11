@@ -4,6 +4,7 @@ package memfs
 
 import (
 	"errors"
+	"io"
 	"io/fs"
 	"path"
 	"path/filepath"
@@ -42,13 +43,34 @@ func (mfs *MemoryFS) addFile(p string, content []byte, isDir bool) {
 	}
 }
 
+type MemoryFileHandle struct {
+	*MemoryFile
+	offset int
+}
+
 func (mfs *MemoryFS) Open(name string) (fs.File, error) {
 	file, ok := mfs.files[filepath.Clean(name)]
 	if !ok {
 		return nil, fs.ErrNotExist
 	}
-	return file, nil
+	return &MemoryFileHandle{MemoryFile: file}, nil
 }
+
+func (fh *MemoryFileHandle) Stat() (fs.FileInfo, error) { return fh.MemoryFile, nil }
+
+func (fh *MemoryFileHandle) Read(b []byte) (int, error) {
+	if fh.isDir {
+		return 0, errors.New("cannot read a directory")
+	}
+	if fh.offset >= len(fh.content) {
+		return 0, io.EOF
+	}
+	n := copy(b, fh.content[fh.offset:])
+	fh.offset += n
+	return n, nil
+}
+
+func (fh *MemoryFileHandle) Close() error { return nil }
 
 func (mf *MemoryFile) Stat() (fs.FileInfo, error) { return mf, nil }
 func (mf *MemoryFile) Read(b []byte) (int, error) {
