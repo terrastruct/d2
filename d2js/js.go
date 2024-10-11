@@ -14,6 +14,7 @@ import (
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2format"
+	"oss.terrastruct.com/d2/d2lsp"
 	"oss.terrastruct.com/d2/d2oracle"
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/lib/urlenc"
@@ -95,56 +96,35 @@ type jsRefRanges struct {
 }
 
 func jsGetRefRanges(this js.Value, args []js.Value) interface{} {
-	dsl := args[0].String()
+	fsRaw := args[0].String()
 	key := args[1].String()
 
-	mk, err := d2parser.ParseMapKey(key)
+	var fs map[string]string
+	err := json.Unmarshal([]byte(fsRaw), &fs)
 	if err != nil {
 		ret := jsRefRanges{D2Error: err.Error()}
 		str, _ := json.Marshal(ret)
 		return string(str)
 	}
 
-	g, _, err := d2compiler.Compile("", strings.NewReader(dsl), &d2compiler.CompileOptions{
-		UTF16Pos: true,
-	})
-	var pe *d2parser.ParseError
+	_, err = d2parser.ParseMapKey(key)
 	if err != nil {
-		if errors.As(err, &pe) {
-			serialized, _ := json.Marshal(err)
-			// TODO
-			ret := jsRefRanges{ParseError: string(serialized)}
-			str, _ := json.Marshal(ret)
-			return string(str)
-		}
+		ret := jsRefRanges{D2Error: err.Error()}
+		str, _ := json.Marshal(ret)
+		return string(str)
+	}
+
+	refs, err := d2lsp.GetFieldRefs("", fs, key)
+	if err != nil {
 		ret := jsRefRanges{D2Error: err.Error()}
 		str, _ := json.Marshal(ret)
 		return string(str)
 	}
 
 	var ranges []d2ast.Range
-	if len(mk.Edges) == 1 {
-		edge := d2oracle.GetEdge(g, nil, key)
-		if edge == nil {
-			ret := jsRefRanges{D2Error: "edge not found"}
-			str, _ := json.Marshal(ret)
-			return string(str)
-		}
 
-		for _, ref := range edge.References {
-			ranges = append(ranges, ref.MapKey.Range)
-		}
-	} else {
-		obj := d2oracle.GetObj(g, nil, key)
-		if obj == nil {
-			ret := jsRefRanges{D2Error: "obj not found"}
-			str, _ := json.Marshal(ret)
-			return string(str)
-		}
-
-		for _, ref := range obj.References {
-			ranges = append(ranges, ref.Key.Range)
-		}
+	for _, ref := range refs {
+		ranges = append(ranges, ref.AST().GetRange())
 	}
 
 	resp := jsRefRanges{
