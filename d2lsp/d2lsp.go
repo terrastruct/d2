@@ -2,7 +2,6 @@
 package d2lsp
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
@@ -11,11 +10,11 @@ import (
 	"oss.terrastruct.com/d2/lib/memfs"
 )
 
-func GetFieldRefs(path string, fs map[string]string, key string) (refs []d2ir.Reference, _ error) {
-	if _, ok := fs["index"]; !ok {
-		return nil, errors.New("index not found")
+func GetFieldRefs(path, index string, fs map[string]string, key string) (refs []d2ir.Reference, _ error) {
+	if _, ok := fs[index]; !ok {
+		return nil, fmt.Errorf(`"%s" not found`, index)
 	}
-	r := strings.NewReader(fs["index"])
+	r := strings.NewReader(fs[index])
 	ast, err := d2parser.Parse(path, r, nil)
 	if err != nil {
 		return nil, err
@@ -46,7 +45,7 @@ func GetFieldRefs(path string, fs map[string]string, key string) (refs []d2ir.Re
 	for _, p := range mk.Key.Path {
 		f = curr.GetField(p.Unbox().ScalarString())
 		if f == nil {
-			return nil, fmt.Errorf(`"%s" not found`, key)
+			return nil, nil
 		}
 		curr = f.Map()
 	}
