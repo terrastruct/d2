@@ -10,11 +10,11 @@ import (
 	"oss.terrastruct.com/d2/lib/memfs"
 )
 
-func GetFieldRefs(path, index string, fs map[string]string, key string) (refs []d2ir.Reference, _ error) {
-	if _, ok := fs[index]; !ok {
-		return nil, fmt.Errorf(`"%s" not found`, index)
+func GetFieldRefs(path string, fs map[string]string, key string, boardPath []string) (refs []d2ir.Reference, _ error) {
+	if _, ok := fs[path]; !ok {
+		return nil, fmt.Errorf(`"%s" not found`, path)
 	}
-	r := strings.NewReader(fs[index])
+	r := strings.NewReader(fs[path])
 	ast, err := d2parser.Parse(path, r, nil)
 	if err != nil {
 		return nil, err
@@ -38,6 +38,11 @@ func GetFieldRefs(path, index string, fs map[string]string, key string) (refs []
 	})
 	if err != nil {
 		return nil, err
+	}
+
+	ir = ir.FindBoardRoot(boardPath)
+	if ir == nil {
+		return nil, fmt.Errorf(`board "%v" not found`, boardPath)
 	}
 
 	var f *d2ir.Field

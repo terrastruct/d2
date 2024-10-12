@@ -1771,3 +1771,51 @@ func (m *Map) IsClass() bool {
 	}
 	return false
 }
+
+func (m *Map) FindBoardRoot(path []string) *Map {
+	if m == nil {
+		return nil
+	}
+	if len(path) == 0 {
+		return m
+	}
+
+	layersf := m.GetField("layers")
+	scenariosf := m.GetField("scenarios")
+	stepsf := m.GetField("steps")
+
+	if layersf != nil && layersf.Map() != nil {
+		for _, f := range layersf.Map().Fields {
+			if f.Name == path[0] {
+				if len(path) == 1 {
+					return f.Map()
+				}
+				return layersf.Map().FindBoardRoot(path[1:])
+			}
+		}
+	}
+
+	if scenariosf != nil && scenariosf.Map() != nil {
+		for _, f := range scenariosf.Map().Fields {
+			if f.Name == path[0] {
+				if len(path) == 1 {
+					return f.Map()
+				}
+				return scenariosf.Map().FindBoardRoot(path[1:])
+			}
+		}
+	}
+
+	if stepsf != nil && stepsf.Map() != nil {
+		for _, f := range stepsf.Map().Fields {
+			if f.Name == path[0] {
+				if len(path) == 1 {
+					return f.Map()
+				}
+				return stepsf.Map().FindBoardRoot(path[1:])
+			}
+		}
+	}
+
+	return nil
+}
