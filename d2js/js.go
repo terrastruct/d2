@@ -99,6 +99,7 @@ func jsGetRefRanges(this js.Value, args []js.Value) interface{} {
 	fsRaw := args[0].String()
 	file := args[1].String()
 	key := args[2].String()
+	boardPathRaw := args[3].String()
 
 	var fs map[string]string
 	err := json.Unmarshal([]byte(fsRaw), &fs)
@@ -115,7 +116,15 @@ func jsGetRefRanges(this js.Value, args []js.Value) interface{} {
 		return string(str)
 	}
 
-	refs, err := d2lsp.GetFieldRefs("", file, fs, key)
+	var boardPath []string
+	err = json.Unmarshal([]byte(boardPathRaw), &boardPath)
+	if err != nil {
+		ret := jsRefRanges{D2Error: err.Error()}
+		str, _ := json.Marshal(ret)
+		return string(str)
+	}
+
+	refs, err := d2lsp.GetFieldRefs(file, fs, key, boardPath)
 	if err != nil {
 		ret := jsRefRanges{D2Error: err.Error()}
 		str, _ := json.Marshal(ret)
