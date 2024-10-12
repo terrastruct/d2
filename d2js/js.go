@@ -124,7 +124,7 @@ func jsGetRefRanges(this js.Value, args []js.Value) interface{} {
 		return string(str)
 	}
 
-	refs, err := d2lsp.GetFieldRefs(file, fs, key, boardPath)
+	refs, err := d2lsp.GetRefs(file, fs, key, boardPath)
 	if err != nil {
 		ret := jsRefRanges{D2Error: err.Error()}
 		str, _ := json.Marshal(ret)
