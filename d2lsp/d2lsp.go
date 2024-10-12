@@ -10,7 +10,7 @@ import (
 	"oss.terrastruct.com/d2/lib/memfs"
 )
 
-func GetFieldRefs(path string, fs map[string]string, key string, boardPath []string) (refs []d2ir.Reference, _ error) {
+func GetRefs(path string, fs map[string]string, key string, boardPath []string) (refs []d2ir.Reference, _ error) {
 	if _, ok := fs[path]; !ok {
 		return nil, fmt.Errorf(`"%s" not found`, path)
 	}
@@ -29,33 +29,52 @@ func GetFieldRefs(path string, fs map[string]string, key string, boardPath []str
 	if err != nil {
 		return nil, err
 	}
-	if mk.Key == nil {
+	if mk.Key == nil && len(mk.Edges) == 0 {
 		return nil, fmt.Errorf(`"%s" is invalid`, key)
 	}
 
-	ir, _, err := d2ir.Compile(ast, &d2ir.CompileOptions{
+	m, _, err := d2ir.Compile(ast, &d2ir.CompileOptions{
 		FS: mfs,
 	})
 	if err != nil {
 		return nil, err
 	}
 
-	ir = ir.FindBoardRoot(boardPath)
-	if ir == nil {
+	m = m.FindBoardRoot(boardPath)
+	if m == nil {
 		return nil, fmt.Errorf(`board "%v" not found`, boardPath)
 	}
 
 	var f *d2ir.Field
-	curr := ir
-	for _, p := range mk.Key.Path {
-		f = curr.GetField(p.Unbox().ScalarString())
-		if f == nil {
+	if mk.Key != nil {
+		for _, p := range mk.Key.Path {
+			f = m.GetField(p.Unbox().ScalarString())
+			if f == nil {
+				return nil, nil
+			}
+			m = f.Map()
+		}
+	}
+
+	if len(mk.Edges) > 0 {
+		eids := d2ir.NewEdgeIDs(mk)
+		var edges []*d2ir.Edge
+		for _, eid := range eids {
+			edges = append(edges, m.GetEdges(eid, nil, nil)...)
+		}
+		if len(edges) == 0 {
 			return nil, nil
 		}
-		curr = f.Map()
-	}
-	for _, ref := range f.References {
-		refs = append(refs, ref)
+		for _, edge := range edges {
+			for _, ref := range edge.References {
+				refs = append(refs, ref)
+			}
+		}
+		return refs, nil
+	} else {
+		for _, ref := range f.References {
+			refs = append(refs, ref)
+		}
 	}
 	return refs, nil
 }
