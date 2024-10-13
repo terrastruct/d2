@@ -4,7 +4,7 @@
     "errs": [
       {
         "range": "d2/testdata/d2compiler/TestCompile/near_special.d2,0:8:8-0:11:11",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/near_special.d2:1:9: near keys cannot be set to descendants of special objects, like grid cells"
+        "errmsg": "d2/testdata/d2compiler/TestCompile/near_special.d2:1:9: near keys cannot be set to a non-sibling"
       }
     ]
   }
