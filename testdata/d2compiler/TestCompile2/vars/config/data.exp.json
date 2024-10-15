@@ -1,0 +1,157 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": true,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,0:0:0-8:0:60",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,1:0:1-7:1:59",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,1:0:1-1:4:5",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,1:0:1-1:4:5",
+                    "value": [
+                      {
+                        "string": "vars",
+                        "raw_string": "vars"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,1:6:7-7:1:59",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,2:1:10-6:3:57",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,2:1:10-2:10:19",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,2:1:10-2:10:19",
+                              "value": [
+                                {
+                                  "string": "d2-config",
+                                  "raw_string": "d2-config"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,2:12:21-6:3:57",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,3:2:25-5:5:53",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,3:2:25-3:6:29",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,3:2:25-3:6:29",
+                                        "value": [
+                                          {
+                                            "string": "data",
+                                            "raw_string": "data"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "map": {
+                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,3:8:31-5:5:53",
+                                    "nodes": [
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,4:6:39-4:14:47",
+                                          "key": {
+                                            "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,4:6:39-4:9:42",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,4:6:39-4:9:42",
+                                                  "value": [
+                                                    {
+                                                      "string": "cat",
+                                                      "raw_string": "cat"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "unquoted_string": {
+                                              "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,4:11:44-4:14:47",
+                                              "value": [
+                                                {
+                                                  "string": "hat",
+                                                  "raw_string": "hat"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": null
+  },
+  "err": null
+}
