@@ -17,7 +17,6 @@ import (
 	"image/png"
 	"os"
 	"text/template"
-	"time"
 )
 
 type BoardTitle struct {
@@ -226,15 +225,12 @@ func (p *Presentation) SaveTo(filePath string) error {
 		return err
 	}
 
-	dateTime := time.Now().Format(time.RFC3339)
 	err = addFileFromTemplate(zipWriter, "docProps/core.xml", CORE_XML, CoreXmlContent{
 		Creator:        p.Creator,
 		Subject:        p.Subject,
 		Description:    p.Description,
 		LastModifiedBy: p.Creator,
 		Title:          p.Title,
-		Created:        dateTime,
-		Modified:       dateTime,
 	})
 	if err != nil {
 		return err
