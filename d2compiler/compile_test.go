@@ -4573,6 +4573,22 @@ x: {
 `, `d2/testdata/d2compiler/TestCompile2/vars/config/not-root.d2:4:4: "d2-config" can only appear at root vars`)
 				},
 			},
+			{
+				name: "data",
+				run: func(t *testing.T) {
+					_, config := assertCompile(t, `
+vars: {
+	d2-config: {
+		data: {
+      cat: hat
+    }
+  }
+}
+`, ``)
+					assert.Equal(t, 1, len(config.Data))
+					assert.Equal(t, "hat", config.Data["cat"])
+				},
+			},
 		}
 
 		for _, tc := range tca {

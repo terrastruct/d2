@@ -1463,6 +1463,13 @@ func compileConfig(ir *d2ir.Map) (*d2target.Config, error) {
 		}
 		config.DarkThemeOverrides = overrides
 	}
+	f = configMap.GetField("data")
+	if f != nil && f.Map() != nil {
+		config.Data = make(map[string]string)
+		for _, f := range f.Map().Fields {
+			config.Data[f.Name] = f.Primary().Value.ScalarString()
+		}
+	}
 
 	return config, nil
 }
