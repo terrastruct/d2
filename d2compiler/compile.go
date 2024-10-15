@@ -1465,9 +1465,23 @@ func compileConfig(ir *d2ir.Map) (*d2target.Config, error) {
 	}
 	f = configMap.GetField("data")
 	if f != nil && f.Map() != nil {
-		config.Data = make(map[string]string)
+		config.Data = make(map[string]interface{})
 		for _, f := range f.Map().Fields {
-			config.Data[f.Name] = f.Primary().Value.ScalarString()
+			if f.Primary() != nil {
+				config.Data[f.Name] = f.Primary().Value.ScalarString()
+			} else if f.Composite != nil {
+				var arr []interface{}
+				switch c := f.Composite.(type) {
+				case *d2ir.Array:
+					for _, f := range c.Values {
+						switch c := f.(type) {
+						case *d2ir.Scalar:
+							arr = append(arr, c.String())
+						}
+					}
+				}
+				config.Data[f.Name] = arr
+			}
 		}
 	}
 
