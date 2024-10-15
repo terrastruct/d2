@@ -4581,12 +4581,14 @@ vars: {
 	d2-config: {
 		data: {
       cat: hat
+      later: [1;5;2]
     }
   }
 }
 `, ``)
-					assert.Equal(t, 1, len(config.Data))
+					assert.Equal(t, 2, len(config.Data))
 					assert.Equal(t, "hat", config.Data["cat"])
+					assert.Equal(t, "1", (config.Data["later"]).([]interface{})[0])
 				},
 			},
 		}

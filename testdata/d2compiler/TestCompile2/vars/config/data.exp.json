@@ -3,11 +3,11 @@
     "name": "",
     "isFolderOnly": true,
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,0:0:0-8:0:60",
+      "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,0:0:0-9:0:81",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,1:0:1-7:1:59",
+            "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,1:0:1-8:1:80",
             "key": {
               "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,1:0:1-1:4:5",
               "path": [
@@ -27,11 +27,11 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,1:6:7-7:1:59",
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,1:6:7-8:1:80",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,2:1:10-6:3:57",
+                      "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,2:1:10-7:3:78",
                       "key": {
                         "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,2:1:10-2:10:19",
                         "path": [
@@ -51,11 +51,11 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,2:12:21-6:3:57",
+                          "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,2:12:21-7:3:78",
                           "nodes": [
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,3:2:25-5:5:53",
+                                "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,3:2:25-6:5:74",
                                 "key": {
                                   "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,3:2:25-3:6:29",
                                   "path": [
@@ -75,7 +75,7 @@
                                 "primary": {},
                                 "value": {
                                   "map": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,3:8:31-5:5:53",
+                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,3:8:31-6:5:74",
                                     "nodes": [
                                       {
                                         "map_key": {
@@ -104,6 +104,56 @@
                                                 {
                                                   "string": "hat",
                                                   "raw_string": "hat"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,5:6:54-5:20:68",
+                                          "key": {
+                                            "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,5:6:54-5:11:59",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,5:6:54-5:11:59",
+                                                  "value": [
+                                                    {
+                                                      "string": "later",
+                                                      "raw_string": "later"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "array": {
+                                              "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,5:13:61-6:0:69",
+                                              "nodes": [
+                                                {
+                                                  "number": {
+                                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,5:14:62-5:15:63",
+                                                    "raw": "1",
+                                                    "value": "1"
+                                                  }
+                                                },
+                                                {
+                                                  "number": {
+                                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,5:16:64-5:17:65",
+                                                    "raw": "5",
+                                                    "value": "5"
+                                                  }
+                                                },
+                                                {
+                                                  "number": {
+                                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/config/data.d2,5:18:66-5:19:67",
+                                                    "raw": "2",
+                                                    "value": "2"
+                                                  }
                                                 }
                                               ]
                                             }

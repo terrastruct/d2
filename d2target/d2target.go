@@ -49,7 +49,7 @@ type Config struct {
 	DarkThemeOverrides *ThemeOverrides `json:"darkThemeOverrides,omitempty"`
 	// Data is a data structure for holding user-defined data
 	// useful for plugins that allow users to configure within source code
-	Data map[string]string `json:"data,omitempty"`
+	Data map[string]interface{} `json:"data,omitempty"`
 }
 
 type ThemeOverrides struct {

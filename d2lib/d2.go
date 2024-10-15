@@ -71,6 +71,9 @@ func Compile(ctx context.Context, input string, compileOpts *CompileOptions, ren
 
 	applyConfigs(config, compileOpts, renderOpts)
 	applyDefaults(compileOpts, renderOpts)
+	if config != nil {
+		g.Data = config.Data
+	}
 
 	d, err := compile(ctx, g, compileOpts, renderOpts)
 	if d != nil {
