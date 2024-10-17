@@ -49,8 +49,7 @@ type Node interface {
 	// GetRange returns the range a node occupies in its file.
 	GetRange() Range
 
-	// TODO: add Children() for walking AST
-	// Children() []Node
+	Children() []Node
 }
 
 var _ Node = &Comment{}
@@ -431,6 +430,139 @@ func (s *UnquotedString) scalar()     {}
 func (s *DoubleQuotedString) scalar() {}
 func (s *SingleQuotedString) scalar() {}
 func (s *BlockString) scalar()        {}
+
+func (c *Comment) Children() []Node            { return nil }
+func (c *BlockComment) Children() []Node       { return nil }
+func (n *Null) Children() []Node               { return nil }
+func (b *Boolean) Children() []Node            { return nil }
+func (n *Number) Children() []Node             { return nil }
+func (s *SingleQuotedString) Children() []Node { return nil }
+func (s *BlockString) Children() []Node        { return nil }
+func (ei *EdgeIndex) Children() []Node         { return nil }
+
+func (s *UnquotedString) Children() []Node {
+	var children []Node
+	for _, box := range s.Value {
+		if box.Substitution != nil {
+			children = append(children, box.Substitution)
+		}
+	}
+	return children
+}
+
+func (s *DoubleQuotedString) Children() []Node {
+	var children []Node
+	for _, box := range s.Value {
+		if box.Substitution != nil {
+			children = append(children, box.Substitution)
+		}
+	}
+	return children
+}
+
+func (s *Substitution) Children() []Node {
+	var children []Node
+	for _, sb := range s.Path {
+		if sb != nil {
+			if child := sb.Unbox(); child != nil {
+				children = append(children, child)
+			}
+		}
+	}
+	return children
+}
+
+func (i *Import) Children() []Node {
+	var children []Node
+	for _, sb := range i.Path {
+		if sb != nil {
+			if child := sb.Unbox(); child != nil {
+				children = append(children, child)
+			}
+		}
+	}
+	return children
+}
+
+func (a *Array) Children() []Node {
+	var children []Node
+	for _, box := range a.Nodes {
+		if child := box.Unbox(); child != nil {
+			children = append(children, child)
+		}
+	}
+	return children
+}
+
+func (m *Map) Children() []Node {
+	var children []Node
+	for _, box := range m.Nodes {
+		if child := box.Unbox(); child != nil {
+			children = append(children, child)
+		}
+	}
+	return children
+}
+
+func (k *Key) Children() []Node {
+	var children []Node
+	if k.Key != nil {
+		children = append(children, k.Key)
+	}
+	for _, edge := range k.Edges {
+		if edge != nil {
+			children = append(children, edge)
+		}
+	}
+	if k.EdgeIndex != nil {
+		children = append(children, k.EdgeIndex)
+	}
+	if k.EdgeKey != nil {
+		children = append(children, k.EdgeKey)
+	}
+	if scalar := k.Primary.Unbox(); scalar != nil {
+		children = append(children, scalar)
+	}
+	if value := k.Value.Unbox(); value != nil {
+		children = append(children, value)
+	}
+	return children
+}
+
+func (kp *KeyPath) Children() []Node {
+	var children []Node
+	for _, sb := range kp.Path {
+		if sb != nil {
+			if child := sb.Unbox(); child != nil {
+				children = append(children, child)
+			}
+		}
+	}
+	return children
+}
+
+func (e *Edge) Children() []Node {
+	var children []Node
+	if e.Src != nil {
+		children = append(children, e.Src)
+	}
+	if e.Dst != nil {
+		children = append(children, e.Dst)
+	}
+	return children
+}
+
+func Walk(node Node, fn func(Node) bool) {
+	if node == nil {
+		return
+	}
+	if !fn(node) {
+		return
+	}
+	for _, child := range node.Children() {
+		Walk(child, fn)
+	}
+}
 
 // TODO: mistake, move into parse.go
 func (n *Null) ScalarString() string    { return "" }
