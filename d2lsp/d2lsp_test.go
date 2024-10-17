@@ -136,12 +136,12 @@ okay
 des
 `,
 	}
-	ranges, err := d2lsp.GetImportRanges("yes/index.d2", fs, "fast/ok.d2")
+	ranges, err := d2lsp.GetImportRanges("yes/index.d2", fs["yes/index.d2"], "fast/ok.d2")
 	assert.Success(t, err)
 	assert.Equal(t, 1, len(ranges))
 	assert.Equal(t, 1, ranges[0].Start.Line)
 
-	ranges, err = d2lsp.GetImportRanges("yes/index.d2", fs, "yes/pok.d2")
+	ranges, err = d2lsp.GetImportRanges("yes/index.d2", fs["yes/index.d2"], "yes/pok.d2")
 	assert.Success(t, err)
 	assert.Equal(t, 1, len(ranges))
 	assert.Equal(t, 4, ranges[0].Start.Line)
