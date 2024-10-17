@@ -60,11 +60,8 @@ func GetRefs(path string, fs map[string]string, boardPath []string, key string) 
 	return refs, nil
 }
 
-func GetImportRanges(path string, fs map[string]string, importPath string) (ranges []d2ast.Range, _ error) {
-	if _, ok := fs[path]; !ok {
-		return nil, fmt.Errorf(`"%s" not found`, path)
-	}
-	r := strings.NewReader(fs[path])
+func GetImportRanges(path, file string, importPath string) (ranges []d2ast.Range, _ error) {
+	r := strings.NewReader(file)
 	ast, err := d2parser.Parse(path, r, nil)
 	if err != nil {
 		return nil, err
