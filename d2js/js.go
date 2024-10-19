@@ -25,7 +25,6 @@ func main() {
 	js.Global().Set("d2GetParentID", js.FuncOf(jsGetParentID))
 	js.Global().Set("d2GetObjOrder", js.FuncOf(jsGetObjOrder))
 	js.Global().Set("d2GetRefRanges", js.FuncOf(jsGetRefRanges))
-	js.Global().Set("d2GetImportRanges", js.FuncOf(jsGetImportRanges))
 	js.Global().Set("d2Compile", js.FuncOf(jsCompile))
 	js.Global().Set("d2Parse", js.FuncOf(jsParse))
 	js.Global().Set("d2Encode", js.FuncOf(jsEncode))
@@ -90,10 +89,11 @@ func jsGetParentID(this js.Value, args []js.Value) interface{} {
 }
 
 type jsRefRanges struct {
-	Ranges     []d2ast.Range `json:"ranges"`
-	ParseError string        `json:"parseError"`
-	UserError  string        `json:"userError"`
-	D2Error    string        `json:"d2Error"`
+	Ranges       []d2ast.Range `json:"ranges"`
+	ImportRanges []d2ast.Range `json:"importRanges"`
+	ParseError   string        `json:"parseError"`
+	UserError    string        `json:"userError"`
+	D2Error      string        `json:"d2Error"`
 }
 
 func jsGetRefRanges(this js.Value, args []js.Value) interface{} {
@@ -125,41 +125,7 @@ func jsGetRefRanges(this js.Value, args []js.Value) interface{} {
 		return string(str)
 	}
 
-	refs, err := d2lsp.GetRefs(file, fs, boardPath, key)
-	if err != nil {
-		ret := jsRefRanges{D2Error: err.Error()}
-		str, _ := json.Marshal(ret)
-		return string(str)
-	}
-
-	var ranges []d2ast.Range
-
-	for _, ref := range refs {
-		ranges = append(ranges, ref.AST().GetRange())
-	}
-
-	resp := jsRefRanges{
-		Ranges: ranges,
-	}
-
-	str, _ := json.Marshal(resp)
-	return string(str)
-}
-
-func jsGetImportRanges(this js.Value, args []js.Value) interface{} {
-	fsRaw := args[0].String()
-	path := args[1].String()
-	importPath := args[2].String()
-
-	var fs map[string]string
-	err := json.Unmarshal([]byte(fsRaw), &fs)
-	if err != nil {
-		ret := jsRefRanges{D2Error: err.Error()}
-		str, _ := json.Marshal(ret)
-		return string(str)
-	}
-
-	ranges, err := d2lsp.GetImportRanges(path, fs, importPath)
+	ranges, importRanges, err := d2lsp.GetRefRanges(file, fs, boardPath, key)
 	if err != nil {
 		ret := jsRefRanges{D2Error: err.Error()}
 		str, _ := json.Marshal(ret)
@@ -167,7 +133,8 @@ func jsGetImportRanges(this js.Value, args []js.Value) interface{} {
 	}
 
 	resp := jsRefRanges{
-		Ranges: ranges,
+		Ranges:       ranges,
+		ImportRanges: importRanges,
 	}
 
 	str, _ := json.Marshal(resp)
