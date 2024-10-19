@@ -550,6 +550,7 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 				c.errorf(n.Import, "cannot spread import non map into map")
 				continue
 			}
+			impn.(Importable).SetImportAST(n.Import)
 
 			for _, gctx := range impn.Map().globs {
 				if !gctx.refctx.Key.HasTripleGlob() {
@@ -873,6 +874,7 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 		if !ok {
 			return
 		}
+		n.(Importable).SetImportAST(refctx.Key)
 		switch n := n.(type) {
 		case *Field:
 			if n.Primary_ != nil {
@@ -1196,6 +1198,7 @@ func (c *compiler) compileArray(dst *Array, a *d2ast.Array, scopeAST *d2ast.Map)
 			if !ok {
 				continue
 			}
+			n.(Importable).SetImportAST(v)
 			switch n := n.(type) {
 			case *Field:
 				if v.Spread {

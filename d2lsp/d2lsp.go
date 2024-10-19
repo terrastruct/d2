@@ -3,7 +3,6 @@ package d2lsp
 
 import (
 	"fmt"
-	"path/filepath"
 	"strings"
 
 	"oss.terrastruct.com/d2/d2ast"
@@ -12,18 +11,18 @@ import (
 	"oss.terrastruct.com/d2/lib/memfs"
 )
 
-func GetRefs(path string, fs map[string]string, boardPath []string, key string) (refs []d2ir.Reference, _ error) {
+func GetRefRanges(path string, fs map[string]string, boardPath []string, key string) (ranges []d2ast.Range, importRanges []d2ast.Range, _ error) {
 	m, err := getBoardMap(path, fs, boardPath)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	mk, err := d2parser.ParseMapKey(key)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	if mk.Key == nil && len(mk.Edges) == 0 {
-		return nil, fmt.Errorf(`"%s" is invalid`, key)
+		return nil, nil, fmt.Errorf(`"%s" is invalid`, key)
 	}
 
 	var f *d2ir.Field
@@ -31,7 +30,7 @@ func GetRefs(path string, fs map[string]string, boardPath []string, key string) 
 		for _, p := range mk.Key.Path {
 			f = m.GetField(p.Unbox().ScalarString())
 			if f == nil {
-				return nil, nil
+				return nil, nil, nil
 			}
 			m = f.Map()
 		}
@@ -44,40 +43,25 @@ func GetRefs(path string, fs map[string]string, boardPath []string, key string) 
 			edges = append(edges, m.GetEdges(eid, nil, nil)...)
 		}
 		if len(edges) == 0 {
-			return nil, nil
+			return nil, nil, nil
 		}
 		for _, edge := range edges {
 			for _, ref := range edge.References {
-				refs = append(refs, ref)
+				ranges = append(ranges, ref.AST().GetRange())
+			}
+			if edge.ImportAST() != nil {
+				importRanges = append(importRanges, edge.ImportAST().GetRange())
 			}
 		}
-		return refs, nil
 	} else {
 		for _, ref := range f.References {
-			refs = append(refs, ref)
+			ranges = append(ranges, ref.AST().GetRange())
+		}
+		if f.ImportAST() != nil {
+			importRanges = append(importRanges, f.ImportAST().GetRange())
 		}
 	}
-	return refs, nil
-}
-
-func GetImportRanges(path, file string, importPath string) (ranges []d2ast.Range, _ error) {
-	r := strings.NewReader(file)
-	ast, err := d2parser.Parse(path, r, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	d2ast.Walk(ast, func(n d2ast.Node) bool {
-		switch t := n.(type) {
-		case *d2ast.Import:
-			if (filepath.Join(filepath.Dir(path), t.PathWithPre()) + ".d2") == importPath {
-				ranges = append(ranges, t.Range)
-			}
-		}
-		return true
-	})
-
-	return ranges, nil
+	return ranges, importRanges, nil
 }
 
 func getBoardMap(path string, fs map[string]string, boardPath []string) (*d2ir.Map, error) {
