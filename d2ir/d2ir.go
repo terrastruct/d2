@@ -166,9 +166,10 @@ func (s *Scalar) Equal(n2 Node) bool {
 }
 
 type Map struct {
-	parent Node
-	Fields []*Field `json:"fields"`
-	Edges  []*Edge  `json:"edges"`
+	parent    Node
+	importAST d2ast.Node
+	Fields    []*Field `json:"fields"`
+	Edges     []*Edge  `json:"edges"`
 
 	globs []*globContext
 }
@@ -181,6 +182,20 @@ func (m *Map) initRoot() {
 				ScopeMap: m,
 			},
 		}},
+	}
+}
+
+func (m *Map) ImportAST() d2ast.Node {
+	return m.importAST
+}
+
+func (m *Map) SetImportAST(node d2ast.Node) {
+	m.importAST = node
+	for _, f := range m.Fields {
+		f.SetImportAST(node)
+	}
+	for _, e := range m.Edges {
+		e.SetImportAST(node)
 	}
 }
 
@@ -290,9 +305,19 @@ func NodeBoardKind(n Node) BoardKind {
 	}
 }
 
+type Importable interface {
+	ImportAST() d2ast.Node
+	SetImportAST(d2ast.Node)
+}
+
+var _ Importable = &Edge{}
+var _ Importable = &Field{}
+var _ Importable = &Map{}
+
 type Field struct {
 	// *Map.
-	parent Node
+	parent    Node
+	importAST d2ast.Node
 
 	Name string `json:"name"`
 
@@ -302,6 +327,17 @@ type Field struct {
 	Composite Composite `json:"composite,omitempty"`
 
 	References []*FieldReference `json:"references,omitempty"`
+}
+
+func (f *Field) ImportAST() d2ast.Node {
+	return f.importAST
+}
+
+func (f *Field) SetImportAST(node d2ast.Node) {
+	f.importAST = node
+	if f.Map() != nil {
+		f.Map().SetImportAST(node)
+	}
 }
 
 func (f *Field) Copy(newParent Node) Node {
@@ -450,7 +486,8 @@ func (eid *EdgeID) resolve(m *Map) (_ *EdgeID, _ *Map, common []string, _ error)
 
 type Edge struct {
 	// *Map
-	parent Node
+	parent    Node
+	importAST d2ast.Node
 
 	ID *EdgeID `json:"edge_id"`
 
@@ -458,6 +495,17 @@ type Edge struct {
 	Map_     *Map    `json:"map,omitempty"`
 
 	References []*EdgeReference `json:"references,omitempty"`
+}
+
+func (e *Edge) ImportAST() d2ast.Node {
+	return e.importAST
+}
+
+func (e *Edge) SetImportAST(node d2ast.Node) {
+	e.importAST = node
+	if e.Map() != nil {
+		e.Map().SetImportAST(node)
+	}
 }
 
 func (e *Edge) Copy(newParent Node) Node {
