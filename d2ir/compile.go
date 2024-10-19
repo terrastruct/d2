@@ -874,7 +874,7 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 		if !ok {
 			return
 		}
-		n.(Importable).SetImportAST(refctx.Key)
+		n.(Importable).SetImportAST(refctx.Key.Value.Import)
 		switch n := n.(type) {
 		case *Field:
 			if n.Primary_ != nil {

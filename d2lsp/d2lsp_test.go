@@ -99,6 +99,7 @@ okay
 	assert.Equal(t, "ok.d2", ranges[0].Path)
 	assert.Equal(t, 1, len(importRanges))
 	assert.Equal(t, 3, importRanges[0].Start.Line)
+	assert.Equal(t, 5, importRanges[0].Start.Column)
 
 	ranges, _, err = d2lsp.GetRefRanges("ok.d2", fs, nil, "hi")
 	assert.Success(t, err)
