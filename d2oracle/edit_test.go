@@ -485,6 +485,67 @@ layers: {
 `,
 		},
 		{
+			name: "add_layer/1",
+			text: `b`,
+			key:  `layers.c`,
+
+			expKey: `layers.c`,
+			exp: `b
+
+layers: {
+  c
+}
+`,
+		},
+		{
+			name: "add_layer/2",
+			text: `b
+layers: {
+  c: {
+    x
+  }
+}`,
+			key: `layers.b`,
+
+			expKey: `layers.b`,
+			exp: `b
+
+layers: {
+  c: {
+    x
+  }
+  b
+}
+`,
+		},
+		{
+			name: "add_layer/3",
+			text: `b
+
+layers: {
+	c: {
+    d
+  }
+}
+`,
+			key: `layers.c`,
+
+			boardPath: []string{"c"},
+			expKey:    `layers.c`,
+			exp: `b
+
+layers: {
+  c: {
+    d
+
+    layers: {
+      c
+    }
+  }
+}
+`,
+		},
+		{
 			name: "layers-edge",
 
 			text: `a

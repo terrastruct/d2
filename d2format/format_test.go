@@ -152,7 +152,7 @@ meow
     diagram: int {constraint: foreign_key}
   }
   meow <- diagrams.id
-  
+
   steps: {
     shape: sql_table
     id: {type: int; constraint: primary_key}
@@ -664,8 +664,8 @@ x: @"x/../file"
   b: {
 		e
     scenarios: {
-      p: { 
-        x 
+      p: {
+        x
       }
     }
   }
@@ -677,14 +677,14 @@ x: @"x/../file"
 			exp: `layers: {
   b: {
     e
-    
+
     scenarios: {
       p: {
         x
       }
     }
   }
-  
+
   steps: {
     a
   }
@@ -762,7 +762,7 @@ only-layers: {
     X
     Y
   }
-  
+
   layers: {
     Z
   }
@@ -772,10 +772,10 @@ layers: {
   Test super nested: {
     base-layer
     last-layer
-    
+
     layers: {
       layer-board
-      
+
       layers: {
         grand-child-layer: {
           grand-child-board
@@ -788,7 +788,7 @@ layers: {
 scenarios: {
   scenario-1: {
     non-step
-    
+
     steps: {
       step-1: {
         Test
