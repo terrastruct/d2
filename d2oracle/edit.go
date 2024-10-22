@@ -411,6 +411,47 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			}
 		}
 
+		if mk.Key != nil && len(mk.Key.Path) == 2 {
+			boardType := mk.Key.Path[0].Unbox().ScalarString()
+			if boardType == "layers" || boardType == "scenarios" || boardType == "steps" {
+				// Force map structure
+				var containerMap *d2ast.Map
+				for _, n := range scope.Nodes {
+					if n.MapKey != nil && n.MapKey.Key != nil && len(n.MapKey.Key.Path) == 1 &&
+						n.MapKey.Key.Path[0].Unbox().ScalarString() == boardType {
+						containerMap = n.MapKey.Value.Map
+						break
+					}
+				}
+
+				if containerMap == nil {
+					containerMap = &d2ast.Map{
+						Range: d2ast.MakeRange(",1:0:0-1:0:0"),
+					}
+					containerMK := &d2ast.Key{
+						Key: &d2ast.KeyPath{
+							Path: []*d2ast.StringBox{
+								d2ast.MakeValueBox(d2ast.RawString(boardType, true)).StringBox(),
+							},
+						},
+						Value: d2ast.MakeValueBox(containerMap),
+					}
+					appendMapKey(scope, containerMK)
+				}
+
+				itemMK := &d2ast.Key{
+					Key: &d2ast.KeyPath{
+						Path: []*d2ast.StringBox{
+							d2ast.MakeValueBox(d2ast.RawString(mk.Key.Path[1].Unbox().ScalarString(), true)).StringBox(),
+						},
+					},
+					Value: mk.Value,
+				}
+				appendMapKey(containerMap, itemMK)
+				return nil
+			}
+		}
+
 		writeableLabelMK := true
 		var objK *d2ast.Key
 		if baseAST != g.AST || imported {
