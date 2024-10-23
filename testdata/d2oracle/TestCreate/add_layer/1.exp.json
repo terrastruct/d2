@@ -72,7 +72,12 @@
                         ]
                       },
                       "primary": {},
-                      "value": {}
+                      "value": {
+                        "map": {
+                          "range": ",1:0:0-1:0:0",
+                          "nodes": null
+                        }
+                      }
                     }
                   }
                 ]
@@ -151,6 +156,41 @@
           "constraint": null
         },
         "zIndex": 0
+      }
+    ],
+    "layers": [
+      {
+        "name": "c",
+        "isFolderOnly": true,
+        "ast": {
+          "range": ",0:0:0-1:0:0",
+          "nodes": null
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "attributes": {
+            "label": {
+              "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "style": {},
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": null
+          },
+          "zIndex": 0
+        },
+        "edges": null,
+        "objects": null
       }
     ]
   },

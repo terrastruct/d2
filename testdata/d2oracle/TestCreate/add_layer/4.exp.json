@@ -3,17 +3,17 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,0:0:0-8:0:36",
+      "range": "d2/testdata/d2oracle/TestCreate/add_layer/4.d2,0:0:0-7:0:32",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,0:0:0-0:1:1",
+            "range": "d2/testdata/d2oracle/TestCreate/add_layer/4.d2,0:0:0-0:1:1",
             "key": {
-              "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,0:0:0-0:1:1",
+              "range": "d2/testdata/d2oracle/TestCreate/add_layer/4.d2,0:0:0-0:1:1",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,0:0:0-0:1:1",
+                    "range": "d2/testdata/d2oracle/TestCreate/add_layer/4.d2,0:0:0-0:1:1",
                     "value": [
                       {
                         "string": "b",
@@ -30,13 +30,13 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,2:0:3-7:1:35",
+            "range": "d2/testdata/d2oracle/TestCreate/add_layer/4.d2,2:0:3-6:1:31",
             "key": {
-              "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,2:0:3-2:6:9",
+              "range": "d2/testdata/d2oracle/TestCreate/add_layer/4.d2,2:0:3-2:6:9",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,2:0:3-2:6:9",
+                    "range": "d2/testdata/d2oracle/TestCreate/add_layer/4.d2,2:0:3-2:6:9",
                     "value": [
                       {
                         "string": "layers",
@@ -50,17 +50,17 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,2:8:11-7:1:35",
+                "range": "d2/testdata/d2oracle/TestCreate/add_layer/4.d2,2:8:11-6:1:31",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,3:2:15-5:3:29",
+                      "range": "d2/testdata/d2oracle/TestCreate/add_layer/4.d2,3:2:15-5:3:29",
                       "key": {
-                        "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,3:2:15-3:3:16",
+                        "range": "d2/testdata/d2oracle/TestCreate/add_layer/4.d2,3:2:15-3:3:16",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,3:2:15-3:3:16",
+                              "range": "d2/testdata/d2oracle/TestCreate/add_layer/4.d2,3:2:15-3:3:16",
                               "value": [
                                 {
                                   "string": "c",
@@ -74,21 +74,21 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,3:5:18-5:3:29",
+                          "range": "d2/testdata/d2oracle/TestCreate/add_layer/4.d2,3:5:18-5:3:29",
                           "nodes": [
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,4:4:24-4:5:25",
+                                "range": "d2/testdata/d2oracle/TestCreate/add_layer/4.d2,4:4:24-4:5:25",
                                 "key": {
-                                  "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,4:4:24-4:5:25",
+                                  "range": "d2/testdata/d2oracle/TestCreate/add_layer/4.d2,4:4:24-4:5:25",
                                   "path": [
                                     {
                                       "unquoted_string": {
-                                        "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,4:4:24-4:5:25",
+                                        "range": "d2/testdata/d2oracle/TestCreate/add_layer/4.d2,4:4:24-4:5:25",
                                         "value": [
                                           {
-                                            "string": "x",
-                                            "raw_string": "x"
+                                            "string": "d",
+                                            "raw_string": "d"
                                           }
                                         ]
                                       }
@@ -100,34 +100,6 @@
                               }
                             }
                           ]
-                        }
-                      }
-                    }
-                  },
-                  {
-                    "map_key": {
-                      "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,6:2:32-6:3:33",
-                      "key": {
-                        "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,6:2:32-6:3:33",
-                        "path": [
-                          {
-                            "unquoted_string": {
-                              "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,6:2:32-6:3:33",
-                              "value": [
-                                {
-                                  "string": "b",
-                                  "raw_string": "b"
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      },
-                      "primary": {},
-                      "value": {
-                        "map": {
-                          "range": ",1:0:0-1:0:0",
-                          "nodes": null
                         }
                       }
                     }
@@ -170,11 +142,11 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,0:0:0-0:1:1",
+              "range": "d2/testdata/d2oracle/TestCreate/add_layer/4.d2,0:0:0-0:1:1",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,0:0:0-0:1:1",
+                    "range": "d2/testdata/d2oracle/TestCreate/add_layer/4.d2,0:0:0-0:1:1",
                     "value": [
                       {
                         "string": "b",
@@ -228,7 +200,7 @@
                         "range": ",0:0:0-0:0:0",
                         "value": [
                           {
-                            "string": "x"
+                            "string": "d"
                           }
                         ]
                       }
@@ -267,20 +239,20 @@
         "edges": null,
         "objects": [
           {
-            "id": "x",
-            "id_val": "x",
+            "id": "d",
+            "id_val": "d",
             "references": [
               {
                 "key": {
-                  "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,4:4:24-4:5:25",
+                  "range": "d2/testdata/d2oracle/TestCreate/add_layer/4.d2,4:4:24-4:5:25",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,4:4:24-4:5:25",
+                        "range": "d2/testdata/d2oracle/TestCreate/add_layer/4.d2,4:4:24-4:5:25",
                         "value": [
                           {
-                            "string": "x",
-                            "raw_string": "x"
+                            "string": "d",
+                            "raw_string": "d"
                           }
                         ]
                       }
@@ -293,7 +265,7 @@
             ],
             "attributes": {
               "label": {
-                "value": "x"
+                "value": "d"
               },
               "labelDimensions": {
                 "width": 0,
@@ -312,39 +284,6 @@
             "zIndex": 0
           }
         ]
-      },
-      {
-        "name": "b",
-        "isFolderOnly": true,
-        "ast": {
-          "range": ",0:0:0-1:0:0",
-          "nodes": null
-        },
-        "root": {
-          "id": "",
-          "id_val": "",
-          "attributes": {
-            "label": {
-              "value": ""
-            },
-            "labelDimensions": {
-              "width": 0,
-              "height": 0
-            },
-            "style": {},
-            "near_key": null,
-            "shape": {
-              "value": ""
-            },
-            "direction": {
-              "value": ""
-            },
-            "constraint": null
-          },
-          "zIndex": 0
-        },
-        "edges": null,
-        "objects": null
       }
     ]
   },

@@ -114,8 +114,9 @@ func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 		return
 	}
 	for _, f := range boards.Map().Fields {
+		m := f.Map()
 		if f.Map() == nil {
-			continue
+			m = &d2ir.Map{}
 		}
 		if g.GetBoard(f.Name) != nil {
 			c.errorf(f.References[0].AST(), "board name %v already used by another board", f.Name)
@@ -123,11 +124,11 @@ func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 		}
 		g2 := d2graph.NewGraph()
 		g2.Parent = g
-		g2.AST = f.Map().AST().(*d2ast.Map)
+		g2.AST = m.AST().(*d2ast.Map)
 		if g.BaseAST != nil {
 			g2.BaseAST = findFieldAST(g.BaseAST, f)
 		}
-		c.compileBoard(g2, f.Map())
+		c.compileBoard(g2, m)
 		g2.Name = f.Name
 		switch fieldName {
 		case "layers":
