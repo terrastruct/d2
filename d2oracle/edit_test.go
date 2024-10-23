@@ -546,6 +546,27 @@ layers: {
 `,
 		},
 		{
+			name: "add_layer/4",
+			text: `b
+
+layers: {
+	c
+}
+`,
+			key: `d`,
+
+			boardPath: []string{"c"},
+			expKey:    `d`,
+			exp: `b
+
+layers: {
+  c: {
+    d
+  }
+}
+`,
+		},
+		{
 			name: "layers-edge",
 
 			text: `a
