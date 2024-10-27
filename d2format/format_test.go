@@ -883,6 +883,17 @@ coop: {
 }
 `,
 		},
+		{
+			name: "remove-empty-boards",
+			in: `k
+
+layers
+scenarios: {}
+steps: asdf
+`,
+			exp: `k
+`,
+		},
 	}
 
 	for _, tc := range testCases {

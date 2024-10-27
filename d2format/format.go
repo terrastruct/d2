@@ -293,11 +293,18 @@ func (p *printer) _map(m *d2ast.Map) {
 		if nb.IsBoardNode() {
 			switch nb.MapKey.Key.Path[0].Unbox().ScalarString() {
 			case "layers":
-				layerNodes = append(layerNodes, nb)
+				// remove useless
+				if nb.MapKey.Value.Map != nil && len(nb.MapKey.Value.Map.Nodes) > 0 {
+					layerNodes = append(layerNodes, nb)
+				}
 			case "scenarios":
-				scenarioNodes = append(scenarioNodes, nb)
+				if nb.MapKey.Value.Map != nil && len(nb.MapKey.Value.Map.Nodes) > 0 {
+					scenarioNodes = append(scenarioNodes, nb)
+				}
 			case "steps":
-				stepNodes = append(stepNodes, nb)
+				if nb.MapKey.Value.Map != nil && len(nb.MapKey.Value.Map.Nodes) > 0 {
+					stepNodes = append(stepNodes, nb)
+				}
 			}
 			prev = n
 			continue
