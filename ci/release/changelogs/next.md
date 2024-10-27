@@ -7,6 +7,7 @@
 - Lib: removes a dependency on external slog that was causing troubles with installation [#2137](https://github.com/terrastruct/d2/pull/2137)
 - CLI: attempts writing to path atomically, falling back to non-atomic if failed [#2141](https://github.com/terrastruct/d2/pull/2141)
 - Export: pptx has "created at" metadata removed, so successive runs yield the same result [#2169](https://github.com/terrastruct/d2/pull/2160)
+- Formatter: empty board keywords (e.g. `layers`) are removed [#2178](https://github.com/terrastruct/d2/pull/2178)
 
 #### Bugfixes ⛑️
 
