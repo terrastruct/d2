@@ -4731,6 +4731,22 @@ c
 `,
 		},
 		{
+			name: "underscore_edge_container_7",
+
+			text: `x: {
+  _.y.a -> _.y.b
+}
+`,
+			key:                `x`,
+			newKey:             `y.x`,
+			includeDescendants: false,
+
+			exp: `x: {
+  y.a -> y.b
+}
+`,
+		},
+		{
 			name: "underscore_edge_split",
 
 			text: `a: {
