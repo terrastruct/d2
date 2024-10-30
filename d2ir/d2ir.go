@@ -1838,7 +1838,7 @@ func (m *Map) FindBoardRoot(path []string) *Map {
 				if len(path) == 1 {
 					return f.Map()
 				}
-				return layersf.Map().FindBoardRoot(path[1:])
+				return f.Map().FindBoardRoot(path[1:])
 			}
 		}
 	}
@@ -1849,7 +1849,7 @@ func (m *Map) FindBoardRoot(path []string) *Map {
 				if len(path) == 1 {
 					return f.Map()
 				}
-				return scenariosf.Map().FindBoardRoot(path[1:])
+				return f.Map().FindBoardRoot(path[1:])
 			}
 		}
 	}
@@ -1860,7 +1860,7 @@ func (m *Map) FindBoardRoot(path []string) *Map {
 				if len(path) == 1 {
 					return f.Map()
 				}
-				return stepsf.Map().FindBoardRoot(path[1:])
+				return f.Map().FindBoardRoot(path[1:])
 			}
 		}
 	}

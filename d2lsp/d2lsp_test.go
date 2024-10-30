@@ -117,6 +117,12 @@ hi
 layers: {
   x: {
     hello
+
+    layers: {
+      y: {
+        qwer
+      }
+    }
   }
 }
 `,
@@ -129,6 +135,10 @@ layers: {
 	ranges, _, err = d2lsp.GetRefRanges("index.d2", fs, []string{"x"}, "hi")
 	assert.Success(t, err)
 	assert.Equal(t, 0, len(ranges))
+
+	ranges, _, err = d2lsp.GetRefRanges("index.d2", fs, []string{"x", "y"}, "qwer")
+	assert.Success(t, err)
+	assert.Equal(t, 1, len(ranges))
 
 	_, _, err = d2lsp.GetRefRanges("index.d2", fs, []string{"y"}, "hello")
 	assert.Equal(t, `board "[y]" not found`, err.Error())
