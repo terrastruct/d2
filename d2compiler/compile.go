@@ -129,6 +129,9 @@ func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 			g2.BaseAST = findFieldAST(g.BaseAST, f)
 		}
 		c.compileBoard(g2, m)
+		if f.Primary() != nil {
+			c.compileLabel(&g2.Root.Attributes, f)
+		}
 		g2.Name = f.Name
 		switch fieldName {
 		case "layers":

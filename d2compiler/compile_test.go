@@ -3512,6 +3512,24 @@ steps: {
 			},
 		},
 		{
+			name: "board-label-primary",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `hi
+layers: {
+  1: one {
+    RJ
+  }
+  2: {
+    label: two
+    RJ
+  }
+}
+`, "")
+				assert.Equal(t, "one", g.Layers[0].Root.Label.Value)
+				assert.Equal(t, "two", g.Layers[1].Root.Label.Value)
+			},
+		},
+		{
 			name: "no-inherit-label",
 			run: func(t *testing.T) {
 				g, _ := assertCompile(t, `
