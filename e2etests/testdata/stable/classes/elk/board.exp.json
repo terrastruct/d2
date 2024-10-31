@@ -10,7 +10,7 @@
         "dragon_ball"
       ],
       "pos": {
-        "x": 22,
+        "x": 26,
         "y": 12
       },
       "width": 50,
@@ -56,8 +56,8 @@
         "x": 12,
         "y": 223
       },
-      "width": 70,
-      "height": 70,
+      "width": 78,
+      "height": 78,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -98,10 +98,10 @@
       ],
       "pos": {
         "x": 12,
-        "y": 454
+        "y": 462
       },
-      "width": 70,
-      "height": 70,
+      "width": 78,
+      "height": 78,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -164,11 +164,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 47,
+          "x": 51,
           "y": 62
         },
         {
-          "x": 47,
+          "x": 51,
           "y": 223
         }
       ],
@@ -205,12 +205,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 47,
-          "y": 293
+          "x": 51,
+          "y": 301
         },
         {
-          "x": 47,
-          "y": 454
+          "x": 51,
+          "y": 462
         }
       ],
       "animated": false,
