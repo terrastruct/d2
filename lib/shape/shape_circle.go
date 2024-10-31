@@ -37,22 +37,18 @@ func (s shapeCircle) AspectRatio1() bool {
 }
 
 func (s shapeCircle) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
-	effectiveWidth := width + 2*paddingX
-	effectiveHeight := height + 2*paddingY
-	diameter := math.Ceil(math.Max(effectiveWidth, effectiveHeight))
+	length := math.Max(width+paddingX, height+paddingY)
+	diameter := math.Ceil(math.Sqrt2 * length)
 	return diameter, diameter
 }
 
 func (s shapeCircle) GetInsidePlacement(width, height, paddingX, paddingY float64) geo.Point {
-	centerX := s.Box.TopLeft.X + paddingX
-	centerY := s.Box.TopLeft.Y + paddingY
-	r := s.Box.Width / 2.
-	x := centerX - r
-	y := centerY - r
-
+	project45 := 1 / math.Sqrt2
+	r := s.Box.Width / 2
+	// we want to offset r-padding/2 away from the center
 	return geo.Point{
-		X: math.Ceil(x),
-		Y: math.Ceil(y),
+		X: s.Box.TopLeft.X + math.Ceil(r-project45*(r-paddingX/2)),
+		Y: s.Box.TopLeft.Y + math.Ceil(r-project45*(r-paddingY/2)),
 	}
 }
 
