@@ -1544,11 +1544,8 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			switch shapeType {
 			case shape.TABLE_TYPE, shape.CLASS_TYPE, shape.CODE_TYPE:
 			default:
-				if obj.Link != nil {
-					paddingX += 32
-				}
-				if obj.Tooltip != nil {
-					paddingX += 32
+				if obj.Link != nil && obj.Tooltip != nil {
+					paddingX += 64
 				}
 			}
 		}
