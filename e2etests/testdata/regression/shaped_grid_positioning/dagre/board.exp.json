@@ -8,10 +8,10 @@
       "type": "oval",
       "pos": {
         "x": 0,
-        "y": 0
+        "y": 74
       },
-      "width": 619,
-      "height": 619,
+      "width": 437,
+      "height": 437,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -48,8 +48,8 @@
       "id": "circle.a",
       "type": "rectangle",
       "pos": {
-        "x": 236,
-        "y": 223
+        "x": 145,
+        "y": 206
       },
       "width": 53,
       "height": 66,
@@ -89,8 +89,8 @@
       "id": "circle.b",
       "type": "rectangle",
       "pos": {
-        "x": 329,
-        "y": 223
+        "x": 238,
+        "y": 206
       },
       "width": 54,
       "height": 66,
@@ -130,8 +130,8 @@
       "id": "circle.c",
       "type": "rectangle",
       "pos": {
-        "x": 236,
-        "y": 329
+        "x": 145,
+        "y": 312
       },
       "width": 53,
       "height": 66,
@@ -171,8 +171,8 @@
       "id": "circle.d",
       "type": "rectangle",
       "pos": {
-        "x": 329,
-        "y": 329
+        "x": 238,
+        "y": 312
       },
       "width": 54,
       "height": 66,
@@ -212,8 +212,8 @@
       "id": "oval",
       "type": "oval",
       "pos": {
-        "x": 679,
-        "y": 103
+        "x": 497,
+        "y": 86
       },
       "width": 619,
       "height": 413,
@@ -253,8 +253,8 @@
       "id": "oval.a",
       "type": "rectangle",
       "pos": {
-        "x": 915,
-        "y": 224
+        "x": 733,
+        "y": 207
       },
       "width": 53,
       "height": 66,
@@ -294,8 +294,8 @@
       "id": "oval.b",
       "type": "rectangle",
       "pos": {
-        "x": 1008,
-        "y": 224
+        "x": 826,
+        "y": 207
       },
       "width": 54,
       "height": 66,
@@ -335,8 +335,8 @@
       "id": "oval.c",
       "type": "rectangle",
       "pos": {
-        "x": 915,
-        "y": 330
+        "x": 733,
+        "y": 313
       },
       "width": 53,
       "height": 66,
@@ -376,8 +376,8 @@
       "id": "oval.d",
       "type": "rectangle",
       "pos": {
-        "x": 1008,
-        "y": 330
+        "x": 826,
+        "y": 313
       },
       "width": 54,
       "height": 66,
@@ -417,8 +417,8 @@
       "id": "diamond",
       "type": "diamond",
       "pos": {
-        "x": 1358,
-        "y": 18
+        "x": 1176,
+        "y": 0
       },
       "width": 874,
       "height": 584,
@@ -458,8 +458,8 @@
       "id": "diamond.a",
       "type": "rectangle",
       "pos": {
-        "x": 1721,
-        "y": 224
+        "x": 1539,
+        "y": 206
       },
       "width": 53,
       "height": 66,
@@ -499,8 +499,8 @@
       "id": "diamond.b",
       "type": "rectangle",
       "pos": {
-        "x": 1814,
-        "y": 224
+        "x": 1632,
+        "y": 206
       },
       "width": 54,
       "height": 66,
@@ -540,8 +540,8 @@
       "id": "diamond.c",
       "type": "rectangle",
       "pos": {
-        "x": 1721,
-        "y": 330
+        "x": 1539,
+        "y": 312
       },
       "width": 53,
       "height": 66,
@@ -581,8 +581,8 @@
       "id": "diamond.d",
       "type": "rectangle",
       "pos": {
-        "x": 1814,
-        "y": 330
+        "x": 1632,
+        "y": 312
       },
       "width": 54,
       "height": 66,
@@ -622,8 +622,8 @@
       "id": "square",
       "type": "rectangle",
       "pos": {
-        "x": 2292,
-        "y": 91
+        "x": 2110,
+        "y": 74
       },
       "width": 437,
       "height": 437,
@@ -663,8 +663,8 @@
       "id": "square.a",
       "type": "rectangle",
       "pos": {
-        "x": 2437,
-        "y": 223
+        "x": 2255,
+        "y": 206
       },
       "width": 53,
       "height": 66,
@@ -704,8 +704,8 @@
       "id": "square.b",
       "type": "rectangle",
       "pos": {
-        "x": 2530,
-        "y": 223
+        "x": 2348,
+        "y": 206
       },
       "width": 54,
       "height": 66,
@@ -745,8 +745,8 @@
       "id": "square.c",
       "type": "rectangle",
       "pos": {
-        "x": 2437,
-        "y": 329
+        "x": 2255,
+        "y": 312
       },
       "width": 53,
       "height": 66,
@@ -786,8 +786,8 @@
       "id": "square.d",
       "type": "rectangle",
       "pos": {
-        "x": 2530,
-        "y": 329
+        "x": 2348,
+        "y": 312
       },
       "width": 54,
       "height": 66,
@@ -827,8 +827,8 @@
       "id": "rect",
       "type": "rectangle",
       "pos": {
-        "x": 2789,
-        "y": 164
+        "x": 2607,
+        "y": 146
       },
       "width": 437,
       "height": 292,
@@ -868,8 +868,8 @@
       "id": "rect.a",
       "type": "rectangle",
       "pos": {
-        "x": 2934,
-        "y": 224
+        "x": 2752,
+        "y": 206
       },
       "width": 53,
       "height": 66,
@@ -909,8 +909,8 @@
       "id": "rect.b",
       "type": "rectangle",
       "pos": {
-        "x": 3027,
-        "y": 224
+        "x": 2845,
+        "y": 206
       },
       "width": 54,
       "height": 66,
@@ -950,8 +950,8 @@
       "id": "rect.c",
       "type": "rectangle",
       "pos": {
-        "x": 2934,
-        "y": 330
+        "x": 2752,
+        "y": 312
       },
       "width": 53,
       "height": 66,
@@ -991,8 +991,8 @@
       "id": "rect.d",
       "type": "rectangle",
       "pos": {
-        "x": 3027,
-        "y": 330
+        "x": 2845,
+        "y": 312
       },
       "width": 54,
       "height": 66,
@@ -1032,8 +1032,8 @@
       "id": "cloud",
       "type": "cloud",
       "pos": {
-        "x": 3286,
-        "y": 43
+        "x": 3104,
+        "y": 26
       },
       "width": 534,
       "height": 533,
@@ -1074,8 +1074,8 @@
       "id": "cloud.a",
       "type": "rectangle",
       "pos": {
-        "x": 3477,
-        "y": 321
+        "x": 3295,
+        "y": 304
       },
       "width": 53,
       "height": 66,
@@ -1115,8 +1115,8 @@
       "id": "cloud.b",
       "type": "rectangle",
       "pos": {
-        "x": 3570,
-        "y": 321
+        "x": 3388,
+        "y": 304
       },
       "width": 54,
       "height": 66,
@@ -1156,8 +1156,8 @@
       "id": "cloud.c",
       "type": "rectangle",
       "pos": {
-        "x": 3477,
-        "y": 427
+        "x": 3295,
+        "y": 410
       },
       "width": 53,
       "height": 66,
@@ -1197,8 +1197,8 @@
       "id": "cloud.d",
       "type": "rectangle",
       "pos": {
-        "x": 3570,
-        "y": 427
+        "x": 3388,
+        "y": 410
       },
       "width": 54,
       "height": 66,
