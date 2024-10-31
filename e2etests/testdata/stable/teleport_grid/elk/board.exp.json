@@ -8,10 +8,10 @@
       "type": "rectangle",
       "pos": {
         "x": 12,
-        "y": 165
+        "y": 167
       },
-      "width": 303,
-      "height": 523,
+      "width": 302,
+      "height": 520,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -47,7 +47,7 @@
       "id": "via",
       "type": "rectangle",
       "pos": {
-        "x": 385,
+        "x": 384,
         "y": 122
       },
       "width": 236,
@@ -87,7 +87,7 @@
       "id": "teleport",
       "type": "rectangle",
       "pos": {
-        "x": 691,
+        "x": 690,
         "y": 275
       },
       "width": 473,
@@ -128,7 +128,7 @@
       "id": "jita",
       "type": "rectangle",
       "pos": {
-        "x": 1946,
+        "x": 1945,
         "y": 12
       },
       "width": 820,
@@ -169,7 +169,7 @@
       "id": "infra",
       "type": "rectangle",
       "pos": {
-        "x": 1294,
+        "x": 1293,
         "y": 150
       },
       "width": 582,
@@ -210,7 +210,7 @@
       "id": "identity provider",
       "type": "rectangle",
       "pos": {
-        "x": 1294,
+        "x": 1293,
         "y": 514
       },
       "width": 201,
@@ -264,10 +264,10 @@
       "type": "oval",
       "pos": {
         "x": 72,
-        "y": 225
+        "y": 227
       },
-      "width": 183,
-      "height": 183,
+      "width": 182,
+      "height": 182,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -317,10 +317,10 @@
       "type": "oval",
       "pos": {
         "x": 72,
-        "y": 448
+        "y": 449
       },
-      "width": 183,
-      "height": 180,
+      "width": 182,
+      "height": 178,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -369,7 +369,7 @@
       "id": "via.https",
       "type": "rectangle",
       "pos": {
-        "x": 445,
+        "x": 444,
         "y": 182
       },
       "width": 116,
@@ -410,7 +410,7 @@
       "id": "via.kubectl",
       "type": "rectangle",
       "pos": {
-        "x": 445,
+        "x": 444,
         "y": 288
       },
       "width": 116,
@@ -451,7 +451,7 @@
       "id": "via.tsh",
       "type": "rectangle",
       "pos": {
-        "x": 445,
+        "x": 444,
         "y": 394
       },
       "width": 116,
@@ -492,7 +492,7 @@
       "id": "via.api",
       "type": "rectangle",
       "pos": {
-        "x": 445,
+        "x": 444,
         "y": 500
       },
       "width": 116,
@@ -533,7 +533,7 @@
       "id": "via.db clients",
       "type": "rectangle",
       "pos": {
-        "x": 445,
+        "x": 444,
         "y": 606
       },
       "width": 116,
@@ -574,7 +574,7 @@
       "id": "teleport.inp",
       "type": "text",
       "pos": {
-        "x": 751,
+        "x": 750,
         "y": 335
       },
       "width": 353,
@@ -614,7 +614,7 @@
       "id": "teleport.Audit Log",
       "type": "rectangle",
       "pos": {
-        "x": 751,
+        "x": 750,
         "y": 426
       },
       "width": 140,
@@ -667,7 +667,7 @@
       "id": "teleport.Cert Authority",
       "type": "rectangle",
       "pos": {
-        "x": 931,
+        "x": 930,
         "y": 426
       },
       "width": 173,
@@ -720,7 +720,7 @@
       "id": "jita.Slack",
       "type": "rectangle",
       "pos": {
-        "x": 2006,
+        "x": 2005,
         "y": 72
       },
       "width": 110,
@@ -773,7 +773,7 @@
       "id": "jita.Mattermost",
       "type": "rectangle",
       "pos": {
-        "x": 2156,
+        "x": 2155,
         "y": 72
       },
       "width": 128,
@@ -814,7 +814,7 @@
       "id": "jita.Jira",
       "type": "rectangle",
       "pos": {
-        "x": 2324,
+        "x": 2323,
         "y": 72
       },
       "width": 72,
@@ -855,7 +855,7 @@
       "id": "jita.Pagerduty",
       "type": "rectangle",
       "pos": {
-        "x": 2436,
+        "x": 2435,
         "y": 72
       },
       "width": 119,
@@ -896,7 +896,7 @@
       "id": "jita.Email",
       "type": "rectangle",
       "pos": {
-        "x": 2595,
+        "x": 2594,
         "y": 72
       },
       "width": 111,
@@ -949,7 +949,7 @@
       "id": "infra.ssh",
       "type": "rectangle",
       "pos": {
-        "x": 1354,
+        "x": 1353,
         "y": 210
       },
       "width": 103,
@@ -1002,7 +1002,7 @@
       "id": "infra.Kubernetes",
       "type": "rectangle",
       "pos": {
-        "x": 1497,
+        "x": 1496,
         "y": 210
       },
       "width": 152,
@@ -1055,7 +1055,7 @@
       "id": "infra.My SQL",
       "type": "rectangle",
       "pos": {
-        "x": 1689,
+        "x": 1688,
         "y": 210
       },
       "width": 126,
@@ -1108,7 +1108,7 @@
       "id": "infra.MongoDB",
       "type": "rectangle",
       "pos": {
-        "x": 1354,
+        "x": 1353,
         "y": 342
       },
       "width": 138,
@@ -1161,7 +1161,7 @@
       "id": "infra.PSQL",
       "type": "rectangle",
       "pos": {
-        "x": 1532,
+        "x": 1531,
         "y": 342
       },
       "width": 108,
@@ -1214,7 +1214,7 @@
       "id": "infra.Windows",
       "type": "rectangle",
       "pos": {
-        "x": 1680,
+        "x": 1679,
         "y": 342
       },
       "width": 136,
@@ -1290,11 +1290,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 315,
+          "x": 314,
           "y": 427.0329895019531
         },
         {
-          "x": 385,
+          "x": 384,
           "y": 427.0329895019531
         }
       ],
@@ -1328,11 +1328,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 621,
+          "x": 620,
           "y": 427.0329895019531
         },
         {
-          "x": 691,
+          "x": 690,
           "y": 427.0329895019531
         }
       ],
@@ -1366,19 +1366,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1164,
+          "x": 1163,
           "y": 336.13299560546875
         },
         {
-          "x": 1204,
+          "x": 1203,
           "y": 336.13299560546875
         },
         {
-          "x": 1204,
+          "x": 1203,
           "y": 118
         },
         {
-          "x": 1946,
+          "x": 1945,
           "y": 118
         }
       ],
@@ -1412,11 +1412,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1164,
+          "x": 1163,
           "y": 396.7330017089844
         },
         {
-          "x": 1294,
+          "x": 1293,
           "y": 396.7330017089844
         }
       ],
@@ -1450,19 +1450,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1164,
+          "x": 1163,
           "y": 457.3330078125
         },
         {
-          "x": 1254,
+          "x": 1253,
           "y": 457.3330078125
         },
         {
-          "x": 1254,
+          "x": 1253,
           "y": 553.3330078125
         },
         {
-          "x": 1294,
+          "x": 1293,
           "y": 553.3330078125
         }
       ],
@@ -1496,19 +1496,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1164,
+          "x": 1163,
           "y": 517.9329833984375
         },
         {
-          "x": 1204,
+          "x": 1203,
           "y": 517.9329833984375
         },
         {
-          "x": 1204,
+          "x": 1203,
           "y": 592.666015625
         },
         {
-          "x": 1294,
+          "x": 1293,
           "y": 592.666015625
         }
       ],
