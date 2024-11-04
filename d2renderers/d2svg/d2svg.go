@@ -553,54 +553,51 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection, i
 		}
 
 		path = circleEl.Render()
-	case d2target.FilledBoxArrowhead:
-		polygonEl := d2themes.NewThemableElement("polygon", inlineTheme)
-		polygonEl.ClassName = "connection"
-		polygonEl.Fill = connection.Stroke
-		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+	case d2target.CrossArrowhead:
+		inset := strokeWidth / 8
+		rotationAngle := math.Pi / 4
+		origin := geo.NewPoint(width/2, height/2)
+		newOrigin := geo.NewPoint(math.Cos(rotationAngle)*origin.X-math.Sin(rotationAngle)*origin.Y, math.Sin(rotationAngle)*origin.X+math.Cos(rotationAngle)*origin.Y)
 
+		crossEl := d2themes.NewThemableElement("polygon", inlineTheme)
+		crossEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f, %f,%f %f,%f %f,%f %f,%f %f,%f %f,%f %f,%f %f,%f",
+			0., height/2+inset,
+			width/2-inset, height/2+inset,
+			width/2-inset, height,
+			width/2+inset, height,
+			width/2+inset, height/2+inset,
+			width, height/2+inset,
+			width, height/2-inset,
+			width/2+inset, height/2-inset,
+			width/2+inset, 0.,
+			width/2-inset, 0.,
+			width/2-inset, height/2-inset,
+			0., height/2-inset,
+		)
+		crossEl.Transform = fmt.Sprintf("translate(%f, %f) rotate(45)", -newOrigin.X+width/2, -newOrigin.Y+height/2)
+
+		childPathEl := d2themes.NewThemableElement("path", inlineTheme)
 		if isTarget {
-			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
-				0., 0.,
-				0., height,
-				width, height,
-				width, 0.,
+			childPathEl.D = fmt.Sprintf("M%f,%f %f,%f",
+				width/2, height/2,
+				width, height/2,
 			)
 		} else {
-			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
-				0., 0.,
-				0., height,
-				width, height,
-				width, 0.,
+			childPathEl.D = fmt.Sprintf("M%f,%f %f,%f",
+				width/2, height/2,
+				0., height/2,
 			)
 		}
 
-		path = polygonEl.Render()
-	case d2target.BoxArrowhead:
-		polygonEl := d2themes.NewThemableElement("polygon", inlineTheme)
-		polygonEl.ClassName = "connection"
-		polygonEl.Fill = d2target.BG_COLOR
-		polygonEl.Stroke = connection.Stroke
-		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
-		polygonEl.Style = fmt.Sprintf("%sstroke-linejoin:miter;", polygonEl.Style)
-
-		inset := strokeWidth / 2
-		if isTarget {
-			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
-				inset, inset,
-				inset, height-inset,
-				width-inset, height-inset,
-				width-inset, inset,
-			)
-		} else {
-			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
-				inset, inset,
-				inset, height-inset,
-				width-inset, height-inset,
-				width-inset, inset,
-			)
-		}
-		path = polygonEl.Render()
+		gEl := d2themes.NewThemableElement("g", inlineTheme)
+		gEl.Fill = d2target.BG_COLOR
+		gEl.Stroke = connection.Stroke
+		gEl.ClassName = "connection"
+		gEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+		gEl.Content = fmt.Sprintf("%s%s",
+			crossEl.Render(), childPathEl.Render(),
+		)
+		path = gEl.Render()
 	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
 		offset := 3.0 + float64(connection.StrokeWidth)*1.8
 

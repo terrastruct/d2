@@ -2898,6 +2898,7 @@ y: profits {
 		loadFromFile(t, "unfilled_triangle"),
 		loadFromFile(t, "grid_container_dimensions"),
 		loadFromFile(t, "grid_label_positions"),
+		loadFromFile(t, "cross_arrowhead"),
 	}
 
 	runa(t, tcs)
