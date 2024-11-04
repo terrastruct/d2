@@ -748,6 +748,7 @@ const (
 	FilledDiamondArrowhead    Arrowhead = "filled-diamond"
 	CircleArrowhead           Arrowhead = "circle"
 	FilledCircleArrowhead     Arrowhead = "filled-circle"
+	CrossArrowhead            Arrowhead = "cross"
 
 	// For fat arrows
 	LineArrowhead Arrowhead = "line"
@@ -772,6 +773,7 @@ var Arrowheads = map[string]struct{}{
 	string(CfMany):            {},
 	string(CfOneRequired):     {},
 	string(CfManyRequired):    {},
+	string(CrossArrowhead):    {},
 }
 
 func ToArrowhead(arrowheadType string, filled *bool) Arrowhead {
@@ -795,6 +797,8 @@ func ToArrowhead(arrowheadType string, filled *bool) Arrowhead {
 			return UnfilledTriangleArrowhead
 		}
 		return TriangleArrowhead
+	case string(CrossArrowhead):
+		return CrossArrowhead
 	case string(CfOne):
 		return CfOne
 	case string(CfMany):
@@ -844,6 +848,11 @@ func (arrowhead Arrowhead) Dimensions(strokeWidth float64) (width, height float6
 		baseHeight = 9
 		widthMultiplier = 5.5
 		heightMultiplier = 4.5
+	case CrossArrowhead:
+		baseWidth = 7
+		baseHeight = 7
+		widthMultiplier = 5
+		heightMultiplier = 5
 	case FilledCircleArrowhead, CircleArrowhead:
 		baseWidth = 8
 		baseHeight = 8

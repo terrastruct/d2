@@ -798,6 +798,13 @@ func ArrowheadJS(r *Runner, arrowhead d2target.Arrowhead, stroke string, strokeW
 			stroke,
 			stroke,
 		)
+	case d2target.CrossArrowhead:
+		arrowJS = fmt.Sprintf(
+			`node = rc.linearPath(%s, { strokeWidth: %d, stroke: "%s", seed: 3 })`,
+			`[[-6, -6], [6, 6], [0, 0], [-6, 6], [0, 0], [6, -6]]`,
+			strokeWidth,
+			stroke,
+		)
 	case d2target.CfManyRequired:
 		arrowJS = fmt.Sprintf(
 			// TODO why does fillStyle: "zigzag" error with path
