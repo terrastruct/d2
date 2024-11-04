@@ -784,7 +784,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 	filter := func(f *Field, passthrough bool) bool {
 		if gctx != nil {
 			var ks string
-			if refctx.Key.HasTripleGlob() {
+			if refctx.Key.HasMultiGlob() {
 				ks = d2format.Format(d2ast.MakeKeyPath(IDA(f)))
 			} else {
 				ks = d2format.Format(d2ast.MakeKeyPath(BoardIDA(f)))
@@ -937,7 +937,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 		}
 		for _, grefctx := range c.globRefContextStack {
 			var ks string
-			if grefctx.Key.HasTripleGlob() {
+			if grefctx.Key.HasMultiGlob() {
 				ks = d2format.Format(d2ast.MakeKeyPath(IDA(f)))
 			} else {
 				ks = d2format.Format(d2ast.MakeKeyPath(BoardIDA(f)))
@@ -1134,7 +1134,7 @@ func (m *Map) getEdges(eid *EdgeID, refctx *RefContext, gctx *globContext, ea *[
 			for _, e := range ea2 {
 				if gctx != nil {
 					var ks string
-					if refctx.Key.HasTripleGlob() {
+					if refctx.Key.HasMultiGlob() {
 						ks = d2format.Format(d2ast.MakeKeyPath(IDA(e)))
 					} else {
 						ks = d2format.Format(d2ast.MakeKeyPath(BoardIDA(e)))
@@ -1352,7 +1352,7 @@ func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, c 
 		e2 := e.Copy(e.Parent()).(*Edge)
 		e2.ID = e2.ID.Copy()
 		e2.ID.Index = nil
-		if refctx.Key.HasTripleGlob() {
+		if refctx.Key.HasMultiGlob() {
 			ks = d2format.Format(d2ast.MakeKeyPath(IDA(e2)))
 		} else {
 			ks = d2format.Format(d2ast.MakeKeyPath(BoardIDA(e2)))

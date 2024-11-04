@@ -1006,6 +1006,21 @@ func (mk *Key) HasTripleGlob() bool {
 	return false
 }
 
+func (mk *Key) HasMultiGlob() bool {
+	if mk.Key.HasMultiGlob() {
+		return true
+	}
+	for _, e := range mk.Edges {
+		if e.Src.HasMultiGlob() || e.Dst.HasMultiGlob() {
+			return true
+		}
+	}
+	if mk.EdgeKey.HasMultiGlob() {
+		return true
+	}
+	return false
+}
+
 func (mk *Key) SupportsGlobFilters() bool {
 	if mk.Key.HasGlob() && len(mk.Edges) == 0 {
 		return true
