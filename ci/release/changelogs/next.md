@@ -14,3 +14,4 @@
 
 - Render: fixes edge case of a 3d shape with outside label being cut off [#2132](https://github.com/terrastruct/d2/pull/2132)
 - Composition: labels for boards set with shorthand `x: y` was not applied [#2182](https://github.com/terrastruct/d2/pull/2182)
+- Globs: double globs (`**`) were erroring when used with multiple scenario boards [#2195](https://github.com/terrastruct/d2/pull/2195)

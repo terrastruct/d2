@@ -3576,6 +3576,40 @@ steps: {
 `, `d2/testdata/d2compiler/TestCompile2/boards/errs/duplicate_board.d2:9:2: board name one already used by another board`)
 			},
 		},
+		{
+			name: "style-nested-boards",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `**.style.stroke: black
+
+scenarios: {
+  a: {
+    x
+  }
+  b: {
+    x
+  }
+}
+steps: {
+  c: {
+    x
+  }
+  d: {
+    x
+  }
+}
+layers: {
+  e: {
+    x
+  }
+}
+`, ``)
+				assert.Equal(t, "black", g.Scenarios[0].Objects[0].Style.Stroke.Value)
+				assert.Equal(t, "black", g.Scenarios[1].Objects[0].Style.Stroke.Value)
+				assert.Equal(t, "black", g.Steps[0].Objects[0].Style.Stroke.Value)
+				assert.Equal(t, "black", g.Steps[1].Objects[0].Style.Stroke.Value)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Layers[0].Objects[0].Style.Stroke)
+			},
+		},
 	}
 
 	for _, tc := range tca {
