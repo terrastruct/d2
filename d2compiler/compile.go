@@ -7,6 +7,7 @@ import (
 	"io"
 	"io/fs"
 	"net/url"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -1221,6 +1222,11 @@ func (c *compiler) validateBoardLinks(g *d2graph.Graph) {
 		}
 
 		if !hasBoard(g.RootBoard(), linkKey.IDA()) {
+			obj.Link = nil
+			continue
+		}
+
+		if slices.Equal(linkKey.IDA(), obj.Graph.IDA()) {
 			obj.Link = nil
 			continue
 		}

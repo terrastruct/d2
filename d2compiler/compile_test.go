@@ -2318,6 +2318,27 @@ scenarios: {
 			},
 		},
 		{
+			name: "no-self-link",
+			text: `
+x.link: scenarios.a
+
+layers: {
+  g: {
+    s.link: _.layers.g
+  }
+}
+
+scenarios: {
+  a: {
+    b
+  }
+}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Scenarios[0].Objects[0].Link)
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Layers[0].Objects[0].Link)
+			},
+		},
+		{
 			name: "link-board-not-found-1",
 			text: `x.link: layers.x
 `,
