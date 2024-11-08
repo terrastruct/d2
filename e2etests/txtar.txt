@@ -279,8 +279,6 @@ a <-> c: {style.animated: true}
 a <-> d: {style.animated: true}
 a <-> e
 f <-> g: {style.animated: true}
-<<<<<<< HEAD:e2etests/txtar.txt
-x -- x: {style.animated: true}
 
 -- sequence-edge-group-tall-edge-label --
 Sequence: {

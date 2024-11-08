@@ -1334,7 +1334,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			// we need the self closing form in this svg/xhtml context
 			render = strings.ReplaceAll(render, "<hr>", "<hr />")
 
-			mdEl := d2themes.NewThemableElement("div")
+			mdEl := d2themes.NewThemableElement("div", inlineTheme)
 			mdEl.ClassName = "md"
 			mdEl.Content = render
 
