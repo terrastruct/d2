@@ -84,6 +84,66 @@ func (g *Graph) RootBoard() *Graph {
 	return g
 }
 
+func (g *Graph) IDA() []string {
+	if g == nil {
+		return nil
+	}
+
+	var parts []string
+
+	current := g
+	for current != nil {
+		if current.Name != "" {
+			parts = append(parts, current.Name)
+		}
+		current = current.Parent
+	}
+
+	for i := 0; i < len(parts)/2; i++ {
+		j := len(parts) - 1 - i
+		parts[i], parts[j] = parts[j], parts[i]
+	}
+
+	if len(parts) == 0 {
+		return []string{"root"}
+	}
+
+	parts = append([]string{"root"}, parts...)
+
+	if g.Parent != nil {
+		var containerName string
+		if len(g.Parent.Layers) > 0 {
+			for _, l := range g.Parent.Layers {
+				if l == g {
+					containerName = "layers"
+					break
+				}
+			}
+		}
+		if len(g.Parent.Scenarios) > 0 {
+			for _, s := range g.Parent.Scenarios {
+				if s == g {
+					containerName = "scenarios"
+					break
+				}
+			}
+		}
+		if len(g.Parent.Steps) > 0 {
+			for _, s := range g.Parent.Steps {
+				if s == g {
+					containerName = "steps"
+					break
+				}
+			}
+		}
+		if containerName != "" {
+			parts = append(parts[:1], append([]string{containerName}, parts[1:]...)...)
+		}
+	}
+
+	return parts
+}
+
 type LayoutGraph func(context.Context, *Graph) error
 type RouteEdges func(context.Context, *Graph, []*Edge) error
 
