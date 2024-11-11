@@ -31,11 +31,22 @@ var setupJS string
 //go:embed dagre.js
 var dagreJS string
 
+// const (
+//   EDGE_LABEL_GAP  = 20
+//   DEFAULT_PADDING = 30.
+//   MIN_SPACING     = 10.
+// )
+
 const (
-	MIN_RANK_SEP    = 60
+	// Edge and spacing constants
 	EDGE_LABEL_GAP  = 20
 	DEFAULT_PADDING = 30.
 	MIN_SPACING     = 10.
+
+	// Rank separation thresholds
+	MIN_RANK_SEP      = 70
+	RANK_GAP_BUFFER   = 20
+	SPACING_THRESHOLD = 100.
 )
 
 type ConfigurableOpts struct {
@@ -125,14 +136,9 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 
 	if !isHorizontal {
-		rootAttrs.ranksep = go2.Max(100, maxLabelHeight+40)
+		rootAttrs.ranksep = go2.Max(MIN_RANK_SEP, maxLabelHeight+RANK_GAP_BUFFER)
 	} else {
-		rootAttrs.ranksep = go2.Max(100, maxLabelWidth+40)
-		// use existing config
-		// rootAttrs.NodeSep = rootAttrs.EdgeSep
-		// // configure vertical padding
-		// rootAttrs.EdgeSep = maxLabelHeight + 40
-		// Note: non-containers have both of these as padding (rootAttrs.NodeSep + rootAttrs.EdgeSep)
+		rootAttrs.ranksep = go2.Max(MIN_RANK_SEP, maxLabelWidth+RANK_GAP_BUFFER)
 	}
 
 	configJS := setGraphAttrs(rootAttrs)
@@ -781,7 +787,6 @@ func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance f
 	}
 
 	// if object below is within this distance after shifting, also shift it
-	threshold := 100.
 	checkBelow := func(curr *d2graph.Object) {
 		currBottom := curr.TopLeft.Y + curr.Height
 		currRight := curr.TopLeft.X + curr.Width
@@ -795,7 +800,7 @@ func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance f
 					continue
 				}
 				if originalRight < other.TopLeft.X &&
-					other.TopLeft.X < originalRight+distance+threshold &&
+					other.TopLeft.X < originalRight+distance+SPACING_THRESHOLD &&
 					curr.TopLeft.Y < other.TopLeft.Y+other.Height &&
 					other.TopLeft.Y < currBottom {
 					queue(other)
@@ -811,7 +816,7 @@ func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance f
 					continue
 				}
 				if originalBottom < other.TopLeft.Y &&
-					other.TopLeft.Y < originalBottom+distance+threshold &&
+					other.TopLeft.Y < originalBottom+distance+SPACING_THRESHOLD &&
 					curr.TopLeft.X < other.TopLeft.X+other.Width &&
 					other.TopLeft.X < currRight {
 					queue(other)
@@ -1052,7 +1057,7 @@ func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance f
 
 				// above and within threshold
 				if other.TopLeft.X < moved.TopLeft.X &&
-					moved.TopLeft.X < other.TopLeft.X+other.Width+threshold {
+					moved.TopLeft.X < other.TopLeft.X+other.Width+SPACING_THRESHOLD {
 					counts = false
 					break
 				}
@@ -1065,7 +1070,7 @@ func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance f
 
 				// above and within threshold
 				if other.TopLeft.Y < moved.TopLeft.Y &&
-					moved.TopLeft.Y < other.TopLeft.Y+other.Height+threshold {
+					moved.TopLeft.Y < other.TopLeft.Y+other.Height+SPACING_THRESHOLD {
 					counts = false
 					break
 				}

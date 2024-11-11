@@ -28,6 +28,18 @@ import (
 	"oss.terrastruct.com/d2/lib/shape"
 )
 
+const (
+	// Layout options
+	DEFAULT_NODE_SPACING      = 70
+	DEFAULT_THOROUGHNESS      = 8
+	DEFAULT_EDGE_EDGE_SPACING = 50
+	DEFAULT_PORT_SPACING      = 40.0
+	DEFAULT_EDGE_NODE_SPACING = 40
+	DEFAULT_SELF_LOOP_SPACING = 50
+	MIN_ENDPOINT_MARGIN       = 10
+	MIN_SEGMENT_PADDING       = 5
+)
+
 //go:embed elk.js
 var elkJS string
 
@@ -119,14 +131,11 @@ type ConfigurableOpts struct {
 
 var DefaultOpts = ConfigurableOpts{
 	Algorithm:       "layered",
-	NodeSpacing:     70.0,
+	NodeSpacing:     DEFAULT_NODE_SPACING,
 	Padding:         "[top=50,left=50,bottom=50,right=50]",
-	EdgeNodeSpacing: 40.0,
-	SelfLoopSpacing: 50.0,
+	EdgeNodeSpacing: DEFAULT_EDGE_NODE_SPACING,
+	SelfLoopSpacing: DEFAULT_SELF_LOOP_SPACING,
 }
-
-var port_spacing = 40.
-var edge_node_spacing = 40
 
 type elkOpts struct {
 	EdgeNode                     int       `json:"elk.spacing.edgeNode,omitempty"`
@@ -179,9 +188,9 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	elkGraph := &ELKGraph{
 		ID: "",
 		LayoutOptions: &elkOpts{
-			Thoroughness:                 8,
-			EdgeEdgeBetweenLayersSpacing: 50,
-			EdgeNode:                     edge_node_spacing,
+			Thoroughness:                 DEFAULT_THOROUGHNESS,
+			EdgeEdgeBetweenLayersSpacing: DEFAULT_EDGE_EDGE_SPACING,
+			EdgeNode:                     DEFAULT_EDGE_NODE_SPACING,
 			HierarchyHandling:            "INCLUDE_CHILDREN",
 			FixedAlignment:               "BALANCED",
 			ConsiderModelOrder:           "NODES_AND_EDGES",
@@ -197,8 +206,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		},
 	}
 	if elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing == DefaultOpts.SelfLoopSpacing {
-		// +5 for a tiny bit of padding
-		elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, childrenMaxSelfLoop(g.Root, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+5)
+		elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, childrenMaxSelfLoop(g.Root, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+MIN_SEGMENT_PADDING)
 	}
 	switch g.Root.Direction.Value {
 	case "down":
@@ -248,11 +256,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			switch g.Root.Direction.Value {
 			case "right", "left":
 				if obj.Attributes.HeightAttr == nil {
-					obj.Height = math.Max(obj.Height, math.Max(incoming, outgoing)*port_spacing)
+					obj.Height = math.Max(obj.Height, math.Max(incoming, outgoing)*DEFAULT_PORT_SPACING)
 				}
 			default:
 				if obj.Attributes.WidthAttr == nil {
-					obj.Width = math.Max(obj.Width, math.Max(incoming, outgoing)*port_spacing)
+					obj.Width = math.Max(obj.Width, math.Max(incoming, outgoing)*DEFAULT_PORT_SPACING)
 				}
 			}
 		}
@@ -276,11 +284,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		if len(obj.ChildrenArray) > 0 {
 			n.LayoutOptions = &elkOpts{
 				ForceNodeModelOrder:          true,
-				Thoroughness:                 8,
-				EdgeEdgeBetweenLayersSpacing: 50,
+				Thoroughness:                 DEFAULT_THOROUGHNESS,
+				EdgeEdgeBetweenLayersSpacing: DEFAULT_EDGE_EDGE_SPACING,
 				HierarchyHandling:            "INCLUDE_CHILDREN",
 				FixedAlignment:               "BALANCED",
-				EdgeNode:                     edge_node_spacing,
+				EdgeNode:                     DEFAULT_EDGE_NODE_SPACING,
 				ConsiderModelOrder:           "NODES_AND_EDGES",
 				CycleBreakingStrategy:        "GREEDY_MODEL_ORDER",
 				NodeSizeConstraints:          "MINIMUM_SIZE",
@@ -720,17 +728,17 @@ func deleteBends(g *d2graph.Graph) {
 					continue
 				}
 			case isHorizontal:
-				if end.Y <= endpoint.TopLeft.Y+10-dy {
+				if end.Y <= endpoint.TopLeft.Y+MIN_ENDPOINT_MARGIN-dy {
 					continue
 				}
-				if end.Y >= endpoint.TopLeft.Y+endpoint.Height-10 {
+				if end.Y >= endpoint.TopLeft.Y+endpoint.Height-MIN_ENDPOINT_MARGIN {
 					continue
 				}
 			default:
-				if end.X <= endpoint.TopLeft.X+10 {
+				if end.X <= endpoint.TopLeft.X+MIN_ENDPOINT_MARGIN {
 					continue
 				}
-				if end.X >= endpoint.TopLeft.X+endpoint.Width-10+dx {
+				if end.X >= endpoint.TopLeft.X+endpoint.Width-MIN_ENDPOINT_MARGIN+dx {
 					continue
 				}
 			}
@@ -906,7 +914,7 @@ func countObjectIntersects(g *d2graph.Graph, src, dst *d2graph.Object, s geo.Seg
 		if g.Objects[i] == src || g.Objects[i] == dst {
 			continue
 		}
-		if o.Intersects(s, float64(edge_node_spacing)-1) {
+		if o.Intersects(s, float64(DEFAULT_EDGE_NODE_SPACING)-1) {
 			count++
 		}
 	}
@@ -931,9 +939,9 @@ func countEdgeIntersects(g *d2graph.Graph, sEdge *d2graph.Edge, s geo.Segment) (
 			if isHorizontal == otherIsHorizontal {
 				if s.Overlaps(*otherS, !isHorizontal, 0.) {
 					if isHorizontal {
-						if math.Abs(s.Start.Y-otherS.Start.Y) < float64(edge_node_spacing)/2. {
+						if math.Abs(s.Start.Y-otherS.Start.Y) < float64(DEFAULT_EDGE_NODE_SPACING)/2. {
 							overlapsCount++
-							if math.Abs(s.Start.Y-otherS.Start.Y) < float64(edge_node_spacing)/4. {
+							if math.Abs(s.Start.Y-otherS.Start.Y) < float64(DEFAULT_EDGE_NODE_SPACING)/4. {
 								closeOverlapsCount++
 								if math.Abs(s.Start.Y-otherS.Start.Y) < 1. {
 									touchingCount++
@@ -941,9 +949,9 @@ func countEdgeIntersects(g *d2graph.Graph, sEdge *d2graph.Edge, s geo.Segment) (
 							}
 						}
 					} else {
-						if math.Abs(s.Start.X-otherS.Start.X) < float64(edge_node_spacing)/2. {
+						if math.Abs(s.Start.X-otherS.Start.X) < float64(DEFAULT_EDGE_NODE_SPACING)/2. {
 							overlapsCount++
-							if math.Abs(s.Start.X-otherS.Start.X) < float64(edge_node_spacing)/4. {
+							if math.Abs(s.Start.X-otherS.Start.X) < float64(DEFAULT_EDGE_NODE_SPACING)/4. {
 								closeOverlapsCount++
 								if math.Abs(s.Start.Y-otherS.Start.Y) < 1. {
 									touchingCount++
