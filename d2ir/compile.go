@@ -984,6 +984,10 @@ func (c *compiler) extendLinks(m *Map, importF *Field, importDir string) {
 		}
 		if f.Name == "icon" && f.Primary() != nil {
 			val := f.Primary().Value.ScalarString()
+			// It's likely a substitution
+			if val == "" {
+				continue
+			}
 			u, err := url.Parse(html.UnescapeString(val))
 			isRemoteImg := err == nil && strings.HasPrefix(u.Scheme, "http")
 			if isRemoteImg {

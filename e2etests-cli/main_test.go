@@ -822,6 +822,33 @@ a.b.c.d
 			},
 		},
 		{
+			name: "chain_icon_import",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `...@y
+hello.class: Ecs`)
+				writeFile(t, dir, "y.d2", `
+...@x
+classes: {
+    Ecs: {
+        shape: "circle"
+        icon: ${icons.ecs}
+    }
+}
+`)
+				writeFile(t, dir, "x.d2", `
+vars: {
+    icons: {
+        ecs: "https://icons.terrastruct.com/aws%2FCompute%2FAmazon-Elastic-Container-Service.svg"
+    }
+}
+`)
+				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
+				assert.Success(t, err)
+				svg := readFile(t, dir, "hello-world.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
 			name: "board_import",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `x.link: layers.x; layers: { x: @x }`)
