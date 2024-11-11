@@ -89,11 +89,11 @@
       "id": "network",
       "type": "rectangle",
       "pos": {
-        "x": 193,
-        "y": 317
+        "x": 213,
+        "y": 327
       },
-      "width": 324,
-      "height": 1053,
+      "width": 284,
+      "height": 1023,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -130,11 +130,11 @@
       "id": "network.tower",
       "type": "rectangle",
       "pos": {
-        "x": 223,
-        "y": 358
+        "x": 233,
+        "y": 368
       },
-      "width": 200,
-      "height": 329,
+      "width": 180,
+      "height": 309,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -253,11 +253,11 @@
       "id": "network.processor",
       "type": "rectangle",
       "pos": {
-        "x": 237,
-        "y": 783
+        "x": 247,
+        "y": 788
       },
-      "width": 171,
-      "height": 183,
+      "width": 151,
+      "height": 168,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -335,11 +335,11 @@
       "id": "network.portal",
       "type": "rectangle",
       "pos": {
-        "x": 368,
-        "y": 1214
+        "x": 378,
+        "y": 1224
       },
-      "width": 119,
-      "height": 126,
+      "width": 99,
+      "height": 106,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -947,11 +947,11 @@
         },
         {
           "x": 317.5,
-          "y": 739.5
+          "y": 740.5
         },
         {
           "x": 317.5,
-          "y": 747.5
+          "y": 752.5
         }
       ],
       "isCurve": true,
@@ -994,11 +994,11 @@
         },
         {
           "x": 317.5,
-          "y": 276.3999938964844
+          "y": 278.3999938964844
         },
         {
           "x": 317.5,
-          "y": 322
+          "y": 332
         }
       ],
       "isCurve": true,
@@ -1033,11 +1033,11 @@
       "route": [
         {
           "x": 282.25,
-          "y": 966
+          "y": 956
         },
         {
           "x": 282.25,
-          "y": 998
+          "y": 996
         },
         {
           "x": 251.85000610351562,
@@ -1080,11 +1080,11 @@
       "route": [
         {
           "x": 317.5,
-          "y": 966
+          "y": 956
         },
         {
           "x": 317.5,
-          "y": 998
+          "y": 996
         },
         {
           "x": 279.8999938964844,
@@ -1127,11 +1127,11 @@
       "route": [
         {
           "x": 362.75,
-          "y": 966
+          "y": 956
         },
         {
           "x": 362.75,
-          "y": 998
+          "y": 996
         },
         {
           "x": 316.1499938964844,

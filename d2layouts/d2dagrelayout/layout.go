@@ -31,16 +31,10 @@ var setupJS string
 //go:embed dagre.js
 var dagreJS string
 
-// const (
-//   EDGE_LABEL_GAP  = 20
-//   DEFAULT_PADDING = 30.
-//   MIN_SPACING     = 10.
-// )
-
 const (
 	// Edge and spacing constants
 	EDGE_LABEL_GAP  = 20
-	DEFAULT_PADDING = 30.
+	DEFAULT_PADDING = 20.
 	MIN_SPACING     = 10.
 
 	// Rank separation thresholds

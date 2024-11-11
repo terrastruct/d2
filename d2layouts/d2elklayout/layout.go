@@ -36,6 +36,7 @@ const (
 	DEFAULT_PORT_SPACING      = 20.0
 	DEFAULT_EDGE_NODE_SPACING = 20
 	DEFAULT_SELF_LOOP_SPACING = 50
+	CONTAINER_PADDING         = 20
 	MIN_ENDPOINT_MARGIN       = 10
 	MIN_SEGMENT_PADDING       = 5
 )
@@ -132,7 +133,7 @@ type ConfigurableOpts struct {
 var DefaultOpts = ConfigurableOpts{
 	Algorithm:       "layered",
 	NodeSpacing:     DEFAULT_NODE_SPACING,
-	Padding:         "[top=50,left=50,bottom=50,right=50]",
+	Padding:         fmt.Sprintf("[top=%d,left=%d,bottom=%d,right=%d]", CONTAINER_PADDING, CONTAINER_PADDING, CONTAINER_PADDING, CONTAINER_PADDING),
 	EdgeNodeSpacing: DEFAULT_EDGE_NODE_SPACING,
 	SelfLoopSpacing: DEFAULT_SELF_LOOP_SPACING,
 }
