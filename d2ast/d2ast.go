@@ -166,7 +166,8 @@ func (r Range) Before(r2 Range) bool {
 type Position struct {
 	Line   int
 	Column int
-	Byte   int
+	// -1 is used as sentinel that a constructed position is missing byte offset (for LSP usage)
+	Byte int
 }
 
 var _ fmt.Stringer = Position{}
@@ -276,7 +277,13 @@ func (p Position) SubtractString(s string, byUTF16 bool) Position {
 }
 
 func (p Position) Before(p2 Position) bool {
-	return p.Byte < p2.Byte
+	if p.Byte != p2.Byte && p.Byte != -1 && p2.Byte != -1 {
+		return p.Byte < p2.Byte
+	}
+	if p.Line != p2.Line {
+		return p.Line < p2.Line
+	}
+	return p.Column < p2.Column
 }
 
 // MapNode is implemented by nodes that may be children of Maps.
