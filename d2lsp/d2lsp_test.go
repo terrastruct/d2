@@ -291,6 +291,19 @@ layers: {
 			position: d2ast.Position{Line: 3, Column: 2},
 			want:     []string{"layers", "basic"},
 		},
+		{
+			name: "cursor in between",
+			fs: map[string]string{
+				"index.d2": `
+		layers: {
+			basic: {
+			}
+		}`,
+			},
+			path:     "index.d2",
+			position: d2ast.Position{Line: 2, Column: 2},
+			want:     nil,
+		},
 	}
 
 	for _, tt := range tests {

@@ -143,6 +143,11 @@ func getBoardPathAtPosition(m d2ast.Map, currPath []string, pos d2ast.Position) 
 				return deeperPath
 			}
 
+			// We're in between boards, e.g. layers.x.scenarios
+			// Which means, there's no board at this position
+			if len(newPath)%2 == 1 {
+				return nil
+			}
 			// Nothing deeper matched but we're in this map's range, return current path
 			return newPath
 		}
