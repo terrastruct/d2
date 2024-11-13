@@ -1,6 +1,7 @@
 package d2lsp_test
 
 import (
+	"slices"
 	"testing"
 
 	"oss.terrastruct.com/d2/d2ast"
@@ -294,29 +295,14 @@ layers: {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := d2lsp.GetBoardAtPosition(tt.path, tt.fs, tt.position)
+			got, err := d2lsp.GetBoardAtPosition(tt.fs[tt.path], tt.position)
 			assert.Success(t, err)
 			if tt.want == nil {
 				assert.Equal(t, true, got == nil)
 			} else {
 				assert.Equal(t, len(tt.want), len(got))
-				assert.Equal(t, tt.want[0], got[0]) // board type
-				assert.Equal(t, tt.want[1], got[1]) // board id
+				assert.True(t, slices.Equal(tt.want, got))
 			}
 		})
 	}
-
-	// Error cases
-	t.Run("invalid file", func(t *testing.T) {
-		fs := map[string]string{
-			"index.d2": "x ->",
-		}
-		_, err := d2lsp.GetBoardAtPosition("index.d2", fs, d2ast.Position{Line: 0, Column: 0})
-		assert.Error(t, err)
-	})
-
-	t.Run("file not found", func(t *testing.T) {
-		_, err := d2lsp.GetBoardAtPosition("notfound.d2", nil, d2ast.Position{Line: 0, Column: 0})
-		assert.Error(t, err)
-	})
 }

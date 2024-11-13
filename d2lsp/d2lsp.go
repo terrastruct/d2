@@ -93,12 +93,9 @@ func getBoardMap(path string, fs map[string]string, boardPath []string) (*d2ir.M
 	return m, nil
 }
 
-func GetBoardAtPosition(path string, fs map[string]string, pos d2ast.Position) ([]string, error) {
-	if _, ok := fs[path]; !ok {
-		return nil, fmt.Errorf(`"%s" not found`, path)
-	}
-	r := strings.NewReader(fs[path])
-	ast, err := d2parser.Parse(path, r, nil)
+func GetBoardAtPosition(text string, pos d2ast.Position) ([]string, error) {
+	r := strings.NewReader(text)
+	ast, err := d2parser.Parse("", r, nil)
 	if err != nil {
 		return nil, err
 	}
