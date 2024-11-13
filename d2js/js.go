@@ -26,6 +26,7 @@ func main() {
 	js.Global().Set("d2GetObjOrder", js.FuncOf(jsGetObjOrder))
 	js.Global().Set("d2GetRefRanges", js.FuncOf(jsGetRefRanges))
 	js.Global().Set("d2Compile", js.FuncOf(jsCompile))
+	js.Global().Set("d2GetBoardAtPosition", js.FuncOf(jsGetBoardAtPosition))
 	js.Global().Set("d2Parse", js.FuncOf(jsParse))
 	js.Global().Set("d2Encode", js.FuncOf(jsEncode))
 	js.Global().Set("d2Decode", js.FuncOf(jsDecode))
@@ -301,4 +302,32 @@ func jsDecode(this js.Value, args []js.Value) interface{} {
 
 func jsVersion(this js.Value, args []js.Value) interface{} {
 	return version.Version
+}
+
+type jsBoardAtPosition struct {
+	BoardPath []string `json:"boardPath"`
+	Error     string   `json:"error"`
+}
+
+func jsGetBoardAtPosition(this js.Value, args []js.Value) interface{} {
+	dsl := args[0].String()
+	line := args[1].Int()
+	column := args[2].Int()
+
+	boardPath, err := d2lsp.GetBoardAtPosition(dsl, d2ast.Position{
+		Line:   line,
+		Column: column,
+	})
+
+	if err != nil {
+		ret := jsBoardAtPosition{Error: err.Error()}
+		str, _ := json.Marshal(ret)
+		return string(str)
+	}
+
+	resp := jsBoardAtPosition{
+		BoardPath: boardPath,
+	}
+	str, _ := json.Marshal(resp)
+	return string(str)
 }
