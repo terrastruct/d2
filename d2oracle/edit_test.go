@@ -1026,6 +1026,16 @@ square.style.opacity: 0.2
 `,
 		},
 		{
+			name: "labeled_set_position",
+			text: `hey.label: what
+`,
+			key:   `hey.top`,
+			value: go2.Pointer(`200`),
+			exp: `hey.label: what
+hey.top: 200
+`,
+		},
+		{
 			name: "replace_position",
 			text: `square: {
   width: 100

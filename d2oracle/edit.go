@@ -491,7 +491,12 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			m = obj.Map
 		}
 
-		if (obj.Label.MapKey != nil && writeableLabelMK) && m == nil && (!found || reserved || len(mk.Edges) > 0) {
+		if (obj.Label.MapKey != nil && writeableLabelMK) && m == nil && (!found || reserved || len(mk.Edges) > 0) &&
+			// Label is not set like `hey.label: mylabel`
+			// This should only work when label is set like `hey: mylabel`
+			(obj.Label.MapKey.Key == nil ||
+				len(obj.Label.MapKey.Key.Path) == 0 ||
+				obj.Label.MapKey.Key.Path[len(obj.Label.MapKey.Key.Path)-1].Unbox().ScalarString() != "label") {
 			m2 := &d2ast.Map{
 				Range: d2ast.MakeRange(",1:0:0-1:0:0"),
 			}
