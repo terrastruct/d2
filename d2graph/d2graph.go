@@ -937,7 +937,9 @@ func (obj *Object) GetLabelSize(mtexts []*d2target.MText, ruler *textmeasure.Rul
 
 	var dims *d2target.TextDimensions
 	switch shapeType {
-	case d2target.ShapeText:
+	case d2target.ShapeClass:
+		dims = GetTextDimensions(mtexts, ruler, obj.Text(), go2.Pointer(d2fonts.SourceCodePro))
+	default:
 		if obj.Language == "latex" {
 			width, height, err := d2latex.Measure(obj.Text().Text)
 			if err != nil {
@@ -953,12 +955,6 @@ func (obj *Object) GetLabelSize(mtexts []*d2target.MText, ruler *textmeasure.Rul
 		} else {
 			dims = GetTextDimensions(mtexts, ruler, obj.Text(), fontFamily)
 		}
-
-	case d2target.ShapeClass:
-		dims = GetTextDimensions(mtexts, ruler, obj.Text(), go2.Pointer(d2fonts.SourceCodePro))
-
-	default:
-		dims = GetTextDimensions(mtexts, ruler, obj.Text(), fontFamily)
 	}
 
 	if shapeType == d2target.ShapeSQLTable && obj.Label.Value == "" {
