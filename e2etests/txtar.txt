@@ -49,7 +49,6 @@ without.codeEx -> with.codeEx
 without.mdEx -> with.mdEx
 
 -- theme-overrides --
-
 direction: right
 vars: {
   d2-config: {
@@ -469,3 +468,67 @@ colors: {
   style.font-color: "linear-gradient(to bottom right, red 0%, yellow 25%, green 50%, cyan 75%, blue 100%)"
 }
 gradient -> colors
+
+-- padding --
+logs: {
+  shape: page
+  style.multiple: true
+}
+user: User {shape: person}
+network: Network {
+  tower: Cell Tower {
+    satellites: {
+      shape: stored_data
+      style.multiple: true
+    }
+
+    satellites -> transmitter
+    satellites -> transmitter
+    satellites -> transmitter
+    transmitter
+  }
+  processor: Data Processor {
+    storage: Storage {
+      shape: cylinder
+      style.multiple: true
+    }
+  }
+  portal: Online Portal {
+    UI
+  }
+
+  tower.transmitter -> processor: phone logs
+}
+server: API Server
+
+user -> network.tower: Make call
+network.processor -> server
+network.processor -> server
+network.processor -> server
+
+server -> logs
+server -> logs
+server -> logs: persist
+
+server -> network.portal.UI: display
+user -> network.portal.UI: access {
+  style.stroke-dash: 3
+}
+
+costumes: {
+  shape: sql_table
+  id: int {constraint: primary_key}
+  silliness: int
+  monster: int
+  last_updated: timestamp
+}
+
+monsters: {
+  shape: sql_table
+  id: int {constraint: primary_key}
+  movie: string
+  weight: int
+  last_updated: timestamp
+}
+
+costumes.monster -> monsters.id
