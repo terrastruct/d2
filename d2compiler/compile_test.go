@@ -2866,6 +2866,22 @@ x*: {
 			},
 		},
 		{
+			name: "var_in_markdown",
+			text: `vars: {
+  v: {
+    ok
+  }
+}
+
+x: |md
+  m${v}y
+|
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "moky", g.Objects[0].Attributes.Label.Value)
+			},
+		},
+		{
 			name: "var_in_vars",
 			text: `vars: {
     Apple: {
