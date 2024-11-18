@@ -83,7 +83,11 @@ func RenderMarkdown(m string) (string, error) {
 	if err := markdownRenderer.Convert([]byte(m), &output); err != nil {
 		return "", err
 	}
-	return output.String(), nil
+	sanitized, err := sanitizeLinks(output.String())
+	if err != nil {
+		return "", err
+	}
+	return sanitized, nil
 }
 
 func init() {

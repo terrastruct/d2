@@ -936,6 +936,13 @@ b.(x -> y)[0]: two
 			},
 		},
 		{
+			name: "markdown_ampersand",
+			text: `memo: |md
+  <a href="https://www.google.com/search?q=d2&newwindow=1&amp;bar">d2</a>
+|
+`,
+		},
+		{
 			name: "unsemantic_markdown",
 
 			text: `test:|
