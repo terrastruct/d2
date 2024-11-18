@@ -469,3 +469,17 @@ colors: {
   style.font-color: "linear-gradient(to bottom right, red 0%, yellow 25%, green 50%, cyan 75%, blue 100%)"
 }
 gradient -> colors
+
+-- var_in_markdown --
+vars: {
+  service-x: Kube
+}
+x: ${service-x}
+description: |md
+  ${service-x} is a service
+
+  ```
+  Let ${y} be ${x}
+  ```
+|
+b -> description -> a
