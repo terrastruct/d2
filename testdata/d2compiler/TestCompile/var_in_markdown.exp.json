@@ -3,11 +3,11 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,0:0:0-9:0:47",
+      "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,0:0:0-15:0:90",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,0:0:0-4:1:27",
+            "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,0:0:0-2:1:17",
             "key": {
               "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,0:0:0-0:4:4",
               "path": [
@@ -27,11 +27,11 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,0:6:6-4:1:27",
+                "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,0:6:6-2:1:17",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,1:2:10-3:3:25",
+                      "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,1:2:10-1:7:15",
                       "key": {
                         "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,1:2:10-1:3:11",
                         "path": [
@@ -50,31 +50,12 @@
                       },
                       "primary": {},
                       "value": {
-                        "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,1:5:13-3:3:25",
-                          "nodes": [
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,1:5:13-1:7:15",
+                          "value": [
                             {
-                              "map_key": {
-                                "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,2:4:19-2:6:21",
-                                "key": {
-                                  "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,2:4:19-2:6:21",
-                                  "path": [
-                                    {
-                                      "unquoted_string": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,2:4:19-2:6:21",
-                                        "value": [
-                                          {
-                                            "string": "ok",
-                                            "raw_string": "ok"
-                                          }
-                                        ]
-                                      }
-                                    }
-                                  ]
-                                },
-                                "primary": {},
-                                "value": {}
-                              }
+                              "string": "ok",
+                              "raw_string": "ok"
                             }
                           ]
                         }
@@ -88,13 +69,13 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,6:0:29-8:1:46",
+            "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,4:0:19-14:1:89",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,6:0:29-6:1:30",
+              "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,4:0:19-4:1:20",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,6:0:29-6:1:30",
+                    "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,4:0:19-4:1:20",
                     "value": [
                       {
                         "string": "x",
@@ -108,10 +89,10 @@
             "primary": {},
             "value": {
               "block_string": {
-                "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,6:3:32-8:1:46",
+                "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,4:3:22-14:1:89",
                 "quote": "",
                 "tag": "md",
-                "value": "m${v}y"
+                "value": "moky\n\n`hey ${v}`\n\nregular markdown\n\n```\nbye ${v}\n```"
               }
             }
           }
@@ -149,11 +130,11 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,6:0:29-6:1:30",
+              "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,4:0:19-4:1:20",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,6:0:29-6:1:30",
+                    "range": "d2/testdata/d2compiler/TestCompile/var_in_markdown.d2,4:0:19-4:1:20",
                     "value": [
                       {
                         "string": "x",
@@ -170,7 +151,7 @@
         ],
         "attributes": {
           "label": {
-            "value": "m${v}y"
+            "value": "moky\n\n`hey ${v}`\n\nregular markdown\n\n```\nbye ${v}\n```"
           },
           "labelDimensions": {
             "width": 0,

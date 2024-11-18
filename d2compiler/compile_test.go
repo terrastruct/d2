@@ -2868,17 +2868,28 @@ x*: {
 		{
 			name: "var_in_markdown",
 			text: `vars: {
-  v: {
-    ok
-  }
+  v: ok
 }
 
 x: |md
   m${v}y
+
+	` + "`hey ${v}`" + `
+
+	regular markdown
+
+	` + "```" + `
+	bye ${v}
+	` + "```" + `
 |
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				tassert.Equal(t, "moky", g.Objects[0].Attributes.Label.Value)
+				tassert.True(t, strings.Contains(g.Objects[0].Attributes.Label.Value, "moky"))
+				tassert.False(t, strings.Contains(g.Objects[0].Attributes.Label.Value, "m${v}y"))
+				// Code spans untouched
+				tassert.True(t, strings.Contains(g.Objects[0].Attributes.Label.Value, "hey ${v}"))
+				// Code blocks untouched
+				tassert.True(t, strings.Contains(g.Objects[0].Attributes.Label.Value, "bye ${v}"))
 			},
 		},
 		{

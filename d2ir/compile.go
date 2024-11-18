@@ -15,6 +15,7 @@ import (
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
+	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
 type globContext struct {
@@ -342,8 +343,30 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) (removedFie
 		if subbed {
 			s.Coalesce()
 		}
+	case *d2ast.BlockString:
+		variables := make(map[string]string)
+		for _, vars := range varsStack {
+			c.collectVariables(vars, variables)
+		}
+		preprocessedValue := textmeasure.ReplaceSubstitutionsMarkdown(s.Value, variables)
+
+		// Update the block string value
+		s.Value = preprocessedValue
 	}
 	return removedField
+}
+
+func (c *compiler) collectVariables(vars *Map, variables map[string]string) {
+	if vars == nil {
+		return
+	}
+	for _, f := range vars.Fields {
+		if f.Primary() != nil {
+			variables[f.Name] = f.Primary().Value.ScalarString()
+		} else if f.Map() != nil {
+			c.collectVariables(f.Map(), variables)
+		}
+	}
 }
 
 func (c *compiler) resolveSubstitution(vars *Map, node Node, substitution *d2ast.Substitution, isCurrentScopeVars bool) *Field {
