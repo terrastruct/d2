@@ -21,3 +21,7 @@ test: fmt
 .PHONY: race
 race: fmt
 	prefix "$@" ./ci/test.sh --race ./...
+
+.PHONY: themesdemo
+themesdemo:
+	$(MAKE) -C ./testdata/examples/
