@@ -1,6 +1,7 @@
 #### Features 🚀
 
 - Vars: vars in markdown blocks are substituted [#2218](https://github.com/terrastruct/d2/pull/2218)
+- Markdown: Github-flavored tables work in `md` blocks [#2221](https://github.com/terrastruct/d2/pull/2221)
 
 #### Improvements 🧹
 
