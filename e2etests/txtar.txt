@@ -483,3 +483,163 @@ description: |md
   ```
 |
 b -> description -> a
+
+-- md-tables --
+# Financial table
+savings: ||md
+  | Month    | Savings | Expenses | Balance |
+  | -------- | ------- | -------- | ------- |
+  | January  | $250    | $150     | $100    |
+  | February | $80     | $200     | -$120   |
+  | March    | $420    | $180     | $240    |
+||
+
+# Simple 2x2 table
+status: ||md
+  | Status | Count |
+  | ------ | ----- |
+  | Done   | 42    |
+  | Todo   | 17    |
+||
+
+# Long table with many rows
+metrics: ||md
+  | Metric    | Value   |
+  | --------- | ------- |
+  | Uptime    | 99.9%   |
+  | Latency   | 150ms   |
+  | Errors    | 0.01%   |
+  | Requests  | 15k/min |
+  | CPU       | 45%     |
+  | Memory    | 68%     |
+  | Disk      | 72%     |
+  | Network   | 33%     |
+||
+
+# Connect tables with labeled edges
+savings -> status: Triggers {
+  style: {
+    stroke-dash: 5
+  }
+}
+status -> metrics: Monitors {
+  style: {
+    stroke-width: 2
+  }
+}
+
+# Add some styling
+savings.style: {
+  fill: "#e8f4f8"
+  stroke: "#4a90e2"
+}
+
+status.style: {
+  fill: "#f8e8e8"
+  stroke: "#e24a4a"
+}
+
+metrics.style: {
+  fill: "#f0f8e8"
+  stroke: "#82e24a"
+}
+
+# Container for financial data
+financial: {
+  label: "Financial Overview"
+  style.stroke-width: 2
+
+  monthly: ||md
+    | Month     | Revenue  | Costs    | Margin |
+    | --------- | -------- | -------- | ------ |
+    | January   | $25,000  | $18,000  | 28%    |
+    | February  | $28,500  | $19,200  | 33%    |
+    | March     | $31,200  | $21,500  | 31%    |
+  ||
+
+  quarterly: ||md
+    | Quarter | Target | Actual | Variance |
+    |:--------|-------:|:------:|:---------|
+    | Q1 2024 | $75K   | $84.7K | +12.9%   |
+    | Q2 2024 | $82K   | -      | -        |
+  ||
+
+  monthly -> quarterly: "Aggregates"
+}
+
+# Container for system metrics
+monitoring: {
+  label: "System Health"
+  style.3d: true
+
+  availability: ||md
+    | Service    | Status | Uptime | Last Incident |
+    |:-----------|:------:|:------:|:--------------|
+    | API        | ✅     | 99.9%  | 15 days ago   |
+    | Database   | ✅     | 99.8%  | 3 days ago    |
+    | Cache      | ⚠️     | 98.5%  | 1 hour ago    |
+  ||
+
+  performance: ||md
+    | Metric          |  P50  |  P90  |  P99  |
+    |:----------------|:-----:|:-----:|:-----:|
+    | Response Time   | 120ms | 350ms | 750ms |
+    | DB Query Time   |  45ms | 180ms | 450ms |
+    | Cache Latency   |   5ms |  12ms |  30ms |
+  ||
+
+  availability -> performance: "Affects"
+}
+
+# Container for project status
+projects: {
+  label: "Project Tracking"
+  style.stroke: "#4a90e2"
+  style.double-border: true
+
+  status: ||md
+    | Project | Priority | Progress | Due Date | Owner |
+    |---------|:--------:|:--------:|:---------|:------|
+    | Alpha   | HIGH     | ![p](https://progress.com/80) 80% | 2024-04-01 | Alice |
+    | Beta    | MEDIUM   | ![p](https://progress.com/45) 45% | 2024-05-15 | Bob   |
+    | Gamma   | LOW      | ![p](https://progress.com/20) 20% | 2024-06-30 | Carol |
+  ||
+
+  risks: ||md
+    | Risk ID | Description | Impact | Mitigation |
+    |:-------:|:------------|:------:|:-----------|
+    | R1      | Resource shortage | 🔴 High | Hire contractors |
+    | R2      | Technical debt | 🟡 Med | Code review |
+    | R3      | Scope creep | 🟢 Low | Clear requirements |
+  ||
+}
+
+# Container for team stats
+team: {
+  label: "Team Analytics"
+  style.fill: "#f5f5f5"
+
+  velocity: ||md
+    | Sprint | Points | Completed | Carryover |
+    |:-------|:------:|:---------:|:---------:|
+    | SP-1   | 34     | 30        | 4         |
+    | SP-2   | 38     | 35        | 3         |
+    | SP-3   | 42     | 40        | 2         |
+    | Average| 38     | 35        | 3         |
+  ||
+}
+
+# Connect containers
+financial -> monitoring: "Impacts"
+monitoring -> projects: "Informs" {
+  style.stroke-dash: 5
+}
+projects -> team: "Assigns" {
+  style.animated: true
+}
+
+# Styling
+financial.style.fill: "#e8f4f8"
+monitoring.style.fill: "#f8e8e8"
+projects.style.fill: "#e8f8e8"
+team.style.fill: "#f8f0e8"
