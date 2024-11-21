@@ -1724,6 +1724,24 @@ y
 			},
 		},
 		{
+			name: "reserved_quoted",
+			text: `my_table: {
+  shape: sql_table
+  width: 200
+  height: 200
+  "shape": string
+  "icon": string
+  "width": int
+  "height": int
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 4, len(g.Objects[0].SQLTable.Columns))
+				assert.Equal(t, "shape", g.Objects[0].SQLTable.Columns[0].Name)
+				// assert.Equal(t, "string", g.Objects[0].SQLTable.Columns[0].Type)
+			},
+		},
+		{
 			name: "errors/reserved_icon_style",
 
 			text: `x: {
