@@ -277,7 +277,7 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 		if f.Name == "shape" {
 			continue
 		}
-		if _, ok := d2ast.BoardKeywords[f.Name]; ok {
+		if f.IsBoard() {
 			continue
 		}
 		c.compileField(obj, f)
@@ -298,62 +298,64 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 }
 
 func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
-	keyword := strings.ToLower(f.Name)
-	_, isStyleReserved := d2ast.StyleKeywords[keyword]
-	if isStyleReserved {
-		c.errorf(f.LastRef().AST(), "%v must be style.%v", f.Name, f.Name)
-		return
-	}
-	_, isReserved := d2ast.SimpleReservedKeywords[keyword]
-	if f.Name == "classes" {
-		if f.Map() != nil {
-			if len(f.Map().Edges) > 0 {
-				c.errorf(f.Map().Edges[0].LastRef().AST(), "classes cannot contain an edge")
-			}
-			for _, classesField := range f.Map().Fields {
-				if classesField.Map() == nil {
-					continue
+	if f.IsUnquoted {
+		keyword := strings.ToLower(f.Name)
+		_, isStyleReserved := d2ast.StyleKeywords[keyword]
+		if isStyleReserved {
+			c.errorf(f.LastRef().AST(), "%v must be style.%v", f.Name, f.Name)
+			return
+		}
+		_, isReserved := d2ast.SimpleReservedKeywords[keyword]
+		if f.Name == "classes" {
+			if f.Map() != nil {
+				if len(f.Map().Edges) > 0 {
+					c.errorf(f.Map().Edges[0].LastRef().AST(), "classes cannot contain an edge")
 				}
-				for _, cf := range classesField.Map().Fields {
-					if _, ok := d2ast.ReservedKeywords[cf.Name]; !ok {
-						c.errorf(cf.LastRef().AST(), "%s is an invalid class field, must be reserved keyword", cf.Name)
+				for _, classesField := range f.Map().Fields {
+					if classesField.Map() == nil {
+						continue
 					}
-					if cf.Name == "class" {
-						c.errorf(cf.LastRef().AST(), `"class" cannot appear within "classes"`)
+					for _, cf := range classesField.Map().Fields {
+						if _, ok := d2ast.ReservedKeywords[cf.Name]; !ok {
+							c.errorf(cf.LastRef().AST(), "%s is an invalid class field, must be reserved keyword", cf.Name)
+						}
+						if cf.Name == "class" {
+							c.errorf(cf.LastRef().AST(), `"class" cannot appear within "classes"`)
+						}
 					}
 				}
 			}
-		}
-		return
-	} else if f.Name == "vars" {
-		return
-	} else if f.Name == "source-arrowhead" || f.Name == "target-arrowhead" {
-		c.errorf(f.LastRef().AST(), `%#v can only be used on connections`, f.Name)
-		return
+			return
+		} else if f.Name == "vars" {
+			return
+		} else if f.Name == "source-arrowhead" || f.Name == "target-arrowhead" {
+			c.errorf(f.LastRef().AST(), `%#v can only be used on connections`, f.Name)
+			return
 
-	} else if isReserved {
-		c.compileReserved(&obj.Attributes, f)
-		return
-	} else if f.Name == "style" {
-		if f.Map() == nil || len(f.Map().Fields) == 0 {
-			c.errorf(f.LastRef().AST(), `"style" expected to be set to a map of key-values, or contain an additional keyword like "style.opacity: 0.4"`)
+		} else if isReserved {
+			c.compileReserved(&obj.Attributes, f)
+			return
+		} else if f.Name == "style" {
+			if f.Map() == nil || len(f.Map().Fields) == 0 {
+				c.errorf(f.LastRef().AST(), `"style" expected to be set to a map of key-values, or contain an additional keyword like "style.opacity: 0.4"`)
+				return
+			}
+			c.compileStyle(&obj.Attributes, f.Map())
+			if obj.Style.Animated != nil {
+				c.errorf(obj.Style.Animated.MapKey, `key "animated" can only be applied to edges`)
+			}
 			return
 		}
-		c.compileStyle(&obj.Attributes, f.Map())
-		if obj.Style.Animated != nil {
-			c.errorf(obj.Style.Animated.MapKey, `key "animated" can only be applied to edges`)
-		}
-		return
-	}
 
-	if obj.Parent != nil {
-		if strings.EqualFold(obj.Parent.Shape.Value, d2target.ShapeSQLTable) {
-			c.errorf(f.LastRef().AST(), "sql_table columns cannot have children")
-			return
-		}
-		if strings.EqualFold(obj.Parent.Shape.Value, d2target.ShapeClass) {
-			c.errorf(f.LastRef().AST(), "class fields cannot have children")
-			return
+		if obj.Parent != nil {
+			if strings.EqualFold(obj.Parent.Shape.Value, d2target.ShapeSQLTable) {
+				c.errorf(f.LastRef().AST(), "sql_table columns cannot have children")
+				return
+			}
+			if strings.EqualFold(obj.Parent.Shape.Value, d2target.ShapeClass) {
+				c.errorf(f.LastRef().AST(), "class fields cannot have children")
+				return
+			}
 		}
 	}
 
@@ -995,7 +997,7 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 
 func (c *compiler) validateKeys(obj *d2graph.Object, m *d2ir.Map) {
 	for _, f := range m.Fields {
-		if _, ok := d2ast.BoardKeywords[f.Name]; ok {
+		if f.IsBoard() {
 			continue
 		}
 		c.validateKey(obj, f)
@@ -1003,45 +1005,47 @@ func (c *compiler) validateKeys(obj *d2graph.Object, m *d2ir.Map) {
 }
 
 func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
-	keyword := strings.ToLower(f.Name)
-	_, isReserved := d2ast.ReservedKeywords[keyword]
-	if isReserved {
-		switch obj.Shape.Value {
-		case d2target.ShapeCircle, d2target.ShapeSquare:
-			checkEqual := (keyword == "width" && obj.HeightAttr != nil) || (keyword == "height" && obj.WidthAttr != nil)
-			if checkEqual && obj.WidthAttr.Value != obj.HeightAttr.Value {
-				c.errorf(f.LastPrimaryKey(), "width and height must be equal for %s shapes", obj.Shape.Value)
-			}
-		}
-
-		switch f.Name {
-		case "style":
-			if obj.Style.ThreeDee != nil {
-				if !strings.EqualFold(obj.Shape.Value, d2target.ShapeSquare) && !strings.EqualFold(obj.Shape.Value, d2target.ShapeRectangle) && !strings.EqualFold(obj.Shape.Value, d2target.ShapeHexagon) {
-					c.errorf(obj.Style.ThreeDee.MapKey, `key "3d" can only be applied to squares, rectangles, and hexagons`)
+	if f.IsUnquoted {
+		keyword := strings.ToLower(f.Name)
+		_, isReserved := d2ast.ReservedKeywords[keyword]
+		if isReserved {
+			switch obj.Shape.Value {
+			case d2target.ShapeCircle, d2target.ShapeSquare:
+				checkEqual := (keyword == "width" && obj.HeightAttr != nil) || (keyword == "height" && obj.WidthAttr != nil)
+				if checkEqual && obj.WidthAttr.Value != obj.HeightAttr.Value {
+					c.errorf(f.LastPrimaryKey(), "width and height must be equal for %s shapes", obj.Shape.Value)
 				}
 			}
-			if obj.Style.DoubleBorder != nil {
-				if obj.Shape.Value != "" && !strings.EqualFold(obj.Shape.Value, d2target.ShapeSquare) && !strings.EqualFold(obj.Shape.Value, d2target.ShapeRectangle) && !strings.EqualFold(obj.Shape.Value, d2target.ShapeCircle) && !strings.EqualFold(obj.Shape.Value, d2target.ShapeOval) {
-					c.errorf(obj.Style.DoubleBorder.MapKey, `key "double-border" can only be applied to squares, rectangles, circles, ovals`)
+
+			switch f.Name {
+			case "style":
+				if obj.Style.ThreeDee != nil {
+					if !strings.EqualFold(obj.Shape.Value, d2target.ShapeSquare) && !strings.EqualFold(obj.Shape.Value, d2target.ShapeRectangle) && !strings.EqualFold(obj.Shape.Value, d2target.ShapeHexagon) {
+						c.errorf(obj.Style.ThreeDee.MapKey, `key "3d" can only be applied to squares, rectangles, and hexagons`)
+					}
+				}
+				if obj.Style.DoubleBorder != nil {
+					if obj.Shape.Value != "" && !strings.EqualFold(obj.Shape.Value, d2target.ShapeSquare) && !strings.EqualFold(obj.Shape.Value, d2target.ShapeRectangle) && !strings.EqualFold(obj.Shape.Value, d2target.ShapeCircle) && !strings.EqualFold(obj.Shape.Value, d2target.ShapeOval) {
+						c.errorf(obj.Style.DoubleBorder.MapKey, `key "double-border" can only be applied to squares, rectangles, circles, ovals`)
+					}
+				}
+			case "shape":
+				if strings.EqualFold(obj.Shape.Value, d2target.ShapeImage) && obj.Icon == nil {
+					c.errorf(f.LastPrimaryKey(), `image shape must include an "icon" field`)
+				}
+
+				in := d2target.IsShape(obj.Shape.Value)
+				_, arrowheadIn := d2target.Arrowheads[obj.Shape.Value]
+				if !in && arrowheadIn {
+					c.errorf(f.LastPrimaryKey(), fmt.Sprintf(`invalid shape, can only set "%s" for arrowheads`, obj.Shape.Value))
+				}
+			case "constraint":
+				if !strings.EqualFold(obj.Shape.Value, d2target.ShapeSQLTable) {
+					c.errorf(f.LastPrimaryKey(), `"constraint" keyword can only be used in "sql_table" shapes`)
 				}
 			}
-		case "shape":
-			if strings.EqualFold(obj.Shape.Value, d2target.ShapeImage) && obj.Icon == nil {
-				c.errorf(f.LastPrimaryKey(), `image shape must include an "icon" field`)
-			}
-
-			in := d2target.IsShape(obj.Shape.Value)
-			_, arrowheadIn := d2target.Arrowheads[obj.Shape.Value]
-			if !in && arrowheadIn {
-				c.errorf(f.LastPrimaryKey(), fmt.Sprintf(`invalid shape, can only set "%s" for arrowheads`, obj.Shape.Value))
-			}
-		case "constraint":
-			if !strings.EqualFold(obj.Shape.Value, d2target.ShapeSQLTable) {
-				c.errorf(f.LastPrimaryKey(), `"constraint" keyword can only be used in "sql_table" shapes`)
-			}
+			return
 		}
-		return
 	}
 
 	if strings.EqualFold(obj.Shape.Value, d2target.ShapeImage) && obj.OuterSequenceDiagram() == nil {
