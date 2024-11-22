@@ -320,9 +320,9 @@ type Field struct {
 	importAST d2ast.Node
 
 	Name string `json:"name"`
-	// IsUnquoted is also false if the field contains an escape.
-	// For example, \label would have IsUnquoted false
-	IsUnquoted bool `json:"-"`
+	// IsQuoted is also true if the field contains an escape.
+	// For example, \label would have IsQuoted true
+	IsQuoted bool `json:"-"`
 
 	// Primary_ to avoid clashing with Primary(). We need to keep it exported for
 	// encoding/json to marshal it so cannot prefix _ instead.
@@ -332,8 +332,15 @@ type Field struct {
 	References []*FieldReference `json:"references,omitempty"`
 }
 
+func (f *Field) RawName() string {
+	if f.IsQuoted {
+		return fmt.Sprintf(`"%s"`, f.Name)
+	}
+	return f.Name
+}
+
 func (f *Field) IsReserved() bool {
-	if !f.IsUnquoted {
+	if !f.IsQuoted {
 		return false
 	}
 	_, is := d2ast.ReservedKeywords[f.Name]
@@ -341,7 +348,7 @@ func (f *Field) IsReserved() bool {
 }
 
 func (f *Field) IsBoard() bool {
-	if !f.IsUnquoted {
+	if f.IsQuoted {
 		return false
 	}
 	_, is := d2ast.BoardKeywords[f.Name]
@@ -888,28 +895,31 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 		// Do not consider it unquoted if it has any escapes
 		headUnquoted = len(headString) == len(unquotedString.ScalarString())
 	}
+	headQuoted := !headUnquoted
 
-	if _, ok := d2ast.ReservedKeywords[strings.ToLower(headString)]; ok {
-		headString = strings.ToLower(headString)
-		if _, ok := d2ast.CompositeReservedKeywords[headString]; !ok && i < len(kp.Path)-1 {
-			return d2parser.Errorf(kp.Path[i].Unbox(), fmt.Sprintf(`"%s" must be the last part of the key`, head))
+	if !headQuoted {
+		if _, ok := d2ast.ReservedKeywords[strings.ToLower(headString)]; ok {
+			headString = strings.ToLower(headString)
+			if _, ok := d2ast.CompositeReservedKeywords[headString]; !ok && i < len(kp.Path)-1 {
+				return d2parser.Errorf(kp.Path[i].Unbox(), fmt.Sprintf(`"%s" must be the last part of the key`, head))
+			}
+		}
+
+		if headString == "_" {
+			return d2parser.Errorf(kp.Path[i].Unbox(), `parent "_" can only be used in the beginning of paths, e.g. "_.x"`)
+		}
+
+		if headString == "classes" && NodeBoardKind(m) == "" {
+			return d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", head)
+		}
+
+		if findBoardKeyword(headString) != -1 && NodeBoardKind(m) == "" && headUnquoted {
+			return d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", head)
 		}
 	}
 
-	if headString == "_" {
-		return d2parser.Errorf(kp.Path[i].Unbox(), `parent "_" can only be used in the beginning of paths, e.g. "_.x"`)
-	}
-
-	if headString == "classes" && NodeBoardKind(m) == "" {
-		return d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", head)
-	}
-
-	if findBoardKeyword(headString) != -1 && NodeBoardKind(m) == "" && headUnquoted {
-		return d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", head)
-	}
-
 	for _, f := range m.Fields {
-		if !strings.EqualFold(f.Name, headString) {
+		if !(strings.EqualFold(f.Name, headString) && f.IsQuoted == headQuoted) {
 			continue
 		}
 
@@ -952,9 +962,9 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 		}
 	}
 	f := &Field{
-		parent:     m,
-		Name:       headString,
-		IsUnquoted: headUnquoted,
+		parent:   m,
+		Name:     headString,
+		IsQuoted: headQuoted,
 	}
 	defer func() {
 		if i < kp.FirstGlob() {

@@ -274,7 +274,7 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 		}
 	}
 	for _, f := range m.Fields {
-		if f.Name == "shape" {
+		if f.Name == "shape" && !f.IsQuoted {
 			continue
 		}
 		if f.IsBoard() {
@@ -298,7 +298,7 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 }
 
 func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
-	if f.IsUnquoted {
+	if !f.IsQuoted {
 		keyword := strings.ToLower(f.Name)
 		_, isStyleReserved := d2ast.StyleKeywords[keyword]
 		if isStyleReserved {
@@ -360,7 +360,8 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 	}
 
 	parent := obj
-	obj = obj.EnsureChild(d2graphIDA([]string{f.Name}))
+	d2ast.RawString(f.Name, true)
+	obj = obj.EnsureChild(d2graphIDA([]string{f.RawName()}))
 	if f.Primary() != nil {
 		c.compileLabel(&obj.Attributes, f)
 	}
@@ -838,12 +839,12 @@ func (c *compiler) compileEdgeMap(edge *d2graph.Edge, m *d2ir.Map) {
 func (c *compiler) compileEdgeField(edge *d2graph.Edge, f *d2ir.Field) {
 	keyword := strings.ToLower(f.Name)
 	_, isStyleReserved := d2ast.StyleKeywords[keyword]
-	if isStyleReserved {
+	if isStyleReserved && !f.IsQuoted {
 		c.errorf(f.LastRef().AST(), "%v must be style.%v", f.Name, f.Name)
 		return
 	}
 	_, isReserved := d2ast.SimpleReservedKeywords[keyword]
-	if isReserved {
+	if isReserved && !f.IsQuoted {
 		c.compileReserved(&edge.Attributes, f)
 		return
 	} else if f.Name == "style" {
@@ -854,7 +855,7 @@ func (c *compiler) compileEdgeField(edge *d2graph.Edge, f *d2ir.Field) {
 		return
 	}
 
-	if f.Name == "source-arrowhead" || f.Name == "target-arrowhead" {
+	if (f.Name == "source-arrowhead" || f.Name == "target-arrowhead") && !f.IsQuoted {
 		c.compileArrowheads(edge, f)
 	}
 }
@@ -881,10 +882,10 @@ func (c *compiler) compileArrowheads(edge *d2graph.Edge, f *d2ir.Field) {
 		for _, f2 := range f.Map().Fields {
 			keyword := strings.ToLower(f2.Name)
 			_, isReserved := d2ast.SimpleReservedKeywords[keyword]
-			if isReserved {
+			if isReserved && !f2.IsQuoted {
 				c.compileReserved(attrs, f2)
 				continue
-			} else if f2.Name == "style" {
+			} else if f2.Name == "style" && !f2.IsQuoted {
 				if f2.Map() == nil {
 					continue
 				}
@@ -1005,7 +1006,7 @@ func (c *compiler) validateKeys(obj *d2graph.Object, m *d2ir.Map) {
 }
 
 func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
-	if f.IsUnquoted {
+	if !f.IsQuoted {
 		keyword := strings.ToLower(f.Name)
 		_, isReserved := d2ast.ReservedKeywords[keyword]
 		if isReserved {
