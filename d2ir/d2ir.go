@@ -1591,7 +1591,7 @@ func countUnderscores(p []d2ast.String) int {
 
 func findBoardKeyword(ida ...d2ast.String) int {
 	for i := range ida {
-		if _, ok := d2ast.BoardKeywords[ida[i].ScalarString()]; ok && ida[i].IsUnquoted() {
+		if _, ok := d2ast.BoardKeywords[strings.ToLower(ida[i].ScalarString())]; ok && ida[i].IsUnquoted() {
 			return i
 		}
 	}
