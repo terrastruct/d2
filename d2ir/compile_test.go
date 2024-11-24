@@ -739,7 +739,7 @@ dora: {
 }
 `)
 				assert.Success(t, err)
-				assert.Equal(t, "grid-columns", m.Fields[1].Map().Fields[0].Name)
+				assert.Equal(t, "grid-columns", m.Fields[1].Map().Fields[0].Name.ScalarString())
 			},
 		},
 	}

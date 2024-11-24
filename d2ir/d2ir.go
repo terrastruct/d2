@@ -890,7 +890,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 	}
 
 	for _, f := range m.Fields {
-		if !(strings.EqualFold(f.Name.ScalarString(), head.ScalarString()) && f.Name.IsUnquoted() == head.IsUnquoted()) {
+		if !(f.Name != nil && strings.EqualFold(f.Name.ScalarString(), head.ScalarString()) && f.Name.IsUnquoted() == head.IsUnquoted()) {
 			continue
 		}
 
