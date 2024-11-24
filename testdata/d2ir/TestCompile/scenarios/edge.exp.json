@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "a",
+      "name": {
+        "range": "TestCompile/scenarios/edge.d2,0:0:0-0:1:1",
+        "value": [
+          {
+            "string": "a",
+            "raw_string": "a"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -118,7 +126,15 @@
       ]
     },
     {
-      "name": "b",
+      "name": {
+        "range": "TestCompile/scenarios/edge.d2,0:5:5-0:6:6",
+        "value": [
+          {
+            "string": "b",
+            "raw_string": "b"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -235,15 +251,39 @@
       ]
     },
     {
-      "name": "scenarios",
+      "name": {
+        "range": "TestCompile/scenarios/edge.d2,1:0:7-1:9:16",
+        "value": [
+          {
+            "string": "scenarios",
+            "raw_string": "scenarios"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "1",
+            "name": {
+              "range": "TestCompile/scenarios/edge.d2,2:2:22-2:3:23",
+              "value": [
+                {
+                  "string": "1",
+                  "raw_string": "1"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "a",
+                  "name": {
+                    "range": "TestCompile/scenarios/edge.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -510,7 +550,15 @@
                   ]
                 },
                 {
-                  "name": "b",
+                  "name": {
+                    "range": "TestCompile/scenarios/edge.d2,0:5:5-0:6:6",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -781,11 +829,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "a"
+                      {
+                        "range": "TestCompile/scenarios/edge.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "a",
+                            "raw_string": "a"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "b"
+                      {
+                        "range": "TestCompile/scenarios/edge.d2,0:5:5-0:6:6",
+                        "value": [
+                          {
+                            "string": "b",
+                            "raw_string": "b"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -794,11 +858,27 @@
                   "map": {
                     "fields": [
                       {
-                        "name": "style",
+                        "name": {
+                          "range": "TestCompile/scenarios/edge.d2,3:16:43-3:21:48",
+                          "value": [
+                            {
+                              "string": "style",
+                              "raw_string": "style"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "opacity",
+                              "name": {
+                                "range": "TestCompile/scenarios/edge.d2,3:22:49-3:29:56",
+                                "value": [
+                                  {
+                                    "string": "opacity",
+                                    "raw_string": "opacity"
+                                  }
+                                ]
+                              },
                               "primary": {
                                 "value": {
                                   "range": "TestCompile/scenarios/edge.d2,3:31:58-3:34:61",
@@ -1686,11 +1766,27 @@
     {
       "edge_id": {
         "src_path": [
-          "a"
+          {
+            "range": "TestCompile/scenarios/edge.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "b"
+          {
+            "range": "TestCompile/scenarios/edge.d2,0:5:5-0:6:6",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,

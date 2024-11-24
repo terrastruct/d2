@@ -382,10 +382,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,4:4:29-4:9:34",
                         "value": [
                           {
-                            "string": "santa"
+                            "string": "santa",
+                            "raw_string": "santa"
                           }
                         ]
                       }
@@ -484,10 +485,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,7:4:52-7:10:58",
                         "value": [
                           {
-                            "string": "clause"
+                            "string": "clause",
+                            "raw_string": "clause"
                           }
                         ]
                       }
@@ -506,10 +508,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:2:61-8:7:66",
                         "value": [
                           {
-                            "string": "steps"
+                            "string": "steps",
+                            "raw_string": "steps"
                           }
                         ]
                       }
@@ -529,10 +532,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:3:73-9:11:81",
                                   "value": [
                                     {
-                                      "string": "seinfeld"
+                                      "string": "seinfeld",
+                                      "raw_string": "seinfeld"
                                     }
                                   ]
                                 }
@@ -552,10 +556,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,7:4:52-7:10:58",
                                             "value": [
                                               {
-                                                "string": "clause"
+                                                "string": "clause",
+                                                "raw_string": "clause"
                                               }
                                             ]
                                           }
@@ -574,10 +579,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,10:4:89-10:12:97",
                                             "value": [
                                               {
-                                                "string": "reindeer"
+                                                "string": "reindeer",
+                                                "raw_string": "reindeer"
                                               }
                                             ]
                                           }
@@ -601,10 +607,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:3:106-12:11:114",
                                   "value": [
                                     {
-                                      "string": "missoula"
+                                      "string": "missoula",
+                                      "raw_string": "missoula"
                                     }
                                   ]
                                 }
@@ -624,10 +631,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,7:4:52-7:10:58",
                                             "value": [
                                               {
-                                                "string": "clause"
+                                                "string": "clause",
+                                                "raw_string": "clause"
                                               }
                                             ]
                                           }
@@ -646,10 +654,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,10:4:89-10:12:97",
                                             "value": [
                                               {
-                                                "string": "reindeer"
+                                                "string": "reindeer",
+                                                "raw_string": "reindeer"
                                               }
                                             ]
                                           }
@@ -668,10 +677,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,13:4:122-13:11:129",
                                             "value": [
                                               {
-                                                "string": "montana"
+                                                "string": "montana",
+                                                "raw_string": "montana"
                                               }
                                             ]
                                           }
@@ -780,10 +790,11 @@
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
+                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,7:4:52-7:10:58",
                             "value": [
                               {
-                                "string": "clause"
+                                "string": "clause",
+                                "raw_string": "clause"
                               }
                             ]
                           }
@@ -802,10 +813,11 @@
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
+                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,10:4:89-10:12:97",
                             "value": [
                               {
-                                "string": "reindeer"
+                                "string": "reindeer",
+                                "raw_string": "reindeer"
                               }
                             ]
                           }
@@ -949,10 +961,11 @@
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
+                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,7:4:52-7:10:58",
                             "value": [
                               {
-                                "string": "clause"
+                                "string": "clause",
+                                "raw_string": "clause"
                               }
                             ]
                           }
@@ -971,10 +984,11 @@
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
+                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,10:4:89-10:12:97",
                             "value": [
                               {
-                                "string": "reindeer"
+                                "string": "reindeer",
+                                "raw_string": "reindeer"
                               }
                             ]
                           }
@@ -993,10 +1007,11 @@
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
+                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,13:4:122-13:11:129",
                             "value": [
                               {
-                                "string": "montana"
+                                "string": "montana",
+                                "raw_string": "montana"
                               }
                             ]
                           }

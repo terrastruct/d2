@@ -1724,6 +1724,51 @@ y
 			},
 		},
 		{
+			name: "reserved_quoted/1",
+			text: `x: {
+  "label": hello
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 2, len(g.Objects))
+				assert.Equal(t, "x", g.Objects[0].Label.Value)
+			},
+		},
+		{
+			name: "reserved_quoted/2",
+			text: `my_table: {
+  shape: sql_table
+  width: 200
+  height: 200
+  "shape": string
+  "icon": string
+  "width": int
+  "height": int
+}
+		`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 4, len(g.Objects[0].SQLTable.Columns))
+				assert.Equal(t, `shape`, g.Objects[0].SQLTable.Columns[0].Name.Label)
+			},
+		},
+		{
+			name: "reserved_quoted/3",
+			text: `*."shape"
+x
+		`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 2, len(g.Objects))
+				assert.Equal(t, `x.shape`, g.Objects[0].AbsID())
+			},
+		},
+		{
+			name: "reserved_quoted/4",
+			text: `x."style"."fill"`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 3, len(g.Objects))
+			},
+		},
+		{
 			name: "errors/reserved_icon_style",
 
 			text: `x: {

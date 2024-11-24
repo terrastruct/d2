@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "x",
+      "name": {
+        "range": "rules.d2,2:0:30-2:1:31",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "primary": {
         "value": {
           "range": "rules.d2,1:5:25-1:9:29",
@@ -16,11 +24,27 @@
       "composite": {
         "fields": [
           {
-            "name": "style",
+            "name": {
+              "range": "rules.d2,0:4:4-0:9:9",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "fill",
+                  "name": {
+                    "range": "rules.d2,0:10:10-0:14:14",
+                    "value": [
+                      {
+                        "string": "fill",
+                        "raw_string": "fill"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "rules.d2,0:16:16-0:19:19",
@@ -948,7 +972,15 @@
       ]
     },
     {
-      "name": "hi",
+      "name": {
+        "range": "index.d2,1:0:13-1:2:15",
+        "value": [
+          {
+            "string": "hi",
+            "raw_string": "hi"
+          }
+        ]
+      },
       "primary": {
         "value": {
           "range": "rules.d2,1:5:25-1:9:29",
@@ -963,11 +995,27 @@
       "composite": {
         "fields": [
           {
-            "name": "style",
+            "name": {
+              "range": "rules.d2,0:4:4-0:9:9",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "fill",
+                  "name": {
+                    "range": "rules.d2,0:10:10-0:14:14",
+                    "value": [
+                      {
+                        "string": "fill",
+                        "raw_string": "fill"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "rules.d2,0:16:16-0:19:19",

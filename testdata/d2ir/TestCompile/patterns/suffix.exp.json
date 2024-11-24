@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "animal",
+      "name": {
+        "range": "TestCompile/patterns/suffix.d2,0:0:0-0:6:6",
+        "value": [
+          {
+            "string": "animal",
+            "raw_string": "animal"
+          }
+        ]
+      },
       "primary": {
         "value": {
           "range": "TestCompile/patterns/suffix.d2,2:4:30-2:11:37",
@@ -80,7 +88,15 @@
       ]
     },
     {
-      "name": "jingle",
+      "name": {
+        "range": "TestCompile/patterns/suffix.d2,1:0:13-1:6:19",
+        "value": [
+          {
+            "string": "jingle",
+            "raw_string": "jingle"
+          }
+        ]
+      },
       "primary": {
         "value": {
           "range": "TestCompile/patterns/suffix.d2,2:4:30-2:11:37",

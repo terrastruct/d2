@@ -194,10 +194,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:0:0-0:1:1",
                         "value": [
                           {
-                            "string": "a"
+                            "string": "a",
+                            "raw_string": "a"
                           }
                         ]
                       }
@@ -216,10 +217,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/x.d2,1:0:2-1:6:8",
                         "value": [
                           {
-                            "string": "layers"
+                            "string": "layers",
+                            "raw_string": "layers"
                           }
                         ]
                       }
@@ -239,10 +241,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile/x.d2,2:2:14-2:3:15",
                                   "value": [
                                     {
-                                      "string": "b"
+                                      "string": "b",
+                                      "raw_string": "b"
                                     }
                                   ]
                                 }
@@ -262,10 +265,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,3:2:21-3:3:22",
                                             "value": [
                                               {
-                                                "string": "d"
+                                                "string": "d",
+                                                "raw_string": "d"
                                               }
                                             ]
                                           }
@@ -284,10 +288,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,5:2:26-5:8:32",
                                             "value": [
                                               {
-                                                "string": "layers"
+                                                "string": "layers",
+                                                "raw_string": "layers"
                                               }
                                             ]
                                           }
@@ -307,10 +312,11 @@
                                                 "path": [
                                                   {
                                                     "unquoted_string": {
-                                                      "range": ",0:0:0-0:0:0",
+                                                      "range": "d2/testdata/d2compiler/TestCompile/x.d2,6:4:40-6:5:41",
                                                       "value": [
                                                         {
-                                                          "string": "c"
+                                                          "string": "c",
+                                                          "raw_string": "c"
                                                         }
                                                       ]
                                                     }
@@ -330,10 +336,11 @@
                                                           "path": [
                                                             {
                                                               "unquoted_string": {
-                                                                "range": ",0:0:0-0:0:0",
+                                                                "range": "d2/testdata/d2compiler/TestCompile/x.d2,7:5:50-7:6:51",
                                                                 "value": [
                                                                   {
-                                                                    "string": "c"
+                                                                    "string": "c",
+                                                                    "raw_string": "c"
                                                                   }
                                                                 ]
                                                               }
@@ -452,10 +459,11 @@
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
+                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,3:2:21-3:3:22",
                             "value": [
                               {
-                                "string": "d"
+                                "string": "d",
+                                "raw_string": "d"
                               }
                             ]
                           }
@@ -474,10 +482,11 @@
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
+                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,5:2:26-5:8:32",
                             "value": [
                               {
-                                "string": "layers"
+                                "string": "layers",
+                                "raw_string": "layers"
                               }
                             ]
                           }
@@ -497,10 +506,11 @@
                                 "path": [
                                   {
                                     "unquoted_string": {
-                                      "range": ",0:0:0-0:0:0",
+                                      "range": "d2/testdata/d2compiler/TestCompile/x.d2,6:4:40-6:5:41",
                                       "value": [
                                         {
-                                          "string": "c"
+                                          "string": "c",
+                                          "raw_string": "c"
                                         }
                                       ]
                                     }
@@ -520,10 +530,11 @@
                                           "path": [
                                             {
                                               "unquoted_string": {
-                                                "range": ",0:0:0-0:0:0",
+                                                "range": "d2/testdata/d2compiler/TestCompile/x.d2,7:5:50-7:6:51",
                                                 "value": [
                                                   {
-                                                    "string": "c"
+                                                    "string": "c",
+                                                    "raw_string": "c"
                                                   }
                                                 ]
                                               }
@@ -632,10 +643,11 @@
                           "path": [
                             {
                               "unquoted_string": {
-                                "range": ",0:0:0-0:0:0",
+                                "range": "d2/testdata/d2compiler/TestCompile/x.d2,7:5:50-7:6:51",
                                 "value": [
                                   {
-                                    "string": "c"
+                                    "string": "c",
+                                    "raw_string": "c"
                                   }
                                 ]
                               }

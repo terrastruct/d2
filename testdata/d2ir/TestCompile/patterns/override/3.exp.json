@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "a",
+      "name": {
+        "range": "TestCompile/patterns/override/3.d2,3:0:28-3:1:29",
+        "value": [
+          {
+            "string": "a",
+            "raw_string": "a"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -118,7 +126,15 @@
       ]
     },
     {
-      "name": "b",
+      "name": {
+        "range": "TestCompile/patterns/override/3.d2,3:5:33-3:6:34",
+        "value": [
+          {
+            "string": "b",
+            "raw_string": "b"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -235,23 +251,63 @@
       ]
     },
     {
-      "name": "layers",
+      "name": {
+        "range": "TestCompile/patterns/override/3.d2,5:0:36-5:6:42",
+        "value": [
+          {
+            "string": "layers",
+            "raw_string": "layers"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "hi",
+            "name": {
+              "range": "TestCompile/patterns/override/3.d2,6:2:48-6:4:50",
+              "value": [
+                {
+                  "string": "hi",
+                  "raw_string": "hi"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "scenarios",
+                  "name": {
+                    "range": "TestCompile/patterns/override/3.d2,9:4:90-9:13:99",
+                    "value": [
+                      {
+                        "string": "scenarios",
+                        "raw_string": "scenarios"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "b",
+                        "name": {
+                          "range": "TestCompile/patterns/override/3.d2,10:6:109-10:7:110",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "a",
+                              "name": {
+                                "range": "TestCompile/patterns/override/3.d2,12:8:175-12:9:176",
+                                "value": [
+                                  {
+                                    "string": "a",
+                                    "raw_string": "a"
+                                  }
+                                ]
+                              },
                               "references": [
                                 {
                                   "string": {
@@ -368,7 +424,15 @@
                               ]
                             },
                             {
-                              "name": "b",
+                              "name": {
+                                "range": "TestCompile/patterns/override/3.d2,12:13:180-12:14:181",
+                                "value": [
+                                  {
+                                    "string": "b",
+                                    "raw_string": "b"
+                                  }
+                                ]
+                              },
                               "references": [
                                 {
                                   "string": {
@@ -489,11 +553,27 @@
                             {
                               "edge_id": {
                                 "src_path": [
-                                  "a"
+                                  {
+                                    "range": "TestCompile/patterns/override/3.d2,12:8:175-12:9:176",
+                                    "value": [
+                                      {
+                                        "string": "a",
+                                        "raw_string": "a"
+                                      }
+                                    ]
+                                  }
                                 ],
                                 "src_arrow": false,
                                 "dst_path": [
-                                  "b"
+                                  {
+                                    "range": "TestCompile/patterns/override/3.d2,12:13:180-12:14:181",
+                                    "value": [
+                                      {
+                                        "string": "b",
+                                        "raw_string": "b"
+                                      }
+                                    ]
+                                  }
                                 ],
                                 "dst_arrow": true,
                                 "index": 0,
@@ -502,7 +582,15 @@
                               "map": {
                                 "fields": [
                                   {
-                                    "name": "label",
+                                    "name": {
+                                      "range": "TestCompile/patterns/override/3.d2,1:16:17-1:21:22",
+                                      "value": [
+                                        {
+                                          "string": "label",
+                                          "raw_string": "label"
+                                        }
+                                      ]
+                                    },
                                     "primary": {
                                       "value": {
                                         "range": "TestCompile/patterns/override/3.d2,7:27:81-7:30:84",
@@ -8088,11 +8176,27 @@
     {
       "edge_id": {
         "src_path": [
-          "a"
+          {
+            "range": "TestCompile/patterns/override/3.d2,3:0:28-3:1:29",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "b"
+          {
+            "range": "TestCompile/patterns/override/3.d2,3:5:33-3:6:34",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -8101,7 +8205,15 @@
       "map": {
         "fields": [
           {
-            "name": "label",
+            "name": {
+              "range": "TestCompile/patterns/override/3.d2,1:16:17-1:21:22",
+              "value": [
+                {
+                  "string": "label",
+                  "raw_string": "label"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "TestCompile/patterns/override/3.d2,1:23:24-1:25:26",

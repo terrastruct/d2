@@ -211,10 +211,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/alixander-lazy-globs-review/2.d2,5:4:48-5:5:49",
                         "value": [
                           {
-                            "string": "a"
+                            "string": "a",
+                            "raw_string": "a"
                           }
                         ]
                       }
@@ -234,10 +235,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/globs/alixander-lazy-globs-review/2.d2,1:3:4-1:8:9",
                                   "value": [
                                     {
-                                      "string": "style"
+                                      "string": "style",
+                                      "raw_string": "style"
                                     }
                                   ]
                                 }
@@ -257,10 +259,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile2/globs/alixander-lazy-globs-review/2.d2,1:9:10-1:13:14",
                                             "value": [
                                               {
-                                                "string": "fill"
+                                                "string": "fill",
+                                                "raw_string": "fill"
                                               }
                                             ]
                                           }
@@ -299,10 +302,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/alixander-lazy-globs-review/2.d2,5:9:53-5:10:54",
                         "value": [
                           {
-                            "string": "b"
+                            "string": "b",
+                            "raw_string": "b"
                           }
                         ]
                       }
@@ -322,10 +326,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/globs/alixander-lazy-globs-review/2.d2,1:3:4-1:8:9",
                                   "value": [
                                     {
-                                      "string": "style"
+                                      "string": "style",
+                                      "raw_string": "style"
                                     }
                                   ]
                                 }
@@ -345,10 +350,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile2/globs/alixander-lazy-globs-review/2.d2,1:9:10-1:13:14",
                                             "value": [
                                               {
-                                                "string": "fill"
+                                                "string": "fill",
+                                                "raw_string": "fill"
                                               }
                                             ]
                                           }

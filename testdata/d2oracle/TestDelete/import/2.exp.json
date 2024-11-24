@@ -266,10 +266,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "index.d2,4:4:34-4:5:35",
                         "value": [
                           {
-                            "string": "c"
+                            "string": "c",
+                            "raw_string": "c"
                           }
                         ]
                       }

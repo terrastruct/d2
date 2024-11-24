@@ -334,10 +334,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/no-self-link.d2,5:4:43-5:5:44",
                         "value": [
                           {
-                            "string": "s"
+                            "string": "s",
+                            "raw_string": "s"
                           }
                         ]
                       }
@@ -357,10 +358,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile/no-self-link.d2,5:6:45-5:10:49",
                                   "value": [
                                     {
-                                      "string": "link"
+                                      "string": "link",
+                                      "raw_string": "link"
                                     }
                                   ]
                                 }
@@ -486,10 +488,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/no-self-link.d2,1:0:1-1:1:2",
                         "value": [
                           {
-                            "string": "x"
+                            "string": "x",
+                            "raw_string": "x"
                           }
                         ]
                       }
@@ -509,10 +512,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile/no-self-link.d2,1:2:3-1:6:7",
                                   "value": [
                                     {
-                                      "string": "link"
+                                      "string": "link",
+                                      "raw_string": "link"
                                     }
                                   ]
                                 }
@@ -545,10 +549,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/no-self-link.d2,11:4:93-11:5:94",
                         "value": [
                           {
-                            "string": "b"
+                            "string": "b",
+                            "raw_string": "b"
                           }
                         ]
                       }

@@ -338,6 +338,7 @@ type String interface {
 	SetString(string)
 	Copy() String
 	_string()
+	IsUnquoted() bool
 }
 
 var _ String = &UnquotedString{}
@@ -610,6 +611,11 @@ func (s *UnquotedString) _string()     {}
 func (s *DoubleQuotedString) _string() {}
 func (s *SingleQuotedString) _string() {}
 func (s *BlockString) _string()        {}
+
+func (s *UnquotedString) IsUnquoted() bool     { return true }
+func (s *DoubleQuotedString) IsUnquoted() bool { return false }
+func (s *SingleQuotedString) IsUnquoted() bool { return false }
+func (s *BlockString) IsUnquoted() bool        { return false }
 
 type Comment struct {
 	Range Range  `json:"range"`
@@ -1059,7 +1065,22 @@ func MakeKeyPath(a []string) *KeyPath {
 	return kp
 }
 
-func (kp *KeyPath) IDA() (ida []string) {
+func MakeKeyPathString(a []String) *KeyPath {
+	kp := &KeyPath{}
+	for _, el := range a {
+		kp.Path = append(kp.Path, MakeValueBox(RawString(el.ScalarString(), true)).StringBox())
+	}
+	return kp
+}
+
+func (kp *KeyPath) IDA() (ida []String) {
+	for _, el := range kp.Path {
+		ida = append(ida, el.Unbox())
+	}
+	return ida
+}
+
+func (kp *KeyPath) StringIDA() (ida []string) {
 	for _, el := range kp.Path {
 		ida = append(ida, el.Unbox().ScalarString())
 	}
@@ -1572,9 +1593,9 @@ func (s *Substitution) IDA() (ida []string) {
 	return ida
 }
 
-func (i *Import) IDA() (ida []string) {
+func (i *Import) IDA() (ida []String) {
 	for _, el := range i.Path[1:] {
-		ida = append(ida, el.Unbox().ScalarString())
+		ida = append(ida, el.Unbox())
 	}
 	return ida
 }

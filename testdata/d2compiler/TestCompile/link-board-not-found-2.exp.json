@@ -258,10 +258,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,2:8:29-2:12:33",
                         "value": [
                           {
-                            "string": "ping"
+                            "string": "ping",
+                            "raw_string": "ping"
                           }
                         ]
                       }
@@ -281,10 +282,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,3:12:49-3:16:53",
                                   "value": [
                                     {
-                                      "string": "link"
+                                      "string": "link",
+                                      "raw_string": "link"
                                     }
                                   ]
                                 }
@@ -398,10 +400,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,7:8:94-7:12:98",
                         "value": [
                           {
-                            "string": "pong"
+                            "string": "pong",
+                            "raw_string": "pong"
                           }
                         ]
                       }
@@ -421,10 +424,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,8:12:114-8:16:118",
                                   "value": [
                                     {
-                                      "string": "link"
+                                      "string": "link",
+                                      "raw_string": "link"
                                     }
                                   ]
                                 }

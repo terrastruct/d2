@@ -349,7 +349,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		if err != nil {
 			return xmain.UsageErrorf("invalid target: %s", *targetFlag)
 		}
-		boardPath = key.IDA()
+		boardPath = key.StringIDA()
 	}
 
 	ctx, cancel := timelib.WithTimeout(ctx, time.Minute*2)

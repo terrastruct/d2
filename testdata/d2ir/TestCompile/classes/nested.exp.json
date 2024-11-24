@@ -1,19 +1,51 @@
 {
   "fields": [
     {
-      "name": "classes",
+      "name": {
+        "range": "TestCompile/classes/nested.d2,0:0:0-0:7:7",
+        "value": [
+          {
+            "string": "classes",
+            "raw_string": "classes"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "mango",
+            "name": {
+              "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+              "value": [
+                {
+                  "string": "mango",
+                  "raw_string": "mango"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "style",
+                  "name": {
+                    "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "fill",
+                        "name": {
+                          "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                          "value": [
+                            {
+                              "string": "fill",
+                              "raw_string": "fill"
+                            }
+                          ]
+                        },
                         "primary": {
                           "value": {
                             "range": "TestCompile/classes/nested.d2,2:16:38-2:22:44",
@@ -452,23 +484,63 @@
       ]
     },
     {
-      "name": "layers",
+      "name": {
+        "range": "TestCompile/classes/nested.d2,5:0:51-5:6:57",
+        "value": [
+          {
+            "string": "layers",
+            "raw_string": "layers"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "hawaii",
+            "name": {
+              "range": "TestCompile/classes/nested.d2,6:2:63-6:8:69",
+              "value": [
+                {
+                  "string": "hawaii",
+                  "raw_string": "hawaii"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "layers",
+                  "name": {
+                    "range": "TestCompile/classes/nested.d2,7:2:75-7:8:81",
+                    "value": [
+                      {
+                        "string": "layers",
+                        "raw_string": "layers"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "maui",
+                        "name": {
+                          "range": "TestCompile/classes/nested.d2,8:6:91-8:10:95",
+                          "value": [
+                            {
+                              "string": "maui",
+                              "raw_string": "maui"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "x",
+                              "name": {
+                                "range": "TestCompile/classes/nested.d2,9:8:107-9:9:108",
+                                "value": [
+                                  {
+                                    "string": "x",
+                                    "raw_string": "x"
+                                  }
+                                ]
+                              },
                               "references": [
                                 {
                                   "string": {
@@ -526,19 +598,51 @@
                               ]
                             },
                             {
-                              "name": "classes",
+                              "name": {
+                                "range": "TestCompile/classes/nested.d2,0:0:0-0:7:7",
+                                "value": [
+                                  {
+                                    "string": "classes",
+                                    "raw_string": "classes"
+                                  }
+                                ]
+                              },
                               "composite": {
                                 "fields": [
                                   {
-                                    "name": "mango",
+                                    "name": {
+                                      "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                                      "value": [
+                                        {
+                                          "string": "mango",
+                                          "raw_string": "mango"
+                                        }
+                                      ]
+                                    },
                                     "composite": {
                                       "fields": [
                                         {
-                                          "name": "style",
+                                          "name": {
+                                            "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                                            "value": [
+                                              {
+                                                "string": "style",
+                                                "raw_string": "style"
+                                              }
+                                            ]
+                                          },
                                           "composite": {
                                             "fields": [
                                               {
-                                                "name": "fill",
+                                                "name": {
+                                                  "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                                                  "value": [
+                                                    {
+                                                      "string": "fill",
+                                                      "raw_string": "fill"
+                                                    }
+                                                  ]
+                                                },
                                                 "primary": {
                                                   "value": {
                                                     "range": "TestCompile/classes/nested.d2,2:16:38-2:22:44",
@@ -1182,19 +1286,51 @@
                   ]
                 },
                 {
-                  "name": "classes",
+                  "name": {
+                    "range": "TestCompile/classes/nested.d2,0:0:0-0:7:7",
+                    "value": [
+                      {
+                        "string": "classes",
+                        "raw_string": "classes"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "mango",
+                        "name": {
+                          "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                          "value": [
+                            {
+                              "string": "mango",
+                              "raw_string": "mango"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "style",
+                              "name": {
+                                "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                                "value": [
+                                  {
+                                    "string": "style",
+                                    "raw_string": "style"
+                                  }
+                                ]
+                              },
                               "composite": {
                                 "fields": [
                                   {
-                                    "name": "fill",
+                                    "name": {
+                                      "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                                      "value": [
+                                        {
+                                          "string": "fill",
+                                          "raw_string": "fill"
+                                        }
+                                      ]
+                                    },
                                     "primary": {
                                       "value": {
                                         "range": "TestCompile/classes/nested.d2,2:16:38-2:22:44",

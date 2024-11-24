@@ -21,11 +21,14 @@ func (m *Map) multiGlob(pattern []string) ([]*Field, bool) {
 
 func (m *Map) _doubleGlob(fa *[]*Field) {
 	for _, f := range m.Fields {
-		if _, ok := d2ast.ReservedKeywords[f.Name]; ok {
-			if f.Name == "layers" {
+		if f.Name == nil {
+			continue
+		}
+		if _, ok := d2ast.ReservedKeywords[f.Name.ScalarString()]; ok && f.Name.IsUnquoted() {
+			if f.Name.ScalarString() == "layers" {
 				continue
 			}
-			if _, ok := d2ast.BoardKeywords[f.Name]; !ok {
+			if _, ok := d2ast.BoardKeywords[f.Name.ScalarString()]; !ok {
 				continue
 			}
 			// We don't ever want to append layers, scenarios or steps directly.
@@ -45,8 +48,8 @@ func (m *Map) _doubleGlob(fa *[]*Field) {
 
 func (m *Map) _tripleGlob(fa *[]*Field) {
 	for _, f := range m.Fields {
-		if _, ok := d2ast.ReservedKeywords[f.Name]; ok {
-			if _, ok := d2ast.BoardKeywords[f.Name]; !ok {
+		if _, ok := d2ast.ReservedKeywords[f.Name.ScalarString()]; ok && f.Name.IsUnquoted() {
+			if _, ok := d2ast.BoardKeywords[f.Name.ScalarString()]; !ok {
 				continue
 			}
 			// We don't ever want to append layers, scenarios or steps directly.

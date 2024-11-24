@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "a",
+      "name": {
+        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+        "value": [
+          {
+            "string": "a",
+            "raw_string": "a"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -164,7 +172,15 @@
       ]
     },
     {
-      "name": "b",
+      "name": {
+        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+        "value": [
+          {
+            "string": "b",
+            "raw_string": "b"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -327,15 +343,39 @@
       ]
     },
     {
-      "name": "scenarios",
+      "name": {
+        "range": "TestCompile/scenarios/multiple-scenario-map.d2,1:0:31-1:9:40",
+        "value": [
+          {
+            "string": "scenarios",
+            "raw_string": "scenarios"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "1",
+            "name": {
+              "range": "TestCompile/scenarios/multiple-scenario-map.d2,2:2:46-2:3:47",
+              "value": [
+                {
+                  "string": "1",
+                  "raw_string": "1"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "a",
+                  "name": {
+                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -648,7 +688,15 @@
                   ]
                 },
                 {
-                  "name": "b",
+                  "name": {
+                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -961,7 +1009,15 @@
                   ]
                 },
                 {
-                  "name": "z",
+                  "name": {
+                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,6:1:98-6:2:99",
+                    "value": [
+                      {
+                        "string": "z",
+                        "raw_string": "z"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -1023,11 +1079,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "a"
+                      {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "a",
+                            "raw_string": "a"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "b"
+                      {
+                        "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+                        "value": [
+                          {
+                            "string": "b",
+                            "raw_string": "b"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -1036,11 +1108,27 @@
                   "map": {
                     "fields": [
                       {
-                        "name": "style",
+                        "name": {
+                          "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:15:15",
+                          "value": [
+                            {
+                              "string": "style",
+                              "raw_string": "style"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "opacity",
+                              "name": {
+                                "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:16:16-0:23:23",
+                                "value": [
+                                  {
+                                    "string": "opacity",
+                                    "raw_string": "opacity"
+                                  }
+                                ]
+                              },
                               "primary": {
                                 "value": {
                                   "range": "TestCompile/scenarios/multiple-scenario-map.d2,3:31:82-3:34:85",
@@ -2270,11 +2358,27 @@
     {
       "edge_id": {
         "src_path": [
-          "a"
+          {
+            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "b"
+          {
+            "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:5:5-0:6:6",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -2283,11 +2387,27 @@
       "map": {
         "fields": [
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:10:10-0:15:15",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "opacity",
+                  "name": {
+                    "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:16:16-0:23:23",
+                    "value": [
+                      {
+                        "string": "opacity",
+                        "raw_string": "opacity"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/scenarios/multiple-scenario-map.d2,0:25:25-0:28:28",

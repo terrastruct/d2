@@ -454,10 +454,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,20:4:139-20:5:140",
                         "value": [
                           {
-                            "string": "x"
+                            "string": "x",
+                            "raw_string": "x"
                           }
                         ]
                       }
@@ -558,10 +559,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,4:4:48-4:5:49",
                         "value": [
                           {
-                            "string": "x"
+                            "string": "x",
+                            "raw_string": "x"
                           }
                         ]
                       }
@@ -581,10 +583,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:3:3-0:8:8",
                                   "value": [
                                     {
-                                      "string": "style"
+                                      "string": "style",
+                                      "raw_string": "style"
                                     }
                                   ]
                                 }
@@ -604,10 +607,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:9:9-0:15:15",
                                             "value": [
                                               {
-                                                "string": "stroke"
+                                                "string": "stroke",
+                                                "raw_string": "stroke"
                                               }
                                             ]
                                           }
@@ -730,10 +734,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,7:4:65-7:5:66",
                         "value": [
                           {
-                            "string": "x"
+                            "string": "x",
+                            "raw_string": "x"
                           }
                         ]
                       }
@@ -753,10 +758,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:3:3-0:8:8",
                                   "value": [
                                     {
-                                      "string": "style"
+                                      "string": "style",
+                                      "raw_string": "style"
                                     }
                                   ]
                                 }
@@ -776,10 +782,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:9:9-0:15:15",
                                             "value": [
                                               {
-                                                "string": "stroke"
+                                                "string": "stroke",
+                                                "raw_string": "stroke"
                                               }
                                             ]
                                           }
@@ -904,10 +911,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,12:4:93-12:5:94",
                         "value": [
                           {
-                            "string": "x"
+                            "string": "x",
+                            "raw_string": "x"
                           }
                         ]
                       }
@@ -927,10 +935,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:3:3-0:8:8",
                                   "value": [
                                     {
-                                      "string": "style"
+                                      "string": "style",
+                                      "raw_string": "style"
                                     }
                                   ]
                                 }
@@ -950,10 +959,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:9:9-0:15:15",
                                             "value": [
                                               {
-                                                "string": "stroke"
+                                                "string": "stroke",
+                                                "raw_string": "stroke"
                                               }
                                             ]
                                           }
@@ -1076,10 +1086,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,12:4:93-12:5:94",
                         "value": [
                           {
-                            "string": "x"
+                            "string": "x",
+                            "raw_string": "x"
                           }
                         ]
                       }
@@ -1099,10 +1110,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:3:3-0:8:8",
                                   "value": [
                                     {
-                                      "string": "style"
+                                      "string": "style",
+                                      "raw_string": "style"
                                     }
                                   ]
                                 }
@@ -1122,10 +1134,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:9:9-0:15:15",
                                             "value": [
                                               {
-                                                "string": "stroke"
+                                                "string": "stroke",
+                                                "raw_string": "stroke"
                                               }
                                             ]
                                           }

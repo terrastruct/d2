@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "a",
+      "name": {
+        "range": "TestCompile/patterns/override/4.d2,3:0:28-3:1:29",
+        "value": [
+          {
+            "string": "a",
+            "raw_string": "a"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -157,7 +165,15 @@
       ]
     },
     {
-      "name": "b",
+      "name": {
+        "range": "TestCompile/patterns/override/4.d2,3:5:33-3:6:34",
+        "value": [
+          {
+            "string": "b",
+            "raw_string": "b"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -317,11 +333,27 @@
     {
       "edge_id": {
         "src_path": [
-          "a"
+          {
+            "range": "TestCompile/patterns/override/4.d2,3:0:28-3:1:29",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "b"
+          {
+            "range": "TestCompile/patterns/override/4.d2,3:5:33-3:6:34",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -330,7 +362,15 @@
       "map": {
         "fields": [
           {
-            "name": "label",
+            "name": {
+              "range": "TestCompile/patterns/override/4.d2,1:16:17-1:21:22",
+              "value": [
+                {
+                  "string": "label",
+                  "raw_string": "label"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "TestCompile/patterns/override/4.d2,4:9:47-4:12:50",

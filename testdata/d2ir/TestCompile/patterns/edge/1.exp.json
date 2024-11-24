@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "animate",
+      "name": {
+        "range": "TestCompile/patterns/edge/1.d2,0:0:0-0:7:7",
+        "value": [
+          {
+            "string": "animate",
+            "raw_string": "animate"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -59,7 +67,15 @@
       ]
     },
     {
-      "name": "animal",
+      "name": {
+        "range": "TestCompile/patterns/edge/1.d2,1:0:8-1:6:14",
+        "value": [
+          {
+            "string": "animal",
+            "raw_string": "animal"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -121,11 +137,27 @@
     {
       "edge_id": {
         "src_path": [
-          "animate"
+          {
+            "range": "TestCompile/patterns/edge/1.d2,0:0:0-0:7:7",
+            "value": [
+              {
+                "string": "animate",
+                "raw_string": "animate"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "animal"
+          {
+            "range": "TestCompile/patterns/edge/1.d2,1:0:8-1:6:14",
+            "value": [
+              {
+                "string": "animal",
+                "raw_string": "animal"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -240,11 +272,27 @@
     {
       "edge_id": {
         "src_path": [
-          "animal"
+          {
+            "range": "TestCompile/patterns/edge/1.d2,1:0:8-1:6:14",
+            "value": [
+              {
+                "string": "animal",
+                "raw_string": "animal"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "animate"
+          {
+            "range": "TestCompile/patterns/edge/1.d2,0:0:0-0:7:7",
+            "value": [
+              {
+                "string": "animate",
+                "raw_string": "animate"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,

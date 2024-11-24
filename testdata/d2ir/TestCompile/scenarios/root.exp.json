@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "x",
+      "name": {
+        "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -118,7 +126,15 @@
       ]
     },
     {
-      "name": "y",
+      "name": {
+        "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
+        "value": [
+          {
+            "string": "y",
+            "raw_string": "y"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -235,15 +251,39 @@
       ]
     },
     {
-      "name": "scenarios",
+      "name": {
+        "range": "TestCompile/scenarios/root.d2,1:0:7-1:9:16",
+        "value": [
+          {
+            "string": "scenarios",
+            "raw_string": "scenarios"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "bingo",
+            "name": {
+              "range": "TestCompile/scenarios/root.d2,2:1:21-2:6:26",
+              "value": [
+                {
+                  "string": "bingo",
+                  "raw_string": "bingo"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "x",
+                  "name": {
+                    "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -360,7 +400,15 @@
                   ]
                 },
                 {
-                  "name": "y",
+                  "name": {
+                    "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -477,15 +525,39 @@
                   ]
                 },
                 {
-                  "name": "p",
+                  "name": {
+                    "range": "TestCompile/scenarios/root.d2,2:10:30-2:11:31",
+                    "value": [
+                      {
+                        "string": "p",
+                        "raw_string": "p"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "q",
+                        "name": {
+                          "range": "TestCompile/scenarios/root.d2,2:12:32-2:13:33",
+                          "value": [
+                            {
+                              "string": "q",
+                              "raw_string": "q"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "z",
+                              "name": {
+                                "range": "TestCompile/scenarios/root.d2,2:14:34-2:15:35",
+                                "value": [
+                                  {
+                                    "string": "z",
+                                    "raw_string": "z"
+                                  }
+                                ]
+                              },
                               "references": [
                                 {
                                   "string": {
@@ -797,11 +869,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "x"
+                      {
+                        "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "y"
+                      {
+                        "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -1007,11 +1095,27 @@
             ]
           },
           {
-            "name": "nuclear",
+            "name": {
+              "range": "TestCompile/scenarios/root.d2,3:1:39-3:8:46",
+              "value": [
+                {
+                  "string": "nuclear",
+                  "raw_string": "nuclear"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "x",
+                  "name": {
+                    "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -1128,7 +1232,15 @@
                   ]
                 },
                 {
-                  "name": "y",
+                  "name": {
+                    "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -1245,7 +1357,15 @@
                   ]
                 },
                 {
-                  "name": "quiche",
+                  "name": {
+                    "range": "TestCompile/scenarios/root.d2,3:12:50-3:18:56",
+                    "value": [
+                      {
+                        "string": "quiche",
+                        "raw_string": "quiche"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -1307,11 +1427,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "x"
+                      {
+                        "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "y"
+                      {
+                        "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -1690,11 +1826,27 @@
     {
       "edge_id": {
         "src_path": [
-          "x"
+          {
+            "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "y"
+          {
+            "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
+            "value": [
+              {
+                "string": "y",
+                "raw_string": "y"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,

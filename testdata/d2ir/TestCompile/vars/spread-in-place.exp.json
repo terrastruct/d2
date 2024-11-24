@@ -1,15 +1,39 @@
 {
   "fields": [
     {
-      "name": "vars",
+      "name": {
+        "range": "TestCompile/vars/spread-in-place.d2,0:0:0-0:4:4",
+        "value": [
+          {
+            "string": "vars",
+            "raw_string": "vars"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "person-shape",
+            "name": {
+              "range": "TestCompile/vars/spread-in-place.d2,1:2:10-1:14:22",
+              "value": [
+                {
+                  "string": "person-shape",
+                  "raw_string": "person-shape"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "grid-columns",
+                  "name": {
+                    "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:16:42",
+                    "value": [
+                      {
+                        "string": "grid-columns",
+                        "raw_string": "grid-columns"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/vars/spread-in-place.d2,2:18:44-2:19:45",
@@ -80,7 +104,15 @@
                   ]
                 },
                 {
-                  "name": "grid-rows",
+                  "name": {
+                    "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:13:59",
+                    "value": [
+                      {
+                        "string": "grid-rows",
+                        "raw_string": "grid-rows"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/vars/spread-in-place.d2,3:15:61-3:16:62",
@@ -151,7 +183,15 @@
                   ]
                 },
                 {
-                  "name": "grid-gap",
+                  "name": {
+                    "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:12:75",
+                    "value": [
+                      {
+                        "string": "grid-gap",
+                        "raw_string": "grid-gap"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/vars/spread-in-place.d2,4:14:77-4:15:78",
@@ -222,7 +262,15 @@
                   ]
                 },
                 {
-                  "name": "head",
+                  "name": {
+                    "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+                    "value": [
+                      {
+                        "string": "head",
+                        "raw_string": "head"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -280,7 +328,15 @@
                   ]
                 },
                 {
-                  "name": "body",
+                  "name": {
+                    "range": "TestCompile/vars/spread-in-place.d2,6:4:92-6:8:96",
+                    "value": [
+                      {
+                        "string": "body",
+                        "raw_string": "body"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -763,11 +819,27 @@
       ]
     },
     {
-      "name": "dora",
+      "name": {
+        "range": "TestCompile/vars/spread-in-place.d2,10:0:104-10:4:108",
+        "value": [
+          {
+            "string": "dora",
+            "raw_string": "dora"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "grid-columns",
+            "name": {
+              "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:16:42",
+              "value": [
+                {
+                  "string": "grid-columns",
+                  "raw_string": "grid-columns"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "TestCompile/vars/spread-in-place.d2,2:18:44-2:19:45",
@@ -838,7 +910,15 @@
             ]
           },
           {
-            "name": "grid-rows",
+            "name": {
+              "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:13:59",
+              "value": [
+                {
+                  "string": "grid-rows",
+                  "raw_string": "grid-rows"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "TestCompile/vars/spread-in-place.d2,3:15:61-3:16:62",
@@ -909,7 +989,15 @@
             ]
           },
           {
-            "name": "grid-gap",
+            "name": {
+              "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:12:75",
+              "value": [
+                {
+                  "string": "grid-gap",
+                  "raw_string": "grid-gap"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "TestCompile/vars/spread-in-place.d2,4:14:77-4:15:78",
@@ -980,7 +1068,15 @@
             ]
           },
           {
-            "name": "head",
+            "name": {
+              "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+              "value": [
+                {
+                  "string": "head",
+                  "raw_string": "head"
+                }
+              ]
+            },
             "references": [
               {
                 "string": {
@@ -1038,7 +1134,15 @@
             ]
           },
           {
-            "name": "body",
+            "name": {
+              "range": "TestCompile/vars/spread-in-place.d2,12:2:135-12:6:139",
+              "value": [
+                {
+                  "string": "body",
+                  "raw_string": "body"
+                }
+              ]
+            },
             "references": [
               {
                 "string": {

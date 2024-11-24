@@ -180,10 +180,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestDelete/edge-in-layer.d2,2:4:24-2:5:25",
                         "value": [
                           {
-                            "string": "x"
+                            "string": "x",
+                            "raw_string": "x"
                           }
                         ]
                       }
@@ -203,10 +204,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2oracle/TestDelete/edge-in-layer.d2,3:6:35-3:7:36",
                                   "value": [
                                     {
-                                      "string": "a"
+                                      "string": "a",
+                                      "raw_string": "a"
                                     }
                                   ]
                                 }
@@ -225,10 +227,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2oracle/TestDelete/edge-in-layer.d2,3:11:40-3:12:41",
                                   "value": [
                                     {
-                                      "string": "b"
+                                      "string": "b",
+                                      "raw_string": "b"
                                     }
                                   ]
                                 }
