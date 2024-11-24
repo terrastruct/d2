@@ -28,7 +28,7 @@ func GetRefRanges(path string, fs map[string]string, boardPath []string, key str
 	var f *d2ir.Field
 	if mk.Key != nil {
 		for _, p := range mk.Key.Path {
-			f = m.GetField(p.Unbox().ScalarString())
+			f = m.GetField(p.Unbox())
 			if f == nil {
 				return nil, nil, nil
 			}

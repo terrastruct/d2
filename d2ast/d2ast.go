@@ -1080,6 +1080,13 @@ func (kp *KeyPath) IDA() (ida []String) {
 	return ida
 }
 
+func (kp *KeyPath) StringIDA() (ida []string) {
+	for _, el := range kp.Path {
+		ida = append(ida, el.Unbox().ScalarString())
+	}
+	return ida
+}
+
 func (kp *KeyPath) Copy() *KeyPath {
 	kp2 := *kp
 	kp2.Path = nil

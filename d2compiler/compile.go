@@ -1230,11 +1230,7 @@ func (c *compiler) validateBoardLinks(g *d2graph.Graph) {
 			continue
 		}
 
-		formattedIDA := []string{}
-		for _, id := range linkKey.IDA() {
-			formattedIDA = append(formattedIDA, id.ScalarString())
-		}
-		if slices.Equal(formattedIDA, obj.Graph.IDA()) {
+		if slices.Equal(linkKey.StringIDA(), obj.Graph.IDA()) {
 			obj.Link = nil
 			continue
 		}
