@@ -735,6 +735,9 @@ func (m *Map) getField(ida []string) *Field {
 	}
 
 	for _, f := range m.Fields {
+		if f.Name == nil {
+			continue
+		}
 		if !strings.EqualFold(f.Name.ScalarString(), s) {
 			continue
 		}
@@ -841,6 +844,9 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 			return nil
 		}
 		for _, f := range m.Fields {
+			if f.Name == nil {
+				continue
+			}
 			if matchPattern(f.Name.ScalarString(), us.Pattern) {
 				if i == len(kp.Path)-1 {
 					faAppend(f)

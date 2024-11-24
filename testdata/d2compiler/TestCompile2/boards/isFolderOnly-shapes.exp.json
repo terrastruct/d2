@@ -161,10 +161,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly-shapes.d2,1:0:1-1:9:10",
                         "value": [
                           {
-                            "string": "direction"
+                            "string": "direction",
+                            "raw_string": "direction"
                           }
                         ]
                       }
@@ -193,10 +194,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly-shapes.d2,5:4:39-5:6:41",
                         "value": [
                           {
-                            "string": "RJ"
+                            "string": "RJ",
+                            "raw_string": "RJ"
                           }
                         ]
                       }

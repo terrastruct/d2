@@ -126,6 +126,9 @@ func (c *compiler) overlayClasses(m *Map) {
 
 func (c *compiler) compileSubstitutions(m *Map, varsStack []*Map) {
 	for _, f := range m.Fields {
+		if f.Name == nil {
+			continue
+		}
 		if f.Name.ScalarString() == "vars" && f.Name.IsUnquoted() && f.Map() != nil {
 			varsStack = append([]*Map{f.Map()}, varsStack...)
 		}
@@ -148,7 +151,7 @@ func (c *compiler) compileSubstitutions(m *Map, varsStack []*Map) {
 				}
 			}
 		} else if f.Map() != nil {
-			if f.Name.ScalarString() == "vars" && f.Name.IsUnquoted() {
+			if f.Name != nil && f.Name.ScalarString() == "vars" && f.Name.IsUnquoted() {
 				c.compileSubstitutions(f.Map(), varsStack)
 				c.validateConfigs(f.Map().GetField("d2-config"))
 			} else {
@@ -398,7 +401,7 @@ func (c *compiler) resolveSubstitution(vars *Map, node Node, substitution *d2ast
 		//
 		// When resolving hi.vars.x, the vars stack includes itself.
 		// So this next if clause says, "ignore if we're using the current scope's vars to try to resolve a substitution that requires a var from further in the stack"
-		if fok && fieldNode.Name.ScalarString() == p.Unbox().ScalarString() && isCurrentScopeVars && parent.Name.ScalarString() == "vars" && parent.Name.IsUnquoted() {
+		if fok && fieldNode.Name != nil && fieldNode.Name.ScalarString() == p.Unbox().ScalarString() && isCurrentScopeVars && parent.Name.ScalarString() == "vars" && parent.Name.IsUnquoted() {
 			return nil
 		}
 

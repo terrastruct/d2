@@ -56,8 +56,8 @@
     "edges": null,
     "objects": [
       {
-        "id": "\"github.com/terrastruct/d2parser.git\"",
-        "id_val": "github.com/terrastruct/d2parser.git",
+        "id": "github.com/terrastruct/d2parser.git",
+        "id_val": "github",
         "references": [
           {
             "key": {
@@ -82,7 +82,7 @@
         ],
         "attributes": {
           "label": {
-            "value": "github.com/terrastruct/d2parser.git"
+            "value": "github"
           },
           "labelDimensions": {
             "width": 0,

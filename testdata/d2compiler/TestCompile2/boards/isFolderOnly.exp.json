@@ -332,10 +332,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,3:4:24-3:9:29",
                         "value": [
                           {
-                            "string": "santa"
+                            "string": "santa",
+                            "raw_string": "santa"
                           }
                         ]
                       }
@@ -434,10 +435,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,6:4:47-6:10:53",
                         "value": [
                           {
-                            "string": "clause"
+                            "string": "clause",
+                            "raw_string": "clause"
                           }
                         ]
                       }
@@ -456,10 +458,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:2:56-7:11:65",
                         "value": [
                           {
-                            "string": "scenarios"
+                            "string": "scenarios",
+                            "raw_string": "scenarios"
                           }
                         ]
                       }
@@ -479,10 +482,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:3:72-8:11:80",
                                   "value": [
                                     {
-                                      "string": "seinfeld"
+                                      "string": "seinfeld",
+                                      "raw_string": "seinfeld"
                                     }
                                   ]
                                 }
@@ -502,10 +506,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,6:4:47-6:10:53",
                                             "value": [
                                               {
-                                                "string": "clause"
+                                                "string": "clause",
+                                                "raw_string": "clause"
                                               }
                                             ]
                                           }
@@ -529,10 +534,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:3:92-10:11:100",
                                   "value": [
                                     {
-                                      "string": "missoula"
+                                      "string": "missoula",
+                                      "raw_string": "missoula"
                                     }
                                   ]
                                 }
@@ -552,10 +558,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,6:4:47-6:10:53",
                                             "value": [
                                               {
-                                                "string": "clause"
+                                                "string": "clause",
+                                                "raw_string": "clause"
                                               }
                                             ]
                                           }
@@ -574,10 +581,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:4:108-11:9:113",
                                             "value": [
                                               {
-                                                "string": "steps"
+                                                "string": "steps",
+                                                "raw_string": "steps"
                                               }
                                             ]
                                           }
@@ -597,10 +605,11 @@
                                                 "path": [
                                                   {
                                                     "unquoted_string": {
-                                                      "range": ",0:0:0-0:0:0",
+                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:5:122-12:11:128",
                                                       "value": [
                                                         {
-                                                          "string": "missus"
+                                                          "string": "missus",
+                                                          "raw_string": "missus"
                                                         }
                                                       ]
                                                     }
@@ -724,10 +733,11 @@
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
+                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,6:4:47-6:10:53",
                             "value": [
                               {
-                                "string": "clause"
+                                "string": "clause",
+                                "raw_string": "clause"
                               }
                             ]
                           }
@@ -826,10 +836,11 @@
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
+                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,6:4:47-6:10:53",
                             "value": [
                               {
-                                "string": "clause"
+                                "string": "clause",
+                                "raw_string": "clause"
                               }
                             ]
                           }
@@ -848,10 +859,11 @@
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
+                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:4:108-11:9:113",
                             "value": [
                               {
-                                "string": "steps"
+                                "string": "steps",
+                                "raw_string": "steps"
                               }
                             ]
                           }
@@ -871,10 +883,11 @@
                                 "path": [
                                   {
                                     "unquoted_string": {
-                                      "range": ",0:0:0-0:0:0",
+                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:5:122-12:11:128",
                                       "value": [
                                         {
-                                          "string": "missus"
+                                          "string": "missus",
+                                          "raw_string": "missus"
                                         }
                                       ]
                                     }

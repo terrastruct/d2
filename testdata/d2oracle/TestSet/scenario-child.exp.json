@@ -380,10 +380,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestSet/scenario-child.d2,0:0:0-0:1:1",
                         "value": [
                           {
-                            "string": "a"
+                            "string": "a",
+                            "raw_string": "a"
                           }
                         ]
                       }
@@ -402,10 +403,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestSet/scenario-child.d2,0:5:5-0:6:6",
                         "value": [
                           {
-                            "string": "b"
+                            "string": "b",
+                            "raw_string": "b"
                           }
                         ]
                       }
@@ -424,10 +426,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestSet/scenario-child.d2,4:4:32-4:6:34",
                         "value": [
                           {
-                            "string": "hi"
+                            "string": "hi",
+                            "raw_string": "hi"
                           }
                         ]
                       }
@@ -491,10 +494,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2oracle/TestSet/scenario-child.d2,5:16:51-5:21:56",
                                   "value": [
                                     {
-                                      "string": "style"
+                                      "string": "style",
+                                      "raw_string": "style"
                                     }
                                   ]
                                 }
@@ -514,10 +518,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2oracle/TestSet/scenario-child.d2,5:22:57-5:34:69",
                                             "value": [
                                               {
-                                                "string": "stroke-width"
+                                                "string": "stroke-width",
+                                                "raw_string": "stroke-width"
                                               }
                                             ]
                                           }

@@ -254,10 +254,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestCreate/add_layer/3.d2,4:4:24-4:5:25",
                         "value": [
                           {
-                            "string": "d"
+                            "string": "d",
+                            "raw_string": "d"
                           }
                         ]
                       }
@@ -276,10 +277,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestCreate/add_layer/3.d2,5:4:30-5:10:36",
                         "value": [
                           {
-                            "string": "layers"
+                            "string": "layers",
+                            "raw_string": "layers"
                           }
                         ]
                       }
@@ -299,10 +301,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2oracle/TestCreate/add_layer/3.d2,6:6:46-6:7:47",
                                   "value": [
                                     {
-                                      "string": "c"
+                                      "string": "c",
+                                      "raw_string": "c"
                                     }
                                   ]
                                 }

@@ -21,6 +21,9 @@ func (m *Map) multiGlob(pattern []string) ([]*Field, bool) {
 
 func (m *Map) _doubleGlob(fa *[]*Field) {
 	for _, f := range m.Fields {
+		if f.Name == nil {
+			continue
+		}
 		if _, ok := d2ast.ReservedKeywords[f.Name.ScalarString()]; ok && f.Name.IsUnquoted() {
 			if f.Name.ScalarString() == "layers" {
 				continue

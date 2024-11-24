@@ -263,10 +263,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,0:0:0-0:1:1",
                         "value": [
                           {
-                            "string": "a"
+                            "string": "a",
+                            "raw_string": "a"
                           }
                         ]
                       }
@@ -296,10 +297,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,4:14:44-4:19:49",
                                   "value": [
                                     {
-                                      "string": "style"
+                                      "string": "style",
+                                      "raw_string": "style"
                                     }
                                   ]
                                 }
@@ -319,10 +321,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,4:20:50-4:27:57",
                                             "value": [
                                               {
-                                                "string": "opacity"
+                                                "string": "opacity",
+                                                "raw_string": "opacity"
                                               }
                                             ]
                                           }
