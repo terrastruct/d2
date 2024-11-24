@@ -1,15 +1,39 @@
 {
   "fields": [
     {
-      "name": "x",
+      "name": {
+        "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,2:0:48-2:1:49",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,0:2:2-0:7:7",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "opacity",
+                  "name": {
+                    "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,0:8:8-0:15:15",
+                    "value": [
+                      {
+                        "string": "opacity",
+                        "raw_string": "opacity"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,0:17:17-0:18:18",
@@ -1671,15 +1695,39 @@
       ]
     },
     {
-      "name": "y",
+      "name": {
+        "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,2:5:53-2:6:54",
+        "value": [
+          {
+            "string": "y",
+            "raw_string": "y"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,0:2:2-0:7:7",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "opacity",
+                  "name": {
+                    "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,0:8:8-0:15:15",
+                    "value": [
+                      {
+                        "string": "opacity",
+                        "raw_string": "opacity"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,0:17:17-0:18:18",
@@ -3232,23 +3280,63 @@
       ]
     },
     {
-      "name": "steps",
+      "name": {
+        "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,4:0:56-4:5:61",
+        "value": [
+          {
+            "string": "steps",
+            "raw_string": "steps"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "1",
+            "name": {
+              "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,5:2:67-5:3:68",
+              "value": [
+                {
+                  "string": "1",
+                  "raw_string": "1"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "x",
+                  "name": {
+                    "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,2:0:48-2:1:49",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "style",
+                        "name": {
+                          "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,0:2:2-0:7:7",
+                          "value": [
+                            {
+                              "string": "style",
+                              "raw_string": "style"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "opacity",
+                              "name": {
+                                "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,0:8:8-0:15:15",
+                                "value": [
+                                  {
+                                    "string": "opacity",
+                                    "raw_string": "opacity"
+                                  }
+                                ]
+                              },
                               "primary": {
                                 "value": {
                                   "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,6:21:93-6:22:94",
@@ -5012,15 +5100,39 @@
                   ]
                 },
                 {
-                  "name": "y",
+                  "name": {
+                    "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,2:5:53-2:6:54",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "style",
+                        "name": {
+                          "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,0:2:2-0:7:7",
+                          "value": [
+                            {
+                              "string": "style",
+                              "raw_string": "style"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "opacity",
+                              "name": {
+                                "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,0:8:8-0:15:15",
+                                "value": [
+                                  {
+                                    "string": "opacity",
+                                    "raw_string": "opacity"
+                                  }
+                                ]
+                              },
                               "primary": {
                                 "value": {
                                   "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,0:17:17-0:18:18",
@@ -6366,11 +6478,27 @@
                   ]
                 },
                 {
-                  "name": "style",
+                  "name": {
+                    "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,1:12:31-1:17:36",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "opacity",
+                        "name": {
+                          "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,1:18:37-1:25:44",
+                          "value": [
+                            {
+                              "string": "opacity",
+                              "raw_string": "opacity"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": null,
                           "edges": null
@@ -7194,11 +7322,27 @@
                   "map": {
                     "fields": [
                       {
-                        "name": "style",
+                        "name": {
+                          "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,1:12:31-1:17:36",
+                          "value": [
+                            {
+                              "string": "style",
+                              "raw_string": "style"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "opacity",
+                              "name": {
+                                "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,1:18:37-1:25:44",
+                                "value": [
+                                  {
+                                    "string": "opacity",
+                                    "raw_string": "opacity"
+                                  }
+                                ]
+                              },
                               "primary": {
                                 "value": {
                                   "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,1:27:46-1:28:47",
@@ -8745,19 +8889,51 @@
             ]
           },
           {
-            "name": "2",
+            "name": {
+              "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,8:2:101-8:3:102",
+              "value": [
+                {
+                  "string": "2",
+                  "raw_string": "2"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "x",
+                  "name": {
+                    "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,2:0:48-2:1:49",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "style",
+                        "name": {
+                          "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,0:2:2-0:7:7",
+                          "value": [
+                            {
+                              "string": "style",
+                              "raw_string": "style"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "opacity",
+                              "name": {
+                                "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,0:8:8-0:15:15",
+                                "value": [
+                                  {
+                                    "string": "opacity",
+                                    "raw_string": "opacity"
+                                  }
+                                ]
+                              },
                               "primary": {
                                 "value": {
                                   "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,6:21:93-6:22:94",
@@ -10820,15 +10996,39 @@
                   ]
                 },
                 {
-                  "name": "y",
+                  "name": {
+                    "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,2:5:53-2:6:54",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "style",
+                        "name": {
+                          "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,0:2:2-0:7:7",
+                          "value": [
+                            {
+                              "string": "style",
+                              "raw_string": "style"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "opacity",
+                              "name": {
+                                "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,0:8:8-0:15:15",
+                                "value": [
+                                  {
+                                    "string": "opacity",
+                                    "raw_string": "opacity"
+                                  }
+                                ]
+                              },
                               "primary": {
                                 "value": {
                                   "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,0:17:17-0:18:18",
@@ -12473,11 +12673,27 @@
                   ]
                 },
                 {
-                  "name": "style",
+                  "name": {
+                    "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,1:12:31-1:17:36",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "opacity",
+                        "name": {
+                          "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,1:18:37-1:25:44",
+                          "value": [
+                            {
+                              "string": "opacity",
+                              "raw_string": "opacity"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [],
                           "edges": null
@@ -13697,11 +13913,27 @@
                   "map": {
                     "fields": [
                       {
-                        "name": "style",
+                        "name": {
+                          "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,1:12:31-1:17:36",
+                          "value": [
+                            {
+                              "string": "style",
+                              "raw_string": "style"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "opacity",
+                              "name": {
+                                "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,1:18:37-1:25:44",
+                                "value": [
+                                  {
+                                    "string": "opacity",
+                                    "raw_string": "opacity"
+                                  }
+                                ]
+                              },
                               "primary": {
                                 "value": {
                                   "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,9:31:137-9:32:138",
@@ -15235,19 +15467,51 @@
             ]
           },
           {
-            "name": "3",
+            "name": {
+              "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,11:2:145-11:3:146",
+              "value": [
+                {
+                  "string": "3",
+                  "raw_string": "3"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "x",
+                  "name": {
+                    "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,2:0:48-2:1:49",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "style",
+                        "name": {
+                          "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,0:2:2-0:7:7",
+                          "value": [
+                            {
+                              "string": "style",
+                              "raw_string": "style"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "opacity",
+                              "name": {
+                                "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,0:8:8-0:15:15",
+                                "value": [
+                                  {
+                                    "string": "opacity",
+                                    "raw_string": "opacity"
+                                  }
+                                ]
+                              },
                               "primary": {
                                 "value": {
                                   "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,6:21:93-6:22:94",
@@ -17459,15 +17723,39 @@
                   ]
                 },
                 {
-                  "name": "y",
+                  "name": {
+                    "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,2:5:53-2:6:54",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "style",
+                        "name": {
+                          "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,0:2:2-0:7:7",
+                          "value": [
+                            {
+                              "string": "style",
+                              "raw_string": "style"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "opacity",
+                              "name": {
+                                "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,0:8:8-0:15:15",
+                                "value": [
+                                  {
+                                    "string": "opacity",
+                                    "raw_string": "opacity"
+                                  }
+                                ]
+                              },
                               "primary": {
                                 "value": {
                                   "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,12:21:171-12:22:172",
@@ -19570,11 +19858,27 @@
                   ]
                 },
                 {
-                  "name": "style",
+                  "name": {
+                    "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,1:12:31-1:17:36",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "opacity",
+                        "name": {
+                          "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,1:18:37-1:25:44",
+                          "value": [
+                            {
+                              "string": "opacity",
+                              "raw_string": "opacity"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [],
                           "edges": null
@@ -21190,11 +21494,27 @@
                   "map": {
                     "fields": [
                       {
-                        "name": "style",
+                        "name": {
+                          "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,1:12:31-1:17:36",
+                          "value": [
+                            {
+                              "string": "style",
+                              "raw_string": "style"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "opacity",
+                              "name": {
+                                "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,1:18:37-1:25:44",
+                                "value": [
+                                  {
+                                    "string": "opacity",
+                                    "raw_string": "opacity"
+                                  }
+                                ]
+                              },
                               "primary": {
                                 "value": {
                                   "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,9:31:137-9:32:138",
@@ -24578,11 +24898,27 @@
       "map": {
         "fields": [
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,1:12:31-1:17:36",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "opacity",
+                  "name": {
+                    "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,1:18:37-1:25:44",
+                    "value": [
+                      {
+                        "string": "opacity",
+                        "raw_string": "opacity"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,1:27:46-1:28:47",

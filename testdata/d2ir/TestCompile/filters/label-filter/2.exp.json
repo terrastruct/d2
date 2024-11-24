@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "x",
+      "name": {
+        "range": "TestCompile/filters/label-filter/2.d2,8:0:83-8:1:84",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -240,7 +248,15 @@
       ]
     },
     {
-      "name": "y",
+      "name": {
+        "range": "TestCompile/filters/label-filter/2.d2,8:5:88-8:6:89",
+        "value": [
+          {
+            "string": "y",
+            "raw_string": "y"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -507,11 +523,27 @@
       "map": {
         "fields": [
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/filters/label-filter/2.d2,1:12:13-1:17:18",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "opacity",
+                  "name": {
+                    "range": "TestCompile/filters/label-filter/2.d2,1:18:19-1:25:26",
+                    "value": [
+                      {
+                        "string": "opacity",
+                        "raw_string": "opacity"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/filters/label-filter/2.d2,5:17:78-5:18:79",
@@ -1844,11 +1876,27 @@
       "map": {
         "fields": [
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/filters/label-filter/2.d2,1:12:13-1:17:18",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "opacity",
+                  "name": {
+                    "range": "TestCompile/filters/label-filter/2.d2,1:18:19-1:25:26",
+                    "value": [
+                      {
+                        "string": "opacity",
+                        "raw_string": "opacity"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/filters/label-filter/2.d2,1:27:28-1:30:31",

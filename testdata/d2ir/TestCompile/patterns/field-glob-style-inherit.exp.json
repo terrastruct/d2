@@ -1,15 +1,39 @@
 {
   "fields": [
     {
-      "name": "x",
+      "name": {
+        "range": "TestCompile/patterns/field-glob-style-inherit.d2,1:0:19-1:1:20",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "opacity",
+                  "name": {
+                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                    "value": [
+                      {
+                        "string": "opacity",
+                        "raw_string": "opacity"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:17:41-2:18:42",
@@ -1166,23 +1190,63 @@
       ]
     },
     {
-      "name": "scenarios",
+      "name": {
+        "range": "TestCompile/patterns/field-glob-style-inherit.d2,5:0:46-5:9:55",
+        "value": [
+          {
+            "string": "scenarios",
+            "raw_string": "scenarios"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "1",
+            "name": {
+              "range": "TestCompile/patterns/field-glob-style-inherit.d2,6:2:61-6:3:62",
+              "value": [
+                {
+                  "string": "1",
+                  "raw_string": "1"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "x",
+                  "name": {
+                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,1:0:19-1:1:20",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "style",
+                        "name": {
+                          "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                          "value": [
+                            {
+                              "string": "style",
+                              "raw_string": "style"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "opacity",
+                              "name": {
+                                "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                                "value": [
+                                  {
+                                    "string": "opacity",
+                                    "raw_string": "opacity"
+                                  }
+                                ]
+                              },
                               "primary": {
                                 "value": {
                                   "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:17:41-2:18:42",

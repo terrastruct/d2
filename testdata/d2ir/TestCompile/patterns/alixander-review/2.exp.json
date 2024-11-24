@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "a",
+      "name": {
+        "range": "TestCompile/patterns/alixander-review/2.d2,1:0:1-1:1:2",
+        "value": [
+          {
+            "string": "a",
+            "raw_string": "a"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -59,7 +67,15 @@
       ]
     },
     {
-      "name": "y",
+      "name": {
+        "range": "TestCompile/patterns/alixander-review/2.d2,3:5:9-3:6:10",
+        "value": [
+          {
+            "string": "y",
+            "raw_string": "y"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -654,7 +670,15 @@
       ]
     },
     {
-      "name": "b",
+      "name": {
+        "range": "TestCompile/patterns/alixander-review/2.d2,5:0:12-5:1:13",
+        "value": [
+          {
+            "string": "b",
+            "raw_string": "b"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -712,7 +736,15 @@
       ]
     },
     {
-      "name": "c",
+      "name": {
+        "range": "TestCompile/patterns/alixander-review/2.d2,6:0:14-6:1:15",
+        "value": [
+          {
+            "string": "c",
+            "raw_string": "c"
+          }
+        ]
+      },
       "references": [
         {
           "string": {

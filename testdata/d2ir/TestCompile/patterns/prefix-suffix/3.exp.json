@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "tinkertinker",
+      "name": {
+        "range": "TestCompile/patterns/prefix-suffix/3.d2,0:0:0-0:12:12",
+        "value": [
+          {
+            "string": "tinkertinker",
+            "raw_string": "tinkertinker"
+          }
+        ]
+      },
       "primary": {
         "value": {
           "range": "TestCompile/patterns/prefix-suffix/3.d2,2:17:56-2:24:63",
@@ -80,7 +88,15 @@
       ]
     },
     {
-      "name": "thinkerthinker",
+      "name": {
+        "range": "TestCompile/patterns/prefix-suffix/3.d2,1:0:19-1:14:33",
+        "value": [
+          {
+            "string": "thinkerthinker",
+            "raw_string": "thinkerthinker"
+          }
+        ]
+      },
       "primary": {
         "value": {
           "range": "TestCompile/patterns/prefix-suffix/3.d2,2:17:56-2:24:63",

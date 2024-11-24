@@ -1,11 +1,27 @@
 {
   "fields": [
     {
-      "name": "zone A",
+      "name": {
+        "range": "TestCompile/patterns/double-glob/edge-no-container.d2,0:0:0-0:6:6",
+        "value": [
+          {
+            "string": "zone A",
+            "raw_string": "zone A"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "machine A",
+            "name": {
+              "range": "TestCompile/patterns/double-glob/edge-no-container.d2,1:1:11-1:10:20",
+              "value": [
+                {
+                  "string": "machine A",
+                  "raw_string": "machine A"
+                }
+              ]
+            },
             "references": [
               {
                 "string": {
@@ -63,11 +79,27 @@
             ]
           },
           {
-            "name": "machine B",
+            "name": {
+              "range": "TestCompile/patterns/double-glob/edge-no-container.d2,2:1:22-2:10:31",
+              "value": [
+                {
+                  "string": "machine B",
+                  "raw_string": "machine B"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "submachine A",
+                  "name": {
+                    "range": "TestCompile/patterns/double-glob/edge-no-container.d2,3:2:37-3:14:49",
+                    "value": [
+                      {
+                        "string": "submachine A",
+                        "raw_string": "submachine A"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -125,7 +157,15 @@
                   ]
                 },
                 {
-                  "name": "submachine B",
+                  "name": {
+                    "range": "TestCompile/patterns/double-glob/edge-no-container.d2,4:2:52-4:14:64",
+                    "value": [
+                      {
+                        "string": "submachine B",
+                        "raw_string": "submachine B"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -617,7 +657,15 @@
       ]
     },
     {
-      "name": "load balancer",
+      "name": {
+        "range": "TestCompile/patterns/double-glob/edge-no-container.d2,7:13:83-7:26:96",
+        "value": [
+          {
+            "string": "load balancer",
+            "raw_string": "load balancer"
+          }
+        ]
+      },
       "references": [
         {
           "string": {

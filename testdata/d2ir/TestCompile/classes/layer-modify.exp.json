@@ -1,19 +1,51 @@
 {
   "fields": [
     {
-      "name": "classes",
+      "name": {
+        "range": "TestCompile/classes/layer-modify.d2,0:0:0-0:7:7",
+        "value": [
+          {
+            "string": "classes",
+            "raw_string": "classes"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "orb",
+            "name": {
+              "range": "TestCompile/classes/layer-modify.d2,1:2:13-1:5:16",
+              "value": [
+                {
+                  "string": "orb",
+                  "raw_string": "orb"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "style",
+                  "name": {
+                    "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:9:29",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "fill",
+                        "name": {
+                          "range": "TestCompile/classes/layer-modify.d2,2:10:30-2:14:34",
+                          "value": [
+                            {
+                              "string": "fill",
+                              "raw_string": "fill"
+                            }
+                          ]
+                        },
                         "primary": {
                           "value": {
                             "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
@@ -452,27 +484,75 @@
       ]
     },
     {
-      "name": "layers",
+      "name": {
+        "range": "TestCompile/classes/layer-modify.d2,5:0:49-5:6:55",
+        "value": [
+          {
+            "string": "layers",
+            "raw_string": "layers"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "x",
+            "name": {
+              "range": "TestCompile/classes/layer-modify.d2,6:2:61-6:3:62",
+              "value": [
+                {
+                  "string": "x",
+                  "raw_string": "x"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "classes",
+                  "name": {
+                    "range": "TestCompile/classes/layer-modify.d2,0:0:0-0:7:7",
+                    "value": [
+                      {
+                        "string": "classes",
+                        "raw_string": "classes"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "orb",
+                        "name": {
+                          "range": "TestCompile/classes/layer-modify.d2,1:2:13-1:5:16",
+                          "value": [
+                            {
+                              "string": "orb",
+                              "raw_string": "orb"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "style",
+                              "name": {
+                                "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:9:29",
+                                "value": [
+                                  {
+                                    "string": "style",
+                                    "raw_string": "style"
+                                  }
+                                ]
+                              },
                               "composite": {
                                 "fields": [
                                   {
-                                    "name": "fill",
+                                    "name": {
+                                      "range": "TestCompile/classes/layer-modify.d2,2:10:30-2:14:34",
+                                      "value": [
+                                        {
+                                          "string": "fill",
+                                          "raw_string": "fill"
+                                        }
+                                      ]
+                                    },
                                     "primary": {
                                       "value": {
                                         "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
@@ -573,7 +653,15 @@
                                     ]
                                   },
                                   {
-                                    "name": "stroke",
+                                    "name": {
+                                      "range": "TestCompile/classes/layer-modify.d2,7:22:88-7:28:94",
+                                      "value": [
+                                        {
+                                          "string": "stroke",
+                                          "raw_string": "stroke"
+                                        }
+                                      ]
+                                    },
                                     "primary": {
                                       "value": {
                                         "range": "TestCompile/classes/layer-modify.d2,7:30:96-7:33:99",

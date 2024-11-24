@@ -1,11 +1,27 @@
 {
   "fields": [
     {
-      "name": "table",
+      "name": {
+        "range": "TestCompile/patterns/table-class-exception.d2,9:0:46-9:5:51",
+        "value": [
+          {
+            "string": "table",
+            "raw_string": "table"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "c",
+            "name": {
+              "range": "TestCompile/patterns/table-class-exception.d2,2:2:10-2:3:11",
+              "value": [
+                {
+                  "string": "c",
+                  "raw_string": "c"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "TestCompile/patterns/table-class-exception.d2,2:5:13-2:6:14",
@@ -20,11 +36,27 @@
             "composite": {
               "fields": [
                 {
-                  "name": "style",
+                  "name": {
+                    "range": "TestCompile/patterns/table-class-exception.d2,6:2:27-6:7:32",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "fill",
+                        "name": {
+                          "range": "TestCompile/patterns/table-class-exception.d2,6:8:33-6:12:37",
+                          "value": [
+                            {
+                              "string": "fill",
+                              "raw_string": "fill"
+                            }
+                          ]
+                        },
                         "primary": {
                           "value": {
                             "range": "TestCompile/patterns/table-class-exception.d2,6:14:39-6:17:42",
@@ -285,11 +317,27 @@
             ]
           },
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/patterns/table-class-exception.d2,6:2:27-6:7:32",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "fill",
+                  "name": {
+                    "range": "TestCompile/patterns/table-class-exception.d2,6:8:33-6:12:37",
+                    "value": [
+                      {
+                        "string": "fill",
+                        "raw_string": "fill"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/table-class-exception.d2,6:14:39-6:17:42",
@@ -481,7 +529,15 @@
             ]
           },
           {
-            "name": "shape",
+            "name": {
+              "range": "TestCompile/patterns/table-class-exception.d2,10:2:57-10:7:62",
+              "value": [
+                {
+                  "string": "shape",
+                  "raw_string": "shape"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "TestCompile/patterns/table-class-exception.d2,10:9:64-10:18:73",
@@ -560,7 +616,15 @@
             ]
           },
           {
-            "name": "a",
+            "name": {
+              "range": "TestCompile/patterns/table-class-exception.d2,11:2:76-11:3:77",
+              "value": [
+                {
+                  "string": "a",
+                  "raw_string": "a"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "TestCompile/patterns/table-class-exception.d2,11:5:79-11:6:80",
@@ -575,11 +639,27 @@
             "composite": {
               "fields": [
                 {
-                  "name": "style",
+                  "name": {
+                    "range": "TestCompile/patterns/table-class-exception.d2,6:2:27-6:7:32",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "fill",
+                        "name": {
+                          "range": "TestCompile/patterns/table-class-exception.d2,6:8:33-6:12:37",
+                          "value": [
+                            {
+                              "string": "fill",
+                              "raw_string": "fill"
+                            }
+                          ]
+                        },
                         "primary": {
                           "value": {
                             "range": "TestCompile/patterns/table-class-exception.d2,6:14:39-6:17:42",
@@ -971,11 +1051,27 @@
       ]
     },
     {
-      "name": "class",
+      "name": {
+        "range": "TestCompile/patterns/table-class-exception.d2,14:0:84-14:5:89",
+        "value": [
+          {
+            "string": "class",
+            "raw_string": "class"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "shape",
+            "name": {
+              "range": "TestCompile/patterns/table-class-exception.d2,15:2:95-15:7:100",
+              "value": [
+                {
+                  "string": "shape",
+                  "raw_string": "shape"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "TestCompile/patterns/table-class-exception.d2,15:9:102-15:14:107",
@@ -1054,7 +1150,15 @@
             ]
           },
           {
-            "name": "a",
+            "name": {
+              "range": "TestCompile/patterns/table-class-exception.d2,16:2:110-16:3:111",
+              "value": [
+                {
+                  "string": "a",
+                  "raw_string": "a"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "TestCompile/patterns/table-class-exception.d2,16:5:113-16:6:114",

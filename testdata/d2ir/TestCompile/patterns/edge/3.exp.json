@@ -1,11 +1,27 @@
 {
   "fields": [
     {
-      "name": "shared",
+      "name": {
+        "range": "TestCompile/patterns/edge/3.d2,0:0:0-0:6:6",
+        "value": [
+          {
+            "string": "shared",
+            "raw_string": "shared"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "animate",
+            "name": {
+              "range": "TestCompile/patterns/edge/3.d2,0:7:7-0:14:14",
+              "value": [
+                {
+                  "string": "animate",
+                  "raw_string": "animate"
+                }
+              ]
+            },
             "references": [
               {
                 "string": {
@@ -85,7 +101,15 @@
             ]
           },
           {
-            "name": "animal",
+            "name": {
+              "range": "TestCompile/patterns/edge/3.d2,1:7:22-1:13:28",
+              "value": [
+                {
+                  "string": "animal",
+                  "raw_string": "animal"
+                }
+              ]
+            },
             "references": [
               {
                 "string": {

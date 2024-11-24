@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "x",
+      "name": {
+        "range": "TestCompile/filters/label-filter/3.d2,6:0:53-6:1:54",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -128,7 +136,15 @@
       ]
     },
     {
-      "name": "y",
+      "name": {
+        "range": "TestCompile/filters/label-filter/3.d2,6:5:58-6:6:59",
+        "value": [
+          {
+            "string": "y",
+            "raw_string": "y"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -283,11 +299,27 @@
       "map": {
         "fields": [
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/filters/label-filter/3.d2,3:2:31-3:7:36",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "opacity",
+                  "name": {
+                    "range": "TestCompile/filters/label-filter/3.d2,3:8:37-3:15:44",
+                    "value": [
+                      {
+                        "string": "opacity",
+                        "raw_string": "opacity"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/filters/label-filter/3.d2,3:17:46-3:20:49",

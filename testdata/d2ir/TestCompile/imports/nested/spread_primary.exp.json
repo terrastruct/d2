@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "q",
+      "name": {
+        "range": "index.d2,0:0:0-0:1:1",
+        "value": [
+          {
+            "string": "q",
+            "raw_string": "q"
+          }
+        ]
+      },
       "primary": {
         "value": {
           "range": "x.d2,0:3:3-0:7:7",
@@ -16,7 +24,15 @@
       "composite": {
         "fields": [
           {
-            "name": "jon",
+            "name": {
+              "range": "x.d2,0:10:10-0:13:13",
+              "value": [
+                {
+                  "string": "jon",
+                  "raw_string": "jon"
+                }
+              ]
+            },
             "references": [
               {
                 "string": {
@@ -74,7 +90,15 @@
             ]
           },
           {
-            "name": "jan",
+            "name": {
+              "range": "x.d2,0:15:15-0:18:18",
+              "value": [
+                {
+                  "string": "jan",
+                  "raw_string": "jan"
+                }
+              ]
+            },
             "references": [
               {
                 "string": {

@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "z",
+      "name": {
+        "range": "index.d2,0:0:0-0:1:1",
+        "value": [
+          {
+            "string": "z",
+            "raw_string": "z"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -59,15 +67,39 @@
       ]
     },
     {
-      "name": "scenarios",
+      "name": {
+        "range": "index.d2,0:28:28-0:37:37",
+        "value": [
+          {
+            "string": "scenarios",
+            "raw_string": "scenarios"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "x",
+            "name": {
+              "range": "index.d2,0:41:41-0:42:42",
+              "value": [
+                {
+                  "string": "x",
+                  "raw_string": "x"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "z",
+                  "name": {
+                    "range": "index.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "z",
+                        "raw_string": "z"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -125,7 +157,15 @@
                   ]
                 },
                 {
-                  "name": "a",
+                  "name": {
+                    "range": "x.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -261,11 +301,27 @@
             ]
           },
           {
-            "name": "y",
+            "name": {
+              "range": "index.d2,0:48:48-0:49:49",
+              "value": [
+                {
+                  "string": "y",
+                  "raw_string": "y"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "z",
+                  "name": {
+                    "range": "index.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "z",
+                        "raw_string": "z"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -323,7 +379,15 @@
                   ]
                 },
                 {
-                  "name": "b",
+                  "name": {
+                    "range": "y.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -608,15 +672,39 @@
       ]
     },
     {
-      "name": "steps",
+      "name": {
+        "range": "index.d2,0:3:3-0:8:8",
+        "value": [
+          {
+            "string": "steps",
+            "raw_string": "steps"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "1",
+            "name": {
+              "range": "index.d2,0:12:12-0:13:13",
+              "value": [
+                {
+                  "string": "1",
+                  "raw_string": "1"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "z",
+                  "name": {
+                    "range": "index.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "z",
+                        "raw_string": "z"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -674,7 +762,15 @@
                   ]
                 },
                 {
-                  "name": "a",
+                  "name": {
+                    "range": "x.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -810,11 +906,27 @@
             ]
           },
           {
-            "name": "2",
+            "name": {
+              "range": "index.d2,0:19:19-0:20:20",
+              "value": [
+                {
+                  "string": "2",
+                  "raw_string": "2"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "z",
+                  "name": {
+                    "range": "index.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "z",
+                        "raw_string": "z"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -872,7 +984,15 @@
                   ]
                 },
                 {
-                  "name": "a",
+                  "name": {
+                    "range": "x.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -930,7 +1050,15 @@
                   ]
                 },
                 {
-                  "name": "b",
+                  "name": {
+                    "range": "y.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {

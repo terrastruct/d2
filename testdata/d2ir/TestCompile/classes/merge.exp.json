@@ -1,19 +1,51 @@
 {
   "fields": [
     {
-      "name": "classes",
+      "name": {
+        "range": "TestCompile/classes/merge.d2,0:0:0-0:7:7",
+        "value": [
+          {
+            "string": "classes",
+            "raw_string": "classes"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "mango",
+            "name": {
+              "range": "TestCompile/classes/merge.d2,1:2:13-1:7:18",
+              "value": [
+                {
+                  "string": "mango",
+                  "raw_string": "mango"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "style",
+                  "name": {
+                    "range": "TestCompile/classes/merge.d2,2:4:26-2:9:31",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "fill",
+                        "name": {
+                          "range": "TestCompile/classes/merge.d2,2:10:32-2:14:36",
+                          "value": [
+                            {
+                              "string": "fill",
+                              "raw_string": "fill"
+                            }
+                          ]
+                        },
                         "primary": {
                           "value": {
                             "range": "TestCompile/classes/merge.d2,2:16:38-2:22:44",
@@ -205,7 +237,15 @@
                   ]
                 },
                 {
-                  "name": "width",
+                  "name": {
+                    "range": "TestCompile/classes/merge.d2,3:2:47-3:7:52",
+                    "value": [
+                      {
+                        "string": "width",
+                        "raw_string": "width"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/classes/merge.d2,3:9:54-3:11:56",
@@ -581,27 +621,75 @@
       ]
     },
     {
-      "name": "layers",
+      "name": {
+        "range": "TestCompile/classes/merge.d2,6:0:63-6:6:69",
+        "value": [
+          {
+            "string": "layers",
+            "raw_string": "layers"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "hawaii",
+            "name": {
+              "range": "TestCompile/classes/merge.d2,7:2:75-7:8:81",
+              "value": [
+                {
+                  "string": "hawaii",
+                  "raw_string": "hawaii"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "classes",
+                  "name": {
+                    "range": "TestCompile/classes/merge.d2,0:0:0-0:7:7",
+                    "value": [
+                      {
+                        "string": "classes",
+                        "raw_string": "classes"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "mango",
+                        "name": {
+                          "range": "TestCompile/classes/merge.d2,1:2:13-1:7:18",
+                          "value": [
+                            {
+                              "string": "mango",
+                              "raw_string": "mango"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "style",
+                              "name": {
+                                "range": "TestCompile/classes/merge.d2,2:4:26-2:9:31",
+                                "value": [
+                                  {
+                                    "string": "style",
+                                    "raw_string": "style"
+                                  }
+                                ]
+                              },
                               "composite": {
                                 "fields": [
                                   {
-                                    "name": "fill",
+                                    "name": {
+                                      "range": "TestCompile/classes/merge.d2,2:10:32-2:14:36",
+                                      "value": [
+                                        {
+                                          "string": "fill",
+                                          "raw_string": "fill"
+                                        }
+                                      ]
+                                    },
                                     "primary": {
                                       "value": {
                                         "range": "TestCompile/classes/merge.d2,2:16:38-2:22:44",
@@ -793,7 +881,15 @@
                               ]
                             },
                             {
-                              "name": "width",
+                              "name": {
+                                "range": "TestCompile/classes/merge.d2,3:2:47-3:7:52",
+                                "value": [
+                                  {
+                                    "string": "width",
+                                    "raw_string": "width"
+                                  }
+                                ]
+                              },
                               "primary": {
                                 "value": {
                                   "range": "TestCompile/classes/merge.d2,10:15:130-10:19:134",

@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "diddy kong",
+      "name": {
+        "range": "TestCompile/patterns/case/2.d2,0:0:0-0:10:10",
+        "value": [
+          {
+            "string": "diddy kong",
+            "raw_string": "diddy kong"
+          }
+        ]
+      },
       "primary": {
         "value": {
           "range": "TestCompile/patterns/case/2.d2,2:7:30-2:10:33",
@@ -70,7 +78,15 @@
       ]
     },
     {
-      "name": "Donkey Kong",
+      "name": {
+        "range": "TestCompile/patterns/case/2.d2,1:0:11-1:11:22",
+        "value": [
+          {
+            "string": "Donkey Kong",
+            "raw_string": "Donkey Kong"
+          }
+        ]
+      },
       "primary": {
         "value": {
           "range": "TestCompile/patterns/case/2.d2,2:7:30-2:10:33",

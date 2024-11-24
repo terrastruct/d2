@@ -873,7 +873,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 
 	if _, ok := d2ast.ReservedKeywords[strings.ToLower(head.ScalarString())]; ok && head.IsUnquoted() {
 		if _, ok := d2ast.CompositeReservedKeywords[strings.ToLower(head.ScalarString())]; !ok && i < len(kp.Path)-1 {
-			return d2parser.Errorf(kp.Path[i].Unbox(), fmt.Sprintf(`"%s" must be the last part of the key`, head))
+			return d2parser.Errorf(kp.Path[i].Unbox(), fmt.Sprintf(`"%s" must be the last part of the key`, head.ScalarString()))
 		}
 	}
 
@@ -882,11 +882,11 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 	}
 
 	if head.ScalarString() == "classes" && head.IsUnquoted() && NodeBoardKind(m) == "" {
-		return d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", head)
+		return d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", head.ScalarString())
 	}
 
 	if findBoardKeyword(head.ScalarString()) != -1 && head.IsUnquoted() && NodeBoardKind(m) == "" {
-		return d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", head)
+		return d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", head.ScalarString())
 	}
 
 	for _, f := range m.Fields {
