@@ -409,7 +409,6 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 		}
 		switch attrs.Language {
 		case "latex":
-			println("\033[1;31m--- DEBUG:", scalar.ScalarString(), "\033[m")
 			attrs.Shape.Value = d2target.ShapeText
 		case "markdown":
 			rendered, err := textmeasure.RenderMarkdown(scalar.ScalarString())

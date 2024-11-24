@@ -7,6 +7,9 @@
 
 - Composition: links pointing to own board are purged [#2203](https://github.com/terrastruct/d2/pull/2203)
 - Syntax: reserved keywords must be unquoted [#2231](https://github.com/terrastruct/d2/pull/2231)
+- Latex: Backslashes in Latex blocks do not escape [#2232](https://github.com/terrastruct/d2/pull/2232)
+  - This is a breaking change. Previously Latex blocks required escaping the backslash. So
+    for older D2 versions, you should remove the excess backslashes.
 
 #### Bugfixes ⛑️
 
