@@ -291,8 +291,8 @@
         "zIndex": 0
       },
       {
-        "id": "\"D.E\"",
-        "id_val": "D.E",
+        "id": "D.E",
+        "id_val": "D",
         "references": [
           {
             "key": {
@@ -317,7 +317,7 @@
         ],
         "attributes": {
           "label": {
-            "value": "D.E"
+            "value": "D"
           },
           "labelDimensions": {
             "width": 0,

@@ -175,7 +175,7 @@ func (c *compiler) validateConfigs(configs *Field) {
 	}
 
 	if NodeBoardKind(ParentMap(ParentMap(configs))) == "" {
-		c.errorf(configs.LastRef().AST(), `"%s" can only appear at root vars`, configs.Name)
+		c.errorf(configs.LastRef().AST(), `"%s" can only appear at root vars`, configs.Name.ScalarString())
 		return
 	}
 
@@ -183,7 +183,7 @@ func (c *compiler) validateConfigs(configs *Field) {
 		var val string
 		if f.Primary() == nil {
 			if f.Name.ScalarString() != "theme-overrides" && f.Name.ScalarString() != "dark-theme-overrides" && f.Name.ScalarString() != "data" {
-				c.errorf(f.LastRef().AST(), `"%s" needs a value`, f.Name)
+				c.errorf(f.LastRef().AST(), `"%s" needs a value`, f.Name.ScalarString())
 				continue
 			}
 		} else {
@@ -194,18 +194,18 @@ func (c *compiler) validateConfigs(configs *Field) {
 		case "sketch", "center":
 			_, err := strconv.ParseBool(val)
 			if err != nil {
-				c.errorf(f.LastRef().AST(), `expected a boolean for "%s", got "%s"`, f.Name, val)
+				c.errorf(f.LastRef().AST(), `expected a boolean for "%s", got "%s"`, f.Name.ScalarString(), val)
 				continue
 			}
 		case "theme-overrides", "dark-theme-overrides", "data":
 			if f.Map() == nil {
-				c.errorf(f.LastRef().AST(), `"%s" needs a map`, f.Name)
+				c.errorf(f.LastRef().AST(), `"%s" needs a map`, f.Name.ScalarString())
 				continue
 			}
 		case "theme-id", "dark-theme-id":
 			valInt, err := strconv.Atoi(val)
 			if err != nil {
-				c.errorf(f.LastRef().AST(), `expected an integer for "%s", got "%s"`, f.Name, val)
+				c.errorf(f.LastRef().AST(), `expected an integer for "%s", got "%s"`, f.Name.ScalarString(), val)
 				continue
 			}
 			if d2themescatalog.Find(int64(valInt)) == (d2themes.Theme{}) {
@@ -215,12 +215,12 @@ func (c *compiler) validateConfigs(configs *Field) {
 		case "pad":
 			_, err := strconv.Atoi(val)
 			if err != nil {
-				c.errorf(f.LastRef().AST(), `expected an integer for "%s", got "%s"`, f.Name, val)
+				c.errorf(f.LastRef().AST(), `expected an integer for "%s", got "%s"`, f.Name.ScalarString(), val)
 				continue
 			}
 		case "layout-engine":
 		default:
-			c.errorf(f.LastRef().AST(), `"%s" is not a valid config`, f.Name)
+			c.errorf(f.LastRef().AST(), `"%s" is not a valid config`, f.Name.ScalarString())
 		}
 	}
 }

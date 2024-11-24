@@ -306,10 +306,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,5:4:47-5:6:49",
                         "value": [
                           {
-                            "string": "yo"
+                            "string": "yo",
+                            "raw_string": "yo"
                           }
                         ]
                       }

@@ -297,10 +297,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-not-board.d2,4:4:44-4:5:45",
                         "value": [
                           {
-                            "string": "y"
+                            "string": "y",
+                            "raw_string": "y"
                           }
                         ]
                       }

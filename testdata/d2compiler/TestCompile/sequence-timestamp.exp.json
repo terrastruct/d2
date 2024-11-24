@@ -442,8 +442,8 @@
         "zIndex": 0
       },
       {
-        "id": "\"04:20,11:20\"",
-        "id_val": "04:20,11:20",
+        "id": "04:20,11:20",
+        "id_val": "04",
         "references": [
           {
             "key": {
@@ -468,7 +468,7 @@
         ],
         "attributes": {
           "label": {
-            "value": "04:20,11:20"
+            "value": "04"
           },
           "labelDimensions": {
             "width": 0,
@@ -532,8 +532,8 @@
         "zIndex": 0
       },
       {
-        "id": "\"start_time = datetime.datetime.now\"",
-        "id_val": "start_time = datetime.datetime.now",
+        "id": "start_time = datetime.datetime.now",
+        "id_val": "start_time = datetime",
         "references": [
           {
             "key": {
@@ -569,7 +569,7 @@
         ],
         "attributes": {
           "label": {
-            "value": "start_time = datetime.datetime.now"
+            "value": "start_time = datetime"
           },
           "labelDimensions": {
             "width": 0,

@@ -113,10 +113,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/x.d2,3:7:20-3:8:21",
                         "value": [
                           {
-                            "string": "c"
+                            "string": "c",
+                            "raw_string": "c"
                           }
                         ]
                       }
@@ -215,10 +216,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/x.d2,4:7:31-4:8:32",
                         "value": [
                           {
-                            "string": "d"
+                            "string": "d",
+                            "raw_string": "d"
                           }
                         ]
                       }
@@ -238,10 +240,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile/x.d2,4:9:33-4:13:37",
                                   "value": [
                                     {
-                                      "string": "link"
+                                      "string": "link",
+                                      "raw_string": "link"
                                     }
                                   ]
                                 }
@@ -368,10 +371,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/x.d2,6:4:62-6:5:63",
                         "value": [
                           {
-                            "string": "l"
+                            "string": "l",
+                            "raw_string": "l"
                           }
                         ]
                       }
@@ -390,10 +394,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/x.d2,8:2:67-8:8:73",
                         "value": [
                           {
-                            "string": "layers"
+                            "string": "layers",
+                            "raw_string": "layers"
                           }
                         ]
                       }
@@ -413,10 +418,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile/x.d2,9:3:80-9:4:81",
                                   "value": [
                                     {
-                                      "string": "j"
+                                      "string": "j",
+                                      "raw_string": "j"
                                     }
                                   ]
                                 }
@@ -436,10 +442,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,10:5:90-10:6:91",
                                             "value": [
                                               {
-                                                "string": "k"
+                                                "string": "k",
+                                                "raw_string": "k"
                                               }
                                             ]
                                           }
@@ -459,10 +466,11 @@
                                                 "path": [
                                                   {
                                                     "unquoted_string": {
-                                                      "range": ",0:0:0-0:0:0",
+                                                      "range": "d2/testdata/d2compiler/TestCompile/x.d2,10:7:92-10:11:96",
                                                       "value": [
                                                         {
-                                                          "string": "link"
+                                                          "string": "link",
+                                                          "raw_string": "link"
                                                         }
                                                       ]
                                                     }
@@ -495,10 +503,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,11:5:105-11:6:106",
                                             "value": [
                                               {
-                                                "string": "n"
+                                                "string": "n",
+                                                "raw_string": "n"
                                               }
                                             ]
                                           }
@@ -518,10 +527,11 @@
                                                 "path": [
                                                   {
                                                     "unquoted_string": {
-                                                      "range": ",0:0:0-0:0:0",
+                                                      "range": "d2/testdata/d2compiler/TestCompile/x.d2,11:7:107-11:11:111",
                                                       "value": [
                                                         {
-                                                          "string": "link"
+                                                          "string": "link",
+                                                          "raw_string": "link"
                                                         }
                                                       ]
                                                     }
@@ -554,10 +564,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,12:5:122-12:6:123",
                                             "value": [
                                               {
-                                                "string": "m"
+                                                "string": "m",
+                                                "raw_string": "m"
                                               }
                                             ]
                                           }
@@ -577,10 +588,11 @@
                                                 "path": [
                                                   {
                                                     "unquoted_string": {
-                                                      "range": ",0:0:0-0:0:0",
+                                                      "range": "d2/testdata/d2compiler/TestCompile/x.d2,12:7:124-12:11:128",
                                                       "value": [
                                                         {
-                                                          "string": "link"
+                                                          "string": "link",
+                                                          "raw_string": "link"
                                                         }
                                                       ]
                                                     }
@@ -703,10 +715,11 @@
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
+                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,10:5:90-10:6:91",
                             "value": [
                               {
-                                "string": "k"
+                                "string": "k",
+                                "raw_string": "k"
                               }
                             ]
                           }
@@ -726,10 +739,11 @@
                                 "path": [
                                   {
                                     "unquoted_string": {
-                                      "range": ",0:0:0-0:0:0",
+                                      "range": "d2/testdata/d2compiler/TestCompile/x.d2,10:7:92-10:11:96",
                                       "value": [
                                         {
-                                          "string": "link"
+                                          "string": "link",
+                                          "raw_string": "link"
                                         }
                                       ]
                                     }
@@ -762,10 +776,11 @@
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
+                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,11:5:105-11:6:106",
                             "value": [
                               {
-                                "string": "n"
+                                "string": "n",
+                                "raw_string": "n"
                               }
                             ]
                           }
@@ -785,10 +800,11 @@
                                 "path": [
                                   {
                                     "unquoted_string": {
-                                      "range": ",0:0:0-0:0:0",
+                                      "range": "d2/testdata/d2compiler/TestCompile/x.d2,11:7:107-11:11:111",
                                       "value": [
                                         {
-                                          "string": "link"
+                                          "string": "link",
+                                          "raw_string": "link"
                                         }
                                       ]
                                     }
@@ -821,10 +837,11 @@
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
+                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,12:5:122-12:6:123",
                             "value": [
                               {
-                                "string": "m"
+                                "string": "m",
+                                "raw_string": "m"
                               }
                             ]
                           }
@@ -844,10 +861,11 @@
                                 "path": [
                                   {
                                     "unquoted_string": {
-                                      "range": ",0:0:0-0:0:0",
+                                      "range": "d2/testdata/d2compiler/TestCompile/x.d2,12:7:124-12:11:128",
                                       "value": [
                                         {
-                                          "string": "link"
+                                          "string": "link",
+                                          "raw_string": "link"
                                         }
                                       ]
                                     }

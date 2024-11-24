@@ -120,7 +120,7 @@ func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 			m = &d2ir.Map{}
 		}
 		if g.GetBoard(f.Name.ScalarString()) != nil {
-			c.errorf(f.References[0].AST(), "board name %v already used by another board", f.Name)
+			c.errorf(f.References[0].AST(), "board name %v already used by another board", f.Name.ScalarString())
 			continue
 		}
 		g2 := d2graph.NewGraph()
@@ -301,7 +301,7 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 	keyword := strings.ToLower(f.Name.ScalarString())
 	_, isStyleReserved := d2ast.StyleKeywords[keyword]
 	if isStyleReserved && f.Name.IsUnquoted() {
-		c.errorf(f.LastRef().AST(), "%v must be style.%v", f.Name, f.Name)
+		c.errorf(f.LastRef().AST(), "%v must be style.%v", f.Name.ScalarString(), f.Name.ScalarString())
 		return
 	}
 	_, isReserved := d2ast.SimpleReservedKeywords[keyword]
@@ -317,7 +317,7 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 				}
 				for _, cf := range classesField.Map().Fields {
 					if _, ok := d2ast.ReservedKeywords[cf.Name.ScalarString()]; !(ok && f.Name.IsUnquoted()) {
-						c.errorf(cf.LastRef().AST(), "%s is an invalid class field, must be reserved keyword", cf.Name)
+						c.errorf(cf.LastRef().AST(), "%s is an invalid class field, must be reserved keyword", cf.Name.ScalarString())
 					}
 					if cf.Name.ScalarString() == "class" && cf.Name.IsUnquoted() {
 						c.errorf(cf.LastRef().AST(), `"class" cannot appear within "classes"`)
@@ -329,7 +329,7 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 	} else if f.Name.ScalarString() == "vars" && f.Name.IsUnquoted() {
 		return
 	} else if (f.Name.ScalarString() == "source-arrowhead" || f.Name.ScalarString() == "target-arrowhead") && f.Name.IsUnquoted() {
-		c.errorf(f.LastRef().AST(), `%#v can only be used on connections`, f.Name)
+		c.errorf(f.LastRef().AST(), `%#v can only be used on connections`, f.Name.ScalarString())
 		return
 
 	} else if isReserved {
@@ -468,7 +468,7 @@ func (c *compiler) compilePosition(attrs *d2graph.Attributes, f *d2ir.Field) {
 				}
 			} else {
 				if f.LastPrimaryKey() != nil {
-					c.errorf(f.LastPrimaryKey(), `unexpected field %s`, f.Name)
+					c.errorf(f.LastPrimaryKey(), `unexpected field %s`, f.Name.ScalarString())
 				}
 			}
 		}
@@ -506,7 +506,7 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 			case "label", "icon":
 				c.compilePosition(attrs, f)
 			default:
-				c.errorf(f.LastPrimaryKey(), "reserved field %v does not accept composite", f.Name)
+				c.errorf(f.LastPrimaryKey(), "reserved field %v does not accept composite", f.Name.ScalarString())
 			}
 		}
 		return
@@ -697,7 +697,7 @@ func (c *compiler) compileStyle(attrs *d2graph.Attributes, m *d2ir.Map) {
 
 func (c *compiler) compileStyleField(attrs *d2graph.Attributes, f *d2ir.Field) {
 	if _, ok := d2ast.StyleKeywords[strings.ToLower(f.Name.ScalarString())]; !(ok && f.Name.IsUnquoted()) {
-		c.errorf(f.LastRef().AST(), `invalid style keyword: "%s"`, f.Name)
+		c.errorf(f.LastRef().AST(), `invalid style keyword: "%s"`, f.Name.ScalarString())
 		return
 	}
 	if f.Primary() == nil {
@@ -839,7 +839,7 @@ func (c *compiler) compileEdgeField(edge *d2graph.Edge, f *d2ir.Field) {
 	_, isStyleReserved := d2ast.StyleKeywords[keyword]
 	isStyleReserved = isStyleReserved && f.Name.IsUnquoted()
 	if isStyleReserved {
-		c.errorf(f.LastRef().AST(), "%v must be style.%v", f.Name, f.Name)
+		c.errorf(f.LastRef().AST(), "%v must be style.%v", f.Name.ScalarString(), f.Name.ScalarString())
 		return
 	}
 	_, isReserved := d2ast.SimpleReservedKeywords[keyword]
@@ -1546,11 +1546,11 @@ FOR:
 		case "AB5":
 			themeOverrides.AB5 = go2.Pointer(f.Primary().Value.ScalarString())
 		default:
-			err.Errors = append(err.Errors, d2parser.Errorf(f.LastPrimaryKey(), fmt.Sprintf(`"%s" is not a valid theme code`, f.Name)).(d2ast.Error))
+			err.Errors = append(err.Errors, d2parser.Errorf(f.LastPrimaryKey(), fmt.Sprintf(`"%s" is not a valid theme code`, f.Name.ScalarString())).(d2ast.Error))
 			continue FOR
 		}
 		if !go2.Contains(color.NamedColors, strings.ToLower(f.Primary().Value.ScalarString())) && !color.ColorHexRegex.MatchString(f.Primary().Value.ScalarString()) {
-			err.Errors = append(err.Errors, d2parser.Errorf(f.LastPrimaryKey(), fmt.Sprintf(`expected "%s" to be a valid named color ("orange") or a hex code ("#f0ff3a")`, f.Name)).(d2ast.Error))
+			err.Errors = append(err.Errors, d2parser.Errorf(f.LastPrimaryKey(), fmt.Sprintf(`expected "%s" to be a valid named color ("orange") or a hex code ("#f0ff3a")`, f.Name.ScalarString())).(d2ast.Error))
 		}
 	}
 
