@@ -2853,12 +2853,36 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "d",
-                      "b"
+                      {
+                        "range": "TestCompile/patterns/alixander-review/3.d2,7:4:37-7:5:38",
+                        "value": [
+                          {
+                            "string": "d",
+                            "raw_string": "d"
+                          }
+                        ]
+                      },
+                      {
+                        "range": "TestCompile/patterns/alixander-review/3.d2,3:4:8-3:5:9",
+                        "value": [
+                          {
+                            "string": "b",
+                            "raw_string": "b"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "c"
+                      {
+                        "range": "TestCompile/patterns/alixander-review/3.d2,3:9:13-3:10:14",
+                        "value": [
+                          {
+                            "string": "c",
+                            "raw_string": "c"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -3732,12 +3756,36 @@
     {
       "edge_id": {
         "src_path": [
-          "a",
-          "b"
+          {
+            "range": "TestCompile/patterns/alixander-review/3.d2,1:0:1-1:1:2",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          },
+          {
+            "range": "TestCompile/patterns/alixander-review/3.d2,3:4:8-3:5:9",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "c"
+          {
+            "range": "TestCompile/patterns/alixander-review/3.d2,3:9:13-3:10:14",
+            "value": [
+              {
+                "string": "c",
+                "raw_string": "c"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,

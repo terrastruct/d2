@@ -255,11 +255,27 @@
     {
       "edge_id": {
         "src_path": [
-          "b"
+          {
+            "range": "TestCompile/patterns/alixander-review/8.d2,4:0:62-4:1:63",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "c"
+          {
+            "range": "TestCompile/patterns/alixander-review/8.d2,4:5:67-4:6:68",
+            "value": [
+              {
+                "string": "c",
+                "raw_string": "c"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,

@@ -2254,11 +2254,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "a"
+                      {
+                        "range": "TestCompile/patterns/alixander-review/5.d2,5:4:45-5:5:46",
+                        "value": [
+                          {
+                            "string": "a",
+                            "raw_string": "a"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "b"
+                      {
+                        "range": "TestCompile/patterns/alixander-review/5.d2,5:9:50-5:10:51",
+                        "value": [
+                          {
+                            "string": "b",
+                            "raw_string": "b"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,

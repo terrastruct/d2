@@ -7309,11 +7309,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "x"
+                      {
+                        "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,2:0:48-2:1:49",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "y"
+                      {
+                        "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,2:5:53-2:6:54",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -13900,11 +13916,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "x"
+                      {
+                        "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,2:0:48-2:1:49",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "y"
+                      {
+                        "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,2:5:53-2:6:54",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -21481,11 +21513,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "x"
+                      {
+                        "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,2:0:48-2:1:49",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "y"
+                      {
+                        "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,2:5:53-2:6:54",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -24885,11 +24933,27 @@
     {
       "edge_id": {
         "src_path": [
-          "x"
+          {
+            "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,2:0:48-2:1:49",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "y"
+          {
+            "range": "TestCompile/patterns/edge-glob-style-inherit/2.d2,2:5:53-2:6:54",
+            "value": [
+              {
+                "string": "y",
+                "raw_string": "y"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,

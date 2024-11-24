@@ -1593,11 +1593,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "x"
+                      {
+                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,1:0:29-1:1:30",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "y"
+                      {
+                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,1:5:34-1:6:35",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -3424,11 +3440,27 @@
     {
       "edge_id": {
         "src_path": [
-          "x"
+          {
+            "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,1:0:29-1:1:30",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "y"
+          {
+            "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,1:5:34-1:6:35",
+            "value": [
+              {
+                "string": "y",
+                "raw_string": "y"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,

@@ -757,7 +757,7 @@ func (m *Map) getField(ida []d2ast.String) *Field {
 // EnsureField is a bit of a misnomer. It's more of a Query/Ensure combination function at this point.
 func (m *Map) EnsureField(kp *d2ast.KeyPath, refctx *RefContext, create bool, c *compiler) ([]*Field, error) {
 	i := 0
-	for kp.Path[i].Unbox().ScalarString() == "_" {
+	for kp.Path[i].Unbox().ScalarString() == "_" && kp.Path[i].Unbox().IsUnquoted() {
 		m = ParentMap(m)
 		if m == nil {
 			return nil, d2parser.Errorf(kp.Path[i].Unbox(), "invalid underscore: no parent")
@@ -1582,7 +1582,7 @@ func ParentShape(n Node) string {
 
 func countUnderscores(p []d2ast.String) int {
 	for i, el := range p {
-		if el.ScalarString() != "_" || el.IsUnquoted() {
+		if el.ScalarString() != "_" || !el.IsUnquoted() {
 			return i
 		}
 	}
