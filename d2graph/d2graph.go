@@ -847,7 +847,7 @@ func (obj *Object) FindEdges(mk *d2ast.Key) ([]*Edge, bool) {
 	return ea, true
 }
 
-func (obj *Object) ensureChildEdge(ida []string) *Object {
+func (obj *Object) ensureChildEdge(ida []d2ast.String) *Object {
 	for i := range ida {
 		switch obj.Shape.Value {
 		case d2target.ShapeClass, d2target.ShapeSQLTable:
@@ -863,12 +863,12 @@ func (obj *Object) ensureChildEdge(ida []string) *Object {
 
 // EnsureChild grabs the child by ids or creates it if it does not exist including all
 // intermediate nodes.
-func (obj *Object) EnsureChild(ida []string) *Object {
+func (obj *Object) EnsureChild(ida []d2ast.String) *Object {
 	seq := obj.OuterSequenceDiagram()
 	if seq != nil {
 		for _, c := range seq.ChildrenArray {
-			if c.ID == ida[0] {
-				if obj.ID == ida[0] {
+			if c.ID == ida[0].ScalarString() {
+				if obj.ID == ida[0].ScalarString() {
 					// In cases of a.a where EnsureChild is called on the parent a, the second a should
 					// be created as a child of a and not as a child of the diagram. This is super
 					// unfortunate code but alas.
@@ -884,9 +884,11 @@ func (obj *Object) EnsureChild(ida []string) *Object {
 		return obj
 	}
 
-	_, is := d2ast.ReservedKeywordHolders[ida[0]]
+	_, is := d2ast.ReservedKeywordHolders[ida[0].ScalarString()]
+	is = is && ida[0].IsUnquoted()
 	if len(ida) == 1 && !is {
-		_, ok := d2ast.ReservedKeywords[ida[0]]
+		_, ok := d2ast.ReservedKeywords[ida[0].ScalarString()]
+		ok = ok && ida[0].IsUnquoted()
 		if ok {
 			return obj
 		}
@@ -895,13 +897,13 @@ func (obj *Object) EnsureChild(ida []string) *Object {
 	id := ida[0]
 	ida = ida[1:]
 
-	if id == "_" {
+	if id.ScalarString() == "_" && id.IsUnquoted() {
 		return obj.Parent.EnsureChild(ida)
 	}
 
-	child, ok := obj.Children[strings.ToLower(id)]
+	child, ok := obj.Children[strings.ToLower(id.ScalarString())]
 	if !ok {
-		child = obj.newObject(id)
+		child = obj.newObject(id.ScalarString())
 	}
 
 	if len(ida) >= 1 {
@@ -1298,10 +1300,10 @@ func (e *Edge) AbsID() string {
 	return fmt.Sprintf("%s(%s %s %s)[%d]", commonKey, strings.Join(srcIDA, "."), e.ArrowString(), strings.Join(dstIDA, "."), e.Index)
 }
 
-func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label string) (*Edge, error) {
-	for _, id := range [][]string{srcID, dstID} {
+func (obj *Object) Connect(srcID, dstID []d2ast.String, srcArrow, dstArrow bool, label string) (*Edge, error) {
+	for _, id := range [][]d2ast.String{srcID, dstID} {
 		for _, p := range id {
-			if _, ok := d2ast.ReservedKeywords[p]; ok {
+			if _, ok := d2ast.ReservedKeywords[p.ScalarString()]; ok && p.IsUnquoted() {
 				return nil, errors.New("cannot connect to reserved keyword")
 			}
 		}
@@ -1329,7 +1331,7 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 	return e, nil
 }
 
-func addSQLTableColumnIndices(e *Edge, srcID, dstID []string, obj, src, dst *Object) {
+func addSQLTableColumnIndices(e *Edge, srcID, dstID []d2ast.String, obj, src, dst *Object) {
 	if src.Shape.Value == d2target.ShapeSQLTable {
 		if src == dst {
 			// Ignore edge to column inside table.
@@ -1339,7 +1341,7 @@ func addSQLTableColumnIndices(e *Edge, srcID, dstID []string, obj, src, dst *Obj
 		srcAbsID := src.AbsIDArray()
 		if len(objAbsID)+len(srcID) > len(srcAbsID) {
 			for i, d2col := range src.SQLTable.Columns {
-				if d2col.Name.Label == srcID[len(srcID)-1] {
+				if d2col.Name.Label == srcID[len(srcID)-1].ScalarString() {
 					d2col.Reference = dst.AbsID()
 					e.SrcTableColumnIndex = new(int)
 					*e.SrcTableColumnIndex = i
@@ -1353,7 +1355,7 @@ func addSQLTableColumnIndices(e *Edge, srcID, dstID []string, obj, src, dst *Obj
 		dstAbsID := dst.AbsIDArray()
 		if len(objAbsID)+len(dstID) > len(dstAbsID) {
 			for i, d2col := range dst.SQLTable.Columns {
-				if d2col.Name.Label == dstID[len(dstID)-1] {
+				if d2col.Name.Label == dstID[len(dstID)-1].ScalarString() {
 					d2col.Reference = dst.AbsID()
 					e.DstTableColumnIndex = new(int)
 					*e.DstTableColumnIndex = i

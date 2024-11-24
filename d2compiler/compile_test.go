@@ -1731,6 +1731,7 @@ y
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				assert.Equal(t, 2, len(g.Objects))
+				assert.Equal(t, "x", g.Objects[0].Label.Value)
 			},
 		},
 		{
@@ -1747,7 +1748,7 @@ y
 		`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				assert.Equal(t, 4, len(g.Objects[0].SQLTable.Columns))
-				assert.Equal(t, `"shape"`, g.Objects[0].SQLTable.Columns[0].Name.Label)
+				assert.Equal(t, `shape`, g.Objects[0].SQLTable.Columns[0].Name.Label)
 			},
 		},
 		{
@@ -1757,7 +1758,7 @@ x
 		`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				assert.Equal(t, 2, len(g.Objects))
-				assert.Equal(t, `x.'"shape"'`, g.Objects[0].AbsID())
+				assert.Equal(t, `x.shape`, g.Objects[0].AbsID())
 			},
 		},
 		{

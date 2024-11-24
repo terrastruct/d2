@@ -126,7 +126,7 @@ func (c *compiler) overlayClasses(m *Map) {
 
 func (c *compiler) compileSubstitutions(m *Map, varsStack []*Map) {
 	for _, f := range m.Fields {
-		if f.Name == "vars" && f.Map() != nil {
+		if f.Name.ScalarString() == "vars" && f.Name.IsUnquoted() && f.Map() != nil {
 			varsStack = append([]*Map{f.Map()}, varsStack...)
 		}
 	}
@@ -148,7 +148,7 @@ func (c *compiler) compileSubstitutions(m *Map, varsStack []*Map) {
 				}
 			}
 		} else if f.Map() != nil {
-			if f.Name == "vars" {
+			if f.Name.ScalarString() == "vars" && f.Name.IsUnquoted() {
 				c.compileSubstitutions(f.Map(), varsStack)
 				c.validateConfigs(f.Map().GetField("d2-config"))
 			} else {
@@ -179,7 +179,7 @@ func (c *compiler) validateConfigs(configs *Field) {
 	for _, f := range configs.Map().Fields {
 		var val string
 		if f.Primary() == nil {
-			if f.Name != "theme-overrides" && f.Name != "dark-theme-overrides" && f.Name != "data" {
+			if f.Name.ScalarString() != "theme-overrides" && f.Name.ScalarString() != "dark-theme-overrides" && f.Name.ScalarString() != "data" {
 				c.errorf(f.LastRef().AST(), `"%s" needs a value`, f.Name)
 				continue
 			}
@@ -187,7 +187,7 @@ func (c *compiler) validateConfigs(configs *Field) {
 			val = f.Primary().Value.ScalarString()
 		}
 
-		switch f.Name {
+		switch f.Name.ScalarString() {
 		case "sketch", "center":
 			_, err := strconv.ParseBool(val)
 			if err != nil {
@@ -362,7 +362,7 @@ func (c *compiler) collectVariables(vars *Map, variables map[string]string) {
 	}
 	for _, f := range vars.Fields {
 		if f.Primary() != nil {
-			variables[f.Name] = f.Primary().Value.ScalarString()
+			variables[f.Name.ScalarString()] = f.Primary().Value.ScalarString()
 		} else if f.Map() != nil {
 			c.collectVariables(f.Map(), variables)
 		}
@@ -398,7 +398,7 @@ func (c *compiler) resolveSubstitution(vars *Map, node Node, substitution *d2ast
 		//
 		// When resolving hi.vars.x, the vars stack includes itself.
 		// So this next if clause says, "ignore if we're using the current scope's vars to try to resolve a substitution that requires a var from further in the stack"
-		if fok && fieldNode.Name == p.Unbox().ScalarString() && isCurrentScopeVars && parent.Name == "vars" {
+		if fok && fieldNode.Name.ScalarString() == p.Unbox().ScalarString() && isCurrentScopeVars && parent.Name.ScalarString() == "vars" && parent.Name.IsUnquoted() {
 			return nil
 		}
 
@@ -758,7 +758,7 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 				case *Field:
 					// The label value for fields is their key value
 					f.Primary_ = &Scalar{
-						Value: d2ast.FlatUnquotedString(n.Name),
+						Value: n.Name,
 					}
 				case *Edge:
 					// But for edges, it's nothing
@@ -834,7 +834,7 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 		// For vars, if we delete the field, it may just resolve to an outer scope var of the same name
 		// Instead we keep it around, so that resolveSubstitutions can find it
 		if !IsVar(ParentMap(f)) {
-			ParentMap(f).DeleteField(f.Name)
+			ParentMap(f).DeleteField(f.Name.ScalarString())
 			return
 		}
 	}
@@ -943,7 +943,7 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 			Value:  refctx.Key.Value.ScalarBox().Unbox(),
 		}
 		// If the link is a board, we need to transform it into an absolute path.
-		if f.Name == "link" {
+		if f.Name.ScalarString() == "link" && f.Name.IsUnquoted() {
 			c.compileLink(f, refctx)
 		}
 	}
@@ -966,7 +966,7 @@ func (c *compiler) extendLinks(m *Map, importF *Field, importDir string) {
 	nodeBoardKind := NodeBoardKind(m)
 	importIDA := IDA(importF)
 	for _, f := range m.Fields {
-		if f.Name == "link" {
+		if f.Name.ScalarString() == "link" && f.Name.IsUnquoted() {
 			if nodeBoardKind != "" {
 				c.errorf(f.LastRef().AST(), "a board itself cannot be linked; only objects within a board can be linked")
 				continue
@@ -1005,7 +1005,7 @@ func (c *compiler) extendLinks(m *Map, importF *Field, importDir string) {
 			s := d2format.Format(kp)
 			f.Primary_.Value = d2ast.MakeValueBox(d2ast.FlatUnquotedString(s)).ScalarBox().Unbox()
 		}
-		if f.Name == "icon" && f.Primary() != nil {
+		if f.Name.ScalarString() == "icon" && f.Name.IsUnquoted() && f.Primary() != nil {
 			val := f.Primary().Value.ScalarString()
 			// It's likely a substitution
 			if val == "" {

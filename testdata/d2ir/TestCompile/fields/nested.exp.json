@@ -1,11 +1,27 @@
 {
   "fields": [
     {
-      "name": "x",
+      "name": {
+        "range": "TestCompile/fields/nested.d2,0:0:0-0:1:1",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "y",
+            "name": {
+              "range": "TestCompile/fields/nested.d2,0:2:2-0:3:3",
+              "value": [
+                {
+                  "string": "y",
+                  "raw_string": "y"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "TestCompile/fields/nested.d2,0:5:5-0:8:8",

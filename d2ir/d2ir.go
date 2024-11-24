@@ -176,7 +176,7 @@ type Map struct {
 
 func (m *Map) initRoot() {
 	m.parent = &Field{
-		Name: "root",
+		Name: d2ast.FlatUnquotedString("root"),
 		References: []*FieldReference{{
 			Context_: &RefContext{
 				ScopeMap: m,
@@ -293,7 +293,7 @@ func NodeBoardKind(n Node) BoardKind {
 	if f == nil {
 		return ""
 	}
-	switch f.Name {
+	switch f.Name.ScalarString() {
 	case "layers":
 		return BoardLayer
 	case "scenarios":
@@ -319,7 +319,7 @@ type Field struct {
 	parent    Node
 	importAST d2ast.Node
 
-	Name string `json:"name"`
+	Name d2ast.String `json:"name"`
 
 	// Primary_ to avoid clashing with Primary(). We need to keep it exported for
 	// encoding/json to marshal it so cannot prefix _ instead.
@@ -458,13 +458,13 @@ func (eid *EdgeID) resolve(m *Map) (_ *EdgeID, _ *Map, common []string, _ error)
 			eid.SrcPath = eid.SrcPath[1:]
 		} else {
 			mf := ParentField(m)
-			eid.SrcPath = append([]string{mf.Name}, eid.SrcPath...)
+			eid.SrcPath = append([]string{mf.Name.ScalarString()}, eid.SrcPath...)
 		}
 		if eid.DstPath[0] == "_" {
 			eid.DstPath = eid.DstPath[1:]
 		} else {
 			mf := ParentField(m)
-			eid.DstPath = append([]string{mf.Name}, eid.DstPath...)
+			eid.DstPath = append([]string{mf.Name.ScalarString()}, eid.DstPath...)
 		}
 		m = ParentMap(m)
 		if m == nil {
@@ -674,8 +674,8 @@ func (m *Map) IsContainer() bool {
 		return false
 	}
 	for _, f := range m.Fields {
-		_, isReserved := d2ast.ReservedKeywords[f.Name]
-		if !isReserved {
+		_, isReserved := d2ast.ReservedKeywords[f.Name.ScalarString()]
+		if !(isReserved && f.Name.IsUnquoted()) {
 			return true
 		}
 	}
@@ -735,7 +735,7 @@ func (m *Map) getField(ida []string) *Field {
 	}
 
 	for _, f := range m.Fields {
-		if !strings.EqualFold(f.Name, s) {
+		if !strings.EqualFold(f.Name.ScalarString(), s) {
 			continue
 		}
 		if len(rest) == 0 {
@@ -841,7 +841,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 			return nil
 		}
 		for _, f := range m.Fields {
-			if matchPattern(f.Name, us.Pattern) {
+			if matchPattern(f.Name.ScalarString(), us.Pattern) {
 				if i == len(kp.Path)-1 {
 					faAppend(f)
 				} else {
@@ -863,29 +863,28 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 		return nil
 	}
 
-	head := kp.Path[i].Unbox().ScalarString()
+	head := kp.Path[i].Unbox()
 
-	if _, ok := d2ast.ReservedKeywords[strings.ToLower(head)]; ok {
-		head = strings.ToLower(head)
-		if _, ok := d2ast.CompositeReservedKeywords[head]; !ok && i < len(kp.Path)-1 {
+	if _, ok := d2ast.ReservedKeywords[strings.ToLower(head.ScalarString())]; ok && head.IsUnquoted() {
+		if _, ok := d2ast.CompositeReservedKeywords[strings.ToLower(head.ScalarString())]; !ok && i < len(kp.Path)-1 {
 			return d2parser.Errorf(kp.Path[i].Unbox(), fmt.Sprintf(`"%s" must be the last part of the key`, head))
 		}
 	}
 
-	if head == "_" {
+	if head.ScalarString() == "_" && head.IsUnquoted() {
 		return d2parser.Errorf(kp.Path[i].Unbox(), `parent "_" can only be used in the beginning of paths, e.g. "_.x"`)
 	}
 
-	if head == "classes" && NodeBoardKind(m) == "" {
+	if head.ScalarString() == "classes" && head.IsUnquoted() && NodeBoardKind(m) == "" {
 		return d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", head)
 	}
 
-	if findBoardKeyword(head) != -1 && NodeBoardKind(m) == "" {
+	if findBoardKeyword(head.ScalarString()) != -1 && head.IsUnquoted() && NodeBoardKind(m) == "" {
 		return d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", head)
 	}
 
 	for _, f := range m.Fields {
-		if !strings.EqualFold(f.Name, head) {
+		if !(strings.EqualFold(f.Name.ScalarString(), head.ScalarString()) && f.Name.IsUnquoted() == head.IsUnquoted()) {
 			continue
 		}
 
@@ -922,14 +921,14 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 		return nil
 	}
 	shape := ParentShape(m)
-	if _, ok := d2ast.ReservedKeywords[strings.ToLower(head)]; !ok && len(c.globRefContextStack) > 0 {
+	if _, ok := d2ast.ReservedKeywords[strings.ToLower(head.ScalarString())]; !(ok && head.IsUnquoted()) && len(c.globRefContextStack) > 0 {
 		if shape == d2target.ShapeClass || shape == d2target.ShapeSQLTable {
 			return nil
 		}
 	}
 	f := &Field{
 		parent: m,
-		Name:   head,
+		Name:   kp.Path[i].Unbox(),
 	}
 	defer func() {
 		if i < kp.FirstGlob() {
@@ -995,7 +994,7 @@ func (m *Map) DeleteField(ida ...string) *Field {
 	rest := ida[1:]
 
 	for i, f := range m.Fields {
-		if !strings.EqualFold(f.Name, s) {
+		if !strings.EqualFold(f.Name.ScalarString(), s) {
 			continue
 		}
 		if len(rest) == 0 {
@@ -1022,10 +1021,10 @@ func (m *Map) DeleteField(ida ...string) *Field {
 			// then that holder becomes meaningless and should be deleted too
 			parent := ParentField(f)
 			for keywordHolder := range d2ast.ReservedKeywordHolders {
-				if parent != nil && parent.Name == keywordHolder && len(parent.Map().Fields) == 0 {
+				if parent != nil && parent.Name.ScalarString() == keywordHolder && parent.Name.IsUnquoted() && len(parent.Map().Fields) == 0 {
 					keywordHolderParentMap := ParentMap(parent)
 					for i, f := range keywordHolderParentMap.Fields {
-						if f.Name == keywordHolder {
+						if f.Name.ScalarString() == keywordHolder && f.Name.IsUnquoted() {
 							keywordHolderParentMap.Fields = append(keywordHolderParentMap.Fields[:i], keywordHolderParentMap.Fields[i+1:]...)
 							break
 						}
@@ -1376,7 +1375,7 @@ func (f *Field) AST() d2ast.Node {
 	k := &d2ast.Key{
 		Key: &d2ast.KeyPath{
 			Path: []*d2ast.StringBox{
-				d2ast.MakeValueBox(d2ast.RawString(f.Name, true)).StringBox(),
+				d2ast.MakeValueBox(f.Name).StringBox(),
 			},
 		},
 	}
@@ -1517,7 +1516,7 @@ func IsVar(n Node) bool {
 		if NodeBoardKind(n) != "" {
 			return false
 		}
-		if f, ok := n.(*Field); ok && f.Name == "vars" {
+		if f, ok := n.(*Field); ok && f.Name.ScalarString() == "vars" && f.Name.IsUnquoted() {
 			return true
 		}
 		if n == (*Map)(nil) {
@@ -1644,7 +1643,7 @@ func BoardIDA(n Node) (ida []string) {
 				reverseIDA(ida)
 				return ida
 			}
-			ida = append(ida, n.Name)
+			ida = append(ida, n.Name.ScalarString())
 		case *Edge:
 			ida = append(ida, n.IDString())
 		}
@@ -1661,7 +1660,7 @@ func IDA(n Node) (ida []string) {
 	for {
 		switch n := n.(type) {
 		case *Field:
-			ida = append(ida, n.Name)
+			ida = append(ida, n.Name.ScalarString())
 			if n.Root() {
 				reverseIDA(ida)
 				return ida
@@ -1682,7 +1681,7 @@ func RelIDA(p, n Node) (ida []string) {
 	for {
 		switch n := n.(type) {
 		case *Field:
-			ida = append(ida, n.Name)
+			ida = append(ida, n.Name.ScalarString())
 			if n.Root() {
 				reverseIDA(ida)
 				return ida
@@ -1834,7 +1833,7 @@ func (m *Map) FindBoardRoot(path []string) *Map {
 
 	if layersf != nil && layersf.Map() != nil {
 		for _, f := range layersf.Map().Fields {
-			if f.Name == path[0] {
+			if f.Name.ScalarString() == path[0] {
 				if len(path) == 1 {
 					return f.Map()
 				}
@@ -1845,7 +1844,7 @@ func (m *Map) FindBoardRoot(path []string) *Map {
 
 	if scenariosf != nil && scenariosf.Map() != nil {
 		for _, f := range scenariosf.Map().Fields {
-			if f.Name == path[0] {
+			if f.Name.ScalarString() == path[0] {
 				if len(path) == 1 {
 					return f.Map()
 				}
@@ -1856,7 +1855,7 @@ func (m *Map) FindBoardRoot(path []string) *Map {
 
 	if stepsf != nil && stepsf.Map() != nil {
 		for _, f := range stepsf.Map().Fields {
-			if f.Name == path[0] {
+			if f.Name.ScalarString() == path[0] {
 				if len(path) == 1 {
 					return f.Map()
 				}

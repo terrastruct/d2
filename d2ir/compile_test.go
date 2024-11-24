@@ -196,6 +196,23 @@ func testCompileFields(t *testing.T) {
 			},
 		},
 		{
+			name: "quoted",
+			run: func(t testing.TB) {
+				m, err := compile(t, `my_table: {
+  shape: sql_table
+  width: 200
+  height: 200
+  "shape": string
+  "icon": string
+  "width": int
+  "height": int
+}`)
+				assert.Success(t, err)
+				assertQuery(t, m, 0, 0, "sql_table", "my_table.shape")
+				assertQuery(t, m, 0, 0, "string", `my_table."shape"`)
+			},
+		},
+		{
 			name: "null",
 			run: func(t testing.TB) {
 				m, err := compile(t, `pq: pq

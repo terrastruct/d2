@@ -1,11 +1,27 @@
 {
   "fields": [
     {
-      "name": "x",
+      "name": {
+        "range": "index.d2,0:0:0-0:1:1",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "shape",
+            "name": {
+              "range": "x.d2,0:0:0-0:5:5",
+              "value": [
+                {
+                  "string": "shape",
+                  "raw_string": "shape"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "x.d2,0:7:7-0:13:13",
@@ -84,7 +100,15 @@
             ]
           },
           {
-            "name": "label",
+            "name": {
+              "range": "x.d2,1:0:14-1:5:19",
+              "value": [
+                {
+                  "string": "label",
+                  "raw_string": "label"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "x.d2,1:7:21-1:11:25",

@@ -338,6 +338,7 @@ type String interface {
 	SetString(string)
 	Copy() String
 	_string()
+	IsUnquoted() bool
 }
 
 var _ String = &UnquotedString{}
@@ -610,6 +611,11 @@ func (s *UnquotedString) _string()     {}
 func (s *DoubleQuotedString) _string() {}
 func (s *SingleQuotedString) _string() {}
 func (s *BlockString) _string()        {}
+
+func (s *UnquotedString) IsUnquoted() bool     { return true }
+func (s *DoubleQuotedString) IsUnquoted() bool { return false }
+func (s *SingleQuotedString) IsUnquoted() bool { return false }
+func (s *BlockString) IsUnquoted() bool        { return false }
 
 type Comment struct {
 	Range Range  `json:"range"`
