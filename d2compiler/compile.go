@@ -110,7 +110,7 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 }
 
 func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName string) {
-	boards := ir.GetField(fieldName)
+	boards := ir.GetField(d2ast.FlatUnquotedString(fieldName))
 	if boards.Map() == nil {
 		return
 	}
@@ -224,7 +224,7 @@ func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
 }
 
 func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
-	class := m.GetField("class")
+	class := m.GetField(d2ast.FlatUnquotedString("class"))
 	if class != nil {
 		var classNames []string
 		if class.Primary() != nil {
@@ -265,7 +265,7 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 			}
 		}
 	}
-	shape := m.GetField("shape")
+	shape := m.GetField(d2ast.FlatUnquotedString("shape"))
 	if shape != nil {
 		if shape.Composite != nil {
 			c.errorf(shape.LastPrimaryKey(), "reserved field shape does not accept composite")
@@ -388,7 +388,7 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 			IsVar:           d2ir.IsVar(fr.Context_.ScopeMap),
 		}
 		if fr.Context_.ScopeMap != nil && !d2ir.IsVar(fr.Context_.ScopeMap) {
-			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(fr.Context_.ScopeMap))
+			scopeObjIDA := d2ir.BoardIDA(fr.Context_.ScopeMap)
 			r.ScopeObj = obj.Graph.Root.EnsureChild(scopeObjIDA)
 		}
 		obj.References = append(obj.References, r)
@@ -766,7 +766,7 @@ func compileStyleFieldInit(attrs *d2graph.Attributes, f *d2ir.Field) {
 }
 
 func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
-	edge, err := obj.Connect(d2graphIDA(e.ID.SrcPath), d2graphIDA(e.ID.DstPath), e.ID.SrcArrow, e.ID.DstArrow, "")
+	edge, err := obj.Connect(e.ID.SrcPath, e.ID.DstPath, e.ID.SrcArrow, e.ID.DstArrow, "")
 	if err != nil {
 		c.errorf(e.References[0].AST(), err.Error())
 		return
@@ -790,7 +790,7 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 			ScopeObj:        obj,
 		}
 		if er.Context_.ScopeMap != nil && !d2ir.IsVar(er.Context_.ScopeMap) {
-			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(er.Context_.ScopeMap))
+			scopeObjIDA := d2ir.BoardIDA(er.Context_.ScopeMap)
 			r.ScopeObj = edge.Src.Graph.Root.EnsureChild(scopeObjIDA)
 		}
 		edge.References = append(edge.References, r)
@@ -798,7 +798,7 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 }
 
 func (c *compiler) compileEdgeMap(edge *d2graph.Edge, m *d2ir.Map) {
-	class := m.GetField("class")
+	class := m.GetField(d2ast.FlatUnquotedString("class"))
 	if class != nil {
 		var classNames []string
 		if class.Primary() != nil {
@@ -1230,7 +1230,11 @@ func (c *compiler) validateBoardLinks(g *d2graph.Graph) {
 			continue
 		}
 
-		if slices.Equal(linkKey.IDA(), obj.Graph.IDA()) {
+		formattedIDA := []string{}
+		for _, id := range linkKey.IDA() {
+			formattedIDA = append(formattedIDA, id.ScalarString())
+		}
+		if slices.Equal(formattedIDA, obj.Graph.IDA()) {
 			obj.Link = nil
 			continue
 		}
@@ -1246,34 +1250,34 @@ func (c *compiler) validateBoardLinks(g *d2graph.Graph) {
 	}
 }
 
-func hasBoard(root *d2graph.Graph, ida []string) bool {
+func hasBoard(root *d2graph.Graph, ida []d2ast.String) bool {
 	if len(ida) == 0 {
 		return true
 	}
-	if ida[0] == "root" {
+	if ida[0].ScalarString() == "root" && ida[0].IsUnquoted() {
 		return hasBoard(root, ida[1:])
 	}
 	id := ida[0]
 	if len(ida) == 1 {
-		return root.Name == id
+		return root.Name == id.ScalarString()
 	}
 	nextID := ida[1]
-	switch id {
+	switch id.ScalarString() {
 	case "layers":
 		for _, b := range root.Layers {
-			if b.Name == nextID {
+			if b.Name == nextID.ScalarString() {
 				return hasBoard(b, ida[2:])
 			}
 		}
 	case "scenarios":
 		for _, b := range root.Scenarios {
-			if b.Name == nextID {
+			if b.Name == nextID.ScalarString() {
 				return hasBoard(b, ida[2:])
 			}
 		}
 	case "steps":
 		for _, b := range root.Steps {
-			if b.Name == nextID {
+			if b.Name == nextID.ScalarString() {
 				return hasBoard(b, ida[2:])
 			}
 		}
@@ -1286,13 +1290,6 @@ func init() {
 	for k, v := range ShortToFullLanguageAliases {
 		FullToShortLanguageAliases[v] = k
 	}
-}
-
-func d2graphIDA(irIDA []string) (ida []d2ast.String) {
-	for _, el := range irIDA {
-		ida = append(ida, d2ast.RawString(el, true))
-	}
-	return ida
 }
 
 // Unused for now until shape: edge_group
@@ -1350,8 +1347,8 @@ func (c *compiler) preprocessEdgeGroup(seqDiagram, m *d2ir.Map) {
 			f := srcParent.GetField(el)
 			if !isEdgeGroup(f) {
 				for j := 0; j < i+1; j++ {
-					e.ID.SrcPath = append([]string{"_"}, e.ID.SrcPath...)
-					e.ID.DstPath = append([]string{"_"}, e.ID.DstPath...)
+					e.ID.SrcPath = append([]d2ast.String{d2ast.FlatUnquotedString("_")}, e.ID.SrcPath...)
+					e.ID.DstPath = append([]d2ast.String{d2ast.FlatUnquotedString("_")}, e.ID.DstPath...)
 				}
 				break
 			}
@@ -1361,7 +1358,7 @@ func (c *compiler) preprocessEdgeGroup(seqDiagram, m *d2ir.Map) {
 }
 
 func hoistActor(seqDiagram *d2ir.Map, f *d2ir.Field) {
-	f2 := seqDiagram.GetField(f.Name.ScalarString())
+	f2 := seqDiagram.GetField(f.Name)
 	if f2 == nil {
 		seqDiagram.Fields = append(seqDiagram.Fields, f.Copy(seqDiagram).(*d2ir.Field))
 	} else {
@@ -1420,7 +1417,7 @@ func parentSeqDiagram(n d2ir.Node) *d2ir.Map {
 }
 
 func compileConfig(ir *d2ir.Map) (*d2target.Config, error) {
-	f := ir.GetField("vars", "d2-config")
+	f := ir.GetField(d2ast.FlatUnquotedString("vars"), d2ast.FlatUnquotedString("d2-config"))
 	if f == nil || f.Map() == nil {
 		return nil, nil
 	}
@@ -1429,36 +1426,36 @@ func compileConfig(ir *d2ir.Map) (*d2target.Config, error) {
 
 	config := &d2target.Config{}
 
-	f = configMap.GetField("sketch")
+	f = configMap.GetField(d2ast.FlatUnquotedString("sketch"))
 	if f != nil {
 		val, _ := strconv.ParseBool(f.Primary().Value.ScalarString())
 		config.Sketch = &val
 	}
 
-	f = configMap.GetField("theme-id")
+	f = configMap.GetField(d2ast.FlatUnquotedString("theme-id"))
 	if f != nil {
 		val, _ := strconv.Atoi(f.Primary().Value.ScalarString())
 		config.ThemeID = go2.Pointer(int64(val))
 	}
 
-	f = configMap.GetField("dark-theme-id")
+	f = configMap.GetField(d2ast.FlatUnquotedString("dark-theme-id"))
 	if f != nil {
 		val, _ := strconv.Atoi(f.Primary().Value.ScalarString())
 		config.DarkThemeID = go2.Pointer(int64(val))
 	}
 
-	f = configMap.GetField("pad")
+	f = configMap.GetField(d2ast.FlatUnquotedString("pad"))
 	if f != nil {
 		val, _ := strconv.Atoi(f.Primary().Value.ScalarString())
 		config.Pad = go2.Pointer(int64(val))
 	}
 
-	f = configMap.GetField("layout-engine")
+	f = configMap.GetField(d2ast.FlatUnquotedString("layout-engine"))
 	if f != nil {
 		config.LayoutEngine = go2.Pointer(f.Primary().Value.ScalarString())
 	}
 
-	f = configMap.GetField("theme-overrides")
+	f = configMap.GetField(d2ast.FlatUnquotedString("theme-overrides"))
 	if f != nil {
 		overrides, err := compileThemeOverrides(f.Map())
 		if err != nil {
@@ -1466,7 +1463,7 @@ func compileConfig(ir *d2ir.Map) (*d2target.Config, error) {
 		}
 		config.ThemeOverrides = overrides
 	}
-	f = configMap.GetField("dark-theme-overrides")
+	f = configMap.GetField(d2ast.FlatUnquotedString("dark-theme-overrides"))
 	if f != nil {
 		overrides, err := compileThemeOverrides(f.Map())
 		if err != nil {
@@ -1474,7 +1471,7 @@ func compileConfig(ir *d2ir.Map) (*d2target.Config, error) {
 		}
 		config.DarkThemeOverrides = overrides
 	}
-	f = configMap.GetField("data")
+	f = configMap.GetField(d2ast.FlatUnquotedString("data"))
 	if f != nil && f.Map() != nil {
 		config.Data = make(map[string]interface{})
 		for _, f := range f.Map().Fields {

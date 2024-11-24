@@ -1065,9 +1065,17 @@ func MakeKeyPath(a []string) *KeyPath {
 	return kp
 }
 
-func (kp *KeyPath) IDA() (ida []string) {
+func MakeKeyPathString(a []String) *KeyPath {
+	kp := &KeyPath{}
+	for _, el := range a {
+		kp.Path = append(kp.Path, MakeValueBox(RawString(el.ScalarString(), true)).StringBox())
+	}
+	return kp
+}
+
+func (kp *KeyPath) IDA() (ida []String) {
 	for _, el := range kp.Path {
-		ida = append(ida, el.Unbox().ScalarString())
+		ida = append(ida, el.Unbox())
 	}
 	return ida
 }
@@ -1578,9 +1586,9 @@ func (s *Substitution) IDA() (ida []string) {
 	return ida
 }
 
-func (i *Import) IDA() (ida []string) {
+func (i *Import) IDA() (ida []String) {
 	for _, el := range i.Path[1:] {
-		ida = append(ida, el.Unbox().ScalarString())
+		ida = append(ida, el.Unbox())
 	}
 	return ida
 }

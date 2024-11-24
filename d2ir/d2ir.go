@@ -377,11 +377,11 @@ func (f *Field) LastRef() Reference {
 }
 
 type EdgeID struct {
-	SrcPath  []string `json:"src_path"`
-	SrcArrow bool     `json:"src_arrow"`
+	SrcPath  []d2ast.String `json:"src_path"`
+	SrcArrow bool           `json:"src_arrow"`
 
-	DstPath  []string `json:"dst_path"`
-	DstArrow bool     `json:"dst_arrow"`
+	DstPath  []d2ast.String `json:"dst_path"`
+	DstArrow bool           `json:"dst_arrow"`
 
 	// If nil, then any EdgeID with equal src/dst/arrows matches.
 	Index *int `json:"index"`
@@ -409,8 +409,8 @@ func (eid *EdgeID) Copy() *EdgeID {
 	tmp := *eid
 	eid = &tmp
 
-	eid.SrcPath = append([]string(nil), eid.SrcPath...)
-	eid.DstPath = append([]string(nil), eid.DstPath...)
+	eid.SrcPath = append([]d2ast.String(nil), eid.SrcPath...)
+	eid.DstPath = append([]d2ast.String(nil), eid.DstPath...)
 	return eid
 }
 
@@ -428,7 +428,7 @@ func (eid *EdgeID) Match(eid2 *EdgeID) bool {
 		return false
 	}
 	for i, s := range eid.SrcPath {
-		if !strings.EqualFold(s, eid2.SrcPath[i]) {
+		if !strings.EqualFold(s.ScalarString(), eid2.SrcPath[i].ScalarString()) {
 			return false
 		}
 	}
@@ -440,7 +440,7 @@ func (eid *EdgeID) Match(eid2 *EdgeID) bool {
 		return false
 	}
 	for i, s := range eid.DstPath {
-		if !strings.EqualFold(s, eid2.DstPath[i]) {
+		if !strings.EqualFold(s.ScalarString(), eid2.DstPath[i].ScalarString()) {
 			return false
 		}
 	}
@@ -450,21 +450,21 @@ func (eid *EdgeID) Match(eid2 *EdgeID) bool {
 
 // resolve resolves both underscores and commons in eid.
 // It returns the new eid, containing map adjusted for underscores and common ida.
-func (eid *EdgeID) resolve(m *Map) (_ *EdgeID, _ *Map, common []string, _ error) {
+func (eid *EdgeID) resolve(m *Map) (_ *EdgeID, _ *Map, common []d2ast.String, _ error) {
 	eid = eid.Copy()
 	maxUnderscores := go2.Max(countUnderscores(eid.SrcPath), countUnderscores(eid.DstPath))
 	for i := 0; i < maxUnderscores; i++ {
-		if eid.SrcPath[0] == "_" {
+		if eid.SrcPath[0].ScalarString() == "_" && eid.SrcPath[0].IsUnquoted() {
 			eid.SrcPath = eid.SrcPath[1:]
 		} else {
 			mf := ParentField(m)
-			eid.SrcPath = append([]string{mf.Name.ScalarString()}, eid.SrcPath...)
+			eid.SrcPath = append([]d2ast.String{mf.Name}, eid.SrcPath...)
 		}
-		if eid.DstPath[0] == "_" {
+		if eid.DstPath[0].ScalarString() == "_" && eid.DstPath[0].IsUnquoted() {
 			eid.DstPath = eid.DstPath[1:]
 		} else {
 			mf := ParentField(m)
-			eid.DstPath = append([]string{mf.Name.ScalarString()}, eid.DstPath...)
+			eid.DstPath = append([]d2ast.String{mf.Name}, eid.DstPath...)
 		}
 		m = ParentMap(m)
 		if m == nil {
@@ -473,7 +473,7 @@ func (eid *EdgeID) resolve(m *Map) (_ *EdgeID, _ *Map, common []string, _ error)
 	}
 
 	for len(eid.SrcPath) > 1 && len(eid.DstPath) > 1 {
-		if !strings.EqualFold(eid.SrcPath[0], eid.DstPath[0]) || strings.Contains(eid.SrcPath[0], "*") {
+		if !strings.EqualFold(eid.SrcPath[0].ScalarString(), eid.DstPath[0].ScalarString()) || strings.Contains(eid.SrcPath[0].ScalarString(), "*") {
 			return eid, m, common, nil
 		}
 		common = append(common, eid.SrcPath[0])
@@ -702,9 +702,9 @@ func (m *Map) EdgeCountRecursive() int {
 
 func (m *Map) GetClassMap(name string) *Map {
 	root := RootMap(m)
-	classes := root.Map().GetField("classes")
+	classes := root.Map().GetField(d2ast.FlatUnquotedString("classes"))
 	if classes != nil && classes.Map() != nil {
-		class := classes.Map().GetField(name)
+		class := classes.Map().GetField(d2ast.FlatUnquotedString(name))
 		if class != nil && class.Map() != nil {
 			return class.Map()
 		}
@@ -712,8 +712,8 @@ func (m *Map) GetClassMap(name string) *Map {
 	return nil
 }
 
-func (m *Map) GetField(ida ...string) *Field {
-	for len(ida) > 0 && ida[0] == "_" {
+func (m *Map) GetField(ida ...d2ast.String) *Field {
+	for len(ida) > 0 && ida[0].ScalarString() == "_" && ida[0].IsUnquoted() {
 		m = ParentMap(m)
 		if m == nil {
 			return nil
@@ -722,7 +722,7 @@ func (m *Map) GetField(ida ...string) *Field {
 	return m.getField(ida)
 }
 
-func (m *Map) getField(ida []string) *Field {
+func (m *Map) getField(ida []d2ast.String) *Field {
 	if len(ida) == 0 {
 		return nil
 	}
@@ -730,7 +730,7 @@ func (m *Map) getField(ida []string) *Field {
 	s := ida[0]
 	rest := ida[1:]
 
-	if s == "_" {
+	if s.ScalarString() == "_" && s.IsUnquoted() {
 		return nil
 	}
 
@@ -738,7 +738,10 @@ func (m *Map) getField(ida []string) *Field {
 		if f.Name == nil {
 			continue
 		}
-		if !strings.EqualFold(f.Name.ScalarString(), s) {
+		if !strings.EqualFold(f.Name.ScalarString(), s.ScalarString()) {
+			continue
+		}
+		if f.Name.IsUnquoted() != s.IsUnquoted() {
 			continue
 		}
 		if len(rest) == 0 {
@@ -788,9 +791,9 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 		if gctx != nil {
 			var ks string
 			if refctx.Key.HasMultiGlob() {
-				ks = d2format.Format(d2ast.MakeKeyPath(IDA(f)))
+				ks = d2format.Format(d2ast.MakeKeyPathString(IDA(f)))
 			} else {
-				ks = d2format.Format(d2ast.MakeKeyPath(BoardIDA(f)))
+				ks = d2format.Format(d2ast.MakeKeyPathString(BoardIDA(f)))
 			}
 			if !kp.HasGlob() {
 				if !passthrough {
@@ -887,7 +890,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 		return d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", headString)
 	}
 
-	if findBoardKeyword(headString) != -1 && head.IsUnquoted() && NodeBoardKind(m) == "" {
+	if findBoardKeyword(head) != -1 && head.IsUnquoted() && NodeBoardKind(m) == "" {
 		return d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", headString)
 	}
 
@@ -945,9 +948,9 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 		for _, grefctx := range c.globRefContextStack {
 			var ks string
 			if grefctx.Key.HasMultiGlob() {
-				ks = d2format.Format(d2ast.MakeKeyPath(IDA(f)))
+				ks = d2format.Format(d2ast.MakeKeyPathString(IDA(f)))
 			} else {
-				ks = d2format.Format(d2ast.MakeKeyPath(BoardIDA(f)))
+				ks = d2format.Format(d2ast.MakeKeyPathString(BoardIDA(f)))
 			}
 			gctx2 := c.getGlobContext(grefctx)
 			gctx2.appliedFields[ks] = struct{}{}
@@ -1090,7 +1093,7 @@ func (m *Map) getEdges(eid *EdgeID, refctx *RefContext, gctx *globContext, ea *[
 	}
 
 	if len(common) > 0 {
-		commonKP := d2ast.MakeKeyPath(common)
+		commonKP := d2ast.MakeKeyPathString(common)
 		lastMatch := 0
 		for i, el := range commonKP.Path {
 			for j := lastMatch; j < len(refctx.Edge.Src.Path); j++ {
@@ -1142,9 +1145,9 @@ func (m *Map) getEdges(eid *EdgeID, refctx *RefContext, gctx *globContext, ea *[
 				if gctx != nil {
 					var ks string
 					if refctx.Key.HasMultiGlob() {
-						ks = d2format.Format(d2ast.MakeKeyPath(IDA(e)))
+						ks = d2format.Format(d2ast.MakeKeyPathString(IDA(e)))
 					} else {
-						ks = d2format.Format(d2ast.MakeKeyPath(BoardIDA(e)))
+						ks = d2format.Format(d2ast.MakeKeyPathString(BoardIDA(e)))
 					}
 					if _, ok := gctx.appliedEdges[ks]; ok {
 						continue
@@ -1186,7 +1189,7 @@ func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, gctx *globContext, c *
 		return d2parser.Errorf(refctx.Edge, err.Error())
 	}
 	if len(common) > 0 {
-		commonKP := d2ast.MakeKeyPath(common)
+		commonKP := d2ast.MakeKeyPathString(common)
 		lastMatch := 0
 		for i, el := range commonKP.Path {
 			for j := lastMatch; j < len(refctx.Edge.Src.Path); j++ {
@@ -1303,7 +1306,7 @@ func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, c 
 		return nil, d2parser.Errorf(refctx.Edge, err.Error())
 	}
 	if len(common) > 0 {
-		commonKP := d2ast.MakeKeyPath(common)
+		commonKP := d2ast.MakeKeyPathString(common)
 		lastMatch := 0
 		for i, el := range commonKP.Path {
 			for j := lastMatch; j < len(refctx.Edge.Src.Path); j++ {
@@ -1360,9 +1363,9 @@ func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, c 
 		e2.ID = e2.ID.Copy()
 		e2.ID.Index = nil
 		if refctx.Key.HasMultiGlob() {
-			ks = d2format.Format(d2ast.MakeKeyPath(IDA(e2)))
+			ks = d2format.Format(d2ast.MakeKeyPathString(IDA(e2)))
 		} else {
-			ks = d2format.Format(d2ast.MakeKeyPath(BoardIDA(e2)))
+			ks = d2format.Format(d2ast.MakeKeyPathString(BoardIDA(e2)))
 		}
 		if _, ok := gctx.appliedEdges[ks]; ok {
 			return nil, nil
@@ -1401,11 +1404,11 @@ func (f *Field) AST() d2ast.Node {
 func (e *Edge) AST() d2ast.Node {
 	astEdge := &d2ast.Edge{}
 
-	astEdge.Src = d2ast.MakeKeyPath(e.ID.SrcPath)
+	astEdge.Src = d2ast.MakeKeyPathString(e.ID.SrcPath)
 	if e.ID.SrcArrow {
 		astEdge.SrcArrow = "<"
 	}
-	astEdge.Dst = d2ast.MakeKeyPath(e.ID.DstPath)
+	astEdge.Dst = d2ast.MakeKeyPathString(e.ID.DstPath)
 	if e.ID.DstArrow {
 		astEdge.DstArrow = ">"
 	}
@@ -1424,7 +1427,7 @@ func (e *Edge) AST() d2ast.Node {
 	return k
 }
 
-func (e *Edge) IDString() string {
+func (e *Edge) IDString() d2ast.String {
 	ast := e.AST().(*d2ast.Key)
 	if e.ID.Index != nil {
 		ast.EdgeIndex = &d2ast.EdgeIndex{
@@ -1433,7 +1436,8 @@ func (e *Edge) IDString() string {
 	}
 	ast.Primary = d2ast.ScalarBox{}
 	ast.Value = d2ast.ValueBox{}
-	return d2format.Format(ast)
+	formatted := d2format.Format(ast)
+	return d2ast.FlatUnquotedString(formatted)
 }
 
 func (a *Array) AST() d2ast.Node {
@@ -1465,7 +1469,7 @@ func (m *Map) AST() d2ast.Node {
 
 func (m *Map) appendFieldReferences(i int, kp *d2ast.KeyPath, refctx *RefContext, c *compiler) {
 	sb := kp.Path[i]
-	f := m.GetField(sb.Unbox().ScalarString())
+	f := m.GetField(sb.Unbox())
 	if f == nil {
 		return
 	}
@@ -1563,7 +1567,7 @@ func ParentShape(n Node) string {
 		f, ok := n.(*Field)
 		if ok {
 			if f.Map() != nil {
-				shapef := f.Map().GetField("shape")
+				shapef := f.Map().GetField(d2ast.FlatUnquotedString("shape"))
 				if shapef != nil && shapef.Primary() != nil {
 					return shapef.Primary().Value.ScalarString()
 				}
@@ -1576,30 +1580,30 @@ func ParentShape(n Node) string {
 	}
 }
 
-func countUnderscores(p []string) int {
+func countUnderscores(p []d2ast.String) int {
 	for i, el := range p {
-		if el != "_" {
+		if el.ScalarString() != "_" || el.IsUnquoted() {
 			return i
 		}
 	}
 	return 0
 }
 
-func findBoardKeyword(ida ...string) int {
+func findBoardKeyword(ida ...d2ast.String) int {
 	for i := range ida {
-		if _, ok := d2ast.BoardKeywords[ida[i]]; ok {
+		if _, ok := d2ast.BoardKeywords[ida[i].ScalarString()]; ok && ida[i].IsUnquoted() {
 			return i
 		}
 	}
 	return -1
 }
 
-func findProhibitedEdgeKeyword(ida ...string) int {
+func findProhibitedEdgeKeyword(ida ...d2ast.String) int {
 	for i := range ida {
-		if _, ok := d2ast.SimpleReservedKeywords[ida[i]]; ok {
+		if _, ok := d2ast.SimpleReservedKeywords[ida[i].ScalarString()]; ok && ida[i].IsUnquoted() {
 			return i
 		}
-		if _, ok := d2ast.ReservedKeywordHolders[ida[i]]; ok {
+		if _, ok := d2ast.ReservedKeywordHolders[ida[i].ScalarString()]; ok && ida[i].IsUnquoted() {
 			return i
 		}
 	}
@@ -1643,7 +1647,7 @@ func parentPrimaryKey(n Node) *d2ast.Key {
 }
 
 // BoardIDA returns the absolute path to n from the nearest board root.
-func BoardIDA(n Node) (ida []string) {
+func BoardIDA(n Node) (ida []d2ast.String) {
 	for {
 		switch n := n.(type) {
 		case *Field:
@@ -1651,7 +1655,7 @@ func BoardIDA(n Node) (ida []string) {
 				reverseIDA(ida)
 				return ida
 			}
-			ida = append(ida, n.Name.ScalarString())
+			ida = append(ida, n.Name)
 		case *Edge:
 			ida = append(ida, n.IDString())
 		}
@@ -1664,11 +1668,11 @@ func BoardIDA(n Node) (ida []string) {
 }
 
 // IDA returns the absolute path to n.
-func IDA(n Node) (ida []string) {
+func IDA(n Node) (ida []d2ast.String) {
 	for {
 		switch n := n.(type) {
 		case *Field:
-			ida = append(ida, n.Name.ScalarString())
+			ida = append(ida, n.Name)
 			if n.Root() {
 				reverseIDA(ida)
 				return ida
@@ -1685,17 +1689,17 @@ func IDA(n Node) (ida []string) {
 }
 
 // RelIDA returns the path to n relative to p.
-func RelIDA(p, n Node) (ida []string) {
+func RelIDA(p, n Node) (ida []d2ast.String) {
 	for {
 		switch n := n.(type) {
 		case *Field:
-			ida = append(ida, n.Name.ScalarString())
+			ida = append(ida, n.Name)
 			if n.Root() {
 				reverseIDA(ida)
 				return ida
 			}
 		case *Edge:
-			ida = append(ida, n.String())
+			ida = append(ida, d2ast.FlatUnquotedString(n.String()))
 		}
 		n = n.Parent()
 		f, fok := n.(*Field)
@@ -1707,11 +1711,11 @@ func RelIDA(p, n Node) (ida []string) {
 	}
 }
 
-func reverseIDA(ida []string) {
-	for i := 0; i < len(ida)/2; i++ {
-		tmp := ida[i]
-		ida[i] = ida[len(ida)-i-1]
-		ida[len(ida)-i-1] = tmp
+func reverseIDA[T any](slice []T) {
+	for i := 0; i < len(slice)/2; i++ {
+		tmp := slice[i]
+		slice[i] = slice[len(slice)-i-1]
+		slice[len(slice)-i-1] = tmp
 	}
 }
 
@@ -1786,7 +1790,7 @@ func (m *Map) Equal(n2 Node) bool {
 }
 
 func (m *Map) InClass(key *d2ast.Key) bool {
-	classes := m.Map().GetField("classes")
+	classes := m.Map().GetField(d2ast.FlatUnquotedString("classes"))
 	if classes == nil || classes.Map() == nil {
 		return false
 	}
@@ -1814,7 +1818,7 @@ func (m *Map) IsClass() bool {
 	if parentBoard.Map() == nil {
 		return false
 	}
-	classes := parentBoard.Map().GetField("classes")
+	classes := parentBoard.Map().GetField(d2ast.FlatUnquotedString("classes"))
 	if classes == nil || classes.Map() == nil {
 		return false
 	}
@@ -1835,9 +1839,9 @@ func (m *Map) FindBoardRoot(path []string) *Map {
 		return m
 	}
 
-	layersf := m.GetField("layers")
-	scenariosf := m.GetField("scenarios")
-	stepsf := m.GetField("steps")
+	layersf := m.GetField(d2ast.FlatUnquotedString("layers"))
+	scenariosf := m.GetField(d2ast.FlatUnquotedString("scenarios"))
+	stepsf := m.GetField(d2ast.FlatUnquotedString("steps"))
 
 	if layersf != nil && layersf.Map() != nil {
 		for _, f := range layersf.Map().Fields {

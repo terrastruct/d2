@@ -643,3 +643,17 @@ financial.style.fill: "#e8f4f8"
 monitoring.style.fill: "#f8e8e8"
 projects.style.fill: "#e8f8e8"
 team.style.fill: "#f8f0e8"
+
+-- sql-table-reserved --
+my_table: {
+  shape: sql_table
+  icon: https://static.wikia.nocookie.net/tomandjerry/images/4/46/JerryJumbo3-1-.jpg
+  width: 200
+  height: 200
+  "shape": string
+  "icon": string
+  "width": int
+  "height": int
+}
+
+x -> my_table."shape"

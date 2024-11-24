@@ -2,7 +2,7 @@ package d2ir
 
 func OverlayMap(base, overlay *Map) {
 	for _, of := range overlay.Fields {
-		bf := base.GetField(of.Name.ScalarString())
+		bf := base.GetField(of.Name)
 		if bf == nil {
 			base.Fields = append(base.Fields, of.Copy(base).(*Field))
 			continue
@@ -31,7 +31,7 @@ func ExpandSubstitution(m, resolved *Map, placeholder *Field) {
 	}
 
 	for _, of := range resolved.Fields {
-		bf := m.GetField(of.Name.ScalarString())
+		bf := m.GetField(of.Name)
 		if bf == nil {
 			m.Fields = append(m.Fields[:fi], append([]*Field{of.Copy(m).(*Field)}, m.Fields[fi:]...)...)
 			fi++

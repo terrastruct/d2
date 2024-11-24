@@ -88,12 +88,12 @@ func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, []string, error) {
 }
 
 func (c *compiler) overlayClasses(m *Map) {
-	classes := m.GetField("classes")
+	classes := m.GetField(d2ast.FlatUnquotedString("classes"))
 	if classes == nil || classes.Map() == nil {
 		return
 	}
 
-	layersField := m.GetField("layers")
+	layersField := m.GetField(d2ast.FlatUnquotedString("layers"))
 	if layersField == nil {
 		return
 	}
@@ -108,7 +108,7 @@ func (c *compiler) overlayClasses(m *Map) {
 			continue
 		}
 		l := lf.Map()
-		lClasses := l.GetField("classes")
+		lClasses := l.GetField(d2ast.FlatUnquotedString("classes"))
 
 		if lClasses == nil {
 			lClasses = classes.Copy(l).(*Field)
@@ -153,7 +153,7 @@ func (c *compiler) compileSubstitutions(m *Map, varsStack []*Map) {
 		} else if f.Map() != nil {
 			if f.Name != nil && f.Name.ScalarString() == "vars" && f.Name.IsUnquoted() {
 				c.compileSubstitutions(f.Map(), varsStack)
-				c.validateConfigs(f.Map().GetField("d2-config"))
+				c.validateConfigs(f.Map().GetField(d2ast.FlatUnquotedString("d2-config")))
 			} else {
 				c.compileSubstitutions(f.Map(), varsStack)
 			}
@@ -381,7 +381,7 @@ func (c *compiler) resolveSubstitution(vars *Map, node Node, substitution *d2ast
 	parent := ParentField(node)
 
 	for i, p := range substitution.Path {
-		f := vars.GetField(p.Unbox().ScalarString())
+		f := vars.GetField(p.Unbox())
 		if f == nil {
 			return nil
 		}
@@ -445,7 +445,7 @@ func (g *globContext) copyApplied(from *globContext) {
 
 func (g *globContext) prefixed(dst *Map) *globContext {
 	g2 := g.copy()
-	prefix := d2ast.MakeKeyPath(RelIDA(g2.refctx.ScopeMap, dst))
+	prefix := d2ast.MakeKeyPathString(RelIDA(g2.refctx.ScopeMap, dst))
 	g2.refctx.Key = g2.refctx.Key.Copy()
 	if g2.refctx.Key.Key != nil {
 		prefix.Path = append(prefix.Path, g2.refctx.Key.Key.Path...)
@@ -483,9 +483,9 @@ func (c *compiler) ampersandFilterMap(dst *Map, ast, scopeAST *d2ast.Map) bool {
 				}
 				var ks string
 				if gctx.refctx.Key.HasMultiGlob() {
-					ks = d2format.Format(d2ast.MakeKeyPath(IDA(dst)))
+					ks = d2format.Format(d2ast.MakeKeyPathString(IDA(dst)))
 				} else {
-					ks = d2format.Format(d2ast.MakeKeyPath(BoardIDA(dst)))
+					ks = d2format.Format(d2ast.MakeKeyPathString(BoardIDA(dst)))
 				}
 				delete(gctx.appliedFields, ks)
 				delete(gctx.appliedEdges, ks)
@@ -992,11 +992,11 @@ func (c *compiler) extendLinks(m *Map, importF *Field, importDir string) {
 			}
 
 			for _, id := range linkIDA[1:] {
-				if id == "_" {
+				if id.ScalarString() == "_" && id.IsUnquoted() {
 					if len(linkIDA) < 2 || len(importIDA) < 2 {
 						break
 					}
-					linkIDA = append([]string{linkIDA[0]}, linkIDA[2:]...)
+					linkIDA = append([]d2ast.String{linkIDA[0]}, linkIDA[2:]...)
 					importIDA = importIDA[:len(importIDA)-2]
 				} else {
 					break
@@ -1004,7 +1004,7 @@ func (c *compiler) extendLinks(m *Map, importF *Field, importDir string) {
 			}
 
 			extendedIDA := append(importIDA, linkIDA[1:]...)
-			kp := d2ast.MakeKeyPath(extendedIDA)
+			kp := d2ast.MakeKeyPathString(extendedIDA)
 			s := d2format.Format(kp)
 			f.Primary_.Value = d2ast.MakeValueBox(d2ast.FlatUnquotedString(s)).ScalarBox().Unbox()
 		}
@@ -1046,30 +1046,34 @@ func (c *compiler) compileLink(f *Field, refctx *RefContext) {
 		return
 	}
 
-	if linkIDA[0] == "root" {
+	if linkIDA[0].ScalarString() == "root" && linkIDA[0].IsUnquoted() {
 		c.errorf(refctx.Key.Key, "cannot refer to root in link")
 		return
 	}
 
+	if !linkIDA[0].IsUnquoted() {
+		return
+	}
+
 	// If it doesn't start with one of these reserved words, the link is definitely not a board link.
-	if !strings.EqualFold(linkIDA[0], "layers") && !strings.EqualFold(linkIDA[0], "scenarios") && !strings.EqualFold(linkIDA[0], "steps") && linkIDA[0] != "_" {
+	if !strings.EqualFold(linkIDA[0].ScalarString(), "layers") && !strings.EqualFold(linkIDA[0].ScalarString(), "scenarios") && !strings.EqualFold(linkIDA[0].ScalarString(), "steps") && linkIDA[0].ScalarString() != "_" {
 		return
 	}
 
 	// Chop off the non-board portion of the scope, like if this is being defined on a nested object (e.g. `x.y.z`)
 	for i := len(scopeIDA) - 1; i > 0; i-- {
-		if strings.EqualFold(scopeIDA[i-1], "layers") || strings.EqualFold(scopeIDA[i-1], "scenarios") || strings.EqualFold(scopeIDA[i-1], "steps") {
+		if scopeIDA[i-1].IsUnquoted() && (strings.EqualFold(scopeIDA[i-1].ScalarString(), "layers") || strings.EqualFold(scopeIDA[i-1].ScalarString(), "scenarios") || strings.EqualFold(scopeIDA[i-1].ScalarString(), "steps")) {
 			scopeIDA = scopeIDA[:i+1]
 			break
 		}
-		if scopeIDA[i-1] == "root" {
+		if scopeIDA[i-1].ScalarString() == "root" && scopeIDA[i-1].IsUnquoted() {
 			scopeIDA = scopeIDA[:i]
 			break
 		}
 	}
 
 	// Resolve underscores
-	for len(linkIDA) > 0 && linkIDA[0] == "_" {
+	for len(linkIDA) > 0 && linkIDA[0].ScalarString() == "_" && linkIDA[0].IsUnquoted() {
 		if len(scopeIDA) < 2 {
 			// Leave the underscore. It will fail in compiler as a standalone board,
 			// but if imported, will get further resolved in extendLinks
@@ -1080,12 +1084,12 @@ func (c *compiler) compileLink(f *Field, refctx *RefContext) {
 		linkIDA = linkIDA[1:]
 	}
 	if len(scopeIDA) == 0 {
-		scopeIDA = []string{"root"}
+		scopeIDA = []d2ast.String{d2ast.FlatUnquotedString("root")}
 	}
 
 	// Create the absolute path by appending scope path with value specified
 	scopeIDA = append(scopeIDA, linkIDA...)
-	kp := d2ast.MakeKeyPath(scopeIDA)
+	kp := d2ast.MakeKeyPathString(scopeIDA)
 	f.Primary_.Value = d2ast.FlatUnquotedString(d2format.Format(kp))
 }
 
