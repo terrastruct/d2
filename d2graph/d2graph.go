@@ -694,7 +694,10 @@ func (obj *Object) Text() *d2target.MText {
 	}
 }
 
-func (obj *Object) newObject(id string) *Object {
+func (obj *Object) newObject(ids d2ast.String) *Object {
+	id := d2format.Format(&d2ast.KeyPath{
+		Path: []*d2ast.StringBox{d2ast.MakeValueBox(d2ast.RawString(ids.ScalarString(), true)).StringBox()},
+	})
 	idval := id
 	k, _ := d2parser.ParseKey(id)
 	if k != nil && len(k.Path) > 0 {
@@ -901,9 +904,12 @@ func (obj *Object) EnsureChild(ida []d2ast.String) *Object {
 		return obj.Parent.EnsureChild(ida)
 	}
 
-	child, ok := obj.Children[strings.ToLower(id.ScalarString())]
+	head := d2format.Format(&d2ast.KeyPath{
+		Path: []*d2ast.StringBox{d2ast.MakeValueBox(d2ast.RawString(id.ScalarString(), true)).StringBox()},
+	})
+	child, ok := obj.Children[strings.ToLower(head)]
 	if !ok {
-		child = obj.newObject(id.ScalarString())
+		child = obj.newObject(id)
 	}
 
 	if len(ida) >= 1 {

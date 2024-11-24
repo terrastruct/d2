@@ -2113,7 +2113,7 @@ b
 				tassert.Equal(t, 5, len(g.Objects))
 				tassert.Equal(t, "a", g.Objects[0].ID)
 				tassert.Equal(t, "b", g.Objects[1].ID)
-				tassert.Equal(t, `04:20,11:20`, g.Objects[2].ID)
+				tassert.Equal(t, `"04:20,11:20"`, g.Objects[2].ID)
 				tassert.Equal(t, `loop through each table`, g.Objects[3].ID)
 				tassert.Equal(t, 1, len(g.Objects[0].ChildrenArray))
 				tassert.Equal(t, 0, len(g.Objects[1].ChildrenArray))

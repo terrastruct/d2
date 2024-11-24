@@ -56,8 +56,8 @@
     "edges": null,
     "objects": [
       {
-        "id": "b\nb",
-        "id_val": "b",
+        "id": "\"b\\nb\"",
+        "id_val": "b\nb",
         "references": [
           {
             "key": {
@@ -82,7 +82,7 @@
         ],
         "attributes": {
           "label": {
-            "value": "b"
+            "value": "b\nb"
           },
           "labelDimensions": {
             "width": 0,
