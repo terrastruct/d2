@@ -83,7 +83,7 @@ func jsGetParentID(this js.Value, args []js.Value) interface{} {
 			return "root"
 		}
 		mk.Key.Path = mk.Key.Path[:len(mk.Key.Path)-1]
-		return strings.Join(mk.Key.IDA(), ".")
+		return strings.Join(mk.Key.StringIDA(), ".")
 	}
 
 	return ""
