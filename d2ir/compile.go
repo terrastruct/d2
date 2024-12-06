@@ -977,7 +977,7 @@ func (c *compiler) extendLinks(m *Map, importF *Field, importDir string) {
 			val := f.Primary().Value.ScalarString()
 
 			u, err := url.Parse(html.UnescapeString(val))
-			isRemote := err == nil && strings.HasPrefix(u.Scheme, "http")
+			isRemote := err == nil && u.Scheme != ""
 			if isRemote {
 				continue
 			}
@@ -1015,7 +1015,7 @@ func (c *compiler) extendLinks(m *Map, importF *Field, importDir string) {
 				continue
 			}
 			u, err := url.Parse(html.UnescapeString(val))
-			isRemoteImg := err == nil && strings.HasPrefix(u.Scheme, "http")
+			isRemoteImg := err == nil && u.Scheme != ""
 			if isRemoteImg {
 				continue
 			}
