@@ -1512,6 +1512,22 @@ x -> y: {
 			},
 		},
 		{
+			name: "non_url_link",
+
+			text: `x: {
+  link: vscode://file//Users/pmoura/logtalk/examples/searching/hill_climbing1.lgt:35:0
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if len(g.Objects) != 1 {
+					t.Fatal(g.Objects)
+				}
+				if g.Objects[0].Link.Value != "vscode://file//Users/pmoura/logtalk/examples/searching/hill_climbing1.lgt:35:0" {
+					t.Fatal(g.Objects[0].Link.Value)
+				}
+			},
+		},
+		{
 			name: "import_url_link",
 
 			text: `...@test
