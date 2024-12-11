@@ -22,6 +22,7 @@ Usage:
   %[1]s [--watch=false] [--theme=0] file.d2 [file.svg | file.png]
   %[1]s layout [name]
   %[1]s fmt file.d2 ...
+  %[1]s play [--theme=0] [--sketch] file.d2
 
 %[1]s compiles and renders file.d2 to file.svg | file.png
 It defaults to file.svg if an output path is not provided.
