@@ -38,6 +38,7 @@ Subcommands:
   %[1]s layout [name] - Display long help for a particular layout engine, including its configuration options
   %[1]s themes - Lists available themes
   %[1]s fmt file.d2 ... - Format passed files
+  %[1]s play file.d2 - Opens the file in playground
 
 See more docs and the source code at https://oss.terrastruct.com/d2.
 Hosted icons at https://icons.terrastruct.com.
