@@ -11,3 +11,7 @@ func MeasureMarkdown(mdText string, ruler *Ruler, fontFamily *d2fonts.FontFamily
 func RenderMarkdown(m string) (string, error) {
 	return "", nil
 }
+
+func ReplaceSubstitutionsMarkdown(mdText string, variables map[string]string) string {
+	return mdText
+}
