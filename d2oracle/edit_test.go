@@ -2668,6 +2668,31 @@ scenarios: {
 }
 `,
 		},
+		{
+			name: "step-connection",
+
+			text: `steps: {
+  1: {
+    Modules -- Metricbeat: {
+      style.stroke-width: 1
+    }
+  }
+}
+
+		`,
+			key:       `Metricbeat.style.stroke`,
+			value:     go2.Pointer(`red`),
+			boardPath: []string{"1"},
+			exp: `steps: {
+  1: {
+    Modules -- Metricbeat: {
+      style.stroke-width: 1
+    }
+    Metricbeat.style.stroke: red
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
