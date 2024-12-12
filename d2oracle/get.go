@@ -249,7 +249,7 @@ func GetID(key string) string {
 
 func GetWriteableRefs(obj *d2graph.Object, writeableAST *d2ast.Map) (out []d2graph.Reference) {
 	for i, ref := range obj.References {
-		if ref.ScopeAST == writeableAST && ref.Key.Range.Path == writeableAST.Range.Path {
+		if ref.ScopeAST == writeableAST && ref.Key.Range.Path == writeableAST.Range.Path && len(ref.MapKey.Edges) == 0 {
 			out = append(out, obj.References[i])
 		}
 	}
