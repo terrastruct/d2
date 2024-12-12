@@ -567,6 +567,37 @@ layers: {
 `,
 		},
 		{
+			name: "add_layer/5",
+			text: `classes: {
+  a: {
+    style.stroke: red
+  }
+}
+b
+
+layers: {
+	c
+}
+`,
+			key: `d`,
+
+			boardPath: []string{"c"},
+			expKey:    `d`,
+			exp: `classes: {
+  a: {
+    style.stroke: red
+  }
+}
+b
+
+layers: {
+  c: {
+    d
+  }
+}
+`,
+		},
+		{
 			name: "layers-edge",
 
 			text: `a

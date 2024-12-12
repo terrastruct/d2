@@ -104,7 +104,6 @@ func (c *compiler) overlayClasses(m *Map) {
 
 	for _, lf := range layers.Fields {
 		if lf.Map() == nil || lf.Primary() != nil {
-			c.errorf(lf.References[0].Context_.Key, "invalid layer")
 			continue
 		}
 		l := lf.Map()
