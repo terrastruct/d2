@@ -1528,6 +1528,30 @@ x -> y: {
 			},
 		},
 		{
+			name: "glob-connection-steps",
+
+			text: `*.style.stroke: black
+
+layers: {
+  ok: @ok
+}
+`,
+			files: map[string]string{
+				"ok.d2": `
+steps: {
+  1: {
+    step1
+  }
+}
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 0, len(g.Steps))
+				assert.Equal(t, 1, len(g.Layers))
+				assert.Equal(t, 1, len(g.Layers[0].Steps))
+			},
+		},
+		{
 			name: "import_url_link",
 
 			text: `...@test

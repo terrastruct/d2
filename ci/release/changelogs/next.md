@@ -16,3 +16,4 @@
 
 - Imports: fixes using substitutions in `icon` values [#2207](https://github.com/terrastruct/d2/pull/2207)
 - Markdown: fixes ampersands in URLs in markdown [#2219](https://github.com/terrastruct/d2/pull/2219)
+- Globs: fixes edge case where globs with imported boards would create empty boards [#2247](https://github.com/terrastruct/d2/pull/2247)
