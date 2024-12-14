@@ -681,6 +681,13 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 	case "classes":
 	}
 
+	if attrs.Link != nil && attrs.Label.Value != "" {
+		u, err := url.ParseRequestURI(attrs.Label.Value)
+		if err == nil && u.Host != "" {
+			c.errorf(scalar, "Label cannot be set to URL when link is also set (for security)")
+		}
+	}
+
 	if attrs.Link != nil && attrs.Tooltip != nil {
 		u, err := url.ParseRequestURI(attrs.Tooltip.Value)
 		if err == nil && u.Host != "" {

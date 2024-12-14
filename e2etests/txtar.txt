@@ -669,3 +669,18 @@ formula: {
     \end{equation}
   |
 }
+
+-- link-on-connections --
+a <-> b: {
+  link: https://google.com/
+}
+
+b -> c: test {
+  link: layers.d
+}
+
+layers: {
+  d: {
+    d
+  }
+}
