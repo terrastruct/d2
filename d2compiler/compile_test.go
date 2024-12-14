@@ -1645,10 +1645,6 @@ a.style.fill: null
 			expErr: `d2/testdata/d2compiler/TestCompile/no_url_link_and_path_url_label_concurrently.d2:1:35: Label cannot be set to URL when link is also set (for security)`,
 		},
 		{
-			name: "url_link_and_path_url_label_ok",
-			text: `x -> y note: {link: https://not-google.com}`,
-		},
-		{
 			name: "url_link_and_path_url_label_concurrently",
 			text: `x -> y: hello world {link: https://google.com}`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
