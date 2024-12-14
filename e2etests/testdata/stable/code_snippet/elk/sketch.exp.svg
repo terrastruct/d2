@@ -1,22 +1,6 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="v0.6.8-HEAD" preserveAspectRatio="xMinYMin meet" viewBox="0 0 757 477"><svg id="d2-svg" class="d2-3358777174" width="757" height="477" viewBox="11 11 757 477"><rect x="11.000000" y="11.000000" width="757.000000" height="477.000000" rx="0.000000" fill="#FFFFFF" class=" fill-N7" stroke-width="0" /><style type="text/css"><![CDATA[
-.d2-3358777174 .text-bold {
-	font-family: "d2-3358777174-font-bold";
-||||||| parent of 33280fed5 (fixed e2e tests)
-<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="v0.6.6-HEAD" preserveAspectRatio="xMinYMin meet" viewBox="0 0 757 477"><svg id="d2-svg" class="d2-3358777174" width="757" height="477" viewBox="11 11 757 477"><rect x="11.000000" y="11.000000" width="757.000000" height="477.000000" rx="0.000000" class=" fill-N7" stroke-width="0" /><style type="text/css"><![CDATA[
-.d2-3358777174 .text-bold {
-	font-family: "d2-3358777174-font-bold";
-=======
-<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="v0.6.5-HEAD" preserveAspectRatio="xMinYMin meet" viewBox="0 0 757 477"><svg id="d2-svg" class="d2-637161018" width="757" height="477" viewBox="11 11 757 477"><rect x="11.000000" y="11.000000" width="757.000000" height="477.000000" rx="0.000000" class=" fill-N7" stroke-width="0" /><style type="text/css"><![CDATA[
-||||||| parent of cb2f2823c (Fix changes)
-<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="v0.6.5-HEAD" preserveAspectRatio="xMinYMin meet" viewBox="0 0 757 477"><svg id="d2-svg" class="d2-637161018" width="757" height="477" viewBox="11 11 757 477"><rect x="11.000000" y="11.000000" width="757.000000" height="477.000000" rx="0.000000" class=" fill-N7" stroke-width="0" /><style type="text/css"><![CDATA[
-=======
-<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="v0.6.6-HEAD" preserveAspectRatio="xMinYMin meet" viewBox="0 0 757 477"><svg id="d2-svg" class="d2-637161018" width="757" height="477" viewBox="11 11 757 477"><rect x="11.000000" y="11.000000" width="757.000000" height="477.000000" rx="0.000000" class=" fill-N7" stroke-width="0" /><style type="text/css"><![CDATA[
->>>>>>> cb2f2823c (Fix changes)
+<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="v0.6.8-HEAD" preserveAspectRatio="xMinYMin meet" viewBox="0 0 757 477"><svg id="d2-svg" class="d2-637161018" width="757" height="477" viewBox="11 11 757 477"><rect x="11.000000" y="11.000000" width="757.000000" height="477.000000" rx="0.000000" fill="#FFFFFF" class=" fill-N7" stroke-width="0" /><style type="text/css"><![CDATA[
 .d2-637161018 .text-bold {
 	font-family: "d2-637161018-font-bold";
->>>>>>> 33280fed5 (fixed e2e tests)
 }
 @font-face {
 	font-family: d2-637161018-font-bold;
@@ -55,153 +39,6 @@
   opacity: 0.5;
 }
 
-<<<<<<< HEAD
-		.d2-3358777174 .fill-N1{fill:#0A0F25;}
-		.d2-3358777174 .fill-N2{fill:#676C7E;}
-		.d2-3358777174 .fill-N3{fill:#9499AB;}
-		.d2-3358777174 .fill-N4{fill:#CFD2DD;}
-		.d2-3358777174 .fill-N5{fill:#DEE1EB;}
-		.d2-3358777174 .fill-N6{fill:#EEF1F8;}
-		.d2-3358777174 .fill-N7{fill:#FFFFFF;}
-		.d2-3358777174 .fill-B1{fill:#0D32B2;}
-		.d2-3358777174 .fill-B2{fill:#0D32B2;}
-		.d2-3358777174 .fill-B3{fill:#E3E9FD;}
-		.d2-3358777174 .fill-B4{fill:#E3E9FD;}
-		.d2-3358777174 .fill-B5{fill:#EDF0FD;}
-		.d2-3358777174 .fill-B6{fill:#F7F8FE;}
-		.d2-3358777174 .fill-AA2{fill:#4A6FF3;}
-		.d2-3358777174 .fill-AA4{fill:#EDF0FD;}
-		.d2-3358777174 .fill-AA5{fill:#F7F8FE;}
-		.d2-3358777174 .fill-AB4{fill:#EDF0FD;}
-		.d2-3358777174 .fill-AB5{fill:#F7F8FE;}
-		.d2-3358777174 .stroke-N1{stroke:#0A0F25;}
-		.d2-3358777174 .stroke-N2{stroke:#676C7E;}
-		.d2-3358777174 .stroke-N3{stroke:#9499AB;}
-		.d2-3358777174 .stroke-N4{stroke:#CFD2DD;}
-		.d2-3358777174 .stroke-N5{stroke:#DEE1EB;}
-		.d2-3358777174 .stroke-N6{stroke:#EEF1F8;}
-		.d2-3358777174 .stroke-N7{stroke:#FFFFFF;}
-		.d2-3358777174 .stroke-B1{stroke:#0D32B2;}
-		.d2-3358777174 .stroke-B2{stroke:#0D32B2;}
-		.d2-3358777174 .stroke-B3{stroke:#E3E9FD;}
-		.d2-3358777174 .stroke-B4{stroke:#E3E9FD;}
-		.d2-3358777174 .stroke-B5{stroke:#EDF0FD;}
-		.d2-3358777174 .stroke-B6{stroke:#F7F8FE;}
-		.d2-3358777174 .stroke-AA2{stroke:#4A6FF3;}
-		.d2-3358777174 .stroke-AA4{stroke:#EDF0FD;}
-		.d2-3358777174 .stroke-AA5{stroke:#F7F8FE;}
-		.d2-3358777174 .stroke-AB4{stroke:#EDF0FD;}
-		.d2-3358777174 .stroke-AB5{stroke:#F7F8FE;}
-		.d2-3358777174 .background-color-N1{background-color:#0A0F25;}
-		.d2-3358777174 .background-color-N2{background-color:#676C7E;}
-		.d2-3358777174 .background-color-N3{background-color:#9499AB;}
-		.d2-3358777174 .background-color-N4{background-color:#CFD2DD;}
-		.d2-3358777174 .background-color-N5{background-color:#DEE1EB;}
-		.d2-3358777174 .background-color-N6{background-color:#EEF1F8;}
-		.d2-3358777174 .background-color-N7{background-color:#FFFFFF;}
-		.d2-3358777174 .background-color-B1{background-color:#0D32B2;}
-		.d2-3358777174 .background-color-B2{background-color:#0D32B2;}
-		.d2-3358777174 .background-color-B3{background-color:#E3E9FD;}
-		.d2-3358777174 .background-color-B4{background-color:#E3E9FD;}
-		.d2-3358777174 .background-color-B5{background-color:#EDF0FD;}
-		.d2-3358777174 .background-color-B6{background-color:#F7F8FE;}
-		.d2-3358777174 .background-color-AA2{background-color:#4A6FF3;}
-		.d2-3358777174 .background-color-AA4{background-color:#EDF0FD;}
-		.d2-3358777174 .background-color-AA5{background-color:#F7F8FE;}
-		.d2-3358777174 .background-color-AB4{background-color:#EDF0FD;}
-		.d2-3358777174 .background-color-AB5{background-color:#F7F8FE;}
-		.d2-3358777174 .color-N1{color:#0A0F25;}
-		.d2-3358777174 .color-N2{color:#676C7E;}
-		.d2-3358777174 .color-N3{color:#9499AB;}
-		.d2-3358777174 .color-N4{color:#CFD2DD;}
-		.d2-3358777174 .color-N5{color:#DEE1EB;}
-		.d2-3358777174 .color-N6{color:#EEF1F8;}
-		.d2-3358777174 .color-N7{color:#FFFFFF;}
-		.d2-3358777174 .color-B1{color:#0D32B2;}
-		.d2-3358777174 .color-B2{color:#0D32B2;}
-		.d2-3358777174 .color-B3{color:#E3E9FD;}
-		.d2-3358777174 .color-B4{color:#E3E9FD;}
-		.d2-3358777174 .color-B5{color:#EDF0FD;}
-		.d2-3358777174 .color-B6{color:#F7F8FE;}
-		.d2-3358777174 .color-AA2{color:#4A6FF3;}
-		.d2-3358777174 .color-AA4{color:#EDF0FD;}
-		.d2-3358777174 .color-AA5{color:#F7F8FE;}
-		.d2-3358777174 .color-AB4{color:#EDF0FD;}
-		.d2-3358777174 .color-AB5{color:#F7F8FE;}.appendix text.text{fill:#0A0F25}.md{--color-fg-default:#0A0F25;--color-fg-muted:#676C7E;--color-fg-subtle:#9499AB;--color-canvas-default:#FFFFFF;--color-canvas-subtle:#EEF1F8;--color-border-default:#0D32B2;--color-border-muted:#0D32B2;--color-neutral-muted:#EEF1F8;--color-accent-fg:#0D32B2;--color-accent-emphasis:#0D32B2;--color-attention-subtle:#676C7E;--color-danger-fg:red;}.sketch-overlay-B1{fill:url(#streaks-darker);mix-blend-mode:lighten}.sketch-overlay-B2{fill:url(#streaks-darker);mix-blend-mode:lighten}.sketch-overlay-B3{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-B4{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-B5{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-B6{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-AA2{fill:url(#streaks-dark);mix-blend-mode:overlay}.sketch-overlay-AA4{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-AA5{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-AB4{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-AB5{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-N1{fill:url(#streaks-darker);mix-blend-mode:lighten}.sketch-overlay-N2{fill:url(#streaks-dark);mix-blend-mode:overlay}.sketch-overlay-N3{fill:url(#streaks-normal);mix-blend-mode:color-burn}.sketch-overlay-N4{fill:url(#streaks-normal);mix-blend-mode:color-burn}.sketch-overlay-N5{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-N6{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-N7{fill:url(#streaks-bright);mix-blend-mode:darken}.light-code{display: block}.dark-code{display: none}]]></style><g id="hey"><g class="shape" ></g><g transform="translate(12.000000 148.000000)" class="light-code"><rect width="755.000000" height="203.000000" stroke="#0A0F25" class="shape stroke-N1" style="fill:#ffffff;stroke-width:2;" /><g transform="translate(8.000000 8.000000)"><text class="text-mono" x="0" y="1.000000em"><tspan fill="#999988" class="text-mono-italic">//&#160;RegisterHash&#160;registers&#160;a&#160;function&#160;that&#160;returns&#160;a&#160;new&#160;instance&#160;of&#160;the&#160;given
-||||||| parent of 33280fed5 (fixed e2e tests)
-		.d2-3358777174 .fill-N1{fill:#0A0F25;}
-		.d2-3358777174 .fill-N2{fill:#676C7E;}
-		.d2-3358777174 .fill-N3{fill:#9499AB;}
-		.d2-3358777174 .fill-N4{fill:#CFD2DD;}
-		.d2-3358777174 .fill-N5{fill:#DEE1EB;}
-		.d2-3358777174 .fill-N6{fill:#EEF1F8;}
-		.d2-3358777174 .fill-N7{fill:#FFFFFF;}
-		.d2-3358777174 .fill-B1{fill:#0D32B2;}
-		.d2-3358777174 .fill-B2{fill:#0D32B2;}
-		.d2-3358777174 .fill-B3{fill:#E3E9FD;}
-		.d2-3358777174 .fill-B4{fill:#E3E9FD;}
-		.d2-3358777174 .fill-B5{fill:#EDF0FD;}
-		.d2-3358777174 .fill-B6{fill:#F7F8FE;}
-		.d2-3358777174 .fill-AA2{fill:#4A6FF3;}
-		.d2-3358777174 .fill-AA4{fill:#EDF0FD;}
-		.d2-3358777174 .fill-AA5{fill:#F7F8FE;}
-		.d2-3358777174 .fill-AB4{fill:#EDF0FD;}
-		.d2-3358777174 .fill-AB5{fill:#F7F8FE;}
-		.d2-3358777174 .stroke-N1{stroke:#0A0F25;}
-		.d2-3358777174 .stroke-N2{stroke:#676C7E;}
-		.d2-3358777174 .stroke-N3{stroke:#9499AB;}
-		.d2-3358777174 .stroke-N4{stroke:#CFD2DD;}
-		.d2-3358777174 .stroke-N5{stroke:#DEE1EB;}
-		.d2-3358777174 .stroke-N6{stroke:#EEF1F8;}
-		.d2-3358777174 .stroke-N7{stroke:#FFFFFF;}
-		.d2-3358777174 .stroke-B1{stroke:#0D32B2;}
-		.d2-3358777174 .stroke-B2{stroke:#0D32B2;}
-		.d2-3358777174 .stroke-B3{stroke:#E3E9FD;}
-		.d2-3358777174 .stroke-B4{stroke:#E3E9FD;}
-		.d2-3358777174 .stroke-B5{stroke:#EDF0FD;}
-		.d2-3358777174 .stroke-B6{stroke:#F7F8FE;}
-		.d2-3358777174 .stroke-AA2{stroke:#4A6FF3;}
-		.d2-3358777174 .stroke-AA4{stroke:#EDF0FD;}
-		.d2-3358777174 .stroke-AA5{stroke:#F7F8FE;}
-		.d2-3358777174 .stroke-AB4{stroke:#EDF0FD;}
-		.d2-3358777174 .stroke-AB5{stroke:#F7F8FE;}
-		.d2-3358777174 .background-color-N1{background-color:#0A0F25;}
-		.d2-3358777174 .background-color-N2{background-color:#676C7E;}
-		.d2-3358777174 .background-color-N3{background-color:#9499AB;}
-		.d2-3358777174 .background-color-N4{background-color:#CFD2DD;}
-		.d2-3358777174 .background-color-N5{background-color:#DEE1EB;}
-		.d2-3358777174 .background-color-N6{background-color:#EEF1F8;}
-		.d2-3358777174 .background-color-N7{background-color:#FFFFFF;}
-		.d2-3358777174 .background-color-B1{background-color:#0D32B2;}
-		.d2-3358777174 .background-color-B2{background-color:#0D32B2;}
-		.d2-3358777174 .background-color-B3{background-color:#E3E9FD;}
-		.d2-3358777174 .background-color-B4{background-color:#E3E9FD;}
-		.d2-3358777174 .background-color-B5{background-color:#EDF0FD;}
-		.d2-3358777174 .background-color-B6{background-color:#F7F8FE;}
-		.d2-3358777174 .background-color-AA2{background-color:#4A6FF3;}
-		.d2-3358777174 .background-color-AA4{background-color:#EDF0FD;}
-		.d2-3358777174 .background-color-AA5{background-color:#F7F8FE;}
-		.d2-3358777174 .background-color-AB4{background-color:#EDF0FD;}
-		.d2-3358777174 .background-color-AB5{background-color:#F7F8FE;}
-		.d2-3358777174 .color-N1{color:#0A0F25;}
-		.d2-3358777174 .color-N2{color:#676C7E;}
-		.d2-3358777174 .color-N3{color:#9499AB;}
-		.d2-3358777174 .color-N4{color:#CFD2DD;}
-		.d2-3358777174 .color-N5{color:#DEE1EB;}
-		.d2-3358777174 .color-N6{color:#EEF1F8;}
-		.d2-3358777174 .color-N7{color:#FFFFFF;}
-		.d2-3358777174 .color-B1{color:#0D32B2;}
-		.d2-3358777174 .color-B2{color:#0D32B2;}
-		.d2-3358777174 .color-B3{color:#E3E9FD;}
-		.d2-3358777174 .color-B4{color:#E3E9FD;}
-		.d2-3358777174 .color-B5{color:#EDF0FD;}
-		.d2-3358777174 .color-B6{color:#F7F8FE;}
-		.d2-3358777174 .color-AA2{color:#4A6FF3;}
-		.d2-3358777174 .color-AA4{color:#EDF0FD;}
-		.d2-3358777174 .color-AA5{color:#F7F8FE;}
-		.d2-3358777174 .color-AB4{color:#EDF0FD;}
-		.d2-3358777174 .color-AB5{color:#F7F8FE;}.appendix text.text{fill:#0A0F25}.md{--color-fg-default:#0A0F25;--color-fg-muted:#676C7E;--color-fg-subtle:#9499AB;--color-canvas-default:#FFFFFF;--color-canvas-subtle:#EEF1F8;--color-border-default:#0D32B2;--color-border-muted:#0D32B2;--color-neutral-muted:#EEF1F8;--color-accent-fg:#0D32B2;--color-accent-emphasis:#0D32B2;--color-attention-subtle:#676C7E;--color-danger-fg:red;}.sketch-overlay-B1{fill:url(#streaks-darker);mix-blend-mode:lighten}.sketch-overlay-B2{fill:url(#streaks-darker);mix-blend-mode:lighten}.sketch-overlay-B3{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-B4{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-B5{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-B6{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-AA2{fill:url(#streaks-dark);mix-blend-mode:overlay}.sketch-overlay-AA4{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-AA5{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-AB4{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-AB5{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-N1{fill:url(#streaks-darker);mix-blend-mode:lighten}.sketch-overlay-N2{fill:url(#streaks-dark);mix-blend-mode:overlay}.sketch-overlay-N3{fill:url(#streaks-normal);mix-blend-mode:color-burn}.sketch-overlay-N4{fill:url(#streaks-normal);mix-blend-mode:color-burn}.sketch-overlay-N5{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-N6{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-N7{fill:url(#streaks-bright);mix-blend-mode:darken}.light-code{display: block}.dark-code{display: none}]]></style><g id="hey"><g class="shape" ></g><g transform="translate(12.000000 148.000000)" class="light-code"><rect width="755.000000" height="203.000000" class="shape stroke-N1" style="fill:#ffffff;stroke-width:2;" /><g transform="translate(8.000000 8.000000)"><text class="text-mono" x="0" y="1.000000em"><tspan fill="#999988" class="text-mono-italic">//&#160;RegisterHash&#160;registers&#160;a&#160;function&#160;that&#160;returns&#160;a&#160;new&#160;instance&#160;of&#160;the&#160;given
-=======
 		.d2-637161018 .fill-N1{fill:#0A0F25;}
 		.d2-637161018 .fill-N2{fill:#676C7E;}
 		.d2-637161018 .fill-N3{fill:#9499AB;}
@@ -273,8 +110,7 @@
 		.d2-637161018 .color-AA4{color:#EDF0FD;}
 		.d2-637161018 .color-AA5{color:#F7F8FE;}
 		.d2-637161018 .color-AB4{color:#EDF0FD;}
-		.d2-637161018 .color-AB5{color:#F7F8FE;}.appendix text.text{fill:#0A0F25}.md{--color-fg-default:#0A0F25;--color-fg-muted:#676C7E;--color-fg-subtle:#9499AB;--color-canvas-default:#FFFFFF;--color-canvas-subtle:#EEF1F8;--color-border-default:#0D32B2;--color-border-muted:#0D32B2;--color-neutral-muted:#EEF1F8;--color-accent-fg:#0D32B2;--color-accent-emphasis:#0D32B2;--color-attention-subtle:#676C7E;--color-danger-fg:red;}.sketch-overlay-B1{fill:url(#streaks-darker);mix-blend-mode:lighten}.sketch-overlay-B2{fill:url(#streaks-darker);mix-blend-mode:lighten}.sketch-overlay-B3{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-B4{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-B5{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-B6{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-AA2{fill:url(#streaks-dark);mix-blend-mode:overlay}.sketch-overlay-AA4{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-AA5{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-AB4{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-AB5{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-N1{fill:url(#streaks-darker);mix-blend-mode:lighten}.sketch-overlay-N2{fill:url(#streaks-dark);mix-blend-mode:overlay}.sketch-overlay-N3{fill:url(#streaks-normal);mix-blend-mode:color-burn}.sketch-overlay-N4{fill:url(#streaks-normal);mix-blend-mode:color-burn}.sketch-overlay-N5{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-N6{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-N7{fill:url(#streaks-bright);mix-blend-mode:darken}.light-code{display: block}.dark-code{display: none}]]></style><g id="hey"><g class="shape" ></g><g transform="translate(12.000000 148.000000)" class="light-code"><rect width="755.000000" height="203.000000" class="shape stroke-N1" style="fill:#ffffff;stroke-width:2;" /><g transform="translate(8.000000 8.000000)"><text class="text-mono" x="0" y="1.000000em"><tspan fill="#999988" class="text-mono-italic">//&#160;RegisterHash&#160;registers&#160;a&#160;function&#160;that&#160;returns&#160;a&#160;new&#160;instance&#160;of&#160;the&#160;given
->>>>>>> 33280fed5 (fixed e2e tests)
+		.d2-637161018 .color-AB5{color:#F7F8FE;}.appendix text.text{fill:#0A0F25}.md{--color-fg-default:#0A0F25;--color-fg-muted:#676C7E;--color-fg-subtle:#9499AB;--color-canvas-default:#FFFFFF;--color-canvas-subtle:#EEF1F8;--color-border-default:#0D32B2;--color-border-muted:#0D32B2;--color-neutral-muted:#EEF1F8;--color-accent-fg:#0D32B2;--color-accent-emphasis:#0D32B2;--color-attention-subtle:#676C7E;--color-danger-fg:red;}.sketch-overlay-B1{fill:url(#streaks-darker);mix-blend-mode:lighten}.sketch-overlay-B2{fill:url(#streaks-darker);mix-blend-mode:lighten}.sketch-overlay-B3{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-B4{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-B5{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-B6{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-AA2{fill:url(#streaks-dark);mix-blend-mode:overlay}.sketch-overlay-AA4{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-AA5{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-AB4{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-AB5{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-N1{fill:url(#streaks-darker);mix-blend-mode:lighten}.sketch-overlay-N2{fill:url(#streaks-dark);mix-blend-mode:overlay}.sketch-overlay-N3{fill:url(#streaks-normal);mix-blend-mode:color-burn}.sketch-overlay-N4{fill:url(#streaks-normal);mix-blend-mode:color-burn}.sketch-overlay-N5{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-N6{fill:url(#streaks-bright);mix-blend-mode:darken}.sketch-overlay-N7{fill:url(#streaks-bright);mix-blend-mode:darken}.light-code{display: block}.dark-code{display: none}]]></style><g id="hey"><g class="shape" ></g><g transform="translate(12.000000 148.000000)" class="light-code"><rect width="755.000000" height="203.000000" stroke="#0A0F25" class="shape stroke-N1" style="fill:#ffffff;stroke-width:2;" /><g transform="translate(8.000000 8.000000)"><text class="text-mono" x="0" y="1.000000em"><tspan fill="#999988" class="text-mono-italic">//&#160;RegisterHash&#160;registers&#160;a&#160;function&#160;that&#160;returns&#160;a&#160;new&#160;instance&#160;of&#160;the&#160;given
 </tspan></text><text class="text-mono" x="0" y="2.300000em"><tspan fill="#999988" class="text-mono-italic"></tspan><tspan fill="#999988" class="text-mono-italic">//&#160;hash&#160;function.&#160;This&#160;is&#160;intended&#160;to&#160;be&#160;called&#160;from&#160;the&#160;init&#160;function&#160;in
 </tspan></text><text class="text-mono" x="0" y="3.600000em"><tspan fill="#999988" class="text-mono-italic"></tspan><tspan fill="#999988" class="text-mono-italic">//&#160;packages&#160;that&#160;implement&#160;hash&#160;functions.
 </tspan></text><text class="text-mono" x="0" y="4.900000em"><tspan fill="#999988" class="text-mono-italic"></tspan><tspan fill="#000000" class="text-mono-bold">func</tspan>&#160;<tspan fill="#990000" class="text-mono-bold">RegisterHash</tspan>(h&#160;Hash,&#160;f&#160;<tspan fill="#000000" class="text-mono-bold">func</tspan>()&#160;hash.Hash)&#160;{
@@ -282,7 +118,6 @@
 </text><text class="text-mono" x="0" y="7.500000em">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<tspan fill="#0086b3">panic</tspan>(<tspan fill="#dd1144">&quot;crypto:&#160;RegisterHash&#160;of&#160;unknown&#160;hash&#160;function&quot;</tspan>)
 </text><text class="text-mono" x="0" y="8.800000em">&#160;&#160;&#160;&#160;}
 </text><text class="text-mono" x="0" y="10.100000em">&#160;&#160;&#160;&#160;hashes[h]&#160;=&#160;f
-<<<<<<< HEAD
 </text><text class="text-mono" x="0" y="11.400000em">}</text></g></g><g transform="translate(12.000000 148.000000)" class="dark-code"><rect width="755.000000" height="203.000000" stroke="#0A0F25" class="shape stroke-N1" style="fill:#1e1e2e;stroke-width:2;" /><g transform="translate(8.000000 8.000000)"><text class="text-mono" x="0" y="1.000000em"><tspan fill="#6c7086" class="text-mono-italic">//&#160;RegisterHash&#160;registers&#160;a&#160;function&#160;that&#160;returns&#160;a&#160;new&#160;instance&#160;of&#160;the&#160;given
 </tspan></text><text class="text-mono" x="0" y="2.300000em"><tspan fill="#6c7086" class="text-mono-italic"></tspan><tspan fill="#6c7086" class="text-mono-italic">//&#160;hash&#160;function.&#160;This&#160;is&#160;intended&#160;to&#160;be&#160;called&#160;from&#160;the&#160;init&#160;function&#160;in
 </tspan></text><text class="text-mono" x="0" y="3.600000em"><tspan fill="#6c7086" class="text-mono-italic"></tspan><tspan fill="#6c7086" class="text-mono-italic">//&#160;packages&#160;that&#160;implement&#160;hash&#160;functions.
@@ -291,28 +126,7 @@
 </tspan></text><text class="text-mono" x="0" y="7.500000em"><tspan fill="#cdd6f4"></tspan><tspan fill="#cdd6f4">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</tspan><tspan fill="#89dceb">panic</tspan><tspan fill="#cdd6f4">(</tspan><tspan fill="#a6e3a1">&quot;crypto:&#160;RegisterHash&#160;of&#160;unknown&#160;hash&#160;function&quot;</tspan><tspan fill="#cdd6f4">)</tspan><tspan fill="#cdd6f4">
 </tspan></text><text class="text-mono" x="0" y="8.800000em"><tspan fill="#cdd6f4"></tspan><tspan fill="#cdd6f4">&#160;&#160;&#160;&#160;</tspan><tspan fill="#cdd6f4">}</tspan><tspan fill="#cdd6f4">
 </tspan></text><text class="text-mono" x="0" y="10.100000em"><tspan fill="#cdd6f4"></tspan><tspan fill="#cdd6f4">&#160;&#160;&#160;&#160;</tspan><tspan fill="#cdd6f4">hashes</tspan><tspan fill="#cdd6f4">[</tspan><tspan fill="#cdd6f4">h</tspan><tspan fill="#cdd6f4">]</tspan><tspan fill="#cdd6f4">&#160;</tspan><tspan fill="#cdd6f4">=</tspan><tspan fill="#cdd6f4">&#160;</tspan><tspan fill="#cdd6f4">f</tspan><tspan fill="#cdd6f4">
-</tspan></text><text class="text-mono" x="0" y="11.400000em"><tspan fill="#cdd6f4"></tspan><tspan fill="#cdd6f4">}</tspan></text></g></g></g><g id="x"><g class="shape" ><rect x="363.000000" y="12.000000" width="53.000000" height="66.000000" stroke="#0D32B2" fill="#F7F8FE" class=" stroke-B1 fill-B6" style="stroke-width:2;" /></g><text x="389.500000" y="50.500000" fill="#0A0F25" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px">x</text></g><g id="y"><g class="shape" ><rect x="362.000000" y="421.000000" width="54.000000" height="66.000000" stroke="#0D32B2" fill="#F7F8FE" class=" stroke-B1 fill-B6" style="stroke-width:2;" /></g><text x="389.000000" y="459.500000" fill="#0A0F25" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px">y</text></g><g id="(x -&gt; hey)[0]"><marker id="mk-3488378134" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" fill="#0D32B2" class="connection fill-B1" stroke-width="2" /> </marker><path d="M 389.500000 80.000000 L 389.500000 144.000000" stroke="#0D32B2" fill="none" class="connection stroke-B1" style="stroke-width:2;" marker-end="url(#mk-3488378134)" mask="url(#d2-3358777174)" /></g><g id="(hey -&gt; y)[0]"><path d="M 389.500000 353.000000 L 389.500000 417.000000" stroke="#0D32B2" fill="none" class="connection stroke-B1" style="stroke-width:2;" marker-end="url(#mk-3488378134)" mask="url(#d2-3358777174)" /></g><mask id="d2-3358777174" maskUnits="userSpaceOnUse" x="11" y="11" width="757" height="477">
-||||||| parent of 33280fed5 (fixed e2e tests)
-</text><text class="text-mono" x="0" y="11.400000em">}</text></g></g><g transform="translate(12.000000 148.000000)" class="dark-code"><rect width="755.000000" height="203.000000" class="shape stroke-N1" style="fill:#1e1e2e;stroke-width:2;" /><g transform="translate(8.000000 8.000000)"><text class="text-mono" x="0" y="1.000000em"><tspan fill="#585b70" class="text-mono-italic">//&#160;RegisterHash&#160;registers&#160;a&#160;function&#160;that&#160;returns&#160;a&#160;new&#160;instance&#160;of&#160;the&#160;given
-</tspan></text><text class="text-mono" x="0" y="2.300000em"><tspan fill="#585b70" class="text-mono-italic"></tspan><tspan fill="#585b70" class="text-mono-italic">//&#160;hash&#160;function.&#160;This&#160;is&#160;intended&#160;to&#160;be&#160;called&#160;from&#160;the&#160;init&#160;function&#160;in
-</tspan></text><text class="text-mono" x="0" y="3.600000em"><tspan fill="#585b70" class="text-mono-italic"></tspan><tspan fill="#585b70" class="text-mono-italic">//&#160;packages&#160;that&#160;implement&#160;hash&#160;functions.
-</tspan></text><text class="text-mono" x="0" y="4.900000em"><tspan fill="#585b70" class="text-mono-italic"></tspan><tspan fill="#cba6f7">func</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#89dceb">RegisterHash</tspan><tspan fill="#cdd6f4">(</tspan><tspan fill="#fab387">h</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#fab387">Hash</tspan><tspan fill="#cdd6f4">,</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#fab387">f</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#cba6f7">func</tspan><tspan fill="#cdd6f4">(</tspan><tspan fill="#cdd6f4">)</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#fab387">hash</tspan><tspan fill="#cdd6f4">.</tspan><tspan fill="#fab387">Hash</tspan><tspan fill="#cdd6f4">)</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#cdd6f4">{</tspan><tspan fill="#fab387">
-</tspan></text><text class="text-mono" x="0" y="6.200000em"><tspan fill="#fab387"></tspan><tspan fill="#fab387">&#160;&#160;&#160;&#160;</tspan><tspan fill="#cba6f7">if</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#fab387">h</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#89dceb">&gt;=</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#fab387">maxHash</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#cdd6f4">{</tspan><tspan fill="#fab387">
-</tspan></text><text class="text-mono" x="0" y="7.500000em"><tspan fill="#fab387"></tspan><tspan fill="#fab387">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</tspan><tspan fill="#fab387" class="text-mono-italic">panic</tspan><tspan fill="#cdd6f4">(</tspan><tspan fill="#a6e3a1">&quot;crypto:&#160;RegisterHash&#160;of&#160;unknown&#160;hash&#160;function&quot;</tspan><tspan fill="#cdd6f4">)</tspan><tspan fill="#fab387">
-</tspan></text><text class="text-mono" x="0" y="8.800000em"><tspan fill="#fab387"></tspan><tspan fill="#fab387">&#160;&#160;&#160;&#160;</tspan><tspan fill="#cdd6f4">}</tspan><tspan fill="#fab387">
-</tspan></text><text class="text-mono" x="0" y="10.100000em"><tspan fill="#fab387"></tspan><tspan fill="#fab387">&#160;&#160;&#160;&#160;</tspan><tspan fill="#fab387">hashes</tspan><tspan fill="#cdd6f4">[</tspan><tspan fill="#fab387">h</tspan><tspan fill="#cdd6f4">]</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#cdd6f4">=</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#fab387">f</tspan><tspan fill="#fab387">
-</tspan></text><text class="text-mono" x="0" y="11.400000em"><tspan fill="#fab387"></tspan><tspan fill="#cdd6f4">}</tspan></text></g></g></g><g id="x"><g class="shape" ><rect x="363.000000" y="12.000000" width="53.000000" height="66.000000" class=" stroke-B1 fill-B6" style="stroke-width:2;" /></g><text x="389.500000" y="50.500000" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px">x</text></g><g id="y"><g class="shape" ><rect x="362.000000" y="421.000000" width="54.000000" height="66.000000" class=" stroke-B1 fill-B6" style="stroke-width:2;" /></g><text x="389.000000" y="459.500000" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px">y</text></g><g id="(x -&gt; hey)[0]"><marker id="mk-3488378134" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" class="connection fill-B1" stroke-width="2" /> </marker><path d="M 389.500000 80.000000 L 389.500000 144.000000" fill="none" class="connection stroke-B1" style="stroke-width:2;" marker-end="url(#mk-3488378134)" mask="url(#d2-3358777174)" /></g><g id="(hey -&gt; y)[0]"><path d="M 389.500000 353.000000 L 389.500000 417.000000" fill="none" class="connection stroke-B1" style="stroke-width:2;" marker-end="url(#mk-3488378134)" mask="url(#d2-3358777174)" /></g><mask id="d2-3358777174" maskUnits="userSpaceOnUse" x="11" y="11" width="757" height="477">
-=======
-</text><text class="text-mono" x="0" y="11.400000em">}</text></g></g><g transform="translate(12.000000 148.000000)" class="dark-code"><rect width="755.000000" height="203.000000" class="shape stroke-N1" style="fill:#1e1e2e;stroke-width:2;" /><g transform="translate(8.000000 8.000000)"><text class="text-mono" x="0" y="1.000000em"><tspan fill="#585b70" class="text-mono-italic">//&#160;RegisterHash&#160;registers&#160;a&#160;function&#160;that&#160;returns&#160;a&#160;new&#160;instance&#160;of&#160;the&#160;given
-</tspan></text><text class="text-mono" x="0" y="2.300000em"><tspan fill="#585b70" class="text-mono-italic"></tspan><tspan fill="#585b70" class="text-mono-italic">//&#160;hash&#160;function.&#160;This&#160;is&#160;intended&#160;to&#160;be&#160;called&#160;from&#160;the&#160;init&#160;function&#160;in
-</tspan></text><text class="text-mono" x="0" y="3.600000em"><tspan fill="#585b70" class="text-mono-italic"></tspan><tspan fill="#585b70" class="text-mono-italic">//&#160;packages&#160;that&#160;implement&#160;hash&#160;functions.
-</tspan></text><text class="text-mono" x="0" y="4.900000em"><tspan fill="#585b70" class="text-mono-italic"></tspan><tspan fill="#cba6f7">func</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#89dceb">RegisterHash</tspan><tspan fill="#cdd6f4">(</tspan><tspan fill="#fab387">h</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#fab387">Hash</tspan><tspan fill="#cdd6f4">,</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#fab387">f</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#cba6f7">func</tspan><tspan fill="#cdd6f4">(</tspan><tspan fill="#cdd6f4">)</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#fab387">hash</tspan><tspan fill="#cdd6f4">.</tspan><tspan fill="#fab387">Hash</tspan><tspan fill="#cdd6f4">)</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#cdd6f4">{</tspan><tspan fill="#fab387">
-</tspan></text><text class="text-mono" x="0" y="6.200000em"><tspan fill="#fab387"></tspan><tspan fill="#fab387">&#160;&#160;&#160;&#160;</tspan><tspan fill="#cba6f7">if</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#fab387">h</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#89dceb">&gt;=</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#fab387">maxHash</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#cdd6f4">{</tspan><tspan fill="#fab387">
-</tspan></text><text class="text-mono" x="0" y="7.500000em"><tspan fill="#fab387"></tspan><tspan fill="#fab387">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</tspan><tspan fill="#fab387" class="text-mono-italic">panic</tspan><tspan fill="#cdd6f4">(</tspan><tspan fill="#a6e3a1">&quot;crypto:&#160;RegisterHash&#160;of&#160;unknown&#160;hash&#160;function&quot;</tspan><tspan fill="#cdd6f4">)</tspan><tspan fill="#fab387">
-</tspan></text><text class="text-mono" x="0" y="8.800000em"><tspan fill="#fab387"></tspan><tspan fill="#fab387">&#160;&#160;&#160;&#160;</tspan><tspan fill="#cdd6f4">}</tspan><tspan fill="#fab387">
-</tspan></text><text class="text-mono" x="0" y="10.100000em"><tspan fill="#fab387"></tspan><tspan fill="#fab387">&#160;&#160;&#160;&#160;</tspan><tspan fill="#fab387">hashes</tspan><tspan fill="#cdd6f4">[</tspan><tspan fill="#fab387">h</tspan><tspan fill="#cdd6f4">]</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#cdd6f4">=</tspan><tspan fill="#fab387">&#160;</tspan><tspan fill="#fab387">f</tspan><tspan fill="#fab387">
-</tspan></text><text class="text-mono" x="0" y="11.400000em"><tspan fill="#fab387"></tspan><tspan fill="#cdd6f4">}</tspan></text></g></g></g><g id="x"><g class="shape" ><rect x="363.000000" y="12.000000" width="53.000000" height="66.000000" class=" stroke-B1 fill-B6" style="stroke-width:2;" /></g><text x="389.500000" y="50.500000" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px">x</text></g><g id="y"><g class="shape" ><rect x="362.000000" y="421.000000" width="54.000000" height="66.000000" class=" stroke-B1 fill-B6" style="stroke-width:2;" /></g><text x="389.000000" y="459.500000" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px">y</text></g><g id="(x -&gt; hey)[0]"><marker id="mk-3488378134" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" class="connection fill-B1" stroke-width="2" /> </marker><path d="M 389.500000 80.000000 L 389.500000 144.000000" fill="none" class="connection stroke-B1" style="stroke-width:2;" marker-end="url(#mk-3488378134)" mask="url(#d2-637161018)" /></g><g id="(hey -&gt; y)[0]"><path d="M 389.500000 353.000000 L 389.500000 417.000000" fill="none" class="connection stroke-B1" style="stroke-width:2;" marker-end="url(#mk-3488378134)" mask="url(#d2-637161018)" /></g><mask id="d2-637161018" maskUnits="userSpaceOnUse" x="11" y="11" width="757" height="477">
->>>>>>> 33280fed5 (fixed e2e tests)
+</tspan></text><text class="text-mono" x="0" y="11.400000em"><tspan fill="#cdd6f4"></tspan><tspan fill="#cdd6f4">}</tspan></text></g></g></g><g id="x"><g class="shape" ><rect x="363.000000" y="12.000000" width="53.000000" height="66.000000" stroke="#0D32B2" fill="#F7F8FE" class=" stroke-B1 fill-B6" style="stroke-width:2;" /></g><text x="389.500000" y="50.500000" fill="#0A0F25" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px">x</text></g><g id="y"><g class="shape" ><rect x="362.000000" y="421.000000" width="54.000000" height="66.000000" stroke="#0D32B2" fill="#F7F8FE" class=" stroke-B1 fill-B6" style="stroke-width:2;" /></g><text x="389.000000" y="459.500000" fill="#0A0F25" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px">y</text></g><g id="(x -&gt; hey)[0]"><marker id="mk-3488378134" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" fill="#0D32B2" class="connection fill-B1" stroke-width="2" /> </marker><path d="M 389.500000 80.000000 L 389.500000 144.000000" stroke="#0D32B2" fill="none" class="connection stroke-B1" style="stroke-width:2;" marker-end="url(#mk-3488378134)" mask="url(#d2-637161018)" /></g><g id="(hey -&gt; y)[0]"><path d="M 389.500000 353.000000 L 389.500000 417.000000" stroke="#0D32B2" fill="none" class="connection stroke-B1" style="stroke-width:2;" marker-end="url(#mk-3488378134)" mask="url(#d2-637161018)" /></g><mask id="d2-637161018" maskUnits="userSpaceOnUse" x="11" y="11" width="757" height="477">
 <rect x="11" y="11" width="757" height="477" fill="white"></rect>
 <rect x="12.000000" y="148.000000" width="739" height="187" fill="rgba(0,0,0,0.75)"></rect>
 <rect x="385.500000" y="34.500000" width="8" height="21" fill="rgba(0,0,0,0.75)"></rect>
