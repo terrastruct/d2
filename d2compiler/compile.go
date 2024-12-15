@@ -239,8 +239,6 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 					}
 				}
 			}
-		} else {
-			c.errorf(class.LastRef().AST(), "class missing value")
 		}
 
 		for _, className := range classNames {
@@ -505,6 +503,8 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 			default:
 				c.errorf(f.LastPrimaryKey(), "reserved field %v does not accept composite", f.Name.ScalarString())
 			}
+		} else {
+			c.errorf(f.LastRef().AST(), `reserved field "%v" must have a value`, f.Name.ScalarString())
 		}
 		return
 	}
@@ -817,8 +817,6 @@ func (c *compiler) compileEdgeMap(edge *d2graph.Edge, m *d2ir.Map) {
 					}
 				}
 			}
-		} else {
-			c.errorf(class.LastRef().AST(), "class missing value")
 		}
 
 		for _, className := range classNames {

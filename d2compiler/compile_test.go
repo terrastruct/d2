@@ -128,6 +128,18 @@ x: {
 			},
 		},
 		{
+			name: "reserved_missing_values",
+			text: `foobar: {
+  width
+  bottom
+  left
+  right
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/reserved_missing_values.d2:2:3: reserved field "width" must have a value
+d2/testdata/d2compiler/TestCompile/reserved_missing_values.d2:4:3: reserved field "left" must have a value`,
+		},
+		{
 			name: "positions_negative",
 			text: `hey: {
 	top: 200
@@ -3066,7 +3078,7 @@ object: {
 			name: "no-class-primary",
 			text: `x.class
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/no-class-primary.d2:1:3: class missing value`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no-class-primary.d2:1:3: reserved field "class" must have a value`,
 		},
 		{
 			name: "no-class-inside-classes",
