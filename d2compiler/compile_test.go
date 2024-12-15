@@ -1219,7 +1219,6 @@ x: {
 	style.animated: true
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/shape_edge_style.d2:3:2: key "animated" can only be applied to edges`,
 		},
 		{
 			name: "edge_invalid_style",

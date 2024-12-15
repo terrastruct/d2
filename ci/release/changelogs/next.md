@@ -1,5 +1,6 @@
 #### Features 🚀
 
+- Animations: `style.animated: true` is supported on shapes [#2250](https://github.com/terrastruct/d2/pull/2250)
 - Connections now support `link` [#1955](https://github.com/terrastruct/d2/pull/1955)
 - Vars: vars in markdown blocks are substituted [#2218](https://github.com/terrastruct/d2/pull/2218)
 - Markdown: Github-flavored tables work in `md` blocks [#2221](https://github.com/terrastruct/d2/pull/2221)

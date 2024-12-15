@@ -341,9 +341,6 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 			return
 		}
 		c.compileStyle(&obj.Attributes, f.Map())
-		if obj.Style.Animated != nil {
-			c.errorf(obj.Style.Animated.MapKey, `key "animated" can only be applied to edges`)
-		}
 		return
 	}
 
