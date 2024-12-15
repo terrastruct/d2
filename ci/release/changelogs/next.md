@@ -13,6 +13,7 @@
   - This is a breaking change. Previously Latex blocks required escaping the backslash. So
     for older D2 versions, you should remove the excess backslashes.
 - Links: non-http url scheme links are supported (e.g. `x.link: vscode://file/`) [#2237](https://github.com/terrastruct/d2/issues/2237)
+- Compiler: reserved keywords with missing values error instead of silently doing nothing [#2251](https://github.com/terrastruct/d2/pull/2251)
 
 #### Bugfixes ⛑️
 
