@@ -194,6 +194,9 @@ func toShape(obj *d2graph.Object, g *d2graph.Graph) d2target.Shape {
 	if obj.Tooltip != nil {
 		shape.Tooltip = obj.Tooltip.Value
 	}
+	if obj.Style.Animated != nil {
+		shape.Animated, _ = strconv.ParseBool(obj.Style.Animated.Value)
+	}
 	if obj.Link != nil {
 		shape.Link = obj.Link.Value
 		shape.PrettyLink = toPrettyLink(g, obj.Link.Value)

@@ -469,6 +469,7 @@ type Shape struct {
 	FillPattern string `json:"fillPattern,omitempty"`
 	Stroke      string `json:"stroke"`
 
+	Animated     bool `json:"animated"`
 	Shadow       bool `json:"shadow"`
 	ThreeDee     bool `json:"3d"`
 	Multiple     bool `json:"multiple"`

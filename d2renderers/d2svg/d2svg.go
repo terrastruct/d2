@@ -975,6 +975,10 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		fmt.Fprint(writer, clipPathForBorderRadius(diagramHash, targetShape))
 	}
 	classStr := ""
+	if targetShape.Animated {
+		// the animated class applies to the whole svg group to include the label, unlike connections
+		targetShape.Classes = append(targetShape.Classes, "animated-shape")
+	}
 	if len(targetShape.Classes) > 0 {
 		classStr = fmt.Sprintf(` class="%s"`, strings.Join(targetShape.Classes, " "))
 	}
@@ -1629,6 +1633,23 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 	from {
 		stroke-dashoffset: 0;
 	}
+}
+`,
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
+			`animated-shape`,
+		},
+		`
+@keyframes shapeappear {
+    0%, 100% { transform: translateY(0); filter: drop-shadow(0px 0px 0px rgba(0,0,0,0)); }
+    50% { transform: translateY(-4px); filter: drop-shadow(0px 12.6px 25.2px rgba(50,50,93,0.25)) drop-shadow(0px 7.56px 15.12px rgba(0,0,0,0.1)); }
+}
+.animated-shape {
+	animation: shapeappear 1s linear infinite;
 }
 `,
 	)
