@@ -4,11 +4,15 @@
     "errs": [
       {
         "range": "d2/testdata/d2compiler/TestCompile/near-invalid.d2,8:10:133-8:17:140",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/near-invalid.d2:9:11: near keys cannot be set to an ancestor"
+        "errmsg": "d2/testdata/d2compiler/TestCompile/near-invalid.d2:9:11: near keys cannot be set to a non-sibling"
       },
       {
         "range": "d2/testdata/d2compiler/TestCompile/near-invalid.d2,13:8:161-13:11:164",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/near-invalid.d2:14:9: near keys cannot be set to an descendant"
+        "errmsg": "d2/testdata/d2compiler/TestCompile/near-invalid.d2:14:9: near keys cannot be set to a non-sibling"
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/near-invalid.d2,15:9:178-15:16:185",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/near-invalid.d2:16:10: near keys cannot be set to a non-sibling"
       }
     ]
   }
