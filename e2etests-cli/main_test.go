@@ -1006,16 +1006,26 @@ layers: {
 			},
 		},
 		{
-			name: "fmt-check",
+			name: "fmt-check-unformatted",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "foo.d2", `a ---> b`)
 				writeFile(t, dir, "bar.d2", `x ---> y`)
-				err := runTestMainPersist(t, ctx, dir, env, "fmt", "--check", "foo.d2", "bar.d2")
+				writeFile(t, dir, "baz.d2", "a -> z\n")
+				err := runTestMainPersist(t, ctx, dir, env, "fmt", "--check", "foo.d2", "bar.d2", "baz.d2")
 				assert.ErrorString(t, err, "failed to wait xmain test: e2etests-cli/d2: failed to fmt: exiting with code 1: found 2 unformatted files. Run d2 fmt to fix.")
 				gotFoo := readFile(t, dir, "foo.d2")
 				gotBar := readFile(t, dir, "bar.d2")
 				assert.Equal(t, "a ---> b", string(gotFoo))
 				assert.Equal(t, "x ---> y", string(gotBar))
+			},
+		},
+		{
+			name: "fmt-check-formatted",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "foo.d2", "a -> b\n")
+				writeFile(t, dir, "bar.d2", "x -> y\n")
+				err := runTestMainPersist(t, ctx, dir, env, "fmt", "--check", "foo.d2", "bar.d2")
+				assert.Success(t, err)
 			},
 		},
 		{
