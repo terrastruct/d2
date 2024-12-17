@@ -12,15 +12,18 @@ import (
 
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2parser"
+	"oss.terrastruct.com/d2/lib/log"
 )
 
-func fmtCmd(ctx context.Context, ms *xmain.State) (err error) {
+func fmtCmd(ctx context.Context, ms *xmain.State, check bool) (err error) {
 	defer xdefer.Errorf(&err, "failed to fmt")
 
 	ms.Opts = xmain.NewOpts(ms.Env, ms.Opts.Flags.Args()[1:])
 	if len(ms.Opts.Args) == 0 {
 		return xmain.UsageErrorf("fmt must be passed at least one file to be formatted")
 	}
+
+	unformattedCount := 0
 
 	for _, inputPath := range ms.Opts.Args {
 		if inputPath != "-" {
@@ -43,10 +46,25 @@ func fmtCmd(ctx context.Context, ms *xmain.State) (err error) {
 
 		output := []byte(d2format.Format(m))
 		if !bytes.Equal(output, input) {
-			if err := ms.WritePath(inputPath, output); err != nil {
-				return err
+			if check {
+				unformattedCount += 1
+				log.Warn(ctx, inputPath)
+			} else {
+				if err := ms.WritePath(inputPath, output); err != nil {
+					return err
+				}
 			}
 		}
 	}
+
+	if unformattedCount > 0 {
+		pluralFiles := "file"
+		if unformattedCount > 1 {
+			pluralFiles = "files"
+		}
+
+		return xmain.ExitErrorf(1, "found %d unformatted %s. Run d2 fmt to fix.", unformattedCount, pluralFiles)
+	}
+
 	return nil
 }
