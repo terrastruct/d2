@@ -2328,6 +2328,29 @@ c <-> d: filled-circle {
 }`,
 		},
 		{
+			name: "box_arrowhead",
+			script: `
+a <-> b: box {
+  source-arrowhead: {
+    shape: box
+  }
+  target-arrowhead: {
+    shape: box
+  }
+}
+  
+c <-> d: filled-box {
+  source-arrowhead: {
+    shape: box
+	style.filled: true
+  }
+  target-arrowhead: {
+    shape: box
+	style.filled: true
+  }
+}`,
+		},
+		{
 			name: "animated",
 			script: `
 your love life will be -> happy: { style.animated: true }
