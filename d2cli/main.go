@@ -103,6 +103,11 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
+	formatFlag := ms.Opts.String("", "format", "f", "", "stdout output format (svg, png)")
+	if err != nil {
+		return err
+	}
+
 	browserFlag := ms.Opts.String("BROWSER", "browser", "", "", "browser executable that watch opens. Setting to 0 opens no browser.")
 	centerFlag, err := ms.Opts.Bool("D2_CENTER", "center", "c", false, "center the SVG in the containing viewbox, such as your browser screen")
 	if err != nil {
@@ -213,7 +218,12 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if filepath.Ext(outputPath) == ".ppt" {
 		return xmain.UsageErrorf("D2 does not support ppt exports, did you mean \"pptx\"?")
 	}
-	outputFormat := getExportExtension(outputPath)
+
+	outputFormat, err := getOutputFormat(formatFlag, outputPath)
+	if err != nil {
+		return xmain.UsageErrorf("%v", err)
+	}
+
 	if outputPath != "-" {
 		outputPath = ms.AbsPath(outputPath)
 		if *animateIntervalFlag > 0 && !outputFormat.supportsAnimation() {
@@ -325,6 +335,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 			forceAppendix:   *forceAppendixFlag,
 			pw:              pw,
 			fontFamily:      fontFamily,
+			outputFormat:    outputFormat,
 		})
 		if err != nil {
 			return err
@@ -355,7 +366,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	ctx, cancel := timelib.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
-	_, written, err := compile(ctx, ms, plugins, nil, layoutFlag, renderOpts, fontFamily, *animateIntervalFlag, inputPath, outputPath, boardPath, noChildren, *bundleFlag, *forceAppendixFlag, pw.Page)
+	_, written, err := compile(ctx, ms, plugins, nil, layoutFlag, renderOpts, fontFamily, *animateIntervalFlag, inputPath, outputPath, boardPath, noChildren, *bundleFlag, *forceAppendixFlag, pw.Page, outputFormat)
 	if err != nil {
 		if written {
 			return fmt.Errorf("failed to fully compile (partial render written) %s: %w", ms.HumanPath(inputPath), err)
@@ -430,7 +441,7 @@ func RouterResolver(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plu
 	}
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs fs.FS, layout *string, renderOpts d2svg.RenderOpts, fontFamily *d2fonts.FontFamily, animateInterval int64, inputPath, outputPath string, boardPath []string, noChildren, bundle, forceAppendix bool, page playwright.Page) (_ []byte, written bool, _ error) {
+func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs fs.FS, layout *string, renderOpts d2svg.RenderOpts, fontFamily *d2fonts.FontFamily, animateInterval int64, inputPath, outputPath string, boardPath []string, noChildren, bundle, forceAppendix bool, page playwright.Page, ext exportExtension) (_ []byte, written bool, _ error) {
 	start := time.Now()
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
@@ -522,7 +533,6 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs
 		return nil, false, err
 	}
 
-	ext := getExportExtension(outputPath)
 	switch ext {
 	case GIF:
 		svg, pngs, err := renderPNGsForGIF(ctx, ms, plugin, renderOpts, ruler, page, inputPath, diagram)
@@ -598,9 +608,9 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs
 		var boards [][]byte
 		var err error
 		if noChildren {
-			boards, err = renderSingle(ctx, ms, compileDur, plugin, renderOpts, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
+			boards, err = renderSingle(ctx, ms, compileDur, plugin, renderOpts, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram, ext)
 		} else {
-			boards, err = render(ctx, ms, compileDur, plugin, renderOpts, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
+			boards, err = render(ctx, ms, compileDur, plugin, renderOpts, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram, ext)
 		}
 		if err != nil {
 			return nil, false, err
@@ -739,7 +749,7 @@ func relink(currDiagramPath string, d *d2target.Diagram, linkToOutput map[string
 	return nil
 }
 
-func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([][]byte, error) {
+func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, ext exportExtension) ([][]byte, error) {
 	if diagram.Name != "" {
 		ext := filepath.Ext(outputPath)
 		outputPath = strings.TrimSuffix(outputPath, ext)
@@ -785,21 +795,21 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 
 	var boards [][]byte
 	for _, dl := range diagram.Layers {
-		childrenBoards, err := render(ctx, ms, compileDur, plugin, opts, inputPath, layersOutputPath, bundle, forceAppendix, page, ruler, dl)
+		childrenBoards, err := render(ctx, ms, compileDur, plugin, opts, inputPath, layersOutputPath, bundle, forceAppendix, page, ruler, dl, ext)
 		if err != nil {
 			return nil, err
 		}
 		boards = append(boards, childrenBoards...)
 	}
 	for _, dl := range diagram.Scenarios {
-		childrenBoards, err := render(ctx, ms, compileDur, plugin, opts, inputPath, scenariosOutputPath, bundle, forceAppendix, page, ruler, dl)
+		childrenBoards, err := render(ctx, ms, compileDur, plugin, opts, inputPath, scenariosOutputPath, bundle, forceAppendix, page, ruler, dl, ext)
 		if err != nil {
 			return nil, err
 		}
 		boards = append(boards, childrenBoards...)
 	}
 	for _, dl := range diagram.Steps {
-		childrenBoards, err := render(ctx, ms, compileDur, plugin, opts, inputPath, stepsOutputPath, bundle, forceAppendix, page, ruler, dl)
+		childrenBoards, err := render(ctx, ms, compileDur, plugin, opts, inputPath, stepsOutputPath, bundle, forceAppendix, page, ruler, dl, ext)
 		if err != nil {
 			return nil, err
 		}
@@ -808,7 +818,7 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 
 	if !diagram.IsFolderOnly {
 		start := time.Now()
-		out, err := _render(ctx, ms, plugin, opts, inputPath, boardOutputPath, bundle, forceAppendix, page, ruler, diagram)
+		out, err := _render(ctx, ms, plugin, opts, inputPath, boardOutputPath, bundle, forceAppendix, page, ruler, diagram, ext)
 		if err != nil {
 			return boards, err
 		}
@@ -822,9 +832,9 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 	return boards, nil
 }
 
-func renderSingle(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([][]byte, error) {
+func renderSingle(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, outputFormat exportExtension) ([][]byte, error) {
 	start := time.Now()
-	out, err := _render(ctx, ms, plugin, opts, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
+	out, err := _render(ctx, ms, plugin, opts, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram, outputFormat)
 	if err != nil {
 		return [][]byte{}, err
 	}
@@ -835,8 +845,9 @@ func renderSingle(ctx context.Context, ms *xmain.State, compileDur time.Duration
 	return [][]byte{out}, nil
 }
 
-func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
-	toPNG := getExportExtension(outputPath) == PNG
+func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, outputFormat exportExtension) ([]byte, error) {
+	toPNG := outputFormat == PNG
+
 	var scale *float64
 	if opts.Scale != nil {
 		scale = opts.Scale
