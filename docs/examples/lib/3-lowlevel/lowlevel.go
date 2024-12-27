@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -11,6 +11,7 @@ import (
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
+	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
@@ -20,11 +21,12 @@ func main() {
 	graph.ApplyTheme(d2themescatalog.NeutralDefault.ID)
 	ruler, _ := textmeasure.NewRuler()
 	_ = graph.SetDimensions(nil, ruler, nil)
-	_ = d2dagrelayout.Layout(context.Background(), graph, nil)
-	diagram, _ := d2exporter.Export(context.Background(), graph, nil)
+	ctx := log.WithDefault(context.Background())
+	_ = d2dagrelayout.Layout(ctx, graph, nil)
+	diagram, _ := d2exporter.Export(ctx, graph, nil)
 	diagram.Config = config
 	out, _ := d2svg.Render(diagram, &d2svg.RenderOpts{
 		ThemeID: &d2themescatalog.NeutralDefault.ID,
 	})
-	_ = ioutil.WriteFile(filepath.Join("out.svg"), out, 0600)
+	_ = os.WriteFile(filepath.Join("out.svg"), out, 0600)
 }
