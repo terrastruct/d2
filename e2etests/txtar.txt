@@ -738,3 +738,12 @@ logs: {shape: page; style.multiple: true}
 
 network.data processor -> api server
 
+-- note-overlap --
+shape: sequence_diagram
+alice -> bob
+alice -> alice: "Self-messages"
+alice -> alice: "Self-messages"
+alice -> alice: "Self-messages"
+alice -> alice: "Self-messages"
+
+bob."In the eyes of my dog, I'm a man."
