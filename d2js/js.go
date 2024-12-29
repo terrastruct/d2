@@ -16,6 +16,7 @@ func main() {
 	api.Register("getObjOrder", d2wasm.GetObjOrder)
 	api.Register("getRefRanges", d2wasm.GetRefRanges)
 	api.Register("compile", d2wasm.Compile)
+	api.Register("render", d2wasm.Render)
 	api.Register("getBoardAtPosition", d2wasm.GetBoardAtPosition)
 	api.Register("encode", d2wasm.Encode)
 	api.Register("decode", d2wasm.Decode)

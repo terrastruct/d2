@@ -3,17 +3,30 @@
 package d2wasm
 
 import (
+	"context"
 	"encoding/json"
+	"fmt"
 	"strings"
 	"syscall/js"
 
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2format"
+	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
+	"oss.terrastruct.com/d2/d2layouts/d2elklayout"
+	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2lsp"
 	"oss.terrastruct.com/d2/d2oracle"
 	"oss.terrastruct.com/d2/d2parser"
+	"oss.terrastruct.com/d2/d2renderers/d2fonts"
+	"oss.terrastruct.com/d2/d2renderers/d2svg"
+	"oss.terrastruct.com/d2/lib/log"
+	"oss.terrastruct.com/d2/lib/memfs"
+	"oss.terrastruct.com/d2/lib/textmeasure"
+	"oss.terrastruct.com/d2/lib/urlenc"
 	"oss.terrastruct.com/d2/lib/version"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 func GetParentID(args []js.Value) (interface{}, error) {
@@ -96,13 +109,62 @@ func GetRefRanges(args []js.Value) (interface{}, error) {
 
 func Compile(args []js.Value) (interface{}, error) {
 	if len(args) < 1 {
-		return nil, &WASMError{Message: "missing script argument", Code: 400}
+		return nil, &WASMError{Message: "missing JSON argument", Code: 400}
+	}
+	var input CompileRequest
+	if err := json.Unmarshal([]byte(args[0].String()), &input); err != nil {
+		return nil, &WASMError{Message: "invalid JSON input", Code: 400}
 	}
 
-	script := args[0].String()
-	g, _, err := d2compiler.Compile("", strings.NewReader(script), &d2compiler.CompileOptions{
-		UTF16Pos: true,
-	})
+	if input.FS == nil {
+		return nil, &WASMError{Message: "missing 'fs' field in input JSON", Code: 400}
+	}
+
+	if _, ok := input.FS["index"]; !ok {
+		return nil, &WASMError{Message: "missing 'index' file in input fs", Code: 400}
+	}
+
+	fs, err := memfs.New(input.FS)
+	if err != nil {
+		return nil, &WASMError{Message: fmt.Sprintf("invalid fs input: %s", err.Error()), Code: 400}
+	}
+
+	ruler, err := textmeasure.NewRuler()
+	if err != nil {
+		return nil, &WASMError{Message: fmt.Sprintf("text ruler cannot be initialized: %s", err.Error()), Code: 500}
+	}
+	ctx := log.WithDefault(context.Background())
+	layoutFunc := d2dagrelayout.DefaultLayout
+	if input.Opts != nil && input.Opts.Layout != nil {
+		switch *input.Opts.Layout {
+		case "dagre":
+			layoutFunc = d2dagrelayout.DefaultLayout
+		case "elk":
+			layoutFunc = d2elklayout.DefaultLayout
+		default:
+			return nil, &WASMError{Message: fmt.Sprintf("layout option '%s' not recognized", *input.Opts.Layout), Code: 400}
+		}
+	}
+	layoutResolver := func(engine string) (d2graph.LayoutGraph, error) {
+		return layoutFunc, nil
+	}
+
+	renderOpts := &d2svg.RenderOpts{}
+	var fontFamily *d2fonts.FontFamily
+	if input.Opts != nil && input.Opts.Sketch != nil {
+		fontFamily = go2.Pointer(d2fonts.HandDrawn)
+		renderOpts.Sketch = input.Opts.Sketch
+	}
+	if input.Opts != nil && input.Opts.ThemeID != nil {
+		renderOpts.ThemeID = input.Opts.ThemeID
+	}
+	diagram, g, err := d2lib.Compile(ctx, input.FS["index"], &d2lib.CompileOptions{
+		UTF16Pos:       true,
+		FS:             fs,
+		Ruler:          ruler,
+		LayoutResolver: layoutResolver,
+		FontFamily:     fontFamily,
+	}, renderOpts)
 	if err != nil {
 		if pe, ok := err.(*d2parser.ParseError); ok {
 			return nil, &WASMError{Message: pe.Error(), Code: 400}
@@ -110,12 +172,41 @@ func Compile(args []js.Value) (interface{}, error) {
 		return nil, &WASMError{Message: err.Error(), Code: 500}
 	}
 
-	newScript := d2format.Format(g.AST)
-	if script != newScript {
-		return map[string]string{"result": newScript}, nil
+	input.FS["index"] = d2format.Format(g.AST)
+
+	return CompileResponse{
+		FS:      input.FS,
+		Diagram: *diagram,
+		Graph:   *g,
+	}, nil
+}
+
+func Render(args []js.Value) (interface{}, error) {
+	if len(args) < 1 {
+		return nil, &WASMError{Message: "missing JSON argument", Code: 400}
+	}
+	var input RenderRequest
+	if err := json.Unmarshal([]byte(args[0].String()), &input); err != nil {
+		return nil, &WASMError{Message: "invalid JSON input", Code: 400}
 	}
 
-	return nil, nil
+	if input.Diagram == nil {
+		return nil, &WASMError{Message: "missing 'diagram' field in input JSON", Code: 400}
+	}
+
+	renderOpts := &d2svg.RenderOpts{}
+	if input.Opts != nil && input.Opts.Sketch != nil {
+		renderOpts.Sketch = input.Opts.Sketch
+	}
+	if input.Opts != nil && input.Opts.ThemeID != nil {
+		renderOpts.ThemeID = input.Opts.ThemeID
+	}
+	out, err := d2svg.Render(input.Diagram, renderOpts)
+	if err != nil {
+		return nil, &WASMError{Message: fmt.Sprintf("render failed: %s", err.Error()), Code: 500}
+	}
+
+	return out, nil
 }
 
 func GetBoardAtPosition(args []js.Value) (interface{}, error) {
@@ -144,7 +235,13 @@ func Encode(args []js.Value) (interface{}, error) {
 	}
 
 	script := args[0].String()
-	return map[string]string{"result": script}, nil
+	encoded, err := urlenc.Encode(script)
+	// should never happen
+	if err != nil {
+		return nil, &WASMError{Message: err.Error(), Code: 500}
+	}
+
+	return map[string]string{"result": encoded}, nil
 }
 
 func Decode(args []js.Value) (interface{}, error) {
@@ -153,6 +250,10 @@ func Decode(args []js.Value) (interface{}, error) {
 	}
 
 	script := args[0].String()
+	script, err := urlenc.Decode(script)
+	if err != nil {
+		return nil, &WASMError{Message: err.Error(), Code: 500}
+	}
 	return map[string]string{"result": script}, nil
 }
 
@@ -188,8 +289,4 @@ func GetCompletions(args []js.Value) (interface{}, error) {
 	return CompletionResponse{
 		Items: items,
 	}, nil
-}
-
-type CompletionResponse struct {
-	Items []map[string]interface{} `json:"items"`
 }
