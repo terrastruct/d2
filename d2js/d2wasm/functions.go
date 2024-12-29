@@ -159,3 +159,37 @@ func Decode(args []js.Value) (interface{}, error) {
 func GetVersion(args []js.Value) (interface{}, error) {
 	return version.Version, nil
 }
+
+func GetCompletions(args []js.Value) (interface{}, error) {
+	if len(args) < 3 {
+		return nil, &WASMError{Message: "missing required arguments", Code: 400}
+	}
+
+	text := args[0].String()
+	line := args[1].Int()
+	column := args[2].Int()
+
+	completions, err := d2lsp.GetCompletionItems(text, line, column)
+	if err != nil {
+		return nil, &WASMError{Message: err.Error(), Code: 500}
+	}
+
+	// Convert to map for JSON serialization
+	items := make([]map[string]interface{}, len(completions))
+	for i, completion := range completions {
+		items[i] = map[string]interface{}{
+			"label":      completion.Label,
+			"kind":       int(completion.Kind),
+			"detail":     completion.Detail,
+			"insertText": completion.InsertText,
+		}
+	}
+
+	return CompletionResponse{
+		Items: items,
+	}, nil
+}
+
+type CompletionResponse struct {
+	Items []map[string]interface{} `json:"items"`
+}
