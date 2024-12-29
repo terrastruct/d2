@@ -2,7 +2,11 @@
 
 package d2wasm
 
-import "oss.terrastruct.com/d2/d2ast"
+import (
+	"oss.terrastruct.com/d2/d2ast"
+	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2target"
+)
 
 type WASMResponse struct {
 	Data  interface{} `json:"data,omitempty"`
@@ -25,4 +29,30 @@ type RefRangesResponse struct {
 
 type BoardPositionResponse struct {
 	BoardPath []string `json:"boardPath"`
+}
+
+type CompileRequest struct {
+	FS   map[string]string `json:"fs"`
+	Opts *RenderOptions    `json:"options"`
+}
+
+type RenderOptions struct {
+	Layout  *string `json:"layout"`
+	Sketch  *bool   `json:"sketch"`
+	ThemeID *int64  `json:"themeID"`
+}
+
+type CompileResponse struct {
+	FS      map[string]string `json:"fs"`
+	Diagram d2target.Diagram  `json:"diagram"`
+	Graph   d2graph.Graph     `json:"graph"`
+}
+
+type CompletionResponse struct {
+	Items []map[string]interface{} `json:"items"`
+}
+
+type RenderRequest struct {
+	Diagram *d2target.Diagram `json:"diagram"`
+	Opts    *RenderOptions    `json:"options"`
 }

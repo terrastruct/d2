@@ -5,6 +5,7 @@ package d2wasm
 import (
 	"encoding/json"
 	"fmt"
+	"runtime/debug"
 	"syscall/js"
 )
 
@@ -36,7 +37,7 @@ func wrapWASMCall(fn func(args []js.Value) (interface{}, error)) js.Func {
 			if r := recover(); r != nil {
 				resp := WASMResponse{
 					Error: &WASMError{
-						Message: fmt.Sprintf("panic recovered: %v", r),
+						Message: fmt.Sprintf("panic recovered: %v\n%s", r, debug.Stack()),
 						Code:    500,
 					},
 				}
