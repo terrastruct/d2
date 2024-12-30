@@ -466,7 +466,12 @@ func (sd *sequenceDiagram) placeNotes() {
 
 		for _, msg := range sd.messages {
 			if sd.verticalIndices[msg.AbsID()] < verticalIndex {
-				y += sd.yStep + float64(msg.LabelDimensions.Height)
+				if msg.Src == msg.Dst {
+					// For self-messages, account for the full vertical space they occupy
+					y += sd.yStep + math.Max(float64(msg.LabelDimensions.Height), MIN_MESSAGE_DISTANCE)*1.5
+				} else {
+					y += sd.yStep + float64(msg.LabelDimensions.Height)
+				}
 			}
 		}
 		for _, otherNote := range sd.notes {

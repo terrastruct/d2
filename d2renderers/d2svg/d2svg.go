@@ -1867,6 +1867,8 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		}
 		darkThemeID = opts.DarkThemeID
 		scale = opts.Scale
+	} else {
+		opts = &RenderOpts{}
 	}
 
 	buf := &bytes.Buffer{}

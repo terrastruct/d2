@@ -124,6 +124,11 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	fontBoldFlag := ms.Opts.String("D2_FONT_BOLD", "font-bold", "", "", "path to .ttf file to use for the bold font. If none provided, Source Sans Pro Bold is used.")
 	fontSemiboldFlag := ms.Opts.String("D2_FONT_SEMIBOLD", "font-semibold", "", "", "path to .ttf file to use for the semibold font. If none provided, Source Sans Pro Semibold is used.")
 
+	checkFlag, err := ms.Opts.Bool("D2_CHECK", "check", "", false, "check that the specified files are formatted correctly.")
+	if err != nil {
+		return err
+	}
+
 	plugins, err := d2plugin.ListPlugins(ctx)
 	if err != nil {
 		return err
@@ -158,7 +163,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 			themesCmd(ctx, ms)
 			return nil
 		case "fmt":
-			return fmtCmd(ctx, ms)
+			return fmtCmd(ctx, ms, *checkFlag)
 		case "version":
 			if len(ms.Opts.Flags.Args()) > 1 {
 				return xmain.UsageErrorf("version subcommand accepts no arguments")

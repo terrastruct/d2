@@ -4,7 +4,9 @@
 - Connections now support `link` [#1955](https://github.com/terrastruct/d2/pull/1955)
 - Vars: vars in markdown blocks are substituted [#2218](https://github.com/terrastruct/d2/pull/2218)
 - Markdown: Github-flavored tables work in `md` blocks [#2221](https://github.com/terrastruct/d2/pull/2221)
-- CLI: PNG output to stdout is supported using `--stdout-format png -` [#2260](https://github.com/terrastruct/d2/pull/2260)
+- `d2 fmt` now supports a `--check` flag [#2253](https://github.com/terrastruct/d2/pull/2253)
+- CLI: PNG output to stdout is supported using `--stdout-format png -` [#2257](https://github.com/terrastruct/d2/pull/2257)
+
 
 #### Improvements 🧹
 
@@ -21,3 +23,4 @@
 - Imports: fixes using substitutions in `icon` values [#2207](https://github.com/terrastruct/d2/pull/2207)
 - Markdown: fixes ampersands in URLs in markdown [#2219](https://github.com/terrastruct/d2/pull/2219)
 - Globs: fixes edge case where globs with imported boards would create empty boards [#2247](https://github.com/terrastruct/d2/pull/2247)
+- Sequence diagrams: fixes alignment of notes when self messages are above it [#2264](https://github.com/terrastruct/d2/pull/2264)
