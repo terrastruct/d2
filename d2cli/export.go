@@ -3,6 +3,7 @@ package d2cli
 import (
 	"fmt"
 	"path/filepath"
+	"strings"
 )
 
 type exportExtension string
@@ -15,20 +16,20 @@ const SVG exportExtension = ".svg"
 
 var SUPPORTED_EXTENSIONS = []exportExtension{SVG, PNG, PDF, PPTX, GIF}
 
-func getOutputFormat(formatFlag *string, outputPath string) (exportExtension, error) {
-	var formatMap = map[string]exportExtension{
-		"png":  PNG,
-		"svg":  SVG,
-		"pdf":  PDF,
-		"pptx": PPTX,
-		"gif":  GIF,
-	}
+var STDOUT_FORMAT_MAP = map[string]exportExtension{
+	"png": PNG,
+	"svg": SVG,
+}
 
-	if *formatFlag != "" {
-		if format, ok := formatMap[*formatFlag]; ok {
-			return format, nil
+var SUPPORTED_STDOUT_FORMATS = []string{"png", "svg"}
+
+func getOutputFormat(stdoutFormatFlag *string, outputPath string) (exportExtension, error) {
+	if *stdoutFormatFlag != "" {
+		format := strings.ToLower(*stdoutFormatFlag)
+		if ext, ok := STDOUT_FORMAT_MAP[format]; ok {
+			return ext, nil
 		}
-		return "", fmt.Errorf("unsupported format: %s", *formatFlag)
+		return "", fmt.Errorf("%s is not a supported format. Supported formats are: %s", *stdoutFormatFlag, SUPPORTED_STDOUT_FORMATS)
 	}
 	return getExportExtension(outputPath), nil
 }

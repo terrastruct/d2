@@ -103,7 +103,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
-	formatFlag := ms.Opts.String("", "format", "f", "", "stdout output format (svg, png)")
+	stdoutFormatFlag := ms.Opts.String("", "stdout-format", "", "", "output format when writing to stdout (svg, png). Usage: d2 input.d2 --stdout-format png - > output.png")
 	if err != nil {
 		return err
 	}
@@ -219,7 +219,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		return xmain.UsageErrorf("D2 does not support ppt exports, did you mean \"pptx\"?")
 	}
 
-	outputFormat, err := getOutputFormat(formatFlag, outputPath)
+	outputFormat, err := getOutputFormat(stdoutFormatFlag, outputPath)
 	if err != nil {
 		return xmain.UsageErrorf("%v", err)
 	}
