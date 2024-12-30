@@ -4,6 +4,7 @@
 - Connections now support `link` [#1955](https://github.com/terrastruct/d2/pull/1955)
 - Vars: vars in markdown blocks are substituted [#2218](https://github.com/terrastruct/d2/pull/2218)
 - Markdown: Github-flavored tables work in `md` blocks [#2221](https://github.com/terrastruct/d2/pull/2221)
+- `d2 fmt` now supports a `--check` flag [#2253](https://github.com/terrastruct/d2/pull/2253)
 
 #### Improvements 🧹
 
