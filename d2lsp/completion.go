@@ -42,18 +42,21 @@ func GetCompletionItems(text string, line, column int) ([]CompletionItem, error)
 	case "shape", "shape:":
 		return getShapeCompletions(), nil
 	case "shadow", "3d", "multiple", "animated", "bold", "italic", "underline", "filled", "double-border",
-		"shadow:", "3d:", "multiple:", "animated:", "bold:", "italic:", "underline:", "filled:", "double-border:":
+		"shadow:", "3d:", "multiple:", "animated:", "bold:", "italic:", "underline:", "filled:", "double-border:",
+		"style.shadow:", "style.3d:", "style.multiple:", "style.animated:", "style.bold:", "style.italic:", "style.underline:", "style.filled:", "style.double-border:":
 		return getBooleanCompletions(), nil
-	case "fill-pattern", "fill-pattern:":
+	case "fill-pattern", "fill-pattern:", "style.fill-pattern:":
 		return getFillPatternCompletions(), nil
-	case "text-transform", "text-transform:":
+	case "text-transform", "text-transform:", "style.text-transform:":
 		return getTextTransformCompletions(), nil
 	case "opacity", "stroke-width", "stroke-dash", "border-radius", "font-size",
 		"stroke", "fill", "font-color":
 		return getValueCompletions(keyword), nil
 	case "opacity:", "stroke-width:", "stroke-dash:", "border-radius:", "font-size:",
-		"stroke:", "fill:", "font-color:":
-		return getValueCompletions(keyword[:len(keyword)-1]), nil
+		"stroke:", "fill:", "font-color:",
+		"style.opacity:", "style.stroke-width:", "style.stroke-dash:", "style.border-radius:", "style.font-size:",
+		"style.stroke:", "style.fill:", "style.font-color:":
+		return getValueCompletions(strings.TrimSuffix(strings.TrimPrefix(keyword, "style."), ":")), nil
 	case "width", "height", "top", "left":
 		return getValueCompletions(keyword), nil
 	case "width:", "height:", "top:", "left:":
@@ -140,6 +143,9 @@ func getKeywordContext(text string, m *d2ast.Map, line, column int) string {
 			}
 		}
 		if _, isBoard := d2ast.BoardKeywords[firstPart]; isBoard {
+			firstPart = ""
+		}
+		if firstPart == "classes" {
 			firstPart = ""
 		}
 
