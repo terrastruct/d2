@@ -31,6 +31,18 @@ func TestGetCompletionItems(t *testing.T) {
 			want:   getStyleCompletions(),
 		},
 		{
+			name: "nested style map suggestions",
+			text: `a: {
+	style: {
+    3d:
+  }
+}
+`,
+			line:   2,
+			column: 7,
+			want:   getBooleanCompletions(),
+		},
+		{
 			name: "3d style map suggestions",
 			text: `a.style: {
   3d:
