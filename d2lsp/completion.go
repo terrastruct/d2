@@ -145,6 +145,9 @@ func getKeywordContext(text string, m *d2ast.Map, line, column int) string {
 		if _, isBoard := d2ast.BoardKeywords[firstPart]; isBoard {
 			firstPart = ""
 		}
+		if firstPart == "classes" {
+			firstPart = ""
+		}
 
 		_, isHolder := d2ast.ReservedKeywordHolders[firstPart]
 		if !isHolder {
