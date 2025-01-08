@@ -1458,7 +1458,7 @@ func (m *Map) AST() d2ast.Node {
 	astMap := &d2ast.Map{
 		Range: d2ast.MakeRange(",0:0:0-1:0:0"),
 	}
-	if m.parent != nil {
+	if m.parent != nil && NodeBoardKind(m) != "" {
 		f, ok := m.parent.(*Field)
 		if ok {
 			astMap.Range.Path = f.Name.GetRange().Path

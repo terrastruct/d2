@@ -347,7 +347,7 @@
         "name": "1",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {

@@ -421,7 +421,7 @@
         "name": "cat",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -679,7 +679,7 @@
         "name": "green",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
