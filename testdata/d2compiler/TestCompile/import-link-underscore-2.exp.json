@@ -202,7 +202,7 @@
         "name": "x",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile/import-link-underscore-2.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -273,7 +273,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": ",0:0:0-1:0:0",
+                              "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:0:0-1:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -443,7 +443,7 @@
                                               "primary": {},
                                               "value": {
                                                 "map": {
-                                                  "range": ",0:0:0-1:0:0",
+                                                  "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:0:0-1:0:0",
                                                   "nodes": [
                                                     {
                                                       "map_key": {
@@ -665,7 +665,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": ",0:0:0-1:0:0",
+                              "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:0:0-1:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -778,7 +778,7 @@
             "name": "b",
             "isFolderOnly": false,
             "ast": {
-              "range": ",0:0:0-1:0:0",
+              "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:0:0-1:0:0",
               "nodes": [
                 {
                   "map_key": {
@@ -948,7 +948,7 @@
                               "primary": {},
                               "value": {
                                 "map": {
-                                  "range": ",0:0:0-1:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:0:0-1:0:0",
                                   "nodes": [
                                     {
                                       "map_key": {
@@ -1294,7 +1294,7 @@
                 "name": "c",
                 "isFolderOnly": false,
                 "ast": {
-                  "range": ",0:0:0-1:0:0",
+                  "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:0:0-1:0:0",
                   "nodes": [
                     {
                       "map_key": {
@@ -1691,7 +1691,7 @@
             "name": "k",
             "isFolderOnly": false,
             "ast": {
-              "range": ",0:0:0-1:0:0",
+              "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:0:0-1:0:0",
               "nodes": [
                 {
                   "map_key": {

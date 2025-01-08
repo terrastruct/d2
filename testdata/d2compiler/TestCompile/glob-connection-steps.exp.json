@@ -191,7 +191,7 @@
         "name": "ok",
         "isFolderOnly": true,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile/glob-connection-steps.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -239,7 +239,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": ",0:0:0-1:0:0",
+                              "range": "d2/testdata/d2compiler/TestCompile/ok.d2,0:0:0-1:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -374,7 +374,7 @@
             "name": "1",
             "isFolderOnly": false,
             "ast": {
-              "range": ",0:0:0-1:0:0",
+              "range": "d2/testdata/d2compiler/TestCompile/ok.d2,0:0:0-1:0:0",
               "nodes": [
                 {
                   "map_key": {

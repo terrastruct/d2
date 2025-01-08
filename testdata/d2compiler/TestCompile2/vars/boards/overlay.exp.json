@@ -531,7 +531,7 @@
         "name": "l2",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -786,7 +786,7 @@
         "name": "l",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {

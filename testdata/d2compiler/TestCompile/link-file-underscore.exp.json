@@ -103,7 +103,7 @@
         "name": "a",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -206,7 +206,7 @@
         "name": "b",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -361,7 +361,7 @@
         "name": "e",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -432,7 +432,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": ",0:0:0-1:0:0",
+                              "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:0:0-1:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -705,7 +705,7 @@
             "name": "j",
             "isFolderOnly": false,
             "ast": {
-              "range": ",0:0:0-1:0:0",
+              "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:0:0-1:0:0",
               "nodes": [
                 {
                   "map_key": {

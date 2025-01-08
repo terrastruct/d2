@@ -3515,6 +3515,25 @@ svc_1."think about A"
 svc_1.t2 -> b: do with B
 `,
 		},
+		{
+			name: "layer-import-nested-layer",
+			text: `layers: {
+	ok: {...@meow}
+}
+`,
+			files: map[string]string{
+				"meow.d2": `layers: {
+  1: {
+    asdf
+  }
+}
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "d2/testdata/d2compiler/TestCompile/layer-import-nested-layer.d2", g.Layers[0].AST.Range.Path)
+				tassert.Equal(t, "d2/testdata/d2compiler/TestCompile/meow.d2", g.Layers[0].Layers[0].AST.Range.Path)
+			},
+		},
 	}
 
 	for _, tc := range testCases {
