@@ -2468,6 +2468,36 @@ layers: {
 `,
 		},
 		{
+			name: "import/10",
+
+			text: `heyn
+
+layers: {
+  man: {...@meow}
+}
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `layers: {
+  1: {
+    asdf
+  }
+}
+`,
+			},
+			boardPath: []string{"man", "1"},
+			key:       `asdf.link`,
+			value:     go2.Pointer(`_._`),
+			exp: `heyn
+
+layers: {
+  man: {
+    ...@meow
+    asdf.link: _._
+  }
+}
+`,
+		},
+		{
 			name: "label-near/1",
 
 			text: `x

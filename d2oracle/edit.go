@@ -42,6 +42,9 @@ func Create(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 		}
 		// TODO beter name
 		baseAST = boardG.BaseAST
+		if baseAST == nil {
+			return nil, "", fmt.Errorf("board %v missing base AST", boardPath)
+		}
 	}
 
 	newKey, edge, err := generateUniqueKey(boardG, key, nil, nil)
@@ -106,10 +109,16 @@ func Set(g *d2graph.Graph, boardPath []string, key string, tag, value *string) (
 	}
 
 	if len(boardPath) > 0 {
-		replaced := ReplaceBoardNode(g.AST, baseAST, boardPath)
-		if !replaced {
-			return nil, fmt.Errorf("board %v AST not found", boardPath)
+		// The baseAST may not correspond with the board path if the baseAST if the import
+		// In which case keep trying less nested board paths until it gets to the one with the import
+		// See test Set/import/10
+		for i := len(boardPath); i > 0; i-- {
+			replaced := ReplaceBoardNode(g.AST, baseAST, boardPath[:i])
+			if replaced {
+				return recompile(g)
+			}
 		}
+		return nil, fmt.Errorf("board %v AST not found", boardPath)
 	}
 
 	return recompile(g)
@@ -142,6 +151,9 @@ func ReconnectEdge(g *d2graph.Graph, boardPath []string, edgeKey string, srcKey,
 		}
 		// TODO beter name
 		baseAST = boardG.BaseAST
+		if baseAST == nil {
+			return nil, fmt.Errorf("board %v missing base AST", boardPath)
+		}
 	}
 
 	obj := boardG.Root
@@ -946,6 +958,9 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 		}
 		// TODO beter name
 		baseAST = boardG.BaseAST
+		if baseAST == nil {
+			return nil, fmt.Errorf("board %v missing base AST", boardPath)
+		}
 	}
 
 	g2, err := deleteReserved(g, boardPath, baseAST, mk)
@@ -1761,6 +1776,9 @@ func move(g *d2graph.Graph, boardPath []string, key, newKey string, includeDesce
 		}
 		// TODO beter name
 		baseAST = boardG.BaseAST
+		if baseAST == nil {
+			return nil, fmt.Errorf("board %v missing base AST", boardPath)
+		}
 	}
 
 	newKey, _, err := generateUniqueKey(boardG, newKey, nil, nil)

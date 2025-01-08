@@ -126,8 +126,11 @@ func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 		g2 := d2graph.NewGraph()
 		g2.Parent = g
 		g2.AST = m.AST().(*d2ast.Map)
-		if g.BaseAST != nil {
-			g2.BaseAST = findFieldAST(g.BaseAST, f)
+		g2.BaseAST = findFieldAST(g.BaseAST, f)
+		// We cannot find the AST from the graph's base ast, which means it must be imported
+		// Then the base AST continues to be the one with the import
+		if g2.BaseAST == nil {
+			g2.BaseAST = g.BaseAST
 		}
 		c.compileBoard(g2, m)
 		if f.Primary() != nil {
