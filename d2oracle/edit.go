@@ -42,6 +42,9 @@ func Create(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 		}
 		// TODO beter name
 		baseAST = boardG.BaseAST
+		if baseAST == nil {
+			return nil, "", fmt.Errorf("board %v cannot be modified through this file", boardPath)
+		}
 	}
 
 	newKey, edge, err := generateUniqueKey(boardG, key, nil, nil)
@@ -98,6 +101,9 @@ func Set(g *d2graph.Graph, boardPath []string, key string, tag, value *string) (
 		}
 		// TODO beter name
 		baseAST = boardG.BaseAST
+		if baseAST == nil {
+			return nil, fmt.Errorf("board %v cannot be modified through this file", boardPath)
+		}
 	}
 
 	err = _set(boardG, baseAST, key, tag, value)
@@ -142,6 +148,9 @@ func ReconnectEdge(g *d2graph.Graph, boardPath []string, edgeKey string, srcKey,
 		}
 		// TODO beter name
 		baseAST = boardG.BaseAST
+		if baseAST == nil {
+			return nil, fmt.Errorf("board %v cannot be modified through this file", boardPath)
+		}
 	}
 
 	obj := boardG.Root
@@ -946,6 +955,9 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 		}
 		// TODO beter name
 		baseAST = boardG.BaseAST
+		if baseAST == nil {
+			return nil, fmt.Errorf("board %v cannot be modified through this file", boardPath)
+		}
 	}
 
 	g2, err := deleteReserved(g, boardPath, baseAST, mk)
@@ -1761,6 +1773,9 @@ func move(g *d2graph.Graph, boardPath []string, key, newKey string, includeDesce
 		}
 		// TODO beter name
 		baseAST = boardG.BaseAST
+		if baseAST == nil {
+			return nil, fmt.Errorf("board %v cannot be modified through this file", boardPath)
+		}
 	}
 
 	newKey, _, err := generateUniqueKey(boardG, newKey, nil, nil)
