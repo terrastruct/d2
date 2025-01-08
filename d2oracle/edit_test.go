@@ -2487,15 +2487,7 @@ layers: {
 			boardPath: []string{"man", "1"},
 			key:       `asdf.link`,
 			value:     go2.Pointer(`_._`),
-			exp: `heyn
-
-layers: {
-  man: {
-    ...@meow
-    asdf.link: _._
-  }
-}
-`,
+			expErr:    `failed to set "asdf.link" to "\"_._\"": board [man 1] cannot be modified through this file`,
 		},
 		{
 			name: "label-near/1",

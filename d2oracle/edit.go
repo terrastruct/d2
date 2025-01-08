@@ -43,7 +43,7 @@ func Create(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 		// TODO beter name
 		baseAST = boardG.BaseAST
 		if baseAST == nil {
-			return nil, "", fmt.Errorf("board %v missing base AST", boardPath)
+			return nil, "", fmt.Errorf("board %v cannot be modified through this file", boardPath)
 		}
 	}
 
@@ -101,6 +101,9 @@ func Set(g *d2graph.Graph, boardPath []string, key string, tag, value *string) (
 		}
 		// TODO beter name
 		baseAST = boardG.BaseAST
+		if baseAST == nil {
+			return nil, fmt.Errorf("board %v cannot be modified through this file", boardPath)
+		}
 	}
 
 	err = _set(boardG, baseAST, key, tag, value)
@@ -109,16 +112,10 @@ func Set(g *d2graph.Graph, boardPath []string, key string, tag, value *string) (
 	}
 
 	if len(boardPath) > 0 {
-		// The baseAST may not correspond with the board path if the baseAST if the import
-		// In which case keep trying less nested board paths until it gets to the one with the import
-		// See test Set/import/10
-		for i := len(boardPath); i > 0; i-- {
-			replaced := ReplaceBoardNode(g.AST, baseAST, boardPath[:i])
-			if replaced {
-				return recompile(g)
-			}
+		replaced := ReplaceBoardNode(g.AST, baseAST, boardPath)
+		if !replaced {
+			return nil, fmt.Errorf("board %v AST not found", boardPath)
 		}
-		return nil, fmt.Errorf("board %v AST not found", boardPath)
 	}
 
 	return recompile(g)
@@ -152,7 +149,7 @@ func ReconnectEdge(g *d2graph.Graph, boardPath []string, edgeKey string, srcKey,
 		// TODO beter name
 		baseAST = boardG.BaseAST
 		if baseAST == nil {
-			return nil, fmt.Errorf("board %v missing base AST", boardPath)
+			return nil, fmt.Errorf("board %v cannot be modified through this file", boardPath)
 		}
 	}
 
@@ -959,7 +956,7 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 		// TODO beter name
 		baseAST = boardG.BaseAST
 		if baseAST == nil {
-			return nil, fmt.Errorf("board %v missing base AST", boardPath)
+			return nil, fmt.Errorf("board %v cannot be modified through this file", boardPath)
 		}
 	}
 
@@ -1777,7 +1774,7 @@ func move(g *d2graph.Graph, boardPath []string, key, newKey string, includeDesce
 		// TODO beter name
 		baseAST = boardG.BaseAST
 		if baseAST == nil {
-			return nil, fmt.Errorf("board %v missing base AST", boardPath)
+			return nil, fmt.Errorf("board %v cannot be modified through this file", boardPath)
 		}
 	}
 
