@@ -10,10 +10,9 @@ import (
 	"hash/fnv"
 	"html"
 	"io"
+	"math"
 	"sort"
 	"strings"
-
-	"math"
 
 	"github.com/alecthomas/chroma/v2"
 	"github.com/alecthomas/chroma/v2/formatters"
@@ -79,6 +78,7 @@ type RenderOpts struct {
 	ThemeOverrides     *d2target.ThemeOverrides
 	DarkThemeOverrides *d2target.ThemeOverrides
 	Font               string
+	IDAttrVal          string
 	// the svg will be scaled by this factor, if unset the svg will fit to screen
 	Scale *float64
 
@@ -575,7 +575,6 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		if connection.Animated && ((connection.DstArrow == d2target.NoArrowhead && connection.SrcArrow == d2target.NoArrowhead) || (connection.DstArrow != d2target.NoArrowhead && connection.SrcArrow != d2target.NoArrowhead)) {
 			// There is no pure CSS way to animate bidirectional connections in two directions, so we split it up
 			path1, path2, err := svg.SplitPath(path, 0.5)
-
 			if err != nil {
 				return "", err
 			}
@@ -2119,6 +2118,9 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		xmlTag = `<?xml version="1.0" encoding="utf-8"?>`
 		fitToScreenWrapperClosing = "</svg>"
 		idAttr = `id="d2-svg"`
+		if opts.IDAttrVal != "" {
+			idAttr = fmt.Sprintf("id=%q", opts.IDAttrVal)
+		}
 		tag = "svg"
 	}
 
