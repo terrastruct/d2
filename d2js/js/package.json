@@ -28,7 +28,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "bun build.js",
+    "build": "./make.sh build",
     "test": "bun test test/unit",
     "test:integration": "bun run build && bun test test/integration",
     "test:all": "bun run test && bun run test:integration",
