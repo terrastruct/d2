@@ -11,8 +11,9 @@ if [ ! -f ./d2js/js/wasm/d2.wasm ]; then
   echoerr "Error: d2.wasm is missing"
   exit 1
 else
-  stat --printf="Size: %s bytes\n" ./d2js/js/wasm/d2.wasm || ls -lh ./d2js/js/wasm/d2.wasm
+  echo "d2.wasm exists. Size:"
+  ls -lh ./d2js/js/wasm/d2.wasm | awk '{print $5}'
 fi
 
 cd d2js/js
-sh_c bun run build
+sh_c bun build.js
