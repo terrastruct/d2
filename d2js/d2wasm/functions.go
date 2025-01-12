@@ -151,7 +151,7 @@ func Compile(args []js.Value) (interface{}, error) {
 
 	renderOpts := &d2svg.RenderOpts{}
 	var fontFamily *d2fonts.FontFamily
-	if input.Opts != nil && input.Opts.Sketch != nil {
+	if input.Opts != nil && input.Opts.Sketch != nil && *input.Opts.Sketch {
 		fontFamily = go2.Pointer(d2fonts.HandDrawn)
 		renderOpts.Sketch = input.Opts.Sketch
 	}

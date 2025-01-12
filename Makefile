@@ -1,7 +1,7 @@
 .POSIX:
 
 .PHONY: all
-all: fmt gen lint build test
+all: fmt gen js lint build test
 
 .PHONY: fmt
 fmt:
@@ -21,3 +21,6 @@ test: fmt
 .PHONY: race
 race: fmt
 	prefix "$@" ./ci/test.sh --race ./...
+.PHONY: js
+js:
+	cd d2js/js && prefix "$@" ./make.sh
