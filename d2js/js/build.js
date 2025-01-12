@@ -1,35 +1,110 @@
 import { build } from "bun";
-import { copyFile, mkdir } from "node:fs/promises";
-import { join } from "node:path";
+import { copyFile, mkdir, writeFile, readFile, rm } from "node:fs/promises";
+import { join, resolve } from "node:path";
 
-await mkdir("./dist/esm", { recursive: true });
-await mkdir("./dist/cjs", { recursive: true });
+const __dirname = new URL(".", import.meta.url).pathname;
+const ROOT_DIR = resolve(__dirname);
+const SRC_DIR = resolve(ROOT_DIR, "src");
+
+await rm("./dist", { recursive: true, force: true });
+await mkdir("./dist/browser", { recursive: true });
+await mkdir("./dist/node-esm", { recursive: true });
+await mkdir("./dist/node-cjs", { recursive: true });
+
+const wasmBinary = await readFile("./wasm/d2.wasm");
+const wasmExecJs = await readFile("./wasm/wasm_exec.js", "utf8");
+
+await writeFile(
+  join(SRC_DIR, "wasm-loader.browser.js"),
+  `export const wasmBinary = Uint8Array.from(atob("${Buffer.from(wasmBinary).toString(
+    "base64"
+  )}"), c => c.charCodeAt(0));
+   export const wasmExecJs = ${JSON.stringify(wasmExecJs)};`
+);
 
 const commonConfig = {
-  target: "node",
   splitting: false,
   sourcemap: "external",
   minify: true,
-  naming: {
-    entry: "[dir]/[name].js",
-    chunk: "[name]-[hash].js",
-    asset: "[name]-[hash][ext]",
-  },
 };
 
-async function buildAndCopy(format) {
-  const outdir = `./dist/${format}`;
+async function buildPlatformFile(platform) {
+  const platformContent =
+    platform === "node"
+      ? "export * from './platform.node.js';"
+      : "export * from './platform.browser.js';";
 
-  await build({
-    ...commonConfig,
-    entrypoints: ["./src/index.js", "./src/worker.js", "./src/platform.js"],
-    outdir,
-    format,
-  });
-
-  await copyFile("./wasm/d2.wasm", join(outdir, "d2.wasm"));
-  await copyFile("./wasm/wasm_exec.js", join(outdir, "wasm_exec.js"));
+  const platformPath = join(SRC_DIR, "platform.js");
+  await writeFile(platformPath, platformContent);
 }
 
-await buildAndCopy("esm");
-await buildAndCopy("cjs");
+async function buildAndCopy(buildType) {
+  const configs = {
+    browser: {
+      outdir: resolve(ROOT_DIR, "dist/browser"),
+      format: "esm",
+      target: "browser",
+      platform: "browser",
+      loader: {
+        ".js": "jsx",
+      },
+      entrypoints: [
+        resolve(SRC_DIR, "index.js"),
+        resolve(SRC_DIR, "worker.js"),
+        resolve(SRC_DIR, "platform.js"),
+        resolve(SRC_DIR, "wasm-loader.browser.js"),
+      ],
+    },
+    "node-esm": {
+      outdir: resolve(ROOT_DIR, "dist/node-esm"),
+      format: "esm",
+      target: "node",
+      platform: "node",
+      entrypoints: [
+        resolve(SRC_DIR, "index.js"),
+        resolve(SRC_DIR, "worker.js"),
+        resolve(SRC_DIR, "platform.js"),
+      ],
+    },
+    "node-cjs": {
+      outdir: resolve(ROOT_DIR, "dist/node-cjs"),
+      format: "cjs",
+      target: "node",
+      platform: "node",
+      entrypoints: [
+        resolve(SRC_DIR, "index.js"),
+        resolve(SRC_DIR, "worker.js"),
+        resolve(SRC_DIR, "platform.js"),
+      ],
+    },
+  };
+
+  const config = configs[buildType];
+  await buildPlatformFile(config.platform);
+
+  const result = await build({
+    ...commonConfig,
+    ...config,
+  });
+
+  if (!result.outputs || result.outputs.length === 0) {
+    throw new Error(`No outputs generated for ${buildType} build`);
+  }
+
+  if (buildType !== "browser") {
+    await copyFile(resolve(ROOT_DIR, "wasm/d2.wasm"), join(config.outdir, "d2.wasm"));
+    await copyFile(
+      resolve(ROOT_DIR, "wasm/wasm_exec.js"),
+      join(config.outdir, "wasm_exec.js")
+    );
+  }
+}
+
+try {
+  await buildAndCopy("browser");
+  await buildAndCopy("node-esm");
+  await buildAndCopy("node-cjs");
+} catch (error) {
+  console.error("Build failed:", error);
+  process.exit(1);
+}

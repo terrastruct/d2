@@ -1,5 +1,5 @@
 import { expect, test, describe } from "bun:test";
-import { D2 } from "../../dist/esm/index.js";
+import { D2 } from "../../dist/node-esm/index.js";
 
 describe("D2 ESM Integration", () => {
   test("can import and use ESM build", async () => {

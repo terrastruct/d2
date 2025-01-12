@@ -1,5 +1,5 @@
 import { expect, test, describe } from "bun:test";
-import { D2 } from "../../src/index.js";
+import { D2 } from "../../dist/node-esm/index.js";
 
 describe("D2 Unit Tests", () => {
   test("basic compilation works", async () => {

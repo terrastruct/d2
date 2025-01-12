@@ -2,10 +2,10 @@
   "name": "@terrastruct/d2",
   "author": "Terrastruct, Inc.",
   "description": "D2.js is a wrapper around the WASM build of D2, the modern text-to-diagram language.",
-  "version": "0.1.0",
+  "version": "0.1.11",
   "repository": {
     "type": "git",
-    "url": "https://github.com/terrastruct/d2.git",
+    "url": "git+https://github.com/terrastruct/d2.git",
     "directory": "d2js/js"
   },
   "bugs": {
@@ -20,8 +20,10 @@
   "module": "./dist/esm/index.js",
   "exports": {
     ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "browser": "./dist/browser/index.js",
+      "import": "./dist/node-esm/index.js",
+      "require": "./dist/node-cjs/index.js",
+      "default": "./dist/node-esm/index.js"
     }
   },
   "files": [
@@ -33,7 +35,7 @@
     "test:integration": "bun test test/integration",
     "test:all": "bun run test && bun run test:integration",
     "dev": "bun --watch dev-server.js",
-    "prepublishOnly": "./make.sh"
+    "prepublishOnly": "./make.sh all"
   },
   "keywords": [
     "d2",
@@ -43,9 +45,6 @@
     "text-to-diagram",
     "go"
   ],
-  "engines": {
-    "bun": ">=1.0.0"
-  },
   "license": "MPL-2.0",
   "devDependencies": {
     "bun": "latest"

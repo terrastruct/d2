@@ -27,8 +27,6 @@ async function handleMessage(e) {
       try {
         if (isNode) {
           eval(data.wasmExecContent);
-        } else {
-          importScripts(data.wasmExecUrl);
         }
         d2 = await initWasm(data.wasm);
         currentPort.postMessage({ type: "ready" });
