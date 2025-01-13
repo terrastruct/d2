@@ -1,7 +1,6 @@
 import { wasmBinary, wasmExecJs } from "./wasm-loader.browser.js";
 
 export async function loadFile(path) {
-  console.log("loading " + path);
   if (path === "./d2.wasm") {
     return wasmBinary.buffer;
   }
