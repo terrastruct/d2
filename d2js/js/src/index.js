@@ -50,7 +50,7 @@ export class D2 {
 
     if (isNode) {
       this.worker.on("error", (error) => {
-        console.error("Worker encountered an error:", error.message || error);
+        console.error("Worker (node) encountered an error:", error.message || error);
       });
     } else {
       this.worker.onerror = (error) => {
