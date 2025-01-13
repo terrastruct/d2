@@ -1,6 +1,6 @@
 .POSIX:
 .PHONY: all
-all: fmt build test
+all: fmt build test cleanup
 
 .PHONY: fmt
 fmt: node_modules
@@ -8,7 +8,7 @@ fmt: node_modules
 	prefix "$@" rm -f yarn.lock
 
 .PHONY: build
-build: node_modules
+build: fmt
 	prefix "$@" ./ci/build.sh
 
 .PHONY: test
@@ -18,3 +18,7 @@ test: build
 .PHONY: node_modules
 node_modules:
 	prefix "$@" bun install $${CI:+--frozen-lockfile}
+
+.PHONY: cleanup
+cleanup: test
+	prefix "$@" git checkout -- src/platform.js

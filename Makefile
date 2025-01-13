@@ -22,5 +22,5 @@ test: fmt
 race: fmt
 	prefix "$@" ./ci/test.sh --race ./...
 .PHONY: js
-js:
-	cd d2js/js && prefix "$@" ./make.sh
+js: gen
+	cd d2js/js && prefix "$@" ./make.sh all

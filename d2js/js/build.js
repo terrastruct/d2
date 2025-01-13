@@ -1,5 +1,5 @@
 import { build } from "bun";
-import { copyFile, mkdir, writeFile, readFile, rm } from "node:fs/promises";
+import { copyFile, mkdir, writeFile, readFile, rm, chmod } from "node:fs/promises";
 import { join, resolve } from "node:path";
 
 const __dirname = new URL(".", import.meta.url).pathname;
@@ -31,11 +31,12 @@ const commonConfig = {
 async function buildPlatformFile(platform) {
   const platformContent =
     platform === "node"
-      ? "export * from './platform.node.js';"
-      : "export * from './platform.browser.js';";
+      ? `export * from "./platform.node.js";`
+      : `export * from "./platform.browser.js";`;
 
   const platformPath = join(SRC_DIR, "platform.js");
   await writeFile(platformPath, platformContent);
+  await chmod(platformPath, 0o600);
 }
 
 async function buildAndCopy(buildType) {
