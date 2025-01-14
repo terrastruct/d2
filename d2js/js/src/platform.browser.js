@@ -11,18 +11,17 @@ export async function loadFile(path) {
 }
 
 export async function createWorker() {
-  // Combine wasmExecJs with worker script
-  const workerResponse = await fetch(new URL("./worker.js", import.meta.url));
-  if (!workerResponse.ok) {
+  let response = await fetch(new URL("./worker.js", import.meta.url));
+  if (!response.ok)
     throw new Error(
-      `Failed to load worker.js: ${workerResponse.status} ${workerResponse.statusText}`
+      `Failed to load worker.js: ${response.status} ${response.statusText}`
     );
-  }
-  const workerJs = await workerResponse.text();
+  let workerScript = await response.text();
 
-  const blob = new Blob(["(() => {", wasmExecJs, "})();", workerJs], {
-    type: "application/javascript",
+  let blob = new Blob(["(() => {", wasmExecJs, "})();", workerScript], {
+    type: "text/javascript;charset=utf-8",
   });
-
-  return new Worker(URL.createObjectURL(blob));
+  return new Worker(URL.createObjectURL(blob), {
+    type: "module",
+  });
 }
