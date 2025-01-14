@@ -134,6 +134,9 @@ Print usage information and exit
 .It Fl v , -version
 Print version information and exit
 .Ns .
+.It Fl -stdout-format Ar string
+Set the output format when writing to stdout. Supported formats are: png, svg. Only used when output is set to stdout (-)
+.Ns .
 .El
 .Sh SUBCOMMANDS
 .Bl -tag -width Fl
@@ -197,6 +200,8 @@ See -h[ost] flag.
 See -p[ort] flag.
 .It Ev Sy BROWSER
 See --browser flag.
+.It Ev Sy D2_STDOUT_FORMAT
+See --stdout-format flag.
 .El
 .Sh SEE ALSO
 .Xr d2plugin-tala 1
