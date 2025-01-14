@@ -36,13 +36,14 @@ async function buildDynamicFiles(platform) {
   const platformPath = join(SRC_DIR, "platform.js");
   await writeFile(platformPath, platformContent);
 
-  const workerContent =
+  const workerSource =
     platform === "node"
-      ? `export * from "./worker.node.js";`
-      : `export * from "./worker.browser.js";`;
+      ? join(SRC_DIR, "worker.node.js")
+      : join(SRC_DIR, "worker.browser.js");
 
-  const workerPath = join(SRC_DIR, "worker.js");
-  await writeFile(workerPath, workerContent);
+  const workerTarget = join(SRC_DIR, "worker.js");
+  const workerContent = await readFile(workerSource, "utf8");
+  await writeFile(workerTarget, workerContent);
 }
 
 async function buildAndCopy(buildType) {

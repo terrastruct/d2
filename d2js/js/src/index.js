@@ -54,10 +54,7 @@ export class D2 {
       });
     } else {
       this.worker.onerror = (error) => {
-        console.error("Worker detailed error:", error);
-        console.error("Error message:", error.message);
-        console.error("Error filename:", error.filename);
-        console.error("Error lineno:", error.lineno);
+        console.error("Worker encountered an error:", error.message || error);
       };
     }
 

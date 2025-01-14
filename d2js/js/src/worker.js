@@ -1,1 +1,1 @@
-export * from "./worker.node.js";
+// Replaced at build time

@@ -1,7 +1,7 @@
 let currentPort;
 let d2;
 
-export function setupMessageHandler(port, initWasm) {
+export function setupMessageHandler(isNode, port, initWasm) {
   currentPort = port;
 
   const handleMessage = async (e) => {
@@ -10,6 +10,9 @@ export function setupMessageHandler(port, initWasm) {
     switch (type) {
       case "init":
         try {
+          if (isNode) {
+            eval(data.wasmExecContent);
+          }
           d2 = await initWasm(data.wasm);
           currentPort.postMessage({ type: "ready" });
         } catch (err) {
@@ -41,7 +44,7 @@ export function setupMessageHandler(port, initWasm) {
     }
   };
 
-  if (typeof process !== "undefined" && process.release?.name === "node") {
+  if (isNode) {
     port.on("message", handleMessage);
   } else {
     port.onmessage = (e) => handleMessage(e.data);

@@ -7,4 +7,4 @@ async function initWasmBrowser(wasmBinary) {
   return self.d2;
 }
 
-setupMessageHandler(self, initWasmBrowser);
+setupMessageHandler(false, self, initWasmBrowser);

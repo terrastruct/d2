@@ -8,4 +8,4 @@ async function initWasmNode(wasmBinary) {
   return global.d2;
 }
 
-setupMessageHandler(parentPort, initWasmNode);
+setupMessageHandler(true, parentPort, initWasmNode);

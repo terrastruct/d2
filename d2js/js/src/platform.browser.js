@@ -18,34 +18,12 @@ export async function createWorker() {
     );
   let workerScript = await response.text();
 
-  // Create global Go without IIFE in module context
-  let blob = new Blob(
-    [
-      // First establish Go in global scope
-      wasmExecJs,
-      // Then the module code
-      workerScript,
-    ],
-    {
-      type: "text/javascript;charset=utf-8",
-    }
-  );
+  let blob = new Blob([wasmExecJs, workerScript], {
+    type: "text/javascript;charset=utf-8",
+  });
 
-  console.log("about to create worker");
   const worker = new Worker(URL.createObjectURL(blob), {
     type: "module",
   });
-  console.log("worker", worker);
-
-  // Add error handler to see initialization errors
-  worker.onerror = (error) => {
-    console.error("Worker initialization error:", {
-      message: error.message,
-      filename: error.filename,
-      lineno: error.lineno,
-      error: error.error,
-    });
-  };
-
   return worker;
 }
