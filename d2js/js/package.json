@@ -21,10 +21,14 @@
   "exports": {
     ".": {
       "browser": "./dist/browser/index.js",
-      "import": "./dist/node-esm/index.js",
+      "import": {
+        "browser": "./dist/browser/index.js",
+        "default": "./dist/node-esm/index.js"
+      },
       "require": "./dist/node-cjs/index.js",
       "default": "./dist/node-esm/index.js"
-    }
+    },
+    "./worker": "./dist/browser/worker.js"
   },
   "files": [
     "dist"
