@@ -31,36 +31,18 @@ bun add @terrastruct/d2
 
 ## Usage
 
-### Browser
+D2.js uses webworkers to call a WASM file.
 
 ```javascript
+// Same for Node or browser
 import { D2 } from '@terrastruct/d2';
+// Or using a CDN
+// import { D2 } from 'https://esm.sh/@terrastruct/d2';
 
 const d2 = new D2();
 
 const result = await d2.compile('x -> y');
 const svg = await d2.render(result.diagram);
-
-const result = await d2.compile('x -> y', {
-  layout: 'dagre',
-  sketch: true
-});
-```
-
-### Node
-
-```javascript
-import { D2 } from '@terrastruct/d2';
-
-const d2 = new D2();
-
-async function createDiagram() {
-  const result = await d2.compile('x -> y');
-  const svg = await d2.render(result.diagram);
-  console.log(svg);
-}
-
-createDiagram();
 ```
 
 ## API Reference
@@ -87,7 +69,7 @@ D2.js uses Bun, so install this first.
 ```bash
 git clone https://github.com/terrastruct/d2.git
 cd d2/d2js/js
-./make.sh
+./make.sh all
 ```
 
 If you change the main D2 source code, you should regenerate the WASM file:
@@ -96,6 +78,8 @@ If you change the main D2 source code, you should regenerate the WASM file:
 ```
 
 ### Running the Development Server
+
+Make sure you've built already, then run:
 
 ```bash
 bun run dev

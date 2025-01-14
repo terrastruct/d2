@@ -21,4 +21,4 @@ node_modules:
 
 .PHONY: cleanup
 cleanup: test
-	prefix "$@" git checkout -- src/platform.js
+	prefix "$@" git checkout -- src/platform.js src/worker.js
