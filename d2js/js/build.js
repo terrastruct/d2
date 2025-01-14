@@ -23,7 +23,6 @@ await writeFile(
 );
 
 const commonConfig = {
-  splitting: false,
   sourcemap: "external",
   minify: true,
 };
@@ -42,40 +41,30 @@ async function buildAndCopy(buildType) {
   const configs = {
     browser: {
       outdir: resolve(ROOT_DIR, "dist/browser"),
+      splitting: false,
       format: "esm",
       target: "browser",
       platform: "browser",
       loader: {
         ".js": "jsx",
       },
-      entrypoints: [
-        resolve(SRC_DIR, "index.js"),
-        resolve(SRC_DIR, "worker.js"),
-        resolve(SRC_DIR, "platform.js"),
-        resolve(SRC_DIR, "wasm-loader.browser.js"),
-      ],
+      entrypoints: [resolve(SRC_DIR, "index.js"), resolve(SRC_DIR, "worker.js")],
     },
     "node-esm": {
       outdir: resolve(ROOT_DIR, "dist/node-esm"),
+      splitting: true,
       format: "esm",
       target: "node",
       platform: "node",
-      entrypoints: [
-        resolve(SRC_DIR, "index.js"),
-        resolve(SRC_DIR, "worker.js"),
-        resolve(SRC_DIR, "platform.js"),
-      ],
+      entrypoints: [resolve(SRC_DIR, "index.js"), resolve(SRC_DIR, "worker.js")],
     },
     "node-cjs": {
       outdir: resolve(ROOT_DIR, "dist/node-cjs"),
+      splitting: false,
       format: "cjs",
       target: "node",
       platform: "node",
-      entrypoints: [
-        resolve(SRC_DIR, "index.js"),
-        resolve(SRC_DIR, "worker.js"),
-        resolve(SRC_DIR, "platform.js"),
-      ],
+      entrypoints: [resolve(SRC_DIR, "index.js"), resolve(SRC_DIR, "worker.js")],
     },
   };
 
