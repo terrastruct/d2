@@ -27,7 +27,7 @@ const commonConfig = {
   minify: true,
 };
 
-async function buildPlatformFile(platform) {
+async function buildDynamicFiles(platform) {
   const platformContent =
     platform === "node"
       ? `export * from "./platform.node.js";`
@@ -35,6 +35,14 @@ async function buildPlatformFile(platform) {
 
   const platformPath = join(SRC_DIR, "platform.js");
   await writeFile(platformPath, platformContent);
+
+  const workerContent =
+    platform === "node"
+      ? `export * from "./worker.node.js";`
+      : `export * from "./worker.browser.js";`;
+
+  const workerPath = join(SRC_DIR, "worker.js");
+  await writeFile(workerPath, workerContent);
 }
 
 async function buildAndCopy(buildType) {
@@ -69,7 +77,7 @@ async function buildAndCopy(buildType) {
   };
 
   const config = configs[buildType];
-  await buildPlatformFile(config.platform);
+  await buildDynamicFiles(config.platform);
 
   const result = await build({
     ...commonConfig,
