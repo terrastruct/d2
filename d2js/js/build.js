@@ -23,7 +23,6 @@ await writeFile(
 );
 
 const commonConfig = {
-  sourcemap: "external",
   minify: true,
 };
 
@@ -54,10 +53,7 @@ async function buildAndCopy(buildType) {
       format: "esm",
       target: "browser",
       platform: "browser",
-      loader: {
-        ".js": "jsx",
-      },
-      entrypoints: [resolve(SRC_DIR, "index.js"), resolve(SRC_DIR, "worker.js")],
+      entrypoints: [resolve(SRC_DIR, "index.js")],
     },
     "node-esm": {
       outdir: resolve(ROOT_DIR, "dist/node-esm"),
@@ -86,7 +82,9 @@ async function buildAndCopy(buildType) {
   });
 
   if (!result.outputs || result.outputs.length === 0) {
-    throw new Error(`No outputs generated for ${buildType} build`);
+    throw new Error(
+      `No outputs generated for ${buildType} build. Result: ${JSON.stringify(result)}`
+    );
   }
 
   if (buildType !== "browser") {
