@@ -9,6 +9,13 @@ describe("D2 Unit Tests", () => {
     await d2.worker.terminate();
   }, 20000);
 
+  test("elk layout works", async () => {
+    const d2 = new D2();
+    const result = await d2.compile("x -> y", { layout: "elk" });
+    expect(result.diagram).toBeDefined();
+    await d2.worker.terminate();
+  }, 20000);
+
   test("render works", async () => {
     const d2 = new D2();
     const result = await d2.compile("x -> y");
