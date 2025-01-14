@@ -63,6 +63,10 @@ async function createDiagram() {
 createDiagram();
 ```
 
+### Edge/CDN
+
+TODO
+
 ## API Reference
 
 ### `new D2()`
@@ -87,7 +91,7 @@ D2.js uses Bun, so install this first.
 ```bash
 git clone https://github.com/terrastruct/d2.git
 cd d2/d2js/js
-./make.sh
+./make.sh all
 ```
 
 If you change the main D2 source code, you should regenerate the WASM file:
@@ -96,6 +100,8 @@ If you change the main D2 source code, you should regenerate the WASM file:
 ```
 
 ### Running the Development Server
+
+Make sure you've built already, then run:
 
 ```bash
 bun run dev
