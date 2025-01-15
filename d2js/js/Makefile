@@ -11,6 +11,11 @@ fmt: node_modules
 build: fmt
 	prefix "$@" ./ci/build.sh
 
+.PHONY: dev
+dev: build
+	prefix "$@" git checkout -- src/platform.js src/worker.js
+	prefix "$@" bun run dev
+
 .PHONY: test
 test: build
 	prefix "$@" bun test:all

@@ -1,3 +1,6 @@
+const fs = require("fs/promises");
+const path = require("path");
+
 const MIME_TYPES = {
   ".html": "text/html",
   ".js": "text/javascript",
@@ -11,45 +14,57 @@ const server = Bun.serve({
   port: 3000,
   async fetch(request) {
     const url = new URL(request.url);
-    let path = url.pathname;
+    let filePath = url.pathname.slice(1); // Remove leading "/"
 
-    // Serve index page by default
-    if (path === "/") {
-      path = "/examples/basic.html";
-    }
-
-    // Handle attempts to access files in src
-    if (path.startsWith("/src/")) {
-      const wasmFile = path.includes("wasm_exec.js") || path.includes("d2.wasm");
-      if (wasmFile) {
-        path = path.replace("/src/", "/wasm/");
-      }
+    if (filePath === "") {
+      filePath = "examples/";
     }
 
     try {
-      const filePath = path.slice(1);
-      const file = Bun.file(filePath);
-      const exists = await file.exists();
+      const fullPath = path.join(process.cwd(), filePath);
+      const stats = await fs.stat(fullPath);
 
-      if (!exists) {
-        return new Response(`File not found: ${path}`, { status: 404 });
+      if (stats.isDirectory()) {
+        const entries = await fs.readdir(fullPath);
+        const links = await Promise.all(
+          entries.map(async (entry) => {
+            const entryPath = path.join(fullPath, entry);
+            const isDir = (await fs.stat(entryPath)).isDirectory();
+            const slash = isDir ? "/" : "";
+            return `<li><a href="${filePath}${entry}${slash}">${entry}${slash}</a></li>`;
+          })
+        );
+
+        const html = `
+          <html>
+            <body>
+              <h1>Examples</h1>
+              <ul>
+                ${links.join("")}
+              </ul>
+            </body>
+          </html>
+        `;
+        return new Response(html, {
+          headers: { "Content-Type": "text/html" },
+        });
+      } else {
+        const ext = path.extname(filePath);
+        const mimeType = MIME_TYPES[ext] || "application/octet-stream";
+
+        const file = Bun.file(filePath);
+        return new Response(file, {
+          headers: {
+            "Content-Type": mimeType,
+            "Access-Control-Allow-Origin": "*",
+            "Cross-Origin-Opener-Policy": "same-origin",
+            "Cross-Origin-Embedder-Policy": "require-corp",
+          },
+        });
       }
-
-      // Get file extension and corresponding MIME type
-      const ext = "." + filePath.split(".").pop();
-      const mimeType = MIME_TYPES[ext] || "application/octet-stream";
-
-      return new Response(file, {
-        headers: {
-          "Content-Type": mimeType,
-          "Access-Control-Allow-Origin": "*",
-          "Cross-Origin-Opener-Policy": "same-origin",
-          "Cross-Origin-Embedder-Policy": "require-corp",
-        },
-      });
     } catch (err) {
-      console.error(`Error serving ${path}:`, err);
-      return new Response(`Server error: ${err.message}`, { status: 500 });
+      console.error(`Error serving ${filePath}:`, err);
+      return new Response(`File not found: ${filePath}`, { status: 404 });
     }
   },
 });

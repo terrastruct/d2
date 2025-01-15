@@ -77,12 +77,12 @@ If you change the main D2 source code, you should regenerate the WASM file:
 ./make.sh build
 ```
 
-### Running the Development Server
+### Running the dev server
 
-Make sure you've built already, then run:
+You can browse the examples by running the dev server:
 
 ```bash
-bun run dev
+./make.sh dev
 ```
 
 Visit `http://localhost:3000` to see the example page.
