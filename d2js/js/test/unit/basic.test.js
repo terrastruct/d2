@@ -25,6 +25,16 @@ describe("D2 Unit Tests", () => {
     await d2.worker.terminate();
   }, 20000);
 
+  test("sketch render works", async () => {
+    const d2 = new D2();
+    const result = await d2.compile("x -> y", { sketch: true });
+    const svg = await d2.render(result.diagram, { sketch: true });
+    expect(svg).toContain("<svg");
+    expect(svg).toContain("</svg>");
+    expect(svg).toContain("sketch-overlay");
+    await d2.worker.terminate();
+  }, 20000);
+
   test("handles syntax errors correctly", async () => {
     const d2 = new D2();
     try {

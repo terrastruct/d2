@@ -24,7 +24,16 @@
         border-radius: 4px;
         font-family: monospace;
       }
-      .layout-toggle {
+      .options-group {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px;
+        border: 1px solid #eee;
+        border-radius: 4px;
+      }
+      .layout-toggle,
+      .sketch-toggle {
         display: flex;
         gap: 16px;
         align-items: center;
@@ -33,7 +42,8 @@
         display: flex;
         gap: 12px;
       }
-      .radio-label {
+      .radio-label,
+      .checkbox-label {
         display: flex;
         gap: 4px;
         align-items: center;
@@ -66,16 +76,24 @@
   <body>
     <div class="controls">
       <textarea id="input">x -> y</textarea>
-      <div class="layout-toggle">
-        <span>Layout:</span>
-        <div class="radio-group">
-          <label class="radio-label">
-            <input type="radio" name="layout" value="dagre" checked />
-            Dagre
-          </label>
-          <label class="radio-label">
-            <input type="radio" name="layout" value="elk" />
-            ELK
+      <div class="options-group">
+        <div class="layout-toggle">
+          <span>Layout:</span>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="layout" value="dagre" checked />
+              Dagre
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="layout" value="elk" />
+              ELK
+            </label>
+          </div>
+        </div>
+        <div class="sketch-toggle">
+          <label class="checkbox-label">
+            <input type="checkbox" id="sketch" />
+            Sketch mode
           </label>
         </div>
       </div>
@@ -88,9 +106,10 @@
       window.compile = async () => {
         const input = document.getElementById("input").value;
         const layout = document.querySelector('input[name="layout"]:checked').value;
+        const sketch = document.getElementById("sketch").checked;
         try {
-          const result = await d2.compile(input, { layout });
-          const svg = await d2.render(result.diagram);
+          const result = await d2.compile(input, { layout, sketch });
+          const svg = await d2.render(result.diagram, { sketch });
           document.getElementById("output").innerHTML = svg;
         } catch (err) {
           console.error(err);
