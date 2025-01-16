@@ -26,9 +26,6 @@ import (
 	"oss.terrastruct.com/d2/lib/shape"
 )
 
-//go:embed elk.js
-var elkJS string
-
 //go:embed setup.js
 var setupJS string
 
