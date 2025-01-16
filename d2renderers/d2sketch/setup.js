@@ -18,6 +18,6 @@ const root = {
 const rc = rough.svg(root, { seed: 1 });
 let node;
 
-if (typeof globalThis !== 'undefined') {
+if (typeof globalThis !== "undefined") {
   globalThis.rc = rc;
 }
