@@ -15,6 +15,7 @@ func main() {
 	api.Register("getParentID", d2wasm.GetParentID)
 	api.Register("getObjOrder", d2wasm.GetObjOrder)
 	api.Register("getRefRanges", d2wasm.GetRefRanges)
+	api.Register("getELKGraph", d2wasm.GetELKGraph)
 	api.Register("compile", d2wasm.Compile)
 	api.Register("render", d2wasm.Render)
 	api.Register("getBoardAtPosition", d2wasm.GetBoardAtPosition)

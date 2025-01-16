@@ -30,6 +30,7 @@ import (
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/d2/lib/jsrunner"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/shape"
 	"oss.terrastruct.com/d2/lib/svg"
@@ -496,7 +497,7 @@ func makeLabelMask(labelTL *geo.Point, width, height int, opacity float64) strin
 	)
 }
 
-func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, sketchRunner *d2sketch.Runner, inlineTheme *d2themes.Theme) (labelMask string, _ error) {
+func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, jsRunner jsrunner.JSRunner, inlineTheme *d2themes.Theme) (labelMask string, _ error) {
 	opacityStyle := ""
 	if connection.Opacity != 1.0 {
 		opacityStyle = fmt.Sprintf(" style='opacity:%f'", connection.Opacity)
@@ -552,15 +553,15 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 	path := pathData(connection, srcAdj, dstAdj)
 	mask := fmt.Sprintf(`mask="url(#%s)"`, labelMaskID)
 
-	if sketchRunner != nil {
-		out, err := d2sketch.Connection(sketchRunner, connection, path, mask)
+	if jsRunner != nil {
+		out, err := d2sketch.Connection(jsRunner, connection, path, mask)
 		if err != nil {
 			return "", err
 		}
 		fmt.Fprint(writer, out)
 
 		// render sketch arrowheads separately
-		arrowPaths, err := d2sketch.Arrowheads(sketchRunner, connection, srcAdj, dstAdj)
+		arrowPaths, err := d2sketch.Arrowheads(jsRunner, connection, srcAdj, dstAdj)
 		if err != nil {
 			return "", err
 		}
@@ -957,7 +958,7 @@ func render3DHexagon(targetShape d2target.Shape, inlineTheme *d2themes.Theme) st
 	return borderMask + mainShapeRendered + renderedSides + renderedBorder
 }
 
-func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape d2target.Shape, sketchRunner *d2sketch.Runner, inlineTheme *d2themes.Theme) (labelMask string, err error) {
+func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape d2target.Shape, jsRunner jsrunner.JSRunner, inlineTheme *d2themes.Theme) (labelMask string, err error) {
 	closingTag := "</g>"
 	if targetShape.Link != "" {
 
@@ -1021,8 +1022,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 
 	switch targetShape.Type {
 	case d2target.ShapeClass:
-		if sketchRunner != nil {
-			out, err := d2sketch.Class(sketchRunner, targetShape)
+		if jsRunner != nil {
+			out, err := d2sketch.Class(jsRunner, targetShape)
 			if err != nil {
 				return "", err
 			}
@@ -1035,8 +1036,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
 	case d2target.ShapeSQLTable:
-		if sketchRunner != nil {
-			out, err := d2sketch.Table(sketchRunner, targetShape)
+		if jsRunner != nil {
+			out, err := d2sketch.Table(jsRunner, targetShape)
 			if err != nil {
 				return "", err
 			}
@@ -1053,8 +1054,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			if targetShape.Multiple {
 				fmt.Fprint(writer, renderDoubleOval(multipleTL, width, height, fill, "", stroke, style, inlineTheme))
 			}
-			if sketchRunner != nil {
-				out, err := d2sketch.DoubleOval(sketchRunner, targetShape)
+			if jsRunner != nil {
+				out, err := d2sketch.DoubleOval(jsRunner, targetShape)
 				if err != nil {
 					return "", err
 				}
@@ -1066,8 +1067,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			if targetShape.Multiple {
 				fmt.Fprint(writer, renderOval(multipleTL, width, height, fill, "", stroke, style, inlineTheme))
 			}
-			if sketchRunner != nil {
-				out, err := d2sketch.Oval(sketchRunner, targetShape)
+			if jsRunner != nil {
+				out, err := d2sketch.Oval(jsRunner, targetShape)
 				if err != nil {
 					return "", err
 				}
@@ -1111,8 +1112,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					el.Rx = borderRadius
 					fmt.Fprint(writer, el.Render())
 				}
-				if sketchRunner != nil {
-					out, err := d2sketch.Rect(sketchRunner, targetShape)
+				if jsRunner != nil {
+					out, err := d2sketch.Rect(jsRunner, targetShape)
 					if err != nil {
 						return "", err
 					}
@@ -1155,8 +1156,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					el.Rx = borderRadius
 					fmt.Fprint(writer, el.Render())
 				}
-				if sketchRunner != nil {
-					out, err := d2sketch.DoubleRect(sketchRunner, targetShape)
+				if jsRunner != nil {
+					out, err := d2sketch.DoubleRect(jsRunner, targetShape)
 					if err != nil {
 						return "", err
 					}
@@ -1203,8 +1204,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				}
 			}
 
-			if sketchRunner != nil {
-				out, err := d2sketch.Paths(sketchRunner, targetShape, s.GetSVGPathData())
+			if jsRunner != nil {
+				out, err := d2sketch.Paths(jsRunner, targetShape, s.GetSVGPathData())
 				if err != nil {
 					return "", err
 				}
@@ -1235,8 +1236,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			}
 		}
 
-		if sketchRunner != nil {
-			out, err := d2sketch.Paths(sketchRunner, targetShape, s.GetSVGPathData())
+		if jsRunner != nil {
+			out, err := d2sketch.Paths(jsRunner, targetShape, s.GetSVGPathData())
 			if err != nil {
 				return "", err
 			}
@@ -1846,7 +1847,7 @@ func appendOnTrigger(buf *bytes.Buffer, source string, triggers []string, newCon
 var DEFAULT_DARK_THEME *int64 = nil // no theme selected
 
 func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
-	var sketchRunner *d2sketch.Runner
+	var jsRunner jsrunner.JSRunner
 	pad := DEFAULT_PADDING
 	themeID := d2themescatalog.NeutralDefault.ID
 	darkThemeID := DEFAULT_DARK_THEME
@@ -1856,8 +1857,8 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 			pad = int(*opts.Pad)
 		}
 		if opts.Sketch != nil && *opts.Sketch {
-			var err error
-			sketchRunner, err = d2sketch.InitSketchVM()
+			jsRunner = jsrunner.NewJSRunner()
+			err := d2sketch.LoadJS(jsRunner)
 			if err != nil {
 				return nil, err
 			}
@@ -1941,7 +1942,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	}
 	for _, obj := range allObjects {
 		if c, is := obj.(d2target.Connection); is {
-			labelMask, err := drawConnection(buf, isolatedDiagramHash, c, markers, idToShape, sketchRunner, inlineTheme)
+			labelMask, err := drawConnection(buf, isolatedDiagramHash, c, markers, idToShape, jsRunner, inlineTheme)
 			if err != nil {
 				return nil, err
 			}
@@ -1949,7 +1950,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 				labelMasks = append(labelMasks, labelMask)
 			}
 		} else if s, is := obj.(d2target.Shape); is {
-			labelMask, err := drawShape(buf, appendixItemBuf, diagramHash, s, sketchRunner, inlineTheme)
+			labelMask, err := drawShape(buf, appendixItemBuf, diagramHash, s, jsRunner, inlineTheme)
 			if err != nil {
 				return nil, err
 			} else if labelMask != "" {
@@ -2003,7 +2004,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 			fmt.Fprintf(upperBuf, `<style type="text/css">%s</style>`, css)
 		}
 
-		if sketchRunner != nil {
+		if jsRunner != nil {
 			d2sketch.DefineFillPatterns(upperBuf)
 		}
 	}

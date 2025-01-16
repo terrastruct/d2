@@ -1,13 +1,7 @@
 (function (f) {
-  if (typeof exports === "object" && typeof module !== "undefined") {
-    module.exports = f();
-  } else if (typeof define === "function" && define.amd) {
-    define([], f);
-  } else {
-    var g;
-    g = this;
-    g.ELK = f();
-  }
+  var g;
+  g = globalThis;
+  g.ELK = f();
 })(function () {
   var define, module, exports;
   return (function () {

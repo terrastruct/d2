@@ -107,6 +107,52 @@ func GetRefRanges(args []js.Value) (interface{}, error) {
 	}, nil
 }
 
+func GetELKGraph(args []js.Value) (interface{}, error) {
+	if len(args) < 1 {
+		return nil, &WASMError{Message: "missing JSON argument", Code: 400}
+	}
+	var input CompileRequest
+	if err := json.Unmarshal([]byte(args[0].String()), &input); err != nil {
+		return nil, &WASMError{Message: "invalid JSON input", Code: 400}
+	}
+
+	if input.FS == nil {
+		return nil, &WASMError{Message: "missing 'fs' field in input JSON", Code: 400}
+	}
+
+	if _, ok := input.FS["index"]; !ok {
+		return nil, &WASMError{Message: "missing 'index' file in input fs", Code: 400}
+	}
+
+	fs, err := memfs.New(input.FS)
+	if err != nil {
+		return nil, &WASMError{Message: fmt.Sprintf("invalid fs input: %s", err.Error()), Code: 400}
+	}
+
+	g, _, err := d2compiler.Compile("", strings.NewReader(input.FS["index"]), &d2compiler.CompileOptions{
+		UTF16Pos: true,
+		FS:       fs,
+	})
+	if err != nil {
+		return nil, &WASMError{Message: err.Error(), Code: 400}
+	}
+
+	ruler, err := textmeasure.NewRuler()
+	if err != nil {
+		return nil, &WASMError{Message: fmt.Sprintf("text ruler cannot be initialized: %s", err.Error()), Code: 500}
+	}
+	err = g.SetDimensions(nil, ruler, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	elk, err := d2elklayout.ConvertGraph(context.Background(), g, nil)
+	if err != nil {
+		return nil, &WASMError{Message: err.Error(), Code: 400}
+	}
+	return elk, nil
+}
+
 func Compile(args []js.Value) (interface{}, error) {
 	if len(args) < 1 {
 		return nil, &WASMError{Message: "missing JSON argument", Code: 400}
