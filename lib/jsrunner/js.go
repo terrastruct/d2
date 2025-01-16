@@ -42,7 +42,12 @@ func (j *jsRunner) MustGet(key string) (JSValue, error) {
 	return &jsValue{val: result}, nil
 }
 
-func (j *jsRunner) RunString(code string) (JSValue, error) {
+func (j *jsRunner) RunString(code string) (_ JSValue, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("panic: %v", r)
+		}
+	}()
 	result := j.global.Call("eval", code)
 	return &jsValue{val: result}, nil
 }
