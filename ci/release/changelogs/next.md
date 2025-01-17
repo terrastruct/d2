@@ -5,6 +5,7 @@
 - Vars: vars in markdown blocks are substituted [#2218](https://github.com/terrastruct/d2/pull/2218)
 - Markdown: Github-flavored tables work in `md` blocks [#2221](https://github.com/terrastruct/d2/pull/2221)
 - `d2 fmt` now supports a `--check` flag [#2253](https://github.com/terrastruct/d2/pull/2253)
+- CLI: PNG output to stdout is supported using `--stdout-format png -` [#2291](https://github.com/terrastruct/d2/pull/2291)
 
 #### Improvements 🧹
 
