@@ -25,6 +25,18 @@ describe("D2 Unit Tests", () => {
     await d2.worker.terminate();
   }, 20000);
 
+  test("multiple renders works", async () => {
+    const d2 = new D2();
+    const result = await d2.compile("x -> y");
+    const svg = await d2.render(result.diagram);
+    expect(svg).toContain("<svg");
+    expect(svg).toContain("</svg>");
+    const result2 = await d2.compile("x -> y");
+    const svg2 = await d2.render(result2.diagram);
+    expect(svg).toEqual(svg2);
+    await d2.worker.terminate();
+  }, 20000);
+
   test("sketch render works", async () => {
     const d2 = new D2();
     const result = await d2.compile("x -> y", { sketch: true });
