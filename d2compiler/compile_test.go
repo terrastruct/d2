@@ -5198,6 +5198,23 @@ y.link: https://google.com
 			},
 		},
 		{
+			name: "exists-filter",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+**.style.fill: red {
+  &leaf: false
+}
+a.b.c
+`, ``)
+				assert.Equal(t, "a", g.Objects[0].ID)
+				assert.Equal(t, "red", g.Objects[0].Attributes.Style.Fill.Value)
+				assert.Equal(t, "b", g.Objects[1].Attributes.Style.Fill.Value)
+				assert.Equal(t, "red", g.Objects[1].Attributes.Style.Fill.Value)
+				assert.Equal(t, "c", g.Objects[2].Attributes.Style.Fill.Value)
+				assert.NotEqual(t, "red", g.Objects[2].Attributes.Style.Fill.Value)
+			},
+		},
+		{
 			name: "glob-filter",
 			run: func(t *testing.T) {
 				g, _ := assertCompile(t, `
