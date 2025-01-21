@@ -750,6 +750,17 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 				},
 			}
 			return c._ampersandFilter(f, refctx)
+		case "leaf":
+			raw := refctx.Key.Value.ScalarBox().Unbox().ScalarString()
+			boolVal, err := strconv.ParseBool(raw)
+			if err != nil {
+				c.errorf(refctx.Key, `&leaf must be "true" or "false", got %q`, raw)
+				return false
+			}
+
+			f := refctx.ScopeMap.Parent().(*Field)
+			isLeaf := f.Map() == nil || !f.Map().IsContainer()
+			return isLeaf == boolVal
 		case "label":
 			f := &Field{}
 			n := refctx.ScopeMap.Parent()

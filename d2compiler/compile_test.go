@@ -5198,20 +5198,21 @@ y.link: https://google.com
 			},
 		},
 		{
-			name: "exists-filter",
+			name: "leaf-filter",
 			run: func(t *testing.T) {
 				g, _ := assertCompile(t, `
-**.style.fill: red {
+**: {
   &leaf: false
+  style.fill: red
 }
 a.b.c
 `, ``)
 				assert.Equal(t, "a", g.Objects[0].ID)
 				assert.Equal(t, "red", g.Objects[0].Attributes.Style.Fill.Value)
-				assert.Equal(t, "b", g.Objects[1].Attributes.Style.Fill.Value)
+				assert.Equal(t, "b", g.Objects[1].ID)
 				assert.Equal(t, "red", g.Objects[1].Attributes.Style.Fill.Value)
-				assert.Equal(t, "c", g.Objects[2].Attributes.Style.Fill.Value)
-				assert.NotEqual(t, "red", g.Objects[2].Attributes.Style.Fill.Value)
+				assert.Equal(t, "c", g.Objects[2].ID)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Fill)
 			},
 		},
 		{
