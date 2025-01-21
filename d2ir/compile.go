@@ -750,6 +750,33 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 				},
 			}
 			return c._ampersandFilter(f, refctx)
+		case "leaf":
+			raw := refctx.Key.Value.ScalarBox().Unbox().ScalarString()
+			boolVal, err := strconv.ParseBool(raw)
+			if err != nil {
+				c.errorf(refctx.Key, `&leaf must be "true" or "false", got %q`, raw)
+				return false
+			}
+
+			f := refctx.ScopeMap.Parent().(*Field)
+			isLeaf := f.Map() == nil || !f.Map().IsContainer()
+			return isLeaf == boolVal
+		case "connected":
+			raw := refctx.Key.Value.ScalarBox().Unbox().ScalarString()
+			boolVal, err := strconv.ParseBool(raw)
+			if err != nil {
+				c.errorf(refctx.Key, `&connected must be "true" or "false", got %q`, raw)
+				return false
+			}
+			f := refctx.ScopeMap.Parent().(*Field)
+			isConnected := false
+			for _, r := range f.References {
+				if r.InEdge() {
+					isConnected = true
+					break
+				}
+			}
+			return isConnected == boolVal
 		case "label":
 			f := &Field{}
 			n := refctx.ScopeMap.Parent()

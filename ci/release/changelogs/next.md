@@ -6,6 +6,7 @@
 - Markdown: Github-flavored tables work in `md` blocks [#2221](https://github.com/terrastruct/d2/pull/2221)
 - `d2 fmt` now supports a `--check` flag [#2253](https://github.com/terrastruct/d2/pull/2253)
 - CLI: PNG output to stdout is supported using `--stdout-format png -` [#2291](https://github.com/terrastruct/d2/pull/2291)
+- Globs: `&connected` and `&leaf` filters are implemented [#2299](https://github.com/terrastruct/d2/pull/2299)
 
 #### Improvements 🧹
 
