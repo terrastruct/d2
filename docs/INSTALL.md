@@ -209,6 +209,23 @@ under plain Windows.
 aka Windows Subsystem for Linux if that's what you prefer. Installation is just like any
 other Linux system.
 
+### Native Package managers
+
+Some people have created releases for d2 on windows package managers based on the prebuilt releases!
+
+#### Scoop
+
+[Scoop](https://scoop.sh/) is a package manager for windows. It can be used to install d2 by running 
+```sh
+scoop install main/d2
+```
+
+#### Chocolatey
+[Chocolatey](https://chocolatey.org/) is a package manager for windows. It can be used to install d2 by running
+```sh
+choco install d2
+```
+
 ## Docker
 
 https://hub.docker.com/repository/docker/terrastruct/d2
