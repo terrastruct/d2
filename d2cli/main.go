@@ -129,6 +129,11 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		return err
 	}
 
+	noXMLTagFlag, err := ms.Opts.Bool("D2_NO_XML_TAG", "no-xml-tag", "", false, "omit XML tag (<?xml ...?>) from output SVG files. Useful when generating SVGs for direct HTML embedding")
+	if err != nil {
+		return err
+	}
+
 	plugins, err := d2plugin.ListPlugins(ctx)
 	if err != nil {
 		return err
@@ -318,6 +323,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		ThemeID:     themeFlag,
 		DarkThemeID: darkThemeFlag,
 		Scale:       scale,
+		NoXMLTag:    noXMLTagFlag,
 	}
 
 	if *watchFlag {
@@ -868,6 +874,7 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 		DarkThemeID:        opts.DarkThemeID,
 		ThemeOverrides:     opts.ThemeOverrides,
 		DarkThemeOverrides: opts.DarkThemeOverrides,
+		NoXMLTag:           opts.NoXMLTag,
 		Scale:              scale,
 	})
 	if err != nil {
