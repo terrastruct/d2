@@ -983,6 +983,29 @@ layers: {
 			},
 		},
 		{
+			name: "no_xml_tag",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "test.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "--no-xml-tag", "test.d2", "no-xml.svg")
+				assert.Success(t, err)
+				noXMLSvg := readFile(t, dir, "no-xml.svg")
+				assert.False(t, strings.Contains(string(noXMLSvg), "<?xml"))
+
+				writeFile(t, dir, "test.d2", `x -> y`)
+				err = runTestMain(t, ctx, dir, env, "test.d2", "with-xml.svg")
+				assert.Success(t, err)
+				withXMLSvg := readFile(t, dir, "with-xml.svg")
+				assert.True(t, strings.Contains(string(withXMLSvg), "<?xml"))
+
+				env.Setenv("D2_NO_XML_TAG", "1")
+				writeFile(t, dir, "test.d2", `x -> y`)
+				err = runTestMain(t, ctx, dir, env, "test.d2", "no-xml-env.svg")
+				assert.Success(t, err)
+				noXMLEnvSvg := readFile(t, dir, "no-xml-env.svg")
+				assert.False(t, strings.Contains(string(noXMLEnvSvg), "<?xml"))
+			},
+		},
+		{
 			name: "basic-fmt",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `x ---> y`)

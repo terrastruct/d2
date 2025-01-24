@@ -86,6 +86,7 @@ type RenderOpts struct {
 	// MasterID is passed when the diagram should use something other than its own hash for unique targeting
 	// Currently, that's when multi-boards are collapsed
 	MasterID string
+	NoXMLTag *bool
 }
 
 func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height int) {
@@ -2117,7 +2118,9 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 			w, h,
 			dimensions,
 		)
-		xmlTag = `<?xml version="1.0" encoding="utf-8"?>`
+		if opts.NoXMLTag == nil || !*opts.NoXMLTag {
+			xmlTag = `<?xml version="1.0" encoding="utf-8"?>`
+		}
 		fitToScreenWrapperClosing = "</svg>"
 		idAttr = `id="d2-svg"`
 		tag = "svg"
