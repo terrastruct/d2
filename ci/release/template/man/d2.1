@@ -151,6 +151,9 @@ Lists available themes
 .Ns .
 .It Ar fmt Ar file.d2 ...
 Format all passed files
+.It Fl -no-xml-tag Ar false
+Omit XML tag (<?xml ...?>) from output SVG files. Useful when generating SVGs for direct HTML embedding
+.Ns .
 .Ns .
 .El
 .Sh ENVIRONMENT VARIABLES
@@ -202,6 +205,8 @@ See -p[ort] flag.
 See --browser flag.
 .It Ev Sy D2_STDOUT_FORMAT
 See --stdout-format flag.
+.It Ev Sy D2_NO_XML_TAG
+See --no-xml-tag flag.
 .El
 .Sh SEE ALSO
 .Xr d2plugin-tala 1
