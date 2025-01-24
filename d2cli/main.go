@@ -129,7 +129,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		return err
 	}
 
-	noXMLTagFlag, err := ms.Opts.Bool("D2_NO_XML_TAG", "no-xml-tag", "", false, "suppress the XML declaration in SVG output")
+	noXMLTagFlag, err := ms.Opts.Bool("D2_NO_XML_TAG", "no-xml-tag", "", false, "omit XML tag (<?xml ...?>) from output SVG files. Useful when generating SVGs for direct HTML embedding")
 	if err != nil {
 		return err
 	}
