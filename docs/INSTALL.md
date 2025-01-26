@@ -16,6 +16,8 @@ You may install `d2` through any of the following methods.
 - [Windows](#windows)
   - [Release archives](#release-archives)
   - [WSL](#wsl)
+  - [Native Package managers](#native-package-managers)
+
 - [Docker](#docker)
 - [Coming soon](#coming-soon)
 
@@ -211,17 +213,17 @@ other Linux system.
 
 ### Native Package managers
 
-Some people have created releases for d2 on windows package managers based on the prebuilt releases!
+The following are community-managed Windows releases of d2 on popular package managers
 
 #### Scoop
 
-[Scoop](https://scoop.sh/) is a package manager for windows. It can be used to install d2 by running 
+[![scoop/d2 badge](https://img.shields.io/scoop/v/d2)](https://scoop.sh/#/apps?q=d2&id=06d1259ce6446dd25dafa1a6c57285159ec927b0)
 ```sh
 scoop install main/d2
 ```
 
 #### Chocolatey
-[Chocolatey](https://chocolatey.org/) is a package manager for windows. It can be used to install d2 by running
+[![chocolatey/d2_badge](https://img.shields.io/chocolatey/v/d2)]([https://chocolatey.org/](https://community.chocolatey.org/packages/d2/0.6.6))
 ```sh
 choco install d2
 ```
