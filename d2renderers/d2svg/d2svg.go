@@ -739,7 +739,7 @@ func defineShadowFilter(writer io.Writer) {
 </defs>`)
 }
 
-func render3DRect(targetShape d2target.Shape, inlineTheme *d2themes.Theme) string {
+func render3DRect(diagramHash string, targetShape d2target.Shape, inlineTheme *d2themes.Theme) string {
 	moveTo := func(p d2target.Point) string {
 		return fmt.Sprintf("M%d,%d", p.X+targetShape.Pos.X, p.Y+targetShape.Pos.Y)
 	}
@@ -781,7 +781,7 @@ func render3DRect(targetShape d2target.Shape, inlineTheme *d2themes.Theme) strin
 	renderedBorder := border.Render()
 
 	// create mask from border stroke, to cut away from the shape fills
-	maskID := fmt.Sprintf("border-mask-%v", svg.EscapeText(targetShape.ID))
+	maskID := fmt.Sprintf("border-mask-%v-%v", diagramHash, svg.EscapeText(targetShape.ID))
 	borderMask := strings.Join([]string{
 		fmt.Sprintf(`<defs><mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
 			maskID, targetShape.Pos.X, targetShape.Pos.Y-d2target.THREE_DEE_OFFSET, targetShape.Width+d2target.THREE_DEE_OFFSET, targetShape.Height+d2target.THREE_DEE_OFFSET,
@@ -835,7 +835,7 @@ func render3DRect(targetShape d2target.Shape, inlineTheme *d2themes.Theme) strin
 	return borderMask + mainShapeRendered + renderedSides + renderedBorder
 }
 
-func render3DHexagon(targetShape d2target.Shape, inlineTheme *d2themes.Theme) string {
+func render3DHexagon(diagramHash string, targetShape d2target.Shape, inlineTheme *d2themes.Theme) string {
 	moveTo := func(p d2target.Point) string {
 		return fmt.Sprintf("M%d,%d", p.X+targetShape.Pos.X, p.Y+targetShape.Pos.Y)
 	}
@@ -905,7 +905,7 @@ func render3DHexagon(targetShape d2target.Shape, inlineTheme *d2themes.Theme) st
 
 	mainPointsPoly := strings.Join(mainPoints, " ")
 	// create mask from border stroke, to cut away from the shape fills
-	maskID := fmt.Sprintf("border-mask-%v", svg.EscapeText(targetShape.ID))
+	maskID := fmt.Sprintf("border-mask-%v-%v", diagramHash, svg.EscapeText(targetShape.ID))
 	borderMask := strings.Join([]string{
 		fmt.Sprintf(`<defs><mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
 			maskID, targetShape.Pos.X, targetShape.Pos.Y-d2target.THREE_DEE_OFFSET, targetShape.Width+d2target.THREE_DEE_OFFSET, targetShape.Height+d2target.THREE_DEE_OFFSET,
@@ -1099,7 +1099,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			borderRadius = float64(targetShape.BorderRadius)
 		}
 		if targetShape.ThreeDee {
-			fmt.Fprint(writer, render3DRect(targetShape, inlineTheme))
+			fmt.Fprint(writer, render3DRect(diagramHash, targetShape, inlineTheme))
 		} else {
 			if !targetShape.DoubleBorder {
 				if targetShape.Multiple {
@@ -1192,7 +1192,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		}
 	case d2target.ShapeHexagon:
 		if targetShape.ThreeDee {
-			fmt.Fprint(writer, render3DHexagon(targetShape, inlineTheme))
+			fmt.Fprint(writer, render3DHexagon(diagramHash, targetShape, inlineTheme))
 		} else {
 			if targetShape.Multiple {
 				multiplePathData := shape.NewShape(shapeType, geo.NewBox(multipleTL, width, height)).GetSVGPathData()
