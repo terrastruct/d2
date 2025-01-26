@@ -5,6 +5,7 @@ package d2svg
 import (
 	"bytes"
 	_ "embed"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"hash/fnv"
@@ -508,7 +509,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 	if len(connection.Classes) > 0 {
 		classStr = fmt.Sprintf(` class="%s"`, strings.Join(connection.Classes, " "))
 	}
-	fmt.Fprintf(writer, `<g id="%s"%s%s>`, svg.EscapeText(connection.ID), opacityStyle, classStr)
+	fmt.Fprintf(writer, `<g class="%s"%s%s>`, base64.URLEncoding.EncodeToString([]byte(svg.EscapeText(connection.ID))), opacityStyle, classStr)
 	var markerStart string
 	if connection.SrcArrow != d2target.NoArrowhead {
 		id := arrowheadMarkerID(false, connection)
@@ -984,7 +985,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	if len(targetShape.Classes) > 0 {
 		classStr = fmt.Sprintf(` class="%s"`, strings.Join(targetShape.Classes, " "))
 	}
-	fmt.Fprintf(writer, `<g id="%s"%s%s>`, svg.EscapeText(targetShape.ID), opacityStyle, classStr)
+	fmt.Fprintf(writer, `<g class="%s"%s%s>`, base64.URLEncoding.EncodeToString([]byte(svg.EscapeText(targetShape.ID))), opacityStyle, classStr)
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
 	height := float64(targetShape.Height)
