@@ -2112,7 +2112,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	tag := "g"
 	// Many things change when this is rendering for animation
 	if opts.MasterID == "" {
-		fitToScreenWrapperOpening = fmt.Sprintf(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="%s" preserveAspectRatio="%s meet" viewBox="0 0 %d %d"%s>`,
+		fitToScreenWrapperOpening = fmt.Sprintf(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-d2-version="%s" preserveAspectRatio="%s meet" viewBox="0 0 %d %d"%s>`,
 			version.Version,
 			alignment,
 			w, h,
