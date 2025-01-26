@@ -2123,7 +2123,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 			xmlTag = `<?xml version="1.0" encoding="utf-8"?>`
 		}
 		fitToScreenWrapperClosing = "</svg>"
-		idAttr = `id="d2-svg"`
+		idAttr = `class="d2-svg"`
 		tag = "svg"
 	}
 
