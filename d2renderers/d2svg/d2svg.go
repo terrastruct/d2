@@ -100,7 +100,7 @@ func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height in
 	return left, top, width, height
 }
 
-func arrowheadMarkerID(isTarget bool, connection d2target.Connection) string {
+func arrowheadMarkerID(diagramHash string, isTarget bool, connection d2target.Connection) string {
 	var arrowhead d2target.Arrowhead
 	if isTarget {
 		arrowhead = connection.DstArrow
@@ -108,7 +108,7 @@ func arrowheadMarkerID(isTarget bool, connection d2target.Connection) string {
 		arrowhead = connection.SrcArrow
 	}
 
-	return fmt.Sprintf("mk-%s", hash(fmt.Sprintf("%s,%t,%d,%s",
+	return fmt.Sprintf("mk-%s-%s", diagramHash, hash(fmt.Sprintf("%s,%t,%d,%s",
 		arrowhead, isTarget, connection.StrokeWidth, connection.Stroke,
 	)))
 }
@@ -499,7 +499,7 @@ func makeLabelMask(labelTL *geo.Point, width, height int, opacity float64) strin
 	)
 }
 
-func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, jsRunner jsrunner.JSRunner, inlineTheme *d2themes.Theme) (labelMask string, _ error) {
+func drawConnection(writer io.Writer, diagramHash string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, jsRunner jsrunner.JSRunner, inlineTheme *d2themes.Theme) (labelMask string, _ error) {
 	opacityStyle := ""
 	if connection.Opacity != 1.0 {
 		opacityStyle = fmt.Sprintf(" style='opacity:%f'", connection.Opacity)
@@ -512,7 +512,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 	fmt.Fprintf(writer, `<g class="%s"%s%s>`, base64.URLEncoding.EncodeToString([]byte(svg.EscapeText(connection.ID))), opacityStyle, classStr)
 	var markerStart string
 	if connection.SrcArrow != d2target.NoArrowhead {
-		id := arrowheadMarkerID(false, connection)
+		id := arrowheadMarkerID(diagramHash, false, connection)
 		if _, in := markers[id]; !in {
 			marker := arrowheadMarker(false, id, connection, inlineTheme)
 			if marker == "" {
@@ -526,7 +526,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 
 	var markerEnd string
 	if connection.DstArrow != d2target.NoArrowhead {
-		id := arrowheadMarkerID(true, connection)
+		id := arrowheadMarkerID(diagramHash, true, connection)
 		if _, in := markers[id]; !in {
 			marker := arrowheadMarker(true, id, connection, inlineTheme)
 			if marker == "" {
@@ -553,7 +553,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 
 	srcAdj, dstAdj := getArrowheadAdjustments(connection, idToShape)
 	path := pathData(connection, srcAdj, dstAdj)
-	mask := fmt.Sprintf(`mask="url(#%s)"`, labelMaskID)
+	mask := fmt.Sprintf(`mask="url(#%s)"`, diagramHash)
 
 	if jsRunner != nil {
 		out, err := d2sketch.Connection(jsRunner, connection, path, mask)
