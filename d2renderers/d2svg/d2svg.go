@@ -2123,17 +2123,16 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 			xmlTag = `<?xml version="1.0" encoding="utf-8"?>`
 		}
 		fitToScreenWrapperClosing = "</svg>"
-		idAttr = `class="d2-svg"`
+		idAttr = `d2-svg`
 		tag = "svg"
 	}
 
 	// TODO minify
-	docRendered := fmt.Sprintf(`%s%s<%s %s class="%s" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s%s</%s>%s`,
+	docRendered := fmt.Sprintf(`%s%s<%s class="%s" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s%s</%s>%s`,
 		xmlTag,
 		fitToScreenWrapperOpening,
 		tag,
-		idAttr,
-		diagramHash,
+		strings.Join([]string{diagramHash, idAttr}, " "),
 		w, h, left, top, w, h,
 		doubleBorderElStr,
 		backgroundEl.Render(),
