@@ -5,6 +5,7 @@ package d2svg
 import (
 	"bytes"
 	_ "embed"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"hash/fnv"
@@ -99,7 +100,7 @@ func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height in
 	return left, top, width, height
 }
 
-func arrowheadMarkerID(isTarget bool, connection d2target.Connection) string {
+func arrowheadMarkerID(diagramHash string, isTarget bool, connection d2target.Connection) string {
 	var arrowhead d2target.Arrowhead
 	if isTarget {
 		arrowhead = connection.DstArrow
@@ -107,7 +108,7 @@ func arrowheadMarkerID(isTarget bool, connection d2target.Connection) string {
 		arrowhead = connection.SrcArrow
 	}
 
-	return fmt.Sprintf("mk-%s", hash(fmt.Sprintf("%s,%t,%d,%s",
+	return fmt.Sprintf("mk-%s-%s", diagramHash, hash(fmt.Sprintf("%s,%t,%d,%s",
 		arrowhead, isTarget, connection.StrokeWidth, connection.Stroke,
 	)))
 }
@@ -498,7 +499,7 @@ func makeLabelMask(labelTL *geo.Point, width, height int, opacity float64) strin
 	)
 }
 
-func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, jsRunner jsrunner.JSRunner, inlineTheme *d2themes.Theme) (labelMask string, _ error) {
+func drawConnection(writer io.Writer, diagramHash string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, jsRunner jsrunner.JSRunner, inlineTheme *d2themes.Theme) (labelMask string, _ error) {
 	opacityStyle := ""
 	if connection.Opacity != 1.0 {
 		opacityStyle = fmt.Sprintf(" style='opacity:%f'", connection.Opacity)
@@ -508,10 +509,10 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 	if len(connection.Classes) > 0 {
 		classStr = fmt.Sprintf(` class="%s"`, strings.Join(connection.Classes, " "))
 	}
-	fmt.Fprintf(writer, `<g id="%s"%s%s>`, svg.EscapeText(connection.ID), opacityStyle, classStr)
+	fmt.Fprintf(writer, `<g class="%s"%s%s>`, base64.URLEncoding.EncodeToString([]byte(svg.EscapeText(connection.ID))), opacityStyle, classStr)
 	var markerStart string
 	if connection.SrcArrow != d2target.NoArrowhead {
-		id := arrowheadMarkerID(false, connection)
+		id := arrowheadMarkerID(diagramHash, false, connection)
 		if _, in := markers[id]; !in {
 			marker := arrowheadMarker(false, id, connection, inlineTheme)
 			if marker == "" {
@@ -525,7 +526,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 
 	var markerEnd string
 	if connection.DstArrow != d2target.NoArrowhead {
-		id := arrowheadMarkerID(true, connection)
+		id := arrowheadMarkerID(diagramHash, true, connection)
 		if _, in := markers[id]; !in {
 			marker := arrowheadMarker(true, id, connection, inlineTheme)
 			if marker == "" {
@@ -552,7 +553,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 
 	srcAdj, dstAdj := getArrowheadAdjustments(connection, idToShape)
 	path := pathData(connection, srcAdj, dstAdj)
-	mask := fmt.Sprintf(`mask="url(#%s)"`, labelMaskID)
+	mask := fmt.Sprintf(`mask="url(#%s)"`, diagramHash)
 
 	if jsRunner != nil {
 		out, err := d2sketch.Connection(jsRunner, connection, path, mask)
@@ -738,7 +739,7 @@ func defineShadowFilter(writer io.Writer) {
 </defs>`)
 }
 
-func render3DRect(targetShape d2target.Shape, inlineTheme *d2themes.Theme) string {
+func render3DRect(diagramHash string, targetShape d2target.Shape, inlineTheme *d2themes.Theme) string {
 	moveTo := func(p d2target.Point) string {
 		return fmt.Sprintf("M%d,%d", p.X+targetShape.Pos.X, p.Y+targetShape.Pos.Y)
 	}
@@ -780,7 +781,7 @@ func render3DRect(targetShape d2target.Shape, inlineTheme *d2themes.Theme) strin
 	renderedBorder := border.Render()
 
 	// create mask from border stroke, to cut away from the shape fills
-	maskID := fmt.Sprintf("border-mask-%v", svg.EscapeText(targetShape.ID))
+	maskID := fmt.Sprintf("border-mask-%v-%v", diagramHash, svg.EscapeText(targetShape.ID))
 	borderMask := strings.Join([]string{
 		fmt.Sprintf(`<defs><mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
 			maskID, targetShape.Pos.X, targetShape.Pos.Y-d2target.THREE_DEE_OFFSET, targetShape.Width+d2target.THREE_DEE_OFFSET, targetShape.Height+d2target.THREE_DEE_OFFSET,
@@ -834,7 +835,7 @@ func render3DRect(targetShape d2target.Shape, inlineTheme *d2themes.Theme) strin
 	return borderMask + mainShapeRendered + renderedSides + renderedBorder
 }
 
-func render3DHexagon(targetShape d2target.Shape, inlineTheme *d2themes.Theme) string {
+func render3DHexagon(diagramHash string, targetShape d2target.Shape, inlineTheme *d2themes.Theme) string {
 	moveTo := func(p d2target.Point) string {
 		return fmt.Sprintf("M%d,%d", p.X+targetShape.Pos.X, p.Y+targetShape.Pos.Y)
 	}
@@ -904,7 +905,7 @@ func render3DHexagon(targetShape d2target.Shape, inlineTheme *d2themes.Theme) st
 
 	mainPointsPoly := strings.Join(mainPoints, " ")
 	// create mask from border stroke, to cut away from the shape fills
-	maskID := fmt.Sprintf("border-mask-%v", svg.EscapeText(targetShape.ID))
+	maskID := fmt.Sprintf("border-mask-%v-%v", diagramHash, svg.EscapeText(targetShape.ID))
 	borderMask := strings.Join([]string{
 		fmt.Sprintf(`<defs><mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
 			maskID, targetShape.Pos.X, targetShape.Pos.Y-d2target.THREE_DEE_OFFSET, targetShape.Width+d2target.THREE_DEE_OFFSET, targetShape.Height+d2target.THREE_DEE_OFFSET,
@@ -984,7 +985,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	if len(targetShape.Classes) > 0 {
 		classStr = fmt.Sprintf(` class="%s"`, strings.Join(targetShape.Classes, " "))
 	}
-	fmt.Fprintf(writer, `<g id="%s"%s%s>`, svg.EscapeText(targetShape.ID), opacityStyle, classStr)
+	fmt.Fprintf(writer, `<g class="%s"%s%s>`, base64.URLEncoding.EncodeToString([]byte(svg.EscapeText(targetShape.ID))), opacityStyle, classStr)
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
 	height := float64(targetShape.Height)
@@ -1098,7 +1099,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			borderRadius = float64(targetShape.BorderRadius)
 		}
 		if targetShape.ThreeDee {
-			fmt.Fprint(writer, render3DRect(targetShape, inlineTheme))
+			fmt.Fprint(writer, render3DRect(diagramHash, targetShape, inlineTheme))
 		} else {
 			if !targetShape.DoubleBorder {
 				if targetShape.Multiple {
@@ -1191,7 +1192,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		}
 	case d2target.ShapeHexagon:
 		if targetShape.ThreeDee {
-			fmt.Fprint(writer, render3DHexagon(targetShape, inlineTheme))
+			fmt.Fprint(writer, render3DHexagon(diagramHash, targetShape, inlineTheme))
 		} else {
 			if targetShape.Multiple {
 				multiplePathData := shape.NewShape(shapeType, geo.NewBox(multipleTL, width, height)).GetSVGPathData()
@@ -2112,7 +2113,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	tag := "g"
 	// Many things change when this is rendering for animation
 	if opts.MasterID == "" {
-		fitToScreenWrapperOpening = fmt.Sprintf(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="%s" preserveAspectRatio="%s meet" viewBox="0 0 %d %d"%s>`,
+		fitToScreenWrapperOpening = fmt.Sprintf(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-d2-version="%s" preserveAspectRatio="%s meet" viewBox="0 0 %d %d"%s>`,
 			version.Version,
 			alignment,
 			w, h,
@@ -2122,17 +2123,16 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 			xmlTag = `<?xml version="1.0" encoding="utf-8"?>`
 		}
 		fitToScreenWrapperClosing = "</svg>"
-		idAttr = `id="d2-svg"`
+		idAttr = `d2-svg`
 		tag = "svg"
 	}
 
 	// TODO minify
-	docRendered := fmt.Sprintf(`%s%s<%s %s class="%s" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s%s</%s>%s`,
+	docRendered := fmt.Sprintf(`%s%s<%s class="%s" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s%s</%s>%s`,
 		xmlTag,
 		fitToScreenWrapperOpening,
 		tag,
-		idAttr,
-		diagramHash,
+		strings.Join([]string{diagramHash, idAttr}, " "),
 		w, h, left, top, w, h,
 		doubleBorderElStr,
 		backgroundEl.Render(),

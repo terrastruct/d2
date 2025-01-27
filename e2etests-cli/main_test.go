@@ -1442,7 +1442,9 @@ func testdataIgnoreDiff(tb testing.TB, ext string, got []byte) {
 // getNumBoards gets the number of boards in an SVG file through a non-robust pattern search
 // If the renderer changes, this must change
 func getNumBoards(svg string) int {
-	return strings.Count(svg, `class="d2`)
+	re := regexp.MustCompile(`class="d2-\d+`)
+	matches := re.FindAllString(svg, -1)
+	return len(matches)
 }
 
 var errRE = regexp.MustCompile(`err:`)

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="v0.6.8-HEAD" preserveAspectRatio="xMinYMin meet" viewBox="0 0 1288 2192"><svg id="d2-svg" class="d2-4057630444" width="1288" height="2192" viewBox="11 11 1288 2192"><rect x="11.000000" y="11.000000" width="1288.000000" height="2192.000000" rx="0.000000" fill="#FFFFFF" class=" fill-N7" stroke-width="0" /><style type="text/css"><![CDATA[
+<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-d2-version="v0.6.8-HEAD" preserveAspectRatio="xMinYMin meet" viewBox="0 0 1288 2192"><svg class="d2-4057630444 d2-svg" width="1288" height="2192" viewBox="11 11 1288 2192"><rect x="11.000000" y="11.000000" width="1288.000000" height="2192.000000" rx="0.000000" fill="#FFFFFF" class=" fill-N7" stroke-width="0" /><style type="text/css"><![CDATA[
 .d2-4057630444 .text {
 	font-family: "d2-4057630444-font-regular";
 }
@@ -842,7 +842,7 @@
 .d2-4057630444 .md .contains-task-list:dir(rtl) .task-list-item-checkbox {
   margin: 0 -1.6em 0.25em 0.2em;
 }
-</style><g id="savings"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="12.000000" y="386.000000" width="343" height="150"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:#e8f4f8"><table>
+</style><g class="c2F2aW5ncw=="><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="12.000000" y="386.000000" width="343" height="150"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:#e8f4f8"><table>
 <thead>
 <tr>
 <th>Month</th>
@@ -872,7 +872,7 @@
 </tr>
 </tbody>
 </table>
-</div></foreignObject></g></g><g id="status"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="112.000000" y="921.000000" width="142" height="113"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:#f8e8e8"><table>
+</div></foreignObject></g></g><g class="c3RhdHVz"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="112.000000" y="921.000000" width="142" height="113"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:#f8e8e8"><table>
 <thead>
 <tr>
 <th>Status</th>
@@ -890,7 +890,7 @@
 </tr>
 </tbody>
 </table>
-</div></foreignObject></g></g><g id="metrics"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="97.000000" y="1419.000000" width="173" height="335"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:#f0f8e8"><table>
+</div></foreignObject></g></g><g class="bWV0cmljcw=="><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="97.000000" y="1419.000000" width="173" height="335"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:#f0f8e8"><table>
 <thead>
 <tr>
 <th>Metric</th>
@@ -932,9 +932,9 @@
 </tr>
 </tbody>
 </table>
-</div></foreignObject></g></g><g id="financial"><g class="shape" ><rect x="579.000000" y="12.000000" width="429.000000" height="524.000000" stroke="#0D32B2" fill="#e8f4f8" class=" stroke-B1" style="stroke-width:2;" /></g><text x="793.500000" y="45.000000" fill="#0A0F25" class="text fill-N1" style="text-anchor:middle;font-size:28px">Financial Overview</text></g><g id="monitoring"><g class="shape" ><defs><mask id="border-mask-monitoring" maskUnits="userSpaceOnUse" x="565" y="697" width="457" height="561">
+</div></foreignObject></g></g><g class="ZmluYW5jaWFs"><g class="shape" ><rect x="579.000000" y="12.000000" width="429.000000" height="524.000000" stroke="#0D32B2" fill="#e8f4f8" class=" stroke-B1" style="stroke-width:2;" /></g><text x="793.500000" y="45.000000" fill="#0A0F25" class="text fill-N1" style="text-anchor:middle;font-size:28px">Financial Overview</text></g><g class="bW9uaXRvcmluZw=="><g class="shape" ><defs><mask id="border-mask-d2-4057630444-monitoring" maskUnits="userSpaceOnUse" x="565" y="697" width="457" height="561">
 <rect x="565" y="697" width="457" height="561" fill="white"></rect>
-<path d="M565,712L580,697L1022,697L1022,1243L1007,1258L565,1258L565,712L1007,712L1007,1258M1007,712L1022,697" style="stroke-width:2;;stroke:#000;fill:none;opacity:1;"/></mask></defs><rect x="565.000000" y="712.000000" width="442.000000" height="546.000000" mask="url(#border-mask-monitoring)" stroke="none" fill="#f8e8e8" style="stroke-width:2;" /><polygon mask="url(#border-mask-monitoring)" points="565,712 580,697 1022,697 1022,1243 1007,1258 1007,712" fill="#ecc1c1" style="stroke-width:2;" /><path d="M565,712 L580,697 L1022,697 L1022,1243 L1007,1258 L565,1258 L565,712 L1007,712 L1007,1258 M1007,712 L1022,697" stroke="#0D32B2" fill="none" class=" stroke-B1" style="stroke-width:2;" /></g><text x="786.000000" y="745.000000" fill="#0A0F25" class="text fill-N1" style="text-anchor:middle;font-size:28px">System Health</text></g><g id="projects"><g class="shape" ><rect x="290.000000" y="1461.000000" width="1008.000000" height="250.000000" stroke="#4a90e2" fill="#e8f8e8" style="stroke-width:2;" /><rect x="295.000000" y="1466.000000" width="998.000000" height="240.000000" stroke="#4a90e2" fill="transparent" style="stroke-width:2;" /></g><text x="794.000000" y="1494.000000" fill="#0A0F25" class="text fill-N1" style="text-anchor:middle;font-size:28px">Project Tracking</text></g><g id="team"><g class="shape" ><rect x="568.000000" y="1915.000000" width="451.000000" height="287.000000" stroke="#0D32B2" fill="#f8f0e8" class=" stroke-B1" style="stroke-width:2;" /></g><text x="793.500000" y="1948.000000" fill="#0A0F25" class="text fill-N1" style="text-anchor:middle;font-size:28px">Team Analytics</text></g><g id="financial.monthly"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="629.000000" y="62.000000" width="329" height="150"><div xmlns="http://www.w3.org/1999/xhtml" class="md"><table>
+<path d="M565,712L580,697L1022,697L1022,1243L1007,1258L565,1258L565,712L1007,712L1007,1258M1007,712L1022,697" style="stroke-width:2;;stroke:#000;fill:none;opacity:1;"/></mask></defs><rect x="565.000000" y="712.000000" width="442.000000" height="546.000000" mask="url(#border-mask-d2-4057630444-monitoring)" stroke="none" fill="#f8e8e8" style="stroke-width:2;" /><polygon mask="url(#border-mask-d2-4057630444-monitoring)" points="565,712 580,697 1022,697 1022,1243 1007,1258 1007,712" fill="#ecc1c1" style="stroke-width:2;" /><path d="M565,712 L580,697 L1022,697 L1022,1243 L1007,1258 L565,1258 L565,712 L1007,712 L1007,1258 M1007,712 L1022,697" stroke="#0D32B2" fill="none" class=" stroke-B1" style="stroke-width:2;" /></g><text x="786.000000" y="745.000000" fill="#0A0F25" class="text fill-N1" style="text-anchor:middle;font-size:28px">System Health</text></g><g class="cHJvamVjdHM="><g class="shape" ><rect x="290.000000" y="1461.000000" width="1008.000000" height="250.000000" stroke="#4a90e2" fill="#e8f8e8" style="stroke-width:2;" /><rect x="295.000000" y="1466.000000" width="998.000000" height="240.000000" stroke="#4a90e2" fill="transparent" style="stroke-width:2;" /></g><text x="794.000000" y="1494.000000" fill="#0A0F25" class="text fill-N1" style="text-anchor:middle;font-size:28px">Project Tracking</text></g><g class="dGVhbQ=="><g class="shape" ><rect x="568.000000" y="1915.000000" width="451.000000" height="287.000000" stroke="#0D32B2" fill="#f8f0e8" class=" stroke-B1" style="stroke-width:2;" /></g><text x="793.500000" y="1948.000000" fill="#0A0F25" class="text fill-N1" style="text-anchor:middle;font-size:28px">Team Analytics</text></g><g class="ZmluYW5jaWFsLm1vbnRobHk="><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="629.000000" y="62.000000" width="329" height="150"><div xmlns="http://www.w3.org/1999/xhtml" class="md"><table>
 <thead>
 <tr>
 <th>Month</th>
@@ -964,7 +964,7 @@
 </tr>
 </tbody>
 </table>
-</div></foreignObject></g></g><g id="financial.quarterly"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="636.000000" y="373.000000" width="315" height="113"><div xmlns="http://www.w3.org/1999/xhtml" class="md"><table>
+</div></foreignObject></g></g><g class="ZmluYW5jaWFsLnF1YXJ0ZXJseQ=="><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="636.000000" y="373.000000" width="315" height="113"><div xmlns="http://www.w3.org/1999/xhtml" class="md"><table>
 <thead>
 <tr>
 <th align="left">Quarter</th>
@@ -988,7 +988,7 @@
 </tr>
 </tbody>
 </table>
-</div></foreignObject></g></g><g id="monitoring.availability"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="608.000000" y="754.000000" width="357" height="150"><div xmlns="http://www.w3.org/1999/xhtml" class="md"><table>
+</div></foreignObject></g></g><g class="bW9uaXRvcmluZy5hdmFpbGFiaWxpdHk="><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="608.000000" y="754.000000" width="357" height="150"><div xmlns="http://www.w3.org/1999/xhtml" class="md"><table>
 <thead>
 <tr>
 <th align="left">Service</th>
@@ -1018,7 +1018,7 @@
 </tr>
 </tbody>
 </table>
-</div></foreignObject></g></g><g id="monitoring.performance"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="614.000000" y="1065.000000" width="344" height="150"><div xmlns="http://www.w3.org/1999/xhtml" class="md"><table>
+</div></foreignObject></g></g><g class="bW9uaXRvcmluZy5wZXJmb3JtYW5jZQ=="><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="614.000000" y="1065.000000" width="344" height="150"><div xmlns="http://www.w3.org/1999/xhtml" class="md"><table>
 <thead>
 <tr>
 <th align="left">Metric</th>
@@ -1048,7 +1048,7 @@
 </tr>
 </tbody>
 </table>
-</div></foreignObject></g></g><g id="projects.status"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="340.000000" y="1511.000000" width="425" height="150"><div xmlns="http://www.w3.org/1999/xhtml" class="md"><table>
+</div></foreignObject></g></g><g class="cHJvamVjdHMuc3RhdHVz"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="340.000000" y="1511.000000" width="425" height="150"><div xmlns="http://www.w3.org/1999/xhtml" class="md"><table>
 <thead>
 <tr>
 <th>Project</th>
@@ -1082,7 +1082,7 @@
 </tr>
 </tbody>
 </table>
-</div></foreignObject></g></g><g id="projects.risks"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="785.000000" y="1511.000000" width="463" height="150"><div xmlns="http://www.w3.org/1999/xhtml" class="md"><table>
+</div></foreignObject></g></g><g class="cHJvamVjdHMucmlza3M="><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="785.000000" y="1511.000000" width="463" height="150"><div xmlns="http://www.w3.org/1999/xhtml" class="md"><table>
 <thead>
 <tr>
 <th align="center">Risk ID</th>
@@ -1112,7 +1112,7 @@
 </tr>
 </tbody>
 </table>
-</div></foreignObject></g></g><g id="team.velocity"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="618.000000" y="1965.000000" width="351" height="187"><div xmlns="http://www.w3.org/1999/xhtml" class="md"><table>
+</div></foreignObject></g></g><g class="dGVhbS52ZWxvY2l0eQ=="><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="618.000000" y="1965.000000" width="351" height="187"><div xmlns="http://www.w3.org/1999/xhtml" class="md"><table>
 <thead>
 <tr>
 <th align="left">Sprint</th>
@@ -1148,7 +1148,7 @@
 </tr>
 </tbody>
 </table>
-</div></foreignObject></g></g><g id="(savings -&gt; status)[0]"><marker id="mk-2177206569" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" fill="#0D32B2" class="connection fill-B2" stroke-width="2" /> </marker><path d="M 183.500000 538.000000 L 183.500000 917.000000" stroke="#0D32B2" fill="none" class="connection stroke-B2" style="stroke-width:2;stroke-dasharray:10.000000,9.865639;" marker-end="url(#mk-2177206569)" mask="url(#d2-4057630444)" /><text x="184.000000" y="734.000000" fill="#676C7E" class="text-italic fill-N2" style="text-anchor:middle;font-size:16px">Triggers</text></g><g id="(status -&gt; metrics)[0]"><marker id="mk-3488378134" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" fill="#0D32B2" class="connection fill-B1" stroke-width="2" /> </marker><path d="M 183.500000 1036.000000 L 183.500000 1415.000000" stroke="#0D32B2" fill="none" class="connection stroke-B1" style="stroke-width:2;" marker-end="url(#mk-3488378134)" mask="url(#d2-4057630444)" /><text x="184.000000" y="1232.000000" fill="#676C7E" class="text-italic fill-N2" style="text-anchor:middle;font-size:16px">Monitors</text></g><g id="financial.(monthly -&gt; quarterly)[0]"><path d="M 794.000000 214.000000 L 794.000000 369.000000" stroke="#0D32B2" fill="none" class="connection stroke-B1" style="stroke-width:2;" marker-end="url(#mk-3488378134)" mask="url(#d2-4057630444)" /><text x="794.500000" y="298.000000" fill="#676C7E" class="text-italic fill-N2" style="text-anchor:middle;font-size:16px">Aggregates</text></g><g id="monitoring.(availability -&gt; performance)[0]"><path d="M 786.500000 906.500000 L 786.500000 1061.500000" stroke="#0D32B2" fill="none" class="connection stroke-B1" style="stroke-width:2;" marker-end="url(#mk-3488378134)" mask="url(#d2-4057630444)" /><text x="787.000000" y="991.000000" fill="#676C7E" class="text-italic fill-N2" style="text-anchor:middle;font-size:16px">Affects</text></g><g id="(financial -&gt; monitoring)[0]"><path d="M 794.000000 538.000000 L 794.000000 693.000000" stroke="#0D32B2" fill="none" class="connection stroke-B1" style="stroke-width:2;" marker-end="url(#mk-3488378134)" mask="url(#d2-4057630444)" /><text x="794.000000" y="622.000000" fill="#676C7E" class="text-italic fill-N2" style="text-anchor:middle;font-size:16px">Impacts</text></g><g id="(monitoring -&gt; projects)[0]"><path d="M 794.000000 1259.500000 L 794.000000 1457.500000" stroke="#0D32B2" fill="none" class="connection stroke-B2" style="stroke-width:2;stroke-dasharray:10.000000,9.865639;" marker-end="url(#mk-2177206569)" mask="url(#d2-4057630444)" /><text x="794.500000" y="1365.000000" fill="#676C7E" class="text-italic fill-N2" style="text-anchor:middle;font-size:16px">Informs</text></g><g id="(projects -&gt; team)[0]"><path d="M 794.000000 1713.000000 L 794.000000 1911.000000" stroke="#0D32B2" fill="none" class="connection animated-connection stroke-B1" style="stroke-width:2;stroke-dasharray:10.000000,9.865639;stroke-dashoffset:-198.656393;animation: dashdraw 4.932820s linear infinite;" marker-end="url(#mk-3488378134)" mask="url(#d2-4057630444)" /><text x="794.000000" y="1819.000000" fill="#676C7E" class="text-italic fill-N2" style="text-anchor:middle;font-size:16px">Assigns</text></g><mask id="d2-4057630444" maskUnits="userSpaceOnUse" x="11" y="11" width="1288" height="2192">
+</div></foreignObject></g></g><g class="KHNhdmluZ3MgLSZndDsgc3RhdHVzKVswXQ=="><marker id="mk-d2-4057630444-2177206569" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" fill="#0D32B2" class="connection fill-B2" stroke-width="2" /> </marker><path d="M 183.500000 538.000000 L 183.500000 917.000000" stroke="#0D32B2" fill="none" class="connection stroke-B2" style="stroke-width:2;stroke-dasharray:10.000000,9.865639;" marker-end="url(#mk-d2-4057630444-2177206569)" mask="url(#d2-4057630444)" /><text x="184.000000" y="734.000000" fill="#676C7E" class="text-italic fill-N2" style="text-anchor:middle;font-size:16px">Triggers</text></g><g class="KHN0YXR1cyAtJmd0OyBtZXRyaWNzKVswXQ=="><marker id="mk-d2-4057630444-3488378134" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" fill="#0D32B2" class="connection fill-B1" stroke-width="2" /> </marker><path d="M 183.500000 1036.000000 L 183.500000 1415.000000" stroke="#0D32B2" fill="none" class="connection stroke-B1" style="stroke-width:2;" marker-end="url(#mk-d2-4057630444-3488378134)" mask="url(#d2-4057630444)" /><text x="184.000000" y="1232.000000" fill="#676C7E" class="text-italic fill-N2" style="text-anchor:middle;font-size:16px">Monitors</text></g><g class="ZmluYW5jaWFsLihtb250aGx5IC0mZ3Q7IHF1YXJ0ZXJseSlbMF0="><path d="M 794.000000 214.000000 L 794.000000 369.000000" stroke="#0D32B2" fill="none" class="connection stroke-B1" style="stroke-width:2;" marker-end="url(#mk-d2-4057630444-3488378134)" mask="url(#d2-4057630444)" /><text x="794.500000" y="298.000000" fill="#676C7E" class="text-italic fill-N2" style="text-anchor:middle;font-size:16px">Aggregates</text></g><g class="bW9uaXRvcmluZy4oYXZhaWxhYmlsaXR5IC0mZ3Q7IHBlcmZvcm1hbmNlKVswXQ=="><path d="M 786.500000 906.500000 L 786.500000 1061.500000" stroke="#0D32B2" fill="none" class="connection stroke-B1" style="stroke-width:2;" marker-end="url(#mk-d2-4057630444-3488378134)" mask="url(#d2-4057630444)" /><text x="787.000000" y="991.000000" fill="#676C7E" class="text-italic fill-N2" style="text-anchor:middle;font-size:16px">Affects</text></g><g class="KGZpbmFuY2lhbCAtJmd0OyBtb25pdG9yaW5nKVswXQ=="><path d="M 794.000000 538.000000 L 794.000000 693.000000" stroke="#0D32B2" fill="none" class="connection stroke-B1" style="stroke-width:2;" marker-end="url(#mk-d2-4057630444-3488378134)" mask="url(#d2-4057630444)" /><text x="794.000000" y="622.000000" fill="#676C7E" class="text-italic fill-N2" style="text-anchor:middle;font-size:16px">Impacts</text></g><g class="KG1vbml0b3JpbmcgLSZndDsgcHJvamVjdHMpWzBd"><path d="M 794.000000 1259.500000 L 794.000000 1457.500000" stroke="#0D32B2" fill="none" class="connection stroke-B2" style="stroke-width:2;stroke-dasharray:10.000000,9.865639;" marker-end="url(#mk-d2-4057630444-2177206569)" mask="url(#d2-4057630444)" /><text x="794.500000" y="1365.000000" fill="#676C7E" class="text-italic fill-N2" style="text-anchor:middle;font-size:16px">Informs</text></g><g class="KHByb2plY3RzIC0mZ3Q7IHRlYW0pWzBd"><path d="M 794.000000 1713.000000 L 794.000000 1911.000000" stroke="#0D32B2" fill="none" class="connection animated-connection stroke-B1" style="stroke-width:2;stroke-dasharray:10.000000,9.865639;stroke-dashoffset:-198.656393;animation: dashdraw 4.932820s linear infinite;" marker-end="url(#mk-d2-4057630444-3488378134)" mask="url(#d2-4057630444)" /><text x="794.000000" y="1819.000000" fill="#676C7E" class="text-italic fill-N2" style="text-anchor:middle;font-size:16px">Assigns</text></g><mask id="d2-4057630444" maskUnits="userSpaceOnUse" x="11" y="11" width="1288" height="2192">
 <rect x="11" y="11" width="1288" height="2192" fill="white"></rect>
 <rect x="12.000000" y="386.000000" width="343" height="150" fill="rgba(0,0,0,0.75)"></rect>
 <rect x="112.000000" y="921.000000" width="142" height="113" fill="rgba(0,0,0,0.75)"></rect>
