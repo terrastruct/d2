@@ -189,7 +189,7 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 		if icon.isTooltip {
 			iconStr = fmt.Sprintf(d2svg.TooltipIcon, diagramHash, svglib.SVGID(icon.shape.ID))
 		} else {
-			iconStr = d2svg.LinkIcon
+			iconStr = fmt.Sprintf(d2svg.LinkIcon, diagramHash, svglib.SVGID(icon.shape.ID))
 		}
 		svg = strings.Replace(svg, iconStr, generateNumberedIcon(icon.number, 0, ICON_RADIUS), 1)
 	}

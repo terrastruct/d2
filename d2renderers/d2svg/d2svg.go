@@ -1531,7 +1531,7 @@ func addAppendixItems(writer io.Writer, diagramHash string, targetShape d2target
 		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
 			x-appendixIconRadius,
 			y-appendixIconRadius,
-			LinkIcon,
+			fmt.Sprintf(LinkIcon, diagramHash, svg.SVGID(targetShape.ID)),
 		)
 	}
 }
