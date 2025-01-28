@@ -1033,7 +1033,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		} else {
 			drawClass(writer, diagramHash, targetShape, inlineTheme)
 		}
-		addAppendixItems(appendixWriter, targetShape, s)
+		addAppendixItems(appendixWriter, diagramHash, targetShape, s)
 		fmt.Fprint(writer, `</g>`)
 		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
@@ -1047,7 +1047,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		} else {
 			drawTable(writer, diagramHash, targetShape, inlineTheme)
 		}
-		addAppendixItems(appendixWriter, targetShape, s)
+		addAppendixItems(appendixWriter, diagramHash, targetShape, s)
 		fmt.Fprint(writer, `</g>`)
 		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
@@ -1467,13 +1467,13 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			svg.EscapeText(targetShape.Tooltip),
 		)
 	}
-	addAppendixItems(appendixWriter, targetShape, s)
+	addAppendixItems(appendixWriter, diagramHash, targetShape, s)
 
 	fmt.Fprint(writer, closingTag)
 	return labelMask, nil
 }
 
-func addAppendixItems(writer io.Writer, targetShape d2target.Shape, s shape.Shape) {
+func addAppendixItems(writer io.Writer, diagramHash string, targetShape d2target.Shape, s shape.Shape) {
 	var p1, p2 *geo.Point
 	if targetShape.Tooltip != "" || targetShape.Link != "" {
 		bothIcons := targetShape.Tooltip != "" && targetShape.Link != ""
@@ -1519,7 +1519,7 @@ func addAppendixItems(writer io.Writer, targetShape d2target.Shape, s shape.Shap
 			x-appendixIconRadius,
 			y-appendixIconRadius,
 			svg.EscapeText(targetShape.Tooltip),
-			TooltipIcon,
+			fmt.Sprintf(TooltipIcon, diagramHash, svg.SVGID(targetShape.ID)),
 		)
 	}
 	if targetShape.Link != "" {
