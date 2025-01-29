@@ -2072,19 +2072,19 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 			}
 			switch pattern {
 			case "dots":
-				patternDefs += dots
+				patternDefs += fmt.Sprintf(dots, diagramHash)
 			case "lines":
-				patternDefs += lines
+				patternDefs += fmt.Sprintf(lines, diagramHash)
 			case "grain":
-				patternDefs += grain
+				patternDefs += fmt.Sprintf(grain, diagramHash)
 			case "paper":
-				patternDefs += paper
+				patternDefs += fmt.Sprintf(paper, diagramHash)
 			}
 			fmt.Fprintf(upperBuf, `
 .%s-overlay {
-	fill: url(#%s);
+	fill: url(#%s-%s);
 	mix-blend-mode: multiply;
-}`, pattern, pattern)
+}`, pattern, pattern, diagramHash)
 		}
 	}
 	if patternDefs != "" {
