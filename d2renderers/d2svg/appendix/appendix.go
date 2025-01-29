@@ -17,6 +17,7 @@ import (
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/lib/color"
+	svglib "oss.terrastruct.com/d2/lib/svg"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 	"oss.terrastruct.com/util-go/go2"
 )
@@ -176,15 +177,19 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 		return renderOrder[i].shape.Level < renderOrder[j].shape.Level
 	})
 
+	diagramHash, err := diagram.HashID()
+	if err != nil {
+		return nil
+	}
 	// replace each rendered svg icon
 	for _, icon := range renderOrder {
 		// The clip-path has a unique ID, so this won't replace any user icons
 		// In the existing SVG, the transform places it top-left, so we adjust
 		var iconStr string
 		if icon.isTooltip {
-			iconStr = d2svg.TooltipIcon
+			iconStr = fmt.Sprintf(d2svg.TooltipIcon, diagramHash, svglib.SVGID(icon.shape.ID))
 		} else {
-			iconStr = d2svg.LinkIcon
+			iconStr = fmt.Sprintf(d2svg.LinkIcon, diagramHash, svglib.SVGID(icon.shape.ID))
 		}
 		svg = strings.Replace(svg, iconStr, generateNumberedIcon(icon.number, 0, ICON_RADIUS), 1)
 	}
