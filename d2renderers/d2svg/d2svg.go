@@ -1788,11 +1788,11 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		[]string{
 			`sketch-overlay-bright`,
 		},
-		`
+		fmt.Sprintf(`
 .sketch-overlay-bright {
-	fill: url(#streaks-bright);
+	fill: url(#streaks-bright-%s);
 	mix-blend-mode: darken;
-}`,
+}`, diagramHash),
 	)
 
 	appendOnTrigger(
@@ -1801,11 +1801,11 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		[]string{
 			`sketch-overlay-normal`,
 		},
-		`
+		fmt.Sprintf(`
 .sketch-overlay-normal {
-	fill: url(#streaks-normal);
+	fill: url(#streaks-normal-%s);
 	mix-blend-mode: color-burn;
-}`,
+}`, diagramHash),
 	)
 
 	appendOnTrigger(
@@ -1814,11 +1814,11 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		[]string{
 			`sketch-overlay-dark`,
 		},
-		`
+		fmt.Sprintf(`
 .sketch-overlay-dark {
-	fill: url(#streaks-dark);
+	fill: url(#streaks-dark-%s);
 	mix-blend-mode: overlay;
-}`,
+}`, diagramHash),
 	)
 
 	appendOnTrigger(
@@ -1827,11 +1827,11 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		[]string{
 			`sketch-overlay-darker`,
 		},
-		`
+		fmt.Sprintf(`
 .sketch-overlay-darker {
-	fill: url(#streaks-darker);
+	fill: url(#streaks-darker-%s);
 	mix-blend-mode: lighten;
-}`,
+}`, diagramHash),
 	)
 
 	fmt.Fprint(buf, `]]></style>`)
@@ -2007,7 +2007,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		}
 
 		if jsRunner != nil {
-			d2sketch.DefineFillPatterns(upperBuf)
+			d2sketch.DefineFillPatterns(upperBuf, diagramHash)
 		}
 	}
 
@@ -2250,98 +2250,98 @@ func singleThemeRulesets(diagramHash string, themeID int64, overrides *d2target.
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B1, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.B1, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.B2)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B2, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.B2, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.B3)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B3, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.B3, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.B4)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B4, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.B4, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.B5)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B5, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.B5, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.B6)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B6, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.B6, lc, diagramHash, blendMode(lc))
 
 	// AA
 	lc, err = color.LuminanceCategory(theme.Colors.AA2)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.AA2, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.AA2, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.AA4)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.AA4, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.AA4, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.AA5)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.AA5, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.AA5, lc, diagramHash, blendMode(lc))
 
 	// AB
 	lc, err = color.LuminanceCategory(theme.Colors.AB4)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.AB4, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.AB4, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.AB5)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.AB5, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.AB5, lc, diagramHash, blendMode(lc))
 
 	// Neutrals
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N1)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N1, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.N1, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N2)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N2, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.N2, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N3)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N3, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.N3, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N4)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N4, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.N4, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N5)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N5, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.N5, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N6)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N6, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.N6, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N7)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N7, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.N7, lc, diagramHash, blendMode(lc))
 
 	if theme.IsDark() {
 		out += ".light-code{display: none}"

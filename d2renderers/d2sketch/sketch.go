@@ -54,22 +54,22 @@ func LoadJS(runner jsrunner.JSRunner) error {
 // DefineFillPatterns adds reusable patterns that are overlayed on shapes with
 // fill. This gives it a subtle streaky effect that subtly looks hand-drawn but
 // not distractingly so.
-func DefineFillPatterns(buf *bytes.Buffer) {
+func DefineFillPatterns(buf *bytes.Buffer, diagramHash string) {
 	source := buf.String()
 	fmt.Fprint(buf, "<defs>")
 
-	defineFillPattern(buf, source, "bright", "rgba(0, 0, 0, 0.1)")
-	defineFillPattern(buf, source, "normal", "rgba(0, 0, 0, 0.16)")
-	defineFillPattern(buf, source, "dark", "rgba(0, 0, 0, 0.32)")
-	defineFillPattern(buf, source, "darker", "rgba(255, 255, 255, 0.24)")
+	defineFillPattern(buf, source, diagramHash, "bright", "rgba(0, 0, 0, 0.1)")
+	defineFillPattern(buf, source, diagramHash, "normal", "rgba(0, 0, 0, 0.16)")
+	defineFillPattern(buf, source, diagramHash, "dark", "rgba(0, 0, 0, 0.32)")
+	defineFillPattern(buf, source, diagramHash, "darker", "rgba(255, 255, 255, 0.24)")
 
 	fmt.Fprint(buf, "</defs>")
 }
 
-func defineFillPattern(buf *bytes.Buffer, source string, luminanceCategory, fill string) {
-	trigger := fmt.Sprintf(`url(#streaks-%s)`, luminanceCategory)
+func defineFillPattern(buf *bytes.Buffer, source, diagramHash string, luminanceCategory, fill string) {
+	trigger := fmt.Sprintf(`url(#streaks-%s-%s)`, luminanceCategory, diagramHash)
 	if strings.Contains(source, trigger) {
-		fmt.Fprintf(buf, streaks, luminanceCategory, fill)
+		fmt.Fprintf(buf, streaks, luminanceCategory, diagramHash, fill)
 	}
 }
 

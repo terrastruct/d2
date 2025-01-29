@@ -102,7 +102,7 @@ func Wrap(rootDiagram *d2target.Diagram, svgs [][]byte, renderOpts d2svg.RenderO
 	}
 
 	if renderOpts.Sketch != nil && *renderOpts.Sketch {
-		d2sketch.DefineFillPatterns(buf)
+		d2sketch.DefineFillPatterns(buf, diagramHash)
 	}
 
 	fmt.Fprint(buf, `<style type="text/css"><![CDATA[`)
