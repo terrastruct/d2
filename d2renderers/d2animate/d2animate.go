@@ -77,7 +77,7 @@ func Wrap(rootDiagram *d2target.Diagram, svgs [][]byte, renderOpts d2svg.RenderO
 		svgsStr += string(svg) + " "
 	}
 
-	diagramHash, err := rootDiagram.HashID()
+	diagramHash, err := rootDiagram.HashID(renderOpts.Salt)
 	if err != nil {
 		return nil, err
 	}

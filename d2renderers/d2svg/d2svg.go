@@ -88,6 +88,7 @@ type RenderOpts struct {
 	// Currently, that's when multi-boards are collapsed
 	MasterID string
 	NoXMLTag *bool
+	Salt     *string
 }
 
 func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height int) {
@@ -1908,7 +1909,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	}
 
 	// Apply hash on IDs for targeting, to be specific for this diagram
-	diagramHash, err := diagram.HashID()
+	diagramHash, err := diagram.HashID(opts.Salt)
 	if err != nil {
 		return nil, err
 	}

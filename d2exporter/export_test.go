@@ -303,10 +303,10 @@ a -> b
 	db, err := compile(ctx, bString)
 	assert.JSON(t, nil, err)
 
-	hashA, err := da.HashID()
+	hashA, err := da.HashID(nil)
 	assert.JSON(t, nil, err)
 
-	hashB, err := db.HashID()
+	hashB, err := db.HashID(nil)
 	assert.JSON(t, nil, err)
 
 	assert.NotEqual(t, hashA, hashB)

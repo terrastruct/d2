@@ -63,7 +63,7 @@ func FindViewboxSlice(svg []byte) []string {
 	return strings.Split(viewboxRaw, " ")
 }
 
-func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []byte {
+func Append(diagram *d2target.Diagram, renderOpts *d2svg.RenderOpts, ruler *textmeasure.Ruler, in []byte) []byte {
 	svg := string(in)
 
 	appendix, w, h := generateAppendix(diagram, ruler, svg)
@@ -177,7 +177,11 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 		return renderOrder[i].shape.Level < renderOrder[j].shape.Level
 	})
 
-	diagramHash, err := diagram.HashID()
+	var salt *string
+	if renderOpts != nil {
+		salt = renderOpts.Salt
+	}
+	diagramHash, err := diagram.HashID(salt)
 	if err != nil {
 		return nil
 	}

@@ -134,6 +134,8 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		return err
 	}
 
+	saltFlag := ms.Opts.String("", "salt", "", "", "Add a salt value to ensure the output uses unique IDs. This is useful when generating multiple identical diagrams to be included in the same HTML doc, so that duplicate IDs do not cause invalid HTML. The salt value is a string that will be appended to IDs in the output.")
+
 	plugins, err := d2plugin.ListPlugins(ctx)
 	if err != nil {
 		return err
@@ -324,6 +326,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		DarkThemeID: darkThemeFlag,
 		Scale:       scale,
 		NoXMLTag:    noXMLTagFlag,
+		Salt:        saltFlag,
 	}
 
 	if *watchFlag {
@@ -517,7 +520,7 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs
 	plugin, _ := d2plugin.FindPlugin(ctx, plugins, *opts.Layout)
 
 	if animateInterval > 0 {
-		masterID, err := diagram.HashID()
+		masterID, err := diagram.HashID(renderOpts.Salt)
 		if err != nil {
 			return nil, false, err
 		}
@@ -865,7 +868,7 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 	} else if toPNG {
 		scale = go2.Pointer(1.)
 	}
-	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
+	renderOpts := &d2svg.RenderOpts{
 		Pad:                opts.Pad,
 		Sketch:             opts.Sketch,
 		Center:             opts.Center,
@@ -875,8 +878,10 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 		ThemeOverrides:     opts.ThemeOverrides,
 		DarkThemeOverrides: opts.DarkThemeOverrides,
 		NoXMLTag:           opts.NoXMLTag,
+		Salt:               opts.Salt,
 		Scale:              scale,
-	})
+	}
+	svg, err := d2svg.Render(diagram, renderOpts)
 	if err != nil {
 		return nil, err
 	}
@@ -897,12 +902,12 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 		bundleErr = multierr.Combine(bundleErr, bundleErr2)
 	}
 	if forceAppendix && !toPNG {
-		svg = appendix.Append(diagram, ruler, svg)
+		svg = appendix.Append(diagram, renderOpts, ruler, svg)
 	}
 
 	out := svg
 	if toPNG {
-		svg := appendix.Append(diagram, ruler, svg)
+		svg := appendix.Append(diagram, renderOpts, ruler, svg)
 
 		if !bundle {
 			var bundleErr2 error
@@ -960,7 +965,7 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 			scale = go2.Pointer(1.)
 		}
 
-		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
+		renderOpts := &d2svg.RenderOpts{
 			Pad:                opts.Pad,
 			Sketch:             opts.Sketch,
 			Center:             opts.Center,
@@ -969,7 +974,8 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 			DarkThemeID:        opts.DarkThemeID,
 			ThemeOverrides:     opts.ThemeOverrides,
 			DarkThemeOverrides: opts.DarkThemeOverrides,
-		})
+		}
+		svg, err = d2svg.Render(diagram, renderOpts)
 		if err != nil {
 			return nil, err
 		}
@@ -987,7 +993,7 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 		if bundleErr != nil {
 			return svg, bundleErr
 		}
-		svg = appendix.Append(diagram, ruler, svg)
+		svg = appendix.Append(diagram, renderOpts, ruler, svg)
 
 		pngImg, err := ConvertSVG(ms, page, svg)
 		if err != nil {
@@ -1066,7 +1072,7 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 
 		var err error
 
-		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
+		renderOpts := &d2svg.RenderOpts{
 			Pad:                opts.Pad,
 			Sketch:             opts.Sketch,
 			Center:             opts.Center,
@@ -1075,7 +1081,8 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 			DarkThemeID:        opts.DarkThemeID,
 			ThemeOverrides:     opts.ThemeOverrides,
 			DarkThemeOverrides: opts.DarkThemeOverrides,
-		})
+		}
+		svg, err = d2svg.Render(diagram, renderOpts)
 		if err != nil {
 			return nil, err
 		}
@@ -1094,7 +1101,7 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 			return nil, bundleErr
 		}
 
-		svg = appendix.Append(diagram, ruler, svg)
+		svg = appendix.Append(diagram, renderOpts, ruler, svg)
 
 		pngImg, err := ConvertSVG(ms, page, svg)
 		if err != nil {
@@ -1312,7 +1319,7 @@ func renderPNGsForGIF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plug
 		} else {
 			scale = go2.Pointer(1.)
 		}
-		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
+		renderOpts := &d2svg.RenderOpts{
 			Pad:                opts.Pad,
 			Sketch:             opts.Sketch,
 			Center:             opts.Center,
@@ -1321,7 +1328,8 @@ func renderPNGsForGIF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plug
 			DarkThemeID:        opts.DarkThemeID,
 			ThemeOverrides:     opts.ThemeOverrides,
 			DarkThemeOverrides: opts.DarkThemeOverrides,
-		})
+		}
+		svg, err = d2svg.Render(diagram, renderOpts)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -1340,7 +1348,7 @@ func renderPNGsForGIF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plug
 			return nil, nil, bundleErr
 		}
 
-		svg = appendix.Append(diagram, ruler, svg)
+		svg = appendix.Append(diagram, renderOpts, ruler, svg)
 
 		pngImg, err := ConvertSVG(ms, page, svg)
 		if err != nil {
