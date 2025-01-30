@@ -8,6 +8,7 @@
 .Nm d2
 .Op Fl -watch Ar false
 .Op Fl -theme Em 0
+.Op Fl -salt Ar string
 .Ar file.d2
 .Op Ar file.svg | file.png
 .Nm d2
@@ -127,6 +128,9 @@ The maximum number of seconds that D2 runs for before timing out and exiting. Wh
 .Ns .
 .It Fl -check Ar false
 Check that the specified files are formatted correctly
+.Ns .
+.It Fl -salt Ar string
+Add a salt value to ensure the output uses unique IDs. This is useful when generating multiple identical diagrams to be included in the same HTML doc, so that duplicate id's do not cause invalid HTML. The salt value is a string that will be appended to IDs in the output.
 .Ns .
 .It Fl h , -help
 Print usage information and exit
