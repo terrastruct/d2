@@ -3885,13 +3885,27 @@ a: null
 				},
 			},
 			{
-				name: "edge",
+				name: "basic-edge",
 				run: func(t *testing.T) {
 					g, _ := assertCompile(t, `
 a -> b
 (a -> b)[0]: null
 `, "")
 					assert.Equal(t, 2, len(g.Objects))
+					assert.Equal(t, 0, len(g.Edges))
+				},
+			},
+			{
+				name: "nested-edge",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+a.b.c -> a.d.e
+a.b.c -> a.d.e
+
+a.(b.c -> d.e)[0]: null
+(a.b.c -> a.d.e)[1]: null
+`, "")
+					assert.Equal(t, 5, len(g.Objects))
 					assert.Equal(t, 0, len(g.Edges))
 				},
 			},
