@@ -987,9 +987,25 @@ func (m *Map) DeleteEdge(eid *EdgeID) *Edge {
 		return nil
 	}
 
-	for i, e := range m.Edges {
-		if e.ID.Match(eid) {
-			m.Edges = append(m.Edges[:i], m.Edges[i+1:]...)
+	resolvedEID, resolvedM, common, err := eid.resolve(m)
+	if err != nil {
+		return nil
+	}
+
+	if len(common) > 0 {
+		f := resolvedM.GetField(common...)
+		if f == nil {
+			return nil
+		}
+		if f.Map() == nil {
+			return nil
+		}
+		return f.Map().DeleteEdge(resolvedEID)
+	}
+
+	for i, e := range resolvedM.Edges {
+		if e.ID.Match(resolvedEID) {
+			resolvedM.Edges = append(resolvedM.Edges[:i], resolvedM.Edges[i+1:]...)
 			return e
 		}
 	}
