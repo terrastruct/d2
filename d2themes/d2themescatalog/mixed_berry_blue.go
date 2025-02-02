@@ -4,7 +4,7 @@ import "oss.terrastruct.com/d2/d2themes"
 
 var MixedBerryBlue = d2themes.Theme{
 	ID:   5,
-	Name: "Mixed berry blue",
+	Name: "Mixed Berry Blue",
 	Colors: d2themes.ColorPalette{
 		Neutrals: d2themes.CoolNeutral,
 

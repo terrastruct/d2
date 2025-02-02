@@ -4,7 +4,7 @@ import "oss.terrastruct.com/d2/d2themes"
 
 var GrapeSoda = d2themes.Theme{
 	ID:   6,
-	Name: "Grape soda",
+	Name: "Grape Soda",
 	Colors: d2themes.ColorPalette{
 		Neutrals: d2themes.CoolNeutral,
 
