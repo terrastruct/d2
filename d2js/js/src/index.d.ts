@@ -50,31 +50,109 @@ declare module "index" {
         center?: boolean;
     }
 
-    interface Request {
-        fs?: { index: string };
-        options?: Options;
+    export interface CompileRequest {
+        fs?: {
+            index: string;
+        };
+        options: Options;
+    }
+
+    // Replace the properties below with the actual structure of the worker’s responses.
+    export interface CompileResult {
+        compiled: string;
+    }
+
+    export interface RenderResult {
+        svg: string;
+    }
+
+    export interface EncodedResult {
+        encoded: string;
+    }
+
+    export interface DecodedResult {
+        decoded: string;
+    }
+
+    export type WorkerMessage =
+        | { type: "ready" }
+        | { type: "error"; error: string }
+        | {
+            type: "result";
+            data: CompileResult | RenderResult | EncodedResult | DecodedResult;
+        };
+
+    export interface D2Worker {
+        on(event: "message", listener: (data: WorkerMessage) => void): void;
+        on(event: "error", listener: (error: Error) => void): void;
+        onmessage?: (e: { data: WorkerMessage }) => void;
+        onerror?: (error: Error) => void;
+        postMessage(message: { type: string; data: object }): void;
     }
 
     export class D2 {
-        ready: Promise<void>;
-        currentResolve?: (value: any) => void;
-        currentReject?: (reason?: any) => void;
-        worker: any;
+        readonly ready: Promise<void>;
+        worker: D2Worker;
+        currentResolve?: (
+            result:
+                | CompileResult
+                | RenderResult
+                | EncodedResult
+                | DecodedResult,
+        ) => void;
+        currentReject?: (reason: Error) => void;
 
         constructor();
 
+        /**
+         * Sets up the message handler for the worker.
+         */
         setupMessageHandler(): Promise<void>;
 
+        /**
+         * Initializes the worker and related resources.
+         */
         init(): Promise<void>;
 
-        sendMessage(type: string, data: any): Promise<any>;
+        /**
+         * Sends a message to the worker.
+         * @param type The type of message.
+         * @param data The message payload.
+         */
+        sendMessage(
+            type: string,
+            data: object,
+        ): Promise<
+            CompileResult | RenderResult | EncodedResult | DecodedResult
+        >;
 
-        compile(input: string | Request, options?: Options): Promise<any>;
+        /**
+         * Compiles the provided input.
+         * @param input A string representing the source or a CompileRequest.
+         * @param options Optional compilation options.
+         */
+        compile(
+            input: string | CompileRequest,
+            options?: Options,
+        ): Promise<CompileResult>;
 
-        render(diagram: string, options?: Options): Promise<any>;
+        /**
+         * Renders the given diagram.
+         * @param diagram A diagram definition in string form.
+         * @param options Optional rendering options.
+         */
+        render(diagram: string, options?: Options): Promise<RenderResult>;
 
-        encode(script: string): Promise<any>;
+        /**
+         * Encodes the provided script.
+         * @param script The script to encode.
+         */
+        encode(script: string): Promise<EncodedResult>;
 
-        decode(encoded: string): Promise<any>;
+        /**
+         * Decodes the provided encoded string.
+         * @param encoded The encoded data.
+         */
+        decode(encoded: string): Promise<DecodedResult>;
     }
 }
