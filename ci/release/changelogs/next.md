@@ -19,6 +19,7 @@
 - Links: non-http url scheme links are supported (e.g. `x.link: vscode://file/`) [#2237](https://github.com/terrastruct/d2/issues/2237)
 - Compiler: reserved keywords with missing values error instead of silently doing nothing [#2251](https://github.com/terrastruct/d2/pull/2251)
 - Render: SVG outputs conform to stricter HTML standards, e.g. no duplicate ids [#2273](https://github.com/terrastruct/d2/issues/2273)
+- Themes: theme names are consistently cased [#2322](https://github.com/terrastruct/d2/pull/2322)
 
 #### Bugfixes ⛑️
 
