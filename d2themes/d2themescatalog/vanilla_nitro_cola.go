@@ -4,7 +4,7 @@ import "oss.terrastruct.com/d2/d2themes"
 
 var VanillaNitroCola = d2themes.Theme{
 	ID:   100,
-	Name: "Vanilla nitro cola",
+	Name: "Vanilla Nitro Cola",
 	Colors: d2themes.ColorPalette{
 		Neutrals: d2themes.WarmNeutral,
 
