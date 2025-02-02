@@ -24,7 +24,7 @@ var STDOUT_FORMAT_MAP = map[string]exportExtension{
 var SUPPORTED_STDOUT_FORMATS = []string{"png", "svg"}
 
 func getOutputFormat(stdoutFormatFlag *string, outputPath string) (exportExtension, error) {
-	if *stdoutFormatFlag != "" {
+	if stdoutFormatFlag != nil && *stdoutFormatFlag != "" {
 		format := strings.ToLower(*stdoutFormatFlag)
 		if ext, ok := STDOUT_FORMAT_MAP[format]; ok {
 			return ext, nil
