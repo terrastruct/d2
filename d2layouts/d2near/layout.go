@@ -190,6 +190,17 @@ func boundingBox(g *d2graph.Graph) (tl, br *geo.Point) {
 		}
 	}
 
+	for _, edge := range g.Edges {
+		if edge.Route != nil {
+			for _, point := range edge.Route {
+				x1 = math.Min(x1, point.X-pad/2)
+				y1 = math.Min(y1, point.Y-pad/2)
+				x2 = math.Max(x2, point.X+pad/2)
+				y2 = math.Max(y2, point.Y+pad/2)
+			}
+		}
+	}
+
 	if math.IsInf(x1, 1) && math.IsInf(x2, -1) {
 		x1 = 0
 		x2 = 0
