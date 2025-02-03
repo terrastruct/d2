@@ -4,7 +4,7 @@ import "oss.terrastruct.com/d2/d2themes"
 
 var ShirleyTemple = d2themes.Theme{
 	ID:   102,
-	Name: "Shirley temple",
+	Name: "Shirley Temple",
 	Colors: d2themes.ColorPalette{
 		Neutrals: d2themes.WarmNeutral,
 

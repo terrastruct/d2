@@ -8079,6 +8079,32 @@ y
 (* -> *)[*].style.opacity: 0.8
 `,
 		},
+		{
+			name: "layer-delete-complex-object",
+
+			text: `k
+
+layers: {
+  x: {
+    a: "b" {
+      top: 184
+      left: 180
+    }
+    j
+  }
+}
+`,
+			key:       `a`,
+			boardPath: []string{"x"},
+			exp: `k
+
+layers: {
+  x: {
+    j
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
