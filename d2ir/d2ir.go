@@ -1413,8 +1413,10 @@ func (f *Field) AST() d2ast.Node {
 	if f.Composite != nil {
 		value := f.Composite.AST().(d2ast.Value)
 		if m, ok := value.(*d2ast.Map); ok {
+			path := m.Range.Path
 			// Treat it as multi-line, but not file-map (line 0)
 			m.Range = d2ast.MakeRange(",1:0:0-2:0:0")
+			m.Range.Path = path
 		}
 		k.Value = d2ast.MakeValueBox(value)
 	}
