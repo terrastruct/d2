@@ -191,12 +191,15 @@ func boundingBox(g *d2graph.Graph) (tl, br *geo.Point) {
 	}
 
 	for _, edge := range g.Edges {
+		if edge.Src.OuterNearContainer() != nil || edge.Dst.OuterNearContainer() != nil {
+			continue
+		}
 		if edge.Route != nil {
 			for _, point := range edge.Route {
-				x1 = math.Min(x1, point.X-pad/2)
-				y1 = math.Min(y1, point.Y-pad/2)
-				x2 = math.Max(x2, point.X+pad/2)
-				y2 = math.Max(y2, point.Y+pad/2)
+				x1 = math.Min(x1, point.X)
+				y1 = math.Min(y1, point.Y)
+				x2 = math.Max(x2, point.X)
+				y2 = math.Max(y2, point.Y)
 			}
 		}
 	}
