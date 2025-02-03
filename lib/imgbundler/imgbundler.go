@@ -6,7 +6,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"html"
-	"io/ioutil"
+	"io"
 	"mime"
 	"net/http"
 	"net/url"
@@ -212,7 +212,7 @@ func httpGet(ctx context.Context, href string) ([]byte, string, error) {
 		return nil, "", fmt.Errorf("expected status 200 but got %d %s", resp.StatusCode, resp.Status)
 	}
 	r := http.MaxBytesReader(nil, resp.Body, maxImageSize)
-	buf, err := ioutil.ReadAll(r)
+	buf, err := io.ReadAll(r)
 	if err != nil {
 		return nil, "", err
 	}

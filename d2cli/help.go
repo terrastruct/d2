@@ -55,7 +55,7 @@ func layoutCmd(ctx context.Context, ms *xmain.State, ps []d2plugin.Plugin) error
 	}
 }
 
-func themesCmd(ctx context.Context, ms *xmain.State) {
+func themesCmd(_ context.Context, ms *xmain.State) {
 	fmt.Fprintf(ms.Stdout, "Available themes:\n%s", d2themescatalog.CLIString())
 }
 

@@ -17,9 +17,9 @@ import (
 	"sync"
 	"time"
 
+	"github.com/coder/websocket"
+	"github.com/coder/websocket/wsjson"
 	"github.com/fsnotify/fsnotify"
-	"nhooyr.io/websocket"
-	"nhooyr.io/websocket/wsjson"
 
 	"oss.terrastruct.com/util-go/xbrowser"
 

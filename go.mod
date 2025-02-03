@@ -7,6 +7,7 @@ toolchain go1.23.0
 require (
 	github.com/PuerkitoBio/goquery v1.10.0
 	github.com/alecthomas/chroma/v2 v2.14.0
+	github.com/coder/websocket v1.8.12
 	github.com/dop251/goja v0.0.0-20240927123429-241b342198c2
 	github.com/dsoprea/go-exif/v3 v3.0.1
 	github.com/dsoprea/go-png-image-structure/v2 v2.0.0-20210512210324-29b889a6093d
@@ -28,7 +29,6 @@ require (
 	golang.org/x/tools v0.25.0
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da
 	gonum.org/v1/plot v0.14.0
-	nhooyr.io/websocket v1.8.17
 	oss.terrastruct.com/util-go v0.0.0-20241005222610-44c011a04896
 )
 
