@@ -468,7 +468,7 @@ colors: {
   style.stroke: "linear-gradient(to right, red, blue, green)"
   style.font-color: "linear-gradient(to bottom right, red 0%, yellow 25%, green 50%, cyan 75%, blue 100%)"
 }
-gradient -> colors
+gradient -> colors: foobar {style.font-color: red; style.stroke: red; style.fill: "radial-gradient(#ffffff, #000000)"}
 
 -- var_in_markdown --
 vars: {

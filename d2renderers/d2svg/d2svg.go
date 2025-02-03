@@ -1906,6 +1906,9 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		if color.IsGradient(c.Stroke) {
 			defineGradients(buf, c.Stroke)
 		}
+		if color.IsGradient(c.Fill) {
+			defineGradients(buf, c.Fill)
+		}
 	}
 
 	// Apply hash on IDs for targeting, to be specific for this diagram
