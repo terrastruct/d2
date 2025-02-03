@@ -1411,7 +1411,12 @@ func (f *Field) AST() d2ast.Node {
 		k.Primary = d2ast.MakeValueBox(f.Primary_.AST().(d2ast.Value)).ScalarBox()
 	}
 	if f.Composite != nil {
-		k.Value = d2ast.MakeValueBox(f.Composite.AST().(d2ast.Value))
+		value := f.Composite.AST().(d2ast.Value)
+		if m, ok := value.(*d2ast.Map); ok {
+			// Treat it as multi-line, but not file-map (line 0)
+			m.Range = d2ast.MakeRange(",1:0:0-2:0:0")
+		}
+		k.Value = d2ast.MakeValueBox(value)
 	}
 
 	return k
