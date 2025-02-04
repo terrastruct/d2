@@ -9,6 +9,7 @@
 - CLI: PNG output to stdout is supported using `--stdout-format png -` [#2291](https://github.com/terrastruct/d2/pull/2291)
 - Globs: `&connected` and `&leaf` filters are implemented [#2299](https://github.com/terrastruct/d2/pull/2299)
 - CLI: add --no-xml-tag for direct HTML embedding [#2302](https://github.com/terrastruct/d2/pull/2302)
+- CLI: `play` cmd added for opening d2 input in online playground [#2242](https://github.com/terrastruct/d2/pull/2242)
 
 #### Improvements 🧹
 

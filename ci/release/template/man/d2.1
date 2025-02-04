@@ -15,6 +15,8 @@
 .Ar layout Op Ar name
 .Nm d2
 .Ar fmt Ar file.d2 ...
+.Nm d2
+.Ar play Ar file.d2
 .Sh DESCRIPTION
 .Nm
 compiles and renders
@@ -141,6 +143,9 @@ Print version information and exit
 .It Fl -stdout-format Ar string
 Set the output format when writing to stdout. Supported formats are: png, svg. Only used when output is set to stdout (-)
 .Ns .
+.It Fl -no-xml-tag Ar false
+Omit XML tag (<?xml ...?>) from output SVG files. Useful when generating SVGs for direct HTML embedding
+.Ns .
 .El
 .Sh SUBCOMMANDS
 .Bl -tag -width Fl
@@ -155,10 +160,8 @@ Lists available themes
 .Ns .
 .It Ar fmt Ar file.d2 ...
 Format all passed files
-.It Fl -no-xml-tag Ar false
-Omit XML tag (<?xml ...?>) from output SVG files. Useful when generating SVGs for direct HTML embedding
-.Ns .
-.Ns .
+.It Ar play Ar file.d2
+Opens the file in playground, an online web viewer (https://play.d2lang.com)
 .El
 .Sh ENVIRONMENT VARIABLES
 Many flags can also be set with environment variables.
