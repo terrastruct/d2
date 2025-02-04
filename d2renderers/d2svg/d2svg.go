@@ -554,11 +554,11 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 		opacityStyle = fmt.Sprintf(" style='opacity:%f'", connection.Opacity)
 	}
 
-	classStr := ""
-	if len(connection.Classes) > 0 {
-		classStr = fmt.Sprintf(` class="%s"`, strings.Join(connection.Classes, " "))
-	}
-	fmt.Fprintf(writer, `<g class="%s"%s%s>`, base64.URLEncoding.EncodeToString([]byte(svg.EscapeText(connection.ID))), opacityStyle, classStr)
+	classes := []string{base64.URLEncoding.EncodeToString([]byte(svg.EscapeText(connection.ID)))}
+	classes = append(classes, connection.Classes...)
+	classStr := fmt.Sprintf(` class="%s"`, strings.Join(classes, " "))
+
+	fmt.Fprintf(writer, `<g%s%s>`, classStr, opacityStyle)
 	var markerStart string
 	if connection.SrcArrow != d2target.NoArrowhead {
 		id := arrowheadMarkerID(diagramHash, false, connection)
@@ -1026,15 +1026,13 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	if targetShape.BorderRadius != 0 && (targetShape.Type == d2target.ShapeClass || targetShape.Type == d2target.ShapeSQLTable) {
 		fmt.Fprint(writer, clipPathForBorderRadius(diagramHash, targetShape))
 	}
-	classStr := ""
+	classes := []string{base64.URLEncoding.EncodeToString([]byte(svg.EscapeText(targetShape.ID)))}
 	if targetShape.Animated {
-		// the animated class applies to the whole svg group to include the label, unlike connections
-		targetShape.Classes = append(targetShape.Classes, "animated-shape")
+		classes = append(classes, "animated-shape")
 	}
-	if len(targetShape.Classes) > 0 {
-		classStr = fmt.Sprintf(` class="%s"`, strings.Join(targetShape.Classes, " "))
-	}
-	fmt.Fprintf(writer, `<g class="%s"%s%s>`, base64.URLEncoding.EncodeToString([]byte(svg.EscapeText(targetShape.ID))), opacityStyle, classStr)
+	classes = append(classes, targetShape.Classes...)
+	classStr := fmt.Sprintf(` class="%s"`, strings.Join(classes, " "))
+	fmt.Fprintf(writer, `<g%s%s>`, classStr, opacityStyle)
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
 	height := float64(targetShape.Height)
