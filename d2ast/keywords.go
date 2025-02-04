@@ -8,7 +8,6 @@ var ReservedKeywords map[string]struct{}
 // Non Style/Holder keywords.
 var SimpleReservedKeywords = map[string]struct{}{
 	"label":          {},
-	"desc":           {},
 	"shape":          {},
 	"icon":           {},
 	"constraint":     {},
@@ -31,17 +30,17 @@ var SimpleReservedKeywords = map[string]struct{}{
 
 // ReservedKeywordHolders are reserved keywords that are meaningless on its own and must hold composites
 var ReservedKeywordHolders = map[string]struct{}{
-	"style":            {},
-	"source-arrowhead": {},
-	"target-arrowhead": {},
+	"style": {},
 }
 
 // CompositeReservedKeywords are reserved keywords that can hold composites
 var CompositeReservedKeywords = map[string]struct{}{
-	"classes":    {},
-	"constraint": {},
-	"label":      {},
-	"icon":       {},
+	"source-arrowhead": {},
+	"target-arrowhead": {},
+	"classes":          {},
+	"constraint":       {},
+	"label":            {},
+	"icon":             {},
 }
 
 // StyleKeywords are reserved keywords which cannot exist outside of the "style" keyword

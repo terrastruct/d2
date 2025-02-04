@@ -3515,6 +3515,25 @@ svc_1."think about A"
 svc_1.t2 -> b: do with B
 `,
 		},
+		{
+			name: "layer-import-nested-layer",
+			text: `layers: {
+	ok: {...@meow}
+}
+`,
+			files: map[string]string{
+				"meow.d2": `layers: {
+  1: {
+    asdf
+  }
+}
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "d2/testdata/d2compiler/TestCompile/layer-import-nested-layer.d2", g.Layers[0].AST.Range.Path)
+				tassert.Equal(t, "d2/testdata/d2compiler/TestCompile/meow.d2", g.Layers[0].Layers[0].AST.Range.Path)
+			},
+		},
 	}
 
 	for _, tc := range testCases {
@@ -3866,13 +3885,27 @@ a: null
 				},
 			},
 			{
-				name: "edge",
+				name: "basic-edge",
 				run: func(t *testing.T) {
 					g, _ := assertCompile(t, `
 a -> b
 (a -> b)[0]: null
 `, "")
 					assert.Equal(t, 2, len(g.Objects))
+					assert.Equal(t, 0, len(g.Edges))
+				},
+			},
+			{
+				name: "nested-edge",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+a.b.c -> a.d.e
+a.b.c -> a.d.e
+
+a.(b.c -> d.e)[0]: null
+(a.b.c -> a.d.e)[1]: null
+`, "")
+					assert.Equal(t, 5, len(g.Objects))
 					assert.Equal(t, 0, len(g.Edges))
 				},
 			},
@@ -5176,6 +5209,43 @@ y.link: https://google.com
 `, ``)
 				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Attributes.Style.Underline)
 				assert.Equal(t, "true", g.Objects[1].Attributes.Style.Underline.Value)
+			},
+		},
+		{
+			name: "leaf-filter",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+**: {
+  &leaf: false
+  style.fill: red
+}
+a.b.c
+`, ``)
+				assert.Equal(t, "a", g.Objects[0].ID)
+				assert.Equal(t, "red", g.Objects[0].Attributes.Style.Fill.Value)
+				assert.Equal(t, "b", g.Objects[1].ID)
+				assert.Equal(t, "red", g.Objects[1].Attributes.Style.Fill.Value)
+				assert.Equal(t, "c", g.Objects[2].ID)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Fill)
+			},
+		},
+		{
+			name: "connected-filter",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*: {
+  &connected: true
+  style.fill: red
+}
+a -> b
+c
+`, ``)
+				assert.Equal(t, "a", g.Objects[0].ID)
+				assert.Equal(t, "red", g.Objects[0].Attributes.Style.Fill.Value)
+				assert.Equal(t, "b", g.Objects[1].ID)
+				assert.Equal(t, "red", g.Objects[1].Attributes.Style.Fill.Value)
+				assert.Equal(t, "c", g.Objects[2].ID)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Fill)
 			},
 		},
 		{

@@ -2468,6 +2468,28 @@ layers: {
 `,
 		},
 		{
+			name: "import/10",
+
+			text: `heyn
+
+layers: {
+  man: {...@meow}
+}
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `layers: {
+  1: {
+    asdf
+  }
+}
+`,
+			},
+			boardPath: []string{"man", "1"},
+			key:       `asdf.link`,
+			value:     go2.Pointer(`_._`),
+			expErr:    `failed to set "asdf.link" to "\"_._\"": board [man 1] cannot be modified through this file`,
+		},
+		{
 			name: "label-near/1",
 
 			text: `x
@@ -8055,6 +8077,32 @@ y
 y
 
 (* -> *)[*].style.opacity: 0.8
+`,
+		},
+		{
+			name: "layer-delete-complex-object",
+
+			text: `k
+
+layers: {
+  x: {
+    a: "b" {
+      top: 184
+      left: 180
+    }
+    j
+  }
+}
+`,
+			key:       `a`,
+			boardPath: []string{"x"},
+			exp: `k
+
+layers: {
+  x: {
+    j
+  }
+}
 `,
 		},
 	}

@@ -191,7 +191,7 @@
         "name": "a",
         "isFolderOnly": true,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile2/nulls/multiboard/scenario.d2,0:0:0-1:0:0",
           "nodes": null
         },
         "root": {

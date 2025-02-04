@@ -1,5 +1,13 @@
 {
   "name": "",
+  "config": {
+    "sketch": false,
+    "themeID": 0,
+    "darkThemeID": null,
+    "pad": null,
+    "center": null,
+    "layoutEngine": null
+  },
   "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
@@ -50,7 +58,7 @@
       "type": "rectangle",
       "pos": {
         "x": 20,
-        "y": 148
+        "y": 239
       },
       "width": 89,
       "height": 66,
@@ -98,19 +106,20 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "B1",
+      "stroke": "red",
+      "fill": "radial-gradient(#ffffff, #000000)",
       "borderRadius": 10,
-      "label": "",
+      "label": "foobar",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "N2",
+      "color": "red",
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
+      "labelWidth": 46,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
       "link": "",
       "route": [
@@ -120,7 +129,7 @@
         },
         {
           "x": 65,
-          "y": 148
+          "y": 239
         }
       ],
       "animated": false,

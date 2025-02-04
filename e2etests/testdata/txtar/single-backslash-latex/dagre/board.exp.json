@@ -1,5 +1,13 @@
 {
   "name": "",
+  "config": {
+    "sketch": false,
+    "themeID": 0,
+    "darkThemeID": null,
+    "pad": null,
+    "center": null,
+    "layoutEngine": null
+  },
   "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
@@ -73,7 +81,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "\\\\begin{equation} \\\\label{eq1}\n\\\\begin{split}\nA & = \\\\frac{\\\\\\\\pi r^2}{2} \\\\\\\\\n & = \\\\frac{1}{2} \\\\pi r^2\n\\\\end{split}\n\\\\end{equation}",
+      "label": "\\begin{equation} \\label{eq1}\n\\begin{split}\nA & = \\frac{\\\\pi r^2}{2} \\\\\n & = \\frac{1}{2} \\pi r^2\n\\end{split}\n\\end{equation}",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "latex",

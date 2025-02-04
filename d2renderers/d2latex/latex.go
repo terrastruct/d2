@@ -6,9 +6,9 @@ import (
 	"math"
 	"regexp"
 	"strconv"
+	"strings"
 
-	"github.com/dop251/goja"
-
+	"oss.terrastruct.com/d2/lib/jsrunner"
 	"oss.terrastruct.com/util-go/xdefer"
 )
 
@@ -29,21 +29,25 @@ var svgRe = regexp.MustCompile(`<svg[^>]+width="([0-9\.]+)ex" height="([0-9\.]+)
 
 func Render(s string) (_ string, err error) {
 	defer xdefer.Errorf(&err, "latex failed to parse")
-	vm := goja.New()
+	s = doubleBackslashes(s)
+	runner := jsrunner.NewJSRunner()
 
-	if _, err := vm.RunString(polyfillsJS); err != nil {
+	if _, err := runner.RunString(polyfillsJS); err != nil {
 		return "", err
 	}
 
-	if _, err := vm.RunString(mathjaxJS); err != nil {
+	if _, err := runner.RunString(mathjaxJS); err != nil {
+		// Known issue that a harmless error occurs in JS: https://github.com/mathjax/MathJax/issues/3289
+		if runner.Engine() == jsrunner.Goja {
+			return "", err
+		}
+	}
+
+	if _, err := runner.RunString(setupJS); err != nil {
 		return "", err
 	}
 
-	if _, err := vm.RunString(setupJS); err != nil {
-		return "", err
-	}
-
-	val, err := vm.RunString(fmt.Sprintf(`adaptor.innerHTML(html.convert(`+"`"+"%s`"+`, {
+	val, err := runner.RunString(fmt.Sprintf(`adaptor.innerHTML(html.convert(`+"`"+"%s`"+`, {
   em: %d,
   ex: %d,
 }))`, s, pxPerEx*2, pxPerEx))
@@ -79,4 +83,16 @@ func Measure(s string) (width, height int, err error) {
 	}
 
 	return int(math.Ceil(wf * float64(pxPerEx))), int(math.Ceil(hf * float64(pxPerEx))), nil
+}
+
+func doubleBackslashes(s string) string {
+	var result strings.Builder
+	for i := 0; i < len(s); i++ {
+		if s[i] == '\\' {
+			result.WriteString("\\\\")
+		} else {
+			result.WriteByte(s[i])
+		}
+	}
+	return result.String()
 }

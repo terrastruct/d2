@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+        height: 100vh;
+        margin: 0;
+        font-family: system-ui, -apple-system, sans-serif;
+      }
+      .controls {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 400px;
+      }
+      textarea {
+        width: 100%;
+        height: 300px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-family: monospace;
+      }
+      .options-group {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px;
+        border: 1px solid #eee;
+        border-radius: 4px;
+      }
+      .layout-toggle,
+      .sketch-toggle {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+      }
+      .radio-group {
+        display: flex;
+        gap: 12px;
+      }
+      .radio-label,
+      .checkbox-label {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+        cursor: pointer;
+      }
+      button {
+        padding: 8px 16px;
+        background: #0066cc;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #0052a3;
+      }
+      #output {
+        flex: 1;
+        overflow: auto;
+        border: 1px solid #eee;
+        border-radius: 4px;
+        padding: 16px;
+      }
+      #output svg {
+        max-width: 100%;
+        max-height: 90vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="controls">
+      <textarea id="input">x -> y</textarea>
+      <div class="options-group">
+        <div class="layout-toggle">
+          <span>Layout:</span>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="layout" value="dagre" checked />
+              Dagre
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="layout" value="elk" />
+              ELK
+            </label>
+          </div>
+        </div>
+        <div class="sketch-toggle">
+          <label class="checkbox-label">
+            <input type="checkbox" id="sketch" />
+            Sketch mode
+          </label>
+        </div>
+      </div>
+      <button onclick="compile()">Compile</button>
+    </div>
+    <div id="output"></div>
+    <script type="module">
+      import { D2 } from "../dist/browser/index.js";
+      const d2 = new D2();
+      window.compile = async () => {
+        const input = document.getElementById("input").value;
+        const layout = document.querySelector('input[name="layout"]:checked').value;
+        const sketch = document.getElementById("sketch").checked;
+        try {
+          const result = await d2.compile(input, { layout, sketch });
+          const svg = await d2.render(result.diagram, { sketch });
+          document.getElementById("output").innerHTML = svg;
+        } catch (err) {
+          console.error(err);
+          document.getElementById("output").textContent = err.message;
+        }
+      };
+      compile();
+    </script>
+  </body>
+</html>

@@ -1,5 +1,13 @@
 {
   "name": "",
+  "config": {
+    "sketch": false,
+    "themeID": 0,
+    "darkThemeID": null,
+    "pad": null,
+    "center": null,
+    "layoutEngine": null
+  },
   "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
@@ -325,7 +333,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "\\\\lim_{h \\\\rightarrow 0 } \\\\frac{f(x+h)-f(x)}{h}",
+      "label": "\\lim_{h \\rightarrow 0 } \\frac{f(x+h)-f(x)}{h}",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "latex",

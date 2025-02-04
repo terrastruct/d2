@@ -223,13 +223,16 @@ func (diagram Diagram) HasShape(condition func(Shape) bool) bool {
 	return false
 }
 
-func (diagram Diagram) HashID() (string, error) {
+func (diagram Diagram) HashID(salt *string) (string, error) {
 	bytes, err := diagram.Bytes()
 	if err != nil {
 		return "", err
 	}
 	h := fnv.New32a()
 	h.Write(bytes)
+	if salt != nil {
+		h.Write([]byte(*salt))
+	}
 	// CSS names can't start with numbers, so prepend a little something
 	return fmt.Sprintf("d2-%d", h.Sum32()), nil
 }

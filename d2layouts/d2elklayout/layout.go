@@ -8,14 +8,11 @@ import (
 	"context"
 	_ "embed"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"math"
 	"regexp"
 	"strconv"
 	"strings"
-
-	"github.com/dop251/goja"
 
 	"oss.terrastruct.com/util-go/xdefer"
 
@@ -24,12 +21,10 @@ import (
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/d2/lib/jsrunner"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/shape"
 )
-
-//go:embed elk.js
-var elkJS string
 
 //go:embed setup.js
 var setupJS string
@@ -162,18 +157,20 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 	defer xdefer.Errorf(&err, "failed to ELK layout")
 
-	vm := goja.New()
+	runner := jsrunner.NewJSRunner()
 
-	console := vm.NewObject()
-	if err := vm.Set("console", console); err != nil {
-		return err
-	}
+	if runner.Engine() == jsrunner.Goja {
+		console := runner.NewObject()
+		if err := runner.Set("console", console); err != nil {
+			return err
+		}
 
-	if _, err := vm.RunString(elkJS); err != nil {
-		return err
-	}
-	if _, err := vm.RunString(setupJS); err != nil {
-		return err
+		if _, err := runner.RunString(elkJS); err != nil {
+			return err
+		}
+		if _, err := runner.RunString(setupJS); err != nil {
+			return err
+		}
 	}
 
 	elkGraph := &ELKGraph{
@@ -443,40 +440,29 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		return err
 	}
 
-	loadScript := fmt.Sprintf(`var graph = %s`, raw)
+	var val jsrunner.JSValue
+	if runner.Engine() == jsrunner.Goja {
+		loadScript := fmt.Sprintf(`var graph = %s`, raw)
 
-	if _, err := vm.RunString(loadScript); err != nil {
-		return err
-	}
+		if _, err := runner.RunString(loadScript); err != nil {
+			return err
+		}
 
-	val, err := vm.RunString(`elk.layout(graph)
+		val, err = runner.RunString(`elk.layout(graph)
 .then(s => s)
 .catch(err => err.message)
 `)
-
+	} else {
+		val, err = runner.MustGet("elkResult")
+	}
 	if err != nil {
 		return err
 	}
 
-	p := val.Export()
+	result, err := runner.WaitPromise(ctx, val)
 	if err != nil {
-		return err
+		return fmt.Errorf("ELK layout error: %v", err)
 	}
-
-	promise := p.(*goja.Promise)
-
-	for promise.State() == goja.PromiseStatePending {
-		if err := ctx.Err(); err != nil {
-			return err
-		}
-		continue
-	}
-
-	if promise.State() == goja.PromiseStateRejected {
-		return errors.New("ELK: something went wrong")
-	}
-
-	result := promise.Result().Export()
 
 	var jsonOut map[string]interface{}
 	switch out := result.(type) {
