@@ -4,6 +4,7 @@
 - Connections now support `link` [#1955](https://github.com/terrastruct/d2/pull/1955)
 - Vars: vars in markdown blocks are substituted [#2218](https://github.com/terrastruct/d2/pull/2218)
 - Markdown: Github-flavored tables work in `md` blocks [#2221](https://github.com/terrastruct/d2/pull/2221)
+- Render: adds box arrowheads [#2227](https://github.com/terrastruct/d2/issues/2227)
 - `d2 fmt` now supports a `--check` flag [#2253](https://github.com/terrastruct/d2/pull/2253)
 - CLI: PNG output to stdout is supported using `--stdout-format png -` [#2291](https://github.com/terrastruct/d2/pull/2291)
 - Globs: `&connected` and `&leaf` filters are implemented [#2299](https://github.com/terrastruct/d2/pull/2299)

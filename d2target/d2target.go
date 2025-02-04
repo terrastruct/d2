@@ -755,6 +755,8 @@ const (
 	FilledDiamondArrowhead    Arrowhead = "filled-diamond"
 	CircleArrowhead           Arrowhead = "circle"
 	FilledCircleArrowhead     Arrowhead = "filled-circle"
+	BoxArrowhead              Arrowhead = "box"
+	FilledBoxArrowhead        Arrowhead = "filled-box"
 
 	// For fat arrows
 	LineArrowhead Arrowhead = "line"
@@ -775,6 +777,7 @@ var Arrowheads = map[string]struct{}{
 	string(TriangleArrowhead): {},
 	string(DiamondArrowhead):  {},
 	string(CircleArrowhead):   {},
+	string(BoxArrowhead):      {},
 	string(CfOne):             {},
 	string(CfMany):            {},
 	string(CfOneRequired):     {},
@@ -802,6 +805,11 @@ func ToArrowhead(arrowheadType string, filled *bool) Arrowhead {
 			return UnfilledTriangleArrowhead
 		}
 		return TriangleArrowhead
+	case string(BoxArrowhead):
+		if filled != nil && *filled {
+			return FilledBoxArrowhead
+		}
+		return BoxArrowhead
 	case string(CfOne):
 		return CfOne
 	case string(CfMany):
@@ -854,6 +862,11 @@ func (arrowhead Arrowhead) Dimensions(strokeWidth float64) (width, height float6
 	case FilledCircleArrowhead, CircleArrowhead:
 		baseWidth = 8
 		baseHeight = 8
+		widthMultiplier = 5
+		heightMultiplier = 5
+	case FilledBoxArrowhead, BoxArrowhead:
+		baseWidth = 6
+		baseHeight = 6
 		widthMultiplier = 5
 		heightMultiplier = 5
 	case CfOne, CfMany, CfOneRequired, CfManyRequired:
