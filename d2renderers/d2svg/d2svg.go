@@ -558,7 +558,7 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 	classes = append(classes, connection.Classes...)
 	classStr := fmt.Sprintf(` class="%s"`, strings.Join(classes, " "))
 
-	fmt.Fprintf(writer, `<g%s%s>`, opacityStyle, classStr)
+	fmt.Fprintf(writer, `<g%s%s>`, classStr, opacityStyle)
 	var markerStart string
 	if connection.SrcArrow != d2target.NoArrowhead {
 		id := arrowheadMarkerID(diagramHash, false, connection)
@@ -1032,7 +1032,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	}
 	classes = append(classes, targetShape.Classes...)
 	classStr := fmt.Sprintf(` class="%s"`, strings.Join(classes, " "))
-	fmt.Fprintf(writer, `<g%s%s>`, opacityStyle, classStr)
+	fmt.Fprintf(writer, `<g%s%s>`, classStr, opacityStyle)
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
 	height := float64(targetShape.Height)
