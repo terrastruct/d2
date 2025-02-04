@@ -6,6 +6,7 @@ import (
 	"math"
 	"regexp"
 	"strconv"
+	"strings"
 
 	"oss.terrastruct.com/d2/lib/jsrunner"
 	"oss.terrastruct.com/util-go/xdefer"
@@ -28,6 +29,7 @@ var svgRe = regexp.MustCompile(`<svg[^>]+width="([0-9\.]+)ex" height="([0-9\.]+)
 
 func Render(s string) (_ string, err error) {
 	defer xdefer.Errorf(&err, "latex failed to parse")
+	s = doubleBackslashes(s)
 	runner := jsrunner.NewJSRunner()
 
 	if _, err := runner.RunString(polyfillsJS); err != nil {
@@ -81,4 +83,16 @@ func Measure(s string) (width, height int, err error) {
 	}
 
 	return int(math.Ceil(wf * float64(pxPerEx))), int(math.Ceil(hf * float64(pxPerEx))), nil
+}
+
+func doubleBackslashes(s string) string {
+	var result strings.Builder
+	for i := 0; i < len(s); i++ {
+		if s[i] == '\\' {
+			result.WriteString("\\\\")
+		} else {
+			result.WriteByte(s[i])
+		}
+	}
+	return result.String()
 }

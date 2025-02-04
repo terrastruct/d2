@@ -289,6 +289,54 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection, i
 		}
 
 		path = circleEl.Render()
+	case d2target.FilledBoxArrowhead:
+		polygonEl := d2themes.NewThemableElement("polygon", inlineTheme)
+		polygonEl.ClassName = "connection"
+		polygonEl.Fill = connection.Stroke
+		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+
+		if isTarget {
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
+				0., 0.,
+				0., height,
+				width, height,
+				width, 0.,
+			)
+		} else {
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
+				0., 0.,
+				0., height,
+				width, height,
+				width, 0.,
+			)
+		}
+
+		path = polygonEl.Render()
+	case d2target.BoxArrowhead:
+		polygonEl := d2themes.NewThemableElement("polygon", inlineTheme)
+		polygonEl.ClassName = "connection"
+		polygonEl.Fill = d2target.BG_COLOR
+		polygonEl.Stroke = connection.Stroke
+		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+		polygonEl.Style = fmt.Sprintf("%sstroke-linejoin:miter;", polygonEl.Style)
+
+		inset := strokeWidth / 2
+		if isTarget {
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
+				inset, inset,
+				inset, height-inset,
+				width-inset, height-inset,
+				width-inset, inset,
+			)
+		} else {
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
+				inset, inset,
+				inset, height-inset,
+				width-inset, height-inset,
+				width-inset, inset,
+			)
+		}
+		path = polygonEl.Render()
 	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
 		offset := 3.0 + float64(connection.StrokeWidth)*1.8
 
@@ -1905,6 +1953,9 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	for _, c := range diagram.Connections {
 		if color.IsGradient(c.Stroke) {
 			defineGradients(buf, c.Stroke)
+		}
+		if color.IsGradient(c.Fill) {
+			defineGradients(buf, c.Fill)
 		}
 	}
 

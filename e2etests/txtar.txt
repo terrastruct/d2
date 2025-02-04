@@ -468,7 +468,7 @@ colors: {
   style.stroke: "linear-gradient(to right, red, blue, green)"
   style.font-color: "linear-gradient(to bottom right, red 0%, yellow 25%, green 50%, cyan 75%, blue 100%)"
 }
-gradient -> colors
+gradient -> colors: foobar {style.font-color: red; style.stroke: red; style.fill: "radial-gradient(#ffffff, #000000)"}
 
 -- var_in_markdown --
 vars: {
@@ -747,3 +747,15 @@ alice -> alice: "Self-messages"
 alice -> alice: "Self-messages"
 
 bob."In the eyes of my dog, I'm a man."
+
+-- elk-title-near --
+title: "diagram title : Red-line hits 'near: top-center' in elk" {near: top-center}
+a: {
+  a -> b
+}
+b: {
+  c
+}
+
+a.b -> b.c
+b.c -> a.a: {style.font-color: red; style.stroke: red; style.fill: mistyrose}
