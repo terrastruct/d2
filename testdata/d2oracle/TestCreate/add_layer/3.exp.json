@@ -244,7 +244,7 @@
         "name": "c",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2oracle/TestCreate/add_layer/3.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -291,7 +291,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": ",0:0:0-1:0:0",
+                    "range": ",1:0:0-2:0:0",
                     "nodes": [
                       {
                         "map_key": {

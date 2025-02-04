@@ -468,7 +468,7 @@ colors: {
   style.stroke: "linear-gradient(to right, red, blue, green)"
   style.font-color: "linear-gradient(to bottom right, red 0%, yellow 25%, green 50%, cyan 75%, blue 100%)"
 }
-gradient -> colors
+gradient -> colors: foobar {style.font-color: red; style.stroke: red; style.fill: "radial-gradient(#ffffff, #000000)"}
 
 -- var_in_markdown --
 vars: {
@@ -669,3 +669,93 @@ formula: {
     \end{equation}
   |
 }
+
+-- link-on-connections --
+a <-> b: {
+  link: https://google.com/
+}
+
+b -> c: test {
+  link: layers.d
+}
+
+layers: {
+  d: {
+    d
+  }
+}
+
+-- shape-animate --
+vars: {
+  d2-config: {
+    layout-engine: elk
+    # Terminal theme code
+    theme-id: 300
+  }
+}
+network: {
+  cell tower: {
+    satellites: {
+      shape: stored_data
+      style.multiple: true
+    }
+
+    transmitter
+
+    satellites -> transmitter: send
+    satellites -> transmitter: send
+    satellites -> transmitter: send
+  }
+
+  online portal: {
+    ui: {shape: hexagon}
+  }
+
+  data processor: {
+    storage: {
+               style.animated: true
+      shape: cylinder
+      style.multiple: true
+    }
+  }
+
+  cell tower.transmitter -> data processor.storage: phone logs
+}
+
+user: {
+  shape: person
+  width: 130
+}
+
+user -> network.cell tower: make call
+user -> network.online portal.ui: access {
+  style.stroke-dash: 3
+}
+
+api server -> network.online portal.ui: display
+api server -> logs: persist
+logs: {shape: page; style.multiple: true}
+
+network.data processor -> api server
+
+-- note-overlap --
+shape: sequence_diagram
+alice -> bob
+alice -> alice: "Self-messages"
+alice -> alice: "Self-messages"
+alice -> alice: "Self-messages"
+alice -> alice: "Self-messages"
+
+bob."In the eyes of my dog, I'm a man."
+
+-- elk-title-near --
+title: "diagram title : Red-line hits 'near: top-center' in elk" {near: top-center}
+a: {
+  a -> b
+}
+b: {
+  c
+}
+
+a.b -> b.c
+b.c -> a.a: {style.font-color: red; style.stroke: red; style.fill: mistyrose}

@@ -983,6 +983,29 @@ layers: {
 			},
 		},
 		{
+			name: "no_xml_tag",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "test.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "--no-xml-tag", "test.d2", "no-xml.svg")
+				assert.Success(t, err)
+				noXMLSvg := readFile(t, dir, "no-xml.svg")
+				assert.False(t, strings.Contains(string(noXMLSvg), "<?xml"))
+
+				writeFile(t, dir, "test.d2", `x -> y`)
+				err = runTestMain(t, ctx, dir, env, "test.d2", "with-xml.svg")
+				assert.Success(t, err)
+				withXMLSvg := readFile(t, dir, "with-xml.svg")
+				assert.True(t, strings.Contains(string(withXMLSvg), "<?xml"))
+
+				env.Setenv("D2_NO_XML_TAG", "1")
+				writeFile(t, dir, "test.d2", `x -> y`)
+				err = runTestMain(t, ctx, dir, env, "test.d2", "no-xml-env.svg")
+				assert.Success(t, err)
+				noXMLEnvSvg := readFile(t, dir, "no-xml-env.svg")
+				assert.False(t, strings.Contains(string(noXMLEnvSvg), "<?xml"))
+			},
+		},
+		{
 			name: "basic-fmt",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `x ---> y`)
@@ -1003,6 +1026,29 @@ layers: {
 				gotBar := readFile(t, dir, "bar.d2")
 				assert.Equal(t, "a -> b\n", string(gotFoo))
 				assert.Equal(t, "x -> y\n", string(gotBar))
+			},
+		},
+		{
+			name: "fmt-check-unformatted",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "foo.d2", `a ---> b`)
+				writeFile(t, dir, "bar.d2", `x ---> y`)
+				writeFile(t, dir, "baz.d2", "a -> z\n")
+				err := runTestMainPersist(t, ctx, dir, env, "fmt", "--check", "foo.d2", "bar.d2", "baz.d2")
+				assert.ErrorString(t, err, "failed to wait xmain test: e2etests-cli/d2: failed to fmt: exiting with code 1: found 2 unformatted files. Run d2 fmt to fix.")
+				gotFoo := readFile(t, dir, "foo.d2")
+				gotBar := readFile(t, dir, "bar.d2")
+				assert.Equal(t, "a ---> b", string(gotFoo))
+				assert.Equal(t, "x ---> y", string(gotBar))
+			},
+		},
+		{
+			name: "fmt-check-formatted",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "foo.d2", "a -> b\n")
+				writeFile(t, dir, "bar.d2", "x -> y\n")
+				err := runTestMainPersist(t, ctx, dir, env, "fmt", "--check", "foo.d2", "bar.d2")
+				assert.Success(t, err)
 			},
 		},
 		{
@@ -1396,7 +1442,9 @@ func testdataIgnoreDiff(tb testing.TB, ext string, got []byte) {
 // getNumBoards gets the number of boards in an SVG file through a non-robust pattern search
 // If the renderer changes, this must change
 func getNumBoards(svg string) int {
-	return strings.Count(svg, `class="d2`)
+	re := regexp.MustCompile(`class="d2-\d+`)
+	matches := re.FindAllString(svg, -1)
+	return len(matches)
 }
 
 var errRE = regexp.MustCompile(`err:`)

@@ -1,5 +1,13 @@
 {
   "name": "",
+  "config": {
+    "sketch": false,
+    "themeID": 0,
+    "darkThemeID": null,
+    "pad": null,
+    "center": null,
+    "layoutEngine": null
+  },
   "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
@@ -18,6 +26,7 @@
       "borderRadius": 0,
       "fill": "B4",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -59,6 +68,7 @@
       "borderRadius": 0,
       "fill": "B5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -100,6 +110,7 @@
       "borderRadius": 0,
       "fill": "AA5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -141,6 +152,7 @@
       "borderRadius": 0,
       "fill": "B6",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -182,6 +194,7 @@
       "borderRadius": 0,
       "fill": "B5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -223,6 +236,7 @@
       "borderRadius": 0,
       "fill": "N5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -264,6 +278,7 @@
       "borderRadius": 0,
       "fill": "B5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -305,6 +320,7 @@
       "borderRadius": 0,
       "fill": "AA5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -346,6 +362,7 @@
       "borderRadius": 0,
       "fill": "B3",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -387,6 +404,7 @@
       "borderRadius": 0,
       "fill": "B6",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -428,6 +446,7 @@
       "borderRadius": 0,
       "fill": "AB4",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -479,6 +498,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 143,
@@ -517,6 +537,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 187,
@@ -555,6 +576,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 231,
@@ -593,6 +615,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 187,
@@ -631,6 +654,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 254,
@@ -677,6 +701,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 298,
@@ -723,6 +748,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 420.0830078125,
@@ -777,6 +803,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 400.75,
@@ -815,6 +842,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 132.5,
@@ -854,6 +882,7 @@
     "borderRadius": 0,
     "fill": "N7",
     "stroke": "",
+    "animated": false,
     "shadow": false,
     "3d": false,
     "multiple": false,

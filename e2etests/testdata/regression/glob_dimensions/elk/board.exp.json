@@ -1,5 +1,13 @@
 {
   "name": "",
+  "config": {
+    "sketch": false,
+    "themeID": 0,
+    "darkThemeID": null,
+    "pad": null,
+    "center": null,
+    "layoutEngine": null
+  },
   "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
@@ -18,6 +26,7 @@
       "borderRadius": 16,
       "fill": "black",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -59,6 +68,7 @@
       "borderRadius": 16,
       "fill": "B4",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -100,6 +110,7 @@
       "borderRadius": 16,
       "fill": "black",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -141,6 +152,7 @@
       "borderRadius": 16,
       "fill": "B5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -182,6 +194,7 @@
       "borderRadius": 16,
       "fill": "N4",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -222,6 +235,7 @@
       "borderRadius": 16,
       "fill": "B5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -263,6 +277,7 @@
       "borderRadius": 16,
       "fill": "B6",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -304,6 +319,7 @@
       "borderRadius": 16,
       "fill": "B6",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -345,6 +361,7 @@
       "borderRadius": 16,
       "fill": "B6",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -396,6 +413,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 169,
@@ -434,6 +452,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 167,
@@ -472,6 +491,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 123.5,
@@ -518,6 +538,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 170,
@@ -564,6 +585,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 166,
@@ -602,6 +624,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 108.75,
@@ -640,6 +663,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 60,
@@ -678,6 +702,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 240.99899291992188,
@@ -724,6 +749,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 157.5,
@@ -762,6 +788,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 60,
@@ -801,6 +828,7 @@
     "borderRadius": 0,
     "fill": "N7",
     "stroke": "",
+    "animated": false,
     "shadow": false,
     "3d": false,
     "multiple": false,

@@ -104,7 +104,6 @@ func (c *compiler) overlayClasses(m *Map) {
 
 	for _, lf := range layers.Fields {
 		if lf.Map() == nil || lf.Primary() != nil {
-			c.errorf(lf.References[0].Context_.Key, "invalid layer")
 			continue
 		}
 		l := lf.Map()
@@ -443,22 +442,6 @@ func (g *globContext) copyApplied(from *globContext) {
 	}
 }
 
-func (g *globContext) prefixed(dst *Map) *globContext {
-	g2 := g.copy()
-	prefix := d2ast.MakeKeyPathString(RelIDA(g2.refctx.ScopeMap, dst))
-	g2.refctx.Key = g2.refctx.Key.Copy()
-	if g2.refctx.Key.Key != nil {
-		prefix.Path = append(prefix.Path, g2.refctx.Key.Key.Path...)
-	}
-	if len(prefix.Path) > 0 {
-		g2.refctx.Key.Key = prefix
-	}
-	if !g2.refctx.Key.HasTripleGlob() && g2.refctx.Key.EdgeKey != nil {
-		prefix.Path = append(prefix.Path, g2.refctx.Key.EdgeKey.Path...)
-	}
-	return g2
-}
-
 func (c *compiler) ampersandFilterMap(dst *Map, ast, scopeAST *d2ast.Map) bool {
 	for _, n := range ast.Nodes {
 		switch {
@@ -505,12 +488,24 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 		if NodeBoardKind(dst) == BoardLayer && !dst.Root() {
 			for _, g := range previousGlobs {
 				if g.refctx.Key.HasTripleGlob() {
-					globs = append(globs, g.prefixed(dst))
+					gctx2 := g.copy()
+					gctx2.refctx.ScopeMap = dst
+					globs = append(globs, gctx2)
 				}
 			}
 		} else if NodeBoardKind(dst) == BoardScenario {
 			for _, g := range previousGlobs {
-				g2 := g.prefixed(dst)
+				gctx2 := g.copy()
+				gctx2.refctx.ScopeMap = dst
+				if !g.refctx.Key.HasMultiGlob() {
+					// Triple globs already apply independently to each board
+					gctx2.copyApplied(g)
+				}
+				globs = append(globs, gctx2)
+			}
+			for _, g := range previousGlobs {
+				g2 := g.copy()
+				g2.refctx.ScopeMap = dst
 				// We don't want globs applied in a given scenario to affect future boards
 				// Copying the applied fields and edges keeps the applications scoped to this board
 				// Note that this is different from steps, where applications carry over
@@ -522,7 +517,9 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 			}
 		} else if NodeBoardKind(dst) == BoardStep {
 			for _, g := range previousGlobs {
-				globs = append(globs, g.prefixed(dst))
+				gctx2 := g.copy()
+				gctx2.refctx.ScopeMap = dst
+				globs = append(globs, gctx2)
 			}
 		} else {
 			globs = append(globs, previousGlobs...)
@@ -753,6 +750,33 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 				},
 			}
 			return c._ampersandFilter(f, refctx)
+		case "leaf":
+			raw := refctx.Key.Value.ScalarBox().Unbox().ScalarString()
+			boolVal, err := strconv.ParseBool(raw)
+			if err != nil {
+				c.errorf(refctx.Key, `&leaf must be "true" or "false", got %q`, raw)
+				return false
+			}
+
+			f := refctx.ScopeMap.Parent().(*Field)
+			isLeaf := f.Map() == nil || !f.Map().IsContainer()
+			return isLeaf == boolVal
+		case "connected":
+			raw := refctx.Key.Value.ScalarBox().Unbox().ScalarString()
+			boolVal, err := strconv.ParseBool(raw)
+			if err != nil {
+				c.errorf(refctx.Key, `&connected must be "true" or "false", got %q`, raw)
+				return false
+			}
+			f := refctx.ScopeMap.Parent().(*Field)
+			isConnected := false
+			for _, r := range f.References {
+				if r.InEdge() {
+					isConnected = true
+					break
+				}
+			}
+			return isConnected == boolVal
 		case "label":
 			f := &Field{}
 			n := refctx.ScopeMap.Parent()

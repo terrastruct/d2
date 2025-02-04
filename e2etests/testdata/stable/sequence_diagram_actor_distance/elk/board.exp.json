@@ -1,5 +1,13 @@
 {
   "name": "",
+  "config": {
+    "sketch": false,
+    "themeID": 0,
+    "darkThemeID": null,
+    "pad": null,
+    "center": null,
+    "layoutEngine": null
+  },
   "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
@@ -18,6 +26,7 @@
       "borderRadius": 0,
       "fill": "B5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -59,6 +68,7 @@
       "borderRadius": 0,
       "fill": "B5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -100,6 +110,7 @@
       "borderRadius": 0,
       "fill": "B5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -141,6 +152,7 @@
       "borderRadius": 0,
       "fill": "B5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -182,6 +194,7 @@
       "borderRadius": 0,
       "fill": "B5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -223,6 +236,7 @@
       "borderRadius": 0,
       "fill": "B5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -274,6 +288,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 225.5,
@@ -312,6 +327,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 225.5,
@@ -350,6 +366,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 658.5,
@@ -388,6 +405,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 225.5,
@@ -426,6 +444,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 1091,
@@ -464,6 +483,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 225.5,
@@ -502,6 +522,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 225.5,
@@ -540,6 +561,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 658.5,
@@ -578,6 +600,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 1091,
@@ -616,6 +639,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 1562,
@@ -654,6 +678,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 1724.5,
@@ -692,6 +717,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 2066.5,
@@ -723,6 +749,7 @@
     "borderRadius": 0,
     "fill": "N7",
     "stroke": "",
+    "animated": false,
     "shadow": false,
     "3d": false,
     "multiple": false,

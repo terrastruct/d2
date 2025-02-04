@@ -8,6 +8,7 @@ import (
 
 func TestOutputFormat(t *testing.T) {
 	type testCase struct {
+		stdoutFormatFlag          string
 		outputPath                string
 		extension                 exportExtension
 		supportsDarkTheme         bool
@@ -40,6 +41,15 @@ func TestOutputFormat(t *testing.T) {
 			supportsAnimation:         true,
 			requiresAnimationInterval: false,
 			requiresPngRender:         false,
+		},
+		{
+			stdoutFormatFlag:          "png",
+			outputPath:                "-",
+			extension:                 PNG,
+			supportsDarkTheme:         false,
+			supportsAnimation:         false,
+			requiresAnimationInterval: false,
+			requiresPngRender:         true,
 		},
 		{
 			outputPath:                "/out.png",
@@ -78,7 +88,8 @@ func TestOutputFormat(t *testing.T) {
 	for _, tc := range testCases {
 		tc := tc
 		t.Run(tc.outputPath, func(t *testing.T) {
-			extension := getExportExtension(tc.outputPath)
+			extension, err := getOutputFormat(&tc.stdoutFormatFlag, tc.outputPath)
+			assert.NoError(t, err)
 			assert.Equal(t, tc.extension, extension)
 			assert.Equal(t, tc.supportsAnimation, extension.supportsAnimation())
 			assert.Equal(t, tc.supportsDarkTheme, extension.supportsDarkTheme())

@@ -194,6 +194,9 @@ func toShape(obj *d2graph.Object, g *d2graph.Graph) d2target.Shape {
 	if obj.Tooltip != nil {
 		shape.Tooltip = obj.Tooltip.Value
 	}
+	if obj.Style.Animated != nil {
+		shape.Animated, _ = strconv.ParseBool(obj.Style.Animated.Value)
+	}
 	if obj.Link != nil {
 		shape.Link = obj.Link.Value
 		shape.PrettyLink = toPrettyLink(g, obj.Link.Value)
@@ -353,6 +356,9 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 	}
 	if edge.Style.Font != nil {
 		connection.FontFamily = edge.Style.Font.Value
+	}
+	if edge.Link != nil {
+		connection.Link = edge.Link.Value
 	}
 	connection.Label = text.Text
 	connection.LabelWidth = text.Dimensions.Width

@@ -128,6 +128,18 @@ x: {
 			},
 		},
 		{
+			name: "reserved_missing_values",
+			text: `foobar: {
+  width
+  bottom
+  left
+  right
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/reserved_missing_values.d2:2:3: reserved field "width" must have a value
+d2/testdata/d2compiler/TestCompile/reserved_missing_values.d2:4:3: reserved field "left" must have a value`,
+		},
+		{
 			name: "positions_negative",
 			text: `hey: {
 	top: 200
@@ -1219,7 +1231,6 @@ x: {
 	style.animated: true
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/shape_edge_style.d2:3:2: key "animated" can only be applied to edges`,
 		},
 		{
 			name: "edge_invalid_style",
@@ -1528,6 +1539,30 @@ x -> y: {
 			},
 		},
 		{
+			name: "glob-connection-steps",
+
+			text: `*.style.stroke: black
+
+layers: {
+  ok: @ok
+}
+`,
+			files: map[string]string{
+				"ok.d2": `
+steps: {
+  1: {
+    step1
+  }
+}
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 0, len(g.Steps))
+				assert.Equal(t, 1, len(g.Layers))
+				assert.Equal(t, 1, len(g.Layers[0].Steps))
+			},
+		},
+		{
 			name: "import_url_link",
 
 			text: `...@test
@@ -1612,6 +1647,27 @@ a.style.fill: null
 
 				if g.Objects[0].Tooltip.Value != "hello world" {
 					t.Fatal(g.Objects[0].Tooltip.Value)
+				}
+			},
+		},
+		{
+			name:   "no_url_link_and_path_url_label_concurrently",
+			text:   `x -> y: https://google.com {link: https://not-google.com }`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no_url_link_and_path_url_label_concurrently.d2:1:35: Label cannot be set to URL when link is also set (for security)`,
+		},
+		{
+			name: "url_link_and_path_url_label_concurrently",
+			text: `x -> y: hello world {link: https://google.com}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if len(g.Edges) != 1 {
+					t.Fatal(len(g.Edges))
+				}
+				if g.Edges[0].Link.Value != "https://google.com" {
+					t.Fatal(g.Edges[0].Link.Value)
+				}
+
+				if g.Edges[0].Label.Value != "hello world" {
+					t.Fatal(g.Edges[0].Label.Value)
 				}
 			},
 		},
@@ -3022,7 +3078,7 @@ object: {
 			name: "no-class-primary",
 			text: `x.class
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/no-class-primary.d2:1:3: class missing value`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no-class-primary.d2:1:3: reserved field "class" must have a value`,
 		},
 		{
 			name: "no-class-inside-classes",
@@ -3459,6 +3515,25 @@ svc_1."think about A"
 svc_1.t2 -> b: do with B
 `,
 		},
+		{
+			name: "layer-import-nested-layer",
+			text: `layers: {
+	ok: {...@meow}
+}
+`,
+			files: map[string]string{
+				"meow.d2": `layers: {
+  1: {
+    asdf
+  }
+}
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "d2/testdata/d2compiler/TestCompile/layer-import-nested-layer.d2", g.Layers[0].AST.Range.Path)
+				tassert.Equal(t, "d2/testdata/d2compiler/TestCompile/meow.d2", g.Layers[0].Layers[0].AST.Range.Path)
+			},
+		},
 	}
 
 	for _, tc := range testCases {
@@ -3810,13 +3885,27 @@ a: null
 				},
 			},
 			{
-				name: "edge",
+				name: "basic-edge",
 				run: func(t *testing.T) {
 					g, _ := assertCompile(t, `
 a -> b
 (a -> b)[0]: null
 `, "")
 					assert.Equal(t, 2, len(g.Objects))
+					assert.Equal(t, 0, len(g.Edges))
+				},
+			},
+			{
+				name: "nested-edge",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+a.b.c -> a.d.e
+a.b.c -> a.d.e
+
+a.(b.c -> d.e)[0]: null
+(a.b.c -> a.d.e)[1]: null
+`, "")
+					assert.Equal(t, 5, len(g.Objects))
 					assert.Equal(t, 0, len(g.Edges))
 				},
 			},
@@ -5120,6 +5209,43 @@ y.link: https://google.com
 `, ``)
 				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Attributes.Style.Underline)
 				assert.Equal(t, "true", g.Objects[1].Attributes.Style.Underline.Value)
+			},
+		},
+		{
+			name: "leaf-filter",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+**: {
+  &leaf: false
+  style.fill: red
+}
+a.b.c
+`, ``)
+				assert.Equal(t, "a", g.Objects[0].ID)
+				assert.Equal(t, "red", g.Objects[0].Attributes.Style.Fill.Value)
+				assert.Equal(t, "b", g.Objects[1].ID)
+				assert.Equal(t, "red", g.Objects[1].Attributes.Style.Fill.Value)
+				assert.Equal(t, "c", g.Objects[2].ID)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Fill)
+			},
+		},
+		{
+			name: "connected-filter",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*: {
+  &connected: true
+  style.fill: red
+}
+a -> b
+c
+`, ``)
+				assert.Equal(t, "a", g.Objects[0].ID)
+				assert.Equal(t, "red", g.Objects[0].Attributes.Style.Fill.Value)
+				assert.Equal(t, "b", g.Objects[1].ID)
+				assert.Equal(t, "red", g.Objects[1].Attributes.Style.Fill.Value)
+				assert.Equal(t, "c", g.Objects[2].ID)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Fill)
 			},
 		},
 		{

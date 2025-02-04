@@ -239,8 +239,6 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 					}
 				}
 			}
-		} else {
-			c.errorf(class.LastRef().AST(), "class missing value")
 		}
 
 		for _, className := range classNames {
@@ -341,9 +339,6 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 			return
 		}
 		c.compileStyle(&obj.Attributes, f.Map())
-		if obj.Style.Animated != nil {
-			c.errorf(obj.Style.Animated.MapKey, `key "animated" can only be applied to edges`)
-		}
 		return
 	}
 
@@ -508,6 +503,8 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 			default:
 				c.errorf(f.LastPrimaryKey(), "reserved field %v does not accept composite", f.Name.ScalarString())
 			}
+		} else {
+			c.errorf(f.LastRef().AST(), `reserved field "%v" must have a value`, f.Name.ScalarString())
 		}
 		return
 	}
@@ -681,6 +678,13 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 	case "classes":
 	}
 
+	if attrs.Link != nil && attrs.Label.Value != "" {
+		u, err := url.ParseRequestURI(attrs.Label.Value)
+		if err == nil && u.Host != "" {
+			c.errorf(scalar, "Label cannot be set to URL when link is also set (for security)")
+		}
+	}
+
 	if attrs.Link != nil && attrs.Tooltip != nil {
 		u, err := url.ParseRequestURI(attrs.Tooltip.Value)
 		if err == nil && u.Host != "" {
@@ -813,8 +817,6 @@ func (c *compiler) compileEdgeMap(edge *d2graph.Edge, m *d2ir.Map) {
 					}
 				}
 			}
-		} else {
-			c.errorf(class.LastRef().AST(), "class missing value")
 		}
 
 		for _, className := range classNames {

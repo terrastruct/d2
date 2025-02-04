@@ -987,9 +987,25 @@ func (m *Map) DeleteEdge(eid *EdgeID) *Edge {
 		return nil
 	}
 
-	for i, e := range m.Edges {
-		if e.ID.Match(eid) {
-			m.Edges = append(m.Edges[:i], m.Edges[i+1:]...)
+	resolvedEID, resolvedM, common, err := eid.resolve(m)
+	if err != nil {
+		return nil
+	}
+
+	if len(common) > 0 {
+		f := resolvedM.GetField(common...)
+		if f == nil {
+			return nil
+		}
+		if f.Map() == nil {
+			return nil
+		}
+		return f.Map().DeleteEdge(resolvedEID)
+	}
+
+	for i, e := range resolvedM.Edges {
+		if e.ID.Match(resolvedEID) {
+			resolvedM.Edges = append(resolvedM.Edges[:i], resolvedM.Edges[i+1:]...)
 			return e
 		}
 	}
@@ -1395,7 +1411,14 @@ func (f *Field) AST() d2ast.Node {
 		k.Primary = d2ast.MakeValueBox(f.Primary_.AST().(d2ast.Value)).ScalarBox()
 	}
 	if f.Composite != nil {
-		k.Value = d2ast.MakeValueBox(f.Composite.AST().(d2ast.Value))
+		value := f.Composite.AST().(d2ast.Value)
+		if m, ok := value.(*d2ast.Map); ok {
+			path := m.Range.Path
+			// Treat it as multi-line, but not file-map (line 0)
+			m.Range = d2ast.MakeRange(",1:0:0-2:0:0")
+			m.Range.Path = path
+		}
+		k.Value = d2ast.MakeValueBox(value)
 	}
 
 	return k
@@ -1457,6 +1480,12 @@ func (m *Map) AST() d2ast.Node {
 	}
 	astMap := &d2ast.Map{
 		Range: d2ast.MakeRange(",0:0:0-1:0:0"),
+	}
+	if m.parent != nil && NodeBoardKind(m) != "" {
+		f, ok := m.parent.(*Field)
+		if ok {
+			astMap.Range.Path = f.Name.GetRange().Path
+		}
 	}
 	for _, f := range m.Fields {
 		astMap.Nodes = append(astMap.Nodes, d2ast.MakeMapNodeBox(f.AST().(d2ast.MapNode)))

@@ -567,6 +567,37 @@ layers: {
 `,
 		},
 		{
+			name: "add_layer/5",
+			text: `classes: {
+  a: {
+    style.stroke: red
+  }
+}
+b
+
+layers: {
+	c
+}
+`,
+			key: `d`,
+
+			boardPath: []string{"c"},
+			expKey:    `d`,
+			exp: `classes: {
+  a: {
+    style.stroke: red
+  }
+}
+b
+
+layers: {
+  c: {
+    d
+  }
+}
+`,
+		},
+		{
 			name: "layers-edge",
 
 			text: `a
@@ -2437,6 +2468,28 @@ layers: {
 `,
 		},
 		{
+			name: "import/10",
+
+			text: `heyn
+
+layers: {
+  man: {...@meow}
+}
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `layers: {
+  1: {
+    asdf
+  }
+}
+`,
+			},
+			boardPath: []string{"man", "1"},
+			key:       `asdf.link`,
+			value:     go2.Pointer(`_._`),
+			expErr:    `failed to set "asdf.link" to "\"_._\"": board [man 1] cannot be modified through this file`,
+		},
+		{
 			name: "label-near/1",
 
 			text: `x
@@ -2664,6 +2717,31 @@ scenarios: {
         (a -> b)[0].style.stroke-width: 3
       }
     }
+  }
+}
+`,
+		},
+		{
+			name: "step-connection",
+
+			text: `steps: {
+  1: {
+    Modules -- Metricbeat: {
+      style.stroke-width: 1
+    }
+  }
+}
+
+		`,
+			key:       `Metricbeat.style.stroke`,
+			value:     go2.Pointer(`red`),
+			boardPath: []string{"1"},
+			exp: `steps: {
+  1: {
+    Modules -- Metricbeat: {
+      style.stroke-width: 1
+    }
+    Metricbeat.style.stroke: red
   }
 }
 `,
@@ -7999,6 +8077,32 @@ y
 y
 
 (* -> *)[*].style.opacity: 0.8
+`,
+		},
+		{
+			name: "layer-delete-complex-object",
+
+			text: `k
+
+layers: {
+  x: {
+    a: "b" {
+      top: 184
+      left: 180
+    }
+    j
+  }
+}
+`,
+			key:       `a`,
+			boardPath: []string{"x"},
+			exp: `k
+
+layers: {
+  x: {
+    j
+  }
+}
 `,
 		},
 	}

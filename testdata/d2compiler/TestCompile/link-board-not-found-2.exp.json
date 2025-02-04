@@ -248,7 +248,7 @@
         "name": "one",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -272,7 +272,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": ",0:0:0-1:0:0",
+                    "range": ",1:0:0-2:0:0",
                     "nodes": [
                       {
                         "map_key": {
@@ -390,7 +390,7 @@
         "name": "two",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -414,7 +414,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": ",0:0:0-1:0:0",
+                    "range": ",1:0:0-2:0:0",
                     "nodes": [
                       {
                         "map_key": {

@@ -1,4 +1,4 @@
-<pattern id="lines" x="0" y="0" width="15" height="15" patternUnits="userSpaceOnUse">
+<pattern id="lines-%s" x="0" y="0" width="15" height="15" patternUnits="userSpaceOnUse">
 <g style="mix-blend-mode:multiply">
 <g style="mix-blend-mode:multiply" opacity="0.05">
 <rect y="2" width="15" height="1" fill="#0A0F25"/>

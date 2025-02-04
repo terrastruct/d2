@@ -5,6 +5,7 @@ package d2svg
 import (
 	"bytes"
 	_ "embed"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"hash/fnv"
@@ -30,6 +31,7 @@ import (
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/d2/lib/jsrunner"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/shape"
 	"oss.terrastruct.com/d2/lib/svg"
@@ -85,6 +87,8 @@ type RenderOpts struct {
 	// MasterID is passed when the diagram should use something other than its own hash for unique targeting
 	// Currently, that's when multi-boards are collapsed
 	MasterID string
+	NoXMLTag *bool
+	Salt     *string
 }
 
 func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height int) {
@@ -97,7 +101,7 @@ func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height in
 	return left, top, width, height
 }
 
-func arrowheadMarkerID(isTarget bool, connection d2target.Connection) string {
+func arrowheadMarkerID(diagramHash string, isTarget bool, connection d2target.Connection) string {
 	var arrowhead d2target.Arrowhead
 	if isTarget {
 		arrowhead = connection.DstArrow
@@ -105,7 +109,7 @@ func arrowheadMarkerID(isTarget bool, connection d2target.Connection) string {
 		arrowhead = connection.SrcArrow
 	}
 
-	return fmt.Sprintf("mk-%s", hash(fmt.Sprintf("%s,%t,%d,%s",
+	return fmt.Sprintf("mk-%s-%s", diagramHash, hash(fmt.Sprintf("%s,%t,%d,%s",
 		arrowhead, isTarget, connection.StrokeWidth, connection.Stroke,
 	)))
 }
@@ -285,6 +289,54 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection, i
 		}
 
 		path = circleEl.Render()
+	case d2target.FilledBoxArrowhead:
+		polygonEl := d2themes.NewThemableElement("polygon", inlineTheme)
+		polygonEl.ClassName = "connection"
+		polygonEl.Fill = connection.Stroke
+		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+
+		if isTarget {
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
+				0., 0.,
+				0., height,
+				width, height,
+				width, 0.,
+			)
+		} else {
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
+				0., 0.,
+				0., height,
+				width, height,
+				width, 0.,
+			)
+		}
+
+		path = polygonEl.Render()
+	case d2target.BoxArrowhead:
+		polygonEl := d2themes.NewThemableElement("polygon", inlineTheme)
+		polygonEl.ClassName = "connection"
+		polygonEl.Fill = d2target.BG_COLOR
+		polygonEl.Stroke = connection.Stroke
+		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+		polygonEl.Style = fmt.Sprintf("%sstroke-linejoin:miter;", polygonEl.Style)
+
+		inset := strokeWidth / 2
+		if isTarget {
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
+				inset, inset,
+				inset, height-inset,
+				width-inset, height-inset,
+				width-inset, inset,
+			)
+		} else {
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
+				inset, inset,
+				inset, height-inset,
+				width-inset, height-inset,
+				width-inset, inset,
+			)
+		}
+		path = polygonEl.Render()
 	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
 		offset := 3.0 + float64(connection.StrokeWidth)*1.8
 
@@ -496,7 +548,7 @@ func makeLabelMask(labelTL *geo.Point, width, height int, opacity float64) strin
 	)
 }
 
-func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, sketchRunner *d2sketch.Runner, inlineTheme *d2themes.Theme) (labelMask string, _ error) {
+func drawConnection(writer io.Writer, diagramHash string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, jsRunner jsrunner.JSRunner, inlineTheme *d2themes.Theme) (labelMask string, _ error) {
 	opacityStyle := ""
 	if connection.Opacity != 1.0 {
 		opacityStyle = fmt.Sprintf(" style='opacity:%f'", connection.Opacity)
@@ -506,10 +558,10 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 	if len(connection.Classes) > 0 {
 		classStr = fmt.Sprintf(` class="%s"`, strings.Join(connection.Classes, " "))
 	}
-	fmt.Fprintf(writer, `<g id="%s"%s%s>`, svg.EscapeText(connection.ID), opacityStyle, classStr)
+	fmt.Fprintf(writer, `<g class="%s"%s%s>`, base64.URLEncoding.EncodeToString([]byte(svg.EscapeText(connection.ID))), opacityStyle, classStr)
 	var markerStart string
 	if connection.SrcArrow != d2target.NoArrowhead {
-		id := arrowheadMarkerID(false, connection)
+		id := arrowheadMarkerID(diagramHash, false, connection)
 		if _, in := markers[id]; !in {
 			marker := arrowheadMarker(false, id, connection, inlineTheme)
 			if marker == "" {
@@ -523,7 +575,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 
 	var markerEnd string
 	if connection.DstArrow != d2target.NoArrowhead {
-		id := arrowheadMarkerID(true, connection)
+		id := arrowheadMarkerID(diagramHash, true, connection)
 		if _, in := markers[id]; !in {
 			marker := arrowheadMarker(true, id, connection, inlineTheme)
 			if marker == "" {
@@ -550,17 +602,17 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 
 	srcAdj, dstAdj := getArrowheadAdjustments(connection, idToShape)
 	path := pathData(connection, srcAdj, dstAdj)
-	mask := fmt.Sprintf(`mask="url(#%s)"`, labelMaskID)
+	mask := fmt.Sprintf(`mask="url(#%s)"`, diagramHash)
 
-	if sketchRunner != nil {
-		out, err := d2sketch.Connection(sketchRunner, connection, path, mask)
+	if jsRunner != nil {
+		out, err := d2sketch.Connection(jsRunner, connection, path, mask)
 		if err != nil {
 			return "", err
 		}
 		fmt.Fprint(writer, out)
 
 		// render sketch arrowheads separately
-		arrowPaths, err := d2sketch.Arrowheads(sketchRunner, connection, srcAdj, dstAdj)
+		arrowPaths, err := d2sketch.Arrowheads(jsRunner, connection, srcAdj, dstAdj)
 		if err != nil {
 			return "", err
 		}
@@ -635,11 +687,23 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		textEl := d2themes.NewThemableElement("text", inlineTheme)
 		textEl.X = labelTL.X + float64(connection.LabelWidth)/2
 		textEl.Y = labelTL.Y + float64(connection.FontSize)
-		textEl.Fill = connection.GetFontColor()
 		textEl.ClassName = fontClass
 		textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "middle", connection.FontSize)
 		textEl.Content = RenderText(connection.Label, textEl.X, float64(connection.LabelHeight))
+
+		if connection.Link != "" {
+			textEl.ClassName += " text-underline text-link"
+
+			fmt.Fprintf(writer, `<a href="%s" xlink:href="%[1]s">`, svg.EscapeText(connection.Link))
+		} else {
+			textEl.Fill = connection.GetFontColor()
+		}
+
 		fmt.Fprint(writer, textEl.Render())
+
+		if connection.Link != "" {
+			fmt.Fprintf(writer, "</a>")
+		}
 	}
 
 	if connection.SrcLabel != nil && connection.SrcLabel.Label != "" {
@@ -724,7 +788,7 @@ func defineShadowFilter(writer io.Writer) {
 </defs>`)
 }
 
-func render3DRect(targetShape d2target.Shape, inlineTheme *d2themes.Theme) string {
+func render3DRect(diagramHash string, targetShape d2target.Shape, inlineTheme *d2themes.Theme) string {
 	moveTo := func(p d2target.Point) string {
 		return fmt.Sprintf("M%d,%d", p.X+targetShape.Pos.X, p.Y+targetShape.Pos.Y)
 	}
@@ -766,7 +830,7 @@ func render3DRect(targetShape d2target.Shape, inlineTheme *d2themes.Theme) strin
 	renderedBorder := border.Render()
 
 	// create mask from border stroke, to cut away from the shape fills
-	maskID := fmt.Sprintf("border-mask-%v", svg.EscapeText(targetShape.ID))
+	maskID := fmt.Sprintf("border-mask-%v-%v", diagramHash, svg.EscapeText(targetShape.ID))
 	borderMask := strings.Join([]string{
 		fmt.Sprintf(`<defs><mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
 			maskID, targetShape.Pos.X, targetShape.Pos.Y-d2target.THREE_DEE_OFFSET, targetShape.Width+d2target.THREE_DEE_OFFSET, targetShape.Height+d2target.THREE_DEE_OFFSET,
@@ -820,7 +884,7 @@ func render3DRect(targetShape d2target.Shape, inlineTheme *d2themes.Theme) strin
 	return borderMask + mainShapeRendered + renderedSides + renderedBorder
 }
 
-func render3DHexagon(targetShape d2target.Shape, inlineTheme *d2themes.Theme) string {
+func render3DHexagon(diagramHash string, targetShape d2target.Shape, inlineTheme *d2themes.Theme) string {
 	moveTo := func(p d2target.Point) string {
 		return fmt.Sprintf("M%d,%d", p.X+targetShape.Pos.X, p.Y+targetShape.Pos.Y)
 	}
@@ -890,7 +954,7 @@ func render3DHexagon(targetShape d2target.Shape, inlineTheme *d2themes.Theme) st
 
 	mainPointsPoly := strings.Join(mainPoints, " ")
 	// create mask from border stroke, to cut away from the shape fills
-	maskID := fmt.Sprintf("border-mask-%v", svg.EscapeText(targetShape.ID))
+	maskID := fmt.Sprintf("border-mask-%v-%v", diagramHash, svg.EscapeText(targetShape.ID))
 	borderMask := strings.Join([]string{
 		fmt.Sprintf(`<defs><mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
 			maskID, targetShape.Pos.X, targetShape.Pos.Y-d2target.THREE_DEE_OFFSET, targetShape.Width+d2target.THREE_DEE_OFFSET, targetShape.Height+d2target.THREE_DEE_OFFSET,
@@ -945,7 +1009,7 @@ func render3DHexagon(targetShape d2target.Shape, inlineTheme *d2themes.Theme) st
 	return borderMask + mainShapeRendered + renderedSides + renderedBorder
 }
 
-func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape d2target.Shape, sketchRunner *d2sketch.Runner, inlineTheme *d2themes.Theme) (labelMask string, err error) {
+func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape d2target.Shape, jsRunner jsrunner.JSRunner, inlineTheme *d2themes.Theme) (labelMask string, err error) {
 	closingTag := "</g>"
 	if targetShape.Link != "" {
 
@@ -963,10 +1027,14 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		fmt.Fprint(writer, clipPathForBorderRadius(diagramHash, targetShape))
 	}
 	classStr := ""
+	if targetShape.Animated {
+		// the animated class applies to the whole svg group to include the label, unlike connections
+		targetShape.Classes = append(targetShape.Classes, "animated-shape")
+	}
 	if len(targetShape.Classes) > 0 {
 		classStr = fmt.Sprintf(` class="%s"`, strings.Join(targetShape.Classes, " "))
 	}
-	fmt.Fprintf(writer, `<g id="%s"%s%s>`, svg.EscapeText(targetShape.ID), opacityStyle, classStr)
+	fmt.Fprintf(writer, `<g class="%s"%s%s>`, base64.URLEncoding.EncodeToString([]byte(svg.EscapeText(targetShape.ID))), opacityStyle, classStr)
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
 	height := float64(targetShape.Height)
@@ -1005,8 +1073,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 
 	switch targetShape.Type {
 	case d2target.ShapeClass:
-		if sketchRunner != nil {
-			out, err := d2sketch.Class(sketchRunner, targetShape)
+		if jsRunner != nil {
+			out, err := d2sketch.Class(jsRunner, targetShape)
 			if err != nil {
 				return "", err
 			}
@@ -1014,13 +1082,13 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		} else {
 			drawClass(writer, diagramHash, targetShape, inlineTheme)
 		}
-		addAppendixItems(appendixWriter, targetShape, s)
+		addAppendixItems(appendixWriter, diagramHash, targetShape, s)
 		fmt.Fprint(writer, `</g>`)
 		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
 	case d2target.ShapeSQLTable:
-		if sketchRunner != nil {
-			out, err := d2sketch.Table(sketchRunner, targetShape)
+		if jsRunner != nil {
+			out, err := d2sketch.Table(jsRunner, targetShape)
 			if err != nil {
 				return "", err
 			}
@@ -1028,7 +1096,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		} else {
 			drawTable(writer, diagramHash, targetShape, inlineTheme)
 		}
-		addAppendixItems(appendixWriter, targetShape, s)
+		addAppendixItems(appendixWriter, diagramHash, targetShape, s)
 		fmt.Fprint(writer, `</g>`)
 		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
@@ -1037,8 +1105,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			if targetShape.Multiple {
 				fmt.Fprint(writer, renderDoubleOval(multipleTL, width, height, fill, "", stroke, style, inlineTheme))
 			}
-			if sketchRunner != nil {
-				out, err := d2sketch.DoubleOval(sketchRunner, targetShape)
+			if jsRunner != nil {
+				out, err := d2sketch.DoubleOval(jsRunner, targetShape)
 				if err != nil {
 					return "", err
 				}
@@ -1050,8 +1118,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			if targetShape.Multiple {
 				fmt.Fprint(writer, renderOval(multipleTL, width, height, fill, "", stroke, style, inlineTheme))
 			}
-			if sketchRunner != nil {
-				out, err := d2sketch.Oval(sketchRunner, targetShape)
+			if jsRunner != nil {
+				out, err := d2sketch.Oval(jsRunner, targetShape)
 				if err != nil {
 					return "", err
 				}
@@ -1080,7 +1148,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			borderRadius = float64(targetShape.BorderRadius)
 		}
 		if targetShape.ThreeDee {
-			fmt.Fprint(writer, render3DRect(targetShape, inlineTheme))
+			fmt.Fprint(writer, render3DRect(diagramHash, targetShape, inlineTheme))
 		} else {
 			if !targetShape.DoubleBorder {
 				if targetShape.Multiple {
@@ -1095,8 +1163,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					el.Rx = borderRadius
 					fmt.Fprint(writer, el.Render())
 				}
-				if sketchRunner != nil {
-					out, err := d2sketch.Rect(sketchRunner, targetShape)
+				if jsRunner != nil {
+					out, err := d2sketch.Rect(jsRunner, targetShape)
 					if err != nil {
 						return "", err
 					}
@@ -1139,8 +1207,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					el.Rx = borderRadius
 					fmt.Fprint(writer, el.Render())
 				}
-				if sketchRunner != nil {
-					out, err := d2sketch.DoubleRect(sketchRunner, targetShape)
+				if jsRunner != nil {
+					out, err := d2sketch.DoubleRect(jsRunner, targetShape)
 					if err != nil {
 						return "", err
 					}
@@ -1173,7 +1241,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		}
 	case d2target.ShapeHexagon:
 		if targetShape.ThreeDee {
-			fmt.Fprint(writer, render3DHexagon(targetShape, inlineTheme))
+			fmt.Fprint(writer, render3DHexagon(diagramHash, targetShape, inlineTheme))
 		} else {
 			if targetShape.Multiple {
 				multiplePathData := shape.NewShape(shapeType, geo.NewBox(multipleTL, width, height)).GetSVGPathData()
@@ -1187,8 +1255,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				}
 			}
 
-			if sketchRunner != nil {
-				out, err := d2sketch.Paths(sketchRunner, targetShape, s.GetSVGPathData())
+			if jsRunner != nil {
+				out, err := d2sketch.Paths(jsRunner, targetShape, s.GetSVGPathData())
 				if err != nil {
 					return "", err
 				}
@@ -1219,8 +1287,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			}
 		}
 
-		if sketchRunner != nil {
-			out, err := d2sketch.Paths(sketchRunner, targetShape, s.GetSVGPathData())
+		if jsRunner != nil {
+			out, err := d2sketch.Paths(jsRunner, targetShape, s.GetSVGPathData())
 			if err != nil {
 				return "", err
 			}
@@ -1448,13 +1516,13 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			svg.EscapeText(targetShape.Tooltip),
 		)
 	}
-	addAppendixItems(appendixWriter, targetShape, s)
+	addAppendixItems(appendixWriter, diagramHash, targetShape, s)
 
 	fmt.Fprint(writer, closingTag)
 	return labelMask, nil
 }
 
-func addAppendixItems(writer io.Writer, targetShape d2target.Shape, s shape.Shape) {
+func addAppendixItems(writer io.Writer, diagramHash string, targetShape d2target.Shape, s shape.Shape) {
 	var p1, p2 *geo.Point
 	if targetShape.Tooltip != "" || targetShape.Link != "" {
 		bothIcons := targetShape.Tooltip != "" && targetShape.Link != ""
@@ -1500,7 +1568,7 @@ func addAppendixItems(writer io.Writer, targetShape d2target.Shape, s shape.Shap
 			x-appendixIconRadius,
 			y-appendixIconRadius,
 			svg.EscapeText(targetShape.Tooltip),
-			TooltipIcon,
+			fmt.Sprintf(TooltipIcon, diagramHash, svg.SVGID(targetShape.ID)),
 		)
 	}
 	if targetShape.Link != "" {
@@ -1512,7 +1580,7 @@ func addAppendixItems(writer io.Writer, targetShape d2target.Shape, s shape.Shap
 		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
 			x-appendixIconRadius,
 			y-appendixIconRadius,
-			LinkIcon,
+			fmt.Sprintf(LinkIcon, diagramHash, svg.SVGID(targetShape.ID)),
 		)
 	}
 }
@@ -1594,6 +1662,22 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		buf,
 		source,
 		[]string{
+			`text-link`,
+		},
+		`
+.text-link {
+	fill: blue;
+}
+
+.text-link:visited {
+	fill: purple;
+}`,
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
 			`animated-connection`,
 		},
 		`
@@ -1601,6 +1685,23 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 	from {
 		stroke-dashoffset: 0;
 	}
+}
+`,
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
+			`animated-shape`,
+		},
+		`
+@keyframes shapeappear {
+    0%, 100% { transform: translateY(0); filter: drop-shadow(0px 0px 0px rgba(0,0,0,0)); }
+    50% { transform: translateY(-4px); filter: drop-shadow(0px 12.6px 25.2px rgba(50,50,93,0.25)) drop-shadow(0px 7.56px 15.12px rgba(0,0,0,0.1)); }
+}
+.animated-shape {
+	animation: shapeappear 1s linear infinite;
 }
 `,
 	)
@@ -1736,11 +1837,11 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		[]string{
 			`sketch-overlay-bright`,
 		},
-		`
+		fmt.Sprintf(`
 .sketch-overlay-bright {
-	fill: url(#streaks-bright);
+	fill: url(#streaks-bright-%s);
 	mix-blend-mode: darken;
-}`,
+}`, diagramHash),
 	)
 
 	appendOnTrigger(
@@ -1749,11 +1850,11 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		[]string{
 			`sketch-overlay-normal`,
 		},
-		`
+		fmt.Sprintf(`
 .sketch-overlay-normal {
-	fill: url(#streaks-normal);
+	fill: url(#streaks-normal-%s);
 	mix-blend-mode: color-burn;
-}`,
+}`, diagramHash),
 	)
 
 	appendOnTrigger(
@@ -1762,11 +1863,11 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		[]string{
 			`sketch-overlay-dark`,
 		},
-		`
+		fmt.Sprintf(`
 .sketch-overlay-dark {
-	fill: url(#streaks-dark);
+	fill: url(#streaks-dark-%s);
 	mix-blend-mode: overlay;
-}`,
+}`, diagramHash),
 	)
 
 	appendOnTrigger(
@@ -1775,11 +1876,11 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		[]string{
 			`sketch-overlay-darker`,
 		},
-		`
+		fmt.Sprintf(`
 .sketch-overlay-darker {
-	fill: url(#streaks-darker);
+	fill: url(#streaks-darker-%s);
 	mix-blend-mode: lighten;
-}`,
+}`, diagramHash),
 	)
 
 	fmt.Fprint(buf, `]]></style>`)
@@ -1797,7 +1898,7 @@ func appendOnTrigger(buf *bytes.Buffer, source string, triggers []string, newCon
 var DEFAULT_DARK_THEME *int64 = nil // no theme selected
 
 func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
-	var sketchRunner *d2sketch.Runner
+	var jsRunner jsrunner.JSRunner
 	pad := DEFAULT_PADDING
 	themeID := d2themescatalog.NeutralDefault.ID
 	darkThemeID := DEFAULT_DARK_THEME
@@ -1807,8 +1908,8 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 			pad = int(*opts.Pad)
 		}
 		if opts.Sketch != nil && *opts.Sketch {
-			var err error
-			sketchRunner, err = d2sketch.InitSketchVM()
+			jsRunner = jsrunner.NewJSRunner()
+			err := d2sketch.LoadJS(jsRunner)
 			if err != nil {
 				return nil, err
 			}
@@ -1818,6 +1919,8 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		}
 		darkThemeID = opts.DarkThemeID
 		scale = opts.Scale
+	} else {
+		opts = &RenderOpts{}
 	}
 
 	buf := &bytes.Buffer{}
@@ -1851,10 +1954,13 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		if color.IsGradient(c.Stroke) {
 			defineGradients(buf, c.Stroke)
 		}
+		if color.IsGradient(c.Fill) {
+			defineGradients(buf, c.Fill)
+		}
 	}
 
 	// Apply hash on IDs for targeting, to be specific for this diagram
-	diagramHash, err := diagram.HashID()
+	diagramHash, err := diagram.HashID(opts.Salt)
 	if err != nil {
 		return nil, err
 	}
@@ -1890,7 +1996,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	}
 	for _, obj := range allObjects {
 		if c, is := obj.(d2target.Connection); is {
-			labelMask, err := drawConnection(buf, isolatedDiagramHash, c, markers, idToShape, sketchRunner, inlineTheme)
+			labelMask, err := drawConnection(buf, isolatedDiagramHash, c, markers, idToShape, jsRunner, inlineTheme)
 			if err != nil {
 				return nil, err
 			}
@@ -1898,7 +2004,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 				labelMasks = append(labelMasks, labelMask)
 			}
 		} else if s, is := obj.(d2target.Shape); is {
-			labelMask, err := drawShape(buf, appendixItemBuf, diagramHash, s, sketchRunner, inlineTheme)
+			labelMask, err := drawShape(buf, appendixItemBuf, diagramHash, s, jsRunner, inlineTheme)
 			if err != nil {
 				return nil, err
 			} else if labelMask != "" {
@@ -1952,8 +2058,8 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 			fmt.Fprintf(upperBuf, `<style type="text/css">%s</style>`, css)
 		}
 
-		if sketchRunner != nil {
-			d2sketch.DefineFillPatterns(upperBuf)
+		if jsRunner != nil {
+			d2sketch.DefineFillPatterns(upperBuf, diagramHash)
 		}
 	}
 
@@ -2018,19 +2124,19 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 			}
 			switch pattern {
 			case "dots":
-				patternDefs += dots
+				patternDefs += fmt.Sprintf(dots, diagramHash)
 			case "lines":
-				patternDefs += lines
+				patternDefs += fmt.Sprintf(lines, diagramHash)
 			case "grain":
-				patternDefs += grain
+				patternDefs += fmt.Sprintf(grain, diagramHash)
 			case "paper":
-				patternDefs += paper
+				patternDefs += fmt.Sprintf(paper, diagramHash)
 			}
 			fmt.Fprintf(upperBuf, `
 .%s-overlay {
-	fill: url(#%s);
+	fill: url(#%s-%s);
 	mix-blend-mode: multiply;
-}`, pattern, pattern)
+}`, pattern, pattern, diagramHash)
 		}
 	}
 	if patternDefs != "" {
@@ -2059,25 +2165,26 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	tag := "g"
 	// Many things change when this is rendering for animation
 	if opts.MasterID == "" {
-		fitToScreenWrapperOpening = fmt.Sprintf(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="%s" preserveAspectRatio="%s meet" viewBox="0 0 %d %d"%s>`,
+		fitToScreenWrapperOpening = fmt.Sprintf(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-d2-version="%s" preserveAspectRatio="%s meet" viewBox="0 0 %d %d"%s>`,
 			version.Version,
 			alignment,
 			w, h,
 			dimensions,
 		)
-		xmlTag = `<?xml version="1.0" encoding="utf-8"?>`
+		if opts.NoXMLTag == nil || !*opts.NoXMLTag {
+			xmlTag = `<?xml version="1.0" encoding="utf-8"?>`
+		}
 		fitToScreenWrapperClosing = "</svg>"
-		idAttr = `id="d2-svg"`
+		idAttr = `d2-svg`
 		tag = "svg"
 	}
 
 	// TODO minify
-	docRendered := fmt.Sprintf(`%s%s<%s %s class="%s" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s%s</%s>%s`,
+	docRendered := fmt.Sprintf(`%s%s<%s class="%s" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s%s</%s>%s`,
 		xmlTag,
 		fitToScreenWrapperOpening,
 		tag,
-		idAttr,
-		diagramHash,
+		strings.Join([]string{diagramHash, idAttr}, " "),
 		w, h, left, top, w, h,
 		doubleBorderElStr,
 		backgroundEl.Render(),
@@ -2195,98 +2302,98 @@ func singleThemeRulesets(diagramHash string, themeID int64, overrides *d2target.
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B1, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.B1, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.B2)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B2, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.B2, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.B3)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B3, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.B3, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.B4)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B4, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.B4, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.B5)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B5, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.B5, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.B6)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B6, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.B6, lc, diagramHash, blendMode(lc))
 
 	// AA
 	lc, err = color.LuminanceCategory(theme.Colors.AA2)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.AA2, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.AA2, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.AA4)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.AA4, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.AA4, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.AA5)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.AA5, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.AA5, lc, diagramHash, blendMode(lc))
 
 	// AB
 	lc, err = color.LuminanceCategory(theme.Colors.AB4)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.AB4, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.AB4, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.AB5)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.AB5, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.AB5, lc, diagramHash, blendMode(lc))
 
 	// Neutrals
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N1)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N1, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.N1, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N2)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N2, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.N2, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N3)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N3, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.N3, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N4)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N4, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.N4, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N5)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N5, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.N5, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N6)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N6, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.N6, lc, diagramHash, blendMode(lc))
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N7)
 	if err != nil {
 		return "", err
 	}
-	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N7, lc, blendMode(lc))
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}", color.N7, lc, diagramHash, blendMode(lc))
 
 	if theme.IsDark() {
 		out += ".light-code{display: none}"
