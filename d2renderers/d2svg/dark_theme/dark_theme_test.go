@@ -3,7 +3,6 @@ package dark_theme_test
 import (
 	"context"
 	"encoding/xml"
-	"io/ioutil"
 	"log/slog"
 	"os"
 	"path/filepath"
@@ -449,7 +448,7 @@ func run(t *testing.T, tc testCase) {
 	assert.Success(t, err)
 	err = os.MkdirAll(dataPath, 0755)
 	assert.Success(t, err)
-	err = ioutil.WriteFile(pathGotSVG, svgBytes, 0600)
+	err = os.WriteFile(pathGotSVG, svgBytes, 0600)
 	assert.Success(t, err)
 	defer os.Remove(pathGotSVG)
 

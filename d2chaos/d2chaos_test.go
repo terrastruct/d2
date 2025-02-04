@@ -3,7 +3,6 @@ package d2chaos_test
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"runtime/debug"
@@ -90,14 +89,14 @@ func TestD2Chaos(t *testing.T) {
 
 func test(t *testing.T, textPath, text string) {
 	t.Logf("writing d2 to %v (%d bytes)", textPath, len(text))
-	err := ioutil.WriteFile(textPath, []byte(text), 0644)
+	err := os.WriteFile(textPath, []byte(text), 0644)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	goencText := fmt.Sprintf("%#v", text)
 	t.Logf("writing d2.goenc to %v (%d bytes)", textPath+".goenc", len(goencText))
-	err = ioutil.WriteFile(textPath+".goenc", []byte(goencText), 0644)
+	err = os.WriteFile(textPath+".goenc", []byte(goencText), 0644)
 	if err != nil {
 		t.Fatal(err)
 	}
