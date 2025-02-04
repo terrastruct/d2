@@ -20,6 +20,7 @@
 - Compiler: reserved keywords with missing values error instead of silently doing nothing [#2251](https://github.com/terrastruct/d2/pull/2251)
 - Render: SVG outputs conform to stricter HTML standards, e.g. no duplicate ids [#2273](https://github.com/terrastruct/d2/issues/2273)
 - Themes: theme names are consistently cased [#2322](https://github.com/terrastruct/d2/pull/2322)
+- Nears: constant nears avoid collision with edge routes [#2327](https://github.com/terrastruct/d2/pull/2327)
 
 #### Bugfixes ⛑️
 
