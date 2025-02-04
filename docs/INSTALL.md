@@ -17,7 +17,6 @@ You may install `d2` through any of the following methods.
   - [Release archives](#release-archives)
   - [WSL](#wsl)
   - [Native Package managers](#native-package-managers)
-
 - [Docker](#docker)
 - [Coming soon](#coming-soon)
 
