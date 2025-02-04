@@ -278,7 +278,7 @@
         "name": "x",
         "isFolderOnly": false,
         "ast": {
-          "range": ",1:0:0-2:0:0",
+          "range": "d2/testdata/d2oracle/TestCreate/steps-basic.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -288,10 +288,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestCreate/steps-basic.d2,0:0:0-0:1:1",
                         "value": [
                           {
-                            "string": "a"
+                            "string": "a",
+                            "raw_string": "a"
                           }
                         ]
                       }
@@ -310,10 +311,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestCreate/steps-basic.d2,1:0:2-1:1:3",
                         "value": [
                           {
-                            "string": "d"
+                            "string": "d",
+                            "raw_string": "d"
                           }
                         ]
                       }
@@ -332,10 +334,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestCreate/steps-basic.d2,5:4:25-5:5:26",
                         "value": [
                           {
-                            "string": "b"
+                            "string": "b",
+                            "raw_string": "b"
                           }
                         ]
                       }
@@ -354,10 +357,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestCreate/steps-basic.d2,6:4:31-6:5:32",
                         "value": [
                           {
-                            "string": "c"
+                            "string": "c",
+                            "raw_string": "c"
                           }
                         ]
                       }

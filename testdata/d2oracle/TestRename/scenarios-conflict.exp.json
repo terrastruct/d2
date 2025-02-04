@@ -187,7 +187,7 @@
         "name": "y",
         "isFolderOnly": false,
         "ast": {
-          "range": ",1:0:0-2:0:0",
+          "range": "d2/testdata/d2oracle/TestRename/scenarios-conflict.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -197,10 +197,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestRename/scenarios-conflict.d2,0:0:0-0:1:1",
                         "value": [
                           {
-                            "string": "x"
+                            "string": "x",
+                            "raw_string": "x"
                           }
                         ]
                       }
@@ -219,10 +220,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestRename/scenarios-conflict.d2,4:4:27-4:7:30",
                         "value": [
                           {
-                            "string": "x 2"
+                            "string": "x 2",
+                            "raw_string": "x 2"
                           }
                         ]
                       }

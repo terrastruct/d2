@@ -111,8 +111,8 @@ func main() {
 
 markdown -> code -> ex
 ex: |tex
-	\\displaylines{x = a + b \\\\ y = b + c}
-	\\sum_{k=1}^{n} h_{k} \\int_{0}^{1} \\bigl(\\partial_{k} f(x_{k-1}+t h_{k} e_{k}) -\\partial_{k} f(a)\\bigr) \\,dt
+	\displaylines{x = a + b \\ y = b + c}
+	\sum_{k=1}^{n} h_{k} \int_{0}^{1} \bigl(\partial_{k} f(x_{k-1}+t h_{k} e_{k}) -\partial_{k} f(a)\bigr) \,dt
 |
 `,
 		},
@@ -218,8 +218,8 @@ func main() {
 
 markdown -> code -> ex
 ex: |tex
-	\\displaylines{x = a + b \\\\ y = b + c}
-	\\sum_{k=1}^{n} h_{k} \\int_{0}^{1} \\bigl(\\partial_{k} f(x_{k-1}+t h_{k} e_{k}) -\\partial_{k} f(a)\\bigr) \\,dt
+	\displaylines{x = a + b \\ y = b + c}
+	\sum_{k=1}^{n} h_{k} \int_{0}^{1} \bigl(\partial_{k} f(x_{k-1}+t h_{k} e_{k}) -\partial_{k} f(a)\bigr) \,dt
 |
 `,
 		},
@@ -340,6 +340,24 @@ api server -> logs: 持続する
 logs: ログ { shape: page; style.multiple: true }
 
 network.data processor -> api server
+`,
+		},
+		{
+			name:    "3d-sides",
+			themeID: &d2themescatalog.Terminal.ID,
+			script: `
+beats: Beats {
+  Explanation: Beats is a family of "data shippers," distinct services that send a single type of data from machines {
+    grid-columns: 1
+    style.stroke-width: 0
+    Image: "" {
+      icon: https://www.pngkey.com/png/full/75-752805_elastic-beats-logo-png-transparent-design.png
+      shape: image
+    }
+  }
+
+  style.3d: true
+}
 `,
 		},
 	}

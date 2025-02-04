@@ -1,0 +1,1104 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/link-file-underscore.d2,0:0:0-0:5:5",
+      "nodes": [
+        {
+          "import": {
+            "range": "d2/testdata/d2compiler/TestCompile/link-file-underscore.d2,0:0:0-0:5:5",
+            "spread": true,
+            "pre": "",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2compiler/TestCompile/link-file-underscore.d2,0:4:4-0:5:5",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "x",
+        "id_val": "x",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "x"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ],
+    "layers": [
+      {
+        "name": "a",
+        "isFolderOnly": false,
+        "ast": {
+          "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:0:0-1:0:0",
+          "nodes": [
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/x.d2,3:7:20-3:8:21",
+                        "value": [
+                          {
+                            "string": "c",
+                            "raw_string": "c"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {}
+              }
+            }
+          ]
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "attributes": {
+            "label": {
+              "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "style": {},
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": null
+          },
+          "zIndex": 0
+        },
+        "edges": null,
+        "objects": [
+          {
+            "id": "c",
+            "id_val": "c",
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile/x.d2,3:7:20-3:8:21",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/x.d2,3:7:20-3:8:21",
+                        "value": [
+                          {
+                            "string": "c",
+                            "raw_string": "c"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "c"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          }
+        ]
+      },
+      {
+        "name": "b",
+        "isFolderOnly": false,
+        "ast": {
+          "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:0:0-1:0:0",
+          "nodes": [
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/x.d2,4:7:31-4:8:32",
+                        "value": [
+                          {
+                            "string": "d",
+                            "raw_string": "d"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {
+                  "map": {
+                    "range": ",1:0:0-2:0:0",
+                    "nodes": [
+                      {
+                        "map_key": {
+                          "range": ",0:0:0-0:0:0",
+                          "key": {
+                            "range": ",0:0:0-0:0:0",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/x.d2,4:9:33-4:13:37",
+                                  "value": [
+                                    {
+                                      "string": "link",
+                                      "raw_string": "link"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {
+                            "unquoted_string": {
+                              "range": ",0:0:0-0:0:0",
+                              "value": [
+                                {
+                                  "string": "root.layers.a"
+                                }
+                              ]
+                            }
+                          },
+                          "value": {}
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "attributes": {
+            "label": {
+              "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "style": {},
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": null
+          },
+          "zIndex": 0
+        },
+        "edges": null,
+        "objects": [
+          {
+            "id": "d",
+            "id_val": "d",
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile/x.d2,4:7:31-4:13:37",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/x.d2,4:7:31-4:8:32",
+                        "value": [
+                          {
+                            "string": "d",
+                            "raw_string": "d"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/x.d2,4:9:33-4:13:37",
+                        "value": [
+                          {
+                            "string": "link",
+                            "raw_string": "link"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "d"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {},
+              "link": {
+                "value": "root.layers.a"
+              },
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          }
+        ]
+      },
+      {
+        "name": "e",
+        "isFolderOnly": false,
+        "ast": {
+          "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:0:0-1:0:0",
+          "nodes": [
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/x.d2,6:4:62-6:5:63",
+                        "value": [
+                          {
+                            "string": "l",
+                            "raw_string": "l"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {}
+              }
+            },
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/x.d2,8:2:67-8:8:73",
+                        "value": [
+                          {
+                            "string": "layers",
+                            "raw_string": "layers"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {
+                  "map": {
+                    "range": ",1:0:0-2:0:0",
+                    "nodes": [
+                      {
+                        "map_key": {
+                          "range": ",0:0:0-0:0:0",
+                          "key": {
+                            "range": ",0:0:0-0:0:0",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/x.d2,9:3:80-9:4:81",
+                                  "value": [
+                                    {
+                                      "string": "j",
+                                      "raw_string": "j"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": "d2/testdata/d2compiler/TestCompile/x.d2,1:0:0-2:0:0",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": ",0:0:0-0:0:0",
+                                    "key": {
+                                      "range": ",0:0:0-0:0:0",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,10:5:90-10:6:91",
+                                            "value": [
+                                              {
+                                                "string": "k",
+                                                "raw_string": "k"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {},
+                                    "value": {
+                                      "map": {
+                                        "range": ",1:0:0-2:0:0",
+                                        "nodes": [
+                                          {
+                                            "map_key": {
+                                              "range": ",0:0:0-0:0:0",
+                                              "key": {
+                                                "range": ",0:0:0-0:0:0",
+                                                "path": [
+                                                  {
+                                                    "unquoted_string": {
+                                                      "range": "d2/testdata/d2compiler/TestCompile/x.d2,10:7:92-10:11:96",
+                                                      "value": [
+                                                        {
+                                                          "string": "link",
+                                                          "raw_string": "link"
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                ]
+                                              },
+                                              "primary": {
+                                                "unquoted_string": {
+                                                  "range": ",0:0:0-0:0:0",
+                                                  "value": [
+                                                    {
+                                                      "string": "root.layers.e"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "value": {}
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                },
+                                {
+                                  "map_key": {
+                                    "range": ",0:0:0-0:0:0",
+                                    "key": {
+                                      "range": ",0:0:0-0:0:0",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,11:5:105-11:6:106",
+                                            "value": [
+                                              {
+                                                "string": "n",
+                                                "raw_string": "n"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {},
+                                    "value": {
+                                      "map": {
+                                        "range": ",1:0:0-2:0:0",
+                                        "nodes": [
+                                          {
+                                            "map_key": {
+                                              "range": ",0:0:0-0:0:0",
+                                              "key": {
+                                                "range": ",0:0:0-0:0:0",
+                                                "path": [
+                                                  {
+                                                    "unquoted_string": {
+                                                      "range": "d2/testdata/d2compiler/TestCompile/x.d2,11:7:107-11:11:111",
+                                                      "value": [
+                                                        {
+                                                          "string": "link",
+                                                          "raw_string": "link"
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                ]
+                                              },
+                                              "primary": {
+                                                "unquoted_string": {
+                                                  "range": ",0:0:0-0:0:0",
+                                                  "value": [
+                                                    {
+                                                      "string": "root"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "value": {}
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                },
+                                {
+                                  "map_key": {
+                                    "range": ",0:0:0-0:0:0",
+                                    "key": {
+                                      "range": ",0:0:0-0:0:0",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,12:5:122-12:6:123",
+                                            "value": [
+                                              {
+                                                "string": "m",
+                                                "raw_string": "m"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {},
+                                    "value": {
+                                      "map": {
+                                        "range": ",1:0:0-2:0:0",
+                                        "nodes": [
+                                          {
+                                            "map_key": {
+                                              "range": ",0:0:0-0:0:0",
+                                              "key": {
+                                                "range": ",0:0:0-0:0:0",
+                                                "path": [
+                                                  {
+                                                    "unquoted_string": {
+                                                      "range": "d2/testdata/d2compiler/TestCompile/x.d2,12:7:124-12:11:128",
+                                                      "value": [
+                                                        {
+                                                          "string": "link",
+                                                          "raw_string": "link"
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                ]
+                                              },
+                                              "primary": {
+                                                "unquoted_string": {
+                                                  "range": ",0:0:0-0:0:0",
+                                                  "value": [
+                                                    {
+                                                      "string": "root.layers.a"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "value": {}
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "attributes": {
+            "label": {
+              "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "style": {},
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": null
+          },
+          "zIndex": 0
+        },
+        "edges": null,
+        "objects": [
+          {
+            "id": "l",
+            "id_val": "l",
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile/x.d2,6:4:62-6:5:63",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/x.d2,6:4:62-6:5:63",
+                        "value": [
+                          {
+                            "string": "l",
+                            "raw_string": "l"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "l"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          }
+        ],
+        "layers": [
+          {
+            "name": "j",
+            "isFolderOnly": false,
+            "ast": {
+              "range": "d2/testdata/d2compiler/TestCompile/x.d2,0:0:0-1:0:0",
+              "nodes": [
+                {
+                  "map_key": {
+                    "range": ",0:0:0-0:0:0",
+                    "key": {
+                      "range": ",0:0:0-0:0:0",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,10:5:90-10:6:91",
+                            "value": [
+                              {
+                                "string": "k",
+                                "raw_string": "k"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": ",1:0:0-2:0:0",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": ",0:0:0-0:0:0",
+                              "key": {
+                                "range": ",0:0:0-0:0:0",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2compiler/TestCompile/x.d2,10:7:92-10:11:96",
+                                      "value": [
+                                        {
+                                          "string": "link",
+                                          "raw_string": "link"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {
+                                "unquoted_string": {
+                                  "range": ",0:0:0-0:0:0",
+                                  "value": [
+                                    {
+                                      "string": "root.layers.e"
+                                    }
+                                  ]
+                                }
+                              },
+                              "value": {}
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "map_key": {
+                    "range": ",0:0:0-0:0:0",
+                    "key": {
+                      "range": ",0:0:0-0:0:0",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,11:5:105-11:6:106",
+                            "value": [
+                              {
+                                "string": "n",
+                                "raw_string": "n"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": ",1:0:0-2:0:0",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": ",0:0:0-0:0:0",
+                              "key": {
+                                "range": ",0:0:0-0:0:0",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2compiler/TestCompile/x.d2,11:7:107-11:11:111",
+                                      "value": [
+                                        {
+                                          "string": "link",
+                                          "raw_string": "link"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {
+                                "unquoted_string": {
+                                  "range": ",0:0:0-0:0:0",
+                                  "value": [
+                                    {
+                                      "string": "root"
+                                    }
+                                  ]
+                                }
+                              },
+                              "value": {}
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "map_key": {
+                    "range": ",0:0:0-0:0:0",
+                    "key": {
+                      "range": ",0:0:0-0:0:0",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,12:5:122-12:6:123",
+                            "value": [
+                              {
+                                "string": "m",
+                                "raw_string": "m"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": ",1:0:0-2:0:0",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": ",0:0:0-0:0:0",
+                              "key": {
+                                "range": ",0:0:0-0:0:0",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2compiler/TestCompile/x.d2,12:7:124-12:11:128",
+                                      "value": [
+                                        {
+                                          "string": "link",
+                                          "raw_string": "link"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {
+                                "unquoted_string": {
+                                  "range": ",0:0:0-0:0:0",
+                                  "value": [
+                                    {
+                                      "string": "root.layers.a"
+                                    }
+                                  ]
+                                }
+                              },
+                              "value": {}
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            "root": {
+              "id": "",
+              "id_val": "",
+              "attributes": {
+                "label": {
+                  "value": ""
+                },
+                "labelDimensions": {
+                  "width": 0,
+                  "height": 0
+                },
+                "style": {},
+                "near_key": null,
+                "shape": {
+                  "value": ""
+                },
+                "direction": {
+                  "value": ""
+                },
+                "constraint": null
+              },
+              "zIndex": 0
+            },
+            "edges": null,
+            "objects": [
+              {
+                "id": "k",
+                "id_val": "k",
+                "references": [
+                  {
+                    "key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/x.d2,10:5:90-10:11:96",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,10:5:90-10:6:91",
+                            "value": [
+                              {
+                                "string": "k",
+                                "raw_string": "k"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,10:7:92-10:11:96",
+                            "value": [
+                              {
+                                "string": "link",
+                                "raw_string": "link"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "key_path_index": 0,
+                    "map_key_edge_index": -1
+                  }
+                ],
+                "attributes": {
+                  "label": {
+                    "value": "k"
+                  },
+                  "labelDimensions": {
+                    "width": 0,
+                    "height": 0
+                  },
+                  "style": {},
+                  "link": {
+                    "value": "root.layers.e"
+                  },
+                  "near_key": null,
+                  "shape": {
+                    "value": "rectangle"
+                  },
+                  "direction": {
+                    "value": ""
+                  },
+                  "constraint": null
+                },
+                "zIndex": 0
+              },
+              {
+                "id": "n",
+                "id_val": "n",
+                "references": [
+                  {
+                    "key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/x.d2,11:5:105-11:11:111",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,11:5:105-11:6:106",
+                            "value": [
+                              {
+                                "string": "n",
+                                "raw_string": "n"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,11:7:107-11:11:111",
+                            "value": [
+                              {
+                                "string": "link",
+                                "raw_string": "link"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "key_path_index": 0,
+                    "map_key_edge_index": -1
+                  }
+                ],
+                "attributes": {
+                  "label": {
+                    "value": "n"
+                  },
+                  "labelDimensions": {
+                    "width": 0,
+                    "height": 0
+                  },
+                  "style": {},
+                  "link": {
+                    "value": "root"
+                  },
+                  "near_key": null,
+                  "shape": {
+                    "value": "rectangle"
+                  },
+                  "direction": {
+                    "value": ""
+                  },
+                  "constraint": null
+                },
+                "zIndex": 0
+              },
+              {
+                "id": "m",
+                "id_val": "m",
+                "references": [
+                  {
+                    "key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/x.d2,12:5:122-12:11:128",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,12:5:122-12:6:123",
+                            "value": [
+                              {
+                                "string": "m",
+                                "raw_string": "m"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/x.d2,12:7:124-12:11:128",
+                            "value": [
+                              {
+                                "string": "link",
+                                "raw_string": "link"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "key_path_index": 0,
+                    "map_key_edge_index": -1
+                  }
+                ],
+                "attributes": {
+                  "label": {
+                    "value": "m"
+                  },
+                  "labelDimensions": {
+                    "width": 0,
+                    "height": 0
+                  },
+                  "style": {},
+                  "link": {
+                    "value": "root.layers.a"
+                  },
+                  "near_key": null,
+                  "shape": {
+                    "value": "rectangle"
+                  },
+                  "direction": {
+                    "value": ""
+                  },
+                  "constraint": null
+                },
+                "zIndex": 0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "err": null
+}

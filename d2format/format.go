@@ -135,6 +135,12 @@ func (p *printer) interpolationBoxes(boxes []d2ast.InterpolationBox, isDoubleStr
 			}
 			b.StringRaw = &s
 		}
+		if !isDoubleString {
+			if _, ok := d2ast.ReservedKeywords[strings.ToLower(*b.StringRaw)]; ok {
+				s := strings.ToLower(*b.StringRaw)
+				b.StringRaw = &s
+			}
+		}
 		p.sb.WriteString(*b.StringRaw)
 	}
 }
@@ -287,11 +293,18 @@ func (p *printer) _map(m *d2ast.Map) {
 		if nb.IsBoardNode() {
 			switch nb.MapKey.Key.Path[0].Unbox().ScalarString() {
 			case "layers":
-				layerNodes = append(layerNodes, nb)
+				// remove useless
+				if nb.MapKey.Value.Map != nil && len(nb.MapKey.Value.Map.Nodes) > 0 {
+					layerNodes = append(layerNodes, nb)
+				}
 			case "scenarios":
-				scenarioNodes = append(scenarioNodes, nb)
+				if nb.MapKey.Value.Map != nil && len(nb.MapKey.Value.Map.Nodes) > 0 {
+					scenarioNodes = append(scenarioNodes, nb)
+				}
 			case "steps":
-				stepNodes = append(stepNodes, nb)
+				if nb.MapKey.Value.Map != nil && len(nb.MapKey.Value.Map.Nodes) > 0 {
+					stepNodes = append(stepNodes, nb)
+				}
 			}
 			prev = n
 			continue
@@ -333,12 +346,14 @@ func (p *printer) _map(m *d2ast.Map) {
 		n := boards[i].Unbox()
 		// if this board is the very first line of the file, don't add an extra newline
 		if n.GetRange().Start.Line != 0 {
-			p.newline()
+			p.sb.WriteByte('\n')
 		}
 		// if scope only has boards, don't newline the first board
 		if i != 0 || len(m.Nodes) > len(boards) {
-			p.newline()
+			p.sb.WriteByte('\n')
 		}
+
+		p.sb.WriteString(p.indentStr)
 		p.node(n)
 		prev = n
 	}
@@ -357,6 +372,9 @@ func (p *printer) _map(m *d2ast.Map) {
 
 func (p *printer) mapKey(mk *d2ast.Key) {
 	if mk.Ampersand {
+		p.sb.WriteByte('&')
+	} else if mk.NotAmpersand {
+		p.sb.WriteByte('!')
 		p.sb.WriteByte('&')
 	}
 	if mk.Key != nil {

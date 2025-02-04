@@ -347,7 +347,7 @@
         "name": "1",
         "isFolderOnly": false,
         "ast": {
-          "range": ",1:0:0-2:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -357,10 +357,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:0:0-0:1:1",
                         "value": [
                           {
-                            "string": "a"
+                            "string": "a",
+                            "raw_string": "a"
                           }
                         ]
                       }
@@ -379,10 +380,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:5:5-0:6:6",
                         "value": [
                           {
-                            "string": "x"
+                            "string": "x",
+                            "raw_string": "x"
                           }
                         ]
                       }
@@ -436,7 +438,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": ",1:0:0-2:0:0",
+                    "range": ",0:0:0-1:0:0",
                     "nodes": [
                       {
                         "map_key": {
@@ -446,10 +448,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:16:44-4:21:49",
                                   "value": [
                                     {
-                                      "string": "style"
+                                      "string": "style",
+                                      "raw_string": "style"
                                     }
                                   ]
                                 }
@@ -469,10 +472,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:22:50-4:29:57",
                                             "value": [
                                               {
-                                                "string": "opacity"
+                                                "string": "opacity",
+                                                "raw_string": "opacity"
                                               }
                                             ]
                                           }

@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "x",
+      "name": {
+        "range": "TestCompile/filters/edge.d2,0:0:0-0:1:1",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -828,7 +836,15 @@
       ]
     },
     {
-      "name": "y",
+      "name": {
+        "range": "TestCompile/filters/edge.d2,0:5:5-0:6:6",
+        "value": [
+          {
+            "string": "y",
+            "raw_string": "y"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -1155,11 +1171,27 @@
     {
       "edge_id": {
         "src_path": [
-          "x"
+          {
+            "range": "TestCompile/filters/edge.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "y"
+          {
+            "range": "TestCompile/filters/edge.d2,0:5:5-0:6:6",
+            "value": [
+              {
+                "string": "y",
+                "raw_string": "y"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -1168,11 +1200,27 @@
       "map": {
         "fields": [
           {
-            "name": "source-arrowhead",
+            "name": {
+              "range": "TestCompile/filters/edge.d2,1:1:11-1:17:27",
+              "value": [
+                {
+                  "string": "source-arrowhead",
+                  "raw_string": "source-arrowhead"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "shape",
+                  "name": {
+                    "range": "TestCompile/filters/edge.d2,1:18:28-1:23:33",
+                    "value": [
+                      {
+                        "string": "shape",
+                        "raw_string": "shape"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/filters/edge.d2,1:25:35-1:32:42",
@@ -1536,11 +1584,27 @@
             ]
           },
           {
-            "name": "target-arrowhead",
+            "name": {
+              "range": "TestCompile/filters/edge.d2,2:1:44-2:17:60",
+              "value": [
+                {
+                  "string": "target-arrowhead",
+                  "raw_string": "target-arrowhead"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "shape",
+                  "name": {
+                    "range": "TestCompile/filters/edge.d2,2:18:61-2:23:66",
+                    "value": [
+                      {
+                        "string": "shape",
+                        "raw_string": "shape"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/filters/edge.d2,2:25:68-2:32:75",
@@ -1904,7 +1968,15 @@
             ]
           },
           {
-            "name": "label",
+            "name": {
+              "range": "TestCompile/filters/edge.d2,9:1:170-9:6:175",
+              "value": [
+                {
+                  "string": "label",
+                  "raw_string": "label"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "TestCompile/filters/edge.d2,9:8:177-9:32:201",
@@ -2399,11 +2471,27 @@
     {
       "edge_id": {
         "src_path": [
-          "x"
+          {
+            "range": "TestCompile/filters/edge.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "y"
+          {
+            "range": "TestCompile/filters/edge.d2,0:5:5-0:6:6",
+            "value": [
+              {
+                "string": "y",
+                "raw_string": "y"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 1,

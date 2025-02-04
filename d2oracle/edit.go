@@ -42,6 +42,9 @@ func Create(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 		}
 		// TODO beter name
 		baseAST = boardG.BaseAST
+		if baseAST == nil {
+			return nil, "", fmt.Errorf("board %v cannot be modified through this file", boardPath)
+		}
 	}
 
 	newKey, edge, err := generateUniqueKey(boardG, key, nil, nil)
@@ -98,6 +101,9 @@ func Set(g *d2graph.Graph, boardPath []string, key string, tag, value *string) (
 		}
 		// TODO beter name
 		baseAST = boardG.BaseAST
+		if baseAST == nil {
+			return nil, fmt.Errorf("board %v cannot be modified through this file", boardPath)
+		}
 	}
 
 	err = _set(boardG, baseAST, key, tag, value)
@@ -142,6 +148,9 @@ func ReconnectEdge(g *d2graph.Graph, boardPath []string, edgeKey string, srcKey,
 		}
 		// TODO beter name
 		baseAST = boardG.BaseAST
+		if baseAST == nil {
+			return nil, fmt.Errorf("board %v cannot be modified through this file", boardPath)
+		}
 	}
 
 	obj := boardG.Root
@@ -372,7 +381,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 	if mk.Key != nil {
 		found := true
 		for _, idel := range d2graph.Key(mk.Key) {
-			_, ok := d2graph.ReservedKeywords[idel]
+			_, ok := d2ast.ReservedKeywords[idel]
 			if ok {
 				reserved = true
 				break
@@ -408,6 +417,47 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			toSkip = 1
 			if len(mk.Key.Path) == 0 {
 				mk.Key = nil
+			}
+		}
+
+		if mk.Key != nil && len(mk.Key.Path) == 2 {
+			boardType := mk.Key.Path[0].Unbox().ScalarString()
+			if boardType == "layers" || boardType == "scenarios" || boardType == "steps" {
+				// Force map structure
+				var containerMap *d2ast.Map
+				for _, n := range scope.Nodes {
+					if n.MapKey != nil && n.MapKey.Key != nil && len(n.MapKey.Key.Path) == 1 &&
+						n.MapKey.Key.Path[0].Unbox().ScalarString() == boardType {
+						containerMap = n.MapKey.Value.Map
+						break
+					}
+				}
+
+				if containerMap == nil {
+					containerMap = &d2ast.Map{
+						Range: d2ast.MakeRange(",1:0:0-1:0:0"),
+					}
+					containerMK := &d2ast.Key{
+						Key: &d2ast.KeyPath{
+							Path: []*d2ast.StringBox{
+								d2ast.MakeValueBox(d2ast.RawString(boardType, true)).StringBox(),
+							},
+						},
+						Value: d2ast.MakeValueBox(containerMap),
+					}
+					appendMapKey(scope, containerMK)
+				}
+
+				itemMK := &d2ast.Key{
+					Key: &d2ast.KeyPath{
+						Path: []*d2ast.StringBox{
+							d2ast.MakeValueBox(d2ast.RawString(mk.Key.Path[1].Unbox().ScalarString(), true)).StringBox(),
+						},
+					},
+					Value: mk.Value,
+				}
+				appendMapKey(containerMap, itemMK)
+				return nil
 			}
 		}
 
@@ -450,7 +500,12 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			m = obj.Map
 		}
 
-		if (obj.Label.MapKey != nil && writeableLabelMK) && m == nil && (!found || reserved || len(mk.Edges) > 0) {
+		if (obj.Label.MapKey != nil && writeableLabelMK) && m == nil && (!found || reserved || len(mk.Edges) > 0) &&
+			// Label is not set like `hey.label: mylabel`
+			// This should only work when label is set like `hey: mylabel`
+			(obj.Label.MapKey.Key == nil ||
+				len(obj.Label.MapKey.Key.Path) == 0 ||
+				obj.Label.MapKey.Key.Path[len(obj.Label.MapKey.Key.Path)-1].Unbox().ScalarString() != "label") {
 			m2 := &d2ast.Map{
 				Range: d2ast.MakeRange(",1:0:0-1:0:0"),
 			}
@@ -544,7 +599,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 		attrs = edge.Attributes
 
 		if mk.EdgeKey != nil {
-			if _, ok := d2graph.ReservedKeywords[mk.EdgeKey.Path[0].Unbox().ScalarString()]; !ok {
+			if _, ok := d2ast.ReservedKeywords[mk.EdgeKey.Path[0].Unbox().ScalarString()]; !ok {
 				return errors.New("edge key must be reserved")
 			}
 			reserved = true
@@ -856,7 +911,7 @@ func appendMapKey(m *d2ast.Map, mk *d2ast.Key) {
 	if len(m.Nodes) == 1 &&
 		mk.Key != nil &&
 		len(mk.Key.Path) > 0 {
-		_, ok := d2graph.ReservedKeywords[mk.Key.Path[0].Unbox().ScalarString()]
+		_, ok := d2ast.ReservedKeywords[mk.Key.Path[0].Unbox().ScalarString()]
 		if ok {
 			// Allow one line reserved key (like shape) maps.
 			// TODO: This needs to be smarter as certain keys are only reserved in context.
@@ -900,6 +955,9 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 		}
 		// TODO beter name
 		baseAST = boardG.BaseAST
+		if baseAST == nil {
+			return nil, fmt.Errorf("board %v cannot be modified through this file", boardPath)
+		}
 	}
 
 	g2, err := deleteReserved(g, boardPath, baseAST, mk)
@@ -949,7 +1007,10 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 
 				for i := len(e.References) - 1; i >= 0; i-- {
 					ref := e.References[i]
-					deleteEdge(g, ref.Scope, ref.MapKey, ref.MapKeyEdgeIndex)
+					// Leave glob setters alone
+					if !(ref.MapKey.EdgeIndex != nil && ref.MapKey.EdgeIndex.Glob) {
+						deleteEdge(g, ref.Scope, ref.MapKey, ref.MapKeyEdgeIndex)
+					}
 				}
 
 				edges, ok := obj.FindEdges(mk)
@@ -981,7 +1042,10 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 		return recompile(boardG)
 	}
 
-	prevG, _ := recompile(boardG)
+	prevG, err := recompile(boardG)
+	if err != nil {
+		return nil, err
+	}
 
 	obj, ok := boardG.Root.HasChild(d2graph.Key(mk.Key))
 	if !ok {
@@ -1071,7 +1135,7 @@ func hoistRefChildren(g *d2graph.Graph, key *d2ast.KeyPath, ref d2graph.Referenc
 			continue
 		}
 		if n.MapKey.Key != nil {
-			_, ok := d2graph.ReservedKeywords[n.MapKey.Key.Path[0].Unbox().ScalarString()]
+			_, ok := d2ast.ReservedKeywords[n.MapKey.Key.Path[0].Unbox().ScalarString()]
 			if ok {
 				continue
 			}
@@ -1124,7 +1188,7 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 					continue
 				}
 				if n.MapKey.Key != nil {
-					_, ok := d2graph.ReservedKeywords[n.MapKey.Key.Path[0].Unbox().ScalarString()]
+					_, ok := d2ast.ReservedKeywords[n.MapKey.Key.Path[0].Unbox().ScalarString()]
 					if ok {
 						continue
 					}
@@ -1144,7 +1208,7 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 				absKey.Path = append(absKey.Path, k.Path[0])
 				absKeys = append(absKeys, absKey)
 			}
-		} else if _, ok := d2graph.ReservedKeywords[ref.Key.Path[len(ref.Key.Path)-1].Unbox().ScalarString()]; !ok {
+		} else if _, ok := d2ast.ReservedKeywords[ref.Key.Path[len(ref.Key.Path)-1].Unbox().ScalarString()]; !ok {
 			absKey, err := d2parser.ParseKey(ref.ScopeObj.AbsID())
 			if err != nil {
 				absKey = &d2ast.KeyPath{}
@@ -1248,7 +1312,7 @@ func deleteReserved(g *d2graph.Graph, boardPath []string, baseAST *d2ast.Map, mk
 		}
 		targetKey = mk.EdgeKey
 	}
-	_, ok := d2graph.ReservedKeywords[targetKey.Path[len(targetKey.Path)-1].Unbox().ScalarString()]
+	_, ok := d2ast.ReservedKeywords[targetKey.Path[len(targetKey.Path)-1].Unbox().ScalarString()]
 	if !ok {
 		return g, nil
 	}
@@ -1265,7 +1329,7 @@ func deleteReserved(g *d2graph.Graph, boardPath []string, baseAST *d2ast.Map, mk
 	if len(mk.Edges) == 1 {
 		if mk.Key != nil {
 			var ok bool
-			obj, ok = g.Root.HasChild(d2graph.Key(mk.Key))
+			obj, ok = obj.HasChild(d2graph.Key(mk.Key))
 			if !ok {
 				return g, nil
 			}
@@ -1291,7 +1355,7 @@ func deleteReserved(g *d2graph.Graph, boardPath []string, baseAST *d2ast.Map, mk
 	imported := false
 	parts := d2graph.Key(targetKey)
 	for i, id := range parts {
-		_, ok := d2graph.ReservedKeywords[id]
+		_, ok := d2ast.ReservedKeywords[id]
 		if ok {
 			if id == "style" {
 				isNestedKey = true
@@ -1469,7 +1533,7 @@ func deleteObject(g *d2graph.Graph, baseAST *d2ast.Map, key *d2ast.KeyPath, obj 
 			}
 			ref.Key.Path = append(ref.Key.Path[:ref.KeyPathIndex], ref.Key.Path[ref.KeyPathIndex+1:]...)
 			withoutSpecial := go2.Filter(ref.Key.Path, func(x *d2ast.StringBox) bool {
-				_, isReserved := d2graph.ReservedKeywords[x.Unbox().ScalarString()]
+				_, isReserved := d2ast.ReservedKeywords[x.Unbox().ScalarString()]
 				isSpecial := isReserved || x.Unbox().ScalarString() == "_"
 				return !isSpecial
 			})
@@ -1488,7 +1552,7 @@ func deleteObject(g *d2graph.Graph, baseAST *d2ast.Map, key *d2ast.KeyPath, obj 
 				for i := 0; i < len(ref.MapKey.Value.Map.Nodes); i++ {
 					n := ref.MapKey.Value.Map.Nodes[i]
 					if n.MapKey != nil && n.MapKey.Key != nil {
-						_, ok := d2graph.ReservedKeywords[n.MapKey.Key.Path[0].Unbox().ScalarString()]
+						_, ok := d2ast.ReservedKeywords[n.MapKey.Key.Path[0].Unbox().ScalarString()]
 						if ok {
 							deleteFromMap(ref.MapKey.Value.Map, n.MapKey)
 							i--
@@ -1655,7 +1719,7 @@ func Rename(g *d2graph.Graph, boardPath []string, key, newName string) (_ *d2gra
 		mk2.Key = mk.Key
 		mk = mk2
 	} else {
-		_, ok := d2graph.ReservedKeywords[newName]
+		_, ok := d2ast.ReservedKeywords[newName]
 		if ok {
 			return nil, "", fmt.Errorf("cannot rename to reserved keyword: %#v", newName)
 		}
@@ -1680,7 +1744,7 @@ func Rename(g *d2graph.Graph, boardPath []string, key, newName string) (_ *d2gra
 
 func trimReservedSuffix(path []*d2ast.StringBox) []*d2ast.StringBox {
 	for i, p := range path {
-		if _, ok := d2graph.ReservedKeywords[p.Unbox().ScalarString()]; ok {
+		if _, ok := d2ast.ReservedKeywords[p.Unbox().ScalarString()]; ok {
 			return path[:i]
 		}
 	}
@@ -1709,6 +1773,9 @@ func move(g *d2graph.Graph, boardPath []string, key, newKey string, includeDesce
 		}
 		// TODO beter name
 		baseAST = boardG.BaseAST
+		if baseAST == nil {
+			return nil, fmt.Errorf("board %v cannot be modified through this file", boardPath)
+		}
 	}
 
 	newKey, _, err := generateUniqueKey(boardG, newKey, nil, nil)
@@ -1758,7 +1825,10 @@ func move(g *d2graph.Graph, boardPath []string, key, newKey string, includeDesce
 		return recompile(g)
 	}
 
-	prevG, _ := recompile(boardG)
+	prevG, err := recompile(boardG)
+	if err != nil {
+		return nil, err
+	}
 
 	ak := d2graph.Key(mk.Key)
 	ak2 := d2graph.Key(mk2.Key)
@@ -1924,9 +1994,9 @@ func move(g *d2graph.Graph, boardPath []string, key, newKey string, includeDesce
 			ida = resolvedIDA
 		}
 		// e.g. "a.b.shape: circle"
-		_, endsWithReserved := d2graph.ReservedKeywords[ida[len(ida)-1]]
+		_, endsWithReserved := d2ast.ReservedKeywords[ida[len(ida)-1]]
 		ida = go2.Filter(ida, func(x string) bool {
-			_, ok := d2graph.ReservedKeywords[x]
+			_, ok := d2ast.ReservedKeywords[x]
 			return !ok
 		})
 
@@ -1967,7 +2037,7 @@ func move(g *d2graph.Graph, boardPath []string, key, newKey string, includeDesce
 								continue
 							}
 							if n.MapKey.Key != nil {
-								_, ok := d2graph.ReservedKeywords[n.MapKey.Key.Path[0].Unbox().ScalarString()]
+								_, ok := d2ast.ReservedKeywords[n.MapKey.Key.Path[0].Unbox().ScalarString()]
 								if ok {
 									detachedMK.Value.Map.Nodes = append(detachedMK.Value.Map.Nodes, n)
 								}
@@ -2213,7 +2283,7 @@ func filterReserved(value d2ast.ValueBox) (with, without d2ast.ValueBox) {
 				forWithout = append(forWithout, n)
 				continue
 			}
-			_, ok := d2graph.ReservedKeywords[n.MapKey.Key.Path[0].Unbox().ScalarString()]
+			_, ok := d2ast.ReservedKeywords[n.MapKey.Key.Path[0].Unbox().ScalarString()]
 			if !ok {
 				flushComments(&forWithout)
 				forWithout = append(forWithout, n)
@@ -2282,8 +2352,17 @@ func updateNear(prevG, g *d2graph.Graph, from, to *string, includeDescendants bo
 			if len(n.MapKey.Key.Path) == 0 {
 				continue
 			}
+			if len(n.MapKey.Key.Path) > 1 {
+				if n.MapKey.Key.Path[len(n.MapKey.Key.Path)-2].Unbox().ScalarString() == "label" ||
+					n.MapKey.Key.Path[len(n.MapKey.Key.Path)-2].Unbox().ScalarString() == "icon" {
+					continue
+				}
+			}
 			if n.MapKey.Key.Path[len(n.MapKey.Key.Path)-1].Unbox().ScalarString() == "near" {
 				k := n.MapKey.Value.ScalarBox().Unbox().ScalarString()
+				if _, ok := d2ast.NearConstants[k]; ok {
+					continue
+				}
 				if strings.EqualFold(k, *from) && to == nil {
 					deleteFromMap(obj.Map, n.MapKey)
 				} else {
@@ -2907,7 +2986,7 @@ func DeleteIDDeltas(g *d2graph.Graph, boardPath []string, key string) (deltas ma
 	if mk.Key != nil {
 		ida := d2graph.Key(mk.Key)
 		// Deleting a reserved field cannot possibly have any deltas
-		if _, ok := d2graph.ReservedKeywords[ida[len(ida)-1]]; ok {
+		if _, ok := d2ast.ReservedKeywords[ida[len(ida)-1]]; ok {
 			return nil, nil
 		}
 
@@ -3238,7 +3317,7 @@ func getMostNestedRefs(obj *d2graph.Object) []d2graph.Reference {
 
 func filterReservedPath(path []*d2ast.StringBox) (filtered []*d2ast.StringBox) {
 	for _, box := range path {
-		if _, ok := d2graph.ReservedKeywords[strings.ToLower(box.Unbox().ScalarString())]; ok {
+		if _, ok := d2ast.ReservedKeywords[strings.ToLower(box.Unbox().ScalarString())]; ok {
 			return
 		}
 		filtered = append(filtered, box)

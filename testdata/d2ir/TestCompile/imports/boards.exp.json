@@ -1,11 +1,27 @@
 {
   "fields": [
     {
-      "name": "x",
+      "name": {
+        "range": "index.d2,0:0:0-0:1:1",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "link",
+            "name": {
+              "range": "index.d2,0:2:2-0:6:6",
+              "value": [
+                {
+                  "string": "link",
+                  "raw_string": "link"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": ",0:0:0-0:0:0",
@@ -196,19 +212,51 @@
       ]
     },
     {
-      "name": "layers",
+      "name": {
+        "range": "index.d2,0:18:18-0:24:24",
+        "value": [
+          {
+            "string": "layers",
+            "raw_string": "layers"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "x",
+            "name": {
+              "range": "index.d2,0:28:28-0:29:29",
+              "value": [
+                {
+                  "string": "x",
+                  "raw_string": "x"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "y",
+                  "name": {
+                    "range": "x.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "link",
+                        "name": {
+                          "range": "x.d2,0:2:2-0:6:6",
+                          "value": [
+                            {
+                              "string": "link",
+                              "raw_string": "link"
+                            }
+                          ]
+                        },
                         "primary": {
                           "value": {
                             "range": ",0:0:0-0:0:0",
@@ -399,15 +447,39 @@
                   ]
                 },
                 {
-                  "name": "layers",
+                  "name": {
+                    "range": "x.d2,0:18:18-0:24:24",
+                    "value": [
+                      {
+                        "string": "layers",
+                        "raw_string": "layers"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "y",
+                        "name": {
+                          "range": "x.d2,0:28:28-0:29:29",
+                          "value": [
+                            {
+                              "string": "y",
+                              "raw_string": "y"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "meow",
+                              "name": {
+                                "range": "y.d2,0:0:0-0:4:4",
+                                "value": [
+                                  {
+                                    "string": "meow",
+                                    "raw_string": "meow"
+                                  }
+                                ]
+                              },
                               "references": [
                                 {
                                   "string": {

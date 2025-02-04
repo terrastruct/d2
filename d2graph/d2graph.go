@@ -60,6 +60,11 @@ type Graph struct {
 
 	// Object.Level uses the location of a nested graph
 	RootLevel int `json:"rootLevel,omitempty"`
+
+	// Currently this holds data embedded from source code configuration variables
+	// Plugins only have access to exported graph, so this data structure allows
+	// carrying arbitrary metadata that any plugin might handle
+	Data map[string]interface{} `json:"data,omitempty"`
 }
 
 func NewGraph() *Graph {
@@ -77,6 +82,66 @@ func (g *Graph) RootBoard() *Graph {
 		g = g.Parent
 	}
 	return g
+}
+
+func (g *Graph) IDA() []string {
+	if g == nil {
+		return nil
+	}
+
+	var parts []string
+
+	current := g
+	for current != nil {
+		if current.Name != "" {
+			parts = append(parts, current.Name)
+		}
+		current = current.Parent
+	}
+
+	for i := 0; i < len(parts)/2; i++ {
+		j := len(parts) - 1 - i
+		parts[i], parts[j] = parts[j], parts[i]
+	}
+
+	if len(parts) == 0 {
+		return []string{"root"}
+	}
+
+	parts = append([]string{"root"}, parts...)
+
+	if g.Parent != nil {
+		var containerName string
+		if len(g.Parent.Layers) > 0 {
+			for _, l := range g.Parent.Layers {
+				if l == g {
+					containerName = "layers"
+					break
+				}
+			}
+		}
+		if len(g.Parent.Scenarios) > 0 {
+			for _, s := range g.Parent.Scenarios {
+				if s == g {
+					containerName = "scenarios"
+					break
+				}
+			}
+		}
+		if len(g.Parent.Steps) > 0 {
+			for _, s := range g.Parent.Steps {
+				if s == g {
+					containerName = "steps"
+					break
+				}
+			}
+		}
+		if containerName != "" {
+			parts = append(parts[:1], append([]string{containerName}, parts[1:]...)...)
+		}
+	}
+
+	return parts
 }
 
 type LayoutGraph func(context.Context, *Graph) error
@@ -197,6 +262,7 @@ type Reference struct {
 	Scope           *d2ast.Map `json:"-"`
 	ScopeObj        *Object    `json:"-"`
 	ScopeAST        *d2ast.Map `json:"-"`
+	IsVar           bool       `json:"-"`
 }
 
 func (r Reference) MapKeyEdgeDest() bool {
@@ -252,24 +318,24 @@ func (s *Style) Apply(key, value string) error {
 		if s.Stroke == nil {
 			break
 		}
-		if !go2.Contains(color.NamedColors, strings.ToLower(value)) && !color.ColorHexRegex.MatchString(value) {
-			return errors.New(`expected "stroke" to be a valid named color ("orange") or a hex code ("#f0ff3a")`)
+		if !color.ValidColor(value) {
+			return errors.New(`expected "stroke" to be a valid named color ("orange"), a hex code ("#f0ff3a"), or a gradient ("linear-gradient(red, blue)")`)
 		}
 		s.Stroke.Value = value
 	case "fill":
 		if s.Fill == nil {
 			break
 		}
-		if !go2.Contains(color.NamedColors, strings.ToLower(value)) && !color.ColorHexRegex.MatchString(value) {
-			return errors.New(`expected "fill" to be a valid named color ("orange") or a hex code ("#f0ff3a")`)
+		if !color.ValidColor(value) {
+			return errors.New(`expected "fill" to be a valid named color ("orange"), a hex code ("#f0ff3a"), or a gradient ("linear-gradient(red, blue)")`)
 		}
 		s.Fill.Value = value
 	case "fill-pattern":
 		if s.FillPattern == nil {
 			break
 		}
-		if !go2.Contains(FillPatterns, strings.ToLower(value)) {
-			return fmt.Errorf(`expected "fill-pattern" to be one of: %s`, strings.Join(FillPatterns, ", "))
+		if !go2.Contains(d2ast.FillPatterns, strings.ToLower(value)) {
+			return fmt.Errorf(`expected "fill-pattern" to be one of: %s`, strings.Join(d2ast.FillPatterns, ", "))
 		}
 		s.FillPattern.Value = value
 	case "stroke-width":
@@ -347,8 +413,8 @@ func (s *Style) Apply(key, value string) error {
 		if s.FontColor == nil {
 			break
 		}
-		if !go2.Contains(color.NamedColors, strings.ToLower(value)) && !color.ColorHexRegex.MatchString(value) {
-			return errors.New(`expected "font-color" to be a valid named color ("orange") or a hex code ("#f0ff3a")`)
+		if !color.ValidColor(value) {
+			return errors.New(`expected "font-color" to be a valid named color ("orange"), a hex code ("#f0ff3a"), or a gradient ("linear-gradient(red, blue)")`)
 		}
 		s.FontColor.Value = value
 	case "animated":
@@ -409,8 +475,8 @@ func (s *Style) Apply(key, value string) error {
 		if s.TextTransform == nil {
 			break
 		}
-		if !go2.Contains(textTransforms, strings.ToLower(value)) {
-			return fmt.Errorf(`expected "text-transform" to be one of (%s)`, strings.Join(textTransforms, ", "))
+		if !go2.Contains(d2ast.TextTransforms, strings.ToLower(value)) {
+			return fmt.Errorf(`expected "text-transform" to be one of (%s)`, strings.Join(d2ast.TextTransforms, ", "))
 		}
 		s.TextTransform.Value = value
 	default:
@@ -628,7 +694,10 @@ func (obj *Object) Text() *d2target.MText {
 	}
 }
 
-func (obj *Object) newObject(id string) *Object {
+func (obj *Object) newObject(ids d2ast.String) *Object {
+	id := d2format.Format(&d2ast.KeyPath{
+		Path: []*d2ast.StringBox{d2ast.MakeValueBox(d2ast.RawString(ids.ScalarString(), true)).StringBox()},
+	})
 	idval := id
 	k, _ := d2parser.ParseKey(id)
 	if k != nil && len(k.Path) > 0 {
@@ -667,7 +736,7 @@ func (obj *Object) HasChild(ids []string) (*Object, bool) {
 		return obj, true
 	}
 	if len(ids) == 1 && ids[0] != "style" {
-		_, ok := ReservedKeywords[ids[0]]
+		_, ok := d2ast.ReservedKeywords[ids[0]]
 		if ok {
 			return obj, true
 		}
@@ -781,7 +850,7 @@ func (obj *Object) FindEdges(mk *d2ast.Key) ([]*Edge, bool) {
 	return ea, true
 }
 
-func (obj *Object) ensureChildEdge(ida []string) *Object {
+func (obj *Object) ensureChildEdge(ida []d2ast.String) *Object {
 	for i := range ida {
 		switch obj.Shape.Value {
 		case d2target.ShapeClass, d2target.ShapeSQLTable:
@@ -797,12 +866,12 @@ func (obj *Object) ensureChildEdge(ida []string) *Object {
 
 // EnsureChild grabs the child by ids or creates it if it does not exist including all
 // intermediate nodes.
-func (obj *Object) EnsureChild(ida []string) *Object {
+func (obj *Object) EnsureChild(ida []d2ast.String) *Object {
 	seq := obj.OuterSequenceDiagram()
 	if seq != nil {
 		for _, c := range seq.ChildrenArray {
-			if c.ID == ida[0] {
-				if obj.ID == ida[0] {
+			if c.ID == ida[0].ScalarString() {
+				if obj.ID == ida[0].ScalarString() {
 					// In cases of a.a where EnsureChild is called on the parent a, the second a should
 					// be created as a child of a and not as a child of the diagram. This is super
 					// unfortunate code but alas.
@@ -818,9 +887,11 @@ func (obj *Object) EnsureChild(ida []string) *Object {
 		return obj
 	}
 
-	_, is := ReservedKeywordHolders[ida[0]]
+	_, is := d2ast.ReservedKeywordHolders[ida[0].ScalarString()]
+	is = is && ida[0].IsUnquoted()
 	if len(ida) == 1 && !is {
-		_, ok := ReservedKeywords[ida[0]]
+		_, ok := d2ast.ReservedKeywords[ida[0].ScalarString()]
+		ok = ok && ida[0].IsUnquoted()
 		if ok {
 			return obj
 		}
@@ -829,11 +900,14 @@ func (obj *Object) EnsureChild(ida []string) *Object {
 	id := ida[0]
 	ida = ida[1:]
 
-	if id == "_" {
+	if id.ScalarString() == "_" && id.IsUnquoted() {
 		return obj.Parent.EnsureChild(ida)
 	}
 
-	child, ok := obj.Children[strings.ToLower(id)]
+	head := d2format.Format(&d2ast.KeyPath{
+		Path: []*d2ast.StringBox{d2ast.MakeValueBox(d2ast.RawString(id.ScalarString(), true)).StringBox()},
+	})
+	child, ok := obj.Children[strings.ToLower(head)]
 	if !ok {
 		child = obj.newObject(id)
 	}
@@ -986,7 +1060,7 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 		}
 		if anyRowText != nil {
 			rowHeight := GetTextDimensions(mtexts, ruler, anyRowText, go2.Pointer(d2fonts.SourceCodePro)).Height + d2target.VerticalPadding
-			dims.Height = rowHeight * (len(obj.Class.Fields) + len(obj.Class.Methods) + 2)
+			dims.Height = rowHeight*(len(obj.Class.Fields)+len(obj.Class.Methods)) + go2.Max(2*rowHeight, labelDims.Height+2*label.PADDING)
 		} else {
 			dims.Height = 2*go2.Max(12, labelDims.Height) + d2target.VerticalPadding
 		}
@@ -1120,7 +1194,7 @@ func (obj *Object) IsConstantNear() bool {
 	if isKey {
 		return false
 	}
-	_, isConst := NearConstants[keyPath[0]]
+	_, isConst := d2ast.NearConstants[keyPath[0]]
 	return isConst
 }
 
@@ -1232,10 +1306,10 @@ func (e *Edge) AbsID() string {
 	return fmt.Sprintf("%s(%s %s %s)[%d]", commonKey, strings.Join(srcIDA, "."), e.ArrowString(), strings.Join(dstIDA, "."), e.Index)
 }
 
-func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label string) (*Edge, error) {
-	for _, id := range [][]string{srcID, dstID} {
+func (obj *Object) Connect(srcID, dstID []d2ast.String, srcArrow, dstArrow bool, label string) (*Edge, error) {
+	for _, id := range [][]d2ast.String{srcID, dstID} {
 		for _, p := range id {
-			if _, ok := ReservedKeywords[p]; ok {
+			if _, ok := d2ast.ReservedKeywords[p.ScalarString()]; ok && p.IsUnquoted() {
 				return nil, errors.New("cannot connect to reserved keyword")
 			}
 		}
@@ -1263,7 +1337,7 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 	return e, nil
 }
 
-func addSQLTableColumnIndices(e *Edge, srcID, dstID []string, obj, src, dst *Object) {
+func addSQLTableColumnIndices(e *Edge, srcID, dstID []d2ast.String, obj, src, dst *Object) {
 	if src.Shape.Value == d2target.ShapeSQLTable {
 		if src == dst {
 			// Ignore edge to column inside table.
@@ -1273,7 +1347,7 @@ func addSQLTableColumnIndices(e *Edge, srcID, dstID []string, obj, src, dst *Obj
 		srcAbsID := src.AbsIDArray()
 		if len(objAbsID)+len(srcID) > len(srcAbsID) {
 			for i, d2col := range src.SQLTable.Columns {
-				if d2col.Name.Label == srcID[len(srcID)-1] {
+				if d2col.Name.Label == srcID[len(srcID)-1].ScalarString() {
 					d2col.Reference = dst.AbsID()
 					e.SrcTableColumnIndex = new(int)
 					*e.SrcTableColumnIndex = i
@@ -1287,7 +1361,7 @@ func addSQLTableColumnIndices(e *Edge, srcID, dstID []string, obj, src, dst *Obj
 		dstAbsID := dst.AbsIDArray()
 		if len(objAbsID)+len(dstID) > len(dstAbsID) {
 			for i, d2col := range dst.SQLTable.Columns {
-				if d2col.Name.Label == dstID[len(dstID)-1] {
+				if d2col.Name.Label == dstID[len(dstID)-1].ScalarString() {
 					d2col.Reference = dst.AbsID()
 					e.DstTableColumnIndex = new(int)
 					*e.DstTableColumnIndex = i
@@ -1428,12 +1502,12 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		// user-specified label/icon positions
 		if obj.HasLabel() && obj.Attributes.LabelPosition != nil {
 			scalar := *obj.Attributes.LabelPosition
-			position := LabelPositionsMapping[scalar.Value]
+			position := d2ast.LabelPositionsMapping[scalar.Value]
 			obj.LabelPosition = go2.Pointer(position.String())
 		}
 		if obj.Icon != nil && obj.Attributes.IconPosition != nil {
 			scalar := *obj.Attributes.IconPosition
-			position := LabelPositionsMapping[scalar.Value]
+			position := d2ast.LabelPositionsMapping[scalar.Value]
 			obj.IconPosition = go2.Pointer(position.String())
 		}
 
@@ -1538,11 +1612,8 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			switch shapeType {
 			case shape.TABLE_TYPE, shape.CLASS_TYPE, shape.CODE_TYPE:
 			default:
-				if obj.Link != nil {
-					paddingX += 32
-				}
-				if obj.Tooltip != nil {
-					paddingX += 32
+				if obj.Link != nil && obj.Tooltip != nil {
+					paddingX += 64
 				}
 			}
 		}
@@ -1673,205 +1744,6 @@ func Key(k *d2ast.KeyPath) []string {
 	return d2format.KeyPath(k)
 }
 
-// All reserved keywords. See init below.
-var ReservedKeywords map[string]struct{}
-
-// Non Style/Holder keywords.
-var SimpleReservedKeywords = map[string]struct{}{
-	"label":          {},
-	"desc":           {},
-	"shape":          {},
-	"icon":           {},
-	"constraint":     {},
-	"tooltip":        {},
-	"link":           {},
-	"near":           {},
-	"width":          {},
-	"height":         {},
-	"direction":      {},
-	"top":            {},
-	"left":           {},
-	"grid-rows":      {},
-	"grid-columns":   {},
-	"grid-gap":       {},
-	"vertical-gap":   {},
-	"horizontal-gap": {},
-	"class":          {},
-	"vars":           {},
-}
-
-// ReservedKeywordHolders are reserved keywords that are meaningless on its own and must hold composites
-var ReservedKeywordHolders = map[string]struct{}{
-	"style":            {},
-	"source-arrowhead": {},
-	"target-arrowhead": {},
-}
-
-// CompositeReservedKeywords are reserved keywords that can hold composites
-var CompositeReservedKeywords = map[string]struct{}{
-	"classes":    {},
-	"constraint": {},
-	"label":      {},
-	"icon":       {},
-}
-
-// StyleKeywords are reserved keywords which cannot exist outside of the "style" keyword
-var StyleKeywords = map[string]struct{}{
-	"opacity":       {},
-	"stroke":        {},
-	"fill":          {},
-	"fill-pattern":  {},
-	"stroke-width":  {},
-	"stroke-dash":   {},
-	"border-radius": {},
-
-	// Only for text
-	"font":           {},
-	"font-size":      {},
-	"font-color":     {},
-	"bold":           {},
-	"italic":         {},
-	"underline":      {},
-	"text-transform": {},
-
-	// Only for shapes
-	"shadow":        {},
-	"multiple":      {},
-	"double-border": {},
-
-	// Only for squares
-	"3d": {},
-
-	// Only for edges
-	"animated": {},
-	"filled":   {},
-}
-
-// TODO maybe autofmt should allow other values, and transform them to conform
-// e.g. left-center becomes center-left
-var NearConstantsArray = []string{
-	"top-left",
-	"top-center",
-	"top-right",
-
-	"center-left",
-	"center-right",
-
-	"bottom-left",
-	"bottom-center",
-	"bottom-right",
-}
-var NearConstants map[string]struct{}
-
-// LabelPositionsArray are the values that labels and icons can set `near` to
-var LabelPositionsArray = []string{
-	"top-left",
-	"top-center",
-	"top-right",
-
-	"center-left",
-	"center-center",
-	"center-right",
-
-	"bottom-left",
-	"bottom-center",
-	"bottom-right",
-
-	"outside-top-left",
-	"outside-top-center",
-	"outside-top-right",
-
-	"outside-left-top",
-	"outside-left-center",
-	"outside-left-bottom",
-
-	"outside-right-top",
-	"outside-right-center",
-	"outside-right-bottom",
-
-	"outside-bottom-left",
-	"outside-bottom-center",
-	"outside-bottom-right",
-}
-var LabelPositions map[string]struct{}
-
-// convert to label.Position
-var LabelPositionsMapping = map[string]label.Position{
-	"top-left":   label.InsideTopLeft,
-	"top-center": label.InsideTopCenter,
-	"top-right":  label.InsideTopRight,
-
-	"center-left":   label.InsideMiddleLeft,
-	"center-center": label.InsideMiddleCenter,
-	"center-right":  label.InsideMiddleRight,
-
-	"bottom-left":   label.InsideBottomLeft,
-	"bottom-center": label.InsideBottomCenter,
-	"bottom-right":  label.InsideBottomRight,
-
-	"outside-top-left":   label.OutsideTopLeft,
-	"outside-top-center": label.OutsideTopCenter,
-	"outside-top-right":  label.OutsideTopRight,
-
-	"outside-left-top":    label.OutsideLeftTop,
-	"outside-left-center": label.OutsideLeftMiddle,
-	"outside-left-bottom": label.OutsideLeftBottom,
-
-	"outside-right-top":    label.OutsideRightTop,
-	"outside-right-center": label.OutsideRightMiddle,
-	"outside-right-bottom": label.OutsideRightBottom,
-
-	"outside-bottom-left":   label.OutsideBottomLeft,
-	"outside-bottom-center": label.OutsideBottomCenter,
-	"outside-bottom-right":  label.OutsideBottomRight,
-}
-
-var FillPatterns = []string{
-	"none",
-	"dots",
-	"lines",
-	"grain",
-	"paper",
-}
-
-var textTransforms = []string{"none", "uppercase", "lowercase", "capitalize"}
-
-// BoardKeywords contains the keywords that create new boards.
-var BoardKeywords = map[string]struct{}{
-	"layers":    {},
-	"scenarios": {},
-	"steps":     {},
-}
-
-func init() {
-	ReservedKeywords = make(map[string]struct{})
-	for k, v := range SimpleReservedKeywords {
-		ReservedKeywords[k] = v
-	}
-	for k, v := range StyleKeywords {
-		ReservedKeywords[k] = v
-	}
-	for k, v := range ReservedKeywordHolders {
-		CompositeReservedKeywords[k] = v
-	}
-	for k, v := range BoardKeywords {
-		CompositeReservedKeywords[k] = v
-	}
-	for k, v := range CompositeReservedKeywords {
-		ReservedKeywords[k] = v
-	}
-
-	NearConstants = make(map[string]struct{}, len(NearConstantsArray))
-	for _, k := range NearConstantsArray {
-		NearConstants[k] = struct{}{}
-	}
-
-	LabelPositions = make(map[string]struct{}, len(LabelPositionsArray))
-	for _, k := range LabelPositionsArray {
-		LabelPositions[k] = struct{}{}
-	}
-}
-
 func (g *Graph) GetBoard(name string) *Graph {
 	for _, l := range g.Layers {
 		if l.Name == name {
@@ -1901,6 +1773,11 @@ func (g *Graph) SortObjectsByAST() {
 		}
 		r1 := o1.References[0]
 		r2 := o2.References[0]
+		// If they are variable substitutions, leave them alone, as their
+		// references reflect where the variable is, not where the substitution is
+		if r1.IsVar || r2.IsVar {
+			return i < j
+		}
 		return r1.Key.Path[r1.KeyPathIndex].Unbox().GetRange().Before(r2.Key.Path[r2.KeyPathIndex].Unbox().GetRange())
 	})
 	g.Objects = objects

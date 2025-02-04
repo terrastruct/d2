@@ -9,12 +9,11 @@ import (
 
 	_ "embed"
 
-	"github.com/dop251/goja"
-
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/d2/lib/jsrunner"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/svg"
 	"oss.terrastruct.com/util-go/go2"
@@ -29,8 +28,6 @@ var setupJS string
 //go:embed streaks.txt
 var streaks string
 
-type Runner goja.Runtime
-
 var baseRoughProps = `fillWeight: 2.0,
 hachureGap: 16,
 fillStyle: "solid",
@@ -44,46 +41,39 @@ const (
 	FG_COLOR = color.N1
 )
 
-func (r *Runner) run(js string) (goja.Value, error) {
-	vm := (*goja.Runtime)(r)
-	return vm.RunString(js)
-}
-
-func InitSketchVM() (*Runner, error) {
-	vm := goja.New()
-	if _, err := vm.RunString(roughJS); err != nil {
-		return nil, err
+func LoadJS(runner jsrunner.JSRunner) error {
+	if _, err := runner.RunString(roughJS); err != nil {
+		return err
 	}
-	if _, err := vm.RunString(setupJS); err != nil {
-		return nil, err
+	if _, err := runner.RunString(setupJS); err != nil {
+		return err
 	}
-	r := Runner(*vm)
-	return &r, nil
+	return nil
 }
 
 // DefineFillPatterns adds reusable patterns that are overlayed on shapes with
 // fill. This gives it a subtle streaky effect that subtly looks hand-drawn but
 // not distractingly so.
-func DefineFillPatterns(buf *bytes.Buffer) {
+func DefineFillPatterns(buf *bytes.Buffer, diagramHash string) {
 	source := buf.String()
 	fmt.Fprint(buf, "<defs>")
 
-	defineFillPattern(buf, source, "bright", "rgba(0, 0, 0, 0.1)")
-	defineFillPattern(buf, source, "normal", "rgba(0, 0, 0, 0.16)")
-	defineFillPattern(buf, source, "dark", "rgba(0, 0, 0, 0.32)")
-	defineFillPattern(buf, source, "darker", "rgba(255, 255, 255, 0.24)")
+	defineFillPattern(buf, source, diagramHash, "bright", "rgba(0, 0, 0, 0.1)")
+	defineFillPattern(buf, source, diagramHash, "normal", "rgba(0, 0, 0, 0.16)")
+	defineFillPattern(buf, source, diagramHash, "dark", "rgba(0, 0, 0, 0.32)")
+	defineFillPattern(buf, source, diagramHash, "darker", "rgba(255, 255, 255, 0.24)")
 
 	fmt.Fprint(buf, "</defs>")
 }
 
-func defineFillPattern(buf *bytes.Buffer, source string, luminanceCategory, fill string) {
-	trigger := fmt.Sprintf(`url(#streaks-%s)`, luminanceCategory)
+func defineFillPattern(buf *bytes.Buffer, source, diagramHash string, luminanceCategory, fill string) {
+	trigger := fmt.Sprintf(`url(#streaks-%s-%s)`, luminanceCategory, diagramHash)
 	if strings.Contains(source, trigger) {
-		fmt.Fprintf(buf, streaks, luminanceCategory, fill)
+		fmt.Fprintf(buf, streaks, luminanceCategory, diagramHash, fill)
 	}
 }
 
-func Rect(r *Runner, shape d2target.Shape) (string, error) {
+func Rect(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	js := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
 		fill: "#000",
 		stroke: "#000",
@@ -95,7 +85,7 @@ func Rect(r *Runner, shape d2target.Shape) (string, error) {
 		return "", err
 	}
 	output := ""
-	pathEl := d2themes.NewThemableElement("path")
+	pathEl := d2themes.NewThemableElement("path", nil)
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	pathEl.FillPattern = shape.FillPattern
@@ -106,7 +96,7 @@ func Rect(r *Runner, shape d2target.Shape) (string, error) {
 		output += pathEl.Render()
 	}
 
-	sketchOEl := d2themes.NewThemableElement("rect")
+	sketchOEl := d2themes.NewThemableElement("rect", nil)
 	sketchOEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	sketchOEl.Width = float64(shape.Width)
 	sketchOEl.Height = float64(shape.Height)
@@ -119,7 +109,7 @@ func Rect(r *Runner, shape d2target.Shape) (string, error) {
 	return output, nil
 }
 
-func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
+func DoubleRect(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	jsBigRect := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
 		fill: "#000",
 		stroke: "#000",
@@ -143,7 +133,7 @@ func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
 
 	output := ""
 
-	pathEl := d2themes.NewThemableElement("path")
+	pathEl := d2themes.NewThemableElement("path", nil)
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	pathEl.FillPattern = shape.FillPattern
@@ -154,7 +144,7 @@ func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
 		output += pathEl.Render()
 	}
 
-	pathEl = d2themes.NewThemableElement("path")
+	pathEl = d2themes.NewThemableElement("path", nil)
 	pathEl.SetTranslate(float64(shape.Pos.X+d2target.INNER_BORDER_OFFSET), float64(shape.Pos.Y+d2target.INNER_BORDER_OFFSET))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	// No need for inner to double paint
@@ -166,7 +156,7 @@ func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
 		output += pathEl.Render()
 	}
 
-	sketchOEl := d2themes.NewThemableElement("rect")
+	sketchOEl := d2themes.NewThemableElement("rect", nil)
 	sketchOEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	sketchOEl.Width = float64(shape.Width)
 	sketchOEl.Height = float64(shape.Height)
@@ -179,7 +169,7 @@ func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
 	return output, nil
 }
 
-func Oval(r *Runner, shape d2target.Shape) (string, error) {
+func Oval(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	js := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
 		fill: "#000",
 		stroke: "#000",
@@ -191,7 +181,7 @@ func Oval(r *Runner, shape d2target.Shape) (string, error) {
 		return "", err
 	}
 	output := ""
-	pathEl := d2themes.NewThemableElement("path")
+	pathEl := d2themes.NewThemableElement("path", nil)
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	pathEl.FillPattern = shape.FillPattern
@@ -202,7 +192,7 @@ func Oval(r *Runner, shape d2target.Shape) (string, error) {
 		output += pathEl.Render()
 	}
 
-	soElement := d2themes.NewThemableElement("ellipse")
+	soElement := d2themes.NewThemableElement("ellipse", nil)
 	soElement.SetTranslate(float64(shape.Pos.X+shape.Width/2), float64(shape.Pos.Y+shape.Height/2))
 	soElement.Rx = float64(shape.Width / 2)
 	soElement.Ry = float64(shape.Height / 2)
@@ -218,7 +208,7 @@ func Oval(r *Runner, shape d2target.Shape) (string, error) {
 	return output, nil
 }
 
-func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
+func DoubleOval(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	jsBigCircle := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
 		fill: "#000",
 		stroke: "#000",
@@ -242,7 +232,7 @@ func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
 
 	output := ""
 
-	pathEl := d2themes.NewThemableElement("path")
+	pathEl := d2themes.NewThemableElement("path", nil)
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	pathEl.FillPattern = shape.FillPattern
@@ -253,7 +243,7 @@ func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
 		output += pathEl.Render()
 	}
 
-	pathEl = d2themes.NewThemableElement("path")
+	pathEl = d2themes.NewThemableElement("path", nil)
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	// No need for inner to double paint
@@ -264,7 +254,7 @@ func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
 		pathEl.D = p
 		output += pathEl.Render()
 	}
-	soElement := d2themes.NewThemableElement("ellipse")
+	soElement := d2themes.NewThemableElement("ellipse", nil)
 	soElement.SetTranslate(float64(shape.Pos.X+shape.Width/2), float64(shape.Pos.Y+shape.Height/2))
 	soElement.Rx = float64(shape.Width / 2)
 	soElement.Ry = float64(shape.Height / 2)
@@ -281,7 +271,7 @@ func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
 }
 
 // TODO need to personalize this per shape like we do in Terrastruct app
-func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
+func Paths(r jsrunner.JSRunner, shape d2target.Shape, paths []string) (string, error) {
 	output := ""
 	for _, path := range paths {
 		js := fmt.Sprintf(`node = rc.path("%s", {
@@ -294,7 +284,7 @@ func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		pathEl := d2themes.NewThemableElement("path")
+		pathEl := d2themes.NewThemableElement("path", nil)
 		pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 		pathEl.FillPattern = shape.FillPattern
 		pathEl.ClassName = "shape"
@@ -304,7 +294,7 @@ func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
 			output += pathEl.Render()
 		}
 
-		soElement := d2themes.NewThemableElement("path")
+		soElement := d2themes.NewThemableElement("path", nil)
 		for _, p := range sketchPaths {
 			soElement.D = p
 			renderedSO, err := d2themes.NewThemableSketchOverlay(
@@ -320,34 +310,75 @@ func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
 	return output, nil
 }
 
-func Connection(r *Runner, connection d2target.Connection, path, attrs string) (string, error) {
-	roughness := 0.5
-	js := fmt.Sprintf(`node = rc.path("%s", {roughness: %f, seed: 1});`, path, roughness)
-	paths, err := computeRoughPathData(r, js)
-	if err != nil {
-		return "", err
-	}
-	output := ""
+func Connection(r jsrunner.JSRunner, connection d2target.Connection, path, attrs string) (string, error) {
 	animatedClass := ""
 	if connection.Animated {
 		animatedClass = " animated-connection"
 	}
 
-	pathEl := d2themes.NewThemableElement("path")
-	pathEl.Fill = color.None
-	pathEl.Stroke = connection.Stroke
-	pathEl.ClassName = fmt.Sprintf("connection%s", animatedClass)
-	pathEl.Style = connection.CSSStyle()
-	pathEl.Attributes = attrs
-	for _, p := range paths {
-		pathEl.D = p
-		output += pathEl.Render()
+	if connection.Animated {
+		// If connection is animated and bidirectional
+		if (connection.DstArrow == d2target.NoArrowhead && connection.SrcArrow == d2target.NoArrowhead) || (connection.DstArrow != d2target.NoArrowhead && connection.SrcArrow != d2target.NoArrowhead) {
+			// There is no pure CSS way to animate bidirectional connections in two directions, so we split it up
+			path1, path2, err := svg.SplitPath(path, 0.5)
+
+			if err != nil {
+				return "", err
+			}
+
+			pathEl1 := d2themes.NewThemableElement("path", nil)
+			pathEl1.D = path1
+			pathEl1.Fill = color.None
+			pathEl1.Stroke = connection.Stroke
+			pathEl1.ClassName = fmt.Sprintf("connection%s", animatedClass)
+			pathEl1.Style = connection.CSSStyle()
+			pathEl1.Style += "animation-direction: reverse;"
+			pathEl1.Attributes = attrs
+
+			pathEl2 := d2themes.NewThemableElement("path", nil)
+			pathEl2.D = path2
+			pathEl2.Fill = color.None
+			pathEl2.Stroke = connection.Stroke
+			pathEl2.ClassName = fmt.Sprintf("connection%s", animatedClass)
+			pathEl2.Style = connection.CSSStyle()
+			pathEl2.Attributes = attrs
+			return pathEl1.Render() + " " + pathEl2.Render(), nil
+		} else {
+			pathEl := d2themes.NewThemableElement("path", nil)
+			pathEl.D = path
+			pathEl.Fill = color.None
+			pathEl.Stroke = connection.Stroke
+			pathEl.ClassName = fmt.Sprintf("connection%s", animatedClass)
+			pathEl.Style = connection.CSSStyle()
+			pathEl.Attributes = attrs
+			return pathEl.Render(), nil
+		}
+	} else {
+		roughness := 0.5
+		js := fmt.Sprintf(`node = rc.path("%s", {roughness: %f, seed: 1});`, path, roughness)
+		paths, err := computeRoughPathData(r, js)
+		if err != nil {
+			return "", err
+		}
+
+		output := ""
+
+		pathEl := d2themes.NewThemableElement("path", nil)
+		pathEl.Fill = color.None
+		pathEl.Stroke = connection.Stroke
+		pathEl.ClassName = fmt.Sprintf("connection%s", animatedClass)
+		pathEl.Style = connection.CSSStyle()
+		pathEl.Attributes = attrs
+		for _, p := range paths {
+			pathEl.D = p
+			output += pathEl.Render()
+		}
+		return output, nil
 	}
-	return output, nil
 }
 
 // TODO cleanup
-func Table(r *Runner, shape d2target.Shape) (string, error) {
+func Table(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	output := ""
 	js := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
 		fill: "#000",
@@ -359,7 +390,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	pathEl := d2themes.NewThemableElement("path")
+	pathEl := d2themes.NewThemableElement("path", nil)
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	pathEl.FillPattern = shape.FillPattern
@@ -386,7 +417,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	pathEl = d2themes.NewThemableElement("path")
+	pathEl = d2themes.NewThemableElement("path", nil)
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill = shape.Fill
 	pathEl.FillPattern = shape.FillPattern
@@ -404,7 +435,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 			float64(shape.LabelHeight),
 		)
 
-		textEl := d2themes.NewThemableElement("text")
+		textEl := d2themes.NewThemableElement("text", nil)
 		textEl.X = tl.X
 		textEl.Y = tl.Y + float64(shape.LabelHeight)*3/4
 		textEl.Fill = shape.GetFontColor()
@@ -437,7 +468,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 			float64(shape.FontSize),
 		)
 
-		textEl := d2themes.NewThemableElement("text")
+		textEl := d2themes.NewThemableElement("text", nil)
 		textEl.X = nameTL.X
 		textEl.Y = nameTL.Y + float64(shape.FontSize)*3/4
 		textEl.Fill = shape.PrimaryAccentColor
@@ -467,7 +498,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		pathEl := d2themes.NewThemableElement("path")
+		pathEl := d2themes.NewThemableElement("path", nil)
 		pathEl.Fill = shape.Fill
 		pathEl.FillPattern = shape.FillPattern
 		for _, p := range paths {
@@ -476,7 +507,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 		}
 	}
 
-	sketchOEl := d2themes.NewThemableElement("rect")
+	sketchOEl := d2themes.NewThemableElement("rect", nil)
 	sketchOEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	sketchOEl.Width = float64(shape.Width)
 	sketchOEl.Height = float64(shape.Height)
@@ -489,7 +520,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 	return output, nil
 }
 
-func Class(r *Runner, shape d2target.Shape) (string, error) {
+func Class(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	output := ""
 	js := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
 		fill: "#000",
@@ -501,7 +532,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	pathEl := d2themes.NewThemableElement("path")
+	pathEl := d2themes.NewThemableElement("path", nil)
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	pathEl.FillPattern = shape.FillPattern
@@ -529,7 +560,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	pathEl = d2themes.NewThemableElement("path")
+	pathEl = d2themes.NewThemableElement("path", nil)
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill = shape.Fill
 	pathEl.FillPattern = shape.FillPattern
@@ -539,7 +570,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 		output += pathEl.Render()
 	}
 
-	sketchOEl := d2themes.NewThemableElement("rect")
+	sketchOEl := d2themes.NewThemableElement("rect", nil)
 	sketchOEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	sketchOEl.Width = float64(shape.Width)
 	sketchOEl.Height = headerBox.Height
@@ -557,7 +588,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 			float64(shape.LabelHeight),
 		)
 
-		textEl := d2themes.NewThemableElement("text")
+		textEl := d2themes.NewThemableElement("text", nil)
 		textEl.X = tl.X + float64(shape.LabelWidth)/2
 		textEl.Y = tl.Y + float64(shape.LabelHeight)*3/4
 		textEl.Fill = shape.GetFontColor()
@@ -584,7 +615,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	pathEl = d2themes.NewThemableElement("path")
+	pathEl = d2themes.NewThemableElement("path", nil)
 	pathEl.Fill = shape.Fill
 	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "class_header"
@@ -616,7 +647,7 @@ func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText str
 		fontSize,
 	)
 
-	textEl := d2themes.NewThemableElement("text")
+	textEl := d2themes.NewThemableElement("text", nil)
 	textEl.X = prefixTL.X
 	textEl.Y = prefixTL.Y + fontSize*3/4
 	textEl.Fill = shape.PrimaryAccentColor
@@ -640,8 +671,8 @@ func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText str
 	return output
 }
 
-func computeRoughPathData(r *Runner, js string) ([]string, error) {
-	if _, err := r.run(js); err != nil {
+func computeRoughPathData(r jsrunner.JSRunner, js string) ([]string, error) {
+	if _, err := r.RunString(js); err != nil {
 		return nil, err
 	}
 	roughPaths, err := extractRoughPaths(r)
@@ -651,8 +682,8 @@ func computeRoughPathData(r *Runner, js string) ([]string, error) {
 	return extractPathData(roughPaths)
 }
 
-func computeRoughPaths(r *Runner, js string) ([]roughPath, error) {
-	if _, err := r.run(js); err != nil {
+func computeRoughPaths(r jsrunner.JSRunner, js string) ([]roughPath, error) {
+	if _, err := r.RunString(js); err != nil {
 		return nil, err
 	}
 	return extractRoughPaths(r)
@@ -681,8 +712,8 @@ func (rp roughPath) StyleCSS() string {
 	return style
 }
 
-func extractRoughPaths(r *Runner) ([]roughPath, error) {
-	val, err := r.run("JSON.stringify(node.children, null, '  ')")
+func extractRoughPaths(r jsrunner.JSRunner) ([]roughPath, error) {
+	val, err := r.RunString("JSON.stringify(node.children, null, '  ')")
 	if err != nil {
 		return nil, err
 	}
@@ -715,7 +746,7 @@ func extractPathData(roughPaths []roughPath) ([]string, error) {
 	return paths, nil
 }
 
-func ArrowheadJS(r *Runner, arrowhead d2target.Arrowhead, stroke string, strokeWidth int) (arrowJS, extraJS string) {
+func ArrowheadJS(r jsrunner.JSRunner, arrowhead d2target.Arrowhead, stroke string, strokeWidth int) (arrowJS, extraJS string) {
 	// Note: selected each seed that looks the good for consistent renders
 	switch arrowhead {
 	case d2target.ArrowArrowhead:
@@ -802,11 +833,34 @@ func ArrowheadJS(r *Runner, arrowhead d2target.Arrowhead, stroke string, strokeW
 			stroke,
 			BG_COLOR,
 		)
+	case d2target.CircleArrowhead:
+		arrowJS = fmt.Sprintf(
+			`node = rc.circle(-2, -1, 8, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", fillWeight: 1, seed: 5 })`,
+			strokeWidth,
+			stroke,
+			BG_COLOR,
+		)
+	case d2target.BoxArrowhead:
+		arrowJS = fmt.Sprintf(
+			`node = rc.polygon(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", seed: 1})`,
+			`[[0, -10], [0, 10], [-20, 10], [-20, -10]]`,
+			strokeWidth,
+			stroke,
+			BG_COLOR,
+		)
+	case d2target.FilledBoxArrowhead:
+		arrowJS = fmt.Sprintf(
+			`node = rc.polygon(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", seed: 1})`,
+			`[[0, -10], [0, 10], [-20, 10], [-20, -10]]`,
+			strokeWidth,
+			stroke,
+			stroke,
+		)
 	}
 	return
 }
 
-func Arrowheads(r *Runner, connection d2target.Connection, srcAdj, dstAdj *geo.Point) (string, error) {
+func Arrowheads(r jsrunner.JSRunner, connection d2target.Connection, srcAdj, dstAdj *geo.Point) (string, error) {
 	arrowPaths := []string{}
 
 	if connection.SrcArrow != d2target.NoArrowhead {
@@ -835,7 +889,7 @@ func Arrowheads(r *Runner, connection d2target.Connection, srcAdj, dstAdj *geo.P
 			roughPaths = append(roughPaths, extraPaths...)
 		}
 
-		pathEl := d2themes.NewThemableElement("path")
+		pathEl := d2themes.NewThemableElement("path", nil)
 		pathEl.ClassName = "connection"
 		pathEl.Attributes = transform
 		for _, rp := range roughPaths {
@@ -874,7 +928,7 @@ func Arrowheads(r *Runner, connection d2target.Connection, srcAdj, dstAdj *geo.P
 			roughPaths = append(roughPaths, extraPaths...)
 		}
 
-		pathEl := d2themes.NewThemableElement("path")
+		pathEl := d2themes.NewThemableElement("path", nil)
 		pathEl.ClassName = "connection"
 		pathEl.Attributes = transform
 		for _, rp := range roughPaths {

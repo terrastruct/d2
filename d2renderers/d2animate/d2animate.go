@@ -54,13 +54,21 @@ func Wrap(rootDiagram *d2target.Diagram, svgs [][]byte, renderOpts d2svg.RenderO
 	width := br.X - tl.X + int(*renderOpts.Pad)*2
 	height := br.Y - tl.Y + int(*renderOpts.Pad)*2
 
-	fitToScreenWrapperOpening := fmt.Sprintf(`<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="%s" preserveAspectRatio="xMinYMin meet" viewBox="0 0 %d %d">`,
+	var dimensions string
+	if renderOpts.Scale != nil {
+		dimensions = fmt.Sprintf(` width="%d" height="%d"`,
+			int(math.Ceil((*renderOpts.Scale)*float64(width))),
+			int(math.Ceil((*renderOpts.Scale)*float64(height))),
+		)
+	}
+
+	fitToScreenWrapperOpening := fmt.Sprintf(`<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="%s" preserveAspectRatio="xMinYMin meet" viewBox="0 0 %d %d"%s>`,
 		version.Version,
-		width, height,
+		width, height, dimensions,
 	)
 	fmt.Fprint(buf, fitToScreenWrapperOpening)
 
-	innerOpening := fmt.Sprintf(`<svg id="d2-svg" width="%d" height="%d" viewBox="%d %d %d %d">`,
+	innerOpening := fmt.Sprintf(`<svg class="d2-svg" width="%d" height="%d" viewBox="%d %d %d %d">`,
 		width, height, left, top, width, height)
 	fmt.Fprint(buf, innerOpening)
 
@@ -69,7 +77,7 @@ func Wrap(rootDiagram *d2target.Diagram, svgs [][]byte, renderOpts d2svg.RenderO
 		svgsStr += string(svg) + " "
 	}
 
-	diagramHash, err := rootDiagram.HashID()
+	diagramHash, err := rootDiagram.HashID(renderOpts.Salt)
 	if err != nil {
 		return nil, err
 	}
@@ -94,7 +102,7 @@ func Wrap(rootDiagram *d2target.Diagram, svgs [][]byte, renderOpts d2svg.RenderO
 	}
 
 	if renderOpts.Sketch != nil && *renderOpts.Sketch {
-		d2sketch.DefineFillPatterns(buf)
+		d2sketch.DefineFillPatterns(buf, diagramHash)
 	}
 
 	fmt.Fprint(buf, `<style type="text/css"><![CDATA[`)

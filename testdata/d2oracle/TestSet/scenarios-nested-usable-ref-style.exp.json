@@ -356,7 +356,7 @@
         "name": "x",
         "isFolderOnly": false,
         "ast": {
-          "range": ",1:0:0-2:0:0",
+          "range": "d2/testdata/d2oracle/TestSet/scenarios-nested-usable-ref-style.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -366,10 +366,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-nested-usable-ref-style.d2,0:0:0-0:1:1",
                         "value": [
                           {
-                            "string": "a"
+                            "string": "a",
+                            "raw_string": "a"
                           }
                         ]
                       }
@@ -389,10 +390,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2oracle/TestSet/scenarios-nested-usable-ref-style.d2,1:2:7-1:3:8",
                                   "value": [
                                     {
-                                      "string": "b"
+                                      "string": "b",
+                                      "raw_string": "b"
                                     }
                                   ]
                                 }
@@ -422,10 +424,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2oracle/TestSet/scenarios-nested-usable-ref-style.d2,7:16:64-7:21:69",
                                             "value": [
                                               {
-                                                "string": "style"
+                                                "string": "style",
+                                                "raw_string": "style"
                                               }
                                             ]
                                           }
@@ -445,10 +448,11 @@
                                                 "path": [
                                                   {
                                                     "unquoted_string": {
-                                                      "range": ",0:0:0-0:0:0",
+                                                      "range": "d2/testdata/d2oracle/TestSet/scenarios-nested-usable-ref-style.d2,7:22:70-7:29:77",
                                                       "value": [
                                                         {
-                                                          "string": "opacity"
+                                                          "string": "opacity",
+                                                          "raw_string": "opacity"
                                                         }
                                                       ]
                                                     }

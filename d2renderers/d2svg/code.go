@@ -49,8 +49,23 @@ func styleAttr(styles map[chroma.TokenType]string, tt chroma.TokenType) string {
 		}
 	}
 	// Custom code
-	out := strings.Replace(styles[tt], `font-weight="bold"`, `class="text-mono-bold"`, -1)
-	return strings.Replace(out, `font-style="italic"`, `class="text-mono-italic"`, -1)
+	out := styles[tt]
+	classes := []string{}
+
+	if strings.Contains(out, `font-weight="bold"`) {
+		out = strings.Replace(out, `font-weight="bold"`, ``, 1)
+		classes = append(classes, "text-mono-bold")
+	}
+	if strings.Contains(out, `font-style="italic"`) {
+		out = strings.Replace(out, `font-style="italic"`, ``, 1)
+		classes = append(classes, "text-mono-italic")
+	}
+
+	if len(classes) > 0 {
+		out += `class="` + strings.Join(classes, " ") + `"`
+	}
+
+	return strings.TrimSpace(out)
 }
 
 // <<< END

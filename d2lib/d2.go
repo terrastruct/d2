@@ -71,9 +71,21 @@ func Compile(ctx context.Context, input string, compileOpts *CompileOptions, ren
 
 	applyConfigs(config, compileOpts, renderOpts)
 	applyDefaults(compileOpts, renderOpts)
+	if config != nil {
+		g.Data = config.Data
+	}
 
 	d, err := compile(ctx, g, compileOpts, renderOpts)
 	if d != nil {
+		if config == nil {
+			config = &d2target.Config{}
+		}
+		// These are fields that affect a diagram's appearance, so feed them back
+		// into diagram.Config to ensure the hash computed for CSS styling purposes
+		// is unique to its appearance
+		config.ThemeID = renderOpts.ThemeID
+		config.DarkThemeID = renderOpts.DarkThemeID
+		config.Sketch = renderOpts.Sketch
 		d.Config = config
 	}
 	return d, g, err

@@ -1,15 +1,39 @@
 {
   "fields": [
     {
-      "name": "a",
+      "name": {
+        "range": "TestCompile/filters/lazy-filter.d2,6:0:42-6:1:43",
+        "value": [
+          {
+            "string": "a",
+            "raw_string": "a"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/filters/lazy-filter.d2,3:2:20-3:7:25",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "fill",
+                  "name": {
+                    "range": "TestCompile/filters/lazy-filter.d2,3:8:26-3:12:30",
+                    "value": [
+                      {
+                        "string": "fill",
+                        "raw_string": "fill"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/filters/lazy-filter.d2,3:14:32-3:20:38",
@@ -260,14 +284,30 @@
       ]
     },
     {
-      "name": "b",
+      "name": {
+        "range": "TestCompile/filters/lazy-filter.d2,7:0:44-7:1:45",
+        "value": [
+          {
+            "string": "b",
+            "raw_string": "b"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "label",
+            "name": {
+              "range": "TestCompile/filters/lazy-filter.d2,8:2:48-8:7:53",
+              "value": [
+                {
+                  "string": "label",
+                  "raw_string": "label"
+                }
+              ]
+            },
             "primary": {
               "value": {
-                "range": "TestCompile/filters/lazy-filter.d2,9:9:109-9:10:110",
+                "range": "TestCompile/filters/lazy-filter.d2,8:9:55-8:10:56",
                 "value": [
                   {
                     "string": "a",
@@ -279,7 +319,7 @@
             "references": [
               {
                 "string": {
-                  "range": "TestCompile/filters/lazy-filter.d2,9:2:102-9:7:107",
+                  "range": "TestCompile/filters/lazy-filter.d2,8:2:48-8:7:53",
                   "value": [
                     {
                       "string": "label",
@@ -288,11 +328,11 @@
                   ]
                 },
                 "key_path": {
-                  "range": "TestCompile/filters/lazy-filter.d2,9:0:100-9:7:107",
+                  "range": "TestCompile/filters/lazy-filter.d2,8:0:46-8:7:53",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "TestCompile/filters/lazy-filter.d2,9:0:100-9:1:101",
+                        "range": "TestCompile/filters/lazy-filter.d2,8:0:46-8:1:47",
                         "value": [
                           {
                             "string": "b",
@@ -303,7 +343,7 @@
                     },
                     {
                       "unquoted_string": {
-                        "range": "TestCompile/filters/lazy-filter.d2,9:2:102-9:7:107",
+                        "range": "TestCompile/filters/lazy-filter.d2,8:2:48-8:7:53",
                         "value": [
                           {
                             "string": "label",
@@ -317,13 +357,13 @@
                 "context": {
                   "edge": null,
                   "key": {
-                    "range": "TestCompile/filters/lazy-filter.d2,9:0:100-9:10:110",
+                    "range": "TestCompile/filters/lazy-filter.d2,8:0:46-8:10:56",
                     "key": {
-                      "range": "TestCompile/filters/lazy-filter.d2,9:0:100-9:7:107",
+                      "range": "TestCompile/filters/lazy-filter.d2,8:0:46-8:7:53",
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": "TestCompile/filters/lazy-filter.d2,9:0:100-9:1:101",
+                            "range": "TestCompile/filters/lazy-filter.d2,8:0:46-8:1:47",
                             "value": [
                               {
                                 "string": "b",
@@ -334,7 +374,7 @@
                         },
                         {
                           "unquoted_string": {
-                            "range": "TestCompile/filters/lazy-filter.d2,9:2:102-9:7:107",
+                            "range": "TestCompile/filters/lazy-filter.d2,8:2:48-8:7:53",
                             "value": [
                               {
                                 "string": "label",
@@ -348,7 +388,7 @@
                     "primary": {},
                     "value": {
                       "unquoted_string": {
-                        "range": "TestCompile/filters/lazy-filter.d2,9:9:109-9:10:110",
+                        "range": "TestCompile/filters/lazy-filter.d2,8:9:55-8:10:56",
                         "value": [
                           {
                             "string": "a",
@@ -557,11 +597,27 @@
             ]
           },
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/filters/lazy-filter.d2,3:2:20-3:7:25",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "fill",
+                  "name": {
+                    "range": "TestCompile/filters/lazy-filter.d2,3:8:26-3:12:30",
+                    "value": [
+                      {
+                        "string": "fill",
+                        "raw_string": "fill"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/filters/lazy-filter.d2,3:14:32-3:20:38",
@@ -758,7 +814,7 @@
       "references": [
         {
           "string": {
-            "range": "TestCompile/filters/lazy-filter.d2,8:0:98-8:1:99",
+            "range": "TestCompile/filters/lazy-filter.d2,7:0:44-7:1:45",
             "value": [
               {
                 "string": "b",
@@ -767,11 +823,11 @@
             ]
           },
           "key_path": {
-            "range": "TestCompile/filters/lazy-filter.d2,8:0:98-8:1:99",
+            "range": "TestCompile/filters/lazy-filter.d2,7:0:44-7:1:45",
             "path": [
               {
                 "unquoted_string": {
-                  "range": "TestCompile/filters/lazy-filter.d2,8:0:98-8:1:99",
+                  "range": "TestCompile/filters/lazy-filter.d2,7:0:44-7:1:45",
                   "value": [
                     {
                       "string": "b",
@@ -785,13 +841,13 @@
           "context": {
             "edge": null,
             "key": {
-              "range": "TestCompile/filters/lazy-filter.d2,8:0:98-8:1:99",
+              "range": "TestCompile/filters/lazy-filter.d2,7:0:44-7:1:45",
               "key": {
-                "range": "TestCompile/filters/lazy-filter.d2,8:0:98-8:1:99",
+                "range": "TestCompile/filters/lazy-filter.d2,7:0:44-7:1:45",
                 "path": [
                   {
                     "unquoted_string": {
-                      "range": "TestCompile/filters/lazy-filter.d2,8:0:98-8:1:99",
+                      "range": "TestCompile/filters/lazy-filter.d2,7:0:44-7:1:45",
                       "value": [
                         {
                           "string": "b",
@@ -811,7 +867,7 @@
         },
         {
           "string": {
-            "range": "TestCompile/filters/lazy-filter.d2,9:0:100-9:1:101",
+            "range": "TestCompile/filters/lazy-filter.d2,8:0:46-8:1:47",
             "value": [
               {
                 "string": "b",
@@ -820,11 +876,11 @@
             ]
           },
           "key_path": {
-            "range": "TestCompile/filters/lazy-filter.d2,9:0:100-9:7:107",
+            "range": "TestCompile/filters/lazy-filter.d2,8:0:46-8:7:53",
             "path": [
               {
                 "unquoted_string": {
-                  "range": "TestCompile/filters/lazy-filter.d2,9:0:100-9:1:101",
+                  "range": "TestCompile/filters/lazy-filter.d2,8:0:46-8:1:47",
                   "value": [
                     {
                       "string": "b",
@@ -835,7 +891,7 @@
               },
               {
                 "unquoted_string": {
-                  "range": "TestCompile/filters/lazy-filter.d2,9:2:102-9:7:107",
+                  "range": "TestCompile/filters/lazy-filter.d2,8:2:48-8:7:53",
                   "value": [
                     {
                       "string": "label",
@@ -849,13 +905,13 @@
           "context": {
             "edge": null,
             "key": {
-              "range": "TestCompile/filters/lazy-filter.d2,9:0:100-9:10:110",
+              "range": "TestCompile/filters/lazy-filter.d2,8:0:46-8:10:56",
               "key": {
-                "range": "TestCompile/filters/lazy-filter.d2,9:0:100-9:7:107",
+                "range": "TestCompile/filters/lazy-filter.d2,8:0:46-8:7:53",
                 "path": [
                   {
                     "unquoted_string": {
-                      "range": "TestCompile/filters/lazy-filter.d2,9:0:100-9:1:101",
+                      "range": "TestCompile/filters/lazy-filter.d2,8:0:46-8:1:47",
                       "value": [
                         {
                           "string": "b",
@@ -866,7 +922,7 @@
                   },
                   {
                     "unquoted_string": {
-                      "range": "TestCompile/filters/lazy-filter.d2,9:2:102-9:7:107",
+                      "range": "TestCompile/filters/lazy-filter.d2,8:2:48-8:7:53",
                       "value": [
                         {
                           "string": "label",
@@ -880,7 +936,7 @@
               "primary": {},
               "value": {
                 "unquoted_string": {
-                  "range": "TestCompile/filters/lazy-filter.d2,9:9:109-9:10:110",
+                  "range": "TestCompile/filters/lazy-filter.d2,8:9:55-8:10:56",
                   "value": [
                     {
                       "string": "a",

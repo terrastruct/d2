@@ -270,7 +270,7 @@
         "name": "x",
         "isFolderOnly": false,
         "ast": {
-          "range": ",1:0:0-2:0:0",
+          "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -280,10 +280,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,0:0:0-0:1:1",
                         "value": [
                           {
-                            "string": "a"
+                            "string": "a",
+                            "raw_string": "a"
                           }
                         ]
                       }
@@ -313,10 +314,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,1:2:7-1:7:12",
                                   "value": [
                                     {
-                                      "string": "style"
+                                      "string": "style",
+                                      "raw_string": "style"
                                     }
                                   ]
                                 }
@@ -336,10 +338,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,1:8:13-1:15:20",
                                             "value": [
                                               {
-                                                "string": "opacity"
+                                                "string": "opacity",
+                                                "raw_string": "opacity"
                                               }
                                             ]
                                           }
@@ -374,10 +377,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,6:4:53-6:5:54",
                         "value": [
                           {
-                            "string": "b"
+                            "string": "b",
+                            "raw_string": "b"
                           }
                         ]
                       }

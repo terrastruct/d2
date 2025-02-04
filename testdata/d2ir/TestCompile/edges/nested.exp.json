@@ -1,11 +1,27 @@
 {
   "fields": [
     {
-      "name": "x",
+      "name": {
+        "range": "TestCompile/edges/nested.d2,0:0:0-0:1:1",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "y",
+            "name": {
+              "range": "TestCompile/edges/nested.d2,0:2:2-0:3:3",
+              "value": [
+                {
+                  "string": "y",
+                  "raw_string": "y"
+                }
+              ]
+            },
             "references": [
               {
                 "string": {
@@ -350,11 +366,27 @@
       ]
     },
     {
-      "name": "z",
+      "name": {
+        "range": "TestCompile/edges/nested.d2,0:7:7-0:8:8",
+        "value": [
+          {
+            "string": "z",
+            "raw_string": "z"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "p",
+            "name": {
+              "range": "TestCompile/edges/nested.d2,0:9:9-0:10:10",
+              "value": [
+                {
+                  "string": "p",
+                  "raw_string": "p"
+                }
+              ]
+            },
             "references": [
               {
                 "string": {
@@ -703,13 +735,45 @@
     {
       "edge_id": {
         "src_path": [
-          "x",
-          "y"
+          {
+            "range": "TestCompile/edges/nested.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          },
+          {
+            "range": "TestCompile/edges/nested.d2,0:2:2-0:3:3",
+            "value": [
+              {
+                "string": "y",
+                "raw_string": "y"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "z",
-          "p"
+          {
+            "range": "TestCompile/edges/nested.d2,0:7:7-0:8:8",
+            "value": [
+              {
+                "string": "z",
+                "raw_string": "z"
+              }
+            ]
+          },
+          {
+            "range": "TestCompile/edges/nested.d2,0:9:9-0:10:10",
+            "value": [
+              {
+                "string": "p",
+                "raw_string": "p"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,

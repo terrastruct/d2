@@ -27,7 +27,6 @@ x  ->  y
 			exp: `x -> y
 `,
 		},
-
 		{
 			name: "complex",
 			in: `
@@ -153,7 +152,7 @@ meow
     diagram: int {constraint: foreign_key}
   }
   meow <- diagrams.id
-  
+
   steps: {
     shape: sql_table
     id: {type: int; constraint: primary_key}
@@ -665,8 +664,8 @@ x: @"x/../file"
   b: {
 		e
     scenarios: {
-      p: { 
-        x 
+      p: {
+        x
       }
     }
   }
@@ -678,14 +677,14 @@ x: @"x/../file"
 			exp: `layers: {
   b: {
     e
-    
+
     scenarios: {
       p: {
         x
       }
     }
   }
-  
+
   steps: {
     a
   }
@@ -763,7 +762,7 @@ only-layers: {
     X
     Y
   }
-  
+
   layers: {
     Z
   }
@@ -773,10 +772,10 @@ layers: {
   Test super nested: {
     base-layer
     last-layer
-    
+
     layers: {
       layer-board
-      
+
       layers: {
         grand-child-layer: {
           grand-child-board
@@ -789,7 +788,7 @@ layers: {
 scenarios: {
   scenario-1: {
     non-step
-    
+
     steps: {
       step-1: {
         Test
@@ -829,6 +828,70 @@ mybox: {
 mybox: {
   label: prefix${test}suffix
 }
+`,
+		},
+		{
+			name: "not-filter",
+			in: `jacob: {
+	shape: circle
+}
+jeremy: {
+	shape: rectangle
+}
+*: {
+	!&shape: rectangle
+	label: I'm not a rectangle
+}`,
+			exp: `jacob: {
+  shape: circle
+}
+jeremy: {
+  shape: rectangle
+}
+*: {
+  !&shape: rectangle
+  label: I'm not a rectangle
+}
+`,
+		},
+		{
+			name: "lowercase-reserved",
+			in: `jacob: {
+	SHAPE: circle
+}
+jeremy.SHAPE: rectangle
+alice.STYLE.fill: red
+bob.style.FILL: red
+carmen.STYLE.FILL: red
+coop: {
+  STYLE: {
+    FILL: blue
+  }
+}
+`,
+			exp: `jacob: {
+  shape: circle
+}
+jeremy.shape: rectangle
+alice.style.fill: red
+bob.style.fill: red
+carmen.style.fill: red
+coop: {
+  style: {
+    fill: blue
+  }
+}
+`,
+		},
+		{
+			name: "remove-empty-boards",
+			in: `k
+
+layers
+scenarios: {}
+steps: asdf
+`,
+			exp: `k
 `,
 		},
 	}

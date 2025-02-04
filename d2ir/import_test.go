@@ -211,6 +211,23 @@ label: meow`,
 				assert.Success(t, err)
 			},
 		},
+		{
+			name: "nested-scope",
+			run: func(t testing.TB) {
+				m, err := compileFS(t, "index.d2", map[string]string{
+					"index.d2": `...@second
+`,
+					"second.d2": `elem: {
+  ...@third
+}`,
+					"third.d2": `third: {
+  elem
+}`,
+				})
+				assert.Success(t, err)
+				assertQuery(t, m, 3, 0, nil, "")
+			},
+		},
 	}
 
 	runa(t, tca)
@@ -233,15 +250,6 @@ label: meow`,
 						"index.d2": "...@'./../x.d2'",
 					})
 					assert.ErrorString(t, err, `index.d2:1:1: failed to import "../x.d2": open ../x.d2: invalid argument`)
-				},
-			},
-			{
-				name: "absolute",
-				run: func(t testing.TB) {
-					_, err := compileFS(t, "index.d2", map[string]string{
-						"index.d2": "...@/x.d2",
-					})
-					assert.ErrorString(t, err, `index.d2:1:1: import paths must be relative`)
 				},
 			},
 			{

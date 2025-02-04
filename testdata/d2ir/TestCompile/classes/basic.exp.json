@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "x",
+      "name": {
+        "range": "TestCompile/classes/basic.d2,0:0:0-0:1:1",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -59,19 +67,51 @@
       ]
     },
     {
-      "name": "classes",
+      "name": {
+        "range": "TestCompile/classes/basic.d2,1:0:2-1:7:9",
+        "value": [
+          {
+            "string": "classes",
+            "raw_string": "classes"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "mango",
+            "name": {
+              "range": "TestCompile/classes/basic.d2,2:2:15-2:7:20",
+              "value": [
+                {
+                  "string": "mango",
+                  "raw_string": "mango"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "style",
+                  "name": {
+                    "range": "TestCompile/classes/basic.d2,3:4:28-3:9:33",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "fill",
+                        "name": {
+                          "range": "TestCompile/classes/basic.d2,3:10:34-3:14:38",
+                          "value": [
+                            {
+                              "string": "fill",
+                              "raw_string": "fill"
+                            }
+                          ]
+                        },
                         "primary": {
                           "value": {
                             "range": "TestCompile/classes/basic.d2,3:16:40-3:22:46",

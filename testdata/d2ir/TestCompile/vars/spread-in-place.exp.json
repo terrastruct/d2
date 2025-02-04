@@ -1,0 +1,1364 @@
+{
+  "fields": [
+    {
+      "name": {
+        "range": "TestCompile/vars/spread-in-place.d2,0:0:0-0:4:4",
+        "value": [
+          {
+            "string": "vars",
+            "raw_string": "vars"
+          }
+        ]
+      },
+      "composite": {
+        "fields": [
+          {
+            "name": {
+              "range": "TestCompile/vars/spread-in-place.d2,1:2:10-1:14:22",
+              "value": [
+                {
+                  "string": "person-shape",
+                  "raw_string": "person-shape"
+                }
+              ]
+            },
+            "composite": {
+              "fields": [
+                {
+                  "name": {
+                    "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:16:42",
+                    "value": [
+                      {
+                        "string": "grid-columns",
+                        "raw_string": "grid-columns"
+                      }
+                    ]
+                  },
+                  "primary": {
+                    "value": {
+                      "range": "TestCompile/vars/spread-in-place.d2,2:18:44-2:19:45",
+                      "raw": "1",
+                      "value": "1"
+                    }
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:16:42",
+                        "value": [
+                          {
+                            "string": "grid-columns",
+                            "raw_string": "grid-columns"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:16:42",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:16:42",
+                              "value": [
+                                {
+                                  "string": "grid-columns",
+                                  "raw_string": "grid-columns"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:19:45",
+                          "key": {
+                            "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:16:42",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:16:42",
+                                  "value": [
+                                    {
+                                      "string": "grid-columns",
+                                      "raw_string": "grid-columns"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "number": {
+                              "range": "TestCompile/vars/spread-in-place.d2,2:18:44-2:19:45",
+                              "raw": "1",
+                              "value": "1"
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    }
+                  ]
+                },
+                {
+                  "name": {
+                    "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:13:59",
+                    "value": [
+                      {
+                        "string": "grid-rows",
+                        "raw_string": "grid-rows"
+                      }
+                    ]
+                  },
+                  "primary": {
+                    "value": {
+                      "range": "TestCompile/vars/spread-in-place.d2,3:15:61-3:16:62",
+                      "raw": "2",
+                      "value": "2"
+                    }
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:13:59",
+                        "value": [
+                          {
+                            "string": "grid-rows",
+                            "raw_string": "grid-rows"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:13:59",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:13:59",
+                              "value": [
+                                {
+                                  "string": "grid-rows",
+                                  "raw_string": "grid-rows"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:16:62",
+                          "key": {
+                            "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:13:59",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:13:59",
+                                  "value": [
+                                    {
+                                      "string": "grid-rows",
+                                      "raw_string": "grid-rows"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "number": {
+                              "range": "TestCompile/vars/spread-in-place.d2,3:15:61-3:16:62",
+                              "raw": "2",
+                              "value": "2"
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    }
+                  ]
+                },
+                {
+                  "name": {
+                    "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:12:75",
+                    "value": [
+                      {
+                        "string": "grid-gap",
+                        "raw_string": "grid-gap"
+                      }
+                    ]
+                  },
+                  "primary": {
+                    "value": {
+                      "range": "TestCompile/vars/spread-in-place.d2,4:14:77-4:15:78",
+                      "raw": "0",
+                      "value": "0"
+                    }
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:12:75",
+                        "value": [
+                          {
+                            "string": "grid-gap",
+                            "raw_string": "grid-gap"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:12:75",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:12:75",
+                              "value": [
+                                {
+                                  "string": "grid-gap",
+                                  "raw_string": "grid-gap"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:15:78",
+                          "key": {
+                            "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:12:75",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:12:75",
+                                  "value": [
+                                    {
+                                      "string": "grid-gap",
+                                      "raw_string": "grid-gap"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "number": {
+                              "range": "TestCompile/vars/spread-in-place.d2,4:14:77-4:15:78",
+                              "raw": "0",
+                              "value": "0"
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    }
+                  ]
+                },
+                {
+                  "name": {
+                    "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+                    "value": [
+                      {
+                        "string": "head",
+                        "raw_string": "head"
+                      }
+                    ]
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+                        "value": [
+                          {
+                            "string": "head",
+                            "raw_string": "head"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+                              "value": [
+                                {
+                                  "string": "head",
+                                  "raw_string": "head"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+                          "key": {
+                            "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+                                  "value": [
+                                    {
+                                      "string": "head",
+                                      "raw_string": "head"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {}
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    }
+                  ]
+                },
+                {
+                  "name": {
+                    "range": "TestCompile/vars/spread-in-place.d2,6:4:92-6:8:96",
+                    "value": [
+                      {
+                        "string": "body",
+                        "raw_string": "body"
+                      }
+                    ]
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/vars/spread-in-place.d2,6:4:92-6:8:96",
+                        "value": [
+                          {
+                            "string": "body",
+                            "raw_string": "body"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/vars/spread-in-place.d2,6:4:92-6:8:96",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/vars/spread-in-place.d2,6:4:92-6:8:96",
+                              "value": [
+                                {
+                                  "string": "body",
+                                  "raw_string": "body"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/vars/spread-in-place.d2,6:4:92-6:8:96",
+                          "key": {
+                            "range": "TestCompile/vars/spread-in-place.d2,6:4:92-6:8:96",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/vars/spread-in-place.d2,6:4:92-6:8:96",
+                                  "value": [
+                                    {
+                                      "string": "body",
+                                      "raw_string": "body"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {}
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/vars/spread-in-place.d2,1:2:10-1:14:22",
+                  "value": [
+                    {
+                      "string": "person-shape",
+                      "raw_string": "person-shape"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/vars/spread-in-place.d2,1:2:10-1:14:22",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/vars/spread-in-place.d2,1:2:10-1:14:22",
+                        "value": [
+                          {
+                            "string": "person-shape",
+                            "raw_string": "person-shape"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/vars/spread-in-place.d2,1:2:10-7:3:100",
+                    "key": {
+                      "range": "TestCompile/vars/spread-in-place.d2,1:2:10-1:14:22",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/vars/spread-in-place.d2,1:2:10-1:14:22",
+                            "value": [
+                              {
+                                "string": "person-shape",
+                                "raw_string": "person-shape"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/vars/spread-in-place.d2,1:16:24-7:3:100",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:19:45",
+                              "key": {
+                                "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:16:42",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:16:42",
+                                      "value": [
+                                        {
+                                          "string": "grid-columns",
+                                          "raw_string": "grid-columns"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "number": {
+                                  "range": "TestCompile/vars/spread-in-place.d2,2:18:44-2:19:45",
+                                  "raw": "1",
+                                  "value": "1"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "map_key": {
+                              "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:16:62",
+                              "key": {
+                                "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:13:59",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:13:59",
+                                      "value": [
+                                        {
+                                          "string": "grid-rows",
+                                          "raw_string": "grid-rows"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "number": {
+                                  "range": "TestCompile/vars/spread-in-place.d2,3:15:61-3:16:62",
+                                  "raw": "2",
+                                  "value": "2"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "map_key": {
+                              "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:15:78",
+                              "key": {
+                                "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:12:75",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:12:75",
+                                      "value": [
+                                        {
+                                          "string": "grid-gap",
+                                          "raw_string": "grid-gap"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "number": {
+                                  "range": "TestCompile/vars/spread-in-place.d2,4:14:77-4:15:78",
+                                  "raw": "0",
+                                  "value": "0"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "map_key": {
+                              "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+                              "key": {
+                                "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+                                      "value": [
+                                        {
+                                          "string": "head",
+                                          "raw_string": "head"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {}
+                            }
+                          },
+                          {
+                            "map_key": {
+                              "range": "TestCompile/vars/spread-in-place.d2,6:4:92-6:8:96",
+                              "key": {
+                                "range": "TestCompile/vars/spread-in-place.d2,6:4:92-6:8:96",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/vars/spread-in-place.d2,6:4:92-6:8:96",
+                                      "value": [
+                                        {
+                                          "string": "body",
+                                          "raw_string": "body"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {}
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/vars/spread-in-place.d2,0:0:0-0:4:4",
+            "value": [
+              {
+                "string": "vars",
+                "raw_string": "vars"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/vars/spread-in-place.d2,0:0:0-0:4:4",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/vars/spread-in-place.d2,0:0:0-0:4:4",
+                  "value": [
+                    {
+                      "string": "vars",
+                      "raw_string": "vars"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/vars/spread-in-place.d2,0:0:0-8:1:102",
+              "key": {
+                "range": "TestCompile/vars/spread-in-place.d2,0:0:0-0:4:4",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/vars/spread-in-place.d2,0:0:0-0:4:4",
+                      "value": [
+                        {
+                          "string": "vars",
+                          "raw_string": "vars"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/vars/spread-in-place.d2,0:6:6-8:1:102",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/vars/spread-in-place.d2,1:2:10-7:3:100",
+                        "key": {
+                          "range": "TestCompile/vars/spread-in-place.d2,1:2:10-1:14:22",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/vars/spread-in-place.d2,1:2:10-1:14:22",
+                                "value": [
+                                  {
+                                    "string": "person-shape",
+                                    "raw_string": "person-shape"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "map": {
+                            "range": "TestCompile/vars/spread-in-place.d2,1:16:24-7:3:100",
+                            "nodes": [
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:19:45",
+                                  "key": {
+                                    "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:16:42",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:16:42",
+                                          "value": [
+                                            {
+                                              "string": "grid-columns",
+                                              "raw_string": "grid-columns"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {
+                                    "number": {
+                                      "range": "TestCompile/vars/spread-in-place.d2,2:18:44-2:19:45",
+                                      "raw": "1",
+                                      "value": "1"
+                                    }
+                                  }
+                                }
+                              },
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:16:62",
+                                  "key": {
+                                    "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:13:59",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:13:59",
+                                          "value": [
+                                            {
+                                              "string": "grid-rows",
+                                              "raw_string": "grid-rows"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {
+                                    "number": {
+                                      "range": "TestCompile/vars/spread-in-place.d2,3:15:61-3:16:62",
+                                      "raw": "2",
+                                      "value": "2"
+                                    }
+                                  }
+                                }
+                              },
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:15:78",
+                                  "key": {
+                                    "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:12:75",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:12:75",
+                                          "value": [
+                                            {
+                                              "string": "grid-gap",
+                                              "raw_string": "grid-gap"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {
+                                    "number": {
+                                      "range": "TestCompile/vars/spread-in-place.d2,4:14:77-4:15:78",
+                                      "raw": "0",
+                                      "value": "0"
+                                    }
+                                  }
+                                }
+                              },
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+                                  "key": {
+                                    "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+                                          "value": [
+                                            {
+                                              "string": "head",
+                                              "raw_string": "head"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {}
+                                }
+                              },
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/vars/spread-in-place.d2,6:4:92-6:8:96",
+                                  "key": {
+                                    "range": "TestCompile/vars/spread-in-place.d2,6:4:92-6:8:96",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/vars/spread-in-place.d2,6:4:92-6:8:96",
+                                          "value": [
+                                            {
+                                              "string": "body",
+                                              "raw_string": "body"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {}
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        }
+      ]
+    },
+    {
+      "name": {
+        "range": "TestCompile/vars/spread-in-place.d2,10:0:104-10:4:108",
+        "value": [
+          {
+            "string": "dora",
+            "raw_string": "dora"
+          }
+        ]
+      },
+      "composite": {
+        "fields": [
+          {
+            "name": {
+              "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:16:42",
+              "value": [
+                {
+                  "string": "grid-columns",
+                  "raw_string": "grid-columns"
+                }
+              ]
+            },
+            "primary": {
+              "value": {
+                "range": "TestCompile/vars/spread-in-place.d2,2:18:44-2:19:45",
+                "raw": "1",
+                "value": "1"
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:16:42",
+                  "value": [
+                    {
+                      "string": "grid-columns",
+                      "raw_string": "grid-columns"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:16:42",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:16:42",
+                        "value": [
+                          {
+                            "string": "grid-columns",
+                            "raw_string": "grid-columns"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:19:45",
+                    "key": {
+                      "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:16:42",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/vars/spread-in-place.d2,2:4:30-2:16:42",
+                            "value": [
+                              {
+                                "string": "grid-columns",
+                                "raw_string": "grid-columns"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "number": {
+                        "range": "TestCompile/vars/spread-in-place.d2,2:18:44-2:19:45",
+                        "raw": "1",
+                        "value": "1"
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              }
+            ]
+          },
+          {
+            "name": {
+              "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:13:59",
+              "value": [
+                {
+                  "string": "grid-rows",
+                  "raw_string": "grid-rows"
+                }
+              ]
+            },
+            "primary": {
+              "value": {
+                "range": "TestCompile/vars/spread-in-place.d2,3:15:61-3:16:62",
+                "raw": "2",
+                "value": "2"
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:13:59",
+                  "value": [
+                    {
+                      "string": "grid-rows",
+                      "raw_string": "grid-rows"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:13:59",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:13:59",
+                        "value": [
+                          {
+                            "string": "grid-rows",
+                            "raw_string": "grid-rows"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:16:62",
+                    "key": {
+                      "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:13:59",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/vars/spread-in-place.d2,3:4:50-3:13:59",
+                            "value": [
+                              {
+                                "string": "grid-rows",
+                                "raw_string": "grid-rows"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "number": {
+                        "range": "TestCompile/vars/spread-in-place.d2,3:15:61-3:16:62",
+                        "raw": "2",
+                        "value": "2"
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              }
+            ]
+          },
+          {
+            "name": {
+              "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:12:75",
+              "value": [
+                {
+                  "string": "grid-gap",
+                  "raw_string": "grid-gap"
+                }
+              ]
+            },
+            "primary": {
+              "value": {
+                "range": "TestCompile/vars/spread-in-place.d2,4:14:77-4:15:78",
+                "raw": "0",
+                "value": "0"
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:12:75",
+                  "value": [
+                    {
+                      "string": "grid-gap",
+                      "raw_string": "grid-gap"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:12:75",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:12:75",
+                        "value": [
+                          {
+                            "string": "grid-gap",
+                            "raw_string": "grid-gap"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:15:78",
+                    "key": {
+                      "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:12:75",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/vars/spread-in-place.d2,4:4:67-4:12:75",
+                            "value": [
+                              {
+                                "string": "grid-gap",
+                                "raw_string": "grid-gap"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "number": {
+                        "range": "TestCompile/vars/spread-in-place.d2,4:14:77-4:15:78",
+                        "raw": "0",
+                        "value": "0"
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              }
+            ]
+          },
+          {
+            "name": {
+              "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+              "value": [
+                {
+                  "string": "head",
+                  "raw_string": "head"
+                }
+              ]
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+                  "value": [
+                    {
+                      "string": "head",
+                      "raw_string": "head"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+                        "value": [
+                          {
+                            "string": "head",
+                            "raw_string": "head"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+                    "key": {
+                      "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/vars/spread-in-place.d2,5:4:83-5:8:87",
+                            "value": [
+                              {
+                                "string": "head",
+                                "raw_string": "head"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {}
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              }
+            ]
+          },
+          {
+            "name": {
+              "range": "TestCompile/vars/spread-in-place.d2,12:2:135-12:6:139",
+              "value": [
+                {
+                  "string": "body",
+                  "raw_string": "body"
+                }
+              ]
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/vars/spread-in-place.d2,12:2:135-12:6:139",
+                  "value": [
+                    {
+                      "string": "body",
+                      "raw_string": "body"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/vars/spread-in-place.d2,12:2:135-12:6:139",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/vars/spread-in-place.d2,12:2:135-12:6:139",
+                        "value": [
+                          {
+                            "string": "body",
+                            "raw_string": "body"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/vars/spread-in-place.d2,12:2:135-12:6:139",
+                    "key": {
+                      "range": "TestCompile/vars/spread-in-place.d2,12:2:135-12:6:139",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/vars/spread-in-place.d2,12:2:135-12:6:139",
+                            "value": [
+                              {
+                                "string": "body",
+                                "raw_string": "body"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {}
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              },
+              {
+                "string": {
+                  "range": "TestCompile/vars/spread-in-place.d2,6:4:92-6:8:96",
+                  "value": [
+                    {
+                      "string": "body",
+                      "raw_string": "body"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/vars/spread-in-place.d2,6:4:92-6:8:96",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/vars/spread-in-place.d2,6:4:92-6:8:96",
+                        "value": [
+                          {
+                            "string": "body",
+                            "raw_string": "body"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/vars/spread-in-place.d2,6:4:92-6:8:96",
+                    "key": {
+                      "range": "TestCompile/vars/spread-in-place.d2,6:4:92-6:8:96",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/vars/spread-in-place.d2,6:4:92-6:8:96",
+                            "value": [
+                              {
+                                "string": "body",
+                                "raw_string": "body"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {}
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/vars/spread-in-place.d2,10:0:104-10:4:108",
+            "value": [
+              {
+                "string": "dora",
+                "raw_string": "dora"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/vars/spread-in-place.d2,10:0:104-10:4:108",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/vars/spread-in-place.d2,10:0:104-10:4:108",
+                  "value": [
+                    {
+                      "string": "dora",
+                      "raw_string": "dora"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/vars/spread-in-place.d2,10:0:104-13:1:141",
+              "key": {
+                "range": "TestCompile/vars/spread-in-place.d2,10:0:104-10:4:108",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/vars/spread-in-place.d2,10:0:104-10:4:108",
+                      "value": [
+                        {
+                          "string": "dora",
+                          "raw_string": "dora"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/vars/spread-in-place.d2,10:6:110-13:1:141",
+                  "nodes": [
+                    {
+                      "substitution": {
+                        "range": "TestCompile/vars/spread-in-place.d2,11:2:114-11:20:132",
+                        "spread": true,
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/vars/spread-in-place.d2,11:7:119-11:19:131",
+                              "value": [
+                                {
+                                  "string": "person-shape",
+                                  "raw_string": "person-shape"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "map_key": {
+                        "range": "TestCompile/vars/spread-in-place.d2,12:2:135-12:6:139",
+                        "key": {
+                          "range": "TestCompile/vars/spread-in-place.d2,12:2:135-12:6:139",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/vars/spread-in-place.d2,12:2:135-12:6:139",
+                                "value": [
+                                  {
+                                    "string": "body",
+                                    "raw_string": "body"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {}
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        }
+      ]
+    }
+  ],
+  "edges": null
+}

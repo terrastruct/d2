@@ -1,15 +1,39 @@
 {
   "fields": [
     {
-      "name": "layers",
+      "name": {
+        "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:6:6",
+        "value": [
+          {
+            "string": "layers",
+            "raw_string": "layers"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "x",
+            "name": {
+              "range": "TestCompile/layers/errs/4/good_edge.d2,0:7:7-0:8:8",
+              "value": [
+                {
+                  "string": "x",
+                  "raw_string": "x"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "y",
+                  "name": {
+                    "range": "TestCompile/layers/errs/4/good_edge.d2,0:9:9-0:10:10",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -462,11 +486,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "y"
+                      {
+                        "range": "TestCompile/layers/errs/4/good_edge.d2,0:9:9-0:10:10",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "y"
+                      {
+                        "range": "TestCompile/layers/errs/4/good_edge.d2,0:9:9-0:10:10",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,

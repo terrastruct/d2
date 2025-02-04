@@ -267,7 +267,7 @@
         "name": "l",
         "isFolderOnly": false,
         "ast": {
-          "range": ",1:0:0-2:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/replace.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -277,10 +277,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/replace.d2,1:0:1-1:4:5",
                         "value": [
                           {
-                            "string": "vars"
+                            "string": "vars",
+                            "raw_string": "vars"
                           }
                         ]
                       }
@@ -300,10 +301,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/replace.d2,2:2:11-2:3:12",
                                   "value": [
                                     {
-                                      "string": "x"
+                                      "string": "x",
+                                      "raw_string": "x"
                                     }
                                   ]
                                 }
@@ -337,10 +339,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/replace.d2,10:4:95-10:5:96",
                         "value": [
                           {
-                            "string": "x"
+                            "string": "x",
+                            "raw_string": "x"
                           }
                         ]
                       }

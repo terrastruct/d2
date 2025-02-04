@@ -95,6 +95,54 @@ func TestCLI_E2E(t *testing.T) {
 			},
 		},
 		{
+			name: "sequence-layer",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "index.d2", `k; layers: { seq: @seq.d2 }`)
+				writeFile(t, dir, "seq.d2", `shape: sequence_diagram
+a: me
+b: github.com/terrastruct/d2
+
+a -> b: issue about a bug
+a."some note about the bug"
+
+if i'm right: {
+	a <- b: fix
+}
+
+if i'm wrong: {
+	a <- b: nah, intended
+}`)
+				err := runTestMain(t, ctx, dir, env, "index.d2")
+				assert.Success(t, err)
+
+				assert.TestdataDir(t, filepath.Join(dir, "index"))
+			},
+		},
+		{
+			name: "sequence-spread-layer",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "index.d2", `k; layers: { seq: {...@seq.d2} }`)
+				writeFile(t, dir, "seq.d2", `shape: sequence_diagram
+a: me
+b: github.com/terrastruct/d2
+
+a -> b: issue about a bug
+a."some note about the bug"
+
+if i'm right: {
+	a <- b: fix
+}
+
+if i'm wrong: {
+	a <- b: nah, intended
+}`)
+				err := runTestMain(t, ctx, dir, env, "index.d2")
+				assert.Success(t, err)
+
+				assert.TestdataDir(t, filepath.Join(dir, "index"))
+			},
+		},
+		{
 			// Skip the empty base board so the animation doesn't show blank for 1400ms
 			name: "empty-base",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
@@ -638,6 +686,43 @@ steps: {
 			},
 		},
 		{
+			name:   "pptx-theme-overrides",
+			skipCI: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `vars:{
+  d2-config: {
+    theme-overrides: {
+			# All red
+      N1:  "#ff0000"
+      B1:  "#ff0000"
+      B2:  "#ff0000"
+      AA2: "#ff0000"
+      N2:  "#ff0000"
+      N6:  "#ff0000"
+      B4:  "#ff0000"
+      B5:  "#ff0000"
+      B3:  "#ff0000"
+      N4:  "#ff0000"
+      N5:  "#ff0000"
+      AA4: "#ff0000"
+      AB4: "#ff0000"
+      B6:  "#ff0000"
+      N7:  "#ff0000"
+      AA5: "#ff0000"
+      AB5: "#ff0000"
+    }
+  }
+}
+a->z
+a.b.c.d
+`)
+				err := runTestMain(t, ctx, dir, env, "in.d2", "all_red.pptx")
+				assert.Success(t, err)
+				pptx := readFile(t, dir, "all_red.pptx")
+				testdataIgnoreDiff(t, ".pptx", pptx)
+			},
+		},
+		{
 			name:   "one-layer-gif",
 			skipCI: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
@@ -712,11 +797,51 @@ steps: {
 			},
 		},
 		{
+			name: "import_icon_relative",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `...@asdf/x`)
+				writeFile(t, filepath.Join(dir, "asdf"), "x.d2", `y: { icon: ./blah.svg }; z: { icon: ../root.svg }`)
+				writeFile(t, filepath.Join(dir, "asdf"), "blah.svg", ``)
+				writeFile(t, dir, "root.svg", ``)
+				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
+				assert.Success(t, err)
+				svg := readFile(t, dir, "hello-world.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
 			name: "chain_import",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `...@x`)
 				writeFile(t, dir, "x.d2", `...@y`)
 				writeFile(t, dir, "y.d2", `meow`)
+				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
+				assert.Success(t, err)
+				svg := readFile(t, dir, "hello-world.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
+			name: "chain_icon_import",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `...@y
+hello.class: Ecs`)
+				writeFile(t, dir, "y.d2", `
+...@x
+classes: {
+    Ecs: {
+        shape: "circle"
+        icon: ${icons.ecs}
+    }
+}
+`)
+				writeFile(t, dir, "x.d2", `
+vars: {
+    icons: {
+        ecs: "https://icons.terrastruct.com/aws%2FCompute%2FAmazon-Elastic-Container-Service.svg"
+    }
+}
+`)
 				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
 				assert.Success(t, err)
 				svg := readFile(t, dir, "hello-world.svg")
@@ -858,6 +983,29 @@ layers: {
 			},
 		},
 		{
+			name: "no_xml_tag",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "test.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "--no-xml-tag", "test.d2", "no-xml.svg")
+				assert.Success(t, err)
+				noXMLSvg := readFile(t, dir, "no-xml.svg")
+				assert.False(t, strings.Contains(string(noXMLSvg), "<?xml"))
+
+				writeFile(t, dir, "test.d2", `x -> y`)
+				err = runTestMain(t, ctx, dir, env, "test.d2", "with-xml.svg")
+				assert.Success(t, err)
+				withXMLSvg := readFile(t, dir, "with-xml.svg")
+				assert.True(t, strings.Contains(string(withXMLSvg), "<?xml"))
+
+				env.Setenv("D2_NO_XML_TAG", "1")
+				writeFile(t, dir, "test.d2", `x -> y`)
+				err = runTestMain(t, ctx, dir, env, "test.d2", "no-xml-env.svg")
+				assert.Success(t, err)
+				noXMLEnvSvg := readFile(t, dir, "no-xml-env.svg")
+				assert.False(t, strings.Contains(string(noXMLEnvSvg), "<?xml"))
+			},
+		},
+		{
 			name: "basic-fmt",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `x ---> y`)
@@ -878,6 +1026,29 @@ layers: {
 				gotBar := readFile(t, dir, "bar.d2")
 				assert.Equal(t, "a -> b\n", string(gotFoo))
 				assert.Equal(t, "x -> y\n", string(gotBar))
+			},
+		},
+		{
+			name: "fmt-check-unformatted",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "foo.d2", `a ---> b`)
+				writeFile(t, dir, "bar.d2", `x ---> y`)
+				writeFile(t, dir, "baz.d2", "a -> z\n")
+				err := runTestMainPersist(t, ctx, dir, env, "fmt", "--check", "foo.d2", "bar.d2", "baz.d2")
+				assert.ErrorString(t, err, "failed to wait xmain test: e2etests-cli/d2: failed to fmt: exiting with code 1: found 2 unformatted files. Run d2 fmt to fix.")
+				gotFoo := readFile(t, dir, "foo.d2")
+				gotBar := readFile(t, dir, "bar.d2")
+				assert.Equal(t, "a ---> b", string(gotFoo))
+				assert.Equal(t, "x ---> y", string(gotBar))
+			},
+		},
+		{
+			name: "fmt-check-formatted",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "foo.d2", "a -> b\n")
+				writeFile(t, dir, "bar.d2", "x -> y\n")
+				err := runTestMainPersist(t, ctx, dir, env, "fmt", "--check", "foo.d2", "bar.d2")
+				assert.Success(t, err)
 			},
 		},
 		{
@@ -935,12 +1106,9 @@ layers: {
 			name:   "watch-ok-link",
 			serial: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
-				// This link technically works because D2 interprets it as a URL,
-				// and on local filesystem, that is whe path where the compilation happens
-				// to output it to.
 				writeFile(t, dir, "index.d2", `
 a -> b
-b.link: cream
+b.link: layers.cream
 
 layers: {
     cream: {
@@ -987,17 +1155,15 @@ layers: {
 			},
 		},
 		{
-			name:   "watch-bad-link",
+			name:   "watch-underscore-link",
 			serial: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
-				// Just verify we don't crash even with a bad link (it's treated as a URL, which users might have locally)
 				writeFile(t, dir, "index.d2", `
-a -> b
-b.link: dream
+bobby
 
 layers: {
     cream: {
-        c -> b
+			back.link: _
     }
 }`)
 				stderr := &stderrWrapper{}
@@ -1015,6 +1181,73 @@ layers: {
 				urlRE := regexp.MustCompile(`127.0.0.1:([0-9]+)`)
 				watchURL, err := waitLogs(ctx, stderr, urlRE)
 				assert.Success(t, err)
+
+				stderr.Reset()
+
+				// Start a client
+				c, _, err := websocket.Dial(ctx, fmt.Sprintf("ws://%s/watch", watchURL), nil)
+				assert.Success(t, err)
+				defer c.CloseNow()
+
+				_, _, err = c.Read(ctx)
+				assert.Success(t, err)
+
+				err = getWatchPage(ctx, t, fmt.Sprintf("http://%s/%s", watchURL, "cream"))
+				assert.Success(t, err)
+
+				// Get the link
+				_, msg, err := c.Read(ctx)
+				aRE := regexp.MustCompile(`href=\\"([^\"]*)\\"`)
+				match := aRE.FindSubmatch(msg)
+				assert.Equal(t, 2, len(match))
+
+				link := string(match[1])
+
+				err = getWatchPage(ctx, t, fmt.Sprintf("http://%s/%s", watchURL, link))
+				assert.Success(t, err)
+				_, _, err = c.Read(ctx)
+				assert.Success(t, err)
+				successRE := regexp.MustCompile(`broadcasting update to 1 client`)
+				_, err = waitLogs(ctx, stderr, successRE)
+				assert.Success(t, err)
+			},
+		},
+		{
+			name:   "watch-nested-layer-link",
+			serial: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "index.d2", `
+a: {
+  link: layers.b
+}
+
+layers: {
+  b: {
+    hi
+
+    layers: {
+      hey: {
+        hey
+      }
+    }
+  }
+}`)
+				stderr := &stderrWrapper{}
+				tms := testMain(dir, env, "--watch", "--browser=0", "index.d2")
+				tms.Stderr = stderr
+
+				tms.Start(t, ctx)
+				defer func() {
+					// Manually close, since watcher is daemon
+					err := tms.Signal(ctx, os.Interrupt)
+					assert.Success(t, err)
+				}()
+
+				// Wait for watch server to spin up and listen
+				urlRE := regexp.MustCompile(`127.0.0.1:([0-9]+)`)
+				watchURL, err := waitLogs(ctx, stderr, urlRE)
+				assert.Success(t, err)
+
 				stderr.Reset()
 
 				// Start a client
@@ -1024,15 +1257,15 @@ layers: {
 
 				// Get the link
 				_, msg, err := c.Read(ctx)
-				assert.Success(t, err)
 				aRE := regexp.MustCompile(`href=\\"([^\"]*)\\"`)
 				match := aRE.FindSubmatch(msg)
 				assert.Equal(t, 2, len(match))
-				linkedPath := match[1]
+				link := string(match[1])
 
-				err = getWatchPage(ctx, t, fmt.Sprintf("http://%s/%s", watchURL, linkedPath))
+				err = getWatchPage(ctx, t, fmt.Sprintf("http://%s/%s", watchURL, link))
 				assert.Success(t, err)
-
+				_, _, err = c.Read(ctx)
+				assert.Success(t, err)
 				successRE := regexp.MustCompile(`broadcasting update to 1 client`)
 				_, err = waitLogs(ctx, stderr, successRE)
 				assert.Success(t, err)
@@ -1209,7 +1442,9 @@ func testdataIgnoreDiff(tb testing.TB, ext string, got []byte) {
 // getNumBoards gets the number of boards in an SVG file through a non-robust pattern search
 // If the renderer changes, this must change
 func getNumBoards(svg string) int {
-	return strings.Count(svg, `class="d2`)
+	re := regexp.MustCompile(`class="d2-\d+`)
+	matches := re.FindAllString(svg, -1)
+	return len(matches)
 }
 
 var errRE = regexp.MustCompile(`err:`)

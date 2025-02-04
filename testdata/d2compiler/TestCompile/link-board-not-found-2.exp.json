@@ -1,0 +1,534 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": true,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,0:0:0-12:0:142",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,0:0:0-11:1:141",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,0:0:0-0:6:6",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,0:0:0-0:6:6",
+                    "value": [
+                      {
+                        "string": "layers",
+                        "raw_string": "layers"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,0:8:8-11:1:141",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,1:4:14-5:5:74",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,1:4:14-1:7:17",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,1:4:14-1:7:17",
+                              "value": [
+                                {
+                                  "string": "one",
+                                  "raw_string": "one"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,1:9:19-5:5:74",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,2:8:29-4:9:68",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,2:8:29-2:12:33",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,2:8:29-2:12:33",
+                                        "value": [
+                                          {
+                                            "string": "ping",
+                                            "raw_string": "ping"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "map": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,2:14:35-4:9:68",
+                                    "nodes": [
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,3:12:49-3:21:58",
+                                          "key": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,3:12:49-3:16:53",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,3:12:49-3:16:53",
+                                                  "value": [
+                                                    {
+                                                      "string": "link",
+                                                      "raw_string": "link"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "unquoted_string": {
+                                              "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,3:18:55-3:21:58",
+                                              "value": [
+                                                {
+                                                  "string": "two",
+                                                  "raw_string": "two"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,6:4:79-10:5:139",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,6:4:79-6:7:82",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,6:4:79-6:7:82",
+                              "value": [
+                                {
+                                  "string": "two",
+                                  "raw_string": "two"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,6:9:84-10:5:139",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,7:8:94-9:9:133",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,7:8:94-7:12:98",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,7:8:94-7:12:98",
+                                        "value": [
+                                          {
+                                            "string": "pong",
+                                            "raw_string": "pong"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "map": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,7:14:100-9:9:133",
+                                    "nodes": [
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,8:12:114-8:21:123",
+                                          "key": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,8:12:114-8:16:118",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,8:12:114-8:16:118",
+                                                  "value": [
+                                                    {
+                                                      "string": "link",
+                                                      "raw_string": "link"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "unquoted_string": {
+                                              "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,8:18:120-8:21:123",
+                                              "value": [
+                                                {
+                                                  "string": "one",
+                                                  "raw_string": "one"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": null,
+    "layers": [
+      {
+        "name": "one",
+        "isFolderOnly": false,
+        "ast": {
+          "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,0:0:0-1:0:0",
+          "nodes": [
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,2:8:29-2:12:33",
+                        "value": [
+                          {
+                            "string": "ping",
+                            "raw_string": "ping"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {
+                  "map": {
+                    "range": ",1:0:0-2:0:0",
+                    "nodes": [
+                      {
+                        "map_key": {
+                          "range": ",0:0:0-0:0:0",
+                          "key": {
+                            "range": ",0:0:0-0:0:0",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,3:12:49-3:16:53",
+                                  "value": [
+                                    {
+                                      "string": "link",
+                                      "raw_string": "link"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,3:18:55-3:21:58",
+                              "value": [
+                                {
+                                  "string": "two",
+                                  "raw_string": "two"
+                                }
+                              ]
+                            }
+                          },
+                          "value": {}
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "attributes": {
+            "label": {
+              "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "style": {},
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": null
+          },
+          "zIndex": 0
+        },
+        "edges": null,
+        "objects": [
+          {
+            "id": "ping",
+            "id_val": "ping",
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,2:8:29-2:12:33",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,2:8:29-2:12:33",
+                        "value": [
+                          {
+                            "string": "ping",
+                            "raw_string": "ping"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "ping"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          }
+        ]
+      },
+      {
+        "name": "two",
+        "isFolderOnly": false,
+        "ast": {
+          "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,0:0:0-1:0:0",
+          "nodes": [
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,7:8:94-7:12:98",
+                        "value": [
+                          {
+                            "string": "pong",
+                            "raw_string": "pong"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {
+                  "map": {
+                    "range": ",1:0:0-2:0:0",
+                    "nodes": [
+                      {
+                        "map_key": {
+                          "range": ",0:0:0-0:0:0",
+                          "key": {
+                            "range": ",0:0:0-0:0:0",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,8:12:114-8:16:118",
+                                  "value": [
+                                    {
+                                      "string": "link",
+                                      "raw_string": "link"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,8:18:120-8:21:123",
+                              "value": [
+                                {
+                                  "string": "one",
+                                  "raw_string": "one"
+                                }
+                              ]
+                            }
+                          },
+                          "value": {}
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "attributes": {
+            "label": {
+              "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "style": {},
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": null
+          },
+          "zIndex": 0
+        },
+        "edges": null,
+        "objects": [
+          {
+            "id": "pong",
+            "id_val": "pong",
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,7:8:94-7:12:98",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,7:8:94-7:12:98",
+                        "value": [
+                          {
+                            "string": "pong",
+                            "raw_string": "pong"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "pong"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          }
+        ]
+      }
+    ]
+  },
+  "err": null
+}

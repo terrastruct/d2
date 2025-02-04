@@ -3,112 +3,64 @@ package log
 
 import (
 	"context"
-	"log"
-	stdlog "log"
+	"log/slog"
 	"os"
 	"runtime/debug"
 	"testing"
-
-	"cdr.dev/slog"
-	"cdr.dev/slog/sloggers/sloghuman"
-	"cdr.dev/slog/sloggers/slogtest"
-
-	"oss.terrastruct.com/d2/lib/env"
 )
 
-var _default = slog.Make(sloghuman.Sink(os.Stderr)).Named("default")
+var _default = slog.New(NewPrettyHandler(NewLevelHandler(slog.LevelInfo, slog.NewTextHandler(os.Stderr, nil)))).With(slog.String("logger", "default"))
 
 func Init() {
-	stdlib := slog.Stdlib(context.Background(), _default, slog.LevelInfo)
-	log.SetOutput(stdlib.Writer())
+	slog.SetDefault(_default)
 }
 
 type loggerKey struct{}
 
-func from(ctx context.Context) slog.Logger {
-	l, ok := ctx.Value(loggerKey{}).(slog.Logger)
+func from(ctx context.Context) *slog.Logger {
+	l, ok := ctx.Value(loggerKey{}).(*slog.Logger)
 	if !ok {
-		_default.Warn(ctx, "missing slog.Logger in context, see lib/log.With", slog.F("stack", string(debug.Stack())))
+		_default.WarnContext(ctx, "missing slog.Logger in context, see lib/log.With", slog.String("stack", string(debug.Stack())))
 		return _default
 	}
 	return l
 }
 
-func With(ctx context.Context, l slog.Logger) context.Context {
+func With(ctx context.Context, l *slog.Logger) context.Context {
 	return context.WithValue(ctx, loggerKey{}, l)
 }
 
-// WithTB calls With with the result of slogtest.Make.
-func WithTB(ctx context.Context, t testing.TB, opts *slogtest.Options) context.Context {
-	l := slogtest.Make(t, opts)
-	if env.Debug() {
-		l = l.Leveled(slog.LevelDebug)
-	}
-	return With(ctx, l)
-}
-
-func Debug(ctx context.Context, msg string, fields ...slog.Field) {
-	slog.Helper()
-	from(ctx).Debug(ctx, msg, fields...)
-}
-
-func Info(ctx context.Context, msg string, fields ...slog.Field) {
-	slog.Helper()
-	from(ctx).Info(ctx, msg, fields...)
-}
-
-func Warn(ctx context.Context, msg string, fields ...slog.Field) {
-	slog.Helper()
-	from(ctx).Warn(ctx, msg, fields...)
-}
-
-func Error(ctx context.Context, msg string, fields ...slog.Field) {
-	slog.Helper()
-	from(ctx).Error(ctx, msg, fields...)
-}
-
-func Critical(ctx context.Context, msg string, fields ...slog.Field) {
-	slog.Helper()
-	from(ctx).Critical(ctx, msg, fields...)
-}
-
-func Fatal(ctx context.Context, msg string, fields ...slog.Field) {
-	slog.Helper()
-	from(ctx).Fatal(ctx, msg, fields...)
-}
-
-func Named(ctx context.Context, name string) context.Context {
-	return With(ctx, from(ctx).Named(name))
+func WithDefault(ctx context.Context) context.Context {
+	return context.WithValue(ctx, loggerKey{}, _default)
 }
 
 func Leveled(ctx context.Context, level slog.Level) context.Context {
-	return With(ctx, from(ctx).Leveled(level))
+	logger := from(ctx)
+	handler := logger.Handler()
+	leveledHandler := NewLevelHandler(level, handler)
+	prettyHandler := NewPrettyHandler(leveledHandler)
+	return With(ctx, slog.New(prettyHandler))
 }
 
-func AppendSinks(ctx context.Context, s ...slog.Sink) context.Context {
-	return With(ctx, from(ctx).AppendSinks(s...))
+func WithTB(ctx context.Context, tb testing.TB) context.Context {
+	writer := &tbWriter{tb: tb}
+	handler := slog.NewTextHandler(writer, nil)
+	logger := slog.New(handler)
+	return With(ctx, logger)
 }
 
-func Sync(ctx context.Context) {
-	from(ctx).Sync()
+func Debug(ctx context.Context, msg string, attrs ...slog.Attr) {
+	from(ctx).LogAttrs(ctx, slog.LevelDebug, msg, attrs...)
 }
 
-func Stdlib(ctx context.Context, level slog.Level) *log.Logger {
-	return slog.Stdlib(ctx, from(ctx), level)
+func Info(ctx context.Context, msg string, attrs ...slog.Attr) {
+	from(ctx).LogAttrs(ctx, slog.LevelInfo, msg, attrs...)
 }
 
-func Fork(ctx, loggerCtx context.Context) context.Context {
-	return With(ctx, from(loggerCtx))
+func Warn(ctx context.Context, msg string, attrs ...slog.Attr) {
+	from(ctx).LogAttrs(ctx, slog.LevelWarn, msg, attrs...)
 }
 
-func Stderr(ctx context.Context) context.Context {
-	l := slog.Make(sloghuman.Sink(os.Stderr))
-	if os.Getenv("DEBUG") == "1" {
-		l = l.Leveled(slog.LevelDebug)
-	}
-
-	sl := slog.Stdlib(ctx, l, slog.LevelInfo)
-	stdlog.SetOutput(sl.Writer())
-
-	return With(ctx, l)
+func Error(ctx context.Context, msg string, attrs ...slog.Attr) {
+	from(ctx).LogAttrs(ctx, slog.LevelError, msg, attrs...)
 }

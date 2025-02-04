@@ -1,0 +1,868 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,0:0:0-19:0:277",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,0:0:0-14:1:231",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,0:0:0-0:4:4",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,0:0:0-0:4:4",
+                    "value": [
+                      {
+                        "string": "vars",
+                        "raw_string": "vars"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,0:6:6-14:1:231",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,1:4:12-4:5:74",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,1:4:12-1:9:17",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,1:4:12-1:9:17",
+                              "value": [
+                                {
+                                  "string": "Apple",
+                                  "raw_string": "Apple"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,1:11:19-4:5:74",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,2:8:29-2:20:41",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,2:8:29-2:13:34",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,2:8:29-2:13:34",
+                                        "value": [
+                                          {
+                                            "string": "shape",
+                                            "raw_string": "shape"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,2:14:35-2:20:41",
+                                    "value": [
+                                      {
+                                        "string": "circle",
+                                        "raw_string": "circle"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,3:8:50-3:26:68",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,3:8:50-3:13:55",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,3:8:50-3:13:55",
+                                        "value": [
+                                          {
+                                            "string": "label",
+                                            "raw_string": "label"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,3:14:56-3:26:68",
+                                    "value": [
+                                      {
+                                        "string": "Granny Smith",
+                                        "raw_string": "Granny Smith"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,5:4:79-8:5:144",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,5:4:79-5:10:85",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,5:4:79-5:10:85",
+                              "value": [
+                                {
+                                  "string": "Cherry",
+                                  "raw_string": "Cherry"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,5:12:87-8:5:144",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,6:8:97-6:20:109",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,6:8:97-6:13:102",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,6:8:97-6:13:102",
+                                        "value": [
+                                          {
+                                            "string": "shape",
+                                            "raw_string": "shape"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,6:14:103-6:20:109",
+                                    "value": [
+                                      {
+                                        "string": "circle",
+                                        "raw_string": "circle"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,7:8:118-7:28:138",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,7:8:118-7:13:123",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,7:8:118-7:13:123",
+                                        "value": [
+                                          {
+                                            "string": "label",
+                                            "raw_string": "label"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,7:14:124-7:28:138",
+                                    "value": [
+                                      {
+                                        "string": "Rainier Cherry",
+                                        "raw_string": "Rainier Cherry"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,9:4:149-13:5:229",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,9:4:149-9:15:160",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,9:4:149-9:15:160",
+                              "value": [
+                                {
+                                  "string": "SummerFruit",
+                                  "raw_string": "SummerFruit"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,9:17:162-13:5:229",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,10:8:172-10:20:184",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,10:8:172-10:10:174",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,10:8:172-10:10:174",
+                                        "value": [
+                                          {
+                                            "string": "xx",
+                                            "raw_string": "xx"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,10:12:176-10:13:177",
+                                    "value": [
+                                      {
+                                        "substitution": {
+                                          "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,10:12:176-10:20:184",
+                                          "spread": false,
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,10:14:178-10:19:183",
+                                                "value": [
+                                                  {
+                                                    "string": "Apple",
+                                                    "raw_string": "Apple"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,11:8:193-11:21:206",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,11:8:193-11:10:195",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,11:8:193-11:10:195",
+                                        "value": [
+                                          {
+                                            "string": "cc",
+                                            "raw_string": "cc"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,11:12:197-11:13:198",
+                                    "value": [
+                                      {
+                                        "substitution": {
+                                          "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,11:12:197-11:21:206",
+                                          "spread": false,
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,11:14:199-11:20:205",
+                                                "value": [
+                                                  {
+                                                    "string": "Cherry",
+                                                    "raw_string": "Cherry"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,12:8:215-12:16:223",
+                                "edges": [
+                                  {
+                                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,12:8:215-12:16:223",
+                                    "src": {
+                                      "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,12:8:215-12:10:217",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,12:8:215-12:10:217",
+                                            "value": [
+                                              {
+                                                "string": "xx",
+                                                "raw_string": "xx"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "src_arrow": "",
+                                    "dst": {
+                                      "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,12:14:221-12:16:223",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,12:14:221-12:16:223",
+                                            "value": [
+                                              {
+                                                "string": "cc",
+                                                "raw_string": "cc"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "dst_arrow": ">"
+                                  }
+                                ],
+                                "primary": {},
+                                "value": {}
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,16:0:233-16:11:244",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,16:0:233-16:1:234",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,16:0:233-16:1:234",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "unquoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,16:3:236-16:4:237",
+                "value": [
+                  {
+                    "substitution": {
+                      "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,16:3:236-16:11:244",
+                      "spread": false,
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,16:5:238-16:10:243",
+                            "value": [
+                              {
+                                "string": "Apple",
+                                "raw_string": "Apple"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,17:0:245-17:12:257",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,17:0:245-17:1:246",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,17:0:245-17:1:246",
+                    "value": [
+                      {
+                        "string": "c",
+                        "raw_string": "c"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "unquoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,17:3:248-17:4:249",
+                "value": [
+                  {
+                    "substitution": {
+                      "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,17:3:248-17:12:257",
+                      "spread": false,
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,17:5:250-17:11:256",
+                            "value": [
+                              {
+                                "string": "Cherry",
+                                "raw_string": "Cherry"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,18:0:258-18:18:276",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,18:0:258-18:2:260",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,18:0:258-18:2:260",
+                    "value": [
+                      {
+                        "string": "sf",
+                        "raw_string": "sf"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "unquoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,18:4:262-18:5:263",
+                "value": [
+                  {
+                    "substitution": {
+                      "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,18:4:262-18:18:276",
+                      "spread": false,
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,18:6:264-18:17:275",
+                            "value": [
+                              {
+                                "string": "SummerFruit",
+                                "raw_string": "SummerFruit"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": [
+      {
+        "index": 0,
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ],
+    "objects": [
+      {
+        "id": "x",
+        "id_val": "x",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,16:0:233-16:1:234",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,16:0:233-16:1:234",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Granny Smith"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "circle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "c",
+        "id_val": "c",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,17:0:245-17:1:246",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,17:0:245-17:1:246",
+                    "value": [
+                      {
+                        "string": "c",
+                        "raw_string": "c"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Rainier Cherry"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "circle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "sf",
+        "id_val": "sf",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,18:0:258-18:2:260",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,18:0:258-18:2:260",
+                    "value": [
+                      {
+                        "string": "sf",
+                        "raw_string": "sf"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "sf"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "xx",
+        "id_val": "xx",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,10:8:172-10:10:174",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,10:8:172-10:10:174",
+                    "value": [
+                      {
+                        "string": "xx",
+                        "raw_string": "xx"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,12:8:215-12:10:217",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,12:8:215-12:10:217",
+                    "value": [
+                      {
+                        "string": "xx",
+                        "raw_string": "xx"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Granny Smith"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "circle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "cc",
+        "id_val": "cc",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,11:8:193-11:10:195",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,11:8:193-11:10:195",
+                    "value": [
+                      {
+                        "string": "cc",
+                        "raw_string": "cc"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,12:14:221-12:16:223",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/var_in_vars.d2,12:14:221-12:16:223",
+                    "value": [
+                      {
+                        "string": "cc",
+                        "raw_string": "cc"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Rainier Cherry"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "circle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

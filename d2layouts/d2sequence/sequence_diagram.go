@@ -1,9 +1,11 @@
 package d2sequence
 
 import (
+	"cmp"
 	"errors"
 	"fmt"
 	"math"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -50,6 +52,9 @@ func getObjEarliestLineNum(o *d2graph.Object) int {
 		if ref.MapKey == nil {
 			continue
 		}
+		if ref.Key.HasGlob() {
+			continue
+		}
 		min = go2.IntMin(min, ref.MapKey.Range.Start.Line)
 	}
 	return min
@@ -61,6 +66,9 @@ func getEdgeEarliestLineNum(e *d2graph.Edge) int {
 		if ref.MapKey == nil {
 			continue
 		}
+		if ref.Edge.Src.HasGlob() || ref.Edge.Dst.HasGlob() {
+			continue
+		}
 		min = go2.IntMin(min, ref.MapKey.Range.Start.Line)
 	}
 	return min
@@ -69,6 +77,13 @@ func getEdgeEarliestLineNum(e *d2graph.Edge) int {
 func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) (*sequenceDiagram, error) {
 	var actors []*d2graph.Object
 	var groups []*d2graph.Object
+
+	slices.SortFunc(objects, func(a, b *d2graph.Object) int {
+		return cmp.Compare(getObjEarliestLineNum(a), getObjEarliestLineNum(b))
+	})
+	slices.SortFunc(messages, func(a, b *d2graph.Edge) int {
+		return cmp.Compare(getEdgeEarliestLineNum(a), getEdgeEarliestLineNum(b))
+	})
 
 	for _, obj := range objects {
 		if obj.IsSequenceDiagramGroup() {
@@ -162,17 +177,21 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) (*s
 
 	for _, message := range sd.messages {
 		sd.verticalIndices[message.AbsID()] = getEdgeEarliestLineNum(message)
-		// TODO this should not be global yStep, only affect the neighbors
-		sd.yStep = math.Max(sd.yStep, float64(message.LabelDimensions.Height))
 
 		// ensures that long labels, spanning over multiple actors, don't make for large gaps between actors
 		// by distributing the label length across the actors rank difference
 		rankDiff := math.Abs(float64(sd.objectRank[message.Src]) - float64(sd.objectRank[message.Dst]))
 		if rankDiff != 0 {
-			// rankDiff = 0 for self edges
 			distributedLabelWidth := float64(message.LabelDimensions.Width) / rankDiff
 			for rank := go2.IntMin(sd.objectRank[message.Src], sd.objectRank[message.Dst]); rank <= go2.IntMax(sd.objectRank[message.Src], sd.objectRank[message.Dst])-1; rank++ {
-				sd.actorXStep[rank] = math.Max(sd.actorXStep[rank], distributedLabelWidth+HORIZONTAL_PAD)
+				sd.actorXStep[rank] = math.Max(sd.actorXStep[rank], distributedLabelWidth+LABEL_HORIZONTAL_PAD)
+			}
+		} else {
+			// self edge
+			nextRank := sd.objectRank[message.Src]
+			if nextRank < len(sd.actorXStep) {
+				labelAdjust := float64(message.LabelDimensions.Width) + label.PADDING*4
+				sd.actorXStep[nextRank] = math.Max(sd.actorXStep[nextRank], labelAdjust)
 			}
 		}
 		sd.lastMessage[message.Src] = message
@@ -229,10 +248,12 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 	for _, m := range sd.messages {
 		if m.ContainedBy(group) {
 			for _, p := range m.Route {
+				labelHeight := float64(m.LabelDimensions.Height) / 2.
+				edgePad := math.Max(labelHeight+GROUP_CONTAINER_PADDING, MIN_MESSAGE_DISTANCE/2.)
 				minX = math.Min(minX, p.X-HORIZONTAL_PAD)
-				minY = math.Min(minY, p.Y-MIN_MESSAGE_DISTANCE/2.)
+				minY = math.Min(minY, p.Y-edgePad)
 				maxX = math.Max(maxX, p.X+HORIZONTAL_PAD)
-				maxY = math.Max(maxY, p.Y+MIN_MESSAGE_DISTANCE/2.)
+				maxY = math.Max(maxY, p.Y+edgePad)
 			}
 		}
 	}
@@ -240,6 +261,9 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 	for _, n := range sd.notes {
 		inGroup := false
 		for _, ref := range n.References {
+			if ref.Key.HasGlob() {
+				continue
+			}
 			curr := ref.ScopeObj
 			for curr != nil {
 				if curr == group {
@@ -287,8 +311,8 @@ func (sd *sequenceDiagram) adjustGroupLabel(group *d2graph.Object) {
 		return
 	}
 
-	heightAdd := (group.LabelDimensions.Height + EDGE_GROUP_LABEL_PADDING) - GROUP_CONTAINER_PADDING
-	if heightAdd < 0 {
+	heightAdd := (group.LabelDimensions.Height + EDGE_GROUP_LABEL_PADDING/2.)
+	if heightAdd < GROUP_CONTAINER_PADDING {
 		return
 	}
 
@@ -329,7 +353,6 @@ func (sd *sequenceDiagram) adjustGroupLabel(group *d2graph.Object) {
 			n.TopLeft.Y += float64(heightAdd)
 		}
 	}
-
 }
 
 // placeActors places actors bottom aligned, side by side with centers spaced by sd.actorXStep
@@ -443,7 +466,12 @@ func (sd *sequenceDiagram) placeNotes() {
 
 		for _, msg := range sd.messages {
 			if sd.verticalIndices[msg.AbsID()] < verticalIndex {
-				y += sd.yStep
+				if msg.Src == msg.Dst {
+					// For self-messages, account for the full vertical space they occupy
+					y += sd.yStep + math.Max(float64(msg.LabelDimensions.Height), MIN_MESSAGE_DISTANCE)*1.5
+				} else {
+					y += sd.yStep + float64(msg.LabelDimensions.Height)
+				}
 			}
 		}
 		for _, otherNote := range sd.notes {
@@ -536,8 +564,6 @@ func (sd *sequenceDiagram) placeSpans() {
 // routeMessages routes horizontal edges (messages) from Src to Dst lifeline (actor/span center)
 // in another step, routes are adjusted to spans borders when necessary
 func (sd *sequenceDiagram) routeMessages() error {
-	var prevIsLoop bool
-	var prevGroup *d2graph.Object
 	messageOffset := sd.maxActorHeight + sd.yStep
 	for _, message := range sd.messages {
 		message.ZIndex = MESSAGE_Z_INDEX
@@ -547,15 +573,6 @@ func (sd *sequenceDiagram) routeMessages() error {
 				noteOffset += note.Height + sd.yStep
 			}
 		}
-
-		// we need extra space if the previous message is a loop in a different group
-		group := message.GetGroup()
-		if prevIsLoop && prevGroup != group {
-			messageOffset += MIN_MESSAGE_DISTANCE
-		}
-		prevGroup = group
-
-		startY := messageOffset + noteOffset
 
 		var startX, endX float64
 		if startCenter := getCenter(message.Src); startCenter != nil {
@@ -583,23 +600,24 @@ func (sd *sequenceDiagram) routeMessages() error {
 		isToSibling := currSrc == currDst
 
 		if isSelfMessage || isToDescendant || isFromDescendant || isToSibling {
-			midX := startX + SELF_MESSAGE_HORIZONTAL_TRAVEL
-			endY := startY + MIN_MESSAGE_DISTANCE*1.5
+			midX := startX + math.Max(SELF_MESSAGE_HORIZONTAL_TRAVEL, float64(message.LabelDimensions.Width)/2.+label.PADDING*2)
+			startY := messageOffset + noteOffset
+			endY := startY + math.Max(float64(message.LabelDimensions.Height), MIN_MESSAGE_DISTANCE)*1.5
 			message.Route = []*geo.Point{
 				geo.NewPoint(startX, startY),
 				geo.NewPoint(midX, startY),
 				geo.NewPoint(midX, endY),
 				geo.NewPoint(endX, endY),
 			}
-			prevIsLoop = true
+			messageOffset = endY + sd.yStep - noteOffset
 		} else {
+			startY := messageOffset + noteOffset + float64(message.LabelDimensions.Height/2.)
 			message.Route = []*geo.Point{
 				geo.NewPoint(startX, startY),
 				geo.NewPoint(endX, startY),
 			}
-			prevIsLoop = false
+			messageOffset = startY + float64(message.LabelDimensions.Height/2.) + sd.yStep - noteOffset
 		}
-		messageOffset += sd.yStep
 
 		if message.Label.Value != "" {
 			message.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
@@ -647,7 +665,19 @@ func (sd *sequenceDiagram) isActor(obj *d2graph.Object) bool {
 func (sd *sequenceDiagram) getWidth() float64 {
 	// the layout is always placed starting at 0, so the width is just the last actor
 	lastActor := sd.actors[len(sd.actors)-1]
-	return lastActor.TopLeft.X + lastActor.Width
+	rightmost := lastActor.TopLeft.X + lastActor.Width
+
+	for _, m := range sd.messages {
+		for _, p := range m.Route {
+			rightmost = math.Max(rightmost, p.X)
+		}
+		// Self referential messages may have labels that extend further
+		if m.Src == m.Dst {
+			rightmost = math.Max(rightmost, m.Route[1].X+float64(m.LabelDimensions.Width)/2.)
+		}
+	}
+
+	return rightmost
 }
 
 func (sd *sequenceDiagram) getHeight() float64 {

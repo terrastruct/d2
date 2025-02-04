@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "x",
+      "name": {
+        "range": "TestCompile/fields/primary/root.d2,0:0:0-0:1:1",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "primary": {
         "value": {
           "range": "TestCompile/fields/primary/root.d2,0:3:3-0:6:6",
@@ -16,7 +24,15 @@
       "composite": {
         "fields": [
           {
-            "name": "pqrs",
+            "name": {
+              "range": "TestCompile/fields/primary/root.d2,0:9:9-0:13:13",
+              "value": [
+                {
+                  "string": "pqrs",
+                  "raw_string": "pqrs"
+                }
+              ]
+            },
             "references": [
               {
                 "string": {

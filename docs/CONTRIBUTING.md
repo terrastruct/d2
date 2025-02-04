@@ -100,7 +100,7 @@ running:
 ./ci/e2ereport.sh -delta
 ```
 
-This gives me a nice HMTL output of what the test expected vs what it got (this was a PR
+This gives me a nice HTML output of what the test expected vs what it got (this was a PR
 fixing multi-byte character labels):
 
 ![screencapture-file-Users-alexanderwang-dev-alixander-d2-e2etests-out-e2e-report-html-2023-02-14-10_15_07](https://user-images.githubusercontent.com/3120367/218822836-bcc517f2-ae3e-4e0d-83f6-2cbaa2fd9275.png)

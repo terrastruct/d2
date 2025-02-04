@@ -1,11 +1,27 @@
 {
   "fields": [
     {
-      "name": "jacob",
+      "name": {
+        "range": "TestCompile/filters/base.d2,0:0:0-0:5:5",
+        "value": [
+          {
+            "string": "jacob",
+            "raw_string": "jacob"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "shape",
+            "name": {
+              "range": "TestCompile/filters/base.d2,1:1:10-1:6:15",
+              "value": [
+                {
+                  "string": "shape",
+                  "raw_string": "shape"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "TestCompile/filters/base.d2,1:8:17-1:14:23",
@@ -246,11 +262,27 @@
       ]
     },
     {
-      "name": "jeremy",
+      "name": {
+        "range": "TestCompile/filters/base.d2,3:0:26-3:6:32",
+        "value": [
+          {
+            "string": "jeremy",
+            "raw_string": "jeremy"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "shape",
+            "name": {
+              "range": "TestCompile/filters/base.d2,4:1:37-4:6:42",
+              "value": [
+                {
+                  "string": "shape",
+                  "raw_string": "shape"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "TestCompile/filters/base.d2,4:8:44-4:17:53",
@@ -457,7 +489,15 @@
             ]
           },
           {
-            "name": "label",
+            "name": {
+              "range": "TestCompile/filters/base.d2,8:1:81-8:6:86",
+              "value": [
+                {
+                  "string": "label",
+                  "raw_string": "label"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "TestCompile/filters/base.d2,8:8:88-8:23:103",

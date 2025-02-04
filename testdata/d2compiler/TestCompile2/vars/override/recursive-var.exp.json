@@ -3,7 +3,7 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,0:0:0-10:0:65",
+      "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,0:0:0-12:0:87",
       "nodes": [
         {
           "map_key": {
@@ -69,7 +69,7 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,4:0:18-9:1:64",
+            "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,4:0:18-11:1:86",
             "key": {
               "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,4:0:18-4:2:20",
               "path": [
@@ -89,11 +89,11 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,4:4:22-9:1:64",
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,4:4:22-11:1:86",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,5:2:26-7:3:51",
+                      "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,5:2:26-8:3:61",
                       "key": {
                         "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,5:2:26-5:6:30",
                         "path": [
@@ -113,7 +113,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,5:8:32-7:3:51",
+                          "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,5:8:32-8:3:61",
                           "nodes": [
                             {
                               "map_key": {
@@ -146,6 +146,54 @@
                                   }
                                 }
                               }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,7:2:50-7:9:57",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,7:2:50-7:3:51",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,7:2:50-7:3:51",
+                                        "value": [
+                                          {
+                                            "string": "b",
+                                            "raw_string": "b"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,7:5:53-7:6:54",
+                                    "value": [
+                                      {
+                                        "substitution": {
+                                          "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,7:5:53-7:9:57",
+                                          "spread": false,
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,7:7:55-7:8:56",
+                                                "value": [
+                                                  {
+                                                    "string": "x",
+                                                    "raw_string": "x"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
                             }
                           ]
                         }
@@ -154,13 +202,13 @@
                   },
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,8:2:54-8:10:62",
+                      "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,9:2:64-9:10:72",
                       "key": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,8:2:54-8:4:56",
+                        "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,9:2:64-9:4:66",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,8:2:54-8:4:56",
+                              "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,9:2:64-9:4:66",
                               "value": [
                                 {
                                   "string": "yo",
@@ -174,20 +222,68 @@
                       "primary": {},
                       "value": {
                         "unquoted_string": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,8:6:58-8:7:59",
+                          "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,9:6:68-9:7:69",
                           "value": [
                             {
                               "substitution": {
-                                "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,8:6:58-8:10:62",
+                                "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,9:6:68-9:10:72",
                                 "spread": false,
                                 "path": [
                                   {
                                     "unquoted_string": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,8:8:60-8:9:61",
+                                      "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,9:8:70-9:9:71",
                                       "value": [
                                         {
                                           "string": "x",
                                           "raw_string": "x"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,10:2:75-10:11:84",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,10:2:75-10:5:78",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,10:2:75-10:5:78",
+                              "value": [
+                                {
+                                  "string": "hey",
+                                  "raw_string": "hey"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,10:7:80-10:8:81",
+                          "value": [
+                            {
+                              "substitution": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,10:7:80-10:11:84",
+                                "spread": false,
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,10:9:82-10:10:83",
+                                      "value": [
+                                        {
+                                          "string": "b",
+                                          "raw_string": "b"
                                         }
                                       ]
                                     }
@@ -283,15 +379,60 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,8:2:54-8:4:56",
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,9:2:64-9:4:66",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,8:2:54-8:4:56",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,9:2:64-9:4:66",
                     "value": [
                       {
                         "string": "yo",
                         "raw_string": "yo"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "a-b"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "hey",
+        "id_val": "hey",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,10:2:75-10:5:78",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/override/recursive-var.d2,10:2:75-10:5:78",
+                    "value": [
+                      {
+                        "string": "hey",
+                        "raw_string": "hey"
                       }
                     ]
                   }

@@ -175,7 +175,6 @@ x -> y: hi
 }
 
 a
-# if i remove this line, the glob applies as expected
 b
 b.label: a
 `)
@@ -223,6 +222,25 @@ classes: {
 `)
 				assert.Success(t, err)
 				assertQuery(t, m, 9, 3, nil, "")
+			},
+		},
+		{
+			name: "not-basic",
+			run: func(t testing.TB) {
+				m, err := compile(t, `jacob: {
+	shape: circle
+}
+jeremy: {
+	shape: rectangle
+}
+*: {
+	!&shape: rectangle
+	label: I'm not a rectangle
+}`)
+				assert.Success(t, err)
+				assertQuery(t, m, 2, 0, nil, "jacob")
+				assertQuery(t, m, 1, 0, nil, "jeremy")
+				assertQuery(t, m, 0, 0, "I'm not a rectangle", "jacob.label")
 			},
 		},
 	}

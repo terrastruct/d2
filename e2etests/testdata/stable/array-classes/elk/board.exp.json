@@ -1,5 +1,13 @@
 {
   "name": "",
+  "config": {
+    "sketch": false,
+    "themeID": 0,
+    "darkThemeID": null,
+    "pad": null,
+    "center": null,
+    "layoutEngine": null
+  },
   "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
@@ -22,6 +30,7 @@
       "borderRadius": 999,
       "fill": "#90EE90",
       "stroke": "black",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -67,6 +76,7 @@
       "borderRadius": 999,
       "fill": "#EA9999",
       "stroke": "black",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -110,6 +120,7 @@
     "borderRadius": 0,
     "fill": "N7",
     "stroke": "",
+    "animated": false,
     "shadow": false,
     "3d": false,
     "multiple": false,

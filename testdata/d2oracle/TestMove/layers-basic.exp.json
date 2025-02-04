@@ -216,7 +216,7 @@
         "name": "x",
         "isFolderOnly": false,
         "ast": {
-          "range": ",1:0:0-2:0:0",
+          "range": "d2/testdata/d2oracle/TestMove/layers-basic.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -226,10 +226,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestMove/layers-basic.d2,4:4:24-4:5:25",
                         "value": [
                           {
-                            "string": "b"
+                            "string": "b",
+                            "raw_string": "b"
                           }
                         ]
                       }
@@ -249,10 +250,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2oracle/TestMove/layers-basic.d2,5:6:35-5:7:36",
                                   "value": [
                                     {
-                                      "string": "c"
+                                      "string": "c",
+                                      "raw_string": "c"
                                     }
                                   ]
                                 }

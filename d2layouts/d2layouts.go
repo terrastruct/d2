@@ -3,11 +3,10 @@ package d2layouts
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"math"
 	"sort"
 	"strings"
-
-	"cdr.dev/slog"
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2grid"
@@ -203,7 +202,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			extractedEdges = append(extractedEdges, externalEdges...)
 			extractedEdgeIDs = append(extractedEdgeIDs, externalEdgeIDs...)
 
-			log.Info(ctx, "layout nested", slog.F("level", curr.Level()), slog.F("child", curr.AbsID()), slog.F("gi", gi))
+			log.Debug(ctx, "layout nested", slog.Any("level", curr.Level()), slog.Any("child", curr.AbsID()), slog.Any("gi", gi))
 			nestedInfo := gi
 			nearKey := curr.NearKey
 			if gi.IsConstantNear {
@@ -250,19 +249,19 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 	if len(g.Objects) > 0 {
 		switch graphInfo.DiagramType {
 		case GridDiagram:
-			log.Debug(ctx, "layout grid", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
+			log.Debug(ctx, "layout grid", slog.Any("rootlevel", g.RootLevel), slog.Any("shapes", g.PrintString()))
 			if err = d2grid.Layout(ctx, g); err != nil {
 				return err
 			}
 
 		case SequenceDiagram:
-			log.Debug(ctx, "layout sequence", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
+			log.Debug(ctx, "layout sequence", slog.Any("rootlevel", g.RootLevel), slog.Any("shapes", g.PrintString()))
 			err = d2sequence.Layout(ctx, g, coreLayout)
 			if err != nil {
 				return err
 			}
 		default:
-			log.Debug(ctx, "default layout", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
+			log.Debug(ctx, "default layout", slog.Any("rootlevel", g.RootLevel), slog.Any("shapes", g.PrintString()))
 			err := coreLayout(ctx, g)
 			if err != nil {
 				return err
@@ -337,7 +336,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 		}
 	}
 
-	log.Debug(ctx, "done", slog.F("rootlevel", g.RootLevel), slog.F("shapes", g.PrintString()))
+	log.Debug(ctx, "done", slog.Any("rootlevel", g.RootLevel), slog.Any("shapes", g.PrintString()))
 	return err
 }
 

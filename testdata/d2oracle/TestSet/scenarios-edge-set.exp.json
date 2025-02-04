@@ -370,7 +370,7 @@
         "name": "x",
         "isFolderOnly": false,
         "ast": {
-          "range": ",1:0:0-2:0:0",
+          "range": "d2/testdata/d2oracle/TestSet/scenarios-edge-set.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -380,10 +380,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-edge-set.d2,0:0:0-0:1:1",
                         "value": [
                           {
-                            "string": "a"
+                            "string": "a",
+                            "raw_string": "a"
                           }
                         ]
                       }
@@ -402,10 +403,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-edge-set.d2,0:5:5-0:6:6",
                         "value": [
                           {
-                            "string": "b"
+                            "string": "b",
+                            "raw_string": "b"
                           }
                         ]
                       }
@@ -424,10 +426,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-edge-set.d2,4:4:32-4:5:33",
                         "value": [
                           {
-                            "string": "c"
+                            "string": "c",
+                            "raw_string": "c"
                           }
                         ]
                       }
@@ -481,7 +484,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": ",1:0:0-2:0:0",
+                    "range": ",0:0:0-1:0:0",
                     "nodes": [
                       {
                         "map_key": {
@@ -491,10 +494,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2oracle/TestSet/scenarios-edge-set.d2,5:16:50-5:21:55",
                                   "value": [
                                     {
-                                      "string": "style"
+                                      "string": "style",
+                                      "raw_string": "style"
                                     }
                                   ]
                                 }
@@ -514,10 +518,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2oracle/TestSet/scenarios-edge-set.d2,5:22:56-5:29:63",
                                             "value": [
                                               {
-                                                "string": "opacity"
+                                                "string": "opacity",
+                                                "raw_string": "opacity"
                                               }
                                             ]
                                           }

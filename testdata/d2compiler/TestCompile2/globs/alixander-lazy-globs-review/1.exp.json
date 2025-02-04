@@ -436,7 +436,7 @@
         "name": "next",
         "isFolderOnly": false,
         "ast": {
-          "range": ",1:0:0-2:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile2/globs/alixander-lazy-globs-review/1.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -446,10 +446,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/alixander-lazy-globs-review/1.d2,11:4:101-11:5:102",
                         "value": [
                           {
-                            "string": "a"
+                            "string": "a",
+                            "raw_string": "a"
                           }
                         ]
                       }
@@ -469,10 +470,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/globs/alixander-lazy-globs-review/1.d2,1:4:5-1:9:10",
                                   "value": [
                                     {
-                                      "string": "style"
+                                      "string": "style",
+                                      "raw_string": "style"
                                     }
                                   ]
                                 }
@@ -492,10 +494,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile2/globs/alixander-lazy-globs-review/1.d2,1:10:11-1:14:15",
                                             "value": [
                                               {
-                                                "string": "fill"
+                                                "string": "fill",
+                                                "raw_string": "fill"
                                               }
                                             ]
                                           }

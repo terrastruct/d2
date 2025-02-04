@@ -128,6 +128,18 @@ x: {
 			},
 		},
 		{
+			name: "reserved_missing_values",
+			text: `foobar: {
+  width
+  bottom
+  left
+  right
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/reserved_missing_values.d2:2:3: reserved field "width" must have a value
+d2/testdata/d2compiler/TestCompile/reserved_missing_values.d2:4:3: reserved field "left" must have a value`,
+		},
+		{
 			name: "positions_negative",
 			text: `hey: {
 	top: 200
@@ -936,6 +948,13 @@ b.(x -> y)[0]: two
 			},
 		},
 		{
+			name: "markdown_ampersand",
+			text: `memo: |md
+  <a href="https://www.google.com/search?q=d2&newwindow=1&amp;bar">d2</a>
+|
+`,
+		},
+		{
 			name: "unsemantic_markdown",
 
 			text: `test:|
@@ -1212,7 +1231,6 @@ x: {
 	style.animated: true
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/shape_edge_style.d2:3:2: key "animated" can only be applied to edges`,
 		},
 		{
 			name: "edge_invalid_style",
@@ -1505,6 +1523,95 @@ x -> y: {
 			},
 		},
 		{
+			name: "non_url_link",
+
+			text: `x: {
+  link: vscode://file//Users/pmoura/logtalk/examples/searching/hill_climbing1.lgt:35:0
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if len(g.Objects) != 1 {
+					t.Fatal(g.Objects)
+				}
+				if g.Objects[0].Link.Value != "vscode://file//Users/pmoura/logtalk/examples/searching/hill_climbing1.lgt:35:0" {
+					t.Fatal(g.Objects[0].Link.Value)
+				}
+			},
+		},
+		{
+			name: "glob-connection-steps",
+
+			text: `*.style.stroke: black
+
+layers: {
+  ok: @ok
+}
+`,
+			files: map[string]string{
+				"ok.d2": `
+steps: {
+  1: {
+    step1
+  }
+}
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 0, len(g.Steps))
+				assert.Equal(t, 1, len(g.Layers))
+				assert.Equal(t, 1, len(g.Layers[0].Steps))
+			},
+		},
+		{
+			name: "import_url_link",
+
+			text: `...@test
+`,
+			files: map[string]string{
+				"test.d2": `elem: elem {
+  link: https://google.com
+}`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if len(g.Objects) != 1 {
+					t.Fatal(g.Objects)
+				}
+				if g.Objects[0].Link.Value != "https://google.com" {
+					t.Fatal(g.Objects[0].Link.Value)
+				}
+			},
+		},
+		{
+			name: "nested-scope-1",
+
+			text: `...@second
+`,
+			files: map[string]string{
+				"second.d2": `second: {
+  ...@third
+}`,
+				"third.d2": `third: {
+  elem
+}`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 3, len(g.Objects))
+			},
+		},
+		{
+			name: "nested-scope-2",
+
+			text: `...@second
+a.style.fill: null
+`,
+			files: map[string]string{
+				"second.d2": `a.style.fill: red`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 1, len(g.Objects))
+			},
+		},
+		{
 			name: "url_tooltip",
 			text: `x: {tooltip: https://google.com}`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
@@ -1544,6 +1651,27 @@ x -> y: {
 			},
 		},
 		{
+			name:   "no_url_link_and_path_url_label_concurrently",
+			text:   `x -> y: https://google.com {link: https://not-google.com }`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no_url_link_and_path_url_label_concurrently.d2:1:35: Label cannot be set to URL when link is also set (for security)`,
+		},
+		{
+			name: "url_link_and_path_url_label_concurrently",
+			text: `x -> y: hello world {link: https://google.com}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if len(g.Edges) != 1 {
+					t.Fatal(len(g.Edges))
+				}
+				if g.Edges[0].Link.Value != "https://google.com" {
+					t.Fatal(g.Edges[0].Link.Value)
+				}
+
+				if g.Edges[0].Label.Value != "hello world" {
+					t.Fatal(g.Edges[0].Label.Value)
+				}
+			},
+		},
+		{
 			name: "nil_scope_obj_regression",
 
 			text: `a
@@ -1555,22 +1683,6 @@ b: {
 				tassert.Equal(t, "a", g.Objects[0].ID)
 				for _, ref := range g.Objects[0].References {
 					tassert.NotNil(t, ref.ScopeObj)
-				}
-			},
-		},
-		{
-			name: "path_link",
-
-			text: `x: {
-  link: Overview.Untitled board 7.zzzzz
-}
-`,
-			assertions: func(t *testing.T, g *d2graph.Graph) {
-				if len(g.Objects) != 1 {
-					t.Fatal(g.Objects)
-				}
-				if g.Objects[0].Link.Value != "Overview.Untitled board 7.zzzzz" {
-					t.Fatal(g.Objects[0].Link.Value)
 				}
 			},
 		},
@@ -1681,6 +1793,51 @@ y
 				if g.Objects[0].Style.Fill.Value != "green" {
 					t.Fatal(g.Objects[0].Style.Fill)
 				}
+			},
+		},
+		{
+			name: "reserved_quoted/1",
+			text: `x: {
+  "label": hello
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 2, len(g.Objects))
+				assert.Equal(t, "x", g.Objects[0].Label.Value)
+			},
+		},
+		{
+			name: "reserved_quoted/2",
+			text: `my_table: {
+  shape: sql_table
+  width: 200
+  height: 200
+  "shape": string
+  "icon": string
+  "width": int
+  "height": int
+}
+		`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 4, len(g.Objects[0].SQLTable.Columns))
+				assert.Equal(t, `shape`, g.Objects[0].SQLTable.Columns[0].Name.Label)
+			},
+		},
+		{
+			name: "reserved_quoted/3",
+			text: `*."shape"
+x
+		`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 2, len(g.Objects))
+				assert.Equal(t, `x.shape`, g.Objects[0].AbsID())
+			},
+		},
+		{
+			name: "reserved_quoted/4",
+			text: `x."style"."fill"`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 3, len(g.Objects))
 			},
 		},
 		{
@@ -2285,10 +2442,53 @@ scenarios: {
 			},
 		},
 		{
-			name: "link-board-not-found",
+			name: "no-self-link",
+			text: `
+x.link: scenarios.a
+
+layers: {
+  g: {
+    s.link: _.layers.g
+  }
+}
+
+scenarios: {
+  a: {
+    b
+  }
+}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Scenarios[0].Objects[0].Link)
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Layers[0].Objects[0].Link)
+			},
+		},
+		{
+			name: "link-board-not-found-1",
 			text: `x.link: layers.x
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/link-board-not-found.d2:1:1: linked board not found`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Link)
+			},
+		},
+		{
+			name: "link-board-not-found-2",
+			text: `layers: {
+    one: {
+        ping: {
+            link: two
+        }
+    }
+    two: {
+        pong: {
+            link: one
+        }
+    }
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Layers[0].Objects[0].Link)
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Layers[1].Objects[0].Link)
+			},
 		},
 		{
 			name: "link-board-not-board",
@@ -2299,7 +2499,10 @@ layers: {
     y
   }
 }`,
-			expErr: `d2/testdata/d2compiler/TestCompile/link-board-not-board.d2:2:1: linked board not found`,
+
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Link)
+			},
 		},
 		{
 			name: "link-board-nested",
@@ -2352,6 +2555,47 @@ layers: {
 			},
 		},
 		{
+			name: "link-file-underscore",
+			text: `...@x`,
+			files: map[string]string{
+				"x.d2": `x
+
+layers: {
+  a: { c }
+  b: { d.link: _.layers.a }
+	e: {
+    l
+
+		layers: {
+			j: {
+			  k.link: _
+			  n.link: _._
+			  m.link: _._.layers.a
+			}
+		}
+  }
+}
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.a", g.Layers[1].Objects[0].Link.Value)
+				tassert.Equal(t, "root.layers.e", g.Layers[2].Layers[0].Objects[0].Link.Value)
+				tassert.Equal(t, "root", g.Layers[2].Layers[0].Objects[1].Link.Value)
+				tassert.Equal(t, "root.layers.a", g.Layers[2].Layers[0].Objects[2].Link.Value)
+			},
+		},
+		{
+			name: "link-beyond-import-root",
+			text: `...@x`,
+			files: map[string]string{
+				"x.d2": `x.link: _.layers.z
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Link)
+			},
+		},
+		{
 			name: "link-board-underscore-not-found",
 			text: `x
 layers: {
@@ -2364,7 +2608,19 @@ layers: {
     }
   }
 }`,
-			expErr: `d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2:7:9: invalid underscore usage`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Layers[0].Layers[0].Objects[0].Link)
+			},
+		},
+		{
+			name: "import-icon-near",
+			text: `y: @y
+`,
+			files: map[string]string{
+				"y.d2": `syslog
+*.icon.near: center-left
+`,
+			},
 		},
 		{
 			name: "border-radius-negative",
@@ -2727,10 +2983,81 @@ x*: {
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				tassert.Equal(t, 4, len(g.Objects))
-				tassert.Equal(t, "x1.ok", g.Objects[0].AbsID())
-				tassert.Equal(t, "x2.ok", g.Objects[1].AbsID())
-				tassert.Equal(t, "x1", g.Objects[2].AbsID())
-				tassert.Equal(t, "x2", g.Objects[3].AbsID())
+				tassert.Equal(t, "x1", g.Objects[0].AbsID())
+				tassert.Equal(t, "x1.ok", g.Objects[1].AbsID())
+				tassert.Equal(t, "x2", g.Objects[2].AbsID())
+				tassert.Equal(t, "x2.ok", g.Objects[3].AbsID())
+			},
+		},
+		{
+			name: "var_in_markdown",
+			text: `vars: {
+  v: ok
+}
+
+x: |md
+  m${v}y
+
+	` + "`hey ${v}`" + `
+
+	regular markdown
+
+	` + "```" + `
+	bye ${v}
+	` + "```" + `
+|
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.True(t, strings.Contains(g.Objects[0].Attributes.Label.Value, "moky"))
+				tassert.False(t, strings.Contains(g.Objects[0].Attributes.Label.Value, "m${v}y"))
+				// Code spans untouched
+				tassert.True(t, strings.Contains(g.Objects[0].Attributes.Label.Value, "hey ${v}"))
+				// Code blocks untouched
+				tassert.True(t, strings.Contains(g.Objects[0].Attributes.Label.Value, "bye ${v}"))
+			},
+		},
+		{
+			name: "var_in_vars",
+			text: `vars: {
+    Apple: {
+        shape:circle
+        label:Granny Smith
+    }
+    Cherry: {
+        shape:circle
+        label:Rainier Cherry
+    }
+    SummerFruit: {
+        xx: ${Apple}
+        cc: ${Cherry}
+        xx -> cc
+    }
+}
+
+x: ${Apple}
+c: ${Cherry}
+sf: ${SummerFruit}
+`,
+		},
+		{
+			name: "spread_var_order",
+			text: `vars: {
+  before_elem: {
+    "before_elem"
+  }
+  after_elem: {
+    "after_elem"
+  }
+}
+
+...${before_elem}
+elem
+...${after_elem}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "before_elem", g.Objects[0].AbsID())
+				tassert.Equal(t, "elem", g.Objects[1].AbsID())
+				tassert.Equal(t, "after_elem", g.Objects[2].AbsID())
 			},
 		},
 		{
@@ -2751,7 +3078,7 @@ object: {
 			name: "no-class-primary",
 			text: `x.class
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/no-class-primary.d2:1:3: class missing value`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no-class-primary.d2:1:3: reserved field "class" must have a value`,
 		},
 		{
 			name: "no-class-inside-classes",
@@ -2900,6 +3227,311 @@ qa: {
 				tassert.Equal(t, "Dev Environment", g.Objects[1].Label.Value)
 				tassert.Equal(t, "qa.env", g.Objects[2].AbsID())
 				tassert.Equal(t, "Qa Environment", g.Objects[2].Label.Value)
+			},
+		},
+		{
+			name: "spread-import-link",
+			text: `k
+
+layers: {
+  x: {...@x}
+}`,
+			files: map[string]string{
+				"x.d2": `a.link: layers.b
+layers: {
+  b: {
+    d
+  }
+}`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.x.layers.b", g.Layers[0].Objects[0].Link.Value)
+			},
+		},
+		{
+			name: "import-link-underscore-1",
+			text: `k
+
+layers: {
+  x: {...@x}
+}`,
+			files: map[string]string{
+				"x.d2": `a
+layers: {
+  b: {
+    d.link: _
+		s.link: _.layers.k
+
+    layers: {
+      c: {
+        c.link: _
+				z.link: _._
+				f.link: _._.layers.b
+      }
+    }
+  }
+  k: {
+    k
+  }
+}`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.x", g.Layers[0].Layers[0].Objects[0].Link.Value)
+				tassert.Equal(t, "root.layers.x.layers.b", g.Layers[0].Layers[0].Layers[0].Objects[0].Link.Value)
+				tassert.Equal(t, "root.layers.x", g.Layers[0].Layers[0].Layers[0].Objects[1].Link.Value)
+				tassert.Equal(t, "root.layers.x.layers.b", g.Layers[0].Layers[0].Layers[0].Objects[2].Link.Value)
+				tassert.Equal(t, "root.layers.x.layers.k", g.Layers[0].Layers[0].Objects[1].Link.Value)
+			},
+		},
+		{
+			name: "import-link-underscore-2",
+			text: `k
+
+layers: {
+  x: @x
+}`,
+			files: map[string]string{
+				"x.d2": `a
+layers: {
+  b: {
+    d.link: _
+		s.link: _.layers.k
+
+    layers: {
+      c: {
+        c.link: _
+				z.link: _._
+				f.link: _._.layers.b
+      }
+    }
+  }
+  k: {
+    k
+  }
+}`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.x", g.Layers[0].Layers[0].Objects[0].Link.Value)
+				tassert.Equal(t, "root.layers.x.layers.b", g.Layers[0].Layers[0].Layers[0].Objects[0].Link.Value)
+				tassert.Equal(t, "root.layers.x", g.Layers[0].Layers[0].Layers[0].Objects[1].Link.Value)
+				tassert.Equal(t, "root.layers.x.layers.b", g.Layers[0].Layers[0].Layers[0].Objects[2].Link.Value)
+				tassert.Equal(t, "root.layers.x.layers.k", g.Layers[0].Layers[0].Objects[1].Link.Value)
+			},
+		},
+		{
+			name: "import-link-underscore-3",
+			text: `k
+
+layers: {
+  x: @x
+	b: {
+    b
+  }
+}`,
+			files: map[string]string{
+				"x.d2": `a
+layers: {
+  y: @y
+}`,
+				"y.d2": `o.link: _._.layers.b
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.b", g.Layers[0].Layers[0].Objects[0].Link.Value)
+			},
+		},
+		{
+			name: "invalid-link-1",
+			text: `k
+
+layers: {
+  x: {...@x}
+}`,
+			files: map[string]string{
+				"x.d2": `k
+layers: {
+  y.link: @n
+}`,
+				"n.d2": `n`,
+			},
+			expErr: `d2/testdata/d2compiler/TestCompile/x.d2:3:5: a board itself cannot be linked; only objects within a board can be linked`,
+		},
+		{
+			name: "invalid-link-2",
+			text: `k
+
+layers: {
+  x: @x
+}`,
+			files: map[string]string{
+				"x.d2": `k
+layers: {
+  y.link: @n
+}`,
+				"n.d2": `n`,
+			},
+			expErr: `d2/testdata/d2compiler/TestCompile/x.d2:3:5: a board itself cannot be linked; only objects within a board can be linked`,
+		},
+		{
+			name: "import-nested-layers",
+			text: `k
+
+layers: {
+  x: {...@x}
+}`,
+			files: map[string]string{
+				"x.d2": `a
+layers: {
+  b: {
+		d
+
+		layers: {
+		  c: {
+			  c
+			}
+		}
+  }
+}`,
+			},
+		},
+		{
+			name: "multiple-import-nested-layers",
+			text: `k
+
+layers: {
+  x: {...@y/x}
+}`,
+			files: map[string]string{
+				"y/x.d2": `a.c.link: layers.b
+
+layers: {
+  b: {...@n}
+}`,
+				"y/n.d2": "p",
+			},
+		},
+		{
+			name: "import-link-layer-1",
+			text: `k
+
+layers: {
+  x: {...@y}
+  z: { hi }
+}`,
+			files: map[string]string{
+				"y.d2": `a.link: _.layers.z
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.z", g.Layers[0].Objects[0].Link.Value)
+			},
+		},
+		{
+			name: "import-link-layer-2",
+			text: `...@y
+
+layers: {
+  z: { hi }
+}`,
+			files: map[string]string{
+				"y.d2": `a.link: layers.z
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.z", g.Objects[0].Link.Value)
+			},
+		},
+		{
+			name: "import-link-layer-3",
+			text: `k
+
+layers: {
+  x: {...@y}
+  z: { hi }
+}`,
+			files: map[string]string{
+				"y.d2": `a
+layers: {
+  lol: {
+    asdf.link: _._.layers.z
+  }
+}
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.z", g.Layers[0].Layers[0].Objects[0].Link.Value)
+			},
+		},
+		{
+			name: "import-link-layer-4",
+			text: `k
+
+layers: {
+  x: @y
+  z: { hi }
+}`,
+			files: map[string]string{
+				"y.d2": `a
+layers: {
+  lol: {
+    asdf.link: _.layers.z
+  }
+	z: { fjf }
+}
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.x.layers.z", g.Layers[0].Layers[0].Objects[0].Link.Value)
+			},
+		},
+		{
+			name: "sql-table-header-newline",
+			text: `x: {
+  shape: sql_table
+  label: hello\nworld
+}
+
+y: "hello\nworld" {
+  shape: sql_table
+	hi: there
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/sql-table-header-newline.d2:3:3: shape sql_table cannot have newlines in label
+d2/testdata/d2compiler/TestCompile/sql-table-header-newline.d2:6:1: shape sql_table cannot have newlines in label`,
+		},
+		{
+			name: "sequence-diagram-icons",
+			text: `shape: sequence_diagram
+svc_1: {
+  icon: https://icons.terrastruct.com/dev%2Fdocker.svg
+  shape: image
+}
+
+a: A
+b: B
+
+svc_1.t1 -> a: do with A
+svc_1."think about A"
+svc_1.t2 -> b: do with B
+`,
+		},
+		{
+			name: "layer-import-nested-layer",
+			text: `layers: {
+	ok: {...@meow}
+}
+`,
+			files: map[string]string{
+				"meow.d2": `layers: {
+  1: {
+    asdf
+  }
+}
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "d2/testdata/d2compiler/TestCompile/layer-import-nested-layer.d2", g.Layers[0].AST.Range.Path)
+				tassert.Equal(t, "d2/testdata/d2compiler/TestCompile/meow.d2", g.Layers[0].Layers[0].AST.Range.Path)
 			},
 		},
 	}
@@ -3071,6 +3703,24 @@ steps: {
 			},
 		},
 		{
+			name: "board-label-primary",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `hi
+layers: {
+  1: one {
+    RJ
+  }
+  2: {
+    label: two
+    RJ
+  }
+}
+`, "")
+				assert.Equal(t, "one", g.Layers[0].Root.Label.Value)
+				assert.Equal(t, "two", g.Layers[1].Root.Label.Value)
+			},
+		},
+		{
 			name: "no-inherit-label",
 			run: func(t *testing.T) {
 				g, _ := assertCompile(t, `
@@ -3115,6 +3765,40 @@ steps: {
 	}
 }
 `, `d2/testdata/d2compiler/TestCompile2/boards/errs/duplicate_board.d2:9:2: board name one already used by another board`)
+			},
+		},
+		{
+			name: "style-nested-boards",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `**.style.stroke: black
+
+scenarios: {
+  a: {
+    x
+  }
+  b: {
+    x
+  }
+}
+steps: {
+  c: {
+    x
+  }
+  d: {
+    x
+  }
+}
+layers: {
+  e: {
+    x
+  }
+}
+`, ``)
+				assert.Equal(t, "black", g.Scenarios[0].Objects[0].Style.Stroke.Value)
+				assert.Equal(t, "black", g.Scenarios[1].Objects[0].Style.Stroke.Value)
+				assert.Equal(t, "black", g.Steps[0].Objects[0].Style.Stroke.Value)
+				assert.Equal(t, "black", g.Steps[1].Objects[0].Style.Stroke.Value)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Layers[0].Objects[0].Style.Stroke)
 			},
 		},
 	}
@@ -3201,13 +3885,27 @@ a: null
 				},
 			},
 			{
-				name: "edge",
+				name: "basic-edge",
 				run: func(t *testing.T) {
 					g, _ := assertCompile(t, `
 a -> b
 (a -> b)[0]: null
 `, "")
 					assert.Equal(t, 2, len(g.Objects))
+					assert.Equal(t, 0, len(g.Edges))
+				},
+			},
+			{
+				name: "nested-edge",
+				run: func(t *testing.T) {
+					g, _ := assertCompile(t, `
+a.b.c -> a.d.e
+a.b.c -> a.d.e
+
+a.(b.c -> d.e)[0]: null
+(a.b.c -> a.d.e)[1]: null
+`, "")
+					assert.Equal(t, 5, len(g.Objects))
 					assert.Equal(t, 0, len(g.Edges))
 				},
 			},
@@ -3670,9 +4368,9 @@ vars: {
 }
 z: ${x}
 `, "")
-					assert.Equal(t, "z", g.Objects[1].ID)
-					assert.Equal(t, "all", g.Objects[1].Label.Value)
-					assert.Equal(t, 1, len(g.Objects[1].Children))
+					assert.Equal(t, "z", g.Objects[0].ID)
+					assert.Equal(t, "all", g.Objects[0].Label.Value)
+					assert.Equal(t, 1, len(g.Objects[0].Children))
 				},
 			},
 			{
@@ -3690,9 +4388,9 @@ z: {
   c
 }
 `, "")
-					assert.Equal(t, "z", g.Objects[2].ID)
+					assert.Equal(t, "z", g.Objects[0].ID)
 					assert.Equal(t, 4, len(g.Objects))
-					assert.Equal(t, 3, len(g.Objects[2].Children))
+					assert.Equal(t, 3, len(g.Objects[0].Children))
 				},
 			},
 			{
@@ -3882,11 +4580,14 @@ vars: {
 hi: {
   vars: {
     x: ${x}-b
+		b: ${x}
   }
   yo: ${x}
+  hey: ${b}
 }
 `, "")
 					assert.Equal(t, "a-b", g.Objects[1].Label.Value)
+					assert.Equal(t, "a-b", g.Objects[2].Label.Value)
 				},
 			},
 			{
@@ -4127,6 +4828,24 @@ x: {
   }
 }
 `, `d2/testdata/d2compiler/TestCompile2/vars/config/not-root.d2:4:4: "d2-config" can only appear at root vars`)
+				},
+			},
+			{
+				name: "data",
+				run: func(t *testing.T) {
+					_, config := assertCompile(t, `
+vars: {
+	d2-config: {
+		data: {
+      cat: hat
+      later: [1;5;2]
+    }
+  }
+}
+`, ``)
+					assert.Equal(t, 2, len(config.Data))
+					assert.Equal(t, "hat", config.Data["cat"])
+					assert.Equal(t, "1", (config.Data["later"]).([]interface{})[0])
 				},
 			},
 		}
@@ -4474,6 +5193,192 @@ a -> b
 `, ``)
 				assert.Equal(t, "green", g.Edges[0].Attributes.Style.Stroke.Value)
 				assert.Equal(t, "red", g.Edges[1].Attributes.Style.Stroke.Value)
+			},
+		},
+		{
+			name: "exists-filter",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*: {
+  &link: *
+	style.underline: true
+}
+
+x
+y.link: https://google.com
+`, ``)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Attributes.Style.Underline)
+				assert.Equal(t, "true", g.Objects[1].Attributes.Style.Underline.Value)
+			},
+		},
+		{
+			name: "leaf-filter",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+**: {
+  &leaf: false
+  style.fill: red
+}
+a.b.c
+`, ``)
+				assert.Equal(t, "a", g.Objects[0].ID)
+				assert.Equal(t, "red", g.Objects[0].Attributes.Style.Fill.Value)
+				assert.Equal(t, "b", g.Objects[1].ID)
+				assert.Equal(t, "red", g.Objects[1].Attributes.Style.Fill.Value)
+				assert.Equal(t, "c", g.Objects[2].ID)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Fill)
+			},
+		},
+		{
+			name: "connected-filter",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*: {
+  &connected: true
+  style.fill: red
+}
+a -> b
+c
+`, ``)
+				assert.Equal(t, "a", g.Objects[0].ID)
+				assert.Equal(t, "red", g.Objects[0].Attributes.Style.Fill.Value)
+				assert.Equal(t, "b", g.Objects[1].ID)
+				assert.Equal(t, "red", g.Objects[1].Attributes.Style.Fill.Value)
+				assert.Equal(t, "c", g.Objects[2].ID)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Fill)
+			},
+		},
+		{
+			name: "glob-filter",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*: {
+  &link: *google*
+	style.underline: true
+}
+
+x
+y.link: https://google.com
+z.link: https://yahoo.com
+`, ``)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Attributes.Style.Underline)
+				assert.Equal(t, "true", g.Objects[1].Attributes.Style.Underline.Value)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Underline)
+			},
+		},
+		{
+			name: "reapply-scenario",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*.b*.shape: circle
+x: {
+  b
+}
+
+scenarios: {
+  k: {
+    x: {
+      b
+    }
+  }
+}
+`, ``)
+				assert.Equal(t, "circle", g.Objects[1].Attributes.Shape.Value)
+				assert.Equal(t, "circle", g.Scenarios[0].Objects[1].Attributes.Shape.Value)
+			},
+		},
+		{
+			name: "second-scenario",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*.b*.shape: circle
+
+scenarios: {
+  k: {
+    x: {
+      b
+    }
+  }
+  z: {
+    x: {
+      b
+    }
+  }
+}
+`, ``)
+				assert.Equal(t, "circle", g.Scenarios[0].Objects[1].Attributes.Shape.Value)
+				assert.Equal(t, "circle", g.Scenarios[1].Objects[1].Attributes.Shape.Value)
+			},
+		},
+		{
+			name: "default-glob-filter/1",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*: {
+	&shape: rectangle
+  style.fill: red
+}
+*: {
+  &style.opacity: 1
+  style.stroke: blue
+}
+a
+b.shape: circle
+c.shape: rectangle
+`, ``)
+				assert.Equal(t, "red", g.Objects[0].Style.Fill.Value)
+				assert.Equal(t, "blue", g.Objects[0].Style.Stroke.Value)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[1].Style.Fill)
+				assert.Equal(t, "red", g.Objects[2].Style.Fill.Value)
+			},
+		},
+		{
+			name: "default-glob-filter/2",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*: {
+	&shape: rectangle
+  style.opacity: 0.2
+}
+a
+b -> c
+`, ``)
+				assert.Equal(t, "0.2", g.Objects[0].Style.Opacity.Value)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[0].Style.Opacity)
+			},
+		},
+		{
+			name: "default-glob-filter/3",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*: {
+	&icon: ""
+  style.opacity: 0.2
+}
+a
+b.icon: https://google.com/cat.jpg
+`, ``)
+				assert.Equal(t, "0.2", g.Objects[0].Style.Opacity.Value)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[1].Style.Opacity)
+			},
+		},
+		{
+			name: "default-glob-filter/4",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*: {
+	&opacity: 1
+  style.stroke: red
+}
+(* -> *)[*]: {
+	&opacity: 1
+  style.stroke: red
+}
+a
+b -> c
+`, ``)
+				assert.Equal(t, "red", g.Objects[0].Style.Stroke.Value)
+				assert.Equal(t, "red", g.Edges[0].Style.Stroke.Value)
 			},
 		},
 	}

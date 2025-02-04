@@ -49,8 +49,7 @@ type Node interface {
 	// GetRange returns the range a node occupies in its file.
 	GetRange() Range
 
-	// TODO: add Children() for walking AST
-	// Children() []Node
+	Children() []Node
 }
 
 var _ Node = &Comment{}
@@ -167,7 +166,8 @@ func (r Range) Before(r2 Range) bool {
 type Position struct {
 	Line   int
 	Column int
-	Byte   int
+	// -1 is used as sentinel that a constructed position is missing byte offset (for LSP usage)
+	Byte int
 }
 
 var _ fmt.Stringer = Position{}
@@ -277,7 +277,13 @@ func (p Position) SubtractString(s string, byUTF16 bool) Position {
 }
 
 func (p Position) Before(p2 Position) bool {
-	return p.Byte < p2.Byte
+	if p.Byte != p2.Byte && p.Byte != -1 && p2.Byte != -1 {
+		return p.Byte < p2.Byte
+	}
+	if p.Line != p2.Line {
+		return p.Line < p2.Line
+	}
+	return p.Column < p2.Column
 }
 
 // MapNode is implemented by nodes that may be children of Maps.
@@ -332,6 +338,7 @@ type String interface {
 	SetString(string)
 	Copy() String
 	_string()
+	IsUnquoted() bool
 }
 
 var _ String = &UnquotedString{}
@@ -432,6 +439,139 @@ func (s *DoubleQuotedString) scalar() {}
 func (s *SingleQuotedString) scalar() {}
 func (s *BlockString) scalar()        {}
 
+func (c *Comment) Children() []Node            { return nil }
+func (c *BlockComment) Children() []Node       { return nil }
+func (n *Null) Children() []Node               { return nil }
+func (b *Boolean) Children() []Node            { return nil }
+func (n *Number) Children() []Node             { return nil }
+func (s *SingleQuotedString) Children() []Node { return nil }
+func (s *BlockString) Children() []Node        { return nil }
+func (ei *EdgeIndex) Children() []Node         { return nil }
+
+func (s *UnquotedString) Children() []Node {
+	var children []Node
+	for _, box := range s.Value {
+		if box.Substitution != nil {
+			children = append(children, box.Substitution)
+		}
+	}
+	return children
+}
+
+func (s *DoubleQuotedString) Children() []Node {
+	var children []Node
+	for _, box := range s.Value {
+		if box.Substitution != nil {
+			children = append(children, box.Substitution)
+		}
+	}
+	return children
+}
+
+func (s *Substitution) Children() []Node {
+	var children []Node
+	for _, sb := range s.Path {
+		if sb != nil {
+			if child := sb.Unbox(); child != nil {
+				children = append(children, child)
+			}
+		}
+	}
+	return children
+}
+
+func (i *Import) Children() []Node {
+	var children []Node
+	for _, sb := range i.Path {
+		if sb != nil {
+			if child := sb.Unbox(); child != nil {
+				children = append(children, child)
+			}
+		}
+	}
+	return children
+}
+
+func (a *Array) Children() []Node {
+	var children []Node
+	for _, box := range a.Nodes {
+		if child := box.Unbox(); child != nil {
+			children = append(children, child)
+		}
+	}
+	return children
+}
+
+func (m *Map) Children() []Node {
+	var children []Node
+	for _, box := range m.Nodes {
+		if child := box.Unbox(); child != nil {
+			children = append(children, child)
+		}
+	}
+	return children
+}
+
+func (k *Key) Children() []Node {
+	var children []Node
+	if k.Key != nil {
+		children = append(children, k.Key)
+	}
+	for _, edge := range k.Edges {
+		if edge != nil {
+			children = append(children, edge)
+		}
+	}
+	if k.EdgeIndex != nil {
+		children = append(children, k.EdgeIndex)
+	}
+	if k.EdgeKey != nil {
+		children = append(children, k.EdgeKey)
+	}
+	if scalar := k.Primary.Unbox(); scalar != nil {
+		children = append(children, scalar)
+	}
+	if value := k.Value.Unbox(); value != nil {
+		children = append(children, value)
+	}
+	return children
+}
+
+func (kp *KeyPath) Children() []Node {
+	var children []Node
+	for _, sb := range kp.Path {
+		if sb != nil {
+			if child := sb.Unbox(); child != nil {
+				children = append(children, child)
+			}
+		}
+	}
+	return children
+}
+
+func (e *Edge) Children() []Node {
+	var children []Node
+	if e.Src != nil {
+		children = append(children, e.Src)
+	}
+	if e.Dst != nil {
+		children = append(children, e.Dst)
+	}
+	return children
+}
+
+func Walk(node Node, fn func(Node) bool) {
+	if node == nil {
+		return
+	}
+	if !fn(node) {
+		return
+	}
+	for _, child := range node.Children() {
+		Walk(child, fn)
+	}
+}
+
 // TODO: mistake, move into parse.go
 func (n *Null) ScalarString() string    { return "" }
 func (b *Boolean) ScalarString() string { return strconv.FormatBool(b.Value) }
@@ -471,6 +611,11 @@ func (s *UnquotedString) _string()     {}
 func (s *DoubleQuotedString) _string() {}
 func (s *SingleQuotedString) _string() {}
 func (s *BlockString) _string()        {}
+
+func (s *UnquotedString) IsUnquoted() bool     { return true }
+func (s *DoubleQuotedString) IsUnquoted() bool { return false }
+func (s *SingleQuotedString) IsUnquoted() bool { return false }
+func (s *BlockString) IsUnquoted() bool        { return false }
 
 type Comment struct {
 	Range Range  `json:"range"`
@@ -660,6 +805,9 @@ func (mk1 *Key) D2OracleEquals(mk2 *Key) bool {
 	if mk1.Ampersand != mk2.Ampersand {
 		return false
 	}
+	if mk1.NotAmpersand != mk2.NotAmpersand {
+		return false
+	}
 	if (mk1.Key == nil) != (mk2.Key == nil) {
 		return false
 	}
@@ -737,6 +885,9 @@ func (mk1 *Key) Equals(mk2 *Key) bool {
 		return false
 	}
 	if mk1.Ampersand != mk2.Ampersand {
+		return false
+	}
+	if mk1.NotAmpersand != mk2.NotAmpersand {
 		return false
 	}
 	if (mk1.Key == nil) != (mk2.Key == nil) {
@@ -862,10 +1013,22 @@ func (mk *Key) HasTripleGlob() bool {
 			return true
 		}
 	}
-	if mk.EdgeIndex != nil && mk.EdgeIndex.Glob {
+	if mk.EdgeKey.HasTripleGlob() {
 		return true
 	}
-	if mk.EdgeKey.HasTripleGlob() {
+	return false
+}
+
+func (mk *Key) HasMultiGlob() bool {
+	if mk.Key.HasMultiGlob() {
+		return true
+	}
+	for _, e := range mk.Edges {
+		if e.Src.HasMultiGlob() || e.Dst.HasMultiGlob() {
+			return true
+		}
+	}
+	if mk.EdgeKey.HasMultiGlob() {
 		return true
 	}
 	return false
@@ -902,7 +1065,22 @@ func MakeKeyPath(a []string) *KeyPath {
 	return kp
 }
 
-func (kp *KeyPath) IDA() (ida []string) {
+func MakeKeyPathString(a []String) *KeyPath {
+	kp := &KeyPath{}
+	for _, el := range a {
+		kp.Path = append(kp.Path, MakeValueBox(RawString(el.ScalarString(), true)).StringBox())
+	}
+	return kp
+}
+
+func (kp *KeyPath) IDA() (ida []String) {
+	for _, el := range kp.Path {
+		ida = append(ida, el.Unbox())
+	}
+	return ida
+}
+
+func (kp *KeyPath) StringIDA() (ida []string) {
 	for _, el := range kp.Path {
 		ida = append(ida, el.Unbox().ScalarString())
 	}
@@ -1415,9 +1593,9 @@ func (s *Substitution) IDA() (ida []string) {
 	return ida
 }
 
-func (i *Import) IDA() (ida []string) {
+func (i *Import) IDA() (ida []String) {
 	for _, el := range i.Path[1:] {
-		ida = append(ida, el.Unbox().ScalarString())
+		ida = append(ida, el.Unbox())
 	}
 	return ida
 }
@@ -1427,4 +1605,8 @@ func (i *Import) PathWithPre() string {
 		return ""
 	}
 	return path.Join(i.Pre, i.Path[0].Unbox().ScalarString())
+}
+
+func (i *Import) Dir() string {
+	return path.Dir(i.PathWithPre())
 }

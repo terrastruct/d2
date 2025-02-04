@@ -485,6 +485,119 @@ layers: {
 `,
 		},
 		{
+			name: "add_layer/1",
+			text: `b`,
+			key:  `layers.c`,
+
+			expKey: `layers.c`,
+			exp: `b
+
+layers: {
+  c
+}
+`,
+		},
+		{
+			name: "add_layer/2",
+			text: `b
+layers: {
+  c: {
+    x
+  }
+}`,
+			key: `layers.b`,
+
+			expKey: `layers.b`,
+			exp: `b
+
+layers: {
+  c: {
+    x
+  }
+  b
+}
+`,
+		},
+		{
+			name: "add_layer/3",
+			text: `b
+
+layers: {
+	c: {
+    d
+  }
+}
+`,
+			key: `layers.c`,
+
+			boardPath: []string{"c"},
+			expKey:    `layers.c`,
+			exp: `b
+
+layers: {
+  c: {
+    d
+
+    layers: {
+      c
+    }
+  }
+}
+`,
+		},
+		{
+			name: "add_layer/4",
+			text: `b
+
+layers: {
+	c
+}
+`,
+			key: `d`,
+
+			boardPath: []string{"c"},
+			expKey:    `d`,
+			exp: `b
+
+layers: {
+  c: {
+    d
+  }
+}
+`,
+		},
+		{
+			name: "add_layer/5",
+			text: `classes: {
+  a: {
+    style.stroke: red
+  }
+}
+b
+
+layers: {
+	c
+}
+`,
+			key: `d`,
+
+			boardPath: []string{"c"},
+			expKey:    `d`,
+			exp: `classes: {
+  a: {
+    style.stroke: red
+  }
+}
+b
+
+layers: {
+  c: {
+    d
+  }
+}
+`,
+		},
+		{
 			name: "layers-edge",
 
 			text: `a
@@ -941,6 +1054,16 @@ square.style.opacity: 0.2
 			key:   `square.top`,
 			value: go2.Pointer(`200`),
 			exp: `square: {top: 200}
+`,
+		},
+		{
+			name: "labeled_set_position",
+			text: `hey.label: what
+`,
+			key:   `hey.top`,
+			value: go2.Pointer(`200`),
+			exp: `hey.label: what
+hey.top: 200
 `,
 		},
 		{
@@ -2345,6 +2468,28 @@ layers: {
 `,
 		},
 		{
+			name: "import/10",
+
+			text: `heyn
+
+layers: {
+  man: {...@meow}
+}
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `layers: {
+  1: {
+    asdf
+  }
+}
+`,
+			},
+			boardPath: []string{"man", "1"},
+			key:       `asdf.link`,
+			value:     go2.Pointer(`_._`),
+			expErr:    `failed to set "asdf.link" to "\"_._\"": board [man 1] cannot be modified through this file`,
+		},
+		{
 			name: "label-near/1",
 
 			text: `x
@@ -2517,6 +2662,87 @@ x -> a.b -> a.b.c
 			exp: `x -> y: {
   # hi
   style.stroke: green
+}
+`,
+		},
+		{
+			name: "scenario-child",
+
+			text: `a -> b
+
+scenarios: {
+  x: {
+    hi
+  }
+}
+`,
+			key:       `(a -> b)[0].style.stroke-width`,
+			value:     go2.Pointer(`3`),
+			boardPath: []string{"x"},
+			exp: `a -> b
+
+scenarios: {
+  x: {
+    hi
+    (a -> b)[0].style.stroke-width: 3
+  }
+}
+`,
+		},
+		{
+			name: "scenario-grandchild",
+
+			text: `a -> b
+
+scenarios: {
+	x: {
+		scenarios: {
+			c: {
+				(a -> b)[0].style.bold: true
+			}
+		}
+	}
+}
+		`,
+			key:       `(a -> b)[0].style.stroke-width`,
+			value:     go2.Pointer(`3`),
+			boardPath: []string{"x", "c"},
+			exp: `a -> b
+
+scenarios: {
+  x: {
+    scenarios: {
+      c: {
+        (a -> b)[0].style.bold: true
+        (a -> b)[0].style.stroke-width: 3
+      }
+    }
+  }
+}
+`,
+		},
+		{
+			name: "step-connection",
+
+			text: `steps: {
+  1: {
+    Modules -- Metricbeat: {
+      style.stroke-width: 1
+    }
+  }
+}
+
+		`,
+			key:       `Metricbeat.style.stroke`,
+			value:     go2.Pointer(`red`),
+			boardPath: []string{"1"},
+			exp: `steps: {
+  1: {
+    Modules -- Metricbeat: {
+      style.stroke-width: 1
+    }
+    Metricbeat.style.stroke: red
+  }
 }
 `,
 		},
@@ -7757,6 +7983,124 @@ layers: {
 			exp: `layers: {
   x: {
     a
+  }
+}
+`,
+		},
+		{
+			name: "edge-out-layer",
+
+			text: `x: {
+	a -> b
+}
+`,
+			key: `x.(a -> b)[0].style.stroke`,
+			exp: `x: {
+  a -> b
+}
+`,
+		},
+		{
+			name: "edge-in-layer",
+
+			text: `layers: {
+  test: {
+    x: {
+			a -> b
+    }
+  }
+}
+`,
+			boardPath: []string{"test"},
+			key:       `x.(a -> b)[0].style.stroke`,
+			exp: `layers: {
+  test: {
+    x: {
+      a -> b
+    }
+  }
+}
+`,
+		},
+		{
+			name: "label-near-in-layer",
+
+			text: `layers: {
+  x: {
+    y: {
+      label.near: center-center
+    }
+    a
+  }
+}
+`,
+			boardPath: []string{"x"},
+			key:       `y`,
+			exp: `layers: {
+  x: {
+    a
+  }
+}
+`,
+		},
+		{
+			name: "update-near-in-layer",
+
+			text: `layers: {
+  x: {
+    y: {
+      near: a
+    }
+    a
+  }
+}
+`,
+			boardPath: []string{"x"},
+			key:       `y`,
+			exp: `layers: {
+  x: {
+    a
+  }
+}
+`,
+		},
+		{
+			name: "edge-with-glob",
+
+			text: `x -> y
+y
+
+(* -> *)[*].style.opacity: 0.8
+`,
+			key: `(x -> y)[0]`,
+			exp: `x
+y
+
+(* -> *)[*].style.opacity: 0.8
+`,
+		},
+		{
+			name: "layer-delete-complex-object",
+
+			text: `k
+
+layers: {
+  x: {
+    a: "b" {
+      top: 184
+      left: 180
+    }
+    j
+  }
+}
+`,
+			key:       `a`,
+			boardPath: []string{"x"},
+			exp: `k
+
+layers: {
+  x: {
+    j
   }
 }
 `,

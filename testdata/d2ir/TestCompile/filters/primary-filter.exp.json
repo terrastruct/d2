@@ -1,11 +1,27 @@
 {
   "fields": [
     {
-      "name": "parent",
+      "name": {
+        "range": "TestCompile/filters/primary-filter.d2,1:0:1-1:6:7",
+        "value": [
+          {
+            "string": "parent",
+            "raw_string": "parent"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "a",
+            "name": {
+              "range": "TestCompile/filters/primary-filter.d2,2:2:13-2:3:14",
+              "value": [
+                {
+                  "string": "a",
+                  "raw_string": "a"
+                }
+              ]
+            },
             "composite": {
               "fields": null,
               "edges": null
@@ -350,7 +366,15 @@
             ]
           },
           {
-            "name": "b1",
+            "name": {
+              "range": "TestCompile/filters/primary-filter.d2,2:7:18-2:9:20",
+              "value": [
+                {
+                  "string": "b1",
+                  "raw_string": "b1"
+                }
+              ]
+            },
             "composite": {
               "fields": null,
               "edges": null
@@ -695,7 +719,15 @@
             ]
           },
           {
-            "name": "b3",
+            "name": {
+              "range": "TestCompile/filters/primary-filter.d2,4:7:38-4:9:40",
+              "value": [
+                {
+                  "string": "b3",
+                  "raw_string": "b3"
+                }
+              ]
+            },
             "composite": {
               "fields": null,
               "edges": null
@@ -816,7 +848,15 @@
             ]
           },
           {
-            "name": "c1",
+            "name": {
+              "range": "TestCompile/filters/primary-filter.d2,6:8:50-6:10:52",
+              "value": [
+                {
+                  "string": "c1",
+                  "raw_string": "c1"
+                }
+              ]
+            },
             "composite": {
               "fields": [],
               "edges": null
@@ -1044,11 +1084,27 @@
           {
             "edge_id": {
               "src_path": [
-                "a"
+                {
+                  "range": "TestCompile/filters/primary-filter.d2,2:2:13-2:3:14",
+                  "value": [
+                    {
+                      "string": "a",
+                      "raw_string": "a"
+                    }
+                  ]
+                }
               ],
               "src_arrow": false,
               "dst_path": [
-                "b1"
+                {
+                  "range": "TestCompile/filters/primary-filter.d2,2:7:18-2:9:20",
+                  "value": [
+                    {
+                      "string": "b1",
+                      "raw_string": "b1"
+                    }
+                  ]
+                }
               ],
               "dst_arrow": true,
               "index": 0,
@@ -1147,11 +1203,27 @@
           {
             "edge_id": {
               "src_path": [
-                "a"
+                {
+                  "range": "TestCompile/filters/primary-filter.d2,2:2:13-2:3:14",
+                  "value": [
+                    {
+                      "string": "a",
+                      "raw_string": "a"
+                    }
+                  ]
+                }
               ],
               "src_arrow": false,
               "dst_path": [
-                "b3"
+                {
+                  "range": "TestCompile/filters/primary-filter.d2,4:7:38-4:9:40",
+                  "value": [
+                    {
+                      "string": "b3",
+                      "raw_string": "b3"
+                    }
+                  ]
+                }
               ],
               "dst_arrow": true,
               "index": 0,
@@ -1250,11 +1322,27 @@
           {
             "edge_id": {
               "src_path": [
-                "b1"
+                {
+                  "range": "TestCompile/filters/primary-filter.d2,2:7:18-2:9:20",
+                  "value": [
+                    {
+                      "string": "b1",
+                      "raw_string": "b1"
+                    }
+                  ]
+                }
               ],
               "src_arrow": false,
               "dst_path": [
-                "c1"
+                {
+                  "range": "TestCompile/filters/primary-filter.d2,6:8:50-6:10:52",
+                  "value": [
+                    {
+                      "string": "c1",
+                      "raw_string": "c1"
+                    }
+                  ]
+                }
               ],
               "dst_arrow": true,
               "index": 0,
@@ -1879,19 +1967,51 @@
       ]
     },
     {
-      "name": "classes",
+      "name": {
+        "range": "TestCompile/filters/primary-filter.d2,20:0:185-20:7:192",
+        "value": [
+          {
+            "string": "classes",
+            "raw_string": "classes"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "hidden",
+            "name": {
+              "range": "TestCompile/filters/primary-filter.d2,21:2:198-21:8:204",
+              "value": [
+                {
+                  "string": "hidden",
+                  "raw_string": "hidden"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "style",
+                  "name": {
+                    "range": "TestCompile/filters/primary-filter.d2,22:4:212-22:9:217",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "fill",
+                        "name": {
+                          "range": "TestCompile/filters/primary-filter.d2,23:6:227-23:10:231",
+                          "value": [
+                            {
+                              "string": "fill",
+                              "raw_string": "fill"
+                            }
+                          ]
+                        },
                         "primary": {
                           "value": {
                             "range": "TestCompile/filters/primary-filter.d2,23:12:233-23:15:236",

@@ -1,5 +1,13 @@
 {
   "name": "",
+  "config": {
+    "sketch": false,
+    "themeID": 0,
+    "darkThemeID": null,
+    "pad": null,
+    "center": null,
+    "layoutEngine": null
+  },
   "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
@@ -13,7 +21,7 @@
         "x": 0,
         "y": 0
       },
-      "width": 191,
+      "width": 127,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -21,13 +29,13 @@
       "borderRadius": 0,
       "fill": "#d14d28",
       "stroke": "#d14d28",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
       "double-border": false,
       "tooltip": "",
-      "link": "example.com",
-      "prettyLink": "example.com",
+      "link": "",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -55,7 +63,7 @@
         "YELLOW"
       ],
       "pos": {
-        "x": 191,
+        "x": 127,
         "y": 0
       },
       "width": 80,
@@ -66,6 +74,7 @@
       "borderRadius": 0,
       "fill": "#f5df65",
       "stroke": "#f5df65",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -102,7 +111,7 @@
         "x": 0,
         "y": 66
       },
-      "width": 191,
+      "width": 127,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -110,13 +119,13 @@
       "borderRadius": 0,
       "fill": "#59c8df",
       "stroke": "#59c8df",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
       "double-border": false,
       "tooltip": "tooltip",
-      "link": "example.com",
-      "prettyLink": "example.com",
+      "link": "",
       "icon": null,
       "iconPosition": "",
       "blend": false,
@@ -144,7 +153,7 @@
         "GREEN"
       ],
       "pos": {
-        "x": 191,
+        "x": 127,
         "y": 66
       },
       "width": 80,
@@ -155,6 +164,7 @@
       "borderRadius": 0,
       "fill": "#2b9464",
       "stroke": "#2b9464",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -198,6 +208,7 @@
     "borderRadius": 0,
     "fill": "N7",
     "stroke": "",
+    "animated": false,
     "shadow": false,
     "3d": false,
     "multiple": false,

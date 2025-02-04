@@ -3,13 +3,11 @@ package appendix_test
 import (
 	"context"
 	"encoding/xml"
-	"io/ioutil"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
-
-	"cdr.dev/slog"
 
 	tassert "github.com/stretchr/testify/assert"
 
@@ -145,7 +143,7 @@ func runa(t *testing.T, tcs []testCase) {
 
 func run(t *testing.T, tc testCase) {
 	ctx := context.Background()
-	ctx = log.WithTB(ctx, t, nil)
+	ctx = log.WithTB(ctx, t)
 	ctx = log.Leveled(ctx, slog.LevelDebug)
 
 	ruler, err := textmeasure.NewRuler()
@@ -173,11 +171,11 @@ func run(t *testing.T, tc testCase) {
 
 	svgBytes, err := d2svg.Render(diagram, renderOpts)
 	assert.Success(t, err)
-	svgBytes = appendix.Append(diagram, ruler, svgBytes)
+	svgBytes = appendix.Append(diagram, nil, ruler, svgBytes)
 
 	err = os.MkdirAll(dataPath, 0755)
 	assert.Success(t, err)
-	err = ioutil.WriteFile(pathGotSVG, svgBytes, 0600)
+	err = os.WriteFile(pathGotSVG, svgBytes, 0600)
 	assert.Success(t, err)
 	defer os.Remove(pathGotSVG)
 

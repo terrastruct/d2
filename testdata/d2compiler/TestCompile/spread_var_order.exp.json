@@ -1,0 +1,367 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,0:0:0-12:0:127",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,0:0:0-7:1:85",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,0:0:0-0:4:4",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,0:0:0-0:4:4",
+                    "value": [
+                      {
+                        "string": "vars",
+                        "raw_string": "vars"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,0:6:6-7:1:85",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,1:2:10-3:3:46",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,1:2:10-1:13:21",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,1:2:10-1:13:21",
+                              "value": [
+                                {
+                                  "string": "before_elem",
+                                  "raw_string": "before_elem"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,1:15:23-3:3:46",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,2:4:29-2:17:42",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,2:4:29-2:17:42",
+                                  "path": [
+                                    {
+                                      "double_quoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,2:4:29-2:17:42",
+                                        "value": [
+                                          {
+                                            "string": "before_elem",
+                                            "raw_string": "before_elem"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {}
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,4:2:49-6:3:83",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,4:2:49-4:12:59",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,4:2:49-4:12:59",
+                              "value": [
+                                {
+                                  "string": "after_elem",
+                                  "raw_string": "after_elem"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,4:14:61-6:3:83",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,5:4:67-5:16:79",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,5:4:67-5:16:79",
+                                  "path": [
+                                    {
+                                      "double_quoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,5:4:67-5:16:79",
+                                        "value": [
+                                          {
+                                            "string": "after_elem",
+                                            "raw_string": "after_elem"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {}
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "substitution": {
+            "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,9:0:87-9:17:104",
+            "spread": true,
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,9:5:92-9:16:103",
+                  "value": [
+                    {
+                      "string": "before_elem",
+                      "raw_string": "before_elem"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,10:0:105-10:4:109",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,10:0:105-10:4:109",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,10:0:105-10:4:109",
+                    "value": [
+                      {
+                        "string": "elem",
+                        "raw_string": "elem"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "substitution": {
+            "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,11:0:110-11:16:126",
+            "spread": true,
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,11:5:115-11:15:125",
+                  "value": [
+                    {
+                      "string": "after_elem",
+                      "raw_string": "after_elem"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "before_elem",
+        "id_val": "before_elem",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,2:4:29-2:17:42",
+              "path": [
+                {
+                  "double_quoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,2:4:29-2:17:42",
+                    "value": [
+                      {
+                        "string": "before_elem",
+                        "raw_string": "before_elem"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "before_elem"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "elem",
+        "id_val": "elem",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,10:0:105-10:4:109",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,10:0:105-10:4:109",
+                    "value": [
+                      {
+                        "string": "elem",
+                        "raw_string": "elem"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "elem"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "after_elem",
+        "id_val": "after_elem",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,5:4:67-5:16:79",
+              "path": [
+                {
+                  "double_quoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/spread_var_order.d2,5:4:67-5:16:79",
+                    "value": [
+                      {
+                        "string": "after_elem",
+                        "raw_string": "after_elem"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "after_elem"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

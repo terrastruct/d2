@@ -43,13 +43,13 @@ func (s shapeCircle) GetDimensionsToFit(width, height, paddingX, paddingY float6
 }
 
 func (s shapeCircle) GetInsidePlacement(width, height, paddingX, paddingY float64) geo.Point {
-	project45 := 1 / math.Sqrt2
-	r := s.Box.Width / 2
-	// we want to offset r-padding/2 away from the center
-	return geo.Point{
-		X: s.Box.TopLeft.X + math.Ceil(r-project45*(r-paddingX/2)),
-		Y: s.Box.TopLeft.Y + math.Ceil(r-project45*(r-paddingY/2)),
+	r := s.GetBox().Width / 2
+	halfLength := r * math.Sqrt2 / 2.
+	p := geo.Point{
+		X: s.GetBox().TopLeft.X + math.Ceil(r-halfLength+paddingX/2.),
+		Y: s.GetBox().TopLeft.Y + math.Ceil(r-halfLength+paddingY/2.),
 	}
+	return p
 }
 
 func (s shapeCircle) Perimeter() []geo.Intersectable {

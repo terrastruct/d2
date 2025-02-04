@@ -1,5 +1,13 @@
 {
   "name": "",
+  "config": {
+    "sketch": false,
+    "themeID": 0,
+    "darkThemeID": null,
+    "pad": null,
+    "center": null,
+    "layoutEngine": null
+  },
   "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
@@ -19,6 +27,7 @@
       "fill": "#E7E9EE",
       "fillPattern": "lines",
       "stroke": "black",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -61,6 +70,7 @@
       "fill": "#F5F6F9",
       "fillPattern": "lines",
       "stroke": "black",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -102,6 +112,7 @@
       "borderRadius": 0,
       "fill": "white",
       "stroke": "black",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -143,6 +154,7 @@
       "borderRadius": 0,
       "fill": "white",
       "stroke": "black",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -185,6 +197,7 @@
       "fill": "N1",
       "fillPattern": "lines",
       "stroke": "N7",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -344,6 +357,7 @@
       "fill": "N1",
       "fillPattern": "grain",
       "stroke": "N7",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -512,6 +526,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 163,
@@ -559,6 +574,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 180,
@@ -606,6 +622,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 198,
@@ -653,6 +670,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 557.5,
@@ -693,6 +711,7 @@
     "borderRadius": 0,
     "fill": "N7",
     "stroke": "",
+    "animated": false,
     "shadow": false,
     "3d": false,
     "multiple": false,

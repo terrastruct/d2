@@ -23,7 +23,7 @@ I just forgot my whole philosophy of life!!!: {
 }
 
 // TestChanges makes it explicit in PRs when encoding changes
-// Something we might want to know for playground compatability
+// Something we might want to know for playground compatibility
 func TestChanges(t *testing.T) {
 	// Choose something with many keywords and varied text
 	const script = `timeline mixer: "" {

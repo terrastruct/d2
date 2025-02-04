@@ -172,51 +172,6 @@
     "edges": null,
     "objects": [
       {
-        "id": "I am not a lawyer",
-        "id_val": "I am not a lawyer",
-        "references": [
-          {
-            "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,3:4:29-3:21:46",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,3:4:29-3:21:46",
-                    "value": [
-                      {
-                        "string": "I am not a lawyer",
-                        "raw_string": "I am not a lawyer"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "key_path_index": 0,
-            "map_key_edge_index": -1
-          }
-        ],
-        "attributes": {
-          "label": {
-            "value": "I am not a lawyer"
-          },
-          "labelDimensions": {
-            "width": 0,
-            "height": 0
-          },
-          "style": {},
-          "near_key": null,
-          "shape": {
-            "value": "rectangle"
-          },
-          "direction": {
-            "value": ""
-          },
-          "constraint": null
-        },
-        "zIndex": 0
-      },
-      {
         "id": "custom-disclaimer",
         "id_val": "custom-disclaimer",
         "references": [
@@ -244,6 +199,51 @@
         "attributes": {
           "label": {
             "value": "DRAFT DISCLAIMER"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "I am not a lawyer",
+        "id_val": "I am not a lawyer",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,3:4:29-3:21:46",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/spread-nested.d2,3:4:29-3:21:46",
+                    "value": [
+                      {
+                        "string": "I am not a lawyer",
+                        "raw_string": "I am not a lawyer"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "I am not a lawyer"
           },
           "labelDimensions": {
             "width": 0,

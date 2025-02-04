@@ -7,6 +7,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
+	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2sequence"
@@ -50,7 +51,7 @@ n2 -> n1
 
 	nEdges := len(g.Edges)
 
-	ctx := log.WithTB(context.Background(), t, nil)
+	ctx := log.WithTB(context.Background(), t)
 	d2sequence.Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
 		// just set some position as if it had been properly placed
 		for _, obj := range g.Objects {
@@ -176,7 +177,7 @@ b.t1 -> a.t1
 a.t2 -> b
 b -> a.t2`
 
-	ctx := log.WithTB(context.Background(), t, nil)
+	ctx := log.WithTB(context.Background(), t)
 	g, _, err := d2compiler.Compile("", strings.NewReader(input), nil)
 	assert.Nil(t, err)
 
@@ -297,7 +298,7 @@ func TestNestedSequenceDiagrams(t *testing.T) {
 c
 container -> c: edge 1
 `
-	ctx := log.WithTB(context.Background(), t, nil)
+	ctx := log.WithTB(context.Background(), t)
 	g, _, err := d2compiler.Compile("", strings.NewReader(input), nil)
 	assert.Nil(t, err)
 
@@ -321,7 +322,7 @@ container -> c: edge 1
 	assert.True(t, has)
 	b_t1.Box = geo.NewBox(nil, 100, 100)
 
-	c := g.Root.EnsureChild([]string{"c"})
+	c := g.Root.EnsureChild([]d2ast.String{d2ast.FlatUnquotedString("c")})
 	c.Box = geo.NewBox(nil, 100, 100)
 	c.Shape = d2graph.Scalar{Value: d2target.ShapeSquare}
 
@@ -379,7 +380,7 @@ container -> c: edge 1
 func TestSelfEdges(t *testing.T) {
 	g := d2graph.NewGraph()
 	g.Root.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
-	n1 := g.Root.EnsureChild([]string{"n1"})
+	n1 := g.Root.EnsureChild([]d2ast.String{d2ast.FlatUnquotedString("n1")})
 	n1.Box = geo.NewBox(nil, 100, 100)
 
 	g.Edges = []*d2graph.Edge{
@@ -393,7 +394,7 @@ func TestSelfEdges(t *testing.T) {
 		},
 	}
 
-	ctx := log.WithTB(context.Background(), t, nil)
+	ctx := log.WithTB(context.Background(), t)
 	d2sequence.Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
 		return nil
 	})
@@ -415,12 +416,12 @@ func TestSelfEdges(t *testing.T) {
 func TestSequenceToDescendant(t *testing.T) {
 	g := d2graph.NewGraph()
 	g.Root.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
-	a := g.Root.EnsureChild([]string{"a"})
+	a := g.Root.EnsureChild([]d2ast.String{d2ast.FlatUnquotedString("a")})
 	a.Box = geo.NewBox(nil, 100, 100)
 	a.Attributes = d2graph.Attributes{
 		Shape: d2graph.Scalar{Value: shape.PERSON_TYPE},
 	}
-	a_t1 := a.EnsureChild([]string{"t1"})
+	a_t1 := a.EnsureChild([]d2ast.String{d2ast.FlatUnquotedString("t1")})
 	a_t1.Box = geo.NewBox(nil, 16, 80)
 
 	g.Edges = []*d2graph.Edge{
@@ -435,7 +436,7 @@ func TestSequenceToDescendant(t *testing.T) {
 		},
 	}
 
-	ctx := log.WithTB(context.Background(), t, nil)
+	ctx := log.WithTB(context.Background(), t)
 	d2sequence.Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
 		return nil
 	})

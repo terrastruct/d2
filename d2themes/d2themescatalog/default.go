@@ -4,7 +4,7 @@ import "oss.terrastruct.com/d2/d2themes"
 
 var NeutralDefault = d2themes.Theme{
 	ID:   0,
-	Name: "Neutral default",
+	Name: "Neutral Default",
 	Colors: d2themes.ColorPalette{
 		Neutrals: d2themes.CoolNeutral,
 

@@ -238,7 +238,7 @@
         "name": "x",
         "isFolderOnly": false,
         "ast": {
-          "range": ",1:0:0-2:0:0",
+          "range": "d2/testdata/d2oracle/TestSet/layers-unusable-ref-style.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -248,10 +248,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestSet/layers-unusable-ref-style.d2,4:4:24-4:5:25",
                         "value": [
                           {
-                            "string": "b"
+                            "string": "b",
+                            "raw_string": "b"
                           }
                         ]
                       }
@@ -270,10 +271,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestSet/layers-unusable-ref-style.d2,5:4:30-5:5:31",
                         "value": [
                           {
-                            "string": "a"
+                            "string": "a",
+                            "raw_string": "a"
                           }
                         ]
                       }
@@ -293,10 +295,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2oracle/TestSet/layers-unusable-ref-style.d2,5:6:32-5:11:37",
                                   "value": [
                                     {
-                                      "string": "style"
+                                      "string": "style",
+                                      "raw_string": "style"
                                     }
                                   ]
                                 }
@@ -316,10 +319,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2oracle/TestSet/layers-unusable-ref-style.d2,5:12:38-5:19:45",
                                             "value": [
                                               {
-                                                "string": "opacity"
+                                                "string": "opacity",
+                                                "raw_string": "opacity"
                                               }
                                             ]
                                           }

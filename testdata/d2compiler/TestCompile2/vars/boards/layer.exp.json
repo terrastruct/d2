@@ -205,7 +205,7 @@
         "name": "l",
         "isFolderOnly": false,
         "ast": {
-          "range": ",1:0:0-2:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -215,10 +215,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer.d2,7:4:47-7:6:49",
                         "value": [
                           {
-                            "string": "hi"
+                            "string": "hi",
+                            "raw_string": "hi"
                           }
                         ]
                       }

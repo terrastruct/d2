@@ -4,12 +4,12 @@ import (
 	"context"
 	"encoding/xml"
 	"fmt"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 
-	"cdr.dev/slog"
 	"golang.org/x/tools/txtar"
 
 	trequire "github.com/stretchr/testify/require"
@@ -79,7 +79,7 @@ a -> c
 
 func testTxtar(t *testing.T) {
 	var tcs []testCase
-	archive, err := txtar.ParseFile("./testdata/txtar.txt")
+	archive, err := txtar.ParseFile("./txtar.txt")
 	assert.Success(t, err)
 	for _, f := range archive.Files {
 		tcs = append(tcs, testCase{
@@ -140,7 +140,7 @@ func serde(t *testing.T, tc testCase, ruler *textmeasure.Ruler) {
 
 func run(t *testing.T, tc testCase) {
 	ctx := context.Background()
-	ctx = log.WithTB(ctx, t, nil)
+	ctx = log.WithTB(ctx, t)
 	ctx = log.Leveled(ctx, slog.LevelDebug)
 
 	var ruler *textmeasure.Ruler
@@ -250,7 +250,7 @@ func run(t *testing.T, tc testCase) {
 		pathGotSVG := filepath.Join(dataPath, "sketch.got.svg")
 
 		if len(diagram.Layers) > 0 || len(diagram.Scenarios) > 0 || len(diagram.Steps) > 0 {
-			masterID, err := diagram.HashID()
+			masterID, err := diagram.HashID(nil)
 			assert.Success(t, err)
 			renderOpts.MasterID = masterID
 		}

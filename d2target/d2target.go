@@ -47,6 +47,9 @@ type Config struct {
 	LayoutEngine       *string         `json:"layoutEngine"`
 	ThemeOverrides     *ThemeOverrides `json:"themeOverrides,omitempty"`
 	DarkThemeOverrides *ThemeOverrides `json:"darkThemeOverrides,omitempty"`
+	// Data is a data structure for holding user-defined data
+	// useful for plugins that allow users to configure within source code
+	Data map[string]interface{} `json:"data,omitempty"`
 }
 
 type ThemeOverrides struct {
@@ -220,13 +223,16 @@ func (diagram Diagram) HasShape(condition func(Shape) bool) bool {
 	return false
 }
 
-func (diagram Diagram) HashID() (string, error) {
+func (diagram Diagram) HashID(salt *string) (string, error) {
 	bytes, err := diagram.Bytes()
 	if err != nil {
 		return "", err
 	}
 	h := fnv.New32a()
 	h.Write(bytes)
+	if salt != nil {
+		h.Write([]byte(*salt))
+	}
 	// CSS names can't start with numbers, so prepend a little something
 	return fmt.Sprintf("d2-%d", h.Sum32()), nil
 }
@@ -313,9 +319,6 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 
 		if targetShape.Label != "" {
 			labelPosition := label.FromString(targetShape.LabelPosition)
-			if !labelPosition.IsOutside() {
-				continue
-			}
 
 			shapeType := DSL_SHAPE_TO_SHAPE_TYPE[targetShape.Type]
 			s := shape.NewShape(shapeType,
@@ -327,6 +330,18 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 			)
 
 			labelTL := labelPosition.GetPointOnBox(s.GetBox(), label.PADDING, float64(targetShape.LabelWidth), float64(targetShape.LabelHeight))
+			if targetShape.ThreeDee {
+				offset := THREE_DEE_OFFSET
+				if targetShape.Type == ShapeHexagon {
+					offset /= 2
+				}
+				if strings.HasPrefix(targetShape.LabelPosition, "OUTSIDE_RIGHT") {
+					labelTL.X += float64(offset)
+				}
+				if strings.HasPrefix(targetShape.LabelPosition, "OUTSIDE_TOP") {
+					labelTL.Y -= float64(offset)
+				}
+			}
 			x1 = go2.Min(x1, int(labelTL.X))
 			y1 = go2.Min(y1, int(labelTL.Y))
 			x2 = go2.Max(x2, int(labelTL.X)+targetShape.LabelWidth)
@@ -457,6 +472,7 @@ type Shape struct {
 	FillPattern string `json:"fillPattern,omitempty"`
 	Stroke      string `json:"stroke"`
 
+	Animated     bool `json:"animated"`
 	Shadow       bool `json:"shadow"`
 	ThreeDee     bool `json:"3d"`
 	Multiple     bool `json:"multiple"`
@@ -586,6 +602,9 @@ type Connection struct {
 	Text
 	LabelPosition   string  `json:"labelPosition"`
 	LabelPercentage float64 `json:"labelPercentage"`
+
+	Link       string `json:"link"`
+	PrettyLink string `json:"prettyLink,omitempty"`
 
 	Route   []*geo.Point `json:"route"`
 	IsCurve bool         `json:"isCurve,omitempty"`
@@ -736,6 +755,8 @@ const (
 	FilledDiamondArrowhead    Arrowhead = "filled-diamond"
 	CircleArrowhead           Arrowhead = "circle"
 	FilledCircleArrowhead     Arrowhead = "filled-circle"
+	BoxArrowhead              Arrowhead = "box"
+	FilledBoxArrowhead        Arrowhead = "filled-box"
 
 	// For fat arrows
 	LineArrowhead Arrowhead = "line"
@@ -756,6 +777,7 @@ var Arrowheads = map[string]struct{}{
 	string(TriangleArrowhead): {},
 	string(DiamondArrowhead):  {},
 	string(CircleArrowhead):   {},
+	string(BoxArrowhead):      {},
 	string(CfOne):             {},
 	string(CfMany):            {},
 	string(CfOneRequired):     {},
@@ -783,6 +805,11 @@ func ToArrowhead(arrowheadType string, filled *bool) Arrowhead {
 			return UnfilledTriangleArrowhead
 		}
 		return TriangleArrowhead
+	case string(BoxArrowhead):
+		if filled != nil && *filled {
+			return FilledBoxArrowhead
+		}
+		return BoxArrowhead
 	case string(CfOne):
 		return CfOne
 	case string(CfMany):
@@ -835,6 +862,11 @@ func (arrowhead Arrowhead) Dimensions(strokeWidth float64) (width, height float6
 	case FilledCircleArrowhead, CircleArrowhead:
 		baseWidth = 8
 		baseHeight = 8
+		widthMultiplier = 5
+		heightMultiplier = 5
+	case FilledBoxArrowhead, BoxArrowhead:
+		baseWidth = 6
+		baseHeight = 6
 		widthMultiplier = 5
 		heightMultiplier = 5
 	case CfOne, CfMany, CfOneRequired, CfManyRequired:
