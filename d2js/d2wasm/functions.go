@@ -213,7 +213,8 @@ func Compile(args []js.Value) (interface{}, error) {
 	}, renderOpts)
 	if err != nil {
 		if pe, ok := err.(*d2parser.ParseError); ok {
-			return nil, &WASMError{Message: pe.Error(), Code: 400}
+			errs, _ := json.Marshal(pe.Errors)
+			return nil, &WASMError{Message: string(errs), Code: 400}
 		}
 		return nil, &WASMError{Message: err.Error(), Code: 500}
 	}
