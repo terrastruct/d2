@@ -310,6 +310,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection, i
 				width, 0.,
 			)
 		}
+
 		path = polygonEl.Render()
 	case d2target.BoxArrowhead:
 		polygonEl := d2themes.NewThemableElement("polygon", inlineTheme)
@@ -317,20 +318,22 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection, i
 		polygonEl.Fill = d2target.BG_COLOR
 		polygonEl.Stroke = connection.Stroke
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+		polygonEl.Style = fmt.Sprintf("%sstroke-linejoin:miter;", polygonEl.Style)
 
+		inset := strokeWidth / 2
 		if isTarget {
 			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
-				0., 0.,
-				0., height,
-				width, height,
-				width, 0.,
+				inset, inset,
+				inset, height-inset,
+				width-inset, height-inset,
+				width-inset, inset,
 			)
 		} else {
 			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
-				0., 0.,
-				0., height,
-				width, height,
-				width, 0.,
+				inset, inset,
+				inset, height-inset,
+				width-inset, height-inset,
+				width-inset, inset,
 			)
 		}
 		path = polygonEl.Render()
