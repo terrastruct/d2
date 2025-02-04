@@ -155,7 +155,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		case "fmt":
 			return fmtCmd(ctx, ms)
 		case "play":
-			return playSubcommand(ctx, ms)
+			return playCmd(ctx, ms)
 		case "version":
 			if len(ms.Opts.Flags.Args()) > 1 {
 				return xmain.UsageErrorf("version subcommand accepts no arguments")

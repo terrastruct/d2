@@ -3,6 +3,7 @@ package d2cli
 import (
 	"context"
 	"fmt"
+	"io"
 	"os"
 
 	"oss.terrastruct.com/d2/lib/urlenc"
@@ -10,9 +11,9 @@ import (
 	"oss.terrastruct.com/util-go/xmain"
 )
 
-func playSubcommand(ctx context.Context, ms *xmain.State) error {
+func playCmd(ctx context.Context, ms *xmain.State) error {
 	if len(ms.Opts.Flags.Args()) != 2 {
-		return xmain.UsageErrorf("play must be passed one file to open")
+		return xmain.UsageErrorf("play must be passed one argument: either a filepath or '-' for stdin")
 	}
 	filepath := ms.Opts.Flags.Args()[1]
 
@@ -33,7 +34,7 @@ func playSubcommand(ctx context.Context, ms *xmain.State) error {
 		sketchNumber = 0
 	}
 
-	fileRaw, err := readFile(filepath)
+	fileRaw, err := readInput(filepath)
 	if err != nil {
 		return err
 	}
@@ -43,17 +44,24 @@ func playSubcommand(ctx context.Context, ms *xmain.State) error {
 		return err
 	}
 
-	url := fmt.Sprintf("https://play.d2lang.com/?l=&script=%s&sketch=%d&theme=%d&", encoded, sketchNumber, theme)
+	url := fmt.Sprintf("https://play.d2lang.com/?script=%s&sketch=%d&theme=%d&", encoded, sketchNumber, theme)
 	openBrowser(ctx, ms, url)
 	return nil
 }
 
-func readFile(filepath string) (string, error) {
+func readInput(filepath string) (string, error) {
+	if filepath == "-" {
+		data, err := io.ReadAll(os.Stdin)
+		if err != nil {
+			return "", fmt.Errorf("error reading from stdin: %w", err)
+		}
+		return string(data), nil
+	}
+
 	data, err := os.ReadFile(filepath)
 	if err != nil {
 		return "", xmain.UsageErrorf(err.Error())
 	}
-
 	return string(data), nil
 }
 
