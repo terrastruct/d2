@@ -840,6 +840,22 @@ func ArrowheadJS(r jsrunner.JSRunner, arrowhead d2target.Arrowhead, stroke strin
 			stroke,
 			BG_COLOR,
 		)
+	case d2target.BoxArrowhead:
+		arrowJS = fmt.Sprintf(
+			`node = rc.polygon(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", seed: 1})`,
+			`[[0, -10], [0, 10], [-20, 10], [-20, -10]]`,
+			strokeWidth,
+			stroke,
+			BG_COLOR,
+		)
+	case d2target.FilledBoxArrowhead:
+		arrowJS = fmt.Sprintf(
+			`node = rc.polygon(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", seed: 1})`,
+			`[[0, -10], [0, 10], [-20, 10], [-20, -10]]`,
+			strokeWidth,
+			stroke,
+			stroke,
+		)
 	}
 	return
 }
