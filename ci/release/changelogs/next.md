@@ -20,6 +20,7 @@
 - Compiler: reserved keywords with missing values error instead of silently doing nothing [#2251](https://github.com/terrastruct/d2/pull/2251)
 - Render: SVG outputs conform to stricter HTML standards, e.g. no duplicate ids [#2273](https://github.com/terrastruct/d2/issues/2273)
 - Themes: theme names are consistently cased [#2322](https://github.com/terrastruct/d2/pull/2322)
+- Nears: constant nears avoid collision with edge routes [#2327](https://github.com/terrastruct/d2/pull/2327)
 
 #### Bugfixes ⛑️
 
@@ -28,3 +29,5 @@
 - Globs: fixes edge case where globs with imported boards would create empty boards [#2247](https://github.com/terrastruct/d2/pull/2247)
 - Sequence diagrams: fixes alignment of notes when self messages are above it [#2264](https://github.com/terrastruct/d2/pull/2264)
 - Null: fixes `null`ing a connection with absolute syntax [#2318](https://github.com/terrastruct/d2/issues/2318)
+- Gradients: works with connection fills [#2326](https://github.com/terrastruct/d2/pull/2326)
+- Latex: fixes backslashes doubling on successive parses [#2328](https://github.com/terrastruct/d2/pull/2328)
