@@ -1480,12 +1480,6 @@ func (p *parser) parseBlockString() *d2ast.BlockString {
 		}
 
 		if r != endHint {
-			if (bs.Tag == "latex" || bs.Tag == "tex") && r == '\\' {
-				// For LaTeX, where single backslash is common, we escape it so that users don't have to write double the backslashes
-				sb.WriteRune('\\')
-				sb.WriteRune('\\')
-				continue
-			}
 			sb.WriteRune(r)
 			continue
 		}

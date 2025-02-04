@@ -30,3 +30,4 @@
 - Sequence diagrams: fixes alignment of notes when self messages are above it [#2264](https://github.com/terrastruct/d2/pull/2264)
 - Null: fixes `null`ing a connection with absolute syntax [#2318](https://github.com/terrastruct/d2/issues/2318)
 - Gradients: works with connection fills [#2326](https://github.com/terrastruct/d2/pull/2326)
+- Latex: fixes backslashes doubling on successive parses [#2328](https://github.com/terrastruct/d2/pull/2328)
