@@ -3,17 +3,17 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,0:0:0-6:0:48",
+      "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,0:0:0-10:0:93",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,1:0:1-4:1:41",
+            "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,1:0:1-4:1:41",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,1:0:1-1:2:3",
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,1:0:1-1:2:3",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,1:0:1-1:2:3",
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,1:0:1-1:2:3",
                     "value": [
                       {
                         "string": "**",
@@ -32,18 +32,18 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,1:4:5-4:1:41",
+                "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,1:4:5-4:1:41",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,2:2:9-2:14:21",
+                      "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,2:2:9-2:14:21",
                       "ampersand": true,
                       "key": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,2:3:10-2:7:14",
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,2:3:10-2:7:14",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,2:3:10-2:7:14",
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,2:3:10-2:7:14",
                               "value": [
                                 {
                                   "string": "leaf",
@@ -57,7 +57,7 @@
                       "primary": {},
                       "value": {
                         "boolean": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,2:9:16-2:14:21",
+                          "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,2:9:16-2:14:21",
                           "value": false
                         }
                       }
@@ -65,13 +65,13 @@
                   },
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,3:2:24-3:17:39",
+                      "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,3:2:24-3:17:39",
                       "key": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,3:2:24-3:12:34",
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,3:2:24-3:12:34",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,3:2:24-3:7:29",
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,3:2:24-3:7:29",
                               "value": [
                                 {
                                   "string": "style",
@@ -82,7 +82,7 @@
                           },
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,3:8:30-3:12:34",
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,3:8:30-3:12:34",
                               "value": [
                                 {
                                   "string": "fill",
@@ -96,7 +96,7 @@
                       "primary": {},
                       "value": {
                         "unquoted_string": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,3:14:36-3:17:39",
+                          "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,3:14:36-3:17:39",
                           "value": [
                             {
                               "string": "red",
@@ -114,13 +114,120 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,5:0:42-5:5:47",
+            "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,5:0:42-8:1:86",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,5:0:42-5:5:47",
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,5:0:42-5:2:44",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,5:0:42-5:1:43",
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,5:0:42-5:2:44",
+                    "value": [
+                      {
+                        "string": "**",
+                        "raw_string": "**"
+                      }
+                    ],
+                    "pattern": [
+                      "*",
+                      "",
+                      "*"
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,5:4:46-8:1:86",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,6:2:50-6:13:61",
+                      "ampersand": true,
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,6:3:51-6:7:55",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,6:3:51-6:7:55",
+                              "value": [
+                                {
+                                  "string": "leaf",
+                                  "raw_string": "leaf"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "boolean": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,6:9:57-6:13:61",
+                          "value": true
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,7:2:64-7:22:84",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,7:2:64-7:14:76",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,7:2:64-7:7:69",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,7:8:70-7:14:76",
+                              "value": [
+                                {
+                                  "string": "stroke",
+                                  "raw_string": "stroke"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,7:16:78-7:22:84",
+                          "value": [
+                            {
+                              "string": "yellow",
+                              "raw_string": "yellow"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,9:0:87-9:5:92",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,9:0:87-9:5:92",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,9:0:87-9:1:88",
                     "value": [
                       {
                         "string": "a",
@@ -131,7 +238,7 @@
                 },
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,5:2:44-5:3:45",
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,9:2:89-9:3:90",
                     "value": [
                       {
                         "string": "b",
@@ -142,7 +249,7 @@
                 },
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,5:4:46-5:5:47",
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,9:4:91-9:5:92",
                     "value": [
                       {
                         "string": "c",
@@ -190,11 +297,11 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,5:0:42-5:5:47",
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,9:0:87-9:5:92",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,5:0:42-5:1:43",
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,9:0:87-9:1:88",
                     "value": [
                       {
                         "string": "a",
@@ -205,7 +312,7 @@
                 },
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,5:2:44-5:3:45",
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,9:2:89-9:3:90",
                     "value": [
                       {
                         "string": "b",
@@ -216,7 +323,7 @@
                 },
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,5:4:46-5:5:47",
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,9:4:91-9:5:92",
                     "value": [
                       {
                         "string": "c",
@@ -261,11 +368,11 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,5:0:42-5:5:47",
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,9:0:87-9:5:92",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,5:0:42-5:1:43",
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,9:0:87-9:1:88",
                     "value": [
                       {
                         "string": "a",
@@ -276,7 +383,7 @@
                 },
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,5:2:44-5:3:45",
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,9:2:89-9:3:90",
                     "value": [
                       {
                         "string": "b",
@@ -287,7 +394,7 @@
                 },
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,5:4:46-5:5:47",
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,9:4:91-9:5:92",
                     "value": [
                       {
                         "string": "c",
@@ -332,11 +439,11 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,5:0:42-5:5:47",
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,9:0:87-9:5:92",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,5:0:42-5:1:43",
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,9:0:87-9:1:88",
                     "value": [
                       {
                         "string": "a",
@@ -347,7 +454,7 @@
                 },
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,5:2:44-5:3:45",
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,9:2:89-9:3:90",
                     "value": [
                       {
                         "string": "b",
@@ -358,7 +465,7 @@
                 },
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter.d2,5:4:46-5:5:47",
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/leaf-filter-1.d2,9:4:91-9:5:92",
                     "value": [
                       {
                         "string": "c",
@@ -381,7 +488,11 @@
             "width": 0,
             "height": 0
           },
-          "style": {},
+          "style": {
+            "stroke": {
+              "value": "yellow"
+            }
+          },
           "near_key": null,
           "shape": {
             "value": "rectangle"

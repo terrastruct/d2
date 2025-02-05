@@ -5212,21 +5212,55 @@ y.link: https://google.com
 			},
 		},
 		{
-			name: "leaf-filter",
+			name: "leaf-filter-1",
 			run: func(t *testing.T) {
 				g, _ := assertCompile(t, `
 **: {
   &leaf: false
   style.fill: red
 }
+**: {
+  &leaf: true
+  style.stroke: yellow
+}
 a.b.c
 `, ``)
 				assert.Equal(t, "a", g.Objects[0].ID)
 				assert.Equal(t, "red", g.Objects[0].Attributes.Style.Fill.Value)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Attributes.Style.Stroke)
 				assert.Equal(t, "b", g.Objects[1].ID)
 				assert.Equal(t, "red", g.Objects[1].Attributes.Style.Fill.Value)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[1].Attributes.Style.Stroke)
 				assert.Equal(t, "c", g.Objects[2].ID)
 				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Fill)
+				assert.Equal(t, "yellow", g.Objects[2].Attributes.Style.Stroke.Value)
+			},
+		},
+		{
+			name: "leaf-filter-2",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+**: {
+  &leaf: true
+  style.stroke: yellow
+}
+a: {
+  b -> c
+}
+d: {
+  e
+}
+`, ``)
+				assert.Equal(t, "a", g.Objects[0].ID)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Attributes.Style.Stroke)
+				assert.Equal(t, "b", g.Objects[1].ID)
+				assert.Equal(t, "yellow", g.Objects[1].Attributes.Style.Stroke.Value)
+				assert.Equal(t, "c", g.Objects[2].ID)
+				assert.Equal(t, "yellow", g.Objects[2].Attributes.Style.Stroke.Value)
+				assert.Equal(t, "d", g.Objects[3].ID)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[3].Attributes.Style.Stroke)
+				assert.Equal(t, "e", g.Objects[4].ID)
+				assert.Equal(t, "yellow", g.Objects[4].Attributes.Style.Stroke.Value)
 			},
 		},
 		{
