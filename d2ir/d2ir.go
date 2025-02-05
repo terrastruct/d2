@@ -673,6 +673,23 @@ func (m *Map) IsContainer() bool {
 	if m == nil {
 		return false
 	}
+	// Check references as the fields and edges may not be compiled yet
+	f := m.Parent().(*Field)
+	for _, ref := range f.References {
+		if ref.Primary() && ref.Context_.Key != nil && ref.Context_.Key.Value.Map != nil {
+			for _, n := range ref.Context_.Key.Value.Map.Nodes {
+				if len(n.MapKey.Edges) > 0 {
+					return true
+				}
+				if n.MapKey.Key != nil {
+					_, isReserved := d2ast.ReservedKeywords[n.MapKey.Key.Path[0].Unbox().ScalarString()]
+					if !(isReserved && f.Name.IsUnquoted()) {
+						return true
+					}
+				}
+			}
+		}
+	}
 	for _, f := range m.Fields {
 		_, isReserved := d2ast.ReservedKeywords[f.Name.ScalarString()]
 		if !(isReserved && f.Name.IsUnquoted()) {
