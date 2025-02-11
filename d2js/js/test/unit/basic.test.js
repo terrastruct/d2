@@ -35,6 +35,16 @@ describe("D2 Unit Tests", () => {
     await d2.worker.terminate();
   }, 20000);
 
+  test("center render works", async () => {
+    const d2 = new D2();
+    const result = await d2.compile("x -> y", { center: true });
+    const svg = await d2.render(result.diagram, { center: true });
+    expect(svg).toContain("<svg");
+    expect(svg).toContain("</svg>");
+    expect(svg).toContain("xMidYMid meet");
+    await d2.worker.terminate();
+  }, 20000);
+
   test("latex works", async () => {
     const d2 = new D2();
     const result = await d2.compile("x: |latex \\frac{f(x+h)-f(x)}{h} |");

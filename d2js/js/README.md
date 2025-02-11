@@ -56,6 +56,11 @@ Compiles D2 markup into an intermediate representation.
 Options:
 - `layout`: Layout engine to use ('dagre' | 'elk') [default: 'dagre']
 - `sketch`: Enable sketch mode [default: false]
+- `themeId`: Theme ID to use [default: 0]
+- `darkThemeId`: Theme ID to use when client is in dark mode
+- `center`: Center the SVG in the containing viewbox [default: false]
+- `pad`: Pixels padded around the rendered diagram [default: 100]
+- `scale`: Scale the output. E.g., 0.5 to halve the default size. The default will render SVG's that will fit to screen. Setting to 1 turns off SVG fitting to screen.
 
 ### `render(diagram: Diagram, options?: RenderOptions): Promise<string>`
 Renders a compiled diagram to SVG.

@@ -33,7 +33,12 @@
         border-radius: 4px;
       }
       .layout-toggle,
-      .sketch-toggle {
+      .sketch-toggle,
+      .center-toggle,
+      .theme-select,
+      .dark-theme-select,
+      .padding-input,
+      .scale-input {
         display: flex;
         gap: 16px;
         align-items: center;
@@ -42,12 +47,17 @@
         display: flex;
         gap: 12px;
       }
+      .input-label,
+      .select-label,
       .radio-label,
       .checkbox-label {
         display: flex;
         gap: 4px;
         align-items: center;
         cursor: pointer;
+      }
+      .number-input {
+        width: 3rem;
       }
       button {
         padding: 8px 16px;
@@ -96,6 +106,74 @@
             Sketch mode
           </label>
         </div>
+        <div class="center-toggle">
+          <label class="checkbox-label">
+            <input type="checkbox" id="center" />
+            Center mode
+          </label>
+        </div>
+        <div class="theme-select">
+          <label class="select-label">
+            <select id="theme" name="theme">
+              <option value="-1"></option>
+              <option value="0">Default</option>
+              <option value="1">Neutral grey</option>
+              <option value="3">Flagship Terrastruct</option>
+              <option value="4">Cool classics</option>
+              <option value="5">Mixed berry blue</option>
+              <option value="6">Grape soda</option>
+              <option value="7">Aubergine</option>
+              <option value="8">Colorblind clear</option>
+              <option value="100">Vanilla nitro cola</option>
+              <option value="101">Orange creamsicle</option>
+              <option value="102">Shirley temple</option>
+              <option value="103">Earth tones</option>
+              <option value="104">Everglade green</option>
+              <option value="105">Buttered toast</option>
+              <option value="200">Dark mauve</option>
+              <option value="300">Terminal</option>
+              <option value="301">Terminal grayscale</option>
+            </select>
+            Theme ID
+          </label>
+        </div>
+        <div class="dark-theme-select">
+          <label class="select-label">
+            <select id="dark-theme" name="dark-theme">
+              <option value="-1"></option>
+              <option value="0">Default</option>
+              <option value="1">Neutral grey</option>
+              <option value="3">Flagship Terrastruct</option>
+              <option value="4">Cool classics</option>
+              <option value="5">Mixed berry blue</option>
+              <option value="6">Grape soda</option>
+              <option value="7">Aubergine</option>
+              <option value="8">Colorblind clear</option>
+              <option value="100">Vanilla nitro cola</option>
+              <option value="101">Orange creamsicle</option>
+              <option value="102">Shirley temple</option>
+              <option value="103">Earth tones</option>
+              <option value="104">Everglade green</option>
+              <option value="105">Buttered toast</option>
+              <option value="200">Dark mauve</option>
+              <option value="300">Terminal</option>
+              <option value="301">Terminal grayscale</option>
+            </select>
+            Dark Theme ID
+          </label>
+        </div>
+        <div class="padding-input">
+          <label class="input-label">
+            <input type="number" id="padding" value="20" step="10" class="number-input" />
+            Padding
+          </label>
+        </div>
+        <div class="scale-input">
+          <label class="input-label">
+            <input type="number" id="scale" value="-1" step="1" class="number-input" />
+            Scale
+          </label>
+        </div>
       </div>
       <button onclick="compile()">Compile</button>
     </div>
@@ -104,12 +182,43 @@
       import { D2 } from "../dist/browser/index.js";
       const d2 = new D2();
       window.compile = async () => {
+        const notNegative = (value) => {
+          if (value < 0) {
+            return null;
+          } else return value;
+        };
         const input = document.getElementById("input").value;
         const layout = document.querySelector('input[name="layout"]:checked').value;
         const sketch = document.getElementById("sketch").checked;
+        const center = document.getElementById("center").checked;
+        const themeSelector = document.getElementById("theme");
+        const themeId = notNegative(
+          Number(themeSelector.options[themeSelector.selectedIndex].value)
+        );
+        const darkThemeSelector = document.getElementById("dark-theme");
+        const darkThemeId = notNegative(
+          Number(darkThemeSelector.options[darkThemeSelector.selectedIndex].value)
+        );
+        const scale = notNegative(Number(document.getElementById("scale").value));
+        const pad = Number(document.getElementById("padding").value);
         try {
-          const result = await d2.compile(input, { layout, sketch });
-          const svg = await d2.render(result.diagram, { sketch });
+          const result = await d2.compile(input, {
+            layout,
+            sketch,
+            themeId,
+            darkThemeId,
+            scale,
+            pad,
+            center,
+          });
+          const svg = await d2.render(result.diagram, {
+            sketch,
+            themeId,
+            darkThemeId,
+            scale,
+            pad,
+            center,
+          });
           document.getElementById("output").innerHTML = svg;
         } catch (err) {
           console.error(err);
