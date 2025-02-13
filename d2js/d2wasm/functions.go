@@ -201,8 +201,20 @@ func Compile(args []js.Value) (interface{}, error) {
 		fontFamily = go2.Pointer(d2fonts.HandDrawn)
 		renderOpts.Sketch = input.Opts.Sketch
 	}
+	if input.Opts != nil && input.Opts.Pad != nil {
+		renderOpts.Pad = input.Opts.Pad
+	}
+	if input.Opts != nil && input.Opts.Center != nil {
+		renderOpts.Center = input.Opts.Center
+	}
 	if input.Opts != nil && input.Opts.ThemeID != nil {
 		renderOpts.ThemeID = input.Opts.ThemeID
+	}
+	if input.Opts != nil && input.Opts.DarkThemeID != nil {
+		renderOpts.DarkThemeID = input.Opts.DarkThemeID
+	}
+	if input.Opts != nil && input.Opts.Scale != nil {
+		renderOpts.Scale = input.Opts.Scale
 	}
 	diagram, g, err := d2lib.Compile(ctx, input.FS["index"], &d2lib.CompileOptions{
 		UTF16Pos:       true,
@@ -245,8 +257,20 @@ func Render(args []js.Value) (interface{}, error) {
 	if input.Opts != nil && input.Opts.Sketch != nil {
 		renderOpts.Sketch = input.Opts.Sketch
 	}
+	if input.Opts != nil && input.Opts.Pad != nil {
+		renderOpts.Pad = input.Opts.Pad
+	}
+	if input.Opts != nil && input.Opts.Center != nil {
+		renderOpts.Center = input.Opts.Center
+	}
 	if input.Opts != nil && input.Opts.ThemeID != nil {
 		renderOpts.ThemeID = input.Opts.ThemeID
+	}
+	if input.Opts != nil && input.Opts.DarkThemeID != nil {
+		renderOpts.DarkThemeID = input.Opts.DarkThemeID
+	}
+	if input.Opts != nil && input.Opts.Scale != nil {
+		renderOpts.Scale = input.Opts.Scale
 	}
 	out, err := d2svg.Render(input.Diagram, renderOpts)
 	if err != nil {
