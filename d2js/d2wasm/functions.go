@@ -21,6 +21,7 @@ import (
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
+	"oss.terrastruct.com/d2/d2renderers/d2svg/appendix"
 	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/memfs"
 	"oss.terrastruct.com/d2/lib/textmeasure"
@@ -253,6 +254,11 @@ func Render(args []js.Value) (interface{}, error) {
 		return nil, &WASMError{Message: "missing 'diagram' field in input JSON", Code: 400}
 	}
 
+	ruler, err := textmeasure.NewRuler()
+	if err != nil {
+		return nil, &WASMError{Message: fmt.Sprintf("text ruler cannot be initialized: %s", err.Error()), Code: 500}
+	}
+
 	renderOpts := &d2svg.RenderOpts{}
 	if input.Opts != nil && input.Opts.Sketch != nil {
 		renderOpts.Sketch = input.Opts.Sketch
@@ -275,6 +281,9 @@ func Render(args []js.Value) (interface{}, error) {
 	out, err := d2svg.Render(input.Diagram, renderOpts)
 	if err != nil {
 		return nil, &WASMError{Message: fmt.Sprintf("render failed: %s", err.Error()), Code: 500}
+	}
+	if input.Opts != nil && *input.Opts.ForceAppendix {
+		out = appendix.Append(input.Diagram, renderOpts, ruler, out)
 	}
 
 	return out, nil

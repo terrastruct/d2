@@ -35,6 +35,7 @@
       .layout-toggle,
       .sketch-toggle,
       .center-toggle,
+      .appendix-toggle,
       .theme-select,
       .dark-theme-select,
       .padding-input,
@@ -110,6 +111,12 @@
           <label class="checkbox-label">
             <input type="checkbox" id="center" />
             Centered
+          </label>
+        </div>
+        <div class="appendix-toggle">
+          <label class="checkbox-label">
+            <input type="checkbox" id="appendix" />
+            Force Appendix
           </label>
         </div>
         <div class="theme-select">
@@ -201,6 +208,7 @@
         );
         const scale = notNegative(Number(document.getElementById("scale").value));
         const pad = Number(document.getElementById("padding").value);
+        const forceAppendix = document.getElementById("appendix").checked;
         try {
           const result = await d2.compile(input, {
             layout,
@@ -210,6 +218,7 @@
             scale,
             pad,
             center,
+            forceAppendix,
           });
           const svg = await d2.render(result.diagram, {
             sketch,
@@ -218,6 +227,7 @@
             scale,
             pad,
             center,
+            forceAppendix,
           });
           document.getElementById("output").innerHTML = svg;
         } catch (err) {

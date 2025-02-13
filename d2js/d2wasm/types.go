@@ -37,13 +37,14 @@ type CompileRequest struct {
 }
 
 type RenderOptions struct {
-	Layout      *string  `json:"layout"`
-	Pad         *int64   `json:"pad"`
-	Sketch      *bool    `json:"sketch"`
-	Center      *bool    `json:"center"`
-	ThemeID     *int64   `json:"themeID"`
-	DarkThemeID *int64   `json:"darkThemeID"`
-	Scale       *float64 `json:"scale"`
+	Layout        *string  `json:"layout"`
+	Pad           *int64   `json:"pad"`
+	Sketch        *bool    `json:"sketch"`
+	Center        *bool    `json:"center"`
+	ThemeID       *int64   `json:"themeID"`
+	DarkThemeID   *int64   `json:"darkThemeID"`
+	Scale         *float64 `json:"scale"`
+	ForceAppendix *bool    `json:"forceAppendix"`
 }
 
 type CompileResponse struct {
