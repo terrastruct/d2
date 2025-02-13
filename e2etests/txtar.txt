@@ -759,3 +759,10 @@ b: {
 
 a.b -> b.c
 b.c -> a.a: {style.font-color: red; style.stroke: red; style.fill: mistyrose}
+
+-- sql-casing-panic --
+
+asdf:{
+  shape:sQl_table
+  zxcv
+}
