@@ -514,13 +514,14 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		c.compileLabel(attrs, f)
 		c.compilePosition(attrs, f)
 	case "shape":
-		in := d2target.IsShape(scalar.ScalarString())
-		_, isArrowhead := d2target.Arrowheads[scalar.ScalarString()]
+		shapeVal := strings.ToLower(scalar.ScalarString())
+		in := d2target.IsShape(shapeVal)
+		_, isArrowhead := d2target.Arrowheads[shapeVal]
 		if !in && !isArrowhead {
 			c.errorf(scalar, "unknown shape %q", scalar.ScalarString())
 			return
 		}
-		attrs.Shape.Value = scalar.ScalarString()
+		attrs.Shape.Value = shapeVal
 		if strings.EqualFold(attrs.Shape.Value, d2target.ShapeCode) {
 			// Explicit code shape is plaintext.
 			attrs.Language = d2target.ShapeText
@@ -596,11 +597,12 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Link.MapKey = f.LastPrimaryKey()
 	case "direction":
 		dirs := []string{"up", "down", "right", "left"}
-		if !go2.Contains(dirs, scalar.ScalarString()) {
+		val := strings.ToLower(scalar.ScalarString())
+		if !go2.Contains(dirs, val) {
 			c.errorf(scalar, `direction must be one of %v, got %q`, strings.Join(dirs, ", "), scalar.ScalarString())
 			return
 		}
-		attrs.Direction.Value = scalar.ScalarString()
+		attrs.Direction.Value = val
 		attrs.Direction.MapKey = f.LastPrimaryKey()
 	case "constraint":
 		if _, ok := scalar.(d2ast.String); !ok {
