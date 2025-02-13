@@ -29,7 +29,7 @@ require (
 	golang.org/x/tools v0.25.0
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da
 	gonum.org/v1/plot v0.14.0
-	oss.terrastruct.com/util-go v0.0.0-20241005222610-44c011a04896
+	oss.terrastruct.com/util-go v0.0.0-20250213174338-243d8661088a
 )
 
 require (
