@@ -263,6 +263,7 @@ let us know and we'll be happy to include it here!
 - **Remark Plugin**: [https://github.com/mech-a/remark-d2](https://github.com/mech-a/remark-d2)
 - **VitePress Plugin**: [https://github.com/BadgerHobbs/vitepress-plugin-d2](https://github.com/BadgerHobbs/vitepress-plugin-d2)
 - **Zed extension**: [https://github.com/gabeidx/zed-d2](https://github.com/gabeidx/zed-d2)
+- **Hexo blog extension**: [https://github.com/leverimmy/hexo-d2](https://github.com/leverimmy/hexo-d2)
 
 ### Misc
 
