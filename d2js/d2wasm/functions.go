@@ -232,13 +232,23 @@ func Compile(args []js.Value) (interface{}, error) {
 		return nil, &WASMError{Message: err.Error(), Code: 500}
 	}
 
+  mergedRenderOpts := RenderOptions{
+    ThemeID:  renderOpts.ThemeID,
+		DarkThemeID: renderOpts.DarkThemeID,
+		Sketch: renderOpts.Sketch,
+    Pad: renderOpts.Pad,
+    Center: renderOpts.Center,
+    ForceAppendix: input.Opts.ForceAppendix,
+  };
+
 	input.FS["index"] = d2format.Format(g.AST)
 
 	return CompileResponse{
 		FS:      input.FS,
 		Diagram: *diagram,
 		Graph:   *g,
-	}, nil
+    RenderOpts: mergedRenderOpts,
+  }, nil
 }
 
 func Render(args []js.Value) (interface{}, error) {
