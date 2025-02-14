@@ -42,19 +42,44 @@ import { D2 } from '@terrastruct/d2';
 const d2 = new D2();
 
 const result = await d2.compile('x -> y');
-const svg = await d2.render(result.diagram);
+const svg = await d2.render(result.diagram, result.options);
+```
+
+Additional Configuration:
+
+```javascript
+import { D2 } from '@terrastruct/d2';
+
+const d2 = new D2();
+
+const result = await d2.compile('x -> y', {
+    sketch = true,
+});
+const svg = await d2.render(result.diagram, result.options);
 ```
 
 ## API Reference
 
 ### `new D2()`
+
 Creates a new D2 instance.
 
 ### `compile(input: string, options?: CompileOptions): Promise<CompileResult>`
+
 Compiles D2 markup into an intermediate representation.
 
-Options:
+### `render(diagram: Diagram, options?: RenderOptions): Promise<string>`
+
+Renders a compiled diagram to SVG.
+
+### `CompileOptions`
+
+All `RenderOptions` properties in addition to:
+
 - `layout`: Layout engine to use ('dagre' | 'elk') [default: 'dagre']
+
+### `RenderOptions`
+
 - `sketch`: Enable sketch mode [default: false]
 - `themeID`: Theme ID to use [default: 0]
 - `darkThemeID`: Theme ID to use when client is in dark mode
@@ -63,8 +88,12 @@ Options:
 - `scale`: Scale the output. E.g., 0.5 to halve the default size. The default will render SVG's that will fit to screen. Setting to 1 turns off SVG fitting to screen.
 - `forceAppendix`: Adds an appendix for tooltips and links [default: false]
 
-### `render(diagram: Diagram, options?: RenderOptions): Promise<string>`
-Renders a compiled diagram to SVG.
+### `CompileResult`
+
+- `diagram`: `Diagram`: Compiled D2 diagram
+- `options`: `RenderOptions`: Render options merged with configuration set in diagram
+- `fs`
+- `graph`
 
 ## Development
 

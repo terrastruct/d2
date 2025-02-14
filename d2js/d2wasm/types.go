@@ -33,11 +33,10 @@ type BoardPositionResponse struct {
 
 type CompileRequest struct {
 	FS   map[string]string `json:"fs"`
-	Opts *RenderOptions    `json:"options"`
+	Opts *CompileOptions   `json:"options"`
 }
 
 type RenderOptions struct {
-	Layout        *string  `json:"layout"`
 	Pad           *int64   `json:"pad"`
 	Sketch        *bool    `json:"sketch"`
 	Center        *bool    `json:"center"`
@@ -47,10 +46,16 @@ type RenderOptions struct {
 	ForceAppendix *bool    `json:"forceAppendix"`
 }
 
+type CompileOptions struct {
+	RenderOptions
+	Layout *string `json:"layout"`
+}
+
 type CompileResponse struct {
 	FS      map[string]string `json:"fs"`
 	Diagram d2target.Diagram  `json:"diagram"`
 	Graph   d2graph.Graph     `json:"graph"`
+	Options RenderOptions     `json:"options"`
 }
 
 type CompletionResponse struct {

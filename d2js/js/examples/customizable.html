@@ -10,12 +10,14 @@
         margin: 0;
         font-family: system-ui, -apple-system, sans-serif;
       }
+
       .controls {
         display: flex;
         flex-direction: column;
         gap: 12px;
         width: 400px;
       }
+
       textarea {
         width: 100%;
         height: 300px;
@@ -24,6 +26,7 @@
         border-radius: 4px;
         font-family: monospace;
       }
+
       .options-group {
         display: flex;
         flex-direction: column;
@@ -32,34 +35,31 @@
         border: 1px solid #eee;
         border-radius: 4px;
       }
-      .layout-toggle,
-      .sketch-toggle,
-      .center-toggle,
-      .appendix-toggle,
-      .theme-select,
-      .dark-theme-select,
-      .padding-input,
-      .scale-input {
+
+      .option:not(:has(.option-toggle-box:checked)) .option-select {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+
+      .option {
         display: flex;
         gap: 16px;
         align-items: center;
       }
-      .radio-group {
-        display: flex;
-        gap: 12px;
-      }
+
       .input-label,
-      .select-label,
-      .radio-label,
-      .checkbox-label {
+      .checkbox-label,
+      .select-label {
         display: flex;
         gap: 4px;
         align-items: center;
         cursor: pointer;
       }
+
       .number-input {
         width: 3rem;
       }
+
       button {
         padding: 8px 16px;
         background: #0066cc;
@@ -68,9 +68,11 @@
         border-radius: 4px;
         cursor: pointer;
       }
+
       button:hover {
         background: #0052a3;
       }
+
       #output {
         flex: 1;
         overflow: auto;
@@ -78,51 +80,107 @@
         border-radius: 4px;
         padding: 16px;
       }
+
       #output svg {
         max-width: 100%;
         max-height: 90vh;
       }
     </style>
   </head>
+
   <body>
     <div class="controls">
       <textarea id="input">x -> y</textarea>
       <div class="options-group">
-        <div class="layout-toggle">
-          <span>Layout:</span>
-          <div class="radio-group">
-            <label class="radio-label">
-              <input type="radio" name="layout" value="dagre" checked />
-              Dagre
-            </label>
-            <label class="radio-label">
-              <input type="radio" name="layout" value="elk" />
-              ELK
+        <div class="option">
+          <div class="option-toggle">
+            <label class="checkbox-label">
+              <input type="checkbox" id="layout-toggle" class="option-toggle-box" />
+              <span>Layout</span>
             </label>
           </div>
+          <div class="option-select">
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="layout-select" value="dagre" checked />
+                Dagre
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="layout-select" value="elk" />
+                ELK
+              </label>
+            </div>
+          </div>
         </div>
-        <div class="sketch-toggle">
-          <label class="checkbox-label">
-            <input type="checkbox" id="sketch" />
-            Sketch mode
-          </label>
+        <div class="option">
+          <div class="option-toggle">
+            <label class="checkbox-label">
+              <input type="checkbox" id="sketch-toggle" class="option-toggle-box" />
+              <span>Sketch Mode</span>
+            </label>
+          </div>
+          <div class="option-select">
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="sketch-select" value="true" checked />
+                Enabled
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="sketch-select" value="false" />
+                Disabled
+              </label>
+            </div>
+          </div>
         </div>
-        <div class="center-toggle">
-          <label class="checkbox-label">
-            <input type="checkbox" id="center" />
-            Centered
-          </label>
+        <div class="option">
+          <div class="option-toggle">
+            <label class="checkbox-label">
+              <input type="checkbox" id="center-toggle" class="option-toggle-box" />
+              <span>Centered</span>
+            </label>
+          </div>
+          <div class="option-select">
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="center-select" value="true" checked />
+                Enabled
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="center-select" value="false" />
+                Disabled
+              </label>
+            </div>
+          </div>
         </div>
-        <div class="appendix-toggle">
-          <label class="checkbox-label">
-            <input type="checkbox" id="appendix" />
-            Force Appendix
-          </label>
+        <div class="option">
+          <div class="option-toggle">
+            <label class="checkbox-label">
+              <input type="checkbox" id="appendix-toggle" class="option-toggle-box" />
+              <span>Force Appendix</span>
+            </label>
+          </div>
+          <div class="option-select">
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="appendix-select" value="true" checked />
+                Enabled
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="appendix-select" value="false" />
+                Disabled
+              </label>
+            </div>
+          </div>
         </div>
-        <div class="theme-select">
-          <label class="select-label">
-            <select id="theme" name="theme">
-              <option value="-1"></option>
+        <div class="option">
+          <div class="option-toggle">
+            <label class="checkbox-label">
+              <input type="checkbox" id="theme-toggle" class="option-toggle-box" />
+              <span>Theme</span>
+            </label>
+          </div>
+          <div class="option-select">
+            <select id="theme-select">
               <option selected value="0">Default</option>
               <option value="1">Neutral grey</option>
               <option value="3">Flagship Terrastruct</option>
@@ -141,14 +199,18 @@
               <option value="300">Terminal</option>
               <option value="301">Terminal grayscale</option>
             </select>
-            Theme ID
-          </label>
+          </div>
         </div>
-        <div class="dark-theme-select">
-          <label class="select-label">
-            <select id="dark-theme" name="dark-theme">
-              <option value="-1"></option>
-              <option value="0">Default</option>
+        <div class="option">
+          <div class="option-toggle">
+            <label class="checkbox-label">
+              <input type="checkbox" id="dark-theme-toggle" class="option-toggle-box" />
+              <span>Dark Theme</span>
+            </label>
+          </div>
+          <div class="option-select">
+            <select id="dark-theme-select">
+              <option selected value="0">Default</option>
               <option value="1">Neutral grey</option>
               <option value="3">Flagship Terrastruct</option>
               <option value="4">Cool classics</option>
@@ -166,20 +228,46 @@
               <option value="300">Terminal</option>
               <option value="301">Terminal grayscale</option>
             </select>
-            Dark Theme ID
-          </label>
+          </div>
         </div>
-        <div class="padding-input">
-          <label class="input-label">
-            <input type="number" id="padding" value="20" step="10" class="number-input" />
-            Padding
-          </label>
+        <div class="option">
+          <div class="option-toggle">
+            <label class="checkbox-label">
+              <input type="checkbox" id="pad-toggle" class="option-toggle-box" />
+              <span>Padding</span>
+            </label>
+          </div>
+          <div class="option-select">
+            <label class="input-label">
+              <input
+                type="number"
+                id="pad-input"
+                value="20"
+                step="10"
+                class="number-input"
+              />
+            </label>
+          </div>
         </div>
-        <div class="scale-input">
-          <label class="input-label">
-            <input type="number" id="scale" value="-1" step="1" class="number-input" />
-            Scale
-          </label>
+        <div class="option">
+          <div class="option-toggle">
+            <label class="checkbox-label">
+              <input type="checkbox" id="scale-toggle" class="option-toggle-box" />
+              <span>Scale</span>
+            </label>
+          </div>
+          <div class="option-select">
+            <label class="input-label">
+              <input
+                type="number"
+                id="scale-input"
+                value="1"
+                step="0.1"
+                min="0"
+                class="number-input"
+              />
+            </label>
+          </div>
         </div>
       </div>
       <button onclick="compile()">Compile</button>
@@ -189,26 +277,34 @@
       import { D2 } from "../dist/browser/index.js";
       const d2 = new D2();
       window.compile = async () => {
-        const notNegative = (value) => {
-          if (value < 0) {
-            return null;
-          } else return value;
-        };
         const input = document.getElementById("input").value;
-        const layout = document.querySelector('input[name="layout"]:checked').value;
-        const sketch = document.getElementById("sketch").checked;
-        const center = document.getElementById("center").checked;
-        const themeSelector = document.getElementById("theme");
-        const themeId = notNegative(
-          Number(themeSelector.options[themeSelector.selectedIndex].value)
-        );
-        const darkThemeSelector = document.getElementById("dark-theme");
-        const darkThemeId = notNegative(
-          Number(darkThemeSelector.options[darkThemeSelector.selectedIndex].value)
-        );
-        const scale = notNegative(Number(document.getElementById("scale").value));
-        const pad = Number(document.getElementById("padding").value);
-        const forceAppendix = document.getElementById("appendix").checked;
+        const layout = document.getElementById("layout-toggle").checked
+          ? document.querySelector('input[name="layout-select"]:checked').value
+          : null;
+        const sketch = document.getElementById("sketch-toggle").checked
+          ? document.querySelector('input[name="sketch-select"]:checked').value == "true"
+          : null;
+        const center = document.getElementById("center-toggle").checked
+          ? document.querySelector('input[name="center-select"]:checked').value == "true"
+          : null;
+        const forceAppendix = document.getElementById("appendix-toggle").checked
+          ? document.querySelector('input[name="appendix-select"]:checked').value ==
+            "true"
+          : null;
+        const themeSelector = document.getElementById("theme-select");
+        const themeId = document.getElementById("theme-toggle").checked
+          ? Number(themeSelector.options[themeSelector.selectedIndex].value)
+          : null;
+        const darkThemeSelector = document.getElementById("dark-theme-select");
+        const darkThemeId = document.getElementById("dark-theme-toggle").checked
+          ? Number(darkThemeSelector.options[darkThemeSelector.selectedIndex].value)
+          : null;
+        const pad = document.getElementById("pad-toggle").checked
+          ? Number(document.getElementById("pad-input").value)
+          : null;
+        const scale = document.getElementById("scale-toggle").checked
+          ? Number(document.getElementById("scale-input").value)
+          : null;
         try {
           const result = await d2.compile(input, {
             layout,
@@ -220,15 +316,7 @@
             center,
             forceAppendix,
           });
-          const svg = await d2.render(result.diagram, {
-            sketch,
-            themeId,
-            darkThemeId,
-            scale,
-            pad,
-            center,
-            forceAppendix,
-          });
+          const svg = await d2.render(result.diagram, result.options);
           document.getElementById("output").innerHTML = svg;
         } catch (err) {
           console.error(err);

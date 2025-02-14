@@ -154,6 +154,26 @@ func GetELKGraph(args []js.Value) (interface{}, error) {
 	return elk, nil
 }
 
+func layoutResolver() func(engine string) (d2graph.LayoutGraph, error) {
+	cached := make(map[string]d2graph.LayoutGraph)
+	return func(engine string) (d2graph.LayoutGraph, error) {
+		if c, ok := cached[engine]; ok {
+			return c, nil
+		}
+		var layout d2graph.LayoutGraph
+		switch engine {
+		case "dagre":
+			layout = d2dagrelayout.DefaultLayout
+		case "elk":
+			layout = d2elklayout.DefaultLayout
+		default:
+			return nil, &WASMError{Message: fmt.Sprintf("layout option '%s' not recognized", engine), Code: 400}
+		}
+		cached[engine] = layout
+		return layout, nil
+	}
+}
+
 func Compile(args []js.Value) (interface{}, error) {
 	if len(args) < 1 {
 		return nil, &WASMError{Message: "missing JSON argument", Code: 400}
@@ -171,35 +191,29 @@ func Compile(args []js.Value) (interface{}, error) {
 		return nil, &WASMError{Message: "missing 'index' file in input fs", Code: 400}
 	}
 
-	fs, err := memfs.New(input.FS)
+	compileOpts := &d2lib.CompileOptions{
+		UTF16Pos:       true,
+		LayoutResolver: layoutResolver(),
+	}
+
+	var err error
+	compileOpts.FS, err = memfs.New(input.FS)
 	if err != nil {
 		return nil, &WASMError{Message: fmt.Sprintf("invalid fs input: %s", err.Error()), Code: 400}
 	}
 
-	ruler, err := textmeasure.NewRuler()
+	compileOpts.Ruler, err = textmeasure.NewRuler()
 	if err != nil {
 		return nil, &WASMError{Message: fmt.Sprintf("text ruler cannot be initialized: %s", err.Error()), Code: 500}
 	}
-	ctx := log.WithDefault(context.Background())
-	layoutFunc := d2dagrelayout.DefaultLayout
+
 	if input.Opts != nil && input.Opts.Layout != nil {
-		switch *input.Opts.Layout {
-		case "dagre":
-			layoutFunc = d2dagrelayout.DefaultLayout
-		case "elk":
-			layoutFunc = d2elklayout.DefaultLayout
-		default:
-			return nil, &WASMError{Message: fmt.Sprintf("layout option '%s' not recognized", *input.Opts.Layout), Code: 400}
-		}
-	}
-	layoutResolver := func(engine string) (d2graph.LayoutGraph, error) {
-		return layoutFunc, nil
+		compileOpts.Layout = input.Opts.Layout
 	}
 
 	renderOpts := &d2svg.RenderOpts{}
-	var fontFamily *d2fonts.FontFamily
 	if input.Opts != nil && input.Opts.Sketch != nil && *input.Opts.Sketch {
-		fontFamily = go2.Pointer(d2fonts.HandDrawn)
+		compileOpts.FontFamily = go2.Pointer(d2fonts.HandDrawn)
 		renderOpts.Sketch = input.Opts.Sketch
 	}
 	if input.Opts != nil && input.Opts.Pad != nil {
@@ -217,13 +231,9 @@ func Compile(args []js.Value) (interface{}, error) {
 	if input.Opts != nil && input.Opts.Scale != nil {
 		renderOpts.Scale = input.Opts.Scale
 	}
-	diagram, g, err := d2lib.Compile(ctx, input.FS["index"], &d2lib.CompileOptions{
-		UTF16Pos:       true,
-		FS:             fs,
-		Ruler:          ruler,
-		LayoutResolver: layoutResolver,
-		FontFamily:     fontFamily,
-	}, renderOpts)
+
+	ctx := log.WithDefault(context.Background())
+	diagram, g, err := d2lib.Compile(ctx, input.FS["index"], compileOpts, renderOpts)
 	if err != nil {
 		if pe, ok := err.(*d2parser.ParseError); ok {
 			errs, _ := json.Marshal(pe.Errors)
@@ -238,6 +248,15 @@ func Compile(args []js.Value) (interface{}, error) {
 		FS:      input.FS,
 		Diagram: *diagram,
 		Graph:   *g,
+		Options: RenderOptions{
+			ThemeID:       renderOpts.ThemeID,
+			DarkThemeID:   renderOpts.DarkThemeID,
+			Sketch:        renderOpts.Sketch,
+			Pad:           renderOpts.Pad,
+			Center:        renderOpts.Center,
+			Scale:         renderOpts.Scale,
+			ForceAppendix: input.Opts.ForceAppendix,
+		},
 	}, nil
 }
 
