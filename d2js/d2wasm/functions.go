@@ -238,6 +238,7 @@ func Compile(args []js.Value) (interface{}, error) {
 		Sketch: renderOpts.Sketch,
     Pad: renderOpts.Pad,
     Center: renderOpts.Center,
+    Scale: input.Opts.Scale,
     ForceAppendix: input.Opts.ForceAppendix,
   };
 
