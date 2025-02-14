@@ -282,7 +282,7 @@ func Render(args []js.Value) (interface{}, error) {
 	if err != nil {
 		return nil, &WASMError{Message: fmt.Sprintf("render failed: %s", err.Error()), Code: 500}
 	}
-	if input.Opts != nil && *input.Opts.ForceAppendix {
+	if input.Opts != nil && *&input.Opts.ForceAppendix != nil && *input.Opts.ForceAppendix {
 		out = appendix.Append(input.Diagram, renderOpts, ruler, out)
 	}
 
