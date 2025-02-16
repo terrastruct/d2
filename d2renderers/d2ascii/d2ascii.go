@@ -62,7 +62,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		}
 	}
 
-	return canvas.Bytes(), nil
+	return canvas.TrimBytes(), nil
 }
 
 // Canvas handles the ASCII grid and drawing operations
@@ -264,6 +264,45 @@ func (c *Canvas) Bytes() []byte {
 	var buf bytes.Buffer
 	for _, row := range c.grid {
 		buf.WriteString(string(row))
+		buf.WriteByte('\n')
+	}
+	return buf.Bytes()
+}
+
+// TrimBytes removes excess whitespace from all sides of the ASCII output
+func (c *Canvas) TrimBytes() []byte {
+	// Find bounds of content
+	minX, minY, maxX, maxY := c.w, c.h, 0, 0
+
+	// Scan for content bounds
+	for y := 0; y < c.h; y++ {
+		for x := 0; x < c.w; x++ {
+			if c.grid[y][x] != ' ' {
+				if x < minX {
+					minX = x
+				}
+				if x > maxX {
+					maxX = x
+				}
+				if y < minY {
+					minY = y
+				}
+				if y > maxY {
+					maxY = y
+				}
+			}
+		}
+	}
+
+	// If no content found, return empty
+	if minX > maxX || minY > maxY {
+		return []byte{}
+	}
+
+	// Create trimmed output
+	var buf bytes.Buffer
+	for y := minY; y <= maxY; y++ {
+		buf.WriteString(string(c.grid[y][minX : maxX+1]))
 		buf.WriteByte('\n')
 	}
 	return buf.Bytes()
