@@ -62,6 +62,15 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		}
 	}
 
+	// If the canvas is too large, downscale it
+	const maxWidth = 120
+	if canvas.w > maxWidth {
+		ratio := float64(canvas.h) / float64(canvas.w)
+		newWidth := maxWidth
+		newHeight := int(float64(maxWidth) * ratio)
+		canvas.DownscaleGrid(newWidth, newHeight)
+	}
+
 	return canvas.TrimBytes(), nil
 }
 
@@ -224,7 +233,7 @@ func (c *Canvas) drawLine(x1, y1, x2, y2 int) {
 
 	for ; x1 <= x2; x1++ {
 		if steep {
-			c.set(y1, x1, '/')
+			c.set(y1, x1, '|')
 		} else {
 			c.set(x1, y1, '/')
 		}
@@ -306,6 +315,75 @@ func (c *Canvas) TrimBytes() []byte {
 		buf.WriteByte('\n')
 	}
 	return buf.Bytes()
+}
+
+// DownscaleGrid reduces the size of ASCII art using a pixel-like sampling technique
+func (c *Canvas) DownscaleGrid(targetWidth, targetHeight int) {
+	if targetWidth >= c.w || targetHeight >= c.h {
+		return // No downscaling needed
+	}
+
+	// Calculate sampling box size
+	boxWidth := float64(c.w) / float64(targetWidth)
+	boxHeight := float64(c.h) / float64(targetHeight)
+
+	// Create new grid
+	newGrid := make([][]rune, targetHeight)
+	for i := range newGrid {
+		newGrid[i] = make([]rune, targetWidth)
+	}
+
+	// Sample characters from original grid
+	for y := 0; y < targetHeight; y++ {
+		for x := 0; x < targetWidth; x++ {
+			// Calculate sampling box boundaries
+			startX := int(float64(x) * boxWidth)
+			endX := int(float64(x+1) * boxWidth)
+			startY := int(float64(y) * boxHeight)
+			endY := int(float64(y+1) * boxHeight)
+
+			// Count character occurrences in the sampling box
+			charCount := make(map[rune]int)
+			for sy := startY; sy < endY && sy < c.h; sy++ {
+				for sx := startX; sx < endX && sx < c.w; sx++ {
+					ch := c.grid[sy][sx]
+					charCount[ch]++
+				}
+			}
+
+			// Choose the most appropriate character
+			var maxCount int
+			var dominant rune = ' '
+
+			// Priority order for characters
+			priorities := []rune{'+', '|', '-', '/', '\\', '.', ' '}
+			for _, ch := range priorities {
+				if count := charCount[ch]; count > maxCount {
+					maxCount = count
+					dominant = ch
+				}
+			}
+
+			// Special cases for line preservation
+			hasVertical := charCount['|'] > 0 || charCount['+'] > 0
+			hasHorizontal := charCount['-'] > 0 || charCount['+'] > 0
+
+			// Determine final character
+			if hasVertical && hasHorizontal {
+				newGrid[y][x] = '+'
+			} else if hasVertical {
+				newGrid[y][x] = '|'
+			} else if hasHorizontal {
+				newGrid[y][x] = '-'
+			} else {
+				newGrid[y][x] = dominant
+			}
+		}
+	}
+
+	c.grid = newGrid
+	c.w = targetWidth
+	c.h = targetHeight
 }
 
 func min(a, b int) int {
