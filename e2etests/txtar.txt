@@ -766,3 +766,12 @@ asdf:{
   shape:sQl_table
   zxcv
 }
+
+-- connection-icons --
+direction: right
+a -> b: hello {
+  icon: https://icons.terrastruct.com/essentials%2F213-alarm.svg
+}
+b -> c: {
+  icon: https://icons.terrastruct.com/essentials%2F213-alarm.svg
+}
