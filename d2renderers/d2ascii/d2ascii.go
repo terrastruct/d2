@@ -2,6 +2,7 @@ package d2ascii
 
 import (
 	"bytes"
+	"fmt"
 	"math"
 	"strings"
 
@@ -62,14 +63,17 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		}
 	}
 
-	// If the canvas is too large, downscale it
-	const maxWidth = 120
-	if canvas.w > maxWidth {
-		ratio := float64(canvas.h) / float64(canvas.w)
-		newWidth := maxWidth
-		newHeight := int(float64(maxWidth) * ratio)
-		canvas.DownscaleGrid(newWidth, newHeight)
-	}
+	const ( // common terminal size
+		maxWidth  = 120
+		maxHeight = 90
+	) // TODO: detect smallest shape then make it as a baseline
+
+	width = min(canvas.w, maxWidth)
+	height = min(canvas.h, maxHeight)
+
+	fmt.Println("==== ", canvas.w, canvas.h, "====")
+	fmt.Println("==== ", width, height, "====")
+	canvas.ReScale(width, height)
 
 	return canvas.TrimBytes(), nil
 }
@@ -317,12 +321,9 @@ func (c *Canvas) TrimBytes() []byte {
 	return buf.Bytes()
 }
 
-// DownscaleGrid reduces the size of ASCII art using a pixel-like sampling technique
-func (c *Canvas) DownscaleGrid(targetWidth, targetHeight int) {
-	if targetWidth >= c.w || targetHeight >= c.h {
-		return // No downscaling needed
-	}
-
+// ReScale reduces the size of ASCII art using a pixel-like sampling technique
+// BUG: somehow the text label disappear 😂
+func (c *Canvas) ReScale(targetWidth, targetHeight int) {
 	// Calculate sampling box size
 	boxWidth := float64(c.w) / float64(targetWidth)
 	boxHeight := float64(c.h) / float64(targetHeight)
