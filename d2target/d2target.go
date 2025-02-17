@@ -34,6 +34,8 @@ const (
 
 	MIN_ARROWHEAD_STROKE_WIDTH = 2
 	ARROWHEAD_PADDING          = 2.
+
+	CONNECTION_ICON_LABEL_GAP = 8
 )
 
 var BorderOffset = geo.NewVector(5, 5)
@@ -609,11 +611,38 @@ type Connection struct {
 	Route   []*geo.Point `json:"route"`
 	IsCurve bool         `json:"isCurve,omitempty"`
 
-	Animated bool     `json:"animated"`
-	Tooltip  string   `json:"tooltip"`
-	Icon     *url.URL `json:"icon"`
+	Animated     bool     `json:"animated"`
+	Tooltip      string   `json:"tooltip"`
+	Icon         *url.URL `json:"icon"`
+	IconPosition string   `json:"iconPosition,omitempty"`
 
 	ZIndex int `json:"zIndex"`
+}
+
+func (c *Connection) GetIconPosition() *geo.Point {
+	if c.Icon == nil {
+		return nil
+	}
+
+	if c.Label != "" {
+		labelTL := c.GetLabelTopLeft()
+		if labelTL != nil {
+			// Position icon to the left of the label with a small gap
+			return &geo.Point{
+				X: labelTL.X - CONNECTION_ICON_LABEL_GAP - DEFAULT_ICON_SIZE,
+				Y: labelTL.Y + float64(c.LabelHeight)/2 - DEFAULT_ICON_SIZE/2,
+			}
+		}
+	}
+
+	point, _ := label.FromString(c.IconPosition).GetPointOnRoute(
+		c.Route,
+		float64(c.StrokeWidth),
+		-1,
+		float64(DEFAULT_ICON_SIZE),
+		float64(DEFAULT_ICON_SIZE),
+	)
+	return point
 }
 
 func BaseConnection() *Connection {
