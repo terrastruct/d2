@@ -52,10 +52,10 @@ type CompileOptions struct {
 }
 
 type CompileResponse struct {
-	FS      map[string]string `json:"fs"`
-	Diagram d2target.Diagram  `json:"diagram"`
-	Graph   d2graph.Graph     `json:"graph"`
-	Options RenderOptions     `json:"options"`
+	FS            map[string]string `json:"fs"`
+	Diagram       d2target.Diagram  `json:"diagram"`
+	Graph         d2graph.Graph     `json:"graph"`
+	RenderOptions RenderOptions     `json:"renderOptions"`
 }
 
 type CompletionResponse struct {

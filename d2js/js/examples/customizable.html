@@ -316,7 +316,7 @@
             center,
             forceAppendix,
           });
-          const svg = await d2.render(result.diagram, result.options);
+          const svg = await d2.render(result.diagram, result.renderOptions);
           document.getElementById("output").innerHTML = svg;
         } catch (err) {
           console.error(err);

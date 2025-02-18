@@ -25,6 +25,64 @@ describe("D2 Unit Tests", () => {
     await d2.worker.terminate();
   }, 20000);
 
+  test("d2-config read correctly", async () => {
+    const d2 = new D2();
+    const result = await d2.compile(
+      `
+vars: {
+  d2-config: {
+    theme-id: 4
+    dark-theme-id: 200
+    pad: 10
+    center: true
+    sketch: true
+    layout-engine: elk
+  }
+}
+x -> y
+`
+    );
+    expect(result.renderOptions.sketch).toBe(true);
+    expect(result.renderOptions.themeID).toBe(4);
+    expect(result.renderOptions.darkThemeID).toBe(200);
+    // expect(result.renderOptions.center).toBe(true);
+    expect(result.renderOptions.pad).toBe(10);
+    await d2.worker.terminate();
+  }, 20000);
+
+  test("render options take priority", async () => {
+    const d2 = new D2();
+    const result = await d2.compile(
+      `
+vars: {
+  d2-config: {
+    theme-id: 4
+    dark-theme-id: 200
+    pad: 10
+    center: true
+    sketch: true
+    layout-engine: elk
+  }
+}
+x -> y
+`,
+      {
+        sketch: false,
+        themeID: 100,
+        darkThemeID: 300,
+        center: false,
+        pad: 0,
+        layout: "dagre",
+      }
+    );
+    expect(result.renderOptions.sketch).toBe(false);
+    expect(result.renderOptions.themeID).toBe(100);
+    expect(result.renderOptions.darkThemeID).toBe(300);
+    expect(result.renderOptions.center).toBe(false);
+    expect(result.renderOptions.pad).toBe(0);
+    await d2.worker.terminate();
+  }, 20000);
+
   test("sketch render works", async () => {
     const d2 = new D2();
     const result = await d2.compile("x -> y", { sketch: true });

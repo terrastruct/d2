@@ -154,26 +154,6 @@ func GetELKGraph(args []js.Value) (interface{}, error) {
 	return elk, nil
 }
 
-func layoutResolver() func(engine string) (d2graph.LayoutGraph, error) {
-	cached := make(map[string]d2graph.LayoutGraph)
-	return func(engine string) (d2graph.LayoutGraph, error) {
-		if c, ok := cached[engine]; ok {
-			return c, nil
-		}
-		var layout d2graph.LayoutGraph
-		switch engine {
-		case "dagre":
-			layout = d2dagrelayout.DefaultLayout
-		case "elk":
-			layout = d2elklayout.DefaultLayout
-		default:
-			return nil, &WASMError{Message: fmt.Sprintf("layout option '%s' not recognized", engine), Code: 400}
-		}
-		cached[engine] = layout
-		return layout, nil
-	}
-}
-
 func Compile(args []js.Value) (interface{}, error) {
 	if len(args) < 1 {
 		return nil, &WASMError{Message: "missing JSON argument", Code: 400}
@@ -192,8 +172,18 @@ func Compile(args []js.Value) (interface{}, error) {
 	}
 
 	compileOpts := &d2lib.CompileOptions{
-		UTF16Pos:       true,
-		LayoutResolver: layoutResolver(),
+		UTF16Pos: true,
+	}
+
+	compileOpts.LayoutResolver = func(engine string) (d2graph.LayoutGraph, error) {
+		switch engine {
+		case "dagre":
+			return d2dagrelayout.DefaultLayout, nil
+		case "elk":
+			return d2elklayout.DefaultLayout, nil
+		default:
+			return nil, &WASMError{Message: fmt.Sprintf("layout option '%s' not recognized", engine), Code: 400}
+		}
 	}
 
 	var err error
@@ -212,9 +202,11 @@ func Compile(args []js.Value) (interface{}, error) {
 	}
 
 	renderOpts := &d2svg.RenderOpts{}
-	if input.Opts != nil && input.Opts.Sketch != nil && *input.Opts.Sketch {
-		compileOpts.FontFamily = go2.Pointer(d2fonts.HandDrawn)
+	if input.Opts != nil && input.Opts.Sketch != nil {
 		renderOpts.Sketch = input.Opts.Sketch
+		if *input.Opts.Sketch {
+			compileOpts.FontFamily = go2.Pointer(d2fonts.HandDrawn)
+		}
 	}
 	if input.Opts != nil && input.Opts.Pad != nil {
 		renderOpts.Pad = input.Opts.Pad
@@ -248,7 +240,7 @@ func Compile(args []js.Value) (interface{}, error) {
 		FS:      input.FS,
 		Diagram: *diagram,
 		Graph:   *g,
-		Options: RenderOptions{
+		RenderOptions: RenderOptions{
 			ThemeID:       renderOpts.ThemeID,
 			DarkThemeID:   renderOpts.DarkThemeID,
 			Sketch:        renderOpts.Sketch,

@@ -45,7 +45,7 @@ const result = await d2.compile('x -> y');
 const svg = await d2.render(result.diagram, result.options);
 ```
 
-Additional Configuration:
+Configuring render options (see [CompileOptions](#compileoptions) for all available options):
 
 ```javascript
 import { D2 } from '@terrastruct/d2';
@@ -53,9 +53,9 @@ import { D2 } from '@terrastruct/d2';
 const d2 = new D2();
 
 const result = await d2.compile('x -> y', {
-    sketch = true,
+    sketch: true,
 });
-const svg = await d2.render(result.diagram, result.options);
+const svg = await d2.render(result.diagram, result.renderOptions);
 ```
 
 ## API Reference
@@ -74,7 +74,7 @@ Renders a compiled diagram to SVG.
 
 ### `CompileOptions`
 
-All `RenderOptions` properties in addition to:
+All [RenderOptions](#renderoptions) properties in addition to:
 
 - `layout`: Layout engine to use ('dagre' | 'elk') [default: 'dagre']
 
