@@ -79,6 +79,11 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 }
 
 // Canvas handles the ASCII grid and drawing operations
+type TextPosition struct {
+	x, y, w, h int
+	text       string
+}
+
 type Canvas struct {
 	grid [][]rune
 	w, h int
@@ -87,6 +92,9 @@ type Canvas struct {
 	scaleX, scaleY   float64
 	offsetX, offsetY int
 	pad              int
+
+	// Track text positions
+	textPositions []TextPosition
 }
 
 func NewCanvas(w, h int) *Canvas {
@@ -250,6 +258,9 @@ func (c *Canvas) drawLine(x1, y1, x2, y2 int) {
 }
 
 func (c *Canvas) drawCenteredText(x, y, w, h int, text string) {
+	// Record position first
+	c.textPositions = append(c.textPositions, TextPosition{x, y, w, h, text})
+
 	lines := strings.Split(text, "\n")
 	startY := y + (h-len(lines))/2
 
@@ -322,62 +333,84 @@ func (c *Canvas) TrimBytes() []byte {
 }
 
 // ReScale reduces the size of ASCII art using a pixel-like sampling technique
-// BUG: somehow the text label disappear 😂
 func (c *Canvas) ReScale(targetWidth, targetHeight int) {
-	// Calculate sampling box size
-	boxWidth := float64(c.w) / float64(targetWidth)
-	boxHeight := float64(c.h) / float64(targetHeight)
+	scaleX := float64(targetWidth) / float64(c.w)
+	scaleY := float64(targetHeight) / float64(c.h)
 
 	// Create new grid
 	newGrid := make([][]rune, targetHeight)
 	for i := range newGrid {
 		newGrid[i] = make([]rune, targetWidth)
+		for j := range newGrid[i] {
+			newGrid[i][j] = ' '
+		}
 	}
 
-	// Sample characters from original grid
-	for y := 0; y < targetHeight; y++ {
-		for x := 0; x < targetWidth; x++ {
-			// Calculate sampling box boundaries
-			startX := int(float64(x) * boxWidth)
-			endX := int(float64(x+1) * boxWidth)
-			startY := int(float64(y) * boxHeight)
-			endY := int(float64(y+1) * boxHeight)
+	// First scale the borders and lines (source -> target mapping)
+	for y := 0; y < c.h; y++ {
+		targetY := int(float64(y) * scaleY)
+		if targetY >= targetHeight {
+			continue
+		}
 
-			// Count character occurrences in the sampling box
-			charCount := make(map[rune]int)
-			for sy := startY; sy < endY && sy < c.h; sy++ {
-				for sx := startX; sx < endX && sx < c.w; sx++ {
-					ch := c.grid[sy][sx]
-					charCount[ch]++
-				}
+		for x := 0; x < c.w; x++ {
+			targetX := int(float64(x) * scaleX)
+			if targetX >= targetWidth {
+				continue
 			}
 
-			// Choose the most appropriate character
-			var maxCount int
-			var dominant rune = ' '
+			ch := c.grid[y][x]
+			if ch == '+' || ch == '-' || ch == '|' || ch == '/' || ch == '\\' || ch == '.' {
+				newGrid[targetY][targetX] = ch
+			}
+		}
+	}
 
-			// Priority order for characters
-			priorities := []rune{'+', '|', '-', '/', '\\', '.', ' '}
-			for _, ch := range priorities {
-				if count := charCount[ch]; count > maxCount {
-					maxCount = count
-					dominant = ch
-				}
+	// Then redraw text at scaled positions
+	for _, pos := range c.textPositions {
+		// Get box dimensions in source coordinates first
+		srcBoxCenterY := pos.y + pos.h/2
+
+		// Split text into lines
+		lines := strings.Split(pos.text, "\n")
+		textHeight := len(lines)
+
+		// Calculate text start Y in source coordinates
+		srcStartY := srcBoxCenterY - textHeight/2
+
+		// Scale to target coordinates
+		newX := int(float64(pos.x) * scaleX)
+		newY := int(float64(srcStartY) * scaleY)
+		newW := int(float64(pos.w) * scaleX)
+
+		// Draw each line centered horizontally
+		for i, line := range lines {
+			targetY := newY + i
+			if targetY >= targetHeight {
+				break
+			}
+			if targetY < 0 {
+				continue
 			}
 
-			// Special cases for line preservation
-			hasVertical := charCount['|'] > 0 || charCount['+'] > 0
-			hasHorizontal := charCount['-'] > 0 || charCount['+'] > 0
+			// Center text horizontally within the scaled box
+			startX := newX + (newW-len(line))/2
+			for j, ch := range line {
+				targetX := startX + j
+				if targetX >= targetWidth {
+					break
+				}
+				if targetX < 0 {
+					continue
+				}
 
-			// Determine final character
-			if hasVertical && hasHorizontal {
-				newGrid[y][x] = '+'
-			} else if hasVertical {
-				newGrid[y][x] = '|'
-			} else if hasHorizontal {
-				newGrid[y][x] = '-'
-			} else {
-				newGrid[y][x] = dominant
+				// Only overwrite space or existing text
+				existing := newGrid[targetY][targetX]
+				if existing == ' ' || (existing != '+' && existing != '-' &&
+					existing != '|' && existing != '/' && existing != '\\' &&
+					existing != '.') {
+					newGrid[targetY][targetX] = ch
+				}
 			}
 		}
 	}
