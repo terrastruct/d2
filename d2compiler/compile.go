@@ -1455,6 +1455,12 @@ func compileConfig(ir *d2ir.Map) (*d2target.Config, error) {
 		config.LayoutEngine = go2.Pointer(f.Primary().Value.ScalarString())
 	}
 
+	f = configMap.GetField(d2ast.FlatUnquotedString("center"))
+	if f != nil {
+		val, _ := strconv.ParseBool(f.Primary().Value.ScalarString())
+		config.Center = &val
+	}
+
 	f = configMap.GetField(d2ast.FlatUnquotedString("theme-overrides"))
 	if f != nil {
 		overrides, err := compileThemeOverrides(f.Map())
