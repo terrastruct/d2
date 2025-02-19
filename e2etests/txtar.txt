@@ -759,3 +759,19 @@ b: {
 
 a.b -> b.c
 b.c -> a.a: {style.font-color: red; style.stroke: red; style.fill: mistyrose}
+
+-- sql-casing-panic --
+
+asdf:{
+  shape:sQl_table
+  zxcv
+}
+
+-- connection-icons --
+direction: right
+a -> b: hello {
+  icon: https://icons.terrastruct.com/essentials%2F213-alarm.svg
+}
+b -> c: {
+  icon: https://icons.terrastruct.com/essentials%2F213-alarm.svg
+}

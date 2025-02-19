@@ -1070,11 +1070,6 @@ func (c *compiler) compileLink(f *Field, refctx *RefContext) {
 		return
 	}
 
-	if linkIDA[0].ScalarString() == "root" && linkIDA[0].IsUnquoted() {
-		c.errorf(refctx.Key.Key, "cannot refer to root in link")
-		return
-	}
-
 	if !linkIDA[0].IsUnquoted() {
 		return
 	}

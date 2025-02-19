@@ -587,16 +587,51 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 		markerEnd = fmt.Sprintf(`marker-end="url(#%s)" `, id)
 	}
 
+	if connection.Icon != nil {
+		iconPos := connection.GetIconPosition()
+		if iconPos != nil {
+			fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" />`,
+				html.EscapeString(connection.Icon.String()),
+				iconPos.X,
+				iconPos.Y,
+				d2target.DEFAULT_ICON_SIZE,
+				d2target.DEFAULT_ICON_SIZE,
+			)
+		}
+	}
+
 	var labelTL *geo.Point
 	if connection.Label != "" {
 		labelTL = connection.GetLabelTopLeft()
 		labelTL.X = math.Round(labelTL.X)
 		labelTL.Y = math.Round(labelTL.Y)
 
+		maskTL := labelTL.Copy()
+		width := connection.LabelWidth
+		height := connection.LabelHeight
+
+		if connection.Icon != nil {
+			width += d2target.CONNECTION_ICON_LABEL_GAP + d2target.DEFAULT_ICON_SIZE
+			maskTL.X -= float64(d2target.CONNECTION_ICON_LABEL_GAP + d2target.DEFAULT_ICON_SIZE)
+		}
+
 		if label.FromString(connection.LabelPosition).IsOnEdge() {
-			labelMask = makeLabelMask(labelTL, connection.LabelWidth, connection.LabelHeight, 1)
+			labelMask = makeLabelMask(maskTL, width, height, 1)
 		} else {
-			labelMask = makeLabelMask(labelTL, connection.LabelWidth, connection.LabelHeight, 0.75)
+			labelMask = makeLabelMask(maskTL, width, height, 0.75)
+		}
+	} else if connection.Icon != nil {
+		iconPos := connection.GetIconPosition()
+		if iconPos != nil {
+			maskTL := &geo.Point{
+				X: iconPos.X,
+				Y: iconPos.Y,
+			}
+			if label.FromString(connection.IconPosition).IsOnEdge() {
+				labelMask = makeLabelMask(maskTL, d2target.DEFAULT_ICON_SIZE, d2target.DEFAULT_ICON_SIZE, 1)
+			} else {
+				labelMask = makeLabelMask(maskTL, d2target.DEFAULT_ICON_SIZE, d2target.DEFAULT_ICON_SIZE, 0.75)
+			}
 		}
 	}
 

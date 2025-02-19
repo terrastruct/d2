@@ -8,6 +8,7 @@ import (
 
 	"oss.terrastruct.com/util-go/go2"
 
+	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
@@ -15,6 +16,7 @@ import (
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/d2/lib/label"
 )
 
 func Export(ctx context.Context, g *d2graph.Graph, fontFamily *d2fonts.FontFamily) (*d2target.Diagram, error) {
@@ -335,7 +337,14 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 	if edge.Tooltip != nil {
 		connection.Tooltip = edge.Tooltip.Value
 	}
-	connection.Icon = edge.Icon
+	if edge.Icon != nil {
+		connection.Icon = edge.Icon
+		if edge.IconPosition != nil {
+			connection.IconPosition = (d2ast.LabelPositionsMapping[edge.IconPosition.Value]).String()
+		} else {
+			connection.IconPosition = label.InsideMiddleCenter.String()
+		}
+	}
 
 	if edge.Style.Italic != nil {
 		connection.Italic, _ = strconv.ParseBool(edge.Style.Italic.Value)
