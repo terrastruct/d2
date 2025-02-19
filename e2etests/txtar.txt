@@ -777,5 +777,15 @@ b -> c: {
 }
 
 -- cycle-diagram --
-shape: cycle
-a -> b -> c -> d
+1: "" {
+  shape: cycle
+  a -> b -> c -> d
+}
+2: "" {
+  shape: cycle
+  a -> b -> c
+}
+3: "" {
+  shape: cycle
+  a -> b
+}
