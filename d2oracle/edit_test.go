@@ -6118,6 +6118,28 @@ c -> d
 `,
 		},
 		{
+			name: "underscore_linked",
+			text: `k
+
+layers: {
+  x: {
+    a
+    b: {link: _}
+  }
+}
+`,
+			key:       `b`,
+			boardPath: []string{"x"},
+			exp: `k
+
+layers: {
+  x: {
+    a
+  }
+}
+`,
+		},
+		{
 			name: "underscore_no_conflict",
 
 			text: `x: {
