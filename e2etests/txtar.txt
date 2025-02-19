@@ -775,3 +775,7 @@ a -> b: hello {
 b -> c: {
   icon: https://icons.terrastruct.com/essentials%2F213-alarm.svg
 }
+
+-- cycle-diagram --
+shape: cycle
+a -> b -> c -> d
