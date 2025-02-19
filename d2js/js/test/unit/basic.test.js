@@ -45,7 +45,7 @@ x -> y
     expect(result.renderOptions.sketch).toBe(true);
     expect(result.renderOptions.themeID).toBe(4);
     expect(result.renderOptions.darkThemeID).toBe(200);
-    // expect(result.renderOptions.center).toBe(true);
+    expect(result.renderOptions.center).toBe(true);
     expect(result.renderOptions.pad).toBe(10);
     await d2.worker.terminate();
   }, 20000);
