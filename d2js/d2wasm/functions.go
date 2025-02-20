@@ -19,9 +19,11 @@ import (
 	"oss.terrastruct.com/d2/d2lsp"
 	"oss.terrastruct.com/d2/d2oracle"
 	"oss.terrastruct.com/d2/d2parser"
+	"oss.terrastruct.com/d2/d2renderers/d2animate"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2renderers/d2svg/appendix"
+	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/memfs"
 	"oss.terrastruct.com/d2/lib/textmeasure"
@@ -241,13 +243,17 @@ func Compile(args []js.Value) (interface{}, error) {
 		Diagram: *diagram,
 		Graph:   *g,
 		RenderOptions: RenderOptions{
-			ThemeID:       renderOpts.ThemeID,
-			DarkThemeID:   renderOpts.DarkThemeID,
-			Sketch:        renderOpts.Sketch,
-			Pad:           renderOpts.Pad,
-			Center:        renderOpts.Center,
-			Scale:         renderOpts.Scale,
-			ForceAppendix: input.Opts.ForceAppendix,
+			ThemeID:         renderOpts.ThemeID,
+			DarkThemeID:     renderOpts.DarkThemeID,
+			Sketch:          renderOpts.Sketch,
+			Pad:             renderOpts.Pad,
+			Center:          renderOpts.Center,
+			Scale:           renderOpts.Scale,
+			ForceAppendix:   input.Opts.ForceAppendix,
+			Target:          input.Opts.Target,
+			AnimateInterval: input.Opts.AnimateInterval,
+			Salt:            input.Opts.Salt,
+			NoXMLTag:        input.Opts.NoXMLTag,
 		},
 	}, nil
 }
@@ -265,12 +271,60 @@ func Render(args []js.Value) (interface{}, error) {
 		return nil, &WASMError{Message: "missing 'diagram' field in input JSON", Code: 400}
 	}
 
+	var boardPath []string
+	var noChildren bool
+
+	if input.Opts.Target != nil {
+		switch *input.Opts.Target {
+		case "*":
+		case "":
+			noChildren = true
+		default:
+			target := *input.Opts.Target
+			if strings.HasSuffix(target, ".*") {
+				target = target[:len(target)-2]
+			} else {
+				noChildren = true
+			}
+			key, err := d2parser.ParseKey(target)
+			if err != nil {
+				return nil, &WASMError{Message: fmt.Sprintf("target '%s' not recognized", target), Code: 400}
+			}
+			boardPath = key.StringIDA()
+		}
+	}
+
+	diagram := input.Diagram.GetBoard(boardPath)
+	if diagram == nil {
+		return nil, &WASMError{Message: fmt.Sprintf("render target '%s' not found", strings.Join(boardPath, ".")), Code: 400}
+	}
+	if noChildren {
+		diagram.Layers = nil
+		diagram.Scenarios = nil
+		diagram.Steps = nil
+	}
+
+	renderOpts := &d2svg.RenderOpts{}
+
+	if input.Opts != nil && input.Opts.Salt != nil {
+		renderOpts.Salt = input.Opts.Salt
+	}
+
+	var animateInterval = 0
+	if input.Opts != nil && input.Opts.AnimateInterval != nil && *input.Opts.AnimateInterval > 0 {
+		animateInterval = int(*input.Opts.AnimateInterval)
+		masterID, err := diagram.HashID(renderOpts.Salt)
+		if err != nil {
+			return nil, &WASMError{Message: fmt.Sprintf("cannot process animate interval: %s", err.Error()), Code: 500}
+		}
+		renderOpts.MasterID = masterID
+	}
+
 	ruler, err := textmeasure.NewRuler()
 	if err != nil {
 		return nil, &WASMError{Message: fmt.Sprintf("text ruler cannot be initialized: %s", err.Error()), Code: 500}
 	}
 
-	renderOpts := &d2svg.RenderOpts{}
 	if input.Opts != nil && input.Opts.Sketch != nil {
 		renderOpts.Sketch = input.Opts.Sketch
 	}
@@ -289,15 +343,80 @@ func Render(args []js.Value) (interface{}, error) {
 	if input.Opts != nil && input.Opts.Scale != nil {
 		renderOpts.Scale = input.Opts.Scale
 	}
-	out, err := d2svg.Render(input.Diagram, renderOpts)
+	if input.Opts != nil && input.Opts.NoXMLTag != nil {
+		renderOpts.NoXMLTag = input.Opts.NoXMLTag
+	}
+
+	forceAppendix := input.Opts != nil && input.Opts.ForceAppendix != nil && *input.Opts.ForceAppendix
+
+	var boards [][]byte
+	if noChildren {
+		var board []byte
+		board, err = renderSingleBoard(renderOpts, forceAppendix, ruler, diagram)
+		boards = [][]byte{board}
+	} else {
+		boards, err = renderBoards(renderOpts, forceAppendix, ruler, diagram)
+	}
 	if err != nil {
 		return nil, &WASMError{Message: fmt.Sprintf("render failed: %s", err.Error()), Code: 500}
 	}
-	if input.Opts != nil && input.Opts.ForceAppendix != nil && *input.Opts.ForceAppendix {
-		out = appendix.Append(input.Diagram, renderOpts, ruler, out)
+
+	var out []byte
+	if len(boards) > 0 {
+		out = boards[0]
+		if animateInterval > 0 {
+			out, err = d2animate.Wrap(diagram, boards, *renderOpts, animateInterval)
+			if err != nil {
+				return nil, &WASMError{Message: fmt.Sprintf("animation failed: %s", err.Error()), Code: 500}
+			}
+		}
+	}
+	return out, nil
+}
+
+func renderSingleBoard(opts *d2svg.RenderOpts, forceAppendix bool, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
+	out, err := d2svg.Render(diagram, opts)
+	if err != nil {
+		return nil, &WASMError{Message: fmt.Sprintf("render failed: %s", err.Error()), Code: 500}
+	}
+	if forceAppendix {
+		out = appendix.Append(diagram, opts, ruler, out)
+	}
+	return out, nil
+}
+
+func renderBoards(opts *d2svg.RenderOpts, forceAppendix bool, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([][]byte, error) {
+	var boards [][]byte
+	for _, dl := range diagram.Layers {
+		childrenBoards, err := renderBoards(opts, forceAppendix, ruler, dl)
+		if err != nil {
+			return nil, err
+		}
+		boards = append(boards, childrenBoards...)
+	}
+	for _, dl := range diagram.Scenarios {
+		childrenBoards, err := renderBoards(opts, forceAppendix, ruler, dl)
+		if err != nil {
+			return nil, err
+		}
+		boards = append(boards, childrenBoards...)
+	}
+	for _, dl := range diagram.Steps {
+		childrenBoards, err := renderBoards(opts, forceAppendix, ruler, dl)
+		if err != nil {
+			return nil, err
+		}
+		boards = append(boards, childrenBoards...)
 	}
 
-	return out, nil
+	if !diagram.IsFolderOnly {
+		out, err := renderSingleBoard(opts, forceAppendix, ruler, diagram)
+		if err != nil {
+			return boards, err
+		}
+		boards = append([][]byte{out}, boards...)
+	}
+	return boards, nil
 }
 
 func GetBoardAtPosition(args []js.Value) (interface{}, error) {

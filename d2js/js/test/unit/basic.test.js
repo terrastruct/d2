@@ -103,6 +103,14 @@ x -> y
     await d2.worker.terminate();
   }, 20000);
 
+  test("no XML tag works", async () => {
+    const d2 = new D2();
+    const result = await d2.compile("x -> y");
+    const svg = await d2.render(result.diagram, { noXMLTag: true });
+    expect(svg).not.toContain('<?xml version="1.0"');
+    await d2.worker.terminate();
+  }, 20000);
+
   test("force appendix works", async () => {
     const d2 = new D2();
     const result = await d2.compile("x: {tooltip: x appendix}", { forceAppendix: true });

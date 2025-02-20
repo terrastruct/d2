@@ -37,13 +37,17 @@ type CompileRequest struct {
 }
 
 type RenderOptions struct {
-	Pad           *int64   `json:"pad"`
-	Sketch        *bool    `json:"sketch"`
-	Center        *bool    `json:"center"`
-	ThemeID       *int64   `json:"themeID"`
-	DarkThemeID   *int64   `json:"darkThemeID"`
-	Scale         *float64 `json:"scale"`
-	ForceAppendix *bool    `json:"forceAppendix"`
+	Pad             *int64   `json:"pad"`
+	Sketch          *bool    `json:"sketch"`
+	Center          *bool    `json:"center"`
+	ThemeID         *int64   `json:"themeID"`
+	DarkThemeID     *int64   `json:"darkThemeID"`
+	Scale           *float64 `json:"scale"`
+	ForceAppendix   *bool    `json:"forceAppendix"`
+	Target          *string  `json:"target"`
+	AnimateInterval *int64   `json:"animateInterval"`
+	Salt            *string  `json:"salt"`
+	NoXMLTag        *bool    `json:"noXMLTag"`
 }
 
 type CompileOptions struct {
