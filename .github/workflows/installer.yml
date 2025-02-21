@@ -1,0 +1,19 @@
+name: Installer Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: installer (${{ matrix.os }})
+    strategy:
+      matrix:
+        os: [ubuntu, windows, macos]
+    runs-on: ${{ matrix.os }}-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install D2
+        run: |
+          cat install.sh | sh -s --
