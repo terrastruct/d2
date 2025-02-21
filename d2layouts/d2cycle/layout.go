@@ -240,7 +240,6 @@
 // 		}
 // 	}
 // }
-
 package d2cycle
 
 import (
@@ -254,9 +253,9 @@ import (
 )
 
 const (
-	MIN_RADIUS      = 200
-	PADDING         = 20
-	ARC_STEPS       = 60 // High resolution for perfect circles
+	MIN_RADIUS = 200
+	PADDING    = 20
+	ARC_STEPS  = 60 // High resolution for perfect circles
 )
 
 func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) error {
@@ -286,8 +285,8 @@ func calculateBaseRadius(objects []*d2graph.Object) float64 {
 		size := math.Max(obj.Width, obj.Height)
 		maxSize = math.Max(maxSize, size)
 	}
-	radius := (maxSize + 2*PADDING) / (2 * math.Sin(math.Pi/numNodes))
-	return math.Max(radius, MIN_RADIUS)
+	minRadius := (maxSize/2 + PADDING) / math.Sin(math.Pi/numNodes)
+	return math.Max(minRadius, MIN_RADIUS)
 }
 
 func positionObjects(objects []*d2graph.Object, radius float64) {
@@ -313,13 +312,13 @@ func createPerfectArc(edge *d2graph.Edge, baseRadius float64) {
 
 	srcCenter := edge.Src.Center()
 	dstCenter := edge.Dst.Center()
-	center := geo.NewPoint(0, 0) // Layout center
+	layoutCenter := geo.NewPoint(0, 0)
 
 	// Calculate angles with proper wrapping
-	startAngle := math.Atan2(srcCenter.Y-center.Y, srcCenter.X-center.X)
-	endAngle := math.Atan2(dstCenter.Y-center.Y, dstCenter.X-center.X)
+	startAngle := math.Atan2(srcCenter.Y-layoutCenter.Y, srcCenter.X-layoutCenter.X)
+	endAngle := math.Atan2(dstCenter.Y-layoutCenter.Y, dstCenter.X-layoutCenter.X)
 	
-	// Handle angle wrapping for shortest path
+	// Calculate angular distance taking shortest path
 	angleDiff := endAngle - startAngle
 	if angleDiff < 0 {
 		angleDiff += 2 * math.Pi
@@ -333,12 +332,12 @@ func createPerfectArc(edge *d2graph.Edge, baseRadius float64) {
 	for i := 0; i <= ARC_STEPS; i++ {
 		t := float64(i) / ARC_STEPS
 		currentAngle := startAngle + t*angleDiff
-		x := center.X + baseRadius*math.Cos(currentAngle)
-		y := center.Y + baseRadius*math.Sin(currentAngle)
+		x := layoutCenter.X + baseRadius*math.Cos(currentAngle)
+		y := layoutCenter.Y + baseRadius*math.Sin(currentAngle)
 		path = append(path, geo.NewPoint(x, y))
 	}
 
-	// Clip to shape boundaries while preserving arc
+	// Clip to shape boundaries while preserving arc properties
 	edge.Route = path
 	startIdx, endIdx := edge.TraceToShape(edge.Route, 0, len(edge.Route)-1)
 
@@ -346,7 +345,7 @@ func createPerfectArc(edge *d2graph.Edge, baseRadius float64) {
 	if startIdx < endIdx {
 		edge.Route = edge.Route[startIdx : endIdx+1]
 		
-		// Ensure minimum points for smooth rendering
+		// Ensure minimal points for smooth rendering
 		if len(edge.Route) < 3 {
 			edge.Route = []*geo.Point{path[0], path[len(path)-1]}
 		}
@@ -355,6 +354,28 @@ func createPerfectArc(edge *d2graph.Edge, baseRadius float64) {
 	edge.IsCurve = true
 }
 
+// Keep existing helper functions (positionLabelsIcons, boxContains, boxIntersections)
+// Helper if your geo.Box doesn’t implement Contains()
+func boxContains(b *geo.Box, p *geo.Point) bool {
+	// typical bounding-box check
+	return p.X >= b.TopLeft.X &&
+		p.X <= b.TopLeft.X+b.Width &&
+		p.Y >= b.TopLeft.Y &&
+		p.Y <= b.TopLeft.Y+b.Height
+}
+
+// Helper if your geo.Box doesn’t implement Intersections(geo.Segment) yet
+func boxIntersections(b *geo.Box, seg geo.Segment) []*geo.Point {
+	// We'll assume d2's standard geo.Box has a built-in Intersections(*Segment) method.
+	// If not, implement manually. For example, checking each of the 4 edges:
+	//   left, right, top, bottom
+	// For simplicity, if you do have b.Intersections(...) you can just do:
+	//     return b.Intersections(seg)
+	return b.Intersections(seg)
+	// If you don't have that, you'd code the line-rect intersection yourself.
+}
+
+// positionLabelsIcons is basically your logic that sets default label/icon positions if needed
 func positionLabelsIcons(obj *d2graph.Object) {
 	// If there's an icon but no icon position, give it a default
 	if obj.Icon != nil && obj.IconPosition == nil {
@@ -371,6 +392,7 @@ func positionLabelsIcons(obj *d2graph.Object) {
 		}
 	}
 
+	// If there's a label but no label position, give it a default
 	if obj.HasLabel() && obj.LabelPosition == nil {
 		if len(obj.ChildrenArray) > 0 {
 			obj.LabelPosition = go2.Pointer(label.OutsideTopCenter.String())
@@ -382,6 +404,7 @@ func positionLabelsIcons(obj *d2graph.Object) {
 			obj.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
 		}
 
+		// If the label is bigger than the shape, fallback to outside positions
 		if float64(obj.LabelDimensions.Width) > obj.Width ||
 			float64(obj.LabelDimensions.Height) > obj.Height {
 			if len(obj.ChildrenArray) > 0 {
@@ -392,14 +415,165 @@ func positionLabelsIcons(obj *d2graph.Object) {
 		}
 	}
 }
+// package d2cycle
 
-func boxContains(b *geo.Box, p *geo.Point) bool {
-	return p.X >= b.TopLeft.X &&
-		p.X <= b.TopLeft.X+b.Width &&
-		p.Y >= b.TopLeft.Y &&
-		p.Y <= b.TopLeft.Y+b.Height
-}
+// import (
+// 	"context"
+// 	"math"
 
-func boxIntersections(b *geo.Box, seg geo.Segment) []*geo.Point {
-	return b.Intersections(seg)
-}
+// 	"oss.terrastruct.com/d2/d2graph"
+// 	"oss.terrastruct.com/d2/lib/geo"
+// 	"oss.terrastruct.com/d2/lib/label"
+// 	"oss.terrastruct.com/util-go/go2"
+// )
+
+// const (
+// 	MIN_RADIUS      = 200
+// 	PADDING         = 20
+// 	ARC_STEPS       = 60 // High resolution for perfect circles
+// )
+
+// func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) error {
+// 	objects := g.Root.ChildrenArray
+// 	if len(objects) == 0 {
+// 		return nil
+// 	}
+
+// 	for _, obj := range g.Objects {
+// 		positionLabelsIcons(obj)
+// 	}
+
+// 	baseRadius := calculateBaseRadius(objects)
+// 	positionObjects(objects, baseRadius)
+
+// 	for _, edge := range g.Edges {
+// 		createPerfectArc(edge, baseRadius)
+// 	}
+
+// 	return nil
+// }
+
+// func calculateBaseRadius(objects []*d2graph.Object) float64 {
+// 	numNodes := float64(len(objects))
+// 	maxSize := 0.0
+// 	for _, obj := range objects {
+// 		size := math.Max(obj.Width, obj.Height)
+// 		maxSize = math.Max(maxSize, size)
+// 	}
+// 	radius := (maxSize + 2*PADDING) / (2 * math.Sin(math.Pi/numNodes))
+// 	return math.Max(radius, MIN_RADIUS)
+// }
+
+// func positionObjects(objects []*d2graph.Object, radius float64) {
+// 	numObjects := float64(len(objects))
+// 	angleOffset := -math.Pi / 2
+
+// 	for i, obj := range objects {
+// 		angle := angleOffset + (2*math.Pi*float64(i))/numObjects
+// 		x := radius * math.Cos(angle)
+// 		y := radius * math.Sin(angle)
+		
+// 		obj.TopLeft = geo.NewPoint(
+// 			x-obj.Width/2,
+// 			y-obj.Height/2,
+// 		)
+// 	}
+// }
+
+// func createPerfectArc(edge *d2graph.Edge, baseRadius float64) {
+// 	if edge.Src == nil || edge.Dst == nil || edge.Src == edge.Dst {
+// 		return
+// 	}
+
+// 	srcCenter := edge.Src.Center()
+// 	dstCenter := edge.Dst.Center()
+// 	center := geo.NewPoint(0, 0) // Layout center
+
+// 	// Calculate angles with proper wrapping
+// 	startAngle := math.Atan2(srcCenter.Y-center.Y, srcCenter.X-center.X)
+// 	endAngle := math.Atan2(dstCenter.Y-center.Y, dstCenter.X-center.X)
+	
+// 	// Handle angle wrapping for shortest path
+// 	angleDiff := endAngle - startAngle
+// 	if angleDiff < 0 {
+// 		angleDiff += 2 * math.Pi
+// 	}
+// 	if angleDiff > math.Pi {
+// 		angleDiff -= 2 * math.Pi
+// 	}
+
+// 	// Generate perfect circular arc
+// 	path := make([]*geo.Point, 0, ARC_STEPS+1)
+// 	for i := 0; i <= ARC_STEPS; i++ {
+// 		t := float64(i) / ARC_STEPS
+// 		currentAngle := startAngle + t*angleDiff
+// 		x := center.X + baseRadius*math.Cos(currentAngle)
+// 		y := center.Y + baseRadius*math.Sin(currentAngle)
+// 		path = append(path, geo.NewPoint(x, y))
+// 	}
+
+// 	// Clip to shape boundaries while preserving arc
+// 	edge.Route = path
+// 	startIdx, endIdx := edge.TraceToShape(edge.Route, 0, len(edge.Route)-1)
+
+// 	// Maintain smooth arc after clipping
+// 	if startIdx < endIdx {
+// 		edge.Route = edge.Route[startIdx : endIdx+1]
+		
+// 		// Ensure minimum points for smooth rendering
+// 		if len(edge.Route) < 3 {
+// 			edge.Route = []*geo.Point{path[0], path[len(path)-1]}
+// 		}
+// 	}
+	
+// 	edge.IsCurve = true
+// }
+
+// func positionLabelsIcons(obj *d2graph.Object) {
+// 	// If there's an icon but no icon position, give it a default
+// 	if obj.Icon != nil && obj.IconPosition == nil {
+// 		if len(obj.ChildrenArray) > 0 {
+// 			obj.IconPosition = go2.Pointer(label.OutsideTopLeft.String())
+// 			if obj.LabelPosition == nil {
+// 				obj.LabelPosition = go2.Pointer(label.OutsideTopRight.String())
+// 				return
+// 			}
+// 		} else if obj.SQLTable != nil || obj.Class != nil || obj.Language != "" {
+// 			obj.IconPosition = go2.Pointer(label.OutsideTopLeft.String())
+// 		} else {
+// 			obj.IconPosition = go2.Pointer(label.InsideMiddleCenter.String())
+// 		}
+// 	}
+
+// 	if obj.HasLabel() && obj.LabelPosition == nil {
+// 		if len(obj.ChildrenArray) > 0 {
+// 			obj.LabelPosition = go2.Pointer(label.OutsideTopCenter.String())
+// 		} else if obj.HasOutsideBottomLabel() {
+// 			obj.LabelPosition = go2.Pointer(label.OutsideBottomCenter.String())
+// 		} else if obj.Icon != nil {
+// 			obj.LabelPosition = go2.Pointer(label.InsideTopCenter.String())
+// 		} else {
+// 			obj.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
+// 		}
+
+// 		if float64(obj.LabelDimensions.Width) > obj.Width ||
+// 			float64(obj.LabelDimensions.Height) > obj.Height {
+// 			if len(obj.ChildrenArray) > 0 {
+// 				obj.LabelPosition = go2.Pointer(label.OutsideTopCenter.String())
+// 			} else {
+// 				obj.LabelPosition = go2.Pointer(label.OutsideBottomCenter.String())
+// 			}
+// 		}
+// 	}
+// }
+
+// func boxContains(b *geo.Box, p *geo.Point) bool {
+// 	return p.X >= b.TopLeft.X &&
+// 		p.X <= b.TopLeft.X+b.Width &&
+// 		p.Y >= b.TopLeft.Y &&
+// 		p.Y <= b.TopLeft.Y+b.Height
+// }
+
+// func boxIntersections(b *geo.Box, seg geo.Segment) []*geo.Point {
+// 	return b.Intersections(seg)
+// }
