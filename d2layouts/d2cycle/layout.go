@@ -30,8 +30,20 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) e
 	radius := calculateRadius(objects)
 	positionObjects(objects, radius)
 
+	// Calculate max projection for all objects to adjust the arc radius
+	maxProjection := 0.0
+	for _, obj := range objects {
+		center := obj.Center()
+		theta := math.Atan2(center.Y, center.X)
+		projection := (obj.Width/2)*math.Cos(theta) + (obj.Height/2)*math.Sin(theta)
+		if projection > maxProjection {
+			maxProjection = projection
+		}
+	}
+	arcRadius := radius + maxProjection
+
 	for _, edge := range g.Edges {
-		createCircularArc(edge)
+		createCircularArc(edge, arcRadius)
 	}
 
 	return nil
@@ -64,7 +76,7 @@ func positionObjects(objects []*d2graph.Object, radius float64) {
 	}
 }
 
-func createCircularArc(edge *d2graph.Edge) {
+func createCircularArc(edge *d2graph.Edge, arcRadius float64) {
 	if edge.Src == nil || edge.Dst == nil {
 		return
 	}
@@ -77,8 +89,6 @@ func createCircularArc(edge *d2graph.Edge) {
 	if dstAngle < srcAngle {
 		dstAngle += 2 * math.Pi
 	}
-
-	arcRadius := math.Hypot(srcCenter.X, srcCenter.Y)
 
 	path := make([]*geo.Point, 0, ARC_STEPS+1)
 	for i := 0; i <= ARC_STEPS; i++ {
