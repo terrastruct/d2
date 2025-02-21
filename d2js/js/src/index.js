@@ -1,10 +1,5 @@
 import { createWorker, loadFile } from "./platform.js";
 
-const DEFAULT_OPTIONS = {
-  layout: "dagre",
-  sketch: false,
-};
-
 export class D2 {
   constructor() {
     this.ready = this.init();
@@ -86,17 +81,15 @@ export class D2 {
   }
 
   async compile(input, options = {}) {
-    const opts = { ...DEFAULT_OPTIONS, ...options };
     const request =
       typeof input === "string"
-        ? { fs: { index: input }, options: opts }
-        : { ...input, options: { ...opts, ...input.options } };
+        ? { fs: { index: input }, options }
+        : { ...input, options: { ...options, ...input.options } };
     return this.sendMessage("compile", request);
   }
 
   async render(diagram, options = {}) {
-    const opts = { ...DEFAULT_OPTIONS, ...options };
-    return this.sendMessage("render", { diagram, options: opts });
+    return this.sendMessage("render", { diagram, options });
   }
 
   async encode(script) {

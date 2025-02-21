@@ -27,7 +27,7 @@ export function setupMessageHandler(isNode, port, initWasm) {
 
       case "compile":
         try {
-          if (data.options.layout === "elk") {
+          if (data.options.layout === "elk" || data.options.layout == null) {
             const elkGraph = await d2.getELKGraph(JSON.stringify(data));
             const elkGraph2 = JSON.parse(elkGraph).data;
             const layout = await elk.layout(elkGraph2);
