@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2layouts/d2cycle"
 	"oss.terrastruct.com/d2/d2layouts/d2grid"
 	"oss.terrastruct.com/d2/d2layouts/d2near"
 	"oss.terrastruct.com/d2/d2layouts/d2sequence"
@@ -26,6 +27,7 @@ const (
 	ConstantNearGraph DiagramType = "constant-near"
 	GridDiagram       DiagramType = "grid-diagram"
 	SequenceDiagram   DiagramType = "sequence-diagram"
+	CycleDiagram      DiagramType = "cycle-diagram"
 )
 
 type GraphInfo struct {
@@ -260,6 +262,12 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			if err != nil {
 				return err
 			}
+		case CycleDiagram:
+			log.Debug(ctx, "layout sequence", slog.Any("rootlevel", g.RootLevel), slog.Any("shapes", g.PrintString()))
+			err = d2cycle.Layout(ctx, g, coreLayout)
+			if err != nil {
+				return err
+			}			
 		default:
 			log.Debug(ctx, "default layout", slog.Any("rootlevel", g.RootLevel), slog.Any("shapes", g.PrintString()))
 			err := coreLayout(ctx, g)
@@ -360,6 +368,8 @@ func NestedGraphInfo(obj *d2graph.Object) (gi GraphInfo) {
 		gi.DiagramType = SequenceDiagram
 	} else if obj.IsGridDiagram() {
 		gi.DiagramType = GridDiagram
+	} else if obj.IsCycleDiagram() {
+		gi.DiagramType = CycleDiagram
 	}
 	return gi
 }
