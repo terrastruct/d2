@@ -78,6 +78,7 @@ func createCircularArc(edge *d2graph.Edge) {
 		dstAngle += 2 * math.Pi
 	}
 
+	// Use the source center's distance for the arc radius.
 	arcRadius := math.Hypot(srcCenter.X, srcCenter.Y)
 
 	path := make([]*geo.Point, 0, ARC_STEPS+1)
@@ -113,15 +114,11 @@ func clampPointOutsideBox(box *geo.Box, path []*geo.Point, startIdx int) (int, *
 		if boxContains(box, path[i]) {
 			continue
 		}
-		seg := geo.NewSegment(path[i-1], path[i])
-		inters := boxIntersections(box, *seg)
-		if len(inters) > 0 {
-			return i, inters[0]
-		}
-		return i, path[i]
+		// Refine the intersection between the last inside and the first outside point.
+		refined := refineIntersection(box, path[i-1], path[i])
+		return i, refined
 	}
-	last := len(path) - 1
-	return last, path[last]
+	return len(path) - 1, path[len(path)-1]
 }
 
 func clampPointOutsideBoxReverse(box *geo.Box, path []*geo.Point, endIdx int) (int, *geo.Point) {
@@ -136,14 +133,25 @@ func clampPointOutsideBoxReverse(box *geo.Box, path []*geo.Point, endIdx int) (i
 		if boxContains(box, path[j]) {
 			continue
 		}
-		seg := geo.NewSegment(path[j], path[j+1])
-		inters := boxIntersections(box, *seg)
-		if len(inters) > 0 {
-			return j, inters[0]
-		}
-		return j, path[j]
+		refined := refineIntersection(box, path[j], path[j+1])
+		return j, refined
 	}
 	return 0, path[0]
+}
+
+func refineIntersection(box *geo.Box, pInside, pOutside *geo.Point) *geo.Point {
+	const epsilon = 1e-6
+	a := pInside
+	b := pOutside
+	for math.Hypot(b.X-a.X, b.Y-a.Y) > epsilon {
+		mid := geo.NewPoint((a.X+b.X)/2, (a.Y+b.Y)/2)
+		if boxContains(box, mid) {
+			a = mid
+		} else {
+			b = mid
+		}
+	}
+	return geo.NewPoint((a.X+b.X)/2, (a.Y+b.Y)/2)
 }
 
 func boxContains(b *geo.Box, p *geo.Point) bool {
