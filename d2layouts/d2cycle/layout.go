@@ -3,6 +3,7 @@ package d2cycle
 import (
 	"context"
 	"math"
+	"sort"
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/lib/geo"
@@ -14,11 +15,10 @@ const (
 	MIN_RADIUS      = 200
 	PADDING         = 20
 	MIN_SEGMENT_LEN = 10
-	ARC_STEPS       = 30
-	EPSILON         = 1e-10 // Small value for floating point comparisons
+	ARC_STEPS       = 100
 )
 
-// Layout computes node positions and generates curved edge routes.
+// Layout lays out the graph and computes curved edge routes.
 func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) error {
 	objects := g.Root.ChildrenArray
 	if len(objects) == 0 {
@@ -33,7 +33,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) e
 	positionObjects(objects, radius)
 
 	for _, edge := range g.Edges {
-		createPreciseCircularArc(edge)
+		createCircularArc(edge)
 	}
 
 	return nil
@@ -58,7 +58,6 @@ func positionObjects(objects []*d2graph.Object, radius float64) {
 		angle := angleOffset + (2*math.Pi*float64(i)/numObjects)
 		x := radius * math.Cos(angle)
 		y := radius * math.Sin(angle)
-
 		obj.TopLeft = geo.NewPoint(
 			x-obj.Box.Width/2,
 			y-obj.Box.Height/2,
@@ -66,8 +65,7 @@ func positionObjects(objects []*d2graph.Object, radius float64) {
 	}
 }
 
-// createPreciseCircularArc computes a curved edge path that touches the node boundaries exactly.
-func createPreciseCircularArc(edge *d2graph.Edge) {
+func createCircularArc(edge *d2graph.Edge) {
 	if edge.Src == nil || edge.Dst == nil {
 		return
 	}
@@ -75,7 +73,6 @@ func createPreciseCircularArc(edge *d2graph.Edge) {
 	srcCenter := edge.Src.Center()
 	dstCenter := edge.Dst.Center()
 
-	// Compute angles for the circular arc.
 	srcAngle := math.Atan2(srcCenter.Y, srcCenter.X)
 	dstAngle := math.Atan2(dstCenter.Y, dstCenter.X)
 	if dstAngle < srcAngle {
@@ -84,7 +81,6 @@ func createPreciseCircularArc(edge *d2graph.Edge) {
 
 	arcRadius := math.Hypot(srcCenter.X, srcCenter.Y)
 
-	// Generate the initial arc path.
 	path := make([]*geo.Point, 0, ARC_STEPS+1)
 	for i := 0; i <= ARC_STEPS; i++ {
 		t := float64(i) / float64(ARC_STEPS)
@@ -93,134 +89,170 @@ func createPreciseCircularArc(edge *d2graph.Edge) {
 		y := arcRadius * math.Sin(angle)
 		path = append(path, geo.NewPoint(x, y))
 	}
+	path[0] = srcCenter
+	path[len(path)-1] = dstCenter
 
-	// Compute precise intersection points so the arrow touches the node boundaries.
-	// For the source, the segment goes from the center (inside) to the next point (outside).
-	srcIntersection := findPreciseBoxIntersection(edge.Src.Box, path[0], path[1])
-	// For the destination, the segment goes from the center to the previous point (outside).
-	dstIntersection := findPreciseBoxIntersection(edge.Dst.Box, path[len(path)-1], path[len(path)-2])
+	// Clamp endpoints to the boundaries of the source and destination boxes.
+	_, newSrc := clampPointOutsideBox(edge.Src.Box, path, 0)
+	_, newDst := clampPointOutsideBoxReverse(edge.Dst.Box, path, len(path)-1)
+	path[0] = newSrc
+	path[len(path)-1] = newDst
 
-	// Update the endpoints with the snapped intersection points.
-	path[0] = srcIntersection
-	path[len(path)-1] = dstIntersection
+	// Trim redundant path points that fall inside node boundaries.
+	path = trimPathPoints(path, edge.Src.Box)
+	path = trimPathPoints(path, edge.Dst.Box)
 
-	// Trim intermediate points that still fall inside the boxes.
-	startIdx := 0
-	endIdx := len(path) - 1
-	for i := 1; i < len(path); i++ {
-		if !boxContains(edge.Src.Box, path[i]) {
-			startIdx = i - 1
-			break
-		}
-	}
-	for i := len(path) - 2; i >= 0; i-- {
-		if !boxContains(edge.Dst.Box, path[i]) {
-			endIdx = i + 1
-			break
-		}
-	}
-
-	edge.Route = path[startIdx : endIdx+1]
+	edge.Route = path
 	edge.IsCurve = true
 }
 
-// findPreciseBoxIntersection returns the intersection point of the line (from p1 to p2) with the box boundary,
-// snapped exactly to the nearest edge.
-func findPreciseBoxIntersection(box *geo.Box, p1, p2 *geo.Point) *geo.Point {
-	// Define the four box edges.
-	edges := []geo.Segment{
-		*geo.NewSegment(
-			geo.NewPoint(box.TopLeft.X, box.TopLeft.Y),
-			geo.NewPoint(box.TopLeft.X+box.Width, box.TopLeft.Y),
-		), // Top
-		*geo.NewSegment(
-			geo.NewPoint(box.TopLeft.X+box.Width, box.TopLeft.Y),
-			geo.NewPoint(box.TopLeft.X+box.Width, box.TopLeft.Y+box.Height),
-		), // Right
-		*geo.NewSegment(
-			geo.NewPoint(box.TopLeft.X, box.TopLeft.Y+box.Height),
-			geo.NewPoint(box.TopLeft.X+box.Width, box.TopLeft.Y+box.Height),
-		), // Bottom
-		*geo.NewSegment(
-			geo.NewPoint(box.TopLeft.X, box.TopLeft.Y),
-			geo.NewPoint(box.TopLeft.X, box.TopLeft.Y+box.Height),
-		), // Left
+// clampPointOutsideBox walks forward along the path until it finds a point outside the box,
+// then replaces the point with a precise intersection.
+func clampPointOutsideBox(box *geo.Box, path []*geo.Point, startIdx int) (int, *geo.Point) {
+	if startIdx >= len(path)-1 {
+		return startIdx, path[startIdx]
+	}
+	if !boxContains(box, path[startIdx]) {
+		return startIdx, path[startIdx]
 	}
 
-	// Construct the line from p1 (inside) to p2 (outside).
-	line := *geo.NewSegment(p1, p2)
-	var closestIntersection *geo.Point
-	minDist := math.MaxFloat64
-
-	// Find the intersection among the four edges that is closest to p1.
-	for _, seg := range edges {
-		if intersection := findSegmentIntersection(line, seg); intersection != nil {
-			dist := math.Hypot(intersection.X-p1.X, intersection.Y-p1.Y)
-			if dist < minDist {
-				minDist = dist
-				closestIntersection = intersection
-			}
+	for i := startIdx + 1; i < len(path); i++ {
+		if boxContains(box, path[i]) {
+			continue
 		}
+		seg := geo.NewSegment(path[i-1], path[i])
+		inter := findPreciseIntersection(box, *seg)
+		if inter != nil {
+			return i, inter
+		}
+		return i, path[i]
 	}
-
-	if closestIntersection != nil {
-		return snapToBoundary(box, closestIntersection)
-	}
-	return p1
+	return len(path)-1, path[len(path)-1]
 }
 
-// findSegmentIntersection computes the intersection between two line segments s1 and s2 using their parametric form.
-func findSegmentIntersection(s1, s2 geo.Segment) *geo.Point {
-	x1, y1 := s1.Start.X, s1.Start.Y
-	x2, y2 := s1.End.X, s1.End.Y
-	x3, y3 := s2.Start.X, s2.Start.Y
-	x4, y4 := s2.End.X, s2.End.Y
-
-	denom := (x1-x2)*(y3-y4) - (y1-y2)*(x3-x4)
-	if math.Abs(denom) < EPSILON {
-		return nil
+// clampPointOutsideBoxReverse works similarly but in reverse order.
+func clampPointOutsideBoxReverse(box *geo.Box, path []*geo.Point, endIdx int) (int, *geo.Point) {
+	if endIdx <= 0 {
+		return endIdx, path[endIdx]
+	}
+	if !boxContains(box, path[endIdx]) {
+		return endIdx, path[endIdx]
 	}
 
-	t := ((x1-x3)*(y3-y4) - (y1-y3)*(x3-x4)) / denom
-	u := -((x1-x2)*(y1-y3) - (y1-y2)*(x1-x3)) / denom
-
-	if t >= 0 && t <= 1 && u >= 0 && u <= 1 {
-		x := x1 + t*(x2-x1)
-		y := y1 + t*(y2-y1)
-		return geo.NewPoint(x, y)
+	for j := endIdx - 1; j >= 0; j-- {
+		if boxContains(box, path[j]) {
+			continue
+		}
+		seg := geo.NewSegment(path[j], path[j+1])
+		inter := findPreciseIntersection(box, *seg)
+		if inter != nil {
+			return j, inter
+		}
+		return j, path[j]
 	}
-	return nil
+	return 0, path[0]
 }
 
-// snapToBoundary adjusts point p so that it lies exactly on the nearest boundary of box.
-func snapToBoundary(box *geo.Box, p *geo.Point) *geo.Point {
+// findPreciseIntersection calculates intersection points between seg and all four sides of the box,
+// then returns the intersection closest to seg.Start.
+func findPreciseIntersection(box *geo.Box, seg geo.Segment) *geo.Point {
+	intersections := []struct {
+		point *geo.Point
+		t     float64
+	}{}
+
 	left := box.TopLeft.X
 	right := box.TopLeft.X + box.Width
 	top := box.TopLeft.Y
 	bottom := box.TopLeft.Y + box.Height
 
-	dLeft := math.Abs(p.X - left)
-	dRight := math.Abs(p.X - right)
-	dTop := math.Abs(p.Y - top)
-	dBottom := math.Abs(p.Y - bottom)
+	dx := seg.End.X - seg.Start.X
+	dy := seg.End.Y - seg.Start.Y
 
-	if dLeft < dRight && dLeft < dTop && dLeft < dBottom {
-		return geo.NewPoint(left, p.Y)
-	} else if dRight < dLeft && dRight < dTop && dRight < dBottom {
-		return geo.NewPoint(right, p.Y)
-	} else if dTop < dBottom {
-		return geo.NewPoint(p.X, top)
-	} else {
-		return geo.NewPoint(p.X, bottom)
+	// Check vertical boundaries.
+	if dx != 0 {
+		// Left boundary.
+		t := (left - seg.Start.X) / dx
+		if t >= 0 && t <= 1 {
+			y := seg.Start.Y + t*dy
+			if y >= top && y <= bottom {
+				intersections = append(intersections, struct {
+					point *geo.Point
+					t     float64
+				}{geo.NewPoint(left, y), t})
+			}
+		}
+		// Right boundary.
+		t = (right - seg.Start.X) / dx
+		if t >= 0 && t <= 1 {
+			y := seg.Start.Y + t*dy
+			if y >= top && y <= bottom {
+				intersections = append(intersections, struct {
+					point *geo.Point
+					t     float64
+				}{geo.NewPoint(right, y), t})
+			}
+		}
 	}
+
+	// Check horizontal boundaries.
+	if dy != 0 {
+		// Top boundary.
+		t := (top - seg.Start.Y) / dy
+		if t >= 0 && t <= 1 {
+			x := seg.Start.X + t*dx
+			if x >= left && x <= right {
+				intersections = append(intersections, struct {
+					point *geo.Point
+					t     float64
+				}{geo.NewPoint(x, top), t})
+			}
+		}
+		// Bottom boundary.
+		t = (bottom - seg.Start.Y) / dy
+		if t >= 0 && t <= 1 {
+			x := seg.Start.X + t*dx
+			if x >= left && x <= right {
+				intersections = append(intersections, struct {
+					point *geo.Point
+					t     float64
+				}{geo.NewPoint(x, bottom), t})
+			}
+		}
+	}
+
+	if len(intersections) == 0 {
+		return nil
+	}
+
+	// Sort intersections by t (distance from seg.Start) and return the closest.
+	sort.Slice(intersections, func(i, j int) bool {
+		return intersections[i].t < intersections[j].t
+	})
+	return intersections[0].point
 }
 
-// boxContains returns true if point p is inside the box (using EPSILON for floating point tolerance).
+// trimPathPoints removes intermediate points that fall inside the given box while preserving endpoints.
+func trimPathPoints(path []*geo.Point, box *geo.Box) []*geo.Point {
+	if len(path) <= 2 {
+		return path
+	}
+	trimmed := []*geo.Point{path[0]}
+	for i := 1; i < len(path)-1; i++ {
+		if !boxContains(box, path[i]) {
+			trimmed = append(trimmed, path[i])
+		}
+	}
+	trimmed = append(trimmed, path[len(path)-1])
+	return trimmed
+}
+
+// boxContains uses strict inequalities so that points exactly on the boundary are considered outside.
 func boxContains(b *geo.Box, p *geo.Point) bool {
-	return p.X >= b.TopLeft.X-EPSILON &&
-		p.X <= b.TopLeft.X+b.Width+EPSILON &&
-		p.Y >= b.TopLeft.Y-EPSILON &&
-		p.Y <= b.TopLeft.Y+b.Height+EPSILON
+	return p.X > b.TopLeft.X &&
+		p.X < b.TopLeft.X+b.Width &&
+		p.Y > b.TopLeft.Y &&
+		p.Y < b.TopLeft.Y+b.Height
 }
 
 func positionLabelsIcons(obj *d2graph.Object) {
