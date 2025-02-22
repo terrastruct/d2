@@ -99,13 +99,52 @@ func createCircularArc(edge *d2graph.Edge) {
 	path[len(path)-1] = newDst
 
 	// Trim redundant path points that fall inside node boundaries.
-	path = trimPathPoints(path, edge.Src.Box)
-	path = trimPathPoints(path, edge.Dst.Box)
+// 	path = trimPathPoints(path, edge.Src.Box)
+// 	path = trimPathPoints(path, edge.Dst.Box)
 
-	edge.Route = path
-	edge.IsCurve = true
+// 	edge.Route = path
+// 	edge.IsCurve = true
+// }
+path = trimPathPoints(path, edge.Src.Box)
+path = trimPathPoints(path, edge.Dst.Box)
+
+// Adjust the last two points to align the arrow direction with the arc's tangent
+if len(path) >= 2 {
+	dstPoint := path[len(path)-1]
+	prevPoint := path[len(path)-2]
+
+	// Calculate the vector between the last two points
+	dx := dstPoint.X - prevPoint.X
+	dy := dstPoint.Y - prevPoint.Y
+
+	// Calculate the perpendicular vector (rotated 90 degrees counter-clockwise)
+	// This gives us the center direction of the circular arc
+	centerDirX := -dy
+	centerDirY := dx
+
+	// Normalize the center direction vector
+	centerLength := math.Hypot(centerDirX, centerDirY)
+	if centerLength > 0 {
+		centerDirX /= centerLength
+		centerDirY /= centerLength
+	}
+
+	// Calculate the tangent direction (perpendicular to center direction)
+	tangentX := -centerDirY
+	tangentY := centerDirX
+
+	// Adjust the penultimate point to create proper arrow alignment
+	step := 10.0
+	newPrevX := dstPoint.X - tangentX*step
+	newPrevY := dstPoint.Y - tangentY*step
+
+	// Update the path with the adjusted point
+	path[len(path)-2] = geo.NewPoint(newPrevX, newPrevY)
 }
 
+edge.Route = path
+edge.IsCurve = true
+}
 
 // clampPointOutsideBox walks forward along the path until it finds a point outside the box,
 // then replaces the point with a precise intersection.
