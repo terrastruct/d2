@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	MIN_RADIUS      = 100
+	MIN_RADIUS      = 200
 	PADDING         = 20
 	MIN_SEGMENT_LEN = 10
 	ARC_STEPS       = 100
