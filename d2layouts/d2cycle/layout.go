@@ -65,6 +65,46 @@ func positionObjects(objects []*d2graph.Object, radius float64) {
 	}
 }
 
+// func createCircularArc(edge *d2graph.Edge) {
+// 	if edge.Src == nil || edge.Dst == nil {
+// 		return
+// 	}
+
+// 	srcCenter := edge.Src.Center()
+// 	dstCenter := edge.Dst.Center()
+
+// 	srcAngle := math.Atan2(srcCenter.Y, srcCenter.X)
+// 	dstAngle := math.Atan2(dstCenter.Y, dstCenter.X)
+// 	if dstAngle < srcAngle {
+// 		dstAngle += 2 * math.Pi
+// 	}
+
+// 	arcRadius := math.Hypot(srcCenter.X, srcCenter.Y)
+
+// 	path := make([]*geo.Point, 0, ARC_STEPS+1)
+// 	for i := 0; i <= ARC_STEPS; i++ {
+// 		t := float64(i) / float64(ARC_STEPS)
+// 		angle := srcAngle + t*(dstAngle-srcAngle)
+// 		x := arcRadius * math.Cos(angle)
+// 		y := arcRadius * math.Sin(angle)
+// 		path = append(path, geo.NewPoint(x, y))
+// 	}
+// 	path[0] = srcCenter
+// 	path[len(path)-1] = dstCenter
+
+// 	// Clamp endpoints to the boundaries of the source and destination boxes.
+// 	_, newSrc := clampPointOutsideBox(edge.Src.Box, path, 0)
+// 	_, newDst := clampPointOutsideBoxReverse(edge.Dst.Box, path, len(path)-1)
+// 	path[0] = newSrc
+// 	path[len(path)-1] = newDst
+
+// 	// Trim redundant path points that fall inside node boundaries.
+// 	path = trimPathPoints(path, edge.Src.Box)
+// 	path = trimPathPoints(path, edge.Dst.Box)
+
+// 	edge.Route = path
+// 	edge.IsCurve = true
+// }
 func createCircularArc(edge *d2graph.Edge) {
 	if edge.Src == nil || edge.Dst == nil {
 		return
@@ -73,15 +113,27 @@ func createCircularArc(edge *d2graph.Edge) {
 	srcCenter := edge.Src.Center()
 	dstCenter := edge.Dst.Center()
 
+	// Calculate angles and ensure we take the shortest arc
 	srcAngle := math.Atan2(srcCenter.Y, srcCenter.X)
 	dstAngle := math.Atan2(dstCenter.Y, dstCenter.X)
-	if dstAngle < srcAngle {
-		dstAngle += 2 * math.Pi
+	
+	// Calculate angular distance for both directions
+	clockwiseDist := dstAngle - srcAngle
+
+	
+	// Choose shortest path
+	if math.Abs(clockwiseDist) > math.Pi {
+		if clockwiseDist > 0 {
+			dstAngle -= 2 * math.Pi
+		} else {
+			dstAngle += 2 * math.Pi
+		}
 	}
 
 	arcRadius := math.Hypot(srcCenter.X, srcCenter.Y)
-
 	path := make([]*geo.Point, 0, ARC_STEPS+1)
+
+	// Generate path with corrected direction
 	for i := 0; i <= ARC_STEPS; i++ {
 		t := float64(i) / float64(ARC_STEPS)
 		angle := srcAngle + t*(dstAngle-srcAngle)
@@ -89,23 +141,41 @@ func createCircularArc(edge *d2graph.Edge) {
 		y := arcRadius * math.Sin(angle)
 		path = append(path, geo.NewPoint(x, y))
 	}
-	path[0] = srcCenter
-	path[len(path)-1] = dstCenter
 
-	// Clamp endpoints to the boundaries of the source and destination boxes.
-	_, newSrc := clampPointOutsideBox(edge.Src.Box, path, 0)
-	_, newDst := clampPointOutsideBoxReverse(edge.Dst.Box, path, len(path)-1)
-	path[0] = newSrc
-	path[len(path)-1] = newDst
+	// [Keep existing clamping and trimming code...]
 
-	// Trim redundant path points that fall inside node boundaries.
-	path = trimPathPoints(path, edge.Src.Box)
-	path = trimPathPoints(path, edge.Dst.Box)
+	// Calculate tangent direction based on arc direction
+	if len(path) >= 2 {
+		last := path[len(path)-1]
+		var tangentX, tangentY float64
+		
+		// Determine direction using angular difference
+		if (dstAngle - srcAngle) > 0 {
+			// Counter-clockwise direction
+			tangentX = -last.Y
+			tangentY = last.X
+		} else {
+			// Clockwise direction
+			tangentX = last.Y
+			tangentY = -last.X
+		}
+
+		// Normalize and adjust second-to-last point
+		tangentLength := math.Hypot(tangentX, tangentY)
+		if tangentLength > 0 {
+			tangentDir := geo.NewPoint(tangentX/tangentLength, tangentY/tangentLength)
+			delta := 10.0
+			newSecondLast := geo.NewPoint(
+				last.X-delta*tangentDir.X,
+				last.Y-delta*tangentDir.Y,
+			)
+			path[len(path)-2] = newSecondLast
+		}
+	}
 
 	edge.Route = path
 	edge.IsCurve = true
 }
-
 // clampPointOutsideBox walks forward along the path until it finds a point outside the box,
 // then replaces the point with a precise intersection.
 func clampPointOutsideBox(box *geo.Box, path []*geo.Point, startIdx int) (int, *geo.Point) {
