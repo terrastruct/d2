@@ -99,8 +99,8 @@ func createCircularArc(edge *d2graph.Edge) {
 	path[len(path)-1] = newDst
 
 	// Trim redundant path points that fall inside node boundaries.
-// 	path = trimPathPoints(path, edge.Src.Box)
-// 	path = trimPathPoints(path, edge.Dst.Box)
+	path = trimPathPoints(path, edge.Src.Box)
+	path = trimPathPoints(path, edge.Dst.Box)
 
 	edge.Route = path
 	edge.IsCurve = true
