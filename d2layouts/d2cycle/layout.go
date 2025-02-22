@@ -89,7 +89,6 @@ func createCircularArc(edge *d2graph.Edge) {
 		y := arcRadius * math.Sin(angle)
 		path = append(path, geo.NewPoint(x, y))
 	}
-	// Ensure endpoints are the node centers
 	path[0] = srcCenter
 	path[len(path)-1] = dstCenter
 
@@ -99,10 +98,9 @@ func createCircularArc(edge *d2graph.Edge) {
 	path[0] = newSrc
 	path[len(path)-1] = newDst
 
-	// Instead of trimming all intermediate points that fall inside a node,
-	// only trim contiguous points from the start and end.
-	path = trimStartPoints(path, edge.Src.Box)
-	path = trimEndPoints(path, edge.Dst.Box)
+	// Trim redundant path points that fall inside node boundaries.
+	path = trimPathPoints(path, edge.Src.Box)
+	path = trimPathPoints(path, edge.Dst.Box)
 
 	edge.Route = path
 	edge.IsCurve = true
@@ -234,32 +232,19 @@ func findPreciseIntersection(box *geo.Box, seg geo.Segment) *geo.Point {
 	return intersections[0].point
 }
 
-// trimStartPoints removes contiguous starting points that fall inside the box,
-// but preserves one point before the first point outside to maintain smoothness.
-func trimStartPoints(path []*geo.Point, box *geo.Box) []*geo.Point {
-	i := 0
-	for i < len(path) && boxContains(box, path[i]) {
-		i++
+// trimPathPoints removes intermediate points that fall inside the given box while preserving endpoints.
+func trimPathPoints(path []*geo.Point, box *geo.Box) []*geo.Point {
+	if len(path) <= 2 {
+		return path
 	}
-	// If we've trimmed some points and there's at least one point before,
-	// include the last inside point to keep the curve smooth.
-	if i > 0 && i < len(path) {
-		return path[i-1:]
+	trimmed := []*geo.Point{path[0]}
+	for i := 1; i < len(path)-1; i++ {
+		if !boxContains(box, path[i]) {
+			trimmed = append(trimmed, path[i])
+		}
 	}
-	return path
-}
-
-// trimEndPoints removes contiguous ending points that fall inside the box,
-// but preserves one point after the last point outside to maintain smoothness.
-func trimEndPoints(path []*geo.Point, box *geo.Box) []*geo.Point {
-	i := len(path) - 1
-	for i >= 0 && boxContains(box, path[i]) {
-		i--
-	}
-	if i < len(path)-1 && i >= 0 {
-		return path[:i+2]
-	}
-	return path
+	trimmed = append(trimmed, path[len(path)-1])
+	return trimmed
 }
 
 // boxContains uses strict inequalities so that points exactly on the boundary are considered outside.
