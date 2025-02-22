@@ -92,13 +92,21 @@ func createCircularArc(edge *d2graph.Edge) {
 	path[0] = srcCenter
 	path[len(path)-1] = dstCenter
 
-	// Clamp endpoints to the boundaries of the source and destination boxes.
 	_, newSrc := clampPointOutsideBox(edge.Src.Box, path, 0)
 	_, newDst := clampPointOutsideBoxReverse(edge.Dst.Box, path, len(path)-1)
 	path[0] = newSrc
 	path[len(path)-1] = newDst
 
-	// Trim redundant path points that fall inside node boundaries.
+	// Add a point before newDst along the tangent direction
+	if len(path) >= 2 {
+		dstAngle := math.Atan2(newDst.Y, newDst.X)
+		tangent := geo.NewPoint(-math.Sin(dstAngle), math.Cos(dstAngle))
+		ε := 0.01 * arcRadius // Small offset, e.g., 1% of radius
+		preDst := geo.NewPoint(newDst.X - ε*tangent.X, newDst.Y - ε*tangent.Y)
+		// Insert preDst before newDst
+		path = append(path[:len(path)-1], preDst, newDst)
+	}
+
 	path = trimPathPoints(path, edge.Src.Box)
 	path = trimPathPoints(path, edge.Dst.Box)
 
