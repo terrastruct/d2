@@ -66,44 +66,64 @@ func positionObjects(objects []*d2graph.Object, radius float64) {
 }
 
 func createCircularArc(edge *d2graph.Edge) {
-	if edge.Src == nil || edge.Dst == nil {
-		return
-	}
+    if edge.Src == nil || edge.Dst == nil {
+        return
+    }
 
-	srcCenter := edge.Src.Center()
-	dstCenter := edge.Dst.Center()
+    srcCenter := edge.Src.Center()
+    dstCenter := edge.Dst.Center()
 
-	srcAngle := math.Atan2(srcCenter.Y, srcCenter.X)
-	dstAngle := math.Atan2(dstCenter.Y, dstCenter.X)
-	if dstAngle < srcAngle {
-		dstAngle += 2 * math.Pi
-	}
+    // Calculate the radius based on the distance from origin to the centers
+    srcRadius := math.Hypot(srcCenter.X, srcCenter.Y)
+    dstRadius := math.Hypot(dstCenter.X, dstCenter.Y)
+    
+    // Use average radius for more consistent arcs
+    
 
-	arcRadius := math.Hypot(srcCenter.X, srcCenter.Y)
+    // Calculate angles but preserve relative positioning
+    srcAngle := math.Atan2(srcCenter.Y, srcCenter.X)
+    dstAngle := math.Atan2(dstCenter.Y, dstCenter.X)
 
-	path := make([]*geo.Point, 0, ARC_STEPS+1)
-	for i := 0; i <= ARC_STEPS; i++ {
-		t := float64(i) / float64(ARC_STEPS)
-		angle := srcAngle + t*(dstAngle-srcAngle)
-		x := arcRadius * math.Cos(angle)
-		y := arcRadius * math.Sin(angle)
-		path = append(path, geo.NewPoint(x, y))
-	}
-	path[0] = srcCenter
-	path[len(path)-1] = dstCenter
+    // Ensure we take the shorter path around the circle
+    if dstAngle < srcAngle {
+        if srcAngle - dstAngle > math.Pi {
+            dstAngle += 2 * math.Pi
+        }
+    } else {
+        if dstAngle - srcAngle > math.Pi {
+            srcAngle += 2 * math.Pi
+        }
+    }
 
-	// Clamp endpoints to the boundaries of the source and destination boxes.
-	_, newSrc := clampPointOutsideBox(edge.Src.Box, path, 0)
-	_, newDst := clampPointOutsideBoxReverse(edge.Dst.Box, path, len(path)-1)
-	path[0] = newSrc
-	path[len(path)-1] = newDst
+    path := make([]*geo.Point, 0, ARC_STEPS+1)
+    for i := 0; i <= ARC_STEPS; i++ {
+        t := float64(i) / float64(ARC_STEPS)
+        angle := srcAngle + t*(dstAngle-srcAngle)
+        
+        // Use interpolated radius for smoother transition
+        radius := srcRadius + t*(dstRadius-srcRadius)
+        
+        x := radius * math.Cos(angle)
+        y := radius * math.Sin(angle)
+        path = append(path, geo.NewPoint(x, y))
+    }
+    
+    // Ensure exact endpoints
+    path[0] = srcCenter
+    path[len(path)-1] = dstCenter
 
-	// Trim redundant path points that fall inside node boundaries.
-	path = trimPathPoints(path, edge.Src.Box)
-	path = trimPathPoints(path, edge.Dst.Box)
+    // Clamp endpoints to the boundaries of the source and destination boxes
+    _, newSrc := clampPointOutsideBox(edge.Src.Box, path, 0)
+    _, newDst := clampPointOutsideBoxReverse(edge.Dst.Box, path, len(path)-1)
+    path[0] = newSrc
+    path[len(path)-1] = newDst
 
-	edge.Route = path
-	edge.IsCurve = true
+    // Trim redundant path points that fall inside node boundaries
+    path = trimPathPoints(path, edge.Src.Box)
+    path = trimPathPoints(path, edge.Dst.Box)
+
+    edge.Route = path
+    edge.IsCurve = true
 }
 
 // clampPointOutsideBox walks forward along the path until it finds a point outside the box,
