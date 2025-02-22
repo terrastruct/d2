@@ -90,7 +90,7 @@ func createCircularArc(edge *d2graph.Edge, radius float64) {
 		dstAngle := math.Atan2(newDst.Y, newDst.X)
 		tangent := geo.NewPoint(-math.Sin(dstAngle), math.Cos(dstAngle))
 		ε := 0.01 * radius // Small offset, e.g., 1% of radius
-		preDst := geo.NewPoint(newDst.X-ε*tangent.X, newDst.Y-ε*tangent.Y)
+		preDst := geo.NewPoint(newDst.X+ε*tangent.X, newDst.Y+ε*tangent.Y)
 		// Insert preDst before newDst
 		path = append(path[:len(path)-1], preDst, newDst)
 	}
