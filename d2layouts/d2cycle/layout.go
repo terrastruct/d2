@@ -112,7 +112,7 @@ path = trimPathPoints(path, edge.Dst.Box)
 if len(path) >= 2 {
 	dstPoint := path[len(path)-1]
 	// Calculate the tangent direction at the destination point (counter-clockwise)
-	tangentX := -dstPoint.Y
+	tangentX := dstPoint.Y
 	tangentY := dstPoint.X
 	// Normalize the tangent vector
 	length := math.Hypot(tangentX, tangentY)
