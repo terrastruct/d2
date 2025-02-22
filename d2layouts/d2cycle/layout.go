@@ -65,6 +65,46 @@ func positionObjects(objects []*d2graph.Object, radius float64) {
 	}
 }
 
+// func createCircularArc(edge *d2graph.Edge) {
+// 	if edge.Src == nil || edge.Dst == nil {
+// 		return
+// 	}
+
+// 	srcCenter := edge.Src.Center()
+// 	dstCenter := edge.Dst.Center()
+
+// 	srcAngle := math.Atan2(srcCenter.Y, srcCenter.X)
+// 	dstAngle := math.Atan2(dstCenter.Y, dstCenter.X)
+// 	if dstAngle < srcAngle {
+// 		dstAngle += 2 * math.Pi
+// 	}
+
+// 	arcRadius := math.Hypot(srcCenter.X, srcCenter.Y)
+
+// 	path := make([]*geo.Point, 0, ARC_STEPS+1)
+// 	for i := 0; i <= ARC_STEPS; i++ {
+// 		t := float64(i) / float64(ARC_STEPS)
+// 		angle := srcAngle + t*(dstAngle-srcAngle)
+// 		x := arcRadius * math.Cos(angle)
+// 		y := arcRadius * math.Sin(angle)
+// 		path = append(path, geo.NewPoint(x, y))
+// 	}
+// 	path[0] = srcCenter
+// 	path[len(path)-1] = dstCenter
+
+// 	// Clamp endpoints to the boundaries of the source and destination boxes.
+// 	_, newSrc := clampPointOutsideBox(edge.Src.Box, path, 0)
+// 	_, newDst := clampPointOutsideBoxReverse(edge.Dst.Box, path, len(path)-1)
+// 	path[0] = newSrc
+// 	path[len(path)-1] = newDst
+
+// 	// Trim redundant path points that fall inside node boundaries.
+// 	path = trimPathPoints(path, edge.Src.Box)
+// 	path = trimPathPoints(path, edge.Dst.Box)
+
+// 	edge.Route = path
+// 	edge.IsCurve = true
+// }
 func createCircularArc(edge *d2graph.Edge) {
 	if edge.Src == nil || edge.Dst == nil {
 		return
@@ -75,8 +115,13 @@ func createCircularArc(edge *d2graph.Edge) {
 
 	srcAngle := math.Atan2(srcCenter.Y, srcCenter.X)
 	dstAngle := math.Atan2(dstCenter.Y, dstCenter.X)
-	if dstAngle < srcAngle {
-		dstAngle += 2 * math.Pi
+	diff := dstAngle - srcAngle
+	if math.Abs(diff) > math.Pi {
+		if diff > 0 {
+			dstAngle -= 2 * math.Pi
+		} else {
+			dstAngle += 2 * math.Pi
+		}
 	}
 
 	arcRadius := math.Hypot(srcCenter.X, srcCenter.Y)
