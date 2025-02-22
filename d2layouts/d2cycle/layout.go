@@ -102,34 +102,10 @@ func createCircularArc(edge *d2graph.Edge) {
 // 	path = trimPathPoints(path, edge.Src.Box)
 // 	path = trimPathPoints(path, edge.Dst.Box)
 
-// 	edge.Route = path
-// 	edge.IsCurve = true
-// }
-path = trimPathPoints(path, edge.Src.Box)
-path = trimPathPoints(path, edge.Dst.Box)
-
-// Adjust the last two points to align the arrow direction with the arc's tangent at the destination.
-if len(path) >= 2 {
-	dstPoint := path[len(path)-1]
-	// Calculate the tangent direction at the destination point (counter-clockwise)
-	tangentX := dstPoint.Y
-	tangentY := dstPoint.X
-	// Normalize the tangent vector
-	length := math.Hypot(tangentX, tangentY)
-	if length > 0 {
-		tangentX /= length
-		tangentY /= length
-	}
-	// Adjust the penultimate point to be a small step back along the tangent direction
-	step := 10.0
-	prevX := dstPoint.X - tangentX*step
-	prevY := dstPoint.Y - tangentY*step
-	path[len(path)-2] = geo.NewPoint(prevX, prevY)
+	edge.Route = path
+	edge.IsCurve = true
 }
 
-edge.Route = path
-edge.IsCurve = true
-}
 
 // clampPointOutsideBox walks forward along the path until it finds a point outside the box,
 // then replaces the point with a precise intersection.
