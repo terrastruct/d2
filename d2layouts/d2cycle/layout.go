@@ -33,13 +33,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) e
 	positionObjects(objects, radius)
 
 	for _, edge := range g.Edges {
-		createCircularArc(edge, radius)
+		createCircularArc(edge)
 	}
 
 	return nil
 }
 
-// calculateRadius determines the radius of the circular layout based on the number and size of objects.
 func calculateRadius(objects []*d2graph.Object) float64 {
 	numObjects := float64(len(objects))
 	maxSize := 0.0
@@ -51,10 +50,9 @@ func calculateRadius(objects []*d2graph.Object) float64 {
 	return math.Max(minRadius, MIN_RADIUS)
 }
 
-// positionObjects arranges objects in a circular pattern around the origin.
 func positionObjects(objects []*d2graph.Object, radius float64) {
 	numObjects := float64(len(objects))
-	angleOffset := -math.Pi / 2 // Start at the top of the circle
+	angleOffset := -math.Pi / 2
 
 	for i, obj := range objects {
 		angle := angleOffset + (2*math.Pi*float64(i)/numObjects)
@@ -67,8 +65,7 @@ func positionObjects(objects []*d2graph.Object, radius float64) {
 	}
 }
 
-// createCircularArc generates a curved edge route with corrected arrow orientation.
-func createCircularArc(edge *d2graph.Edge, radius float64) {
+func createCircularArc(edge *d2graph.Edge) {
 	if edge.Src == nil || edge.Dst == nil {
 		return
 	}
@@ -76,26 +73,32 @@ func createCircularArc(edge *d2graph.Edge, radius float64) {
 	srcCenter := edge.Src.Center()
 	dstCenter := edge.Dst.Center()
 
-	// Generate initial arc path from source center to destination center
-	path := generateArcPoints(srcCenter, dstCenter, radius, ARC_STEPS)
+	srcAngle := math.Atan2(srcCenter.Y, srcCenter.X)
+	dstAngle := math.Atan2(dstCenter.Y, dstCenter.X)
+	if dstAngle < srcAngle {
+		dstAngle += 2 * math.Pi
+	}
 
-	// Clamp endpoints to the boundaries of the source and destination boxes
+	arcRadius := math.Hypot(srcCenter.X, srcCenter.Y)
+
+	path := make([]*geo.Point, 0, ARC_STEPS+1)
+	for i := 0; i <= ARC_STEPS; i++ {
+		t := float64(i) / float64(ARC_STEPS)
+		angle := srcAngle + t*(dstAngle-srcAngle)
+		x := arcRadius * math.Cos(angle)
+		y := arcRadius * math.Sin(angle)
+		path = append(path, geo.NewPoint(x, y))
+	}
+	path[0] = srcCenter
+	path[len(path)-1] = dstCenter
+
+	// Clamp endpoints to the boundaries of the source and destination boxes.
 	_, newSrc := clampPointOutsideBox(edge.Src.Box, path, 0)
 	_, newDst := clampPointOutsideBoxReverse(edge.Dst.Box, path, len(path)-1)
 	path[0] = newSrc
 	path[len(path)-1] = newDst
 
-	// Add a point before newDst along the tangent direction to correct arrow orientation
-	if len(path) >= 2 {
-		dstAngle := math.Atan2(newDst.Y, newDst.X)
-		tangent := geo.NewPoint(-math.Sin(dstAngle), math.Cos(dstAngle))
-		ε := 0.01 * radius // Small offset, e.g., 1% of radius
-		preDst := geo.NewPoint(newDst.X+ε*tangent.X, newDst.Y+ε*tangent.Y)
-		// Insert preDst before newDst
-		path = append(path[:len(path)-1], preDst, newDst)
-	}
-
-	// Trim redundant path points that fall inside node boundaries
+	// Trim redundant path points that fall inside node boundaries.
 	path = trimPathPoints(path, edge.Src.Box)
 	path = trimPathPoints(path, edge.Dst.Box)
 
@@ -103,34 +106,9 @@ func createCircularArc(edge *d2graph.Edge, radius float64) {
 	edge.IsCurve = true
 }
 
-// generateArcPoints creates points along a circular arc from src to dst.
-func generateArcPoints(src, dst *geo.Point, radius float64, steps int) []*geo.Point {
-	// Calculate angles relative to the center (0,0)
-	srcAngle := math.Atan2(src.Y, src.X)
-	dstAngle := math.Atan2(dst.Y, dst.X)
 
-	// Ensure the arc goes the shorter way
-	if dstAngle < srcAngle {
-		dstAngle += 2 * math.Pi
-	}
-	angleDiff := dstAngle - srcAngle
-	if angleDiff > math.Pi {
-		dstAngle -= 2 * math.Pi
-	}
-
-	// Generate points along the arc
-	path := make([]*geo.Point, 0, steps+1)
-	for i := 0; i <= steps; i++ {
-		t := float64(i) / float64(steps)
-		angle := srcAngle + t*(dstAngle-srcAngle)
-		x := radius * math.Cos(angle)
-		y := radius * math.Sin(angle)
-		path = append(path, geo.NewPoint(x, y))
-	}
-	return path
-}
-
-// clampPointOutsideBox finds the first point outside the box and computes the precise intersection.
+// clampPointOutsideBox walks forward along the path until it finds a point outside the box,
+// then replaces the point with a precise intersection.
 func clampPointOutsideBox(box *geo.Box, path []*geo.Point, startIdx int) (int, *geo.Point) {
 	if startIdx >= len(path)-1 {
 		return startIdx, path[startIdx]
@@ -153,7 +131,7 @@ func clampPointOutsideBox(box *geo.Box, path []*geo.Point, startIdx int) (int, *
 	return len(path)-1, path[len(path)-1]
 }
 
-// clampPointOutsideBoxReverse works similarly but traverses the path in reverse.
+// clampPointOutsideBoxReverse works similarly but in reverse order.
 func clampPointOutsideBoxReverse(box *geo.Box, path []*geo.Point, endIdx int) (int, *geo.Point) {
 	if endIdx <= 0 {
 		return endIdx, path[endIdx]
@@ -176,7 +154,8 @@ func clampPointOutsideBoxReverse(box *geo.Box, path []*geo.Point, endIdx int) (i
 	return 0, path[0]
 }
 
-// findPreciseIntersection calculates the closest intersection between a segment and box boundaries.
+// findPreciseIntersection calculates intersection points between seg and all four sides of the box,
+// then returns the intersection closest to seg.Start.
 func findPreciseIntersection(box *geo.Box, seg geo.Segment) *geo.Point {
 	intersections := []struct {
 		point *geo.Point
@@ -191,9 +170,9 @@ func findPreciseIntersection(box *geo.Box, seg geo.Segment) *geo.Point {
 	dx := seg.End.X - seg.Start.X
 	dy := seg.End.Y - seg.Start.Y
 
-	// Check vertical boundaries
+	// Check vertical boundaries.
 	if dx != 0 {
-		// Left boundary
+		// Left boundary.
 		t := (left - seg.Start.X) / dx
 		if t >= 0 && t <= 1 {
 			y := seg.Start.Y + t*dy
@@ -204,7 +183,7 @@ func findPreciseIntersection(box *geo.Box, seg geo.Segment) *geo.Point {
 				}{geo.NewPoint(left, y), t})
 			}
 		}
-		// Right boundary
+		// Right boundary.
 		t = (right - seg.Start.X) / dx
 		if t >= 0 && t <= 1 {
 			y := seg.Start.Y + t*dy
@@ -217,9 +196,9 @@ func findPreciseIntersection(box *geo.Box, seg geo.Segment) *geo.Point {
 		}
 	}
 
-	// Check horizontal boundaries
+	// Check horizontal boundaries.
 	if dy != 0 {
-		// Top boundary
+		// Top boundary.
 		t := (top - seg.Start.Y) / dy
 		if t >= 0 && t <= 1 {
 			x := seg.Start.X + t*dx
@@ -230,7 +209,7 @@ func findPreciseIntersection(box *geo.Box, seg geo.Segment) *geo.Point {
 				}{geo.NewPoint(x, top), t})
 			}
 		}
-		// Bottom boundary
+		// Bottom boundary.
 		t = (bottom - seg.Start.Y) / dy
 		if t >= 0 && t <= 1 {
 			x := seg.Start.X + t*dx
@@ -247,14 +226,14 @@ func findPreciseIntersection(box *geo.Box, seg geo.Segment) *geo.Point {
 		return nil
 	}
 
-	// Sort intersections by t (distance from seg.Start) and return the closest
+	// Sort intersections by t (distance from seg.Start) and return the closest.
 	sort.Slice(intersections, func(i, j int) bool {
 		return intersections[i].t < intersections[j].t
 	})
 	return intersections[0].point
 }
 
-// trimPathPoints removes intermediate points inside the box while retaining endpoints.
+// trimPathPoints removes intermediate points that fall inside the given box while preserving endpoints.
 func trimPathPoints(path []*geo.Point, box *geo.Box) []*geo.Point {
 	if len(path) <= 2 {
 		return path
@@ -269,7 +248,7 @@ func trimPathPoints(path []*geo.Point, box *geo.Box) []*geo.Point {
 	return trimmed
 }
 
-// boxContains checks if a point is strictly inside the box (boundary points are outside).
+// boxContains uses strict inequalities so that points exactly on the boundary are considered outside.
 func boxContains(b *geo.Box, p *geo.Point) bool {
 	return p.X > b.TopLeft.X &&
 		p.X < b.TopLeft.X+b.Width &&
@@ -277,7 +256,6 @@ func boxContains(b *geo.Box, p *geo.Point) bool {
 		p.Y < b.TopLeft.Y+b.Height
 }
 
-// positionLabelsIcons sets default positions for labels and icons on objects.
 func positionLabelsIcons(obj *d2graph.Object) {
 	if obj.Icon != nil && obj.IconPosition == nil {
 		if len(obj.ChildrenArray) > 0 {
