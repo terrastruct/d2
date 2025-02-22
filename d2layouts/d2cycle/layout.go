@@ -101,29 +101,6 @@ func createCircularArc(edge *d2graph.Edge) {
 	edge.IsCurve = true
 }
 
-// func clampPointOutsideBox(box *geo.Box, path []*geo.Point, startIdx int) (int, *geo.Point) {
-// 	if startIdx >= len(path)-1 {
-// 		return startIdx, path[startIdx]
-// 	}
-// 	if !boxContains(box, path[startIdx]) {
-// 		return startIdx, path[startIdx]
-// 	}
-
-// 	for i := startIdx + 1; i < len(path); i++ {
-// 		if boxContains(box, path[i]) {
-// 			continue
-// 		}
-// 		seg := geo.NewSegment(path[i-1], path[i])
-// 		inters := boxIntersections(box, *seg)
-// 		if len(inters) > 0 {
-// 			return i, inters[0]
-// 		}
-// 		return i, path[i]
-// 	}
-// 	last := len(path) - 1
-// 	return last, path[last]
-// }
-
 func clampPointOutsideBox(box *geo.Box, path []*geo.Point, startIdx int) (int, *geo.Point) {
 	if startIdx >= len(path)-1 {
 		return startIdx, path[startIdx]
@@ -139,7 +116,6 @@ func clampPointOutsideBox(box *geo.Box, path []*geo.Point, startIdx int) (int, *
 		seg := geo.NewSegment(path[i-1], path[i])
 		inters := boxIntersections(box, *seg)
 		if len(inters) > 0 {
-			// Optionally, if multiple intersections are returned, choose the one nearest to path[i-1]
 			return i, inters[0]
 		}
 		return i, path[i]
@@ -170,19 +146,12 @@ func clampPointOutsideBoxReverse(box *geo.Box, path []*geo.Point, endIdx int) (i
 	return 0, path[0]
 }
 
-// func boxContains(b *geo.Box, p *geo.Point) bool {
-// 	return p.X >= b.TopLeft.X &&
-// 		p.X <= b.TopLeft.X+b.Width &&
-// 		p.Y >= b.TopLeft.Y &&
-// 		p.Y <= b.TopLeft.Y+b.Height
-// }
 func boxContains(b *geo.Box, p *geo.Point) bool {
-	return p.X > b.TopLeft.X &&
-		p.X < b.TopLeft.X+b.Width &&
-		p.Y > b.TopLeft.Y &&
-		p.Y < b.TopLeft.Y+b.Height
+	return p.X >= b.TopLeft.X &&
+		p.X <= b.TopLeft.X+b.Width &&
+		p.Y >= b.TopLeft.Y &&
+		p.Y <= b.TopLeft.Y+b.Height
 }
-
 
 func boxIntersections(b *geo.Box, seg geo.Segment) []*geo.Point {
 	return b.Intersections(seg)
