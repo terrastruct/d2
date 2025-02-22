@@ -15,7 +15,7 @@ const (
 	MIN_RADIUS      = 200
 	PADDING         = 20
 	MIN_SEGMENT_LEN = 10
-	ARC_STEPS       = 100
+	ARC_STEPS       = 80
 )
 
 // Layout lays out the graph and computes curved edge routes.
