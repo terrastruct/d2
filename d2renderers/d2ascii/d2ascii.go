@@ -332,16 +332,24 @@ func (c *Canvas) AutoSize() (width, height int) {
 		text              string
 		hasUp, hasDown    bool
 		hasLeft, hasRight bool
+		hasDiagonal       bool
+		originalWidth     int
 	}
 
 	boxes := make([]boxInfo, 0)
-	maxX := 0 // Track rightmost position
 
-	// Collect boxes and connections
+	// Collect boxes and their connections
 	for _, pos := range c.textPositions {
-		up, down, left, right := false, false, false, false
+		up, down, left, right, diag := false, false, false, false, false
 
-		// Vertical connections
+		// Check surrounding area for connections
+		checkRange := 2
+		minX := max(0, pos.x-checkRange)
+		maxX := min(c.w, pos.x+pos.w+checkRange)
+		minY := max(0, pos.y-checkRange)
+		maxY := min(c.h, pos.y+pos.h+checkRange)
+
+		// Check vertical connections
 		for x := pos.x; x < pos.x+pos.w; x++ {
 			if pos.y > 0 && c.grid[pos.y-1][x] == '|' {
 				up = true
@@ -349,52 +357,74 @@ func (c *Canvas) AutoSize() (width, height int) {
 			if pos.y+pos.h < c.h && c.grid[pos.y+pos.h][x] == '|' {
 				down = true
 			}
-			maxX = max(maxX, x+1) // Track rightmost position
 		}
 
-		// Horizontal connections
-		for y := pos.y; y < pos.y+pos.h; y++ {
-			if pos.x > 0 && c.grid[y][pos.x-1] == '-' {
-				left = true
-			}
-			if pos.x+pos.w < c.w && c.grid[y][pos.x+pos.w] == '-' {
-				right = true
+		// Check horizontal and diagonal connections
+		for y := minY; y < maxY; y++ {
+			for x := minX; x < maxX; x++ {
+				ch := c.grid[y][x]
+				switch ch {
+				case '-':
+					if x < pos.x {
+						left = true
+					} else if x >= pos.x+pos.w {
+						right = true
+					}
+				case '/', '\\':
+					diag = true
+				}
 			}
 		}
 
 		boxes = append(boxes, boxInfo{
-			x: pos.x, y: pos.y,
-			w: pos.w, h: pos.h,
-			text:  pos.text,
-			hasUp: up, hasDown: down,
-			hasLeft: left, hasRight: right,
+			x:             pos.x,
+			y:             pos.y,
+			w:             pos.w,
+			h:             pos.h,
+			text:          pos.text,
+			hasUp:         up,
+			hasDown:       down,
+			hasLeft:       left,
+			hasRight:      right,
+			hasDiagonal:   diag,
+			originalWidth: pos.w,
 		})
 	}
 
-	// Sort for vertical processing
+	// Sort boxes vertically
 	yBoxes := make([]boxInfo, len(boxes))
 	copy(yBoxes, boxes)
 	sort.Slice(yBoxes, func(i, j int) bool {
 		return yBoxes[i].y < yBoxes[j].y
 	})
 
-	// Calculate vertical layout
+	// Calculate vertical layout with increased padding
 	currY := 0
 	yMapping := make(map[int]int)
 
 	for i, box := range yBoxes {
 		lines := strings.Split(box.text, "\n")
-		minHeight := len(lines) + 2 // text + borders
+		minHeight := len(lines) + 4 // padding + border
+
+		if box.hasDiagonal { // Add extra height for diagonal connections
+			minHeight += 2
+		}
 
 		if i == 0 {
-			yMapping[box.y] = 0
-			currY = minHeight
+			yMapping[box.y] = 2 // Start with some padding
+			currY = minHeight + 2
 			continue
 		}
 
-		spacing := 1 // minimum spacing
-		if yBoxes[i-1].hasDown && box.hasUp {
-			spacing = 2 // space for connections
+		spacing := 2 // spacing between boxes
+		prevBox := yBoxes[i-1]
+
+		// Add more spacing for connections
+		if box.hasUp || prevBox.hasDown {
+			spacing = 3
+		}
+		if box.hasDiagonal || prevBox.hasDiagonal {
+			spacing = 4
 		}
 
 		yMapping[box.y] = currY + spacing
@@ -406,48 +436,71 @@ func (c *Canvas) AutoSize() (width, height int) {
 	for _, box := range yBoxes {
 		newY := yMapping[box.y]
 		lines := strings.Split(box.text, "\n")
-		boxHeight := len(lines) + 2
+		boxHeight := len(lines) + 4 // padding + border
+
+		if box.hasDiagonal {
+			boxHeight += 2
+		}
+
 		maxH = max(maxH, newY+boxHeight)
 	}
 
-	// Add padding for edge connections
+	// Add extra vertical padding for top/bottom connections
+	topPad := 2
+	bottomPad := 2
 	for x := 0; x < c.w; x++ {
-		if c.grid[0][x] != ' ' || c.grid[c.h-1][x] != ' ' {
-			maxH++
-			break
+		if c.grid[0][x] != ' ' {
+			topPad = 3
+		}
+		if c.grid[c.h-1][x] != ' ' {
+			bottomPad = 3
 		}
 	}
+	maxH += topPad + bottomPad
 
-	// Find actual rightmost content
-	actualMaxX := 0
-	for y := 0; y < c.h; y++ {
-		for x := c.w - 1; x >= 0; x-- {
-			if c.grid[y][x] != ' ' {
-				actualMaxX = max(actualMaxX, x+1)
-				break
-			}
+	// preserve the original width of each box
+	// but ensure it's wide enough for the content
+	maxW := 0
+	for _, box := range boxes {
+		// Calculate minimum width needed for text
+		lines := strings.Split(box.text, "\n")
+		textWidth := 0
+		for _, line := range lines {
+			textWidth = max(textWidth, len(line))
 		}
+
+		requiredWidth := textWidth + 4 // Base padding
+
+		// Add extra width for connections
+		if box.hasLeft {
+			requiredWidth += 2
+		}
+		if box.hasRight {
+			requiredWidth += 2
+		}
+		if box.hasDiagonal {
+			requiredWidth += 4
+		}
+
+		// Use the larger of required width or original width
+		effectiveWidth := max(requiredWidth, box.originalWidth)
+		maxW = max(maxW, box.x+effectiveWidth)
 	}
 
-	// Add minimal padding for edges
-	if actualMaxX > 0 {
-		actualMaxX += 1 // Right padding
-	}
-
-	// Find leftmost content to determine if we need left padding
-	needLeftPad := false
+	// Add padding for edge connections
+	leftPad := 2
+	rightPad := 2
 	for y := 0; y < c.h; y++ {
 		if c.grid[y][0] != ' ' {
-			needLeftPad = true
-			break
+			leftPad = max(leftPad, 3)
+		}
+		if c.grid[y][c.w-1] != ' ' {
+			rightPad = max(rightPad, 3)
 		}
 	}
-	if needLeftPad {
-		actualMaxX += 1
-	}
+	maxW += leftPad + rightPad
 
-	// Return optimized dimensions
-	return actualMaxX, maxH
+	return min(c.w, maxW), min(c.h, maxH)
 }
 
 // ReScale reduces the size of ASCII art using a pixel-like sampling technique
@@ -485,21 +538,21 @@ func (c *Canvas) ReScale(targetWidth, targetHeight int) {
 	}
 
 	// Then redraw text at scaled positions
-	for _, pos := range c.textPositions {
+	for _, label := range c.textPositions {
 		// Get box dimensions in source coordinates first
-		srcBoxCenterY := pos.y + pos.h/2
+		srcBoxCenterY := label.y + label.h/2
 
 		// Split text into lines
-		lines := strings.Split(pos.text, "\n")
+		lines := strings.Split(label.text, "\n")
 		textHeight := len(lines)
 
 		// Calculate text start Y in source coordinates
 		srcStartY := srcBoxCenterY - textHeight/2
 
 		// Scale to target coordinates
-		newX := int(float64(pos.x) * scaleX)
+		newX := int(float64(label.x) * scaleX)
 		newY := int(float64(srcStartY) * scaleY)
-		newW := int(float64(pos.w) * scaleX)
+		newW := int(float64(label.w) * scaleX)
 
 		// Draw each line centered horizontally
 		for i, line := range lines {
