@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"math"
+	"sort"
 	"strings"
 
 	"oss.terrastruct.com/d2/d2target"
@@ -63,14 +64,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		}
 	}
 
-	const ( // common terminal size
-		maxWidth  = 120
-		maxHeight = 90
-	) // TODO: detect smallest shape then make it as a baseline
-
-	width = min(canvas.w, maxWidth)
-	height = min(canvas.h, maxHeight)
-
+	width, height = canvas.AutoSize()
 	fmt.Println("==== ", canvas.w, canvas.h, "====")
 	fmt.Println("==== ", width, height, "====")
 	canvas.ReScale(width, height)
@@ -330,6 +324,130 @@ func (c *Canvas) TrimBytes() []byte {
 		buf.WriteByte('\n')
 	}
 	return buf.Bytes()
+}
+
+func (c *Canvas) AutoSize() (width, height int) {
+	type boxInfo struct {
+		x, y, w, h        int
+		text              string
+		hasUp, hasDown    bool
+		hasLeft, hasRight bool
+	}
+
+	boxes := make([]boxInfo, 0)
+	maxX := 0 // Track rightmost position
+
+	// Collect boxes and connections
+	for _, pos := range c.textPositions {
+		up, down, left, right := false, false, false, false
+
+		// Vertical connections
+		for x := pos.x; x < pos.x+pos.w; x++ {
+			if pos.y > 0 && c.grid[pos.y-1][x] == '|' {
+				up = true
+			}
+			if pos.y+pos.h < c.h && c.grid[pos.y+pos.h][x] == '|' {
+				down = true
+			}
+			maxX = max(maxX, x+1) // Track rightmost position
+		}
+
+		// Horizontal connections
+		for y := pos.y; y < pos.y+pos.h; y++ {
+			if pos.x > 0 && c.grid[y][pos.x-1] == '-' {
+				left = true
+			}
+			if pos.x+pos.w < c.w && c.grid[y][pos.x+pos.w] == '-' {
+				right = true
+			}
+		}
+
+		boxes = append(boxes, boxInfo{
+			x: pos.x, y: pos.y,
+			w: pos.w, h: pos.h,
+			text:  pos.text,
+			hasUp: up, hasDown: down,
+			hasLeft: left, hasRight: right,
+		})
+	}
+
+	// Sort for vertical processing
+	yBoxes := make([]boxInfo, len(boxes))
+	copy(yBoxes, boxes)
+	sort.Slice(yBoxes, func(i, j int) bool {
+		return yBoxes[i].y < yBoxes[j].y
+	})
+
+	// Calculate vertical layout
+	currY := 0
+	yMapping := make(map[int]int)
+
+	for i, box := range yBoxes {
+		lines := strings.Split(box.text, "\n")
+		minHeight := len(lines) + 2 // text + borders
+
+		if i == 0 {
+			yMapping[box.y] = 0
+			currY = minHeight
+			continue
+		}
+
+		spacing := 1 // minimum spacing
+		if yBoxes[i-1].hasDown && box.hasUp {
+			spacing = 2 // space for connections
+		}
+
+		yMapping[box.y] = currY + spacing
+		currY = yMapping[box.y] + minHeight
+	}
+
+	// Calculate final height
+	maxH := 0
+	for _, box := range yBoxes {
+		newY := yMapping[box.y]
+		lines := strings.Split(box.text, "\n")
+		boxHeight := len(lines) + 2
+		maxH = max(maxH, newY+boxHeight)
+	}
+
+	// Add padding for edge connections
+	for x := 0; x < c.w; x++ {
+		if c.grid[0][x] != ' ' || c.grid[c.h-1][x] != ' ' {
+			maxH++
+			break
+		}
+	}
+
+	// Find actual rightmost content
+	actualMaxX := 0
+	for y := 0; y < c.h; y++ {
+		for x := c.w - 1; x >= 0; x-- {
+			if c.grid[y][x] != ' ' {
+				actualMaxX = max(actualMaxX, x+1)
+				break
+			}
+		}
+	}
+
+	// Add minimal padding for edges
+	if actualMaxX > 0 {
+		actualMaxX += 1 // Right padding
+	}
+
+	// Find leftmost content to determine if we need left padding
+	needLeftPad := false
+	for y := 0; y < c.h; y++ {
+		if c.grid[y][0] != ' ' {
+			needLeftPad = true
+			break
+		}
+	}
+	if needLeftPad {
+		actualMaxX += 1
+	}
+
+	// Return optimized dimensions
+	return actualMaxX, maxH
 }
 
 // ReScale reduces the size of ASCII art using a pixel-like sampling technique
