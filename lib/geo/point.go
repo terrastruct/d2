@@ -324,3 +324,11 @@ func RemovePoints(points Points, toRemove []bool) Points {
 	}
 	return without
 }
+func (v Vector) Normalize() Vector {
+	length := v.Length()
+	if length == 0 {
+		// avoid dividing by 0
+		return Vector{0, 0}
+	}
+	return Vector{v[0] / length, v[1] / length}
+}
