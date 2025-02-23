@@ -18,7 +18,7 @@ const (
 	ARC_STEPS       = 100
 )
 
-// Layout lays out the graph and computes curved edge routes.
+// Layout lays out the graph and computes curved edge routes
 func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) error {
 	objects := g.Root.ChildrenArray
 	if len(objects) == 0 {
