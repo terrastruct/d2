@@ -104,6 +104,43 @@ func createCircularArc(edge *d2graph.Edge) {
 
 	edge.Route = path
 	edge.IsCurve = true
+
+	// Adjust the last segment to ensure proper arrowhead direction
+	if len(edge.Route) >= 2 {
+		lastIndex := len(edge.Route) - 1
+		lastPoint := edge.Route[lastIndex]
+		secondLastPoint := edge.Route[lastIndex-1]
+
+		// Calculate tangent direction (perpendicular to radius vector)
+		tangentX := -lastPoint.Y
+		tangentY := lastPoint.X
+		mag := math.Hypot(tangentX, tangentY)
+		if mag > 0 {
+			tangentX /= mag
+			tangentY /= mag
+		}
+        const MIN_SEGMENT_LEN = 10.0
+		// Calculate current segment direction
+		dx := lastPoint.X - secondLastPoint.X
+		dy := lastPoint.Y - secondLastPoint.Y
+		segLength := math.Hypot(dx, dy)
+		if segLength > 0 {
+			currentDirX := dx / segLength
+			currentDirY := dy / segLength
+
+			// Check if we need to adjust the direction
+			if segLength < MIN_SEGMENT_LEN || (currentDirX*tangentX+currentDirY*tangentY) < 0.999 {
+				// Create new point along tangent direction
+				adjustLength := MIN_SEGMENT_LEN  // Now float64
+				if segLength >= MIN_SEGMENT_LEN {
+					adjustLength = segLength  // Both are float64 now
+				}
+				newSecondLastX := lastPoint.X - tangentX*adjustLength
+				newSecondLastY := lastPoint.Y - tangentY*adjustLength
+				edge.Route[lastIndex-1] = geo.NewPoint(newSecondLastX, newSecondLastY)
+			}
+		}
+	}
 }
 
 
