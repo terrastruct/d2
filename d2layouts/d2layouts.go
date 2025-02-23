@@ -267,7 +267,7 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			err = d2cycle.Layout(ctx, g, coreLayout)
 			if err != nil {
 				return err
-			}			
+			}
 		default:
 			log.Debug(ctx, "default layout", slog.Any("rootlevel", g.RootLevel), slog.Any("shapes", g.PrintString()))
 			err := coreLayout(ctx, g)

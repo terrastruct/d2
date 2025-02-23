@@ -55,7 +55,7 @@ func positionObjects(objects []*d2graph.Object, radius float64) {
 	angleOffset := -math.Pi / 2
 
 	for i, obj := range objects {
-		angle := angleOffset + (2*math.Pi*float64(i)/numObjects)
+		angle := angleOffset + (2 * math.Pi * float64(i) / numObjects)
 		x := radius * math.Cos(angle)
 		y := radius * math.Sin(angle)
 		obj.TopLeft = geo.NewPoint(
@@ -117,7 +117,7 @@ func createCircularArc(edge *d2graph.Edge) {
 			tangentX /= mag
 			tangentY /= mag
 		}
-        const MIN_SEGMENT_LEN = 4.159
+		const MIN_SEGMENT_LEN = 4.159
 
 		dx := lastPoint.X - secondLastPoint.X
 		dy := lastPoint.Y - secondLastPoint.Y
@@ -129,9 +129,9 @@ func createCircularArc(edge *d2graph.Edge) {
 			// Check if we need to adjust the direction
 			if segLength < MIN_SEGMENT_LEN || (currentDirX*tangentX+currentDirY*tangentY) < 0.999 {
 				// Create new point along tangent direction
-				adjustLength := MIN_SEGMENT_LEN  // Now float64
+				adjustLength := MIN_SEGMENT_LEN // Now float64
 				if segLength >= MIN_SEGMENT_LEN {
-					adjustLength = segLength  // Both are float64 now
+					adjustLength = segLength // Both are float64 now
 				}
 				newSecondLastX := lastPoint.X - tangentX*adjustLength
 				newSecondLastY := lastPoint.Y - tangentY*adjustLength
@@ -140,7 +140,6 @@ func createCircularArc(edge *d2graph.Edge) {
 		}
 	}
 }
-
 
 // clampPointOutsideBox walks forward along the path until it finds a point outside the box,
 // then replaces the point with a precise intersection.
@@ -163,7 +162,7 @@ func clampPointOutsideBox(box *geo.Box, path []*geo.Point, startIdx int) (int, *
 		}
 		return i, path[i]
 	}
-	return len(path)-1, path[len(path)-1]
+	return len(path) - 1, path[len(path)-1]
 }
 
 // clampPointOutsideBoxReverse works similarly but in reverse order.
