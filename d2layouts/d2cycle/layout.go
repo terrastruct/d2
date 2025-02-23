@@ -117,7 +117,7 @@ func createCircularArc(edge *d2graph.Edge) {
 			tangentX /= mag
 			tangentY /= mag
 		}
-        const MIN_SEGMENT_LEN = 4.09
+        const MIN_SEGMENT_LEN = 4.05
 
 		dx := lastPoint.X - secondLastPoint.X
 		dy := lastPoint.Y - secondLastPoint.Y
