@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	MIN_RADIUS      = 100
+	MIN_RADIUS      = 200
 	PADDING         = 20
 	MIN_SEGMENT_LEN = 10
 	ARC_STEPS       = 100
@@ -105,13 +105,11 @@ func createCircularArc(edge *d2graph.Edge) {
 	edge.Route = path
 	edge.IsCurve = true
 
-	// Adjust the last segment to ensure proper arrowhead direction
 	if len(edge.Route) >= 2 {
 		lastIndex := len(edge.Route) - 1
 		lastPoint := edge.Route[lastIndex]
 		secondLastPoint := edge.Route[lastIndex-1]
 
-		// Calculate tangent direction (perpendicular to radius vector)
 		tangentX := -lastPoint.Y
 		tangentY := lastPoint.X
 		mag := math.Hypot(tangentX, tangentY)
@@ -120,7 +118,7 @@ func createCircularArc(edge *d2graph.Edge) {
 			tangentY /= mag
 		}
         const MIN_SEGMENT_LEN = 4.255
-		// Calculate current segment direction
+
 		dx := lastPoint.X - secondLastPoint.X
 		dy := lastPoint.Y - secondLastPoint.Y
 		segLength := math.Hypot(dx, dy)
