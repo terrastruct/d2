@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"math"
-	"sort"
 	"strings"
 
 	"oss.terrastruct.com/d2/d2target"
@@ -64,11 +63,9 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		}
 	}
 
-	width, height = canvas.AutoSize()
-	fmt.Println("==== ", canvas.w, canvas.h, "====")
-	fmt.Println("==== ", width, height, "====")
-	canvas.ReScale(width, height)
-
+	height = canvas.AutoHeight()
+	fmt.Println(canvas.h, height)
+	canvas.ReScale(canvas.w, height)
 	return canvas.TrimBytes(), nil
 }
 
@@ -326,181 +323,34 @@ func (c *Canvas) TrimBytes() []byte {
 	return buf.Bytes()
 }
 
-func (c *Canvas) AutoSize() (width, height int) {
-	type boxInfo struct {
-		x, y, w, h        int
-		text              string
-		hasUp, hasDown    bool
-		hasLeft, hasRight bool
-		hasDiagonal       bool
-		originalWidth     int
-	}
-
-	boxes := make([]boxInfo, 0)
-
-	// Collect boxes and their connections
-	for _, pos := range c.textPositions {
-		up, down, left, right, diag := false, false, false, false, false
-
-		// Check surrounding area for connections
-		checkRange := 2
-		minX := max(0, pos.x-checkRange)
-		maxX := min(c.w, pos.x+pos.w+checkRange)
-		minY := max(0, pos.y-checkRange)
-		maxY := min(c.h, pos.y+pos.h+checkRange)
-
-		// Check vertical connections
-		for x := pos.x; x < pos.x+pos.w; x++ {
-			if pos.y > 0 && c.grid[pos.y-1][x] == '|' {
-				up = true
-			}
-			if pos.y+pos.h < c.h && c.grid[pos.y+pos.h][x] == '|' {
-				down = true
-			}
-		}
-
-		// Check horizontal and diagonal connections
-		for y := minY; y < maxY; y++ {
-			for x := minX; x < maxX; x++ {
-				ch := c.grid[y][x]
-				switch ch {
-				case '-':
-					if x < pos.x {
-						left = true
-					} else if x >= pos.x+pos.w {
-						right = true
-					}
-				case '/', '\\':
-					diag = true
-				}
-			}
-		}
-
-		boxes = append(boxes, boxInfo{
-			x:             pos.x,
-			y:             pos.y,
-			w:             pos.w,
-			h:             pos.h,
-			text:          pos.text,
-			hasUp:         up,
-			hasDown:       down,
-			hasLeft:       left,
-			hasRight:      right,
-			hasDiagonal:   diag,
-			originalWidth: pos.w,
-		})
-	}
-
-	// Sort boxes vertically
-	yBoxes := make([]boxInfo, len(boxes))
-	copy(yBoxes, boxes)
-	sort.Slice(yBoxes, func(i, j int) bool {
-		return yBoxes[i].y < yBoxes[j].y
-	})
-
-	// Calculate vertical layout with increased padding
+func (c *Canvas) AutoHeight() int {
 	currY := 0
-	yMapping := make(map[int]int)
+	mapping := make(map[int]int)
 
-	for i, box := range yBoxes {
-		lines := strings.Split(box.text, "\n")
-		minHeight := len(lines) + 4 // padding + border
-
-		if box.hasDiagonal { // Add extra height for diagonal connections
-			minHeight += 2
-		}
+	for i, label := range c.textPositions {
+		lines := strings.Split(label.text, "\n")
+		minHeight := len(lines) + 2 // +border
 
 		if i == 0 {
-			yMapping[box.y] = 2 // Start with some padding
+			mapping[label.y] = 0
 			currY = minHeight + 2
 			continue
 		}
 
-		spacing := 2 // spacing between boxes
-		prevBox := yBoxes[i-1]
-
-		// Add more spacing for connections
-		if box.hasUp || prevBox.hasDown {
-			spacing = 3
-		}
-		if box.hasDiagonal || prevBox.hasDiagonal {
-			spacing = 4
-		}
-
-		yMapping[box.y] = currY + spacing
-		currY = yMapping[box.y] + minHeight
+		mapping[label.y] = currY + 3 // +spacing
+		currY = mapping[label.y] + minHeight
 	}
 
-	// Calculate final height
 	maxH := 0
-	for _, box := range yBoxes {
-		newY := yMapping[box.y]
-		lines := strings.Split(box.text, "\n")
-		boxHeight := len(lines) + 4 // padding + border
-
-		if box.hasDiagonal {
-			boxHeight += 2
-		}
+	for _, label := range c.textPositions {
+		newY := mapping[label.y]
+		lines := strings.Split(label.text, "\n")
+		boxHeight := len(lines) + 2 // +border
 
 		maxH = max(maxH, newY+boxHeight)
 	}
 
-	// Add extra vertical padding for top/bottom connections
-	topPad := 2
-	bottomPad := 2
-	for x := 0; x < c.w; x++ {
-		if c.grid[0][x] != ' ' {
-			topPad = 3
-		}
-		if c.grid[c.h-1][x] != ' ' {
-			bottomPad = 3
-		}
-	}
-	maxH += topPad + bottomPad
-
-	// preserve the original width of each box
-	// but ensure it's wide enough for the content
-	maxW := 0
-	for _, box := range boxes {
-		// Calculate minimum width needed for text
-		lines := strings.Split(box.text, "\n")
-		textWidth := 0
-		for _, line := range lines {
-			textWidth = max(textWidth, len(line))
-		}
-
-		requiredWidth := textWidth + 4 // Base padding
-
-		// Add extra width for connections
-		if box.hasLeft {
-			requiredWidth += 2
-		}
-		if box.hasRight {
-			requiredWidth += 2
-		}
-		if box.hasDiagonal {
-			requiredWidth += 4
-		}
-
-		// Use the larger of required width or original width
-		effectiveWidth := max(requiredWidth, box.originalWidth)
-		maxW = max(maxW, box.x+effectiveWidth)
-	}
-
-	// Add padding for edge connections
-	leftPad := 2
-	rightPad := 2
-	for y := 0; y < c.h; y++ {
-		if c.grid[y][0] != ' ' {
-			leftPad = max(leftPad, 3)
-		}
-		if c.grid[y][c.w-1] != ' ' {
-			rightPad = max(rightPad, 3)
-		}
-	}
-	maxW += leftPad + rightPad
-
-	return min(c.w, maxW), min(c.h, maxH)
+	return maxH
 }
 
 // ReScale reduces the size of ASCII art using a pixel-like sampling technique
