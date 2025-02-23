@@ -1,4 +1,4 @@
-declare module "index" {
+declare module "@terrastruct/d2" {
     interface Options {
         /**
          * @default 0
@@ -57,11 +57,6 @@ declare module "index" {
         options: Options;
     }
 
-    // Replace the properties below with the actual structure of the worker’s responses.
-    export interface CompileResult {
-        compiled: string;
-    }
-
     export interface RenderResult {
         svg: string;
     }
@@ -79,8 +74,12 @@ declare module "index" {
         | { type: "error"; error: string }
         | {
             type: "result";
-            data: CompileResult | RenderResult | EncodedResult | DecodedResult;
+            data: string | EncodedResult | DecodedResult;
         };
+
+    export interface CompileResult {
+        result: string;
+    }
 
     export interface D2Worker {
         on(event: "message", listener: (data: WorkerMessage) => void): void;
@@ -95,7 +94,7 @@ declare module "index" {
         worker: D2Worker;
         currentResolve?: (
             result:
-                | CompileResult
+                | string
                 | RenderResult
                 | EncodedResult
                 | DecodedResult,
@@ -134,14 +133,14 @@ declare module "index" {
         compile(
             input: string | CompileRequest,
             options?: Options,
-        ): Promise<CompileResult>;
+        ): Promise<string>;
 
         /**
          * Renders the given diagram.
          * @param diagram A diagram definition in string form.
          * @param options Optional rendering options.
          */
-        render(diagram: string, options?: Options): Promise<RenderResult>;
+        render(diagram: string, options?: Options): Promise<string>;
 
         /**
          * Encodes the provided script.
