@@ -271,26 +271,33 @@ func Render(args []js.Value) (interface{}, error) {
 		return nil, &WASMError{Message: "missing 'diagram' field in input JSON", Code: 400}
 	}
 
+	animateInterval := 0
+	if input.Opts != nil && input.Opts.AnimateInterval != nil && *input.Opts.AnimateInterval > 0 {
+		animateInterval = int(*input.Opts.AnimateInterval)
+	}
+
 	var boardPath []string
-	var noChildren bool
+	noChildren := true
 
 	if input.Opts.Target != nil {
 		switch *input.Opts.Target {
 		case "*":
+			noChildren = false
 		case "":
-			noChildren = true
 		default:
 			target := *input.Opts.Target
 			if strings.HasSuffix(target, ".*") {
 				target = target[:len(target)-2]
-			} else {
-				noChildren = true
+				noChildren = false
 			}
 			key, err := d2parser.ParseKey(target)
 			if err != nil {
 				return nil, &WASMError{Message: fmt.Sprintf("target '%s' not recognized", target), Code: 400}
 			}
 			boardPath = key.StringIDA()
+		}
+		if !noChildren && animateInterval <= 0 {
+			return nil, &WASMError{Message: fmt.Sprintf("target '%s' only supported for animated SVGs", *input.Opts.Target), Code: 500}
 		}
 	}
 
@@ -310,9 +317,7 @@ func Render(args []js.Value) (interface{}, error) {
 		renderOpts.Salt = input.Opts.Salt
 	}
 
-	var animateInterval = 0
-	if input.Opts != nil && input.Opts.AnimateInterval != nil && *input.Opts.AnimateInterval > 0 {
-		animateInterval = int(*input.Opts.AnimateInterval)
+	if animateInterval > 0 {
 		masterID, err := diagram.HashID(renderOpts.Salt)
 		if err != nil {
 			return nil, &WASMError{Message: fmt.Sprintf("cannot process animate interval: %s", err.Error()), Code: 500}

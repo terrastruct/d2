@@ -121,6 +121,24 @@ x -> y
     await d2.worker.terminate();
   }, 20000);
 
+  test("animated multi-board works", async () => {
+    const d2 = new D2();
+    const source = `
+x -> y
+layers: {
+  numbers: {
+    1 -> 2
+  }
+}
+`;
+    const options = { target: "*", animateInterval: 1000 };
+    const result = await d2.compile(source, options);
+    const svg = await d2.render(result.diagram, result.renderOptions);
+    expect(svg).toContain("<svg");
+    expect(svg).toContain("</svg>");
+    await d2.worker.terminate();
+  }, 20000);
+
   test("latex works", async () => {
     const d2 = new D2();
     const result = await d2.compile("x: |latex \\frac{f(x+h)-f(x)}{h} |");
@@ -138,6 +156,27 @@ x -> y
     } catch (err) {
       expect(err).toBeDefined();
       expect(err.message).not.toContain("Should have thrown syntax error");
+    }
+    await d2.worker.terminate();
+  }, 20000);
+
+  test("handles unanimated multi-board error correctly", async () => {
+    const d2 = new D2();
+    const source = `
+x -> y
+layers: {
+  numbers: {
+    1 -> 2
+  }
+}
+`;
+    const result = await d2.compile(source);
+    try {
+      await d2.render(result.diagram, { target: "*" });
+      throw new Error("Should have thrown compile error");
+    } catch (err) {
+      expect(err).toBeDefined();
+      expect(err.message).not.toContain("Should have thrown compile error");
     }
     await d2.worker.terminate();
   }, 20000);
