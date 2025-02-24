@@ -38,11 +38,6 @@ export function setupMessageHandler(isNode, port, initWasm) {
             const layout = await elk.layout(elkGraph2);
             globalThis.elkResult = layout;
           }
-          const elkGraph = await d2.getELKGraph(JSON.stringify(data));
-          const elkGraph2 = JSON.parse(elkGraph).data;
-          const layout = await elk.layout(elkGraph2);
-          globalThis.elkResult = layout;
-
           const result = await d2.compile(JSON.stringify(data));
           const response = JSON.parse(result);
           if (response.error) throw new Error(response.error.message);
