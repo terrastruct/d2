@@ -16,7 +16,7 @@
     - `animateInterval`
     - `salt`
     - `noXMLTag`
-  - Support fonts (`fontRegular`, `fontItalic`, `fontBold`, `fontSemiBold`): (PR Pending)
+  - Support fonts (`fontRegular`, `fontItalic`, `fontBold`, `fontSemiBold`): [#2384](https://github.com/terrastruct/d2/pull/2384)
 
 #### Bugfixes ⛑️
 
