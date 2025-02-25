@@ -62,8 +62,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		}
 	}
 
-	// TODO: preserve arrow head
-	// canvas.ReScale(canvas.w, canvas.AutoHeight())
+	canvas.ReScale(canvas.w, canvas.AutoHeight())
 	return canvas.TrimBytes(), nil
 }
 
@@ -383,6 +382,10 @@ func (c *Canvas) AutoHeight() int {
 	return maxH
 }
 
+func isArrowHead(ch rune) bool {
+	return ch == '>' || ch == '<' || ch == '^' || ch == 'v'
+}
+
 // ReScale reduces the size of ASCII art using a pixel-like sampling technique
 func (c *Canvas) ReScale(targetWidth, targetHeight int) {
 	scaleX := float64(targetWidth) / float64(c.w)
@@ -397,27 +400,67 @@ func (c *Canvas) ReScale(targetWidth, targetHeight int) {
 		}
 	}
 
-	// First scale the borders and lines (source -> target mapping)
-	for y := 0; y < c.h; y++ {
+	// First pass: scale borders and lines, but skip arrow heads
+	for y := range c.h {
 		targetY := int(float64(y) * scaleY)
 		if targetY >= targetHeight {
 			continue
 		}
 
-		for x := 0; x < c.w; x++ {
+		for x := range c.w {
 			targetX := int(float64(x) * scaleX)
 			if targetX >= targetWidth {
 				continue
 			}
 
 			ch := c.grid[y][x]
-			if ch == '+' || ch == '-' || ch == '|' || ch == '/' || ch == '\\' || ch == '.' {
+			if !isArrowHead(ch) && (ch == '+' || ch == '-' || ch == '|' || ch == '/' || ch == '\\') {
 				newGrid[targetY][targetX] = ch
 			}
 		}
 	}
 
-	// Then redraw text at scaled positions
+	// Second pass: copy arrow heads with position adjustment
+	for y := range c.h {
+		targetY := int(float64(y) * scaleY)
+		if targetY >= targetHeight {
+			continue
+		}
+
+		for x := range c.w {
+			targetX := int(float64(x) * scaleX)
+			if targetX >= targetWidth {
+				continue
+			}
+
+			ch := c.grid[y][x]
+			if isArrowHead(ch) {
+				// Determine offset based on arrow direction
+				var dx, dy int
+				switch ch {
+				case '>':
+					dx = -1
+				case '<':
+					dx = 1
+				case 'v':
+					dy = -1
+				case '^':
+					dy = 1
+				}
+
+				// Apply offset and ensure we stay within bounds
+				finalX := min(max(0, targetX+dx), targetWidth-1)
+				finalY := min(max(0, targetY+dy), targetHeight-1)
+
+				// Only place arrow if target position is empty or has a line character
+				if newGrid[finalY][finalX] == ' ' || newGrid[finalY][finalX] == '-' || newGrid[finalY][finalX] == '|' {
+					newGrid[finalY][finalX] = ch
+				}
+			}
+		}
+	}
+
+	// Third pass: redraw text at scaled positions
 	for _, label := range c.textPositions {
 		// Get box dimensions in source coordinates first
 		srcBoxCenterY := label.y + label.h/2
@@ -455,11 +498,10 @@ func (c *Canvas) ReScale(targetWidth, targetHeight int) {
 					continue
 				}
 
-				// Only overwrite space or existing text
+				// Only overwrite if not an arrow head and not a border
 				existing := newGrid[targetY][targetX]
-				if existing == ' ' || (existing != '+' && existing != '-' &&
-					existing != '|' && existing != '/' && existing != '\\' &&
-					existing != '.') {
+				if !isArrowHead(existing) && existing != '+' && existing != '-' &&
+					existing != '|' && existing != '/' && existing != '\\' {
 					newGrid[targetY][targetX] = ch
 				}
 			}
