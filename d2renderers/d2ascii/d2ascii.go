@@ -2,7 +2,6 @@ package d2ascii
 
 import (
 	"bytes"
-	"fmt"
 	"math"
 	"strings"
 
@@ -47,14 +46,6 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	canvas.setOffset(-int(tl.X), -int(tl.Y))
 	canvas.setPad(pad)
 
-	// Draw shapes
-	for _, shape := range diagram.Shapes {
-		err := canvas.drawShape(shape)
-		if err != nil {
-			return nil, err
-		}
-	}
-
 	// Draw connections
 	for _, conn := range diagram.Connections {
 		err := canvas.drawConnection(conn)
@@ -63,9 +54,16 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		}
 	}
 
-	height = canvas.AutoHeight()
-	fmt.Println(canvas.h, height)
-	canvas.ReScale(canvas.w, height)
+	// Draw shapes
+	for _, shape := range diagram.Shapes {
+		err := canvas.drawShape(shape)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	// TODO: preserve arrow head
+	// canvas.ReScale(canvas.w, canvas.AutoHeight())
 	return canvas.TrimBytes(), nil
 }
 
@@ -182,14 +180,46 @@ func (c *Canvas) drawCircle(x, y, w, h int, label string) error {
 }
 
 func (c *Canvas) drawConnection(conn d2target.Connection) error {
-	// Draw a simple line between points for now
 	points := make([]struct{ x, y int }, len(conn.Route))
 	for i, p := range conn.Route {
 		points[i].x, points[i].y = c.transformPoint(int(p.X), int(p.Y))
 	}
 
-	for i := 0; i < len(points)-1; i++ {
+	// Draw lines between points
+	for i := range len(points) - 1 {
 		c.drawLine(points[i].x, points[i].y, points[i+1].x, points[i+1].y)
+	}
+
+	// Draw destination arrow if needed
+	if len(points) >= 2 && conn.DstArrow != d2target.NoArrowhead {
+		end, prev := points[len(points)-1], points[len(points)-2]
+		// Calculate angle for arrow direction
+		dx := float64(end.x - prev.x)
+		dy := float64(end.y - prev.y)
+		angle := math.Atan2(dy, dx)
+
+		// Determine arrow character and offsets based on angle
+		var arrow rune
+		var mx, my int
+		switch {
+		case angle > -math.Pi/4 && angle <= math.Pi/4:
+			arrow = '>'
+			mx = -1 // Move left
+			my = 0
+		case angle > math.Pi/4 && angle <= 3*math.Pi/4:
+			arrow = 'v'
+			mx = 0
+			my = -1 // Move up
+		case angle > 3*math.Pi/4 || angle <= -3*math.Pi/4:
+			arrow = '<'
+			mx = 1 // Move right
+			my = 0
+		default: // -3*math.Pi/4 < angle <= -math.Pi/4 (upward)
+			arrow = '^'
+			mx = 0
+			my = 1 // Move down
+		}
+		c.set(end.x+mx, end.y+my, arrow)
 	}
 
 	return nil
