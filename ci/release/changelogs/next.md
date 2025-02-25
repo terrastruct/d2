@@ -16,7 +16,7 @@
     - `animateInterval`
     - `salt`
     - `noXMLTag`
-  - Support relative imports. Improve elk error handling: (PR Pending)
+  - Support relative imports. Improve elk error handling: [#2382](https://github.com/terrastruct/d2/pull/2382)
 
 #### Bugfixes ⛑️
 
