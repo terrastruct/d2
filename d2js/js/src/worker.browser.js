@@ -34,7 +34,9 @@ export function setupMessageHandler(isNode, port, initWasm) {
           // anyway to support `layout-engine: elk` in d2-config vars
           if (data.options.layout === "elk" || data.options.layout == null) {
             const elkGraph = await d2.getELKGraph(JSON.stringify(data));
-            const elkGraph2 = JSON.parse(elkGraph).data;
+            const response = JSON.parse(elkGraph);
+            if (response.error) throw new Error(response.error.message);
+            const elkGraph2 = response.data;
             const layout = await elk.layout(elkGraph2);
             globalThis.elkResult = layout;
           }
