@@ -4410,6 +4410,24 @@ a: {
 				},
 			},
 			{
+				name: "comment-array",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+  list: [
+    "a";
+    "b";
+    "c";
+    "d"
+    # e
+  ]
+}
+
+a
+`, "")
+				},
+			},
+			{
 				name: "spread-array",
 				run: func(t *testing.T) {
 					g, _ := assertCompile(t, `
