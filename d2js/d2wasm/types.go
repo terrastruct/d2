@@ -33,19 +33,33 @@ type BoardPositionResponse struct {
 
 type CompileRequest struct {
 	FS   map[string]string `json:"fs"`
-	Opts *RenderOptions    `json:"options"`
+	Opts *CompileOptions   `json:"options"`
 }
 
 type RenderOptions struct {
-	Layout  *string `json:"layout"`
-	Sketch  *bool   `json:"sketch"`
-	ThemeID *int64  `json:"themeID"`
+	Pad             *int64   `json:"pad"`
+	Sketch          *bool    `json:"sketch"`
+	Center          *bool    `json:"center"`
+	ThemeID         *int64   `json:"themeID"`
+	DarkThemeID     *int64   `json:"darkThemeID"`
+	Scale           *float64 `json:"scale"`
+	ForceAppendix   *bool    `json:"forceAppendix"`
+	Target          *string  `json:"target"`
+	AnimateInterval *int64   `json:"animateInterval"`
+	Salt            *string  `json:"salt"`
+	NoXMLTag        *bool    `json:"noXMLTag"`
+}
+
+type CompileOptions struct {
+	RenderOptions
+	Layout *string `json:"layout"`
 }
 
 type CompileResponse struct {
-	FS      map[string]string `json:"fs"`
-	Diagram d2target.Diagram  `json:"diagram"`
-	Graph   d2graph.Graph     `json:"graph"`
+	FS            map[string]string `json:"fs"`
+	Diagram       d2target.Diagram  `json:"diagram"`
+	Graph         d2graph.Graph     `json:"graph"`
+	RenderOptions RenderOptions     `json:"renderOptions"`
 }
 
 type CompletionResponse struct {

@@ -4,6 +4,18 @@
 
 #### Improvements 🧹
 
+- d2js: Support `d2-config`. Support additional options: [#2343](https://github.com/terrastruct/d2/pull/2343)
+  - `themeID`
+  - `darkThemeID`
+  - `center`
+  - `pad`
+  - `scale`
+  - `forceAppendix`
+  - `target`
+  - `animateInterval`
+  - `salt`
+  - `noXMLTag`
+
 #### Bugfixes ⛑️
 
 - Compiler:

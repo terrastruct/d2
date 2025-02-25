@@ -19,8 +19,11 @@ import (
 	"oss.terrastruct.com/d2/d2lsp"
 	"oss.terrastruct.com/d2/d2oracle"
 	"oss.terrastruct.com/d2/d2parser"
+	"oss.terrastruct.com/d2/d2renderers/d2animate"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
+	"oss.terrastruct.com/d2/d2renderers/d2svg/appendix"
+	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/memfs"
 	"oss.terrastruct.com/d2/lib/textmeasure"
@@ -170,47 +173,61 @@ func Compile(args []js.Value) (interface{}, error) {
 		return nil, &WASMError{Message: "missing 'index' file in input fs", Code: 400}
 	}
 
-	fs, err := memfs.New(input.FS)
+	compileOpts := &d2lib.CompileOptions{
+		UTF16Pos: true,
+	}
+
+	compileOpts.LayoutResolver = func(engine string) (d2graph.LayoutGraph, error) {
+		switch engine {
+		case "dagre":
+			return d2dagrelayout.DefaultLayout, nil
+		case "elk":
+			return d2elklayout.DefaultLayout, nil
+		default:
+			return nil, &WASMError{Message: fmt.Sprintf("layout option '%s' not recognized", engine), Code: 400}
+		}
+	}
+
+	var err error
+	compileOpts.FS, err = memfs.New(input.FS)
 	if err != nil {
 		return nil, &WASMError{Message: fmt.Sprintf("invalid fs input: %s", err.Error()), Code: 400}
 	}
 
-	ruler, err := textmeasure.NewRuler()
+	compileOpts.Ruler, err = textmeasure.NewRuler()
 	if err != nil {
 		return nil, &WASMError{Message: fmt.Sprintf("text ruler cannot be initialized: %s", err.Error()), Code: 500}
 	}
-	ctx := log.WithDefault(context.Background())
-	layoutFunc := d2dagrelayout.DefaultLayout
+
 	if input.Opts != nil && input.Opts.Layout != nil {
-		switch *input.Opts.Layout {
-		case "dagre":
-			layoutFunc = d2dagrelayout.DefaultLayout
-		case "elk":
-			layoutFunc = d2elklayout.DefaultLayout
-		default:
-			return nil, &WASMError{Message: fmt.Sprintf("layout option '%s' not recognized", *input.Opts.Layout), Code: 400}
-		}
-	}
-	layoutResolver := func(engine string) (d2graph.LayoutGraph, error) {
-		return layoutFunc, nil
+		compileOpts.Layout = input.Opts.Layout
 	}
 
 	renderOpts := &d2svg.RenderOpts{}
-	var fontFamily *d2fonts.FontFamily
-	if input.Opts != nil && input.Opts.Sketch != nil && *input.Opts.Sketch {
-		fontFamily = go2.Pointer(d2fonts.HandDrawn)
+	if input.Opts != nil && input.Opts.Sketch != nil {
 		renderOpts.Sketch = input.Opts.Sketch
+		if *input.Opts.Sketch {
+			compileOpts.FontFamily = go2.Pointer(d2fonts.HandDrawn)
+		}
+	}
+	if input.Opts != nil && input.Opts.Pad != nil {
+		renderOpts.Pad = input.Opts.Pad
+	}
+	if input.Opts != nil && input.Opts.Center != nil {
+		renderOpts.Center = input.Opts.Center
 	}
 	if input.Opts != nil && input.Opts.ThemeID != nil {
 		renderOpts.ThemeID = input.Opts.ThemeID
 	}
-	diagram, g, err := d2lib.Compile(ctx, input.FS["index"], &d2lib.CompileOptions{
-		UTF16Pos:       true,
-		FS:             fs,
-		Ruler:          ruler,
-		LayoutResolver: layoutResolver,
-		FontFamily:     fontFamily,
-	}, renderOpts)
+	if input.Opts != nil && input.Opts.DarkThemeID != nil {
+		renderOpts.DarkThemeID = input.Opts.DarkThemeID
+	}
+	if input.Opts != nil && input.Opts.Scale != nil {
+		renderOpts.Scale = input.Opts.Scale
+	}
+
+	ctx := log.WithDefault(context.Background())
+	diagram, g, err := d2lib.Compile(ctx, input.FS["index"], compileOpts, renderOpts)
 	if err != nil {
 		if pe, ok := err.(*d2parser.ParseError); ok {
 			errs, _ := json.Marshal(pe.Errors)
@@ -225,6 +242,19 @@ func Compile(args []js.Value) (interface{}, error) {
 		FS:      input.FS,
 		Diagram: *diagram,
 		Graph:   *g,
+		RenderOptions: RenderOptions{
+			ThemeID:         renderOpts.ThemeID,
+			DarkThemeID:     renderOpts.DarkThemeID,
+			Sketch:          renderOpts.Sketch,
+			Pad:             renderOpts.Pad,
+			Center:          renderOpts.Center,
+			Scale:           renderOpts.Scale,
+			ForceAppendix:   input.Opts.ForceAppendix,
+			Target:          input.Opts.Target,
+			AnimateInterval: input.Opts.AnimateInterval,
+			Salt:            input.Opts.Salt,
+			NoXMLTag:        input.Opts.NoXMLTag,
+		},
 	}, nil
 }
 
@@ -241,19 +271,157 @@ func Render(args []js.Value) (interface{}, error) {
 		return nil, &WASMError{Message: "missing 'diagram' field in input JSON", Code: 400}
 	}
 
+	animateInterval := 0
+	if input.Opts != nil && input.Opts.AnimateInterval != nil && *input.Opts.AnimateInterval > 0 {
+		animateInterval = int(*input.Opts.AnimateInterval)
+	}
+
+	var boardPath []string
+	noChildren := true
+
+	if input.Opts.Target != nil {
+		switch *input.Opts.Target {
+		case "*":
+			noChildren = false
+		case "":
+		default:
+			target := *input.Opts.Target
+			if strings.HasSuffix(target, ".*") {
+				target = target[:len(target)-2]
+				noChildren = false
+			}
+			key, err := d2parser.ParseKey(target)
+			if err != nil {
+				return nil, &WASMError{Message: fmt.Sprintf("target '%s' not recognized", target), Code: 400}
+			}
+			boardPath = key.StringIDA()
+		}
+		if !noChildren && animateInterval <= 0 {
+			return nil, &WASMError{Message: fmt.Sprintf("target '%s' only supported for animated SVGs", *input.Opts.Target), Code: 500}
+		}
+	}
+
+	diagram := input.Diagram.GetBoard(boardPath)
+	if diagram == nil {
+		return nil, &WASMError{Message: fmt.Sprintf("render target '%s' not found", strings.Join(boardPath, ".")), Code: 400}
+	}
+	if noChildren {
+		diagram.Layers = nil
+		diagram.Scenarios = nil
+		diagram.Steps = nil
+	}
+
 	renderOpts := &d2svg.RenderOpts{}
+
+	if input.Opts != nil && input.Opts.Salt != nil {
+		renderOpts.Salt = input.Opts.Salt
+	}
+
+	if animateInterval > 0 {
+		masterID, err := diagram.HashID(renderOpts.Salt)
+		if err != nil {
+			return nil, &WASMError{Message: fmt.Sprintf("cannot process animate interval: %s", err.Error()), Code: 500}
+		}
+		renderOpts.MasterID = masterID
+	}
+
+	ruler, err := textmeasure.NewRuler()
+	if err != nil {
+		return nil, &WASMError{Message: fmt.Sprintf("text ruler cannot be initialized: %s", err.Error()), Code: 500}
+	}
+
 	if input.Opts != nil && input.Opts.Sketch != nil {
 		renderOpts.Sketch = input.Opts.Sketch
+	}
+	if input.Opts != nil && input.Opts.Pad != nil {
+		renderOpts.Pad = input.Opts.Pad
+	}
+	if input.Opts != nil && input.Opts.Center != nil {
+		renderOpts.Center = input.Opts.Center
 	}
 	if input.Opts != nil && input.Opts.ThemeID != nil {
 		renderOpts.ThemeID = input.Opts.ThemeID
 	}
-	out, err := d2svg.Render(input.Diagram, renderOpts)
+	if input.Opts != nil && input.Opts.DarkThemeID != nil {
+		renderOpts.DarkThemeID = input.Opts.DarkThemeID
+	}
+	if input.Opts != nil && input.Opts.Scale != nil {
+		renderOpts.Scale = input.Opts.Scale
+	}
+	if input.Opts != nil && input.Opts.NoXMLTag != nil {
+		renderOpts.NoXMLTag = input.Opts.NoXMLTag
+	}
+
+	forceAppendix := input.Opts != nil && input.Opts.ForceAppendix != nil && *input.Opts.ForceAppendix
+
+	var boards [][]byte
+	if noChildren {
+		var board []byte
+		board, err = renderSingleBoard(renderOpts, forceAppendix, ruler, diagram)
+		boards = [][]byte{board}
+	} else {
+		boards, err = renderBoards(renderOpts, forceAppendix, ruler, diagram)
+	}
 	if err != nil {
 		return nil, &WASMError{Message: fmt.Sprintf("render failed: %s", err.Error()), Code: 500}
 	}
 
+	var out []byte
+	if len(boards) > 0 {
+		out = boards[0]
+		if animateInterval > 0 {
+			out, err = d2animate.Wrap(diagram, boards, *renderOpts, animateInterval)
+			if err != nil {
+				return nil, &WASMError{Message: fmt.Sprintf("animation failed: %s", err.Error()), Code: 500}
+			}
+		}
+	}
 	return out, nil
+}
+
+func renderSingleBoard(opts *d2svg.RenderOpts, forceAppendix bool, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
+	out, err := d2svg.Render(diagram, opts)
+	if err != nil {
+		return nil, &WASMError{Message: fmt.Sprintf("render failed: %s", err.Error()), Code: 500}
+	}
+	if forceAppendix {
+		out = appendix.Append(diagram, opts, ruler, out)
+	}
+	return out, nil
+}
+
+func renderBoards(opts *d2svg.RenderOpts, forceAppendix bool, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([][]byte, error) {
+	var boards [][]byte
+	for _, dl := range diagram.Layers {
+		childrenBoards, err := renderBoards(opts, forceAppendix, ruler, dl)
+		if err != nil {
+			return nil, err
+		}
+		boards = append(boards, childrenBoards...)
+	}
+	for _, dl := range diagram.Scenarios {
+		childrenBoards, err := renderBoards(opts, forceAppendix, ruler, dl)
+		if err != nil {
+			return nil, err
+		}
+		boards = append(boards, childrenBoards...)
+	}
+	for _, dl := range diagram.Steps {
+		childrenBoards, err := renderBoards(opts, forceAppendix, ruler, dl)
+		if err != nil {
+			return nil, err
+		}
+		boards = append(boards, childrenBoards...)
+	}
+
+	if !diagram.IsFolderOnly {
+		out, err := renderSingleBoard(opts, forceAppendix, ruler, diagram)
+		if err != nil {
+			return boards, err
+		}
+		boards = append([][]byte{out}, boards...)
+	}
+	return boards, nil
 }
 
 func GetBoardAtPosition(args []js.Value) (interface{}, error) {
