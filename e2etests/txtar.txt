@@ -789,3 +789,11 @@ b -> c: {
   shape: cycle
   a -> b
 }
+4: "" {
+  shape: cycle
+  a -> b -> c -> d -> e -> f
+}
+5: "" {
+  shape: cycle
+  a -> b -> c -> d -> e
+}
