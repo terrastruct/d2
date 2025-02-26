@@ -858,12 +858,14 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 	}
 
 	if len(refctx.Key.Edges) == 0 && (refctx.Key.Primary.Null != nil || refctx.Key.Value.Null != nil) {
-		// For vars, if we delete the field, it may just resolve to an outer scope var of the same name
-		// Instead we keep it around, so that resolveSubstitutions can find it
-		if !IsVar(ParentMap(f)) {
-			ParentMap(f).DeleteField(f.Name.ScalarString())
-			return
+		if !c.lazyGlobBeingApplied {
+			// For vars, if we delete the field, it may just resolve to an outer scope var of the same name
+			// Instead we keep it around, so that resolveSubstitutions can find it
+			if !IsVar(ParentMap(f)) {
+				ParentMap(f).DeleteField(f.Name.ScalarString())
+			}
 		}
+		return
 	}
 
 	if refctx.Key.Primary.Unbox() != nil {
@@ -1143,7 +1145,9 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 	eida := NewEdgeIDs(refctx.Key)
 	for i, eid := range eida {
 		if !eid.Glob && (refctx.Key.Primary.Null != nil || refctx.Key.Value.Null != nil) {
-			refctx.ScopeMap.DeleteEdge(eid)
+			if !c.lazyGlobBeingApplied {
+				refctx.ScopeMap.DeleteEdge(eid)
+			}
 			continue
 		}
 
@@ -1161,7 +1165,9 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 			}
 			for _, e := range ea {
 				if refctx.Key.Primary.Null != nil || refctx.Key.Value.Null != nil {
-					refctx.ScopeMap.DeleteEdge(e.ID)
+					if !c.lazyGlobBeingApplied {
+						refctx.ScopeMap.DeleteEdge(e.ID)
+					}
 					continue
 				}
 				e.References = append(e.References, &EdgeReference{

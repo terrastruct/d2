@@ -775,3 +775,30 @@ a -> b: hello {
 b -> c: {
   icon: https://icons.terrastruct.com/essentials%2F213-alarm.svg
 }
+
+-- model-nulling --
+# Models
+user
+softwareSystem: {
+  serviceA
+  serviceB
+  serviceC
+  serviceD
+
+  serviceA -> serviceB
+  serviceA -> serviceD
+  serviceC -> serviceB
+}
+externalSystem
+user -> softwareSystem
+softwareSystem -> externalSystem
+
+# Clear models
+**: null
+(** -> **)[*]: null
+
+hello
+yes: {
+  ok
+}
+a -> b
