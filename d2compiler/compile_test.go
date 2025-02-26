@@ -5433,6 +5433,23 @@ b -> c
 				assert.Equal(t, "red", g.Edges[0].Style.Stroke.Value)
 			},
 		},
+		{
+			name: "legend-label",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a.legend-label: This is A
+b: {legend-label: This is B}
+a -> b: {
+  legend-label: "This is a->b"
+}
+`, ``)
+				assert.Equal(t, "a", g.Objects[0].ID)
+				assert.Equal(t, "This is A", g.Objects[0].LegendLabel.Value)
+				assert.Equal(t, "b", g.Objects[1].ID)
+				assert.Equal(t, "This is B", g.Objects[1].LegendLabel.Value)
+				assert.Equal(t, "This is a->b", g.Edges[0].LegendLabel.Value)
+			},
+		},
 	}
 
 	for _, tc := range tca {
