@@ -42,6 +42,8 @@ func (p *printer) node(n d2ast.Node) {
 		p.blockComment(n)
 	case *d2ast.Null:
 		p.sb.WriteString("null")
+	case *d2ast.NotNull:
+		p.sb.WriteString("!null")
 	case *d2ast.Boolean:
 		p.sb.WriteString(strconv.FormatBool(n.Value))
 	case *d2ast.Number:

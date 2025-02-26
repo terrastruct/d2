@@ -1669,6 +1669,13 @@ func (p *parser) parseValue() d2ast.ValueBox {
 		return box
 	}
 
+	if strings.EqualFold(s.ScalarString(), "!null") {
+		box.NotNull = &d2ast.NotNull{
+			Range: s.Range,
+		}
+		return box
+	}
+
 	if strings.EqualFold(s.ScalarString(), "true") {
 		box.Boolean = &d2ast.Boolean{
 			Range: s.Range,

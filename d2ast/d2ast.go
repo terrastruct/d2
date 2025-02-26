@@ -55,6 +55,7 @@ type Node interface {
 var _ Node = &Comment{}
 var _ Node = &BlockComment{}
 
+var _ Node = &NotNull{}
 var _ Node = &Null{}
 var _ Node = &Boolean{}
 var _ Node = &Number{}
@@ -328,6 +329,7 @@ type Scalar interface {
 }
 
 // See String for rest.
+var _ Scalar = &NotNull{}
 var _ Scalar = &Null{}
 var _ Scalar = &Boolean{}
 var _ Scalar = &Number{}
@@ -349,6 +351,7 @@ var _ String = &BlockString{}
 func (c *Comment) node()            {}
 func (c *BlockComment) node()       {}
 func (n *Null) node()               {}
+func (n *NotNull) node()            {}
 func (b *Boolean) node()            {}
 func (n *Number) node()             {}
 func (s *UnquotedString) node()     {}
@@ -367,6 +370,7 @@ func (i *EdgeIndex) node()          {}
 func (c *Comment) Type() string            { return "comment" }
 func (c *BlockComment) Type() string       { return "block comment" }
 func (n *Null) Type() string               { return "null" }
+func (n *NotNull) Type() string            { return "!null" }
 func (b *Boolean) Type() string            { return "boolean" }
 func (n *Number) Type() string             { return "number" }
 func (s *UnquotedString) Type() string     { return "unquoted string" }
@@ -385,6 +389,7 @@ func (i *EdgeIndex) Type() string          { return "edge index" }
 func (c *Comment) GetRange() Range            { return c.Range }
 func (c *BlockComment) GetRange() Range       { return c.Range }
 func (n *Null) GetRange() Range               { return n.Range }
+func (n *NotNull) GetRange() Range            { return n.Range }
 func (b *Boolean) GetRange() Range            { return b.Range }
 func (n *Number) GetRange() Range             { return n.Range }
 func (s *UnquotedString) GetRange() Range     { return s.Range }
@@ -409,6 +414,7 @@ func (i *Import) mapNode()       {}
 func (c *Comment) arrayNode()            {}
 func (c *BlockComment) arrayNode()       {}
 func (n *Null) arrayNode()               {}
+func (n *NotNull) arrayNode()            {}
 func (b *Boolean) arrayNode()            {}
 func (n *Number) arrayNode()             {}
 func (s *UnquotedString) arrayNode()     {}
@@ -421,6 +427,7 @@ func (a *Array) arrayNode()              {}
 func (m *Map) arrayNode()                {}
 
 func (n *Null) value()               {}
+func (n *NotNull) value()            {}
 func (b *Boolean) value()            {}
 func (n *Number) value()             {}
 func (s *UnquotedString) value()     {}
@@ -432,6 +439,7 @@ func (m *Map) value()                {}
 func (i *Import) value()             {}
 
 func (n *Null) scalar()               {}
+func (n *NotNull) scalar()            {}
 func (b *Boolean) scalar()            {}
 func (n *Number) scalar()             {}
 func (s *UnquotedString) scalar()     {}
@@ -442,6 +450,7 @@ func (s *BlockString) scalar()        {}
 func (c *Comment) Children() []Node            { return nil }
 func (c *BlockComment) Children() []Node       { return nil }
 func (n *Null) Children() []Node               { return nil }
+func (n *NotNull) Children() []Node            { return nil }
 func (b *Boolean) Children() []Node            { return nil }
 func (n *Number) Children() []Node             { return nil }
 func (s *SingleQuotedString) Children() []Node { return nil }
@@ -574,6 +583,7 @@ func Walk(node Node, fn func(Node) bool) {
 
 // TODO: mistake, move into parse.go
 func (n *Null) ScalarString() string    { return "" }
+func (n *NotNull) ScalarString() string { return "" }
 func (b *Boolean) ScalarString() string { return strconv.FormatBool(b.Value) }
 func (n *Number) ScalarString() string  { return n.Raw }
 func (s *UnquotedString) ScalarString() string {
@@ -628,6 +638,10 @@ type BlockComment struct {
 }
 
 type Null struct {
+	Range Range `json:"range"`
+}
+
+type NotNull struct {
 	Range Range `json:"range"`
 }
 
@@ -1368,6 +1382,7 @@ func (ab ArrayNodeBox) Unbox() ArrayNode {
 
 // ValueBox is used to box Value for JSON persistence.
 type ValueBox struct {
+	NotNull            *NotNull            `json:"notNull,omitempty"`
 	Null               *Null               `json:"null,omitempty"`
 	Boolean            *Boolean            `json:"boolean,omitempty"`
 	Number             *Number             `json:"number,omitempty"`
@@ -1384,6 +1399,8 @@ func (vb ValueBox) Unbox() Value {
 	switch {
 	case vb.Null != nil:
 		return vb.Null
+	case vb.NotNull != nil:
+		return vb.NotNull
 	case vb.Boolean != nil:
 		return vb.Boolean
 	case vb.Number != nil:
@@ -1412,6 +1429,8 @@ func MakeValueBox(v Value) ValueBox {
 	switch v := v.(type) {
 	case *Null:
 		vb.Null = v
+	case *NotNull:
+		vb.NotNull = v
 	case *Boolean:
 		vb.Boolean = v
 	case *Number:
@@ -1437,6 +1456,7 @@ func MakeValueBox(v Value) ValueBox {
 func (vb ValueBox) ScalarBox() ScalarBox {
 	var sb ScalarBox
 	sb.Null = vb.Null
+	sb.NotNull = vb.NotNull
 	sb.Boolean = vb.Boolean
 	sb.Number = vb.Number
 	sb.UnquotedString = vb.UnquotedString
@@ -1459,6 +1479,7 @@ func (vb ValueBox) StringBox() *StringBox {
 // TODO: implement ScalarString()
 type ScalarBox struct {
 	Null               *Null               `json:"null,omitempty"`
+	NotNull            *NotNull            `json:"notNull,omitempty"`
 	Boolean            *Boolean            `json:"boolean,omitempty"`
 	Number             *Number             `json:"number,omitempty"`
 	UnquotedString     *UnquotedString     `json:"unquoted_string,omitempty"`
@@ -1471,6 +1492,8 @@ func (sb ScalarBox) Unbox() Scalar {
 	switch {
 	case sb.Null != nil:
 		return sb.Null
+	case sb.NotNull != nil:
+		return sb.NotNull
 	case sb.Boolean != nil:
 		return sb.Boolean
 	case sb.Number != nil:
@@ -1559,7 +1582,7 @@ func RawString(s string, inKey bool) String {
 				return &SingleQuotedString{Value: s}
 			}
 		}
-	} else if s == "null" || strings.ContainsAny(s, UnquotedValueSpecials) {
+	} else if s == "null" || s == "!null" || strings.ContainsAny(s, UnquotedValueSpecials) {
 		if !strings.ContainsRune(s, '"') && !strings.ContainsRune(s, '$') {
 			return FlatDoubleQuotedString(s)
 		}

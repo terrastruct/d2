@@ -778,7 +778,7 @@ b -> c: {
 
 -- model-nulling --
 # Models
-user
+user.style.fill: blue
 softwareSystem: {
   serviceA
   serviceB
@@ -802,3 +802,5 @@ yes: {
   ok
 }
 a -> b
+
+user: !null
