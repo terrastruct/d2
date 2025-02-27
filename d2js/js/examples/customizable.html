@@ -319,6 +319,53 @@
             </label>
           </div>
         </div>
+        <div class="option">
+          <div class="option-select">
+            <label class="input-label">
+              <span>Regular Font</span>
+              <input
+                type="file"
+                accept=".ttf"
+                id="font-regular-input"
+                class="file-input"
+              />
+            </label>
+          </div>
+        </div>
+        <div class="option">
+          <div class="option-select">
+            <label class="input-label">
+              <span>Italic Font</span>
+              <input
+                type="file"
+                accept=".ttf"
+                id="font-italic-input"
+                class="file-input"
+              />
+            </label>
+          </div>
+        </div>
+        <div class="option">
+          <div class="option-select">
+            <label class="input-label">
+              <span>Bold Font</span>
+              <input type="file" accept=".ttf" id="font-bold-input" class="file-input" />
+            </label>
+          </div>
+        </div>
+        <div class="option">
+          <div class="option-select">
+            <label class="input-label">
+              <span>Semibold Font</span>
+              <input
+                type="file"
+                accept=".ttf"
+                id="font-semibold-input"
+                class="file-input"
+              />
+            </label>
+          </div>
+        </div>
       </div>
       <button onclick="compile()">Compile</button>
     </div>
@@ -326,6 +373,12 @@
     <script type="module">
       import { D2 } from "../dist/browser/index.js";
       const d2 = new D2();
+      const loadFont = async (file) => {
+        if (file != undefined) {
+          const font = await file.arrayBuffer();
+          return Array.from(new Uint8Array(font));
+        }
+      };
       window.compile = async () => {
         const input = document.getElementById("input").value;
         const layout = document.getElementById("layout-toggle").checked
@@ -362,6 +415,18 @@
           ? Number(document.getElementById("animate-interval-input").value)
           : null;
         const salt = String(document.getElementById("salt-input").value);
+        const fontRegular = await loadFont(
+          document.getElementById("font-regular-input").files[0]
+        );
+        const fontItalic = await loadFont(
+          document.getElementById("font-italic-input").files[0]
+        );
+        const fontBold = await loadFont(
+          document.getElementById("font-bold-input").files[0]
+        );
+        const fontSemibold = await loadFont(
+          document.getElementById("font-semibold-input").files[0]
+        );
         try {
           const result = await d2.compile(input, {
             layout,
@@ -375,6 +440,10 @@
             target,
             animateInterval,
             salt,
+            fontRegular,
+            fontItalic,
+            fontSemibold,
+            fontBold,
             noXmlTag: true,
           });
           const svg = await d2.render(result.diagram, result.renderOptions);

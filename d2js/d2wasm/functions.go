@@ -29,7 +29,6 @@ import (
 	"oss.terrastruct.com/d2/lib/textmeasure"
 	"oss.terrastruct.com/d2/lib/urlenc"
 	"oss.terrastruct.com/d2/lib/version"
-	"oss.terrastruct.com/util-go/go2"
 )
 
 func GetParentID(args []js.Value) (interface{}, error) {
@@ -194,6 +193,30 @@ func Compile(args []js.Value) (interface{}, error) {
 		return nil, &WASMError{Message: fmt.Sprintf("invalid fs input: %s", err.Error()), Code: 400}
 	}
 
+	var fontRegular []byte
+	var fontItalic []byte
+	var fontBold []byte
+	var fontSemibold []byte
+	if input.Opts != nil && (input.Opts.FontRegular != nil) {
+		fontRegular = *input.Opts.FontRegular
+	}
+	if input.Opts != nil && (input.Opts.FontItalic != nil) {
+		fontItalic = *input.Opts.FontItalic
+	}
+	if input.Opts != nil && (input.Opts.FontBold != nil) {
+		fontBold = *input.Opts.FontBold
+	}
+	if input.Opts != nil && (input.Opts.FontSemibold != nil) {
+		fontSemibold = *input.Opts.FontSemibold
+	}
+	if fontRegular != nil || fontItalic != nil || fontBold != nil || fontSemibold != nil {
+		fontFamily, err := d2fonts.AddFontFamily("custom", fontRegular, fontItalic, fontBold, fontSemibold)
+		if err != nil {
+			return nil, &WASMError{Message: fmt.Sprintf("custom fonts could not be initialized: %s", err.Error()), Code: 400}
+		}
+		compileOpts.FontFamily = fontFamily
+	}
+
 	compileOpts.Ruler, err = textmeasure.NewRuler()
 	if err != nil {
 		return nil, &WASMError{Message: fmt.Sprintf("text ruler cannot be initialized: %s", err.Error()), Code: 500}
@@ -206,9 +229,6 @@ func Compile(args []js.Value) (interface{}, error) {
 	renderOpts := &d2svg.RenderOpts{}
 	if input.Opts != nil && input.Opts.Sketch != nil {
 		renderOpts.Sketch = input.Opts.Sketch
-		if *input.Opts.Sketch {
-			compileOpts.FontFamily = go2.Pointer(d2fonts.HandDrawn)
-		}
 	}
 	if input.Opts != nil && input.Opts.Pad != nil {
 		renderOpts.Pad = input.Opts.Pad
