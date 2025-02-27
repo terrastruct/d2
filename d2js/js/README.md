@@ -60,9 +60,9 @@ const result = await d2.compile('x -> y', {
 const svg = await d2.render(result.diagram, result.renderOptions);
 ```
 
-### Supporting Imports
+### Imports
 
-In order to support [imports](https://d2lang.com/tour/imports), a 'filesystem' needs to be passed to the D2 compiler. This is a mapping of D2 file paths to their content.
+In order to support [imports](https://d2lang.com/tour/imports), a mapping of D2 file paths to their content can be passed to the compiler.
 
 ```javascript
 import { D2 } from '@terrastruct/d2';
@@ -120,8 +120,8 @@ All [RenderOptions](#renderoptions) properties in addition to:
 
 ### `CompileRequest`
 
-- `fs`: A mapping of D2 filepaths to their content
-- `inputPath`: The path of the D2 file containing the root D2 board [default: index]
+- `fs`: A mapping of D2 file paths to their content
+- `inputPath`: The path of the entry D2 file [default: index]
 - `options`: The [CompileOptions](#compileoptions) to pass to the compiler
 
 ### `CompileResult`
