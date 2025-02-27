@@ -1,6 +1,7 @@
 package d2ir
 
 import (
+	"fmt"
 	"html"
 	"io/fs"
 	"net/url"
@@ -43,10 +44,10 @@ type compiler struct {
 	// Used to prevent field globs causing infinite loops.
 	globRefContextStack []*RefContext
 	// Used to check whether ampersands are allowed in the current map.
-	mapRefContextStack      []*RefContext
-	lazyGlobBeingApplied    bool
-	markedFieldsForDeletion map[*Map]map[string]struct{}
-	markedEdgesForDeletion  map[*Map][]*EdgeID
+	mapRefContextStack   []*RefContext
+	lazyGlobBeingApplied bool
+	deletedFieldsPool    map[*Map]map[string]*Field
+	deletedEdgesPool     map[*Map]map[string]*Edge
 }
 
 type CompileOptions struct {
@@ -67,10 +68,10 @@ func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, []string, error) {
 		err: &d2parser.ParseError{},
 		fs:  opts.FS,
 
-		seenImports:             make(map[string]struct{}),
-		utf16Pos:                opts.UTF16Pos,
-		markedFieldsForDeletion: make(map[*Map]map[string]struct{}),
-		markedEdgesForDeletion:  make(map[*Map][]*EdgeID),
+		seenImports:       make(map[string]struct{}),
+		utf16Pos:          opts.UTF16Pos,
+		deletedFieldsPool: make(map[*Map]map[string]*Field),
+		deletedEdgesPool:  make(map[*Map]map[string]*Edge),
 	}
 	m := &Map{}
 	m.initRoot()
@@ -85,7 +86,6 @@ func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, []string, error) {
 	c.compileMap(m, ast, ast)
 	c.compileSubstitutions(m, nil)
 	c.overlayClasses(m)
-	c.processMarkedDeletions(m)
 
 	if !c.err.Empty() {
 		return nil, nil, c.err
@@ -868,14 +868,30 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 			// For vars, if we delete the field, it may just resolve to an outer scope var of the same name
 			// Instead we keep it around, so that resolveSubstitutions can find it
 			if !IsVar(ParentMap(f)) {
-				c.markFieldForDeletion(ParentMap(f), f.Name.ScalarString())
+				parentMap := ParentMap(f)
+				key := f.Name.ScalarString()
+
+				// Save to pool before deletion
+				c.saveDeletedField(parentMap, key, f)
+
+				// Now delete
+				parentMap.DeleteField(key)
 			}
 		}
 		return
 	}
 
 	if len(refctx.Key.Edges) == 0 && (refctx.Key.Primary.NotNull != nil || refctx.Key.Value.NotNull != nil) {
-		c.unmarkFieldForDeletion(ParentMap(f), f.Name.ScalarString())
+		println("\033[1;31m--- DEBUG:", "=======================", "\033[m")
+		parentMap := ParentMap(f)
+		key := f.Name.ScalarString()
+
+		// Try to restore from pool
+		restoredField := c.restoreDeletedField(parentMap, key)
+		if restoredField != nil {
+			// Add the field back to the parent map
+			parentMap.Fields = append(parentMap.Fields, restoredField)
+		}
 		return
 	}
 
@@ -1157,12 +1173,23 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 	for i, eid := range eida {
 		if !eid.Glob && (refctx.Key.Primary.Null != nil || refctx.Key.Value.Null != nil) {
 			if !c.lazyGlobBeingApplied {
-				c.markEdgeForDeletion(refctx.ScopeMap, eid)
+				edges := refctx.ScopeMap.GetEdges(eid, nil, nil)
+				if len(edges) > 0 {
+					// Save to pool before deletion
+					c.saveDeletedEdge(refctx.ScopeMap, eid, edges[0])
+				}
+
+				// Now delete
+				refctx.ScopeMap.DeleteEdge(eid)
 			}
 			continue
 		}
 		if !eid.Glob && (refctx.Key.Primary.NotNull != nil || refctx.Key.Value.NotNull != nil) {
-			c.unmarkEdgeForDeletion(refctx.ScopeMap, eid)
+			restoredEdge := c.restoreDeletedEdge(refctx.ScopeMap, eid)
+			if restoredEdge != nil {
+				// Add the edge back to the scope map
+				refctx.ScopeMap.Edges = append(refctx.ScopeMap.Edges, restoredEdge)
+			}
 			continue
 		}
 
@@ -1311,50 +1338,93 @@ func (c *compiler) compileArray(dst *Array, a *d2ast.Array, scopeAST *d2ast.Map)
 	}
 }
 
-func (c *compiler) markFieldForDeletion(parent *Map, key string) {
-	if c.markedFieldsForDeletion[parent] == nil {
-		c.markedFieldsForDeletion[parent] = make(map[string]struct{})
+func (c *compiler) saveDeletedField(parent *Map, key string, field *Field) {
+	fmt.Printf("DEBUG: Saving deleted field: %s in map %p\n", key, parent)
+	if c.deletedFieldsPool == nil {
+		c.deletedFieldsPool = make(map[*Map]map[string]*Field)
 	}
-	c.markedFieldsForDeletion[parent][key] = struct{}{}
+	if c.deletedFieldsPool[parent] == nil {
+		c.deletedFieldsPool[parent] = make(map[string]*Field)
+	}
+	c.deletedFieldsPool[parent][key] = field
 }
 
-func (c *compiler) unmarkFieldForDeletion(parent *Map, key string) {
-	if c.markedFieldsForDeletion[parent] != nil {
-		delete(c.markedFieldsForDeletion[parent], key)
+func (c *compiler) restoreDeletedField(parent *Map, key string) *Field {
+	if c.deletedFieldsPool == nil || c.deletedFieldsPool[parent] == nil {
+		return nil
 	}
+
+	field, ok := c.deletedFieldsPool[parent][key]
+	if !ok {
+		return nil
+	}
+
+	fmt.Printf("DEBUG: Restoring deleted field: %s in map %p\n", key, parent)
+	delete(c.deletedFieldsPool[parent], key)
+	return field
 }
 
-func (c *compiler) markEdgeForDeletion(parent *Map, eid *EdgeID) {
-	c.markedEdgesForDeletion[parent] = append(c.markedEdgesForDeletion[parent], eid.Copy())
+func (c *compiler) saveDeletedEdge(parent *Map, eid *EdgeID, edge *Edge) {
+	fmt.Printf("DEBUG: Saving deleted edge in map %p\n", parent)
+	if c.deletedEdgesPool == nil {
+		c.deletedEdgesPool = make(map[*Map]map[string]*Edge)
+	}
+	if c.deletedEdgesPool[parent] == nil {
+		c.deletedEdgesPool[parent] = make(map[string]*Edge)
+	}
+
+	// Create a string key for the edge
+	var key string
+	if eid.SrcArrow {
+		key = "<-"
+	}
+	key += strings.Join(stringifyPath(eid.SrcPath), ".")
+	key += "->"
+	if eid.DstArrow {
+		key += ">"
+	}
+	key += strings.Join(stringifyPath(eid.DstPath), ".")
+	if eid.Index != nil {
+		key += fmt.Sprintf("[%d]", *eid.Index)
+	}
+
+	c.deletedEdgesPool[parent][key] = edge
 }
 
-func (c *compiler) unmarkEdgeForDeletion(parent *Map, eid *EdgeID) {
-	edges := c.markedEdgesForDeletion[parent]
-	for i, e := range edges {
-		if e.Match(eid) {
-			// Remove this edge from the slice
-			c.markedEdgesForDeletion[parent] = append(edges[:i], edges[i+1:]...)
-			break
-		}
+func stringifyPath(path []d2ast.String) []string {
+	result := make([]string, len(path))
+	for i, s := range path {
+		result[i] = s.ScalarString()
 	}
+	return result
 }
 
-func (c *compiler) processMarkedDeletions(m *Map) {
-	// Process field deletions
-	for parent, keys := range c.markedFieldsForDeletion {
-		for key := range keys {
-			parent.DeleteField(key)
-		}
+func (c *compiler) restoreDeletedEdge(parent *Map, eid *EdgeID) *Edge {
+	if c.deletedEdgesPool == nil || c.deletedEdgesPool[parent] == nil {
+		return nil
 	}
 
-	// Process edge deletions
-	for parent, edges := range c.markedEdgesForDeletion {
-		for _, eid := range edges {
-			parent.DeleteEdge(eid)
-		}
+	// Create a string key for the edge
+	var key string
+	if eid.SrcArrow {
+		key = "<-"
+	}
+	key += strings.Join(stringifyPath(eid.SrcPath), ".")
+	key += "->"
+	if eid.DstArrow {
+		key += ">"
+	}
+	key += strings.Join(stringifyPath(eid.DstPath), ".")
+	if eid.Index != nil {
+		key += fmt.Sprintf("[%d]", *eid.Index)
 	}
 
-	// Clear the tracking maps
-	c.markedFieldsForDeletion = make(map[*Map]map[string]struct{})
-	c.markedEdgesForDeletion = make(map[*Map][]*EdgeID)
+	edge, ok := c.deletedEdgesPool[parent][key]
+	if !ok {
+		return nil
+	}
+
+	fmt.Printf("DEBUG: Restoring deleted edge in map %p\n", parent)
+	delete(c.deletedEdgesPool[parent], key)
+	return edge
 }
