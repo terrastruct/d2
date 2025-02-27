@@ -212,7 +212,7 @@ func Compile(args []js.Value) (interface{}, error) {
 	if fontRegular != nil || fontItalic != nil || fontBold != nil || fontSemibold != nil {
 		fontFamily, err := d2fonts.AddFontFamily("custom", fontRegular, fontItalic, fontBold, fontSemibold)
 		if err != nil {
-			return nil, &WASMError{Message: fmt.Sprintf("custom fonts could not be initialized: %s", err.Error()), Code: 500}
+			return nil, &WASMError{Message: fmt.Sprintf("custom fonts could not be initialized: %s", err.Error()), Code: 400}
 		}
 		compileOpts.FontFamily = fontFamily
 	}
