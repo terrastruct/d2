@@ -1282,6 +1282,8 @@ func (c *compiler) compileArray(dst *Array, a *d2ast.Array, scopeAST *d2ast.Map)
 					Value: []d2ast.InterpolationBox{{Substitution: an.Substitution}},
 				},
 			}
+		case *d2ast.Comment:
+			continue
 		}
 
 		dst.Values = append(dst.Values, irv)

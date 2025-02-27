@@ -485,6 +485,7 @@ type Shape struct {
 	PrettyLink   string   `json:"prettyLink,omitempty"`
 	Icon         *url.URL `json:"icon"`
 	IconPosition string   `json:"iconPosition"`
+	LegendLabel  string   `json:"legendLabel,omitempty"`
 
 	// Whether the shape should allow shapes behind it to bleed through
 	// Currently just used for sequence diagram groups
@@ -613,6 +614,7 @@ type Connection struct {
 
 	Animated     bool     `json:"animated"`
 	Tooltip      string   `json:"tooltip"`
+	LegendLabel  string   `json:"legendLabel,omitempty"`
 	Icon         *url.URL `json:"icon"`
 	IconPosition string   `json:"iconPosition,omitempty"`
 

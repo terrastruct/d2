@@ -103,6 +103,10 @@ Renders a compiled diagram to SVG.
 All [RenderOptions](#renderoptions) properties in addition to:
 
 - `layout`: Layout engine to use ('dagre' | 'elk') [default: 'dagre']
+- `fontRegular` A byte array containing .ttf file to use for the regular font. If none provided, Source Sans Pro Regular is used.
+- `fontItalic` A byte array containing .ttf file to use for the italic font. If none provided, Source Sans Pro Italic is used.
+- `fontBold` A byte array containing .ttf file to use for the bold font. If none provided, Source Sans Pro Bold is used.
+- `fontSemibold` A byte array containing .ttf file to use for the semibold font. If none provided, Source Sans Pro Semibold is used.
 
 ### `RenderOptions`
 

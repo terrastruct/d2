@@ -222,7 +222,8 @@ type Attributes struct {
 
 	// These names are attached to the rendered elements in SVG
 	// so that users can target them however they like outside of D2
-	Classes []string `json:"classes,omitempty"`
+	Classes     []string `json:"classes,omitempty"`
+	LegendLabel *Scalar  `json:"legendLabel,omitempty"`
 }
 
 // ApplyTextTransform will alter the `Label.Value` of the current object based

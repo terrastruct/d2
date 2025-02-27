@@ -24,8 +24,8 @@ require (
 	github.com/yuin/goldmark v1.7.4
 	go.uber.org/multierr v1.11.0
 	golang.org/x/image v0.20.0
-	golang.org/x/net v0.29.0
-	golang.org/x/text v0.18.0
+	golang.org/x/net v0.35.0
+	golang.org/x/text v0.22.0
 	golang.org/x/tools v0.25.0
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da
 	gonum.org/v1/plot v0.14.0
@@ -49,8 +49,8 @@ require (
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0 // indirect
-	golang.org/x/sys v0.25.0 // indirect
-	golang.org/x/term v0.24.0 // indirect
+	golang.org/x/sys v0.30.0 // indirect
+	golang.org/x/term v0.29.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
