@@ -5450,6 +5450,18 @@ a -> b: {
 				assert.Equal(t, "This is a->b", g.Edges[0].LegendLabel.Value)
 			},
 		},
+		{
+			name: "merge-glob-values",
+			run: func(t *testing.T) {
+				assertCompile(t, `
+"a"
+*.style.stroke-width: 2
+*.style.font-size: 14
+
+a.width: 339
+`, ``)
+			},
+		},
 	}
 
 	for _, tc := range tca {
