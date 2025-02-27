@@ -43,8 +43,10 @@ type compiler struct {
 	// Used to prevent field globs causing infinite loops.
 	globRefContextStack []*RefContext
 	// Used to check whether ampersands are allowed in the current map.
-	mapRefContextStack   []*RefContext
-	lazyGlobBeingApplied bool
+	mapRefContextStack      []*RefContext
+	lazyGlobBeingApplied    bool
+	markedFieldsForDeletion map[*Map]map[string]struct{}
+	markedEdgesForDeletion  map[*Map][]*EdgeID
 }
 
 type CompileOptions struct {
@@ -65,8 +67,10 @@ func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, []string, error) {
 		err: &d2parser.ParseError{},
 		fs:  opts.FS,
 
-		seenImports: make(map[string]struct{}),
-		utf16Pos:    opts.UTF16Pos,
+		seenImports:             make(map[string]struct{}),
+		utf16Pos:                opts.UTF16Pos,
+		markedFieldsForDeletion: make(map[*Map]map[string]struct{}),
+		markedEdgesForDeletion:  make(map[*Map][]*EdgeID),
 	}
 	m := &Map{}
 	m.initRoot()
@@ -81,6 +85,8 @@ func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, []string, error) {
 	c.compileMap(m, ast, ast)
 	c.compileSubstitutions(m, nil)
 	c.overlayClasses(m)
+	c.processMarkedDeletions(m)
+
 	if !c.err.Empty() {
 		return nil, nil, c.err
 	}
@@ -862,9 +868,14 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 			// For vars, if we delete the field, it may just resolve to an outer scope var of the same name
 			// Instead we keep it around, so that resolveSubstitutions can find it
 			if !IsVar(ParentMap(f)) {
-				ParentMap(f).DeleteField(f.Name.ScalarString())
+				c.markFieldForDeletion(ParentMap(f), f.Name.ScalarString())
 			}
 		}
+		return
+	}
+
+	if len(refctx.Key.Edges) == 0 && (refctx.Key.Primary.NotNull != nil || refctx.Key.Value.NotNull != nil) {
+		c.unmarkFieldForDeletion(ParentMap(f), f.Name.ScalarString())
 		return
 	}
 
@@ -1146,8 +1157,12 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 	for i, eid := range eida {
 		if !eid.Glob && (refctx.Key.Primary.Null != nil || refctx.Key.Value.Null != nil) {
 			if !c.lazyGlobBeingApplied {
-				refctx.ScopeMap.DeleteEdge(eid)
+				c.markEdgeForDeletion(refctx.ScopeMap, eid)
 			}
+			continue
+		}
+		if !eid.Glob && (refctx.Key.Primary.NotNull != nil || refctx.Key.Value.NotNull != nil) {
+			c.unmarkEdgeForDeletion(refctx.ScopeMap, eid)
 			continue
 		}
 
@@ -1294,4 +1309,52 @@ func (c *compiler) compileArray(dst *Array, a *d2ast.Array, scopeAST *d2ast.Map)
 
 		dst.Values = append(dst.Values, irv)
 	}
+}
+
+func (c *compiler) markFieldForDeletion(parent *Map, key string) {
+	if c.markedFieldsForDeletion[parent] == nil {
+		c.markedFieldsForDeletion[parent] = make(map[string]struct{})
+	}
+	c.markedFieldsForDeletion[parent][key] = struct{}{}
+}
+
+func (c *compiler) unmarkFieldForDeletion(parent *Map, key string) {
+	if c.markedFieldsForDeletion[parent] != nil {
+		delete(c.markedFieldsForDeletion[parent], key)
+	}
+}
+
+func (c *compiler) markEdgeForDeletion(parent *Map, eid *EdgeID) {
+	c.markedEdgesForDeletion[parent] = append(c.markedEdgesForDeletion[parent], eid.Copy())
+}
+
+func (c *compiler) unmarkEdgeForDeletion(parent *Map, eid *EdgeID) {
+	edges := c.markedEdgesForDeletion[parent]
+	for i, e := range edges {
+		if e.Match(eid) {
+			// Remove this edge from the slice
+			c.markedEdgesForDeletion[parent] = append(edges[:i], edges[i+1:]...)
+			break
+		}
+	}
+}
+
+func (c *compiler) processMarkedDeletions(m *Map) {
+	// Process field deletions
+	for parent, keys := range c.markedFieldsForDeletion {
+		for key := range keys {
+			parent.DeleteField(key)
+		}
+	}
+
+	// Process edge deletions
+	for parent, edges := range c.markedEdgesForDeletion {
+		for _, eid := range edges {
+			parent.DeleteEdge(eid)
+		}
+	}
+
+	// Clear the tracking maps
+	c.markedFieldsForDeletion = make(map[*Map]map[string]struct{})
+	c.markedEdgesForDeletion = make(map[*Map][]*EdgeID)
 }

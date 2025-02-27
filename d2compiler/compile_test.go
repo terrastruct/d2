@@ -2340,6 +2340,20 @@ ok: {
 			},
 		},
 		{
+			name: "no-lazy-null",
+
+			text: `a
+a -> b
+c.d
+**: null
+
+g
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 1, len(g.Objects))
+			},
+		},
+		{
 			name: "sql-regression",
 
 			text: `a: {
