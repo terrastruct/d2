@@ -32,8 +32,9 @@ type BoardPositionResponse struct {
 }
 
 type CompileRequest struct {
-	FS   map[string]string `json:"fs"`
-	Opts *CompileOptions   `json:"options"`
+	FS        map[string]string `json:"fs"`
+	InputPath *string           `json:"inputPath"`
+	Opts      *CompileOptions   `json:"options"`
 }
 
 type RenderOptions struct {
@@ -61,6 +62,7 @@ type CompileOptions struct {
 
 type CompileResponse struct {
 	FS            map[string]string `json:"fs"`
+	InputPath     string            `json:"inputPath"`
 	Diagram       d2target.Diagram  `json:"diagram"`
 	Graph         d2graph.Graph     `json:"graph"`
 	RenderOptions RenderOptions     `json:"renderOptions"`

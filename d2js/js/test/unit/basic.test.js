@@ -16,6 +16,29 @@ describe("D2 Unit Tests", () => {
     await d2.worker.terminate();
   }, 20000);
 
+  test("import works", async () => {
+    const d2 = new D2();
+    const fs = {
+      index: "a: @import",
+      "import.d2": "x: {shape: circle}",
+    };
+    const result = await d2.compile({ fs });
+    expect(result.diagram).toBeDefined();
+    await d2.worker.terminate();
+  }, 20000);
+
+  test("relative import works", async () => {
+    const d2 = new D2();
+    const fs = {
+      "folder/index.d2": "a: @../import",
+      "import.d2": "x: {shape: circle}",
+    };
+    const inputPath = "folder/index.d2";
+    const result = await d2.compile({ fs, inputPath });
+    expect(result.diagram).toBeDefined();
+    await d2.worker.terminate();
+  }, 20000);
+
   test("render works", async () => {
     const d2 = new D2();
     const result = await d2.compile("x -> y");
@@ -173,6 +196,23 @@ layers: {
     const result = await d2.compile(source);
     try {
       await d2.render(result.diagram, { target: "*" });
+      throw new Error("Should have thrown compile error");
+    } catch (err) {
+      expect(err).toBeDefined();
+      expect(err.message).not.toContain("Should have thrown compile error");
+    }
+    await d2.worker.terminate();
+  }, 20000);
+
+  test("handles invalid imports correctly", async () => {
+    const d2 = new D2();
+    const fs = {
+      "folder/index.d2": "a: @../invalid",
+      "import.d2": "x: {shape: circle}",
+    };
+    const inputPath = "folder/index.d2";
+    try {
+      await d2.compile({ fs, inputPath });
       throw new Error("Should have thrown compile error");
     } catch (err) {
       expect(err).toBeDefined();

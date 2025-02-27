@@ -31,6 +31,8 @@ import (
 	"oss.terrastruct.com/d2/lib/version"
 )
 
+const DEFAULT_INPUT_PATH = "index"
+
 func GetParentID(args []js.Value) (interface{}, error) {
 	if len(args) < 1 {
 		return nil, &WASMError{Message: "missing id argument", Code: 400}
@@ -122,8 +124,14 @@ func GetELKGraph(args []js.Value) (interface{}, error) {
 		return nil, &WASMError{Message: "missing 'fs' field in input JSON", Code: 400}
 	}
 
-	if _, ok := input.FS["index"]; !ok {
-		return nil, &WASMError{Message: "missing 'index' file in input fs", Code: 400}
+	inputPath := DEFAULT_INPUT_PATH
+
+	if input.InputPath != nil {
+		inputPath = *input.InputPath
+	}
+
+	if _, ok := input.FS[inputPath]; !ok {
+		return nil, &WASMError{Message: fmt.Sprintf("missing '%s' file in input fs", inputPath), Code: 400}
 	}
 
 	fs, err := memfs.New(input.FS)
@@ -131,7 +139,7 @@ func GetELKGraph(args []js.Value) (interface{}, error) {
 		return nil, &WASMError{Message: fmt.Sprintf("invalid fs input: %s", err.Error()), Code: 400}
 	}
 
-	g, _, err := d2compiler.Compile("", strings.NewReader(input.FS["index"]), &d2compiler.CompileOptions{
+	g, _, err := d2compiler.Compile(inputPath, strings.NewReader(input.FS[inputPath]), &d2compiler.CompileOptions{
 		UTF16Pos: true,
 		FS:       fs,
 	})
@@ -168,13 +176,21 @@ func Compile(args []js.Value) (interface{}, error) {
 		return nil, &WASMError{Message: "missing 'fs' field in input JSON", Code: 400}
 	}
 
-	if _, ok := input.FS["index"]; !ok {
-		return nil, &WASMError{Message: "missing 'index' file in input fs", Code: 400}
-	}
-
 	compileOpts := &d2lib.CompileOptions{
 		UTF16Pos: true,
 	}
+
+	inputPath := DEFAULT_INPUT_PATH
+
+	if input.InputPath != nil {
+		inputPath = *input.InputPath
+	}
+
+	if _, ok := input.FS[inputPath]; !ok {
+		return nil, &WASMError{Message: fmt.Sprintf("missing '%s' file in input fs", inputPath), Code: 400}
+	}
+
+	compileOpts.InputPath = inputPath
 
 	compileOpts.LayoutResolver = func(engine string) (d2graph.LayoutGraph, error) {
 		switch engine {
@@ -247,7 +263,7 @@ func Compile(args []js.Value) (interface{}, error) {
 	}
 
 	ctx := log.WithDefault(context.Background())
-	diagram, g, err := d2lib.Compile(ctx, input.FS["index"], compileOpts, renderOpts)
+	diagram, g, err := d2lib.Compile(ctx, input.FS[inputPath], compileOpts, renderOpts)
 	if err != nil {
 		if pe, ok := err.(*d2parser.ParseError); ok {
 			errs, _ := json.Marshal(pe.Errors)
@@ -256,12 +272,13 @@ func Compile(args []js.Value) (interface{}, error) {
 		return nil, &WASMError{Message: err.Error(), Code: 500}
 	}
 
-	input.FS["index"] = d2format.Format(g.AST)
+	input.FS[inputPath] = d2format.Format(g.AST)
 
 	return CompileResponse{
-		FS:      input.FS,
-		Diagram: *diagram,
-		Graph:   *g,
+		FS:        input.FS,
+		InputPath: inputPath,
+		Diagram:   *diagram,
+		Graph:     *g,
 		RenderOptions: RenderOptions{
 			ThemeID:         renderOpts.ThemeID,
 			DarkThemeID:     renderOpts.DarkThemeID,

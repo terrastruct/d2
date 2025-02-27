@@ -33,6 +33,8 @@ bun add @terrastruct/d2
 
 D2.js uses webworkers to call a WASM file.
 
+### Basic Usage
+
 ```javascript
 // Same for Node or browser
 import { D2 } from '@terrastruct/d2';
@@ -42,7 +44,7 @@ import { D2 } from '@terrastruct/d2';
 const d2 = new D2();
 
 const result = await d2.compile('x -> y');
-const svg = await d2.render(result.diagram, result.options);
+const svg = await d2.render(result.diagram, result.renderOptions);
 ```
 
 Configuring render options (see [CompileOptions](#compileoptions) for all available options):
@@ -58,15 +60,39 @@ const result = await d2.compile('x -> y', {
 const svg = await d2.render(result.diagram, result.renderOptions);
 ```
 
+### Imports
+
+In order to support [imports](https://d2lang.com/tour/imports), a mapping of D2 file paths to their content can be passed to the compiler.
+
+```javascript
+import { D2 } from '@terrastruct/d2';
+
+const d2 = new D2();
+
+const fs = {
+  "project.d2": "a: @import",
+  "import.d2": "x: {shape: circle}",
+}
+
+const result = await d2.compile({
+    fs,
+    inputPath: "project.d2",
+    options: {
+        sketch: true
+    }
+});
+const svg = await d2.render(result.diagram, result.renderOptions);
+```
+
 ## API Reference
 
 ### `new D2()`
 
 Creates a new D2 instance.
 
-### `compile(input: string, options?: CompileOptions): Promise<CompileResult>`
+### `compile(input: string | CompileRequest, options?: CompileOptions): Promise<CompileResult>`
 
-Compiles D2 markup into an intermediate representation.
+Compiles D2 markup into an intermediate representation. It compile options are provided in both `input` and `options`, the latter will take precedence.
 
 ### `render(diagram: Diagram, options?: RenderOptions): Promise<string>`
 
@@ -95,6 +121,12 @@ All [RenderOptions](#renderoptions) properties in addition to:
 - `animateInterval`: If given, multiple boards are packaged as 1 SVG which transitions through each board at the interval (in milliseconds).
 - `salt`: Add a salt value to ensure the output uses unique IDs. This is useful when generating multiple identical diagrams to be included in the same HTML doc, so that duplicate IDs do not cause invalid HTML. The salt value is a string that will be appended to IDs in the output.
 - `noXMLTag`: Omit XML tag `(<?xml ...?>)` from output SVG files. Useful when generating SVGs for direct HTML embedding.
+
+### `CompileRequest`
+
+- `fs`: A mapping of D2 file paths to their content
+- `inputPath`: The path of the entry D2 file [default: index]
+- `options`: The [CompileOptions](#compileoptions) to pass to the compiler
 
 ### `CompileResult`
 
