@@ -758,8 +758,10 @@ func (m *Map) getField(ida []d2ast.String) *Field {
 		if !strings.EqualFold(f.Name.ScalarString(), s.ScalarString()) {
 			continue
 		}
-		if f.Name.IsUnquoted() != s.IsUnquoted() {
-			continue
+		if _, isReserved := d2ast.ReservedKeywords[strings.ToLower(s.ScalarString())]; isReserved {
+			if f.Name.IsUnquoted() != s.IsUnquoted() {
+				continue
+			}
 		}
 		if len(rest) == 0 {
 			return f
@@ -912,8 +914,13 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 	}
 
 	for _, f := range m.Fields {
-		if !(f.Name != nil && strings.EqualFold(f.Name.ScalarString(), head.ScalarString()) && f.Name.IsUnquoted() == head.IsUnquoted()) {
+		if !(f.Name != nil && strings.EqualFold(f.Name.ScalarString(), head.ScalarString())) {
 			continue
+		}
+		if _, isReserved := d2ast.ReservedKeywords[strings.ToLower(f.Name.ScalarString())]; isReserved {
+			if f.Name.IsUnquoted() != head.IsUnquoted() {
+				continue
+			}
 		}
 
 		// Don't add references for fake common KeyPath from trimCommon in CreateEdge.
