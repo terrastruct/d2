@@ -775,3 +775,33 @@ a -> b: hello {
 b -> c: {
   icon: https://icons.terrastruct.com/essentials%2F213-alarm.svg
 }
+
+-- model-view --
+# Models
+user.style.fill: blue
+softwareSystem: {
+  serviceA.class: ok
+  serviceB
+  serviceC.class: ok
+  serviceD
+
+  serviceA -> serviceB
+  serviceA -> serviceD
+  serviceC -> serviceB
+}
+externalSystem
+user -> softwareSystem
+softwareSystem -> externalSystem
+
+# Clear models
+**: suspend
+(** -> **)[*]: suspend
+
+# Include all top-level objects
+*: restore
+# Include all objects with a certain class
+**: restore {
+  &class: ok
+}
+# Include all connections/objects connected to an object
+(** -> externalSystem)[*]: restore

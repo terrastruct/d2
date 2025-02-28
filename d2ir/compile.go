@@ -81,6 +81,7 @@ func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, []string, error) {
 	c.compileMap(m, ast, ast)
 	c.compileSubstitutions(m, nil)
 	c.overlayClasses(m)
+	m.removeSuspendedFields()
 	if !c.err.Empty() {
 		return nil, nil, c.err
 	}
@@ -866,6 +867,15 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 		}
 	}
 
+	if len(refctx.Key.Edges) == 0 && (refctx.Key.Primary.Suspension != nil || refctx.Key.Value.Suspension != nil) {
+		if refctx.Key.Primary.Suspension != nil {
+			f.suspended = refctx.Key.Primary.Suspension.Value
+		} else {
+			f.suspended = refctx.Key.Value.Suspension.Value
+		}
+		return
+	}
+
 	if refctx.Key.Primary.Unbox() != nil {
 		if c.ignoreLazyGlob(f) {
 			return
@@ -1164,6 +1174,16 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 					refctx.ScopeMap.DeleteEdge(e.ID)
 					continue
 				}
+
+				if refctx.Key.Primary.Suspension != nil || refctx.Key.Value.Suspension != nil {
+					if refctx.Key.Primary.Suspension != nil {
+						e.suspended = refctx.Key.Primary.Suspension.Value
+					} else {
+						e.suspended = refctx.Key.Value.Suspension.Value
+					}
+					continue
+				}
+
 				e.References = append(e.References, &EdgeReference{
 					Context_:       refctx,
 					DueToGlob_:     len(c.globRefContextStack) > 0,
@@ -1287,5 +1307,38 @@ func (c *compiler) compileArray(dst *Array, a *d2ast.Array, scopeAST *d2ast.Map)
 		}
 
 		dst.Values = append(dst.Values, irv)
+	}
+}
+
+func (m *Map) removeSuspendedFields() {
+	if m == nil {
+		return
+	}
+
+	for _, f := range m.Fields {
+		if f.Map() != nil {
+			f.Map().removeSuspendedFields()
+		}
+	}
+
+	for i := len(m.Fields) - 1; i >= 0; i-- {
+		_, isReserved := d2ast.ReservedKeywords[m.Fields[i].Name.ScalarString()]
+		if isReserved {
+			continue
+		}
+		if m.Fields[i].suspended {
+			m.DeleteField(m.Fields[i].Name.ScalarString())
+		}
+	}
+
+	for _, e := range m.Edges {
+		if e.Map() != nil {
+			e.Map().removeSuspendedFields()
+		}
+	}
+	for i := len(m.Edges) - 1; i >= 0; i-- {
+		if m.Edges[i].suspended {
+			m.DeleteEdge(m.Edges[i].ID)
+		}
 	}
 }
