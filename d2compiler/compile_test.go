@@ -5471,6 +5471,22 @@ a.width: 339
 				assert.Equal(t, 5, len(g.Objects))
 			},
 		},
+		{
+			name: "suspension-restore-edge",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a -> b
+c
+**: suspend
+(** -> **)[*]: suspend
+d
+
+# Also restores the objects connected
+(** -> b)[*]: restore
+`, ``)
+				assert.Equal(t, 3, len(g.Objects))
+			},
+		},
 	}
 
 	for _, tc := range tca {

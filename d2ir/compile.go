@@ -868,10 +868,12 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 	}
 
 	if len(refctx.Key.Edges) == 0 && (refctx.Key.Primary.Suspension != nil || refctx.Key.Value.Suspension != nil) {
-		if refctx.Key.Primary.Suspension != nil {
-			f.suspended = refctx.Key.Primary.Suspension.Value
-		} else {
-			f.suspended = refctx.Key.Value.Suspension.Value
+		if !c.lazyGlobBeingApplied {
+			if refctx.Key.Primary.Suspension != nil {
+				f.suspended = refctx.Key.Primary.Suspension.Value
+			} else {
+				f.suspended = refctx.Key.Value.Suspension.Value
+			}
 		}
 		return
 	}
@@ -1176,12 +1178,13 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 				}
 
 				if refctx.Key.Primary.Suspension != nil || refctx.Key.Value.Suspension != nil {
-					if refctx.Key.Primary.Suspension != nil {
-						e.suspended = refctx.Key.Primary.Suspension.Value
-					} else {
-						e.suspended = refctx.Key.Value.Suspension.Value
+					if !c.lazyGlobBeingApplied {
+						if refctx.Key.Primary.Suspension != nil {
+							e.suspended = refctx.Key.Primary.Suspension.Value
+						} else {
+							e.suspended = refctx.Key.Value.Suspension.Value
+						}
 					}
-					continue
 				}
 
 				e.References = append(e.References, &EdgeReference{
@@ -1322,6 +1325,9 @@ func (m *Map) removeSuspendedFields() {
 	}
 
 	for i := len(m.Fields) - 1; i >= 0; i-- {
+		if m.Fields[i].Name == nil {
+			continue
+		}
 		_, isReserved := d2ast.ReservedKeywords[m.Fields[i].Name.ScalarString()]
 		if isReserved {
 			continue
