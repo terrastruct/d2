@@ -54,7 +54,10 @@ export function setupMessageHandler(isNode, port, initWasm) {
           const result = await d2.render(JSON.stringify(data));
           const response = JSON.parse(result);
           if (response.error) throw new Error(response.error.message);
-          currentPort.postMessage({ type: "result", data: atob(response.data) });
+          const decoded = new TextDecoder().decode(
+            Uint8Array.from(atob(response.data), (c) => c.charCodeAt(0))
+          );
+          currentPort.postMessage({ type: "result", data: decoded });
         } catch (err) {
           currentPort.postMessage({ type: "error", error: err.message });
         }

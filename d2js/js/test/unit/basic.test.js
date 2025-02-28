@@ -171,6 +171,17 @@ layers: {
     await d2.worker.terminate();
   }, 20000);
 
+  test("unicode characters work", async () => {
+    const d2 = new D2();
+    const result = await d2.compile("こんにちは -> ♒️");
+    const svg = await d2.render(result.diagram);
+    expect(svg).toContain("<svg");
+    expect(svg).toContain("</svg>");
+    expect(svg).toContain("こんにちは");
+    expect(svg).toContain("♒️");
+    await d2.worker.terminate();
+  }, 20000);
+
   test("handles syntax errors correctly", async () => {
     const d2 = new D2();
     try {
