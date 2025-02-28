@@ -5462,6 +5462,15 @@ a.width: 339
 `, ``)
 			},
 		},
+		{
+			name: "mixed-edge-quoting",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+"a"."b"."c"."z1" -> "a"."b"."c"."z2"
+`, ``)
+				assert.Equal(t, 5, len(g.Objects))
+			},
+		},
 	}
 
 	for _, tc := range tca {
