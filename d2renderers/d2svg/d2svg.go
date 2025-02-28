@@ -452,37 +452,78 @@ func getArrowheadAdjustments(connection d2target.Connection, idToShape map[strin
 func pathData(connection d2target.Connection, srcAdj, dstAdj *geo.Point) string {
 	var path []string
 	route := connection.Route
+	if len(route) == 0 {
+		return ""
+	}
 
+	// Move command to start
 	path = append(path, fmt.Sprintf("M %f %f",
 		route[0].X+srcAdj.X,
 		route[0].Y+srcAdj.Y,
 	))
 
 	if connection.IsCurve {
+		// If we don't have enough points to do triple-step, handle small fallback
+		if len(route) < 3 {
+			// If only 1 or 2 points in route, just draw lines
+			for _, p := range route[1:] {
+				path = append(path, fmt.Sprintf("L %f %f",
+					p.X+dstAdj.X, p.Y+dstAdj.Y,
+				))
+			}
+			return strings.Join(path, " ")
+		}
+
 		i := 1
-		for ; i < len(route)-3; i += 3 {
+		// Process triple curves in steps of 3
+		for ; i+2 < len(route)-1; i += 3 {
 			path = append(path, fmt.Sprintf("C %f %f %f %f %f %f",
 				route[i].X, route[i].Y,
 				route[i+1].X, route[i+1].Y,
 				route[i+2].X, route[i+2].Y,
 			))
 		}
-		// final curve target adjustment
-		path = append(path, fmt.Sprintf("C %f %f %f %f %f %f",
-			route[i].X, route[i].Y,
-			route[i+1].X, route[i+1].Y,
-			route[i+2].X+dstAdj.X,
-			route[i+2].Y+dstAdj.Y,
-		))
+
+		// Now handle the “final” curve to last point
+		// Make sure i+2 is still within range
+		if i+2 < len(route) {
+			// last triple
+			path = append(path, fmt.Sprintf("C %f %f %f %f %f %f",
+				route[i].X, route[i].Y,
+				route[i+1].X, route[i+1].Y,
+				route[i+2].X+dstAdj.X, // final point plus dst adjustment
+				route[i+2].Y+dstAdj.Y,
+			))
+		} else if i+1 < len(route) {
+			// We have i+1 but not i+2 => do a simpler final curve or line
+			path = append(path, fmt.Sprintf("C %f %f %f %f %f %f",
+				route[i].X, route[i].Y,
+				route[i].X, route[i].Y, // repeated for control
+				route[i+1].X+dstAdj.X,
+				route[i+1].Y+dstAdj.Y,
+			))
+		} else {
+			// We have no final triple => do nothing or fallback line
+		}
 	} else {
+		// Not a curve => the "rounded corner" logic
 		for i := 1; i < len(route)-1; i++ {
 			prevSource := route[i-1]
 			prevTarget := route[i]
 			currTarget := route[i+1]
+
+			// Make sure i+1 is valid
+			if i+1 >= len(route) {
+				break
+			}
+
 			prevVector := prevSource.VectorTo(prevTarget)
 			currVector := prevTarget.VectorTo(currTarget)
 
-			dist := geo.EuclideanDistance(prevTarget.X, prevTarget.Y, currTarget.X, currTarget.Y)
+			dist := geo.EuclideanDistance(
+				prevTarget.X, prevTarget.Y,
+				currTarget.X, currTarget.Y,
+			)
 
 			connectionBorderRadius := connection.BorderRadius
 			units := math.Min(connectionBorderRadius, dist/2)
@@ -490,20 +531,26 @@ func pathData(connection d2target.Connection, srcAdj, dstAdj *geo.Point) string 
 			prevTranslations := prevVector.Unit().Multiply(units).ToPoint()
 			currTranslations := currVector.Unit().Multiply(units).ToPoint()
 
+			// Move to corner with "L"
 			path = append(path, fmt.Sprintf("L %f %f",
 				prevTarget.X-prevTranslations.X,
 				prevTarget.Y-prevTranslations.Y,
 			))
 
-			// If the segment length is too small, instead of drawing 2 arcs, just skip this segment and bezier curve to the next one
 			if units < connectionBorderRadius && i < len(route)-2 {
+				// Next checks i+2 => ensure it’s in range
+				if i+2 >= len(route) {
+					// can't do nextTarget => break or do fallback
+					continue
+				}
 				nextTarget := route[i+2]
-				nextVector := geo.NewVector(nextTarget.X-currTarget.X, nextTarget.Y-currTarget.Y)
-				i++
+				nextVector := geo.NewVector(
+					nextTarget.X-currTarget.X,
+					nextTarget.Y-currTarget.Y,
+				)
+				i++ // skip next point
 				nextTranslations := nextVector.Unit().Multiply(units).ToPoint()
 
-				// These 2 bezier control points aren't just at the corner -- they are reflected at the corner, which causes the curve to be ~tangent to the corner,
-				// which matches how the two arcs look
 				path = append(path, fmt.Sprintf("C %f %f %f %f %f %f",
 					// Control point
 					prevTarget.X+prevTranslations.X,
@@ -511,7 +558,7 @@ func pathData(connection d2target.Connection, srcAdj, dstAdj *geo.Point) string 
 					// Control point
 					currTarget.X-nextTranslations.X,
 					currTarget.Y-nextTranslations.Y,
-					// Where curve ends
+					// End
 					currTarget.X+nextTranslations.X,
 					currTarget.Y+nextTranslations.Y,
 				))
@@ -525,11 +572,14 @@ func pathData(connection d2target.Connection, srcAdj, dstAdj *geo.Point) string 
 			}
 		}
 
-		lastPoint := route[len(route)-1]
-		path = append(path, fmt.Sprintf("L %f %f",
-			lastPoint.X+dstAdj.X,
-			lastPoint.Y+dstAdj.Y,
-		))
+		// Finally, draw a line to the last route point + dst offset
+		if len(route) > 1 {
+			lastPoint := route[len(route)-1]
+			path = append(path, fmt.Sprintf("L %f %f",
+				lastPoint.X+dstAdj.X,
+				lastPoint.Y+dstAdj.Y,
+			))
+		}
 	}
 
 	return strings.Join(path, " ")
