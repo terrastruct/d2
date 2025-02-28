@@ -1493,8 +1493,6 @@ func (sb ScalarBox) Unbox() Scalar {
 	switch {
 	case sb.Null != nil:
 		return sb.Null
-	case sb.Null != nil:
-		return sb.Null
 	case sb.Suspension != nil:
 		return sb.Suspension
 	case sb.Boolean != nil:
