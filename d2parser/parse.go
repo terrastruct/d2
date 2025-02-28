@@ -1675,7 +1675,7 @@ func (p *parser) parseValue() d2ast.ValueBox {
 		}
 		return box
 	}
-	if strings.EqualFold(s.ScalarString(), "restore") {
+	if strings.EqualFold(s.ScalarString(), "unsuspend") {
 		box.Suspension = &d2ast.Suspension{
 			Range: s.Range,
 			Value: false,

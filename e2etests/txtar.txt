@@ -798,10 +798,10 @@ softwareSystem -> externalSystem
 (** -> **)[*]: suspend
 
 # Include all top-level objects
-*: restore
+*: unsuspend
 # Include all objects with a certain class
-**: restore {
+**: unsuspend {
   &class: ok
 }
 # Include all connections/objects connected to an object
-(** -> externalSystem)[*]: restore
+(** -> externalSystem)[*]: unsuspend
