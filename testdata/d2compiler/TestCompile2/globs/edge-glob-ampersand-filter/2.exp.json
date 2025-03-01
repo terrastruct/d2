@@ -1,0 +1,1694 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,0:0:0-38:8:457",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,1:0:1-7:1:70",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,1:0:1-1:1:2",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,1:0:1-1:1:2",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,1:3:4-7:1:70",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,2:2:8-2:15:21",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,2:2:8-2:7:13",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,2:2:8-2:7:13",
+                              "value": [
+                                {
+                                  "string": "shape",
+                                  "raw_string": "shape"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,2:9:15-2:15:21",
+                          "value": [
+                            {
+                              "string": "circle",
+                              "raw_string": "circle"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,3:2:24-6:3:68",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,3:2:24-3:7:29",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,3:2:24-3:7:29",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,3:9:31-6:3:68",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,4:4:37-4:14:47",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,4:4:37-4:8:41",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,4:4:37-4:8:41",
+                                        "value": [
+                                          {
+                                            "string": "fill",
+                                            "raw_string": "fill"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,4:10:43-4:14:47",
+                                    "value": [
+                                      {
+                                        "string": "blue",
+                                        "raw_string": "blue"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,5:4:52-5:16:64",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,5:4:52-5:11:59",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,5:4:52-5:11:59",
+                                        "value": [
+                                          {
+                                            "string": "opacity",
+                                            "raw_string": "opacity"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,5:13:61-5:16:64",
+                                    "raw": "0.8",
+                                    "value": "4/5"
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,8:0:71-14:1:142",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,8:0:71-8:1:72",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,8:0:71-8:1:72",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,8:3:74-14:1:142",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,9:2:78-9:18:94",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,9:2:78-9:7:83",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,9:2:78-9:7:83",
+                              "value": [
+                                {
+                                  "string": "shape",
+                                  "raw_string": "shape"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,9:9:85-9:18:94",
+                          "value": [
+                            {
+                              "string": "rectangle",
+                              "raw_string": "rectangle"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,10:2:97-13:3:140",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,10:2:97-10:7:102",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,10:2:97-10:7:102",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,10:9:104-13:3:140",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,11:4:110-11:13:119",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,11:4:110-11:8:114",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,11:4:110-11:8:114",
+                                        "value": [
+                                          {
+                                            "string": "fill",
+                                            "raw_string": "fill"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,11:10:116-11:13:119",
+                                    "value": [
+                                      {
+                                        "string": "red",
+                                        "raw_string": "red"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,12:4:124-12:16:136",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,12:4:124-12:11:131",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,12:4:124-12:11:131",
+                                        "value": [
+                                          {
+                                            "string": "opacity",
+                                            "raw_string": "opacity"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,12:13:133-12:16:136",
+                                    "raw": "0.5",
+                                    "value": "1/2"
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,15:0:143-19:1:207",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,15:0:143-15:1:144",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,15:0:143-15:1:144",
+                    "value": [
+                      {
+                        "string": "c",
+                        "raw_string": "c"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,15:3:146-19:1:207",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,16:2:150-16:16:164",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,16:2:150-16:7:155",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,16:2:150-16:7:155",
+                              "value": [
+                                {
+                                  "string": "shape",
+                                  "raw_string": "shape"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,16:9:157-16:16:164",
+                          "value": [
+                            {
+                              "string": "diamond",
+                              "raw_string": "diamond"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,17:2:167-17:19:184",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,17:2:167-17:12:177",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,17:2:167-17:7:172",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,17:8:173-17:12:177",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,17:14:179-17:19:184",
+                          "value": [
+                            {
+                              "string": "green",
+                              "raw_string": "green"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,18:2:187-18:20:205",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,18:2:187-18:15:200",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,18:2:187-18:7:192",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,18:8:193-18:15:200",
+                              "value": [
+                                {
+                                  "string": "opacity",
+                                  "raw_string": "opacity"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "number": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,18:17:202-18:20:205",
+                          "raw": "0.8",
+                          "value": "4/5"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,21:0:209-24:1:272",
+            "edges": [
+              {
+                "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,21:1:210-21:7:216",
+                "src": {
+                  "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,21:1:210-21:2:211",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,21:1:210-21:2:211",
+                        "value": [
+                          {
+                            "string": "*",
+                            "raw_string": "*"
+                          }
+                        ],
+                        "pattern": [
+                          "*"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,21:6:215-21:7:216",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,21:6:215-21:7:216",
+                        "value": [
+                          {
+                            "string": "*",
+                            "raw_string": "*"
+                          }
+                        ],
+                        "pattern": [
+                          "*"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "edge_index": {
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,21:8:217-21:11:220",
+              "int": null,
+              "glob": true
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,21:13:222-24:1:272",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,22:2:226-22:23:247",
+                      "ampersand": true,
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,22:3:227-22:17:241",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,22:3:227-22:6:230",
+                              "value": [
+                                {
+                                  "string": "src",
+                                  "raw_string": "src"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,22:7:231-22:12:236",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,22:13:237-22:17:241",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,22:19:243-22:23:247",
+                          "value": [
+                            {
+                              "string": "blue",
+                              "raw_string": "blue"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,23:2:250-23:22:270",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,23:2:250-23:19:267",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,23:2:250-23:7:255",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,23:8:256-23:19:267",
+                              "value": [
+                                {
+                                  "string": "stroke-dash",
+                                  "raw_string": "stroke-dash"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "number": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,23:21:269-23:22:270",
+                          "raw": "3",
+                          "value": "3"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,25:0:273-28:1:336",
+            "edges": [
+              {
+                "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,25:1:274-25:7:280",
+                "src": {
+                  "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,25:1:274-25:2:275",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,25:1:274-25:2:275",
+                        "value": [
+                          {
+                            "string": "*",
+                            "raw_string": "*"
+                          }
+                        ],
+                        "pattern": [
+                          "*"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,25:6:279-25:7:280",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,25:6:279-25:7:280",
+                        "value": [
+                          {
+                            "string": "*",
+                            "raw_string": "*"
+                          }
+                        ],
+                        "pattern": [
+                          "*"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "edge_index": {
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,25:8:281-25:11:284",
+              "int": null,
+              "glob": true
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,25:13:286-28:1:336",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,26:2:290-26:25:313",
+                      "ampersand": true,
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,26:3:291-26:20:308",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,26:3:291-26:6:294",
+                              "value": [
+                                {
+                                  "string": "dst",
+                                  "raw_string": "dst"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,26:7:295-26:12:300",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,26:13:301-26:20:308",
+                              "value": [
+                                {
+                                  "string": "opacity",
+                                  "raw_string": "opacity"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "number": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,26:22:310-26:25:313",
+                          "raw": "0.8",
+                          "value": "4/5"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,27:2:316-27:20:334",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,27:2:316-27:14:328",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,27:2:316-27:7:321",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,27:8:322-27:14:328",
+                              "value": [
+                                {
+                                  "string": "stroke",
+                                  "raw_string": "stroke"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,27:16:330-27:20:334",
+                          "value": [
+                            {
+                              "string": "cyan",
+                              "raw_string": "cyan"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,29:0:337-33:1:426",
+            "edges": [
+              {
+                "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,29:1:338-29:7:344",
+                "src": {
+                  "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,29:1:338-29:2:339",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,29:1:338-29:2:339",
+                        "value": [
+                          {
+                            "string": "*",
+                            "raw_string": "*"
+                          }
+                        ],
+                        "pattern": [
+                          "*"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,29:6:343-29:7:344",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,29:6:343-29:7:344",
+                        "value": [
+                          {
+                            "string": "*",
+                            "raw_string": "*"
+                          }
+                        ],
+                        "pattern": [
+                          "*"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "edge_index": {
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,29:8:345-29:11:348",
+              "int": null,
+              "glob": true
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,29:13:350-33:1:426",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,30:2:354-30:23:375",
+                      "ampersand": true,
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,30:3:355-30:12:364",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,30:3:355-30:6:358",
+                              "value": [
+                                {
+                                  "string": "src",
+                                  "raw_string": "src"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,30:7:359-30:12:364",
+                              "value": [
+                                {
+                                  "string": "shape",
+                                  "raw_string": "shape"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,30:14:366-30:23:375",
+                          "value": [
+                            {
+                              "string": "rectangle",
+                              "raw_string": "rectangle"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,31:2:378-31:24:400",
+                      "ampersand": true,
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,31:3:379-31:17:393",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,31:3:379-31:6:382",
+                              "value": [
+                                {
+                                  "string": "dst",
+                                  "raw_string": "dst"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,31:7:383-31:12:388",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,31:13:389-31:17:393",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,31:19:395-31:24:400",
+                          "value": [
+                            {
+                              "string": "green",
+                              "raw_string": "green"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,32:2:403-32:23:424",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,32:2:403-32:20:421",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,32:2:403-32:7:408",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,32:8:409-32:20:421",
+                              "value": [
+                                {
+                                  "string": "stroke-width",
+                                  "raw_string": "stroke-width"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "number": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,32:22:423-32:23:424",
+                          "raw": "5",
+                          "value": "5"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,35:0:428-35:6:434",
+            "edges": [
+              {
+                "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,35:0:428-35:6:434",
+                "src": {
+                  "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,35:0:428-35:1:429",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,35:0:428-35:1:429",
+                        "value": [
+                          {
+                            "string": "a",
+                            "raw_string": "a"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,35:5:433-35:6:434",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,35:5:433-35:6:434",
+                        "value": [
+                          {
+                            "string": "b",
+                            "raw_string": "b"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,36:0:435-36:6:441",
+            "edges": [
+              {
+                "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,36:0:435-36:6:441",
+                "src": {
+                  "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,36:0:435-36:1:436",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,36:0:435-36:1:436",
+                        "value": [
+                          {
+                            "string": "b",
+                            "raw_string": "b"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,36:5:440-36:6:441",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,36:5:440-36:6:441",
+                        "value": [
+                          {
+                            "string": "c",
+                            "raw_string": "c"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,37:0:442-37:6:448",
+            "edges": [
+              {
+                "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,37:0:442-37:6:448",
+                "src": {
+                  "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,37:0:442-37:1:443",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,37:0:442-37:1:443",
+                        "value": [
+                          {
+                            "string": "a",
+                            "raw_string": "a"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,37:5:447-37:6:448",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,37:5:447-37:6:448",
+                        "value": [
+                          {
+                            "string": "c",
+                            "raw_string": "c"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "primary": {},
+            "value": {}
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": [
+      {
+        "index": 0,
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "strokeDash": {
+              "value": "3"
+            }
+          },
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "index": 0,
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "stroke": {
+              "value": "cyan"
+            },
+            "strokeWidth": {
+              "value": "5"
+            }
+          },
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "index": 0,
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "stroke": {
+              "value": "cyan"
+            },
+            "strokeDash": {
+              "value": "3"
+            }
+          },
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ],
+    "objects": [
+      {
+        "id": "a",
+        "id_val": "a",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,1:0:1-1:1:2",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,1:0:1-1:1:2",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,35:0:428-35:1:429",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,35:0:428-35:1:429",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,37:0:442-37:1:443",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,37:0:442-37:1:443",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "a"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "opacity": {
+              "value": "0.8"
+            },
+            "fill": {
+              "value": "blue"
+            }
+          },
+          "near_key": null,
+          "shape": {
+            "value": "circle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "b",
+        "id_val": "b",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,8:0:71-8:1:72",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,8:0:71-8:1:72",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,35:5:433-35:6:434",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,35:5:433-35:6:434",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,36:0:435-36:1:436",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,36:0:435-36:1:436",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "b"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "opacity": {
+              "value": "0.5"
+            },
+            "fill": {
+              "value": "red"
+            }
+          },
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "c",
+        "id_val": "c",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,15:0:143-15:1:144",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,15:0:143-15:1:144",
+                    "value": [
+                      {
+                        "string": "c",
+                        "raw_string": "c"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,36:5:440-36:6:441",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,36:5:440-36:6:441",
+                    "value": [
+                      {
+                        "string": "c",
+                        "raw_string": "c"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,37:5:447-37:6:448",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/edge-glob-ampersand-filter/2.d2,37:5:447-37:6:448",
+                    "value": [
+                      {
+                        "string": "c",
+                        "raw_string": "c"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "c"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "opacity": {
+              "value": "0.8"
+            },
+            "fill": {
+              "value": "green"
+            }
+          },
+          "near_key": null,
+          "shape": {
+            "value": "diamond"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

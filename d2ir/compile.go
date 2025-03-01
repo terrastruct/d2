@@ -694,6 +694,63 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 		return true
 	}
 
+	keyPath := refctx.Key.Key
+	if keyPath == nil || len(keyPath.Path) == 0 {
+		return false
+	}
+
+	firstPart := keyPath.Path[0].Unbox().ScalarString()
+	if (firstPart == "src" || firstPart == "dst") && len(keyPath.Path) > 1 {
+		if len(c.mapRefContextStack) == 0 {
+			return false
+		}
+
+		edge := ParentEdge(refctx.ScopeMap)
+		if edge == nil {
+			return false
+		}
+
+		var nodePath []d2ast.String
+		if firstPart == "src" {
+			nodePath = edge.ID.SrcPath
+		} else {
+			nodePath = edge.ID.DstPath
+		}
+
+		rootMap := RootMap(refctx.ScopeMap)
+		node := rootMap.GetField(nodePath...)
+		if node == nil || node.Map() == nil {
+			return false
+		}
+
+		propKeyPath := &d2ast.KeyPath{
+			Path: keyPath.Path[1:],
+		}
+
+		propKey := &d2ast.Key{
+			Key:   propKeyPath,
+			Value: refctx.Key.Value,
+		}
+
+		propRefCtx := &RefContext{
+			Key:      propKey,
+			ScopeMap: node.Map(),
+			ScopeAST: refctx.ScopeAST,
+		}
+
+		fa, err := node.Map().EnsureField(propKeyPath, propRefCtx, false, c)
+		if err != nil || len(fa) == 0 {
+			return false
+		}
+
+		for _, f := range fa {
+			if c._ampersandFilter(f, propRefCtx) {
+				return true
+			}
+		}
+		return false
+	}
+
 	fa, err := refctx.ScopeMap.EnsureField(refctx.Key.Key, refctx, false, c)
 	if err != nil {
 		c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
@@ -796,6 +853,45 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 				f.Primary_ = n.Primary()
 			}
 			return c._ampersandFilter(f, refctx)
+		case "src":
+			if len(c.mapRefContextStack) == 0 {
+				return false
+			}
+
+			edge := ParentEdge(refctx.ScopeMap)
+			if edge == nil {
+				return false
+			}
+
+			filterValue := refctx.Key.Value.ScalarBox().Unbox().ScalarString()
+
+			var srcParts []string
+			for _, part := range edge.ID.SrcPath {
+				srcParts = append(srcParts, part.ScalarString())
+			}
+			srcPath := strings.Join(srcParts, ".")
+
+			return srcPath == filterValue
+
+		case "dst":
+			if len(c.mapRefContextStack) == 0 {
+				return false
+			}
+
+			edge := ParentEdge(refctx.ScopeMap)
+			if edge == nil {
+				return false
+			}
+
+			filterValue := refctx.Key.Value.ScalarBox().Unbox().ScalarString()
+
+			var dstParts []string
+			for _, part := range edge.ID.DstPath {
+				dstParts = append(dstParts, part.ScalarString())
+			}
+			dstPath := strings.Join(dstParts, ".")
+
+			return dstPath == filterValue
 		default:
 			return false
 		}
