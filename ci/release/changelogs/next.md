@@ -2,6 +2,7 @@
 
 - Icons: connections can include icons [#12](https://github.com/terrastruct/d2/issues/12)
 - Syntax: `suspend`/`unsuspend` to define models and instantiate them [#2394](https://github.com/terrastruct/d2/pull/2394)
+- Globs: support for filtering edges based on properties of endpoint nodes (e.g., `&src.style.fill: blue`) [#2395](https://github.com/terrastruct/d2/pull/2395)
 
 #### Improvements 🧹
 
