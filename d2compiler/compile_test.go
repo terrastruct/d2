@@ -5499,6 +5499,112 @@ d -> d: "suspend"
 				assert.Equal(t, 1, len(g.Edges))
 			},
 		},
+		{
+			name: "edge-glob-ampersand-filter/1",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+  (* -> *)[*]: {
+    &src: a
+    style.stroke-dash: 3
+  }
+  (* -> *)[*]: {
+    &dst: c
+    style.stroke: blue
+  }
+  (* -> *)[*]: {
+    &src: b
+    &dst: c
+    style.fill: red
+  }
+  a -> b
+  b -> c
+  a -> c
+  `, ``)
+				tassert.Equal(t, 3, len(g.Edges))
+
+				tassert.Equal(t, "a", g.Edges[0].Src.ID)
+				tassert.Equal(t, "b", g.Edges[0].Dst.ID)
+				tassert.Equal(t, "3", g.Edges[0].Style.StrokeDash.Value)
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[0].Style.Stroke)
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[0].Style.Fill)
+
+				tassert.Equal(t, "b", g.Edges[1].Src.ID)
+				tassert.Equal(t, "c", g.Edges[1].Dst.ID)
+				tassert.Equal(t, "blue", g.Edges[1].Style.Stroke.Value)
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[1].Style.StrokeDash)
+				tassert.Equal(t, "red", g.Edges[1].Style.Fill.Value)
+
+				tassert.Equal(t, "a", g.Edges[2].Src.ID)
+				tassert.Equal(t, "c", g.Edges[2].Dst.ID)
+				tassert.Equal(t, "3", g.Edges[2].Style.StrokeDash.Value)
+				tassert.Equal(t, "blue", g.Edges[2].Style.Stroke.Value)
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[2].Style.Fill)
+			},
+		},
+		{
+			name: "edge-glob-ampersand-filter/2",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a: {
+		shape: circle
+		style: {
+				fill: blue
+				opacity: 0.8
+		}
+}
+b: {
+		shape: rectangle
+		style: {
+				fill: red
+				opacity: 0.5
+		}
+}
+c: {
+		shape: diamond
+		style.fill: green
+		style.opacity: 0.8
+}
+
+(* -> *)[*]: {
+		&src.style.fill: blue
+		style.stroke-dash: 3
+}
+(* -> *)[*]: {
+		&dst.style.opacity: 0.8
+		style.stroke: cyan
+}
+(* -> *)[*]: {
+		&src.shape: rectangle
+		&dst.style.fill: green
+		style.stroke-width: 5
+}
+
+a -> b
+b -> c
+a -> c
+        `, ``)
+
+				tassert.Equal(t, 3, len(g.Edges))
+
+				tassert.Equal(t, "a", g.Edges[0].Src.ID)
+				tassert.Equal(t, "b", g.Edges[0].Dst.ID)
+				tassert.Equal(t, "3", g.Edges[0].Style.StrokeDash.Value)
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[0].Style.Stroke)
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[0].Style.StrokeWidth)
+
+				tassert.Equal(t, "b", g.Edges[1].Src.ID)
+				tassert.Equal(t, "c", g.Edges[1].Dst.ID)
+				tassert.Equal(t, "cyan", g.Edges[1].Style.Stroke.Value)
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[1].Style.StrokeDash)
+				tassert.Equal(t, "5", g.Edges[1].Style.StrokeWidth.Value)
+
+				tassert.Equal(t, "a", g.Edges[2].Src.ID)
+				tassert.Equal(t, "c", g.Edges[2].Dst.ID)
+				tassert.Equal(t, "3", g.Edges[2].Style.StrokeDash.Value)
+				tassert.Equal(t, "cyan", g.Edges[2].Style.Stroke.Value)
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[2].Style.StrokeWidth)
+			},
+		},
 	}
 
 	for _, tc := range tca {
