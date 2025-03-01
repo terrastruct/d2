@@ -318,6 +318,7 @@ type Field struct {
 	// *Map.
 	parent    Node
 	importAST d2ast.Node
+	suspended bool
 
 	Name d2ast.String `json:"name"`
 
@@ -488,6 +489,7 @@ type Edge struct {
 	// *Map
 	parent    Node
 	importAST d2ast.Node
+	suspended bool
 
 	ID *EdgeID `json:"edge_id"`
 

@@ -1,6 +1,7 @@
 #### Features 🚀
 
 - Icons: connections can include icons [#12](https://github.com/terrastruct/d2/issues/12)
+- Syntax: `suspend`/`unsuspend` to define models and instantiate them [#2394](https://github.com/terrastruct/d2/pull/2394)
 
 #### Improvements 🧹
 

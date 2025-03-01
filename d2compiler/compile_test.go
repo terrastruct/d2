@@ -5471,6 +5471,34 @@ a.width: 339
 				assert.Equal(t, 5, len(g.Objects))
 			},
 		},
+		{
+			name: "suspension-lazy",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a -> b
+c
+**: suspend
+(** -> **)[*]: suspend
+d
+`, ``)
+				assert.Equal(t, 1, len(g.Objects))
+			},
+		},
+		{
+			name: "suspension-quotes",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a -> b
+c
+**: suspend
+(** -> **)[*]: suspend
+d: "suspend"
+d -> d: "suspend"
+`, ``)
+				assert.Equal(t, 1, len(g.Objects))
+				assert.Equal(t, 1, len(g.Edges))
+			},
+		},
 	}
 
 	for _, tc := range tca {
