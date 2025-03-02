@@ -87,6 +87,7 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 	ir = ir.Copy(nil).(*d2ir.Map)
 	// c.preprocessSeqDiagrams(ir)
 	c.compileMap(g.Root, ir)
+	c.setDefaultShapes(g)
 	if len(c.err.Errors) == 0 {
 		c.validateKeys(g.Root, ir)
 	}
@@ -356,14 +357,7 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 	parent := obj
 	obj = obj.EnsureChild(([]d2ast.String{f.Name}))
 	if f.Primary() != nil {
-		var s string
-		if obj.OuterSequenceDiagram() != nil {
-			s = obj.Attributes.Shape.Value
-		}
 		c.compileLabel(&obj.Attributes, f)
-		if s != "" {
-			obj.Attributes.Shape.Value = s
-		}
 	}
 	if f.Map() != nil {
 		c.compileMap(obj, f.Map())
@@ -410,8 +404,6 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 			attrs.Language = fullTag
 		}
 		switch attrs.Language {
-		case "latex":
-			attrs.Shape.Value = d2target.ShapeText
 		case "markdown":
 			rendered, err := textmeasure.RenderMarkdown(scalar.ScalarString())
 			if err != nil {
@@ -428,9 +420,6 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 					c.errorf(f.LastPrimaryKey(), "malformed Markdown: %s", err.Error())
 				}
 			}
-			attrs.Shape.Value = d2target.ShapeText
-		default:
-			attrs.Shape.Value = d2target.ShapeCode
 		}
 		attrs.Label.Value = scalar.ScalarString()
 	default:
@@ -1576,4 +1565,22 @@ FOR:
 		return &themeOverrides, nil
 	}
 	return nil, nil
+}
+
+func (c *compiler) setDefaultShapes(g *d2graph.Graph) {
+	for _, obj := range g.Objects {
+		if obj.Shape.Value == "" {
+			if obj.OuterSequenceDiagram() != nil {
+				obj.Shape.Value = d2target.ShapeRectangle
+			} else if obj.Language == "latex" {
+				obj.Shape.Value = d2target.ShapeText
+			} else if obj.Language == "markdown" {
+				obj.Shape.Value = d2target.ShapeText
+			} else if obj.Language != "" {
+				obj.Shape.Value = d2target.ShapeCode
+			} else {
+				obj.Shape.Value = d2target.ShapeRectangle
+			}
+		}
+	}
 }
