@@ -711,9 +711,6 @@ func (obj *Object) newObject(ids d2ast.String) *Object {
 			Label: Scalar{
 				Value: idval,
 			},
-			Shape: Scalar{
-				Value: d2target.ShapeRectangle,
-			},
 		},
 
 		Graph:  obj.Graph,

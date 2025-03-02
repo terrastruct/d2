@@ -5605,6 +5605,34 @@ a -> c
 				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[2].Style.StrokeWidth)
 			},
 		},
+		{
+			name: "md-shape",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a.shape: circle
+a: |md #hi |
+
+b.shape: circle
+b.label: |md #hi |
+
+c: |md #hi |
+c.shape: circle
+
+d.label: |md #hi |
+d.shape: circle
+
+e: {
+  shape: circle
+  label: |md #hi |
+}
+        `, ``)
+				tassert.Equal(t, 5, len(g.Objects))
+				for _, obj := range g.Objects {
+					tassert.Equal(t, "circle", obj.Shape.Value, "Object "+obj.ID+" should have circle shape")
+					tassert.Equal(t, "markdown", obj.Language, "Object "+obj.ID+" should have md language")
+				}
+			},
+		},
 	}
 
 	for _, tc := range tca {
