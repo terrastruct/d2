@@ -1420,7 +1420,23 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				return labelMask, err
 			}
 			gEl := d2themes.NewThemableElement("g", inlineTheme)
-			gEl.SetTranslate(float64(box.TopLeft.X), float64(box.TopLeft.Y))
+
+			labelPosition := label.FromString(targetShape.LabelPosition)
+			if labelPosition == label.Unset {
+				labelPosition = label.InsideMiddleCenter
+			}
+			var box *geo.Box
+			if labelPosition.IsOutside() {
+				box = s.GetBox()
+			} else {
+				box = s.GetInnerBox()
+			}
+			labelTL := labelPosition.GetPointOnBox(box, label.PADDING,
+				float64(targetShape.LabelWidth),
+				float64(targetShape.LabelHeight),
+			)
+			gEl.SetTranslate(labelTL.X, labelTL.Y)
+
 			gEl.Color = targetShape.Stroke
 			gEl.Content = render
 			fmt.Fprint(writer, gEl.Render())
@@ -1429,9 +1445,26 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			if err != nil {
 				return labelMask, err
 			}
-			fmt.Fprintf(writer, `<g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="%f" y="%f" width="%d" height="%d">`,
-				box.TopLeft.X, box.TopLeft.Y, targetShape.Width, targetShape.Height,
+
+			labelPosition := label.FromString(targetShape.LabelPosition)
+			if labelPosition == label.Unset {
+				labelPosition = label.InsideMiddleCenter
+			}
+			var box *geo.Box
+			if labelPosition.IsOutside() {
+				box = s.GetBox()
+			} else {
+				box = s.GetInnerBox()
+			}
+			labelTL := labelPosition.GetPointOnBox(box, label.PADDING,
+				float64(targetShape.LabelWidth),
+				float64(targetShape.LabelHeight),
 			)
+
+			fmt.Fprintf(writer, `<g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="%f" y="%f" width="%d" height="%d">`,
+				labelTL.X, labelTL.Y, targetShape.LabelWidth, targetShape.LabelHeight,
+			)
+
 			// we need the self closing form in this svg/xhtml context
 			render = strings.ReplaceAll(render, "<hr>", "<hr />")
 

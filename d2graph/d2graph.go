@@ -955,7 +955,7 @@ func (obj *Object) GetLabelSize(mtexts []*d2target.MText, ruler *textmeasure.Rul
 				return nil, err
 			}
 			dims = d2target.NewTextDimensions(width, height)
-		} else if obj.Language != "" {
+		} else if obj.Language != "" && shapeType != d2target.ShapeCode {
 			var err error
 			dims, err = getMarkdownDimensions(mtexts, ruler, obj.Text(), fontFamily)
 			if err != nil {

@@ -356,7 +356,14 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 	parent := obj
 	obj = obj.EnsureChild(([]d2ast.String{f.Name}))
 	if f.Primary() != nil {
+		var s string
+		if obj.OuterSequenceDiagram() != nil {
+			s = obj.Attributes.Shape.Value
+		}
 		c.compileLabel(&obj.Attributes, f)
+		if s != "" {
+			obj.Attributes.Shape.Value = s
+		}
 	}
 	if f.Map() != nil {
 		c.compileMap(obj, f.Map())
