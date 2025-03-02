@@ -805,3 +805,176 @@ softwareSystem -> externalSystem
 }
 # Include all connections/objects connected to an object
 (** -> externalSystem)[*]: unsuspend
+
+-- sequence-diagram-note-md --
+shape: sequence_diagram
+x -> y: hello
+x.x: |md
+  ## A man who fishes for marlin in ponds
+
+  - ...dramatic pause
+
+  will put his money in Etruscan bonds.
+|
+
+y.z: |latex
+  \\lim_{h \\rightarrow 0 } \\frac{f(x+h)-f(x)}{h}
+|
+
+x.z: |python
+  1 + 1 = 2
+|
+
+-- md-label --
+rectangle.shape: rectangle
+rectangle: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+square.shape: square
+square: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+page.shape: page
+page: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+parallelogram.shape: parallelogram
+parallelogram: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+document.shape: document
+document: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+cylinder.shape: cylinder
+cylinder: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+queue.shape: queue
+queue: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+package.shape: package
+package: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+step.shape: step
+step: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+callout.shape: callout
+callout: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+stored_data.shape: stored_data
+stored_data: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+person.shape: person
+person: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+diamond.shape: diamond
+diamond: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+oval.shape: oval
+oval: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+circle.shape: circle
+circle: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+hexagon.shape: hexagon
+hexagon: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+cloud.shape: cloud
+cloud: |md
+  # hello
+
+  - world
+
+  blah blah
+|
