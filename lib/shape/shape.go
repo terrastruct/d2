@@ -21,6 +21,7 @@ const (
 	CALLOUT_TYPE       = "Callout"
 	STORED_DATA_TYPE   = "StoredData"
 	PERSON_TYPE        = "Person"
+	C4_PERSON_TYPE     = "c4-person"
 	DIAMOND_TYPE       = "Diamond"
 	OVAL_TYPE          = "Oval"
 	CIRCLE_TYPE        = "Circle"
@@ -155,6 +156,8 @@ func NewShape(shapeType string, box *geo.Box) Shape {
 		return NewParallelogram(box)
 	case PERSON_TYPE:
 		return NewPerson(box)
+	case C4_PERSON_TYPE:
+		return NewC4Person(box)
 	case QUEUE_TYPE:
 		return NewQueue(box)
 	case REAL_SQUARE_TYPE:

@@ -933,6 +933,7 @@ const (
 	ShapeCallout         = "callout"
 	ShapeStoredData      = "stored_data"
 	ShapePerson          = "person"
+	ShapeC4Person        = "c4-person"
 	ShapeDiamond         = "diamond"
 	ShapeOval            = "oval"
 	ShapeCircle          = "circle"
@@ -960,6 +961,7 @@ var Shapes = []string{
 	ShapeCallout,
 	ShapeStoredData,
 	ShapePerson,
+	ShapeC4Person,
 	ShapeDiamond,
 	ShapeOval,
 	ShapeCircle,
@@ -1028,6 +1030,7 @@ var DSL_SHAPE_TO_SHAPE_TYPE = map[string]string{
 	ShapeCallout:         shape.CALLOUT_TYPE,
 	ShapeStoredData:      shape.STORED_DATA_TYPE,
 	ShapePerson:          shape.PERSON_TYPE,
+	ShapeC4Person:        shape.C4_PERSON_TYPE,
 	ShapeDiamond:         shape.DIAMOND_TYPE,
 	ShapeOval:            shape.OVAL_TYPE,
 	ShapeCircle:          shape.CIRCLE_TYPE,

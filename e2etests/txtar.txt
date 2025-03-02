@@ -978,3 +978,51 @@ cloud: |md
 
   blah blah
 |
+
+-- c4-person-shape --
+c4mdperson.shape: c4-person
+c4mdperson: |md
+## Personal Banking Customer
+
+[person]
+
+A customer of the bank, with\
+personal bank accounts
+  |
+c4person: {
+  shape: c4-person
+  label: "C4 Style Person"
+}
+regular_person -> c4mdperson
+
+regular_person: {
+  shape: person
+  label: "Standard Person"
+}
+
+c4person -> regular_person: "Compare shapes"
+
+styling: {
+  c4styled: {
+    shape: c4-person
+    style.fill: "#91BEEA"
+    style.stroke: "#2E6195"
+    style.stroke-width: 2
+  }
+
+  c4sized: {
+    shape: c4-person
+    width: 150
+    height: 180
+    label: "Custom Size"
+  }
+}
+
+c4person -> styling.c4styled -> styling.c4sized
+**: {
+  &shape: c4-person
+  style.fill: "#08427b"
+  style.stroke: black
+  style.font-color: white
+  style.stroke-width: 1
+}
