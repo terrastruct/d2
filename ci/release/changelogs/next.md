@@ -3,7 +3,9 @@
 - Icons: connections can include icons [#12](https://github.com/terrastruct/d2/issues/12)
 - Syntax: `suspend`/`unsuspend` to define models and instantiate them [#2394](https://github.com/terrastruct/d2/pull/2394)
 - Globs: support for filtering edges based on properties of endpoint nodes (e.g., `&src.style.fill: blue`) [#2395](https://github.com/terrastruct/d2/pull/2395)
-- Render: markdown, latex, and code can be used as object labels [#2204](https://github.com/terrastruct/d2/pull/2204/files)
+- Render:
+  - markdown, latex, and code can be used as object labels [#2204](https://github.com/terrastruct/d2/pull/2204)
+  - `shape: c4-person` to render a person shape like what the C4 model prescribes [#2397](https://github.com/terrastruct/d2/pull/2397)
 
 #### Improvements 🧹
 
