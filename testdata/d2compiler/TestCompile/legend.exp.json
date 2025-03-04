@@ -814,6 +814,14 @@
               "map_key_edge_index": 0
             }
           ],
+          "box": {
+            "TopLeft": {
+              "x": 0,
+              "y": 0
+            },
+            "Width": 0,
+            "Height": 0
+          },
           "attributes": {
             "label": {
               "value": "A person who interacts with the system"
@@ -903,6 +911,14 @@
               "map_key_edge_index": 0
             }
           ],
+          "box": {
+            "TopLeft": {
+              "x": 0,
+              "y": 0
+            },
+            "Width": 0,
+            "Height": 0
+          },
           "attributes": {
             "label": {
               "value": "Stores application data"
@@ -932,6 +948,16 @@
         {
           "index": 0,
           "isCurve": false,
+          "route": [
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            }
+          ],
           "src_arrow": false,
           "dst_arrow": true,
           "references": [
@@ -966,6 +992,16 @@
         {
           "index": 0,
           "isCurve": false,
+          "route": [
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            }
+          ],
           "src_arrow": false,
           "dst_arrow": true,
           "references": [
