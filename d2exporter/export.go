@@ -93,31 +93,31 @@ func applyTheme(shape *d2target.Shape, obj *d2graph.Object, theme *d2themes.Them
 				shape.Color = color.N1
 			}
 		}
-	}
-	if theme.SpecialRules.C4 && obj.Level() == 1 && len(obj.ChildrenArray) == 0 &&
-		obj.Shape.Value != d2target.ShapePerson && obj.Shape.Value != d2target.ShapeC4Person {
-		if obj.Style.Fill == nil {
-			shape.Fill = color.B6
+		if theme.SpecialRules.C4 && obj.Level() == 1 && len(obj.ChildrenArray) == 0 &&
+			obj.Shape.Value != d2target.ShapePerson && obj.Shape.Value != d2target.ShapeC4Person {
+			if obj.Style.Fill == nil {
+				shape.Fill = color.B6
+			}
+			if obj.Style.Stroke == nil {
+				shape.Stroke = color.B5
+			}
 		}
-		if obj.Style.Stroke == nil {
-			shape.Stroke = color.B5
+		if theme.SpecialRules.C4 && (obj.Shape.Value == d2target.ShapePerson || obj.Shape.Value == d2target.ShapeC4Person) {
+			if obj.Style.Fill == nil {
+				shape.Fill = color.B2
+			}
+			if obj.Style.Stroke == nil {
+				shape.Stroke = color.B1
+			}
 		}
-	}
-	if theme.SpecialRules.C4 && (obj.Shape.Value == d2target.ShapePerson || obj.Shape.Value == d2target.ShapeC4Person) {
-		if obj.Style.Fill == nil {
-			shape.Fill = color.B2
-		}
-		if obj.Style.Stroke == nil {
-			shape.Stroke = color.B1
-		}
-	}
-	if theme.SpecialRules.C4 && obj.Level() > 1 && len(obj.ChildrenArray) == 0 &&
-		obj.Shape.Value != d2target.ShapePerson && obj.Shape.Value != d2target.ShapeC4Person {
-		if obj.Style.Fill == nil {
-			shape.Fill = color.B4
-		}
-		if obj.Style.Stroke == nil {
-			shape.Stroke = color.B3
+		if theme.SpecialRules.C4 && obj.Level() > 1 && len(obj.ChildrenArray) == 0 &&
+			obj.Shape.Value != d2target.ShapePerson && obj.Shape.Value != d2target.ShapeC4Person {
+			if obj.Style.Fill == nil {
+				shape.Fill = color.B4
+			}
+			if obj.Style.Stroke == nil {
+				shape.Stroke = color.B3
+			}
 		}
 	}
 }
@@ -205,7 +205,7 @@ func toShape(obj *d2graph.Object, g *d2graph.Graph) d2target.Shape {
 	applyStyles(shape, obj)
 	applyTheme(shape, obj, g.Theme)
 	shape.Color = text.GetColor(shape.Italic)
-	if g.Theme.SpecialRules.C4 {
+	if g.Theme != nil && g.Theme.SpecialRules.C4 {
 		if obj.Style.FontColor == nil {
 			if len(obj.ChildrenArray) > 0 {
 				shape.Color = color.N1
