@@ -32,3 +32,4 @@
   - fixes panic when comment lines appear in arrays [#2378](https://github.com/terrastruct/d2/pull/2378)
   - fixes inconsistencies when objects were double quoted [#2390](https://github.com/terrastruct/d2/pull/2390)
 - CLI: fetch and render remote images of mimetype octet-stream correctly [#2370](https://github.com/terrastruct/d2/pull/2370)
+- d2js: handle unicode characters [#2393](https://github.com/terrastruct/d2/pull/2393)
