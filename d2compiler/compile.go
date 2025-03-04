@@ -20,6 +20,7 @@ import (
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/color"
+	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
@@ -135,7 +136,16 @@ func (c *compiler) compileLegend(g *d2graph.Graph, m *d2ir.Map) {
 				continue
 			}
 		}
+		obj.Box = &geo.Box{}
+		obj.TopLeft = geo.NewPoint(0, 0)
 		objects = append(objects, obj)
+	}
+
+	for _, edge := range legendGraph.Edges {
+		edge.Route = []*geo.Point{
+			{X: 0, Y: 0},
+			{X: 0, Y: 0},
+		}
 	}
 
 	legend := &d2graph.Legend{

@@ -39,6 +39,7 @@ func TestExport(t *testing.T) {
 	t.Run("connection", testConnection)
 	t.Run("label", testLabel)
 	t.Run("theme", testTheme)
+	t.Run("legend", testLegend)
 }
 
 func testShape(t *testing.T) {
@@ -197,6 +198,30 @@ func testTheme(t *testing.T) {
 			dsl: `x -> y: asdf {
   style.bold: true
 }
+`,
+		},
+	}
+
+	runa(t, tcs)
+}
+
+func testLegend(t *testing.T) {
+	tcs := []testCase{
+		{
+			name: "basic_legend",
+			dsl: `vars: {
+  d2-legend: {
+    legend: {
+      l1: Rectangles {shape: rectangle}
+      l2: Ovals {shape: oval}
+      l1 -> l2: Connection
+		}
+	}
+}
+x: {shape: rectangle}
+y: {shape: oval}
+x -> y: connects
+
 `,
 		},
 	}
