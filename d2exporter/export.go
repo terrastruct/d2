@@ -79,6 +79,46 @@ func applyTheme(shape *d2target.Shape, obj *d2graph.Object, theme *d2themes.Them
 		if theme.SpecialRules.Mono {
 			shape.FontFamily = "mono"
 		}
+		if theme.SpecialRules.C4 && len(obj.ChildrenArray) > 0 {
+			if obj.Style.Fill == nil {
+				shape.Fill = "transparent"
+			}
+			if obj.Style.Stroke == nil {
+				shape.Stroke = color.AA2
+			}
+			if obj.Style.StrokeDash == nil {
+				shape.StrokeDash = 5
+			}
+			if obj.Style.FontColor == nil {
+				shape.Color = color.N1
+			}
+		}
+	}
+	if theme.SpecialRules.C4 && obj.Level() == 1 && len(obj.ChildrenArray) == 0 &&
+		obj.Shape.Value != d2target.ShapePerson && obj.Shape.Value != d2target.ShapeC4Person {
+		if obj.Style.Fill == nil {
+			shape.Fill = color.B6
+		}
+		if obj.Style.Stroke == nil {
+			shape.Stroke = color.B5
+		}
+	}
+	if theme.SpecialRules.C4 && (obj.Shape.Value == d2target.ShapePerson || obj.Shape.Value == d2target.ShapeC4Person) {
+		if obj.Style.Fill == nil {
+			shape.Fill = color.B2
+		}
+		if obj.Style.Stroke == nil {
+			shape.Stroke = color.B1
+		}
+	}
+	if theme.SpecialRules.C4 && obj.Level() > 1 && len(obj.ChildrenArray) == 0 &&
+		obj.Shape.Value != d2target.ShapePerson && obj.Shape.Value != d2target.ShapeC4Person {
+		if obj.Style.Fill == nil {
+			shape.Fill = color.B4
+		}
+		if obj.Style.Stroke == nil {
+			shape.Stroke = color.B3
+		}
 	}
 }
 
@@ -165,6 +205,15 @@ func toShape(obj *d2graph.Object, g *d2graph.Graph) d2target.Shape {
 	applyStyles(shape, obj)
 	applyTheme(shape, obj, g.Theme)
 	shape.Color = text.GetColor(shape.Italic)
+	if g.Theme.SpecialRules.C4 {
+		if obj.Style.FontColor == nil {
+			if len(obj.ChildrenArray) > 0 {
+				shape.Color = color.N1
+			} else {
+				shape.Color = color.N7
+			}
+		}
+	}
 	applyStyles(shape, obj)
 
 	switch strings.ToLower(obj.Shape.Value) {
@@ -392,6 +441,18 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 
 	connection.Src = edge.Src.AbsID()
 	connection.Dst = edge.Dst.AbsID()
+
+	if theme != nil && theme.SpecialRules.C4 {
+		if edge.Style.StrokeDash == nil {
+			connection.StrokeDash = 5
+		}
+		if edge.Style.Stroke == nil {
+			connection.Stroke = color.AA4
+		}
+		if edge.Style.FontColor == nil {
+			connection.Color = color.N2
+		}
+	}
 
 	return *connection
 }
