@@ -138,6 +138,8 @@ func (c *compiler) compileLegend(g *d2graph.Graph, m *d2ir.Map) {
 		}
 		obj.Box = &geo.Box{}
 		obj.TopLeft = geo.NewPoint(10, 10)
+		obj.Width = 100
+		obj.Height = 100
 		objects = append(objects, obj)
 	}
 
