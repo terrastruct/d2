@@ -86,12 +86,18 @@ type Diagram struct {
 	Shapes      []Shape      `json:"shapes"`
 	Connections []Connection `json:"connections"`
 
-	Root Shape `json:"root"`
+	Root   Shape   `json:"root"`
+	Legend *Legend `json:"legend,omitempty"`
 	// Maybe Icon can be used as a watermark in the root shape
 
 	Layers    []*Diagram `json:"layers,omitempty"`
 	Scenarios []*Diagram `json:"scenarios,omitempty"`
 	Steps     []*Diagram `json:"steps,omitempty"`
+}
+
+type Legend struct {
+	Shapes      []Shape      `json:"shapes,omitempty"`
+	Connections []Connection `json:"connections,omitempty"`
 }
 
 func (d *Diagram) GetBoard(boardPath []string) *Diagram {
@@ -492,7 +498,6 @@ type Shape struct {
 	PrettyLink   string   `json:"prettyLink,omitempty"`
 	Icon         *url.URL `json:"icon"`
 	IconPosition string   `json:"iconPosition"`
-	LegendLabel  string   `json:"legendLabel,omitempty"`
 
 	// Whether the shape should allow shapes behind it to bleed through
 	// Currently just used for sequence diagram groups
@@ -621,7 +626,6 @@ type Connection struct {
 
 	Animated     bool     `json:"animated"`
 	Tooltip      string   `json:"tooltip"`
-	LegendLabel  string   `json:"legendLabel,omitempty"`
 	Icon         *url.URL `json:"icon"`
 	IconPosition string   `json:"iconPosition,omitempty"`
 
