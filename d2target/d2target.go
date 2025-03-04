@@ -280,6 +280,13 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 		x2 = go2.Max(x2, targetShape.Pos.X+targetShape.Width+int(math.Ceil(float64(targetShape.StrokeWidth)/2.)))
 		y2 = go2.Max(y2, targetShape.Pos.Y+targetShape.Height+int(math.Ceil(float64(targetShape.StrokeWidth)/2.)))
 
+		if targetShape.Type == ShapeC4Person {
+			headRadius := int(float64(targetShape.Width) * 0.22)
+			headCenterY := int(float64(targetShape.Height) * 0.18)
+			headTop := targetShape.Pos.Y + headCenterY - headRadius
+			y1 = go2.Min(y1, headTop-targetShape.StrokeWidth)
+		}
+
 		if targetShape.Tooltip != "" || targetShape.Link != "" {
 			// 16 is the icon radius
 			y1 = go2.Min(y1, targetShape.Pos.Y-targetShape.StrokeWidth-16)

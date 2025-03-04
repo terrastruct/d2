@@ -565,7 +565,7 @@ func (obj *Object) GetFill() string {
 		return color.AB5
 	}
 
-	if strings.EqualFold(shape, d2target.ShapePerson) {
+	if strings.EqualFold(shape, d2target.ShapePerson) || strings.EqualFold(shape, d2target.ShapeC4Person) {
 		return color.B3
 	}
 	if strings.EqualFold(shape, d2target.ShapeDiamond) {

@@ -1483,6 +1483,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			}
 			if !color.IsThemeColor(targetShape.Color) {
 				styles = append(styles, fmt.Sprintf(`color:%s`, targetShape.Color))
+			} else {
+				styles = append(styles, fmt.Sprintf(`color:%s`, d2themes.ResolveThemeColor(*inlineTheme, targetShape.Color)))
 			}
 
 			mdEl.Style = strings.Join(styles, ";")
