@@ -166,8 +166,8 @@
         "id": "legend",
         "type": "rectangle",
         "pos": {
-          "x": 0,
-          "y": 0
+          "x": 10,
+          "y": 10
         },
         "width": 0,
         "height": 0,
@@ -207,8 +207,8 @@
         "id": "legend.l1",
         "type": "rectangle",
         "pos": {
-          "x": 0,
-          "y": 0
+          "x": 10,
+          "y": 10
         },
         "width": 0,
         "height": 0,
@@ -248,8 +248,8 @@
         "id": "legend.l2",
         "type": "oval",
         "pos": {
-          "x": 0,
-          "y": 0
+          "x": 10,
+          "y": 10
         },
         "width": 0,
         "height": 0,
@@ -313,12 +313,12 @@
         "link": "",
         "route": [
           {
-            "x": 0,
-            "y": 0
+            "x": 10,
+            "y": 10
           },
           {
-            "x": 0,
-            "y": 0
+            "x": 110,
+            "y": 10
           }
         ],
         "animated": false,
