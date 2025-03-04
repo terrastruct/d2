@@ -5434,35 +5434,6 @@ b -> c
 			},
 		},
 		{
-			name: "legend-label",
-			run: func(t *testing.T) {
-				g, _ := assertCompile(t, `
-a.legend-label: This is A
-b: {legend-label: This is B}
-a -> b: {
-  legend-label: "This is a->b"
-}
-`, ``)
-				assert.Equal(t, "a", g.Objects[0].ID)
-				assert.Equal(t, "This is A", g.Objects[0].LegendLabel.Value)
-				assert.Equal(t, "b", g.Objects[1].ID)
-				assert.Equal(t, "This is B", g.Objects[1].LegendLabel.Value)
-				assert.Equal(t, "This is a->b", g.Edges[0].LegendLabel.Value)
-			},
-		},
-		{
-			name: "merge-glob-values",
-			run: func(t *testing.T) {
-				assertCompile(t, `
-"a"
-*.style.stroke-width: 2
-*.style.font-size: 14
-
-a.width: 339
-`, ``)
-			},
-		},
-		{
 			name: "mixed-edge-quoting",
 			run: func(t *testing.T) {
 				g, _ := assertCompile(t, `

@@ -543,10 +543,6 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Tooltip = &d2graph.Scalar{}
 		attrs.Tooltip.Value = scalar.ScalarString()
 		attrs.Tooltip.MapKey = f.LastPrimaryKey()
-	case "legend-label":
-		attrs.LegendLabel = &d2graph.Scalar{}
-		attrs.LegendLabel.Value = scalar.ScalarString()
-		attrs.LegendLabel.MapKey = f.LastPrimaryKey()
 	case "width":
 		_, err := strconv.Atoi(scalar.ScalarString())
 		if err != nil {

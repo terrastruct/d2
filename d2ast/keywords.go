@@ -8,7 +8,6 @@ var ReservedKeywords map[string]struct{}
 // Non Style/Holder keywords.
 var SimpleReservedKeywords = map[string]struct{}{
 	"label":          {},
-	"legend-label":   {},
 	"shape":          {},
 	"icon":           {},
 	"constraint":     {},
