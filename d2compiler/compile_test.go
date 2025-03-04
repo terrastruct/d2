@@ -5434,6 +5434,17 @@ b -> c
 			},
 		},
 		{
+			name: "merge-glob-values",
+			run: func(t *testing.T) {
+				assertCompile(t, `
+"a"
+*.style.stroke-width: 2
+*.style.font-size: 14
+a.width: 339
+`, ``)
+			},
+		},
+		{
 			name: "mixed-edge-quoting",
 			run: func(t *testing.T) {
 				g, _ := assertCompile(t, `

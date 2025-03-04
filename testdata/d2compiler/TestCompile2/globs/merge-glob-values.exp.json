@@ -3,7 +3,7 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile2/globs/merge-glob-values.d2,0:0:0-6:0:65",
+      "range": "d2/testdata/d2compiler/TestCompile2/globs/merge-glob-values.d2,0:0:0-5:0:64",
       "nodes": [
         {
           "map_key": {
@@ -138,13 +138,13 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile2/globs/merge-glob-values.d2,5:0:52-5:12:64",
+            "range": "d2/testdata/d2compiler/TestCompile2/globs/merge-glob-values.d2,4:0:51-4:12:63",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/globs/merge-glob-values.d2,5:0:52-5:7:59",
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/merge-glob-values.d2,4:0:51-4:7:58",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/globs/merge-glob-values.d2,5:0:52-5:1:53",
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/merge-glob-values.d2,4:0:51-4:1:52",
                     "value": [
                       {
                         "string": "a",
@@ -155,7 +155,7 @@
                 },
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/globs/merge-glob-values.d2,5:2:54-5:7:59",
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/merge-glob-values.d2,4:2:53-4:7:58",
                     "value": [
                       {
                         "string": "width",
@@ -169,7 +169,7 @@
             "primary": {},
             "value": {
               "number": {
-                "range": "d2/testdata/d2compiler/TestCompile2/globs/merge-glob-values.d2,5:9:61-5:12:64",
+                "range": "d2/testdata/d2compiler/TestCompile2/globs/merge-glob-values.d2,4:9:60-4:12:63",
                 "raw": "339",
                 "value": "339"
               }
@@ -229,11 +229,11 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/globs/merge-glob-values.d2,5:0:52-5:7:59",
+              "range": "d2/testdata/d2compiler/TestCompile2/globs/merge-glob-values.d2,4:0:51-4:7:58",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/globs/merge-glob-values.d2,5:0:52-5:1:53",
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/merge-glob-values.d2,4:0:51-4:1:52",
                     "value": [
                       {
                         "string": "a",
@@ -244,7 +244,7 @@
                 },
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/globs/merge-glob-values.d2,5:2:54-5:7:59",
+                    "range": "d2/testdata/d2compiler/TestCompile2/globs/merge-glob-values.d2,4:2:53-4:7:58",
                     "value": [
                       {
                         "string": "width",
