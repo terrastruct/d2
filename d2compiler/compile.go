@@ -137,14 +137,16 @@ func (c *compiler) compileLegend(g *d2graph.Graph, m *d2ir.Map) {
 			}
 		}
 		obj.Box = &geo.Box{}
-		obj.TopLeft = geo.NewPoint(0, 0)
+		obj.TopLeft = geo.NewPoint(10, 10)
+		obj.Width = 100
+		obj.Height = 100
 		objects = append(objects, obj)
 	}
 
 	for _, edge := range legendGraph.Edges {
 		edge.Route = []*geo.Point{
-			{X: 0, Y: 0},
-			{X: 0, Y: 0},
+			{X: 10, Y: 10},
+			{X: 110, Y: 10},
 		}
 	}
 
