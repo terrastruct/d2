@@ -22,7 +22,7 @@ declare module "@terrastruct/d2" {
      * @default -1
      * The theme to use when the viewer's browser is in dark mode.
      */
-    darkTheme?: number;
+    darkThemeID?: number;
 
     /**
      * @default 100
