@@ -86,12 +86,18 @@ type Diagram struct {
 	Shapes      []Shape      `json:"shapes"`
 	Connections []Connection `json:"connections"`
 
-	Root Shape `json:"root"`
+	Root   Shape   `json:"root"`
+	Legend *Legend `json:"legend,omitempty"`
 	// Maybe Icon can be used as a watermark in the root shape
 
 	Layers    []*Diagram `json:"layers,omitempty"`
 	Scenarios []*Diagram `json:"scenarios,omitempty"`
 	Steps     []*Diagram `json:"steps,omitempty"`
+}
+
+type Legend struct {
+	Shapes      []Shape      `json:"shapes,omitempty"`
+	Connections []Connection `json:"connections,omitempty"`
 }
 
 func (d *Diagram) GetBoard(boardPath []string) *Diagram {

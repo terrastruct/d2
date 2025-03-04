@@ -721,6 +721,142 @@ x: {
 			},
 		},
 		{
+			name: "legend",
+
+			text: `
+			vars: {
+  d2-legend: {
+    User: "A person who interacts with the system" {
+      shape: person
+      style: {
+        fill: "#f5f5f5"
+      }
+    }
+
+    Database: "Stores application data" {
+      shape: cylinder
+      style.fill: "#b5d3ff"
+    }
+
+    HiddenShape: "This should not appear in the legend" {
+      style.opacity: 0
+    }
+
+    User -> Database: "Reads data" {
+      style.stroke: "blue"
+    }
+
+    Database -> User: "Returns results" {
+      style.stroke-dash: 5
+    }
+  }
+}
+
+user: User
+db: Database
+user -> db: Uses
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if g.Legend == nil {
+					t.Fatal("Expected Legend to be non-nil")
+					return
+				}
+
+				// 2. Verify the correct objects are in the legend
+				if len(g.Legend.Objects) != 2 {
+					t.Errorf("Expected 2 objects in legend, got %d", len(g.Legend.Objects))
+				}
+
+				// Check for User object
+				hasUser := false
+				hasDatabase := false
+				for _, obj := range g.Legend.Objects {
+					if obj.ID == "User" {
+						hasUser = true
+						if obj.Shape.Value != "person" {
+							t.Errorf("User shape incorrect, expected 'person', got: %s", obj.Shape.Value)
+						}
+					} else if obj.ID == "Database" {
+						hasDatabase = true
+						if obj.Shape.Value != "cylinder" {
+							t.Errorf("Database shape incorrect, expected 'cylinder', got: %s", obj.Shape.Value)
+						}
+					} else if obj.ID == "HiddenShape" {
+						t.Errorf("HiddenShape should not be in legend due to opacity: 0")
+					}
+				}
+
+				if !hasUser {
+					t.Errorf("User object missing from legend")
+				}
+				if !hasDatabase {
+					t.Errorf("Database object missing from legend")
+				}
+
+				// 3. Verify the correct edges are in the legend
+				if len(g.Legend.Edges) != 2 {
+					t.Errorf("Expected 2 edges in legend, got %d", len(g.Legend.Edges))
+				}
+
+				// Check for expected edges
+				hasReadsEdge := false
+				hasReturnsEdge := false
+				for _, edge := range g.Legend.Edges {
+					if edge.Label.Value == "Reads data" {
+						hasReadsEdge = true
+						// Check edge properties
+						if edge.Style.Stroke == nil {
+							t.Errorf("Reads edge stroke is nil")
+						} else if edge.Style.Stroke.Value != "blue" {
+							t.Errorf("Reads edge stroke incorrect, expected 'blue', got: %s", edge.Style.Stroke.Value)
+						}
+					} else if edge.Label.Value == "Returns results" {
+						hasReturnsEdge = true
+						// Check edge properties
+						if edge.Style.StrokeDash == nil {
+							t.Errorf("Returns edge stroke-dash is nil")
+						} else if edge.Style.StrokeDash.Value != "5" {
+							t.Errorf("Returns edge stroke-dash incorrect, expected '5', got: %s", edge.Style.StrokeDash.Value)
+						}
+					} else if edge.Label.Value == "Hidden connection" {
+						t.Errorf("Hidden connection should not be in legend due to opacity: 0")
+					}
+				}
+
+				if !hasReadsEdge {
+					t.Errorf("'Reads data' edge missing from legend")
+				}
+				if !hasReturnsEdge {
+					t.Errorf("'Returns results' edge missing from legend")
+				}
+
+				// 4. Verify the regular diagram content is still there
+				userObj, hasUserObj := g.Root.HasChild([]string{"user"})
+				if !hasUserObj {
+					t.Errorf("Main diagram missing 'user' object")
+				} else if userObj.Label.Value != "User" {
+					t.Errorf("User label incorrect, expected 'User', got: %s", userObj.Label.Value)
+				}
+
+				dbObj, hasDBObj := g.Root.HasChild([]string{"db"})
+				if !hasDBObj {
+					t.Errorf("Main diagram missing 'db' object")
+				} else if dbObj.Label.Value != "Database" {
+					t.Errorf("DB label incorrect, expected 'Database', got: %s", dbObj.Label.Value)
+				}
+
+				// Check the main edge
+				if len(g.Edges) == 0 {
+					t.Errorf("No edges found in main diagram")
+				} else {
+					mainEdge := g.Edges[0]
+					if mainEdge.Label.Value != "Uses" {
+						t.Errorf("Main edge label incorrect, expected 'Uses', got: %s", mainEdge.Label.Value)
+					}
+				}
+			},
+		},
+		{
 			name: "underscore_edge_nested",
 
 			text: `

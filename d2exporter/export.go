@@ -47,6 +47,26 @@ func Export(ctx context.Context, g *d2graph.Graph, fontFamily *d2fonts.FontFamil
 		diagram.Connections[i] = toConnection(g.Edges[i], g.Theme)
 	}
 
+	if g.Legend != nil {
+		legend := &d2target.Legend{}
+
+		if len(g.Legend.Objects) > 0 {
+			legend.Shapes = make([]d2target.Shape, len(g.Legend.Objects))
+			for i, obj := range g.Legend.Objects {
+				legend.Shapes[i] = toShape(obj, g)
+			}
+		}
+
+		if len(g.Legend.Edges) > 0 {
+			legend.Connections = make([]d2target.Connection, len(g.Legend.Edges))
+			for i, edge := range g.Legend.Edges {
+				legend.Connections[i] = toConnection(edge, g.Theme)
+			}
+		}
+
+		diagram.Legend = legend
+	}
+
 	return diagram, nil
 }
 

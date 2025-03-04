@@ -49,6 +49,7 @@ type Graph struct {
 	BaseAST *d2ast.Map `json:"-"`
 
 	Root    *Object   `json:"root"`
+	Legend  *Legend   `json:"legend,omitempty"`
 	Edges   []*Edge   `json:"edges"`
 	Objects []*Object `json:"objects"`
 
@@ -65,6 +66,11 @@ type Graph struct {
 	// Plugins only have access to exported graph, so this data structure allows
 	// carrying arbitrary metadata that any plugin might handle
 	Data map[string]interface{} `json:"data,omitempty"`
+}
+
+type Legend struct {
+	Objects []*Object `json:"objects,omitempty"`
+	Edges   []*Edge   `json:"edges,omitempty"`
 }
 
 func NewGraph() *Graph {

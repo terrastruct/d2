@@ -96,6 +96,8 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 	c.validateEdges(g)
 	c.validatePositionsCompatibility(g)
 
+	c.compileLegend(g, ir)
+
 	c.compileBoardsField(g, ir, "layers")
 	c.compileBoardsField(g, ir, "scenarios")
 	c.compileBoardsField(g, ir, "steps")
@@ -108,6 +110,42 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 		g.IsFolderOnly = true
 	}
 	return g
+}
+
+func (c *compiler) compileLegend(g *d2graph.Graph, m *d2ir.Map) {
+	varsField := m.GetField(d2ast.FlatUnquotedString("vars"))
+	if varsField == nil || varsField.Map() == nil {
+		return
+	}
+
+	legendField := varsField.Map().GetField(d2ast.FlatUnquotedString("d2-legend"))
+	if legendField == nil || legendField.Map() == nil {
+		return
+	}
+
+	legendGraph := d2graph.NewGraph()
+
+	c.compileMap(legendGraph.Root, legendField.Map())
+	c.setDefaultShapes(legendGraph)
+
+	objects := make([]*d2graph.Object, 0)
+	for _, obj := range legendGraph.Objects {
+		if obj.Style.Opacity != nil {
+			if opacity, err := strconv.ParseFloat(obj.Style.Opacity.Value, 64); err == nil && opacity == 0 {
+				continue
+			}
+		}
+		objects = append(objects, obj)
+	}
+
+	legend := &d2graph.Legend{
+		Objects: objects,
+		Edges:   legendGraph.Edges,
+	}
+
+	if len(legend.Objects) > 0 || len(legend.Edges) > 0 {
+		g.Legend = legend
+	}
 }
 
 func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName string) {
