@@ -39,7 +39,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) e
 	return nil
 }
 
+// calculateRadius now guards against a division-by-zero error when there is only one object.
 func calculateRadius(objects []*d2graph.Object) float64 {
+	if len(objects) < 2 {
+		// When there is a single object, we can simply use MIN_RADIUS.
+		return MIN_RADIUS
+	}
 	numObjects := float64(len(objects))
 	maxSize := 0.0
 	for _, obj := range objects {
