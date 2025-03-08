@@ -39,10 +39,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) e
 	return nil
 }
 
-// calculateRadius now guards against a division-by-zero error when there is only one object.
+// calculateRadius computes the required radius such that the chord between
+// adjacent objects is at least (maxSize + 2*PADDING). We multiply the resulting
+// radius by 1.1 (10% extra) to provide additional separation and avoid overlapping.
 func calculateRadius(objects []*d2graph.Object) float64 {
 	if len(objects) < 2 {
-		// When there is a single object, we can simply use MIN_RADIUS.
 		return MIN_RADIUS
 	}
 	numObjects := float64(len(objects))
@@ -51,8 +52,13 @@ func calculateRadius(objects []*d2graph.Object) float64 {
 		size := math.Max(obj.Box.Width, obj.Box.Height)
 		maxSize = math.Max(maxSize, size)
 	}
+	// The chord between adjacent centers is 2*radius*sin(π/n). To ensure that
+	// chord >= maxSize + 2*PADDING, we require:
+	//   radius >= (maxSize/2 + PADDING) / sin(π/n)
 	minRadius := (maxSize/2.0 + PADDING) / math.Sin(math.Pi/numObjects)
-	return math.Max(minRadius, MIN_RADIUS)
+	// Use MIN_RADIUS as a lower bound and then add a 10% extra margin.
+	radius := math.Max(minRadius, MIN_RADIUS)
+	return radius * 1.1
 }
 
 func positionObjects(objects []*d2graph.Object, radius float64) {
@@ -60,7 +66,7 @@ func positionObjects(objects []*d2graph.Object, radius float64) {
 	angleOffset := -math.Pi / 2
 
 	for i, obj := range objects {
-		angle := angleOffset + (2 * math.Pi * float64(i) / numObjects)
+		angle := angleOffset + (2*math.Pi*float64(i)/numObjects)
 		x := radius * math.Cos(angle)
 		y := radius * math.Sin(angle)
 		obj.TopLeft = geo.NewPoint(
@@ -167,7 +173,7 @@ func clampPointOutsideBox(box *geo.Box, path []*geo.Point, startIdx int) (int, *
 		}
 		return i, path[i]
 	}
-	return len(path) - 1, path[len(path)-1]
+	return len(path)-1, path[len(path)-1]
 }
 
 // clampPointOutsideBoxReverse works similarly but in reverse order.
