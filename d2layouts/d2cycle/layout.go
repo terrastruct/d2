@@ -14,7 +14,7 @@ import (
 const (
 	MIN_RADIUS      = 200
 	PADDING         = 20
-	MIN_SEGMENT_LEN = 10.0 // Changed to float64
+	MIN_SEGMENT_LEN = 10
 	ARC_STEPS       = 100
 )
 
@@ -73,27 +73,14 @@ func createCircularArc(edge *d2graph.Edge) {
 	srcCenter := edge.Src.Center()
 	dstCenter := edge.Dst.Center()
 
-	// Calculate the angle of each object from the origin (0,0)
 	srcAngle := math.Atan2(srcCenter.Y, srcCenter.X)
 	dstAngle := math.Atan2(dstCenter.Y, dstCenter.X)
-	
-	// Determine the shortest arc direction
 	if dstAngle < srcAngle {
-		if srcAngle - dstAngle > math.Pi {
-			dstAngle += 2 * math.Pi
-		}
-	} else {
-		if dstAngle - srcAngle > math.Pi {
-			srcAngle += 2 * math.Pi
-		}
+		dstAngle += 2 * math.Pi
 	}
 
-	// Use the average radius for a smooth circular arc
-	srcRadius := math.Hypot(srcCenter.X, srcCenter.Y)
-	dstRadius := math.Hypot(dstCenter.X, dstCenter.Y)
-	arcRadius := (srcRadius + dstRadius) / 2
+	arcRadius := math.Hypot(srcCenter.X, srcCenter.Y)
 
-	// Create a perfectly circular arc with more points for smoothness
 	path := make([]*geo.Point, 0, ARC_STEPS+1)
 	for i := 0; i <= ARC_STEPS; i++ {
 		t := float64(i) / float64(ARC_STEPS)
@@ -102,31 +89,27 @@ func createCircularArc(edge *d2graph.Edge) {
 		y := arcRadius * math.Sin(angle)
 		path = append(path, geo.NewPoint(x, y))
 	}
-	
-	// Ensure the path starts and ends at the centers
 	path[0] = srcCenter
 	path[len(path)-1] = dstCenter
 
-	// Find precise intersection points with object boundaries
+	// Clamp endpoints to the boundaries of the source and destination boxes.
 	_, newSrc := clampPointOutsideBox(edge.Src.Box, path, 0)
 	_, newDst := clampPointOutsideBoxReverse(edge.Dst.Box, path, len(path)-1)
 	path[0] = newSrc
 	path[len(path)-1] = newDst
 
-	// Trim points that are inside the objects' boxes
+	// Trim redundant path points that fall inside node boundaries.
 	path = trimPathPoints(path, edge.Src.Box)
 	path = trimPathPoints(path, edge.Dst.Box)
 
 	edge.Route = path
 	edge.IsCurve = true
 
-	// Adjust the final segment for proper arrow rendering
 	if len(edge.Route) >= 2 {
 		lastIndex := len(edge.Route) - 1
 		lastPoint := edge.Route[lastIndex]
 		secondLastPoint := edge.Route[lastIndex-1]
 
-		// Calculate tangent at the intersection point (perpendicular to radius)
 		tangentX := -lastPoint.Y
 		tangentY := lastPoint.X
 		mag := math.Hypot(tangentX, tangentY)
@@ -134,8 +117,8 @@ func createCircularArc(edge *d2graph.Edge) {
 			tangentX /= mag
 			tangentY /= mag
 		}
+		const MIN_SEGMENT_LEN = 4.159
 
-		// Check if final segment needs adjustment
 		dx := lastPoint.X - secondLastPoint.X
 		dy := lastPoint.Y - secondLastPoint.Y
 		segLength := math.Hypot(dx, dy)
@@ -143,8 +126,9 @@ func createCircularArc(edge *d2graph.Edge) {
 			currentDirX := dx / segLength
 			currentDirY := dy / segLength
 
-			// If segment is too short or not aligned with the tangent
-			if segLength < MIN_SEGMENT_LEN || (currentDirX*tangentX+currentDirY*tangentY) < 0.99 {
+			// Check if we need to adjust the direction
+			if segLength < MIN_SEGMENT_LEN || (currentDirX*tangentX+currentDirY*tangentY) < 0.999 {
+				// Create new point along tangent direction
 				adjustLength := MIN_SEGMENT_LEN // Now float64
 				if segLength >= MIN_SEGMENT_LEN {
 					adjustLength = segLength // Both are float64 now
