@@ -18,7 +18,7 @@ const (
 	ARC_STEPS       = 100
 )
 
-// Layout lays out the graph and computes curved edge routes
+// Layout lays out the graph and computes curved edge routes.
 func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) error {
 	objects := g.Root.ChildrenArray
 	if len(objects) == 0 {
@@ -39,26 +39,29 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) e
 	return nil
 }
 
-// calculateRadius computes the required radius such that the chord between
-// adjacent objects is at least (maxSize + 2*PADDING). We multiply the resulting
-// radius by 1.1 (10% extra) to provide additional separation and avoid overlapping.
+// calculateRadius computes a radius ensuring that the circular layout does not overlap.
+// For each object we compute the half-diagonal (i.e. the radius of the minimal enclosing circle),
+// then ensure the chord between two adjacent centers (2*radius*sin(π/n)) is at least
+// 2*(maxHalfDiagonal + PADDING). We also add a safety factor (1.2) to avoid floating-point issues.
 func calculateRadius(objects []*d2graph.Object) float64 {
 	if len(objects) < 2 {
 		return MIN_RADIUS
 	}
 	numObjects := float64(len(objects))
-	maxSize := 0.0
+	maxHalfDiag := 0.0
 	for _, obj := range objects {
-		size := math.Max(obj.Box.Width, obj.Box.Height)
-		maxSize = math.Max(maxSize, size)
+		halfDiag := math.Hypot(obj.Box.Width/2, obj.Box.Height/2)
+		if halfDiag > maxHalfDiag {
+			maxHalfDiag = halfDiag
+		}
 	}
-	// The chord between adjacent centers is 2*radius*sin(π/n). To ensure that
-	// chord >= maxSize + 2*PADDING, we require:
-	//   radius >= (maxSize/2 + PADDING) / sin(π/n)
-	minRadius := (maxSize/2.0 + PADDING) / math.Sin(math.Pi/numObjects)
-	// Use MIN_RADIUS as a lower bound and then add a 10% extra margin.
-	radius := math.Max(minRadius, MIN_RADIUS)
-	return radius * 1.1
+	// We need the chord (distance between adjacent centers) to be at least:
+	//    2*(maxHalfDiag + PADDING)
+	// and since chord = 2*radius*sin(π/n), we require:
+	//    radius >= (maxHalfDiag + PADDING) / sin(π/n)
+	minRadius := (maxHalfDiag + PADDING) / math.Sin(math.Pi/numObjects)
+	// Apply a safety factor of 1.2 and ensure it doesn't fall below MIN_RADIUS.
+	return math.Max(minRadius*1.2, MIN_RADIUS)
 }
 
 func positionObjects(objects []*d2graph.Object, radius float64) {
@@ -139,10 +142,9 @@ func createCircularArc(edge *d2graph.Edge) {
 
 			// Check if we need to adjust the direction
 			if segLength < MIN_SEGMENT_LEN || (currentDirX*tangentX+currentDirY*tangentY) < 0.999 {
-				// Create new point along tangent direction
-				adjustLength := MIN_SEGMENT_LEN // Now float64
+				adjustLength := MIN_SEGMENT_LEN
 				if segLength >= MIN_SEGMENT_LEN {
-					adjustLength = segLength // Both are float64 now
+					adjustLength = segLength
 				}
 				newSecondLastX := lastPoint.X - tangentX*adjustLength
 				newSecondLastY := lastPoint.Y - tangentY*adjustLength
@@ -217,7 +219,6 @@ func findPreciseIntersection(box *geo.Box, seg geo.Segment) *geo.Point {
 
 	// Check vertical boundaries.
 	if dx != 0 {
-		// Left boundary.
 		t := (left - seg.Start.X) / dx
 		if t >= 0 && t <= 1 {
 			y := seg.Start.Y + t*dy
@@ -228,7 +229,6 @@ func findPreciseIntersection(box *geo.Box, seg geo.Segment) *geo.Point {
 				}{geo.NewPoint(left, y), t})
 			}
 		}
-		// Right boundary.
 		t = (right - seg.Start.X) / dx
 		if t >= 0 && t <= 1 {
 			y := seg.Start.Y + t*dy
@@ -243,7 +243,6 @@ func findPreciseIntersection(box *geo.Box, seg geo.Segment) *geo.Point {
 
 	// Check horizontal boundaries.
 	if dy != 0 {
-		// Top boundary.
 		t := (top - seg.Start.Y) / dy
 		if t >= 0 && t <= 1 {
 			x := seg.Start.X + t*dx
@@ -254,7 +253,6 @@ func findPreciseIntersection(box *geo.Box, seg geo.Segment) *geo.Point {
 				}{geo.NewPoint(x, top), t})
 			}
 		}
-		// Bottom boundary.
 		t = (bottom - seg.Start.Y) / dy
 		if t >= 0 && t <= 1 {
 			x := seg.Start.X + t*dx
