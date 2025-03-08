@@ -41,12 +41,22 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) e
 
 func calculateRadius(objects []*d2graph.Object) float64 {
 	numObjects := float64(len(objects))
-	maxSize := 0.0
-	for _, obj := range objects {
-		size := math.Max(obj.Box.Width, obj.Box.Height)
-		maxSize = math.Max(maxSize, size)
+	if numObjects == 0 {
+		return MIN_RADIUS
 	}
-	minRadius := (maxSize/2.0 + PADDING) / math.Sin(math.Pi/numObjects)
+
+	maxDiagonal := 0.0
+	for _, obj := range objects {
+		// Calculate the diagonal of the object's bounding box
+		diagonal := math.Sqrt(obj.Box.Width*obj.Box.Width + obj.Box.Height*obj.Box.Height)
+		if diagonal > maxDiagonal {
+			maxDiagonal = diagonal
+		}
+	}
+
+	// Required chord length: sum of two radii (maxDiagonal/2) + padding
+	requiredChordLength := maxDiagonal + PADDING
+	minRadius := requiredChordLength / (2 * math.Sin(math.Pi/numObjects))
 	return math.Max(minRadius, MIN_RADIUS)
 }
 
