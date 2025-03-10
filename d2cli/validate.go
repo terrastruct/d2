@@ -2,6 +2,7 @@ package d2cli
 
 import (
 	"context"
+	"fmt"
 
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/util-go/xdefer"
@@ -9,11 +10,11 @@ import (
 )
 
 func validateCmd(ctx context.Context, ms *xmain.State) (err error) {
-	defer xdefer.Errorf(&err, "failed to validate")
+	defer xdefer.Errorf(&err, "")
 
 	ms.Opts = xmain.NewOpts(ms.Env, ms.Opts.Flags.Args()[1:])
 	if len(ms.Opts.Args) == 0 {
-		return xmain.UsageErrorf("validate must be passed an input file to be validated")
+		return xmain.UsageErrorf("validate must be passed an input file")
 	}
 
 	inputPath := ms.Opts.Args[0]
@@ -30,5 +31,11 @@ func validateCmd(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
+
+	if inputPath == "-" {
+		inputPath = "Input"
+	}
+
+	fmt.Printf("Success! [%s] is valid D2.\n", inputPath)
 	return nil
 }
