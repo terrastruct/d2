@@ -108,6 +108,7 @@ func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height in
 	return left, top, width, height
 }
 
+// renderLegend renders the legend box in the bottom right of the diagram
 func renderLegend(buf *bytes.Buffer, diagram *d2target.Diagram, diagramHash string, theme *d2themes.Theme) error {
 	if diagram.Legend == nil || (len(diagram.Legend.Shapes) == 0 && len(diagram.Legend.Connections) == 0) {
 		return nil
@@ -115,16 +116,21 @@ func renderLegend(buf *bytes.Buffer, diagram *d2target.Diagram, diagramHash stri
 
 	_, br := diagram.BoundingBox()
 
+	// Create a ruler to measure text
 	ruler, err := textmeasure.NewRuler()
 	if err != nil {
 		return err
 	}
 
+	// Calculate total height of legend items
+	// Start with top padding and title height
 	totalHeight := LEGEND_PADDING + LEGEND_FONT_SIZE + LEGEND_ITEM_SPACING
 	maxLabelWidth := 0
 
+	// Track number of items for precise height calculation
 	itemCount := 0
 
+	// Measure text for each legend item to determine dimensions
 	for _, s := range diagram.Legend.Shapes {
 		if s.Label == "" {
 			continue
@@ -157,24 +163,29 @@ func renderLegend(buf *bytes.Buffer, diagram *d2target.Diagram, diagramHash stri
 		itemCount++
 	}
 
+	// If we have items, remove the extra spacing from the last item and add bottom padding
 	if itemCount > 0 {
-		totalHeight -= LEGEND_ITEM_SPACING / 2
+		totalHeight -= LEGEND_ITEM_SPACING / 2 // Remove some of the last spacing
 	}
 
-	if itemCount > 0 && len(diagram.Legend.Connections) > 0 {
-		totalHeight += LEGEND_PADDING * 1.5
-	} else {
-		totalHeight += LEGEND_PADDING * 1.2
-	}
+	// Add bottom padding
+	totalHeight += LEGEND_PADDING
 
+	// Calculate legend dimensions
 	legendWidth := LEGEND_PADDING*2 + LEGEND_ICON_SIZE + LEGEND_PADDING + maxLabelWidth
+
+	// Position legend to the right of the diagram with padding
+	// Add extra padding to ensure it doesn't overlap with diagram elements
 	legendX := br.X + LEGEND_CORNER_PADDING
+	// Center vertically using the bounding box, but ensure it's not too close to the top
 	tl, _ := diagram.BoundingBox()
-	legendY := br.Y - totalHeight
+	legendY := tl.Y + (br.Y-tl.Y-totalHeight)/2
 	if legendY < tl.Y {
 		legendY = tl.Y
 	}
 
+	// Draw legend background with subtle shadow for better visual separation
+	// Add shadow/outline effect first
 	shadowEl := d2themes.NewThemableElement("rect", theme)
 	shadowEl.Fill = "#F7F7FA"
 	shadowEl.Stroke = "#DEE1EB"
@@ -186,6 +197,7 @@ func renderLegend(buf *bytes.Buffer, diagram *d2target.Diagram, diagramHash stri
 	shadowEl.Rx = 4
 	fmt.Fprint(buf, shadowEl.Render())
 
+	// Draw legend background
 	legendEl := d2themes.NewThemableElement("rect", theme)
 	legendEl.Fill = "#ffffff"
 	legendEl.Stroke = "#DEE1EB"
@@ -197,12 +209,14 @@ func renderLegend(buf *bytes.Buffer, diagram *d2target.Diagram, diagramHash stri
 	legendEl.Rx = 4
 	fmt.Fprint(buf, legendEl.Render())
 
+	// Draw legend title
 	fmt.Fprintf(buf, `<text class="text-bold" x="%d" y="%d" style="font-size: %dpx;">Legend</text>`,
 		legendX+LEGEND_PADDING, legendY+LEGEND_PADDING+LEGEND_FONT_SIZE, LEGEND_FONT_SIZE+2)
 
+	// Current Y position for drawing items
 	currentY := legendY + LEGEND_PADDING*2 + LEGEND_FONT_SIZE
 
-	shapeCount := 0
+	// Draw legend shapes
 	for _, s := range diagram.Legend.Shapes {
 		if s.Label == "" {
 			continue
@@ -211,45 +225,30 @@ func renderLegend(buf *bytes.Buffer, diagram *d2target.Diagram, diagramHash stri
 		iconX := legendX + LEGEND_PADDING
 		iconY := currentY
 
+		// Draw shape as icon
 		shapeIcon, err := renderLegendShapeIcon(s, iconX, iconY, diagramHash, theme)
 		if err != nil {
 			return err
 		}
 		fmt.Fprint(buf, shapeIcon)
 
+		// Draw label
 		mtext := &d2target.MText{
 			Text:     s.Label,
 			FontSize: LEGEND_FONT_SIZE,
 		}
 
 		dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
-
-		rowHeight := go2.IntMax(dims.Height, LEGEND_ICON_SIZE)
-		textY := currentY + rowHeight/2 + int(float64(dims.Height)*0.3)
+		textY := currentY + dims.Height/2
 
 		fmt.Fprintf(buf, `<text class="text" x="%d" y="%d" style="font-size: %dpx;">%s</text>`,
 			iconX+LEGEND_ICON_SIZE+LEGEND_PADDING, textY, LEGEND_FONT_SIZE,
 			html.EscapeString(s.Label))
 
-		currentY += rowHeight + LEGEND_ITEM_SPACING
-		shapeCount++
+		currentY += go2.IntMax(dims.Height, LEGEND_ICON_SIZE) + LEGEND_ITEM_SPACING
 	}
 
-	if shapeCount > 0 && len(diagram.Legend.Connections) > 0 {
-		currentY += LEGEND_ITEM_SPACING / 2
-
-		separatorEl := d2themes.NewThemableElement("line", theme)
-		separatorEl.X1 = float64(legendX + LEGEND_PADDING)
-		separatorEl.Y1 = float64(currentY)
-		separatorEl.X2 = float64(legendX + legendWidth - LEGEND_PADDING)
-		separatorEl.Y2 = float64(currentY)
-		separatorEl.Stroke = "#DEE1EB"
-		separatorEl.StrokeDashArray = "2,2"
-		fmt.Fprint(buf, separatorEl.Render())
-
-		currentY += LEGEND_ITEM_SPACING
-	}
-
+	// Draw legend connections
 	for _, c := range diagram.Legend.Connections {
 		if c.Label == "" {
 			continue
@@ -258,110 +257,188 @@ func renderLegend(buf *bytes.Buffer, diagram *d2target.Diagram, diagramHash stri
 		iconX := legendX + LEGEND_PADDING
 		iconY := currentY + LEGEND_ICON_SIZE/2
 
+		// Draw connection as line
 		connIcon, err := renderLegendConnectionIcon(c, iconX, iconY, theme)
 		if err != nil {
 			return err
 		}
 		fmt.Fprint(buf, connIcon)
 
+		// Draw label
 		mtext := &d2target.MText{
 			Text:     c.Label,
 			FontSize: LEGEND_FONT_SIZE,
 		}
 
 		dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
-
-		rowHeight := go2.IntMax(dims.Height, LEGEND_ICON_SIZE)
-		textY := currentY + rowHeight/2 + int(float64(dims.Height)*0.2)
+		textY := currentY + dims.Height/2
 
 		fmt.Fprintf(buf, `<text class="text" x="%d" y="%d" style="font-size: %dpx;">%s</text>`,
 			iconX+LEGEND_ICON_SIZE+LEGEND_PADDING, textY, LEGEND_FONT_SIZE,
 			html.EscapeString(c.Label))
 
-		currentY += rowHeight + LEGEND_ITEM_SPACING
-	}
-
-	if shapeCount > 0 && len(diagram.Legend.Connections) > 0 {
-		currentY += LEGEND_PADDING / 2
-	} else {
-		currentY += LEGEND_PADDING / 4
+		currentY += go2.IntMax(dims.Height, LEGEND_ICON_SIZE) + LEGEND_ITEM_SPACING
 	}
 
 	return nil
 }
 
+// renderLegendShapeIcon creates a small representation of a shape for the legend
+// This reuses the existing shape drawing code
 func renderLegendShapeIcon(s d2target.Shape, x, y int, diagramHash string, theme *d2themes.Theme) (string, error) {
+	// Create a miniature version of the shape
 	iconShape := s
-	const sizeFactor = 5
-	iconShape.Pos.X = 0
-	iconShape.Pos.Y = 0
-	iconShape.Width = LEGEND_ICON_SIZE * sizeFactor
-	iconShape.Height = LEGEND_ICON_SIZE * sizeFactor
+	
+	// Set the position and size for the legend icon
+	iconShape.X = x
+	iconShape.Y = y
+	iconShape.Width = LEGEND_ICON_SIZE
+	iconShape.Height = LEGEND_ICON_SIZE
+	
+	// Remove the label since we don't want it in the icon
 	iconShape.Label = ""
+	
+	// Create wrappers to capture the rendered SVG
 	buf := &bytes.Buffer{}
 	appendixBuf := &bytes.Buffer{}
-	finalBuf := &bytes.Buffer{}
-	fmt.Fprintf(finalBuf, `<g transform="translate(%d, %d) scale(%f)">`,
-		x, y, 1.0/sizeFactor)
+	
+	// Use the existing drawShape function to render the shape with its proper appearance
 	_, err := drawShape(buf, appendixBuf, diagramHash, iconShape, nil, theme)
 	if err != nil {
 		return "", err
 	}
-
-	fmt.Fprint(finalBuf, buf.String())
-
-	fmt.Fprint(finalBuf, `</g>`)
-
-	return finalBuf.String(), nil
+	
+	return buf.String(), nil
 }
 
+// renderLegendConnectionIcon creates a small representation of a connection for the legend
 func renderLegendConnectionIcon(c d2target.Connection, x, y int, theme *d2themes.Theme) (string, error) {
-	finalBuf := &bytes.Buffer{}
-
 	buf := &bytes.Buffer{}
 
-	const sizeFactor = 2
+	// Default stroke width and color
+	strokeWidth := 2.0
 
-	legendConn := *d2target.BaseConnection()
-
-	legendConn.ID = c.ID
-	legendConn.SrcArrow = c.SrcArrow
-	legendConn.DstArrow = c.DstArrow
-	legendConn.StrokeDash = c.StrokeDash
-	legendConn.StrokeWidth = c.StrokeWidth
-	legendConn.Stroke = c.Stroke
-	legendConn.Fill = c.Fill
-	legendConn.BorderRadius = c.BorderRadius
-	legendConn.Opacity = c.Opacity
-	legendConn.Animated = c.Animated
-
-	startX := 0.0
-	midY := 0.0
-	width := float64(LEGEND_ICON_SIZE * sizeFactor)
-
-	legendConn.Route = []*geo.Point{
-		{X: startX, Y: midY},
-		{X: startX + width, Y: midY},
+	// Default color
+	strokeColor := "#000000"
+	if c.Stroke != "" {
+		strokeColor = c.Stroke
+	} else if theme != nil {
+		strokeColor = theme.Colors.B4 // Use a theme color for connections
 	}
 
-	legendHash := fmt.Sprintf("legend-%s", hash(fmt.Sprintf("%s-%d-%d", c.ID, x, y)))
+	// Draw simple line to represent connection
+	startX := float64(x)
+	endX := float64(x + LEGEND_ICON_SIZE)
+	midY := float64(y)
 
-	markers := make(map[string]struct{})
-	idToShape := make(map[string]d2target.Shape)
+	fmt.Fprintf(buf, `<line x1="%f" y1="%f" x2="%f" y2="%f" stroke="%s" stroke-width="%f" />`,
+		startX, midY, endX, midY, strokeColor, strokeWidth)
 
-	fmt.Fprintf(finalBuf, `<g transform="translate(%d, %d) scale(%f)">`,
-		x, y, 1.0/sizeFactor)
-
-	_, err := drawConnection(buf, legendHash, legendConn, markers, idToShape, nil, theme)
-	if err != nil {
-		return "", err
+	// Add arrowhead if needed - check if either has an arrowhead that's not "none"
+	if c.SrcArrow != "none" || c.DstArrow != "none" {
+		// Draw destination arrowhead (right side)
+		fmt.Fprintf(buf, `<polygon points="%f,%f %f,%f %f,%f" fill="%s" />`,
+			endX-6, midY-3, endX, midY, endX-6, midY+3, strokeColor)
 	}
 
-	fmt.Fprint(finalBuf, buf.String())
+	return buf.String(), nil
+}
 
-	fmt.Fprint(finalBuf, `</g>`)
+// renderSimplifiedShape creates a simplified version of a shape for the legend
+func renderSimplifiedShape(buf *bytes.Buffer, s d2target.Shape, theme *d2themes.Theme) error {
+	// Get fill and stroke colors
+	fillColor := "#E8EAF1"   // Default fill color
+	strokeColor := "#CED3E5" // Default stroke color
 
-	return finalBuf.String(), nil
+	if s.Fill != "" {
+		fillColor = s.Fill
+	} else if theme != nil {
+		fillColor = theme.Colors.B5 // Use a theme color for fills
+	}
+
+	if s.Stroke != "" {
+		strokeColor = s.Stroke
+	} else if theme != nil {
+		strokeColor = theme.Colors.B4 // Use a theme color for strokes
+	}
+
+	// Create a simplified shape representation based on shape type
+	switch s.Type {
+	case d2target.ShapeCircle:
+		// Circle
+		circleEl := d2themes.NewThemableElement("circle", theme)
+		circleEl.Fill = fillColor
+		circleEl.Stroke = strokeColor
+		circleEl.Style = "stroke-width: 1px"
+		circleEl.Cx = float64(LEGEND_ICON_SIZE) / 2
+		circleEl.Cy = float64(LEGEND_ICON_SIZE) / 2
+		circleEl.R = float64(LEGEND_ICON_SIZE)/2 - 2
+		fmt.Fprint(buf, circleEl.Render())
+
+	case d2target.ShapeDiamond:
+		// Diamond shape using a simple polygon
+		size := float64(LEGEND_ICON_SIZE)
+		halfSize := size / 2
+
+		diamondEl := d2themes.NewThemableElement("polygon", theme)
+		diamondEl.Fill = fillColor
+		diamondEl.Stroke = strokeColor
+		diamondEl.Style = "stroke-width: 1px"
+		diamondEl.Points = fmt.Sprintf("%.1f,%.1f %.1f,%.1f %.1f,%.1f %.1f,%.1f",
+			halfSize, 2.0, // top
+			size-2.0, halfSize, // right
+			halfSize, size-2.0, // bottom
+			2.0, halfSize) // left
+		fmt.Fprint(buf, diamondEl.Render())
+
+	case d2target.ShapeCylinder:
+		// Simplified cylinder
+		fmt.Fprintf(buf, `<g>`)
+
+		// Main rectangle part (body of cylinder)
+		rectEl := d2themes.NewThemableElement("rect", theme)
+		rectEl.Fill = fillColor
+		rectEl.Stroke = strokeColor
+		rectEl.Style = "stroke-width: 1px"
+		rectEl.X = 2
+		rectEl.Y = 6
+		rectEl.Width = float64(LEGEND_ICON_SIZE - 4)
+		rectEl.Height = float64(LEGEND_ICON_SIZE - 10)
+		fmt.Fprint(buf, rectEl.Render())
+
+		// Top ellipse
+		ellipseEl := d2themes.NewThemableElement("ellipse", theme)
+		ellipseEl.Fill = fillColor
+		ellipseEl.Stroke = strokeColor
+		ellipseEl.Style = "stroke-width: 1px"
+		ellipseEl.Cx = float64(LEGEND_ICON_SIZE) / 2
+		ellipseEl.Cy = 6
+		ellipseEl.Rx = float64(LEGEND_ICON_SIZE-4) / 2
+		ellipseEl.Ry = 3
+		fmt.Fprint(buf, ellipseEl.Render())
+
+		fmt.Fprintf(buf, `</g>`)
+
+	default:
+		// Default rectangle for all other shapes
+		rectEl := d2themes.NewThemableElement("rect", theme)
+		rectEl.Fill = fillColor
+		rectEl.Stroke = strokeColor
+		rectEl.Style = "stroke-width: 1px"
+		rectEl.X = 2
+		rectEl.Y = 2
+		rectEl.Width = float64(LEGEND_ICON_SIZE - 4)
+		rectEl.Height = float64(LEGEND_ICON_SIZE - 4)
+
+		// Apply borderRadius appropriately
+		if s.Type != d2target.ShapeSquare && s.Type != d2target.ShapeRectangle {
+			rectEl.Rx = 4
+		}
+
+		fmt.Fprint(buf, rectEl.Render())
+	}
+
+	return nil
 }
 
 func arrowheadMarkerID(diagramHash string, isTarget bool, connection d2target.Connection) string {
@@ -2348,6 +2425,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	// add all appendix items afterwards so they are always on top
 	fmt.Fprint(buf, appendixItemBuf)
 
+	// Render legend if present
 	if diagram.Legend != nil && (len(diagram.Legend.Shapes) > 0 || len(diagram.Legend.Connections) > 0) {
 		legendBuf := &bytes.Buffer{}
 		err := renderLegend(legendBuf, diagram, diagramHash, inlineTheme)
@@ -2360,13 +2438,17 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	// Note: we always want this since we reference it on connections even if there end up being no masked labels
 	left, top, w, h := dimensions(diagram, pad)
 
+	// Adjust the width and height if the legend is present to ensure it's fully visible
 	if diagram.Legend != nil && (len(diagram.Legend.Shapes) > 0 || len(diagram.Legend.Connections) > 0) {
+		// Calculate dimensions needed for legend
 		tl, br := diagram.BoundingBox()
+		// Start with top padding and title height
 		totalHeight := LEGEND_PADDING + LEGEND_FONT_SIZE + LEGEND_ITEM_SPACING
 		maxLabelWidth := 0
 		itemCount := 0
 		ruler, _ := textmeasure.NewRuler()
 		if ruler != nil {
+			// Calculate height and width of legend
 			for _, s := range diagram.Legend.Shapes {
 				if s.Label == "" {
 					continue
@@ -2395,31 +2477,37 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 				itemCount++
 			}
 
+			// If we have items, remove the extra spacing from the last item and add bottom padding
 			if itemCount > 0 {
-				totalHeight -= LEGEND_ITEM_SPACING / 2
+				totalHeight -= LEGEND_ITEM_SPACING / 2 // Remove some of the last spacing
 			}
 
+			// Add bottom padding
 			totalHeight += LEGEND_PADDING
 
 			if totalHeight > 0 && maxLabelWidth > 0 {
 				legendWidth := LEGEND_PADDING*2 + LEGEND_ICON_SIZE + LEGEND_PADDING + maxLabelWidth
 
-				legendY := br.Y - totalHeight
+				// Calculate legend vertical position (centered)
+				legendY := tl.Y + (br.Y-tl.Y-totalHeight)/2
 				if legendY < tl.Y {
 					legendY = tl.Y
 				}
 
+				// Expand width to include legend to the right
 				legendRight := br.X + LEGEND_CORNER_PADDING + legendWidth
 				if left+w < legendRight {
 					w = legendRight - left + pad/2
 				}
 
+				// Make sure the top of the legend is visible
 				if legendY < top {
 					diffY := top - legendY
 					top -= diffY
 					h += diffY
 				}
 
+				// Make sure the bottom of the legend is visible
 				legendBottom := legendY + totalHeight
 				if top+h < legendBottom {
 					h = legendBottom - top + pad/2
