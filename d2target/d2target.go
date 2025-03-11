@@ -456,6 +456,16 @@ func (diagram Diagram) GetCorpus() string {
 		}
 	}
 
+	if diagram.Legend != nil {
+		corpus += "Legend"
+		for _, s := range diagram.Legend.Shapes {
+			corpus += s.Label
+		}
+		for _, c := range diagram.Legend.Connections {
+			corpus += c.Label
+		}
+	}
+
 	return corpus
 }
 

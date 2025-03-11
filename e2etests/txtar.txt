@@ -1127,3 +1127,45 @@ customer -> email_system: "Sends e-mails to"
 internet_banking_system.api_app -> email_system: "Sends e-mail using"
 internet_banking_system.database <-> internet_banking_system.api_app: "Reads from and writes to\n[SQL/TCP]"
 
+-- legend --
+vars: {
+  d2-legend: {
+    a: {
+      label: Microservice
+    }
+    b: Database {
+      shape: cylinder
+      style.stroke-dash: 2
+    }
+    a <-> b: Good relationship {
+      style.stroke: red
+      style.stroke-dash: 2
+      style.stroke-width: 1
+    }
+    a -> b: Bad relationship
+    a -> b: Tenuous {
+      target-arrowhead.shape: circle
+    }
+  }
+}
+
+api-1
+api-2
+
+api-1 -> postgres
+api-2 -> postgres
+
+postgres: {
+  shape: cylinder
+}
+postgres -> external: {
+  style.stroke: black
+}
+
+api-1 <-> api-2: {
+  style.stroke: red
+  style.stroke-dash: 2
+}
+api-1 -> api-3: {
+  target-arrowhead.shape: circle
+}
