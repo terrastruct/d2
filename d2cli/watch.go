@@ -438,7 +438,6 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			if len(svg) > 0 {
 				err = fmt.Errorf("failed to fully %scompile (rendering partial svg): %w", recompiledPrefix, err)
 			} else {
-				fmt.Println(recompiledPrefix)
 				err = fmt.Errorf("failed to %scompile: %w", recompiledPrefix, err)
 			}
 			errs = err.Error()

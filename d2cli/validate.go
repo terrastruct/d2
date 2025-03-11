@@ -14,7 +14,7 @@ func validateCmd(ctx context.Context, ms *xmain.State) (err error) {
 
 	ms.Opts = xmain.NewOpts(ms.Env, ms.Opts.Flags.Args()[1:])
 	if len(ms.Opts.Args) == 0 {
-		return xmain.UsageErrorf("validate must be passed an input file")
+		return xmain.UsageErrorf("input argument required")
 	}
 
 	inputPath := ms.Opts.Args[0]
