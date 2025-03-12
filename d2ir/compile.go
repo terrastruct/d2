@@ -1322,6 +1322,21 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 
 				if refctx.Key.Primary.Suspension != nil || refctx.Key.Value.Suspension != nil {
 					if !c.lazyGlobBeingApplied {
+						// Check if edge passes filter before applying suspension
+						if refctx.Key.Value.Map != nil && refctx.Key.Value.Map.HasFilter() {
+							if e.Map_ == nil {
+								e.Map_ = &Map{
+									parent: e,
+								}
+							}
+							c.mapRefContextStack = append(c.mapRefContextStack, refctx)
+							ok := c.ampersandFilterMap(e.Map_, refctx.Key.Value.Map, refctx.ScopeAST)
+							c.mapRefContextStack = c.mapRefContextStack[:len(c.mapRefContextStack)-1]
+							if !ok {
+								continue
+							}
+						}
+
 						var suspensionValue bool
 						if refctx.Key.Primary.Suspension != nil {
 							suspensionValue = refctx.Key.Primary.Suspension.Value
@@ -1334,6 +1349,8 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 						// And their ancestors
 						if !suspensionValue {
 							srcPath, dstPath := e.ID.SrcPath, e.ID.DstPath
+
+							// Make paths absolute if they're relative
 							container := ParentField(e)
 							if container != nil && container.Name.ScalarString() != "root" {
 								containerPath := []d2ast.String{}
@@ -1358,6 +1375,7 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 							srcObj := rootMap.GetField(srcPath...)
 							dstObj := rootMap.GetField(dstPath...)
 
+							// Unsuspend source node and all its ancestors
 							if srcObj != nil {
 								srcObj.suspended = false
 								parent := ParentField(srcObj)
@@ -1366,9 +1384,11 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 									parent = ParentField(parent)
 								}
 							}
+
+							// Unsuspend destination node and all its ancestors
 							if dstObj != nil {
 								dstObj.suspended = false
-								parent := ParentField(srcObj)
+								parent := ParentField(dstObj)
 								for parent != nil && parent.Name.ScalarString() != "root" {
 									parent.suspended = false
 									parent = ParentField(parent)

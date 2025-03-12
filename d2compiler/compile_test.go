@@ -5667,6 +5667,27 @@ a: {
 			},
 		},
 		{
+			name: "unsuspend-cross-container-edge-label",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a: {
+  b
+}
+c: {
+  d
+}
+a.b -> c.d: likes
+**: suspend
+(** -> **)[*]: suspend
+(** -> **)[*]: unsuspend {
+  &label: likes
+}
+`, ``)
+				assert.Equal(t, 4, len(g.Objects))
+				assert.Equal(t, 1, len(g.Edges))
+			},
+		},
+		{
 			name: "unsuspend-shape-label",
 			run: func(t *testing.T) {
 				g, _ := assertCompile(t, `
