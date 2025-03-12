@@ -61,7 +61,9 @@ func bodyPath(box *geo.Box) *svg.SvgPathContext {
 	bodyWidth := width
 	bodyHeight := height - bodyTop
 	bodyLeft := 0
-	cornerRadius := width * 0.175
+	// Ensure cornerRadius is constrained to a portion of the shortest dimension
+	// This prevents distorted corners when width is large compared to height
+	cornerRadius := math.Min(width*0.175, bodyHeight*0.25)
 
 	pc.StartAt(pc.Absolute(float64(bodyLeft), bodyTop+cornerRadius))
 
