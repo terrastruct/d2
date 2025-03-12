@@ -5634,6 +5634,21 @@ c
 			},
 		},
 		{
+			name: "unsuspend-edge-filter",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a -> b
+**: suspend
+(** -> **)[*]: suspend
+(* -> *)[*]: unsuspend {
+  &dst: a
+}
+`, ``)
+				assert.Equal(t, 0, len(g.Objects))
+				assert.Equal(t, 0, len(g.Edges))
+			},
+		},
+		{
 			name: "unsuspend-shape-label",
 			run: func(t *testing.T) {
 				g, _ := assertCompile(t, `

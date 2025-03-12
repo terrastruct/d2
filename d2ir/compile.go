@@ -1273,6 +1273,20 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 					continue
 				}
 
+				if refctx.Key.Value.Map != nil && refctx.Key.Value.Map.HasFilter() {
+					if e.Map_ == nil {
+						e.Map_ = &Map{
+							parent: e,
+						}
+					}
+					c.mapRefContextStack = append(c.mapRefContextStack, refctx)
+					ok := c.ampersandFilterMap(e.Map_, refctx.Key.Value.Map, refctx.ScopeAST)
+					c.mapRefContextStack = c.mapRefContextStack[:len(c.mapRefContextStack)-1]
+					if !ok {
+						continue
+					}
+				}
+
 				if refctx.Key.Primary.Suspension != nil || refctx.Key.Value.Suspension != nil {
 					if !c.lazyGlobBeingApplied {
 						var suspensionValue bool
