@@ -869,6 +869,22 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 			for _, part := range edge.ID.SrcPath {
 				srcParts = append(srcParts, part.ScalarString())
 			}
+
+			container := ParentField(edge)
+			if container != nil && container.Name.ScalarString() != "root" {
+				containerPath := []string{}
+				curr := container
+				for curr != nil && curr.Name.ScalarString() != "root" {
+					containerPath = append([]string{curr.Name.ScalarString()}, containerPath...)
+					curr = ParentField(curr)
+				}
+
+				srcStart := srcParts[0]
+				if !strings.EqualFold(srcStart, containerPath[0]) {
+					srcParts = append(containerPath, srcParts...)
+				}
+			}
+
 			srcPath := strings.Join(srcParts, ".")
 
 			return srcPath == filterValue
@@ -888,6 +904,23 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 			var dstParts []string
 			for _, part := range edge.ID.DstPath {
 				dstParts = append(dstParts, part.ScalarString())
+			}
+
+			// Find the container that holds this edge
+			// Build the absolute path by prepending the container's path
+			container := ParentField(edge)
+			if container != nil && container.Name.ScalarString() != "root" {
+				containerPath := []string{}
+				curr := container
+				for curr != nil && curr.Name.ScalarString() != "root" {
+					containerPath = append([]string{curr.Name.ScalarString()}, containerPath...)
+					curr = ParentField(curr)
+				}
+
+				dstStart := dstParts[0]
+				if !strings.EqualFold(dstStart, containerPath[0]) {
+					dstParts = append(containerPath, dstParts...)
+				}
 			}
 			dstPath := strings.Join(dstParts, ".")
 
@@ -1298,16 +1331,48 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 						e.suspended = suspensionValue
 
 						// If we're unsuspending an edge, we should also unsuspend its src and dst objects
+						// And their ancestors
 						if !suspensionValue {
 							srcPath, dstPath := e.ID.SrcPath, e.ID.DstPath
-							srcObj := refctx.ScopeMap.GetField(srcPath...)
-							dstObj := refctx.ScopeMap.GetField(dstPath...)
+							container := ParentField(e)
+							if container != nil && container.Name.ScalarString() != "root" {
+								containerPath := []d2ast.String{}
+								curr := container
+								for curr != nil && curr.Name.ScalarString() != "root" {
+									containerPath = append([]d2ast.String{curr.Name}, containerPath...)
+									curr = ParentField(curr)
+								}
+
+								if len(srcPath) > 0 && !strings.EqualFold(srcPath[0].ScalarString(), containerPath[0].ScalarString()) {
+									absSrcPath := append([]d2ast.String{}, containerPath...)
+									srcPath = append(absSrcPath, srcPath...)
+								}
+
+								if len(dstPath) > 0 && !strings.EqualFold(dstPath[0].ScalarString(), containerPath[0].ScalarString()) {
+									absDstPath := append([]d2ast.String{}, containerPath...)
+									dstPath = append(absDstPath, dstPath...)
+								}
+							}
+
+							rootMap := RootMap(refctx.ScopeMap)
+							srcObj := rootMap.GetField(srcPath...)
+							dstObj := rootMap.GetField(dstPath...)
 
 							if srcObj != nil {
 								srcObj.suspended = false
+								parent := ParentField(srcObj)
+								for parent != nil && parent.Name.ScalarString() != "root" {
+									parent.suspended = false
+									parent = ParentField(parent)
+								}
 							}
 							if dstObj != nil {
 								dstObj.suspended = false
+								parent := ParentField(srcObj)
+								for parent != nil && parent.Name.ScalarString() != "root" {
+									parent.suspended = false
+									parent = ParentField(parent)
+								}
 							}
 						}
 					}
