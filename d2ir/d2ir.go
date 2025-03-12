@@ -650,7 +650,41 @@ func (rc *RefContext) EdgeIndex() int {
 func (rc *RefContext) Equal(rc2 *RefContext) bool {
 	// We intentionally ignore edges here because the same glob can produce multiple RefContexts that should be treated  the same with only the edge as the difference.
 	// Same with ScopeMap.
-	return rc.Key.Equals(rc2.Key) && rc.Scope == rc2.Scope && rc.ScopeAST == rc2.ScopeAST
+	if !(rc.Key.Equals(rc2.Key) && rc.Scope == rc2.Scope && rc.ScopeAST == rc2.ScopeAST) {
+		return false
+	}
+
+	// Check if suspension values match for suspension operations
+	// We don't want these two to equal
+	// 1. *: suspend
+	// 2. *: unsuspend
+	hasSuspension1 := (rc.Key.Primary.Suspension != nil || rc.Key.Value.Suspension != nil)
+	hasSuspension2 := (rc2.Key.Primary.Suspension != nil || rc2.Key.Value.Suspension != nil)
+
+	if hasSuspension1 || hasSuspension2 {
+		var val1, val2 bool
+		if rc.Key.Primary.Suspension != nil {
+			val1 = rc.Key.Primary.Suspension.Value
+		} else if rc.Key.Value.Suspension != nil {
+			val1 = rc.Key.Value.Suspension.Value
+		}
+
+		if rc2.Key.Primary.Suspension != nil {
+			val2 = rc2.Key.Primary.Suspension.Value
+		} else if rc2.Key.Value.Suspension != nil {
+			val2 = rc2.Key.Value.Suspension.Value
+		}
+
+		if hasSuspension1 && hasSuspension2 && val1 != val2 {
+			return false
+		}
+
+		if hasSuspension1 != hasSuspension2 {
+			return false
+		}
+	}
+
+	return true
 }
 
 func (m *Map) FieldCountRecursive() int {

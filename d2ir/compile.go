@@ -1285,12 +1285,10 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 
 						// If we're unsuspending an edge, we should also unsuspend its src and dst objects
 						if !suspensionValue {
-							// Find the source and destination objects
 							srcPath, dstPath := e.ID.SrcPath, e.ID.DstPath
 							srcObj := refctx.ScopeMap.GetField(srcPath...)
 							dstObj := refctx.ScopeMap.GetField(dstPath...)
 
-							// Unsuspend the objects
 							if srcObj != nil {
 								srcObj.suspended = false
 							}

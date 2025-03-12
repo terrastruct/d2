@@ -5618,6 +5618,44 @@ d -> d: "suspend"
 			},
 		},
 		{
+			name: "unsuspend-edge-label",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a -> b: hello
+c
+**: suspend
+(** -> **)[*]: suspend
+
+(* -> *)[*]: unsuspend
+`, ``)
+				assert.Equal(t, 2, len(g.Objects))
+				assert.Equal(t, 1, len(g.Edges))
+				assert.Equal(t, "hello", g.Edges[0].Label.Value)
+			},
+		},
+		{
+			name: "unsuspend-shape-label",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a: hello
+*: suspend
+*: unsuspend
+`, ``)
+				assert.Equal(t, 1, len(g.Objects))
+				assert.Equal(t, "hello", g.Objects[0].Label.Value)
+			},
+		},
+		{
+			name: "suspend-shape",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a: hello
+*: suspend
+`, ``)
+				assert.Equal(t, 0, len(g.Objects))
+			},
+		},
+		{
 			name: "edge-glob-ampersand-filter/1",
 			run: func(t *testing.T) {
 				g, _ := assertCompile(t, `
