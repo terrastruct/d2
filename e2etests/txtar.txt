@@ -1169,3 +1169,21 @@ api-1 <-> api-2: {
 api-1 -> api-3: {
   target-arrowhead.shape: circle
 }
+
+-- dark-theme-md --
+
+vars: {
+	d2-config: {
+		dark-theme-id: 200
+	}
+}
+a.shape: rectangle
+a: |md
+  # hey
+|
+
+-- small-c4-person --
+
+a.shape: c4-person
+a: c4-person
+a.width: 180

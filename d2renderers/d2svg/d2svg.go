@@ -1746,9 +1746,10 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			}
 			if !color.IsThemeColor(targetShape.Color) {
 				styles = append(styles, fmt.Sprintf(`color:%s`, targetShape.Color))
-			} else {
+			} else if inlineTheme != nil {
 				styles = append(styles, fmt.Sprintf(`color:%s`, d2themes.ResolveThemeColor(*inlineTheme, targetShape.Color)))
 			}
+			// When using dark theme, inlineTheme is nil and we rely on CSS variables
 
 			mdEl.Style = strings.Join(styles, ";")
 
