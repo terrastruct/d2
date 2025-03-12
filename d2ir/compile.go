@@ -1275,10 +1275,28 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 
 				if refctx.Key.Primary.Suspension != nil || refctx.Key.Value.Suspension != nil {
 					if !c.lazyGlobBeingApplied {
+						var suspensionValue bool
 						if refctx.Key.Primary.Suspension != nil {
-							e.suspended = refctx.Key.Primary.Suspension.Value
+							suspensionValue = refctx.Key.Primary.Suspension.Value
 						} else {
-							e.suspended = refctx.Key.Value.Suspension.Value
+							suspensionValue = refctx.Key.Value.Suspension.Value
+						}
+						e.suspended = suspensionValue
+
+						// If we're unsuspending an edge, we should also unsuspend its src and dst objects
+						if !suspensionValue {
+							// Find the source and destination objects
+							srcPath, dstPath := e.ID.SrcPath, e.ID.DstPath
+							srcObj := refctx.ScopeMap.GetField(srcPath...)
+							dstObj := refctx.ScopeMap.GetField(dstPath...)
+
+							// Unsuspend the objects
+							if srcObj != nil {
+								srcObj.suspended = false
+							}
+							if dstObj != nil {
+								dstObj.suspended = false
+							}
 						}
 					}
 				}
@@ -1309,7 +1327,7 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 				}
 				c.compileField(e.Map_, refctx.Key.EdgeKey, refctx)
 			} else {
-				if refctx.Key.Primary.Unbox() != nil {
+				if refctx.Key.Primary.Unbox() != nil && refctx.Key.Primary.Suspension == nil {
 					if c.ignoreLazyGlob(e) {
 						return
 					}
@@ -1330,7 +1348,7 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 					c.mapRefContextStack = append(c.mapRefContextStack, refctx)
 					c.compileMap(e.Map_, refctx.Key.Value.Map, refctx.ScopeAST)
 					c.mapRefContextStack = c.mapRefContextStack[:len(c.mapRefContextStack)-1]
-				} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
+				} else if refctx.Key.Value.ScalarBox().Unbox() != nil && refctx.Key.Value.Suspension == nil {
 					if c.ignoreLazyGlob(e) {
 						return
 					}
