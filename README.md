@@ -267,6 +267,7 @@ let us know and we'll be happy to include it here!
 - **VitePress Plugin**: [https://github.com/BadgerHobbs/vitepress-plugin-d2](https://github.com/BadgerHobbs/vitepress-plugin-d2)
 - **Zed extension**: [https://github.com/gabeidx/zed-d2](https://github.com/gabeidx/zed-d2)
 - **Hexo blog extension**: [https://github.com/leverimmy/hexo-d2](https://github.com/leverimmy/hexo-d2)
+- **Rehype Plugin**: [https://github.com/stereobooster/beoe/tree/main/packages/rehype-d2](https://github.com/stereobooster/beoe/tree/main/packages/rehype-d2)
 
 ### Misc
 
