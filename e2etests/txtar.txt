@@ -1187,3 +1187,37 @@ a: |md
 a.shape: c4-person
 a: c4-person
 a.width: 180
+
+-- c4-person-label --
+c4mdperson: |md
+## Personal Banking Customer
+
+[person]
+
+A customer of the bank, with personal bank accounts
+  | {
+    shape: c4-person
+    label.near: center-center
+  }
+
+c4mdperson2: |md
+## Personal Banking Customer
+
+[person]
+
+A customer of the bank, with personal bank accounts
+  | {
+    shape: c4-person
+    label.near: top-center
+  }
+
+c4mdperson3: |md
+## Personal Banking Customer
+
+[person]
+
+A customer of the bank, with personal bank accounts
+  | {
+    shape: c4-person
+    label.near: bottom-center
+  }
