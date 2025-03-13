@@ -16,10 +16,10 @@
       "type": "c4-person",
       "pos": {
         "x": 12,
-        "y": 935
+        "y": 900
       },
       "width": 336,
-      "height": 328,
+      "height": 286,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 1,
@@ -61,7 +61,7 @@
         "y": 12
       },
       "width": 139,
-      "height": 132,
+      "height": 107,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 1,
@@ -100,7 +100,7 @@
       "type": "person",
       "pos": {
         "x": 113,
-        "y": 750
+        "y": 715
       },
       "width": 134,
       "height": 89,
@@ -142,10 +142,10 @@
       "type": "rectangle",
       "pos": {
         "x": 256,
-        "y": 229
+        "y": 204
       },
       "width": 250,
-      "height": 451,
+      "height": 441,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -184,10 +184,10 @@
       "type": "c4-person",
       "pos": {
         "x": 339,
-        "y": 279
+        "y": 254
       },
       "width": 84,
-      "height": 101,
+      "height": 91,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 1,
@@ -226,7 +226,7 @@
       "type": "c4-person",
       "pos": {
         "x": 306,
-        "y": 450
+        "y": 415
       },
       "width": 150,
       "height": 180,
@@ -292,11 +292,11 @@
       "route": [
         {
           "x": 180,
-          "y": 865
+          "y": 830
         },
         {
           "x": 180,
-          "y": 920
+          "y": 900
         }
       ],
       "animated": false,
@@ -331,19 +331,19 @@
       "route": [
         {
           "x": 258,
-          "y": 144
+          "y": 119
         },
         {
           "x": 257.5830078125,
-          "y": 184
+          "y": 159
         },
         {
           "x": 180,
-          "y": 184
+          "y": 159
         },
         {
           "x": 180,
-          "y": 750
+          "y": 715
         }
       ],
       "animated": false,
@@ -378,19 +378,19 @@
       "route": [
         {
           "x": 304,
-          "y": 144
+          "y": 119
         },
         {
           "x": 303.9159851074219,
-          "y": 184
+          "y": 159
         },
         {
           "x": 381.5,
-          "y": 184
+          "y": 159
         },
         {
           "x": 382,
-          "y": 279
+          "y": 254
         }
       ],
       "animated": false,
@@ -425,11 +425,11 @@
       "route": [
         {
           "x": 381,
-          "y": 381
+          "y": 345
         },
         {
           "x": 382,
-          "y": 449
+          "y": 415
         }
       ],
       "animated": false,
