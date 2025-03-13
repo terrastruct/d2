@@ -38,13 +38,20 @@ func (s shapeC4Person) GetInnerBox() *geo.Box {
 	headCenterY := height * 0.18
 	bodyTop := headCenterY + headRadius*0.8
 
-	tl := s.Box.TopLeft.Copy()
-	horizontalPadding := width * 0.1
-	tl.X += horizontalPadding
-	tl.Y += bodyTop + height*0.05
+	// Use a small fixed percentage instead of the full corner radius
+	horizontalPadding := width * 0.05 // 5% padding
 
+	tl := s.Box.TopLeft.Copy()
+	tl.X += horizontalPadding
+
+	// Add vertical padding
+	tl.Y += bodyTop + height*0.03
+
+	// Width minus padding on both sides
 	innerWidth := width - (horizontalPadding * 2)
-	innerHeight := height - tl.Y + s.Box.TopLeft.Y - (height * 0.05)
+
+	// Add bottom padding
+	innerHeight := height - (tl.Y - s.Box.TopLeft.Y) - (height * 0.03)
 
 	return geo.NewBox(tl, innerWidth, innerHeight)
 }
@@ -140,17 +147,23 @@ func (s shapeC4Person) GetSVGPathData() []string {
 func (s shapeC4Person) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	contentWidth := width + paddingX
 	contentHeight := height + paddingY
-	totalWidth := contentWidth / 0.8
+
+	// Account for 10% total horizontal padding (5% on each side)
+	totalWidth := contentWidth / 0.9
 	headRadius := totalWidth * 0.22
-	bodyTop := totalWidth*0.18 + headRadius*0.8
-	verticalPaddingRatio := 0.1 // 5% top + 5% bottom
-	totalHeight := (contentHeight + bodyTop) / (1 - verticalPaddingRatio)
+	headCenterY := totalWidth * 0.18
+	bodyTop := headCenterY + headRadius*0.8
+
+	// Include vertical padding from GetInnerBox
+	verticalPadding := totalWidth * 0.06 // 3% top + 3% bottom
+	totalHeight := contentHeight + bodyTop + verticalPadding
+
 	minHeight := totalWidth * 1.2
 	if totalHeight < minHeight {
 		totalHeight = minHeight
 	}
-	totalWidth, totalHeight = LimitAR(totalWidth, totalHeight, C4_PERSON_AR_LIMIT)
 
+	totalWidth, totalHeight = LimitAR(totalWidth, totalHeight, C4_PERSON_AR_LIMIT)
 	return math.Ceil(totalWidth), math.Ceil(totalHeight)
 }
 
