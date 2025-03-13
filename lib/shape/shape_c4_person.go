@@ -138,16 +138,19 @@ func (s shapeC4Person) GetSVGPathData() []string {
 }
 
 func (s shapeC4Person) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
-	totalWidth := width + paddingX
-	totalHeight := height + paddingY
-
-	if totalHeight < totalWidth*0.8 {
-		totalHeight = totalWidth * 0.8
+	contentWidth := width + paddingX
+	contentHeight := height + paddingY
+	totalWidth := contentWidth / 0.8
+	headRadius := totalWidth * 0.22
+	bodyTop := totalWidth*0.18 + headRadius*0.8
+	verticalPaddingRatio := 0.1 // 5% top + 5% bottom
+	totalHeight := (contentHeight + bodyTop) / (1 - verticalPaddingRatio)
+	minHeight := totalWidth * 1.2
+	if totalHeight < minHeight {
+		totalHeight = minHeight
 	}
-
-	totalHeight *= 1.4
-
 	totalWidth, totalHeight = LimitAR(totalWidth, totalHeight, C4_PERSON_AR_LIMIT)
+
 	return math.Ceil(totalWidth), math.Ceil(totalHeight)
 }
 
