@@ -158,7 +158,10 @@ func (s shapeC4Person) GetDimensionsToFit(width, height, paddingX, paddingY floa
 	verticalPadding := totalWidth * 0.06 // 3% top + 3% bottom
 	totalHeight := contentHeight + bodyTop + verticalPadding
 
-	minHeight := totalWidth * 1.2
+	// Calculate minimum height based on actual proportions
+	// Head height: 2 * headRadius = 0.44 * width
+	// Body should be at least half the width
+	minHeight := totalWidth * 0.95 // Reduced from 1.2
 	if totalHeight < minHeight {
 		totalHeight = minHeight
 	}
@@ -168,5 +171,5 @@ func (s shapeC4Person) GetDimensionsToFit(width, height, paddingX, paddingY floa
 }
 
 func (s shapeC4Person) GetDefaultPadding() (paddingX, paddingY float64) {
-	return 20, defaultPadding * 1.5
+	return 10, defaultPadding
 }
