@@ -16,7 +16,7 @@
       "type": "c4-person",
       "pos": {
         "x": 0,
-        "y": 0
+        "y": 18
       },
       "width": 410,
       "height": 390,
@@ -58,7 +58,7 @@
       "type": "c4-person",
       "pos": {
         "x": 470,
-        "y": 0
+        "y": 18
       },
       "width": 410,
       "height": 390,
@@ -100,7 +100,7 @@
       "type": "c4-person",
       "pos": {
         "x": 940,
-        "y": 0
+        "y": 18
       },
       "width": 410,
       "height": 390,
@@ -136,9 +136,514 @@
       "labelPosition": "INSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
+    },
+    {
+      "id": "customer1",
+      "type": "c4-person",
+      "pos": {
+        "x": 1410,
+        "y": 0
+      },
+      "width": 448,
+      "height": 426,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B3",
+      "stroke": "B1",
+      "animated": false,
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "## Personal Banking Customer\n[person]\n\nA customer of the bank, with pekkrsonal bank ccountskks.",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "markdown",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 388,
+      "labelHeight": 119,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "customer2",
+      "type": "c4-person",
+      "pos": {
+        "x": 1137,
+        "y": 526
+      },
+      "width": 457,
+      "height": 453,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B3",
+      "stroke": "B1",
+      "animated": false,
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "## Personal Banking Customerk\n[person]\n\nA customer of the bank, with pekkrsonal bank accountskks.\n\nA customer of the bank, with pekkrsonal bank accountskks.\n\nA customer of the bank, with pekkrsonal bank accountskks.",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "markdown",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 396,
+      "labelHeight": 199,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "customer3",
+      "type": "c4-person",
+      "pos": {
+        "x": 1147,
+        "y": 1079
+      },
+      "width": 457,
+      "height": 434,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B3",
+      "stroke": "B1",
+      "animated": false,
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "## Personal Banking Customer\n[person]\n\nA customer of the bank, with pekkrsonal bank accountskks.",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "markdown",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 396,
+      "labelHeight": 119,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "customer4",
+      "type": "c4-person",
+      "pos": {
+        "x": 1426,
+        "y": 1613
+      },
+      "width": 457,
+      "height": 434,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B3",
+      "stroke": "B1",
+      "animated": false,
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "## Personal Banking Customer\n[person]\n\nA customer of the bank, with pekkrsonal bank accountskks.",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "markdown",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 396,
+      "labelHeight": 119,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     }
   ],
-  "connections": [],
+  "connections": [
+    {
+      "id": "(customer1 -> customer2)[0]",
+      "src": "customer1",
+      "srcArrow": "none",
+      "dst": "customer2",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "link": "",
+      "route": [
+        {
+          "x": 1433,
+          "y": 410
+        },
+        {
+          "x": 1379,
+          "y": 462.79998779296875
+        },
+        {
+          "x": 1365.5999755859375,
+          "y": 486
+        },
+        {
+          "x": 1366,
+          "y": 526
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(customer2 -> customer3)[0]",
+      "src": "customer2",
+      "srcArrow": "none",
+      "dst": "customer3",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "link": "",
+      "route": [
+        {
+          "x": 1358,
+          "y": 979
+        },
+        {
+          "x": 1356,
+          "y": 1019
+        },
+        {
+          "x": 1356.4000244140625,
+          "y": 1039.199951171875
+        },
+        {
+          "x": 1360,
+          "y": 1080
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(customer3 -> customer4)[0]",
+      "src": "customer3",
+      "srcArrow": "none",
+      "dst": "customer4",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "link": "",
+      "route": [
+        {
+          "x": 1375,
+          "y": 1513
+        },
+        {
+          "x": 1375.4000244140625,
+          "y": 1553
+        },
+        {
+          "x": 1411.800048828125,
+          "y": 1597.800048828125
+        },
+        {
+          "x": 1557,
+          "y": 1737
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(customer4 -> customer1)[0]",
+      "src": "customer4",
+      "srcArrow": "none",
+      "dst": "customer1",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "link": "",
+      "route": [
+        {
+          "x": 1654,
+          "y": 1613
+        },
+        {
+          "x": 1654,
+          "y": 1573
+        },
+        {
+          "x": 1654,
+          "y": 1509.5999755859375
+        },
+        {
+          "x": 1654,
+          "y": 1429.5
+        },
+        {
+          "x": 1654,
+          "y": 1349.4000244140625
+        },
+        {
+          "x": 1654,
+          "y": 1242.5999755859375
+        },
+        {
+          "x": 1654,
+          "y": 1162.5
+        },
+        {
+          "x": 1654,
+          "y": 1082.4000244140625
+        },
+        {
+          "x": 1654,
+          "y": 973.7000122070312
+        },
+        {
+          "x": 1654,
+          "y": 890.75
+        },
+        {
+          "x": 1654,
+          "y": 807.7999877929688
+        },
+        {
+          "x": 1653.199951171875,
+          "y": 466
+        },
+        {
+          "x": 1650,
+          "y": 426
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(customer1 -> customer3)[0]",
+      "src": "customer1",
+      "srcArrow": "none",
+      "dst": "customer3",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "link": "",
+      "route": [
+        {
+          "x": 1634,
+          "y": 426
+        },
+        {
+          "x": 1634,
+          "y": 466
+        },
+        {
+          "x": 1634,
+          "y": 531.2999877929688
+        },
+        {
+          "x": 1634,
+          "y": 614.25
+        },
+        {
+          "x": 1634,
+          "y": 697.2000122070312
+        },
+        {
+          "x": 1602.199951171875,
+          "y": 1062.199951171875
+        },
+        {
+          "x": 1475,
+          "y": 1195
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(customer3 -> customer2)[0]",
+      "src": "customer3",
+      "srcArrow": "none",
+      "dst": "customer2",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "link": "",
+      "route": [
+        {
+          "x": 1453,
+          "y": 1116
+        },
+        {
+          "x": 1482.4000244140625,
+          "y": 1046.4000244140625
+        },
+        {
+          "x": 1485.4000244140625,
+          "y": 1019
+        },
+        {
+          "x": 1468,
+          "y": 979
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    }
+  ],
   "root": {
     "id": "",
     "type": "",

@@ -1221,3 +1221,46 @@ A customer of the bank, with personal bank accounts
     shape: c4-person
     label.near: bottom-center
   }
+
+customer1: |md
+  ## Personal Banking Customer
+  [person]
+
+  A customer of the bank, with pekkrsonal bank ccountskks.
+| {
+  shape: c4-person
+}
+
+customer2: |md
+  ## Personal Banking Customerk
+  [person]
+
+  A customer of the bank, with pekkrsonal bank accountskks.
+
+  A customer of the bank, with pekkrsonal bank accountskks.
+
+  A customer of the bank, with pekkrsonal bank accountskks.
+| {
+  shape: c4-person
+}
+
+customer3: |md
+  ## Personal Banking Customer
+  [person]
+
+  A customer of the bank, with pekkrsonal bank accountskks.
+| {
+  shape: c4-person
+}
+
+customer4: |md
+  ## Personal Banking Customer
+  [person]
+
+  A customer of the bank, with pekkrsonal bank accountskks.
+| {
+  shape: c4-person
+}
+
+customer1 -> customer2 -> customer3 -> customer4
+customer4 -> customer1 -> customer3 -> customer2

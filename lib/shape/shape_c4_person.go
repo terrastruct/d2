@@ -11,6 +11,14 @@ import (
 // Optimal value for circular arc approximation with cubic bezier curves
 const kCircleApprox = 0.5522847498307936 // 4*(math.Sqrt(2)-1)/3
 
+// Constants to match frontend implementation
+const (
+	C4_PERSON_AR_LIMIT   = 1.5
+	HEAD_RADIUS_FACTOR   = 0.22
+	BODY_TOP_FACTOR      = 0.8
+	CORNER_RADIUS_FACTOR = 0.175
+)
+
 type shapeC4Person struct {
 	*baseShape
 }
@@ -26,32 +34,25 @@ func NewC4Person(box *geo.Box) Shape {
 	return shape
 }
 
-const (
-	C4_PERSON_AR_LIMIT = 1.5
-)
-
 func (s shapeC4Person) GetInnerBox() *geo.Box {
 	width := s.Box.Width
 	height := s.Box.Height
 
-	headRadius := width * 0.22
-	headCenterY := height * 0.18
-	bodyTop := headCenterY + headRadius*0.8
+	headRadius := width * HEAD_RADIUS_FACTOR
+	headCenterY := headRadius
+	bodyTop := headCenterY + headRadius*BODY_TOP_FACTOR
 
-	// Use a small fixed percentage instead of the full corner radius
-	horizontalPadding := width * 0.05 // 5% padding
+	// Horizontal padding = 5% of width
+	horizontalPadding := width * 0.05
+	// Vertical padding = 3% of height
+	verticalPadding := height * 0.03
 
 	tl := s.Box.TopLeft.Copy()
 	tl.X += horizontalPadding
+	tl.Y += bodyTop + verticalPadding
 
-	// Add vertical padding
-	tl.Y += bodyTop + height*0.03
-
-	// Width minus padding on both sides
 	innerWidth := width - (horizontalPadding * 2)
-
-	// Add bottom padding
-	innerHeight := height - (tl.Y - s.Box.TopLeft.Y) - (height * 0.03)
+	innerHeight := height - bodyTop - (verticalPadding * 2)
 
 	return geo.NewBox(tl, innerWidth, innerHeight)
 }
@@ -62,15 +63,15 @@ func bodyPath(box *geo.Box) *svg.SvgPathContext {
 
 	pc := svg.NewSVGPathContext(box.TopLeft, 1, 1)
 
-	headRadius := width * 0.22
-	headCenterY := height * 0.18
-	bodyTop := headCenterY + headRadius*0.8
+	headRadius := width * HEAD_RADIUS_FACTOR
+	headCenterY := headRadius
+	bodyTop := headCenterY + headRadius*BODY_TOP_FACTOR
 	bodyWidth := width
 	bodyHeight := height - bodyTop
 	bodyLeft := 0
-	// Ensure cornerRadius is constrained to a portion of the shortest dimension
-	// This prevents distorted corners when width is large compared to height
-	cornerRadius := math.Min(width*0.175, bodyHeight*0.25)
+
+	// Use the same corner radius calculation as frontend
+	cornerRadius := math.Min(width*CORNER_RADIUS_FACTOR, bodyHeight*0.25)
 
 	pc.StartAt(pc.Absolute(float64(bodyLeft), bodyTop+cornerRadius))
 
@@ -88,13 +89,12 @@ func bodyPath(box *geo.Box) *svg.SvgPathContext {
 
 func headPath(box *geo.Box) *svg.SvgPathContext {
 	width := box.Width
-	height := box.Height
 
 	pc := svg.NewSVGPathContext(box.TopLeft, 1, 1)
 
-	headRadius := width * 0.22
+	headRadius := width * HEAD_RADIUS_FACTOR
 	headCenterX := width / 2
-	headCenterY := height * 0.18
+	headCenterY := headRadius
 
 	pc.StartAt(pc.Absolute(headCenterX, headCenterY-headRadius))
 
@@ -123,13 +123,12 @@ func headPath(box *geo.Box) *svg.SvgPathContext {
 
 func (s shapeC4Person) Perimeter() []geo.Intersectable {
 	width := s.Box.Width
-	height := s.Box.Height
 
 	bodyPerimeter := bodyPath(s.Box).Path
 
-	headRadius := width * 0.22
+	headRadius := width * HEAD_RADIUS_FACTOR
 	headCenterX := s.Box.TopLeft.X + width/2
-	headCenterY := s.Box.TopLeft.Y + height*0.18
+	headCenterY := s.Box.TopLeft.Y + headRadius
 	headCenter := geo.NewPoint(headCenterX, headCenterY)
 
 	headEllipse := geo.NewEllipse(headCenter, headRadius, headRadius)
@@ -150,18 +149,18 @@ func (s shapeC4Person) GetDimensionsToFit(width, height, paddingX, paddingY floa
 
 	// Account for 10% total horizontal padding (5% on each side)
 	totalWidth := contentWidth / 0.9
-	headRadius := totalWidth * 0.22
-	headCenterY := totalWidth * 0.18
-	bodyTop := headCenterY + headRadius*0.8
+	headRadius := totalWidth * HEAD_RADIUS_FACTOR
 
-	// Include vertical padding from GetInnerBox
+	// Use positioning matching frontend
+	headCenterY := headRadius
+	bodyTop := headCenterY + headRadius*BODY_TOP_FACTOR
+
+	// Include vertical padding
 	verticalPadding := totalWidth * 0.06 // 3% top + 3% bottom
 	totalHeight := contentHeight + bodyTop + verticalPadding
 
-	// Calculate minimum height based on actual proportions
-	// Head height: 2 * headRadius = 0.44 * width
-	// Body should be at least half the width
-	minHeight := totalWidth * 0.95 // Reduced from 1.2
+	// Calculate minimum height
+	minHeight := totalWidth * 0.95
 	if totalHeight < minHeight {
 		totalHeight = minHeight
 	}
