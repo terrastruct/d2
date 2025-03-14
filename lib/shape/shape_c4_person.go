@@ -38,21 +38,21 @@ func (s shapeC4Person) GetInnerBox() *geo.Box {
 	width := s.Box.Width
 	height := s.Box.Height
 
-	headRadius := width * HEAD_RADIUS_FACTOR
+	headRadius := math.Round(width * HEAD_RADIUS_FACTOR)
 	headCenterY := headRadius
-	bodyTop := headCenterY + headRadius*BODY_TOP_FACTOR
+	bodyTop := math.Round(headCenterY + headRadius*BODY_TOP_FACTOR)
 
 	// Horizontal padding = 5% of width
-	horizontalPadding := width * 0.05
+	horizontalPadding := math.Round(width * 0.05)
 	// Vertical padding = 3% of height
-	verticalPadding := height * 0.03
+	verticalPadding := math.Round(height * 0.03)
 
 	tl := s.Box.TopLeft.Copy()
 	tl.X += horizontalPadding
 	tl.Y += bodyTop + verticalPadding
 
-	innerWidth := width - (horizontalPadding * 2)
-	innerHeight := height - bodyTop - (verticalPadding * 2)
+	innerWidth := math.Round(width - (horizontalPadding * 2))
+	innerHeight := math.Round(height - bodyTop - (verticalPadding * 2))
 
 	return geo.NewBox(tl, innerWidth, innerHeight)
 }
@@ -63,15 +63,14 @@ func bodyPath(box *geo.Box) *svg.SvgPathContext {
 
 	pc := svg.NewSVGPathContext(box.TopLeft, 1, 1)
 
-	headRadius := width * HEAD_RADIUS_FACTOR
+	headRadius := math.Round(width * HEAD_RADIUS_FACTOR)
 	headCenterY := headRadius
-	bodyTop := headCenterY + headRadius*BODY_TOP_FACTOR
+	bodyTop := math.Round(headCenterY + headRadius*BODY_TOP_FACTOR)
 	bodyWidth := width
-	bodyHeight := height - bodyTop
+	bodyHeight := math.Round(height - bodyTop)
 	bodyLeft := 0
 
-	// Use the same corner radius calculation as frontend
-	cornerRadius := math.Min(width*CORNER_RADIUS_FACTOR, bodyHeight*0.25)
+	cornerRadius := math.Round(math.Min(width*CORNER_RADIUS_FACTOR, bodyHeight*0.25))
 
 	pc.StartAt(pc.Absolute(float64(bodyLeft), bodyTop+cornerRadius))
 
@@ -92,8 +91,8 @@ func headPath(box *geo.Box) *svg.SvgPathContext {
 
 	pc := svg.NewSVGPathContext(box.TopLeft, 1, 1)
 
-	headRadius := width * HEAD_RADIUS_FACTOR
-	headCenterX := width / 2
+	headRadius := math.Round(width * HEAD_RADIUS_FACTOR)
+	headCenterX := math.Round(width / 2)
 	headCenterY := headRadius
 
 	pc.StartAt(pc.Absolute(headCenterX, headCenterY-headRadius))
@@ -126,8 +125,8 @@ func (s shapeC4Person) Perimeter() []geo.Intersectable {
 
 	bodyPerimeter := bodyPath(s.Box).Path
 
-	headRadius := width * HEAD_RADIUS_FACTOR
-	headCenterX := s.Box.TopLeft.X + width/2
+	headRadius := math.Round(width * HEAD_RADIUS_FACTOR)
+	headCenterX := s.Box.TopLeft.X + math.Round(width/2)
 	headCenterY := s.Box.TopLeft.Y + headRadius
 	headCenter := geo.NewPoint(headCenterX, headCenterY)
 
@@ -148,19 +147,19 @@ func (s shapeC4Person) GetDimensionsToFit(width, height, paddingX, paddingY floa
 	contentHeight := height + paddingY
 
 	// Account for 10% total horizontal padding (5% on each side)
-	totalWidth := contentWidth / 0.9
-	headRadius := totalWidth * HEAD_RADIUS_FACTOR
+	totalWidth := math.Round(contentWidth / 0.9)
+	headRadius := math.Round(totalWidth * HEAD_RADIUS_FACTOR)
 
 	// Use positioning matching frontend
 	headCenterY := headRadius
-	bodyTop := headCenterY + headRadius*BODY_TOP_FACTOR
+	bodyTop := math.Round(headCenterY + headRadius*BODY_TOP_FACTOR)
 
 	// Include vertical padding
-	verticalPadding := totalWidth * 0.06 // 3% top + 3% bottom
-	totalHeight := contentHeight + bodyTop + verticalPadding
+	verticalPadding := math.Round(totalWidth * 0.06) // 3% top + 3% bottom
+	totalHeight := math.Round(contentHeight + bodyTop + verticalPadding)
 
 	// Calculate minimum height
-	minHeight := totalWidth * 0.95
+	minHeight := math.Round(totalWidth * 0.95)
 	if totalHeight < minHeight {
 		totalHeight = minHeight
 	}
