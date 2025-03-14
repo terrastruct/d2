@@ -16,10 +16,10 @@
       "type": "c4-person",
       "pos": {
         "x": 12,
-        "y": 937
+        "y": 938
       },
       "width": 336,
-      "height": 341,
+      "height": 342,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 1,
@@ -100,7 +100,7 @@
       "type": "person",
       "pos": {
         "x": 113,
-        "y": 752
+        "y": 753
       },
       "width": 134,
       "height": 89,
@@ -145,7 +145,7 @@
         "y": 229
       },
       "width": 250,
-      "height": 453,
+      "height": 454,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -183,11 +183,11 @@
       "id": "styling.c4styled",
       "type": "c4-person",
       "pos": {
-        "x": 340,
+        "x": 339,
         "y": 279
       },
-      "width": 83,
-      "height": 103,
+      "width": 84,
+      "height": 104,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 1,
@@ -226,7 +226,7 @@
       "type": "c4-person",
       "pos": {
         "x": 306,
-        "y": 452
+        "y": 453
       },
       "width": 150,
       "height": 180,
@@ -292,11 +292,11 @@
       "route": [
         {
           "x": 180,
-          "y": 867
+          "y": 868
         },
         {
           "x": 180,
-          "y": 937
+          "y": 938
         }
       ],
       "animated": false,
@@ -331,7 +331,7 @@
       "route": [
         {
           "x": 258,
-          "y": 144
+          "y": 143
         },
         {
           "x": 257.5830078125,
@@ -343,7 +343,7 @@
         },
         {
           "x": 180,
-          "y": 752
+          "y": 753
         }
       ],
       "animated": false,
@@ -378,7 +378,7 @@
       "route": [
         {
           "x": 304,
-          "y": 144
+          "y": 143
         },
         {
           "x": 303.9159851074219,
@@ -425,11 +425,11 @@
       "route": [
         {
           "x": 381,
-          "y": 382
+          "y": 383
         },
         {
           "x": 382,
-          "y": 452
+          "y": 453
         }
       ],
       "animated": false,
