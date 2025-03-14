@@ -8,9 +8,6 @@ import (
 	"oss.terrastruct.com/util-go/go2"
 )
 
-// Optimal value for circular arc approximation with cubic bezier curves
-const kCircleApprox = 0.5522847498307936 // 4*(math.Sqrt(2)-1)/3
-
 // Constants to match frontend implementation
 const (
 	C4_PERSON_AR_LIMIT   = 1.5
@@ -75,13 +72,13 @@ func bodyPath(box *geo.Box) *svg.SvgPathContext {
 
 	pc.StartAt(pc.Absolute(float64(bodyLeft), bodyTop+cornerRadius))
 
-	pc.C(true, 0, -kCircleApprox*cornerRadius, kCircleApprox*cornerRadius, -cornerRadius, cornerRadius, -cornerRadius)
+	pc.C(true, 0, -4*(math.Sqrt(2)-1)/3*cornerRadius, 4*(math.Sqrt(2)-1)/3*cornerRadius, -cornerRadius, cornerRadius, -cornerRadius)
 	pc.H(true, bodyWidth-2*cornerRadius)
-	pc.C(true, kCircleApprox*cornerRadius, 0, cornerRadius, kCircleApprox*cornerRadius, cornerRadius, cornerRadius)
+	pc.C(true, 4*(math.Sqrt(2)-1)/3*cornerRadius, 0, cornerRadius, 4*(math.Sqrt(2)-1)/3*cornerRadius, cornerRadius, cornerRadius)
 	pc.V(true, bodyHeight-2*cornerRadius)
-	pc.C(true, 0, kCircleApprox*cornerRadius, -kCircleApprox*cornerRadius, cornerRadius, -cornerRadius, cornerRadius)
+	pc.C(true, 0, 4*(math.Sqrt(2)-1)/3*cornerRadius, -4*(math.Sqrt(2)-1)/3*cornerRadius, cornerRadius, -cornerRadius, cornerRadius)
 	pc.H(true, -(bodyWidth - 2*cornerRadius))
-	pc.C(true, -kCircleApprox*cornerRadius, 0, -cornerRadius, -kCircleApprox*cornerRadius, -cornerRadius, -cornerRadius)
+	pc.C(true, -4*(math.Sqrt(2)-1)/3*cornerRadius, 0, -cornerRadius, -4*(math.Sqrt(2)-1)/3*cornerRadius, -cornerRadius, -cornerRadius)
 	pc.Z()
 
 	return pc
@@ -99,23 +96,23 @@ func headPath(box *geo.Box) *svg.SvgPathContext {
 	pc.StartAt(pc.Absolute(headCenterX, headCenterY-headRadius))
 
 	pc.C(false,
-		headCenterX+headRadius*kCircleApprox, headCenterY-headRadius,
-		headCenterX+headRadius, headCenterY-headRadius*kCircleApprox,
+		headCenterX+headRadius*4*(math.Sqrt(2)-1)/3, headCenterY-headRadius,
+		headCenterX+headRadius, headCenterY-headRadius*4*(math.Sqrt(2)-1)/3,
 		headCenterX+headRadius, headCenterY)
 
 	pc.C(false,
-		headCenterX+headRadius, headCenterY+headRadius*kCircleApprox,
-		headCenterX+headRadius*kCircleApprox, headCenterY+headRadius,
+		headCenterX+headRadius, headCenterY+headRadius*4*(math.Sqrt(2)-1)/3,
+		headCenterX+headRadius*4*(math.Sqrt(2)-1)/3, headCenterY+headRadius,
 		headCenterX, headCenterY+headRadius)
 
 	pc.C(false,
-		headCenterX-headRadius*kCircleApprox, headCenterY+headRadius,
-		headCenterX-headRadius, headCenterY+headRadius*kCircleApprox,
+		headCenterX-headRadius*4*(math.Sqrt(2)-1)/3, headCenterY+headRadius,
+		headCenterX-headRadius, headCenterY+headRadius*4*(math.Sqrt(2)-1)/3,
 		headCenterX-headRadius, headCenterY)
 
 	pc.C(false,
-		headCenterX-headRadius, headCenterY-headRadius*kCircleApprox,
-		headCenterX-headRadius*kCircleApprox, headCenterY-headRadius,
+		headCenterX-headRadius, headCenterY-headRadius*4*(math.Sqrt(2)-1)/3,
+		headCenterX-headRadius*4*(math.Sqrt(2)-1)/3, headCenterY-headRadius,
 		headCenterX, headCenterY-headRadius)
 
 	return pc
