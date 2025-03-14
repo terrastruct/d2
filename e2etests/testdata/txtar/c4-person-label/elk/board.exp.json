@@ -16,7 +16,7 @@
       "type": "c4-person",
       "pos": {
         "x": 12,
-        "y": 30
+        "y": 43
       },
       "width": 410,
       "height": 390,
@@ -57,8 +57,8 @@
       "id": "c4mdperson2",
       "type": "c4-person",
       "pos": {
-        "x": 441,
-        "y": 30
+        "x": 442,
+        "y": 43
       },
       "width": 410,
       "height": 390,
@@ -99,8 +99,8 @@
       "id": "c4mdperson3",
       "type": "c4-person",
       "pos": {
-        "x": 871,
-        "y": 30
+        "x": 872,
+        "y": 43
       },
       "width": 410,
       "height": 390,
@@ -141,8 +141,8 @@
       "id": "customer1",
       "type": "c4-person",
       "pos": {
-        "x": 1301,
-        "y": 12
+        "x": 1302,
+        "y": 25
       },
       "width": 448,
       "height": 426,
@@ -183,8 +183,8 @@
       "id": "customer2",
       "type": "c4-person",
       "pos": {
-        "x": 1028,
-        "y": 518
+        "x": 1770,
+        "y": 12
       },
       "width": 457,
       "height": 453,
@@ -225,8 +225,8 @@
       "id": "customer3",
       "type": "c4-person",
       "pos": {
-        "x": 1123,
-        "y": 1051
+        "x": 2247,
+        "y": 21
       },
       "width": 457,
       "height": 434,
@@ -267,8 +267,8 @@
       "id": "customer4",
       "type": "c4-person",
       "pos": {
-        "x": 1313,
-        "y": 1565
+        "x": 2724,
+        "y": 21
       },
       "width": 457,
       "height": 434,
@@ -306,242 +306,7 @@
       "level": 1
     }
   ],
-  "connections": [
-    {
-      "id": "(customer1 -> customer2)[0]",
-      "src": "customer1",
-      "srcArrow": "none",
-      "dst": "customer2",
-      "dstArrow": "triangle",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "B1",
-      "borderRadius": 10,
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "N2",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "link": "",
-      "route": [
-        {
-          "x": 1414,
-          "y": 438
-        },
-        {
-          "x": 1414,
-          "y": 699
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 0
-    },
-    {
-      "id": "(customer2 -> customer3)[0]",
-      "src": "customer2",
-      "srcArrow": "none",
-      "dst": "customer3",
-      "dstArrow": "triangle",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "B1",
-      "borderRadius": 10,
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "N2",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "link": "",
-      "route": [
-        {
-          "x": 1237,
-          "y": 971
-        },
-        {
-          "x": 1237,
-          "y": 1232
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 0
-    },
-    {
-      "id": "(customer3 -> customer4)[0]",
-      "src": "customer3",
-      "srcArrow": "none",
-      "dst": "customer4",
-      "dstArrow": "triangle",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "B1",
-      "borderRadius": 10,
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "N2",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "link": "",
-      "route": [
-        {
-          "x": 1466,
-          "y": 1485
-        },
-        {
-          "x": 1466,
-          "y": 1600
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 0
-    },
-    {
-      "id": "(customer4 -> customer1)[0]",
-      "src": "customer4",
-      "srcArrow": "none",
-      "dst": "customer1",
-      "dstArrow": "triangle",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "B1",
-      "borderRadius": 10,
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "N2",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "link": "",
-      "route": [
-        {
-          "x": 1620,
-          "y": 1603
-        },
-        {
-          "x": 1620,
-          "y": 438
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 0
-    },
-    {
-      "id": "(customer1 -> customer3)[0]",
-      "src": "customer1",
-      "srcArrow": "none",
-      "dst": "customer3",
-      "dstArrow": "triangle",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "B1",
-      "borderRadius": 10,
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "N2",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "link": "",
-      "route": [
-        {
-          "x": 1526,
-          "y": 438
-        },
-        {
-          "x": 1526,
-          "y": 1233
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 0
-    },
-    {
-      "id": "(customer3 -> customer2)[0]",
-      "src": "customer3",
-      "srcArrow": "none",
-      "dst": "customer2",
-      "dstArrow": "triangle",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "B1",
-      "borderRadius": 10,
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "N2",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "link": "",
-      "route": [
-        {
-          "x": 1334,
-          "y": 1053
-        },
-        {
-          "x": 1334,
-          "y": 971
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 0
-    }
-  ],
+  "connections": [],
   "root": {
     "id": "",
     "type": "",
