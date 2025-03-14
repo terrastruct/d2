@@ -32,24 +32,26 @@ const (
 
 func (s shapeC4Person) GetInnerBox() *geo.Box {
 	width := s.Box.Width
+	height := s.Box.Height
 
-	// Reduce head radius from 22% to 18% of width
-	headRadius := width * 0.18
-	headCenterY := headRadius
+	headRadius := width * 0.22
+	headCenterY := height * 0.18
 	bodyTop := headCenterY + headRadius*0.8
 
-	// Horizontal padding = 5% of width
-	horizontalPadding := width * 0.05
-
-	// Vertical padding = 3% of width (not height)
-	vertPadding := width * 0.03
+	// Use a small fixed percentage instead of the full corner radius
+	horizontalPadding := width * 0.05 // 5% padding
 
 	tl := s.Box.TopLeft.Copy()
 	tl.X += horizontalPadding
-	tl.Y += bodyTop + vertPadding
 
+	// Add vertical padding
+	tl.Y += bodyTop + height*0.03
+
+	// Width minus padding on both sides
 	innerWidth := width - (horizontalPadding * 2)
-	innerHeight := s.Box.Height - bodyTop - (vertPadding * 2)
+
+	// Add bottom padding
+	innerHeight := height - (tl.Y - s.Box.TopLeft.Y) - (height * 0.03)
 
 	return geo.NewBox(tl, innerWidth, innerHeight)
 }
@@ -60,10 +62,8 @@ func bodyPath(box *geo.Box) *svg.SvgPathContext {
 
 	pc := svg.NewSVGPathContext(box.TopLeft, 1, 1)
 
-	// Reduce head radius from 22% to 18% of width
-	headRadius := width * 0.18
-	// Adjust headCenterY to ensure head fits within box
-	headCenterY := headRadius
+	headRadius := width * 0.22
+	headCenterY := height * 0.18
 	bodyTop := headCenterY + headRadius*0.8
 	bodyWidth := width
 	bodyHeight := height - bodyTop
@@ -88,13 +88,13 @@ func bodyPath(box *geo.Box) *svg.SvgPathContext {
 
 func headPath(box *geo.Box) *svg.SvgPathContext {
 	width := box.Width
+	height := box.Height
+
 	pc := svg.NewSVGPathContext(box.TopLeft, 1, 1)
 
-	// Reduce head radius from 22% to 18% of width
-	headRadius := width * 0.18
+	headRadius := width * 0.22
 	headCenterX := width / 2
-	// Adjust headCenterY to ensure head fits within box
-	headCenterY := headRadius
+	headCenterY := height * 0.18
 
 	pc.StartAt(pc.Absolute(headCenterX, headCenterY-headRadius))
 
@@ -123,13 +123,13 @@ func headPath(box *geo.Box) *svg.SvgPathContext {
 
 func (s shapeC4Person) Perimeter() []geo.Intersectable {
 	width := s.Box.Width
+	height := s.Box.Height
 
 	bodyPerimeter := bodyPath(s.Box).Path
 
-	// Reduce head radius from 22% to 18% of width
-	headRadius := width * 0.18
+	headRadius := width * 0.22
 	headCenterX := s.Box.TopLeft.X + width/2
-	headCenterY := s.Box.TopLeft.Y + headRadius
+	headCenterY := s.Box.TopLeft.Y + height*0.18
 	headCenter := geo.NewPoint(headCenterX, headCenterY)
 
 	headEllipse := geo.NewEllipse(headCenter, headRadius, headRadius)
@@ -145,28 +145,28 @@ func (s shapeC4Person) GetSVGPathData() []string {
 }
 
 func (s shapeC4Person) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
-	// Start with content dimensions + padding
-	totalWidth := width + paddingX
-	totalHeight := height + paddingY
+	contentWidth := width + paddingX
+	contentHeight := height + paddingY
 
-	// Reduce head radius from 22% to 18% of width
-	headRadius := totalWidth * 0.18
+	// Account for 10% total horizontal padding (5% on each side)
+	totalWidth := contentWidth / 0.9
+	headRadius := totalWidth * 0.22
+	headCenterY := totalWidth * 0.18
+	bodyTop := headCenterY + headRadius*0.8
 
-	// Head center is now at headRadius from the top
-	headCenterY := headRadius
+	// Include vertical padding from GetInnerBox
+	verticalPadding := totalWidth * 0.06 // 3% top + 3% bottom
+	totalHeight := contentHeight + bodyTop + verticalPadding
 
-	// Body starts at headCenterY + headRadius*0.8
-	bodyTopPosition := headCenterY + headRadius*0.8
+	// Calculate minimum height based on actual proportions
+	// Head height: 2 * headRadius = 0.44 * width
+	// Body should be at least half the width
+	minHeight := totalWidth * 0.95 // Reduced from 1.2
+	if totalHeight < minHeight {
+		totalHeight = minHeight
+	}
 
-	// Add space for body (head is now fully contained)
-	totalHeight += bodyTopPosition
-
-	// Horizontal padding is handled in GetInnerBox (5% on each side)
-	totalWidth /= 0.9
-
-	// Prevent the shape's aspect ratio from becoming too extreme
 	totalWidth, totalHeight = LimitAR(totalWidth, totalHeight, C4_PERSON_AR_LIMIT)
-
 	return math.Ceil(totalWidth), math.Ceil(totalHeight)
 }
 
