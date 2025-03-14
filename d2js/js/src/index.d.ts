@@ -16,7 +16,7 @@ declare module "@terrastruct/d2" {
      * @default 0
      * Set the diagram theme ID.
      */
-    themeId?: number;
+    themeID?: number;
 
     /**
      * @default -1
