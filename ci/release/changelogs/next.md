@@ -24,6 +24,7 @@
     - `noXMLTag`
   - Support relative imports. Improve elk error handling: [#2382](https://github.com/terrastruct/d2/pull/2382)
   - Support fonts (`fontRegular`, `fontItalic`, `fontBold`, `fontSemiBold`): [#2384](https://github.com/terrastruct/d2/pull/2384)
+  - Add TypeScript signatures
 
 - d2cli:
     - Support `validate` command. [#2415](https://github.com/terrastruct/d2/pull/2415)

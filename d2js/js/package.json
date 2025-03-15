@@ -31,8 +31,10 @@
     "./worker": "./dist/browser/worker.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "index.d.ts"
   ],
+  "types": "./index.d.ts",
   "scripts": {
     "build": "./make.sh build",
     "test": "bun test test/unit",
