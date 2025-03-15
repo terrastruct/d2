@@ -3126,6 +3126,24 @@ x*: {
 			},
 		},
 		{
+			name: "import-var-chain",
+
+			text: `...@dev
+`,
+			files: map[string]string{
+				"dev.d2": `
+vars: {
+  a: {
+    b
+  }
+  c: {
+    ...${a}
+  }
+}
+`,
+			},
+		},
+		{
 			name: "var_in_markdown",
 			text: `vars: {
   v: ok

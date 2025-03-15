@@ -1134,6 +1134,10 @@ func (c *compiler) extendLinks(m *Map, importF *Field, importDir string) {
 	nodeBoardKind := NodeBoardKind(m)
 	importIDA := IDA(importF)
 	for _, f := range m.Fields {
+		// A substitute or such
+		if f.Name == nil {
+			continue
+		}
 		if f.Name.ScalarString() == "link" && f.Name.IsUnquoted() {
 			if nodeBoardKind != "" {
 				c.errorf(f.LastRef().AST(), "a board itself cannot be linked; only objects within a board can be linked")

@@ -32,6 +32,7 @@
 
 - Compiler:
   - fixes panic when `sql_shape` shape value had mixed casing [#2349](https://github.com/terrastruct/d2/pull/2349)
+  - fixes panic when importing from a file with spread substitutions in `vars` [#2427](https://github.com/terrastruct/d2/pull/2427)
   - fixes support for `center` in `d2-config` [#2360](https://github.com/terrastruct/d2/pull/2360)
   - fixes panic when comment lines appear in arrays [#2378](https://github.com/terrastruct/d2/pull/2378)
   - fixes inconsistencies when objects were double quoted [#2390](https://github.com/terrastruct/d2/pull/2390)
