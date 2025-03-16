@@ -135,7 +135,6 @@
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   margin: 0;
-  color: var(--color-fg-default);
   background-color: transparent; /* we don't want to define the background color */
   font-family: "d2-1168851269-font-regular";
   font-size: 16px;
