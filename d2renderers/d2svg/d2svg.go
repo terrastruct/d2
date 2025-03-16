@@ -1163,6 +1163,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		}
 
 	case d2target.ShapeImage:
+		fmt.Fprint(writer, clipPathForIconBorderRadius(diagramHash, targetShape))
 		el := d2themes.NewThemableElement("image", inlineTheme)
 		el.X = float64(targetShape.Pos.X)
 		el.Y = float64(targetShape.Pos.Y)
@@ -1172,6 +1173,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		el.Fill = fill
 		el.Stroke = stroke
 		el.Style = style
+		el.ClipPath = fmt.Sprintf("%v-%v-icon", diagramHash, targetShape.ID)
 		fmt.Fprint(writer, el.Render())
 
 	// TODO should standardize "" to rectangle
@@ -1364,12 +1366,13 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 
 		tl := iconPosition.GetPointOnBox(box, label.PADDING, float64(iconSize), float64(iconSize))
 
-		fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" />`,
+		fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" clip-path="inset(0 round %dpx)" />`,
 			html.EscapeString(targetShape.Icon.String()),
 			tl.X,
 			tl.Y,
 			iconSize,
 			iconSize,
+			targetShape.IconBorderRadius,
 		)
 	}
 

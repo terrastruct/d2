@@ -383,7 +383,9 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 
 	} else if isReserved {
 		c.compileReserved(&obj.Attributes, f)
-		return
+		if keyword != "icon" {
+			return
+		}
 	} else if f.Name.ScalarString() == "style" && f.Name.IsUnquoted() {
 		if f.Map() == nil || len(f.Map().Fields) == 0 {
 			c.errorf(f.LastRef().AST(), `"style" expected to be set to a map of key-values, or contain an additional keyword like "style.opacity: 0.4"`)
@@ -473,7 +475,10 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 		}
 		attrs.Label.Value = scalar.ScalarString()
 	default:
-		attrs.Label.Value = scalar.ScalarString()
+		name := f.LastPrimaryKey().Key.Path[0].UnquotedString.Value[0].String
+		if *name != "icon" {
+			attrs.Label.Value = scalar.ScalarString()
+		}
 	}
 	attrs.Label.MapKey = f.LastPrimaryKey()
 }
@@ -757,7 +762,15 @@ func (c *compiler) compileStyleField(attrs *d2graph.Attributes, f *d2ir.Field) {
 	}
 	compileStyleFieldInit(attrs, f)
 	scalar := f.Primary().Value
-	err := attrs.Style.Apply(f.Name.ScalarString(), scalar.ScalarString())
+
+	parentKeyword := f.LastPrimaryKey().Key.Path[0].ScalarString()
+
+	var err error
+	if parentKeyword == "icon" {
+		err = attrs.IconStyle.Apply(f.Name.ScalarString(), scalar.ScalarString())
+	} else {
+		err = attrs.Style.Apply(f.Name.ScalarString(), scalar.ScalarString())
+	}
 	if err != nil {
 		c.errorf(scalar, err.Error())
 		return
@@ -779,7 +792,12 @@ func compileStyleFieldInit(attrs *d2graph.Attributes, f *d2ir.Field) {
 	case "stroke-dash":
 		attrs.Style.StrokeDash = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "border-radius":
-		attrs.Style.BorderRadius = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		if attrs.Style.BorderRadius == nil {
+			attrs.Style.BorderRadius = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		}
+		if attrs.IconStyle.BorderRadius == nil {
+			attrs.IconStyle.BorderRadius = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		}
 	case "shadow":
 		attrs.Style.Shadow = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "3d":

@@ -493,11 +493,12 @@ type Shape struct {
 	Multiple     bool `json:"multiple"`
 	DoubleBorder bool `json:"double-border"`
 
-	Tooltip      string   `json:"tooltip"`
-	Link         string   `json:"link"`
-	PrettyLink   string   `json:"prettyLink,omitempty"`
-	Icon         *url.URL `json:"icon"`
-	IconPosition string   `json:"iconPosition"`
+	Tooltip          string   `json:"tooltip"`
+	Link             string   `json:"link"`
+	PrettyLink       string   `json:"prettyLink,omitempty"`
+	Icon             *url.URL `json:"icon"`
+	IconBorderRadius int      `json:"iconBorderRadius"`
+	IconPosition     string   `json:"iconPosition"`
 
 	// Whether the shape should allow shapes behind it to bleed through
 	// Currently just used for sequence diagram groups

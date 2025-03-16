@@ -194,6 +194,9 @@ func applyStyles(shape *d2target.Shape, obj *d2graph.Object) {
 	if obj.Style.DoubleBorder != nil {
 		shape.DoubleBorder, _ = strconv.ParseBool(obj.Style.DoubleBorder.Value)
 	}
+	if obj.IconStyle.BorderRadius != nil {
+		shape.IconBorderRadius, _ = strconv.Atoi(obj.IconStyle.BorderRadius.Value)
+	}
 }
 
 func toShape(obj *d2graph.Object, g *d2graph.Graph) d2target.Shape {
