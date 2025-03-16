@@ -1732,23 +1732,31 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			render = strings.ReplaceAll(render, "<hr>", "<hr />")
 
 			mdEl := d2themes.NewThemableElement("div", inlineTheme)
-			mdEl.ClassName = "md"
 			mdEl.Content = render
 
 			// We have to set with styles since within foreignObject, we're in html
 			// land and not SVG attributes
 			var styles []string
+			var classes []string = []string{"md"}
 			if targetShape.FontSize != textmeasure.MarkdownFontSize {
 				styles = append(styles, fmt.Sprintf("font-size:%vpx", targetShape.FontSize))
 			}
+
 			if targetShape.Fill != "" && targetShape.Fill != "transparent" {
-				styles = append(styles, fmt.Sprintf(`background-color:%s`, targetShape.Fill))
+				if color.IsThemeColor(targetShape.Fill) {
+					classes = append(classes, fmt.Sprintf("fill-%s", targetShape.Fill))
+				} else {
+					styles = append(styles, fmt.Sprintf(`background-color:%s`, targetShape.Fill))
+				}
 			}
+
 			if !color.IsThemeColor(targetShape.Color) {
 				styles = append(styles, fmt.Sprintf(`color:%s`, targetShape.Color))
-			} else if inlineTheme != nil {
-				styles = append(styles, fmt.Sprintf(`color:%s`, d2themes.ResolveThemeColor(*inlineTheme, targetShape.Color)))
+			} else {
+				classes = append(classes, fmt.Sprintf("color-%s", targetShape.Color))
 			}
+
+			mdEl.ClassName = strings.Join(classes, " ")
 			// When using dark theme, inlineTheme is nil and we rely on CSS variables
 
 			mdEl.Style = strings.Join(styles, ";")
@@ -1948,6 +1956,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			`class="text"`,
 			`class="text `,
 			`class="md"`,
+			`class="md `,
 		},
 		fmt.Sprintf(`
 .%s .text {
@@ -1967,7 +1976,10 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 	appendOnTrigger(
 		buf,
 		source,
-		[]string{`class="md"`},
+		[]string{
+			`class="md"`,
+			`class="md `,
+		},
 		fmt.Sprintf(`
 @font-face {
 	font-family: %s-font-semibold;
