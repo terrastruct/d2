@@ -383,9 +383,18 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 
 	} else if isReserved {
 		c.compileReserved(&obj.Attributes, f)
-		if keyword != "icon" {
-			return
+		if keyword == "icon" && f.Map() != nil {
+			for _, ff := range f.Map().Fields {
+				if ff.Name.ScalarString() == "style" && ff.Name.IsUnquoted() {
+					if f.Map() == nil || len(f.Map().Fields) == 0 {
+						c.errorf(f.LastRef().AST(), `"style" expected to be set to a map of key-values, or contain an additional keyword like "style.opacity: 0.4"`)
+						return
+					}
+					c.compileIconStyle(&obj.Attributes, ff.Map())
+				}
+			}
 		}
+		return
 	} else if f.Name.ScalarString() == "style" && f.Name.IsUnquoted() {
 		if f.Map() == nil || len(f.Map().Fields) == 0 {
 			c.errorf(f.LastRef().AST(), `"style" expected to be set to a map of key-values, or contain an additional keyword like "style.opacity: 0.4"`)
@@ -475,10 +484,7 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 		}
 		attrs.Label.Value = scalar.ScalarString()
 	default:
-		name := f.LastPrimaryKey().Key.Path[0].UnquotedString.Value[0].String
-		if *name != "icon" {
-			attrs.Label.Value = scalar.ScalarString()
-		}
+		attrs.Label.Value = scalar.ScalarString()
 	}
 	attrs.Label.MapKey = f.LastPrimaryKey()
 }
@@ -752,6 +758,12 @@ func (c *compiler) compileStyle(attrs *d2graph.Attributes, m *d2ir.Map) {
 	}
 }
 
+func (c *compiler) compileIconStyle(attrs *d2graph.Attributes, m *d2ir.Map) {
+	for _, f := range m.Fields {
+		c.compileIconStyleField(attrs, f)
+	}
+}
+
 func (c *compiler) compileStyleField(attrs *d2graph.Attributes, f *d2ir.Field) {
 	if _, ok := d2ast.StyleKeywords[strings.ToLower(f.Name.ScalarString())]; !(ok && f.Name.IsUnquoted()) {
 		c.errorf(f.LastRef().AST(), `invalid style keyword: "%s"`, f.Name.ScalarString())
@@ -763,14 +775,25 @@ func (c *compiler) compileStyleField(attrs *d2graph.Attributes, f *d2ir.Field) {
 	compileStyleFieldInit(attrs, f)
 	scalar := f.Primary().Value
 
-	parentKeyword := f.LastPrimaryKey().Key.Path[0].ScalarString()
-
-	var err error
-	if parentKeyword == "icon" {
-		err = attrs.IconStyle.Apply(f.Name.ScalarString(), scalar.ScalarString())
-	} else {
-		err = attrs.Style.Apply(f.Name.ScalarString(), scalar.ScalarString())
+	err := attrs.Style.Apply(f.Name.ScalarString(), scalar.ScalarString())
+	if err != nil {
+		c.errorf(scalar, err.Error())
+		return
 	}
+}
+
+func (c *compiler) compileIconStyleField(attrs *d2graph.Attributes, f *d2ir.Field) {
+	if _, ok := d2ast.StyleKeywords[strings.ToLower(f.Name.ScalarString())]; !(ok && f.Name.IsUnquoted()) {
+		c.errorf(f.LastRef().AST(), `invalid style keyword: "%s"`, f.Name.ScalarString())
+		return
+	}
+	if f.Primary() == nil {
+		return
+	}
+	compileStyleFieldInit(attrs, f)
+	scalar := f.Primary().Value
+
+	err := attrs.IconStyle.Apply(f.Name.ScalarString(), scalar.ScalarString())
 	if err != nil {
 		c.errorf(scalar, err.Error())
 		return
