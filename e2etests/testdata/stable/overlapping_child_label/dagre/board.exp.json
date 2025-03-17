@@ -34,6 +34,7 @@
       "tooltip": "",
       "link": "",
       "icon": null,
+      "iconBorderRadius": 0,
       "iconPosition": "",
       "blend": false,
       "fields": null,
@@ -76,6 +77,7 @@
       "tooltip": "",
       "link": "",
       "icon": null,
+      "iconBorderRadius": 0,
       "iconPosition": "",
       "blend": false,
       "fields": null,
@@ -118,6 +120,7 @@
       "tooltip": "",
       "link": "",
       "icon": null,
+      "iconBorderRadius": 0,
       "iconPosition": "",
       "blend": false,
       "fields": null,
@@ -175,6 +178,7 @@
         "Fragment": "",
         "RawFragment": ""
       },
+      "iconBorderRadius": 0,
       "iconPosition": "INSIDE_TOP_LEFT",
       "blend": false,
       "fields": null,
@@ -232,6 +236,7 @@
         "Fragment": "",
         "RawFragment": ""
       },
+      "iconBorderRadius": 0,
       "iconPosition": "OUTSIDE_TOP_RIGHT",
       "blend": false,
       "fields": null,
@@ -289,6 +294,7 @@
         "Fragment": "",
         "RawFragment": ""
       },
+      "iconBorderRadius": 0,
       "iconPosition": "INSIDE_BOTTOM_LEFT",
       "blend": false,
       "fields": null,
@@ -346,6 +352,7 @@
         "Fragment": "",
         "RawFragment": ""
       },
+      "iconBorderRadius": 0,
       "iconPosition": "OUTSIDE_BOTTOM_LEFT",
       "blend": false,
       "fields": null,
@@ -403,6 +410,7 @@
         "Fragment": "",
         "RawFragment": ""
       },
+      "iconBorderRadius": 0,
       "iconPosition": "INSIDE_MIDDLE_LEFT",
       "blend": false,
       "fields": null,
@@ -460,6 +468,7 @@
         "Fragment": "",
         "RawFragment": ""
       },
+      "iconBorderRadius": 0,
       "iconPosition": "OUTSIDE_LEFT_MIDDLE",
       "blend": false,
       "fields": null,
@@ -553,6 +562,7 @@
     "tooltip": "",
     "link": "",
     "icon": null,
+    "iconBorderRadius": 0,
     "iconPosition": "",
     "blend": false,
     "fields": null,
