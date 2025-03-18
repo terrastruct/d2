@@ -497,7 +497,7 @@ type Shape struct {
 	Link             string   `json:"link"`
 	PrettyLink       string   `json:"prettyLink,omitempty"`
 	Icon             *url.URL `json:"icon"`
-	IconBorderRadius int      `json:"iconBorderRadius"`
+	IconBorderRadius int      `json:"iconBorderRadius,omitempty"`
 	IconPosition     string   `json:"iconPosition"`
 
 	// Whether the shape should allow shapes behind it to bleed through
