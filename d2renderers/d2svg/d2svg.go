@@ -1366,14 +1366,24 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 
 		tl := iconPosition.GetPointOnBox(box, label.PADDING, float64(iconSize), float64(iconSize))
 
-		fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" clip-path="inset(0 round %dpx)" />`,
-			html.EscapeString(targetShape.Icon.String()),
-			tl.X,
-			tl.Y,
-			iconSize,
-			iconSize,
-			targetShape.IconBorderRadius,
-		)
+		if targetShape.IconBorderRadius != 0 {
+			fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" clip-path="inset(0 round %dpx)" />`,
+				html.EscapeString(targetShape.Icon.String()),
+				tl.X,
+				tl.Y,
+				iconSize,
+				iconSize,
+				targetShape.IconBorderRadius,
+			)
+		} else {
+			fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" />`,
+				html.EscapeString(targetShape.Icon.String()),
+				tl.X,
+				tl.Y,
+				iconSize,
+				iconSize,
+			)
+		}
 	}
 
 	if targetShape.Label != "" && targetShape.Opacity != 0 {
