@@ -790,7 +790,7 @@ func (c *compiler) compileIconStyleField(attrs *d2graph.Attributes, f *d2ir.Fiel
 	if f.Primary() == nil {
 		return
 	}
-	compileStyleFieldInit(attrs, f)
+	compileIconStyleFieldInit(attrs, f)
 	scalar := f.Primary().Value
 
 	err := attrs.IconStyle.Apply(f.Name.ScalarString(), scalar.ScalarString())
@@ -815,12 +815,7 @@ func compileStyleFieldInit(attrs *d2graph.Attributes, f *d2ir.Field) {
 	case "stroke-dash":
 		attrs.Style.StrokeDash = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "border-radius":
-		if attrs.Style.BorderRadius == nil {
-			attrs.Style.BorderRadius = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
-		}
-		if attrs.IconStyle.BorderRadius == nil {
-			attrs.IconStyle.BorderRadius = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
-		}
+		attrs.Style.BorderRadius = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "shadow":
 		attrs.Style.Shadow = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "3d":
@@ -855,6 +850,13 @@ func compileStyleFieldInit(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Style.DoubleBorder = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "text-transform":
 		attrs.Style.TextTransform = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+	}
+}
+
+func compileIconStyleFieldInit(attrs *d2graph.Attributes, f *d2ir.Field) {
+	switch f.Name.ScalarString() {
+	case "border-radius":
+		attrs.IconStyle.BorderRadius = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	}
 }
 
