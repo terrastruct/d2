@@ -625,10 +625,11 @@ type Connection struct {
 	Route   []*geo.Point `json:"route"`
 	IsCurve bool         `json:"isCurve,omitempty"`
 
-	Animated     bool     `json:"animated"`
-	Tooltip      string   `json:"tooltip"`
-	Icon         *url.URL `json:"icon"`
-	IconPosition string   `json:"iconPosition,omitempty"`
+	Animated         bool     `json:"animated"`
+	Tooltip          string   `json:"tooltip"`
+	Icon             *url.URL `json:"icon"`
+	IconPosition     string   `json:"iconPosition,omitempty"`
+	IconBorderRadius float64  `json:"iconBorderRadius,omitempty"`
 
 	ZIndex int `json:"zIndex"`
 }

@@ -416,6 +416,10 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 		}
 	}
 
+	if edge.IconStyle.BorderRadius != nil {
+		connection.IconBorderRadius, _ = strconv.ParseFloat(edge.IconStyle.BorderRadius.Value, 64)
+	}
+
 	if edge.Style.Italic != nil {
 		connection.Italic, _ = strconv.ParseBool(edge.Style.Italic.Value)
 	}

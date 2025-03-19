@@ -590,13 +590,25 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 	if connection.Icon != nil {
 		iconPos := connection.GetIconPosition()
 		if iconPos != nil {
-			fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" />`,
-				html.EscapeString(connection.Icon.String()),
-				iconPos.X,
-				iconPos.Y,
-				d2target.DEFAULT_ICON_SIZE,
-				d2target.DEFAULT_ICON_SIZE,
-			)
+			if connection.IconBorderRadius != 0 {
+				fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" clip-path="inset(0 round %fpx)" />`,
+					html.EscapeString(connection.Icon.String()),
+					iconPos.X,
+					iconPos.Y,
+					d2target.DEFAULT_ICON_SIZE,
+					d2target.DEFAULT_ICON_SIZE,
+					connection.IconBorderRadius,
+				)
+			} else {
+
+				fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" />`,
+					html.EscapeString(connection.Icon.String()),
+					iconPos.X,
+					iconPos.Y,
+					d2target.DEFAULT_ICON_SIZE,
+					d2target.DEFAULT_ICON_SIZE,
+				)
+			}
 		}
 	}
 

@@ -938,6 +938,17 @@ func (c *compiler) compileEdgeField(edge *d2graph.Edge, f *d2ir.Field) {
 	_, isReserved := d2ast.SimpleReservedKeywords[keyword]
 	if isReserved {
 		c.compileReserved(&edge.Attributes, f)
+		if keyword == "icon" && f.Map() != nil {
+			for _, ff := range f.Map().Fields {
+				if ff.Name.ScalarString() == "style" && ff.Name.IsUnquoted() {
+					if f.Map() == nil || len(f.Map().Fields) == 0 {
+						c.errorf(f.LastRef().AST(), `"style" expected to be set to a map of key-values, or contain an additional keyword like "style.opacity: 0.4"`)
+						return
+					}
+					c.compileIconStyle(&edge.Attributes, ff.Map())
+				}
+			}
+		}
 		return
 	} else if f.Name.ScalarString() == "style" {
 		if f.Map() == nil {
@@ -977,6 +988,17 @@ func (c *compiler) compileArrowheads(edge *d2graph.Edge, f *d2ir.Field) {
 			isReserved = isReserved && f2.Name.IsUnquoted()
 			if isReserved {
 				c.compileReserved(attrs, f2)
+				if keyword == "icon" && f.Map() != nil {
+					for _, ff := range f.Map().Fields {
+						if ff.Name.ScalarString() == "style" && ff.Name.IsUnquoted() {
+							if f.Map() == nil || len(f.Map().Fields) == 0 {
+								c.errorf(f.LastRef().AST(), `"style" expected to be set to a map of key-values, or contain an additional keyword like "style.opacity: 0.4"`)
+								return
+							}
+							c.compileIconStyle(attrs, ff.Map())
+						}
+					}
+				}
 				continue
 			} else if f2.Name.ScalarString() == "style" && f2.Name.IsUnquoted() {
 				if f2.Map() == nil {
