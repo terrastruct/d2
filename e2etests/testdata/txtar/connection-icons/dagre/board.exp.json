@@ -15,7 +15,7 @@
       "id": "a",
       "type": "rectangle",
       "pos": {
-        "x": 0,
+        "x": 29,
         "y": 0
       },
       "width": 53,
@@ -57,7 +57,7 @@
       "id": "b",
       "type": "rectangle",
       "pos": {
-        "x": 186,
+        "x": 275,
         "y": 0
       },
       "width": 53,
@@ -99,7 +99,7 @@
       "id": "c",
       "type": "rectangle",
       "pos": {
-        "x": 339,
+        "x": 459,
         "y": 0
       },
       "width": 53,
@@ -136,6 +136,90 @@
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
+    },
+    {
+      "id": "producer",
+      "type": "rectangle",
+      "pos": {
+        "x": 0,
+        "y": 126
+      },
+      "width": 110,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B6",
+      "stroke": "B1",
+      "animated": false,
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "producer",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 65,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "consumer",
+      "type": "rectangle",
+      "pos": {
+        "x": 243,
+        "y": 126
+      },
+      "width": 116,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B6",
+      "stroke": "B1",
+      "animated": false,
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "consumer",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 71,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     }
   ],
   "connections": [
@@ -165,19 +249,19 @@
       "link": "",
       "route": [
         {
-          "x": 52.5,
+          "x": 82.5,
           "y": 33
         },
         {
-          "x": 106.0999984741211,
+          "x": 157.6999969482422,
           "y": 33
         },
         {
-          "x": 132.89999389648438,
+          "x": 196.10000610351562,
           "y": 33
         },
         {
-          "x": 186.5,
+          "x": 274.5,
           "y": 33
         }
       ],
@@ -226,19 +310,19 @@
       "link": "",
       "route": [
         {
-          "x": 239,
+          "x": 328.5,
           "y": 33
         },
         {
-          "x": 279,
+          "x": 392.8999938964844,
           "y": 33
         },
         {
-          "x": 299,
+          "x": 419,
           "y": 33
         },
         {
-          "x": 339,
+          "x": 459,
           "y": 33
         }
       ],
@@ -259,6 +343,68 @@
         "RawFragment": ""
       },
       "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0
+    },
+    {
+      "id": "(producer -> consumer)[0]",
+      "src": "producer",
+      "srcArrow": "none",
+      "dst": "consumer",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "link": "",
+      "route": [
+        {
+          "x": 109.5,
+          "y": 159
+        },
+        {
+          "x": 163.10000610351562,
+          "y": 159
+        },
+        {
+          "x": 189.89999389648438,
+          "y": 159
+        },
+        {
+          "x": 243.5,
+          "y": 159
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": {
+        "Scheme": "https",
+        "Opaque": "",
+        "User": null,
+        "Host": "icons.terrastruct.com",
+        "Path": "/aws/Application Integration/Amazon-Simple-Queue-Service-SQS.svg",
+        "RawPath": "/aws%2FApplication%20Integration%2FAmazon-Simple-Queue-Service-SQS.svg",
+        "OmitHost": false,
+        "ForceQuery": false,
+        "RawQuery": "",
+        "Fragment": "",
+        "RawFragment": ""
+      },
+      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "iconBorderRadius": 20,
       "zIndex": 0
     }
   ],
