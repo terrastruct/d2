@@ -28,6 +28,8 @@
 
 - d2cli:
     - Support `validate` command. [#2415](https://github.com/terrastruct/d2/pull/2415)
+- d2compiler:
+    - `link`s can be set to root path, e.g. `/xyz`. [#2357](https://github.com/terrastruct/d2/issues/2357)
 
 #### Bugfixes ⛑️
 

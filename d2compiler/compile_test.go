@@ -1659,6 +1659,22 @@ x -> y: {
 			},
 		},
 		{
+			name: "url_relative_link",
+
+			text: `x: {
+  link: /google
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if len(g.Objects) != 1 {
+					t.Fatal(g.Objects)
+				}
+				if g.Objects[0].Link.Value != "/google" {
+					t.Fatal(g.Objects[0].Link.Value)
+				}
+			},
+		},
+		{
 			name: "non_url_link",
 
 			text: `x: {
