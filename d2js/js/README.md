@@ -162,6 +162,16 @@ You can browse the examples by running the dev server:
 
 Visit `http://localhost:3000` to see the example page.
 
+### Publishing
+
+WIP.
+
+Nightly builds are automated by CI upon pull request merging by running:
+
+```bash
+PUBLISH=1 ./make.sh build
+```
+
 ## Contributing
 
 Contributions are welcome!

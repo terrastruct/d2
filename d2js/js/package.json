@@ -41,7 +41,7 @@
     "test:integration": "bun test test/integration",
     "test:all": "bun run test && bun run test:integration",
     "dev": "bun --watch dev-server.js",
-    "prepublishOnly": "./make.sh all"
+    "prepublishOnly": "PUBLISH=0 ./make.sh all"
   },
   "keywords": [
     "d2",

@@ -25,3 +25,21 @@ jobs:
         with:
           name: d2chaos
           path: ./d2chaos/out
+  npm-nightly:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Needed for git history and version tags
+
+      - uses: actions/setup-go@v4
+        with:
+          go-version-file: ./go.mod
+          cache: true
+
+      - name: Publish nightly version to NPM
+        run: COLOR=1 PUBLISH=1 ./make.sh js
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}

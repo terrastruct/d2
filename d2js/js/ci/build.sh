@@ -17,3 +17,33 @@ fi
 
 cd d2js/js
 sh_c bun build.js
+
+if [ "${PUBLISH:-0}" = "1" ]; then
+  echo "Publishing nightly version to NPM..."
+
+  DATE_TAG=$(date +'%Y%m%d')
+  COMMIT_SHORT=$(git rev-parse --short HEAD)
+  CURRENT_VERSION=$(node -p "require('./package.json').version")
+  NIGHTLY_VERSION="${CURRENT_VERSION}-nightly.${DATE_TAG}.${COMMIT_SHORT}"
+
+  cp package.json package.json.bak
+  trap 'rm -f .npmrc; mv package.json.bak package.json' EXIT
+
+  echo "Updating package version to ${NIGHTLY_VERSION}"
+  npm version "${NIGHTLY_VERSION}" --no-git-tag-version
+
+  echo "Publishing to npm with tag 'nightly'..."
+  if [ -n "${NPM_TOKEN-}" ]; then
+    echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+    trap 'rm -f .npmrc' EXIT
+    if npm publish --tag nightly; then
+      echo "Successfully published @terrastruct/d2@${NIGHTLY_VERSION} to npm with tag 'nightly'"
+    else
+      echoerr "Failed to publish package to npm"
+      exit 1
+    fi
+  else
+    echoerr "NPM_TOKEN environment variable is required for publishing to npm"
+    exit 1
+  fi
+fi
