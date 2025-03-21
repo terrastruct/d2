@@ -18,11 +18,11 @@ fi
 cd d2js/js
 sh_c bun build.js
 
-if [ -n "$VERSION" ]; then
+if [ -n "$NPM_VERSION" ]; then
   cp package.json package.json.bak
   trap 'rm -f .npmrc; mv package.json.bak package.json' EXIT
 
-  if [ "$VERSION" = "nightly" ]; then
+  if [ "$NPM_VERSION" = "nightly" ]; then
     echo "Publishing nightly version to npm..."
 
     DATE_TAG=$(date +'%Y%m%d')
@@ -33,8 +33,8 @@ if [ -n "$VERSION" ]; then
 
     echo "Updating package version to ${PUBLISH_VERSION}"
   else
-    echo "Publishing official version ${VERSION} to npm..."
-    PUBLISH_VERSION="$VERSION"
+    echo "Publishing official version ${NPM_VERSION} to npm..."
+    PUBLISH_VERSION="$NPM_VERSION"
     NPM_TAG="latest"
 
     echo "Setting package version to ${PUBLISH_VERSION}"
@@ -52,14 +52,14 @@ if [ -n "$VERSION" ]; then
       echo "Successfully published @terrastruct/d2@${PUBLISH_VERSION} to npm with tag '${NPM_TAG}'"
 
       # For official releases, bump the patch version
-      if [ "$VERSION" != "nightly" ]; then
+      if [ "$NPM_VERSION" != "nightly" ]; then
         # Restore original package.json first
         mv package.json.bak package.json
 
-        echo "Bumping version to ${VERSION}"
-        npm version "${VERSION}" --no-git-tag-version
+        echo "Bumping version to ${NPM_VERSION}"
+        npm version "${NPM_VERSION}" --no-git-tag-version
         git add package.json
-        git commit -m "Bump version to ${VERSION} [skip ci]"
+        git commit -m "Bump version to ${NPM_VERSION} [skip ci]"
 
         # Cancel the trap since we manually restored and don't want it to execute on exit
         trap - EXIT

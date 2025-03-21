@@ -51,7 +51,7 @@ jobs:
 
       - name: Publish nightly version to NPM
         if: steps.check_changes.outputs.has_changes == 'true'
-        run: COLOR=1 ./make.sh --version=nightly js
+        run: COLOR=1 NPM_VERSION=nightly ./make.sh js
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
