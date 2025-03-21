@@ -25,3 +25,34 @@ jobs:
         with:
           name: d2chaos
           path: ./d2chaos/out
+  npm-nightly:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Needed for git history and version tags
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if [ $(git rev-list --count --since="24 hours ago" HEAD) -gt 0 ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Found changes in the last 24 hours, proceeding to publish d2js nightly"
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes in the last 24 hours, skipping d2js nightly publish"
+          fi
+
+      - uses: actions/setup-go@v4
+        if: steps.check_changes.outputs.has_changes == 'true'
+        with:
+          go-version-file: ./go.mod
+          cache: true
+
+      - name: Publish nightly version to NPM
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: COLOR=1 PUBLISH=1 ./make.sh js
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
