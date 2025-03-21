@@ -18,26 +18,52 @@ fi
 cd d2js/js
 sh_c bun build.js
 
-if [ "${PUBLISH:-0}" = "1" ]; then
-  echo "Publishing nightly version to NPM..."
-
-  DATE_TAG=$(date +'%Y%m%d')
-  COMMIT_SHORT=$(git rev-parse --short HEAD)
-  CURRENT_VERSION=$(node -p "require('./package.json').version")
-  NIGHTLY_VERSION="${CURRENT_VERSION}-nightly.${DATE_TAG}.${COMMIT_SHORT}"
-
+if [ -n "${NPM_VERSION:-}" ]; then
   cp package.json package.json.bak
   trap 'rm -f .npmrc; mv package.json.bak package.json' EXIT
 
-  echo "Updating package version to ${NIGHTLY_VERSION}"
-  npm version "${NIGHTLY_VERSION}" --no-git-tag-version
+  if [ "$NPM_VERSION" = "nightly" ]; then
+    echo "Publishing nightly version to npm..."
 
-  echo "Publishing to npm with tag 'nightly'..."
+    DATE_TAG=$(date +'%Y%m%d')
+    COMMIT_SHORT=$(git rev-parse --short HEAD)
+    CURRENT_VERSION=$(node -p "require('./package.json').version")
+    PUBLISH_VERSION="${CURRENT_VERSION}-nightly.${DATE_TAG}.${COMMIT_SHORT}"
+    NPM_TAG="nightly"
+
+    echo "Updating package version to ${PUBLISH_VERSION}"
+  else
+    echo "Publishing official version ${NPM_VERSION} to npm..."
+    PUBLISH_VERSION="$NPM_VERSION"
+    NPM_TAG="latest"
+
+    echo "Setting package version to ${PUBLISH_VERSION}"
+  fi
+
+  # Update package.json with the new version
+  npm version "${PUBLISH_VERSION}" --no-git-tag-version
+
+  echo "Publishing to npm with tag '${NPM_TAG}'..."
   if [ -n "${NPM_TOKEN-}" ]; then
+    # Create .npmrc file with auth token
     echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-    trap 'rm -f .npmrc' EXIT
-    if npm publish --tag nightly; then
-      echo "Successfully published @terrastruct/d2@${NIGHTLY_VERSION} to npm with tag 'nightly'"
+
+    if npm publish --tag "$NPM_TAG"; then
+      echo "Successfully published @terrastruct/d2@${PUBLISH_VERSION} to npm with tag '${NPM_TAG}'"
+
+      # For official releases, bump the patch version
+      if [ "$NPM_VERSION" != "nightly" ]; then
+        # Restore original package.json first
+        mv package.json.bak package.json
+
+        echo "Bumping version to ${NPM_VERSION}"
+        npm version "${NPM_VERSION}" --no-git-tag-version
+        git add package.json
+        git commit -m "Bump version to ${NPM_VERSION} [skip ci]"
+
+        # Cancel the trap since we manually restored and don't want it to execute on exit
+        trap - EXIT
+      fi
     else
       echoerr "Failed to publish package to npm"
       exit 1
