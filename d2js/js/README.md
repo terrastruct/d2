@@ -39,6 +39,8 @@ For example,
 yarn add @terrastruct/d2@nightly
 ```
 
+A demo using the nightly build is hosted [here](https://alixander-d2js.web.val.run/).
+
 ## Usage
 
 D2.js uses webworkers to call a WASM file.
