@@ -10,22 +10,6 @@
 
 #### Improvements 🧹
 
-- d2js:
-  - Support `d2-config`. Support additional options: [#2343](https://github.com/terrastruct/d2/pull/2343)
-    - `themeID`
-    - `darkThemeID`
-    - `center`
-    - `pad`
-    - `scale`
-    - `forceAppendix`
-    - `target`
-    - `animateInterval`
-    - `salt`
-    - `noXMLTag`
-  - Support relative imports. Improve elk error handling: [#2382](https://github.com/terrastruct/d2/pull/2382)
-  - Support fonts (`fontRegular`, `fontItalic`, `fontBold`, `fontSemiBold`): [#2384](https://github.com/terrastruct/d2/pull/2384)
-  - Add TypeScript signatures
-
 - d2cli:
     - Support `validate` command. [#2415](https://github.com/terrastruct/d2/pull/2415)
     - Watch mode ignores backup files (e.g. files created by certain editors like Helix). [#2131](https://github.com/terrastruct/d2/issues/2131)
@@ -42,3 +26,7 @@
   - fixes inconsistencies when objects were double quoted [#2390](https://github.com/terrastruct/d2/pull/2390)
 - CLI: fetch and render remote images of mimetype octet-stream correctly [#2370](https://github.com/terrastruct/d2/pull/2370)
 - d2js: handle unicode characters [#2393](https://github.com/terrastruct/d2/pull/2393)
+
+---
+
+For the latest d2.js changes, see separate [changelog](https://github.com/terrastruct/d2/blob/master/d2js/js/CHANGELOG.md).
