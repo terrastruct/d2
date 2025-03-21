@@ -164,9 +164,9 @@ Visit `http://localhost:3000` to see the example page.
 
 ### Publishing
 
-WIP.
+TODO stable release publishing.
 
-Nightly builds are automated by CI upon pull request merging by running:
+Nightly builds are automated by CI by running:
 
 ```bash
 PUBLISH=1 ./make.sh build
