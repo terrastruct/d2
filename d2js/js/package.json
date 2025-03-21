@@ -2,7 +2,7 @@
   "name": "@terrastruct/d2",
   "author": "Terrastruct, Inc.",
   "description": "D2.js is a wrapper around the WASM build of D2, the modern text-to-diagram language.",
-  "version": "0.1.22",
+  "version": "0.1.23",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/terrastruct/d2.git",
@@ -41,7 +41,7 @@
     "test:integration": "bun test test/integration",
     "test:all": "bun run test && bun run test:integration",
     "dev": "bun --watch dev-server.js",
-    "prepublishOnly": "PUBLISH=0 ./make.sh all"
+    "prepublishOnly": "NPM_VERSION= ./make.sh all"
   },
   "keywords": [
     "d2",
