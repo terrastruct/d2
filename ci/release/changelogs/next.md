@@ -6,6 +6,7 @@
 - Render:
   - markdown, latex, and code can be used as object labels [#2204](https://github.com/terrastruct/d2/pull/2204)
   - `shape: c4-person` to render a person shape like what the C4 model prescribes [#2397](https://github.com/terrastruct/d2/pull/2397)
+- Icons: border-radius should work on icon [#2409](https://github.com/terrastruct/d2/issues/2409)
 
 #### Improvements 🧹
 
