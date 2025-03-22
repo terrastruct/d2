@@ -389,7 +389,7 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 			c.errorf(f.LastRef().AST(), `"style" expected to be set to a map of key-values, or contain an additional keyword like "style.opacity: 0.4"`)
 			return
 		}
-		c.compileStyle(&obj.Attributes, f.Map(), false)
+		c.compileStyle(&obj.Attributes.Style, f.Map())
 		return
 	}
 
@@ -588,7 +588,7 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 						c.errorf(f.LastRef().AST(), `"style" expected to be set to a map of key-values, or contain an additional keyword like "style.opacity: 0.4"`)
 						return
 					}
-					c.compileStyle(attrs, ff.Map(), true)
+					c.compileStyle(&attrs.IconStyle, ff.Map())
 				}
 			}
 		}
@@ -752,13 +752,13 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 	}
 }
 
-func (c *compiler) compileStyle(attrs *d2graph.Attributes, m *d2ir.Map, compileIconStyle bool) {
+func (c *compiler) compileStyle(styles *d2graph.Style, m *d2ir.Map) {
 	for _, f := range m.Fields {
-		c.compileStyleField(attrs, f, compileIconStyle)
+		c.compileStyleField(styles, f)
 	}
 }
 
-func (c *compiler) compileStyleField(attrs *d2graph.Attributes, f *d2ir.Field, compileIconStyle bool) {
+func (c *compiler) compileStyleField(styles *d2graph.Style, f *d2ir.Field) {
 	if _, ok := d2ast.StyleKeywords[strings.ToLower(f.Name.ScalarString())]; !(ok && f.Name.IsUnquoted()) {
 		c.errorf(f.LastRef().AST(), `invalid style keyword: "%s"`, f.Name.ScalarString())
 		return
@@ -767,16 +767,9 @@ func (c *compiler) compileStyleField(attrs *d2graph.Attributes, f *d2ir.Field, c
 		return
 	}
 
-	var err error
 	scalar := f.Primary().Value
-
-	if compileIconStyle {
-		compileIconStyleFieldInit(attrs, f)
-		err = attrs.IconStyle.Apply(f.Name.ScalarString(), scalar.ScalarString())
-	} else {
-		compileStyleFieldInit(attrs, f)
-		err = attrs.Style.Apply(f.Name.ScalarString(), scalar.ScalarString())
-	}
+	compileStyleFieldInit(styles, f)
+	err := styles.Apply(f.Name.ScalarString(), scalar.ScalarString())
 
 	if err != nil {
 		c.errorf(scalar, err.Error())
@@ -784,63 +777,48 @@ func (c *compiler) compileStyleField(attrs *d2graph.Attributes, f *d2ir.Field, c
 	}
 }
 
-func compileStyleFieldInit(attrs *d2graph.Attributes, f *d2ir.Field) {
+func compileStyleFieldInit(styles *d2graph.Style, f *d2ir.Field) {
 	switch f.Name.ScalarString() {
 	case "opacity":
-		attrs.Style.Opacity = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Opacity = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "stroke":
-		attrs.Style.Stroke = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Stroke = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "fill":
-		attrs.Style.Fill = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Fill = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "fill-pattern":
-		attrs.Style.FillPattern = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.FillPattern = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "stroke-width":
-		attrs.Style.StrokeWidth = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.StrokeWidth = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "stroke-dash":
-		attrs.Style.StrokeDash = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.StrokeDash = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "border-radius":
-		attrs.Style.BorderRadius = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.BorderRadius = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "shadow":
-		attrs.Style.Shadow = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Shadow = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "3d":
-		attrs.Style.ThreeDee = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.ThreeDee = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "multiple":
-		attrs.Style.Multiple = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Multiple = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "font":
-		attrs.Style.Font = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Font = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "font-size":
-		attrs.Style.FontSize = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.FontSize = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "font-color":
-		attrs.Style.FontColor = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.FontColor = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "animated":
-		attrs.Style.Animated = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Animated = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "bold":
-		attrs.Style.Bold = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Bold = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "italic":
-		attrs.Style.Italic = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Italic = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "underline":
-		attrs.Style.Underline = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Underline = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "filled":
-		attrs.Style.Filled = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
-	case "width":
-		attrs.WidthAttr = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
-	case "height":
-		attrs.HeightAttr = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
-	case "top":
-		attrs.Top = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
-	case "left":
-		attrs.Left = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Filled = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "double-border":
-		attrs.Style.DoubleBorder = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.DoubleBorder = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "text-transform":
-		attrs.Style.TextTransform = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
-	}
-}
-
-func compileIconStyleFieldInit(attrs *d2graph.Attributes, f *d2ir.Field) {
-	switch f.Name.ScalarString() {
-	case "border-radius":
-		attrs.IconStyle.BorderRadius = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.TextTransform = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	}
 }
 
@@ -927,7 +905,7 @@ func (c *compiler) compileEdgeField(edge *d2graph.Edge, f *d2ir.Field) {
 		if f.Map() == nil {
 			return
 		}
-		c.compileStyle(&edge.Attributes, f.Map(), false)
+		c.compileStyle(&edge.Attributes.Style, f.Map())
 		return
 	}
 
@@ -966,7 +944,7 @@ func (c *compiler) compileArrowheads(edge *d2graph.Edge, f *d2ir.Field) {
 				if f2.Map() == nil {
 					continue
 				}
-				c.compileStyle(attrs, f2.Map(), false)
+				c.compileStyle(&attrs.Style, f2.Map())
 				continue
 			} else {
 				c.errorf(f2.LastRef().AST(), `source-arrowhead/target-arrowhead map keys must be reserved keywords`)
