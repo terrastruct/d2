@@ -194,6 +194,12 @@ func applyStyles(shape *d2target.Shape, obj *d2graph.Object) {
 	if obj.Style.DoubleBorder != nil {
 		shape.DoubleBorder, _ = strconv.ParseBool(obj.Style.DoubleBorder.Value)
 	}
+	if obj.IconStyle != (d2graph.Style{}) {
+		shape.IconStyle = &d2target.ShapeIconStyle{}
+	}
+	if obj.IconStyle.BorderRadius != nil {
+		shape.IconStyle.BorderRadius, _ = strconv.Atoi(obj.IconStyle.BorderRadius.Value)
+	}
 }
 
 func toShape(obj *d2graph.Object, g *d2graph.Graph) d2target.Shape {
@@ -411,6 +417,10 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 		} else {
 			connection.IconPosition = label.InsideMiddleCenter.String()
 		}
+	}
+
+	if edge.IconStyle.BorderRadius != nil {
+		connection.IconBorderRadius, _ = strconv.ParseFloat(edge.IconStyle.BorderRadius.Value, 64)
 	}
 
 	if edge.Style.Italic != nil {

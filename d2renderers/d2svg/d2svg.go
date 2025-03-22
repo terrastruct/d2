@@ -853,13 +853,25 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 	if connection.Icon != nil {
 		iconPos := connection.GetIconPosition()
 		if iconPos != nil {
-			fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" />`,
-				html.EscapeString(connection.Icon.String()),
-				iconPos.X,
-				iconPos.Y,
-				d2target.DEFAULT_ICON_SIZE,
-				d2target.DEFAULT_ICON_SIZE,
-			)
+			if connection.IconBorderRadius != 0 {
+				fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" clip-path="inset(0 round %fpx)" />`,
+					html.EscapeString(connection.Icon.String()),
+					iconPos.X,
+					iconPos.Y,
+					d2target.DEFAULT_ICON_SIZE,
+					d2target.DEFAULT_ICON_SIZE,
+					connection.IconBorderRadius,
+				)
+			} else {
+
+				fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" />`,
+					html.EscapeString(connection.Icon.String()),
+					iconPos.X,
+					iconPos.Y,
+					d2target.DEFAULT_ICON_SIZE,
+					d2target.DEFAULT_ICON_SIZE,
+				)
+			}
 		}
 	}
 
@@ -1435,6 +1447,10 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		el.Fill = fill
 		el.Stroke = stroke
 		el.Style = style
+		if targetShape.IconStyle != nil && targetShape.IconStyle.BorderRadius != 0 {
+			fmt.Fprint(writer, clipPathForIconBorderRadius(diagramHash, targetShape))
+			el.ClipPath = fmt.Sprintf("%v-%v-icon", diagramHash, targetShape.ID)
+		}
 		fmt.Fprint(writer, el.Render())
 
 	// TODO should standardize "" to rectangle
@@ -1627,13 +1643,24 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 
 		tl := iconPosition.GetPointOnBox(box, label.PADDING, float64(iconSize), float64(iconSize))
 
-		fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" />`,
-			html.EscapeString(targetShape.Icon.String()),
-			tl.X,
-			tl.Y,
-			iconSize,
-			iconSize,
-		)
+		if targetShape.IconStyle != nil && targetShape.IconStyle.BorderRadius != 0 {
+			fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" clip-path="inset(0 round %dpx)" />`,
+				html.EscapeString(targetShape.Icon.String()),
+				tl.X,
+				tl.Y,
+				iconSize,
+				iconSize,
+				targetShape.IconStyle.BorderRadius,
+			)
+		} else {
+			fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" />`,
+				html.EscapeString(targetShape.Icon.String()),
+				tl.X,
+				tl.Y,
+				iconSize,
+				iconSize,
+			)
+		}
 	}
 
 	if targetShape.Label != "" && targetShape.Opacity != 0 {

@@ -115,6 +115,7 @@
           "height": 0
         },
         "style": {},
+        "iconStyle": {},
         "near_key": null,
         "shape": {
           "value": ""
@@ -173,6 +174,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "near_key": {
             "range": "d2/testdata/d2oracle/TestMove/flat_near.d2,0:8:8-0:11:11",
             "path": [
@@ -244,6 +246,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "rectangle"
@@ -289,6 +292,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "rectangle"

@@ -196,10 +196,11 @@ type Attributes struct {
 	Label           Scalar                  `json:"label"`
 	LabelDimensions d2target.TextDimensions `json:"labelDimensions"`
 
-	Style   Style    `json:"style"`
-	Icon    *url.URL `json:"icon,omitempty"`
-	Tooltip *Scalar  `json:"tooltip,omitempty"`
-	Link    *Scalar  `json:"link,omitempty"`
+	Style     Style    `json:"style"`
+	Icon      *url.URL `json:"icon,omitempty"`
+	IconStyle Style    `json:"iconStyle"`
+	Tooltip   *Scalar  `json:"tooltip,omitempty"`
+	Link      *Scalar  `json:"link,omitempty"`
 
 	WidthAttr  *Scalar `json:"width,omitempty"`
 	HeightAttr *Scalar `json:"height,omitempty"`
