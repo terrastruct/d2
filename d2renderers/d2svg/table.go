@@ -50,20 +50,15 @@ func clipPathForIconBorderRadius(diagramHash string, shape d2target.Shape) strin
 	topX, topY := box.TopLeft.X+box.Width, box.TopLeft.Y
 
 	out := fmt.Sprintf(`<clipPath id="%v-%v-icon">`, diagramHash, shape.ID)
-	out += fmt.Sprintf(`<path d="M %f %f L %f %f S %f %f %f %f `, box.TopLeft.X, box.TopLeft.Y+float64(shape.IconBorderRadius), box.TopLeft.X, box.TopLeft.Y+float64(shape.IconBorderRadius), box.TopLeft.X, box.TopLeft.Y, box.TopLeft.X+float64(shape.IconBorderRadius), box.TopLeft.Y)
-	out += fmt.Sprintf(`L %f %f L %f %f `, box.TopLeft.X+box.Width-float64(shape.IconBorderRadius), box.TopLeft.Y, topX-float64(shape.IconBorderRadius), topY)
+	out += fmt.Sprintf(`<path d="M %f %f L %f %f S %f %f %f %f `, box.TopLeft.X, box.TopLeft.Y+float64(shape.IconStyle.BorderRadius), box.TopLeft.X, box.TopLeft.Y+float64(shape.IconStyle.BorderRadius), box.TopLeft.X, box.TopLeft.Y, box.TopLeft.X+float64(shape.IconStyle.BorderRadius), box.TopLeft.Y)
+	out += fmt.Sprintf(`L %f %f L %f %f `, box.TopLeft.X+box.Width-float64(shape.IconStyle.BorderRadius), box.TopLeft.Y, topX-float64(shape.IconStyle.BorderRadius), topY)
 
-	out += fmt.Sprintf(`S %f %f %f %f `, topX, topY, topX, topY+float64(shape.IconBorderRadius))
-	out += fmt.Sprintf(`L %f %f `, topX, topY+box.Height-float64(shape.IconBorderRadius))
-
-	if len(shape.Columns) != 0 {
-		out += fmt.Sprintf(`L %f %f L %f %f`, topX, topY+box.Height, box.TopLeft.X, box.TopLeft.Y+box.Height)
-	} else {
-		out += fmt.Sprintf(`S %f % f %f %f `, topX, topY+box.Height, topX-float64(shape.IconBorderRadius), topY+box.Height)
-		out += fmt.Sprintf(`L %f %f `, box.TopLeft.X+float64(shape.IconBorderRadius), box.TopLeft.Y+box.Height)
-		out += fmt.Sprintf(`S %f %f %f %f`, box.TopLeft.X, box.TopLeft.Y+box.Height, box.TopLeft.X, box.TopLeft.Y+box.Height-float64(shape.IconBorderRadius))
-		out += fmt.Sprintf(`L %f %f`, box.TopLeft.X, box.TopLeft.Y+float64(shape.IconBorderRadius))
-	}
+	out += fmt.Sprintf(`S %f %f %f %f `, topX, topY, topX, topY+float64(shape.IconStyle.BorderRadius))
+	out += fmt.Sprintf(`L %f %f `, topX, topY+box.Height-float64(shape.IconStyle.BorderRadius))
+	out += fmt.Sprintf(`S %f % f %f %f `, topX, topY+box.Height, topX-float64(shape.IconStyle.BorderRadius), topY+box.Height)
+	out += fmt.Sprintf(`L %f %f `, box.TopLeft.X+float64(shape.IconStyle.BorderRadius), box.TopLeft.Y+box.Height)
+	out += fmt.Sprintf(`S %f %f %f %f`, box.TopLeft.X, box.TopLeft.Y+box.Height, box.TopLeft.X, box.TopLeft.Y+box.Height-float64(shape.IconStyle.BorderRadius))
+	out += fmt.Sprintf(`L %f %f`, box.TopLeft.X, box.TopLeft.Y+float64(shape.IconStyle.BorderRadius))
 	out += fmt.Sprintf(`Z %f %f" `, box.TopLeft.X, box.TopLeft.Y)
 	return out + `fill="none" /> </clipPath>`
 }

@@ -1447,7 +1447,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		el.Fill = fill
 		el.Stroke = stroke
 		el.Style = style
-		if targetShape.IconBorderRadius != 0 {
+		if targetShape.IconStyle != nil && targetShape.IconStyle.BorderRadius != 0 {
 			fmt.Fprint(writer, clipPathForIconBorderRadius(diagramHash, targetShape))
 			el.ClipPath = fmt.Sprintf("%v-%v-icon", diagramHash, targetShape.ID)
 		}
@@ -1643,14 +1643,14 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 
 		tl := iconPosition.GetPointOnBox(box, label.PADDING, float64(iconSize), float64(iconSize))
 
-		if targetShape.IconBorderRadius != 0 {
+		if targetShape.IconStyle != nil && targetShape.IconStyle.BorderRadius != 0 {
 			fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" clip-path="inset(0 round %dpx)" />`,
 				html.EscapeString(targetShape.Icon.String()),
 				tl.X,
 				tl.Y,
 				iconSize,
 				iconSize,
-				targetShape.IconBorderRadius,
+				targetShape.IconStyle.BorderRadius,
 			)
 		} else {
 			fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" />`,
