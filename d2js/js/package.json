@@ -23,9 +23,13 @@
       "browser": "./dist/browser/index.js",
       "import": {
         "browser": "./dist/browser/index.js",
-        "default": "./dist/node-esm/index.js"
+        "default": "./dist/node-esm/index.js",
+        "types": "./index.d.ts"
       },
-      "require": "./dist/node-cjs/index.js",
+      "require": {
+        "default": "./dist/node-cjs/index.js",
+        "types": "./index.d.ts"
+      },
       "default": "./dist/node-esm/index.js"
     },
     "./worker": "./dist/browser/worker.js"

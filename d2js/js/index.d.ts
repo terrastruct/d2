@@ -47,7 +47,7 @@ export interface CompileRequest {
   /** A mapping of D2 file paths to their content*/
   fs: Record<string, string>;
   /** The path of the entry D2 file [default: index]*/
-  inputPath: string;
+  inputPath?: string;
   /** The CompileOptions to pass to the compiler*/
   options: CompileOptions;
 }

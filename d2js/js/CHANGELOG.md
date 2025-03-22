@@ -3,6 +3,10 @@
 All notable changes to only the d2.js package will be documented in this file. **Does not
 include changes to the main d2 project.**
 
+## Next
+
+- Fix TypeScript signatures
+
 ## [0.1.22]
 ### March 20, 2025
 
