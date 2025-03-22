@@ -46,7 +46,9 @@
         "Fragment": "",
         "RawFragment": ""
       },
-      "iconBorderRadius": 20,
+      "iconStyle": {
+        "borderRadius": 20
+      },
       "iconPosition": "INSIDE_MIDDLE_CENTER",
       "blend": false,
       "fields": null,
