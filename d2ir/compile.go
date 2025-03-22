@@ -280,6 +280,19 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) (removedFie
 								break
 							}
 						}
+
+						if removedField && len(m.globs) > 0 && !c.lazyGlobBeingApplied {
+							origGlobStack := c.globContextStack
+							c.globContextStack = append(c.globContextStack, m.globs)
+							for _, gctx := range m.globs {
+								old := c.lazyGlobBeingApplied
+								c.lazyGlobBeingApplied = true
+								c.compileKey(gctx.refctx)
+								c.lazyGlobBeingApplied = old
+							}
+							c.globContextStack = origGlobStack
+						}
+
 					}
 				}
 				if resolvedField.Primary() == nil {
@@ -869,6 +882,22 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 			for _, part := range edge.ID.SrcPath {
 				srcParts = append(srcParts, part.ScalarString())
 			}
+
+			container := ParentField(edge)
+			if container != nil && container.Name.ScalarString() != "root" {
+				containerPath := []string{}
+				curr := container
+				for curr != nil && curr.Name.ScalarString() != "root" {
+					containerPath = append([]string{curr.Name.ScalarString()}, containerPath...)
+					curr = ParentField(curr)
+				}
+
+				srcStart := srcParts[0]
+				if !strings.EqualFold(srcStart, containerPath[0]) {
+					srcParts = append(containerPath, srcParts...)
+				}
+			}
+
 			srcPath := strings.Join(srcParts, ".")
 
 			return srcPath == filterValue
@@ -888,6 +917,23 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 			var dstParts []string
 			for _, part := range edge.ID.DstPath {
 				dstParts = append(dstParts, part.ScalarString())
+			}
+
+			// Find the container that holds this edge
+			// Build the absolute path by prepending the container's path
+			container := ParentField(edge)
+			if container != nil && container.Name.ScalarString() != "root" {
+				containerPath := []string{}
+				curr := container
+				for curr != nil && curr.Name.ScalarString() != "root" {
+					containerPath = append([]string{curr.Name.ScalarString()}, containerPath...)
+					curr = ParentField(curr)
+				}
+
+				dstStart := dstParts[0]
+				if !strings.EqualFold(dstStart, containerPath[0]) {
+					dstParts = append(containerPath, dstParts...)
+				}
 			}
 			dstPath := strings.Join(dstParts, ".")
 
@@ -1101,6 +1147,10 @@ func (c *compiler) extendLinks(m *Map, importF *Field, importDir string) {
 	nodeBoardKind := NodeBoardKind(m)
 	importIDA := IDA(importF)
 	for _, f := range m.Fields {
+		// A substitute or such
+		if f.Name == nil {
+			continue
+		}
 		if f.Name.ScalarString() == "link" && f.Name.IsUnquoted() {
 			if nodeBoardKind != "" {
 				c.errorf(f.LastRef().AST(), "a board itself cannot be linked; only objects within a board can be linked")
@@ -1109,7 +1159,7 @@ func (c *compiler) extendLinks(m *Map, importF *Field, importDir string) {
 			val := f.Primary().Value.ScalarString()
 
 			u, err := url.Parse(html.UnescapeString(val))
-			isRemote := err == nil && u.Scheme != ""
+			isRemote := err == nil && (u.Scheme != "" || strings.HasPrefix(u.Path, "/"))
 			if isRemote {
 				continue
 			}
@@ -1147,7 +1197,7 @@ func (c *compiler) extendLinks(m *Map, importF *Field, importDir string) {
 				continue
 			}
 			u, err := url.Parse(html.UnescapeString(val))
-			isRemoteImg := err == nil && u.Scheme != ""
+			isRemoteImg := err == nil && (u.Scheme != "" || strings.HasPrefix(u.Path, "/"))
 			if isRemoteImg {
 				continue
 			}
@@ -1273,12 +1323,94 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 					continue
 				}
 
+				if refctx.Key.Value.Map != nil && refctx.Key.Value.Map.HasFilter() {
+					if e.Map_ == nil {
+						e.Map_ = &Map{
+							parent: e,
+						}
+					}
+					c.mapRefContextStack = append(c.mapRefContextStack, refctx)
+					ok := c.ampersandFilterMap(e.Map_, refctx.Key.Value.Map, refctx.ScopeAST)
+					c.mapRefContextStack = c.mapRefContextStack[:len(c.mapRefContextStack)-1]
+					if !ok {
+						continue
+					}
+				}
+
 				if refctx.Key.Primary.Suspension != nil || refctx.Key.Value.Suspension != nil {
 					if !c.lazyGlobBeingApplied {
+						// Check if edge passes filter before applying suspension
+						if refctx.Key.Value.Map != nil && refctx.Key.Value.Map.HasFilter() {
+							if e.Map_ == nil {
+								e.Map_ = &Map{
+									parent: e,
+								}
+							}
+							c.mapRefContextStack = append(c.mapRefContextStack, refctx)
+							ok := c.ampersandFilterMap(e.Map_, refctx.Key.Value.Map, refctx.ScopeAST)
+							c.mapRefContextStack = c.mapRefContextStack[:len(c.mapRefContextStack)-1]
+							if !ok {
+								continue
+							}
+						}
+
+						var suspensionValue bool
 						if refctx.Key.Primary.Suspension != nil {
-							e.suspended = refctx.Key.Primary.Suspension.Value
+							suspensionValue = refctx.Key.Primary.Suspension.Value
 						} else {
-							e.suspended = refctx.Key.Value.Suspension.Value
+							suspensionValue = refctx.Key.Value.Suspension.Value
+						}
+						e.suspended = suspensionValue
+
+						// If we're unsuspending an edge, we should also unsuspend its src and dst objects
+						// And their ancestors
+						if !suspensionValue {
+							srcPath, dstPath := e.ID.SrcPath, e.ID.DstPath
+
+							// Make paths absolute if they're relative
+							container := ParentField(e)
+							if container != nil && container.Name.ScalarString() != "root" {
+								containerPath := []d2ast.String{}
+								curr := container
+								for curr != nil && curr.Name.ScalarString() != "root" {
+									containerPath = append([]d2ast.String{curr.Name}, containerPath...)
+									curr = ParentField(curr)
+								}
+
+								if len(srcPath) > 0 && !strings.EqualFold(srcPath[0].ScalarString(), containerPath[0].ScalarString()) {
+									absSrcPath := append([]d2ast.String{}, containerPath...)
+									srcPath = append(absSrcPath, srcPath...)
+								}
+
+								if len(dstPath) > 0 && !strings.EqualFold(dstPath[0].ScalarString(), containerPath[0].ScalarString()) {
+									absDstPath := append([]d2ast.String{}, containerPath...)
+									dstPath = append(absDstPath, dstPath...)
+								}
+							}
+
+							rootMap := RootMap(refctx.ScopeMap)
+							srcObj := rootMap.GetField(srcPath...)
+							dstObj := rootMap.GetField(dstPath...)
+
+							// Unsuspend source node and all its ancestors
+							if srcObj != nil {
+								srcObj.suspended = false
+								parent := ParentField(srcObj)
+								for parent != nil && parent.Name.ScalarString() != "root" {
+									parent.suspended = false
+									parent = ParentField(parent)
+								}
+							}
+
+							// Unsuspend destination node and all its ancestors
+							if dstObj != nil {
+								dstObj.suspended = false
+								parent := ParentField(dstObj)
+								for parent != nil && parent.Name.ScalarString() != "root" {
+									parent.suspended = false
+									parent = ParentField(parent)
+								}
+							}
 						}
 					}
 				}
@@ -1309,7 +1441,7 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 				}
 				c.compileField(e.Map_, refctx.Key.EdgeKey, refctx)
 			} else {
-				if refctx.Key.Primary.Unbox() != nil {
+				if refctx.Key.Primary.Unbox() != nil && refctx.Key.Primary.Suspension == nil {
 					if c.ignoreLazyGlob(e) {
 						return
 					}
@@ -1330,7 +1462,7 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 					c.mapRefContextStack = append(c.mapRefContextStack, refctx)
 					c.compileMap(e.Map_, refctx.Key.Value.Map, refctx.ScopeAST)
 					c.mapRefContextStack = c.mapRefContextStack[:len(c.mapRefContextStack)-1]
-				} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
+				} else if refctx.Key.Value.ScalarBox().Unbox() != nil && refctx.Key.Value.Suspension == nil {
 					if c.ignoreLazyGlob(e) {
 						return
 					}

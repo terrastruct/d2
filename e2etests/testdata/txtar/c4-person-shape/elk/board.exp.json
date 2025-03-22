@@ -16,10 +16,10 @@
       "type": "c4-person",
       "pos": {
         "x": 12,
-        "y": 975
+        "y": 938
       },
-      "width": 312,
-      "height": 350,
+      "width": 336,
+      "height": 342,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 1,
@@ -57,11 +57,11 @@
       "id": "c4person",
       "type": "c4-person",
       "pos": {
-        "x": 201,
+        "x": 211,
         "y": 12
       },
-      "width": 135,
-      "height": 152,
+      "width": 139,
+      "height": 132,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 1,
@@ -99,8 +99,8 @@
       "id": "regular_person",
       "type": "person",
       "pos": {
-        "x": 101,
-        "y": 790
+        "x": 113,
+        "y": 753
       },
       "width": 134,
       "height": 89,
@@ -141,11 +141,11 @@
       "id": "styling",
       "type": "rectangle",
       "pos": {
-        "x": 244,
-        "y": 249
+        "x": 256,
+        "y": 229
       },
       "width": 250,
-      "height": 471,
+      "height": 454,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -183,11 +183,11 @@
       "id": "styling.c4styled",
       "type": "c4-person",
       "pos": {
-        "x": 327,
-        "y": 299
+        "x": 339,
+        "y": 279
       },
-      "width": 85,
-      "height": 121,
+      "width": 84,
+      "height": 104,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 1,
@@ -225,8 +225,8 @@
       "id": "styling.c4sized",
       "type": "c4-person",
       "pos": {
-        "x": 294,
-        "y": 490
+        "x": 306,
+        "y": 453
       },
       "width": 150,
       "height": 180,
@@ -291,12 +291,12 @@
       "link": "",
       "route": [
         {
-          "x": 168,
-          "y": 905
+          "x": 180,
+          "y": 868
         },
         {
-          "x": 168,
-          "y": 969
+          "x": 180,
+          "y": 938
         }
       ],
       "animated": false,
@@ -330,20 +330,20 @@
       "link": "",
       "route": [
         {
-          "x": 246,
-          "y": 165
+          "x": 258,
+          "y": 143
         },
         {
-          "x": 246.25,
-          "y": 204
+          "x": 257.5830078125,
+          "y": 184
         },
         {
-          "x": 168,
-          "y": 204
+          "x": 180,
+          "y": 184
         },
         {
-          "x": 168,
-          "y": 790
+          "x": 180,
+          "y": 753
         }
       ],
       "animated": false,
@@ -377,20 +377,20 @@
       "link": "",
       "route": [
         {
-          "x": 291,
-          "y": 165
+          "x": 304,
+          "y": 143
         },
         {
-          "x": 291.25,
-          "y": 204
+          "x": 303.9159851074219,
+          "y": 184
         },
         {
-          "x": 369.5,
-          "y": 204
+          "x": 381.5,
+          "y": 184
         },
         {
-          "x": 370,
-          "y": 302
+          "x": 382,
+          "y": 279
         }
       ],
       "animated": false,
@@ -424,12 +424,12 @@
       "link": "",
       "route": [
         {
-          "x": 369,
-          "y": 421
+          "x": 381,
+          "y": 383
         },
         {
-          "x": 370,
-          "y": 489
+          "x": 382,
+          "y": 453
         }
       ],
       "animated": false,

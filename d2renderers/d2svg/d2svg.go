@@ -44,6 +44,13 @@ const (
 	DEFAULT_PADDING = 100
 
 	appendixIconRadius = 16
+
+	// Legend constants
+	LEGEND_PADDING        = 20
+	LEGEND_ITEM_SPACING   = 15
+	LEGEND_ICON_SIZE      = 24
+	LEGEND_FONT_SIZE      = 14
+	LEGEND_CORNER_PADDING = 10
 )
 
 var multipleOffset = geo.NewVector(d2target.MULTIPLE_OFFSET, -d2target.MULTIPLE_OFFSET)
@@ -99,6 +106,262 @@ func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height in
 	height = br.Y - tl.Y + pad*2
 
 	return left, top, width, height
+}
+
+func renderLegend(buf *bytes.Buffer, diagram *d2target.Diagram, diagramHash string, theme *d2themes.Theme) error {
+	if diagram.Legend == nil || (len(diagram.Legend.Shapes) == 0 && len(diagram.Legend.Connections) == 0) {
+		return nil
+	}
+
+	_, br := diagram.BoundingBox()
+
+	ruler, err := textmeasure.NewRuler()
+	if err != nil {
+		return err
+	}
+
+	totalHeight := LEGEND_PADDING + LEGEND_FONT_SIZE + LEGEND_ITEM_SPACING
+	maxLabelWidth := 0
+
+	itemCount := 0
+
+	for _, s := range diagram.Legend.Shapes {
+		if s.Label == "" {
+			continue
+		}
+
+		mtext := &d2target.MText{
+			Text:     s.Label,
+			FontSize: LEGEND_FONT_SIZE,
+		}
+
+		dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
+		maxLabelWidth = go2.IntMax(maxLabelWidth, dims.Width)
+		totalHeight += go2.IntMax(dims.Height, LEGEND_ICON_SIZE) + LEGEND_ITEM_SPACING
+		itemCount++
+	}
+
+	for _, c := range diagram.Legend.Connections {
+		if c.Label == "" {
+			continue
+		}
+
+		mtext := &d2target.MText{
+			Text:     c.Label,
+			FontSize: LEGEND_FONT_SIZE,
+		}
+
+		dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
+		maxLabelWidth = go2.IntMax(maxLabelWidth, dims.Width)
+		totalHeight += go2.IntMax(dims.Height, LEGEND_ICON_SIZE) + LEGEND_ITEM_SPACING
+		itemCount++
+	}
+
+	if itemCount > 0 {
+		totalHeight -= LEGEND_ITEM_SPACING / 2
+	}
+
+	if itemCount > 0 && len(diagram.Legend.Connections) > 0 {
+		totalHeight += LEGEND_PADDING * 1.5
+	} else {
+		totalHeight += LEGEND_PADDING * 1.2
+	}
+
+	legendWidth := LEGEND_PADDING*2 + LEGEND_ICON_SIZE + LEGEND_PADDING + maxLabelWidth
+	legendX := br.X + LEGEND_CORNER_PADDING
+	tl, _ := diagram.BoundingBox()
+	legendY := br.Y - totalHeight
+	if legendY < tl.Y {
+		legendY = tl.Y
+	}
+
+	shadowEl := d2themes.NewThemableElement("rect", theme)
+	shadowEl.Fill = "#F7F7FA"
+	shadowEl.Stroke = "#DEE1EB"
+	shadowEl.Style = "stroke-width: 1px; filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.1))"
+	shadowEl.X = float64(legendX)
+	shadowEl.Y = float64(legendY)
+	shadowEl.Width = float64(legendWidth)
+	shadowEl.Height = float64(totalHeight)
+	shadowEl.Rx = 4
+	fmt.Fprint(buf, shadowEl.Render())
+
+	legendEl := d2themes.NewThemableElement("rect", theme)
+	legendEl.Fill = "#ffffff"
+	legendEl.Stroke = "#DEE1EB"
+	legendEl.Style = "stroke-width: 1px"
+	legendEl.X = float64(legendX)
+	legendEl.Y = float64(legendY)
+	legendEl.Width = float64(legendWidth)
+	legendEl.Height = float64(totalHeight)
+	legendEl.Rx = 4
+	fmt.Fprint(buf, legendEl.Render())
+
+	fmt.Fprintf(buf, `<text class="text-bold" x="%d" y="%d" style="font-size: %dpx;">Legend</text>`,
+		legendX+LEGEND_PADDING, legendY+LEGEND_PADDING+LEGEND_FONT_SIZE, LEGEND_FONT_SIZE+2)
+
+	currentY := legendY + LEGEND_PADDING*2 + LEGEND_FONT_SIZE
+
+	shapeCount := 0
+	for _, s := range diagram.Legend.Shapes {
+		if s.Label == "" {
+			continue
+		}
+
+		iconX := legendX + LEGEND_PADDING
+		iconY := currentY
+
+		shapeIcon, err := renderLegendShapeIcon(s, iconX, iconY, diagramHash, theme)
+		if err != nil {
+			return err
+		}
+		fmt.Fprint(buf, shapeIcon)
+
+		mtext := &d2target.MText{
+			Text:     s.Label,
+			FontSize: LEGEND_FONT_SIZE,
+		}
+
+		dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
+
+		rowHeight := go2.IntMax(dims.Height, LEGEND_ICON_SIZE)
+		textY := currentY + rowHeight/2 + int(float64(dims.Height)*0.3)
+
+		fmt.Fprintf(buf, `<text class="text" x="%d" y="%d" style="font-size: %dpx;">%s</text>`,
+			iconX+LEGEND_ICON_SIZE+LEGEND_PADDING, textY, LEGEND_FONT_SIZE,
+			html.EscapeString(s.Label))
+
+		currentY += rowHeight + LEGEND_ITEM_SPACING
+		shapeCount++
+	}
+
+	if shapeCount > 0 && len(diagram.Legend.Connections) > 0 {
+		currentY += LEGEND_ITEM_SPACING / 2
+
+		separatorEl := d2themes.NewThemableElement("line", theme)
+		separatorEl.X1 = float64(legendX + LEGEND_PADDING)
+		separatorEl.Y1 = float64(currentY)
+		separatorEl.X2 = float64(legendX + legendWidth - LEGEND_PADDING)
+		separatorEl.Y2 = float64(currentY)
+		separatorEl.Stroke = "#DEE1EB"
+		separatorEl.StrokeDashArray = "2,2"
+		fmt.Fprint(buf, separatorEl.Render())
+
+		currentY += LEGEND_ITEM_SPACING
+	}
+
+	for _, c := range diagram.Legend.Connections {
+		if c.Label == "" {
+			continue
+		}
+
+		iconX := legendX + LEGEND_PADDING
+		iconY := currentY + LEGEND_ICON_SIZE/2
+
+		connIcon, err := renderLegendConnectionIcon(c, iconX, iconY, theme)
+		if err != nil {
+			return err
+		}
+		fmt.Fprint(buf, connIcon)
+
+		mtext := &d2target.MText{
+			Text:     c.Label,
+			FontSize: LEGEND_FONT_SIZE,
+		}
+
+		dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
+
+		rowHeight := go2.IntMax(dims.Height, LEGEND_ICON_SIZE)
+		textY := currentY + rowHeight/2 + int(float64(dims.Height)*0.2)
+
+		fmt.Fprintf(buf, `<text class="text" x="%d" y="%d" style="font-size: %dpx;">%s</text>`,
+			iconX+LEGEND_ICON_SIZE+LEGEND_PADDING, textY, LEGEND_FONT_SIZE,
+			html.EscapeString(c.Label))
+
+		currentY += rowHeight + LEGEND_ITEM_SPACING
+	}
+
+	if shapeCount > 0 && len(diagram.Legend.Connections) > 0 {
+		currentY += LEGEND_PADDING / 2
+	} else {
+		currentY += LEGEND_PADDING / 4
+	}
+
+	return nil
+}
+
+func renderLegendShapeIcon(s d2target.Shape, x, y int, diagramHash string, theme *d2themes.Theme) (string, error) {
+	iconShape := s
+	const sizeFactor = 5
+	iconShape.Pos.X = 0
+	iconShape.Pos.Y = 0
+	iconShape.Width = LEGEND_ICON_SIZE * sizeFactor
+	iconShape.Height = LEGEND_ICON_SIZE * sizeFactor
+	iconShape.Label = ""
+	buf := &bytes.Buffer{}
+	appendixBuf := &bytes.Buffer{}
+	finalBuf := &bytes.Buffer{}
+	fmt.Fprintf(finalBuf, `<g transform="translate(%d, %d) scale(%f)">`,
+		x, y, 1.0/sizeFactor)
+	_, err := drawShape(buf, appendixBuf, diagramHash, iconShape, nil, theme)
+	if err != nil {
+		return "", err
+	}
+
+	fmt.Fprint(finalBuf, buf.String())
+
+	fmt.Fprint(finalBuf, `</g>`)
+
+	return finalBuf.String(), nil
+}
+
+func renderLegendConnectionIcon(c d2target.Connection, x, y int, theme *d2themes.Theme) (string, error) {
+	finalBuf := &bytes.Buffer{}
+
+	buf := &bytes.Buffer{}
+
+	const sizeFactor = 2
+
+	legendConn := *d2target.BaseConnection()
+
+	legendConn.ID = c.ID
+	legendConn.SrcArrow = c.SrcArrow
+	legendConn.DstArrow = c.DstArrow
+	legendConn.StrokeDash = c.StrokeDash
+	legendConn.StrokeWidth = c.StrokeWidth
+	legendConn.Stroke = c.Stroke
+	legendConn.Fill = c.Fill
+	legendConn.BorderRadius = c.BorderRadius
+	legendConn.Opacity = c.Opacity
+	legendConn.Animated = c.Animated
+
+	startX := 0.0
+	midY := 0.0
+	width := float64(LEGEND_ICON_SIZE * sizeFactor)
+
+	legendConn.Route = []*geo.Point{
+		{X: startX, Y: midY},
+		{X: startX + width, Y: midY},
+	}
+
+	legendHash := fmt.Sprintf("legend-%s", hash(fmt.Sprintf("%s-%d-%d", c.ID, x, y)))
+
+	markers := make(map[string]struct{})
+	idToShape := make(map[string]d2target.Shape)
+
+	fmt.Fprintf(finalBuf, `<g transform="translate(%d, %d) scale(%f)">`,
+		x, y, 1.0/sizeFactor)
+
+	_, err := drawConnection(buf, legendHash, legendConn, markers, idToShape, nil, theme)
+	if err != nil {
+		return "", err
+	}
+
+	fmt.Fprint(finalBuf, buf.String())
+
+	fmt.Fprint(finalBuf, `</g>`)
+
+	return finalBuf.String(), nil
 }
 
 func arrowheadMarkerID(diagramHash string, isTarget bool, connection d2target.Connection) string {
@@ -1496,23 +1759,32 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			render = strings.ReplaceAll(render, "<hr>", "<hr />")
 
 			mdEl := d2themes.NewThemableElement("div", inlineTheme)
-			mdEl.ClassName = "md"
 			mdEl.Content = render
 
 			// We have to set with styles since within foreignObject, we're in html
 			// land and not SVG attributes
 			var styles []string
+			var classes []string = []string{"md"}
 			if targetShape.FontSize != textmeasure.MarkdownFontSize {
 				styles = append(styles, fmt.Sprintf("font-size:%vpx", targetShape.FontSize))
 			}
+
 			if targetShape.Fill != "" && targetShape.Fill != "transparent" {
-				styles = append(styles, fmt.Sprintf(`background-color:%s`, targetShape.Fill))
+				if color.IsThemeColor(targetShape.Fill) {
+					classes = append(classes, fmt.Sprintf("fill-%s", targetShape.Fill))
+				} else {
+					styles = append(styles, fmt.Sprintf(`background-color:%s`, targetShape.Fill))
+				}
 			}
+
 			if !color.IsThemeColor(targetShape.Color) {
 				styles = append(styles, fmt.Sprintf(`color:%s`, targetShape.Color))
 			} else {
-				styles = append(styles, fmt.Sprintf(`color:%s`, d2themes.ResolveThemeColor(*inlineTheme, targetShape.Color)))
+				classes = append(classes, fmt.Sprintf("color-%s", targetShape.Color))
 			}
+
+			mdEl.ClassName = strings.Join(classes, " ")
+			// When using dark theme, inlineTheme is nil and we rely on CSS variables
 
 			mdEl.Style = strings.Join(styles, ";")
 
@@ -1711,6 +1983,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			`class="text"`,
 			`class="text `,
 			`class="md"`,
+			`class="md `,
 		},
 		fmt.Sprintf(`
 .%s .text {
@@ -1730,7 +2003,10 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 	appendOnTrigger(
 		buf,
 		source,
-		[]string{`class="md"`},
+		[]string{
+			`class="md"`,
+			`class="md `,
+		},
 		fmt.Sprintf(`
 @font-face {
 	font-family: %s-font-semibold;
@@ -2112,8 +2388,85 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	// add all appendix items afterwards so they are always on top
 	fmt.Fprint(buf, appendixItemBuf)
 
+	if diagram.Legend != nil && (len(diagram.Legend.Shapes) > 0 || len(diagram.Legend.Connections) > 0) {
+		legendBuf := &bytes.Buffer{}
+		err := renderLegend(legendBuf, diagram, diagramHash, inlineTheme)
+		if err != nil {
+			return nil, err
+		}
+		fmt.Fprint(buf, legendBuf)
+	}
+
 	// Note: we always want this since we reference it on connections even if there end up being no masked labels
 	left, top, w, h := dimensions(diagram, pad)
+
+	if diagram.Legend != nil && (len(diagram.Legend.Shapes) > 0 || len(diagram.Legend.Connections) > 0) {
+		tl, br := diagram.BoundingBox()
+		totalHeight := LEGEND_PADDING + LEGEND_FONT_SIZE + LEGEND_ITEM_SPACING
+		maxLabelWidth := 0
+		itemCount := 0
+		ruler, _ := textmeasure.NewRuler()
+		if ruler != nil {
+			for _, s := range diagram.Legend.Shapes {
+				if s.Label == "" {
+					continue
+				}
+				mtext := &d2target.MText{
+					Text:     s.Label,
+					FontSize: LEGEND_FONT_SIZE,
+				}
+				dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
+				maxLabelWidth = go2.IntMax(maxLabelWidth, dims.Width)
+				totalHeight += go2.IntMax(dims.Height, LEGEND_ICON_SIZE) + LEGEND_ITEM_SPACING
+				itemCount++
+			}
+
+			for _, c := range diagram.Legend.Connections {
+				if c.Label == "" {
+					continue
+				}
+				mtext := &d2target.MText{
+					Text:     c.Label,
+					FontSize: LEGEND_FONT_SIZE,
+				}
+				dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
+				maxLabelWidth = go2.IntMax(maxLabelWidth, dims.Width)
+				totalHeight += go2.IntMax(dims.Height, LEGEND_ICON_SIZE) + LEGEND_ITEM_SPACING
+				itemCount++
+			}
+
+			if itemCount > 0 {
+				totalHeight -= LEGEND_ITEM_SPACING / 2
+			}
+
+			totalHeight += LEGEND_PADDING
+
+			if totalHeight > 0 && maxLabelWidth > 0 {
+				legendWidth := LEGEND_PADDING*2 + LEGEND_ICON_SIZE + LEGEND_PADDING + maxLabelWidth
+
+				legendY := br.Y - totalHeight
+				if legendY < tl.Y {
+					legendY = tl.Y
+				}
+
+				legendRight := br.X + LEGEND_CORNER_PADDING + legendWidth
+				if left+w < legendRight {
+					w = legendRight - left + pad/2
+				}
+
+				if legendY < top {
+					diffY := top - legendY
+					top -= diffY
+					h += diffY
+				}
+
+				legendBottom := legendY + totalHeight
+				if top+h < legendBottom {
+					h = legendBottom - top + pad/2
+				}
+			}
+		}
+	}
 	fmt.Fprint(buf, strings.Join([]string{
 		fmt.Sprintf(`<mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
 			isolatedDiagramHash, left, top, w, h,

@@ -21,7 +21,7 @@ const (
 	CALLOUT_TYPE       = "Callout"
 	STORED_DATA_TYPE   = "StoredData"
 	PERSON_TYPE        = "Person"
-	C4_PERSON_TYPE     = "c4-person"
+	C4_PERSON_TYPE     = "C4Person"
 	DIAMOND_TYPE       = "Diamond"
 	OVAL_TYPE          = "Oval"
 	CIRCLE_TYPE        = "Circle"

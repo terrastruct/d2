@@ -8,8 +8,13 @@ import (
 	"oss.terrastruct.com/util-go/go2"
 )
 
-// Optimal value for circular arc approximation with cubic bezier curves
-const kCircleApprox = 0.5522847498307936 // 4*(math.Sqrt(2)-1)/3
+// Constants to match frontend implementation
+const (
+	C4_PERSON_AR_LIMIT   = 1.5
+	HEAD_RADIUS_FACTOR   = 0.22
+	BODY_TOP_FACTOR      = 0.8
+	CORNER_RADIUS_FACTOR = 0.175
+)
 
 type shapeC4Person struct {
 	*baseShape
@@ -26,25 +31,25 @@ func NewC4Person(box *geo.Box) Shape {
 	return shape
 }
 
-const (
-	C4_PERSON_AR_LIMIT = 1.5
-)
-
 func (s shapeC4Person) GetInnerBox() *geo.Box {
 	width := s.Box.Width
 	height := s.Box.Height
 
-	headRadius := width * 0.22
-	headCenterY := height * 0.18
-	bodyTop := headCenterY + headRadius*0.8
+	headRadius := width * HEAD_RADIUS_FACTOR
+	headCenterY := headRadius
+	bodyTop := headCenterY + headRadius*BODY_TOP_FACTOR
+
+	// Horizontal padding = 5% of width
+	horizontalPadding := width * 0.05
+	// Vertical padding = 3% of height
+	verticalPadding := height * 0.03
 
 	tl := s.Box.TopLeft.Copy()
-	horizontalPadding := width * 0.1
 	tl.X += horizontalPadding
-	tl.Y += bodyTop + height*0.05
+	tl.Y += bodyTop + verticalPadding
 
 	innerWidth := width - (horizontalPadding * 2)
-	innerHeight := height - tl.Y + s.Box.TopLeft.Y - (height * 0.05)
+	innerHeight := height - bodyTop - (verticalPadding * 2)
 
 	return geo.NewBox(tl, innerWidth, innerHeight)
 }
@@ -55,23 +60,25 @@ func bodyPath(box *geo.Box) *svg.SvgPathContext {
 
 	pc := svg.NewSVGPathContext(box.TopLeft, 1, 1)
 
-	headRadius := width * 0.22
-	headCenterY := height * 0.18
-	bodyTop := headCenterY + headRadius*0.8
+	headRadius := width * HEAD_RADIUS_FACTOR
+	headCenterY := headRadius
+	bodyTop := headCenterY + headRadius*BODY_TOP_FACTOR
 	bodyWidth := width
 	bodyHeight := height - bodyTop
 	bodyLeft := 0
-	cornerRadius := width * 0.175
+
+	// Use the same corner radius calculation as frontend
+	cornerRadius := math.Min(width*CORNER_RADIUS_FACTOR, bodyHeight*0.25)
 
 	pc.StartAt(pc.Absolute(float64(bodyLeft), bodyTop+cornerRadius))
 
-	pc.C(true, 0, -kCircleApprox*cornerRadius, kCircleApprox*cornerRadius, -cornerRadius, cornerRadius, -cornerRadius)
+	pc.C(true, 0, -4*(math.Sqrt(2)-1)/3*cornerRadius, 4*(math.Sqrt(2)-1)/3*cornerRadius, -cornerRadius, cornerRadius, -cornerRadius)
 	pc.H(true, bodyWidth-2*cornerRadius)
-	pc.C(true, kCircleApprox*cornerRadius, 0, cornerRadius, kCircleApprox*cornerRadius, cornerRadius, cornerRadius)
+	pc.C(true, 4*(math.Sqrt(2)-1)/3*cornerRadius, 0, cornerRadius, 4*(math.Sqrt(2)-1)/3*cornerRadius, cornerRadius, cornerRadius)
 	pc.V(true, bodyHeight-2*cornerRadius)
-	pc.C(true, 0, kCircleApprox*cornerRadius, -kCircleApprox*cornerRadius, cornerRadius, -cornerRadius, cornerRadius)
+	pc.C(true, 0, 4*(math.Sqrt(2)-1)/3*cornerRadius, -4*(math.Sqrt(2)-1)/3*cornerRadius, cornerRadius, -cornerRadius, cornerRadius)
 	pc.H(true, -(bodyWidth - 2*cornerRadius))
-	pc.C(true, -kCircleApprox*cornerRadius, 0, -cornerRadius, -kCircleApprox*cornerRadius, -cornerRadius, -cornerRadius)
+	pc.C(true, -4*(math.Sqrt(2)-1)/3*cornerRadius, 0, -cornerRadius, -4*(math.Sqrt(2)-1)/3*cornerRadius, -cornerRadius, -cornerRadius)
 	pc.Z()
 
 	return pc
@@ -79,34 +86,33 @@ func bodyPath(box *geo.Box) *svg.SvgPathContext {
 
 func headPath(box *geo.Box) *svg.SvgPathContext {
 	width := box.Width
-	height := box.Height
 
 	pc := svg.NewSVGPathContext(box.TopLeft, 1, 1)
 
-	headRadius := width * 0.22
+	headRadius := width * HEAD_RADIUS_FACTOR
 	headCenterX := width / 2
-	headCenterY := height * 0.18
+	headCenterY := headRadius
 
 	pc.StartAt(pc.Absolute(headCenterX, headCenterY-headRadius))
 
 	pc.C(false,
-		headCenterX+headRadius*kCircleApprox, headCenterY-headRadius,
-		headCenterX+headRadius, headCenterY-headRadius*kCircleApprox,
+		headCenterX+headRadius*4*(math.Sqrt(2)-1)/3, headCenterY-headRadius,
+		headCenterX+headRadius, headCenterY-headRadius*4*(math.Sqrt(2)-1)/3,
 		headCenterX+headRadius, headCenterY)
 
 	pc.C(false,
-		headCenterX+headRadius, headCenterY+headRadius*kCircleApprox,
-		headCenterX+headRadius*kCircleApprox, headCenterY+headRadius,
+		headCenterX+headRadius, headCenterY+headRadius*4*(math.Sqrt(2)-1)/3,
+		headCenterX+headRadius*4*(math.Sqrt(2)-1)/3, headCenterY+headRadius,
 		headCenterX, headCenterY+headRadius)
 
 	pc.C(false,
-		headCenterX-headRadius*kCircleApprox, headCenterY+headRadius,
-		headCenterX-headRadius, headCenterY+headRadius*kCircleApprox,
+		headCenterX-headRadius*4*(math.Sqrt(2)-1)/3, headCenterY+headRadius,
+		headCenterX-headRadius, headCenterY+headRadius*4*(math.Sqrt(2)-1)/3,
 		headCenterX-headRadius, headCenterY)
 
 	pc.C(false,
-		headCenterX-headRadius, headCenterY-headRadius*kCircleApprox,
-		headCenterX-headRadius*kCircleApprox, headCenterY-headRadius,
+		headCenterX-headRadius, headCenterY-headRadius*4*(math.Sqrt(2)-1)/3,
+		headCenterX-headRadius*4*(math.Sqrt(2)-1)/3, headCenterY-headRadius,
 		headCenterX, headCenterY-headRadius)
 
 	return pc
@@ -114,13 +120,12 @@ func headPath(box *geo.Box) *svg.SvgPathContext {
 
 func (s shapeC4Person) Perimeter() []geo.Intersectable {
 	width := s.Box.Width
-	height := s.Box.Height
 
 	bodyPerimeter := bodyPath(s.Box).Path
 
-	headRadius := width * 0.22
+	headRadius := width * HEAD_RADIUS_FACTOR
 	headCenterX := s.Box.TopLeft.X + width/2
-	headCenterY := s.Box.TopLeft.Y + height*0.18
+	headCenterY := s.Box.TopLeft.Y + headRadius
 	headCenter := geo.NewPoint(headCenterX, headCenterY)
 
 	headEllipse := geo.NewEllipse(headCenter, headRadius, headRadius)
@@ -136,19 +141,31 @@ func (s shapeC4Person) GetSVGPathData() []string {
 }
 
 func (s shapeC4Person) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
-	totalWidth := width + paddingX
-	totalHeight := height + paddingY
+	contentWidth := width + paddingX
+	contentHeight := height + paddingY
 
-	if totalHeight < totalWidth*0.8 {
-		totalHeight = totalWidth * 0.8
+	// Account for 10% total horizontal padding (5% on each side)
+	totalWidth := contentWidth / 0.9
+	headRadius := totalWidth * HEAD_RADIUS_FACTOR
+
+	// Use positioning matching frontend
+	headCenterY := headRadius
+	bodyTop := headCenterY + headRadius*BODY_TOP_FACTOR
+
+	// Include vertical padding
+	verticalPadding := totalWidth * 0.06 // 3% top + 3% bottom
+	totalHeight := contentHeight + bodyTop + verticalPadding
+
+	// Calculate minimum height
+	minHeight := totalWidth * 0.95
+	if totalHeight < minHeight {
+		totalHeight = minHeight
 	}
-
-	totalHeight *= 1.4
 
 	totalWidth, totalHeight = LimitAR(totalWidth, totalHeight, C4_PERSON_AR_LIMIT)
 	return math.Ceil(totalWidth), math.Ceil(totalHeight)
 }
 
 func (s shapeC4Person) GetDefaultPadding() (paddingX, paddingY float64) {
-	return 20, defaultPadding * 1.5
+	return 10, defaultPadding
 }

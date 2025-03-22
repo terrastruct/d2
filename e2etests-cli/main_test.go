@@ -1346,6 +1346,22 @@ c
 				assert.Success(t, err)
 			},
 		},
+		{
+			name: "validate-against-correct-d2",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "correct.d2", `x -> y`)
+				err := runTestMainPersist(t, ctx, dir, env, "validate", "correct.d2")
+				assert.Success(t, err)
+			},
+		},
+		{
+			name: "validate-against-incorrect-d2",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "incorrect.d2", `x > y`)
+				err := runTestMainPersist(t, ctx, dir, env, "validate", "incorrect.d2")
+				assert.Error(t, err)
+			},
+		},
 	}
 
 	ctx := context.Background()

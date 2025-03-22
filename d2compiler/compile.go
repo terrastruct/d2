@@ -1330,7 +1330,7 @@ func (c *compiler) validateBoardLinks(g *d2graph.Graph) {
 		}
 
 		u, err := url.Parse(html.UnescapeString(obj.Link.Value))
-		isRemote := err == nil && u.Scheme != ""
+		isRemote := err == nil && (u.Scheme != "" || strings.HasPrefix(u.Path, "/"))
 		if isRemote {
 			continue
 		}

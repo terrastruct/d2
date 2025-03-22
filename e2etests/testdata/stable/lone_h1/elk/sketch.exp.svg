@@ -128,7 +128,6 @@
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   margin: 0;
-  color: var(--color-fg-default);
   background-color: transparent; /* we don't want to define the background color */
   font-family: "d2-1073489527-font-regular";
   font-size: 16px;
@@ -836,7 +835,7 @@
 .d2-1073489527 .md .contains-task-list:dir(rtl) .task-list-item-checkbox {
   margin: 0 -1.6em 0.25em 0.2em;
 }
-</style><g class="bWQ="><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="12.000000" y="148.000000" width="257" height="51"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="color:#0A0F25"><h1>Markdown: Syntax</h1>
+</style><g class="bWQ="><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="12.000000" y="148.000000" width="257" height="51"><div xmlns="http://www.w3.org/1999/xhtml" class="md color-N1"><h1>Markdown: Syntax</h1>
 </div></foreignObject></g></g><g class="YQ=="><g class="shape" ><rect x="114.000000" y="12.000000" width="53.000000" height="66.000000" stroke="#0D32B2" fill="#F7F8FE" class=" stroke-B1 fill-B6" style="stroke-width:2;" /></g><text x="140.500000" y="50.500000" fill="#0A0F25" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px">a</text></g><g class="Yg=="><g class="shape" ><rect x="114.000000" y="269.000000" width="53.000000" height="66.000000" stroke="#0D32B2" fill="#F7F8FE" class=" stroke-B1 fill-B6" style="stroke-width:2;" /></g><text x="140.500000" y="307.500000" fill="#0A0F25" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px">b</text></g><g class="KGEgLSZndDsgbWQpWzBd"><marker id="mk-d2-1073489527-3488378134" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" fill="#0D32B2" class="connection fill-B1" stroke-width="2" /> </marker><path d="M 140.500000 80.000000 L 140.500000 144.000000" stroke="#0D32B2" fill="none" class="connection stroke-B1" style="stroke-width:2;" marker-end="url(#mk-d2-1073489527-3488378134)" mask="url(#d2-1073489527)" /></g><g class="KG1kIC0mZ3Q7IGIpWzBd"><path d="M 140.500000 201.000000 L 140.500000 265.000000" stroke="#0D32B2" fill="none" class="connection stroke-B1" style="stroke-width:2;" marker-end="url(#mk-d2-1073489527-3488378134)" mask="url(#d2-1073489527)" /></g><mask id="d2-1073489527" maskUnits="userSpaceOnUse" x="11" y="11" width="259" height="325">
 <rect x="11" y="11" width="259" height="325" fill="white"></rect>
 <rect x="12.000000" y="148.000000" width="257" height="51" fill="rgba(0,0,0,0.75)"></rect>

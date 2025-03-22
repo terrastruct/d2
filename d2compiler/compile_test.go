@@ -1659,6 +1659,22 @@ x -> y: {
 			},
 		},
 		{
+			name: "url_relative_link",
+
+			text: `x: {
+  link: /google
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if len(g.Objects) != 1 {
+					t.Fatal(g.Objects)
+				}
+				if g.Objects[0].Link.Value != "/google" {
+					t.Fatal(g.Objects[0].Link.Value)
+				}
+			},
+		},
+		{
 			name: "non_url_link",
 
 			text: `x: {
@@ -3123,6 +3139,62 @@ x*: {
 				tassert.Equal(t, "x1.ok", g.Objects[1].AbsID())
 				tassert.Equal(t, "x2", g.Objects[2].AbsID())
 				tassert.Equal(t, "x2.ok", g.Objects[3].AbsID())
+			},
+		},
+		{
+			name: "glob-spread-vars/1",
+			text: `vars: {
+  b: {
+    1
+  }
+}
+
+a: {
+  ...${b}
+  *.style.fill: red
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, "1", g.Objects[1].Label.Value)
+				assert.Equal(t, "red", g.Objects[1].Style.Fill.Value)
+			},
+		},
+		{
+			name: "glob-spread-vars/2",
+			text: `vars: {
+  b: {
+    1
+		2
+  }
+}
+
+a: {
+  ...${b}
+  ** -> _.ok
+}
+
+ok
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 2, len(g.Edges))
+			},
+		},
+		{
+			name: "import-var-chain",
+
+			text: `...@dev
+`,
+			files: map[string]string{
+				"dev.d2": `
+vars: {
+  a: {
+    b
+  }
+  c: {
+    ...${a}
+  }
+}
+`,
 			},
 		},
 		{
@@ -5615,6 +5687,98 @@ d -> d: "suspend"
 `, ``)
 				assert.Equal(t, 1, len(g.Objects))
 				assert.Equal(t, 1, len(g.Edges))
+			},
+		},
+		{
+			name: "unsuspend-edge-label",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a -> b: hello
+c
+**: suspend
+(** -> **)[*]: suspend
+
+(* -> *)[*]: unsuspend
+`, ``)
+				assert.Equal(t, 2, len(g.Objects))
+				assert.Equal(t, 1, len(g.Edges))
+				assert.Equal(t, "hello", g.Edges[0].Label.Value)
+			},
+		},
+		{
+			name: "unsuspend-edge-filter",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a -> b
+**: suspend
+(** -> **)[*]: suspend
+(* -> *)[*]: unsuspend {
+  &dst: a
+}
+`, ``)
+				assert.Equal(t, 0, len(g.Objects))
+				assert.Equal(t, 0, len(g.Edges))
+			},
+		},
+		{
+			name: "unsuspend-edge-child",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a: {
+  b -> c
+}
+
+**: suspend
+(** -> **)[*]: suspend
+(** -> **)[*]: unsuspend {
+  &dst: a.c
+}
+`, ``)
+				assert.Equal(t, 3, len(g.Objects))
+				assert.Equal(t, 1, len(g.Edges))
+			},
+		},
+		{
+			name: "unsuspend-cross-container-edge-label",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a: {
+  b
+}
+c: {
+  d
+}
+a.b -> c.d: likes
+**: suspend
+(** -> **)[*]: suspend
+(** -> **)[*]: unsuspend {
+  &label: likes
+}
+`, ``)
+				assert.Equal(t, 4, len(g.Objects))
+				assert.Equal(t, 1, len(g.Edges))
+			},
+		},
+		{
+			name: "unsuspend-shape-label",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a: hello
+*: suspend
+*: unsuspend
+`, ``)
+				assert.Equal(t, 1, len(g.Objects))
+				assert.Equal(t, "hello", g.Objects[0].Label.Value)
+			},
+		},
+		{
+			name: "suspend-shape",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a: hello
+*: suspend
+`, ``)
+				assert.Equal(t, 0, len(g.Objects))
 			},
 		},
 		{

@@ -29,6 +29,18 @@ pnpm add @terrastruct/d2
 bun add @terrastruct/d2
 ```
 
+### Nightly
+
+Use the `@nightly` tag to get the version that is built by daily CI on the master branch.
+
+For example,
+
+```bash
+yarn add @terrastruct/d2@nightly
+```
+
+A demo using the nightly build is hosted [here](https://alixander-d2js.web.val.run/).
+
 ## Usage
 
 D2.js uses webworkers to call a WASM file.
@@ -161,6 +173,16 @@ You can browse the examples by running the dev server:
 ```
 
 Visit `http://localhost:3000` to see the example page.
+
+### Publishing
+
+TODO stable release publishing.
+
+Nightly builds are automated by CI by running:
+
+```bash
+PUBLISH=1 ./make.sh build
+```
 
 ## Contributing
 
