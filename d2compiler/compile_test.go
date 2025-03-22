@@ -3142,6 +3142,44 @@ x*: {
 			},
 		},
 		{
+			name: "glob-spread-vars/1",
+			text: `vars: {
+  b: {
+    1
+  }
+}
+
+a: {
+  ...${b}
+  *.style.fill: red
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, "1", g.Objects[1].Label.Value)
+				assert.Equal(t, "red", g.Objects[1].Style.Fill.Value)
+			},
+		},
+		{
+			name: "glob-spread-vars/2",
+			text: `vars: {
+  b: {
+    1
+		2
+  }
+}
+
+a: {
+  ...${b}
+  ** -> _.ok
+}
+
+ok
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 2, len(g.Edges))
+			},
+		},
+		{
 			name: "import-var-chain",
 
 			text: `...@dev

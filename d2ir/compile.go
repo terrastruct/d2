@@ -280,6 +280,19 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) (removedFie
 								break
 							}
 						}
+
+						if removedField && len(m.globs) > 0 && !c.lazyGlobBeingApplied {
+							origGlobStack := c.globContextStack
+							c.globContextStack = append(c.globContextStack, m.globs)
+							for _, gctx := range m.globs {
+								old := c.lazyGlobBeingApplied
+								c.lazyGlobBeingApplied = true
+								c.compileKey(gctx.refctx)
+								c.lazyGlobBeingApplied = old
+							}
+							c.globContextStack = origGlobStack
+						}
+
 					}
 				}
 				if resolvedField.Primary() == nil {
