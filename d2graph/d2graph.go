@@ -198,7 +198,7 @@ type Attributes struct {
 
 	Style     Style    `json:"style"`
 	Icon      *url.URL `json:"icon,omitempty"`
-	IconStyle Style    `json:"iconStyle,omitempty"`
+	IconStyle Style    `json:"iconStyle"`
 	Tooltip   *Scalar  `json:"tooltip,omitempty"`
 	Link      *Scalar  `json:"link,omitempty"`
 
