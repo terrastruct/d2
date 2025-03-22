@@ -3,17 +3,17 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,0:0:0-10:0:65",
+      "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,0:0:0-10:0:65",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,0:0:0-4:1:26",
+            "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,0:0:0-4:1:26",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,0:0:0-0:4:4",
+              "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,0:0:0-0:4:4",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,0:0:0-0:4:4",
+                    "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,0:0:0-0:4:4",
                     "value": [
                       {
                         "string": "vars",
@@ -27,17 +27,17 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,0:6:6-4:1:26",
+                "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,0:6:6-4:1:26",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,1:2:10-3:3:24",
+                      "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,1:2:10-3:3:24",
                       "key": {
-                        "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,1:2:10-1:3:11",
+                        "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,1:2:10-1:3:11",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,1:2:10-1:3:11",
+                              "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,1:2:10-1:3:11",
                               "value": [
                                 {
                                   "string": "b",
@@ -51,17 +51,17 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,1:5:13-3:3:24",
+                          "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,1:5:13-3:3:24",
                           "nodes": [
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,2:4:19-2:5:20",
+                                "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,2:4:19-2:5:20",
                                 "key": {
-                                  "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,2:4:19-2:5:20",
+                                  "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,2:4:19-2:5:20",
                                   "path": [
                                     {
                                       "unquoted_string": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,2:4:19-2:5:20",
+                                        "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,2:4:19-2:5:20",
                                         "value": [
                                           {
                                             "string": "1",
@@ -88,13 +88,13 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,6:0:28-9:1:64",
+            "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,6:0:28-9:1:64",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,6:0:28-6:1:29",
+              "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,6:0:28-6:1:29",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,6:0:28-6:1:29",
+                    "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,6:0:28-6:1:29",
                     "value": [
                       {
                         "string": "a",
@@ -108,16 +108,16 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,6:3:31-9:1:64",
+                "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,6:3:31-9:1:64",
                 "nodes": [
                   {
                     "substitution": {
-                      "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,7:2:35-7:9:42",
+                      "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,7:2:35-7:9:42",
                       "spread": true,
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,7:7:40-7:8:41",
+                            "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,7:7:40-7:8:41",
                             "value": [
                               {
                                 "string": "b",
@@ -131,13 +131,13 @@
                   },
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,8:2:45-8:19:62",
+                      "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,8:2:45-8:19:62",
                       "key": {
-                        "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,8:2:45-8:14:57",
+                        "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,8:2:45-8:14:57",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,8:2:45-8:3:46",
+                              "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,8:2:45-8:3:46",
                               "value": [
                                 {
                                   "string": "*",
@@ -151,7 +151,7 @@
                           },
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,8:4:47-8:9:52",
+                              "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,8:4:47-8:9:52",
                               "value": [
                                 {
                                   "string": "style",
@@ -162,7 +162,7 @@
                           },
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,8:10:53-8:14:57",
+                              "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,8:10:53-8:14:57",
                               "value": [
                                 {
                                   "string": "fill",
@@ -176,7 +176,7 @@
                       "primary": {},
                       "value": {
                         "unquoted_string": {
-                          "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,8:16:59-8:19:62",
+                          "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,8:16:59-8:19:62",
                           "value": [
                             {
                               "string": "red",
@@ -225,11 +225,11 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,6:0:28-6:1:29",
+              "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,6:0:28-6:1:29",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,6:0:28-6:1:29",
+                    "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,6:0:28-6:1:29",
                     "value": [
                       {
                         "string": "a",
@@ -270,11 +270,11 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,2:4:19-2:5:20",
+              "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,2:4:19-2:5:20",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars.d2,2:4:19-2:5:20",
+                    "range": "d2/testdata/d2compiler/TestCompile/glob-spread-vars/1.d2,2:4:19-2:5:20",
                     "value": [
                       {
                         "string": "1",
