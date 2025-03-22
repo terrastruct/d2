@@ -3164,6 +3164,7 @@ a: {
 			text: `vars: {
   b: {
     1
+		2
   }
 }
 
@@ -3175,7 +3176,7 @@ a: {
 ok
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				assert.Equal(t, 1, len(g.Edges))
+				assert.Equal(t, 2, len(g.Edges))
 			},
 		},
 		{
