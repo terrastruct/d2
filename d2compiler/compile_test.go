@@ -328,7 +328,7 @@ containers: {
   Steps
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/image_children_Steps.d2:4:3: steps is only allowed at a board root`,
+			expErr: `d2/testdata/d2compiler/TestCompile/image_children_Steps.d2:4:3: steps must be declared at a board root scope`,
 		},
 		{
 			name: "name-with-dot-underscore",
@@ -1746,7 +1746,7 @@ c: {
 }
 `,
 			},
-			expErr: `d2/testdata/d2compiler/TestCompile/import-classes-boards.d2:10:7: layers is only allowed at a board root`,
+			expErr: `d2/testdata/d2compiler/TestCompile/import-classes-boards.d2:10:7: layers must be declared at a board root scope`,
 		},
 		{
 			name: "import_url_link",

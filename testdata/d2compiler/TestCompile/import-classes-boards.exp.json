@@ -4,7 +4,7 @@
     "errs": [
       {
         "range": "d2/testdata/d2compiler/TestCompile/import-classes-boards.d2,9:6:75-9:12:81",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/import-classes-boards.d2:10:7: layers is only allowed at a board root"
+        "errmsg": "d2/testdata/d2compiler/TestCompile/import-classes-boards.d2:10:7: layers must be declared at a board root scope"
       }
     ]
   }

@@ -593,7 +593,7 @@ classes: {
   }
 }
 `)
-				assert.ErrorString(t, err, `TestCompile/classes/nonroot.d2:2:3: classes is only allowed at a board root`)
+				assert.ErrorString(t, err, `TestCompile/classes/nonroot.d2:2:3: classes must be declared at a board root scope`)
 			},
 		},
 		{
