@@ -113,7 +113,7 @@ func (c *compiler) overlayClasses(m *Map) {
 		if lClasses == nil {
 			lClasses = classes.Copy(l).(*Field)
 			l.Fields = append(l.Fields, lClasses)
-		} else {
+		} else if lClasses.Map() != nil {
 			base := classes.Copy(l).(*Field)
 			OverlayMap(base.Map(), lClasses.Map())
 			l.DeleteField("classes")

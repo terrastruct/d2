@@ -1715,6 +1715,40 @@ steps: {
 			},
 		},
 		{
+			name: "import-classes-boards",
+
+			text: `classes: {
+  a: {
+		label: hi
+  }
+}
+
+layers: {
+  asdf: {
+    qwer: {
+      layers: {
+        ok: {
+          bok
+				}
+      }
+    }
+  }
+  wert: {
+    classes: @classes
+  }
+}
+
+`,
+			files: map[string]string{
+				"classes.d2": `
+c: {
+	label: bye
+}
+`,
+			},
+			expErr: `d2/testdata/d2compiler/TestCompile/import-classes-boards.d2:10:7: layers is only allowed at a board root`,
+		},
+		{
 			name: "import_url_link",
 
 			text: `...@test
