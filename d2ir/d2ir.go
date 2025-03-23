@@ -942,11 +942,11 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 	}
 
 	if headString == "classes" && head.IsUnquoted() && NodeBoardKind(m) == "" {
-		return d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", headString)
+		return d2parser.Errorf(kp.Path[i].Unbox(), "%s must be declared at a board root scope", headString)
 	}
 
 	if findBoardKeyword(head) != -1 && head.IsUnquoted() && NodeBoardKind(m) == "" {
-		return d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", headString)
+		return d2parser.Errorf(kp.Path[i].Unbox(), "%s must be declared at a board root scope", headString)
 	}
 
 	for _, f := range m.Fields {
