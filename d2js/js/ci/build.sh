@@ -18,6 +18,7 @@ fi
 cd d2js/js
 sh_c bun build.js
 
+echo "DEBUG: build.sh received NPM_VERSION=${NPM_VERSION:-not set}"
 if [ -n "${NPM_VERSION:-}" ]; then
   cp package.json package.json.bak
   trap 'rm -f .npmrc; mv package.json.bak package.json' EXIT
