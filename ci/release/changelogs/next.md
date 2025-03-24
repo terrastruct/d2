@@ -27,6 +27,7 @@
   - fixes globs not applying to spread substitutions [#2426](https://github.com/terrastruct/d2/issues/2426)
   - fixes panic when classes were mixed with layers incorrectly [#2448](https://github.com/terrastruct/d2/pull/2448)
 - CLI: fetch and render remote images of mimetype octet-stream correctly [#2370](https://github.com/terrastruct/d2/pull/2370)
+- Markdown: fixes nested var substitutions not working [#2456](https://github.com/terrastruct/d2/pull/2456)
 - d2js: handle unicode characters [#2393](https://github.com/terrastruct/d2/pull/2393)
 
 ---
