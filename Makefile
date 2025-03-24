@@ -23,5 +23,4 @@ race: fmt
 	prefix "$@" ./ci/test.sh --race ./...
 .PHONY: js
 js: gen
-	echo "DEBUG: Root Makefile NPM_VERSION=${NPM_VERSION:-not set}"
-	cd d2js/js && NPM_VERSION="${NPM_VERSION}" prefix "$@" ./make.sh all
+	cd d2js/js && prefix "$@" ./make.sh all
