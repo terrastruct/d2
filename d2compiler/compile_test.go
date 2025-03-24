@@ -1715,6 +1715,29 @@ steps: {
 			},
 		},
 		{
+			name: "import-scenario",
+
+			text: `a
+
+...@test
+`,
+			files: map[string]string{
+				"test.d2": `
+x
+
+scenarios: {
+  production: {
+    x.tooltip: foo
+  }
+}
+
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 2, len(g.Scenarios[0].Objects))
+			},
+		},
+		{
 			name: "import-classes-boards",
 
 			text: `classes: {
