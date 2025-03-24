@@ -9,6 +9,7 @@ fi
 PATH="$(cd -- "$(dirname "$0")" && pwd)/../../ci/sub/bin:$PATH"
 cd -- "$(dirname "$0")"
 
+echo "DEBUG: d2js/js/make.sh received NPM_VERSION=${NPM_VERSION:-not set}"
 if ! command -v bun >/dev/null 2>&1; then
   if [ -n "${CI-}" ]; then
     echo "Bun is not installed. Installing Bun..."
