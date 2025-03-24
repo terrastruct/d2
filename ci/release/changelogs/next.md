@@ -10,11 +10,13 @@
 
 #### Improvements 🧹
 
-- d2cli:
+- CLI:
     - Support `validate` command. [#2415](https://github.com/terrastruct/d2/pull/2415)
     - Watch mode ignores backup files (e.g. files created by certain editors like Helix). [#2131](https://github.com/terrastruct/d2/issues/2131)
-- d2compiler:
+- Compiler:
     - `link`s can be set to root path, e.g. `/xyz`. [#2357](https://github.com/terrastruct/d2/issues/2357)
+- Render:
+    - horizontal padding added for connection labels [#2461](https://github.com/terrastruct/d2/pull/2461)
 
 #### Bugfixes ⛑️
 
