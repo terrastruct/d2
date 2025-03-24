@@ -3259,6 +3259,22 @@ x: |md
 			},
 		},
 		{
+			name: "var_nested_in_markdown",
+			text: `vars: {
+  v: {
+		g: ok
+  }
+}
+
+x: |md
+  m${v.g}y
+|
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.True(t, strings.Contains(g.Objects[0].Attributes.Label.Value, "moky"))
+			},
+		},
+		{
 			name: "var_in_vars",
 			text: `vars: {
     Apple: {

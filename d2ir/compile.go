@@ -380,6 +380,11 @@ func (c *compiler) collectVariables(vars *Map, variables map[string]string) {
 		if f.Primary() != nil {
 			variables[f.Name.ScalarString()] = f.Primary().Value.ScalarString()
 		} else if f.Map() != nil {
+			nestedVars := make(map[string]string)
+			c.collectVariables(f.Map(), nestedVars)
+			for k, v := range nestedVars {
+				variables[f.Name.ScalarString()+"."+k] = v
+			}
 			c.collectVariables(f.Map(), variables)
 		}
 	}
