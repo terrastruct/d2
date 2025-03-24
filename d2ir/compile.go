@@ -604,6 +604,20 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 				c.ensureGlobContext(gctx2.refctx)
 			}
 
+			scenariosField := impn.Map().GetField(d2ast.FlatUnquotedString("scenarios"))
+			if scenariosField != nil && scenariosField.Map() != nil {
+				for _, sf := range scenariosField.Map().Fields {
+					c.overlay(dst, sf)
+				}
+			}
+
+			stepsField := impn.Map().GetField(d2ast.FlatUnquotedString("steps"))
+			if stepsField != nil && stepsField.Map() != nil {
+				for _, sf := range stepsField.Map().Fields {
+					c.overlay(dst, sf)
+				}
+			}
+
 			OverlayMap(dst, impn.Map())
 			impDir := n.Import.Dir()
 			c.extendLinks(dst, ParentField(dst), impDir)
