@@ -44,8 +44,7 @@
     "test": "bun test test/unit",
     "test:integration": "bun test test/integration",
     "test:all": "bun run test && bun run test:integration",
-    "dev": "bun --watch dev-server.js",
-    "prepublishOnly": "NPM_VERSION= ./make.sh all"
+    "dev": "bun --watch dev-server.js"
   },
   "keywords": [
     "d2",
