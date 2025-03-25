@@ -1735,7 +1735,7 @@ d -> c
 		{
 			name: "import-style-1",
 
-			text: `c.style.fill: red
+			text: `b.c.style.fill: red
 
 b: @imp
 `,

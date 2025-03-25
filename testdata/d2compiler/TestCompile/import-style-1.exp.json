@@ -3,17 +3,28 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:0:0-3:0:27",
+      "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:0:0-3:0:29",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:0:0-0:17:17",
+            "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:0:0-0:19:19",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:0:0-0:12:12",
+              "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:0:0-0:14:14",
               "path": [
                 {
                   "unquoted_string": {
                     "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:2:2-0:3:3",
                     "value": [
                       {
                         "string": "c",
@@ -24,7 +35,7 @@
                 },
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:2:2-0:7:7",
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:4:4-0:9:9",
                     "value": [
                       {
                         "string": "style",
@@ -35,7 +46,7 @@
                 },
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:8:8-0:12:12",
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:10:10-0:14:14",
                     "value": [
                       {
                         "string": "fill",
@@ -49,7 +60,7 @@
             "primary": {},
             "value": {
               "unquoted_string": {
-                "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:14:14-0:17:17",
+                "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:16:16-0:19:19",
                 "value": [
                   {
                     "string": "red",
@@ -62,13 +73,13 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,2:0:19-2:7:26",
+            "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,2:0:21-2:7:28",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,2:0:19-2:1:20",
+              "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,2:0:21-2:1:22",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,2:0:19-2:1:20",
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,2:0:21-2:1:22",
                     "value": [
                       {
                         "string": "b",
@@ -82,13 +93,13 @@
             "primary": {},
             "value": {
               "import": {
-                "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,2:3:22-2:7:26",
+                "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,2:3:24-2:7:28",
                 "spread": false,
                 "pre": "",
                 "path": [
                   {
                     "unquoted_string": {
-                      "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,2:4:23-2:7:26",
+                      "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,2:4:25-2:7:28",
                       "value": [
                         {
                           "string": "imp",
@@ -130,16 +141,27 @@
     "edges": null,
     "objects": [
       {
-        "id": "c",
-        "id_val": "c",
+        "id": "b",
+        "id_val": "b",
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:0:0-0:12:12",
+              "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:0:0-0:14:14",
               "path": [
                 {
                   "unquoted_string": {
                     "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:2:2-0:3:3",
                     "value": [
                       {
                         "string": "c",
@@ -150,7 +172,7 @@
                 },
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:2:2-0:7:7",
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:4:4-0:9:9",
                     "value": [
                       {
                         "string": "style",
@@ -161,7 +183,7 @@
                 },
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:8:8-0:12:12",
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:10:10-0:14:14",
                     "value": [
                       {
                         "string": "fill",
@@ -174,21 +196,110 @@
             },
             "key_path_index": 0,
             "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,2:0:21-2:1:22",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,2:0:21-2:1:22",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:0:0-0:14:14",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "c",
+                        "raw_string": "c"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:4:4-0:9:9",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:10:10-0:14:14",
+                    "value": [
+                      {
+                        "string": "fill",
+                        "raw_string": "fill"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,2:0:21-2:1:22",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,2:0:21-2:1:22",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
           "label": {
-            "value": "c"
+            "value": "b"
           },
           "labelDimensions": {
             "width": 0,
             "height": 0
           },
-          "style": {
-            "fill": {
-              "value": "red"
-            }
-          },
+          "style": {},
           "near_key": null,
           "shape": {
             "value": "rectangle"
@@ -223,6 +334,59 @@
             },
             "key_path_index": 0,
             "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:0:0-0:14:14",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "c",
+                        "raw_string": "c"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:4:4-0:9:9",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,0:10:10-0:14:14",
+                    "value": [
+                      {
+                        "string": "fill",
+                        "raw_string": "fill"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 1,
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -233,72 +397,11 @@
             "width": 0,
             "height": 0
           },
-          "style": {},
-          "near_key": null,
-          "shape": {
-            "value": "rectangle"
+          "style": {
+            "fill": {
+              "value": "red"
+            }
           },
-          "direction": {
-            "value": ""
-          },
-          "constraint": null
-        },
-        "zIndex": 0
-      },
-      {
-        "id": "b",
-        "id_val": "b",
-        "references": [
-          {
-            "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,2:0:19-2:1:20",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,2:0:19-2:1:20",
-                    "value": [
-                      {
-                        "string": "b",
-                        "raw_string": "b"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "key_path_index": 0,
-            "map_key_edge_index": -1
-          },
-          {
-            "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,2:0:19-2:1:20",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/import-style-1.d2,2:0:19-2:1:20",
-                    "value": [
-                      {
-                        "string": "b",
-                        "raw_string": "b"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "key_path_index": 0,
-            "map_key_edge_index": -1
-          }
-        ],
-        "attributes": {
-          "label": {
-            "value": "b"
-          },
-          "labelDimensions": {
-            "width": 0,
-            "height": 0
-          },
-          "style": {},
           "near_key": null,
           "shape": {
             "value": "rectangle"
