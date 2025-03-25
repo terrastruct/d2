@@ -1715,6 +1715,59 @@ steps: {
 			},
 		},
 		{
+			name: "import-connections",
+
+			text: `b.c -> b.d
+
+b: @imp
+`,
+			files: map[string]string{
+				"imp.d2": `
+c
+d
+d -> c
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 2, len(g.Edges))
+			},
+		},
+		{
+			name: "import-style-1",
+
+			text: `c.style.fill: red
+
+b: @imp
+`,
+			files: map[string]string{
+				"imp.d2": `c`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 2, len(g.Objects))
+				assert.Equal(t, "c", g.Objects[1].Label.Value)
+				assert.Equal(t, "red", g.Objects[1].Style.Fill.Value)
+			},
+		},
+		{
+			name: "import-style-2",
+
+			text: `b.k.c.style.fill: red
+
+b: @imp
+`,
+			files: map[string]string{
+				"imp.d2": `
+k: {
+  c
+}
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, "c", g.Objects[2].Label.Value)
+				assert.Equal(t, "red", g.Objects[2].Style.Fill.Value)
+			},
+		},
+		{
 			name: "import-scenario",
 
 			text: `a

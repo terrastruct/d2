@@ -1098,6 +1098,11 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 			return
 		}
 		n.(Importable).SetImportAST(refctx.Key.Value.Import)
+		var existingEdges []*Edge
+		if f.Map() != nil {
+			existingEdges = f.Map().Edges
+		}
+		originalF := f.Copy(refctx.ScopeMap).(*Field)
 		switch n := n.(type) {
 		case *Field:
 			if n.Primary_ != nil {
@@ -1134,6 +1139,22 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 				c.overlayClasses(f.Map())
 			}
 		}
+		OverlayField(f, originalF)
+		if existingEdges != nil && f.Map() != nil {
+			for _, edge := range existingEdges {
+				exists := false
+				for _, currentEdge := range f.Map().Edges {
+					if currentEdge.ID.Match(edge.ID) {
+						exists = true
+						break
+					}
+				}
+				if !exists {
+					f.Map().Edges = append(f.Map().Edges, edge)
+				}
+			}
+		}
+
 	} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
 		if c.ignoreLazyGlob(f) {
 			return

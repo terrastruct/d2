@@ -10,6 +10,9 @@
           }
         ]
       },
+      "primary": {
+        "value": null
+      },
       "composite": {
         "fields": [
           {
@@ -254,6 +257,9 @@
             "raw_string": "userMobile"
           }
         ]
+      },
+      "primary": {
+        "value": null
       },
       "composite": {
         "fields": [
