@@ -242,6 +242,59 @@
           },
           "due_to_glob": false,
           "due_to_lazy_glob": false
+        },
+        {
+          "string": {
+            "range": "index.d2,0:0:0-0:11:11",
+            "value": [
+              {
+                "string": "userWebsite",
+                "raw_string": "userWebsite"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "index.d2,0:0:0-0:11:11",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "index.d2,0:0:0-0:11:11",
+                  "value": [
+                    {
+                      "string": "userWebsite",
+                      "raw_string": "userWebsite"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "index.d2,0:0:0-0:11:11",
+              "key": {
+                "range": "index.d2,0:0:0-0:11:11",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "index.d2,0:0:0-0:11:11",
+                      "value": [
+                        {
+                          "string": "userWebsite",
+                          "raw_string": "userWebsite"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {}
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
         }
       ]
     },
@@ -435,6 +488,59 @@
         "edges": null
       },
       "references": [
+        {
+          "string": {
+            "range": "index.d2,1:0:12-1:10:22",
+            "value": [
+              {
+                "string": "userMobile",
+                "raw_string": "userMobile"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "index.d2,1:0:12-1:10:22",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "index.d2,1:0:12-1:10:22",
+                  "value": [
+                    {
+                      "string": "userMobile",
+                      "raw_string": "userMobile"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "index.d2,1:0:12-1:10:22",
+              "key": {
+                "range": "index.d2,1:0:12-1:10:22",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "index.d2,1:0:12-1:10:22",
+                      "value": [
+                        {
+                          "string": "userMobile",
+                          "raw_string": "userMobile"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {}
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        },
         {
           "string": {
             "range": "index.d2,1:0:12-1:10:22",

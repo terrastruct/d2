@@ -11,11 +11,15 @@
 
 #### Improvements 🧹
 
-- d2cli:
+- CLI:
     - Support `validate` command. [#2415](https://github.com/terrastruct/d2/pull/2415)
     - Watch mode ignores backup files (e.g. files created by certain editors like Helix). [#2131](https://github.com/terrastruct/d2/issues/2131)
-- d2compiler:
+- Compiler:
     - `link`s can be set to root path, e.g. `/xyz`. [#2357](https://github.com/terrastruct/d2/issues/2357)
+- Parser:
+    - impose max key length. It's almost certainly a mistake if an ID gets too long, e.g. missing quotes [#2465](https://github.com/terrastruct/d2/pull/2465)
+- Render:
+    - horizontal padding added for connection labels [#2461](https://github.com/terrastruct/d2/pull/2461)
 
 #### Bugfixes ⛑️
 
@@ -26,7 +30,14 @@
   - fixes panic when comment lines appear in arrays [#2378](https://github.com/terrastruct/d2/pull/2378)
   - fixes inconsistencies when objects were double quoted [#2390](https://github.com/terrastruct/d2/pull/2390)
   - fixes globs not applying to spread substitutions [#2426](https://github.com/terrastruct/d2/issues/2426)
+  - fixes panic when classes were mixed with layers incorrectly [#2448](https://github.com/terrastruct/d2/pull/2448)
+- Formatter:
+  - fixes substitutions in quotes surrounded by text [#2462](https://github.com/terrastruct/d2/pull/2462)
 - CLI: fetch and render remote images of mimetype octet-stream correctly [#2370](https://github.com/terrastruct/d2/pull/2370)
+- Composition:
+    - spread importing scenarios/steps was not inheriting correctly [#2460](https://github.com/terrastruct/d2/pull/2460)
+    - imported fields were not merging with current fields/edges [#2464](https://github.com/terrastruct/d2/pull/2464)
+- Markdown: fixes nested var substitutions not working [#2456](https://github.com/terrastruct/d2/pull/2456)
 - d2js: handle unicode characters [#2393](https://github.com/terrastruct/d2/pull/2393)
 
 ---

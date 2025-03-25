@@ -500,6 +500,15 @@ func testImport(t *testing.T) {
 				assert.ErrorString(t, err, "d2/testdata/d2parser/TestParse/import/#09.d2:1:7: unquoted strings cannot begin with ...@ as that's import spread syntax")
 			},
 		},
+		{
+			text: `gcloud: {
+  icon: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAADACAMAAAB/Pny7AAAAjVBMVEVChfT///89fOM3gPTk7P0+g/R0oPaKr+0rc+E0d+I5euNYjObt9P1lmiVBORw0KGgoAAAANSUhEUgAAAiVBORw0KGgoAAAANSUhEUgAAAiVBORw0KGgoAAAANSUhEUgAAABORw0KGgoAAAANSUhEUgAAAMwAAADACAMAAAB/Pny7AAAAjVBMVEVChfT///89fOM3gPTk7P0+g/R0oPaKr+0rc+E0d+I5euNYjObt9P1lmiVBORw0KGgoAAAANSUhEUgAAAiVBORw0KGgoAAAANSUhEUgAAAiVBORw0KGgoAAAANSUhEUgAAABORw0KGgoAAAANSUhEUgAAAMwAAADACAMAAAB/Pny7AAAAjVBMVEVChfT///89fOM3gPTk7P0+g/R0oPaKr+0rc+E0d+I5euNYjObt9P1lmiVBORw0KGgoAAAANSUhEUgAAAiVBORw0KGgoAAAANSUhEUgAAAiVBORw0KGgoAAAANSUhEUgAAA
+}
+`,
+			assert: func(t testing.TB, ast *d2ast.Map, err error) {
+				assert.ErrorString(t, err, "d2/testdata/d2parser/TestParse/import/#10.d2:2:24: key length 555 exceeds maximum allowed length of 518")
+			},
+		},
 	}
 
 	runa(t, tca)

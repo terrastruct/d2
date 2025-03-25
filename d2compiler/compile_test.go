@@ -328,7 +328,7 @@ containers: {
   Steps
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/image_children_Steps.d2:4:3: steps is only allowed at a board root`,
+			expErr: `d2/testdata/d2compiler/TestCompile/image_children_Steps.d2:4:3: steps must be declared at a board root scope`,
 		},
 		{
 			name: "name-with-dot-underscore",
@@ -1713,6 +1713,142 @@ steps: {
 				assert.Equal(t, 1, len(g.Layers))
 				assert.Equal(t, 1, len(g.Layers[0].Steps))
 			},
+		},
+		{
+			name: "import-connections",
+
+			text: `b.c -> b.d
+
+b: @imp
+`,
+			files: map[string]string{
+				"imp.d2": `
+c
+d
+d -> c
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 2, len(g.Edges))
+			},
+		},
+		{
+			name: "import-style-1",
+
+			text: `b.c.style.fill: red
+
+b: @imp
+`,
+			files: map[string]string{
+				"imp.d2": `c`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 2, len(g.Objects))
+				assert.Equal(t, "c", g.Objects[1].Label.Value)
+				assert.Equal(t, "red", g.Objects[1].Style.Fill.Value)
+			},
+		},
+		{
+			name: "import-style-2",
+
+			text: `b.k.c.style.fill: red
+
+b: @imp
+`,
+			files: map[string]string{
+				"imp.d2": `
+k: {
+  c
+}
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, "c", g.Objects[2].Label.Value)
+				assert.Equal(t, "red", g.Objects[2].Style.Fill.Value)
+			},
+		},
+		{
+			name: "import-scenario",
+
+			text: `a
+
+...@test
+`,
+			files: map[string]string{
+				"test.d2": `
+x
+
+scenarios: {
+  production: {
+    x.tooltip: foo
+  }
+}
+
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 2, len(g.Scenarios[0].Objects))
+			},
+		},
+		{
+			name: "import-steps",
+
+			text: `a
+
+...@test
+`,
+			files: map[string]string{
+				"test.d2": `
+x
+
+steps: {
+  1: {
+    x.tooltip: foo
+  }
+  2: {
+    x.tooltip: do
+  }
+}
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 2, len(g.Steps[0].Objects))
+				assert.Equal(t, 2, len(g.Steps[1].Objects))
+			},
+		},
+		{
+			name: "import-classes-boards",
+
+			text: `classes: {
+  a: {
+		label: hi
+  }
+}
+
+layers: {
+  asdf: {
+    qwer: {
+      layers: {
+        ok: {
+          bok
+				}
+      }
+    }
+  }
+  wert: {
+    classes: @classes
+  }
+}
+
+`,
+			files: map[string]string{
+				"classes.d2": `
+c: {
+	label: bye
+}
+`,
+			},
+			expErr: `d2/testdata/d2compiler/TestCompile/import-classes-boards.d2:10:7: layers must be declared at a board root scope`,
 		},
 		{
 			name: "import_url_link",
@@ -3222,6 +3358,22 @@ x: |md
 				tassert.True(t, strings.Contains(g.Objects[0].Attributes.Label.Value, "hey ${v}"))
 				// Code blocks untouched
 				tassert.True(t, strings.Contains(g.Objects[0].Attributes.Label.Value, "bye ${v}"))
+			},
+		},
+		{
+			name: "var_nested_in_markdown",
+			text: `vars: {
+  v: {
+		g: ok
+  }
+}
+
+x: |md
+  m${v.g}y
+|
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.True(t, strings.Contains(g.Objects[0].Attributes.Label.Value, "moky"))
 			},
 		},
 		{

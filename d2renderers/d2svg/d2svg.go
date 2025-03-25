@@ -804,8 +804,8 @@ func makeLabelMask(labelTL *geo.Point, width, height int, opacity float64) strin
 		fill = fmt.Sprintf("rgba(0,0,0,%.2f)", opacity)
 	}
 	return fmt.Sprintf(`<rect x="%f" y="%f" width="%d" height="%d" fill="%s"></rect>`,
-		labelTL.X, labelTL.Y,
-		width,
+		labelTL.X-2, labelTL.Y,
+		width+4,
 		height,
 		fill,
 	)

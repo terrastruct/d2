@@ -127,7 +127,7 @@ func (p *printer) blockComment(bc *d2ast.BlockComment) {
 }
 
 func (p *printer) interpolationBoxes(boxes []d2ast.InterpolationBox, isDoubleString bool) {
-	for _, b := range boxes {
+	for i, b := range boxes {
 		if b.Substitution != nil {
 			p.substitution(b.Substitution)
 			continue
@@ -139,6 +139,11 @@ func (p *printer) interpolationBoxes(boxes []d2ast.InterpolationBox, isDoubleStr
 			} else {
 				s = escapeUnquotedValue(*b.String, p.inKey)
 			}
+			b.StringRaw = &s
+		} else if i > 0 && boxes[i-1].Substitution != nil {
+			// If this string follows a substitution, we need to make sure to use
+			// the actual string content, not the raw value which might be incorrect
+			s := *b.String
 			b.StringRaw = &s
 		}
 		if !isDoubleString {

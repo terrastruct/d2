@@ -113,7 +113,7 @@ func (c *compiler) overlayClasses(m *Map) {
 		if lClasses == nil {
 			lClasses = classes.Copy(l).(*Field)
 			l.Fields = append(l.Fields, lClasses)
-		} else {
+		} else if lClasses.Map() != nil {
 			base := classes.Copy(l).(*Field)
 			OverlayMap(base.Map(), lClasses.Map())
 			l.DeleteField("classes")
@@ -380,6 +380,11 @@ func (c *compiler) collectVariables(vars *Map, variables map[string]string) {
 		if f.Primary() != nil {
 			variables[f.Name.ScalarString()] = f.Primary().Value.ScalarString()
 		} else if f.Map() != nil {
+			nestedVars := make(map[string]string)
+			c.collectVariables(f.Map(), nestedVars)
+			for k, v := range nestedVars {
+				variables[f.Name.ScalarString()+"."+k] = v
+			}
 			c.collectVariables(f.Map(), variables)
 		}
 	}
@@ -597,6 +602,20 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 				gctx2.refctx.ScopeMap = dst
 				c.compileKey(gctx2.refctx)
 				c.ensureGlobContext(gctx2.refctx)
+			}
+
+			scenariosField := impn.Map().GetField(d2ast.FlatUnquotedString("scenarios"))
+			if scenariosField != nil && scenariosField.Map() != nil {
+				for _, sf := range scenariosField.Map().Fields {
+					c.overlay(dst, sf)
+				}
+			}
+
+			stepsField := impn.Map().GetField(d2ast.FlatUnquotedString("steps"))
+			if stepsField != nil && stepsField.Map() != nil {
+				for _, sf := range stepsField.Map().Fields {
+					c.overlay(dst, sf)
+				}
 			}
 
 			OverlayMap(dst, impn.Map())
@@ -1079,6 +1098,11 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 			return
 		}
 		n.(Importable).SetImportAST(refctx.Key.Value.Import)
+		var existingEdges []*Edge
+		if f.Map() != nil {
+			existingEdges = f.Map().Edges
+		}
+		originalF := f.Copy(refctx.ScopeMap).(*Field)
 		switch n := n.(type) {
 		case *Field:
 			if n.Primary_ != nil {
@@ -1115,6 +1139,22 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 				c.overlayClasses(f.Map())
 			}
 		}
+		OverlayField(f, originalF)
+		if existingEdges != nil && f.Map() != nil {
+			for _, edge := range existingEdges {
+				exists := false
+				for _, currentEdge := range f.Map().Edges {
+					if currentEdge.ID.Match(edge.ID) {
+						exists = true
+						break
+					}
+				}
+				if !exists {
+					f.Map().Edges = append(f.Map().Edges, edge)
+				}
+			}
+		}
+
 	} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
 		if c.ignoreLazyGlob(f) {
 			return

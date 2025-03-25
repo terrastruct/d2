@@ -8,23 +8,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  ci:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v4
-        with:
-          go-version-file: ./go.mod
-          cache: true
-      - run: COLOR=1 CI_FORCE=1 ./make.sh all race
-        env:
-          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: d2chaos
-          path: ./d2chaos/out
   npm-nightly:
     runs-on: ubuntu-latest
     steps:
@@ -51,8 +34,28 @@ jobs:
 
       - name: Publish nightly version to NPM
         if: steps.check_changes.outputs.has_changes == 'true'
-        run: COLOR=1 NPM_VERSION=nightly ./make.sh js
+        run: |
+          export NPM_VERSION=nightly
+          COLOR=1 ./make.sh js
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+  ci:
+    needs: [npm-nightly]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version-file: ./go.mod
+          cache: true
+      - run: COLOR=1 CI_FORCE=1 ./make.sh all race
+        env:
+          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: d2chaos
+          path: ./d2chaos/out
