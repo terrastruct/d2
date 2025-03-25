@@ -297,6 +297,78 @@
                 },
                 "due_to_glob": false,
                 "due_to_lazy_glob": false
+              },
+              {
+                "string": {
+                  "range": "index.d2,0:41:41-0:42:42",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "index.d2,0:41:41-0:42:42",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "index.d2,0:41:41-0:42:42",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "index.d2,0:41:41-0:46:46",
+                    "key": {
+                      "range": "index.d2,0:41:41-0:42:42",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "index.d2,0:41:41-0:42:42",
+                            "value": [
+                              {
+                                "string": "x",
+                                "raw_string": "x"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "import": {
+                        "range": "index.d2,0:44:44-0:46:46",
+                        "spread": false,
+                        "pre": "",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "index.d2,0:45:45-0:46:46",
+                              "value": [
+                                {
+                                  "string": "x",
+                                  "raw_string": "x"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
               }
             ]
           },
@@ -448,6 +520,78 @@
               "edges": null
             },
             "references": [
+              {
+                "string": {
+                  "range": "index.d2,0:48:48-0:49:49",
+                  "value": [
+                    {
+                      "string": "y",
+                      "raw_string": "y"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "index.d2,0:48:48-0:49:49",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "index.d2,0:48:48-0:49:49",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "index.d2,0:48:48-0:54:54",
+                    "key": {
+                      "range": "index.d2,0:48:48-0:49:49",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "index.d2,0:48:48-0:49:49",
+                            "value": [
+                              {
+                                "string": "y",
+                                "raw_string": "y"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "import": {
+                        "range": "index.d2,0:51:51-0:54:54",
+                        "spread": false,
+                        "pre": "",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "index.d2,0:52:52-0:53:53",
+                              "value": [
+                                {
+                                  "string": "y",
+                                  "raw_string": "y"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              },
               {
                 "string": {
                   "range": "index.d2,0:48:48-0:49:49",
@@ -902,6 +1046,78 @@
                 },
                 "due_to_glob": false,
                 "due_to_lazy_glob": false
+              },
+              {
+                "string": {
+                  "range": "index.d2,0:12:12-0:13:13",
+                  "value": [
+                    {
+                      "string": "1",
+                      "raw_string": "1"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "index.d2,0:12:12-0:13:13",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "index.d2,0:12:12-0:13:13",
+                        "value": [
+                          {
+                            "string": "1",
+                            "raw_string": "1"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "index.d2,0:12:12-0:17:17",
+                    "key": {
+                      "range": "index.d2,0:12:12-0:13:13",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "index.d2,0:12:12-0:13:13",
+                            "value": [
+                              {
+                                "string": "1",
+                                "raw_string": "1"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "import": {
+                        "range": "index.d2,0:15:15-0:17:17",
+                        "spread": false,
+                        "pre": "",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "index.d2,0:16:16-0:17:17",
+                              "value": [
+                                {
+                                  "string": "x",
+                                  "raw_string": "x"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
               }
             ]
           },
@@ -1119,6 +1335,78 @@
               "edges": null
             },
             "references": [
+              {
+                "string": {
+                  "range": "index.d2,0:19:19-0:20:20",
+                  "value": [
+                    {
+                      "string": "2",
+                      "raw_string": "2"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "index.d2,0:19:19-0:20:20",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "index.d2,0:19:19-0:20:20",
+                        "value": [
+                          {
+                            "string": "2",
+                            "raw_string": "2"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "index.d2,0:19:19-0:25:25",
+                    "key": {
+                      "range": "index.d2,0:19:19-0:20:20",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "index.d2,0:19:19-0:20:20",
+                            "value": [
+                              {
+                                "string": "2",
+                                "raw_string": "2"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "import": {
+                        "range": "index.d2,0:22:22-0:25:25",
+                        "spread": false,
+                        "pre": "",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "index.d2,0:23:23-0:24:24",
+                              "value": [
+                                {
+                                  "string": "y",
+                                  "raw_string": "y"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              },
               {
                 "string": {
                   "range": "index.d2,0:19:19-0:20:20",

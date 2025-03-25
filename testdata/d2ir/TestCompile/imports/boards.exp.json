@@ -611,6 +611,78 @@
                             },
                             "due_to_glob": false,
                             "due_to_lazy_glob": false
+                          },
+                          {
+                            "string": {
+                              "range": "x.d2,0:28:28-0:29:29",
+                              "value": [
+                                {
+                                  "string": "y",
+                                  "raw_string": "y"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "x.d2,0:28:28-0:29:29",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "x.d2,0:28:28-0:29:29",
+                                    "value": [
+                                      {
+                                        "string": "y",
+                                        "raw_string": "y"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "x.d2,0:28:28-0:34:34",
+                                "key": {
+                                  "range": "x.d2,0:28:28-0:29:29",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "x.d2,0:28:28-0:29:29",
+                                        "value": [
+                                          {
+                                            "string": "y",
+                                            "raw_string": "y"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "import": {
+                                    "range": "x.d2,0:31:31-0:34:34",
+                                    "spread": false,
+                                    "pre": "",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "x.d2,0:32:32-0:33:33",
+                                          "value": [
+                                            {
+                                              "string": "y",
+                                              "raw_string": "y"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            "due_to_glob": false,
+                            "due_to_lazy_glob": false
                           }
                         ]
                       }
@@ -725,6 +797,78 @@
               "edges": null
             },
             "references": [
+              {
+                "string": {
+                  "range": "index.d2,0:28:28-0:29:29",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "index.d2,0:28:28-0:29:29",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "index.d2,0:28:28-0:29:29",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "index.d2,0:28:28-0:34:34",
+                    "key": {
+                      "range": "index.d2,0:28:28-0:29:29",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "index.d2,0:28:28-0:29:29",
+                            "value": [
+                              {
+                                "string": "x",
+                                "raw_string": "x"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "import": {
+                        "range": "index.d2,0:31:31-0:34:34",
+                        "spread": false,
+                        "pre": "",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "index.d2,0:32:32-0:33:33",
+                              "value": [
+                                {
+                                  "string": "x",
+                                  "raw_string": "x"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              },
               {
                 "string": {
                   "range": "index.d2,0:28:28-0:29:29",
