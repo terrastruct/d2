@@ -30,6 +30,7 @@ func TestCreate(t *testing.T) {
 		boardPath []string
 		name      string
 		text      string
+		fsTexts   map[string]string
 		key       string
 
 		expKey     string
@@ -807,6 +808,38 @@ steps: {
 }
 `,
 		},
+		{
+			name: "image-edge",
+
+			text: `...@k
+a.b: {
+  icon: https://icons.terrastruct.com/essentials/004-picture.svg
+  shape: image
+}
+`,
+			fsTexts: map[string]string{
+				"k.d2": `
+a: {
+  b
+  c
+}
+`,
+			},
+			key:       `a.b -> a.c`,
+			boardPath: []string{},
+
+			expKey: `d 2`,
+			exp: `a
+d
+
+steps: {
+  x: {
+    b
+    d 2
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -816,7 +849,8 @@ steps: {
 
 			var newKey string
 			et := editTest{
-				text: tc.text,
+				text:    tc.text,
+				fsTexts: tc.fsTexts,
 				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
 					var err error
 					g, newKey, err = d2oracle.Create(g, tc.boardPath, tc.key)
