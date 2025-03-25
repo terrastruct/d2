@@ -828,16 +828,13 @@ a: {
 			key:       `a.b -> a.c`,
 			boardPath: []string{},
 
-			expKey: `d 2`,
-			exp: `a
-d
-
-steps: {
-  x: {
-    b
-    d 2
-  }
+			expKey: `a.(b -> c)[0]`,
+			exp: `...@k
+a.b: {
+  icon: https://icons.terrastruct.com/essentials/004-picture.svg
+  shape: image
 }
+a.(b -> c)
 `,
 		},
 	}
