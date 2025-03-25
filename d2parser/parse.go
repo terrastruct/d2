@@ -984,6 +984,14 @@ func (p *parser) parseKey() (k *d2ast.KeyPath) {
 			k = nil
 		} else {
 			k.Range.End = k.Path[len(k.Path)-1].Unbox().GetRange().End
+			for _, part := range k.Path {
+				if part.Unbox() != nil {
+					if len(part.Unbox().ScalarString()) > 518 {
+						p.errorf(k.Range.Start, k.Range.End, "key length %d exceeds maximum allowed length of 518", len(part.Unbox().ScalarString()))
+						break
+					}
+				}
+			}
 		}
 	}()
 
