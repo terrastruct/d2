@@ -767,8 +767,8 @@ func (c *compiler) compileStyleField(styles *d2graph.Style, f *d2ir.Field) {
 		return
 	}
 
-	scalar := f.Primary().Value
 	compileStyleFieldInit(styles, f)
+	scalar := f.Primary().Value
 	err := styles.Apply(f.Name.ScalarString(), scalar.ScalarString())
 
 	if err != nil {
