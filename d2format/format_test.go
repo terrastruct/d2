@@ -894,6 +894,19 @@ steps: asdf
 			exp: `k
 `,
 		},
+		{
+			name: "vars",
+			in: `vars: {
+  a: "a"
+  b: "X${a})"
+}
+`,
+			exp: `vars: {
+  a: "a"
+  b: "X${a})"
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
