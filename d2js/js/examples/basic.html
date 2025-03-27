@@ -36,7 +36,7 @@
         const input = document.getElementById("input").value;
         try {
           const result = await d2.compile(input);
-          const svg = await d2.render(result.diagram);
+          const svg = await d2.render(result.diagram, result.renderOptions);
           document.getElementById("output").innerHTML = svg;
         } catch (err) {
           console.error(err);
