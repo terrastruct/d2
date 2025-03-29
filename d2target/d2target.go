@@ -503,11 +503,12 @@ type Shape struct {
 	Multiple     bool `json:"multiple"`
 	DoubleBorder bool `json:"double-border"`
 
-	Tooltip      string   `json:"tooltip"`
-	Link         string   `json:"link"`
-	PrettyLink   string   `json:"prettyLink,omitempty"`
-	Icon         *url.URL `json:"icon"`
-	IconPosition string   `json:"iconPosition"`
+	Tooltip          string   `json:"tooltip"`
+	Link             string   `json:"link"`
+	PrettyLink       string   `json:"prettyLink,omitempty"`
+	Icon             *url.URL `json:"icon"`
+	IconBorderRadius int      `json:"iconBorderRadius,omitempty"`
+	IconPosition     string   `json:"iconPosition"`
 
 	// Whether the shape should allow shapes behind it to bleed through
 	// Currently just used for sequence diagram groups
@@ -634,10 +635,11 @@ type Connection struct {
 	Route   []*geo.Point `json:"route"`
 	IsCurve bool         `json:"isCurve,omitempty"`
 
-	Animated     bool     `json:"animated"`
-	Tooltip      string   `json:"tooltip"`
-	Icon         *url.URL `json:"icon"`
-	IconPosition string   `json:"iconPosition,omitempty"`
+	Animated         bool     `json:"animated"`
+	Tooltip          string   `json:"tooltip"`
+	Icon             *url.URL `json:"icon"`
+	IconPosition     string   `json:"iconPosition,omitempty"`
+	IconBorderRadius float64  `json:"iconBorderRadius,omitempty"`
 
 	ZIndex int `json:"zIndex"`
 }

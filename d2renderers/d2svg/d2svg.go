@@ -853,12 +853,17 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 	if connection.Icon != nil {
 		iconPos := connection.GetIconPosition()
 		if iconPos != nil {
-			fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" />`,
+			connectionIconClipPath := ""
+			if connection.IconBorderRadius != 0 {
+				connectionIconClipPath = fmt.Sprintf(` clip-path="inset(0 round %fpx)"`, connection.IconBorderRadius)
+			}
+			fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d"%s />`,
 				html.EscapeString(connection.Icon.String()),
 				iconPos.X,
 				iconPos.Y,
 				d2target.DEFAULT_ICON_SIZE,
 				d2target.DEFAULT_ICON_SIZE,
+				connectionIconClipPath,
 			)
 		}
 	}
@@ -1435,6 +1440,11 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		el.Fill = fill
 		el.Stroke = stroke
 		el.Style = style
+		if targetShape.IconBorderRadius != 0 {
+			clipPathId := fmt.Sprintf("%v-%v-icon", diagramHash, svg.SVGID(targetShape.ID))
+			fmt.Fprint(writer, applyIconBorderRadius(clipPathId, targetShape))
+			el.ClipPath = clipPathId
+		}
 		fmt.Fprint(writer, el.Render())
 
 	// TODO should standardize "" to rectangle
@@ -1627,12 +1637,17 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 
 		tl := iconPosition.GetPointOnBox(box, label.PADDING, float64(iconSize), float64(iconSize))
 
-		fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" />`,
+		shapeIconClipPath := ""
+		if targetShape.IconBorderRadius != 0 {
+			shapeIconClipPath = fmt.Sprintf(` clip-path="inset(0 round %dpx)"`, targetShape.IconBorderRadius)
+		}
+		fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d"%s />`,
 			html.EscapeString(targetShape.Icon.String()),
 			tl.X,
 			tl.Y,
 			iconSize,
 			iconSize,
+			shapeIconClipPath,
 		)
 	}
 
@@ -1860,6 +1875,28 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 
 	fmt.Fprint(writer, closingTag)
 	return labelMask, nil
+}
+
+func applyIconBorderRadius(clipPathId string, shape d2target.Shape) string {
+	box := geo.NewBox(
+		geo.NewPoint(float64(shape.Pos.X), float64(shape.Pos.Y)),
+		float64(shape.Width),
+		float64(shape.Height),
+	)
+	topX, topY := box.TopLeft.X+box.Width, box.TopLeft.Y
+
+	out := fmt.Sprintf(`<clipPath id="%s">`, clipPathId)
+	out += fmt.Sprintf(`<path d="M %f %f L %f %f S %f %f %f %f `, box.TopLeft.X, box.TopLeft.Y+float64(shape.IconBorderRadius), box.TopLeft.X, box.TopLeft.Y+float64(shape.IconBorderRadius), box.TopLeft.X, box.TopLeft.Y, box.TopLeft.X+float64(shape.IconBorderRadius), box.TopLeft.Y)
+	out += fmt.Sprintf(`L %f %f L %f %f `, box.TopLeft.X+box.Width-float64(shape.IconBorderRadius), box.TopLeft.Y, topX-float64(shape.IconBorderRadius), topY)
+
+	out += fmt.Sprintf(`S %f %f %f %f `, topX, topY, topX, topY+float64(shape.IconBorderRadius))
+	out += fmt.Sprintf(`L %f %f `, topX, topY+box.Height-float64(shape.IconBorderRadius))
+	out += fmt.Sprintf(`S %f % f %f %f `, topX, topY+box.Height, topX-float64(shape.IconBorderRadius), topY+box.Height)
+	out += fmt.Sprintf(`L %f %f `, box.TopLeft.X+float64(shape.IconBorderRadius), box.TopLeft.Y+box.Height)
+	out += fmt.Sprintf(`S %f %f %f %f`, box.TopLeft.X, box.TopLeft.Y+box.Height, box.TopLeft.X, box.TopLeft.Y+box.Height-float64(shape.IconBorderRadius))
+	out += fmt.Sprintf(`L %f %f`, box.TopLeft.X, box.TopLeft.Y+float64(shape.IconBorderRadius))
+	out += fmt.Sprintf(`Z %f %f" `, box.TopLeft.X, box.TopLeft.Y)
+	return out + `fill="none" /> </clipPath>`
 }
 
 func addAppendixItems(writer io.Writer, diagramHash string, targetShape d2target.Shape, s shape.Shape) {

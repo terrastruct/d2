@@ -225,6 +225,7 @@
           "height": 0
         },
         "style": {},
+        "iconStyle": {},
         "near_key": null,
         "shape": {
           "value": ""
@@ -276,6 +277,7 @@
               "value": "0.2"
             }
           },
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "rectangle"
@@ -406,6 +408,7 @@
               "height": 0
             },
             "style": {},
+            "iconStyle": {},
             "near_key": null,
             "shape": {
               "value": ""
@@ -477,6 +480,7 @@
                   "value": "0.3"
                 }
               },
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"
