@@ -766,11 +766,9 @@ func (c *compiler) compileStyleField(styles *d2graph.Style, f *d2ir.Field) {
 	if f.Primary() == nil {
 		return
 	}
-
 	compileStyleFieldInit(styles, f)
 	scalar := f.Primary().Value
 	err := styles.Apply(f.Name.ScalarString(), scalar.ScalarString())
-
 	if err != nil {
 		c.errorf(scalar, err.Error())
 		return

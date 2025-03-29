@@ -1441,9 +1441,9 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		el.Stroke = stroke
 		el.Style = style
 		if targetShape.IconBorderRadius != 0 {
-			clipPathId := fmt.Sprintf("%v-%v-icon", diagramHash, svg.SVGID(targetShape.ID))
-			fmt.Fprint(writer, applyIconBorderRadius(clipPathId, targetShape))
-			el.ClipPath = clipPathId
+			clipPathID := fmt.Sprintf("%v-%v-icon", diagramHash, svg.SVGID(targetShape.ID))
+			fmt.Fprint(writer, applyIconBorderRadius(clipPathID, targetShape))
+			el.ClipPath = clipPathID
 		}
 		fmt.Fprint(writer, el.Render())
 
@@ -1877,7 +1877,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	return labelMask, nil
 }
 
-func applyIconBorderRadius(clipPathId string, shape d2target.Shape) string {
+func applyIconBorderRadius(clipPathID string, shape d2target.Shape) string {
 	box := geo.NewBox(
 		geo.NewPoint(float64(shape.Pos.X), float64(shape.Pos.Y)),
 		float64(shape.Width),
@@ -1885,7 +1885,7 @@ func applyIconBorderRadius(clipPathId string, shape d2target.Shape) string {
 	)
 	topX, topY := box.TopLeft.X+box.Width, box.TopLeft.Y
 
-	out := fmt.Sprintf(`<clipPath id="%s">`, clipPathId)
+	out := fmt.Sprintf(`<clipPath id="%s">`, clipPathID)
 	out += fmt.Sprintf(`<path d="M %f %f L %f %f S %f %f %f %f `, box.TopLeft.X, box.TopLeft.Y+float64(shape.IconBorderRadius), box.TopLeft.X, box.TopLeft.Y+float64(shape.IconBorderRadius), box.TopLeft.X, box.TopLeft.Y, box.TopLeft.X+float64(shape.IconBorderRadius), box.TopLeft.Y)
 	out += fmt.Sprintf(`L %f %f L %f %f `, box.TopLeft.X+box.Width-float64(shape.IconBorderRadius), box.TopLeft.Y, topX-float64(shape.IconBorderRadius), topY)
 
