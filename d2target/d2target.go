@@ -503,12 +503,12 @@ type Shape struct {
 	Multiple     bool `json:"multiple"`
 	DoubleBorder bool `json:"double-border"`
 
-	Tooltip      string          `json:"tooltip"`
-	Link         string          `json:"link"`
-	PrettyLink   string          `json:"prettyLink,omitempty"`
-	Icon         *url.URL        `json:"icon"`
-	IconStyle    *ShapeIconStyle `json:"iconStyle,omitempty"`
-	IconPosition string          `json:"iconPosition"`
+	Tooltip          string   `json:"tooltip"`
+	Link             string   `json:"link"`
+	PrettyLink       string   `json:"prettyLink,omitempty"`
+	Icon             *url.URL `json:"icon"`
+	IconBorderRadius int      `json:"iconBorderRadius,omitempty"`
+	IconPosition     string   `json:"iconPosition"`
 
 	// Whether the shape should allow shapes behind it to bleed through
 	// Currently just used for sequence diagram groups
@@ -530,10 +530,6 @@ type Shape struct {
 	PrimaryAccentColor   string `json:"primaryAccentColor,omitempty"`
 	SecondaryAccentColor string `json:"secondaryAccentColor,omitempty"`
 	NeutralAccentColor   string `json:"neutralAccentColor,omitempty"`
-}
-
-type ShapeIconStyle struct {
-	BorderRadius int `json:"borderRadius"`
 }
 
 func (s Shape) GetFontColor() string {

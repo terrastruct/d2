@@ -41,28 +41,6 @@ func clipPathForBorderRadius(diagramHash string, shape d2target.Shape) string {
 	return out + `fill="none" /> </clipPath>`
 }
 
-func clipPathForIconBorderRadius(diagramHash string, shape d2target.Shape) string {
-	box := geo.NewBox(
-		geo.NewPoint(float64(shape.Pos.X), float64(shape.Pos.Y)),
-		float64(shape.Width),
-		float64(shape.Height),
-	)
-	topX, topY := box.TopLeft.X+box.Width, box.TopLeft.Y
-
-	out := fmt.Sprintf(`<clipPath id="%v-%v-icon">`, diagramHash, shape.ID)
-	out += fmt.Sprintf(`<path d="M %f %f L %f %f S %f %f %f %f `, box.TopLeft.X, box.TopLeft.Y+float64(shape.IconStyle.BorderRadius), box.TopLeft.X, box.TopLeft.Y+float64(shape.IconStyle.BorderRadius), box.TopLeft.X, box.TopLeft.Y, box.TopLeft.X+float64(shape.IconStyle.BorderRadius), box.TopLeft.Y)
-	out += fmt.Sprintf(`L %f %f L %f %f `, box.TopLeft.X+box.Width-float64(shape.IconStyle.BorderRadius), box.TopLeft.Y, topX-float64(shape.IconStyle.BorderRadius), topY)
-
-	out += fmt.Sprintf(`S %f %f %f %f `, topX, topY, topX, topY+float64(shape.IconStyle.BorderRadius))
-	out += fmt.Sprintf(`L %f %f `, topX, topY+box.Height-float64(shape.IconStyle.BorderRadius))
-	out += fmt.Sprintf(`S %f % f %f %f `, topX, topY+box.Height, topX-float64(shape.IconStyle.BorderRadius), topY+box.Height)
-	out += fmt.Sprintf(`L %f %f `, box.TopLeft.X+float64(shape.IconStyle.BorderRadius), box.TopLeft.Y+box.Height)
-	out += fmt.Sprintf(`S %f %f %f %f`, box.TopLeft.X, box.TopLeft.Y+box.Height, box.TopLeft.X, box.TopLeft.Y+box.Height-float64(shape.IconStyle.BorderRadius))
-	out += fmt.Sprintf(`L %f %f`, box.TopLeft.X, box.TopLeft.Y+float64(shape.IconStyle.BorderRadius))
-	out += fmt.Sprintf(`Z %f %f" `, box.TopLeft.X, box.TopLeft.Y)
-	return out + `fill="none" /> </clipPath>`
-}
-
 func tableHeader(diagramHash string, shape d2target.Shape, box *geo.Box, text string, textWidth, textHeight, fontSize float64, inlineTheme *d2themes.Theme) string {
 	rectEl := d2themes.NewThemableElement("rect", inlineTheme)
 	rectEl.X, rectEl.Y = box.TopLeft.X, box.TopLeft.Y
