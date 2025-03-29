@@ -398,7 +398,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			if baseAST != g.AST || imported {
 				writeableRefs := GetWriteableRefs(obj, baseAST)
 				for _, ref := range writeableRefs {
-					if ref.MapKey != nil && ref.MapKey.Value.Map != nil {
+					if ref.MapKey != nil && ref.MapKey.Value.Map != nil && ref.MapKey.Key == mk.Key {
 						maybeNewScope = ref.MapKey.Value.Map
 					}
 				}
