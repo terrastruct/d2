@@ -5653,7 +5653,18 @@ d: {
   &level: 1
   style.stroke: yellow
 }
+(** -> **)[*]: {
+  &src.level: 0
+  &dst.level: 0
+  style.stroke: blue
+}
 a.b.c
+
+x -> y
+a: {
+  1 -> 2
+}
+a.1 -> x
 `, ``)
 				assert.Equal(t, "a", g.Objects[0].ID)
 				assert.Equal(t, "red", g.Objects[0].Attributes.Style.Fill.Value)
@@ -5666,6 +5677,9 @@ a.b.c
 				assert.Equal(t, "c", g.Objects[2].ID)
 				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Fill)
 				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Stroke)
+
+				assert.Equal(t, "(x -> y)[0]", g.Edges[0].AbsID())
+				assert.Equal(t, "blue", g.Edges[0].Attributes.Style.Stroke)
 			},
 		},
 		{
