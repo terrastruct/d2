@@ -181,7 +181,17 @@ lambda : {
 lambda : {
   shape: image
   icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
-  icon.style.border-radius: 20
+  icon.style.border-radius: 5
+}
+
+AWS Cloud : {
+  icon: https://icons.terrastruct.com/aws%2F_Group%20Icons%2FAWS-Cloud_light-bg.svg
+  icon.style.border-radius: 0
+}
+
+Mesh : {
+  icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAWS-App-Mesh.svg
+  icon.style.border-radius: 999
 }
 
 -- none-fill --
