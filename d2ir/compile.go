@@ -851,6 +851,26 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 			f := refctx.ScopeMap.Parent().(*Field)
 			isLeaf := f.Map() == nil || !f.Map().IsContainer()
 			return isLeaf == boolVal
+		case "level":
+			raw := refctx.Key.Value.ScalarBox().Unbox().ScalarString()
+			levelVal, err := strconv.Atoi(raw)
+			if err != nil {
+				c.errorf(refctx.Key, `&level must be a non-negative integer, got %q`, raw)
+				return false
+			}
+			if levelVal < 0 {
+				c.errorf(refctx.Key, `&level must be a non-negative integer, got %d`, levelVal)
+				return false
+			}
+
+			f := refctx.ScopeMap.Parent().(*Field)
+			level := 0
+			parent := ParentField(f)
+			for parent != nil && parent.Name.ScalarString() != "root" && NodeBoardKind(parent) == "" {
+				level++
+				parent = ParentField(parent)
+			}
+			return level == levelVal
 		case "connected":
 			raw := refctx.Key.Value.ScalarBox().Unbox().ScalarString()
 			boolVal, err := strconv.ParseBool(raw)

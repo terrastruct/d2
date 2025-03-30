@@ -5642,6 +5642,33 @@ d: {
 			},
 		},
 		{
+			name: "level-filter",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+**: {
+  &level: 0
+  style.fill: red
+}
+**: {
+  &level: 1
+  style.stroke: yellow
+}
+a.b.c
+`, ``)
+				assert.Equal(t, "a", g.Objects[0].ID)
+				assert.Equal(t, "red", g.Objects[0].Attributes.Style.Fill.Value)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Attributes.Style.Stroke)
+
+				assert.Equal(t, "b", g.Objects[1].ID)
+				assert.Equal(t, "yellow", g.Objects[1].Attributes.Style.Stroke.Value)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[1].Attributes.Style.Fill)
+
+				assert.Equal(t, "c", g.Objects[2].ID)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Fill)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Stroke)
+			},
+		},
+		{
 			name: "connected-filter",
 			run: func(t *testing.T) {
 				g, _ := assertCompile(t, `
@@ -5658,6 +5685,37 @@ c
 				assert.Equal(t, "red", g.Objects[1].Attributes.Style.Fill.Value)
 				assert.Equal(t, "c", g.Objects[2].ID)
 				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Fill)
+			},
+		},
+		{
+			name: "and-filter",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*: {
+  &shape: person
+  &connected: true
+  style.fill: red
+}
+(** -> **)[*]: {
+  &src: a
+  &dst: c
+  style.stroke: yellow
+}
+a -> b
+a.shape: person
+a -> c
+`, ``)
+				assert.Equal(t, "a", g.Objects[0].ID)
+				assert.Equal(t, "red", g.Objects[0].Attributes.Style.Fill.Value)
+				assert.Equal(t, "b", g.Objects[1].ID)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[1].Attributes.Style.Fill)
+				assert.Equal(t, "c", g.Objects[2].ID)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Fill)
+
+				assert.Equal(t, "(a -> b)[0]", g.Edges[0].AbsID())
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[0].Attributes.Style.Stroke)
+				assert.Equal(t, "(a -> c)[0]", g.Edges[1].AbsID())
+				assert.Equal(t, "yellow", g.Edges[1].Attributes.Style.Stroke.Value)
 			},
 		},
 		{
