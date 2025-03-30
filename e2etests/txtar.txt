@@ -171,6 +171,29 @@ a -> b: hi {
   style.underline: true
 }
 
+-- icon-style --
+
+AWS Firewall Manager : {
+  icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAWS-Firewall-Manager.svg
+  icon.style.border-radius: 5
+}
+
+lambda : {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+  icon.style.border-radius: 20
+}
+
+AWS Cloud : {
+  icon: https://icons.terrastruct.com/aws%2F_Group%20Icons%2FAWS-Cloud_light-bg.svg
+  icon.style.border-radius: 0
+}
+
+Mesh : {
+  icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAWS-App-Mesh.svg
+  icon.style.border-radius: 999
+}
+
 -- none-fill --
 
 vars: {
@@ -774,6 +797,12 @@ a -> b: hello {
 }
 b -> c: {
   icon: https://icons.terrastruct.com/essentials%2F213-alarm.svg
+}
+
+direction: right
+producer -> consumer: {
+  icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-Simple-Queue-Service-SQS.svg
+  icon.style.border-radius: 20
 }
 
 -- model-view --
