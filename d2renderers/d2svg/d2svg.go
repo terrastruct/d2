@@ -1329,6 +1329,13 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	if targetShape.BorderRadius != 0 && (targetShape.Type == d2target.ShapeClass || targetShape.Type == d2target.ShapeSQLTable) {
 		fmt.Fprint(writer, clipPathForBorderRadius(diagramHash, targetShape))
 	}
+	var iconClipPathID string
+	if targetShape.IconBorderRadius != 0 && (targetShape.Type == d2target.ShapeImage) {
+		// https://www.w3.org/Style/CSS/Tracker/issues/29?changelog
+		targetShape.IconBorderRadius = min(targetShape.IconBorderRadius, min(targetShape.Width, targetShape.Height)/2)
+		iconClipPathID = fmt.Sprintf("%v-%v-icon", diagramHash, svg.SVGID(targetShape.ID))
+		fmt.Fprint(writer, applyIconBorderRadius(iconClipPathID, targetShape))
+	}
 	classes := []string{base64.URLEncoding.EncodeToString([]byte(svg.EscapeText(targetShape.ID)))}
 	if targetShape.Animated {
 		classes = append(classes, "animated-shape")
@@ -1441,9 +1448,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		el.Stroke = stroke
 		el.Style = style
 		if targetShape.IconBorderRadius != 0 {
-			clipPathID := fmt.Sprintf("%v-%v-icon", diagramHash, svg.SVGID(targetShape.ID))
-			fmt.Fprint(writer, applyIconBorderRadius(clipPathID, targetShape))
-			el.ClipPath = clipPathID
+			el.ClipPath = iconClipPathID
 		}
 		fmt.Fprint(writer, el.Render())
 
