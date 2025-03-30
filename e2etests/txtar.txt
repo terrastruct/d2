@@ -173,15 +173,15 @@ a -> b: hi {
 
 -- icon-style --
 
-lambda : {
-  icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
-  icon.style.border-radius: 20
+AWS Firewall Manager : {
+  icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAWS-Firewall-Manager.svg
+  icon.style.border-radius: 5
 }
 
 lambda : {
   shape: image
   icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
-  icon.style.border-radius: 5
+  icon.style.border-radius: 20
 }
 
 AWS Cloud : {
