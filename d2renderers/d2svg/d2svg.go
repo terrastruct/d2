@@ -1331,6 +1331,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	}
 	var iconClipPathID string
 	if targetShape.IconBorderRadius != 0 && (targetShape.Type == d2target.ShapeImage) {
+		// Set the icon's border-radius to half of it's smaller dimension in case it exceeds that
 		// https://www.w3.org/Style/CSS/Tracker/issues/29?changelog
 		targetShape.IconBorderRadius = min(targetShape.IconBorderRadius, min(targetShape.Width, targetShape.Height)/2)
 		iconClipPathID = fmt.Sprintf("%v-%v-icon", diagramHash, svg.SVGID(targetShape.ID))
