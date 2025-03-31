@@ -672,6 +672,9 @@
         "references": [
           {
             "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
           }
         ],
         "attributes": {
@@ -682,7 +685,12 @@
             "width": 0,
             "height": 0
           },
-          "style": {},
+          "style": {
+            "stroke": {
+              "value": "blue"
+            }
+          },
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": ""
@@ -713,6 +721,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": ""
@@ -743,6 +752,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": ""
@@ -1077,6 +1087,7 @@
               "value": "red"
             }
           },
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "rectangle"
@@ -1126,6 +1137,7 @@
               "value": "red"
             }
           },
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "rectangle"
@@ -1206,6 +1218,7 @@
               "value": "yellow"
             }
           },
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "rectangle"
@@ -1255,6 +1268,7 @@
               "value": "yellow"
             }
           },
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "rectangle"

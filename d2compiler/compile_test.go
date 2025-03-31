@@ -5679,7 +5679,13 @@ a.1 -> x
 				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Stroke)
 
 				assert.Equal(t, "(x -> y)[0]", g.Edges[0].AbsID())
-				assert.Equal(t, "blue", g.Edges[0].Attributes.Style.Stroke)
+				assert.Equal(t, "blue", g.Edges[0].Attributes.Style.Stroke.Value)
+
+				assert.Equal(t, "a.(1 -> 2)[0]", g.Edges[1].AbsID())
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[1].Attributes.Style.Stroke)
+
+				assert.Equal(t, "(a.1 -> x)[0]", g.Edges[2].AbsID())
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[2].Attributes.Style.Stroke)
 			},
 		},
 		{
