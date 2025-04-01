@@ -1,0 +1,297 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,0:0:0-8:0:59",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,1:0:1-5:1:35",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,1:0:1-1:4:5",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,1:0:1-1:4:5",
+                    "value": [
+                      {
+                        "string": "vars",
+                        "raw_string": "vars"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,1:6:7-5:1:35",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,2:2:11-4:3:33",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,2:2:11-2:3:12",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,2:2:11-2:3:12",
+                              "value": [
+                                {
+                                  "string": "x",
+                                  "raw_string": "x"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,2:5:14-4:3:33",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,3:4:20-3:13:29",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,3:4:20-3:9:25",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,3:4:20-3:9:25",
+                                        "value": [
+                                          {
+                                            "string": "label",
+                                            "raw_string": "label"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,3:11:27-3:13:29",
+                                    "value": [
+                                      {
+                                        "string": "hi",
+                                        "raw_string": "hi"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,6:0:36-6:7:43",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,6:0:36-6:1:37",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,6:0:36-6:1:37",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "unquoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,6:3:39-6:4:40",
+                "value": [
+                  {
+                    "substitution": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,6:3:39-6:7:43",
+                      "spread": false,
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,6:5:41-6:6:42",
+                            "value": [
+                              {
+                                "string": "x",
+                                "raw_string": "x"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,7:0:44-7:14:58",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,7:0:44-7:7:51",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,7:0:44-7:1:45",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,7:2:46-7:7:51",
+                    "value": [
+                      {
+                        "string": "label",
+                        "raw_string": "label"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "unquoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,7:9:53-7:14:58",
+                "value": [
+                  {
+                    "string": "hello",
+                    "raw_string": "hello"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "a",
+        "id_val": "a",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,6:0:36-6:1:37",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,6:0:36-6:1:37",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,7:0:44-7:7:51",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,7:0:44-7:1:45",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/override/label-map.d2,7:2:46-7:7:51",
+                    "value": [
+                      {
+                        "string": "label",
+                        "raw_string": "label"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "hello"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}
