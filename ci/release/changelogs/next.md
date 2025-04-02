@@ -22,9 +22,6 @@
   - impose max key length. It's almost certainly a mistake if an ID gets too long, e.g. missing quotes [#2465](https://github.com/terrastruct/d2/pull/2465)
 - # Render: - horizontal padding added for connection labels [#2461](https://github.com/terrastruct/d2/pull/2461)
 - Themes [#2065](https://github.com/terrastruct/d2/pull/2065):
-  - new theme `Dark Berry Blue` (`205`), intended as dark variant of `Mixed Berry Blue` (`5`).
-  - changed id of `Dark Flagship Terrastruct` (`203`) to mirror the ID of `Flagship Terrastruct` (`3`), improving theme discoverability.
-    > > > > > > > d19e3b4f2 (theme ID mod, add description to improvements)
 
 #### Bugfixes ⛑️
 
