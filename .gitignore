@@ -9,3 +9,8 @@ d2
 
 # https://github.com/golang/go/blob/8b67cf0bc6ad657fddcbaaa10729d0086f08f9a9/src/cmd/go/internal/test/test.go#L415-L416
 e2etests.test
+
+# ignores for direnv/devenv
+.devenv*
+.direnv/
+devenv.*
