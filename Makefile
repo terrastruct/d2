@@ -25,6 +25,18 @@ race: fmt
 js: gen
 	cd d2js/js && NPM_VERSION="${NPM_VERSION}" prefix "$@" ./make.sh all
 
+SVGDIR := testdata/examples/svg
+SVGS = $(shell ./d2 themes | gawk -F':' '/^-/{ printf "$(SVGDIR)/themex-%03d.svg ",$$2 }' || :)
+
+.PHONY: clean
+clean:
+	rm -f $(SVGS) d2
+
 .PHONY: themesdemo
-themesdemo:
-	$(MAKE) -C ./testdata/examples/
+themesdemo: $(SVGS) d2
+
+$(SVGDIR)/themex-%.svg: testdata/examples/themex.d2 
+	$(info Building $@ from $< ...)
+	./d2 -t $$(( 10#$* )) $< $@
+
+# d2: build
