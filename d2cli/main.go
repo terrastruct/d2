@@ -136,6 +136,11 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 
 	saltFlag := ms.Opts.String("", "salt", "", "", "Add a salt value to ensure the output uses unique IDs. This is useful when generating multiple identical diagrams to be included in the same HTML doc, so that duplicate IDs do not cause invalid HTML. The salt value is a string that will be appended to IDs in the output.")
 
+	omitVersionFlag, err := ms.Opts.Bool("OMIT_VERSION", "omit-version", "", false, "omit D2 version from generated image")
+	if err != nil {
+		return err
+	}
+
 	plugins, err := d2plugin.ListPlugins(ctx)
 	if err != nil {
 		return err
@@ -331,6 +336,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		Scale:       scale,
 		NoXMLTag:    noXMLTagFlag,
 		Salt:        saltFlag,
+		OmitVersion: omitVersionFlag,
 	}
 
 	if *watchFlag {
@@ -884,6 +890,7 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 		NoXMLTag:           opts.NoXMLTag,
 		Salt:               opts.Salt,
 		Scale:              scale,
+		OmitVersion:        opts.OmitVersion,
 	}
 	svg, err := d2svg.Render(diagram, renderOpts)
 	if err != nil {
@@ -978,6 +985,7 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 			DarkThemeID:        opts.DarkThemeID,
 			ThemeOverrides:     opts.ThemeOverrides,
 			DarkThemeOverrides: opts.DarkThemeOverrides,
+			OmitVersion:        opts.OmitVersion,
 		}
 		svg, err = d2svg.Render(diagram, renderOpts)
 		if err != nil {
@@ -1085,6 +1093,7 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 			DarkThemeID:        opts.DarkThemeID,
 			ThemeOverrides:     opts.ThemeOverrides,
 			DarkThemeOverrides: opts.DarkThemeOverrides,
+			OmitVersion:        opts.OmitVersion,
 		}
 		svg, err = d2svg.Render(diagram, renderOpts)
 		if err != nil {
@@ -1332,6 +1341,7 @@ func renderPNGsForGIF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plug
 			DarkThemeID:        opts.DarkThemeID,
 			ThemeOverrides:     opts.ThemeOverrides,
 			DarkThemeOverrides: opts.DarkThemeOverrides,
+			OmitVersion:        opts.OmitVersion,
 		}
 		svg, err = d2svg.Render(diagram, renderOpts)
 		if err != nil {

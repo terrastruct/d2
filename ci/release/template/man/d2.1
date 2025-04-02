@@ -148,6 +148,9 @@ Set the output format when writing to stdout. Supported formats are: png, svg. O
 .It Fl -no-xml-tag Ar false
 Omit XML tag (<?xml ...?>) from output SVG files. Useful when generating SVGs for direct HTML embedding
 .Ns .
+.It Fl -omit-version Ar false
+omit D2 version from generated image
+.Ns .
 .El
 .Sh SUBCOMMANDS
 .Bl -tag -width Fl
@@ -218,6 +221,8 @@ See --browser flag.
 See --stdout-format flag.
 .It Ev Sy D2_NO_XML_TAG
 See --no-xml-tag flag.
+.It Ev Sy OMIT_VERSION
+See --omit-version
 .El
 .Sh SEE ALSO
 .Xr d2plugin-tala 1
