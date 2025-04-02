@@ -31,6 +31,7 @@ SVGS = $(shell ./d2 themes | gawk -F':' '/^-/{ printf "$(SVGDIR)/themex-%03d.svg
 .PHONY: clean
 clean:
 	rm -f $(SVGS) d2
+	rmdir $(SVGDIR)
 
 .PHONY: themesdemo
 themesdemo: $(SVGS) d2
@@ -39,4 +40,4 @@ $(SVGDIR)/themex-%.svg: testdata/examples/themex.d2
 	$(info Building $@ from $< ...)
 	./d2 -t $$(( 10#$* )) $< $@
 
-# d2: build
+d2: build
