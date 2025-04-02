@@ -3,8 +3,8 @@ package d2themescatalog
 import "oss.terrastruct.com/d2/d2themes"
 
 var DarkBerryBlue = d2themes.Theme{
-	ID:   205,
-	Name: "Dark berry blue",
+	ID:   202,
+	Name: "Dark Berry Blue",
 	Colors: d2themes.ColorPalette{
 		Neutrals: d2themes.DarkNeutral,
 

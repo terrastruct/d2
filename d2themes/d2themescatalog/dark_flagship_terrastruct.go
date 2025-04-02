@@ -3,7 +3,7 @@ package d2themescatalog
 import "oss.terrastruct.com/d2/d2themes"
 
 var DarkFlagshipTerrastruct = d2themes.Theme{
-	ID:   203,
+	ID:   201,
 	Name: "Dark Flagship Terrastruct",
 	Colors: d2themes.ColorPalette{
 		Neutrals: d2themes.DarkNeutral,
