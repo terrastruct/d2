@@ -24,3 +24,7 @@ race: fmt
 .PHONY: js
 js: gen
 	cd d2js/js && NPM_VERSION="${NPM_VERSION}" prefix "$@" ./make.sh all
+
+.PHONY: themesdemo
+themesdemo:
+	$(MAKE) -C ./testdata/examples/
