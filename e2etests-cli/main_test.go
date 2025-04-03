@@ -1362,6 +1362,29 @@ c
 				assert.Error(t, err)
 			},
 		},
+		{
+			name: "omit-version",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "test.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "--omit-version", "test.d2", "no-version.svg")
+				assert.Success(t, err)
+				noVersionSvg := readFile(t, dir, "no-version.svg")
+				assert.False(t, strings.Contains(string(noVersionSvg), "data-d2-version="))
+
+				writeFile(t, dir, "test.d2", `x -> y`)
+				err = runTestMain(t, ctx, dir, env, "test.d2", "with-version.svg")
+				assert.Success(t, err)
+				withVersionSvg := readFile(t, dir, "with-version.svg")
+				assert.True(t, strings.Contains(string(withVersionSvg), "data-d2-version="))
+
+				env.Setenv("OMIT_VERSION", "1")
+				writeFile(t, dir, "test.d2", `x -> y`)
+				err = runTestMain(t, ctx, dir, env, "test.d2", "no-version-env.svg")
+				assert.Success(t, err)
+				noVersionEnvSvg := readFile(t, dir, "no-version-env.svg")
+				assert.False(t, strings.Contains(string(noVersionEnvSvg), "data-d2-version="))
+			},
+		},
 	}
 
 	ctx := context.Background()

@@ -93,9 +93,10 @@ type RenderOpts struct {
 
 	// MasterID is passed when the diagram should use something other than its own hash for unique targeting
 	// Currently, that's when multi-boards are collapsed
-	MasterID string
-	NoXMLTag *bool
-	Salt     *string
+	MasterID    string
+	NoXMLTag    *bool
+	Salt        *string
+	OmitVersion *bool
 }
 
 func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height int) {
@@ -2629,8 +2630,12 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	tag := "g"
 	// Many things change when this is rendering for animation
 	if opts.MasterID == "" {
-		fitToScreenWrapperOpening = fmt.Sprintf(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-d2-version="%s" preserveAspectRatio="%s meet" viewBox="0 0 %d %d"%s>`,
-			version.Version,
+		dataD2Version := ""
+		if opts.OmitVersion == nil || !*opts.OmitVersion {
+			dataD2Version = fmt.Sprintf(`data-d2-version="%s"`, version.Version)
+		}
+		fitToScreenWrapperOpening = fmt.Sprintf(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" %s preserveAspectRatio="%s meet" viewBox="0 0 %d %d"%s>`,
+			dataD2Version,
 			alignment,
 			w, h,
 			dimensions,
