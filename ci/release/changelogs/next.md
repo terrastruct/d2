@@ -18,6 +18,7 @@
     - Watch mode ignores backup files (e.g. files created by certain editors like Helix). [#2131](https://github.com/terrastruct/d2/issues/2131)
 - Compiler:
     - `link`s can be set to root path, e.g. `/xyz`. [#2357](https://github.com/terrastruct/d2/issues/2357)
+    - When importing a file, attempt resolving substitutions at the imported file scope first [#2482](https://github.com/terrastruct/d2/pull/2482)
 - Parser:
     - impose max key length. It's almost certainly a mistake if an ID gets too long, e.g. missing quotes [#2465](https://github.com/terrastruct/d2/pull/2465)
 - Render:
