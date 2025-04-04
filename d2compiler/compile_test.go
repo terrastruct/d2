@@ -1732,6 +1732,10 @@ environment: {
 }
 `,
 			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 1, len(g.Objects))
+				assert.Equal(t, "k", g.Objects[0].AbsID())
+			},
 		},
 		{
 			name: "import-connections",
