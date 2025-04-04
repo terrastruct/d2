@@ -1715,6 +1715,25 @@ steps: {
 			},
 		},
 		{
+			name: "import-nested-var",
+
+			text: `...@models.environment
+`,
+			files: map[string]string{
+				"models.d2": `
+vars: {
+  c: {
+    k
+  }
+}
+
+environment: {
+  ...${c}
+}
+`,
+			},
+		},
+		{
 			name: "import-connections",
 
 			text: `b.c -> b.d

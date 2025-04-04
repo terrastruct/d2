@@ -1,0 +1,191 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/import-nested-var.d2,0:0:0-3:0:42",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/import-nested-var.d2,0:0:0-2:1:41",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/import-nested-var.d2,0:0:0-0:11:11",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-nested-var.d2,0:0:0-0:11:11",
+                    "value": [
+                      {
+                        "string": "development",
+                        "raw_string": "development"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/import-nested-var.d2,0:13:13-2:1:41",
+                "nodes": [
+                  {
+                    "import": {
+                      "range": "d2/testdata/d2compiler/TestCompile/import-nested-var.d2,1:2:17-1:24:39",
+                      "spread": true,
+                      "pre": "",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/import-nested-var.d2,1:6:21-1:12:27",
+                            "value": [
+                              {
+                                "string": "models",
+                                "raw_string": "models"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/import-nested-var.d2,1:13:28-1:24:39",
+                            "value": [
+                              {
+                                "string": "environment",
+                                "raw_string": "environment"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "iconStyle": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "development",
+        "id_val": "development",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/import-nested-var.d2,0:0:0-0:11:11",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-nested-var.d2,0:0:0-0:11:11",
+                    "value": [
+                      {
+                        "string": "development",
+                        "raw_string": "development"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "development"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "iconStyle": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "k",
+        "id_val": "k",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/models.d2,8:2:56-8:3:57",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/models.d2,8:2:56-8:3:57",
+                    "value": [
+                      {
+                        "string": "k",
+                        "raw_string": "k"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "k"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "iconStyle": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}
