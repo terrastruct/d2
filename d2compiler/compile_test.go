@@ -1715,6 +1715,29 @@ steps: {
 			},
 		},
 		{
+			name: "import-nested-var",
+
+			text: `...@models.environment
+`,
+			files: map[string]string{
+				"models.d2": `
+vars: {
+  c: {
+    k
+  }
+}
+
+environment: {
+  ...${c}
+}
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 1, len(g.Objects))
+				assert.Equal(t, "k", g.Objects[0].AbsID())
+			},
+		},
+		{
 			name: "import-connections",
 
 			text: `b.c -> b.d
