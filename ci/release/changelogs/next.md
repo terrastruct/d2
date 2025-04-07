@@ -17,6 +17,7 @@
     - Support `validate` command. [#2415](https://github.com/terrastruct/d2/pull/2415)
     - Watch mode ignores backup files (e.g. files created by certain editors like Helix). [#2131](https://github.com/terrastruct/d2/issues/2131)
     - Support for `--omit-version` flag. [#2377](https://github.com/terrastruct/d2/issues/2377)
+    - Casing is ignored for plugin names [#2486](https://github.com/terrastruct/d2/pull/2486)
 - Compiler:
     - `link`s can be set to root path, e.g. `/xyz`. [#2357](https://github.com/terrastruct/d2/issues/2357)
     - When importing a file, attempt resolving substitutions at the imported file scope first [#2482](https://github.com/terrastruct/d2/pull/2482)
