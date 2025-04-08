@@ -24,9 +24,15 @@ func (o *ThemableSketchOverlay) Render() (string, error) {
 	if color.IsThemeColor(o.fill) {
 		o.el.ClassName += fmt.Sprintf(" sketch-overlay-%s", o.fill) // e.g. sketch-overlay-B3
 	} else {
-		lc, err := color.LuminanceCategory(o.fill)
-		if err != nil {
-			return "", err
+		var lc string
+		if color.IsUrlGradientId(o.fill) {
+			lc = "normal"
+		} else {
+			var err error
+			lc, err = color.LuminanceCategory(o.fill)
+			if err != nil {
+				return "", err
+			}
 		}
 		o.el.ClassName += fmt.Sprintf(" sketch-overlay-%s", lc) // e.g. sketch-overlay-dark
 	}

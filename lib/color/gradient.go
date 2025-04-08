@@ -246,3 +246,9 @@ var GradientRegex = regexp.MustCompile(`^(linear|radial)-gradient\((.+)\)$`)
 func IsGradient(color string) bool {
 	return GradientRegex.MatchString(color)
 }
+
+var UrlGradientId = regexp.MustCompile(`^url\('#grad-[a-f0-9]{40}'\)$`)
+
+func IsUrlGradientId(color string) bool {
+	return UrlGradientId.MatchString(color)
+}
