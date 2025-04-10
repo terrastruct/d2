@@ -3894,6 +3894,20 @@ svc_1.t2 -> b: do with B
 				tassert.Equal(t, "d2/testdata/d2compiler/TestCompile/meow.d2", g.Layers[0].Layers[0].AST.Range.Path)
 			},
 		},
+		{
+			name: "test-gradient-fill-values-in-sketch-mode",
+			text: `
+				vars: {
+					d2-config: {
+						sketch: true
+					}
+				}
+				x->y
+				x.style.fill: "linear-gradient(#000000, #ffffff)"
+				y.style.fill: "linear-gradient(#ffffff, #000000)"
+			`,
+			expErr: "",
+		},
 	}
 
 	for _, tc := range testCases {
