@@ -86,6 +86,9 @@ func darkenCSS(colorString string) (string, error) {
 }
 
 func LuminanceCategory(colorString string) (string, error) {
+	if IsURLGradientID(colorString) {
+		return "normal", nil
+	}
 	l, err := Luminance(colorString)
 	if err != nil {
 		return "", err

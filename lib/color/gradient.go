@@ -247,8 +247,8 @@ func IsGradient(color string) bool {
 	return GradientRegex.MatchString(color)
 }
 
-var UrlGradientId = regexp.MustCompile(`^url\('#grad-[a-f0-9]{40}'\)$`)
+var URLGradientID = regexp.MustCompile(`^url\('#grad-[a-f0-9]{40}'\)$`)
 
-func IsUrlGradientId(color string) bool {
-	return UrlGradientId.MatchString(color)
+func IsURLGradientID(color string) bool {
+	return URLGradientID.MatchString(color)
 }
