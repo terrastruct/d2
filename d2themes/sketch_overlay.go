@@ -30,5 +30,6 @@ func (o *ThemableSketchOverlay) Render() (string, error) {
 		}
 		o.el.ClassName += fmt.Sprintf(" sketch-overlay-%s", lc) // e.g. sketch-overlay-dark
 	}
+
 	return o.el.Render(), nil
 }
