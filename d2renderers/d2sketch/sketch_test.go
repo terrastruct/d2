@@ -1357,6 +1357,14 @@ item -> customer: is(Adult)
 customer -> item: true
 `,
 		},
+		{
+			name: "test-gradient-fill-values-in-sketch-mode",
+			script: `
+				x->y
+				x.style.fill: "linear-gradient(#000000,#ffffff)"
+				y.style.fill: "linear-gradient(#ffffff,#000000)"
+			`,
+		},
 	}
 	runa(t, tcs)
 }
