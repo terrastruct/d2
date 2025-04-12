@@ -1715,6 +1715,18 @@ steps: {
 			},
 		},
 		{
+			name: "composite-glob-filter",
+
+			text: `
+*: {
+  &shape: [a; b]
+}
+k
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/composite-glob-filter.d2:3:3: glob filters cannot be composites
+d2/testdata/d2compiler/TestCompile/composite-glob-filter.d2:3:3: glob filters cannot be composites`,
+		},
+		{
 			name: "import-nested-var",
 
 			text: `...@models.environment
