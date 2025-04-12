@@ -796,7 +796,7 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 		return false
 	}
 	if len(fa) == 0 {
-		if refctx.Key.Value.ScalarBox().Unbox().ScalarString() == "*" {
+		if refctx.Key.Value.ScalarBox().Unbox() != nil && refctx.Key.Value.ScalarBox().Unbox().ScalarString() == "*" {
 			return false
 		}
 		// The field/edge has no value for this filter
