@@ -36,6 +36,7 @@
   - fixes inconsistencies when objects were double quoted [#2390](https://github.com/terrastruct/d2/pull/2390)
   - fixes globs not applying to spread substitutions [#2426](https://github.com/terrastruct/d2/issues/2426)
   - fixes panic when classes were mixed with layers incorrectly [#2448](https://github.com/terrastruct/d2/pull/2448)
+  - fixes panic using glob ampersand filters with composite values [#2489](https://github.com/terrastruct/d2/pull/2489)
 - Formatter:
   - fixes substitutions in quotes surrounded by text [#2462](https://github.com/terrastruct/d2/pull/2462)
 - CLI: fetch and render remote images of mimetype octet-stream correctly [#2370](https://github.com/terrastruct/d2/pull/2370)
