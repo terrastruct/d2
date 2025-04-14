@@ -86,6 +86,11 @@ func darkenCSS(colorString string) (string, error) {
 }
 
 func LuminanceCategory(colorString string) (string, error) {
+	// check if colorString matches the `url('#grad-<sha1-hash>')` format
+	// which is used to refer to a <linearGradient> or <radialGradient> element.
+	if IsURLGradientID(colorString) {
+		return "normal", nil
+	}
 	l, err := Luminance(colorString)
 	if err != nil {
 		return "", err
