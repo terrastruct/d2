@@ -17,8 +17,10 @@
     - Support `validate` command. [#2415](https://github.com/terrastruct/d2/pull/2415)
     - Watch mode ignores backup files (e.g. files created by certain editors like Helix). [#2131](https://github.com/terrastruct/d2/issues/2131)
     - Support for `--omit-version` flag. [#2377](https://github.com/terrastruct/d2/issues/2377)
+    - Casing is ignored for plugin names [#2486](https://github.com/terrastruct/d2/pull/2486)
 - Compiler:
     - `link`s can be set to root path, e.g. `/xyz`. [#2357](https://github.com/terrastruct/d2/issues/2357)
+    - When importing a file, attempt resolving substitutions at the imported file scope first [#2482](https://github.com/terrastruct/d2/pull/2482)
 - Parser:
     - impose max key length. It's almost certainly a mistake if an ID gets too long, e.g. missing quotes [#2465](https://github.com/terrastruct/d2/pull/2465)
 - Render:
@@ -35,6 +37,7 @@
   - fixes globs not applying to spread substitutions [#2426](https://github.com/terrastruct/d2/issues/2426)
   - fixes panic when classes were mixed with layers incorrectly [#2448](https://github.com/terrastruct/d2/pull/2448)
   - fixes panic when gradient colors are used in sketch mode [#2481](https://github.com/terrastruct/d2/pull/2487)
+  - fixes panic using glob ampersand filters with composite values [#2489](https://github.com/terrastruct/d2/pull/2489)
 - Formatter:
   - fixes substitutions in quotes surrounded by text [#2462](https://github.com/terrastruct/d2/pull/2462)
 - CLI: fetch and render remote images of mimetype octet-stream correctly [#2370](https://github.com/terrastruct/d2/pull/2370)

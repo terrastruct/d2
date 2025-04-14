@@ -755,6 +755,13 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 			return false
 		}
 
+		secondPart := keyPath.Path[1].Unbox().ScalarString()
+		value := refctx.Key.Value.ScalarBox().Unbox().ScalarString()
+
+		if len(keyPath.Path) == 2 && c._ampersandPropertyFilter(secondPart, value, node, refctx.Key) {
+			return true
+		}
+
 		propKeyPath := &d2ast.KeyPath{
 			Path: keyPath.Path[1:],
 		}
@@ -789,7 +796,7 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 		return false
 	}
 	if len(fa) == 0 {
-		if refctx.Key.Value.ScalarBox().Unbox().ScalarString() == "*" {
+		if refctx.Key.Value.ScalarBox().Unbox() != nil && refctx.Key.Value.ScalarBox().Unbox().ScalarString() == "*" {
 			return false
 		}
 		// The field/edge has no value for this filter
@@ -840,53 +847,7 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 				},
 			}
 			return c._ampersandFilter(f, refctx)
-		case "leaf":
-			raw := refctx.Key.Value.ScalarBox().Unbox().ScalarString()
-			boolVal, err := strconv.ParseBool(raw)
-			if err != nil {
-				c.errorf(refctx.Key, `&leaf must be "true" or "false", got %q`, raw)
-				return false
-			}
 
-			f := refctx.ScopeMap.Parent().(*Field)
-			isLeaf := f.Map() == nil || !f.Map().IsContainer()
-			return isLeaf == boolVal
-		case "level":
-			raw := refctx.Key.Value.ScalarBox().Unbox().ScalarString()
-			levelVal, err := strconv.Atoi(raw)
-			if err != nil {
-				c.errorf(refctx.Key, `&level must be a non-negative integer, got %q`, raw)
-				return false
-			}
-			if levelVal < 0 {
-				c.errorf(refctx.Key, `&level must be a non-negative integer, got %d`, levelVal)
-				return false
-			}
-
-			f := refctx.ScopeMap.Parent().(*Field)
-			level := 0
-			parent := ParentField(f)
-			for parent != nil && parent.Name.ScalarString() != "root" && NodeBoardKind(parent) == "" {
-				level++
-				parent = ParentField(parent)
-			}
-			return level == levelVal
-		case "connected":
-			raw := refctx.Key.Value.ScalarBox().Unbox().ScalarString()
-			boolVal, err := strconv.ParseBool(raw)
-			if err != nil {
-				c.errorf(refctx.Key, `&connected must be "true" or "false", got %q`, raw)
-				return false
-			}
-			f := refctx.ScopeMap.Parent().(*Field)
-			isConnected := false
-			for _, r := range f.References {
-				if r.InEdge() {
-					isConnected = true
-					break
-				}
-			}
-			return isConnected == boolVal
 		case "label":
 			f := &Field{}
 			n := refctx.ScopeMap.Parent()
@@ -978,7 +939,10 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 
 			return dstPath == filterValue
 		default:
-			return false
+			f := refctx.ScopeMap.Parent().(*Field)
+			propName := refctx.Key.Key.Last().ScalarString()
+			value := refctx.Key.Value.ScalarBox().Unbox().ScalarString()
+			return c._ampersandPropertyFilter(propName, value, f, refctx.Key)
 		}
 	}
 	for _, f := range fa {
@@ -988,6 +952,70 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 		}
 	}
 	return true
+}
+
+// handles filters that are not based on fields
+func (c *compiler) _ampersandPropertyFilter(propName string, value string, node *Field, key *d2ast.Key) bool {
+	switch propName {
+	case "level":
+		levelVal, err := strconv.Atoi(value)
+		if err != nil {
+			c.errorf(key, `&level must be a non-negative integer, got %q`, value)
+			return false
+		}
+		if levelVal < 0 {
+			c.errorf(key, `&level must be a non-negative integer, got %d`, levelVal)
+			return false
+		}
+
+		level := 0
+		parent := ParentField(node)
+		for parent != nil && parent.Name.ScalarString() != "root" && NodeBoardKind(parent) == "" {
+			level++
+			parent = ParentField(parent)
+		}
+		return level == levelVal
+	case "leaf":
+		boolVal, err := strconv.ParseBool(value)
+		if err != nil {
+			c.errorf(key, `&leaf must be "true" or "false", got %q`, value)
+			return false
+		}
+		isLeaf := node.Map() == nil || !node.Map().IsContainer()
+		return isLeaf == boolVal
+	case "connected":
+		boolVal, err := strconv.ParseBool(value)
+		if err != nil {
+			c.errorf(key, `&connected must be "true" or "false", got %q`, value)
+			return false
+		}
+		isConnected := false
+		for _, r := range node.References {
+			if r.InEdge() {
+				isConnected = true
+				break
+			}
+		}
+		return isConnected == boolVal
+	case "label":
+		f := &Field{}
+		if node.Primary() == nil {
+			f.Primary_ = &Scalar{
+				Value: node.Name,
+			}
+		} else {
+			f.Primary_ = node.Primary()
+		}
+		propKey := &d2ast.Key{
+			Key:   key.Key,
+			Value: key.Value,
+		}
+		propRefCtx := &RefContext{
+			Key: propKey,
+		}
+		return c._ampersandFilter(f, propRefCtx)
+	}
+	return false
 }
 
 func (c *compiler) _ampersandFilter(f *Field, refctx *RefContext) bool {

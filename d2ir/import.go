@@ -111,6 +111,14 @@ func (c *compiler) __import(imp *d2ast.Import) (*Map, bool) {
 
 	c.compileMap(ir, ast, ast)
 
+	// We attempt to resolve variables in the imported file scope first
+	// But ignore errors, in case the variable is meant to be resolved at the
+	// importer
+	savedErrors := make([]d2ast.Error, len(c.err.Errors))
+	copy(savedErrors, c.err.Errors)
+	c.compileSubstitutions(ir, nil)
+	c.err.Errors = savedErrors
+
 	c.seenImports[impPath] = struct{}{}
 
 	return ir, true
