@@ -9,6 +9,8 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/mazznoer/csscolorparser"
 )
 
 type Gradient struct {
@@ -241,10 +243,15 @@ func UniqueGradientID(cssGradient string) string {
 	return "grad-" + hash
 }
 
-var GradientRegex = regexp.MustCompile(`^(linear|radial)-gradient\((.+)\)$`)
-
 func IsGradient(color string) bool {
-	return GradientRegex.MatchString(color)
+	gradient, err := ParseGradient(color)
+	for _, colorStop := range gradient.ColorStops {
+		_, err = csscolorparser.Parse(colorStop.Color)
+		if err != nil {
+			break
+		}
+	}
+	return err == nil
 }
 
 var URLGradientID = regexp.MustCompile(`^url\('#grad-[a-f0-9]{40}'\)$`)

@@ -3929,6 +3929,14 @@ svc_1.t2 -> b: do with B
 				tassert.Equal(t, "d2/testdata/d2compiler/TestCompile/meow.d2", g.Layers[0].Layers[0].AST.Range.Path)
 			},
 		},
+		{
+			name: "invalid_gradient_color_stop",
+			text: `
+				x
+				x.style.fill: "linear-gradient(#ggg, #000)"
+			`,
+			expErr: `d2/testdata/d2compiler/TestCompile/invalid_gradient_color_stop.d2:3:19: expected "fill" to be a valid named color ("orange"), a hex code ("#f0ff3a"), or a gradient ("linear-gradient(red, blue)")`,
+		},
 	}
 
 	for _, tc := range testCases {
