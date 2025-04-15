@@ -1069,9 +1069,10 @@ func renderDoubleOval(tl *geo.Point, width, height float64, fill, fillStroke, st
 	return renderOval(tl, width, height, fill, fillStroke, stroke, style, inlineTheme) + renderOval(innerTL, width-10, height-10, fill, "", stroke, style, inlineTheme)
 }
 
-func defineGradients(writer io.Writer, cssGradient string) {
-	gradient, _ := color.ParseGradient(cssGradient)
+func defineGradients(writer io.Writer, cssGradient string) error {
+	gradient, err := color.ParseGradient(cssGradient)
 	fmt.Fprint(writer, fmt.Sprintf(`<defs>%s</defs>`, color.GradientToSVG(gradient)))
+	return err
 }
 
 func defineShadowFilter(writer io.Writer) {
@@ -2278,28 +2279,42 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	}
 
 	if color.IsGradient(diagram.Root.Fill) {
-		defineGradients(buf, diagram.Root.Fill)
+		if err := defineGradients(buf, diagram.Root.Fill); err != nil {
+			return nil, err
+		}
 	}
 	if color.IsGradient(diagram.Root.Stroke) {
-		defineGradients(buf, diagram.Root.Stroke)
+		if err := defineGradients(buf, diagram.Root.Stroke); err != nil {
+			return nil, err
+		}
 	}
 	for _, s := range diagram.Shapes {
 		if color.IsGradient(s.Fill) {
-			defineGradients(buf, s.Fill)
+			if err := defineGradients(buf, s.Fill); err != nil {
+				return nil, err
+			}
 		}
 		if color.IsGradient(s.Stroke) {
-			defineGradients(buf, s.Stroke)
+			if err := defineGradients(buf, s.Stroke); err != nil {
+				return nil, err
+			}
 		}
 		if color.IsGradient(s.Color) {
-			defineGradients(buf, s.Color)
+			if err := defineGradients(buf, s.Color); err != nil {
+				return nil, err
+			}
 		}
 	}
 	for _, c := range diagram.Connections {
 		if color.IsGradient(c.Stroke) {
-			defineGradients(buf, c.Stroke)
+			if err := defineGradients(buf, c.Stroke); err != nil {
+				return nil, err
+			}
 		}
 		if color.IsGradient(c.Fill) {
-			defineGradients(buf, c.Fill)
+			if err := defineGradients(buf, c.Fill); err != nil {
+				return nil, err
+			}
 		}
 	}
 

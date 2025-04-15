@@ -9,6 +9,8 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/mazznoer/csscolorparser"
 )
 
 type Gradient struct {
@@ -46,23 +48,26 @@ func ParseGradient(cssGradient string) (Gradient, error) {
 	}
 
 	firstParam := strings.TrimSpace(paramList[0])
-
+	var err error
 	if gradient.Type == "linear" && (strings.HasSuffix(firstParam, "deg") || strings.HasPrefix(firstParam, "to ")) {
 		gradient.Direction = firstParam
 		colorStops := paramList[1:]
 		if len(colorStops) == 0 {
 			return Gradient{}, errors.New("no color stops in gradient")
 		}
-		gradient.ColorStops = parseColorStops(colorStops)
+		gradient.ColorStops, err = parseColorStops(colorStops)
 	} else if gradient.Type == "radial" && (firstParam == "circle" || firstParam == "ellipse") {
 		gradient.Direction = firstParam
 		colorStops := paramList[1:]
 		if len(colorStops) == 0 {
 			return Gradient{}, errors.New("no color stops in gradient")
 		}
-		gradient.ColorStops = parseColorStops(colorStops)
+		gradient.ColorStops, err = parseColorStops(colorStops)
 	} else {
-		gradient.ColorStops = parseColorStops(paramList)
+		gradient.ColorStops, err = parseColorStops(paramList)
+	}
+	if err != nil {
+		return Gradient{}, err
 	}
 	gradient.ID = UniqueGradientID(cssGradient)
 
@@ -97,12 +102,14 @@ func splitParams(params string) []string {
 	return parts
 }
 
-func parseColorStops(params []string) []ColorStop {
+func parseColorStops(params []string) ([]ColorStop, error) {
 	var colorStops []ColorStop
 	for _, p := range params {
 		p = strings.TrimSpace(p)
 		parts := strings.Fields(p)
-
+		if _, err := csscolorparser.Parse(parts[0]); err != nil {
+			return nil, fmt.Errorf("%s is not a valid color format", parts[0])
+		}
 		switch len(parts) {
 		case 1:
 			colorStops = append(colorStops, ColorStop{Color: parts[0]})
@@ -112,7 +119,7 @@ func parseColorStops(params []string) []ColorStop {
 			continue
 		}
 	}
-	return colorStops
+	return colorStops, nil
 }
 
 func GradientToSVG(gradient Gradient) string {
