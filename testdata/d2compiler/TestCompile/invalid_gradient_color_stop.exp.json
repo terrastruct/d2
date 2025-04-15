@@ -1,0 +1,11 @@
+{
+  "graph": null,
+  "err": {
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/invalid_gradient_color_stop.d2,2:18:25-2:47:54",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/invalid_gradient_color_stop.d2:3:19: expected \"fill\" to be a valid named color (\"orange\"), a hex code (\"#f0ff3a\"), or a gradient (\"linear-gradient(red, blue)\")"
+      }
+    ]
+  }
+}
