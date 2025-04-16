@@ -1727,6 +1727,33 @@ k
 d2/testdata/d2compiler/TestCompile/composite-glob-filter.d2:3:3: glob filters cannot be composites`,
 		},
 		{
+			name: "imported-glob-leaf-filter",
+
+			text: `
+***: {
+  &leaf: true
+  style: {
+    font-size: 30
+  }
+}
+a: {
+	...@x
+}
+`,
+			files: map[string]string{
+				"x.d2": `
+b
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 2, len(g.Objects))
+				assert.Equal(t, "b", g.Objects[0].Label.Value)
+				assert.Equal(t, "a", g.Objects[1].Label.Value)
+				assert.Equal(t, "30", g.Objects[0].Style.FontSize.Value)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[1].Style.FontSize)
+			},
+		},
+		{
 			name: "import-nested-var",
 
 			text: `...@models.environment

@@ -705,7 +705,7 @@ func (m *Map) FieldCountRecursive() int {
 	return acc
 }
 
-func (m *Map) IsContainer() bool {
+func (c *compiler) IsContainer(m *Map) bool {
 	if m == nil {
 		return false
 	}
@@ -714,6 +714,20 @@ func (m *Map) IsContainer() bool {
 	for _, ref := range f.References {
 		if ref.Primary() && ref.Context_.Key != nil && ref.Context_.Key.Value.Map != nil {
 			for _, n := range ref.Context_.Key.Value.Map.Nodes {
+				if n.MapKey == nil {
+					if n.Import != nil {
+						impn, ok := c.peekImport(n.Import)
+						if ok {
+							for _, f := range impn.Fields {
+								_, isReserved := d2ast.ReservedKeywords[f.Name.ScalarString()]
+								if !(isReserved && f.Name.IsUnquoted()) {
+									return true
+								}
+							}
+						}
+					}
+					continue
+				}
 				if len(n.MapKey.Edges) > 0 {
 					return true
 				}
@@ -1333,7 +1347,7 @@ func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, gctx *globContext, c *
 
 			if refctx.Edge.Src.HasMultiGlob() {
 				// If src has a double glob we only select leafs, those without children.
-				if src.Map().IsContainer() {
+				if c.IsContainer(src.Map()) {
 					continue
 				}
 				if NodeBoardKind(src) != "" || ParentBoard(src) != ParentBoard(dst) {
@@ -1342,7 +1356,7 @@ func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, gctx *globContext, c *
 			}
 			if refctx.Edge.Dst.HasMultiGlob() {
 				// If dst has a double glob we only select leafs, those without children.
-				if dst.Map().IsContainer() {
+				if c.IsContainer(dst.Map()) {
 					continue
 				}
 				if NodeBoardKind(dst) != "" || ParentBoard(src) != ParentBoard(dst) {
