@@ -981,7 +981,7 @@ func (c *compiler) _ampersandPropertyFilter(propName string, value string, node 
 			c.errorf(key, `&leaf must be "true" or "false", got %q`, value)
 			return false
 		}
-		isLeaf := node.Map() == nil || !node.Map().IsContainer()
+		isLeaf := node.Map() == nil || !c.IsContainer(node.Map())
 		return isLeaf == boolVal
 	case "connected":
 		boolVal, err := strconv.ParseBool(value)

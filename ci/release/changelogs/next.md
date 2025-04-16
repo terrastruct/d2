@@ -38,6 +38,7 @@
   - fixes panic when classes were mixed with layers incorrectly [#2448](https://github.com/terrastruct/d2/pull/2448)
   - fixes panic when gradient colors are used in sketch mode [#2481](https://github.com/terrastruct/d2/pull/2487)
   - fixes panic using glob ampersand filters with composite values [#2489](https://github.com/terrastruct/d2/pull/2489)
+  - fixes leaf ampersand filter when used with imports [#2494](https://github.com/terrastruct/d2/pull/2494)
 - Formatter:
   - fixes substitutions in quotes surrounded by text [#2462](https://github.com/terrastruct/d2/pull/2462)
 - CLI: fetch and render remote images of mimetype octet-stream correctly [#2370](https://github.com/terrastruct/d2/pull/2370)
