@@ -512,19 +512,18 @@ var NamedColors = []string{
 var ColorHexRegex = regexp.MustCompile(`^#(([0-9a-fA-F]{2}){3}|([0-9a-fA-F]){3})$`)
 
 func ValidColor(color string) bool {
-
 	if IsGradient(color) {
 		gradient, err := ParseGradient(color)
+		if err != nil {
+			return false
+		}
 		for _, colorStop := range gradient.ColorStops {
 			_, err = csscolorparser.Parse(colorStop.Color)
 			if err != nil {
-				break
+				return false
 			}
 		}
-		return err == nil
-	}
-
-	if !go2.Contains(NamedColors, strings.ToLower(color)) && !ColorHexRegex.MatchString(color) {
+	} else if !go2.Contains(NamedColors, strings.ToLower(color)) && !ColorHexRegex.MatchString(color) {
 		return false
 	}
 
