@@ -2777,6 +2777,40 @@ scenarios: {
 }
 `,
 		},
+		{
+			name: "set-style-in-layer",
+			text: `hey
+
+layers: {
+  k: {
+    b: {style.stroke: "#969db4"}
+  }
+}
+
+layers: {
+  x: {
+    y
+  }
+}
+`,
+			boardPath: []string{"x"},
+			key:       `y.style.fill`,
+			value:     go2.Pointer(`#ff0000`),
+			exp: `hey
+
+layers: {
+  k: {
+    b: {style.stroke: "#969db4"}
+  }
+}
+
+layers: {
+  x: {
+    y: {style.fill: "#ff0000"}
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
