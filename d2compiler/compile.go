@@ -208,55 +208,48 @@ func findFieldAST(ast *d2ast.Map, f *d2ir.Field) *d2ast.Map {
 		curr = d2ir.ParentField(curr)
 	}
 
-	currAST := ast
-	for len(path) > 0 {
-		head := path[0]
-		found := false
-		for _, n := range currAST.Nodes {
-			if n.MapKey == nil {
-				continue
-			}
-			if n.MapKey.Key == nil {
-				continue
-			}
-			if len(n.MapKey.Key.Path) != 1 {
-				continue
-			}
-			head2 := n.MapKey.Key.Path[0].Unbox().ScalarString()
-			if head == head2 {
-				currAST = n.MapKey.Value.Map
-				// The BaseAST is only used for making edits to the AST (through d2oracle)
-				// If there's no Map for a given board, either it's an empty layer or set to an import
-				// Either way, in order to make edits, it needs to be expanded into a Map to add lines to
-				if currAST == nil {
-					n.MapKey.Value.Map = &d2ast.Map{
-						Range: d2ast.MakeRange(",1:0:0-1:0:0"),
-					}
-					if n.MapKey.Value.Import != nil {
-						imp := &d2ast.Import{
-							Range:  d2ast.MakeRange(",1:0:0-1:0:0"),
-							Spread: true,
-							Pre:    n.MapKey.Value.Import.Pre,
-							Path:   n.MapKey.Value.Import.Path,
-						}
-						n.MapKey.Value.Map.Nodes = append(n.MapKey.Value.Map.Nodes, d2ast.MapNodeBox{
-							Import: imp,
-						})
+	return _findFieldAST(ast, path)
+}
 
-					}
-					currAST = n.MapKey.Value.Map
-				}
-				found = true
-				break
-			}
-		}
-		if !found {
-			return nil
-		}
-		path = path[1:]
+func _findFieldAST(ast *d2ast.Map, path []string) *d2ast.Map {
+	if len(path) == 0 {
+		return ast
 	}
 
-	return currAST
+	head := path[0]
+	remainingPath := path[1:]
+
+	for i := range ast.Nodes {
+		if ast.Nodes[i].MapKey == nil || ast.Nodes[i].MapKey.Key == nil || len(ast.Nodes[i].MapKey.Key.Path) != 1 {
+			continue
+		}
+
+		head2 := ast.Nodes[i].MapKey.Key.Path[0].Unbox().ScalarString()
+		if head == head2 {
+			if ast.Nodes[i].MapKey.Value.Map == nil {
+				ast.Nodes[i].MapKey.Value.Map = &d2ast.Map{
+					Range: d2ast.MakeRange(",1:0:0-1:0:0"),
+				}
+				if ast.Nodes[i].MapKey.Value.Import != nil {
+					imp := &d2ast.Import{
+						Range:  d2ast.MakeRange(",1:0:0-1:0:0"),
+						Spread: true,
+						Pre:    ast.Nodes[i].MapKey.Value.Import.Pre,
+						Path:   ast.Nodes[i].MapKey.Value.Import.Path,
+					}
+					ast.Nodes[i].MapKey.Value.Map.Nodes = append(ast.Nodes[i].MapKey.Value.Map.Nodes, d2ast.MapNodeBox{
+						Import: imp,
+					})
+				}
+			}
+
+			if result := _findFieldAST(ast.Nodes[i].MapKey.Value.Map, remainingPath); result != nil {
+				return result
+			}
+		}
+	}
+
+	return nil
 }
 
 type compiler struct {

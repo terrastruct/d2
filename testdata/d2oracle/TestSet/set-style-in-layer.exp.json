@@ -1,0 +1,726 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,0:0:0-13:0:116",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,0:0:0-0:3:3",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,0:0:0-0:3:3",
+                    "value": [
+                      {
+                        "string": "hey",
+                        "raw_string": "hey"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,2:0:5-6:1:60",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,2:0:5-2:6:11",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,2:0:5-2:6:11",
+                    "value": [
+                      {
+                        "string": "layers",
+                        "raw_string": "layers"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,2:8:13-6:1:60",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,3:2:17-5:3:58",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,3:2:17-3:3:18",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,3:2:17-3:3:18",
+                              "value": [
+                                {
+                                  "string": "k",
+                                  "raw_string": "k"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,3:5:20-5:3:58",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,4:4:26-4:32:54",
+                                "key": {
+                                  "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,4:4:26-4:5:27",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,4:4:26-4:5:27",
+                                        "value": [
+                                          {
+                                            "string": "b",
+                                            "raw_string": "b"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "map": {
+                                    "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,4:7:29-4:32:54",
+                                    "nodes": [
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,4:8:30-4:31:53",
+                                          "key": {
+                                            "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,4:8:30-4:20:42",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,4:8:30-4:13:35",
+                                                  "value": [
+                                                    {
+                                                      "string": "style",
+                                                      "raw_string": "style"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,4:14:36-4:20:42",
+                                                  "value": [
+                                                    {
+                                                      "string": "stroke",
+                                                      "raw_string": "stroke"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "double_quoted_string": {
+                                              "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,4:22:44-4:31:53",
+                                              "value": [
+                                                {
+                                                  "string": "#969db4",
+                                                  "raw_string": "#969db4"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,8:0:62-12:1:115",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,8:0:62-8:6:68",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,8:0:62-8:6:68",
+                    "value": [
+                      {
+                        "string": "layers",
+                        "raw_string": "layers"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,8:8:70-12:1:115",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,9:2:74-11:3:113",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,9:2:74-9:3:75",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,9:2:74-9:3:75",
+                              "value": [
+                                {
+                                  "string": "x",
+                                  "raw_string": "x"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,9:5:77-11:3:113",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,10:4:83-10:30:109",
+                                "key": {
+                                  "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,10:4:83-10:5:84",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,10:4:83-10:5:84",
+                                        "value": [
+                                          {
+                                            "string": "y",
+                                            "raw_string": "y"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "map": {
+                                    "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,10:7:86-10:30:109",
+                                    "nodes": [
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,10:8:87-10:29:108",
+                                          "key": {
+                                            "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,10:8:87-10:18:97",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,10:8:87-10:13:92",
+                                                  "value": [
+                                                    {
+                                                      "string": "style",
+                                                      "raw_string": "style"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,10:14:93-10:18:97",
+                                                  "value": [
+                                                    {
+                                                      "string": "fill",
+                                                      "raw_string": "fill"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "double_quoted_string": {
+                                              "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,10:20:99-10:29:108",
+                                              "value": [
+                                                {
+                                                  "string": "#ff0000",
+                                                  "raw_string": "#ff0000"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "iconStyle": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "hey",
+        "id_val": "hey",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,0:0:0-0:3:3",
+                    "value": [
+                      {
+                        "string": "hey",
+                        "raw_string": "hey"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "hey"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "iconStyle": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ],
+    "layers": [
+      {
+        "name": "k",
+        "isFolderOnly": false,
+        "ast": {
+          "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,0:0:0-1:0:0",
+          "nodes": [
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,4:4:26-4:5:27",
+                        "value": [
+                          {
+                            "string": "b",
+                            "raw_string": "b"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {
+                  "map": {
+                    "range": ",1:0:0-2:0:0",
+                    "nodes": [
+                      {
+                        "map_key": {
+                          "range": ",0:0:0-0:0:0",
+                          "key": {
+                            "range": ",0:0:0-0:0:0",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,4:8:30-4:13:35",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": ",1:0:0-2:0:0",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": ",0:0:0-0:0:0",
+                                    "key": {
+                                      "range": ",0:0:0-0:0:0",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,4:14:36-4:20:42",
+                                            "value": [
+                                              {
+                                                "string": "stroke",
+                                                "raw_string": "stroke"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {
+                                      "double_quoted_string": {
+                                        "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,4:22:44-4:31:53",
+                                        "value": [
+                                          {
+                                            "string": "#969db4",
+                                            "raw_string": "#969db4"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "value": {}
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "attributes": {
+            "label": {
+              "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "style": {},
+            "iconStyle": {},
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": null
+          },
+          "zIndex": 0
+        },
+        "edges": null,
+        "objects": [
+          {
+            "id": "b",
+            "id_val": "b",
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,4:4:26-4:5:27",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,4:4:26-4:5:27",
+                        "value": [
+                          {
+                            "string": "b",
+                            "raw_string": "b"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "b"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {
+                "stroke": {
+                  "value": "#969db4"
+                }
+              },
+              "iconStyle": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          }
+        ]
+      },
+      {
+        "name": "x",
+        "isFolderOnly": false,
+        "ast": {
+          "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,0:0:0-1:0:0",
+          "nodes": [
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,10:4:83-10:5:84",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {
+                  "map": {
+                    "range": ",1:0:0-2:0:0",
+                    "nodes": [
+                      {
+                        "map_key": {
+                          "range": ",0:0:0-0:0:0",
+                          "key": {
+                            "range": ",0:0:0-0:0:0",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,10:8:87-10:13:92",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": ",1:0:0-2:0:0",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": ",0:0:0-0:0:0",
+                                    "key": {
+                                      "range": ",0:0:0-0:0:0",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,10:14:93-10:18:97",
+                                            "value": [
+                                              {
+                                                "string": "fill",
+                                                "raw_string": "fill"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {
+                                      "double_quoted_string": {
+                                        "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,10:20:99-10:29:108",
+                                        "value": [
+                                          {
+                                            "string": "#ff0000",
+                                            "raw_string": "#ff0000"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "value": {}
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "attributes": {
+            "label": {
+              "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "style": {},
+            "iconStyle": {},
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": null
+          },
+          "zIndex": 0
+        },
+        "edges": null,
+        "objects": [
+          {
+            "id": "y",
+            "id_val": "y",
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,10:4:83-10:5:84",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestSet/set-style-in-layer.d2,10:4:83-10:5:84",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "y"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {
+                "fill": {
+                  "value": "#ff0000"
+                }
+              },
+              "iconStyle": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          }
+        ]
+      }
+    ]
+  },
+  "err": "<nil>"
+}
