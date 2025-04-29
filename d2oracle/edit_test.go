@@ -9776,6 +9776,56 @@ y
 z
 `,
 		},
+		{
+			name: "in_layer",
+			text: `x
+
+layers: {
+  y: {
+		z: @meow
+  }
+}
+`,
+			fsTexts: map[string]string{
+				"meow.d2": "k",
+				"woof.d2": "k",
+			},
+			path:    "meow",
+			newPath: go2.Pointer("woof"),
+			exp: `x
+
+layers: {
+  y: {
+    z: @woof
+  }
+}
+`,
+		},
+		{
+			name: "layer_import",
+			text: `x
+
+layers: {
+  y: {
+	  ...@meow
+  }
+}
+`,
+			fsTexts: map[string]string{
+				"meow.d2": "k",
+				"woof.d2": "k",
+			},
+			path:    "meow",
+			newPath: go2.Pointer("woof"),
+			exp: `x
+
+layers: {
+  y: {
+    ...@woof
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
