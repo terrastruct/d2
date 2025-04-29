@@ -9597,3 +9597,254 @@ scenarios: {
 		})
 	}
 }
+
+func TestUpdateImport(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		name      string
+		boardPath []string
+		text      string
+		fsTexts   map[string]string
+		path      string
+		newPath   *string
+
+		expErr     string
+		exp        string
+		assertions func(t *testing.T, g *d2graph.Graph)
+	}{
+		{
+			name: "remove_import",
+			text: `x: @meow
+y
+`,
+			fsTexts: map[string]string{
+				"meow.d2": "k",
+			},
+			path:    "meow",
+			newPath: nil,
+			exp: `x
+y
+`,
+		},
+		{
+			name: "remove_spread_import",
+			text: `x
+...@meow
+y`,
+			fsTexts: map[string]string{
+				"meow.d2": "k",
+			},
+			path:    "meow",
+			newPath: nil,
+			exp: `x
+
+y
+`,
+		},
+		{
+			name: "update_import",
+			text: `x: @meow
+y
+`,
+			fsTexts: map[string]string{
+				"meow.d2": "k",
+				"woof.d2": "k",
+			},
+			path:    "meow",
+			newPath: go2.Pointer("woof"),
+			exp: `x: @woof
+y
+`,
+		},
+		{
+			name: "update_import_with_dir",
+			text: `x: @foo/meow
+y
+`,
+			fsTexts: map[string]string{
+				"foo/meow.d2": "k",
+				"bar/woof.d2": "k",
+			},
+			path:    "foo/meow",
+			newPath: go2.Pointer("bar/woof"),
+			exp: `x: @bar/woof
+y
+`,
+		},
+		{
+			name: "update_spread_import",
+			text: `x
+...@meow
+y
+`,
+			fsTexts: map[string]string{
+				"meow.d2": "k",
+				"woof.d2": "k",
+			},
+			path:    "meow",
+			newPath: go2.Pointer("woof"),
+			exp: `x
+...@woof
+y
+`,
+		},
+		{
+			name: "no_matching_import",
+			text: `x: @cat
+y
+`,
+			fsTexts: map[string]string{
+				"cat.d2": "k",
+			},
+			path:    "meow",
+			newPath: go2.Pointer("woof"),
+			exp: `x: @cat
+y
+`,
+		},
+		{
+			name: "nested_import",
+			text: `container: {
+	x: @meow
+  y
+}
+`,
+			fsTexts: map[string]string{
+				"meow.d2": "k",
+				"woof.d2": "k",
+			},
+			path:    "meow",
+			newPath: go2.Pointer("woof"),
+			exp: `container: {
+  x: @woof
+  y
+}
+`,
+		},
+		{
+			name: "remove_nested_import",
+			text: `container: {
+	x: @meow
+  y
+}
+`,
+			fsTexts: map[string]string{
+				"meow.d2": "k",
+			},
+			path:    "meow",
+			newPath: nil,
+			exp: `container: {
+  x
+  y
+}
+`,
+		},
+		{
+			name: "multiple_imports",
+			text: `x: @meow
+y: @meow
+z
+`,
+			fsTexts: map[string]string{
+				"meow.d2": "k",
+				"woof.d2": "k",
+			},
+			path:    "meow",
+			newPath: go2.Pointer("woof"),
+			exp: `x: @woof
+y: @woof
+z
+`,
+		},
+		{
+			name: "mixed_imports",
+			text: `x: @meow
+y
+...@meow
+z
+`,
+			fsTexts: map[string]string{
+				"meow.d2": "k",
+				"woof.d2": "k",
+			},
+			path:    "meow",
+			newPath: go2.Pointer("woof"),
+			exp: `x: @woof
+y
+...@woof
+z
+`,
+		},
+		{
+			name: "in_layer",
+			text: `x
+
+layers: {
+  y: {
+		z: @meow
+  }
+}
+`,
+			fsTexts: map[string]string{
+				"meow.d2": "k",
+				"woof.d2": "k",
+			},
+			path:    "meow",
+			newPath: go2.Pointer("woof"),
+			exp: `x
+
+layers: {
+  y: {
+    z: @woof
+  }
+}
+`,
+		},
+		{
+			name: "layer_import",
+			text: `x
+
+layers: {
+  y: {
+	  ...@meow
+  }
+}
+`,
+			fsTexts: map[string]string{
+				"meow.d2": "k",
+				"woof.d2": "k",
+			},
+			path:    "meow",
+			newPath: go2.Pointer("woof"),
+			exp: `x
+
+layers: {
+  y: {
+    ...@woof
+  }
+}
+`,
+		},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			et := editTest{
+				text:    tc.text,
+				fsTexts: tc.fsTexts,
+				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
+					return d2oracle.UpdateImport(g, tc.boardPath, tc.path, tc.newPath)
+				},
+
+				exp:        tc.exp,
+				expErr:     tc.expErr,
+				assertions: tc.assertions,
+			}
+			et.run(t)
+		})
+	}
+}
