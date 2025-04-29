@@ -3324,3 +3324,106 @@ func filterReservedPath(path []*d2ast.StringBox) (filtered []*d2ast.StringBox) {
 	}
 	return
 }
+
+func UpdateImport(g *d2graph.Graph, boardPath []string, path string, newPath *string) (_ *d2graph.Graph, err error) {
+	if newPath == nil {
+		defer xdefer.Errorf(&err, "failed to remove import %#v", path)
+	} else {
+		defer xdefer.Errorf(&err, "failed to update import from %#v to %#v", path, *newPath)
+	}
+
+	boardG := g
+	baseAST := g.AST
+
+	if len(boardPath) > 0 {
+		// When compiling a nested board, we can read from boardG but only write to baseBoardG
+		boardG = GetBoardGraph(g, boardPath)
+		if boardG == nil {
+			return nil, fmt.Errorf("board %v not found", boardPath)
+		}
+		// TODO beter name
+		baseAST = boardG.BaseAST
+		if baseAST == nil {
+			return nil, fmt.Errorf("board %v cannot be modified through this file", boardPath)
+		}
+	}
+
+	_updateImport(boardG, baseAST, path, newPath)
+
+	if len(boardPath) > 0 {
+		replaced := ReplaceBoardNode(g.AST, baseAST, boardPath)
+		if !replaced {
+			return nil, fmt.Errorf("board %v AST not found", boardPath)
+		}
+	}
+
+	return recompile(g)
+}
+
+func _updateImport(g *d2graph.Graph, m *d2ast.Map, oldPath string, newPath *string) {
+	for i := 0; i < len(m.Nodes); i++ {
+		node := m.Nodes[i]
+
+		if node.Import != nil {
+			if node.Import.PathWithPre() == oldPath {
+				if newPath == nil {
+					if node.Import.Spread {
+						m.Nodes = append(m.Nodes[:i], m.Nodes[i+1:]...)
+						i--
+					} else {
+						node.Import = nil
+					}
+				} else {
+					updateImportPath(node.Import, *newPath)
+				}
+				continue
+			}
+		}
+
+		if node.MapKey != nil {
+			if node.MapKey.Value.Import != nil {
+				if node.MapKey.Value.Import.PathWithPre() == oldPath {
+					if newPath == nil {
+						if node.MapKey.Value.Import.Spread && node.MapKey.Value.Map == nil {
+							m.Nodes = append(m.Nodes[:i], m.Nodes[i+1:]...)
+							i--
+						} else {
+							node.MapKey.Value.Import = nil
+						}
+					} else {
+						updateImportPath(node.MapKey.Value.Import, *newPath)
+					}
+				}
+			}
+
+			primaryImport := node.MapKey.Primary.Unbox()
+			if primaryImport != nil {
+				value, ok := primaryImport.(d2ast.Value)
+				if ok {
+					importBox := d2ast.MakeValueBox(value)
+					if importBox.Import != nil && importBox.Import.PathWithPre() == oldPath {
+						if newPath == nil {
+							node.MapKey.Primary = d2ast.ScalarBox{}
+						} else {
+							updateImportPath(importBox.Import, *newPath)
+						}
+					}
+				}
+			}
+
+			if node.MapKey.Value.Map != nil {
+				_updateImport(g, node.MapKey.Value.Map, oldPath, newPath)
+			}
+		}
+	}
+}
+
+func updateImportPath(imp *d2ast.Import, newPath string) {
+	if len(imp.Path) > 0 {
+		imp.Path[0] = d2ast.MakeValueBox(d2ast.RawString(newPath, true)).StringBox()
+	} else {
+		imp.Path = []*d2ast.StringBox{
+			d2ast.MakeValueBox(d2ast.RawString(newPath, true)).StringBox(),
+		}
+	}
+}
