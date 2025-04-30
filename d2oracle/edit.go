@@ -3365,7 +3365,8 @@ func _updateImport(g *d2graph.Graph, m *d2ast.Map, oldPath string, newPath *stri
 		node := m.Nodes[i]
 
 		if node.Import != nil {
-			if node.Import.PathWithPre() == oldPath {
+			importPath := node.Import.PathWithPre()
+			if matchesImportPath(importPath, oldPath) {
 				if newPath == nil {
 					if node.Import.Spread {
 						m.Nodes = append(m.Nodes[:i], m.Nodes[i+1:]...)
@@ -3374,7 +3375,7 @@ func _updateImport(g *d2graph.Graph, m *d2ast.Map, oldPath string, newPath *stri
 						node.Import = nil
 					}
 				} else {
-					updateImportPath(node.Import, *newPath)
+					updateImportPath(node.Import, getNewImportPath(importPath, oldPath, *newPath))
 				}
 				continue
 			}
@@ -3382,7 +3383,8 @@ func _updateImport(g *d2graph.Graph, m *d2ast.Map, oldPath string, newPath *stri
 
 		if node.MapKey != nil {
 			if node.MapKey.Value.Import != nil {
-				if node.MapKey.Value.Import.PathWithPre() == oldPath {
+				importPath := node.MapKey.Value.Import.PathWithPre()
+				if matchesImportPath(importPath, oldPath) {
 					if newPath == nil {
 						if node.MapKey.Value.Import.Spread && node.MapKey.Value.Map == nil {
 							m.Nodes = append(m.Nodes[:i], m.Nodes[i+1:]...)
@@ -3391,7 +3393,7 @@ func _updateImport(g *d2graph.Graph, m *d2ast.Map, oldPath string, newPath *stri
 							node.MapKey.Value.Import = nil
 						}
 					} else {
-						updateImportPath(node.MapKey.Value.Import, *newPath)
+						updateImportPath(node.MapKey.Value.Import, getNewImportPath(importPath, oldPath, *newPath))
 					}
 				}
 			}
@@ -3401,11 +3403,14 @@ func _updateImport(g *d2graph.Graph, m *d2ast.Map, oldPath string, newPath *stri
 				value, ok := primaryImport.(d2ast.Value)
 				if ok {
 					importBox := d2ast.MakeValueBox(value)
-					if importBox.Import != nil && importBox.Import.PathWithPre() == oldPath {
-						if newPath == nil {
-							node.MapKey.Primary = d2ast.ScalarBox{}
-						} else {
-							updateImportPath(importBox.Import, *newPath)
+					if importBox.Import != nil {
+						importPath := importBox.Import.PathWithPre()
+						if matchesImportPath(importPath, oldPath) {
+							if newPath == nil {
+								node.MapKey.Primary = d2ast.ScalarBox{}
+							} else {
+								updateImportPath(importBox.Import, getNewImportPath(importPath, oldPath, *newPath))
+							}
 						}
 					}
 				}
@@ -3426,4 +3431,22 @@ func updateImportPath(imp *d2ast.Import, newPath string) {
 			d2ast.MakeValueBox(d2ast.RawString(newPath, true)).StringBox(),
 		}
 	}
+}
+
+func matchesImportPath(importPath, oldPath string) bool {
+	isDir := strings.HasSuffix(oldPath, "/")
+	if isDir {
+		return strings.HasPrefix(importPath, oldPath)
+	}
+	return importPath == oldPath
+}
+
+func getNewImportPath(importPath, oldPath, newPath string) string {
+	isOldDir := strings.HasSuffix(oldPath, "/")
+	isNewDir := strings.HasSuffix(newPath, "/")
+	if isOldDir && isNewDir {
+		relPath := importPath[len(oldPath):]
+		return newPath + relPath
+	}
+	return newPath
 }
