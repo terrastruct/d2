@@ -1,15 +1,19 @@
 #### Features 🚀
 
-- Icons: connections can include icons [#12](https://github.com/terrastruct/d2/issues/12)
-- Syntax: `suspend`/`unsuspend` to define models and instantiate them [#2394](https://github.com/terrastruct/d2/pull/2394)
+- Icons:
+  - connections can include icons [#12](https://github.com/terrastruct/d2/issues/12)
+- Syntax:
+  - `suspend`/`unsuspend` to define models and instantiate them [#2394](https://github.com/terrastruct/d2/pull/2394)
 - Globs:
   - support for filtering edges based on properties of endpoint nodes (e.g., `&src.style.fill: blue`) [#2395](https://github.com/terrastruct/d2/pull/2395)
   - `level` filter implemented [#2473](https://github.com/terrastruct/d2/pull/2473)
 - Render:
   - markdown, latex, and code can be used as object labels [#2204](https://github.com/terrastruct/d2/pull/2204)
   - `shape: c4-person` to render a person shape like what the C4 model prescribes [#2397](https://github.com/terrastruct/d2/pull/2397)
-- Icons: border-radius should work on icon [#2409](https://github.com/terrastruct/d2/issues/2409)
-- Diagram legends are implemented [#2416](https://github.com/terrastruct/d2/pull/2416)
+- Icons:
+  - border-radius should work on icon [#2409](https://github.com/terrastruct/d2/issues/2409)
+- Misc:
+  - Diagram legends are implemented [#2416](https://github.com/terrastruct/d2/pull/2416)
 
 #### Improvements 🧹
 
@@ -42,12 +46,13 @@
   - fixes leaf ampersand filter when used with imports [#2494](https://github.com/terrastruct/d2/pull/2494)
 - Formatter:
   - fixes substitutions in quotes surrounded by text [#2462](https://github.com/terrastruct/d2/pull/2462)
-- CLI: fetch and render remote images of mimetype octet-stream correctly [#2370](https://github.com/terrastruct/d2/pull/2370)
+- CLI:
+  - fetch and render remote images of mimetype octet-stream correctly [#2370](https://github.com/terrastruct/d2/pull/2370)
 - Composition:
     - spread importing scenarios/steps was not inheriting correctly [#2460](https://github.com/terrastruct/d2/pull/2460)
     - imported fields were not merging with current fields/edges [#2464](https://github.com/terrastruct/d2/pull/2464)
-- Markdown: fixes nested var substitutions not working [#2456](https://github.com/terrastruct/d2/pull/2456)
-- d2js: handle unicode characters [#2393](https://github.com/terrastruct/d2/pull/2393)
+- Markdown:
+  - fixes nested var substitutions not working [#2456](https://github.com/terrastruct/d2/pull/2456)
 
 ---
 
