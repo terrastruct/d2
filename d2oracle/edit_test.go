@@ -9826,6 +9826,61 @@ layers: {
 }
 `,
 		},
+		{
+			name: "update_directory_import",
+			text: `x: @foo/bar
+y: @foo/baz
+z
+`,
+			fsTexts: map[string]string{
+				"foo/bar.d2":  "k",
+				"foo/baz.d2":  "k",
+				"woof/bar.d2": "k",
+				"woof/baz.d2": "k",
+			},
+			path:    "foo/",
+			newPath: go2.Pointer("woof/"),
+			exp: `x: @woof/bar
+y: @woof/baz
+z
+`,
+		},
+		{
+			name: "remove_directory_import",
+			text: `x: @foo/bar
+y: @foo/baz
+z
+`,
+			fsTexts: map[string]string{
+				"foo/bar.d2": "k",
+				"foo/baz.d2": "k",
+			},
+			path:    "foo/",
+			newPath: nil,
+			exp: `x
+y
+z
+`,
+		},
+		{
+			name: "update_deep_directory_paths",
+			text: `x: @foo/bar/baz
+y: @foo/qux/quux
+z
+`,
+			fsTexts: map[string]string{
+				"foo/bar/baz.d2":   "k",
+				"foo/qux/quux.d2":  "k",
+				"woof/bar/baz.d2":  "k",
+				"woof/qux/quux.d2": "k",
+			},
+			path:    "foo/",
+			newPath: go2.Pointer("woof/"),
+			exp: `x: @woof/bar/baz
+y: @woof/qux/quux
+z
+`,
+		},
 	}
 
 	for _, tc := range testCases {
