@@ -9618,9 +9618,6 @@ func TestUpdateImport(t *testing.T) {
 			text: `x: @meow
 y
 `,
-			fsTexts: map[string]string{
-				"meow.d2": "k",
-			},
 			path:    "meow",
 			newPath: nil,
 			exp: `x
@@ -9632,9 +9629,6 @@ y
 			text: `x
 ...@meow
 y`,
-			fsTexts: map[string]string{
-				"meow.d2": "k",
-			},
 			path:    "meow",
 			newPath: nil,
 			exp: `x
@@ -9647,10 +9641,6 @@ y
 			text: `x: @meow
 y
 `,
-			fsTexts: map[string]string{
-				"meow.d2": "k",
-				"woof.d2": "k",
-			},
 			path:    "meow",
 			newPath: go2.Pointer("woof"),
 			exp: `x: @woof
@@ -9662,10 +9652,6 @@ y
 			text: `x: @foo/meow
 y
 `,
-			fsTexts: map[string]string{
-				"foo/meow.d2": "k",
-				"bar/woof.d2": "k",
-			},
 			path:    "foo/meow",
 			newPath: go2.Pointer("bar/woof"),
 			exp: `x: @bar/woof
@@ -9678,10 +9664,6 @@ y
 ...@meow
 y
 `,
-			fsTexts: map[string]string{
-				"meow.d2": "k",
-				"woof.d2": "k",
-			},
 			path:    "meow",
 			newPath: go2.Pointer("woof"),
 			exp: `x
@@ -9694,9 +9676,6 @@ y
 			text: `x: @cat
 y
 `,
-			fsTexts: map[string]string{
-				"cat.d2": "k",
-			},
 			path:    "meow",
 			newPath: go2.Pointer("woof"),
 			exp: `x: @cat
@@ -9710,10 +9689,6 @@ y
   y
 }
 `,
-			fsTexts: map[string]string{
-				"meow.d2": "k",
-				"woof.d2": "k",
-			},
 			path:    "meow",
 			newPath: go2.Pointer("woof"),
 			exp: `container: {
@@ -9729,9 +9704,6 @@ y
   y
 }
 `,
-			fsTexts: map[string]string{
-				"meow.d2": "k",
-			},
 			path:    "meow",
 			newPath: nil,
 			exp: `container: {
@@ -9746,10 +9718,6 @@ y
 y: @meow
 z
 `,
-			fsTexts: map[string]string{
-				"meow.d2": "k",
-				"woof.d2": "k",
-			},
 			path:    "meow",
 			newPath: go2.Pointer("woof"),
 			exp: `x: @woof
@@ -9764,10 +9732,6 @@ y
 ...@meow
 z
 `,
-			fsTexts: map[string]string{
-				"meow.d2": "k",
-				"woof.d2": "k",
-			},
 			path:    "meow",
 			newPath: go2.Pointer("woof"),
 			exp: `x: @woof
@@ -9786,10 +9750,6 @@ layers: {
   }
 }
 `,
-			fsTexts: map[string]string{
-				"meow.d2": "k",
-				"woof.d2": "k",
-			},
 			path:    "meow",
 			newPath: go2.Pointer("woof"),
 			exp: `x
@@ -9811,10 +9771,6 @@ layers: {
   }
 }
 `,
-			fsTexts: map[string]string{
-				"meow.d2": "k",
-				"woof.d2": "k",
-			},
 			path:    "meow",
 			newPath: go2.Pointer("woof"),
 			exp: `x
@@ -9832,12 +9788,6 @@ layers: {
 y: @foo/baz
 z
 `,
-			fsTexts: map[string]string{
-				"foo/bar.d2":  "k",
-				"foo/baz.d2":  "k",
-				"woof/bar.d2": "k",
-				"woof/baz.d2": "k",
-			},
 			path:    "foo/",
 			newPath: go2.Pointer("woof/"),
 			exp: `x: @woof/bar
@@ -9851,10 +9801,6 @@ z
 y: @foo/baz
 z
 `,
-			fsTexts: map[string]string{
-				"foo/bar.d2": "k",
-				"foo/baz.d2": "k",
-			},
 			path:    "foo/",
 			newPath: nil,
 			exp: `x
@@ -9868,12 +9814,6 @@ z
 y: @foo/qux/quux
 z
 `,
-			fsTexts: map[string]string{
-				"foo/bar/baz.d2":   "k",
-				"foo/qux/quux.d2":  "k",
-				"woof/bar/baz.d2":  "k",
-				"woof/qux/quux.d2": "k",
-			},
 			path:    "foo/",
 			newPath: go2.Pointer("woof/"),
 			exp: `x: @woof/bar/baz
@@ -9888,18 +9828,13 @@ z
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			et := editTest{
-				text:    tc.text,
-				fsTexts: tc.fsTexts,
-				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
-					return d2oracle.UpdateImport(g, tc.boardPath, tc.path, tc.newPath)
-				},
-
-				exp:        tc.exp,
-				expErr:     tc.expErr,
-				assertions: tc.assertions,
+			got, err := d2oracle.UpdateImport(tc.text, tc.path, tc.newPath)
+			if err != nil {
+				t.Fatal(err)
 			}
-			et.run(t)
+			if got != tc.exp {
+				t.Fatalf("tc.exp != newText:\n%s", got)
+			}
 		})
 	}
 }

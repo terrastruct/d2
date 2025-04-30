@@ -3325,42 +3325,24 @@ func filterReservedPath(path []*d2ast.StringBox) (filtered []*d2ast.StringBox) {
 	return
 }
 
-func UpdateImport(g *d2graph.Graph, boardPath []string, path string, newPath *string) (_ *d2graph.Graph, err error) {
+func UpdateImport(dsl, path string, newPath *string) (_ string, err error) {
 	if newPath == nil {
 		defer xdefer.Errorf(&err, "failed to remove import %#v", path)
 	} else {
 		defer xdefer.Errorf(&err, "failed to update import from %#v to %#v", path, *newPath)
 	}
 
-	boardG := g
-	baseAST := g.AST
-
-	if len(boardPath) > 0 {
-		// When compiling a nested board, we can read from boardG but only write to baseBoardG
-		boardG = GetBoardGraph(g, boardPath)
-		if boardG == nil {
-			return nil, fmt.Errorf("board %v not found", boardPath)
-		}
-		// TODO beter name
-		baseAST = boardG.BaseAST
-		if baseAST == nil {
-			return nil, fmt.Errorf("board %v cannot be modified through this file", boardPath)
-		}
+	ast, err := d2parser.Parse("", strings.NewReader(dsl), nil)
+	if err != nil {
+		return "", err
 	}
 
-	_updateImport(boardG, baseAST, path, newPath)
+	_updateImport(ast, path, newPath)
 
-	if len(boardPath) > 0 {
-		replaced := ReplaceBoardNode(g.AST, baseAST, boardPath)
-		if !replaced {
-			return nil, fmt.Errorf("board %v AST not found", boardPath)
-		}
-	}
-
-	return recompile(g)
+	return d2format.Format(ast), nil
 }
 
-func _updateImport(g *d2graph.Graph, m *d2ast.Map, oldPath string, newPath *string) {
+func _updateImport(m *d2ast.Map, oldPath string, newPath *string) {
 	for i := 0; i < len(m.Nodes); i++ {
 		node := m.Nodes[i]
 
@@ -3417,7 +3399,7 @@ func _updateImport(g *d2graph.Graph, m *d2ast.Map, oldPath string, newPath *stri
 			}
 
 			if node.MapKey.Value.Map != nil {
-				_updateImport(g, node.MapKey.Value.Map, oldPath, newPath)
+				_updateImport(node.MapKey.Value.Map, oldPath, newPath)
 			}
 		}
 	}
