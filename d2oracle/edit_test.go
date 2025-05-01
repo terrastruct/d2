@@ -9821,6 +9821,50 @@ y: @woof/qux/quux
 z
 `,
 		},
+		{
+			name: "update_relative_import-1",
+			text: `x: @../meow
+y
+`,
+			path:    "../meow",
+			newPath: go2.Pointer("../woof"),
+			exp: `x: @../woof
+y
+`,
+		},
+		{
+			name: "update_relative_import-2",
+			text: `x: @../meow
+y
+`,
+			path:    "../meow",
+			newPath: go2.Pointer("woof"),
+			exp: `x: @woof
+y
+`,
+		},
+		{
+			name: "update_relative_import-3",
+			text: `x: @../meow
+y
+`,
+			path:    "../meow",
+			newPath: go2.Pointer("../meow/woof"),
+			exp: `x: @../meow/woof
+y
+`,
+		},
+		{
+			name: "update_relative_import-4",
+			text: `x: @../meow
+y
+`,
+			path:    "../meow",
+			newPath: go2.Pointer("../g/woof"),
+			exp: `x: @../g/woof
+y
+`,
+		},
 	}
 
 	for _, tc := range testCases {

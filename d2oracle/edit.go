@@ -3406,11 +3406,35 @@ func _updateImport(m *d2ast.Map, oldPath string, newPath *string) {
 }
 
 func updateImportPath(imp *d2ast.Import, newPath string) {
-	if len(imp.Path) > 0 {
-		imp.Path[0] = d2ast.MakeValueBox(d2ast.RawString(newPath, true)).StringBox()
-	} else {
+	var pre string
+	pathPart := newPath
+
+	for i, r := range newPath {
+		if r != '.' && r != '/' {
+			pre = newPath[:i]
+			pathPart = newPath[i:]
+			break
+		}
+	}
+
+	if pre == "" && len(newPath) > 0 && (newPath[0] == '.' || newPath[0] == '/') {
+		pre = newPath
+		pathPart = ""
+	}
+
+	imp.Pre = pre
+
+	if pathPart != "" {
+		if len(imp.Path) > 0 {
+			imp.Path[0] = d2ast.MakeValueBox(d2ast.RawString(pathPart, true)).StringBox()
+		} else {
+			imp.Path = []*d2ast.StringBox{
+				d2ast.MakeValueBox(d2ast.RawString(pathPart, true)).StringBox(),
+			}
+		}
+	} else if len(imp.Path) == 0 {
 		imp.Path = []*d2ast.StringBox{
-			d2ast.MakeValueBox(d2ast.RawString(newPath, true)).StringBox(),
+			d2ast.MakeValueBox(d2ast.RawString("", true)).StringBox(),
 		}
 	}
 }
