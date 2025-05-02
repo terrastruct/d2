@@ -1,58 +1,8 @@
 #### Features 🚀
 
-- Icons:
-  - connections can include icons [#12](https://github.com/terrastruct/d2/issues/12)
-- Syntax:
-  - `suspend`/`unsuspend` to define models and instantiate them [#2394](https://github.com/terrastruct/d2/pull/2394)
-- Globs:
-  - support for filtering edges based on properties of endpoint nodes (e.g., `&src.style.fill: blue`) [#2395](https://github.com/terrastruct/d2/pull/2395)
-  - `level` filter implemented [#2473](https://github.com/terrastruct/d2/pull/2473)
-- Render:
-  - markdown, latex, and code can be used as object labels [#2204](https://github.com/terrastruct/d2/pull/2204)
-  - `shape: c4-person` to render a person shape like what the C4 model prescribes [#2397](https://github.com/terrastruct/d2/pull/2397)
-- Icons:
-  - border-radius should work on icon [#2409](https://github.com/terrastruct/d2/issues/2409)
-- Misc:
-  - Diagram legends are implemented [#2416](https://github.com/terrastruct/d2/pull/2416)
-
 #### Improvements 🧹
 
-- CLI:
-    - Support `validate` command. [#2415](https://github.com/terrastruct/d2/pull/2415)
-    - Watch mode ignores backup files (e.g. files created by certain editors like Helix). [#2131](https://github.com/terrastruct/d2/issues/2131)
-    - Support for `--omit-version` flag. [#2377](https://github.com/terrastruct/d2/issues/2377)
-    - Casing is ignored for plugin names [#2486](https://github.com/terrastruct/d2/pull/2486)
-- Compiler:
-    - `link`s can be set to root path, e.g. `/xyz`. [#2357](https://github.com/terrastruct/d2/issues/2357)
-    - When importing a file, attempt resolving substitutions at the imported file scope first [#2482](https://github.com/terrastruct/d2/pull/2482)
-    - validate gradient color stops. [#2492](https://github.com/terrastruct/d2/pull/2492)
-- Parser:
-    - impose max key length. It's almost certainly a mistake if an ID gets too long, e.g. missing quotes [#2465](https://github.com/terrastruct/d2/pull/2465)
-- Render:
-    - horizontal padding added for connection labels [#2461](https://github.com/terrastruct/d2/pull/2461)
-
 #### Bugfixes ⛑️
-
-- Compiler:
-  - fixes panic when `sql_shape` shape value had mixed casing [#2349](https://github.com/terrastruct/d2/pull/2349)
-  - fixes panic when importing from a file with spread substitutions in `vars` [#2427](https://github.com/terrastruct/d2/pull/2427)
-  - fixes support for `center` in `d2-config` [#2360](https://github.com/terrastruct/d2/pull/2360)
-  - fixes panic when comment lines appear in arrays [#2378](https://github.com/terrastruct/d2/pull/2378)
-  - fixes inconsistencies when objects were double quoted [#2390](https://github.com/terrastruct/d2/pull/2390)
-  - fixes globs not applying to spread substitutions [#2426](https://github.com/terrastruct/d2/issues/2426)
-  - fixes panic when classes were mixed with layers incorrectly [#2448](https://github.com/terrastruct/d2/pull/2448)
-  - fixes panic when gradient colors are used in sketch mode [#2481](https://github.com/terrastruct/d2/pull/2487)
-  - fixes panic using glob ampersand filters with composite values [#2489](https://github.com/terrastruct/d2/pull/2489)
-  - fixes leaf ampersand filter when used with imports [#2494](https://github.com/terrastruct/d2/pull/2494)
-- Formatter:
-  - fixes substitutions in quotes surrounded by text [#2462](https://github.com/terrastruct/d2/pull/2462)
-- CLI:
-  - fetch and render remote images of mimetype octet-stream correctly [#2370](https://github.com/terrastruct/d2/pull/2370)
-- Composition:
-    - spread importing scenarios/steps was not inheriting correctly [#2460](https://github.com/terrastruct/d2/pull/2460)
-    - imported fields were not merging with current fields/edges [#2464](https://github.com/terrastruct/d2/pull/2464)
-- Markdown:
-  - fixes nested var substitutions not working [#2456](https://github.com/terrastruct/d2/pull/2456)
 
 ---
 
