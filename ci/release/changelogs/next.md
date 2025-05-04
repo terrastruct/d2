@@ -10,6 +10,7 @@
   - `shape: c4-person` to render a person shape like what the C4 model prescribes [#2397](https://github.com/terrastruct/d2/pull/2397)
 - Icons: border-radius should work on icon [#2409](https://github.com/terrastruct/d2/issues/2409)
 - Diagram legends are implemented [#2416](https://github.com/terrastruct/d2/pull/2416)
+- Ability to fade background shape on multiple style [#2509](https://github.com/terrastruct/d2/pull/2509)
 
 #### Improvements 🧹
 
