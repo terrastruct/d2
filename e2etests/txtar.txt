@@ -1190,3 +1190,11 @@ customer4: |md
 | {
   shape: c4-person
 }
+
+-- multiple opacity --
+a: {
+  style: {
+    multiple: true
+    multiple.opacity: 0.5
+  }
+}

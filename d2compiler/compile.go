@@ -763,6 +763,14 @@ func (c *compiler) compileStyleField(styles *d2graph.Style, f *d2ir.Field) {
 		c.errorf(f.LastRef().AST(), `invalid style keyword: "%s"`, f.Name.ScalarString())
 		return
 	}
+	if f.Map() != nil {
+		fields := f.Map().Fields
+		for i := 0; i < len(fields); i++ {
+			field := fields[i]
+			field.Name.SetString(f.Name.ScalarString() + "." + field.Name.ScalarString())
+			c.compileStyleField(styles, field)
+		}
+	}
 	if f.Primary() == nil {
 		return
 	}
@@ -797,6 +805,8 @@ func compileStyleFieldInit(styles *d2graph.Style, f *d2ir.Field) {
 		styles.ThreeDee = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "multiple":
 		styles.Multiple = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+	case "multiple.opacity":
+		styles.MultipleOpacity = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "font":
 		styles.Font = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "font-size":

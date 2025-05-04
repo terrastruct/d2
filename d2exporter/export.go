@@ -172,6 +172,9 @@ func applyStyles(shape *d2target.Shape, obj *d2graph.Object) {
 	if obj.Style.Multiple != nil {
 		shape.Multiple, _ = strconv.ParseBool(obj.Style.Multiple.Value)
 	}
+	if obj.Style.MultipleOpacity != nil {
+		shape.MultipleOpacity, _ = strconv.ParseFloat(obj.Style.MultipleOpacity.Value, 64)
+	}
 	if obj.Style.BorderRadius != nil {
 		shape.BorderRadius, _ = strconv.Atoi(obj.Style.BorderRadius.Value)
 	}

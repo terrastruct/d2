@@ -1326,6 +1326,11 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		opacityStyle = fmt.Sprintf(" style='opacity:%f'", targetShape.Opacity)
 	}
 
+	multipleOpacityStyle := ""
+	if targetShape.MultipleOpacity != 1.0 {
+		multipleOpacityStyle = fmt.Sprintf(" opacity:%f", targetShape.MultipleOpacity)
+	}
+
 	// this clipPath must be defined outside `g` element
 	if targetShape.BorderRadius != 0 && (targetShape.Type == d2target.ShapeClass || targetShape.Type == d2target.ShapeSQLTable) {
 		fmt.Fprint(writer, clipPathForBorderRadius(diagramHash, targetShape))
@@ -1413,7 +1418,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	case d2target.ShapeOval:
 		if targetShape.DoubleBorder {
 			if targetShape.Multiple {
-				fmt.Fprint(writer, renderDoubleOval(multipleTL, width, height, fill, "", stroke, style, inlineTheme))
+				fmt.Fprint(writer, renderDoubleOval(multipleTL, width, height, fill, "", stroke, style+multipleOpacityStyle, inlineTheme))
 			}
 			if jsRunner != nil {
 				out, err := d2sketch.DoubleOval(jsRunner, targetShape)
@@ -1426,7 +1431,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			}
 		} else {
 			if targetShape.Multiple {
-				fmt.Fprint(writer, renderOval(multipleTL, width, height, fill, "", stroke, style, inlineTheme))
+				fmt.Fprint(writer, renderOval(multipleTL, width, height, fill, "", stroke, style+multipleOpacityStyle, inlineTheme))
 			}
 			if jsRunner != nil {
 				out, err := d2sketch.Oval(jsRunner, targetShape)
@@ -1472,7 +1477,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					el.Height = float64(targetShape.Height)
 					el.Fill = fill
 					el.Stroke = stroke
-					el.Style = style
+					el.Style = style + multipleOpacityStyle
 					el.Rx = borderRadius
 					fmt.Fprint(writer, el.Render())
 				}
@@ -1505,7 +1510,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					el.Fill = fill
 					el.FillPattern = targetShape.FillPattern
 					el.Stroke = stroke
-					el.Style = style
+					el.Style = style + multipleOpacityStyle
 					el.Rx = borderRadius
 					fmt.Fprint(writer, el.Render())
 
@@ -1561,7 +1566,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				el := d2themes.NewThemableElement("path", inlineTheme)
 				el.Fill = fill
 				el.Stroke = stroke
-				el.Style = style
+				el.Style = style + multipleOpacityStyle
 				for _, pathData := range multiplePathData {
 					el.D = pathData
 					fmt.Fprint(writer, el.Render())
@@ -1593,7 +1598,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			el := d2themes.NewThemableElement("path", inlineTheme)
 			el.Fill = fill
 			el.Stroke = stroke
-			el.Style = style
+			el.Style = style + multipleOpacityStyle
 			for _, pathData := range multiplePathData {
 				el.D = pathData
 				fmt.Fprint(writer, el.Render())
