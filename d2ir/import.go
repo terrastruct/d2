@@ -124,6 +124,53 @@ func (c *compiler) __import(imp *d2ast.Import) (*Map, bool) {
 	return ir, true
 }
 
+func (c *compiler) peekImport(imp *d2ast.Import) (*Map, bool) {
+	impPath := imp.PathWithPre()
+	if impPath == "" && imp.Range != (d2ast.Range{}) {
+		return nil, false
+	}
+
+	if len(c.importStack) > 0 {
+		if path.Ext(impPath) != ".d2" {
+			impPath += ".d2"
+		}
+
+		if !filepath.IsAbs(impPath) {
+			impPath = path.Join(path.Dir(c.importStack[len(c.importStack)-1]), impPath)
+		}
+	}
+
+	var f fs.File
+	var err error
+	if c.fs == nil {
+		f, err = os.Open(impPath)
+	} else {
+		f, err = c.fs.Open(impPath)
+	}
+	if err != nil {
+		return nil, false
+	}
+	defer f.Close()
+
+	// Use a separate parse error to avoid polluting the main one
+	localErr := &d2parser.ParseError{}
+	ast, err := d2parser.Parse(impPath, f, &d2parser.ParseOptions{
+		UTF16Pos:   c.utf16Pos,
+		ParseError: localErr,
+	})
+	if err != nil {
+		return nil, false
+	}
+
+	ir := &Map{}
+	ir.initRoot()
+	ir.parent.(*Field).References[0].Context_.Scope = ast
+
+	c.compileMap(ir, ast, ast)
+
+	return ir, true
+}
+
 func nilScopeMap(n Node) {
 	switch n := n.(type) {
 	case *Map:

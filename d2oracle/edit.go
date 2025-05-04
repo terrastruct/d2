@@ -3324,3 +3324,135 @@ func filterReservedPath(path []*d2ast.StringBox) (filtered []*d2ast.StringBox) {
 	}
 	return
 }
+
+func UpdateImport(dsl, path string, newPath *string) (_ string, err error) {
+	if newPath == nil {
+		defer xdefer.Errorf(&err, "failed to remove import %#v", path)
+	} else {
+		defer xdefer.Errorf(&err, "failed to update import from %#v to %#v", path, *newPath)
+	}
+
+	ast, err := d2parser.Parse("", strings.NewReader(dsl), nil)
+	if err != nil {
+		return "", err
+	}
+
+	_updateImport(ast, path, newPath)
+
+	return d2format.Format(ast), nil
+}
+
+func _updateImport(m *d2ast.Map, oldPath string, newPath *string) {
+	for i := 0; i < len(m.Nodes); i++ {
+		node := m.Nodes[i]
+
+		if node.Import != nil {
+			importPath := node.Import.PathWithPre()
+			if matchesImportPath(importPath, oldPath) {
+				if newPath == nil {
+					if node.Import.Spread {
+						m.Nodes = append(m.Nodes[:i], m.Nodes[i+1:]...)
+						i--
+					} else {
+						node.Import = nil
+					}
+				} else {
+					updateImportPath(node.Import, getNewImportPath(importPath, oldPath, *newPath))
+				}
+				continue
+			}
+		}
+
+		if node.MapKey != nil {
+			if node.MapKey.Value.Import != nil {
+				importPath := node.MapKey.Value.Import.PathWithPre()
+				if matchesImportPath(importPath, oldPath) {
+					if newPath == nil {
+						if node.MapKey.Value.Import.Spread && node.MapKey.Value.Map == nil {
+							m.Nodes = append(m.Nodes[:i], m.Nodes[i+1:]...)
+							i--
+						} else {
+							node.MapKey.Value.Import = nil
+						}
+					} else {
+						updateImportPath(node.MapKey.Value.Import, getNewImportPath(importPath, oldPath, *newPath))
+					}
+				}
+			}
+
+			primaryImport := node.MapKey.Primary.Unbox()
+			if primaryImport != nil {
+				value, ok := primaryImport.(d2ast.Value)
+				if ok {
+					importBox := d2ast.MakeValueBox(value)
+					if importBox.Import != nil {
+						importPath := importBox.Import.PathWithPre()
+						if matchesImportPath(importPath, oldPath) {
+							if newPath == nil {
+								node.MapKey.Primary = d2ast.ScalarBox{}
+							} else {
+								updateImportPath(importBox.Import, getNewImportPath(importPath, oldPath, *newPath))
+							}
+						}
+					}
+				}
+			}
+
+			if node.MapKey.Value.Map != nil {
+				_updateImport(node.MapKey.Value.Map, oldPath, newPath)
+			}
+		}
+	}
+}
+
+func updateImportPath(imp *d2ast.Import, newPath string) {
+	var pre string
+	pathPart := newPath
+
+	for i, r := range newPath {
+		if r != '.' && r != '/' {
+			pre = newPath[:i]
+			pathPart = newPath[i:]
+			break
+		}
+	}
+
+	if pre == "" && len(newPath) > 0 && (newPath[0] == '.' || newPath[0] == '/') {
+		pre = newPath
+		pathPart = ""
+	}
+
+	imp.Pre = pre
+
+	if pathPart != "" {
+		if len(imp.Path) > 0 {
+			imp.Path[0] = d2ast.MakeValueBox(d2ast.RawString(pathPart, true)).StringBox()
+		} else {
+			imp.Path = []*d2ast.StringBox{
+				d2ast.MakeValueBox(d2ast.RawString(pathPart, true)).StringBox(),
+			}
+		}
+	} else if len(imp.Path) == 0 {
+		imp.Path = []*d2ast.StringBox{
+			d2ast.MakeValueBox(d2ast.RawString("", true)).StringBox(),
+		}
+	}
+}
+
+func matchesImportPath(importPath, oldPath string) bool {
+	isDir := strings.HasSuffix(oldPath, "/")
+	if isDir {
+		return strings.HasPrefix(importPath, oldPath)
+	}
+	return importPath == oldPath
+}
+
+func getNewImportPath(importPath, oldPath, newPath string) string {
+	isOldDir := strings.HasSuffix(oldPath, "/")
+	isNewDir := strings.HasSuffix(newPath, "/")
+	if isOldDir && isNewDir {
+		relPath := importPath[len(oldPath):]
+		return newPath + relPath
+	}
+	return newPath
+}
