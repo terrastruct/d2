@@ -6006,6 +6006,32 @@ c
 			},
 		},
 		{
+			name: "glob-edge-filter",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+x -> y: {class: foo}
+a -> b
+
+
+(** -> **)[*]: {
+  &class: foo
+  source-arrowhead: 1
+  target-arrowhead: * {
+    shape: diamond
+  }
+}
+`, ``)
+				assert.Equal(t, 2, len(g.Edges))
+				assert.Equal(t, "(x -> y)[0]", g.Edges[0].AbsID())
+				assert.Equal(t, "(a -> b)[0]", g.Edges[1].AbsID())
+				assert.Equal(t, "1", g.Edges[0].SrcArrowhead.Label.Value)
+				assert.Equal(t, (*d2graph.Attributes)(nil), g.Edges[1].SrcArrowhead)
+				assert.Equal(t, "diamond", g.Edges[0].DstArrowhead.Shape.Value)
+				assert.Equal(t, "*", g.Edges[0].DstArrowhead.Label.Value)
+				assert.Equal(t, (*d2graph.Attributes)(nil), g.Edges[1].DstArrowhead)
+			},
+		},
+		{
 			name: "unsuspend-edge-filter",
 			run: func(t *testing.T) {
 				g, _ := assertCompile(t, `
