@@ -1,0 +1,459 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,0:0:0-9:2:128",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,0:0:0-8:1:125",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,0:0:0-0:8:8",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,0:0:0-0:8:8",
+                    "value": [
+                      {
+                        "string": "my_table",
+                        "raw_string": "my_table"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,0:10:10-8:1:125",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,1:2:14-1:18:30",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,1:2:14-1:7:19",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,1:2:14-1:7:19",
+                              "value": [
+                                {
+                                  "string": "shape",
+                                  "raw_string": "shape"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,1:9:21-1:18:30",
+                          "value": [
+                            {
+                              "string": "sql_table",
+                              "raw_string": "sql_table"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,2:2:33-2:12:43",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,2:2:33-2:7:38",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,2:2:33-2:7:38",
+                              "value": [
+                                {
+                                  "string": "width",
+                                  "raw_string": "width"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "number": {
+                          "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,2:9:40-2:12:43",
+                          "raw": "200",
+                          "value": "200"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,3:2:46-3:13:57",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,3:2:46-3:8:52",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,3:2:46-3:8:52",
+                              "value": [
+                                {
+                                  "string": "height",
+                                  "raw_string": "height"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "number": {
+                          "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,3:10:54-3:13:57",
+                          "raw": "200",
+                          "value": "200"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,4:2:60-4:17:75",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,4:2:60-4:9:67",
+                        "path": [
+                          {
+                            "double_quoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,4:2:60-4:9:67",
+                              "value": [
+                                {
+                                  "string": "shape",
+                                  "raw_string": "shape"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,4:11:69-4:17:75",
+                          "value": [
+                            {
+                              "string": "string",
+                              "raw_string": "string"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,5:2:78-5:16:92",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,5:2:78-5:8:84",
+                        "path": [
+                          {
+                            "double_quoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,5:2:78-5:8:84",
+                              "value": [
+                                {
+                                  "string": "icon",
+                                  "raw_string": "icon"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,5:10:86-5:16:92",
+                          "value": [
+                            {
+                              "string": "string",
+                              "raw_string": "string"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,6:2:95-6:14:107",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,6:2:95-6:9:102",
+                        "path": [
+                          {
+                            "double_quoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,6:2:95-6:9:102",
+                              "value": [
+                                {
+                                  "string": "width",
+                                  "raw_string": "width"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,6:11:104-6:14:107",
+                          "value": [
+                            {
+                              "string": "int",
+                              "raw_string": "int"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,7:2:110-7:15:123",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,7:2:110-7:10:118",
+                        "path": [
+                          {
+                            "double_quoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,7:2:110-7:10:118",
+                              "value": [
+                                {
+                                  "string": "height",
+                                  "raw_string": "height"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,7:12:120-7:15:123",
+                          "value": [
+                            {
+                              "string": "int",
+                              "raw_string": "int"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "iconStyle": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "my_table",
+        "id_val": "my_table",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,0:0:0-0:8:8",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/2.d2,0:0:0-0:8:8",
+                    "value": [
+                      {
+                        "string": "my_table",
+                        "raw_string": "my_table"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "sql_table": {
+          "columns": [
+            {
+              "name": {
+                "label": "shape",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "type": {
+                "label": "string",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "constraint": null,
+              "reference": ""
+            },
+            {
+              "name": {
+                "label": "icon",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "type": {
+                "label": "string",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "constraint": null,
+              "reference": ""
+            },
+            {
+              "name": {
+                "label": "width",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "type": {
+                "label": "int",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "constraint": null,
+              "reference": ""
+            },
+            {
+              "name": {
+                "label": "height",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "type": {
+                "label": "int",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "constraint": null,
+              "reference": ""
+            }
+          ]
+        },
+        "attributes": {
+          "label": {
+            "value": "my_table"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "iconStyle": {},
+          "width": {
+            "value": "200"
+          },
+          "height": {
+            "value": "200"
+          },
+          "near_key": null,
+          "shape": {
+            "value": "sql_table"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

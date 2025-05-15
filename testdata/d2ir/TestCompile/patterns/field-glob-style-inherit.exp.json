@@ -1,15 +1,39 @@
 {
   "fields": [
     {
-      "name": "x",
+      "name": {
+        "range": "TestCompile/patterns/field-glob-style-inherit.d2,1:0:19-1:1:20",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "opacity",
+                  "name": {
+                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                    "value": [
+                      {
+                        "string": "opacity",
+                        "raw_string": "opacity"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:17:41-2:18:42",
@@ -1166,23 +1190,63 @@
       ]
     },
     {
-      "name": "scenarios",
+      "name": {
+        "range": "TestCompile/patterns/field-glob-style-inherit.d2,5:0:46-5:9:55",
+        "value": [
+          {
+            "string": "scenarios",
+            "raw_string": "scenarios"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "1",
+            "name": {
+              "range": "TestCompile/patterns/field-glob-style-inherit.d2,6:2:61-6:3:62",
+              "value": [
+                {
+                  "string": "1",
+                  "raw_string": "1"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "x",
+                  "name": {
+                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,1:0:19-1:1:20",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "style",
+                        "name": {
+                          "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                          "value": [
+                            {
+                              "string": "style",
+                              "raw_string": "style"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "opacity",
+                              "name": {
+                                "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                                "value": [
+                                  {
+                                    "string": "opacity",
+                                    "raw_string": "opacity"
+                                  }
+                                ]
+                              },
                               "primary": {
                                 "value": {
                                   "range": "TestCompile/patterns/field-glob-style-inherit.d2,2:17:41-2:18:42",
@@ -2024,28 +2088,8 @@
                               ]
                             },
                             "key_path": {
-                              "range": ",0:0:0-0:0:0",
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
                               "path": [
-                                {
-                                  "unquoted_string": {
-                                    "range": ",0:0:0-0:0:0",
-                                    "value": [
-                                      {
-                                        "string": "scenarios"
-                                      }
-                                    ]
-                                  }
-                                },
-                                {
-                                  "unquoted_string": {
-                                    "range": ",0:0:0-0:0:0",
-                                    "value": [
-                                      {
-                                        "string": "1"
-                                      }
-                                    ]
-                                  }
-                                },
                                 {
                                   "unquoted_string": {
                                     "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
@@ -2089,28 +2133,117 @@
                               "key": {
                                 "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:18:18",
                                 "key": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
                                   "path": [
                                     {
                                       "unquoted_string": {
-                                        "range": ",0:0:0-0:0:0",
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
                                         "value": [
                                           {
-                                            "string": "scenarios"
+                                            "string": "*",
+                                            "raw_string": "*"
+                                          }
+                                        ],
+                                        "pattern": [
+                                          "*"
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
                                           }
                                         ]
                                       }
                                     },
                                     {
                                       "unquoted_string": {
-                                        "range": ",0:0:0-0:0:0",
+                                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
                                         "value": [
                                           {
-                                            "string": "1"
+                                            "string": "opacity",
+                                            "raw_string": "opacity"
                                           }
                                         ]
                                       }
-                                    },
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:17:17-0:18:18",
+                                    "raw": "0",
+                                    "value": "0"
+                                  }
+                                }
+                              }
+                            },
+                            "due_to_glob": true,
+                            "due_to_lazy_glob": true
+                          },
+                          {
+                            "string": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
+                                    "value": [
+                                      {
+                                        "string": "*",
+                                        "raw_string": "*"
+                                      }
+                                    ],
+                                    "pattern": [
+                                      "*"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
+                                    "value": [
+                                      {
+                                        "string": "style",
+                                        "raw_string": "style"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
+                                    "value": [
+                                      {
+                                        "string": "opacity",
+                                        "raw_string": "opacity"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:18:18",
+                                "key": {
+                                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:15:15",
+                                  "path": [
                                     {
                                       "unquoted_string": {
                                         "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
@@ -2407,154 +2540,6 @@
                 },
                 "due_to_glob": false,
                 "due_to_lazy_glob": false
-              },
-              {
-                "string": {
-                  "range": ",0:0:0-0:0:0",
-                  "value": [
-                    {
-                      "string": "1"
-                    }
-                  ]
-                },
-                "key_path": {
-                  "range": ",0:0:0-0:0:0",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
-                        "value": [
-                          {
-                            "string": "scenarios"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
-                        "value": [
-                          {
-                            "string": "1"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "unquoted_string": {
-                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
-                        "value": [
-                          {
-                            "string": "*",
-                            "raw_string": "*"
-                          }
-                        ],
-                        "pattern": [
-                          "*"
-                        ]
-                      }
-                    },
-                    {
-                      "unquoted_string": {
-                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
-                        "value": [
-                          {
-                            "string": "style",
-                            "raw_string": "style"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "unquoted_string": {
-                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
-                        "value": [
-                          {
-                            "string": "opacity",
-                            "raw_string": "opacity"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "context": {
-                  "edge": null,
-                  "key": {
-                    "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:18:18",
-                    "key": {
-                      "range": ",0:0:0-0:0:0",
-                      "path": [
-                        {
-                          "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
-                            "value": [
-                              {
-                                "string": "scenarios"
-                              }
-                            ]
-                          }
-                        },
-                        {
-                          "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
-                            "value": [
-                              {
-                                "string": "1"
-                              }
-                            ]
-                          }
-                        },
-                        {
-                          "unquoted_string": {
-                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
-                            "value": [
-                              {
-                                "string": "*",
-                                "raw_string": "*"
-                              }
-                            ],
-                            "pattern": [
-                              "*"
-                            ]
-                          }
-                        },
-                        {
-                          "unquoted_string": {
-                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
-                            "value": [
-                              {
-                                "string": "style",
-                                "raw_string": "style"
-                              }
-                            ]
-                          }
-                        },
-                        {
-                          "unquoted_string": {
-                            "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
-                            "value": [
-                              {
-                                "string": "opacity",
-                                "raw_string": "opacity"
-                              }
-                            ]
-                          }
-                        }
-                      ]
-                    },
-                    "primary": {},
-                    "value": {
-                      "number": {
-                        "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:17:17-0:18:18",
-                        "raw": "0",
-                        "value": "0"
-                      }
-                    }
-                  }
-                },
-                "due_to_glob": true,
-                "due_to_lazy_glob": true
               }
             ]
           }
@@ -2672,154 +2657,6 @@
           },
           "due_to_glob": false,
           "due_to_lazy_glob": false
-        },
-        {
-          "string": {
-            "range": ",0:0:0-0:0:0",
-            "value": [
-              {
-                "string": "scenarios"
-              }
-            ]
-          },
-          "key_path": {
-            "range": ",0:0:0-0:0:0",
-            "path": [
-              {
-                "unquoted_string": {
-                  "range": ",0:0:0-0:0:0",
-                  "value": [
-                    {
-                      "string": "scenarios"
-                    }
-                  ]
-                }
-              },
-              {
-                "unquoted_string": {
-                  "range": ",0:0:0-0:0:0",
-                  "value": [
-                    {
-                      "string": "1"
-                    }
-                  ]
-                }
-              },
-              {
-                "unquoted_string": {
-                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
-                  "value": [
-                    {
-                      "string": "*",
-                      "raw_string": "*"
-                    }
-                  ],
-                  "pattern": [
-                    "*"
-                  ]
-                }
-              },
-              {
-                "unquoted_string": {
-                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
-                  "value": [
-                    {
-                      "string": "style",
-                      "raw_string": "style"
-                    }
-                  ]
-                }
-              },
-              {
-                "unquoted_string": {
-                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
-                  "value": [
-                    {
-                      "string": "opacity",
-                      "raw_string": "opacity"
-                    }
-                  ]
-                }
-              }
-            ]
-          },
-          "context": {
-            "edge": null,
-            "key": {
-              "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:18:18",
-              "key": {
-                "range": ",0:0:0-0:0:0",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": ",0:0:0-0:0:0",
-                      "value": [
-                        {
-                          "string": "scenarios"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "unquoted_string": {
-                      "range": ",0:0:0-0:0:0",
-                      "value": [
-                        {
-                          "string": "1"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:0:0-0:1:1",
-                      "value": [
-                        {
-                          "string": "*",
-                          "raw_string": "*"
-                        }
-                      ],
-                      "pattern": [
-                        "*"
-                      ]
-                    }
-                  },
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:2:2-0:7:7",
-                      "value": [
-                        {
-                          "string": "style",
-                          "raw_string": "style"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:8:8-0:15:15",
-                      "value": [
-                        {
-                          "string": "opacity",
-                          "raw_string": "opacity"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "primary": {},
-              "value": {
-                "number": {
-                  "range": "TestCompile/patterns/field-glob-style-inherit.d2,0:17:17-0:18:18",
-                  "raw": "0",
-                  "value": "0"
-                }
-              }
-            }
-          },
-          "due_to_glob": true,
-          "due_to_lazy_glob": true
         }
       ]
     }

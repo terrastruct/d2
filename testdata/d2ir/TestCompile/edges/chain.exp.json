@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "a",
+      "name": {
+        "range": "TestCompile/edges/chain.d2,0:0:0-0:1:1",
+        "value": [
+          {
+            "string": "a",
+            "raw_string": "a"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -192,7 +200,15 @@
       ]
     },
     {
-      "name": "b",
+      "name": {
+        "range": "TestCompile/edges/chain.d2,0:5:5-0:6:6",
+        "value": [
+          {
+            "string": "b",
+            "raw_string": "b"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -569,7 +585,15 @@
       ]
     },
     {
-      "name": "c",
+      "name": {
+        "range": "TestCompile/edges/chain.d2,0:10:10-0:11:11",
+        "value": [
+          {
+            "string": "c",
+            "raw_string": "c"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -946,7 +970,15 @@
       ]
     },
     {
-      "name": "d",
+      "name": {
+        "range": "TestCompile/edges/chain.d2,0:15:15-0:16:16",
+        "value": [
+          {
+            "string": "d",
+            "raw_string": "d"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -1141,11 +1173,27 @@
     {
       "edge_id": {
         "src_path": [
-          "a"
+          {
+            "range": "TestCompile/edges/chain.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "b"
+          {
+            "range": "TestCompile/edges/chain.d2,0:5:5-0:6:6",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -1318,11 +1366,27 @@
     {
       "edge_id": {
         "src_path": [
-          "b"
+          {
+            "range": "TestCompile/edges/chain.d2,0:5:5-0:6:6",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "c"
+          {
+            "range": "TestCompile/edges/chain.d2,0:10:10-0:11:11",
+            "value": [
+              {
+                "string": "c",
+                "raw_string": "c"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -1495,11 +1559,27 @@
     {
       "edge_id": {
         "src_path": [
-          "c"
+          {
+            "range": "TestCompile/edges/chain.d2,0:10:10-0:11:11",
+            "value": [
+              {
+                "string": "c",
+                "raw_string": "c"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "d"
+          {
+            "range": "TestCompile/edges/chain.d2,0:15:15-0:16:16",
+            "value": [
+              {
+                "string": "d",
+                "raw_string": "d"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,

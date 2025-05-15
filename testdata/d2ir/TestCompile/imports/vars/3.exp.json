@@ -1,11 +1,27 @@
 {
   "fields": [
     {
-      "name": "vars",
+      "name": {
+        "range": "a.d2,0:0:0-0:4:4",
+        "value": [
+          {
+            "string": "vars",
+            "raw_string": "vars"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "x",
+            "name": {
+              "range": "a.d2,0:8:8-0:9:9",
+              "value": [
+                {
+                  "string": "x",
+                  "raw_string": "x"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "index.d2,0:18:18-0:19:19",
@@ -317,7 +333,15 @@
       ]
     },
     {
-      "name": "hi",
+      "name": {
+        "range": "index.d2,0:23:23-0:25:25",
+        "value": [
+          {
+            "string": "hi",
+            "raw_string": "hi"
+          }
+        ]
+      },
       "primary": {
         "value": {
           "range": "index.d2,0:18:18-0:19:19",

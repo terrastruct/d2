@@ -190,6 +190,7 @@
           "height": 0
         },
         "style": {},
+        "iconStyle": {},
         "near_key": null,
         "shape": {
           "value": ""
@@ -237,6 +238,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "rectangle"
@@ -254,7 +256,7 @@
         "name": "x",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile/import-link-layer-4.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -264,10 +266,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/y.d2,0:0:0-0:1:1",
                         "value": [
                           {
-                            "string": "a"
+                            "string": "a",
+                            "raw_string": "a"
                           }
                         ]
                       }
@@ -286,10 +289,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/y.d2,1:0:2-1:6:8",
                         "value": [
                           {
-                            "string": "layers"
+                            "string": "layers",
+                            "raw_string": "layers"
                           }
                         ]
                       }
@@ -299,7 +303,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": ",0:0:0-1:0:0",
+                    "range": ",1:0:0-2:0:0",
                     "nodes": [
                       {
                         "map_key": {
@@ -309,10 +313,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile/y.d2,2:2:14-2:5:17",
                                   "value": [
                                     {
-                                      "string": "lol"
+                                      "string": "lol",
+                                      "raw_string": "lol"
                                     }
                                   ]
                                 }
@@ -322,7 +327,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": ",0:0:0-1:0:0",
+                              "range": "d2/testdata/d2compiler/TestCompile/y.d2,1:0:0-2:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -332,10 +337,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile/y.d2,3:4:25-3:8:29",
                                             "value": [
                                               {
-                                                "string": "asdf"
+                                                "string": "asdf",
+                                                "raw_string": "asdf"
                                               }
                                             ]
                                           }
@@ -345,7 +351,7 @@
                                     "primary": {},
                                     "value": {
                                       "map": {
-                                        "range": ",0:0:0-1:0:0",
+                                        "range": ",1:0:0-2:0:0",
                                         "nodes": [
                                           {
                                             "map_key": {
@@ -355,10 +361,11 @@
                                                 "path": [
                                                   {
                                                     "unquoted_string": {
-                                                      "range": ",0:0:0-0:0:0",
+                                                      "range": "d2/testdata/d2compiler/TestCompile/y.d2,3:9:30-3:13:34",
                                                       "value": [
                                                         {
-                                                          "string": "link"
+                                                          "string": "link",
+                                                          "raw_string": "link"
                                                         }
                                                       ]
                                                     }
@@ -396,10 +403,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile/y.d2,5:1:52-5:2:53",
                                   "value": [
                                     {
-                                      "string": "z"
+                                      "string": "z",
+                                      "raw_string": "z"
                                     }
                                   ]
                                 }
@@ -409,7 +417,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": ",0:0:0-1:0:0",
+                              "range": "d2/testdata/d2compiler/TestCompile/y.d2,1:0:0-2:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -419,10 +427,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile/y.d2,5:6:57-5:9:60",
                                             "value": [
                                               {
-                                                "string": "fjf"
+                                                "string": "fjf",
+                                                "raw_string": "fjf"
                                               }
                                             ]
                                           }
@@ -457,6 +466,7 @@
               "height": 0
             },
             "style": {},
+            "iconStyle": {},
             "near_key": null,
             "shape": {
               "value": ""
@@ -504,6 +514,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"
@@ -521,7 +532,7 @@
             "name": "lol",
             "isFolderOnly": false,
             "ast": {
-              "range": ",0:0:0-1:0:0",
+              "range": "d2/testdata/d2compiler/TestCompile/y.d2,0:0:0-1:0:0",
               "nodes": [
                 {
                   "map_key": {
@@ -531,10 +542,11 @@
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
+                            "range": "d2/testdata/d2compiler/TestCompile/y.d2,3:4:25-3:8:29",
                             "value": [
                               {
-                                "string": "asdf"
+                                "string": "asdf",
+                                "raw_string": "asdf"
                               }
                             ]
                           }
@@ -544,7 +556,7 @@
                     "primary": {},
                     "value": {
                       "map": {
-                        "range": ",0:0:0-1:0:0",
+                        "range": ",1:0:0-2:0:0",
                         "nodes": [
                           {
                             "map_key": {
@@ -554,10 +566,11 @@
                                 "path": [
                                   {
                                     "unquoted_string": {
-                                      "range": ",0:0:0-0:0:0",
+                                      "range": "d2/testdata/d2compiler/TestCompile/y.d2,3:9:30-3:13:34",
                                       "value": [
                                         {
-                                          "string": "link"
+                                          "string": "link",
+                                          "raw_string": "link"
                                         }
                                       ]
                                     }
@@ -596,6 +609,7 @@
                   "height": 0
                 },
                 "style": {},
+                "iconStyle": {},
                 "near_key": null,
                 "shape": {
                   "value": ""
@@ -654,6 +668,7 @@
                     "height": 0
                   },
                   "style": {},
+                  "iconStyle": {},
                   "link": {
                     "value": "root.layers.x.layers.z"
                   },
@@ -674,7 +689,7 @@
             "name": "z",
             "isFolderOnly": false,
             "ast": {
-              "range": ",0:0:0-1:0:0",
+              "range": "d2/testdata/d2compiler/TestCompile/y.d2,0:0:0-1:0:0",
               "nodes": [
                 {
                   "map_key": {
@@ -684,10 +699,11 @@
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
+                            "range": "d2/testdata/d2compiler/TestCompile/y.d2,5:6:57-5:9:60",
                             "value": [
                               {
-                                "string": "fjf"
+                                "string": "fjf",
+                                "raw_string": "fjf"
                               }
                             ]
                           }
@@ -712,6 +728,7 @@
                   "height": 0
                 },
                 "style": {},
+                "iconStyle": {},
                 "near_key": null,
                 "shape": {
                   "value": ""
@@ -759,6 +776,7 @@
                     "height": 0
                   },
                   "style": {},
+                  "iconStyle": {},
                   "near_key": null,
                   "shape": {
                     "value": "rectangle"
@@ -778,7 +796,7 @@
         "name": "z",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile/import-link-layer-4.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -788,10 +806,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/import-link-layer-4.d2,4:7:28-4:9:30",
                         "value": [
                           {
-                            "string": "hi"
+                            "string": "hi",
+                            "raw_string": "hi"
                           }
                         ]
                       }
@@ -816,6 +835,7 @@
               "height": 0
             },
             "style": {},
+            "iconStyle": {},
             "near_key": null,
             "shape": {
               "value": ""
@@ -863,6 +883,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"

@@ -1,15 +1,39 @@
 {
   "fields": [
     {
-      "name": "scenarios",
+      "name": {
+        "range": "TestCompile/patterns/scenarios.d2,2:0:2-2:9:11",
+        "value": [
+          {
+            "string": "scenarios",
+            "raw_string": "scenarios"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "meow",
+            "name": {
+              "range": "TestCompile/patterns/scenarios.d2,3:2:17-3:6:21",
+              "value": [
+                {
+                  "string": "meow",
+                  "raw_string": "meow"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "e",
+                  "name": {
+                    "range": "TestCompile/patterns/scenarios.d2,4:1:26-4:2:27",
+                    "value": [
+                      {
+                        "string": "e",
+                        "raw_string": "e"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/scenarios.d2,16:4:57-16:13:66",
@@ -78,7 +102,15 @@
                   ]
                 },
                 {
-                  "name": "f",
+                  "name": {
+                    "range": "TestCompile/patterns/scenarios.d2,5:1:29-5:2:30",
+                    "value": [
+                      {
+                        "string": "f",
+                        "raw_string": "f"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/scenarios.d2,16:4:57-16:13:66",
@@ -147,7 +179,15 @@
                   ]
                 },
                 {
-                  "name": "g",
+                  "name": {
+                    "range": "TestCompile/patterns/scenarios.d2,6:1:32-6:2:33",
+                    "value": [
+                      {
+                        "string": "g",
+                        "raw_string": "g"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/scenarios.d2,16:4:57-16:13:66",
@@ -216,7 +256,15 @@
                   ]
                 },
                 {
-                  "name": "h",
+                  "name": {
+                    "range": "TestCompile/patterns/scenarios.d2,7:1:35-7:2:36",
+                    "value": [
+                      {
+                        "string": "h",
+                        "raw_string": "h"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/scenarios.d2,16:4:57-16:13:66",
@@ -289,11 +337,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "e"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,4:1:26-4:2:27",
+                        "value": [
+                          {
+                            "string": "e",
+                            "raw_string": "e"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "f"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,5:1:29-5:2:30",
+                        "value": [
+                          {
+                            "string": "f",
+                            "raw_string": "f"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -412,11 +476,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "e"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,4:1:26-4:2:27",
+                        "value": [
+                          {
+                            "string": "e",
+                            "raw_string": "e"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "g"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,6:1:32-6:2:33",
+                        "value": [
+                          {
+                            "string": "g",
+                            "raw_string": "g"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -535,11 +615,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "e"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,4:1:26-4:2:27",
+                        "value": [
+                          {
+                            "string": "e",
+                            "raw_string": "e"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "h"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,7:1:35-7:2:36",
+                        "value": [
+                          {
+                            "string": "h",
+                            "raw_string": "h"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -658,11 +754,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "f"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,5:1:29-5:2:30",
+                        "value": [
+                          {
+                            "string": "f",
+                            "raw_string": "f"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "e"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,4:1:26-4:2:27",
+                        "value": [
+                          {
+                            "string": "e",
+                            "raw_string": "e"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -781,11 +893,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "f"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,5:1:29-5:2:30",
+                        "value": [
+                          {
+                            "string": "f",
+                            "raw_string": "f"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "g"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,6:1:32-6:2:33",
+                        "value": [
+                          {
+                            "string": "g",
+                            "raw_string": "g"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -904,11 +1032,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "f"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,5:1:29-5:2:30",
+                        "value": [
+                          {
+                            "string": "f",
+                            "raw_string": "f"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "h"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,7:1:35-7:2:36",
+                        "value": [
+                          {
+                            "string": "h",
+                            "raw_string": "h"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -1027,11 +1171,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "g"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,6:1:32-6:2:33",
+                        "value": [
+                          {
+                            "string": "g",
+                            "raw_string": "g"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "e"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,4:1:26-4:2:27",
+                        "value": [
+                          {
+                            "string": "e",
+                            "raw_string": "e"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -1150,11 +1310,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "g"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,6:1:32-6:2:33",
+                        "value": [
+                          {
+                            "string": "g",
+                            "raw_string": "g"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "f"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,5:1:29-5:2:30",
+                        "value": [
+                          {
+                            "string": "f",
+                            "raw_string": "f"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -1273,11 +1449,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "g"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,6:1:32-6:2:33",
+                        "value": [
+                          {
+                            "string": "g",
+                            "raw_string": "g"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "h"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,7:1:35-7:2:36",
+                        "value": [
+                          {
+                            "string": "h",
+                            "raw_string": "h"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -1396,11 +1588,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "h"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,7:1:35-7:2:36",
+                        "value": [
+                          {
+                            "string": "h",
+                            "raw_string": "h"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "e"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,4:1:26-4:2:27",
+                        "value": [
+                          {
+                            "string": "e",
+                            "raw_string": "e"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -1519,11 +1727,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "h"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,7:1:35-7:2:36",
+                        "value": [
+                          {
+                            "string": "h",
+                            "raw_string": "h"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "f"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,5:1:29-5:2:30",
+                        "value": [
+                          {
+                            "string": "f",
+                            "raw_string": "f"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -1642,11 +1866,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "h"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,7:1:35-7:2:36",
+                        "value": [
+                          {
+                            "string": "h",
+                            "raw_string": "h"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "g"
+                      {
+                        "range": "TestCompile/patterns/scenarios.d2,6:1:32-6:2:33",
+                        "value": [
+                          {
+                            "string": "g",
+                            "raw_string": "g"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -2105,7 +2345,15 @@
       ]
     },
     {
-      "name": "a",
+      "name": {
+        "range": "TestCompile/patterns/scenarios.d2,11:0:44-11:1:45",
+        "value": [
+          {
+            "string": "a",
+            "raw_string": "a"
+          }
+        ]
+      },
       "primary": {
         "value": {
           "range": "TestCompile/patterns/scenarios.d2,16:4:57-16:13:66",
@@ -2174,7 +2422,15 @@
       ]
     },
     {
-      "name": "b",
+      "name": {
+        "range": "TestCompile/patterns/scenarios.d2,12:0:46-12:1:47",
+        "value": [
+          {
+            "string": "b",
+            "raw_string": "b"
+          }
+        ]
+      },
       "primary": {
         "value": {
           "range": "TestCompile/patterns/scenarios.d2,16:4:57-16:13:66",
@@ -2243,7 +2499,15 @@
       ]
     },
     {
-      "name": "c",
+      "name": {
+        "range": "TestCompile/patterns/scenarios.d2,13:0:48-13:1:49",
+        "value": [
+          {
+            "string": "c",
+            "raw_string": "c"
+          }
+        ]
+      },
       "primary": {
         "value": {
           "range": "TestCompile/patterns/scenarios.d2,16:4:57-16:13:66",
@@ -2312,7 +2576,15 @@
       ]
     },
     {
-      "name": "d",
+      "name": {
+        "range": "TestCompile/patterns/scenarios.d2,14:0:50-14:1:51",
+        "value": [
+          {
+            "string": "d",
+            "raw_string": "d"
+          }
+        ]
+      },
       "primary": {
         "value": {
           "range": "TestCompile/patterns/scenarios.d2,16:4:57-16:13:66",
@@ -2385,11 +2657,27 @@
     {
       "edge_id": {
         "src_path": [
-          "a"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,11:0:44-11:1:45",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "b"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,12:0:46-12:1:47",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -2508,11 +2796,27 @@
     {
       "edge_id": {
         "src_path": [
-          "a"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,11:0:44-11:1:45",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "c"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,13:0:48-13:1:49",
+            "value": [
+              {
+                "string": "c",
+                "raw_string": "c"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -2631,11 +2935,27 @@
     {
       "edge_id": {
         "src_path": [
-          "a"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,11:0:44-11:1:45",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "d"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,14:0:50-14:1:51",
+            "value": [
+              {
+                "string": "d",
+                "raw_string": "d"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -2754,11 +3074,27 @@
     {
       "edge_id": {
         "src_path": [
-          "b"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,12:0:46-12:1:47",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "a"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,11:0:44-11:1:45",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -2877,11 +3213,27 @@
     {
       "edge_id": {
         "src_path": [
-          "b"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,12:0:46-12:1:47",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "c"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,13:0:48-13:1:49",
+            "value": [
+              {
+                "string": "c",
+                "raw_string": "c"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -3000,11 +3352,27 @@
     {
       "edge_id": {
         "src_path": [
-          "b"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,12:0:46-12:1:47",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "d"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,14:0:50-14:1:51",
+            "value": [
+              {
+                "string": "d",
+                "raw_string": "d"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -3123,11 +3491,27 @@
     {
       "edge_id": {
         "src_path": [
-          "c"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,13:0:48-13:1:49",
+            "value": [
+              {
+                "string": "c",
+                "raw_string": "c"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "a"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,11:0:44-11:1:45",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -3246,11 +3630,27 @@
     {
       "edge_id": {
         "src_path": [
-          "c"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,13:0:48-13:1:49",
+            "value": [
+              {
+                "string": "c",
+                "raw_string": "c"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "b"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,12:0:46-12:1:47",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -3369,11 +3769,27 @@
     {
       "edge_id": {
         "src_path": [
-          "c"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,13:0:48-13:1:49",
+            "value": [
+              {
+                "string": "c",
+                "raw_string": "c"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "d"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,14:0:50-14:1:51",
+            "value": [
+              {
+                "string": "d",
+                "raw_string": "d"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -3492,11 +3908,27 @@
     {
       "edge_id": {
         "src_path": [
-          "d"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,14:0:50-14:1:51",
+            "value": [
+              {
+                "string": "d",
+                "raw_string": "d"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "a"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,11:0:44-11:1:45",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -3615,11 +4047,27 @@
     {
       "edge_id": {
         "src_path": [
-          "d"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,14:0:50-14:1:51",
+            "value": [
+              {
+                "string": "d",
+                "raw_string": "d"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "b"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,12:0:46-12:1:47",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -3738,11 +4186,27 @@
     {
       "edge_id": {
         "src_path": [
-          "d"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,14:0:50-14:1:51",
+            "value": [
+              {
+                "string": "d",
+                "raw_string": "d"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "c"
+          {
+            "range": "TestCompile/patterns/scenarios.d2,13:0:48-13:1:49",
+            "value": [
+              {
+                "string": "c",
+                "raw_string": "c"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,

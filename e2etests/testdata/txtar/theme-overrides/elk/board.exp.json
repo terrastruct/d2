@@ -1,8 +1,8 @@
 {
   "name": "",
   "config": {
-    "sketch": null,
-    "themeID": null,
+    "sketch": false,
+    "themeID": 0,
     "darkThemeID": null,
     "pad": null,
     "center": null,
@@ -66,6 +66,7 @@
       "borderRadius": 0,
       "fill": "AB4",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -107,6 +108,7 @@
       "borderRadius": 0,
       "fill": "B3",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -148,6 +150,7 @@
       "borderRadius": 0,
       "fill": "B4",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -189,6 +192,7 @@
       "borderRadius": 0,
       "fill": "B5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -230,6 +234,7 @@
       "borderRadius": 0,
       "fill": "AA5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -271,6 +276,7 @@
       "borderRadius": 0,
       "fill": "B6",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -312,6 +318,7 @@
       "borderRadius": 0,
       "fill": "B5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -353,6 +360,7 @@
       "borderRadius": 0,
       "fill": "AA5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -394,6 +402,7 @@
       "borderRadius": 0,
       "fill": "B5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -435,6 +444,7 @@
       "borderRadius": 0,
       "fill": "B6",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -476,6 +486,7 @@
       "borderRadius": 0,
       "fill": "B6",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -517,6 +528,7 @@
       "borderRadius": 0,
       "fill": "N1",
       "stroke": "N7",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -675,6 +687,7 @@
       "borderRadius": 0,
       "fill": "N1",
       "stroke": "N7",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -843,6 +856,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 985,
@@ -881,6 +895,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 990,
@@ -919,6 +934,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 982,
@@ -957,6 +973,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 1213,
@@ -995,6 +1012,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 299,
@@ -1033,6 +1051,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 1693,
@@ -1079,6 +1098,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 1693,
@@ -1125,6 +1145,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 1693,
@@ -1179,6 +1200,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 2078,
@@ -1225,6 +1247,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 2078,
@@ -1263,6 +1286,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 2078,
@@ -1309,6 +1333,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 1958,
@@ -1363,6 +1388,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 306,
@@ -1409,6 +1435,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 306,
@@ -1440,6 +1467,7 @@
     "borderRadius": 0,
     "fill": "N7",
     "stroke": "",
+    "animated": false,
     "shadow": false,
     "3d": false,
     "multiple": false,

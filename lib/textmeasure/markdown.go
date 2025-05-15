@@ -83,7 +83,11 @@ func RenderMarkdown(m string) (string, error) {
 	if err := markdownRenderer.Convert([]byte(m), &output); err != nil {
 		return "", err
 	}
-	return output.String(), nil
+	sanitized, err := sanitizeLinks(output.String())
+	if err != nil {
+		return "", err
+	}
+	return sanitized, nil
 }
 
 func init() {
@@ -94,6 +98,7 @@ func init() {
 		),
 		goldmark.WithExtensions(
 			extension.Strikethrough,
+			extension.Table,
 		),
 	)
 }
@@ -181,7 +186,8 @@ func isBlockElement(elType string) bool {
 		"ol",
 		"p",
 		"pre",
-		"ul":
+		"ul",
+		"table", "thead", "tbody", "tr", "td", "th": // Added table elements here
 		return true
 	default:
 		return false
@@ -200,6 +206,7 @@ func hasAncestorElement(n *html.Node, elType string) bool {
 
 type blockAttrs struct {
 	width, height, marginTop, marginBottom float64
+	extraData                              interface{}
 }
 
 func (b *blockAttrs) isNotEmpty() bool {
@@ -276,7 +283,7 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 		if debugMeasure {
 			fmt.Printf("%stext(%v,%v)\n", depthStr, w, h)
 		}
-		return blockAttrs{w + spaceWidths, h, 0, 0}
+		return blockAttrs{w + spaceWidths, h, 0, 0, 0}
 	case html.ElementNode:
 		isCode := false
 		switch n.Data {
@@ -425,6 +432,142 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 			block.height += Height_hr_em * float64(fontSize)
 			block.marginTop = go2.Max(block.marginTop, MarginTopBottom_hr)
 			block.marginBottom = go2.Max(block.marginBottom, MarginTopBottom_hr)
+		case "table":
+			var columnWidths []float64
+			var tableHeight float64
+
+			// Border width for table (outer border)
+			tableBorder := 1.0
+
+			// Iterate over child nodes (tbody, thead, tr)
+			for child := n.FirstChild; child != nil; child = child.NextSibling {
+				if child.Type == html.ElementNode && (child.Data == "tbody" || child.Data == "thead" || child.Data == "tfoot") {
+					childAttrs := ruler.measureNode(depth+1, child, fontFamily, fontSize, fontStyle)
+					tableHeight += childAttrs.height
+
+					if childColumnWidths, ok := childAttrs.extraData.([][]float64); ok {
+						columnWidths = mergeColumnWidths(columnWidths, childColumnWidths)
+					}
+				} else if child.Type == html.ElementNode && child.Data == "tr" {
+					rowAttrs := ruler.measureNode(depth+1, child, fontFamily, fontSize, fontStyle)
+					tableHeight += rowAttrs.height
+
+					if rowCellWidths, ok := rowAttrs.extraData.([]float64); ok {
+						columnWidths = mergeColumnWidths(columnWidths, [][]float64{rowCellWidths})
+					}
+				}
+			}
+
+			// Calculate total table width including ALL borders
+			tableWidth := 0.0
+			if len(columnWidths) > 0 {
+				// Add widths of all columns
+				for _, colWidth := range columnWidths {
+					tableWidth += colWidth
+				}
+
+				// Add border for every column division (including outer borders)
+				tableWidth += float64(len(columnWidths)+1) * tableBorder
+			}
+
+			// Add outer borders to height
+			tableHeight += 2 * tableBorder
+
+			block.width = tableWidth
+			block.height = tableHeight
+
+		case "thead", "tbody", "tfoot":
+			var sectionWidth, sectionHeight float64
+			var sectionColumnWidths [][]float64
+
+			// Iterate over tr elements
+			for child := n.FirstChild; child != nil; child = child.NextSibling {
+				if child.Type == html.ElementNode && child.Data == "tr" {
+					childAttrs := ruler.measureNode(depth+1, child, fontFamily, fontSize, fontStyle)
+					sectionHeight += childAttrs.height
+					sectionWidth = go2.Max(sectionWidth, childAttrs.width)
+
+					if rowCellWidths, ok := childAttrs.extraData.([]float64); ok {
+						sectionColumnWidths = append(sectionColumnWidths, rowCellWidths)
+					}
+				}
+			}
+
+			block.width = sectionWidth
+			block.height = sectionHeight
+			block.extraData = sectionColumnWidths // Pass column widths back to table
+
+		case "td", "th":
+			// Apply semibold style to header cells
+			cellFontStyle := fontStyle
+			if n.Data == "th" {
+				cellFontStyle = d2fonts.FONT_STYLE_SEMIBOLD
+			}
+
+			// Measure cell content with appropriate font style
+			var cellContentWidth, cellContentHeight float64
+
+			for child := n.FirstChild; child != nil; child = child.NextSibling {
+				// Pass the header-specific font style to child measurements
+				childAttrs := ruler.measureNode(depth+1, child, fontFamily, fontSize, cellFontStyle)
+				cellContentWidth = go2.Max(cellContentWidth, childAttrs.width)
+				cellContentHeight += childAttrs.height
+			}
+
+			block.width = cellContentWidth
+			block.height = cellContentHeight
+
+		case "tr":
+			var rowWidth, rowHeight float64
+			var cellWidths []float64
+
+			cellBorder := 1.0
+			rowBorder := 1.0
+
+			maxCellHeight := 0.0
+			cellCount := 0
+
+			// Check if this row is in a thead to determine default font style for cells
+			inHeader := hasAncestorElement(n, "thead")
+			rowFontStyle := fontStyle
+			if inHeader {
+				rowFontStyle = d2fonts.FONT_STYLE_SEMIBOLD
+			}
+
+			for child := n.FirstChild; child != nil; child = child.NextSibling {
+				if child.Type == html.ElementNode && (child.Data == "td" || child.Data == "th") {
+					cellCount++
+
+					// Use semibold for th elements regardless of location
+					childFontStyle := rowFontStyle
+					if child.Data == "th" {
+						childFontStyle = d2fonts.FONT_STYLE_SEMIBOLD
+					}
+
+					childAttrs := ruler.measureNode(depth+1, child, fontFamily, fontSize, childFontStyle)
+					cellPaddingH := 13.0 * 2
+					cellPaddingV := 6.0 * 2
+
+					cellWidth := childAttrs.width + cellPaddingH
+					cellHeight := childAttrs.height + cellPaddingV
+
+					cellWidths = append(cellWidths, cellWidth)
+					maxCellHeight = go2.Max(maxCellHeight, cellHeight)
+				}
+			}
+
+			if cellCount > 0 {
+				for _, w := range cellWidths {
+					rowWidth += w
+				}
+				rowWidth += float64(cellCount+1) * cellBorder
+			}
+
+			rowHeight = maxCellHeight + rowBorder
+
+			block.width = rowWidth
+			block.height = rowHeight
+			block.extraData = cellWidths
 		}
 		if block.height > 0 && block.height < lineHeightPx {
 			block.height = lineHeightPx
@@ -435,4 +578,17 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 		return block
 	}
 	return blockAttrs{}
+}
+
+func mergeColumnWidths(existing []float64, new [][]float64) []float64 {
+	for _, rowWidths := range new {
+		for i, width := range rowWidths {
+			if i >= len(existing) {
+				existing = append(existing, width)
+			} else {
+				existing[i] = go2.Max(existing[i], width)
+			}
+		}
+	}
+	return existing
 }

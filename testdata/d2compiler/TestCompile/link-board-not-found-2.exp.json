@@ -230,6 +230,7 @@
           "height": 0
         },
         "style": {},
+        "iconStyle": {},
         "near_key": null,
         "shape": {
           "value": ""
@@ -248,7 +249,7 @@
         "name": "one",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -258,10 +259,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,2:8:29-2:12:33",
                         "value": [
                           {
-                            "string": "ping"
+                            "string": "ping",
+                            "raw_string": "ping"
                           }
                         ]
                       }
@@ -271,7 +273,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": ",0:0:0-1:0:0",
+                    "range": ",1:0:0-2:0:0",
                     "nodes": [
                       {
                         "map_key": {
@@ -281,10 +283,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,3:12:49-3:16:53",
                                   "value": [
                                     {
-                                      "string": "link"
+                                      "string": "link",
+                                      "raw_string": "link"
                                     }
                                   ]
                                 }
@@ -324,6 +327,7 @@
               "height": 0
             },
             "style": {},
+            "iconStyle": {},
             "near_key": null,
             "shape": {
               "value": ""
@@ -371,6 +375,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"
@@ -388,7 +393,7 @@
         "name": "two",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -398,10 +403,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,7:8:94-7:12:98",
                         "value": [
                           {
-                            "string": "pong"
+                            "string": "pong",
+                            "raw_string": "pong"
                           }
                         ]
                       }
@@ -411,7 +417,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": ",0:0:0-1:0:0",
+                    "range": ",1:0:0-2:0:0",
                     "nodes": [
                       {
                         "map_key": {
@@ -421,10 +427,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-not-found-2.d2,8:12:114-8:16:118",
                                   "value": [
                                     {
-                                      "string": "link"
+                                      "string": "link",
+                                      "raw_string": "link"
                                     }
                                   ]
                                 }
@@ -464,6 +471,7 @@
               "height": 0
             },
             "style": {},
+            "iconStyle": {},
             "near_key": null,
             "shape": {
               "value": ""
@@ -511,6 +519,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"

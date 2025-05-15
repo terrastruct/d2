@@ -1,11 +1,27 @@
 {
   "fields": [
     {
-      "name": "x",
+      "name": {
+        "range": "index.d2,0:0:0-0:1:1",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "shape",
+            "name": {
+              "range": "x.d2,1:1:6-1:6:11",
+              "value": [
+                {
+                  "string": "shape",
+                  "raw_string": "shape"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "x.d2,1:8:13-1:14:19",
@@ -84,7 +100,15 @@
             ]
           },
           {
-            "name": "label",
+            "name": {
+              "range": "x.d2,2:1:21-2:6:26",
+              "value": [
+                {
+                  "string": "label",
+                  "raw_string": "label"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "x.d2,2:8:28-2:12:32",
@@ -166,6 +190,89 @@
         "edges": null
       },
       "references": [
+        {
+          "string": {
+            "range": "index.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "index.d2,0:0:0-0:1:1",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "index.d2,0:0:0-0:1:1",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "index.d2,0:0:0-0:7:7",
+              "key": {
+                "range": "index.d2,0:0:0-0:1:1",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "index.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "import": {
+                  "range": "index.d2,0:3:3-0:7:7",
+                  "spread": false,
+                  "pre": "",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "index.d2,0:4:4-0:5:5",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "index.d2,0:6:6-0:7:7",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        },
         {
           "string": {
             "range": "index.d2,0:0:0-0:1:1",

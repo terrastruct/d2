@@ -42,6 +42,12 @@ func (p *printer) node(n d2ast.Node) {
 		p.blockComment(n)
 	case *d2ast.Null:
 		p.sb.WriteString("null")
+	case *d2ast.Suspension:
+		if n.Value {
+			p.sb.WriteString("suspend")
+		} else {
+			p.sb.WriteString("unsuspend")
+		}
 	case *d2ast.Boolean:
 		p.sb.WriteString(strconv.FormatBool(n.Value))
 	case *d2ast.Number:
@@ -121,7 +127,7 @@ func (p *printer) blockComment(bc *d2ast.BlockComment) {
 }
 
 func (p *printer) interpolationBoxes(boxes []d2ast.InterpolationBox, isDoubleString bool) {
-	for _, b := range boxes {
+	for i, b := range boxes {
 		if b.Substitution != nil {
 			p.substitution(b.Substitution)
 			continue
@@ -133,6 +139,11 @@ func (p *printer) interpolationBoxes(boxes []d2ast.InterpolationBox, isDoubleStr
 			} else {
 				s = escapeUnquotedValue(*b.String, p.inKey)
 			}
+			b.StringRaw = &s
+		} else if i > 0 && boxes[i-1].Substitution != nil {
+			// If this string follows a substitution, we need to make sure to use
+			// the actual string content, not the raw value which might be incorrect
+			s := *b.String
 			b.StringRaw = &s
 		}
 		if !isDoubleString {
@@ -293,11 +304,18 @@ func (p *printer) _map(m *d2ast.Map) {
 		if nb.IsBoardNode() {
 			switch nb.MapKey.Key.Path[0].Unbox().ScalarString() {
 			case "layers":
-				layerNodes = append(layerNodes, nb)
+				// remove useless
+				if nb.MapKey.Value.Map != nil && len(nb.MapKey.Value.Map.Nodes) > 0 {
+					layerNodes = append(layerNodes, nb)
+				}
 			case "scenarios":
-				scenarioNodes = append(scenarioNodes, nb)
+				if nb.MapKey.Value.Map != nil && len(nb.MapKey.Value.Map.Nodes) > 0 {
+					scenarioNodes = append(scenarioNodes, nb)
+				}
 			case "steps":
-				stepNodes = append(stepNodes, nb)
+				if nb.MapKey.Value.Map != nil && len(nb.MapKey.Value.Map.Nodes) > 0 {
+					stepNodes = append(stepNodes, nb)
+				}
 			}
 			prev = n
 			continue

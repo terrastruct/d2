@@ -4,7 +4,7 @@ import "oss.terrastruct.com/d2/d2themes"
 
 var EarthTones = d2themes.Theme{
 	ID:   103,
-	Name: "Earth tones",
+	Name: "Earth Tones",
 	Colors: d2themes.ColorPalette{
 		Neutrals: d2themes.WarmNeutral,
 

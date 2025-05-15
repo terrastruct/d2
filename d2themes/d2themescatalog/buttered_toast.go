@@ -4,7 +4,7 @@ import "oss.terrastruct.com/d2/d2themes"
 
 var ButteredToast = d2themes.Theme{
 	ID:   105,
-	Name: "Buttered toast",
+	Name: "Buttered Toast",
 	Colors: d2themes.ColorPalette{
 		Neutrals: d2themes.WarmNeutral,
 

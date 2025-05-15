@@ -7,6 +7,7 @@ import (
 	"io"
 	"io/fs"
 	"net/url"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -19,6 +20,7 @@ import (
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/color"
+	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
@@ -86,6 +88,7 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 	ir = ir.Copy(nil).(*d2ir.Map)
 	// c.preprocessSeqDiagrams(ir)
 	c.compileMap(g.Root, ir)
+	c.setDefaultShapes(g)
 	if len(c.err.Errors) == 0 {
 		c.validateKeys(g.Root, ir)
 	}
@@ -93,6 +96,8 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 	c.validateNear(g)
 	c.validateEdges(g)
 	c.validatePositionsCompatibility(g)
+
+	c.compileLegend(g, ir)
 
 	c.compileBoardsField(g, ir, "layers")
 	c.compileBoardsField(g, ir, "scenarios")
@@ -108,8 +113,55 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 	return g
 }
 
+func (c *compiler) compileLegend(g *d2graph.Graph, m *d2ir.Map) {
+	varsField := m.GetField(d2ast.FlatUnquotedString("vars"))
+	if varsField == nil || varsField.Map() == nil {
+		return
+	}
+
+	legendField := varsField.Map().GetField(d2ast.FlatUnquotedString("d2-legend"))
+	if legendField == nil || legendField.Map() == nil {
+		return
+	}
+
+	legendGraph := d2graph.NewGraph()
+
+	c.compileMap(legendGraph.Root, legendField.Map())
+	c.setDefaultShapes(legendGraph)
+
+	objects := make([]*d2graph.Object, 0)
+	for _, obj := range legendGraph.Objects {
+		if obj.Style.Opacity != nil {
+			if opacity, err := strconv.ParseFloat(obj.Style.Opacity.Value, 64); err == nil && opacity == 0 {
+				continue
+			}
+		}
+		obj.Box = &geo.Box{}
+		obj.TopLeft = geo.NewPoint(10, 10)
+		obj.Width = 100
+		obj.Height = 100
+		objects = append(objects, obj)
+	}
+
+	for _, edge := range legendGraph.Edges {
+		edge.Route = []*geo.Point{
+			{X: 10, Y: 10},
+			{X: 110, Y: 10},
+		}
+	}
+
+	legend := &d2graph.Legend{
+		Objects: objects,
+		Edges:   legendGraph.Edges,
+	}
+
+	if len(legend.Objects) > 0 || len(legend.Edges) > 0 {
+		g.Legend = legend
+	}
+}
+
 func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName string) {
-	boards := ir.GetField(fieldName)
+	boards := ir.GetField(d2ast.FlatUnquotedString(fieldName))
 	if boards.Map() == nil {
 		return
 	}
@@ -118,8 +170,8 @@ func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 		if f.Map() == nil {
 			m = &d2ir.Map{}
 		}
-		if g.GetBoard(f.Name) != nil {
-			c.errorf(f.References[0].AST(), "board name %v already used by another board", f.Name)
+		if g.GetBoard(f.Name.ScalarString()) != nil {
+			c.errorf(f.References[0].AST(), "board name %v already used by another board", f.Name.ScalarString())
 			continue
 		}
 		g2 := d2graph.NewGraph()
@@ -129,7 +181,10 @@ func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 			g2.BaseAST = findFieldAST(g.BaseAST, f)
 		}
 		c.compileBoard(g2, m)
-		g2.Name = f.Name
+		if f.Primary() != nil {
+			c.compileLabel(&g2.Root.Attributes, f)
+		}
+		g2.Name = f.Name.ScalarString()
 		switch fieldName {
 		case "layers":
 			g.Layers = append(g.Layers, g2)
@@ -145,7 +200,7 @@ func findFieldAST(ast *d2ast.Map, f *d2ir.Field) *d2ast.Map {
 	path := []string{}
 	curr := f
 	for {
-		path = append([]string{curr.Name}, path...)
+		path = append([]string{curr.Name.ScalarString()}, path...)
 		boardKind := d2ir.NodeBoardKind(curr)
 		if boardKind == "" {
 			break
@@ -153,55 +208,48 @@ func findFieldAST(ast *d2ast.Map, f *d2ir.Field) *d2ast.Map {
 		curr = d2ir.ParentField(curr)
 	}
 
-	currAST := ast
-	for len(path) > 0 {
-		head := path[0]
-		found := false
-		for _, n := range currAST.Nodes {
-			if n.MapKey == nil {
-				continue
-			}
-			if n.MapKey.Key == nil {
-				continue
-			}
-			if len(n.MapKey.Key.Path) != 1 {
-				continue
-			}
-			head2 := n.MapKey.Key.Path[0].Unbox().ScalarString()
-			if head == head2 {
-				currAST = n.MapKey.Value.Map
-				// The BaseAST is only used for making edits to the AST (through d2oracle)
-				// If there's no Map for a given board, either it's an empty layer or set to an import
-				// Either way, in order to make edits, it needs to be expanded into a Map to add lines to
-				if currAST == nil {
-					n.MapKey.Value.Map = &d2ast.Map{
-						Range: d2ast.MakeRange(",1:0:0-1:0:0"),
-					}
-					if n.MapKey.Value.Import != nil {
-						imp := &d2ast.Import{
-							Range:  d2ast.MakeRange(",1:0:0-1:0:0"),
-							Spread: true,
-							Pre:    n.MapKey.Value.Import.Pre,
-							Path:   n.MapKey.Value.Import.Path,
-						}
-						n.MapKey.Value.Map.Nodes = append(n.MapKey.Value.Map.Nodes, d2ast.MapNodeBox{
-							Import: imp,
-						})
+	return _findFieldAST(ast, path)
+}
 
-					}
-					currAST = n.MapKey.Value.Map
-				}
-				found = true
-				break
-			}
-		}
-		if !found {
-			return nil
-		}
-		path = path[1:]
+func _findFieldAST(ast *d2ast.Map, path []string) *d2ast.Map {
+	if len(path) == 0 {
+		return ast
 	}
 
-	return currAST
+	head := path[0]
+	remainingPath := path[1:]
+
+	for i := range ast.Nodes {
+		if ast.Nodes[i].MapKey == nil || ast.Nodes[i].MapKey.Key == nil || len(ast.Nodes[i].MapKey.Key.Path) != 1 {
+			continue
+		}
+
+		head2 := ast.Nodes[i].MapKey.Key.Path[0].Unbox().ScalarString()
+		if head == head2 {
+			if ast.Nodes[i].MapKey.Value.Map == nil {
+				ast.Nodes[i].MapKey.Value.Map = &d2ast.Map{
+					Range: d2ast.MakeRange(",1:0:0-1:0:0"),
+				}
+				if ast.Nodes[i].MapKey.Value.Import != nil {
+					imp := &d2ast.Import{
+						Range:  d2ast.MakeRange(",1:0:0-1:0:0"),
+						Spread: true,
+						Pre:    ast.Nodes[i].MapKey.Value.Import.Pre,
+						Path:   ast.Nodes[i].MapKey.Value.Import.Path,
+					}
+					ast.Nodes[i].MapKey.Value.Map.Nodes = append(ast.Nodes[i].MapKey.Value.Map.Nodes, d2ast.MapNodeBox{
+						Import: imp,
+					})
+				}
+			}
+
+			if result := _findFieldAST(ast.Nodes[i].MapKey.Value.Map, remainingPath); result != nil {
+				return result
+			}
+		}
+	}
+
+	return nil
 }
 
 type compiler struct {
@@ -220,7 +268,7 @@ func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
 }
 
 func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
-	class := m.GetField("class")
+	class := m.GetField(d2ast.FlatUnquotedString("class"))
 	if class != nil {
 		var classNames []string
 		if class.Primary() != nil {
@@ -235,8 +283,6 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 					}
 				}
 			}
-		} else {
-			c.errorf(class.LastRef().AST(), "class missing value")
 		}
 
 		for _, className := range classNames {
@@ -261,7 +307,7 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 			}
 		}
 	}
-	shape := m.GetField("shape")
+	shape := m.GetField(d2ast.FlatUnquotedString("shape"))
 	if shape != nil {
 		if shape.Composite != nil {
 			c.errorf(shape.LastPrimaryKey(), "reserved field shape does not accept composite")
@@ -270,10 +316,10 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 		}
 	}
 	for _, f := range m.Fields {
-		if f.Name == "shape" {
+		if f.Name.ScalarString() == "shape" && f.Name.IsUnquoted() {
 			continue
 		}
-		if _, ok := d2ast.BoardKeywords[f.Name]; ok {
+		if _, ok := d2ast.BoardKeywords[f.Name.ScalarString()]; ok && f.Name.IsUnquoted() {
 			continue
 		}
 		c.compileField(obj, f)
@@ -294,14 +340,15 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 }
 
 func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
-	keyword := strings.ToLower(f.Name)
+	keyword := strings.ToLower(f.Name.ScalarString())
 	_, isStyleReserved := d2ast.StyleKeywords[keyword]
-	if isStyleReserved {
-		c.errorf(f.LastRef().AST(), "%v must be style.%v", f.Name, f.Name)
+	if isStyleReserved && f.Name.IsUnquoted() {
+		c.errorf(f.LastRef().AST(), "%v must be style.%v", f.Name.ScalarString(), f.Name.ScalarString())
 		return
 	}
 	_, isReserved := d2ast.SimpleReservedKeywords[keyword]
-	if f.Name == "classes" {
+	isReserved = isReserved && f.Name.IsUnquoted()
+	if f.Name.ScalarString() == "classes" && f.Name.IsUnquoted() {
 		if f.Map() != nil {
 			if len(f.Map().Edges) > 0 {
 				c.errorf(f.Map().Edges[0].LastRef().AST(), "classes cannot contain an edge")
@@ -311,34 +358,31 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 					continue
 				}
 				for _, cf := range classesField.Map().Fields {
-					if _, ok := d2ast.ReservedKeywords[cf.Name]; !ok {
-						c.errorf(cf.LastRef().AST(), "%s is an invalid class field, must be reserved keyword", cf.Name)
+					if _, ok := d2ast.ReservedKeywords[cf.Name.ScalarString()]; !(ok && f.Name.IsUnquoted()) {
+						c.errorf(cf.LastRef().AST(), "%s is an invalid class field, must be reserved keyword", cf.Name.ScalarString())
 					}
-					if cf.Name == "class" {
+					if cf.Name.ScalarString() == "class" && cf.Name.IsUnquoted() {
 						c.errorf(cf.LastRef().AST(), `"class" cannot appear within "classes"`)
 					}
 				}
 			}
 		}
 		return
-	} else if f.Name == "vars" {
+	} else if f.Name.ScalarString() == "vars" && f.Name.IsUnquoted() {
 		return
-	} else if f.Name == "source-arrowhead" || f.Name == "target-arrowhead" {
-		c.errorf(f.LastRef().AST(), `%#v can only be used on connections`, f.Name)
+	} else if (f.Name.ScalarString() == "source-arrowhead" || f.Name.ScalarString() == "target-arrowhead") && f.Name.IsUnquoted() {
+		c.errorf(f.LastRef().AST(), `%#v can only be used on connections`, f.Name.ScalarString())
 		return
 
 	} else if isReserved {
 		c.compileReserved(&obj.Attributes, f)
 		return
-	} else if f.Name == "style" {
+	} else if f.Name.ScalarString() == "style" && f.Name.IsUnquoted() {
 		if f.Map() == nil || len(f.Map().Fields) == 0 {
 			c.errorf(f.LastRef().AST(), `"style" expected to be set to a map of key-values, or contain an additional keyword like "style.opacity: 0.4"`)
 			return
 		}
-		c.compileStyle(&obj.Attributes, f.Map())
-		if obj.Style.Animated != nil {
-			c.errorf(obj.Style.Animated.MapKey, `key "animated" can only be applied to edges`)
-		}
+		c.compileStyle(&obj.Attributes.Style, f.Map())
 		return
 	}
 
@@ -354,7 +398,7 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 	}
 
 	parent := obj
-	obj = obj.EnsureChild(d2graphIDA([]string{f.Name}))
+	obj = obj.EnsureChild(([]d2ast.String{f.Name}))
 	if f.Primary() != nil {
 		c.compileLabel(&obj.Attributes, f)
 	}
@@ -383,7 +427,7 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 			IsVar:           d2ir.IsVar(fr.Context_.ScopeMap),
 		}
 		if fr.Context_.ScopeMap != nil && !d2ir.IsVar(fr.Context_.ScopeMap) {
-			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(fr.Context_.ScopeMap))
+			scopeObjIDA := d2ir.BoardIDA(fr.Context_.ScopeMap)
 			r.ScopeObj = obj.Graph.Root.EnsureChild(scopeObjIDA)
 		}
 		obj.References = append(obj.References, r)
@@ -403,8 +447,6 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 			attrs.Language = fullTag
 		}
 		switch attrs.Language {
-		case "latex":
-			attrs.Shape.Value = d2target.ShapeText
 		case "markdown":
 			rendered, err := textmeasure.RenderMarkdown(scalar.ScalarString())
 			if err != nil {
@@ -421,9 +463,6 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 					c.errorf(f.LastPrimaryKey(), "malformed Markdown: %s", err.Error())
 				}
 			}
-			attrs.Shape.Value = d2target.ShapeText
-		default:
-			attrs.Shape.Value = d2target.ShapeCode
 		}
 		attrs.Label.Value = scalar.ScalarString()
 	default:
@@ -436,7 +475,7 @@ func (c *compiler) compilePosition(attrs *d2graph.Attributes, f *d2ir.Field) {
 	name := f.Name
 	if f.Map() != nil {
 		for _, f := range f.Map().Fields {
-			if f.Name == "near" {
+			if f.Name.ScalarString() == "near" && f.Name.IsUnquoted() {
 				if f.Primary() == nil {
 					c.errorf(f.LastPrimaryKey(), `invalid "near" field`)
 				} else {
@@ -448,7 +487,7 @@ func (c *compiler) compilePosition(attrs *d2graph.Attributes, f *d2ir.Field) {
 						if _, ok := d2ast.LabelPositions[scalar.ScalarString()]; !ok {
 							c.errorf(f.LastPrimaryKey(), `invalid "near" field`)
 						} else {
-							switch name {
+							switch name.ScalarString() {
 							case "label":
 								attrs.LabelPosition = &d2graph.Scalar{}
 								attrs.LabelPosition.Value = scalar.ScalarString()
@@ -463,7 +502,7 @@ func (c *compiler) compilePosition(attrs *d2graph.Attributes, f *d2ir.Field) {
 				}
 			} else {
 				if f.LastPrimaryKey() != nil {
-					c.errorf(f.LastPrimaryKey(), `unexpected field %s`, f.Name)
+					c.errorf(f.LastPrimaryKey(), `unexpected field %s`, f.Name.ScalarString())
 				}
 			}
 		}
@@ -476,7 +515,7 @@ func (c *compiler) compilePosition(attrs *d2graph.Attributes, f *d2ir.Field) {
 func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 	if f.Primary() == nil {
 		if f.Composite != nil {
-			switch f.Name {
+			switch f.Name.ScalarString() {
 			case "class":
 				if arr, ok := f.Composite.(*d2ir.Array); ok {
 					for _, class := range arr.Values {
@@ -501,24 +540,27 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 			case "label", "icon":
 				c.compilePosition(attrs, f)
 			default:
-				c.errorf(f.LastPrimaryKey(), "reserved field %v does not accept composite", f.Name)
+				c.errorf(f.LastPrimaryKey(), "reserved field %v does not accept composite", f.Name.ScalarString())
 			}
+		} else {
+			c.errorf(f.LastRef().AST(), `reserved field "%v" must have a value`, f.Name.ScalarString())
 		}
 		return
 	}
 	scalar := f.Primary().Value
-	switch f.Name {
+	switch f.Name.ScalarString() {
 	case "label":
 		c.compileLabel(attrs, f)
 		c.compilePosition(attrs, f)
 	case "shape":
-		in := d2target.IsShape(scalar.ScalarString())
-		_, isArrowhead := d2target.Arrowheads[scalar.ScalarString()]
+		shapeVal := strings.ToLower(scalar.ScalarString())
+		in := d2target.IsShape(shapeVal)
+		_, isArrowhead := d2target.Arrowheads[shapeVal]
 		if !in && !isArrowhead {
 			c.errorf(scalar, "unknown shape %q", scalar.ScalarString())
 			return
 		}
-		attrs.Shape.Value = scalar.ScalarString()
+		attrs.Shape.Value = shapeVal
 		if strings.EqualFold(attrs.Shape.Value, d2target.ShapeCode) {
 			// Explicit code shape is plaintext.
 			attrs.Language = d2target.ShapeText
@@ -532,6 +574,17 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		}
 		attrs.Icon = iconURL
 		c.compilePosition(attrs, f)
+		if f.Map() != nil {
+			for _, ff := range f.Map().Fields {
+				if ff.Name.ScalarString() == "style" && ff.Name.IsUnquoted() {
+					if ff.Map() == nil || len(ff.Map().Fields) == 0 {
+						c.errorf(f.LastRef().AST(), `"style" expected to be set to a map of key-values, or contain an additional keyword like "style.opacity: 0.4"`)
+						return
+					}
+					c.compileStyle(&attrs.IconStyle, ff.Map())
+				}
+			}
+		}
 	case "near":
 		nearKey, err := d2parser.ParseKey(scalar.ScalarString())
 		if err != nil {
@@ -594,11 +647,12 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Link.MapKey = f.LastPrimaryKey()
 	case "direction":
 		dirs := []string{"up", "down", "right", "left"}
-		if !go2.Contains(dirs, scalar.ScalarString()) {
+		val := strings.ToLower(scalar.ScalarString())
+		if !go2.Contains(dirs, val) {
 			c.errorf(scalar, `direction must be one of %v, got %q`, strings.Join(dirs, ", "), scalar.ScalarString())
 			return
 		}
-		attrs.Direction.Value = scalar.ScalarString()
+		attrs.Direction.Value = val
 		attrs.Direction.MapKey = f.LastPrimaryKey()
 	case "constraint":
 		if _, ok := scalar.(d2ast.String); !ok {
@@ -676,6 +730,13 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 	case "classes":
 	}
 
+	if attrs.Link != nil && attrs.Label.Value != "" {
+		u, err := url.ParseRequestURI(attrs.Label.Value)
+		if err == nil && u.Host != "" {
+			c.errorf(scalar, "Label cannot be set to URL when link is also set (for security)")
+		}
+	}
+
 	if attrs.Link != nil && attrs.Tooltip != nil {
 		u, err := url.ParseRequestURI(attrs.Tooltip.Value)
 		if err == nil && u.Host != "" {
@@ -684,84 +745,76 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 	}
 }
 
-func (c *compiler) compileStyle(attrs *d2graph.Attributes, m *d2ir.Map) {
+func (c *compiler) compileStyle(styles *d2graph.Style, m *d2ir.Map) {
 	for _, f := range m.Fields {
-		c.compileStyleField(attrs, f)
+		c.compileStyleField(styles, f)
 	}
 }
 
-func (c *compiler) compileStyleField(attrs *d2graph.Attributes, f *d2ir.Field) {
-	if _, ok := d2ast.StyleKeywords[strings.ToLower(f.Name)]; !ok {
-		c.errorf(f.LastRef().AST(), `invalid style keyword: "%s"`, f.Name)
+func (c *compiler) compileStyleField(styles *d2graph.Style, f *d2ir.Field) {
+	if _, ok := d2ast.StyleKeywords[strings.ToLower(f.Name.ScalarString())]; !(ok && f.Name.IsUnquoted()) {
+		c.errorf(f.LastRef().AST(), `invalid style keyword: "%s"`, f.Name.ScalarString())
 		return
 	}
 	if f.Primary() == nil {
 		return
 	}
-	compileStyleFieldInit(attrs, f)
+	compileStyleFieldInit(styles, f)
 	scalar := f.Primary().Value
-	err := attrs.Style.Apply(f.Name, scalar.ScalarString())
+	err := styles.Apply(f.Name.ScalarString(), scalar.ScalarString())
 	if err != nil {
 		c.errorf(scalar, err.Error())
 		return
 	}
 }
 
-func compileStyleFieldInit(attrs *d2graph.Attributes, f *d2ir.Field) {
-	switch f.Name {
+func compileStyleFieldInit(styles *d2graph.Style, f *d2ir.Field) {
+	switch f.Name.ScalarString() {
 	case "opacity":
-		attrs.Style.Opacity = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Opacity = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "stroke":
-		attrs.Style.Stroke = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Stroke = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "fill":
-		attrs.Style.Fill = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Fill = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "fill-pattern":
-		attrs.Style.FillPattern = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.FillPattern = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "stroke-width":
-		attrs.Style.StrokeWidth = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.StrokeWidth = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "stroke-dash":
-		attrs.Style.StrokeDash = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.StrokeDash = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "border-radius":
-		attrs.Style.BorderRadius = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.BorderRadius = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "shadow":
-		attrs.Style.Shadow = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Shadow = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "3d":
-		attrs.Style.ThreeDee = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.ThreeDee = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "multiple":
-		attrs.Style.Multiple = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Multiple = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "font":
-		attrs.Style.Font = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Font = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "font-size":
-		attrs.Style.FontSize = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.FontSize = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "font-color":
-		attrs.Style.FontColor = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.FontColor = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "animated":
-		attrs.Style.Animated = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Animated = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "bold":
-		attrs.Style.Bold = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Bold = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "italic":
-		attrs.Style.Italic = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Italic = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "underline":
-		attrs.Style.Underline = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Underline = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "filled":
-		attrs.Style.Filled = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
-	case "width":
-		attrs.WidthAttr = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
-	case "height":
-		attrs.HeightAttr = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
-	case "top":
-		attrs.Top = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
-	case "left":
-		attrs.Left = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.Filled = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "double-border":
-		attrs.Style.DoubleBorder = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.DoubleBorder = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "text-transform":
-		attrs.Style.TextTransform = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		styles.TextTransform = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	}
 }
 
 func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
-	edge, err := obj.Connect(d2graphIDA(e.ID.SrcPath), d2graphIDA(e.ID.DstPath), e.ID.SrcArrow, e.ID.DstArrow, "")
+	edge, err := obj.Connect(e.ID.SrcPath, e.ID.DstPath, e.ID.SrcArrow, e.ID.DstArrow, "")
 	if err != nil {
 		c.errorf(e.References[0].AST(), err.Error())
 		return
@@ -785,7 +838,7 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 			ScopeObj:        obj,
 		}
 		if er.Context_.ScopeMap != nil && !d2ir.IsVar(er.Context_.ScopeMap) {
-			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(er.Context_.ScopeMap))
+			scopeObjIDA := d2ir.BoardIDA(er.Context_.ScopeMap)
 			r.ScopeObj = edge.Src.Graph.Root.EnsureChild(scopeObjIDA)
 		}
 		edge.References = append(edge.References, r)
@@ -793,7 +846,7 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 }
 
 func (c *compiler) compileEdgeMap(edge *d2graph.Edge, m *d2ir.Map) {
-	class := m.GetField("class")
+	class := m.GetField(d2ast.FlatUnquotedString("class"))
 	if class != nil {
 		var classNames []string
 		if class.Primary() != nil {
@@ -808,8 +861,6 @@ func (c *compiler) compileEdgeMap(edge *d2graph.Edge, m *d2ir.Map) {
 					}
 				}
 			}
-		} else {
-			c.errorf(class.LastRef().AST(), "class missing value")
 		}
 
 		for _, className := range classNames {
@@ -820,8 +871,8 @@ func (c *compiler) compileEdgeMap(edge *d2graph.Edge, m *d2ir.Map) {
 		}
 	}
 	for _, f := range m.Fields {
-		_, ok := d2ast.ReservedKeywords[f.Name]
-		if !ok {
+		_, ok := d2ast.ReservedKeywords[f.Name.ScalarString()]
+		if !(ok && f.Name.IsUnquoted()) {
 			c.errorf(f.References[0].AST(), `edge map keys must be reserved keywords`)
 			continue
 		}
@@ -830,32 +881,33 @@ func (c *compiler) compileEdgeMap(edge *d2graph.Edge, m *d2ir.Map) {
 }
 
 func (c *compiler) compileEdgeField(edge *d2graph.Edge, f *d2ir.Field) {
-	keyword := strings.ToLower(f.Name)
+	keyword := strings.ToLower(f.Name.ScalarString())
 	_, isStyleReserved := d2ast.StyleKeywords[keyword]
+	isStyleReserved = isStyleReserved && f.Name.IsUnquoted()
 	if isStyleReserved {
-		c.errorf(f.LastRef().AST(), "%v must be style.%v", f.Name, f.Name)
+		c.errorf(f.LastRef().AST(), "%v must be style.%v", f.Name.ScalarString(), f.Name.ScalarString())
 		return
 	}
 	_, isReserved := d2ast.SimpleReservedKeywords[keyword]
 	if isReserved {
 		c.compileReserved(&edge.Attributes, f)
 		return
-	} else if f.Name == "style" {
+	} else if f.Name.ScalarString() == "style" {
 		if f.Map() == nil {
 			return
 		}
-		c.compileStyle(&edge.Attributes, f.Map())
+		c.compileStyle(&edge.Attributes.Style, f.Map())
 		return
 	}
 
-	if f.Name == "source-arrowhead" || f.Name == "target-arrowhead" {
+	if (f.Name.ScalarString() == "source-arrowhead" || f.Name.ScalarString() == "target-arrowhead") && f.Name.IsUnquoted() {
 		c.compileArrowheads(edge, f)
 	}
 }
 
 func (c *compiler) compileArrowheads(edge *d2graph.Edge, f *d2ir.Field) {
 	var attrs *d2graph.Attributes
-	if f.Name == "source-arrowhead" {
+	if f.Name.ScalarString() == "source-arrowhead" {
 		if edge.SrcArrowhead == nil {
 			edge.SrcArrowhead = &d2graph.Attributes{}
 		}
@@ -873,16 +925,17 @@ func (c *compiler) compileArrowheads(edge *d2graph.Edge, f *d2ir.Field) {
 
 	if f.Map() != nil {
 		for _, f2 := range f.Map().Fields {
-			keyword := strings.ToLower(f2.Name)
+			keyword := strings.ToLower(f2.Name.ScalarString())
 			_, isReserved := d2ast.SimpleReservedKeywords[keyword]
+			isReserved = isReserved && f2.Name.IsUnquoted()
 			if isReserved {
 				c.compileReserved(attrs, f2)
 				continue
-			} else if f2.Name == "style" {
+			} else if f2.Name.ScalarString() == "style" && f2.Name.IsUnquoted() {
 				if f2.Map() == nil {
 					continue
 				}
-				c.compileStyle(attrs, f2.Map())
+				c.compileStyle(&attrs.Style, f2.Map())
 				continue
 			} else {
 				c.errorf(f2.LastRef().AST(), `source-arrowhead/target-arrowhead map keys must be reserved keywords`)
@@ -991,7 +1044,7 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 
 func (c *compiler) validateKeys(obj *d2graph.Object, m *d2ir.Map) {
 	for _, f := range m.Fields {
-		if _, ok := d2ast.BoardKeywords[f.Name]; ok {
+		if _, ok := d2ast.BoardKeywords[f.Name.ScalarString()]; ok && f.Name.IsUnquoted() {
 			continue
 		}
 		c.validateKey(obj, f)
@@ -999,8 +1052,9 @@ func (c *compiler) validateKeys(obj *d2graph.Object, m *d2ir.Map) {
 }
 
 func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
-	keyword := strings.ToLower(f.Name)
+	keyword := strings.ToLower(f.Name.ScalarString())
 	_, isReserved := d2ast.ReservedKeywords[keyword]
+	isReserved = isReserved && f.Name.IsUnquoted()
 	if isReserved {
 		switch obj.Shape.Value {
 		case d2target.ShapeCircle, d2target.ShapeSquare:
@@ -1010,7 +1064,7 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 			}
 		}
 
-		switch f.Name {
+		switch f.Name.ScalarString() {
 		case "style":
 			if obj.Style.ThreeDee != nil {
 				if !strings.EqualFold(obj.Shape.Value, d2target.ShapeSquare) && !strings.EqualFold(obj.Shape.Value, d2target.ShapeRectangle) && !strings.EqualFold(obj.Shape.Value, d2target.ShapeHexagon) {
@@ -1045,7 +1099,7 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 		return
 	}
 
-	obj, ok := obj.HasChild([]string{f.Name})
+	obj, ok := obj.HasChild([]string{f.Name.ScalarString()})
 	if ok && f.Map() != nil {
 		c.validateKeys(obj, f.Map())
 	}
@@ -1207,7 +1261,7 @@ func (c *compiler) validateBoardLinks(g *d2graph.Graph) {
 		}
 
 		u, err := url.Parse(html.UnescapeString(obj.Link.Value))
-		isRemote := err == nil && strings.HasPrefix(u.Scheme, "http")
+		isRemote := err == nil && (u.Scheme != "" || strings.HasPrefix(u.Path, "/"))
 		if isRemote {
 			continue
 		}
@@ -1218,6 +1272,11 @@ func (c *compiler) validateBoardLinks(g *d2graph.Graph) {
 		}
 
 		if !hasBoard(g.RootBoard(), linkKey.IDA()) {
+			obj.Link = nil
+			continue
+		}
+
+		if slices.Equal(linkKey.StringIDA(), obj.Graph.IDA()) {
 			obj.Link = nil
 			continue
 		}
@@ -1233,34 +1292,34 @@ func (c *compiler) validateBoardLinks(g *d2graph.Graph) {
 	}
 }
 
-func hasBoard(root *d2graph.Graph, ida []string) bool {
+func hasBoard(root *d2graph.Graph, ida []d2ast.String) bool {
 	if len(ida) == 0 {
 		return true
 	}
-	if ida[0] == "root" {
+	if ida[0].ScalarString() == "root" && ida[0].IsUnquoted() {
 		return hasBoard(root, ida[1:])
 	}
 	id := ida[0]
 	if len(ida) == 1 {
-		return root.Name == id
+		return root.Name == id.ScalarString()
 	}
 	nextID := ida[1]
-	switch id {
+	switch id.ScalarString() {
 	case "layers":
 		for _, b := range root.Layers {
-			if b.Name == nextID {
+			if b.Name == nextID.ScalarString() {
 				return hasBoard(b, ida[2:])
 			}
 		}
 	case "scenarios":
 		for _, b := range root.Scenarios {
-			if b.Name == nextID {
+			if b.Name == nextID.ScalarString() {
 				return hasBoard(b, ida[2:])
 			}
 		}
 	case "steps":
 		for _, b := range root.Steps {
-			if b.Name == nextID {
+			if b.Name == nextID.ScalarString() {
 				return hasBoard(b, ida[2:])
 			}
 		}
@@ -1275,20 +1334,10 @@ func init() {
 	}
 }
 
-func d2graphIDA(irIDA []string) (ida []string) {
-	for _, el := range irIDA {
-		n := &d2ast.KeyPath{
-			Path: []*d2ast.StringBox{d2ast.MakeValueBox(d2ast.RawString(el, true)).StringBox()},
-		}
-		ida = append(ida, d2format.Format(n))
-	}
-	return ida
-}
-
 // Unused for now until shape: edge_group
 func (c *compiler) preprocessSeqDiagrams(m *d2ir.Map) {
 	for _, f := range m.Fields {
-		if f.Name == "shape" && f.Primary_.Value.ScalarString() == d2target.ShapeSequenceDiagram {
+		if f.Name.ScalarString() == "shape" && f.Name.IsUnquoted() && f.Primary_.Value.ScalarString() == d2target.ShapeSequenceDiagram {
 			c.preprocessEdgeGroup(m, m)
 			return
 		}
@@ -1340,8 +1389,8 @@ func (c *compiler) preprocessEdgeGroup(seqDiagram, m *d2ir.Map) {
 			f := srcParent.GetField(el)
 			if !isEdgeGroup(f) {
 				for j := 0; j < i+1; j++ {
-					e.ID.SrcPath = append([]string{"_"}, e.ID.SrcPath...)
-					e.ID.DstPath = append([]string{"_"}, e.ID.DstPath...)
+					e.ID.SrcPath = append([]d2ast.String{d2ast.FlatUnquotedString("_")}, e.ID.SrcPath...)
+					e.ID.DstPath = append([]d2ast.String{d2ast.FlatUnquotedString("_")}, e.ID.DstPath...)
 				}
 				break
 			}
@@ -1356,7 +1405,7 @@ func hoistActor(seqDiagram *d2ir.Map, f *d2ir.Field) {
 		seqDiagram.Fields = append(seqDiagram.Fields, f.Copy(seqDiagram).(*d2ir.Field))
 	} else {
 		d2ir.OverlayField(f2, f)
-		d2ir.ParentMap(f).DeleteField(f.Name)
+		d2ir.ParentMap(f).DeleteField(f.Name.ScalarString())
 	}
 }
 
@@ -1401,7 +1450,7 @@ func parentSeqDiagram(n d2ir.Node) *d2ir.Map {
 			return nil
 		}
 		for _, f := range m.Fields {
-			if f.Name == "shape" && f.Primary_.Value.ScalarString() == d2target.ShapeSequenceDiagram {
+			if f.Name.ScalarString() == "shape" && f.Name.IsUnquoted() && f.Primary_.Value.ScalarString() == d2target.ShapeSequenceDiagram {
 				return m
 			}
 		}
@@ -1410,7 +1459,7 @@ func parentSeqDiagram(n d2ir.Node) *d2ir.Map {
 }
 
 func compileConfig(ir *d2ir.Map) (*d2target.Config, error) {
-	f := ir.GetField("vars", "d2-config")
+	f := ir.GetField(d2ast.FlatUnquotedString("vars"), d2ast.FlatUnquotedString("d2-config"))
 	if f == nil || f.Map() == nil {
 		return nil, nil
 	}
@@ -1419,36 +1468,42 @@ func compileConfig(ir *d2ir.Map) (*d2target.Config, error) {
 
 	config := &d2target.Config{}
 
-	f = configMap.GetField("sketch")
+	f = configMap.GetField(d2ast.FlatUnquotedString("sketch"))
 	if f != nil {
 		val, _ := strconv.ParseBool(f.Primary().Value.ScalarString())
 		config.Sketch = &val
 	}
 
-	f = configMap.GetField("theme-id")
+	f = configMap.GetField(d2ast.FlatUnquotedString("theme-id"))
 	if f != nil {
 		val, _ := strconv.Atoi(f.Primary().Value.ScalarString())
 		config.ThemeID = go2.Pointer(int64(val))
 	}
 
-	f = configMap.GetField("dark-theme-id")
+	f = configMap.GetField(d2ast.FlatUnquotedString("dark-theme-id"))
 	if f != nil {
 		val, _ := strconv.Atoi(f.Primary().Value.ScalarString())
 		config.DarkThemeID = go2.Pointer(int64(val))
 	}
 
-	f = configMap.GetField("pad")
+	f = configMap.GetField(d2ast.FlatUnquotedString("pad"))
 	if f != nil {
 		val, _ := strconv.Atoi(f.Primary().Value.ScalarString())
 		config.Pad = go2.Pointer(int64(val))
 	}
 
-	f = configMap.GetField("layout-engine")
+	f = configMap.GetField(d2ast.FlatUnquotedString("layout-engine"))
 	if f != nil {
 		config.LayoutEngine = go2.Pointer(f.Primary().Value.ScalarString())
 	}
 
-	f = configMap.GetField("theme-overrides")
+	f = configMap.GetField(d2ast.FlatUnquotedString("center"))
+	if f != nil {
+		val, _ := strconv.ParseBool(f.Primary().Value.ScalarString())
+		config.Center = &val
+	}
+
+	f = configMap.GetField(d2ast.FlatUnquotedString("theme-overrides"))
 	if f != nil {
 		overrides, err := compileThemeOverrides(f.Map())
 		if err != nil {
@@ -1456,7 +1511,7 @@ func compileConfig(ir *d2ir.Map) (*d2target.Config, error) {
 		}
 		config.ThemeOverrides = overrides
 	}
-	f = configMap.GetField("dark-theme-overrides")
+	f = configMap.GetField(d2ast.FlatUnquotedString("dark-theme-overrides"))
 	if f != nil {
 		overrides, err := compileThemeOverrides(f.Map())
 		if err != nil {
@@ -1464,12 +1519,12 @@ func compileConfig(ir *d2ir.Map) (*d2target.Config, error) {
 		}
 		config.DarkThemeOverrides = overrides
 	}
-	f = configMap.GetField("data")
+	f = configMap.GetField(d2ast.FlatUnquotedString("data"))
 	if f != nil && f.Map() != nil {
 		config.Data = make(map[string]interface{})
 		for _, f := range f.Map().Fields {
 			if f.Primary() != nil {
-				config.Data[f.Name] = f.Primary().Value.ScalarString()
+				config.Data[f.Name.ScalarString()] = f.Primary().Value.ScalarString()
 			} else if f.Composite != nil {
 				var arr []interface{}
 				switch c := f.Composite.(type) {
@@ -1481,7 +1536,7 @@ func compileConfig(ir *d2ir.Map) (*d2target.Config, error) {
 						}
 					}
 				}
-				config.Data[f.Name] = arr
+				config.Data[f.Name.ScalarString()] = arr
 			}
 		}
 	}
@@ -1498,7 +1553,7 @@ func compileThemeOverrides(m *d2ir.Map) (*d2target.ThemeOverrides, error) {
 	err := &d2parser.ParseError{}
 FOR:
 	for _, f := range m.Fields {
-		switch strings.ToUpper(f.Name) {
+		switch strings.ToUpper(f.Name.ScalarString()) {
 		case "N1":
 			themeOverrides.N1 = go2.Pointer(f.Primary().Value.ScalarString())
 		case "N2":
@@ -1536,11 +1591,11 @@ FOR:
 		case "AB5":
 			themeOverrides.AB5 = go2.Pointer(f.Primary().Value.ScalarString())
 		default:
-			err.Errors = append(err.Errors, d2parser.Errorf(f.LastPrimaryKey(), fmt.Sprintf(`"%s" is not a valid theme code`, f.Name)).(d2ast.Error))
+			err.Errors = append(err.Errors, d2parser.Errorf(f.LastPrimaryKey(), fmt.Sprintf(`"%s" is not a valid theme code`, f.Name.ScalarString())).(d2ast.Error))
 			continue FOR
 		}
 		if !go2.Contains(color.NamedColors, strings.ToLower(f.Primary().Value.ScalarString())) && !color.ColorHexRegex.MatchString(f.Primary().Value.ScalarString()) {
-			err.Errors = append(err.Errors, d2parser.Errorf(f.LastPrimaryKey(), fmt.Sprintf(`expected "%s" to be a valid named color ("orange") or a hex code ("#f0ff3a")`, f.Name)).(d2ast.Error))
+			err.Errors = append(err.Errors, d2parser.Errorf(f.LastPrimaryKey(), fmt.Sprintf(`expected "%s" to be a valid named color ("orange") or a hex code ("#f0ff3a")`, f.Name.ScalarString())).(d2ast.Error))
 		}
 	}
 
@@ -1552,4 +1607,22 @@ FOR:
 		return &themeOverrides, nil
 	}
 	return nil, nil
+}
+
+func (c *compiler) setDefaultShapes(g *d2graph.Graph) {
+	for _, obj := range g.Objects {
+		if obj.Shape.Value == "" {
+			if obj.OuterSequenceDiagram() != nil {
+				obj.Shape.Value = d2target.ShapeRectangle
+			} else if obj.Language == "latex" {
+				obj.Shape.Value = d2target.ShapeText
+			} else if obj.Language == "markdown" {
+				obj.Shape.Value = d2target.ShapeText
+			} else if obj.Language != "" {
+				obj.Shape.Value = d2target.ShapeCode
+			} else {
+				obj.Shape.Value = d2target.ShapeRectangle
+			}
+		}
+	}
 }

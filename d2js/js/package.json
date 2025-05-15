@@ -1,0 +1,61 @@
+{
+  "name": "@terrastruct/d2",
+  "author": "Terrastruct, Inc.",
+  "description": "D2.js is a wrapper around the WASM build of D2, the modern text-to-diagram language.",
+  "version": "0.1.23",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/terrastruct/d2.git",
+    "directory": "d2js/js"
+  },
+  "bugs": {
+    "url": "https://github.com/terrastruct/d2/issues"
+  },
+  "homepage": "https://github.com/terrastruct/d2/tree/master/d2js/js#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "exports": {
+    ".": {
+      "browser": "./dist/browser/index.js",
+      "import": {
+        "browser": "./dist/browser/index.js",
+        "default": "./dist/node-esm/index.js",
+        "types": "./index.d.ts"
+      },
+      "require": {
+        "default": "./dist/node-cjs/index.js",
+        "types": "./index.d.ts"
+      },
+      "default": "./dist/node-esm/index.js"
+    },
+    "./worker": "./dist/browser/worker.js"
+  },
+  "files": [
+    "dist",
+    "index.d.ts"
+  ],
+  "types": "./index.d.ts",
+  "scripts": {
+    "build": "./make.sh build",
+    "test": "bun test test/unit",
+    "test:integration": "bun test test/integration",
+    "test:all": "bun run test && bun run test:integration",
+    "dev": "bun --watch dev-server.js"
+  },
+  "keywords": [
+    "d2",
+    "d2lang",
+    "diagram",
+    "wasm",
+    "text-to-diagram",
+    "go"
+  ],
+  "license": "MPL-2.0",
+  "devDependencies": {
+    "bun": "latest"
+  }
+}

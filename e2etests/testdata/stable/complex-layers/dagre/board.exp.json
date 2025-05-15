@@ -1,13 +1,63 @@
 {
   "name": "",
+  "config": {
+    "sketch": false,
+    "themeID": 0,
+    "darkThemeID": null,
+    "pad": null,
+    "center": null,
+    "layoutEngine": null
+  },
   "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
-      "id": "window",
+      "id": "desc",
       "type": "rectangle",
       "pos": {
         "x": 0,
+        "y": 0
+      },
+      "width": 261,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B6",
+      "stroke": "B1",
+      "animated": false,
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Multi-layer diagram of a home.",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 216,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "window",
+      "type": "rectangle",
+      "pos": {
+        "x": 321,
         "y": 0
       },
       "width": 103,
@@ -18,6 +68,7 @@
       "borderRadius": 0,
       "fill": "B6",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -48,7 +99,7 @@
       "id": "roof",
       "type": "rectangle",
       "pos": {
-        "x": 163,
+        "x": 484,
         "y": 0
       },
       "width": 75,
@@ -59,6 +110,7 @@
       "borderRadius": 0,
       "fill": "B6",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -89,7 +141,7 @@
       "id": "garage",
       "type": "rectangle",
       "pos": {
-        "x": 298,
+        "x": 619,
         "y": 0
       },
       "width": 94,
@@ -100,6 +152,7 @@
       "borderRadius": 0,
       "fill": "B6",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -143,6 +196,7 @@
     "borderRadius": 0,
     "fill": "N7",
     "stroke": "",
+    "animated": false,
     "shadow": false,
     "3d": false,
     "multiple": false,
@@ -189,6 +243,7 @@
           "borderRadius": 0,
           "fill": "B6",
           "stroke": "B1",
+          "animated": false,
           "shadow": false,
           "3d": false,
           "multiple": false,
@@ -230,6 +285,7 @@
           "borderRadius": 0,
           "fill": "B6",
           "stroke": "B1",
+          "animated": false,
           "shadow": false,
           "3d": false,
           "multiple": false,
@@ -273,6 +329,7 @@
         "borderRadius": 0,
         "fill": "N7",
         "stroke": "",
+        "animated": false,
         "shadow": false,
         "3d": false,
         "multiple": false,
@@ -319,6 +376,7 @@
           "borderRadius": 0,
           "fill": "B6",
           "stroke": "B1",
+          "animated": false,
           "shadow": false,
           "3d": false,
           "multiple": false,
@@ -360,6 +418,7 @@
           "borderRadius": 0,
           "fill": "B6",
           "stroke": "B1",
+          "animated": false,
           "shadow": false,
           "3d": false,
           "multiple": false,
@@ -401,6 +460,7 @@
           "borderRadius": 0,
           "fill": "B6",
           "stroke": "B1",
+          "animated": false,
           "shadow": false,
           "3d": false,
           "multiple": false,
@@ -444,6 +504,7 @@
         "borderRadius": 0,
         "fill": "N7",
         "stroke": "",
+        "animated": false,
         "shadow": false,
         "3d": false,
         "multiple": false,
@@ -490,6 +551,7 @@
           "borderRadius": 0,
           "fill": "B6",
           "stroke": "B1",
+          "animated": false,
           "shadow": false,
           "3d": false,
           "multiple": false,
@@ -531,6 +593,7 @@
           "borderRadius": 0,
           "fill": "B6",
           "stroke": "B1",
+          "animated": false,
           "shadow": false,
           "3d": false,
           "multiple": false,
@@ -574,6 +637,7 @@
         "borderRadius": 0,
         "fill": "N7",
         "stroke": "",
+        "animated": false,
         "shadow": false,
         "3d": false,
         "multiple": false,
@@ -602,9 +666,52 @@
     },
     {
       "name": "repair",
-      "isFolderOnly": true,
+      "isFolderOnly": false,
       "fontFamily": "SourceSansPro",
-      "shapes": [],
+      "shapes": [
+        {
+          "id": "desc",
+          "type": "rectangle",
+          "pos": {
+            "x": 0,
+            "y": 0
+          },
+          "width": 200,
+          "height": 66,
+          "opacity": 1,
+          "strokeDash": 0,
+          "strokeWidth": 2,
+          "borderRadius": 0,
+          "fill": "B6",
+          "stroke": "B1",
+          "animated": false,
+          "shadow": false,
+          "3d": false,
+          "multiple": false,
+          "double-border": false,
+          "tooltip": "",
+          "link": "",
+          "icon": null,
+          "iconPosition": "",
+          "blend": false,
+          "fields": null,
+          "methods": null,
+          "columns": null,
+          "label": "How to repair a home.",
+          "fontSize": 16,
+          "fontFamily": "DEFAULT",
+          "language": "",
+          "color": "N1",
+          "italic": false,
+          "bold": true,
+          "underline": false,
+          "labelWidth": 155,
+          "labelHeight": 21,
+          "labelPosition": "INSIDE_MIDDLE_CENTER",
+          "zIndex": 0,
+          "level": 1
+        }
+      ],
       "connections": [],
       "root": {
         "id": "",
@@ -621,6 +728,7 @@
         "borderRadius": 0,
         "fill": "N7",
         "stroke": "",
+        "animated": false,
         "shadow": false,
         "3d": false,
         "multiple": false,
@@ -653,10 +761,52 @@
           "fontFamily": "SourceSansPro",
           "shapes": [
             {
+              "id": "desc",
+              "type": "rectangle",
+              "pos": {
+                "x": 0,
+                "y": 50
+              },
+              "width": 200,
+              "height": 66,
+              "opacity": 1,
+              "strokeDash": 0,
+              "strokeWidth": 2,
+              "borderRadius": 0,
+              "fill": "B6",
+              "stroke": "B1",
+              "animated": false,
+              "shadow": false,
+              "3d": false,
+              "multiple": false,
+              "double-border": false,
+              "tooltip": "",
+              "link": "",
+              "icon": null,
+              "iconPosition": "",
+              "blend": false,
+              "fields": null,
+              "methods": null,
+              "columns": null,
+              "label": "How to repair a home.",
+              "fontSize": 16,
+              "fontFamily": "DEFAULT",
+              "language": "",
+              "color": "N1",
+              "italic": false,
+              "bold": true,
+              "underline": false,
+              "labelWidth": 155,
+              "labelHeight": 21,
+              "labelPosition": "INSIDE_MIDDLE_CENTER",
+              "zIndex": 0,
+              "level": 1
+            },
+            {
               "id": "find contractors",
               "type": "rectangle",
               "pos": {
-                "x": 10,
+                "x": 250,
                 "y": 20
               },
               "width": 341,
@@ -667,6 +817,7 @@
               "borderRadius": 0,
               "fill": "B4",
               "stroke": "B1",
+              "animated": false,
               "shadow": false,
               "3d": false,
               "multiple": false,
@@ -697,7 +848,7 @@
               "id": "find contractors.craigslist",
               "type": "rectangle",
               "pos": {
-                "x": 40,
+                "x": 280,
                 "y": 50
               },
               "width": 110,
@@ -708,6 +859,7 @@
               "borderRadius": 0,
               "fill": "B5",
               "stroke": "B1",
+              "animated": false,
               "shadow": false,
               "3d": false,
               "multiple": false,
@@ -738,7 +890,7 @@
               "id": "find contractors.facebook",
               "type": "rectangle",
               "pos": {
-                "x": 210,
+                "x": 450,
                 "y": 50
               },
               "width": 111,
@@ -749,6 +901,7 @@
               "borderRadius": 0,
               "fill": "B5",
               "stroke": "B1",
+              "animated": false,
               "shadow": false,
               "3d": false,
               "multiple": false,
@@ -792,6 +945,7 @@
             "borderRadius": 0,
             "fill": "N7",
             "stroke": "",
+            "animated": false,
             "shadow": false,
             "3d": false,
             "multiple": false,
@@ -824,10 +978,52 @@
           "fontFamily": "SourceSansPro",
           "shapes": [
             {
+              "id": "desc",
+              "type": "rectangle",
+              "pos": {
+                "x": 0,
+                "y": 50
+              },
+              "width": 200,
+              "height": 66,
+              "opacity": 1,
+              "strokeDash": 0,
+              "strokeWidth": 2,
+              "borderRadius": 0,
+              "fill": "B6",
+              "stroke": "B1",
+              "animated": false,
+              "shadow": false,
+              "3d": false,
+              "multiple": false,
+              "double-border": false,
+              "tooltip": "",
+              "link": "",
+              "icon": null,
+              "iconPosition": "",
+              "blend": false,
+              "fields": null,
+              "methods": null,
+              "columns": null,
+              "label": "How to repair a home.",
+              "fontSize": 16,
+              "fontFamily": "DEFAULT",
+              "language": "",
+              "color": "N1",
+              "italic": false,
+              "bold": true,
+              "underline": false,
+              "labelWidth": 155,
+              "labelHeight": 21,
+              "labelPosition": "INSIDE_MIDDLE_CENTER",
+              "zIndex": 0,
+              "level": 1
+            },
+            {
               "id": "find contractors",
               "type": "rectangle",
               "pos": {
-                "x": 10,
+                "x": 250,
                 "y": 20
               },
               "width": 341,
@@ -838,6 +1034,7 @@
               "borderRadius": 0,
               "fill": "B4",
               "stroke": "B1",
+              "animated": false,
               "shadow": false,
               "3d": false,
               "multiple": false,
@@ -868,7 +1065,7 @@
               "id": "find contractors.craigslist",
               "type": "rectangle",
               "pos": {
-                "x": 40,
+                "x": 280,
                 "y": 50
               },
               "width": 110,
@@ -879,6 +1076,7 @@
               "borderRadius": 0,
               "fill": "B5",
               "stroke": "B1",
+              "animated": false,
               "shadow": false,
               "3d": false,
               "multiple": false,
@@ -909,7 +1107,7 @@
               "id": "find contractors.facebook",
               "type": "rectangle",
               "pos": {
-                "x": 210,
+                "x": 450,
                 "y": 50
               },
               "width": 111,
@@ -920,6 +1118,7 @@
               "borderRadius": 0,
               "fill": "B5",
               "stroke": "B1",
+              "animated": false,
               "shadow": false,
               "3d": false,
               "multiple": false,
@@ -950,7 +1149,7 @@
               "id": "solicit quotes",
               "type": "rectangle",
               "pos": {
-                "x": 196,
+                "x": 436,
                 "y": 266
               },
               "width": 140,
@@ -961,6 +1160,7 @@
               "borderRadius": 0,
               "fill": "B6",
               "stroke": "B1",
+              "animated": false,
               "shadow": false,
               "3d": false,
               "multiple": false,
@@ -1012,21 +1212,22 @@
               "labelHeight": 0,
               "labelPosition": "",
               "labelPercentage": 0,
+              "link": "",
               "route": [
                 {
-                  "x": 265.5,
+                  "x": 505.5,
                   "y": 146
                 },
                 {
-                  "x": 265.5,
+                  "x": 505.5,
                   "y": 202
                 },
                 {
-                  "x": 265.5,
+                  "x": 505.5,
                   "y": 226
                 },
                 {
-                  "x": 265.5,
+                  "x": 505.5,
                   "y": 266
                 }
               ],
@@ -1052,6 +1253,7 @@
             "borderRadius": 0,
             "fill": "N7",
             "stroke": "",
+            "animated": false,
             "shadow": false,
             "3d": false,
             "multiple": false,
@@ -1084,10 +1286,52 @@
           "fontFamily": "SourceSansPro",
           "shapes": [
             {
+              "id": "desc",
+              "type": "rectangle",
+              "pos": {
+                "x": 0,
+                "y": 50
+              },
+              "width": 200,
+              "height": 66,
+              "opacity": 1,
+              "strokeDash": 0,
+              "strokeWidth": 2,
+              "borderRadius": 0,
+              "fill": "B6",
+              "stroke": "B1",
+              "animated": false,
+              "shadow": false,
+              "3d": false,
+              "multiple": false,
+              "double-border": false,
+              "tooltip": "",
+              "link": "",
+              "icon": null,
+              "iconPosition": "",
+              "blend": false,
+              "fields": null,
+              "methods": null,
+              "columns": null,
+              "label": "How to repair a home.",
+              "fontSize": 16,
+              "fontFamily": "DEFAULT",
+              "language": "",
+              "color": "N1",
+              "italic": false,
+              "bold": true,
+              "underline": false,
+              "labelWidth": 155,
+              "labelHeight": 21,
+              "labelPosition": "INSIDE_MIDDLE_CENTER",
+              "zIndex": 0,
+              "level": 1
+            },
+            {
               "id": "find contractors",
               "type": "rectangle",
               "pos": {
-                "x": 10,
+                "x": 250,
                 "y": 20
               },
               "width": 341,
@@ -1098,6 +1342,7 @@
               "borderRadius": 0,
               "fill": "B4",
               "stroke": "B1",
+              "animated": false,
               "shadow": false,
               "3d": false,
               "multiple": false,
@@ -1128,7 +1373,7 @@
               "id": "find contractors.craigslist",
               "type": "rectangle",
               "pos": {
-                "x": 40,
+                "x": 280,
                 "y": 50
               },
               "width": 110,
@@ -1139,6 +1384,7 @@
               "borderRadius": 0,
               "fill": "B5",
               "stroke": "B1",
+              "animated": false,
               "shadow": false,
               "3d": false,
               "multiple": false,
@@ -1169,7 +1415,7 @@
               "id": "find contractors.facebook",
               "type": "rectangle",
               "pos": {
-                "x": 210,
+                "x": 450,
                 "y": 50
               },
               "width": 111,
@@ -1180,6 +1426,7 @@
               "borderRadius": 0,
               "fill": "B5",
               "stroke": "B1",
+              "animated": false,
               "shadow": false,
               "3d": false,
               "multiple": false,
@@ -1210,7 +1457,7 @@
               "id": "solicit quotes",
               "type": "rectangle",
               "pos": {
-                "x": 196,
+                "x": 436,
                 "y": 266
               },
               "width": 140,
@@ -1221,6 +1468,7 @@
               "borderRadius": 0,
               "fill": "B6",
               "stroke": "B1",
+              "animated": false,
               "shadow": false,
               "3d": false,
               "multiple": false,
@@ -1251,7 +1499,7 @@
               "id": "obtain quotes",
               "type": "rectangle",
               "pos": {
-                "x": 401,
+                "x": 641,
                 "y": 50
               },
               "width": 143,
@@ -1262,6 +1510,7 @@
               "borderRadius": 0,
               "fill": "B6",
               "stroke": "B1",
+              "animated": false,
               "shadow": false,
               "3d": false,
               "multiple": false,
@@ -1292,7 +1541,7 @@
               "id": "negotiate",
               "type": "rectangle",
               "pos": {
-                "x": 417,
+                "x": 657,
                 "y": 266
               },
               "width": 112,
@@ -1303,6 +1552,7 @@
               "borderRadius": 0,
               "fill": "B6",
               "stroke": "B1",
+              "animated": false,
               "shadow": false,
               "3d": false,
               "multiple": false,
@@ -1354,21 +1604,22 @@
               "labelHeight": 0,
               "labelPosition": "",
               "labelPercentage": 0,
+              "link": "",
               "route": [
                 {
-                  "x": 265.5,
+                  "x": 505.5,
                   "y": 146
                 },
                 {
-                  "x": 265.5,
+                  "x": 505.5,
                   "y": 202
                 },
                 {
-                  "x": 265.5,
+                  "x": 505.5,
                   "y": 226
                 },
                 {
-                  "x": 265.5,
+                  "x": 505.5,
                   "y": 266
                 }
               ],
@@ -1401,21 +1652,22 @@
               "labelHeight": 0,
               "labelPosition": "",
               "labelPercentage": 0,
+              "link": "",
               "route": [
                 {
-                  "x": 472.5,
+                  "x": 712.5,
                   "y": 116
                 },
                 {
-                  "x": 472.5,
+                  "x": 712.5,
                   "y": 156
                 },
                 {
-                  "x": 472.5,
+                  "x": 712.5,
                   "y": 226
                 },
                 {
-                  "x": 472.5,
+                  "x": 712.5,
                   "y": 266
                 }
               ],
@@ -1441,6 +1693,7 @@
             "borderRadius": 0,
             "fill": "N7",
             "stroke": "",
+            "animated": false,
             "shadow": false,
             "3d": false,
             "multiple": false,
@@ -1473,10 +1726,52 @@
           "fontFamily": "SourceSansPro",
           "shapes": [
             {
+              "id": "desc",
+              "type": "rectangle",
+              "pos": {
+                "x": 0,
+                "y": 50
+              },
+              "width": 200,
+              "height": 66,
+              "opacity": 1,
+              "strokeDash": 0,
+              "strokeWidth": 2,
+              "borderRadius": 0,
+              "fill": "B6",
+              "stroke": "B1",
+              "animated": false,
+              "shadow": false,
+              "3d": false,
+              "multiple": false,
+              "double-border": false,
+              "tooltip": "",
+              "link": "",
+              "icon": null,
+              "iconPosition": "",
+              "blend": false,
+              "fields": null,
+              "methods": null,
+              "columns": null,
+              "label": "How to repair a home.",
+              "fontSize": 16,
+              "fontFamily": "DEFAULT",
+              "language": "",
+              "color": "N1",
+              "italic": false,
+              "bold": true,
+              "underline": false,
+              "labelWidth": 155,
+              "labelHeight": 21,
+              "labelPosition": "INSIDE_MIDDLE_CENTER",
+              "zIndex": 0,
+              "level": 1
+            },
+            {
               "id": "find contractors",
               "type": "rectangle",
               "pos": {
-                "x": 10,
+                "x": 250,
                 "y": 20
               },
               "width": 341,
@@ -1487,6 +1782,7 @@
               "borderRadius": 0,
               "fill": "B4",
               "stroke": "B1",
+              "animated": false,
               "shadow": false,
               "3d": false,
               "multiple": false,
@@ -1517,7 +1813,7 @@
               "id": "find contractors.craigslist",
               "type": "rectangle",
               "pos": {
-                "x": 40,
+                "x": 280,
                 "y": 50
               },
               "width": 110,
@@ -1528,6 +1824,7 @@
               "borderRadius": 0,
               "fill": "B5",
               "stroke": "B1",
+              "animated": false,
               "shadow": false,
               "3d": false,
               "multiple": false,
@@ -1558,7 +1855,7 @@
               "id": "find contractors.facebook",
               "type": "rectangle",
               "pos": {
-                "x": 210,
+                "x": 450,
                 "y": 50
               },
               "width": 111,
@@ -1569,6 +1866,7 @@
               "borderRadius": 0,
               "fill": "B5",
               "stroke": "B1",
+              "animated": false,
               "shadow": false,
               "3d": false,
               "multiple": false,
@@ -1599,7 +1897,7 @@
               "id": "solicit quotes",
               "type": "rectangle",
               "pos": {
-                "x": 196,
+                "x": 436,
                 "y": 266
               },
               "width": 140,
@@ -1610,6 +1908,7 @@
               "borderRadius": 0,
               "fill": "B6",
               "stroke": "B1",
+              "animated": false,
               "shadow": false,
               "3d": false,
               "multiple": false,
@@ -1640,7 +1939,7 @@
               "id": "obtain quotes",
               "type": "rectangle",
               "pos": {
-                "x": 401,
+                "x": 641,
                 "y": 50
               },
               "width": 143,
@@ -1651,6 +1950,7 @@
               "borderRadius": 0,
               "fill": "B6",
               "stroke": "B1",
+              "animated": false,
               "shadow": false,
               "3d": false,
               "multiple": false,
@@ -1681,7 +1981,7 @@
               "id": "negotiate",
               "type": "rectangle",
               "pos": {
-                "x": 417,
+                "x": 657,
                 "y": 266
               },
               "width": 112,
@@ -1692,6 +1992,7 @@
               "borderRadius": 0,
               "fill": "B6",
               "stroke": "B1",
+              "animated": false,
               "shadow": false,
               "3d": false,
               "multiple": false,
@@ -1722,7 +2023,7 @@
               "id": "book the best bid",
               "type": "rectangle",
               "pos": {
-                "x": 389,
+                "x": 629,
                 "y": 432
               },
               "width": 167,
@@ -1733,6 +2034,7 @@
               "borderRadius": 0,
               "fill": "B6",
               "stroke": "B1",
+              "animated": false,
               "shadow": false,
               "3d": false,
               "multiple": false,
@@ -1784,21 +2086,22 @@
               "labelHeight": 0,
               "labelPosition": "",
               "labelPercentage": 0,
+              "link": "",
               "route": [
                 {
-                  "x": 265.5,
+                  "x": 505.5,
                   "y": 146
                 },
                 {
-                  "x": 265.5,
+                  "x": 505.5,
                   "y": 202
                 },
                 {
-                  "x": 265.5,
+                  "x": 505.5,
                   "y": 226
                 },
                 {
-                  "x": 265.5,
+                  "x": 505.5,
                   "y": 266
                 }
               ],
@@ -1831,21 +2134,22 @@
               "labelHeight": 0,
               "labelPosition": "",
               "labelPercentage": 0,
+              "link": "",
               "route": [
                 {
-                  "x": 472.5,
+                  "x": 712.5,
                   "y": 116
                 },
                 {
-                  "x": 472.5,
+                  "x": 712.5,
                   "y": 156
                 },
                 {
-                  "x": 472.5,
+                  "x": 712.5,
                   "y": 226
                 },
                 {
-                  "x": 472.5,
+                  "x": 712.5,
                   "y": 266
                 }
               ],
@@ -1878,21 +2182,22 @@
               "labelHeight": 0,
               "labelPosition": "",
               "labelPercentage": 0,
+              "link": "",
               "route": [
                 {
-                  "x": 472.5,
+                  "x": 712.5,
                   "y": 332
                 },
                 {
-                  "x": 472.5,
+                  "x": 712.5,
                   "y": 372
                 },
                 {
-                  "x": 472.5,
+                  "x": 712.5,
                   "y": 392
                 },
                 {
-                  "x": 472.5,
+                  "x": 712.5,
                   "y": 432
                 }
               ],
@@ -1918,6 +2223,7 @@
             "borderRadius": 0,
             "fill": "N7",
             "stroke": "",
+            "animated": false,
             "shadow": false,
             "3d": false,
             "multiple": false,
@@ -1954,10 +2260,52 @@
       "fontFamily": "SourceSansPro",
       "shapes": [
         {
-          "id": "window",
+          "id": "desc",
           "type": "rectangle",
           "pos": {
             "x": 0,
+            "y": 0
+          },
+          "width": 261,
+          "height": 66,
+          "opacity": 1,
+          "strokeDash": 0,
+          "strokeWidth": 2,
+          "borderRadius": 0,
+          "fill": "B6",
+          "stroke": "B1",
+          "animated": false,
+          "shadow": false,
+          "3d": false,
+          "multiple": false,
+          "double-border": false,
+          "tooltip": "",
+          "link": "",
+          "icon": null,
+          "iconPosition": "",
+          "blend": false,
+          "fields": null,
+          "methods": null,
+          "columns": null,
+          "label": "Multi-layer diagram of a home.",
+          "fontSize": 16,
+          "fontFamily": "DEFAULT",
+          "language": "",
+          "color": "N1",
+          "italic": false,
+          "bold": true,
+          "underline": false,
+          "labelWidth": 216,
+          "labelHeight": 21,
+          "labelPosition": "INSIDE_MIDDLE_CENTER",
+          "zIndex": 0,
+          "level": 1
+        },
+        {
+          "id": "window",
+          "type": "rectangle",
+          "pos": {
+            "x": 321,
             "y": 0
           },
           "width": 103,
@@ -1968,6 +2316,7 @@
           "borderRadius": 0,
           "fill": "B6",
           "stroke": "B1",
+          "animated": false,
           "shadow": false,
           "3d": false,
           "multiple": false,
@@ -1998,7 +2347,7 @@
           "id": "roof",
           "type": "rectangle",
           "pos": {
-            "x": 163,
+            "x": 484,
             "y": 0
           },
           "width": 75,
@@ -2009,6 +2358,7 @@
           "borderRadius": 0,
           "fill": "B6",
           "stroke": "B1",
+          "animated": false,
           "shadow": false,
           "3d": false,
           "multiple": false,
@@ -2039,7 +2389,7 @@
           "id": "garage",
           "type": "rectangle",
           "pos": {
-            "x": 298,
+            "x": 619,
             "y": 0
           },
           "width": 94,
@@ -2050,6 +2400,7 @@
           "borderRadius": 0,
           "fill": "B6",
           "stroke": "B1",
+          "animated": false,
           "shadow": false,
           "3d": false,
           "multiple": false,
@@ -2080,7 +2431,7 @@
           "id": "water",
           "type": "rectangle",
           "pos": {
-            "x": 452,
+            "x": 773,
             "y": 0
           },
           "width": 88,
@@ -2091,6 +2442,7 @@
           "borderRadius": 0,
           "fill": "B6",
           "stroke": "B1",
+          "animated": false,
           "shadow": false,
           "3d": false,
           "multiple": false,
@@ -2121,7 +2473,7 @@
           "id": "rain",
           "type": "rectangle",
           "pos": {
-            "x": 600,
+            "x": 921,
             "y": 0
           },
           "width": 73,
@@ -2132,6 +2484,7 @@
           "borderRadius": 0,
           "fill": "B6",
           "stroke": "B1",
+          "animated": false,
           "shadow": false,
           "3d": false,
           "multiple": false,
@@ -2162,7 +2515,7 @@
           "id": "thunder",
           "type": "rectangle",
           "pos": {
-            "x": 733,
+            "x": 1054,
             "y": 0
           },
           "width": 103,
@@ -2173,6 +2526,7 @@
           "borderRadius": 0,
           "fill": "B6",
           "stroke": "B1",
+          "animated": false,
           "shadow": false,
           "3d": false,
           "multiple": false,
@@ -2216,6 +2570,7 @@
         "borderRadius": 0,
         "fill": "N7",
         "stroke": "",
+        "animated": false,
         "shadow": false,
         "3d": false,
         "multiple": false,

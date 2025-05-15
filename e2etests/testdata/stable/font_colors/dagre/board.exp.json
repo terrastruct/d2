@@ -1,5 +1,13 @@
 {
   "name": "",
+  "config": {
+    "sketch": false,
+    "themeID": 0,
+    "darkThemeID": null,
+    "pad": null,
+    "center": null,
+    "layoutEngine": null
+  },
   "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
@@ -18,6 +26,7 @@
       "borderRadius": 0,
       "fill": "B6",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -59,6 +68,7 @@
       "borderRadius": 0,
       "fill": "B6",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -100,6 +110,7 @@
       "borderRadius": 0,
       "fill": "transparent",
       "stroke": "N1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -150,6 +161,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 42.5,
@@ -190,6 +202,7 @@
     "borderRadius": 0,
     "fill": "N7",
     "stroke": "",
+    "animated": false,
     "shadow": false,
     "3d": false,
     "multiple": false,

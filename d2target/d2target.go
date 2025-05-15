@@ -34,6 +34,8 @@ const (
 
 	MIN_ARROWHEAD_STROKE_WIDTH = 2
 	ARROWHEAD_PADDING          = 2.
+
+	CONNECTION_ICON_LABEL_GAP = 8
 )
 
 var BorderOffset = geo.NewVector(5, 5)
@@ -84,12 +86,18 @@ type Diagram struct {
 	Shapes      []Shape      `json:"shapes"`
 	Connections []Connection `json:"connections"`
 
-	Root Shape `json:"root"`
+	Root   Shape   `json:"root"`
+	Legend *Legend `json:"legend,omitempty"`
 	// Maybe Icon can be used as a watermark in the root shape
 
 	Layers    []*Diagram `json:"layers,omitempty"`
 	Scenarios []*Diagram `json:"scenarios,omitempty"`
 	Steps     []*Diagram `json:"steps,omitempty"`
+}
+
+type Legend struct {
+	Shapes      []Shape      `json:"shapes,omitempty"`
+	Connections []Connection `json:"connections,omitempty"`
 }
 
 func (d *Diagram) GetBoard(boardPath []string) *Diagram {
@@ -223,13 +231,16 @@ func (diagram Diagram) HasShape(condition func(Shape) bool) bool {
 	return false
 }
 
-func (diagram Diagram) HashID() (string, error) {
+func (diagram Diagram) HashID(salt *string) (string, error) {
 	bytes, err := diagram.Bytes()
 	if err != nil {
 		return "", err
 	}
 	h := fnv.New32a()
 	h.Write(bytes)
+	if salt != nil {
+		h.Write([]byte(*salt))
+	}
 	// CSS names can't start with numbers, so prepend a little something
 	return fmt.Sprintf("d2-%d", h.Sum32()), nil
 }
@@ -274,6 +285,13 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 		y1 = go2.Min(y1, targetShape.Pos.Y-int(math.Ceil(float64(targetShape.StrokeWidth)/2.)))
 		x2 = go2.Max(x2, targetShape.Pos.X+targetShape.Width+int(math.Ceil(float64(targetShape.StrokeWidth)/2.)))
 		y2 = go2.Max(y2, targetShape.Pos.Y+targetShape.Height+int(math.Ceil(float64(targetShape.StrokeWidth)/2.)))
+
+		if targetShape.Type == ShapeC4Person {
+			headRadius := int(float64(targetShape.Width) * 0.22)
+			headCenterY := int(float64(targetShape.Height) * 0.18)
+			headTop := targetShape.Pos.Y + headCenterY - headRadius
+			y1 = go2.Min(y1, headTop-targetShape.StrokeWidth)
+		}
 
 		if targetShape.Tooltip != "" || targetShape.Link != "" {
 			// 16 is the icon radius
@@ -438,6 +456,16 @@ func (diagram Diagram) GetCorpus() string {
 		}
 	}
 
+	if diagram.Legend != nil {
+		corpus += "Legend"
+		for _, s := range diagram.Legend.Shapes {
+			corpus += s.Label
+		}
+		for _, c := range diagram.Legend.Connections {
+			corpus += c.Label
+		}
+	}
+
 	return corpus
 }
 
@@ -469,16 +497,18 @@ type Shape struct {
 	FillPattern string `json:"fillPattern,omitempty"`
 	Stroke      string `json:"stroke"`
 
+	Animated     bool `json:"animated"`
 	Shadow       bool `json:"shadow"`
 	ThreeDee     bool `json:"3d"`
 	Multiple     bool `json:"multiple"`
 	DoubleBorder bool `json:"double-border"`
 
-	Tooltip      string   `json:"tooltip"`
-	Link         string   `json:"link"`
-	PrettyLink   string   `json:"prettyLink,omitempty"`
-	Icon         *url.URL `json:"icon"`
-	IconPosition string   `json:"iconPosition"`
+	Tooltip          string   `json:"tooltip"`
+	Link             string   `json:"link"`
+	PrettyLink       string   `json:"prettyLink,omitempty"`
+	Icon             *url.URL `json:"icon"`
+	IconBorderRadius int      `json:"iconBorderRadius,omitempty"`
+	IconPosition     string   `json:"iconPosition"`
 
 	// Whether the shape should allow shapes behind it to bleed through
 	// Currently just used for sequence diagram groups
@@ -599,14 +629,45 @@ type Connection struct {
 	LabelPosition   string  `json:"labelPosition"`
 	LabelPercentage float64 `json:"labelPercentage"`
 
+	Link       string `json:"link"`
+	PrettyLink string `json:"prettyLink,omitempty"`
+
 	Route   []*geo.Point `json:"route"`
 	IsCurve bool         `json:"isCurve,omitempty"`
 
-	Animated bool     `json:"animated"`
-	Tooltip  string   `json:"tooltip"`
-	Icon     *url.URL `json:"icon"`
+	Animated         bool     `json:"animated"`
+	Tooltip          string   `json:"tooltip"`
+	Icon             *url.URL `json:"icon"`
+	IconPosition     string   `json:"iconPosition,omitempty"`
+	IconBorderRadius float64  `json:"iconBorderRadius,omitempty"`
 
 	ZIndex int `json:"zIndex"`
+}
+
+func (c *Connection) GetIconPosition() *geo.Point {
+	if c.Icon == nil {
+		return nil
+	}
+
+	if c.Label != "" {
+		labelTL := c.GetLabelTopLeft()
+		if labelTL != nil {
+			// Position icon to the left of the label with a small gap
+			return &geo.Point{
+				X: labelTL.X - CONNECTION_ICON_LABEL_GAP - DEFAULT_ICON_SIZE,
+				Y: labelTL.Y + float64(c.LabelHeight)/2 - DEFAULT_ICON_SIZE/2,
+			}
+		}
+	}
+
+	point, _ := label.FromString(c.IconPosition).GetPointOnRoute(
+		c.Route,
+		float64(c.StrokeWidth),
+		-1,
+		float64(DEFAULT_ICON_SIZE),
+		float64(DEFAULT_ICON_SIZE),
+	)
+	return point
 }
 
 func BaseConnection() *Connection {
@@ -749,6 +810,8 @@ const (
 	CircleArrowhead           Arrowhead = "circle"
 	FilledCircleArrowhead     Arrowhead = "filled-circle"
 	CrossArrowhead            Arrowhead = "cross"
+	BoxArrowhead              Arrowhead = "box"
+	FilledBoxArrowhead        Arrowhead = "filled-box"
 
 	// For fat arrows
 	LineArrowhead Arrowhead = "line"
@@ -769,6 +832,7 @@ var Arrowheads = map[string]struct{}{
 	string(TriangleArrowhead): {},
 	string(DiamondArrowhead):  {},
 	string(CircleArrowhead):   {},
+	string(BoxArrowhead):      {},
 	string(CfOne):             {},
 	string(CfMany):            {},
 	string(CfOneRequired):     {},
@@ -799,6 +863,11 @@ func ToArrowhead(arrowheadType string, filled *bool) Arrowhead {
 		return TriangleArrowhead
 	case string(CrossArrowhead):
 		return CrossArrowhead
+	case string(BoxArrowhead):
+		if filled != nil && *filled {
+			return FilledBoxArrowhead
+		}
+		return BoxArrowhead
 	case string(CfOne):
 		return CfOne
 	case string(CfMany):
@@ -858,6 +927,11 @@ func (arrowhead Arrowhead) Dimensions(strokeWidth float64) (width, height float6
 		baseHeight = 8
 		widthMultiplier = 5
 		heightMultiplier = 5
+	case FilledBoxArrowhead, BoxArrowhead:
+		baseWidth = 6
+		baseHeight = 6
+		widthMultiplier = 5
+		heightMultiplier = 5
 	case CfOne, CfMany, CfOneRequired, CfManyRequired:
 		baseWidth = 9
 		baseHeight = 9
@@ -891,6 +965,7 @@ const (
 	ShapeCallout         = "callout"
 	ShapeStoredData      = "stored_data"
 	ShapePerson          = "person"
+	ShapeC4Person        = "c4-person"
 	ShapeDiamond         = "diamond"
 	ShapeOval            = "oval"
 	ShapeCircle          = "circle"
@@ -918,6 +993,7 @@ var Shapes = []string{
 	ShapeCallout,
 	ShapeStoredData,
 	ShapePerson,
+	ShapeC4Person,
 	ShapeDiamond,
 	ShapeOval,
 	ShapeCircle,
@@ -986,6 +1062,7 @@ var DSL_SHAPE_TO_SHAPE_TYPE = map[string]string{
 	ShapeCallout:         shape.CALLOUT_TYPE,
 	ShapeStoredData:      shape.STORED_DATA_TYPE,
 	ShapePerson:          shape.PERSON_TYPE,
+	ShapeC4Person:        shape.C4_PERSON_TYPE,
 	ShapeDiamond:         shape.DIAMOND_TYPE,
 	ShapeOval:            shape.OVAL_TYPE,
 	ShapeCircle:          shape.CIRCLE_TYPE,

@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "animal",
+      "name": {
+        "range": "TestCompile/patterns/case/1.d2,0:0:0-0:6:6",
+        "value": [
+          {
+            "string": "animal",
+            "raw_string": "animal"
+          }
+        ]
+      },
       "primary": {
         "value": {
           "range": "TestCompile/patterns/case/1.d2,2:4:29-2:11:36",
@@ -80,7 +88,15 @@
       ]
     },
     {
-      "name": "action",
+      "name": {
+        "range": "TestCompile/patterns/case/1.d2,1:0:13-1:6:19",
+        "value": [
+          {
+            "string": "action",
+            "raw_string": "action"
+          }
+        ]
+      },
       "primary": {
         "value": {
           "range": "TestCompile/patterns/case/1.d2,2:4:29-2:11:36",

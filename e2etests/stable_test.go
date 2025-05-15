@@ -1381,30 +1381,24 @@ c: |md
 		{
 			name: "latex",
 			script: `a: |latex
-\\Huge{\\frac{\\alpha g^2}{\\omega^5} e^{[ -0.74\\bigl\\{\\frac{\\omega U_\\omega 19.5}{g}\\bigr\\}^{\\!-4}\\,]}}
+\Huge{\frac{\alpha g^2}{\omega^5} e^{[ -0.74\bigl\{\frac{\omega U_\omega 19.5}{g}\bigr\}^{\!-4}\,]}}
 |
-
 b: |latex
 e = mc^2
 |
-
 z: |latex
-gibberish\\; math:\\sum_{i=0}^\\infty i^2
+gibberish\; math:\sum_{i=0}^\infty i^2
 |
-
 z -> a
 z -> b
-
 a -> c
 b -> c
 sugar -> c
 c: mixed together
-
 c -> solution: we get
-
 Linear program: {
   formula: |latex
-    \\min_{ \\mathclap{\\substack{ x \\in \\mathbb{R}^n \\ x \\geq 0 \\ Ax \\leq b }}} c^T x
+    \min_{ \mathclap{\substack{ x \in \mathbb{R}^n \ x \geq 0 \ Ax \leq b }}} c^T x
   |
 }
 `,
@@ -2330,6 +2324,29 @@ c <-> d: filled-circle {
   target-arrowhead: {
     shape: circle
     style.filled: true
+  }
+}`,
+		},
+		{
+			name: "box_arrowhead",
+			script: `
+a <-> b: box {
+  source-arrowhead: {
+    shape: box
+  }
+  target-arrowhead: {
+    shape: box
+  }
+}
+  
+c <-> d: filled-box {
+  source-arrowhead: {
+    shape: box
+	style.filled: true
+  }
+  target-arrowhead: {
+    shape: box
+	style.filled: true
   }
 }`,
 		},

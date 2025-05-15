@@ -1,11 +1,27 @@
 {
   "fields": [
     {
-      "name": "vars",
+      "name": {
+        "range": "index.d2,0:0:0-0:4:4",
+        "value": [
+          {
+            "string": "vars",
+            "raw_string": "vars"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "meow",
+            "name": {
+              "range": "x.d2,0:0:0-0:4:4",
+              "value": [
+                {
+                  "string": "meow",
+                  "raw_string": "meow"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "x.d2,0:6:6-0:18:18",
@@ -169,7 +185,15 @@
       ]
     },
     {
-      "name": "q",
+      "name": {
+        "range": "index.d2,0:17:17-0:18:18",
+        "value": [
+          {
+            "string": "q",
+            "raw_string": "q"
+          }
+        ]
+      },
       "primary": {
         "value": {
           "range": "x.d2,0:6:6-0:18:18",

@@ -6,7 +6,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"html"
-	"io/ioutil"
+	"io"
 	"mime"
 	"net/http"
 	"net/url"
@@ -166,7 +166,7 @@ func worker(ctx context.Context, l simplelog.Logger, inputPath string, href []by
 	var err error
 	if isRemote {
 		l.Debug(fmt.Sprintf("fetching %s remotely", string(href)))
-		buf, mimeType, err = httpGet(ctx, html.UnescapeString(string(href)))
+		buf, mimeType, err = httpGet(ctx, l, html.UnescapeString(string(href)))
 	} else {
 		l.Debug(fmt.Sprintf("reading %s from disk", string(href)))
 		path := html.UnescapeString(string(href))
@@ -181,8 +181,15 @@ func worker(ctx context.Context, l simplelog.Logger, inputPath string, href []by
 
 	if mimeType == "" {
 		mimeType = sniffMimeType(href, buf, isRemote)
+		l.Debug(fmt.Sprintf("no mimetype provided - sniffed MIME type for %s: %s", string(href), mimeType))
+	} else {
+		l.Debug(fmt.Sprintf("mimetype provided for %s: %s", string(href), mimeType))
 	}
 	mimeType = strings.Replace(mimeType, "text/xml", "image/svg+xml", 1)
+	if mimeType == "application/octet-stream" && bytes.Contains(buf, []byte("<svg")) {
+		l.Debug(fmt.Sprintf("octet-stream mimetype replaced with svg for %s", string(href)))
+		mimeType = "image/svg+xml"
+	}
 	b64 := base64.StdEncoding.EncodeToString(buf)
 
 	out := []byte(fmt.Sprintf(`<image href="data:%s;base64,%s"`, mimeType, b64))
@@ -194,7 +201,7 @@ func worker(ctx context.Context, l simplelog.Logger, inputPath string, href []by
 
 var httpClient = &http.Client{}
 
-func httpGet(ctx context.Context, href string) ([]byte, string, error) {
+func httpGet(ctx context.Context, l simplelog.Logger, href string) ([]byte, string, error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute)
 	defer cancel()
 
@@ -208,15 +215,19 @@ func httpGet(ctx context.Context, href string) ([]byte, string, error) {
 		return nil, "", err
 	}
 	defer resp.Body.Close()
+	l.Debug(fmt.Sprintf("fetched %s remotely - response code %v", string(href), resp.StatusCode))
 	if resp.StatusCode != 200 {
 		return nil, "", fmt.Errorf("expected status 200 but got %d %s", resp.StatusCode, resp.Status)
 	}
 	r := http.MaxBytesReader(nil, resp.Body, maxImageSize)
-	buf, err := ioutil.ReadAll(r)
+	buf, err := io.ReadAll(r)
 	if err != nil {
 		return nil, "", err
 	}
-	return buf, resp.Header.Get("Content-Type"), nil
+	contentType := resp.Header.Get("Content-Type")
+	l.Debug(fmt.Sprintf("fetched content type: %s, Content length: %d bytes", contentType, len(buf)))
+
+	return buf, contentType, nil
 }
 
 // sniffMimeType sniffs the mime type of href based on its file extension and contents.

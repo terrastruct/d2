@@ -171,6 +171,29 @@ a -> b: hi {
   style.underline: true
 }
 
+-- icon-style --
+
+AWS Firewall Manager : {
+  icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAWS-Firewall-Manager.svg
+  icon.style.border-radius: 5
+}
+
+lambda : {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+  icon.style.border-radius: 20
+}
+
+AWS Cloud : {
+  icon: https://icons.terrastruct.com/aws%2F_Group%20Icons%2FAWS-Cloud_light-bg.svg
+  icon.style.border-radius: 0
+}
+
+Mesh : {
+  icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAWS-App-Mesh.svg
+  icon.style.border-radius: 999
+}
+
 -- none-fill --
 
 vars: {
@@ -481,4 +504,702 @@ colors: {
   style.stroke: "linear-gradient(to right, red, blue, green)"
   style.font-color: "linear-gradient(to bottom right, red 0%, yellow 25%, green 50%, cyan 75%, blue 100%)"
 }
-gradient -> colors
+gradient -> colors: foobar {style.font-color: red; style.stroke: red; style.fill: "radial-gradient(#ffffff, #000000)"}
+
+-- var_in_markdown --
+vars: {
+  service-x: Kube
+}
+x: ${service-x}
+description: |md
+  ${service-x} is a service
+
+  ```
+  Let ${y} be ${x}
+  ```
+|
+b -> description -> a
+
+-- md-tables --
+# Financial table
+savings: ||md
+  | Month    | Savings | Expenses | Balance |
+  | -------- | ------- | -------- | ------- |
+  | January  | $250    | $150     | $100    |
+  | February | $80     | $200     | -$120   |
+  | March    | $420    | $180     | $240    |
+||
+
+# Simple 2x2 table
+status: ||md
+  | Status | Count |
+  | ------ | ----- |
+  | Done   | 42    |
+  | Todo   | 17    |
+||
+
+# Long table with many rows
+metrics: ||md
+  | Metric    | Value   |
+  | --------- | ------- |
+  | Uptime    | 99.9%   |
+  | Latency   | 150ms   |
+  | Errors    | 0.01%   |
+  | Requests  | 15k/min |
+  | CPU       | 45%     |
+  | Memory    | 68%     |
+  | Disk      | 72%     |
+  | Network   | 33%     |
+||
+
+# Connect tables with labeled edges
+savings -> status: Triggers {
+  style: {
+    stroke-dash: 5
+  }
+}
+status -> metrics: Monitors {
+  style: {
+    stroke-width: 2
+  }
+}
+
+# Add some styling
+savings.style: {
+  fill: "#e8f4f8"
+  stroke: "#4a90e2"
+}
+
+status.style: {
+  fill: "#f8e8e8"
+  stroke: "#e24a4a"
+}
+
+metrics.style: {
+  fill: "#f0f8e8"
+  stroke: "#82e24a"
+}
+
+# Container for financial data
+financial: {
+  label: "Financial Overview"
+  style.stroke-width: 2
+
+  monthly: ||md
+    | Month     | Revenue  | Costs    | Margin |
+    | --------- | -------- | -------- | ------ |
+    | January   | $25,000  | $18,000  | 28%    |
+    | February  | $28,500  | $19,200  | 33%    |
+    | March     | $31,200  | $21,500  | 31%    |
+  ||
+
+  quarterly: ||md
+    | Quarter | Target | Actual | Variance |
+    |:--------|-------:|:------:|:---------|
+    | Q1 2024 | $75K   | $84.7K | +12.9%   |
+    | Q2 2024 | $82K   | -      | -        |
+  ||
+
+  monthly -> quarterly: "Aggregates"
+}
+
+# Container for system metrics
+monitoring: {
+  label: "System Health"
+  style.3d: true
+
+  availability: ||md
+    | Service    | Status | Uptime | Last Incident |
+    |:-----------|:------:|:------:|:--------------|
+    | API        | ✅     | 99.9%  | 15 days ago   |
+    | Database   | ✅     | 99.8%  | 3 days ago    |
+    | Cache      | ⚠️     | 98.5%  | 1 hour ago    |
+  ||
+
+  performance: ||md
+    | Metric          |  P50  |  P90  |  P99  |
+    |:----------------|:-----:|:-----:|:-----:|
+    | Response Time   | 120ms | 350ms | 750ms |
+    | DB Query Time   |  45ms | 180ms | 450ms |
+    | Cache Latency   |   5ms |  12ms |  30ms |
+  ||
+
+  availability -> performance: "Affects"
+}
+
+# Container for project status
+projects: {
+  label: "Project Tracking"
+  style.stroke: "#4a90e2"
+  style.double-border: true
+
+  status: ||md
+    | Project | Priority | Progress | Due Date | Owner |
+    |---------|:--------:|:--------:|:---------|:------|
+    | Alpha   | HIGH     | ![p](https://progress.com/80) 80% | 2024-04-01 | Alice |
+    | Beta    | MEDIUM   | ![p](https://progress.com/45) 45% | 2024-05-15 | Bob   |
+    | Gamma   | LOW      | ![p](https://progress.com/20) 20% | 2024-06-30 | Carol |
+  ||
+
+  risks: ||md
+    | Risk ID | Description | Impact | Mitigation |
+    |:-------:|:------------|:------:|:-----------|
+    | R1      | Resource shortage | 🔴 High | Hire contractors |
+    | R2      | Technical debt | 🟡 Med | Code review |
+    | R3      | Scope creep | 🟢 Low | Clear requirements |
+  ||
+}
+
+# Container for team stats
+team: {
+  label: "Team Analytics"
+  style.fill: "#f5f5f5"
+
+  velocity: ||md
+    | Sprint | Points | Completed | Carryover |
+    |:-------|:------:|:---------:|:---------:|
+    | SP-1   | 34     | 30        | 4         |
+    | SP-2   | 38     | 35        | 3         |
+    | SP-3   | 42     | 40        | 2         |
+    | Average| 38     | 35        | 3         |
+  ||
+}
+
+# Connect containers
+financial -> monitoring: "Impacts"
+monitoring -> projects: "Informs" {
+  style.stroke-dash: 5
+}
+projects -> team: "Assigns" {
+  style.animated: true
+}
+
+# Styling
+financial.style.fill: "#e8f4f8"
+monitoring.style.fill: "#f8e8e8"
+projects.style.fill: "#e8f8e8"
+team.style.fill: "#f8f0e8"
+
+-- sql-table-reserved --
+my_table: {
+  shape: sql_table
+  icon: https://static.wikia.nocookie.net/tomandjerry/images/4/46/JerryJumbo3-1-.jpg
+  width: 200
+  height: 200
+  "shape": string
+  "icon": string
+  "width": int
+  "height": int
+}
+
+x -> my_table."shape"
+
+-- single-backslash-latex --
+formula: {
+  equation: |latex
+    \begin{equation} \label{eq1}
+    \begin{split}
+    A & = \frac{\\pi r^2}{2} \\
+     & = \frac{1}{2} \pi r^2
+    \end{split}
+    \end{equation}
+  |
+}
+
+-- link-on-connections --
+a <-> b: {
+  link: https://google.com/
+}
+
+b -> c: test {
+  link: layers.d
+}
+
+layers: {
+  d: {
+    d
+  }
+}
+
+-- shape-animate --
+vars: {
+  d2-config: {
+    layout-engine: elk
+    # Terminal theme code
+    theme-id: 300
+  }
+}
+network: {
+  cell tower: {
+    satellites: {
+      shape: stored_data
+      style.multiple: true
+    }
+
+    transmitter
+
+    satellites -> transmitter: send
+    satellites -> transmitter: send
+    satellites -> transmitter: send
+  }
+
+  online portal: {
+    ui: {shape: hexagon}
+  }
+
+  data processor: {
+    storage: {
+               style.animated: true
+      shape: cylinder
+      style.multiple: true
+    }
+  }
+
+  cell tower.transmitter -> data processor.storage: phone logs
+}
+
+user: {
+  shape: person
+  width: 130
+}
+
+user -> network.cell tower: make call
+user -> network.online portal.ui: access {
+  style.stroke-dash: 3
+}
+
+api server -> network.online portal.ui: display
+api server -> logs: persist
+logs: {shape: page; style.multiple: true}
+
+network.data processor -> api server
+
+-- note-overlap --
+shape: sequence_diagram
+alice -> bob
+alice -> alice: "Self-messages"
+alice -> alice: "Self-messages"
+alice -> alice: "Self-messages"
+alice -> alice: "Self-messages"
+
+bob."In the eyes of my dog, I'm a man."
+
+-- elk-title-near --
+title: "diagram title : Red-line hits 'near: top-center' in elk" {near: top-center}
+a: {
+  a -> b
+}
+b: {
+  c
+}
+
+a.b -> b.c
+b.c -> a.a: {style.font-color: red; style.stroke: red; style.fill: mistyrose}
+
+-- sql-casing-panic --
+
+asdf:{
+  shape:sQl_table
+  zxcv
+}
+
+-- connection-icons --
+direction: right
+a -> b: hello {
+  icon: https://icons.terrastruct.com/essentials%2F213-alarm.svg
+}
+b -> c: {
+  icon: https://icons.terrastruct.com/essentials%2F213-alarm.svg
+}
+
+direction: right
+producer -> consumer: {
+  icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-Simple-Queue-Service-SQS.svg
+  icon.style.border-radius: 20
+}
+
+-- model-view --
+# Models
+user.style.fill: blue
+softwareSystem: {
+  serviceA.class: ok
+  serviceB
+  serviceC.class: ok
+  serviceD
+
+  serviceA -> serviceB
+  serviceA -> serviceD
+  serviceC -> serviceB
+}
+externalSystem
+user -> softwareSystem
+softwareSystem -> externalSystem
+
+# Clear models
+**: suspend
+(** -> **)[*]: suspend
+
+# Include all top-level objects
+*: unsuspend
+# Include all objects with a certain class
+**: unsuspend {
+  &class: ok
+}
+# Include all connections/objects connected to an object
+(** -> externalSystem)[*]: unsuspend
+
+-- sequence-diagram-note-md --
+shape: sequence_diagram
+x -> y: hello
+x.x: |md
+  ## A man who fishes for marlin in ponds
+
+  - ...dramatic pause
+
+  will put his money in Etruscan bonds.
+|
+
+y.z: |latex
+  \\lim_{h \\rightarrow 0 } \\frac{f(x+h)-f(x)}{h}
+|
+
+x.z: |python
+  1 + 1 = 2
+|
+
+-- md-label --
+rectangle.shape: rectangle
+rectangle: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+square.shape: square
+square: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+page.shape: page
+page: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+parallelogram.shape: parallelogram
+parallelogram: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+document.shape: document
+document: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+cylinder.shape: cylinder
+cylinder: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+queue.shape: queue
+queue: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+package.shape: package
+package: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+step.shape: step
+step: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+callout.shape: callout
+callout: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+stored_data.shape: stored_data
+stored_data: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+person.shape: person
+person: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+diamond.shape: diamond
+diamond: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+oval.shape: oval
+oval: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+circle.shape: circle
+circle: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+hexagon.shape: hexagon
+hexagon: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+cloud.shape: cloud
+cloud: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+-- c4-person-shape --
+c4mdperson.shape: c4-person
+c4mdperson: |md
+## Personal Banking Customer
+
+[person]
+
+A customer of the bank, with\
+personal bank accounts
+  |
+c4person: {
+  shape: c4-person
+  label: "C4 Style Person"
+}
+regular_person -> c4mdperson
+
+regular_person: {
+  shape: person
+  label: "Standard Person"
+}
+
+c4person -> regular_person: "Compare shapes"
+
+styling: {
+  c4styled: {
+    shape: c4-person
+    style.fill: "#91BEEA"
+    style.stroke: "#2E6195"
+    style.stroke-width: 2
+  }
+
+  c4sized: {
+    shape: c4-person
+    width: 150
+    height: 180
+    label: "Custom Size"
+  }
+}
+
+c4person -> styling.c4styled -> styling.c4sized
+**: {
+  &shape: c4-person
+  style.fill: "#08427b"
+  style.stroke: black
+  style.font-color: white
+  style.stroke-width: 1
+}
+
+-- legend --
+vars: {
+  d2-legend: {
+    a: {
+      label: Microservice
+    }
+    b: Database {
+      shape: cylinder
+      style.stroke-dash: 2
+    }
+    a <-> b: Good relationship {
+      style.stroke: red
+      style.stroke-dash: 2
+      style.stroke-width: 1
+    }
+    a -> b: Bad relationship
+    a -> b: Tenuous {
+      target-arrowhead.shape: circle
+    }
+  }
+}
+
+api-1
+api-2
+
+api-1 -> postgres
+api-2 -> postgres
+
+postgres: {
+  shape: cylinder
+}
+postgres -> external: {
+  style.stroke: black
+}
+
+api-1 <-> api-2: {
+  style.stroke: red
+  style.stroke-dash: 2
+}
+api-1 -> api-3: {
+  target-arrowhead.shape: circle
+}
+
+-- dark-theme-md --
+
+vars: {
+	d2-config: {
+		dark-theme-id: 200
+	}
+}
+a.shape: rectangle
+a: |md
+  # hey
+|
+
+-- small-c4-person --
+
+a.shape: c4-person
+a: c4-person
+a.width: 180
+
+-- c4-person-label --
+c4mdperson: |md
+## Personal Banking Customer
+
+[person]
+
+A customer of the bank, with personal bank accounts
+  | {
+    shape: c4-person
+    label.near: center-center
+  }
+
+c4mdperson2: |md
+## Personal Banking Customer
+
+[person]
+
+A customer of the bank, with personal bank accounts
+  | {
+    shape: c4-person
+    label.near: top-center
+  }
+
+c4mdperson3: |md
+## Personal Banking Customer
+
+[person]
+
+A customer of the bank, with personal bank accounts
+  | {
+    shape: c4-person
+    label.near: bottom-center
+  }
+
+customer1: |md
+  ## Personal Banking Customer
+  [person]
+
+  A customer of the bank, with pekkrsonal bank ccountskks.
+| {
+  shape: c4-person
+}
+
+customer2: |md
+  ## Personal Banking Customerk
+  [person]
+
+  A customer of the bank, with pekkrsonal bank accountskks.
+
+  A customer of the bank, with pekkrsonal bank accountskks.
+
+  A customer of the bank, with pekkrsonal bank accountskks.
+| {
+  shape: c4-person
+}
+
+customer3: |md
+  ## Personal Banking Customer
+  [person]
+
+  A customer of the bank, with pekkrsonal bank accountskks.
+| {
+  shape: c4-person
+}
+
+customer4: |md
+  ## Personal Banking Customer
+  [person]
+
+  A customer of the bank, with pekkrsonal bank accountskks.
+| {
+  shape: c4-person
+}

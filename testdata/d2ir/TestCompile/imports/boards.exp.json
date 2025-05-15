@@ -1,11 +1,27 @@
 {
   "fields": [
     {
-      "name": "x",
+      "name": {
+        "range": "index.d2,0:0:0-0:1:1",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "link",
+            "name": {
+              "range": "index.d2,0:2:2-0:6:6",
+              "value": [
+                {
+                  "string": "link",
+                  "raw_string": "link"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": ",0:0:0-0:0:0",
@@ -196,19 +212,51 @@
       ]
     },
     {
-      "name": "layers",
+      "name": {
+        "range": "index.d2,0:18:18-0:24:24",
+        "value": [
+          {
+            "string": "layers",
+            "raw_string": "layers"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "x",
+            "name": {
+              "range": "index.d2,0:28:28-0:29:29",
+              "value": [
+                {
+                  "string": "x",
+                  "raw_string": "x"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "y",
+                  "name": {
+                    "range": "x.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "link",
+                        "name": {
+                          "range": "x.d2,0:2:2-0:6:6",
+                          "value": [
+                            {
+                              "string": "link",
+                              "raw_string": "link"
+                            }
+                          ]
+                        },
                         "primary": {
                           "value": {
                             "range": ",0:0:0-0:0:0",
@@ -399,15 +447,39 @@
                   ]
                 },
                 {
-                  "name": "layers",
+                  "name": {
+                    "range": "x.d2,0:18:18-0:24:24",
+                    "value": [
+                      {
+                        "string": "layers",
+                        "raw_string": "layers"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "y",
+                        "name": {
+                          "range": "x.d2,0:28:28-0:29:29",
+                          "value": [
+                            {
+                              "string": "y",
+                              "raw_string": "y"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "meow",
+                              "name": {
+                                "range": "y.d2,0:0:0-0:4:4",
+                                "value": [
+                                  {
+                                    "string": "meow",
+                                    "raw_string": "meow"
+                                  }
+                                ]
+                              },
                               "references": [
                                 {
                                   "string": {
@@ -468,6 +540,78 @@
                           "edges": null
                         },
                         "references": [
+                          {
+                            "string": {
+                              "range": "x.d2,0:28:28-0:29:29",
+                              "value": [
+                                {
+                                  "string": "y",
+                                  "raw_string": "y"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "x.d2,0:28:28-0:29:29",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "x.d2,0:28:28-0:29:29",
+                                    "value": [
+                                      {
+                                        "string": "y",
+                                        "raw_string": "y"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "x.d2,0:28:28-0:34:34",
+                                "key": {
+                                  "range": "x.d2,0:28:28-0:29:29",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "x.d2,0:28:28-0:29:29",
+                                        "value": [
+                                          {
+                                            "string": "y",
+                                            "raw_string": "y"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "import": {
+                                    "range": "x.d2,0:31:31-0:34:34",
+                                    "spread": false,
+                                    "pre": "",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "x.d2,0:32:32-0:33:33",
+                                          "value": [
+                                            {
+                                              "string": "y",
+                                              "raw_string": "y"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            "due_to_glob": false,
+                            "due_to_lazy_glob": false
+                          },
                           {
                             "string": {
                               "range": "x.d2,0:28:28-0:29:29",
@@ -653,6 +797,78 @@
               "edges": null
             },
             "references": [
+              {
+                "string": {
+                  "range": "index.d2,0:28:28-0:29:29",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "index.d2,0:28:28-0:29:29",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "index.d2,0:28:28-0:29:29",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "index.d2,0:28:28-0:34:34",
+                    "key": {
+                      "range": "index.d2,0:28:28-0:29:29",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "index.d2,0:28:28-0:29:29",
+                            "value": [
+                              {
+                                "string": "x",
+                                "raw_string": "x"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "import": {
+                        "range": "index.d2,0:31:31-0:34:34",
+                        "spread": false,
+                        "pre": "",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "index.d2,0:32:32-0:33:33",
+                              "value": [
+                                {
+                                  "string": "x",
+                                  "raw_string": "x"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              },
               {
                 "string": {
                   "range": "index.d2,0:28:28-0:29:29",

@@ -169,6 +169,7 @@
           "height": 0
         },
         "style": {},
+        "iconStyle": {},
         "near_key": null,
         "shape": {
           "value": ""
@@ -216,6 +217,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "rectangle"
@@ -233,7 +235,7 @@
         "name": "x",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2oracle/TestCreate/layers-edge.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -243,10 +245,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestCreate/layers-edge.d2,4:4:24-4:5:25",
                         "value": [
                           {
-                            "string": "a"
+                            "string": "a",
+                            "raw_string": "a"
                           }
                         ]
                       }
@@ -265,10 +268,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestCreate/layers-edge.d2,5:9:35-5:10:36",
                         "value": [
                           {
-                            "string": "b"
+                            "string": "b",
+                            "raw_string": "b"
                           }
                         ]
                       }
@@ -337,6 +341,7 @@
               "height": 0
             },
             "style": {},
+            "iconStyle": {},
             "near_key": null,
             "shape": {
               "value": ""
@@ -368,6 +373,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": ""
@@ -435,6 +441,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"
@@ -480,6 +487,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"

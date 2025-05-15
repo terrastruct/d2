@@ -1,19 +1,51 @@
 {
   "fields": [
     {
-      "name": "classes",
+      "name": {
+        "range": "TestCompile/classes/inherited.d2,0:0:0-0:7:7",
+        "value": [
+          {
+            "string": "classes",
+            "raw_string": "classes"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "mango",
+            "name": {
+              "range": "TestCompile/classes/inherited.d2,1:2:13-1:7:18",
+              "value": [
+                {
+                  "string": "mango",
+                  "raw_string": "mango"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "style",
+                  "name": {
+                    "range": "TestCompile/classes/inherited.d2,2:4:26-2:9:31",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "fill",
+                        "name": {
+                          "range": "TestCompile/classes/inherited.d2,2:10:32-2:14:36",
+                          "value": [
+                            {
+                              "string": "fill",
+                              "raw_string": "fill"
+                            }
+                          ]
+                        },
                         "primary": {
                           "value": {
                             "range": "TestCompile/classes/inherited.d2,2:16:38-2:22:44",
@@ -452,27 +484,75 @@
       ]
     },
     {
-      "name": "scenarios",
+      "name": {
+        "range": "TestCompile/classes/inherited.d2,5:0:51-5:9:60",
+        "value": [
+          {
+            "string": "scenarios",
+            "raw_string": "scenarios"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "hawaii",
+            "name": {
+              "range": "TestCompile/classes/inherited.d2,6:2:66-6:8:72",
+              "value": [
+                {
+                  "string": "hawaii",
+                  "raw_string": "hawaii"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "classes",
+                  "name": {
+                    "range": "TestCompile/classes/inherited.d2,0:0:0-0:7:7",
+                    "value": [
+                      {
+                        "string": "classes",
+                        "raw_string": "classes"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "mango",
+                        "name": {
+                          "range": "TestCompile/classes/inherited.d2,1:2:13-1:7:18",
+                          "value": [
+                            {
+                              "string": "mango",
+                              "raw_string": "mango"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "style",
+                              "name": {
+                                "range": "TestCompile/classes/inherited.d2,2:4:26-2:9:31",
+                                "value": [
+                                  {
+                                    "string": "style",
+                                    "raw_string": "style"
+                                  }
+                                ]
+                              },
                               "composite": {
                                 "fields": [
                                   {
-                                    "name": "fill",
+                                    "name": {
+                                      "range": "TestCompile/classes/inherited.d2,2:10:32-2:14:36",
+                                      "value": [
+                                        {
+                                          "string": "fill",
+                                          "raw_string": "fill"
+                                        }
+                                      ]
+                                    },
                                     "primary": {
                                       "value": {
                                         "range": "TestCompile/classes/inherited.d2,2:16:38-2:22:44",
@@ -911,27 +991,75 @@
                   ]
                 },
                 {
-                  "name": "steps",
+                  "name": {
+                    "range": "TestCompile/classes/inherited.d2,7:2:78-7:7:83",
+                    "value": [
+                      {
+                        "string": "steps",
+                        "raw_string": "steps"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "1",
+                        "name": {
+                          "range": "TestCompile/classes/inherited.d2,8:6:93-8:7:94",
+                          "value": [
+                            {
+                              "string": "1",
+                              "raw_string": "1"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "classes",
+                              "name": {
+                                "range": "TestCompile/classes/inherited.d2,0:0:0-0:7:7",
+                                "value": [
+                                  {
+                                    "string": "classes",
+                                    "raw_string": "classes"
+                                  }
+                                ]
+                              },
                               "composite": {
                                 "fields": [
                                   {
-                                    "name": "mango",
+                                    "name": {
+                                      "range": "TestCompile/classes/inherited.d2,1:2:13-1:7:18",
+                                      "value": [
+                                        {
+                                          "string": "mango",
+                                          "raw_string": "mango"
+                                        }
+                                      ]
+                                    },
                                     "composite": {
                                       "fields": [
                                         {
-                                          "name": "style",
+                                          "name": {
+                                            "range": "TestCompile/classes/inherited.d2,2:4:26-2:9:31",
+                                            "value": [
+                                              {
+                                                "string": "style",
+                                                "raw_string": "style"
+                                              }
+                                            ]
+                                          },
                                           "composite": {
                                             "fields": [
                                               {
-                                                "name": "fill",
+                                                "name": {
+                                                  "range": "TestCompile/classes/inherited.d2,2:10:32-2:14:36",
+                                                  "value": [
+                                                    {
+                                                      "string": "fill",
+                                                      "raw_string": "fill"
+                                                    }
+                                                  ]
+                                                },
                                                 "primary": {
                                                   "value": {
                                                     "range": "TestCompile/classes/inherited.d2,2:16:38-2:22:44",
@@ -1232,15 +1360,39 @@
                                     ]
                                   },
                                   {
-                                    "name": "cherry",
+                                    "name": {
+                                      "range": "TestCompile/classes/inherited.d2,10:10:127-10:16:133",
+                                      "value": [
+                                        {
+                                          "string": "cherry",
+                                          "raw_string": "cherry"
+                                        }
+                                      ]
+                                    },
                                     "composite": {
                                       "fields": [
                                         {
-                                          "name": "style",
+                                          "name": {
+                                            "range": "TestCompile/classes/inherited.d2,11:12:149-11:17:154",
+                                            "value": [
+                                              {
+                                                "string": "style",
+                                                "raw_string": "style"
+                                              }
+                                            ]
+                                          },
                                           "composite": {
                                             "fields": [
                                               {
-                                                "name": "fill",
+                                                "name": {
+                                                  "range": "TestCompile/classes/inherited.d2,11:18:155-11:22:159",
+                                                  "value": [
+                                                    {
+                                                      "string": "fill",
+                                                      "raw_string": "fill"
+                                                    }
+                                                  ]
+                                                },
                                                 "primary": {
                                                   "value": {
                                                     "range": "TestCompile/classes/inherited.d2,11:24:161-11:27:164",
@@ -1811,7 +1963,15 @@
                               ]
                             },
                             {
-                              "name": "x",
+                              "name": {
+                                "range": "TestCompile/classes/inherited.d2,14:8:195-14:9:196",
+                                "value": [
+                                  {
+                                    "string": "x",
+                                    "raw_string": "x"
+                                  }
+                                ]
+                              },
                               "references": [
                                 {
                                   "string": {
@@ -2059,23 +2219,63 @@
                         ]
                       },
                       {
-                        "name": "2",
+                        "name": {
+                          "range": "TestCompile/classes/inherited.d2,16:6:211-16:7:212",
+                          "value": [
+                            {
+                              "string": "2",
+                              "raw_string": "2"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "classes",
+                              "name": {
+                                "range": "TestCompile/classes/inherited.d2,0:0:0-0:7:7",
+                                "value": [
+                                  {
+                                    "string": "classes",
+                                    "raw_string": "classes"
+                                  }
+                                ]
+                              },
                               "composite": {
                                 "fields": [
                                   {
-                                    "name": "mango",
+                                    "name": {
+                                      "range": "TestCompile/classes/inherited.d2,1:2:13-1:7:18",
+                                      "value": [
+                                        {
+                                          "string": "mango",
+                                          "raw_string": "mango"
+                                        }
+                                      ]
+                                    },
                                     "composite": {
                                       "fields": [
                                         {
-                                          "name": "style",
+                                          "name": {
+                                            "range": "TestCompile/classes/inherited.d2,2:4:26-2:9:31",
+                                            "value": [
+                                              {
+                                                "string": "style",
+                                                "raw_string": "style"
+                                              }
+                                            ]
+                                          },
                                           "composite": {
                                             "fields": [
                                               {
-                                                "name": "fill",
+                                                "name": {
+                                                  "range": "TestCompile/classes/inherited.d2,2:10:32-2:14:36",
+                                                  "value": [
+                                                    {
+                                                      "string": "fill",
+                                                      "raw_string": "fill"
+                                                    }
+                                                  ]
+                                                },
                                                 "primary": {
                                                   "value": {
                                                     "range": "TestCompile/classes/inherited.d2,2:16:38-2:22:44",
@@ -2376,15 +2576,39 @@
                                     ]
                                   },
                                   {
-                                    "name": "cherry",
+                                    "name": {
+                                      "range": "TestCompile/classes/inherited.d2,10:10:127-10:16:133",
+                                      "value": [
+                                        {
+                                          "string": "cherry",
+                                          "raw_string": "cherry"
+                                        }
+                                      ]
+                                    },
                                     "composite": {
                                       "fields": [
                                         {
-                                          "name": "style",
+                                          "name": {
+                                            "range": "TestCompile/classes/inherited.d2,11:12:149-11:17:154",
+                                            "value": [
+                                              {
+                                                "string": "style",
+                                                "raw_string": "style"
+                                              }
+                                            ]
+                                          },
                                           "composite": {
                                             "fields": [
                                               {
-                                                "name": "fill",
+                                                "name": {
+                                                  "range": "TestCompile/classes/inherited.d2,11:18:155-11:22:159",
+                                                  "value": [
+                                                    {
+                                                      "string": "fill",
+                                                      "raw_string": "fill"
+                                                    }
+                                                  ]
+                                                },
                                                 "primary": {
                                                   "value": {
                                                     "range": "TestCompile/classes/inherited.d2,11:24:161-11:27:164",
@@ -2955,7 +3179,15 @@
                               ]
                             },
                             {
-                              "name": "x",
+                              "name": {
+                                "range": "TestCompile/classes/inherited.d2,14:8:195-14:9:196",
+                                "value": [
+                                  {
+                                    "string": "x",
+                                    "raw_string": "x"
+                                  }
+                                ]
+                              },
                               "references": [
                                 {
                                   "string": {
@@ -3013,7 +3245,15 @@
                               ]
                             },
                             {
-                              "name": "y",
+                              "name": {
+                                "range": "TestCompile/classes/inherited.d2,17:8:224-17:9:225",
+                                "value": [
+                                  {
+                                    "string": "y",
+                                    "raw_string": "y"
+                                  }
+                                ]
+                              },
                               "references": [
                                 {
                                   "string": {
@@ -3159,23 +3399,63 @@
                         ]
                       },
                       {
-                        "name": "3",
+                        "name": {
+                          "range": "TestCompile/classes/inherited.d2,19:6:240-19:7:241",
+                          "value": [
+                            {
+                              "string": "3",
+                              "raw_string": "3"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "classes",
+                              "name": {
+                                "range": "TestCompile/classes/inherited.d2,0:0:0-0:7:7",
+                                "value": [
+                                  {
+                                    "string": "classes",
+                                    "raw_string": "classes"
+                                  }
+                                ]
+                              },
                               "composite": {
                                 "fields": [
                                   {
-                                    "name": "mango",
+                                    "name": {
+                                      "range": "TestCompile/classes/inherited.d2,1:2:13-1:7:18",
+                                      "value": [
+                                        {
+                                          "string": "mango",
+                                          "raw_string": "mango"
+                                        }
+                                      ]
+                                    },
                                     "composite": {
                                       "fields": [
                                         {
-                                          "name": "style",
+                                          "name": {
+                                            "range": "TestCompile/classes/inherited.d2,2:4:26-2:9:31",
+                                            "value": [
+                                              {
+                                                "string": "style",
+                                                "raw_string": "style"
+                                              }
+                                            ]
+                                          },
                                           "composite": {
                                             "fields": [
                                               {
-                                                "name": "fill",
+                                                "name": {
+                                                  "range": "TestCompile/classes/inherited.d2,2:10:32-2:14:36",
+                                                  "value": [
+                                                    {
+                                                      "string": "fill",
+                                                      "raw_string": "fill"
+                                                    }
+                                                  ]
+                                                },
                                                 "primary": {
                                                   "value": {
                                                     "range": "TestCompile/classes/inherited.d2,2:16:38-2:22:44",
@@ -3476,15 +3756,39 @@
                                     ]
                                   },
                                   {
-                                    "name": "cherry",
+                                    "name": {
+                                      "range": "TestCompile/classes/inherited.d2,10:10:127-10:16:133",
+                                      "value": [
+                                        {
+                                          "string": "cherry",
+                                          "raw_string": "cherry"
+                                        }
+                                      ]
+                                    },
                                     "composite": {
                                       "fields": [
                                         {
-                                          "name": "style",
+                                          "name": {
+                                            "range": "TestCompile/classes/inherited.d2,11:12:149-11:17:154",
+                                            "value": [
+                                              {
+                                                "string": "style",
+                                                "raw_string": "style"
+                                              }
+                                            ]
+                                          },
                                           "composite": {
                                             "fields": [
                                               {
-                                                "name": "fill",
+                                                "name": {
+                                                  "range": "TestCompile/classes/inherited.d2,11:18:155-11:22:159",
+                                                  "value": [
+                                                    {
+                                                      "string": "fill",
+                                                      "raw_string": "fill"
+                                                    }
+                                                  ]
+                                                },
                                                 "primary": {
                                                   "value": {
                                                     "range": "TestCompile/classes/inherited.d2,22:24:308-22:28:312",
@@ -4460,7 +4764,15 @@
                               ]
                             },
                             {
-                              "name": "x",
+                              "name": {
+                                "range": "TestCompile/classes/inherited.d2,14:8:195-14:9:196",
+                                "value": [
+                                  {
+                                    "string": "x",
+                                    "raw_string": "x"
+                                  }
+                                ]
+                              },
                               "references": [
                                 {
                                   "string": {
@@ -4518,7 +4830,15 @@
                               ]
                             },
                             {
-                              "name": "y",
+                              "name": {
+                                "range": "TestCompile/classes/inherited.d2,17:8:224-17:9:225",
+                                "value": [
+                                  {
+                                    "string": "y",
+                                    "raw_string": "y"
+                                  }
+                                ]
+                              },
                               "references": [
                                 {
                                   "string": {
@@ -4819,23 +5139,63 @@
                         ]
                       },
                       {
-                        "name": "4",
+                        "name": {
+                          "range": "TestCompile/classes/inherited.d2,27:6:359-27:7:360",
+                          "value": [
+                            {
+                              "string": "4",
+                              "raw_string": "4"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "classes",
+                              "name": {
+                                "range": "TestCompile/classes/inherited.d2,0:0:0-0:7:7",
+                                "value": [
+                                  {
+                                    "string": "classes",
+                                    "raw_string": "classes"
+                                  }
+                                ]
+                              },
                               "composite": {
                                 "fields": [
                                   {
-                                    "name": "mango",
+                                    "name": {
+                                      "range": "TestCompile/classes/inherited.d2,1:2:13-1:7:18",
+                                      "value": [
+                                        {
+                                          "string": "mango",
+                                          "raw_string": "mango"
+                                        }
+                                      ]
+                                    },
                                     "composite": {
                                       "fields": [
                                         {
-                                          "name": "style",
+                                          "name": {
+                                            "range": "TestCompile/classes/inherited.d2,2:4:26-2:9:31",
+                                            "value": [
+                                              {
+                                                "string": "style",
+                                                "raw_string": "style"
+                                              }
+                                            ]
+                                          },
                                           "composite": {
                                             "fields": [
                                               {
-                                                "name": "fill",
+                                                "name": {
+                                                  "range": "TestCompile/classes/inherited.d2,2:10:32-2:14:36",
+                                                  "value": [
+                                                    {
+                                                      "string": "fill",
+                                                      "raw_string": "fill"
+                                                    }
+                                                  ]
+                                                },
                                                 "primary": {
                                                   "value": {
                                                     "range": "TestCompile/classes/inherited.d2,2:16:38-2:22:44",
@@ -5136,15 +5496,39 @@
                                     ]
                                   },
                                   {
-                                    "name": "cherry",
+                                    "name": {
+                                      "range": "TestCompile/classes/inherited.d2,10:10:127-10:16:133",
+                                      "value": [
+                                        {
+                                          "string": "cherry",
+                                          "raw_string": "cherry"
+                                        }
+                                      ]
+                                    },
                                     "composite": {
                                       "fields": [
                                         {
-                                          "name": "style",
+                                          "name": {
+                                            "range": "TestCompile/classes/inherited.d2,11:12:149-11:17:154",
+                                            "value": [
+                                              {
+                                                "string": "style",
+                                                "raw_string": "style"
+                                              }
+                                            ]
+                                          },
                                           "composite": {
                                             "fields": [
                                               {
-                                                "name": "fill",
+                                                "name": {
+                                                  "range": "TestCompile/classes/inherited.d2,11:18:155-11:22:159",
+                                                  "value": [
+                                                    {
+                                                      "string": "fill",
+                                                      "raw_string": "fill"
+                                                    }
+                                                  ]
+                                                },
                                                 "primary": {
                                                   "value": {
                                                     "range": "TestCompile/classes/inherited.d2,22:24:308-22:28:312",
@@ -6120,7 +6504,15 @@
                               ]
                             },
                             {
-                              "name": "x",
+                              "name": {
+                                "range": "TestCompile/classes/inherited.d2,14:8:195-14:9:196",
+                                "value": [
+                                  {
+                                    "string": "x",
+                                    "raw_string": "x"
+                                  }
+                                ]
+                              },
                               "references": [
                                 {
                                   "string": {
@@ -6231,7 +6623,15 @@
                               ]
                             },
                             {
-                              "name": "y",
+                              "name": {
+                                "range": "TestCompile/classes/inherited.d2,17:8:224-17:9:225",
+                                "value": [
+                                  {
+                                    "string": "y",
+                                    "raw_string": "y"
+                                  }
+                                ]
+                              },
                               "references": [
                                 {
                                   "string": {
@@ -6342,15 +6742,39 @@
                               ]
                             },
                             {
-                              "name": "layers",
+                              "name": {
+                                "range": "TestCompile/classes/inherited.d2,28:8:372-28:14:378",
+                                "value": [
+                                  {
+                                    "string": "layers",
+                                    "raw_string": "layers"
+                                  }
+                                ]
+                              },
                               "composite": {
                                 "fields": [
                                   {
-                                    "name": "deep",
+                                    "name": {
+                                      "range": "TestCompile/classes/inherited.d2,29:10:392-29:14:396",
+                                      "value": [
+                                        {
+                                          "string": "deep",
+                                          "raw_string": "deep"
+                                        }
+                                      ]
+                                    },
                                     "composite": {
                                       "fields": [
                                         {
-                                          "name": "x",
+                                          "name": {
+                                            "range": "TestCompile/classes/inherited.d2,30:12:412-30:13:413",
+                                            "value": [
+                                              {
+                                                "string": "x",
+                                                "raw_string": "x"
+                                              }
+                                            ]
+                                          },
                                           "references": [
                                             {
                                               "string": {
@@ -6408,19 +6832,51 @@
                                           ]
                                         },
                                         {
-                                          "name": "classes",
+                                          "name": {
+                                            "range": "TestCompile/classes/inherited.d2,0:0:0-0:7:7",
+                                            "value": [
+                                              {
+                                                "string": "classes",
+                                                "raw_string": "classes"
+                                              }
+                                            ]
+                                          },
                                           "composite": {
                                             "fields": [
                                               {
-                                                "name": "mango",
+                                                "name": {
+                                                  "range": "TestCompile/classes/inherited.d2,1:2:13-1:7:18",
+                                                  "value": [
+                                                    {
+                                                      "string": "mango",
+                                                      "raw_string": "mango"
+                                                    }
+                                                  ]
+                                                },
                                                 "composite": {
                                                   "fields": [
                                                     {
-                                                      "name": "style",
+                                                      "name": {
+                                                        "range": "TestCompile/classes/inherited.d2,2:4:26-2:9:31",
+                                                        "value": [
+                                                          {
+                                                            "string": "style",
+                                                            "raw_string": "style"
+                                                          }
+                                                        ]
+                                                      },
                                                       "composite": {
                                                         "fields": [
                                                           {
-                                                            "name": "fill",
+                                                            "name": {
+                                                              "range": "TestCompile/classes/inherited.d2,2:10:32-2:14:36",
+                                                              "value": [
+                                                                {
+                                                                  "string": "fill",
+                                                                  "raw_string": "fill"
+                                                                }
+                                                              ]
+                                                            },
                                                             "primary": {
                                                               "value": {
                                                                 "range": "TestCompile/classes/inherited.d2,2:16:38-2:22:44",
@@ -6721,15 +7177,39 @@
                                                 ]
                                               },
                                               {
-                                                "name": "cherry",
+                                                "name": {
+                                                  "range": "TestCompile/classes/inherited.d2,10:10:127-10:16:133",
+                                                  "value": [
+                                                    {
+                                                      "string": "cherry",
+                                                      "raw_string": "cherry"
+                                                    }
+                                                  ]
+                                                },
                                                 "composite": {
                                                   "fields": [
                                                     {
-                                                      "name": "style",
+                                                      "name": {
+                                                        "range": "TestCompile/classes/inherited.d2,11:12:149-11:17:154",
+                                                        "value": [
+                                                          {
+                                                            "string": "style",
+                                                            "raw_string": "style"
+                                                          }
+                                                        ]
+                                                      },
                                                       "composite": {
                                                         "fields": [
                                                           {
-                                                            "name": "fill",
+                                                            "name": {
+                                                              "range": "TestCompile/classes/inherited.d2,11:18:155-11:22:159",
+                                                              "value": [
+                                                                {
+                                                                  "string": "fill",
+                                                                  "raw_string": "fill"
+                                                                }
+                                                              ]
+                                                            },
                                                             "primary": {
                                                               "value": {
                                                                 "range": "TestCompile/classes/inherited.d2,22:24:308-22:28:312",

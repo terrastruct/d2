@@ -202,6 +202,7 @@
           "height": 0
         },
         "style": {},
+        "iconStyle": {},
         "near_key": null,
         "shape": {
           "value": ""
@@ -260,6 +261,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "link": {
             "value": "root.layers.x.layers.x"
           },
@@ -280,7 +282,7 @@
         "name": "x",
         "isFolderOnly": true,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile/link-board-nested.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -290,10 +292,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-nested.d2,3:4:47-3:10:53",
                         "value": [
                           {
-                            "string": "layers"
+                            "string": "layers",
+                            "raw_string": "layers"
                           }
                         ]
                       }
@@ -303,7 +306,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": ",0:0:0-1:0:0",
+                    "range": ",1:0:0-2:0:0",
                     "nodes": [
                       {
                         "map_key": {
@@ -313,10 +316,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-nested.d2,4:6:63-4:7:64",
                                   "value": [
                                     {
-                                      "string": "x"
+                                      "string": "x",
+                                      "raw_string": "x"
                                     }
                                   ]
                                 }
@@ -326,7 +330,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": ",0:0:0-1:0:0",
+                              "range": "d2/testdata/d2compiler/TestCompile/link-board-nested.d2,1:0:0-2:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -336,10 +340,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-nested.d2,5:8:76-5:13:81",
                                             "value": [
                                               {
-                                                "string": "hello"
+                                                "string": "hello",
+                                                "raw_string": "hello"
                                               }
                                             ]
                                           }
@@ -374,6 +379,7 @@
               "height": 0
             },
             "style": {},
+            "iconStyle": {},
             "near_key": null,
             "shape": {
               "value": ""
@@ -392,7 +398,7 @@
             "name": "x",
             "isFolderOnly": false,
             "ast": {
-              "range": ",0:0:0-1:0:0",
+              "range": "d2/testdata/d2compiler/TestCompile/link-board-nested.d2,0:0:0-1:0:0",
               "nodes": [
                 {
                   "map_key": {
@@ -402,10 +408,11 @@
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
+                            "range": "d2/testdata/d2compiler/TestCompile/link-board-nested.d2,5:8:76-5:13:81",
                             "value": [
                               {
-                                "string": "hello"
+                                "string": "hello",
+                                "raw_string": "hello"
                               }
                             ]
                           }
@@ -430,6 +437,7 @@
                   "height": 0
                 },
                 "style": {},
+                "iconStyle": {},
                 "near_key": null,
                 "shape": {
                   "value": ""
@@ -477,6 +485,7 @@
                     "height": 0
                   },
                   "style": {},
+                  "iconStyle": {},
                   "near_key": null,
                   "shape": {
                     "value": "rectangle"

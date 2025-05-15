@@ -1,0 +1,239 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/3.d2,0:0:0-2:2:14",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/3.d2,0:0:0-0:9:9",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/3.d2,0:0:0-0:9:9",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/3.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "*",
+                        "raw_string": "*"
+                      }
+                    ],
+                    "pattern": [
+                      "*"
+                    ]
+                  }
+                },
+                {
+                  "double_quoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/3.d2,0:2:2-0:9:9",
+                    "value": [
+                      {
+                        "string": "shape",
+                        "raw_string": "shape"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/3.d2,1:0:10-1:1:11",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/3.d2,1:0:10-1:1:11",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/3.d2,1:0:10-1:1:11",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "iconStyle": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "shape",
+        "id_val": "shape",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/3.d2,0:0:0-0:9:9",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/3.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "*",
+                        "raw_string": "*"
+                      }
+                    ],
+                    "pattern": [
+                      "*"
+                    ]
+                  }
+                },
+                {
+                  "double_quoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/3.d2,0:2:2-0:9:9",
+                    "value": [
+                      {
+                        "string": "shape",
+                        "raw_string": "shape"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 1,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/3.d2,0:0:0-0:9:9",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/3.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "*",
+                        "raw_string": "*"
+                      }
+                    ],
+                    "pattern": [
+                      "*"
+                    ]
+                  }
+                },
+                {
+                  "double_quoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/3.d2,0:2:2-0:9:9",
+                    "value": [
+                      {
+                        "string": "shape",
+                        "raw_string": "shape"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 1,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "shape"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "iconStyle": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "x",
+        "id_val": "x",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/3.d2,1:0:10-1:1:11",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/reserved_quoted/3.d2,1:0:10-1:1:11",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "x"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "iconStyle": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

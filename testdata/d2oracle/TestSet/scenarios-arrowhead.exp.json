@@ -366,6 +366,7 @@
           "height": 0
         },
         "style": {},
+        "iconStyle": {},
         "near_key": null,
         "shape": {
           "value": ""
@@ -392,6 +393,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "triangle"
@@ -415,6 +417,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": ""
@@ -445,6 +448,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": ""
@@ -492,6 +496,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "rectangle"
@@ -537,6 +542,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "rectangle"
@@ -582,6 +588,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "rectangle"
@@ -627,6 +634,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "rectangle"
@@ -644,7 +652,7 @@
         "name": "x",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2oracle/TestSet/scenarios-arrowhead.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -654,10 +662,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-arrowhead.d2,0:0:0-0:1:1",
                         "value": [
                           {
-                            "string": "a"
+                            "string": "a",
+                            "raw_string": "a"
                           }
                         ]
                       }
@@ -676,10 +685,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-arrowhead.d2,0:5:5-0:6:6",
                         "value": [
                           {
-                            "string": "b"
+                            "string": "b",
+                            "raw_string": "b"
                           }
                         ]
                       }
@@ -698,10 +708,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-arrowhead.d2,3:0:47-3:1:48",
                         "value": [
                           {
-                            "string": "x"
+                            "string": "x",
+                            "raw_string": "x"
                           }
                         ]
                       }
@@ -720,10 +731,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-arrowhead.d2,3:5:52-3:6:53",
                         "value": [
                           {
-                            "string": "y"
+                            "string": "y",
+                            "raw_string": "y"
                           }
                         ]
                       }
@@ -742,10 +754,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-arrowhead.d2,10:4:142-10:5:143",
                         "value": [
                           {
-                            "string": "c"
+                            "string": "c",
+                            "raw_string": "c"
                           }
                         ]
                       }
@@ -764,10 +777,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-arrowhead.d2,10:9:147-10:10:148",
                         "value": [
                           {
-                            "string": "d"
+                            "string": "d",
+                            "raw_string": "d"
                           }
                         ]
                       }
@@ -831,10 +845,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2oracle/TestSet/scenarios-arrowhead.d2,1:2:12-1:18:28",
                                   "value": [
                                     {
-                                      "string": "target-arrowhead"
+                                      "string": "target-arrowhead",
+                                      "raw_string": "target-arrowhead"
                                     }
                                   ]
                                 }
@@ -844,7 +859,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": ",0:0:0-1:0:0",
+                              "range": ",1:0:0-2:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -854,10 +869,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2oracle/TestSet/scenarios-arrowhead.d2,1:19:29-1:24:34",
                                             "value": [
                                               {
-                                                "string": "shape"
+                                                "string": "shape",
+                                                "raw_string": "shape"
                                               }
                                             ]
                                           }
@@ -990,6 +1006,7 @@
               "height": 0
             },
             "style": {},
+            "iconStyle": {},
             "near_key": null,
             "shape": {
               "value": ""
@@ -1016,6 +1033,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "diamond"
@@ -1042,6 +1060,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": ""
@@ -1072,6 +1091,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": ""
@@ -1102,6 +1122,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": ""
@@ -1169,6 +1190,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"
@@ -1234,6 +1256,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"
@@ -1279,6 +1302,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"
@@ -1324,6 +1348,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"
@@ -1369,6 +1394,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"
@@ -1414,6 +1440,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"

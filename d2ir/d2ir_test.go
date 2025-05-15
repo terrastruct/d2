@@ -33,7 +33,7 @@ func TestCopy(t *testing.T) {
 
 	const keyStr = `Absence makes the heart grow frantic.`
 	f := &d2ir.Field{
-		Name: keyStr,
+		Name: d2ast.FlatUnquotedString(keyStr),
 
 		Primary_:  s,
 		Composite: a,
@@ -48,10 +48,10 @@ func TestCopy(t *testing.T) {
 	}
 
 	m = m.Copy(nil).(*d2ir.Map)
-	f.Name = `Many a wife thinks her husband is the world's greatest lover.`
+	f.Name = d2ast.FlatUnquotedString(`Many a wife thinks her husband is the world's greatest lover.`)
 
 	assert.Equal(t, m, m.Fields[0].Parent())
-	assert.Equal(t, keyStr, m.Fields[0].Name)
+	assert.Equal(t, keyStr, m.Fields[0].Name.ScalarString())
 	assert.Equal(t, m.Fields[0], m.Fields[0].Primary_.Parent())
 	assert.Equal(t, m.Fields[0], m.Fields[0].Composite.(*d2ir.Array).Parent())
 

@@ -27,7 +27,7 @@ function init(reconnectDelay) {
       const parsedXML = new DOMParser().parseFromString(msg.svg, "text/xml");
       d2SVG.replaceChildren(parsedXML.documentElement);
       changeFavicon("/static/favicon.ico");
-      const svgEl = d2SVG.querySelector("#d2-svg");
+      const svgEl = d2SVG.querySelector(".d2-svg");
       // just use inner SVG in watch mode
       svgEl.parentElement.replaceWith(svgEl);
       let width = parseInt(svgEl.getAttribute("width"), 10);

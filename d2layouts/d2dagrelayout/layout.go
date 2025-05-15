@@ -11,8 +11,6 @@ import (
 
 	"log/slog"
 
-	"github.com/dop251/goja"
-
 	"oss.terrastruct.com/util-go/xdefer"
 
 	"oss.terrastruct.com/util-go/go2"
@@ -20,6 +18,7 @@ import (
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/d2/lib/jsrunner"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/shape"
@@ -80,11 +79,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	defer xdefer.Errorf(&err, "failed to dagre layout")
 
 	debugJS := false
-	vm := goja.New()
-	if _, err := vm.RunString(dagreJS); err != nil {
+	runner := jsrunner.NewJSRunner()
+	if _, err := runner.RunString(dagreJS); err != nil {
 		return err
 	}
-	if _, err := vm.RunString(setupJS); err != nil {
+	if _, err := runner.RunString(setupJS); err != nil {
 		return err
 	}
 
@@ -136,7 +135,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 
 	configJS := setGraphAttrs(rootAttrs)
-	if _, err := vm.RunString(configJS); err != nil {
+	if _, err := runner.RunString(configJS); err != nil {
 		return err
 	}
 
@@ -183,11 +182,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		log.Debug(ctx, "script", slog.Any("all", setupJS+configJS+loadScript))
 	}
 
-	if _, err := vm.RunString(loadScript); err != nil {
+	if _, err := runner.RunString(loadScript); err != nil {
 		return err
 	}
 
-	if _, err := vm.RunString(`dagre.layout(g)`); err != nil {
+	if _, err := runner.RunString(`dagre.layout(g)`); err != nil {
 		if debugJS {
 			log.Warn(ctx, "layout error", slog.Any("err", err))
 		}
@@ -195,7 +194,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 
 	for i := range g.Objects {
-		val, err := vm.RunString(fmt.Sprintf("JSON.stringify(g.node(g.nodes()[%d]))", i))
+		val, err := runner.RunString(fmt.Sprintf("JSON.stringify(g.node(g.nodes()[%d]))", i))
 		if err != nil {
 			return err
 		}
@@ -216,7 +215,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 
 	for i, edge := range g.Edges {
-		val, err := vm.RunString(fmt.Sprintf("JSON.stringify(g.edge(g.edges()[%d]))", i))
+		val, err := runner.RunString(fmt.Sprintf("JSON.stringify(g.edge(g.edges()[%d]))", i))
 		if err != nil {
 			return err
 		}

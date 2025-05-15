@@ -348,6 +348,7 @@
           "height": 0
         },
         "style": {},
+        "iconStyle": {},
         "near_key": null,
         "shape": {
           "value": ""
@@ -379,6 +380,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": ""
@@ -426,6 +428,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "rectangle"
@@ -471,6 +474,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "rectangle"
@@ -488,7 +492,7 @@
         "name": "x",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2oracle/TestSet/scenario-grandchild.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -498,10 +502,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestSet/scenario-grandchild.d2,0:0:0-0:1:1",
                         "value": [
                           {
-                            "string": "a"
+                            "string": "a",
+                            "raw_string": "a"
                           }
                         ]
                       }
@@ -520,10 +525,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestSet/scenario-grandchild.d2,0:5:5-0:6:6",
                         "value": [
                           {
-                            "string": "b"
+                            "string": "b",
+                            "raw_string": "b"
                           }
                         ]
                       }
@@ -542,10 +548,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestSet/scenario-grandchild.d2,4:4:32-4:13:41",
                         "value": [
                           {
-                            "string": "scenarios"
+                            "string": "scenarios",
+                            "raw_string": "scenarios"
                           }
                         ]
                       }
@@ -555,7 +562,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": ",0:0:0-1:0:0",
+                    "range": ",1:0:0-2:0:0",
                     "nodes": [
                       {
                         "map_key": {
@@ -565,10 +572,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2oracle/TestSet/scenario-grandchild.d2,5:6:51-5:7:52",
                                   "value": [
                                     {
-                                      "string": "c"
+                                      "string": "c",
+                                      "raw_string": "c"
                                     }
                                   ]
                                 }
@@ -578,7 +586,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": ",0:0:0-1:0:0",
+                              "range": "d2/testdata/d2oracle/TestSet/scenario-grandchild.d2,1:0:0-2:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -588,10 +596,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2oracle/TestSet/scenario-grandchild.d2,0:0:0-0:1:1",
                                             "value": [
                                               {
-                                                "string": "a"
+                                                "string": "a",
+                                                "raw_string": "a"
                                               }
                                             ]
                                           }
@@ -610,10 +619,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2oracle/TestSet/scenario-grandchild.d2,0:5:5-0:6:6",
                                             "value": [
                                               {
-                                                "string": "b"
+                                                "string": "b",
+                                                "raw_string": "b"
                                               }
                                             ]
                                           }
@@ -677,10 +687,11 @@
                                                 "path": [
                                                   {
                                                     "unquoted_string": {
-                                                      "range": ",0:0:0-0:0:0",
+                                                      "range": "d2/testdata/d2oracle/TestSet/scenario-grandchild.d2,6:20:76-6:25:81",
                                                       "value": [
                                                         {
-                                                          "string": "style"
+                                                          "string": "style",
+                                                          "raw_string": "style"
                                                         }
                                                       ]
                                                     }
@@ -690,7 +701,7 @@
                                               "primary": {},
                                               "value": {
                                                 "map": {
-                                                  "range": ",0:0:0-1:0:0",
+                                                  "range": ",1:0:0-2:0:0",
                                                   "nodes": [
                                                     {
                                                       "map_key": {
@@ -700,10 +711,11 @@
                                                           "path": [
                                                             {
                                                               "unquoted_string": {
-                                                                "range": ",0:0:0-0:0:0",
+                                                                "range": "d2/testdata/d2oracle/TestSet/scenario-grandchild.d2,6:26:82-6:30:86",
                                                                 "value": [
                                                                   {
-                                                                    "string": "bold"
+                                                                    "string": "bold",
+                                                                    "raw_string": "bold"
                                                                   }
                                                                 ]
                                                               }
@@ -727,10 +739,11 @@
                                                           "path": [
                                                             {
                                                               "unquoted_string": {
-                                                                "range": ",0:0:0-0:0:0",
+                                                                "range": "d2/testdata/d2oracle/TestSet/scenario-grandchild.d2,7:26:119-7:38:131",
                                                                 "value": [
                                                                   {
-                                                                    "string": "stroke-width"
+                                                                    "string": "stroke-width",
+                                                                    "raw_string": "stroke-width"
                                                                   }
                                                                 ]
                                                               }
@@ -825,6 +838,7 @@
               "height": 0
             },
             "style": {},
+            "iconStyle": {},
             "near_key": null,
             "shape": {
               "value": ""
@@ -856,6 +870,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": ""
@@ -903,6 +918,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"
@@ -948,6 +964,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"
@@ -965,7 +982,7 @@
             "name": "c",
             "isFolderOnly": false,
             "ast": {
-              "range": ",0:0:0-1:0:0",
+              "range": "d2/testdata/d2oracle/TestSet/scenario-grandchild.d2,0:0:0-1:0:0",
               "nodes": [
                 {
                   "map_key": {
@@ -975,10 +992,11 @@
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
+                            "range": "d2/testdata/d2oracle/TestSet/scenario-grandchild.d2,0:0:0-0:1:1",
                             "value": [
                               {
-                                "string": "a"
+                                "string": "a",
+                                "raw_string": "a"
                               }
                             ]
                           }
@@ -997,10 +1015,11 @@
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
+                            "range": "d2/testdata/d2oracle/TestSet/scenario-grandchild.d2,0:5:5-0:6:6",
                             "value": [
                               {
-                                "string": "b"
+                                "string": "b",
+                                "raw_string": "b"
                               }
                             ]
                           }
@@ -1064,10 +1083,11 @@
                                 "path": [
                                   {
                                     "unquoted_string": {
-                                      "range": ",0:0:0-0:0:0",
+                                      "range": "d2/testdata/d2oracle/TestSet/scenario-grandchild.d2,6:20:76-6:25:81",
                                       "value": [
                                         {
-                                          "string": "style"
+                                          "string": "style",
+                                          "raw_string": "style"
                                         }
                                       ]
                                     }
@@ -1077,7 +1097,7 @@
                               "primary": {},
                               "value": {
                                 "map": {
-                                  "range": ",0:0:0-1:0:0",
+                                  "range": ",1:0:0-2:0:0",
                                   "nodes": [
                                     {
                                       "map_key": {
@@ -1087,10 +1107,11 @@
                                           "path": [
                                             {
                                               "unquoted_string": {
-                                                "range": ",0:0:0-0:0:0",
+                                                "range": "d2/testdata/d2oracle/TestSet/scenario-grandchild.d2,6:26:82-6:30:86",
                                                 "value": [
                                                   {
-                                                    "string": "bold"
+                                                    "string": "bold",
+                                                    "raw_string": "bold"
                                                   }
                                                 ]
                                               }
@@ -1114,10 +1135,11 @@
                                           "path": [
                                             {
                                               "unquoted_string": {
-                                                "range": ",0:0:0-0:0:0",
+                                                "range": "d2/testdata/d2oracle/TestSet/scenario-grandchild.d2,7:26:119-7:38:131",
                                                 "value": [
                                                   {
-                                                    "string": "stroke-width"
+                                                    "string": "stroke-width",
+                                                    "raw_string": "stroke-width"
                                                   }
                                                 ]
                                               }
@@ -1158,6 +1180,7 @@
                   "height": 0
                 },
                 "style": {},
+                "iconStyle": {},
                 "near_key": null,
                 "shape": {
                   "value": ""
@@ -1202,6 +1225,7 @@
                       "value": "true"
                     }
                   },
+                  "iconStyle": {},
                   "near_key": null,
                   "shape": {
                     "value": ""
@@ -1289,6 +1313,7 @@
                     "height": 0
                   },
                   "style": {},
+                  "iconStyle": {},
                   "near_key": null,
                   "shape": {
                     "value": "rectangle"
@@ -1374,6 +1399,7 @@
                     "height": 0
                   },
                   "style": {},
+                  "iconStyle": {},
                   "near_key": null,
                   "shape": {
                     "value": "rectangle"

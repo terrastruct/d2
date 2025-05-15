@@ -1,5 +1,13 @@
 {
   "name": "",
+  "config": {
+    "sketch": false,
+    "themeID": 0,
+    "darkThemeID": null,
+    "pad": null,
+    "center": null,
+    "layoutEngine": null
+  },
   "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
@@ -18,6 +26,7 @@
       "borderRadius": 0,
       "fill": "B4",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -59,6 +68,7 @@
       "borderRadius": 0,
       "fill": "B5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -100,6 +110,7 @@
       "borderRadius": 0,
       "fill": "N4",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -141,6 +152,7 @@
       "borderRadius": 0,
       "fill": "N4",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -182,6 +194,7 @@
       "borderRadius": 0,
       "fill": "B6",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -223,6 +236,7 @@
       "borderRadius": 0,
       "fill": "B5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -264,6 +278,7 @@
       "borderRadius": 0,
       "fill": "N5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -305,6 +320,7 @@
       "borderRadius": 0,
       "fill": "N5",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -346,6 +362,7 @@
       "borderRadius": 0,
       "fill": "B6",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -387,6 +404,7 @@
       "borderRadius": 0,
       "fill": "N7",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -429,6 +447,7 @@
       "borderRadius": 0,
       "fill": "AA4",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -470,6 +489,7 @@
       "borderRadius": 0,
       "fill": "N1",
       "stroke": "N7",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -545,6 +565,7 @@
       "borderRadius": 0,
       "fill": "N1",
       "stroke": "N7",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -729,6 +750,7 @@
       "borderRadius": 0,
       "fill": "B6",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -770,6 +792,7 @@
       "borderRadius": 0,
       "fill": "transparent",
       "stroke": "N1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -810,6 +833,7 @@
       "borderRadius": 0,
       "fill": "N7",
       "stroke": "N1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -850,6 +874,7 @@
       "borderRadius": 0,
       "fill": "N7",
       "stroke": "N1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -900,6 +925,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 1716,
@@ -938,6 +964,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 1716,
@@ -976,6 +1003,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 1716,
@@ -1014,6 +1042,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 2336,
@@ -1052,6 +1081,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 2336,
@@ -1090,6 +1120,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 2336,
@@ -1121,6 +1152,7 @@
     "borderRadius": 0,
     "fill": "N7",
     "stroke": "",
+    "animated": false,
     "shadow": false,
     "3d": false,
     "multiple": false,

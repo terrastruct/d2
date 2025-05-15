@@ -8,12 +8,17 @@
 .Nm d2
 .Op Fl -watch Ar false
 .Op Fl -theme Em 0
+.Op Fl -salt Ar string
 .Ar file.d2
 .Op Ar file.svg | file.png
 .Nm d2
 .Ar layout Op Ar name
 .Nm d2
 .Ar fmt Ar file.d2 ...
+.Nm d2
+.Ar play Ar file.d2
+.Nm d2
+.Ar validate Ar file.d2
 .Sh DESCRIPTION
 .Nm
 compiles and renders
@@ -125,11 +130,26 @@ In watch mode, images used in icons are cached for subsequent compilations. This
 .It Fl -timeout Ar 120
 The maximum number of seconds that D2 runs for before timing out and exiting. When rendering a large diagram, it is recommended to increase this value
 .Ns .
+.It Fl -check Ar false
+Check that the specified files are formatted correctly
+.Ns .
+.It Fl -salt Ar string
+Add a salt value to ensure the output uses unique IDs. This is useful when generating multiple identical diagrams to be included in the same HTML doc, so that duplicate id's do not cause invalid HTML. The salt value is a string that will be appended to IDs in the output.
+.Ns .
 .It Fl h , -help
 Print usage information and exit
 .Ns .
 .It Fl v , -version
 Print version information and exit
+.Ns .
+.It Fl -stdout-format Ar string
+Set the output format when writing to stdout. Supported formats are: png, svg. Only used when output is set to stdout (-)
+.Ns .
+.It Fl -no-xml-tag Ar false
+Omit XML tag (<?xml ...?>) from output SVG files. Useful when generating SVGs for direct HTML embedding
+.Ns .
+.It Fl -omit-version Ar false
+omit D2 version from generated image
 .Ns .
 .El
 .Sh SUBCOMMANDS
@@ -145,7 +165,64 @@ Lists available themes
 .Ns .
 .It Ar fmt Ar file.d2 ...
 Format all passed files
-.Ns .
+.It Ar play Ar file.d2
+Opens the file in playground, an online web viewer (https://play.d2lang.com)
+.It Ar validate Ar file.d2
+Validates file.d2
+.El
+.Sh ENVIRONMENT VARIABLES
+Many flags can also be set with environment variables.
+.Bl -tag -width Ds
+.It Ev Sy D2_WATCH
+See -w[atch] flag.
+.It Ev Sy D2_LAYOUT
+See -l[ayout] flag.
+.It Ev Sy D2_THEME
+See -t[heme] flag.
+.It Ev Sy D2_DARK_THEME
+See --dark-theme flag.
+.It Ev Sy D2_PAD
+See --pad flag.
+.It Ev Sy D2_CENTER
+See --center flag.
+.It Ev Sy D2_SKETCH
+See -s[ketch] flag.
+.It Ev Sy D2_BUNDLE
+See -b[undle] flag.
+.It Ev Sy D2_FORCE_APPENDIX
+See --force-appendix flag.
+.It Ev Sy D2_FONT_REGULAR
+See --font-regular flag.
+.It Ev Sy D2_FONT_ITALIC
+See --font-italic flag.
+.It Ev Sy D2_FONT_BOLD
+See --font-bold flag.
+.It Ev Sy D2_FONT_SEMIBOLD
+See --font-semibold flag.
+.It Ev Sy D2_ANIMATE_INTERVAL
+See --animate-interval flag.
+.It Ev Sy D2_TIMEOUT
+See --timeout flag.
+.It Ev Sy D2_CHECK
+See --check flag.
+.El
+.Bl -tag -width Ds
+.It Ev Sy DEBUG
+See -d[ebug] flag.
+.It Ev Sy IMG_CACHE
+See --img-cache flag.
+.It Ev Sy HOST
+See -h[ost] flag.
+.It Ev Sy PORT
+See -p[ort] flag.
+.It Ev Sy BROWSER
+See --browser flag.
+.It Ev Sy D2_STDOUT_FORMAT
+See --stdout-format flag.
+.It Ev Sy D2_NO_XML_TAG
+See --no-xml-tag flag.
+.It Ev Sy OMIT_VERSION
+See --omit-version
 .El
 .Sh SEE ALSO
 .Xr d2plugin-tala 1

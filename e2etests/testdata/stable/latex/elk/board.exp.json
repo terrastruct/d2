@@ -1,5 +1,13 @@
 {
   "name": "",
+  "config": {
+    "sketch": false,
+    "themeID": 0,
+    "darkThemeID": null,
+    "pad": null,
+    "center": null,
+    "layoutEngine": null
+  },
   "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
@@ -18,6 +26,7 @@
       "borderRadius": 0,
       "fill": "transparent",
       "stroke": "N1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -30,7 +39,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "\\\\Huge{\\\\frac{\\\\alpha g^2}{\\\\omega^5} e^{[ -0.74\\\\bigl\\\\{\\\\frac{\\\\omega U_\\\\omega 19.5}{g}\\\\bigr\\\\}^{\\\\!-4}\\\\,]}}",
+      "label": "\\Huge{\\frac{\\alpha g^2}{\\omega^5} e^{[ -0.74\\bigl\\{\\frac{\\omega U_\\omega 19.5}{g}\\bigr\\}^{\\!-4}\\,]}}",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "latex",
@@ -58,6 +67,7 @@
       "borderRadius": 0,
       "fill": "transparent",
       "stroke": "N1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -98,6 +108,7 @@
       "borderRadius": 0,
       "fill": "transparent",
       "stroke": "N1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -110,7 +121,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "gibberish\\\\; math:\\\\sum_{i=0}^\\\\infty i^2",
+      "label": "gibberish\\; math:\\sum_{i=0}^\\infty i^2",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "latex",
@@ -138,6 +149,7 @@
       "borderRadius": 0,
       "fill": "B6",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -179,6 +191,7 @@
       "borderRadius": 0,
       "fill": "B6",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -220,6 +233,7 @@
       "borderRadius": 0,
       "fill": "B6",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -261,6 +275,7 @@
       "borderRadius": 0,
       "fill": "B4",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -302,6 +317,7 @@
       "borderRadius": 0,
       "fill": "transparent",
       "stroke": "N1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -314,7 +330,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "\\\\min_{ \\\\mathclap{\\\\substack{ x \\\\in \\\\mathbb{R}^n \\\\ x \\\\geq 0 \\\\ Ax \\\\leq b }}} c^T x",
+      "label": "\\min_{ \\mathclap{\\substack{ x \\in \\mathbb{R}^n \\ x \\geq 0 \\ Ax \\leq b }}} c^T x",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "latex",
@@ -352,6 +368,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 294.9159851074219,
@@ -390,6 +407,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 354.5830078125,
@@ -436,6 +454,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 354.4159851074219,
@@ -474,6 +493,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 446.5,
@@ -520,6 +540,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 542,
@@ -566,6 +587,7 @@
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 392.9159851074219,
@@ -597,6 +619,7 @@
     "borderRadius": 0,
     "fill": "N7",
     "stroke": "",
+    "animated": false,
     "shadow": false,
     "3d": false,
     "multiple": false,

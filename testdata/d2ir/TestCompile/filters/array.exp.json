@@ -1,11 +1,27 @@
 {
   "fields": [
     {
-      "name": "the-little-cannon",
+      "name": {
+        "range": "TestCompile/filters/array.d2,0:0:0-0:17:17",
+        "value": [
+          {
+            "string": "the-little-cannon",
+            "raw_string": "the-little-cannon"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "class",
+            "name": {
+              "range": "TestCompile/filters/array.d2,1:1:22-1:6:27",
+              "value": [
+                {
+                  "string": "class",
+                  "raw_string": "class"
+                }
+              ]
+            },
             "composite": {
               "values": [
                 {
@@ -245,11 +261,27 @@
             ]
           },
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/filters/array.d2,12:1:150-12:6:155",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "multiple",
+                  "name": {
+                    "range": "TestCompile/filters/array.d2,12:7:156-12:15:164",
+                    "value": [
+                      {
+                        "string": "multiple",
+                        "raw_string": "multiple"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/filters/array.d2,12:17:166-12:21:170",
@@ -542,11 +574,27 @@
       ]
     },
     {
-      "name": "dino",
+      "name": {
+        "range": "TestCompile/filters/array.d2,3:0:50-3:4:54",
+        "value": [
+          {
+            "string": "dino",
+            "raw_string": "dino"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "class",
+            "name": {
+              "range": "TestCompile/filters/array.d2,4:1:59-4:6:64",
+              "value": [
+                {
+                  "string": "class",
+                  "raw_string": "class"
+                }
+              ]
+            },
             "composite": {
               "values": [
                 {
@@ -838,11 +886,27 @@
       ]
     },
     {
-      "name": "catapult",
+      "name": {
+        "range": "TestCompile/filters/array.d2,6:0:89-6:8:97",
+        "value": [
+          {
+            "string": "catapult",
+            "raw_string": "catapult"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "class",
+            "name": {
+              "range": "TestCompile/filters/array.d2,7:1:102-7:6:107",
+              "value": [
+                {
+                  "string": "class",
+                  "raw_string": "class"
+                }
+              ]
+            },
             "composite": {
               "values": [
                 {
@@ -1082,11 +1146,27 @@
             ]
           },
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/filters/array.d2,12:1:150-12:6:155",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "multiple",
+                  "name": {
+                    "range": "TestCompile/filters/array.d2,12:7:156-12:15:164",
+                    "value": [
+                      {
+                        "string": "multiple",
+                        "raw_string": "multiple"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/filters/array.d2,12:17:166-12:21:170",

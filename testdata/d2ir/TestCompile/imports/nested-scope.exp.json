@@ -1,15 +1,39 @@
 {
   "fields": [
     {
-      "name": "elem",
+      "name": {
+        "range": "second.d2,0:0:0-0:4:4",
+        "value": [
+          {
+            "string": "elem",
+            "raw_string": "elem"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "third",
+            "name": {
+              "range": "third.d2,0:0:0-0:5:5",
+              "value": [
+                {
+                  "string": "third",
+                  "raw_string": "third"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "elem",
+                  "name": {
+                    "range": "third.d2,1:2:11-1:6:15",
+                    "value": [
+                      {
+                        "string": "elem",
+                        "raw_string": "elem"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {

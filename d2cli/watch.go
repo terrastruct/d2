@@ -17,9 +17,9 @@ import (
 	"sync"
 	"time"
 
+	"github.com/coder/websocket"
+	"github.com/coder/websocket/wsjson"
 	"github.com/fsnotify/fsnotify"
-	"nhooyr.io/websocket"
-	"nhooyr.io/websocket/wsjson"
 
 	"oss.terrastruct.com/util-go/xbrowser"
 
@@ -57,6 +57,7 @@ type watcherOpts struct {
 	forceAppendix   bool
 	pw              png.Playwright
 	fontFamily      *d2fonts.FontFamily
+	outputFormat    exportExtension
 }
 
 type watcher struct {
@@ -263,6 +264,12 @@ func (w *watcher) watchLoop(ctx context.Context) error {
 				return errors.New("fsnotify watcher closed")
 			}
 			w.ms.Log.Debug.Printf("received file system event %v", ev)
+
+			if isTemp, reason := isBackupFile(ev.Name); isTemp {
+				w.ms.Log.Debug.Printf("skipping event for %q: detected as %s", w.ms.HumanPath(ev.Name), reason)
+				continue
+			}
+
 			mt, err := w.ensureAddWatch(ctx, ev.Name)
 			if err != nil {
 				return err
@@ -348,6 +355,11 @@ func (w *watcher) ensureAddWatch(ctx context.Context, path string) (time.Time, e
 }
 
 func (w *watcher) addWatch(ctx context.Context, path string) (time.Time, error) {
+	if isTemp, reason := isBackupFile(path); isTemp {
+		w.ms.Log.Debug.Printf("skipping watch for %q: detected as %s", w.ms.HumanPath(path), reason)
+		return time.Time{}, nil
+	}
+
 	err := w.fw.Add(path)
 	if err != nil {
 		return time.Time{}, err
@@ -430,7 +442,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 		if w.boardPath != "" {
 			boardPath = strings.Split(w.boardPath, string(os.PathSeparator))
 		}
-		svg, _, err := compile(ctx, w.ms, w.plugins, &fs, w.layout, w.renderOpts, w.fontFamily, w.animateInterval, w.inputPath, w.outputPath, boardPath, false, w.bundle, w.forceAppendix, w.pw.Page)
+		svg, _, err := compile(ctx, w.ms, w.plugins, &fs, w.layout, w.renderOpts, w.fontFamily, w.animateInterval, w.inputPath, w.outputPath, boardPath, false, w.bundle, w.forceAppendix, w.pw.Page, w.outputFormat)
 		w.boardpathMu.Unlock()
 		errs := ""
 		if err != nil {
@@ -669,4 +681,42 @@ func (tfs *trackedFS) Open(name string) (fs.File, error) {
 		tfs.opened = append(tfs.opened, name)
 	}
 	return f, err
+}
+
+func isBackupFile(path string) (bool, string) {
+	ext := filepath.Ext(path)
+	baseName := filepath.Base(path)
+
+	// This list is based off of https://github.com/gohugoio/hugo/blob/master/commands/hugobuilder.go#L795
+	switch {
+	case strings.HasSuffix(ext, "~"):
+		return true, "generic backup file (~)"
+	case ext == ".swp":
+		return true, "vim swap file"
+	case ext == ".swx":
+		return true, "vim swap file"
+	case ext == ".tmp":
+		return true, "generic temp file"
+	case ext == ".DS_Store":
+		return true, "OSX thumbnail"
+	case ext == ".bck":
+		return true, "Helix backup"
+	case baseName == "4913":
+		return true, "vim temp file"
+	case strings.HasPrefix(ext, ".goutputstream"):
+		return true, "GNOME temp file"
+	case strings.HasSuffix(ext, "jb_old___"):
+		return true, "IntelliJ old backup"
+	case strings.HasSuffix(ext, "jb_tmp___"):
+		return true, "IntelliJ temp file"
+	case strings.HasSuffix(ext, "jb_bak___"):
+		return true, "IntelliJ backup"
+	case strings.HasPrefix(ext, ".sb-"):
+		return true, "Byword temp file"
+	case strings.HasPrefix(baseName, ".#"):
+		return true, "Emacs lock file"
+	case strings.HasPrefix(baseName, "#"):
+		return true, "Emacs temp file"
+	}
+	return false, ""
 }

@@ -14,8 +14,8 @@ if ! go version | grep -q '1.2[0-9]'; then
   exit 1
 fi
 
-if [ "${CI:-}" ]; then
-  export FORCE_COLOR=1
-  npx playwright@1.31.1 install --with-deps chromium
-fi
+# if [ "${CI:-}" ]; then
+#   export FORCE_COLOR=1
+#   npx playwright@1.31.1 install --with-deps chromium
+# fi
 _make "$@"

@@ -68,7 +68,7 @@ func Wrap(rootDiagram *d2target.Diagram, svgs [][]byte, renderOpts d2svg.RenderO
 	)
 	fmt.Fprint(buf, fitToScreenWrapperOpening)
 
-	innerOpening := fmt.Sprintf(`<svg id="d2-svg" width="%d" height="%d" viewBox="%d %d %d %d">`,
+	innerOpening := fmt.Sprintf(`<svg class="d2-svg" width="%d" height="%d" viewBox="%d %d %d %d">`,
 		width, height, left, top, width, height)
 	fmt.Fprint(buf, innerOpening)
 
@@ -77,7 +77,7 @@ func Wrap(rootDiagram *d2target.Diagram, svgs [][]byte, renderOpts d2svg.RenderO
 		svgsStr += string(svg) + " "
 	}
 
-	diagramHash, err := rootDiagram.HashID()
+	diagramHash, err := rootDiagram.HashID(renderOpts.Salt)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +102,7 @@ func Wrap(rootDiagram *d2target.Diagram, svgs [][]byte, renderOpts d2svg.RenderO
 	}
 
 	if renderOpts.Sketch != nil && *renderOpts.Sketch {
-		d2sketch.DefineFillPatterns(buf)
+		d2sketch.DefineFillPatterns(buf, diagramHash)
 	}
 
 	fmt.Fprint(buf, `<style type="text/css"><![CDATA[`)

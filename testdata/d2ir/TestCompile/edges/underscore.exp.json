@@ -1,11 +1,27 @@
 {
   "fields": [
     {
-      "name": "p",
+      "name": {
+        "range": "TestCompile/edges/underscore.d2,0:0:0-0:1:1",
+        "value": [
+          {
+            "string": "p",
+            "raw_string": "p"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "z",
+            "name": {
+              "range": "TestCompile/edges/underscore.d2,0:12:12-0:13:13",
+              "value": [
+                {
+                  "string": "z",
+                  "raw_string": "z"
+                }
+              ]
+            },
             "references": [
               {
                 "string": {
@@ -266,7 +282,15 @@
       ]
     },
     {
-      "name": "x",
+      "name": {
+        "range": "TestCompile/edges/underscore.d2,0:7:7-0:8:8",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -420,12 +444,36 @@
     {
       "edge_id": {
         "src_path": [
-          "x"
+          {
+            "range": "TestCompile/edges/underscore.d2,0:7:7-0:8:8",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "p",
-          "z"
+          {
+            "range": "TestCompile/edges/underscore.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "p",
+                "raw_string": "p"
+              }
+            ]
+          },
+          {
+            "range": "TestCompile/edges/underscore.d2,0:12:12-0:13:13",
+            "value": [
+              {
+                "string": "z",
+                "raw_string": "z"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,

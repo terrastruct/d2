@@ -49,6 +49,7 @@ type Graph struct {
 	BaseAST *d2ast.Map `json:"-"`
 
 	Root    *Object   `json:"root"`
+	Legend  *Legend   `json:"legend,omitempty"`
 	Edges   []*Edge   `json:"edges"`
 	Objects []*Object `json:"objects"`
 
@@ -67,6 +68,11 @@ type Graph struct {
 	Data map[string]interface{} `json:"data,omitempty"`
 }
 
+type Legend struct {
+	Objects []*Object `json:"objects,omitempty"`
+	Edges   []*Edge   `json:"edges,omitempty"`
+}
+
 func NewGraph() *Graph {
 	d := &Graph{}
 	d.Root = &Object{
@@ -82,6 +88,66 @@ func (g *Graph) RootBoard() *Graph {
 		g = g.Parent
 	}
 	return g
+}
+
+func (g *Graph) IDA() []string {
+	if g == nil {
+		return nil
+	}
+
+	var parts []string
+
+	current := g
+	for current != nil {
+		if current.Name != "" {
+			parts = append(parts, current.Name)
+		}
+		current = current.Parent
+	}
+
+	for i := 0; i < len(parts)/2; i++ {
+		j := len(parts) - 1 - i
+		parts[i], parts[j] = parts[j], parts[i]
+	}
+
+	if len(parts) == 0 {
+		return []string{"root"}
+	}
+
+	parts = append([]string{"root"}, parts...)
+
+	if g.Parent != nil {
+		var containerName string
+		if len(g.Parent.Layers) > 0 {
+			for _, l := range g.Parent.Layers {
+				if l == g {
+					containerName = "layers"
+					break
+				}
+			}
+		}
+		if len(g.Parent.Scenarios) > 0 {
+			for _, s := range g.Parent.Scenarios {
+				if s == g {
+					containerName = "scenarios"
+					break
+				}
+			}
+		}
+		if len(g.Parent.Steps) > 0 {
+			for _, s := range g.Parent.Steps {
+				if s == g {
+					containerName = "steps"
+					break
+				}
+			}
+		}
+		if containerName != "" {
+			parts = append(parts[:1], append([]string{containerName}, parts[1:]...)...)
+		}
+	}
+
+	return parts
 }
 
 type LayoutGraph func(context.Context, *Graph) error
@@ -130,10 +196,11 @@ type Attributes struct {
 	Label           Scalar                  `json:"label"`
 	LabelDimensions d2target.TextDimensions `json:"labelDimensions"`
 
-	Style   Style    `json:"style"`
-	Icon    *url.URL `json:"icon,omitempty"`
-	Tooltip *Scalar  `json:"tooltip,omitempty"`
-	Link    *Scalar  `json:"link,omitempty"`
+	Style     Style    `json:"style"`
+	Icon      *url.URL `json:"icon,omitempty"`
+	IconStyle Style    `json:"iconStyle"`
+	Tooltip   *Scalar  `json:"tooltip,omitempty"`
+	Link      *Scalar  `json:"link,omitempty"`
 
 	WidthAttr  *Scalar `json:"width,omitempty"`
 	HeightAttr *Scalar `json:"height,omitempty"`
@@ -504,7 +571,7 @@ func (obj *Object) GetFill() string {
 		return color.AB5
 	}
 
-	if strings.EqualFold(shape, d2target.ShapePerson) {
+	if strings.EqualFold(shape, d2target.ShapePerson) || strings.EqualFold(shape, d2target.ShapeC4Person) {
 		return color.B3
 	}
 	if strings.EqualFold(shape, d2target.ShapeDiamond) {
@@ -634,7 +701,10 @@ func (obj *Object) Text() *d2target.MText {
 	}
 }
 
-func (obj *Object) newObject(id string) *Object {
+func (obj *Object) newObject(ids d2ast.String) *Object {
+	id := d2format.Format(&d2ast.KeyPath{
+		Path: []*d2ast.StringBox{d2ast.MakeValueBox(d2ast.RawString(ids.ScalarString(), true)).StringBox()},
+	})
 	idval := id
 	k, _ := d2parser.ParseKey(id)
 	if k != nil && len(k.Path) > 0 {
@@ -646,9 +716,6 @@ func (obj *Object) newObject(id string) *Object {
 		Attributes: Attributes{
 			Label: Scalar{
 				Value: idval,
-			},
-			Shape: Scalar{
-				Value: d2target.ShapeRectangle,
 			},
 		},
 
@@ -787,7 +854,7 @@ func (obj *Object) FindEdges(mk *d2ast.Key) ([]*Edge, bool) {
 	return ea, true
 }
 
-func (obj *Object) ensureChildEdge(ida []string) *Object {
+func (obj *Object) ensureChildEdge(ida []d2ast.String) *Object {
 	for i := range ida {
 		switch obj.Shape.Value {
 		case d2target.ShapeClass, d2target.ShapeSQLTable:
@@ -803,12 +870,12 @@ func (obj *Object) ensureChildEdge(ida []string) *Object {
 
 // EnsureChild grabs the child by ids or creates it if it does not exist including all
 // intermediate nodes.
-func (obj *Object) EnsureChild(ida []string) *Object {
+func (obj *Object) EnsureChild(ida []d2ast.String) *Object {
 	seq := obj.OuterSequenceDiagram()
 	if seq != nil {
 		for _, c := range seq.ChildrenArray {
-			if c.ID == ida[0] {
-				if obj.ID == ida[0] {
+			if c.ID == ida[0].ScalarString() {
+				if obj.ID == ida[0].ScalarString() {
 					// In cases of a.a where EnsureChild is called on the parent a, the second a should
 					// be created as a child of a and not as a child of the diagram. This is super
 					// unfortunate code but alas.
@@ -824,9 +891,11 @@ func (obj *Object) EnsureChild(ida []string) *Object {
 		return obj
 	}
 
-	_, is := d2ast.ReservedKeywordHolders[ida[0]]
+	_, is := d2ast.ReservedKeywordHolders[ida[0].ScalarString()]
+	is = is && ida[0].IsUnquoted()
 	if len(ida) == 1 && !is {
-		_, ok := d2ast.ReservedKeywords[ida[0]]
+		_, ok := d2ast.ReservedKeywords[ida[0].ScalarString()]
+		ok = ok && ida[0].IsUnquoted()
 		if ok {
 			return obj
 		}
@@ -835,11 +904,14 @@ func (obj *Object) EnsureChild(ida []string) *Object {
 	id := ida[0]
 	ida = ida[1:]
 
-	if id == "_" {
+	if id.ScalarString() == "_" && id.IsUnquoted() {
 		return obj.Parent.EnsureChild(ida)
 	}
 
-	child, ok := obj.Children[strings.ToLower(id)]
+	head := d2format.Format(&d2ast.KeyPath{
+		Path: []*d2ast.StringBox{d2ast.MakeValueBox(d2ast.RawString(id.ScalarString(), true)).StringBox()},
+	})
+	child, ok := obj.Children[strings.ToLower(head)]
 	if !ok {
 		child = obj.newObject(id)
 	}
@@ -877,14 +949,16 @@ func (obj *Object) GetLabelSize(mtexts []*d2target.MText, ruler *textmeasure.Rul
 
 	var dims *d2target.TextDimensions
 	switch shapeType {
-	case d2target.ShapeText:
+	case d2target.ShapeClass:
+		dims = GetTextDimensions(mtexts, ruler, obj.Text(), go2.Pointer(d2fonts.SourceCodePro))
+	default:
 		if obj.Language == "latex" {
 			width, height, err := d2latex.Measure(obj.Text().Text)
 			if err != nil {
 				return nil, err
 			}
 			dims = d2target.NewTextDimensions(width, height)
-		} else if obj.Language != "" {
+		} else if obj.Language != "" && shapeType != d2target.ShapeCode {
 			var err error
 			dims, err = getMarkdownDimensions(mtexts, ruler, obj.Text(), fontFamily)
 			if err != nil {
@@ -893,12 +967,6 @@ func (obj *Object) GetLabelSize(mtexts []*d2target.MText, ruler *textmeasure.Rul
 		} else {
 			dims = GetTextDimensions(mtexts, ruler, obj.Text(), fontFamily)
 		}
-
-	case d2target.ShapeClass:
-		dims = GetTextDimensions(mtexts, ruler, obj.Text(), go2.Pointer(d2fonts.SourceCodePro))
-
-	default:
-		dims = GetTextDimensions(mtexts, ruler, obj.Text(), fontFamily)
 	}
 
 	if shapeType == d2target.ShapeSQLTable && obj.Label.Value == "" {
@@ -1238,10 +1306,10 @@ func (e *Edge) AbsID() string {
 	return fmt.Sprintf("%s(%s %s %s)[%d]", commonKey, strings.Join(srcIDA, "."), e.ArrowString(), strings.Join(dstIDA, "."), e.Index)
 }
 
-func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label string) (*Edge, error) {
-	for _, id := range [][]string{srcID, dstID} {
+func (obj *Object) Connect(srcID, dstID []d2ast.String, srcArrow, dstArrow bool, label string) (*Edge, error) {
+	for _, id := range [][]d2ast.String{srcID, dstID} {
 		for _, p := range id {
-			if _, ok := d2ast.ReservedKeywords[p]; ok {
+			if _, ok := d2ast.ReservedKeywords[p.ScalarString()]; ok && p.IsUnquoted() {
 				return nil, errors.New("cannot connect to reserved keyword")
 			}
 		}
@@ -1269,7 +1337,7 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 	return e, nil
 }
 
-func addSQLTableColumnIndices(e *Edge, srcID, dstID []string, obj, src, dst *Object) {
+func addSQLTableColumnIndices(e *Edge, srcID, dstID []d2ast.String, obj, src, dst *Object) {
 	if src.Shape.Value == d2target.ShapeSQLTable {
 		if src == dst {
 			// Ignore edge to column inside table.
@@ -1279,7 +1347,7 @@ func addSQLTableColumnIndices(e *Edge, srcID, dstID []string, obj, src, dst *Obj
 		srcAbsID := src.AbsIDArray()
 		if len(objAbsID)+len(srcID) > len(srcAbsID) {
 			for i, d2col := range src.SQLTable.Columns {
-				if d2col.Name.Label == srcID[len(srcID)-1] {
+				if d2col.Name.Label == srcID[len(srcID)-1].ScalarString() {
 					d2col.Reference = dst.AbsID()
 					e.SrcTableColumnIndex = new(int)
 					*e.SrcTableColumnIndex = i
@@ -1293,7 +1361,7 @@ func addSQLTableColumnIndices(e *Edge, srcID, dstID []string, obj, src, dst *Obj
 		dstAbsID := dst.AbsIDArray()
 		if len(objAbsID)+len(dstID) > len(dstAbsID) {
 			for i, d2col := range dst.SQLTable.Columns {
-				if d2col.Name.Label == dstID[len(dstID)-1] {
+				if d2col.Name.Label == dstID[len(dstID)-1].ScalarString() {
 					d2col.Reference = dst.AbsID()
 					e.DstTableColumnIndex = new(int)
 					*e.DstTableColumnIndex = i
@@ -1544,11 +1612,8 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			switch shapeType {
 			case shape.TABLE_TYPE, shape.CLASS_TYPE, shape.CODE_TYPE:
 			default:
-				if obj.Link != nil {
-					paddingX += 32
-				}
-				if obj.Tooltip != nil {
-					paddingX += 32
+				if obj.Link != nil && obj.Tooltip != nil {
+					paddingX += 64
 				}
 			}
 		}

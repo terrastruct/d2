@@ -1,0 +1,410 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "index.d2,0:0:0-7:0:39",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "index.d2,0:0:0-0:1:1",
+            "key": {
+              "range": "index.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "index.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "index.d2,2:0:3-6:1:38",
+            "key": {
+              "range": "index.d2,2:0:3-2:6:9",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "index.d2,2:0:3-2:6:9",
+                    "value": [
+                      {
+                        "string": "layers",
+                        "raw_string": "layers"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "index.d2,2:8:11-6:1:38",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "index.d2,3:2:15-5:3:36",
+                      "key": {
+                        "range": "index.d2,3:2:15-3:3:16",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "index.d2,3:2:15-3:3:16",
+                              "value": [
+                                {
+                                  "string": "y",
+                                  "raw_string": "y"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "index.d2,3:5:18-5:3:36",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "index.d2,4:4:24-4:12:32",
+                                "key": {
+                                  "range": "index.d2,4:4:24-4:5:25",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "index.d2,4:4:24-4:5:25",
+                                        "value": [
+                                          {
+                                            "string": "z",
+                                            "raw_string": "z"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "import": {
+                                    "range": "index.d2,4:7:27-4:12:32",
+                                    "spread": false,
+                                    "pre": "",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "index.d2,4:8:28-4:12:32",
+                                          "value": [
+                                            {
+                                              "string": "woof",
+                                              "raw_string": "woof"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "iconStyle": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "x",
+        "id_val": "x",
+        "references": [
+          {
+            "key": {
+              "range": "index.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "index.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "x"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "iconStyle": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ],
+    "layers": [
+      {
+        "name": "y",
+        "isFolderOnly": false,
+        "ast": {
+          "range": "index.d2,0:0:0-1:0:0",
+          "nodes": [
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "index.d2,4:4:24-4:5:25",
+                        "value": [
+                          {
+                            "string": "z",
+                            "raw_string": "z"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {
+                  "map": {
+                    "range": ",1:0:0-2:0:0",
+                    "nodes": [
+                      {
+                        "map_key": {
+                          "range": ",0:0:0-0:0:0",
+                          "key": {
+                            "range": ",0:0:0-0:0:0",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "woof.d2,0:0:0-0:1:1",
+                                  "value": [
+                                    {
+                                      "string": "k",
+                                      "raw_string": "k"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {}
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "attributes": {
+            "label": {
+              "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "style": {},
+            "iconStyle": {},
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": null
+          },
+          "zIndex": 0
+        },
+        "edges": null,
+        "objects": [
+          {
+            "id": "z",
+            "id_val": "z",
+            "references": [
+              {
+                "key": {
+                  "range": "index.d2,4:4:24-4:5:25",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "index.d2,4:4:24-4:5:25",
+                        "value": [
+                          {
+                            "string": "z",
+                            "raw_string": "z"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              },
+              {
+                "key": {
+                  "range": "index.d2,4:4:24-4:5:25",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "index.d2,4:4:24-4:5:25",
+                        "value": [
+                          {
+                            "string": "z",
+                            "raw_string": "z"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "z"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {},
+              "iconStyle": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          },
+          {
+            "id": "k",
+            "id_val": "k",
+            "references": [
+              {
+                "key": {
+                  "range": "woof.d2,0:0:0-0:1:1",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "woof.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "k",
+                            "raw_string": "k"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "k"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {},
+              "iconStyle": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          }
+        ]
+      }
+    ]
+  },
+  "err": "<nil>"
+}

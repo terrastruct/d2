@@ -1,4 +1,4 @@
-<pattern id="dots" x="0" y="0" width="15" height="15" patternUnits="userSpaceOnUse">
+<pattern id="dots-%s" x="0" y="0" width="15" height="15" patternUnits="userSpaceOnUse">
 <g style="mix-blend-mode:multiply" opacity="0.1">
 <rect x="2" y="2" width="1" height="1" fill="#0A0F25"/>
 </g>

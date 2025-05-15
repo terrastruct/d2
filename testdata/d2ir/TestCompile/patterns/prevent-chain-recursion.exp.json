@@ -1,11 +1,27 @@
 {
   "fields": [
     {
-      "name": "one",
+      "name": {
+        "range": "TestCompile/patterns/prevent-chain-recursion.d2,9:0:46-9:3:49",
+        "value": [
+          {
+            "string": "one",
+            "raw_string": "one"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "c",
+            "name": {
+              "range": "TestCompile/patterns/prevent-chain-recursion.d2,2:2:10-2:3:11",
+              "value": [
+                {
+                  "string": "c",
+                  "raw_string": "c"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "TestCompile/patterns/prevent-chain-recursion.d2,2:5:13-2:6:14",
@@ -20,11 +36,27 @@
             "composite": {
               "fields": [
                 {
-                  "name": "style",
+                  "name": {
+                    "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "fill",
+                        "name": {
+                          "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                          "value": [
+                            {
+                              "string": "fill",
+                              "raw_string": "fill"
+                            }
+                          ]
+                        },
                         "primary": {
                           "value": {
                             "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:14:39-6:17:42",
@@ -285,11 +317,27 @@
             ]
           },
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "fill",
+                  "name": {
+                    "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                    "value": [
+                      {
+                        "string": "fill",
+                        "raw_string": "fill"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:14:39-6:17:42",
@@ -540,11 +588,27 @@
       ]
     },
     {
-      "name": "two",
+      "name": {
+        "range": "TestCompile/patterns/prevent-chain-recursion.d2,10:0:50-10:3:53",
+        "value": [
+          {
+            "string": "two",
+            "raw_string": "two"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "c",
+            "name": {
+              "range": "TestCompile/patterns/prevent-chain-recursion.d2,2:2:10-2:3:11",
+              "value": [
+                {
+                  "string": "c",
+                  "raw_string": "c"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "TestCompile/patterns/prevent-chain-recursion.d2,2:5:13-2:6:14",
@@ -559,11 +623,27 @@
             "composite": {
               "fields": [
                 {
-                  "name": "style",
+                  "name": {
+                    "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "fill",
+                        "name": {
+                          "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                          "value": [
+                            {
+                              "string": "fill",
+                              "raw_string": "fill"
+                            }
+                          ]
+                        },
                         "primary": {
                           "value": {
                             "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:14:39-6:17:42",
@@ -824,11 +904,27 @@
             ]
           },
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:2:27-6:7:32",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "fill",
+                  "name": {
+                    "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:8:33-6:12:37",
+                    "value": [
+                      {
+                        "string": "fill",
+                        "raw_string": "fill"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/prevent-chain-recursion.d2,6:14:39-6:17:42",

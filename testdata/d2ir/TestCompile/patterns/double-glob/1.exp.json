@@ -1,19 +1,51 @@
 {
   "fields": [
     {
-      "name": "shared",
+      "name": {
+        "range": "TestCompile/patterns/double-glob/1.d2,0:0:0-0:6:6",
+        "value": [
+          {
+            "string": "shared",
+            "raw_string": "shared"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "animate",
+            "name": {
+              "range": "TestCompile/patterns/double-glob/1.d2,0:7:7-0:14:14",
+              "value": [
+                {
+                  "string": "animate",
+                  "raw_string": "animate"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "style",
+                  "name": {
+                    "range": "TestCompile/patterns/double-glob/1.d2,2:3:32-2:8:37",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "fill",
+                        "name": {
+                          "range": "TestCompile/patterns/double-glob/1.d2,2:9:38-2:13:42",
+                          "value": [
+                            {
+                              "string": "fill",
+                              "raw_string": "fill"
+                            }
+                          ]
+                        },
                         "primary": {
                           "value": {
                             "range": "TestCompile/patterns/double-glob/1.d2,2:15:44-2:18:47",
@@ -350,15 +382,39 @@
             ]
           },
           {
-            "name": "animal",
+            "name": {
+              "range": "TestCompile/patterns/double-glob/1.d2,1:7:22-1:13:28",
+              "value": [
+                {
+                  "string": "animal",
+                  "raw_string": "animal"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "style",
+                  "name": {
+                    "range": "TestCompile/patterns/double-glob/1.d2,2:3:32-2:8:37",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "fill",
+                        "name": {
+                          "range": "TestCompile/patterns/double-glob/1.d2,2:9:38-2:13:42",
+                          "value": [
+                            {
+                              "string": "fill",
+                              "raw_string": "fill"
+                            }
+                          ]
+                        },
                         "primary": {
                           "value": {
                             "range": "TestCompile/patterns/double-glob/1.d2,2:15:44-2:18:47",
@@ -695,11 +751,27 @@
             ]
           },
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/patterns/double-glob/1.d2,2:3:32-2:8:37",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "fill",
+                  "name": {
+                    "range": "TestCompile/patterns/double-glob/1.d2,2:9:38-2:13:42",
+                    "value": [
+                      {
+                        "string": "fill",
+                        "raw_string": "fill"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/double-glob/1.d2,2:15:44-2:18:47",

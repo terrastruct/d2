@@ -1,11 +1,27 @@
 {
   "fields": [
     {
-      "name": "a",
+      "name": {
+        "range": "TestCompile/patterns/double-glob/edge/2.d2,0:0:0-0:1:1",
+        "value": [
+          {
+            "string": "a",
+            "raw_string": "a"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "b",
+            "name": {
+              "range": "TestCompile/patterns/double-glob/edge/2.d2,2:3:6-2:4:7",
+              "value": [
+                {
+                  "string": "b",
+                  "raw_string": "b"
+                }
+              ]
+            },
             "references": [
               {
                 "string": {
@@ -229,7 +245,15 @@
       ]
     },
     {
-      "name": "c",
+      "name": {
+        "range": "TestCompile/patterns/double-glob/edge/2.d2,2:8:11-2:9:12",
+        "value": [
+          {
+            "string": "c",
+            "raw_string": "c"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -382,12 +406,36 @@
     {
       "edge_id": {
         "src_path": [
-          "a",
-          "b"
+          {
+            "range": "TestCompile/patterns/double-glob/edge/2.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          },
+          {
+            "range": "TestCompile/patterns/double-glob/edge/2.d2,2:3:6-2:4:7",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "c"
+          {
+            "range": "TestCompile/patterns/double-glob/edge/2.d2,2:8:11-2:9:12",
+            "value": [
+              {
+                "string": "c",
+                "raw_string": "c"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,

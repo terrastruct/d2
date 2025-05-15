@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "a",
+      "name": {
+        "range": "TestCompile/patterns/edge-glob-null.d2,0:0:0-0:1:1",
+        "value": [
+          {
+            "string": "a",
+            "raw_string": "a"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -118,7 +126,15 @@
       ]
     },
     {
-      "name": "b",
+      "name": {
+        "range": "TestCompile/patterns/edge-glob-null.d2,0:5:5-0:6:6",
+        "value": [
+          {
+            "string": "b",
+            "raw_string": "b"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -235,7 +251,15 @@
       ]
     },
     {
-      "name": "x",
+      "name": {
+        "range": "TestCompile/patterns/edge-glob-null.d2,2:0:25-2:1:26",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -352,7 +376,15 @@
       ]
     },
     {
-      "name": "y",
+      "name": {
+        "range": "TestCompile/patterns/edge-glob-null.d2,2:5:30-2:6:31",
+        "value": [
+          {
+            "string": "y",
+            "raw_string": "y"
+          }
+        ]
+      },
       "references": [
         {
           "string": {

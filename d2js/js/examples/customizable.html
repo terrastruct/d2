@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+        height: 100vh;
+        margin: 0;
+        font-family: system-ui, -apple-system, sans-serif;
+      }
+
+      .controls {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 400px;
+      }
+
+      textarea {
+        width: 100%;
+        height: 300px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-family: monospace;
+      }
+
+      .options-group {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px;
+        border: 1px solid #eee;
+        border-radius: 4px;
+      }
+
+      .option:has(.option-toggle-box:not(:checked)) .option-select {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+
+      .option {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+      }
+
+      .input-label,
+      .checkbox-label,
+      .select-label {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+      }
+
+      .checkbox-label,
+      .select-label {
+        cursor: pointer;
+      }
+
+      .text-input,
+      .number-input {
+        width: 3rem;
+      }
+
+      button {
+        padding: 8px 16px;
+        background: #0066cc;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #0052a3;
+      }
+
+      #output {
+        flex: 1;
+        overflow: auto;
+        border: 1px solid #eee;
+        border-radius: 4px;
+        padding: 16px;
+      }
+
+      #output svg {
+        min-width: 100%;
+        max-height: 90vh;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="controls">
+      <textarea id="input">x -> y</textarea>
+      <div class="options-group">
+        <div class="option">
+          <div class="option-toggle">
+            <label class="checkbox-label">
+              <input type="checkbox" id="layout-toggle" class="option-toggle-box" />
+              <span>Layout</span>
+            </label>
+          </div>
+          <div class="option-select">
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="layout-select" value="dagre" checked />
+                Dagre
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="layout-select" value="elk" />
+                ELK
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="option">
+          <div class="option-toggle">
+            <label class="checkbox-label">
+              <input type="checkbox" id="sketch-toggle" class="option-toggle-box" />
+              <span>Sketch Mode</span>
+            </label>
+          </div>
+          <div class="option-select">
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="sketch-select" value="true" checked />
+                Enabled
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="sketch-select" value="false" />
+                Disabled
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="option">
+          <div class="option-toggle">
+            <label class="checkbox-label">
+              <input type="checkbox" id="center-toggle" class="option-toggle-box" />
+              <span>Centered</span>
+            </label>
+          </div>
+          <div class="option-select">
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="center-select" value="true" checked />
+                Enabled
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="center-select" value="false" />
+                Disabled
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="option">
+          <div class="option-toggle">
+            <label class="checkbox-label">
+              <input type="checkbox" id="appendix-toggle" class="option-toggle-box" />
+              <span>Force Appendix</span>
+            </label>
+          </div>
+          <div class="option-select">
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="appendix-select" value="true" checked />
+                Enabled
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="appendix-select" value="false" />
+                Disabled
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="option">
+          <div class="option-toggle">
+            <label class="checkbox-label">
+              <input type="checkbox" id="theme-toggle" class="option-toggle-box" />
+              <span>Theme</span>
+            </label>
+          </div>
+          <div class="option-select">
+            <select id="theme-select">
+              <option selected value="0">Default</option>
+              <option value="1">Neutral grey</option>
+              <option value="3">Flagship Terrastruct</option>
+              <option value="4">Cool classics</option>
+              <option value="5">Mixed berry blue</option>
+              <option value="6">Grape soda</option>
+              <option value="7">Aubergine</option>
+              <option value="8">Colorblind clear</option>
+              <option value="100">Vanilla nitro cola</option>
+              <option value="101">Orange creamsicle</option>
+              <option value="102">Shirley temple</option>
+              <option value="103">Earth tones</option>
+              <option value="104">Everglade green</option>
+              <option value="105">Buttered toast</option>
+              <option value="200">Dark mauve</option>
+              <option value="300">Terminal</option>
+              <option value="301">Terminal grayscale</option>
+            </select>
+          </div>
+        </div>
+        <div class="option">
+          <div class="option-toggle">
+            <label class="checkbox-label">
+              <input type="checkbox" id="dark-theme-toggle" class="option-toggle-box" />
+              <span>Dark Theme</span>
+            </label>
+          </div>
+          <div class="option-select">
+            <select id="dark-theme-select">
+              <option selected value="0">Default</option>
+              <option value="1">Neutral grey</option>
+              <option value="3">Flagship Terrastruct</option>
+              <option value="4">Cool classics</option>
+              <option value="5">Mixed berry blue</option>
+              <option value="6">Grape soda</option>
+              <option value="7">Aubergine</option>
+              <option value="8">Colorblind clear</option>
+              <option value="100">Vanilla nitro cola</option>
+              <option value="101">Orange creamsicle</option>
+              <option value="102">Shirley temple</option>
+              <option value="103">Earth tones</option>
+              <option value="104">Everglade green</option>
+              <option value="105">Buttered toast</option>
+              <option value="200">Dark mauve</option>
+              <option value="300">Terminal</option>
+              <option value="301">Terminal grayscale</option>
+            </select>
+          </div>
+        </div>
+        <div class="option">
+          <div class="option-toggle">
+            <label class="checkbox-label">
+              <input type="checkbox" id="pad-toggle" class="option-toggle-box" />
+              <span>Padding</span>
+            </label>
+          </div>
+          <div class="option-select">
+            <label class="input-label">
+              <input
+                type="number"
+                id="pad-input"
+                value="20"
+                step="10"
+                class="number-input"
+              />
+            </label>
+          </div>
+        </div>
+        <div class="option">
+          <div class="option-toggle">
+            <label class="checkbox-label">
+              <input type="checkbox" id="scale-toggle" class="option-toggle-box" />
+              <span>Scale</span>
+            </label>
+          </div>
+          <div class="option-select">
+            <label class="input-label">
+              <input
+                type="number"
+                id="scale-input"
+                value="1"
+                step="0.1"
+                min="0"
+                class="number-input"
+              />
+            </label>
+          </div>
+        </div>
+        <div class="option">
+          <div class="option-toggle">
+            <label class="checkbox-label">
+              <input type="checkbox" id="target-toggle" class="option-toggle-box" />
+              <span>Target</span>
+            </label>
+          </div>
+          <div class="option-select">
+            <label class="input-label">
+              <input type="text" id="target-input" class="text-input" />
+            </label>
+          </div>
+        </div>
+        <div class="option">
+          <div class="option-toggle">
+            <label class="checkbox-label">
+              <input
+                type="checkbox"
+                id="animate-interval-toggle"
+                class="option-toggle-box"
+              />
+              <span>Animate Interval</span>
+            </label>
+          </div>
+          <div class="option-select">
+            <label class="input-label">
+              <input
+                type="number"
+                id="animate-interval-input"
+                value="0"
+                step="100"
+                min="0"
+                class="number-input"
+              />
+            </label>
+          </div>
+        </div>
+        <div class="option">
+          <div class="option-select">
+            <label class="input-label">
+              <span>Salt</span>
+              <input type="text" id="salt-input" class="text-input" />
+            </label>
+          </div>
+        </div>
+        <div class="option">
+          <div class="option-select">
+            <label class="input-label">
+              <span>Regular Font</span>
+              <input
+                type="file"
+                accept=".ttf"
+                id="font-regular-input"
+                class="file-input"
+              />
+            </label>
+          </div>
+        </div>
+        <div class="option">
+          <div class="option-select">
+            <label class="input-label">
+              <span>Italic Font</span>
+              <input
+                type="file"
+                accept=".ttf"
+                id="font-italic-input"
+                class="file-input"
+              />
+            </label>
+          </div>
+        </div>
+        <div class="option">
+          <div class="option-select">
+            <label class="input-label">
+              <span>Bold Font</span>
+              <input type="file" accept=".ttf" id="font-bold-input" class="file-input" />
+            </label>
+          </div>
+        </div>
+        <div class="option">
+          <div class="option-select">
+            <label class="input-label">
+              <span>Semibold Font</span>
+              <input
+                type="file"
+                accept=".ttf"
+                id="font-semibold-input"
+                class="file-input"
+              />
+            </label>
+          </div>
+        </div>
+      </div>
+      <button onclick="compile()">Compile</button>
+    </div>
+    <div id="output"></div>
+    <script type="module">
+      import { D2 } from "../dist/browser/index.js";
+      const d2 = new D2();
+      const loadFont = async (file) => {
+        if (file != undefined) {
+          const font = await file.arrayBuffer();
+          return Array.from(new Uint8Array(font));
+        }
+      };
+      window.compile = async () => {
+        const input = document.getElementById("input").value;
+        const layout = document.getElementById("layout-toggle").checked
+          ? document.querySelector('input[name="layout-select"]:checked').value
+          : null;
+        const sketch = document.getElementById("sketch-toggle").checked
+          ? document.querySelector('input[name="sketch-select"]:checked').value == "true"
+          : null;
+        const center = document.getElementById("center-toggle").checked
+          ? document.querySelector('input[name="center-select"]:checked').value == "true"
+          : null;
+        const forceAppendix = document.getElementById("appendix-toggle").checked
+          ? document.querySelector('input[name="appendix-select"]:checked').value ==
+            "true"
+          : null;
+        const themeSelector = document.getElementById("theme-select");
+        const themeId = document.getElementById("theme-toggle").checked
+          ? Number(themeSelector.options[themeSelector.selectedIndex].value)
+          : null;
+        const darkThemeSelector = document.getElementById("dark-theme-select");
+        const darkThemeId = document.getElementById("dark-theme-toggle").checked
+          ? Number(darkThemeSelector.options[darkThemeSelector.selectedIndex].value)
+          : null;
+        const pad = document.getElementById("pad-toggle").checked
+          ? Number(document.getElementById("pad-input").value)
+          : null;
+        const scale = document.getElementById("scale-toggle").checked
+          ? Number(document.getElementById("scale-input").value)
+          : null;
+        const target = document.getElementById("target-toggle").checked
+          ? String(document.getElementById("target-input").value)
+          : null;
+        const animateInterval = document.getElementById("animate-interval-toggle").checked
+          ? Number(document.getElementById("animate-interval-input").value)
+          : null;
+        const salt = String(document.getElementById("salt-input").value);
+        const fontRegular = await loadFont(
+          document.getElementById("font-regular-input").files[0]
+        );
+        const fontItalic = await loadFont(
+          document.getElementById("font-italic-input").files[0]
+        );
+        const fontBold = await loadFont(
+          document.getElementById("font-bold-input").files[0]
+        );
+        const fontSemibold = await loadFont(
+          document.getElementById("font-semibold-input").files[0]
+        );
+        try {
+          const result = await d2.compile(input, {
+            layout,
+            sketch,
+            themeId,
+            darkThemeId,
+            scale,
+            pad,
+            center,
+            forceAppendix,
+            target,
+            animateInterval,
+            salt,
+            fontRegular,
+            fontItalic,
+            fontSemibold,
+            fontBold,
+            noXmlTag: true,
+          });
+          const svg = await d2.render(result.diagram, result.renderOptions);
+          document.getElementById("output").innerHTML = svg;
+        } catch (err) {
+          console.error(err);
+          document.getElementById("output").textContent = err.message;
+        }
+      };
+      compile();
+    </script>
+  </body>
+</html>

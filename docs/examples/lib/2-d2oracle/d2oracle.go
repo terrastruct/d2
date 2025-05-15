@@ -9,6 +9,7 @@ import (
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2oracle"
+	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
@@ -23,7 +24,8 @@ func main() {
 		LayoutResolver: layoutResolver,
 		Ruler:          ruler,
 	}
-	_, graph, _ := d2lib.Compile(context.Background(), "x -> y", compileOpts, nil)
+	ctx := log.WithDefault(context.Background())
+	_, graph, _ := d2lib.Compile(ctx, "x -> y", compileOpts, nil)
 
 	// Create a shape with the ID, "meow"
 	graph, _, _ = d2oracle.Create(graph, nil, "meow")

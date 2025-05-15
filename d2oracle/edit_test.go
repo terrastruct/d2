@@ -30,6 +30,7 @@ func TestCreate(t *testing.T) {
 		boardPath []string
 		name      string
 		text      string
+		fsTexts   map[string]string
 		key       string
 
 		expKey     string
@@ -567,6 +568,37 @@ layers: {
 `,
 		},
 		{
+			name: "add_layer/5",
+			text: `classes: {
+  a: {
+    style.stroke: red
+  }
+}
+b
+
+layers: {
+	c
+}
+`,
+			key: `d`,
+
+			boardPath: []string{"c"},
+			expKey:    `d`,
+			exp: `classes: {
+  a: {
+    style.stroke: red
+  }
+}
+b
+
+layers: {
+  c: {
+    d
+  }
+}
+`,
+		},
+		{
 			name: "layers-edge",
 
 			text: `a
@@ -776,6 +808,35 @@ steps: {
 }
 `,
 		},
+		{
+			name: "image-edge",
+
+			text: `...@k
+a.b: {
+  icon: https://icons.terrastruct.com/essentials/004-picture.svg
+  shape: image
+}
+`,
+			fsTexts: map[string]string{
+				"k.d2": `
+a: {
+  b
+  c
+}
+`,
+			},
+			key:       `a.b -> a.c`,
+			boardPath: []string{},
+
+			expKey: `a.(b -> c)[0]`,
+			exp: `...@k
+a.b: {
+  icon: https://icons.terrastruct.com/essentials/004-picture.svg
+  shape: image
+}
+a.(b -> c)
+`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -785,7 +846,8 @@ steps: {
 
 			var newKey string
 			et := editTest{
-				text: tc.text,
+				text:    tc.text,
+				fsTexts: tc.fsTexts,
 				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
 					var err error
 					g, newKey, err = d2oracle.Create(g, tc.boardPath, tc.key)
@@ -1023,6 +1085,16 @@ square.style.opacity: 0.2
 			key:   `square.top`,
 			value: go2.Pointer(`200`),
 			exp: `square: {top: 200}
+`,
+		},
+		{
+			name: "labeled_set_position",
+			text: `hey.label: what
+`,
+			key:   `hey.top`,
+			value: go2.Pointer(`200`),
+			exp: `hey.label: what
+hey.top: 200
 `,
 		},
 		{
@@ -2427,6 +2499,28 @@ layers: {
 `,
 		},
 		{
+			name: "import/10",
+
+			text: `heyn
+
+layers: {
+  man: {...@meow}
+}
+`,
+			fsTexts: map[string]string{
+				"meow.d2": `layers: {
+  1: {
+    asdf
+  }
+}
+`,
+			},
+			boardPath: []string{"man", "1"},
+			key:       `asdf.link`,
+			value:     go2.Pointer(`_._`),
+			expErr:    `failed to set "asdf.link" to "\"_._\"": board [man 1] cannot be modified through this file`,
+		},
+		{
 			name: "label-near/1",
 
 			text: `x
@@ -2654,6 +2748,65 @@ scenarios: {
         (a -> b)[0].style.stroke-width: 3
       }
     }
+  }
+}
+`,
+		},
+		{
+			name: "step-connection",
+
+			text: `steps: {
+  1: {
+    Modules -- Metricbeat: {
+      style.stroke-width: 1
+    }
+  }
+}
+
+		`,
+			key:       `Metricbeat.style.stroke`,
+			value:     go2.Pointer(`red`),
+			boardPath: []string{"1"},
+			exp: `steps: {
+  1: {
+    Modules -- Metricbeat: {
+      style.stroke-width: 1
+    }
+    Metricbeat.style.stroke: red
+  }
+}
+`,
+		},
+		{
+			name: "set-style-in-layer",
+			text: `hey
+
+layers: {
+  k: {
+    b: {style.stroke: "#969db4"}
+  }
+}
+
+layers: {
+  x: {
+    y
+  }
+}
+`,
+			boardPath: []string{"x"},
+			key:       `y.style.fill`,
+			value:     go2.Pointer(`#ff0000`),
+			exp: `hey
+
+layers: {
+  k: {
+    b: {style.stroke: "#969db4"}
+  }
+}
+
+layers: {
+  x: {
+    y: {style.fill: "#ff0000"}
   }
 }
 `,
@@ -6030,6 +6183,28 @@ c -> d
 `,
 		},
 		{
+			name: "underscore_linked",
+			text: `k
+
+layers: {
+  x: {
+    a
+    b: {link: _}
+  }
+}
+`,
+			key:       `b`,
+			boardPath: []string{"x"},
+			exp: `k
+
+layers: {
+  x: {
+    a
+  }
+}
+`,
+		},
+		{
 			name: "underscore_no_conflict",
 
 			text: `x: {
@@ -7991,6 +8166,32 @@ y
 (* -> *)[*].style.opacity: 0.8
 `,
 		},
+		{
+			name: "layer-delete-complex-object",
+
+			text: `k
+
+layers: {
+  x: {
+    a: "b" {
+      top: 184
+      left: 180
+    }
+    j
+  }
+}
+`,
+			key:       `a`,
+			boardPath: []string{"x"},
+			exp: `k
+
+layers: {
+  x: {
+    j
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -9392,6 +9593,291 @@ scenarios: {
 			}
 			if ds != "" {
 				t.Fatalf("unexpected deltas: %s", ds)
+			}
+		})
+	}
+}
+
+func TestUpdateImport(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		name      string
+		boardPath []string
+		text      string
+		fsTexts   map[string]string
+		path      string
+		newPath   *string
+
+		expErr     string
+		exp        string
+		assertions func(t *testing.T, g *d2graph.Graph)
+	}{
+		{
+			name: "remove_import",
+			text: `x: @meow
+y
+`,
+			path:    "meow",
+			newPath: nil,
+			exp: `x
+y
+`,
+		},
+		{
+			name: "remove_spread_import",
+			text: `x
+...@meow
+y`,
+			path:    "meow",
+			newPath: nil,
+			exp: `x
+
+y
+`,
+		},
+		{
+			name: "update_import",
+			text: `x: @meow
+y
+`,
+			path:    "meow",
+			newPath: go2.Pointer("woof"),
+			exp: `x: @woof
+y
+`,
+		},
+		{
+			name: "update_import_with_dir",
+			text: `x: @foo/meow
+y
+`,
+			path:    "foo/meow",
+			newPath: go2.Pointer("bar/woof"),
+			exp: `x: @bar/woof
+y
+`,
+		},
+		{
+			name: "update_spread_import",
+			text: `x
+...@meow
+y
+`,
+			path:    "meow",
+			newPath: go2.Pointer("woof"),
+			exp: `x
+...@woof
+y
+`,
+		},
+		{
+			name: "no_matching_import",
+			text: `x: @cat
+y
+`,
+			path:    "meow",
+			newPath: go2.Pointer("woof"),
+			exp: `x: @cat
+y
+`,
+		},
+		{
+			name: "nested_import",
+			text: `container: {
+	x: @meow
+  y
+}
+`,
+			path:    "meow",
+			newPath: go2.Pointer("woof"),
+			exp: `container: {
+  x: @woof
+  y
+}
+`,
+		},
+		{
+			name: "remove_nested_import",
+			text: `container: {
+	x: @meow
+  y
+}
+`,
+			path:    "meow",
+			newPath: nil,
+			exp: `container: {
+  x
+  y
+}
+`,
+		},
+		{
+			name: "multiple_imports",
+			text: `x: @meow
+y: @meow
+z
+`,
+			path:    "meow",
+			newPath: go2.Pointer("woof"),
+			exp: `x: @woof
+y: @woof
+z
+`,
+		},
+		{
+			name: "mixed_imports",
+			text: `x: @meow
+y
+...@meow
+z
+`,
+			path:    "meow",
+			newPath: go2.Pointer("woof"),
+			exp: `x: @woof
+y
+...@woof
+z
+`,
+		},
+		{
+			name: "in_layer",
+			text: `x
+
+layers: {
+  y: {
+		z: @meow
+  }
+}
+`,
+			path:    "meow",
+			newPath: go2.Pointer("woof"),
+			exp: `x
+
+layers: {
+  y: {
+    z: @woof
+  }
+}
+`,
+		},
+		{
+			name: "layer_import",
+			text: `x
+
+layers: {
+  y: {
+	  ...@meow
+  }
+}
+`,
+			path:    "meow",
+			newPath: go2.Pointer("woof"),
+			exp: `x
+
+layers: {
+  y: {
+    ...@woof
+  }
+}
+`,
+		},
+		{
+			name: "update_directory_import",
+			text: `x: @foo/bar
+y: @foo/baz
+z
+`,
+			path:    "foo/",
+			newPath: go2.Pointer("woof/"),
+			exp: `x: @woof/bar
+y: @woof/baz
+z
+`,
+		},
+		{
+			name: "remove_directory_import",
+			text: `x: @foo/bar
+y: @foo/baz
+z
+`,
+			path:    "foo/",
+			newPath: nil,
+			exp: `x
+y
+z
+`,
+		},
+		{
+			name: "update_deep_directory_paths",
+			text: `x: @foo/bar/baz
+y: @foo/qux/quux
+z
+`,
+			path:    "foo/",
+			newPath: go2.Pointer("woof/"),
+			exp: `x: @woof/bar/baz
+y: @woof/qux/quux
+z
+`,
+		},
+		{
+			name: "update_relative_import-1",
+			text: `x: @../meow
+y
+`,
+			path:    "../meow",
+			newPath: go2.Pointer("../woof"),
+			exp: `x: @../woof
+y
+`,
+		},
+		{
+			name: "update_relative_import-2",
+			text: `x: @../meow
+y
+`,
+			path:    "../meow",
+			newPath: go2.Pointer("woof"),
+			exp: `x: @woof
+y
+`,
+		},
+		{
+			name: "update_relative_import-3",
+			text: `x: @../meow
+y
+`,
+			path:    "../meow",
+			newPath: go2.Pointer("../meow/woof"),
+			exp: `x: @../meow/woof
+y
+`,
+		},
+		{
+			name: "update_relative_import-4",
+			text: `x: @../meow
+y
+`,
+			path:    "../meow",
+			newPath: go2.Pointer("../g/woof"),
+			exp: `x: @../g/woof
+y
+`,
+		},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			got, err := d2oracle.UpdateImport(tc.text, tc.path, tc.newPath)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if got != tc.exp {
+				t.Fatalf("tc.exp != newText:\n%s", got)
 			}
 		})
 	}

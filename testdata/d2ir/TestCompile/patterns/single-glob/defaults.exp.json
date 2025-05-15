@@ -1,15 +1,39 @@
 {
   "fields": [
     {
-      "name": "wrapper",
+      "name": {
+        "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:7:7",
+        "value": [
+          {
+            "string": "wrapper",
+            "raw_string": "wrapper"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "a",
+            "name": {
+              "range": "TestCompile/patterns/single-glob/defaults.d2,4:8:37-4:9:38",
+              "value": [
+                {
+                  "string": "a",
+                  "raw_string": "a"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "shape",
+                  "name": {
+                    "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:6:19",
+                    "value": [
+                      {
+                        "string": "shape",
+                        "raw_string": "shape"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/single-glob/defaults.d2,1:8:21-1:12:25",
@@ -169,11 +193,27 @@
             ]
           },
           {
-            "name": "b",
+            "name": {
+              "range": "TestCompile/patterns/single-glob/defaults.d2,5:8:47-5:9:48",
+              "value": [
+                {
+                  "string": "b",
+                  "raw_string": "b"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "shape",
+                  "name": {
+                    "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:6:19",
+                    "value": [
+                      {
+                        "string": "shape",
+                        "raw_string": "shape"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/single-glob/defaults.d2,1:8:21-1:12:25",
@@ -333,11 +373,27 @@
             ]
           },
           {
-            "name": "c",
+            "name": {
+              "range": "TestCompile/patterns/single-glob/defaults.d2,6:8:57-6:9:58",
+              "value": [
+                {
+                  "string": "c",
+                  "raw_string": "c"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "shape",
+                  "name": {
+                    "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:6:19",
+                    "value": [
+                      {
+                        "string": "shape",
+                        "raw_string": "shape"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/single-glob/defaults.d2,1:8:21-1:12:25",
@@ -497,11 +553,27 @@
             ]
           },
           {
-            "name": "d",
+            "name": {
+              "range": "TestCompile/patterns/single-glob/defaults.d2,7:8:67-7:9:68",
+              "value": [
+                {
+                  "string": "d",
+                  "raw_string": "d"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "shape",
+                  "name": {
+                    "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:6:19",
+                    "value": [
+                      {
+                        "string": "shape",
+                        "raw_string": "shape"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/single-glob/defaults.d2,1:8:21-1:12:25",
@@ -2527,23 +2599,63 @@
       ]
     },
     {
-      "name": "scenarios",
+      "name": {
+        "range": "TestCompile/patterns/single-glob/defaults.d2,9:0:70-9:9:79",
+        "value": [
+          {
+            "string": "scenarios",
+            "raw_string": "scenarios"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "x",
+            "name": {
+              "range": "TestCompile/patterns/single-glob/defaults.d2,9:10:80-9:11:81",
+              "value": [
+                {
+                  "string": "x",
+                  "raw_string": "x"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "wrapper",
+                  "name": {
+                    "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:7:7",
+                    "value": [
+                      {
+                        "string": "wrapper",
+                        "raw_string": "wrapper"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "a",
+                        "name": {
+                          "range": "TestCompile/patterns/single-glob/defaults.d2,4:8:37-4:9:38",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "shape",
+                              "name": {
+                                "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:6:19",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              },
                               "primary": {
                                 "value": {
                                   "range": "TestCompile/patterns/single-glob/defaults.d2,1:8:21-1:12:25",
@@ -2703,11 +2815,27 @@
                         ]
                       },
                       {
-                        "name": "b",
+                        "name": {
+                          "range": "TestCompile/patterns/single-glob/defaults.d2,5:8:47-5:9:48",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "shape",
+                              "name": {
+                                "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:6:19",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              },
                               "primary": {
                                 "value": {
                                   "range": "TestCompile/patterns/single-glob/defaults.d2,1:8:21-1:12:25",
@@ -2867,11 +2995,27 @@
                         ]
                       },
                       {
-                        "name": "c",
+                        "name": {
+                          "range": "TestCompile/patterns/single-glob/defaults.d2,6:8:57-6:9:58",
+                          "value": [
+                            {
+                              "string": "c",
+                              "raw_string": "c"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "shape",
+                              "name": {
+                                "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:6:19",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              },
                               "primary": {
                                 "value": {
                                   "range": "TestCompile/patterns/single-glob/defaults.d2,1:8:21-1:12:25",
@@ -3031,11 +3175,27 @@
                         ]
                       },
                       {
-                        "name": "d",
+                        "name": {
+                          "range": "TestCompile/patterns/single-glob/defaults.d2,7:8:67-7:9:68",
+                          "value": [
+                            {
+                              "string": "d",
+                              "raw_string": "d"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "shape",
+                              "name": {
+                                "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:6:19",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              },
                               "primary": {
                                 "value": {
                                   "range": "TestCompile/patterns/single-glob/defaults.d2,1:8:21-1:12:25",
@@ -3195,11 +3355,27 @@
                         ]
                       },
                       {
-                        "name": "p",
+                        "name": {
+                          "range": "TestCompile/patterns/single-glob/defaults.d2,9:23:93-9:24:94",
+                          "value": [
+                            {
+                              "string": "p",
+                              "raw_string": "p"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "shape",
+                              "name": {
+                                "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:6:19",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              },
                               "primary": {
                                 "value": {
                                   "range": "TestCompile/patterns/single-glob/defaults.d2,1:8:21-1:12:25",
@@ -4948,28 +5124,8 @@
                         ]
                       },
                       "key_path": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:9:9",
                         "path": [
-                          {
-                            "unquoted_string": {
-                              "range": ",0:0:0-0:0:0",
-                              "value": [
-                                {
-                                  "string": "scenarios"
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": ",0:0:0-0:0:0",
-                              "value": [
-                                {
-                                  "string": "x"
-                                }
-                              ]
-                            }
-                          },
                           {
                             "unquoted_string": {
                               "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:7:7",
@@ -5002,28 +5158,8 @@
                         "key": {
                           "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-2:1:27",
                           "key": {
-                            "range": ",0:0:0-0:0:0",
+                            "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:9:9",
                             "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
-                                  "value": [
-                                    {
-                                      "string": "scenarios"
-                                    }
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
-                                  "value": [
-                                    {
-                                      "string": "x"
-                                    }
-                                  ]
-                                }
-                              },
                               {
                                 "unquoted_string": {
                                   "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:7:7",
@@ -5108,28 +5244,8 @@
                         ]
                       },
                       "key_path": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:9:9",
                         "path": [
-                          {
-                            "unquoted_string": {
-                              "range": ",0:0:0-0:0:0",
-                              "value": [
-                                {
-                                  "string": "scenarios"
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": ",0:0:0-0:0:0",
-                              "value": [
-                                {
-                                  "string": "x"
-                                }
-                              ]
-                            }
-                          },
                           {
                             "unquoted_string": {
                               "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:7:7",
@@ -5162,28 +5278,248 @@
                         "key": {
                           "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-2:1:27",
                           "key": {
-                            "range": ",0:0:0-0:0:0",
+                            "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:9:9",
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:7:7",
                                   "value": [
                                     {
-                                      "string": "scenarios"
+                                      "string": "wrapper",
+                                      "raw_string": "wrapper"
                                     }
                                   ]
                                 }
                               },
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "TestCompile/patterns/single-glob/defaults.d2,0:8:8-0:9:9",
                                   "value": [
                                     {
-                                      "string": "x"
+                                      "string": "*",
+                                      "raw_string": "*"
+                                    }
+                                  ],
+                                  "pattern": [
+                                    "*"
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": "TestCompile/patterns/single-glob/defaults.d2,0:11:11-2:1:27",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:12:25",
+                                    "key": {
+                                      "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:6:19",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:6:19",
+                                            "value": [
+                                              {
+                                                "string": "shape",
+                                                "raw_string": "shape"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {},
+                                    "value": {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/single-glob/defaults.d2,1:8:21-1:12:25",
+                                        "value": [
+                                          {
+                                            "string": "page",
+                                            "raw_string": "page"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": true
+                    },
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:7:7",
+                        "value": [
+                          {
+                            "string": "wrapper",
+                            "raw_string": "wrapper"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:9:9",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:7:7",
+                              "value": [
+                                {
+                                  "string": "wrapper",
+                                  "raw_string": "wrapper"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/single-glob/defaults.d2,0:8:8-0:9:9",
+                              "value": [
+                                {
+                                  "string": "*",
+                                  "raw_string": "*"
+                                }
+                              ],
+                              "pattern": [
+                                "*"
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-2:1:27",
+                          "key": {
+                            "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:9:9",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:7:7",
+                                  "value": [
+                                    {
+                                      "string": "wrapper",
+                                      "raw_string": "wrapper"
                                     }
                                   ]
                                 }
                               },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/single-glob/defaults.d2,0:8:8-0:9:9",
+                                  "value": [
+                                    {
+                                      "string": "*",
+                                      "raw_string": "*"
+                                    }
+                                  ],
+                                  "pattern": [
+                                    "*"
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": "TestCompile/patterns/single-glob/defaults.d2,0:11:11-2:1:27",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:12:25",
+                                    "key": {
+                                      "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:6:19",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:6:19",
+                                            "value": [
+                                              {
+                                                "string": "shape",
+                                                "raw_string": "shape"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {},
+                                    "value": {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/patterns/single-glob/defaults.d2,1:8:21-1:12:25",
+                                        "value": [
+                                          {
+                                            "string": "page",
+                                            "raw_string": "page"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": true,
+                      "due_to_lazy_glob": true
+                    },
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:7:7",
+                        "value": [
+                          {
+                            "string": "wrapper",
+                            "raw_string": "wrapper"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:9:9",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:7:7",
+                              "value": [
+                                {
+                                  "string": "wrapper",
+                                  "raw_string": "wrapper"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/single-glob/defaults.d2,0:8:8-0:9:9",
+                              "value": [
+                                {
+                                  "string": "*",
+                                  "raw_string": "*"
+                                }
+                              ],
+                              "pattern": [
+                                "*"
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-2:1:27",
+                          "key": {
+                            "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:9:9",
+                            "path": [
                               {
                                 "unquoted_string": {
                                   "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:7:7",
@@ -5377,324 +5713,6 @@
                 },
                 "due_to_glob": false,
                 "due_to_lazy_glob": false
-              },
-              {
-                "string": {
-                  "range": ",0:0:0-0:0:0",
-                  "value": [
-                    {
-                      "string": "x"
-                    }
-                  ]
-                },
-                "key_path": {
-                  "range": ",0:0:0-0:0:0",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
-                        "value": [
-                          {
-                            "string": "scenarios"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
-                        "value": [
-                          {
-                            "string": "x"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "unquoted_string": {
-                        "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:7:7",
-                        "value": [
-                          {
-                            "string": "wrapper",
-                            "raw_string": "wrapper"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "unquoted_string": {
-                        "range": "TestCompile/patterns/single-glob/defaults.d2,0:8:8-0:9:9",
-                        "value": [
-                          {
-                            "string": "*",
-                            "raw_string": "*"
-                          }
-                        ],
-                        "pattern": [
-                          "*"
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "context": {
-                  "edge": null,
-                  "key": {
-                    "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-2:1:27",
-                    "key": {
-                      "range": ",0:0:0-0:0:0",
-                      "path": [
-                        {
-                          "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
-                            "value": [
-                              {
-                                "string": "scenarios"
-                              }
-                            ]
-                          }
-                        },
-                        {
-                          "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
-                            "value": [
-                              {
-                                "string": "x"
-                              }
-                            ]
-                          }
-                        },
-                        {
-                          "unquoted_string": {
-                            "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:7:7",
-                            "value": [
-                              {
-                                "string": "wrapper",
-                                "raw_string": "wrapper"
-                              }
-                            ]
-                          }
-                        },
-                        {
-                          "unquoted_string": {
-                            "range": "TestCompile/patterns/single-glob/defaults.d2,0:8:8-0:9:9",
-                            "value": [
-                              {
-                                "string": "*",
-                                "raw_string": "*"
-                              }
-                            ],
-                            "pattern": [
-                              "*"
-                            ]
-                          }
-                        }
-                      ]
-                    },
-                    "primary": {},
-                    "value": {
-                      "map": {
-                        "range": "TestCompile/patterns/single-glob/defaults.d2,0:11:11-2:1:27",
-                        "nodes": [
-                          {
-                            "map_key": {
-                              "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:12:25",
-                              "key": {
-                                "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:6:19",
-                                "path": [
-                                  {
-                                    "unquoted_string": {
-                                      "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:6:19",
-                                      "value": [
-                                        {
-                                          "string": "shape",
-                                          "raw_string": "shape"
-                                        }
-                                      ]
-                                    }
-                                  }
-                                ]
-                              },
-                              "primary": {},
-                              "value": {
-                                "unquoted_string": {
-                                  "range": "TestCompile/patterns/single-glob/defaults.d2,1:8:21-1:12:25",
-                                  "value": [
-                                    {
-                                      "string": "page",
-                                      "raw_string": "page"
-                                    }
-                                  ]
-                                }
-                              }
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  }
-                },
-                "due_to_glob": true,
-                "due_to_lazy_glob": true
-              },
-              {
-                "string": {
-                  "range": ",0:0:0-0:0:0",
-                  "value": [
-                    {
-                      "string": "x"
-                    }
-                  ]
-                },
-                "key_path": {
-                  "range": ",0:0:0-0:0:0",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
-                        "value": [
-                          {
-                            "string": "scenarios"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
-                        "value": [
-                          {
-                            "string": "x"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "unquoted_string": {
-                        "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:7:7",
-                        "value": [
-                          {
-                            "string": "wrapper",
-                            "raw_string": "wrapper"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "unquoted_string": {
-                        "range": "TestCompile/patterns/single-glob/defaults.d2,0:8:8-0:9:9",
-                        "value": [
-                          {
-                            "string": "*",
-                            "raw_string": "*"
-                          }
-                        ],
-                        "pattern": [
-                          "*"
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "context": {
-                  "edge": null,
-                  "key": {
-                    "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-2:1:27",
-                    "key": {
-                      "range": ",0:0:0-0:0:0",
-                      "path": [
-                        {
-                          "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
-                            "value": [
-                              {
-                                "string": "scenarios"
-                              }
-                            ]
-                          }
-                        },
-                        {
-                          "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
-                            "value": [
-                              {
-                                "string": "x"
-                              }
-                            ]
-                          }
-                        },
-                        {
-                          "unquoted_string": {
-                            "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:7:7",
-                            "value": [
-                              {
-                                "string": "wrapper",
-                                "raw_string": "wrapper"
-                              }
-                            ]
-                          }
-                        },
-                        {
-                          "unquoted_string": {
-                            "range": "TestCompile/patterns/single-glob/defaults.d2,0:8:8-0:9:9",
-                            "value": [
-                              {
-                                "string": "*",
-                                "raw_string": "*"
-                              }
-                            ],
-                            "pattern": [
-                              "*"
-                            ]
-                          }
-                        }
-                      ]
-                    },
-                    "primary": {},
-                    "value": {
-                      "map": {
-                        "range": "TestCompile/patterns/single-glob/defaults.d2,0:11:11-2:1:27",
-                        "nodes": [
-                          {
-                            "map_key": {
-                              "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:12:25",
-                              "key": {
-                                "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:6:19",
-                                "path": [
-                                  {
-                                    "unquoted_string": {
-                                      "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:6:19",
-                                      "value": [
-                                        {
-                                          "string": "shape",
-                                          "raw_string": "shape"
-                                        }
-                                      ]
-                                    }
-                                  }
-                                ]
-                              },
-                              "primary": {},
-                              "value": {
-                                "unquoted_string": {
-                                  "range": "TestCompile/patterns/single-glob/defaults.d2,1:8:21-1:12:25",
-                                  "value": [
-                                    {
-                                      "string": "page",
-                                      "raw_string": "page"
-                                    }
-                                  ]
-                                }
-                              }
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  }
-                },
-                "due_to_glob": true,
-                "due_to_lazy_glob": true
               }
             ]
           }
@@ -5816,341 +5834,55 @@
           },
           "due_to_glob": false,
           "due_to_lazy_glob": false
-        },
-        {
-          "string": {
-            "range": ",0:0:0-0:0:0",
-            "value": [
-              {
-                "string": "scenarios"
-              }
-            ]
-          },
-          "key_path": {
-            "range": ",0:0:0-0:0:0",
-            "path": [
-              {
-                "unquoted_string": {
-                  "range": ",0:0:0-0:0:0",
-                  "value": [
-                    {
-                      "string": "scenarios"
-                    }
-                  ]
-                }
-              },
-              {
-                "unquoted_string": {
-                  "range": ",0:0:0-0:0:0",
-                  "value": [
-                    {
-                      "string": "x"
-                    }
-                  ]
-                }
-              },
-              {
-                "unquoted_string": {
-                  "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:7:7",
-                  "value": [
-                    {
-                      "string": "wrapper",
-                      "raw_string": "wrapper"
-                    }
-                  ]
-                }
-              },
-              {
-                "unquoted_string": {
-                  "range": "TestCompile/patterns/single-glob/defaults.d2,0:8:8-0:9:9",
-                  "value": [
-                    {
-                      "string": "*",
-                      "raw_string": "*"
-                    }
-                  ],
-                  "pattern": [
-                    "*"
-                  ]
-                }
-              }
-            ]
-          },
-          "context": {
-            "edge": null,
-            "key": {
-              "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-2:1:27",
-              "key": {
-                "range": ",0:0:0-0:0:0",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": ",0:0:0-0:0:0",
-                      "value": [
-                        {
-                          "string": "scenarios"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "unquoted_string": {
-                      "range": ",0:0:0-0:0:0",
-                      "value": [
-                        {
-                          "string": "x"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:7:7",
-                      "value": [
-                        {
-                          "string": "wrapper",
-                          "raw_string": "wrapper"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/patterns/single-glob/defaults.d2,0:8:8-0:9:9",
-                      "value": [
-                        {
-                          "string": "*",
-                          "raw_string": "*"
-                        }
-                      ],
-                      "pattern": [
-                        "*"
-                      ]
-                    }
-                  }
-                ]
-              },
-              "primary": {},
-              "value": {
-                "map": {
-                  "range": "TestCompile/patterns/single-glob/defaults.d2,0:11:11-2:1:27",
-                  "nodes": [
-                    {
-                      "map_key": {
-                        "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:12:25",
-                        "key": {
-                          "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:6:19",
-                          "path": [
-                            {
-                              "unquoted_string": {
-                                "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:6:19",
-                                "value": [
-                                  {
-                                    "string": "shape",
-                                    "raw_string": "shape"
-                                  }
-                                ]
-                              }
-                            }
-                          ]
-                        },
-                        "primary": {},
-                        "value": {
-                          "unquoted_string": {
-                            "range": "TestCompile/patterns/single-glob/defaults.d2,1:8:21-1:12:25",
-                            "value": [
-                              {
-                                "string": "page",
-                                "raw_string": "page"
-                              }
-                            ]
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "due_to_glob": true,
-          "due_to_lazy_glob": true
-        },
-        {
-          "string": {
-            "range": ",0:0:0-0:0:0",
-            "value": [
-              {
-                "string": "scenarios"
-              }
-            ]
-          },
-          "key_path": {
-            "range": ",0:0:0-0:0:0",
-            "path": [
-              {
-                "unquoted_string": {
-                  "range": ",0:0:0-0:0:0",
-                  "value": [
-                    {
-                      "string": "scenarios"
-                    }
-                  ]
-                }
-              },
-              {
-                "unquoted_string": {
-                  "range": ",0:0:0-0:0:0",
-                  "value": [
-                    {
-                      "string": "x"
-                    }
-                  ]
-                }
-              },
-              {
-                "unquoted_string": {
-                  "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:7:7",
-                  "value": [
-                    {
-                      "string": "wrapper",
-                      "raw_string": "wrapper"
-                    }
-                  ]
-                }
-              },
-              {
-                "unquoted_string": {
-                  "range": "TestCompile/patterns/single-glob/defaults.d2,0:8:8-0:9:9",
-                  "value": [
-                    {
-                      "string": "*",
-                      "raw_string": "*"
-                    }
-                  ],
-                  "pattern": [
-                    "*"
-                  ]
-                }
-              }
-            ]
-          },
-          "context": {
-            "edge": null,
-            "key": {
-              "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-2:1:27",
-              "key": {
-                "range": ",0:0:0-0:0:0",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": ",0:0:0-0:0:0",
-                      "value": [
-                        {
-                          "string": "scenarios"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "unquoted_string": {
-                      "range": ",0:0:0-0:0:0",
-                      "value": [
-                        {
-                          "string": "x"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/patterns/single-glob/defaults.d2,0:0:0-0:7:7",
-                      "value": [
-                        {
-                          "string": "wrapper",
-                          "raw_string": "wrapper"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/patterns/single-glob/defaults.d2,0:8:8-0:9:9",
-                      "value": [
-                        {
-                          "string": "*",
-                          "raw_string": "*"
-                        }
-                      ],
-                      "pattern": [
-                        "*"
-                      ]
-                    }
-                  }
-                ]
-              },
-              "primary": {},
-              "value": {
-                "map": {
-                  "range": "TestCompile/patterns/single-glob/defaults.d2,0:11:11-2:1:27",
-                  "nodes": [
-                    {
-                      "map_key": {
-                        "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:12:25",
-                        "key": {
-                          "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:6:19",
-                          "path": [
-                            {
-                              "unquoted_string": {
-                                "range": "TestCompile/patterns/single-glob/defaults.d2,1:1:14-1:6:19",
-                                "value": [
-                                  {
-                                    "string": "shape",
-                                    "raw_string": "shape"
-                                  }
-                                ]
-                              }
-                            }
-                          ]
-                        },
-                        "primary": {},
-                        "value": {
-                          "unquoted_string": {
-                            "range": "TestCompile/patterns/single-glob/defaults.d2,1:8:21-1:12:25",
-                            "value": [
-                              {
-                                "string": "page",
-                                "raw_string": "page"
-                              }
-                            ]
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "due_to_glob": true,
-          "due_to_lazy_glob": true
         }
       ]
     },
     {
-      "name": "layers",
+      "name": {
+        "range": "TestCompile/patterns/single-glob/defaults.d2,10:0:97-10:6:103",
+        "value": [
+          {
+            "string": "layers",
+            "raw_string": "layers"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "x",
+            "name": {
+              "range": "TestCompile/patterns/single-glob/defaults.d2,10:7:104-10:8:105",
+              "value": [
+                {
+                  "string": "x",
+                  "raw_string": "x"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "wrapper",
+                  "name": {
+                    "range": "TestCompile/patterns/single-glob/defaults.d2,10:12:109-10:19:116",
+                    "value": [
+                      {
+                        "string": "wrapper",
+                        "raw_string": "wrapper"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "p",
+                        "name": {
+                          "range": "TestCompile/patterns/single-glob/defaults.d2,10:20:117-10:21:118",
+                          "value": [
+                            {
+                              "string": "p",
+                              "raw_string": "p"
+                            }
+                          ]
+                        },
                         "references": [
                           {
                             "string": {

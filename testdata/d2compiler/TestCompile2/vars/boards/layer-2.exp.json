@@ -330,6 +330,7 @@
           "height": 0
         },
         "style": {},
+        "iconStyle": {},
         "near_key": null,
         "shape": {
           "value": ""
@@ -348,7 +349,7 @@
         "name": "l",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer-2.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -358,10 +359,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer-2.d2,8:4:65-8:8:69",
                         "value": [
                           {
-                            "string": "vars"
+                            "string": "vars",
+                            "raw_string": "vars"
                           }
                         ]
                       }
@@ -371,7 +373,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": ",0:0:0-1:0:0",
+                    "range": ",1:0:0-2:0:0",
                     "nodes": [
                       {
                         "map_key": {
@@ -381,10 +383,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer-2.d2,9:6:79-9:7:80",
                                   "value": [
                                     {
-                                      "string": "x"
+                                      "string": "x",
+                                      "raw_string": "x"
                                     }
                                   ]
                                 }
@@ -418,10 +421,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer-2.d2,11:4:104-11:6:106",
                         "value": [
                           {
-                            "string": "hi"
+                            "string": "hi",
+                            "raw_string": "hi"
                           }
                         ]
                       }
@@ -450,10 +454,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/layer-2.d2,12:4:117-12:9:122",
                         "value": [
                           {
-                            "string": "hello"
+                            "string": "hello",
+                            "raw_string": "hello"
                           }
                         ]
                       }
@@ -488,6 +493,7 @@
               "height": 0
             },
             "style": {},
+            "iconStyle": {},
             "near_key": null,
             "shape": {
               "value": ""
@@ -535,6 +541,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"
@@ -580,6 +587,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"

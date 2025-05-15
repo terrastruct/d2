@@ -250,7 +250,7 @@ func run(t *testing.T, tc testCase) {
 		pathGotSVG := filepath.Join(dataPath, "sketch.got.svg")
 
 		if len(diagram.Layers) > 0 || len(diagram.Scenarios) > 0 || len(diagram.Steps) > 0 {
-			masterID, err := diagram.HashID()
+			masterID, err := diagram.HashID(nil)
 			assert.Success(t, err)
 			renderOpts.MasterID = masterID
 		}

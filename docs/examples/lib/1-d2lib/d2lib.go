@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 
 	"oss.terrastruct.com/d2/d2graph"
@@ -10,6 +10,7 @@ import (
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
+	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 	"oss.terrastruct.com/util-go/go2"
 )
@@ -28,7 +29,8 @@ func main() {
 		LayoutResolver: layoutResolver,
 		Ruler:          ruler,
 	}
-	diagram, _, _ := d2lib.Compile(context.Background(), "x -> y", compileOpts, renderOpts)
+	ctx := log.WithDefault(context.Background())
+	diagram, _, _ := d2lib.Compile(ctx, "x -> y", compileOpts, renderOpts)
 	out, _ := d2svg.Render(diagram, renderOpts)
-	_ = ioutil.WriteFile(filepath.Join("out.svg"), out, 0600)
+	_ = os.WriteFile(filepath.Join("out.svg"), out, 0600)
 }

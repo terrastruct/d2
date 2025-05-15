@@ -4,7 +4,7 @@ import "oss.terrastruct.com/d2/d2themes"
 
 var OrangeCreamsicle = d2themes.Theme{
 	ID:   101,
-	Name: "Orange creamsicle",
+	Name: "Orange Creamsicle",
 	Colors: d2themes.ColorPalette{
 		Neutrals: d2themes.WarmNeutral,
 

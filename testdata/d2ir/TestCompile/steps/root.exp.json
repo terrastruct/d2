@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "x",
+      "name": {
+        "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -118,7 +126,15 @@
       ]
     },
     {
-      "name": "y",
+      "name": {
+        "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
+        "value": [
+          {
+            "string": "y",
+            "raw_string": "y"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -235,15 +251,39 @@
       ]
     },
     {
-      "name": "steps",
+      "name": {
+        "range": "TestCompile/steps/root.d2,1:0:7-1:5:12",
+        "value": [
+          {
+            "string": "steps",
+            "raw_string": "steps"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "bingo",
+            "name": {
+              "range": "TestCompile/steps/root.d2,2:1:17-2:6:22",
+              "value": [
+                {
+                  "string": "bingo",
+                  "raw_string": "bingo"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "x",
+                  "name": {
+                    "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -360,7 +400,15 @@
                   ]
                 },
                 {
-                  "name": "y",
+                  "name": {
+                    "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -477,15 +525,39 @@
                   ]
                 },
                 {
-                  "name": "p",
+                  "name": {
+                    "range": "TestCompile/steps/root.d2,2:10:26-2:11:27",
+                    "value": [
+                      {
+                        "string": "p",
+                        "raw_string": "p"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "q",
+                        "name": {
+                          "range": "TestCompile/steps/root.d2,2:12:28-2:13:29",
+                          "value": [
+                            {
+                              "string": "q",
+                              "raw_string": "q"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "z",
+                              "name": {
+                                "range": "TestCompile/steps/root.d2,2:14:30-2:15:31",
+                                "value": [
+                                  {
+                                    "string": "z",
+                                    "raw_string": "z"
+                                  }
+                                ]
+                              },
                               "references": [
                                 {
                                   "string": {
@@ -797,11 +869,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "x"
+                      {
+                        "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "y"
+                      {
+                        "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -1007,11 +1095,27 @@
             ]
           },
           {
-            "name": "nuclear",
+            "name": {
+              "range": "TestCompile/steps/root.d2,3:1:35-3:8:42",
+              "value": [
+                {
+                  "string": "nuclear",
+                  "raw_string": "nuclear"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "x",
+                  "name": {
+                    "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -1128,7 +1232,15 @@
                   ]
                 },
                 {
-                  "name": "y",
+                  "name": {
+                    "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -1245,15 +1357,39 @@
                   ]
                 },
                 {
-                  "name": "p",
+                  "name": {
+                    "range": "TestCompile/steps/root.d2,2:10:26-2:11:27",
+                    "value": [
+                      {
+                        "string": "p",
+                        "raw_string": "p"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "q",
+                        "name": {
+                          "range": "TestCompile/steps/root.d2,2:12:28-2:13:29",
+                          "value": [
+                            {
+                              "string": "q",
+                              "raw_string": "q"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "z",
+                              "name": {
+                                "range": "TestCompile/steps/root.d2,2:14:30-2:15:31",
+                                "value": [
+                                  {
+                                    "string": "z",
+                                    "raw_string": "z"
+                                  }
+                                ]
+                              },
                               "references": [
                                 {
                                   "string": {
@@ -1561,7 +1697,15 @@
                   ]
                 },
                 {
-                  "name": "quiche",
+                  "name": {
+                    "range": "TestCompile/steps/root.d2,3:12:46-3:18:52",
+                    "value": [
+                      {
+                        "string": "quiche",
+                        "raw_string": "quiche"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -1623,11 +1767,27 @@
                 {
                   "edge_id": {
                     "src_path": [
-                      "x"
+                      {
+                        "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "y"
+                      {
+                        "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -2006,11 +2166,27 @@
     {
       "edge_id": {
         "src_path": [
-          "x"
+          {
+            "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "y"
+          {
+            "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
+            "value": [
+              {
+                "string": "y",
+                "raw_string": "y"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,

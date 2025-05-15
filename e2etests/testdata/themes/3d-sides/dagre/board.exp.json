@@ -1,5 +1,13 @@
 {
   "name": "",
+  "config": {
+    "sketch": false,
+    "themeID": 300,
+    "darkThemeID": null,
+    "pad": null,
+    "center": null,
+    "layoutEngine": null
+  },
   "isFolderOnly": false,
   "fontFamily": "SourceCodePro",
   "shapes": [
@@ -19,6 +27,7 @@
       "fill": "B4",
       "fillPattern": "dots",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": true,
       "multiple": false,
@@ -61,6 +70,7 @@
       "fill": "B5",
       "fillPattern": "dots",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -102,6 +112,7 @@
       "borderRadius": 0,
       "fill": "N7",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -156,6 +167,7 @@
     "borderRadius": 0,
     "fill": "N7",
     "stroke": "",
+    "animated": false,
     "shadow": false,
     "3d": false,
     "multiple": false,

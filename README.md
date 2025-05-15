@@ -4,17 +4,22 @@
     A modern diagram scripting language that turns text to diagrams.
   </h2>
 
-[Docs](https://d2lang.com) | [Cheat sheet](./docs/assets/cheat_sheet.pdf) | [Comparisons](https://text-to-diagram.com) | [Playground](https://play.d2lang.com)
+[Docs](https://d2lang.com) | [Cheat sheet](./docs/assets/cheat_sheet.pdf) | [Comparisons](https://text-to-diagram.com) | [Playground](https://play.d2lang.com) | [IDE](https://app.terrastruct.com)
 
 [![ci](https://github.com/terrastruct/d2/actions/workflows/ci.yml/badge.svg)](https://github.com/terrastruct/d2/actions/workflows/ci.yml)
 [![daily](https://github.com/terrastruct/d2/actions/workflows/daily.yml/badge.svg)](https://github.com/terrastruct/d2/actions/workflows/daily.yml)
 [![release](https://img.shields.io/github/v/release/terrastruct/d2)](https://github.com/terrastruct/d2/releases)
+[![changelog](https://img.shields.io/badge/changelog-read-blue)](./CHANGELOG.md)
+[![npm version](https://img.shields.io/npm/v/@terrastruct/d2)](https://www.npmjs.com/package/@terrastruct/d2)
 [![discord](https://img.shields.io/discord/1039184639652265985?label=discord)](https://discord.gg/NF6X8K4eDq)
 [![twitter](https://img.shields.io/twitter/follow/terrastruct?style=social)](https://twitter.com/terrastruct)
 [![license](https://img.shields.io/github/license/terrastruct/d2?color=9cf)](./LICENSE.txt)
 
 <a href="https://play.d2lang.com">
 <img src="./docs/assets/playground_button.png" alt="D2 Playground button" width="200" />
+</a>
+<a href="https://app.terrastruct.com">
+<img src="./docs/assets/studio_button.png" alt="D2 Studio button" width="200" />
 </a>
 
 https://user-images.githubusercontent.com/3120367/206125010-bd1fea8e-248a-43e7-8f85-0bbfca0c6e2a.mp4
@@ -238,7 +243,7 @@ let us know and we'll be happy to include it here!
 
 ### Community plugins
 
-- **Tree-sitter grammar**: [https://git.pleshevski.ru/pleshevskiy/tree-sitter-d2](https://git.pleshevski.ru/pleshevskiy/tree-sitter-d2)
+- **Tree-sitter grammar**: [https://github.com/ravsii/tree-sitter-d2](https://github.com/ravsii/tree-sitter-d2)
 - **Emacs major mode**: [https://github.com/andorsk/d2-mode](https://github.com/andorsk/d2-mode)
 - **Goldmark extension**: [https://github.com/FurqanSoftware/goldmark-d2](https://github.com/FurqanSoftware/goldmark-d2)
 - **Telegram bot**: [https://github.com/meinside/telegram-d2-bot](https://github.com/meinside/telegram-d2-bot)
@@ -261,12 +266,16 @@ let us know and we'll be happy to include it here!
 - **ent2d2**: [https://github.com/tmc/ent2d2](https://github.com/tmc/ent2d2)
 - **MkDocs Plugin**: [https://github.com/landmaj/mkdocs-d2-plugin](https://github.com/landmaj/mkdocs-d2-plugin)
 - **Remark Plugin**: [https://github.com/mech-a/remark-d2](https://github.com/mech-a/remark-d2)
+- **VitePress Plugin**: [https://github.com/BadgerHobbs/vitepress-plugin-d2](https://github.com/BadgerHobbs/vitepress-plugin-d2)
 - **Zed extension**: [https://github.com/gabeidx/zed-d2](https://github.com/gabeidx/zed-d2)
+- **Hexo blog extension**: [https://github.com/leverimmy/hexo-d2](https://github.com/leverimmy/hexo-d2)
+- **Rehype Plugin**: [https://github.com/stereobooster/beoe/tree/main/packages/rehype-d2](https://github.com/stereobooster/beoe/tree/main/packages/rehype-d2)
 
 ### Misc
 
 - **Comparison site**: [https://github.com/terrastruct/text-to-diagram-site](https://github.com/terrastruct/text-to-diagram-site)
 - **Playground**: [https://github.com/terrastruct/d2-playground](https://github.com/terrastruct/d2-playground)
+- **IDE (paid)**: [https://app.terrastruct.com](https://app.terrastruct.com)
 - **Language docs**: [https://github.com/terrastruct/d2-docs](https://github.com/terrastruct/d2-docs)
 - **Hosted icons**: [https://icons.terrastruct.com](https://icons.terrastruct.com)
 

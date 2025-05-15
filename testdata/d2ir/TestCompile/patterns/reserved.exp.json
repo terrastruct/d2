@@ -1,15 +1,39 @@
 {
   "fields": [
     {
-      "name": "vars",
+      "name": {
+        "range": "TestCompile/patterns/reserved.d2,0:0:0-0:4:4",
+        "value": [
+          {
+            "string": "vars",
+            "raw_string": "vars"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "d2-config",
+            "name": {
+              "range": "TestCompile/patterns/reserved.d2,1:2:10-1:11:19",
+              "value": [
+                {
+                  "string": "d2-config",
+                  "raw_string": "d2-config"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "layout-engine",
+                  "name": {
+                    "range": "TestCompile/patterns/reserved.d2,2:4:27-2:17:40",
+                    "value": [
+                      {
+                        "string": "layout-engine",
+                        "raw_string": "layout-engine"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/reserved.d2,2:19:42-2:22:45",
@@ -313,7 +337,15 @@
       ]
     },
     {
-      "name": "Spiderman 1",
+      "name": {
+        "range": "TestCompile/patterns/reserved.d2,6:0:53-6:11:64",
+        "value": [
+          {
+            "string": "Spiderman 1",
+            "raw_string": "Spiderman 1"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -371,7 +403,15 @@
       ]
     },
     {
-      "name": "Spiderman 2",
+      "name": {
+        "range": "TestCompile/patterns/reserved.d2,7:0:65-7:11:76",
+        "value": [
+          {
+            "string": "Spiderman 2",
+            "raw_string": "Spiderman 2"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -429,7 +469,15 @@
       ]
     },
     {
-      "name": "Spiderman 3",
+      "name": {
+        "range": "TestCompile/patterns/reserved.d2,8:0:77-8:11:88",
+        "value": [
+          {
+            "string": "Spiderman 3",
+            "raw_string": "Spiderman 3"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -491,11 +539,27 @@
     {
       "edge_id": {
         "src_path": [
-          "Spiderman 1"
+          {
+            "range": "TestCompile/patterns/reserved.d2,6:0:53-6:11:64",
+            "value": [
+              {
+                "string": "Spiderman 1",
+                "raw_string": "Spiderman 1"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "Spiderman 2"
+          {
+            "range": "TestCompile/patterns/reserved.d2,7:0:65-7:11:76",
+            "value": [
+              {
+                "string": "Spiderman 2",
+                "raw_string": "Spiderman 2"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -627,11 +691,27 @@
     {
       "edge_id": {
         "src_path": [
-          "Spiderman 1"
+          {
+            "range": "TestCompile/patterns/reserved.d2,6:0:53-6:11:64",
+            "value": [
+              {
+                "string": "Spiderman 1",
+                "raw_string": "Spiderman 1"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "Spiderman 3"
+          {
+            "range": "TestCompile/patterns/reserved.d2,8:0:77-8:11:88",
+            "value": [
+              {
+                "string": "Spiderman 3",
+                "raw_string": "Spiderman 3"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -763,11 +843,27 @@
     {
       "edge_id": {
         "src_path": [
-          "Spiderman 2"
+          {
+            "range": "TestCompile/patterns/reserved.d2,7:0:65-7:11:76",
+            "value": [
+              {
+                "string": "Spiderman 2",
+                "raw_string": "Spiderman 2"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "Spiderman 1"
+          {
+            "range": "TestCompile/patterns/reserved.d2,6:0:53-6:11:64",
+            "value": [
+              {
+                "string": "Spiderman 1",
+                "raw_string": "Spiderman 1"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -899,11 +995,27 @@
     {
       "edge_id": {
         "src_path": [
-          "Spiderman 2"
+          {
+            "range": "TestCompile/patterns/reserved.d2,7:0:65-7:11:76",
+            "value": [
+              {
+                "string": "Spiderman 2",
+                "raw_string": "Spiderman 2"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "Spiderman 3"
+          {
+            "range": "TestCompile/patterns/reserved.d2,8:0:77-8:11:88",
+            "value": [
+              {
+                "string": "Spiderman 3",
+                "raw_string": "Spiderman 3"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -1035,11 +1147,27 @@
     {
       "edge_id": {
         "src_path": [
-          "Spiderman 3"
+          {
+            "range": "TestCompile/patterns/reserved.d2,8:0:77-8:11:88",
+            "value": [
+              {
+                "string": "Spiderman 3",
+                "raw_string": "Spiderman 3"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "Spiderman 1"
+          {
+            "range": "TestCompile/patterns/reserved.d2,6:0:53-6:11:64",
+            "value": [
+              {
+                "string": "Spiderman 1",
+                "raw_string": "Spiderman 1"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -1171,11 +1299,27 @@
     {
       "edge_id": {
         "src_path": [
-          "Spiderman 3"
+          {
+            "range": "TestCompile/patterns/reserved.d2,8:0:77-8:11:88",
+            "value": [
+              {
+                "string": "Spiderman 3",
+                "raw_string": "Spiderman 3"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "Spiderman 2"
+          {
+            "range": "TestCompile/patterns/reserved.d2,7:0:65-7:11:76",
+            "value": [
+              {
+                "string": "Spiderman 2",
+                "raw_string": "Spiderman 2"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,

@@ -1,11 +1,11 @@
-<pattern id="paper" x="0" y="0" width="75" height="75" patternUnits="userSpaceOnUse">
+<pattern id="paper-%[1]s" x="0" y="0" width="75" height="75" patternUnits="userSpaceOnUse">
 <g style="mix-blend-mode:multiply" opacity="0.3">
 <svg width="75" height="75" viewBox="0 0 75 75" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_3964_29771)">
-<mask id="mask0_3964_29771" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="-1" y="-1" width="77" height="77">
+<g clip-path="url(#clip0_3964_29771-%[1]s)">
+<mask id="mask0_3964_29771-%[1]s" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="-1" y="-1" width="77" height="77">
 <path d="M75.0871 -0.0878906H-0.0878906V75.0871H75.0871V-0.0878906Z" fill="white"/>
 </mask>
-<g mask="url(#mask0_3964_29771)">
+<g mask="url(#mask0_3964_29771-%[1]s)">
 <path d="M75.0871 -0.0888672H-0.0878906V75.0861H75.0871V-0.0888672Z" fill="black"/>
 <path d="M75.0879 74.3798V75.0314C75.6852 74.95 76.2825 74.8957 76.7983 74.6513C76.1196 74.6784 75.4136 74.7599 75.2237 74.1083C74.8435 72.8594 76.5269 73.3482 76.9884 72.4522C76.8798 72.3979 76.744 72.3436 76.6082 72.3164C76.0924 72.4522 75.5766 72.5065 75.0879 72.4793V74.3798Z" fill="#F7F7F7"/>
 <path d="M27.5332 11.5896C27.5332 11.5896 27.5603 11.5083 27.5874 11.4541C27.5874 11.5083 27.5603 11.5354 27.5332 11.5896Z" fill="#F9F9F9"/>
@@ -1051,7 +1051,7 @@
 </g>
 </g>
 <defs>
-<clipPath id="clip0_3964_29771">
+<clipPath id="clip0_3964_29771-%[1]s">
 <rect width="75" height="75" fill="white"/>
 </clipPath>
 </defs>

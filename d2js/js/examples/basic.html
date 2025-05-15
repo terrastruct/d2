@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+        height: 100vh;
+        margin: 0;
+      }
+      textarea {
+        width: 400px;
+        height: 300px;
+      }
+      #output {
+        flex: 1;
+        overflow: auto;
+      }
+      #output svg {
+        max-width: 100%;
+        max-height: 90vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <textarea id="input">x -> y</textarea>
+      <button onclick="compile()">Compile</button>
+    </div>
+    <div id="output"></div>
+    <script type="module">
+      import { D2 } from "../dist/browser/index.js";
+      const d2 = new D2();
+      window.compile = async () => {
+        const input = document.getElementById("input").value;
+        try {
+          const result = await d2.compile(input);
+          const svg = await d2.render(result.diagram, result.renderOptions);
+          document.getElementById("output").innerHTML = svg;
+        } catch (err) {
+          console.error(err);
+          document.getElementById("output").textContent = err.message;
+        }
+      };
+      compile();
+    </script>
+  </body>
+</html>

@@ -9,12 +9,11 @@ import (
 
 	_ "embed"
 
-	"github.com/dop251/goja"
-
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/d2/lib/jsrunner"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/svg"
 	"oss.terrastruct.com/util-go/go2"
@@ -29,8 +28,6 @@ var setupJS string
 //go:embed streaks.txt
 var streaks string
 
-type Runner goja.Runtime
-
 var baseRoughProps = `fillWeight: 2.0,
 hachureGap: 16,
 fillStyle: "solid",
@@ -44,46 +41,39 @@ const (
 	FG_COLOR = color.N1
 )
 
-func (r *Runner) run(js string) (goja.Value, error) {
-	vm := (*goja.Runtime)(r)
-	return vm.RunString(js)
-}
-
-func InitSketchVM() (*Runner, error) {
-	vm := goja.New()
-	if _, err := vm.RunString(roughJS); err != nil {
-		return nil, err
+func LoadJS(runner jsrunner.JSRunner) error {
+	if _, err := runner.RunString(roughJS); err != nil {
+		return err
 	}
-	if _, err := vm.RunString(setupJS); err != nil {
-		return nil, err
+	if _, err := runner.RunString(setupJS); err != nil {
+		return err
 	}
-	r := Runner(*vm)
-	return &r, nil
+	return nil
 }
 
 // DefineFillPatterns adds reusable patterns that are overlayed on shapes with
 // fill. This gives it a subtle streaky effect that subtly looks hand-drawn but
 // not distractingly so.
-func DefineFillPatterns(buf *bytes.Buffer) {
+func DefineFillPatterns(buf *bytes.Buffer, diagramHash string) {
 	source := buf.String()
 	fmt.Fprint(buf, "<defs>")
 
-	defineFillPattern(buf, source, "bright", "rgba(0, 0, 0, 0.1)")
-	defineFillPattern(buf, source, "normal", "rgba(0, 0, 0, 0.16)")
-	defineFillPattern(buf, source, "dark", "rgba(0, 0, 0, 0.32)")
-	defineFillPattern(buf, source, "darker", "rgba(255, 255, 255, 0.24)")
+	defineFillPattern(buf, source, diagramHash, "bright", "rgba(0, 0, 0, 0.1)")
+	defineFillPattern(buf, source, diagramHash, "normal", "rgba(0, 0, 0, 0.16)")
+	defineFillPattern(buf, source, diagramHash, "dark", "rgba(0, 0, 0, 0.32)")
+	defineFillPattern(buf, source, diagramHash, "darker", "rgba(255, 255, 255, 0.24)")
 
 	fmt.Fprint(buf, "</defs>")
 }
 
-func defineFillPattern(buf *bytes.Buffer, source string, luminanceCategory, fill string) {
-	trigger := fmt.Sprintf(`url(#streaks-%s)`, luminanceCategory)
+func defineFillPattern(buf *bytes.Buffer, source, diagramHash string, luminanceCategory, fill string) {
+	trigger := fmt.Sprintf(`url(#streaks-%s-%s)`, luminanceCategory, diagramHash)
 	if strings.Contains(source, trigger) {
-		fmt.Fprintf(buf, streaks, luminanceCategory, fill)
+		fmt.Fprintf(buf, streaks, luminanceCategory, diagramHash, fill)
 	}
 }
 
-func Rect(r *Runner, shape d2target.Shape) (string, error) {
+func Rect(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	js := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
 		fill: "#000",
 		stroke: "#000",
@@ -119,7 +109,7 @@ func Rect(r *Runner, shape d2target.Shape) (string, error) {
 	return output, nil
 }
 
-func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
+func DoubleRect(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	jsBigRect := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
 		fill: "#000",
 		stroke: "#000",
@@ -179,7 +169,7 @@ func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
 	return output, nil
 }
 
-func Oval(r *Runner, shape d2target.Shape) (string, error) {
+func Oval(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	js := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
 		fill: "#000",
 		stroke: "#000",
@@ -218,7 +208,7 @@ func Oval(r *Runner, shape d2target.Shape) (string, error) {
 	return output, nil
 }
 
-func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
+func DoubleOval(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	jsBigCircle := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
 		fill: "#000",
 		stroke: "#000",
@@ -281,7 +271,7 @@ func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
 }
 
 // TODO need to personalize this per shape like we do in Terrastruct app
-func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
+func Paths(r jsrunner.JSRunner, shape d2target.Shape, paths []string) (string, error) {
 	output := ""
 	for _, path := range paths {
 		js := fmt.Sprintf(`node = rc.path("%s", {
@@ -320,7 +310,7 @@ func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
 	return output, nil
 }
 
-func Connection(r *Runner, connection d2target.Connection, path, attrs string) (string, error) {
+func Connection(r jsrunner.JSRunner, connection d2target.Connection, path, attrs string) (string, error) {
 	animatedClass := ""
 	if connection.Animated {
 		animatedClass = " animated-connection"
@@ -388,7 +378,7 @@ func Connection(r *Runner, connection d2target.Connection, path, attrs string) (
 }
 
 // TODO cleanup
-func Table(r *Runner, shape d2target.Shape) (string, error) {
+func Table(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	output := ""
 	js := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
 		fill: "#000",
@@ -530,7 +520,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 	return output, nil
 }
 
-func Class(r *Runner, shape d2target.Shape) (string, error) {
+func Class(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	output := ""
 	js := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
 		fill: "#000",
@@ -681,8 +671,8 @@ func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText str
 	return output
 }
 
-func computeRoughPathData(r *Runner, js string) ([]string, error) {
-	if _, err := r.run(js); err != nil {
+func computeRoughPathData(r jsrunner.JSRunner, js string) ([]string, error) {
+	if _, err := r.RunString(js); err != nil {
 		return nil, err
 	}
 	roughPaths, err := extractRoughPaths(r)
@@ -692,8 +682,8 @@ func computeRoughPathData(r *Runner, js string) ([]string, error) {
 	return extractPathData(roughPaths)
 }
 
-func computeRoughPaths(r *Runner, js string) ([]roughPath, error) {
-	if _, err := r.run(js); err != nil {
+func computeRoughPaths(r jsrunner.JSRunner, js string) ([]roughPath, error) {
+	if _, err := r.RunString(js); err != nil {
 		return nil, err
 	}
 	return extractRoughPaths(r)
@@ -722,8 +712,8 @@ func (rp roughPath) StyleCSS() string {
 	return style
 }
 
-func extractRoughPaths(r *Runner) ([]roughPath, error) {
-	val, err := r.run("JSON.stringify(node.children, null, '  ')")
+func extractRoughPaths(r jsrunner.JSRunner) ([]roughPath, error) {
+	val, err := r.RunString("JSON.stringify(node.children, null, '  ')")
 	if err != nil {
 		return nil, err
 	}
@@ -756,7 +746,7 @@ func extractPathData(roughPaths []roughPath) ([]string, error) {
 	return paths, nil
 }
 
-func ArrowheadJS(r *Runner, arrowhead d2target.Arrowhead, stroke string, strokeWidth int) (arrowJS, extraJS string) {
+func ArrowheadJS(r jsrunner.JSRunner, arrowhead d2target.Arrowhead, stroke string, strokeWidth int) (arrowJS, extraJS string) {
 	// Note: selected each seed that looks the good for consistent renders
 	switch arrowhead {
 	case d2target.ArrowArrowhead:
@@ -857,11 +847,27 @@ func ArrowheadJS(r *Runner, arrowhead d2target.Arrowhead, stroke string, strokeW
 			stroke,
 			BG_COLOR,
 		)
+	case d2target.BoxArrowhead:
+		arrowJS = fmt.Sprintf(
+			`node = rc.polygon(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", seed: 1})`,
+			`[[0, -10], [0, 10], [-20, 10], [-20, -10]]`,
+			strokeWidth,
+			stroke,
+			BG_COLOR,
+		)
+	case d2target.FilledBoxArrowhead:
+		arrowJS = fmt.Sprintf(
+			`node = rc.polygon(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", seed: 1})`,
+			`[[0, -10], [0, 10], [-20, 10], [-20, -10]]`,
+			strokeWidth,
+			stroke,
+			stroke,
+		)
 	}
 	return
 }
 
-func Arrowheads(r *Runner, connection d2target.Connection, srcAdj, dstAdj *geo.Point) (string, error) {
+func Arrowheads(r jsrunner.JSRunner, connection d2target.Connection, srcAdj, dstAdj *geo.Point) (string, error) {
 	arrowPaths := []string{}
 
 	if connection.SrcArrow != d2target.NoArrowhead {

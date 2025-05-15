@@ -1,0 +1,1284 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": true,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:0:0-23:0:147",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:0:0-0:22:22",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:0:0-0:15:15",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:0:0-0:2:2",
+                    "value": [
+                      {
+                        "string": "**",
+                        "raw_string": "**"
+                      }
+                    ],
+                    "pattern": [
+                      "*",
+                      "",
+                      "*"
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:3:3-0:8:8",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:9:9-0:15:15",
+                    "value": [
+                      {
+                        "string": "stroke",
+                        "raw_string": "stroke"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "unquoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:17:17-0:22:22",
+                "value": [
+                  {
+                    "string": "black",
+                    "raw_string": "black"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,2:0:24-9:1:72",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,2:0:24-2:9:33",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,2:0:24-2:9:33",
+                    "value": [
+                      {
+                        "string": "scenarios",
+                        "raw_string": "scenarios"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,2:11:35-9:1:72",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,3:2:39-5:3:53",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,3:2:39-3:3:40",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,3:2:39-3:3:40",
+                              "value": [
+                                {
+                                  "string": "a",
+                                  "raw_string": "a"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,3:5:42-5:3:53",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,4:4:48-4:5:49",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,4:4:48-4:5:49",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,4:4:48-4:5:49",
+                                        "value": [
+                                          {
+                                            "string": "x",
+                                            "raw_string": "x"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {}
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,6:2:56-8:3:70",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,6:2:56-6:3:57",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,6:2:56-6:3:57",
+                              "value": [
+                                {
+                                  "string": "b",
+                                  "raw_string": "b"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,6:5:59-8:3:70",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,7:4:65-7:5:66",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,7:4:65-7:5:66",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,7:4:65-7:5:66",
+                                        "value": [
+                                          {
+                                            "string": "x",
+                                            "raw_string": "x"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {}
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,10:0:73-17:1:117",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,10:0:73-10:5:78",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,10:0:73-10:5:78",
+                    "value": [
+                      {
+                        "string": "steps",
+                        "raw_string": "steps"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,10:7:80-17:1:117",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,11:2:84-13:3:98",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,11:2:84-11:3:85",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,11:2:84-11:3:85",
+                              "value": [
+                                {
+                                  "string": "c",
+                                  "raw_string": "c"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,11:5:87-13:3:98",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,12:4:93-12:5:94",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,12:4:93-12:5:94",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,12:4:93-12:5:94",
+                                        "value": [
+                                          {
+                                            "string": "x",
+                                            "raw_string": "x"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {}
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,14:2:101-16:3:115",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,14:2:101-14:3:102",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,14:2:101-14:3:102",
+                              "value": [
+                                {
+                                  "string": "d",
+                                  "raw_string": "d"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,14:5:104-16:3:115",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,15:4:110-15:5:111",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,15:4:110-15:5:111",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,15:4:110-15:5:111",
+                                        "value": [
+                                          {
+                                            "string": "x",
+                                            "raw_string": "x"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {}
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,18:0:118-22:1:146",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,18:0:118-18:6:124",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,18:0:118-18:6:124",
+                    "value": [
+                      {
+                        "string": "layers",
+                        "raw_string": "layers"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,18:8:126-22:1:146",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,19:2:130-21:3:144",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,19:2:130-19:3:131",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,19:2:130-19:3:131",
+                              "value": [
+                                {
+                                  "string": "e",
+                                  "raw_string": "e"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,19:5:133-21:3:144",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,20:4:139-20:5:140",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,20:4:139-20:5:140",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,20:4:139-20:5:140",
+                                        "value": [
+                                          {
+                                            "string": "x",
+                                            "raw_string": "x"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {}
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "iconStyle": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": null,
+    "layers": [
+      {
+        "name": "e",
+        "isFolderOnly": false,
+        "ast": {
+          "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:0:0-1:0:0",
+          "nodes": [
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,20:4:139-20:5:140",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {}
+              }
+            }
+          ]
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "attributes": {
+            "label": {
+              "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "style": {},
+            "iconStyle": {},
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": null
+          },
+          "zIndex": 0
+        },
+        "edges": null,
+        "objects": [
+          {
+            "id": "x",
+            "id_val": "x",
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,20:4:139-20:5:140",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,20:4:139-20:5:140",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "x"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {},
+              "iconStyle": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          }
+        ]
+      }
+    ],
+    "scenarios": [
+      {
+        "name": "a",
+        "isFolderOnly": false,
+        "ast": {
+          "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:0:0-1:0:0",
+          "nodes": [
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,4:4:48-4:5:49",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {
+                  "map": {
+                    "range": ",1:0:0-2:0:0",
+                    "nodes": [
+                      {
+                        "map_key": {
+                          "range": ",0:0:0-0:0:0",
+                          "key": {
+                            "range": ",0:0:0-0:0:0",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:3:3-0:8:8",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": ",1:0:0-2:0:0",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": ",0:0:0-0:0:0",
+                                    "key": {
+                                      "range": ",0:0:0-0:0:0",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:9:9-0:15:15",
+                                            "value": [
+                                              {
+                                                "string": "stroke",
+                                                "raw_string": "stroke"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:17:17-0:22:22",
+                                        "value": [
+                                          {
+                                            "string": "black",
+                                            "raw_string": "black"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "value": {}
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "attributes": {
+            "label": {
+              "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "style": {},
+            "iconStyle": {},
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": null
+          },
+          "zIndex": 0
+        },
+        "edges": null,
+        "objects": [
+          {
+            "id": "x",
+            "id_val": "x",
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,4:4:48-4:5:49",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,4:4:48-4:5:49",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "x"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {
+                "stroke": {
+                  "value": "black"
+                }
+              },
+              "iconStyle": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          }
+        ]
+      },
+      {
+        "name": "b",
+        "isFolderOnly": false,
+        "ast": {
+          "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:0:0-1:0:0",
+          "nodes": [
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,7:4:65-7:5:66",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {
+                  "map": {
+                    "range": ",1:0:0-2:0:0",
+                    "nodes": [
+                      {
+                        "map_key": {
+                          "range": ",0:0:0-0:0:0",
+                          "key": {
+                            "range": ",0:0:0-0:0:0",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:3:3-0:8:8",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": ",1:0:0-2:0:0",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": ",0:0:0-0:0:0",
+                                    "key": {
+                                      "range": ",0:0:0-0:0:0",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:9:9-0:15:15",
+                                            "value": [
+                                              {
+                                                "string": "stroke",
+                                                "raw_string": "stroke"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:17:17-0:22:22",
+                                        "value": [
+                                          {
+                                            "string": "black",
+                                            "raw_string": "black"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "value": {}
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "attributes": {
+            "label": {
+              "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "style": {},
+            "iconStyle": {},
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": null
+          },
+          "zIndex": 0
+        },
+        "edges": null,
+        "objects": [
+          {
+            "id": "x",
+            "id_val": "x",
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,7:4:65-7:5:66",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,7:4:65-7:5:66",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "x"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {
+                "stroke": {
+                  "value": "black"
+                }
+              },
+              "iconStyle": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          }
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "name": "c",
+        "isFolderOnly": false,
+        "ast": {
+          "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:0:0-1:0:0",
+          "nodes": [
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,12:4:93-12:5:94",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {
+                  "map": {
+                    "range": ",1:0:0-2:0:0",
+                    "nodes": [
+                      {
+                        "map_key": {
+                          "range": ",0:0:0-0:0:0",
+                          "key": {
+                            "range": ",0:0:0-0:0:0",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:3:3-0:8:8",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": ",1:0:0-2:0:0",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": ",0:0:0-0:0:0",
+                                    "key": {
+                                      "range": ",0:0:0-0:0:0",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:9:9-0:15:15",
+                                            "value": [
+                                              {
+                                                "string": "stroke",
+                                                "raw_string": "stroke"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:17:17-0:22:22",
+                                        "value": [
+                                          {
+                                            "string": "black",
+                                            "raw_string": "black"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "value": {}
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "attributes": {
+            "label": {
+              "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "style": {},
+            "iconStyle": {},
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": null
+          },
+          "zIndex": 0
+        },
+        "edges": null,
+        "objects": [
+          {
+            "id": "x",
+            "id_val": "x",
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,12:4:93-12:5:94",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,12:4:93-12:5:94",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "x"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {
+                "stroke": {
+                  "value": "black"
+                }
+              },
+              "iconStyle": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          }
+        ]
+      },
+      {
+        "name": "d",
+        "isFolderOnly": false,
+        "ast": {
+          "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:0:0-1:0:0",
+          "nodes": [
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,12:4:93-12:5:94",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {
+                  "map": {
+                    "range": ",1:0:0-2:0:0",
+                    "nodes": [
+                      {
+                        "map_key": {
+                          "range": ",0:0:0-0:0:0",
+                          "key": {
+                            "range": ",0:0:0-0:0:0",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:3:3-0:8:8",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": ",1:0:0-2:0:0",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": ",0:0:0-0:0:0",
+                                    "key": {
+                                      "range": ",0:0:0-0:0:0",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:9:9-0:15:15",
+                                            "value": [
+                                              {
+                                                "string": "stroke",
+                                                "raw_string": "stroke"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,0:17:17-0:22:22",
+                                        "value": [
+                                          {
+                                            "string": "black",
+                                            "raw_string": "black"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "value": {}
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "attributes": {
+            "label": {
+              "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "style": {},
+            "iconStyle": {},
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": null
+          },
+          "zIndex": 0
+        },
+        "edges": null,
+        "objects": [
+          {
+            "id": "x",
+            "id_val": "x",
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,12:4:93-12:5:94",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,12:4:93-12:5:94",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              },
+              {
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,15:4:110-15:5:111",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/style-nested-boards.d2,15:4:110-15:5:111",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "x"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {
+                "stroke": {
+                  "value": "black"
+                }
+              },
+              "iconStyle": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          }
+        ]
+      }
+    ]
+  },
+  "err": null
+}

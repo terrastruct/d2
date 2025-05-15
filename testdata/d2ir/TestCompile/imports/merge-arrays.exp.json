@@ -1,11 +1,27 @@
 {
   "fields": [
     {
-      "name": "x",
+      "name": {
+        "range": "index.d2,0:0:0-0:1:1",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "class",
+            "name": {
+              "range": "index.d2,0:2:2-0:7:7",
+              "value": [
+                {
+                  "string": "class",
+                  "raw_string": "class"
+                }
+              ]
+            },
             "composite": {
               "values": [
                 {

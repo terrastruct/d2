@@ -1,0 +1,529 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,0:0:0-10:0:70",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,0:0:0-0:2:2",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,0:0:0-0:2:2",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,0:0:0-0:2:2",
+                    "value": [
+                      {
+                        "string": "hi",
+                        "raw_string": "hi"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,1:0:3-9:1:69",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,1:0:3-1:6:9",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,1:0:3-1:6:9",
+                    "value": [
+                      {
+                        "string": "layers",
+                        "raw_string": "layers"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,1:8:11-9:1:69",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,2:2:15-4:3:34",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,2:2:15-2:3:16",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,2:2:15-2:3:16",
+                              "value": [
+                                {
+                                  "string": "1",
+                                  "raw_string": "1"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,2:5:18-2:8:21",
+                          "value": [
+                            {
+                              "string": "one",
+                              "raw_string": "one"
+                            }
+                          ]
+                        }
+                      },
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,2:9:22-4:3:34",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,3:4:28-3:6:30",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,3:4:28-3:6:30",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,3:4:28-3:6:30",
+                                        "value": [
+                                          {
+                                            "string": "RJ",
+                                            "raw_string": "RJ"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {}
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,5:2:37-8:3:67",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,5:2:37-5:3:38",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,5:2:37-5:3:38",
+                              "value": [
+                                {
+                                  "string": "2",
+                                  "raw_string": "2"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,5:5:40-8:3:67",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,6:4:46-6:14:56",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,6:4:46-6:9:51",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,6:4:46-6:9:51",
+                                        "value": [
+                                          {
+                                            "string": "label",
+                                            "raw_string": "label"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,6:11:53-6:14:56",
+                                    "value": [
+                                      {
+                                        "string": "two",
+                                        "raw_string": "two"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,7:4:61-7:6:63",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,7:4:61-7:6:63",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,7:4:61-7:6:63",
+                                        "value": [
+                                          {
+                                            "string": "RJ",
+                                            "raw_string": "RJ"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {}
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "iconStyle": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "hi",
+        "id_val": "hi",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,0:0:0-0:2:2",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,0:0:0-0:2:2",
+                    "value": [
+                      {
+                        "string": "hi",
+                        "raw_string": "hi"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "hi"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "iconStyle": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ],
+    "layers": [
+      {
+        "name": "1",
+        "isFolderOnly": false,
+        "ast": {
+          "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,0:0:0-1:0:0",
+          "nodes": [
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,3:4:28-3:6:30",
+                        "value": [
+                          {
+                            "string": "RJ",
+                            "raw_string": "RJ"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {}
+              }
+            }
+          ]
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "attributes": {
+            "label": {
+              "value": "one"
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "style": {},
+            "iconStyle": {},
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": null
+          },
+          "zIndex": 0
+        },
+        "edges": null,
+        "objects": [
+          {
+            "id": "RJ",
+            "id_val": "RJ",
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,3:4:28-3:6:30",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,3:4:28-3:6:30",
+                        "value": [
+                          {
+                            "string": "RJ",
+                            "raw_string": "RJ"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "RJ"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {},
+              "iconStyle": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          }
+        ]
+      },
+      {
+        "name": "2",
+        "isFolderOnly": false,
+        "ast": {
+          "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,0:0:0-1:0:0",
+          "nodes": [
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,6:4:46-6:9:51",
+                        "value": [
+                          {
+                            "string": "label",
+                            "raw_string": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,6:11:53-6:14:56",
+                    "value": [
+                      {
+                        "string": "two",
+                        "raw_string": "two"
+                      }
+                    ]
+                  }
+                },
+                "value": {}
+              }
+            },
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,7:4:61-7:6:63",
+                        "value": [
+                          {
+                            "string": "RJ",
+                            "raw_string": "RJ"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {}
+              }
+            }
+          ]
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "attributes": {
+            "label": {
+              "value": "two"
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "style": {},
+            "iconStyle": {},
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": null
+          },
+          "zIndex": 0
+        },
+        "edges": null,
+        "objects": [
+          {
+            "id": "RJ",
+            "id_val": "RJ",
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,7:4:61-7:6:63",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/board-label-primary.d2,7:4:61-7:6:63",
+                        "value": [
+                          {
+                            "string": "RJ",
+                            "raw_string": "RJ"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "RJ"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {},
+              "iconStyle": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          }
+        ]
+      }
+    ]
+  },
+  "err": null
+}

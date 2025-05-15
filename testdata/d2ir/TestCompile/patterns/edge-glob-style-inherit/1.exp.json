@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "x",
+      "name": {
+        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,1:0:29-1:1:30",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -164,7 +172,15 @@
       ]
     },
     {
-      "name": "y",
+      "name": {
+        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,1:5:34-1:6:35",
+        "value": [
+          {
+            "string": "y",
+            "raw_string": "y"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -327,15 +343,39 @@
       ]
     },
     {
-      "name": "scenarios",
+      "name": {
+        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,5:0:61-5:9:70",
+        "value": [
+          {
+            "string": "scenarios",
+            "raw_string": "scenarios"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "1",
+            "name": {
+              "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,6:2:76-6:3:77",
+              "value": [
+                {
+                  "string": "1",
+                  "raw_string": "1"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "x",
+                  "name": {
+                    "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,1:0:29-1:1:30",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -551,7 +591,15 @@
                   ]
                 },
                 {
-                  "name": "y",
+                  "name": {
+                    "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,1:5:34-1:6:35",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  },
                   "references": [
                     {
                       "string": {
@@ -712,828 +760,33 @@
                       "due_to_lazy_glob": false
                     }
                   ]
-                },
-                {
-                  "name": "style",
-                  "composite": {
-                    "fields": [
-                      {
-                        "name": "opacity",
-                        "composite": {
-                          "fields": null,
-                          "edges": null
-                        },
-                        "references": [
-                          {
-                            "string": {
-                              "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                              "value": [
-                                {
-                                  "string": "opacity",
-                                  "raw_string": "opacity"
-                                }
-                              ]
-                            },
-                            "key_path": {
-                              "range": ",0:0:0-0:0:0",
-                              "path": [
-                                {
-                                  "unquoted_string": {
-                                    "range": ",0:0:0-0:0:0",
-                                    "value": [
-                                      {
-                                        "string": "scenarios"
-                                      }
-                                    ]
-                                  }
-                                },
-                                {
-                                  "unquoted_string": {
-                                    "range": ",0:0:0-0:0:0",
-                                    "value": [
-                                      {
-                                        "string": "1"
-                                      }
-                                    ]
-                                  }
-                                },
-                                {
-                                  "unquoted_string": {
-                                    "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                                    "value": [
-                                      {
-                                        "string": "style",
-                                        "raw_string": "style"
-                                      }
-                                    ]
-                                  }
-                                },
-                                {
-                                  "unquoted_string": {
-                                    "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                                    "value": [
-                                      {
-                                        "string": "opacity",
-                                        "raw_string": "opacity"
-                                      }
-                                    ]
-                                  }
-                                }
-                              ]
-                            },
-                            "context": {
-                              "edge": null,
-                              "key": {
-                                "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:0:0-0:28:28",
-                                "key": {
-                                  "range": ",0:0:0-0:0:0",
-                                  "path": [
-                                    {
-                                      "unquoted_string": {
-                                        "range": ",0:0:0-0:0:0",
-                                        "value": [
-                                          {
-                                            "string": "scenarios"
-                                          }
-                                        ]
-                                      }
-                                    },
-                                    {
-                                      "unquoted_string": {
-                                        "range": ",0:0:0-0:0:0",
-                                        "value": [
-                                          {
-                                            "string": "1"
-                                          }
-                                        ]
-                                      }
-                                    },
-                                    {
-                                      "unquoted_string": {
-                                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                                        "value": [
-                                          {
-                                            "string": "style",
-                                            "raw_string": "style"
-                                          }
-                                        ]
-                                      }
-                                    },
-                                    {
-                                      "unquoted_string": {
-                                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                                        "value": [
-                                          {
-                                            "string": "opacity",
-                                            "raw_string": "opacity"
-                                          }
-                                        ]
-                                      }
-                                    }
-                                  ]
-                                },
-                                "edges": [
-                                  {
-                                    "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:7:7",
-                                    "src": {
-                                      "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:2:2",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:2:2",
-                                            "value": [
-                                              {
-                                                "string": "*",
-                                                "raw_string": "*"
-                                              }
-                                            ],
-                                            "pattern": [
-                                              "*"
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "src_arrow": "",
-                                    "dst": {
-                                      "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:6:6-0:7:7",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:6:6-0:7:7",
-                                            "value": [
-                                              {
-                                                "string": "*",
-                                                "raw_string": "*"
-                                              }
-                                            ],
-                                            "pattern": [
-                                              "*"
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "dst_arrow": ">"
-                                  }
-                                ],
-                                "edge_index": {
-                                  "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:8:8-0:11:11",
-                                  "int": null,
-                                  "glob": true
-                                },
-                                "edge_key": {
-                                  "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:25:25",
-                                  "path": [
-                                    {
-                                      "unquoted_string": {
-                                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                                        "value": [
-                                          {
-                                            "string": "style",
-                                            "raw_string": "style"
-                                          }
-                                        ]
-                                      }
-                                    },
-                                    {
-                                      "unquoted_string": {
-                                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                                        "value": [
-                                          {
-                                            "string": "opacity",
-                                            "raw_string": "opacity"
-                                          }
-                                        ]
-                                      }
-                                    }
-                                  ]
-                                },
-                                "primary": {},
-                                "value": {
-                                  "number": {
-                                    "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:27:27-0:28:28",
-                                    "raw": "0",
-                                    "value": "0"
-                                  }
-                                }
-                              }
-                            },
-                            "due_to_glob": true,
-                            "due_to_lazy_glob": true
-                          },
-                          {
-                            "string": {
-                              "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                              "value": [
-                                {
-                                  "string": "opacity",
-                                  "raw_string": "opacity"
-                                }
-                              ]
-                            },
-                            "key_path": {
-                              "range": ",0:0:0-0:0:0",
-                              "path": [
-                                {
-                                  "unquoted_string": {
-                                    "range": ",0:0:0-0:0:0",
-                                    "value": [
-                                      {
-                                        "string": "scenarios"
-                                      }
-                                    ]
-                                  }
-                                },
-                                {
-                                  "unquoted_string": {
-                                    "range": ",0:0:0-0:0:0",
-                                    "value": [
-                                      {
-                                        "string": "1"
-                                      }
-                                    ]
-                                  }
-                                },
-                                {
-                                  "unquoted_string": {
-                                    "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                                    "value": [
-                                      {
-                                        "string": "style",
-                                        "raw_string": "style"
-                                      }
-                                    ]
-                                  }
-                                },
-                                {
-                                  "unquoted_string": {
-                                    "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                                    "value": [
-                                      {
-                                        "string": "opacity",
-                                        "raw_string": "opacity"
-                                      }
-                                    ]
-                                  }
-                                }
-                              ]
-                            },
-                            "context": {
-                              "edge": null,
-                              "key": {
-                                "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:0:0-0:28:28",
-                                "key": {
-                                  "range": ",0:0:0-0:0:0",
-                                  "path": [
-                                    {
-                                      "unquoted_string": {
-                                        "range": ",0:0:0-0:0:0",
-                                        "value": [
-                                          {
-                                            "string": "scenarios"
-                                          }
-                                        ]
-                                      }
-                                    },
-                                    {
-                                      "unquoted_string": {
-                                        "range": ",0:0:0-0:0:0",
-                                        "value": [
-                                          {
-                                            "string": "1"
-                                          }
-                                        ]
-                                      }
-                                    },
-                                    {
-                                      "unquoted_string": {
-                                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                                        "value": [
-                                          {
-                                            "string": "style",
-                                            "raw_string": "style"
-                                          }
-                                        ]
-                                      }
-                                    },
-                                    {
-                                      "unquoted_string": {
-                                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                                        "value": [
-                                          {
-                                            "string": "opacity",
-                                            "raw_string": "opacity"
-                                          }
-                                        ]
-                                      }
-                                    }
-                                  ]
-                                },
-                                "edges": [
-                                  {
-                                    "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:7:7",
-                                    "src": {
-                                      "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:2:2",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:2:2",
-                                            "value": [
-                                              {
-                                                "string": "*",
-                                                "raw_string": "*"
-                                              }
-                                            ],
-                                            "pattern": [
-                                              "*"
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "src_arrow": "",
-                                    "dst": {
-                                      "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:6:6-0:7:7",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:6:6-0:7:7",
-                                            "value": [
-                                              {
-                                                "string": "*",
-                                                "raw_string": "*"
-                                              }
-                                            ],
-                                            "pattern": [
-                                              "*"
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "dst_arrow": ">"
-                                  }
-                                ],
-                                "edge_index": {
-                                  "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:8:8-0:11:11",
-                                  "int": null,
-                                  "glob": true
-                                },
-                                "edge_key": {
-                                  "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:25:25",
-                                  "path": [
-                                    {
-                                      "unquoted_string": {
-                                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                                        "value": [
-                                          {
-                                            "string": "style",
-                                            "raw_string": "style"
-                                          }
-                                        ]
-                                      }
-                                    },
-                                    {
-                                      "unquoted_string": {
-                                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                                        "value": [
-                                          {
-                                            "string": "opacity",
-                                            "raw_string": "opacity"
-                                          }
-                                        ]
-                                      }
-                                    }
-                                  ]
-                                },
-                                "primary": {},
-                                "value": {
-                                  "number": {
-                                    "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:27:27-0:28:28",
-                                    "raw": "0",
-                                    "value": "0"
-                                  }
-                                }
-                              }
-                            },
-                            "due_to_glob": true,
-                            "due_to_lazy_glob": true
-                          }
-                        ]
-                      }
-                    ],
-                    "edges": null
-                  },
-                  "references": [
-                    {
-                      "string": {
-                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                        "value": [
-                          {
-                            "string": "style",
-                            "raw_string": "style"
-                          }
-                        ]
-                      },
-                      "key_path": {
-                        "range": ",0:0:0-0:0:0",
-                        "path": [
-                          {
-                            "unquoted_string": {
-                              "range": ",0:0:0-0:0:0",
-                              "value": [
-                                {
-                                  "string": "scenarios"
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": ",0:0:0-0:0:0",
-                              "value": [
-                                {
-                                  "string": "1"
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                              "value": [
-                                {
-                                  "string": "style",
-                                  "raw_string": "style"
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                              "value": [
-                                {
-                                  "string": "opacity",
-                                  "raw_string": "opacity"
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      },
-                      "context": {
-                        "edge": null,
-                        "key": {
-                          "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:0:0-0:28:28",
-                          "key": {
-                            "range": ",0:0:0-0:0:0",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
-                                  "value": [
-                                    {
-                                      "string": "scenarios"
-                                    }
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
-                                  "value": [
-                                    {
-                                      "string": "1"
-                                    }
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                                  "value": [
-                                    {
-                                      "string": "style",
-                                      "raw_string": "style"
-                                    }
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                                  "value": [
-                                    {
-                                      "string": "opacity",
-                                      "raw_string": "opacity"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "edges": [
-                            {
-                              "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:7:7",
-                              "src": {
-                                "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:2:2",
-                                "path": [
-                                  {
-                                    "unquoted_string": {
-                                      "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:2:2",
-                                      "value": [
-                                        {
-                                          "string": "*",
-                                          "raw_string": "*"
-                                        }
-                                      ],
-                                      "pattern": [
-                                        "*"
-                                      ]
-                                    }
-                                  }
-                                ]
-                              },
-                              "src_arrow": "",
-                              "dst": {
-                                "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:6:6-0:7:7",
-                                "path": [
-                                  {
-                                    "unquoted_string": {
-                                      "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:6:6-0:7:7",
-                                      "value": [
-                                        {
-                                          "string": "*",
-                                          "raw_string": "*"
-                                        }
-                                      ],
-                                      "pattern": [
-                                        "*"
-                                      ]
-                                    }
-                                  }
-                                ]
-                              },
-                              "dst_arrow": ">"
-                            }
-                          ],
-                          "edge_index": {
-                            "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:8:8-0:11:11",
-                            "int": null,
-                            "glob": true
-                          },
-                          "edge_key": {
-                            "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:25:25",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                                  "value": [
-                                    {
-                                      "string": "style",
-                                      "raw_string": "style"
-                                    }
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                                  "value": [
-                                    {
-                                      "string": "opacity",
-                                      "raw_string": "opacity"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "number": {
-                              "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:27:27-0:28:28",
-                              "raw": "0",
-                              "value": "0"
-                            }
-                          }
-                        }
-                      },
-                      "due_to_glob": true,
-                      "due_to_lazy_glob": true
-                    },
-                    {
-                      "string": {
-                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                        "value": [
-                          {
-                            "string": "style",
-                            "raw_string": "style"
-                          }
-                        ]
-                      },
-                      "key_path": {
-                        "range": ",0:0:0-0:0:0",
-                        "path": [
-                          {
-                            "unquoted_string": {
-                              "range": ",0:0:0-0:0:0",
-                              "value": [
-                                {
-                                  "string": "scenarios"
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": ",0:0:0-0:0:0",
-                              "value": [
-                                {
-                                  "string": "1"
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                              "value": [
-                                {
-                                  "string": "style",
-                                  "raw_string": "style"
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                              "value": [
-                                {
-                                  "string": "opacity",
-                                  "raw_string": "opacity"
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      },
-                      "context": {
-                        "edge": null,
-                        "key": {
-                          "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:0:0-0:28:28",
-                          "key": {
-                            "range": ",0:0:0-0:0:0",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
-                                  "value": [
-                                    {
-                                      "string": "scenarios"
-                                    }
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
-                                  "value": [
-                                    {
-                                      "string": "1"
-                                    }
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                                  "value": [
-                                    {
-                                      "string": "style",
-                                      "raw_string": "style"
-                                    }
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                                  "value": [
-                                    {
-                                      "string": "opacity",
-                                      "raw_string": "opacity"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "edges": [
-                            {
-                              "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:7:7",
-                              "src": {
-                                "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:2:2",
-                                "path": [
-                                  {
-                                    "unquoted_string": {
-                                      "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:2:2",
-                                      "value": [
-                                        {
-                                          "string": "*",
-                                          "raw_string": "*"
-                                        }
-                                      ],
-                                      "pattern": [
-                                        "*"
-                                      ]
-                                    }
-                                  }
-                                ]
-                              },
-                              "src_arrow": "",
-                              "dst": {
-                                "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:6:6-0:7:7",
-                                "path": [
-                                  {
-                                    "unquoted_string": {
-                                      "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:6:6-0:7:7",
-                                      "value": [
-                                        {
-                                          "string": "*",
-                                          "raw_string": "*"
-                                        }
-                                      ],
-                                      "pattern": [
-                                        "*"
-                                      ]
-                                    }
-                                  }
-                                ]
-                              },
-                              "dst_arrow": ">"
-                            }
-                          ],
-                          "edge_index": {
-                            "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:8:8-0:11:11",
-                            "int": null,
-                            "glob": true
-                          },
-                          "edge_key": {
-                            "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:25:25",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                                  "value": [
-                                    {
-                                      "string": "style",
-                                      "raw_string": "style"
-                                    }
-                                  ]
-                                }
-                              },
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                                  "value": [
-                                    {
-                                      "string": "opacity",
-                                      "raw_string": "opacity"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "number": {
-                              "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:27:27-0:28:28",
-                              "raw": "0",
-                              "value": "0"
-                            }
-                          }
-                        }
-                      },
-                      "due_to_glob": true,
-                      "due_to_lazy_glob": true
-                    }
-                  ]
                 }
               ],
               "edges": [
                 {
                   "edge_id": {
                     "src_path": [
-                      "x"
+                      {
+                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,1:0:29-1:1:30",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
                     ],
                     "src_arrow": false,
                     "dst_path": [
-                      "y"
+                      {
+                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,1:5:34-1:6:35",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
                     ],
                     "dst_arrow": true,
                     "index": 0,
@@ -1542,11 +795,27 @@
                   "map": {
                     "fields": [
                       {
-                        "name": "style",
+                        "name": {
+                          "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
+                          "value": [
+                            {
+                              "string": "style",
+                              "raw_string": "style"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "opacity",
+                              "name": {
+                                "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
+                                "value": [
+                                  {
+                                    "string": "opacity",
+                                    "raw_string": "opacity"
+                                  }
+                                ]
+                              },
                               "primary": {
                                 "value": {
                                   "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,2:17:56-2:18:57",
@@ -2431,400 +1700,6 @@
                 },
                 "due_to_glob": false,
                 "due_to_lazy_glob": false
-              },
-              {
-                "string": {
-                  "range": ",0:0:0-0:0:0",
-                  "value": [
-                    {
-                      "string": "1"
-                    }
-                  ]
-                },
-                "key_path": {
-                  "range": ",0:0:0-0:0:0",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
-                        "value": [
-                          {
-                            "string": "scenarios"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
-                        "value": [
-                          {
-                            "string": "1"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "unquoted_string": {
-                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                        "value": [
-                          {
-                            "string": "style",
-                            "raw_string": "style"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "unquoted_string": {
-                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                        "value": [
-                          {
-                            "string": "opacity",
-                            "raw_string": "opacity"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "context": {
-                  "edge": null,
-                  "key": {
-                    "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:0:0-0:28:28",
-                    "key": {
-                      "range": ",0:0:0-0:0:0",
-                      "path": [
-                        {
-                          "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
-                            "value": [
-                              {
-                                "string": "scenarios"
-                              }
-                            ]
-                          }
-                        },
-                        {
-                          "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
-                            "value": [
-                              {
-                                "string": "1"
-                              }
-                            ]
-                          }
-                        },
-                        {
-                          "unquoted_string": {
-                            "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                            "value": [
-                              {
-                                "string": "style",
-                                "raw_string": "style"
-                              }
-                            ]
-                          }
-                        },
-                        {
-                          "unquoted_string": {
-                            "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                            "value": [
-                              {
-                                "string": "opacity",
-                                "raw_string": "opacity"
-                              }
-                            ]
-                          }
-                        }
-                      ]
-                    },
-                    "edges": [
-                      {
-                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:7:7",
-                        "src": {
-                          "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:2:2",
-                          "path": [
-                            {
-                              "unquoted_string": {
-                                "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:2:2",
-                                "value": [
-                                  {
-                                    "string": "*",
-                                    "raw_string": "*"
-                                  }
-                                ],
-                                "pattern": [
-                                  "*"
-                                ]
-                              }
-                            }
-                          ]
-                        },
-                        "src_arrow": "",
-                        "dst": {
-                          "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:6:6-0:7:7",
-                          "path": [
-                            {
-                              "unquoted_string": {
-                                "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:6:6-0:7:7",
-                                "value": [
-                                  {
-                                    "string": "*",
-                                    "raw_string": "*"
-                                  }
-                                ],
-                                "pattern": [
-                                  "*"
-                                ]
-                              }
-                            }
-                          ]
-                        },
-                        "dst_arrow": ">"
-                      }
-                    ],
-                    "edge_index": {
-                      "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:8:8-0:11:11",
-                      "int": null,
-                      "glob": true
-                    },
-                    "edge_key": {
-                      "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:25:25",
-                      "path": [
-                        {
-                          "unquoted_string": {
-                            "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                            "value": [
-                              {
-                                "string": "style",
-                                "raw_string": "style"
-                              }
-                            ]
-                          }
-                        },
-                        {
-                          "unquoted_string": {
-                            "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                            "value": [
-                              {
-                                "string": "opacity",
-                                "raw_string": "opacity"
-                              }
-                            ]
-                          }
-                        }
-                      ]
-                    },
-                    "primary": {},
-                    "value": {
-                      "number": {
-                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:27:27-0:28:28",
-                        "raw": "0",
-                        "value": "0"
-                      }
-                    }
-                  }
-                },
-                "due_to_glob": true,
-                "due_to_lazy_glob": true
-              },
-              {
-                "string": {
-                  "range": ",0:0:0-0:0:0",
-                  "value": [
-                    {
-                      "string": "1"
-                    }
-                  ]
-                },
-                "key_path": {
-                  "range": ",0:0:0-0:0:0",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
-                        "value": [
-                          {
-                            "string": "scenarios"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
-                        "value": [
-                          {
-                            "string": "1"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "unquoted_string": {
-                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                        "value": [
-                          {
-                            "string": "style",
-                            "raw_string": "style"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "unquoted_string": {
-                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                        "value": [
-                          {
-                            "string": "opacity",
-                            "raw_string": "opacity"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "context": {
-                  "edge": null,
-                  "key": {
-                    "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:0:0-0:28:28",
-                    "key": {
-                      "range": ",0:0:0-0:0:0",
-                      "path": [
-                        {
-                          "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
-                            "value": [
-                              {
-                                "string": "scenarios"
-                              }
-                            ]
-                          }
-                        },
-                        {
-                          "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
-                            "value": [
-                              {
-                                "string": "1"
-                              }
-                            ]
-                          }
-                        },
-                        {
-                          "unquoted_string": {
-                            "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                            "value": [
-                              {
-                                "string": "style",
-                                "raw_string": "style"
-                              }
-                            ]
-                          }
-                        },
-                        {
-                          "unquoted_string": {
-                            "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                            "value": [
-                              {
-                                "string": "opacity",
-                                "raw_string": "opacity"
-                              }
-                            ]
-                          }
-                        }
-                      ]
-                    },
-                    "edges": [
-                      {
-                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:7:7",
-                        "src": {
-                          "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:2:2",
-                          "path": [
-                            {
-                              "unquoted_string": {
-                                "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:2:2",
-                                "value": [
-                                  {
-                                    "string": "*",
-                                    "raw_string": "*"
-                                  }
-                                ],
-                                "pattern": [
-                                  "*"
-                                ]
-                              }
-                            }
-                          ]
-                        },
-                        "src_arrow": "",
-                        "dst": {
-                          "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:6:6-0:7:7",
-                          "path": [
-                            {
-                              "unquoted_string": {
-                                "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:6:6-0:7:7",
-                                "value": [
-                                  {
-                                    "string": "*",
-                                    "raw_string": "*"
-                                  }
-                                ],
-                                "pattern": [
-                                  "*"
-                                ]
-                              }
-                            }
-                          ]
-                        },
-                        "dst_arrow": ">"
-                      }
-                    ],
-                    "edge_index": {
-                      "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:8:8-0:11:11",
-                      "int": null,
-                      "glob": true
-                    },
-                    "edge_key": {
-                      "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:25:25",
-                      "path": [
-                        {
-                          "unquoted_string": {
-                            "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                            "value": [
-                              {
-                                "string": "style",
-                                "raw_string": "style"
-                              }
-                            ]
-                          }
-                        },
-                        {
-                          "unquoted_string": {
-                            "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                            "value": [
-                              {
-                                "string": "opacity",
-                                "raw_string": "opacity"
-                              }
-                            ]
-                          }
-                        }
-                      ]
-                    },
-                    "primary": {},
-                    "value": {
-                      "number": {
-                        "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:27:27-0:28:28",
-                        "raw": "0",
-                        "value": "0"
-                      }
-                    }
-                  }
-                },
-                "due_to_glob": true,
-                "due_to_lazy_glob": true
               }
             ]
           }
@@ -2942,400 +1817,6 @@
           },
           "due_to_glob": false,
           "due_to_lazy_glob": false
-        },
-        {
-          "string": {
-            "range": ",0:0:0-0:0:0",
-            "value": [
-              {
-                "string": "scenarios"
-              }
-            ]
-          },
-          "key_path": {
-            "range": ",0:0:0-0:0:0",
-            "path": [
-              {
-                "unquoted_string": {
-                  "range": ",0:0:0-0:0:0",
-                  "value": [
-                    {
-                      "string": "scenarios"
-                    }
-                  ]
-                }
-              },
-              {
-                "unquoted_string": {
-                  "range": ",0:0:0-0:0:0",
-                  "value": [
-                    {
-                      "string": "1"
-                    }
-                  ]
-                }
-              },
-              {
-                "unquoted_string": {
-                  "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                  "value": [
-                    {
-                      "string": "style",
-                      "raw_string": "style"
-                    }
-                  ]
-                }
-              },
-              {
-                "unquoted_string": {
-                  "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                  "value": [
-                    {
-                      "string": "opacity",
-                      "raw_string": "opacity"
-                    }
-                  ]
-                }
-              }
-            ]
-          },
-          "context": {
-            "edge": null,
-            "key": {
-              "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:0:0-0:28:28",
-              "key": {
-                "range": ",0:0:0-0:0:0",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": ",0:0:0-0:0:0",
-                      "value": [
-                        {
-                          "string": "scenarios"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "unquoted_string": {
-                      "range": ",0:0:0-0:0:0",
-                      "value": [
-                        {
-                          "string": "1"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                      "value": [
-                        {
-                          "string": "style",
-                          "raw_string": "style"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                      "value": [
-                        {
-                          "string": "opacity",
-                          "raw_string": "opacity"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "edges": [
-                {
-                  "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:7:7",
-                  "src": {
-                    "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:2:2",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:2:2",
-                          "value": [
-                            {
-                              "string": "*",
-                              "raw_string": "*"
-                            }
-                          ],
-                          "pattern": [
-                            "*"
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "src_arrow": "",
-                  "dst": {
-                    "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:6:6-0:7:7",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:6:6-0:7:7",
-                          "value": [
-                            {
-                              "string": "*",
-                              "raw_string": "*"
-                            }
-                          ],
-                          "pattern": [
-                            "*"
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "dst_arrow": ">"
-                }
-              ],
-              "edge_index": {
-                "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:8:8-0:11:11",
-                "int": null,
-                "glob": true
-              },
-              "edge_key": {
-                "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:25:25",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                      "value": [
-                        {
-                          "string": "style",
-                          "raw_string": "style"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                      "value": [
-                        {
-                          "string": "opacity",
-                          "raw_string": "opacity"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "primary": {},
-              "value": {
-                "number": {
-                  "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:27:27-0:28:28",
-                  "raw": "0",
-                  "value": "0"
-                }
-              }
-            }
-          },
-          "due_to_glob": true,
-          "due_to_lazy_glob": true
-        },
-        {
-          "string": {
-            "range": ",0:0:0-0:0:0",
-            "value": [
-              {
-                "string": "scenarios"
-              }
-            ]
-          },
-          "key_path": {
-            "range": ",0:0:0-0:0:0",
-            "path": [
-              {
-                "unquoted_string": {
-                  "range": ",0:0:0-0:0:0",
-                  "value": [
-                    {
-                      "string": "scenarios"
-                    }
-                  ]
-                }
-              },
-              {
-                "unquoted_string": {
-                  "range": ",0:0:0-0:0:0",
-                  "value": [
-                    {
-                      "string": "1"
-                    }
-                  ]
-                }
-              },
-              {
-                "unquoted_string": {
-                  "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                  "value": [
-                    {
-                      "string": "style",
-                      "raw_string": "style"
-                    }
-                  ]
-                }
-              },
-              {
-                "unquoted_string": {
-                  "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                  "value": [
-                    {
-                      "string": "opacity",
-                      "raw_string": "opacity"
-                    }
-                  ]
-                }
-              }
-            ]
-          },
-          "context": {
-            "edge": null,
-            "key": {
-              "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:0:0-0:28:28",
-              "key": {
-                "range": ",0:0:0-0:0:0",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": ",0:0:0-0:0:0",
-                      "value": [
-                        {
-                          "string": "scenarios"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "unquoted_string": {
-                      "range": ",0:0:0-0:0:0",
-                      "value": [
-                        {
-                          "string": "1"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                      "value": [
-                        {
-                          "string": "style",
-                          "raw_string": "style"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                      "value": [
-                        {
-                          "string": "opacity",
-                          "raw_string": "opacity"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "edges": [
-                {
-                  "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:7:7",
-                  "src": {
-                    "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:2:2",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:1:1-0:2:2",
-                          "value": [
-                            {
-                              "string": "*",
-                              "raw_string": "*"
-                            }
-                          ],
-                          "pattern": [
-                            "*"
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "src_arrow": "",
-                  "dst": {
-                    "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:6:6-0:7:7",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:6:6-0:7:7",
-                          "value": [
-                            {
-                              "string": "*",
-                              "raw_string": "*"
-                            }
-                          ],
-                          "pattern": [
-                            "*"
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "dst_arrow": ">"
-                }
-              ],
-              "edge_index": {
-                "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:8:8-0:11:11",
-                "int": null,
-                "glob": true
-              },
-              "edge_key": {
-                "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:25:25",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
-                      "value": [
-                        {
-                          "string": "style",
-                          "raw_string": "style"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
-                      "value": [
-                        {
-                          "string": "opacity",
-                          "raw_string": "opacity"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "primary": {},
-              "value": {
-                "number": {
-                  "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:27:27-0:28:28",
-                  "raw": "0",
-                  "value": "0"
-                }
-              }
-            }
-          },
-          "due_to_glob": true,
-          "due_to_lazy_glob": true
         }
       ]
     }
@@ -3344,11 +1825,27 @@
     {
       "edge_id": {
         "src_path": [
-          "x"
+          {
+            "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,1:0:29-1:1:30",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "y"
+          {
+            "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,1:5:34-1:6:35",
+            "value": [
+              {
+                "string": "y",
+                "raw_string": "y"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -3357,11 +1854,27 @@
       "map": {
         "fields": [
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:12:12-0:17:17",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "opacity",
+                  "name": {
+                    "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,0:18:18-0:25:25",
+                    "value": [
+                      {
+                        "string": "opacity",
+                        "raw_string": "opacity"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/edge-glob-style-inherit/1.d2,2:17:56-2:18:57",

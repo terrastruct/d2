@@ -28,7 +28,7 @@ func GetRefRanges(path string, fs map[string]string, boardPath []string, key str
 	var f *d2ir.Field
 	if mk.Key != nil {
 		for _, p := range mk.Key.Path {
-			f = m.GetField(p.Unbox().ScalarString())
+			f = m.GetField(p.Unbox())
 			if f == nil {
 				return nil, nil, nil
 			}
@@ -91,4 +91,67 @@ func getBoardMap(path string, fs map[string]string, boardPath []string) (*d2ir.M
 		return nil, fmt.Errorf(`board "%v" not found`, boardPath)
 	}
 	return m, nil
+}
+
+func GetBoardAtPosition(text string, pos d2ast.Position) ([]string, error) {
+	r := strings.NewReader(text)
+	ast, err := d2parser.Parse("", r, nil)
+	if err != nil {
+		return nil, err
+	}
+	pos.Byte = -1
+	return getBoardPathAtPosition(*ast, nil, pos), nil
+}
+
+func getBoardPathAtPosition(m d2ast.Map, currPath []string, pos d2ast.Position) []string {
+	inRange := func(r d2ast.Range) bool {
+		return !pos.Before(r.Start) && pos.Before(r.End)
+	}
+
+	if !inRange(m.Range) {
+		return nil
+	}
+
+	for _, n := range m.Nodes {
+		if n.MapKey == nil {
+			continue
+		}
+		mk := n.MapKey
+
+		if mk.Key == nil || len(mk.Key.Path) == 0 {
+			continue
+		}
+
+		if mk.Value.Map == nil {
+			continue
+		}
+
+		keyName := mk.Key.Path[0].Unbox().ScalarString()
+
+		if len(currPath)%2 == 0 {
+			isBoardType := keyName == "layers" || keyName == "scenarios" || keyName == "steps"
+			if !isBoardType {
+				continue
+			}
+		}
+
+		if inRange(mk.Value.Map.Range) {
+			newPath := append(currPath, keyName)
+
+			// Check deeper
+			if deeperPath := getBoardPathAtPosition(*mk.Value.Map, newPath, pos); deeperPath != nil {
+				return deeperPath
+			}
+
+			// We're in between boards, e.g. layers.x.scenarios
+			// Which means, there's no board at this position
+			if len(newPath)%2 == 1 {
+				return nil
+			}
+			// Nothing deeper matched but we're in this map's range, return current path
+			return newPath
+		}
+	}
+
+	return nil
 }

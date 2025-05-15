@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "x",
+      "name": {
+        "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -118,7 +126,15 @@
       ]
     },
     {
-      "name": "y",
+      "name": {
+        "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
+        "value": [
+          {
+            "string": "y",
+            "raw_string": "y"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -235,23 +251,63 @@
       ]
     },
     {
-      "name": "layers",
+      "name": {
+        "range": "TestCompile/layers/root.d2,1:0:7-1:6:13",
+        "value": [
+          {
+            "string": "layers",
+            "raw_string": "layers"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "bingo",
+            "name": {
+              "range": "TestCompile/layers/root.d2,2:1:18-2:6:23",
+              "value": [
+                {
+                  "string": "bingo",
+                  "raw_string": "bingo"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "p",
+                  "name": {
+                    "range": "TestCompile/layers/root.d2,2:10:27-2:11:28",
+                    "value": [
+                      {
+                        "string": "p",
+                        "raw_string": "p"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "q",
+                        "name": {
+                          "range": "TestCompile/layers/root.d2,2:12:29-2:13:30",
+                          "value": [
+                            {
+                              "string": "q",
+                              "raw_string": "q"
+                            }
+                          ]
+                        },
                         "composite": {
                           "fields": [
                             {
-                              "name": "z",
+                              "name": {
+                                "range": "TestCompile/layers/root.d2,2:14:31-2:15:32",
+                                "value": [
+                                  {
+                                    "string": "z",
+                                    "raw_string": "z"
+                                  }
+                                ]
+                              },
                               "references": [
                                 {
                                   "string": {
@@ -812,11 +868,27 @@
     {
       "edge_id": {
         "src_path": [
-          "x"
+          {
+            "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "y"
+          {
+            "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
+            "value": [
+              {
+                "string": "y",
+                "raw_string": "y"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,

@@ -5,7 +5,6 @@ import (
 	_ "embed"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	stdlog "log"
 	"os"
 	"os/exec"
@@ -104,7 +103,7 @@ func main() {
 			return err
 		}
 		if info.IsDir() {
-			files, err := ioutil.ReadDir(path)
+			files, err := os.ReadDir(path)
 			if err != nil {
 				panic(err)
 			}
@@ -112,7 +111,7 @@ func main() {
 			var testFile os.FileInfo
 			for _, f := range files {
 				if strings.HasSuffix(f.Name(), "exp.svg") {
-					testFile = f
+					testFile, _ = f.Info()
 					break
 				}
 			}

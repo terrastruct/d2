@@ -462,6 +462,20 @@ a.9 <-> b.9: cf-one-required {
 	source-arrowhead.shape: cf-one-required
 	target-arrowhead.shape: cf-one-required
 }
+a.10 <-> b.10: box {
+	source-arrowhead.shape: box
+	target-arrowhead.shape: box
+}
+a.11 <-> b.11: box-filled {
+	source-arrowhead: {
+		shape: box
+		style.filled: true
+	}
+	target-arrowhead: {
+		shape: box
+		style.filled: true
+	}
+}
 `,
 		},
 		{
@@ -1342,6 +1356,14 @@ rental -> item: isRentable(c)
 item -> customer: is(Adult)
 customer -> item: true
 `,
+		},
+		{
+			name: "test-gradient-fill-values-in-sketch-mode",
+			script: `
+				x->y
+				x.style.fill: "linear-gradient(#000000,#ffffff)"
+				y.style.fill: "linear-gradient(#ffffff,#000000)"
+			`,
 		},
 	}
 	runa(t, tcs)

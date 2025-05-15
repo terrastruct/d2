@@ -1,7 +1,7 @@
 {
   "name": "",
   "config": {
-    "sketch": null,
+    "sketch": false,
     "themeID": 302,
     "darkThemeID": null,
     "pad": null,
@@ -27,6 +27,7 @@
       "fill": "B6",
       "fillPattern": "none",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -69,6 +70,7 @@
       "fill": "B6",
       "fillPattern": "paper",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -112,6 +114,7 @@
     "borderRadius": 0,
     "fill": "N7",
     "stroke": "",
+    "animated": false,
     "shadow": false,
     "3d": false,
     "multiple": false,

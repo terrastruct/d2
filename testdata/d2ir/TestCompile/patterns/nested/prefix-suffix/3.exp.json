@@ -1,15 +1,39 @@
 {
   "fields": [
     {
-      "name": "animate",
+      "name": {
+        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:0:0-0:7:7",
+        "value": [
+          {
+            "string": "animate",
+            "raw_string": "animate"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "constant",
+            "name": {
+              "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:8:8-0:16:16",
+              "value": [
+                {
+                  "string": "constant",
+                  "raw_string": "constant"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "tinkertinker",
+                  "name": {
+                    "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:17:17-0:29:29",
+                    "value": [
+                      {
+                        "string": "tinkertinker",
+                        "raw_string": "tinkertinker"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:33:108-2:40:115",
@@ -505,15 +529,39 @@
       ]
     },
     {
-      "name": "astronaut",
+      "name": {
+        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:0:36-1:9:45",
+        "value": [
+          {
+            "string": "astronaut",
+            "raw_string": "astronaut"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "constant",
+            "name": {
+              "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:10:46-1:18:54",
+              "value": [
+                {
+                  "string": "constant",
+                  "raw_string": "constant"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "thinkerthinker",
+                  "name": {
+                    "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:19:55-1:33:69",
+                    "value": [
+                      {
+                        "string": "thinkerthinker",
+                        "raw_string": "thinkerthinker"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:33:108-2:40:115",

@@ -316,6 +316,7 @@
           "height": 0
         },
         "style": {},
+        "iconStyle": {},
         "near_key": null,
         "shape": {
           "value": ""
@@ -370,6 +371,7 @@
               "value": "true"
             }
           },
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "circle"
@@ -419,6 +421,7 @@
               "value": "yellow"
             }
           },
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "circle"
@@ -436,7 +439,7 @@
         "name": "next",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile2/globs/alixander-lazy-globs-review/1.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -446,10 +449,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/globs/alixander-lazy-globs-review/1.d2,11:4:101-11:5:102",
                         "value": [
                           {
-                            "string": "a"
+                            "string": "a",
+                            "raw_string": "a"
                           }
                         ]
                       }
@@ -459,7 +463,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": ",0:0:0-1:0:0",
+                    "range": ",1:0:0-2:0:0",
                     "nodes": [
                       {
                         "map_key": {
@@ -469,10 +473,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/globs/alixander-lazy-globs-review/1.d2,1:4:5-1:9:10",
                                   "value": [
                                     {
-                                      "string": "style"
+                                      "string": "style",
+                                      "raw_string": "style"
                                     }
                                   ]
                                 }
@@ -482,7 +487,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": ",0:0:0-1:0:0",
+                              "range": ",1:0:0-2:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -492,10 +497,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile2/globs/alixander-lazy-globs-review/1.d2,1:10:11-1:14:15",
                                             "value": [
                                               {
-                                                "string": "fill"
+                                                "string": "fill",
+                                                "raw_string": "fill"
                                               }
                                             ]
                                           }
@@ -540,6 +546,7 @@
               "height": 0
             },
             "style": {},
+            "iconStyle": {},
             "near_key": null,
             "shape": {
               "value": ""
@@ -591,6 +598,7 @@
                   "value": "yellow"
                 }
               },
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"

@@ -323,6 +323,7 @@
           "height": 0
         },
         "style": {},
+        "iconStyle": {},
         "near_key": null,
         "shape": {
           "value": ""
@@ -401,6 +402,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "link": {
             "value": "root.layers.cat"
           },
@@ -421,7 +423,7 @@
         "name": "cat",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -431,10 +433,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:11:88",
                         "value": [
                           {
-                            "string": "the cat"
+                            "string": "the cat",
+                            "raw_string": "the cat"
                           }
                         ]
                       }
@@ -453,10 +456,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:15:92-5:24:101",
                         "value": [
                           {
-                            "string": "meeeowwww"
+                            "string": "meeeowwww",
+                            "raw_string": "meeeowwww"
                           }
                         ]
                       }
@@ -535,6 +539,7 @@
               "height": 0
             },
             "style": {},
+            "iconStyle": {},
             "near_key": null,
             "shape": {
               "value": ""
@@ -566,6 +571,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": ""
@@ -613,6 +619,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"
@@ -658,6 +665,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"
@@ -677,7 +685,7 @@
         "name": "green",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -687,10 +695,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-0:8:8",
                         "value": [
                           {
-                            "string": "question"
+                            "string": "question",
+                            "raw_string": "question"
                           }
                         ]
                       }
@@ -710,7 +719,7 @@
                 },
                 "value": {
                   "map": {
-                    "range": ",0:0:0-1:0:0",
+                    "range": ",1:0:0-2:0:0",
                     "nodes": [
                       {
                         "map_key": {
@@ -720,10 +729,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:9:40-1:13:44",
                                   "value": [
                                     {
-                                      "string": "link"
+                                      "string": "link",
+                                      "raw_string": "link"
                                     }
                                   ]
                                 }
@@ -751,10 +761,11 @@
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
+                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,11:13:152-11:18:157",
                                   "value": [
                                     {
-                                      "string": "style"
+                                      "string": "style",
+                                      "raw_string": "style"
                                     }
                                   ]
                                 }
@@ -764,7 +775,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": ",0:0:0-1:0:0",
+                              "range": ",1:0:0-2:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -774,10 +785,11 @@
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
+                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,11:19:158-11:23:162",
                                             "value": [
                                               {
-                                                "string": "fill"
+                                                "string": "fill",
+                                                "raw_string": "fill"
                                               }
                                             ]
                                           }
@@ -822,6 +834,7 @@
               "height": 0
             },
             "style": {},
+            "iconStyle": {},
             "near_key": null,
             "shape": {
               "value": ""
@@ -946,6 +959,7 @@
                   "value": "green"
                 }
               },
+              "iconStyle": {},
               "link": {
                 "value": "root.layers.cat"
               },

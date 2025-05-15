@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "before",
+      "name": {
+        "range": "index.d2,0:0:0-0:6:6",
+        "value": [
+          {
+            "string": "before",
+            "raw_string": "before"
+          }
+        ]
+      },
       "primary": {
         "value": {
           "range": "globs.d2,2:5:24-2:9:28",
@@ -70,7 +78,15 @@
       ]
     },
     {
-      "name": "after",
+      "name": {
+        "range": "index.d2,0:22:22-0:27:27",
+        "value": [
+          {
+            "string": "after",
+            "raw_string": "after"
+          }
+        ]
+      },
       "primary": {
         "value": {
           "range": "globs.d2,2:5:24-2:9:28",

@@ -1,0 +1,58 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": true,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/import-var-chain.d2,0:0:0-1:0:8",
+      "nodes": [
+        {
+          "import": {
+            "range": "d2/testdata/d2compiler/TestCompile/import-var-chain.d2,0:0:0-0:7:7",
+            "spread": true,
+            "pre": "",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2compiler/TestCompile/import-var-chain.d2,0:4:4-0:7:7",
+                  "value": [
+                    {
+                      "string": "dev",
+                      "raw_string": "dev"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "iconStyle": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": null
+  },
+  "err": null
+}

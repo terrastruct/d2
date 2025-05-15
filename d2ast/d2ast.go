@@ -56,6 +56,7 @@ var _ Node = &Comment{}
 var _ Node = &BlockComment{}
 
 var _ Node = &Null{}
+var _ Node = &Suspension{}
 var _ Node = &Boolean{}
 var _ Node = &Number{}
 var _ Node = &UnquotedString{}
@@ -166,7 +167,8 @@ func (r Range) Before(r2 Range) bool {
 type Position struct {
 	Line   int
 	Column int
-	Byte   int
+	// -1 is used as sentinel that a constructed position is missing byte offset (for LSP usage)
+	Byte int
 }
 
 var _ fmt.Stringer = Position{}
@@ -276,7 +278,13 @@ func (p Position) SubtractString(s string, byUTF16 bool) Position {
 }
 
 func (p Position) Before(p2 Position) bool {
-	return p.Byte < p2.Byte
+	if p.Byte != p2.Byte && p.Byte != -1 && p2.Byte != -1 {
+		return p.Byte < p2.Byte
+	}
+	if p.Line != p2.Line {
+		return p.Line < p2.Line
+	}
+	return p.Column < p2.Column
 }
 
 // MapNode is implemented by nodes that may be children of Maps.
@@ -322,6 +330,7 @@ type Scalar interface {
 
 // See String for rest.
 var _ Scalar = &Null{}
+var _ Scalar = &Suspension{}
 var _ Scalar = &Boolean{}
 var _ Scalar = &Number{}
 
@@ -331,6 +340,7 @@ type String interface {
 	SetString(string)
 	Copy() String
 	_string()
+	IsUnquoted() bool
 }
 
 var _ String = &UnquotedString{}
@@ -341,6 +351,7 @@ var _ String = &BlockString{}
 func (c *Comment) node()            {}
 func (c *BlockComment) node()       {}
 func (n *Null) node()               {}
+func (n *Suspension) node()         {}
 func (b *Boolean) node()            {}
 func (n *Number) node()             {}
 func (s *UnquotedString) node()     {}
@@ -359,6 +370,7 @@ func (i *EdgeIndex) node()          {}
 func (c *Comment) Type() string            { return "comment" }
 func (c *BlockComment) Type() string       { return "block comment" }
 func (n *Null) Type() string               { return "null" }
+func (n *Suspension) Type() string         { return "suspension" }
 func (b *Boolean) Type() string            { return "boolean" }
 func (n *Number) Type() string             { return "number" }
 func (s *UnquotedString) Type() string     { return "unquoted string" }
@@ -377,6 +389,7 @@ func (i *EdgeIndex) Type() string          { return "edge index" }
 func (c *Comment) GetRange() Range            { return c.Range }
 func (c *BlockComment) GetRange() Range       { return c.Range }
 func (n *Null) GetRange() Range               { return n.Range }
+func (n *Suspension) GetRange() Range         { return n.Range }
 func (b *Boolean) GetRange() Range            { return b.Range }
 func (n *Number) GetRange() Range             { return n.Range }
 func (s *UnquotedString) GetRange() Range     { return s.Range }
@@ -401,6 +414,7 @@ func (i *Import) mapNode()       {}
 func (c *Comment) arrayNode()            {}
 func (c *BlockComment) arrayNode()       {}
 func (n *Null) arrayNode()               {}
+func (n *Suspension) arrayNode()         {}
 func (b *Boolean) arrayNode()            {}
 func (n *Number) arrayNode()             {}
 func (s *UnquotedString) arrayNode()     {}
@@ -413,6 +427,7 @@ func (a *Array) arrayNode()              {}
 func (m *Map) arrayNode()                {}
 
 func (n *Null) value()               {}
+func (n *Suspension) value()         {}
 func (b *Boolean) value()            {}
 func (n *Number) value()             {}
 func (s *UnquotedString) value()     {}
@@ -424,6 +439,7 @@ func (m *Map) value()                {}
 func (i *Import) value()             {}
 
 func (n *Null) scalar()               {}
+func (n *Suspension) scalar()         {}
 func (b *Boolean) scalar()            {}
 func (n *Number) scalar()             {}
 func (s *UnquotedString) scalar()     {}
@@ -434,6 +450,7 @@ func (s *BlockString) scalar()        {}
 func (c *Comment) Children() []Node            { return nil }
 func (c *BlockComment) Children() []Node       { return nil }
 func (n *Null) Children() []Node               { return nil }
+func (n *Suspension) Children() []Node         { return nil }
 func (b *Boolean) Children() []Node            { return nil }
 func (n *Number) Children() []Node             { return nil }
 func (s *SingleQuotedString) Children() []Node { return nil }
@@ -565,9 +582,10 @@ func Walk(node Node, fn func(Node) bool) {
 }
 
 // TODO: mistake, move into parse.go
-func (n *Null) ScalarString() string    { return "" }
-func (b *Boolean) ScalarString() string { return strconv.FormatBool(b.Value) }
-func (n *Number) ScalarString() string  { return n.Raw }
+func (n *Null) ScalarString() string       { return "" }
+func (n *Suspension) ScalarString() string { return "" }
+func (b *Boolean) ScalarString() string    { return strconv.FormatBool(b.Value) }
+func (n *Number) ScalarString() string     { return n.Raw }
 func (s *UnquotedString) ScalarString() string {
 	if len(s.Value) == 0 {
 		return ""
@@ -604,6 +622,11 @@ func (s *DoubleQuotedString) _string() {}
 func (s *SingleQuotedString) _string() {}
 func (s *BlockString) _string()        {}
 
+func (s *UnquotedString) IsUnquoted() bool     { return true }
+func (s *DoubleQuotedString) IsUnquoted() bool { return false }
+func (s *SingleQuotedString) IsUnquoted() bool { return false }
+func (s *BlockString) IsUnquoted() bool        { return false }
+
 type Comment struct {
 	Range Range  `json:"range"`
 	Value string `json:"value"`
@@ -616,6 +639,11 @@ type BlockComment struct {
 
 type Null struct {
 	Range Range `json:"range"`
+}
+
+type Suspension struct {
+	Range Range `json:"range"`
+	Value bool  `json:"value"`
 }
 
 type Boolean struct {
@@ -1006,6 +1034,21 @@ func (mk *Key) HasTripleGlob() bool {
 	return false
 }
 
+func (mk *Key) HasMultiGlob() bool {
+	if mk.Key.HasMultiGlob() {
+		return true
+	}
+	for _, e := range mk.Edges {
+		if e.Src.HasMultiGlob() || e.Dst.HasMultiGlob() {
+			return true
+		}
+	}
+	if mk.EdgeKey.HasMultiGlob() {
+		return true
+	}
+	return false
+}
+
 func (mk *Key) SupportsGlobFilters() bool {
 	if mk.Key.HasGlob() && len(mk.Edges) == 0 {
 		return true
@@ -1037,7 +1080,22 @@ func MakeKeyPath(a []string) *KeyPath {
 	return kp
 }
 
-func (kp *KeyPath) IDA() (ida []string) {
+func MakeKeyPathString(a []String) *KeyPath {
+	kp := &KeyPath{}
+	for _, el := range a {
+		kp.Path = append(kp.Path, MakeValueBox(RawString(el.ScalarString(), true)).StringBox())
+	}
+	return kp
+}
+
+func (kp *KeyPath) IDA() (ida []String) {
+	for _, el := range kp.Path {
+		ida = append(ida, el.Unbox())
+	}
+	return ida
+}
+
+func (kp *KeyPath) StringIDA() (ida []string) {
 	for _, el := range kp.Path {
 		ida = append(ida, el.Unbox().ScalarString())
 	}
@@ -1326,6 +1384,7 @@ func (ab ArrayNodeBox) Unbox() ArrayNode {
 // ValueBox is used to box Value for JSON persistence.
 type ValueBox struct {
 	Null               *Null               `json:"null,omitempty"`
+	Suspension         *Suspension         `json:"suspension,omitempty"`
 	Boolean            *Boolean            `json:"boolean,omitempty"`
 	Number             *Number             `json:"number,omitempty"`
 	UnquotedString     *UnquotedString     `json:"unquoted_string,omitempty"`
@@ -1341,6 +1400,8 @@ func (vb ValueBox) Unbox() Value {
 	switch {
 	case vb.Null != nil:
 		return vb.Null
+	case vb.Suspension != nil:
+		return vb.Suspension
 	case vb.Boolean != nil:
 		return vb.Boolean
 	case vb.Number != nil:
@@ -1369,6 +1430,8 @@ func MakeValueBox(v Value) ValueBox {
 	switch v := v.(type) {
 	case *Null:
 		vb.Null = v
+	case *Suspension:
+		vb.Suspension = v
 	case *Boolean:
 		vb.Boolean = v
 	case *Number:
@@ -1394,6 +1457,7 @@ func MakeValueBox(v Value) ValueBox {
 func (vb ValueBox) ScalarBox() ScalarBox {
 	var sb ScalarBox
 	sb.Null = vb.Null
+	sb.Suspension = vb.Suspension
 	sb.Boolean = vb.Boolean
 	sb.Number = vb.Number
 	sb.UnquotedString = vb.UnquotedString
@@ -1416,6 +1480,7 @@ func (vb ValueBox) StringBox() *StringBox {
 // TODO: implement ScalarString()
 type ScalarBox struct {
 	Null               *Null               `json:"null,omitempty"`
+	Suspension         *Suspension         `json:"suspension,omitempty"`
 	Boolean            *Boolean            `json:"boolean,omitempty"`
 	Number             *Number             `json:"number,omitempty"`
 	UnquotedString     *UnquotedString     `json:"unquoted_string,omitempty"`
@@ -1428,6 +1493,8 @@ func (sb ScalarBox) Unbox() Scalar {
 	switch {
 	case sb.Null != nil:
 		return sb.Null
+	case sb.Suspension != nil:
+		return sb.Suspension
 	case sb.Boolean != nil:
 		return sb.Boolean
 	case sb.Number != nil:
@@ -1516,7 +1583,7 @@ func RawString(s string, inKey bool) String {
 				return &SingleQuotedString{Value: s}
 			}
 		}
-	} else if s == "null" || strings.ContainsAny(s, UnquotedValueSpecials) {
+	} else if s == "null" || s == "suspend" || s == "unsuspend" || strings.ContainsAny(s, UnquotedValueSpecials) {
 		if !strings.ContainsRune(s, '"') && !strings.ContainsRune(s, '$') {
 			return FlatDoubleQuotedString(s)
 		}
@@ -1550,9 +1617,9 @@ func (s *Substitution) IDA() (ida []string) {
 	return ida
 }
 
-func (i *Import) IDA() (ida []string) {
+func (i *Import) IDA() (ida []String) {
 	for _, el := range i.Path[1:] {
-		ida = append(ida, el.Unbox().ScalarString())
+		ida = append(ida, el.Unbox())
 	}
 	return ida
 }

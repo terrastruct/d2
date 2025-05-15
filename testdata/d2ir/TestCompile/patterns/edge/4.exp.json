@@ -1,11 +1,27 @@
 {
   "fields": [
     {
-      "name": "app_a",
+      "name": {
+        "range": "TestCompile/patterns/edge/4.d2,0:0:0-0:5:5",
+        "value": [
+          {
+            "string": "app_a",
+            "raw_string": "app_a"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "x",
+            "name": {
+              "range": "TestCompile/patterns/edge/4.d2,1:3:12-1:4:13",
+              "value": [
+                {
+                  "string": "x",
+                  "raw_string": "x"
+                }
+              ]
+            },
             "references": [
               {
                 "string": {
@@ -250,7 +266,15 @@
             ]
           },
           {
-            "name": "y",
+            "name": {
+              "range": "TestCompile/patterns/edge/4.d2,8:18:55-8:19:56",
+              "value": [
+                {
+                  "string": "y",
+                  "raw_string": "y"
+                }
+              ]
+            },
             "references": [
               {
                 "string": {
@@ -446,11 +470,27 @@
           {
             "edge_id": {
               "src_path": [
-                "x"
+                {
+                  "range": "TestCompile/patterns/edge/4.d2,1:3:12-1:4:13",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
               ],
               "src_arrow": false,
               "dst_path": [
-                "y"
+                {
+                  "range": "TestCompile/patterns/edge/4.d2,8:18:55-8:19:56",
+                  "value": [
+                    {
+                      "string": "y",
+                      "raw_string": "y"
+                    }
+                  ]
+                }
               ],
               "dst_arrow": true,
               "index": 0,
@@ -694,11 +734,27 @@
       ]
     },
     {
-      "name": "app_b",
+      "name": {
+        "range": "TestCompile/patterns/edge/4.d2,4:1:19-4:6:24",
+        "value": [
+          {
+            "string": "app_b",
+            "raw_string": "app_b"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "y",
+            "name": {
+              "range": "TestCompile/patterns/edge/4.d2,5:3:31-5:4:32",
+              "value": [
+                {
+                  "string": "y",
+                  "raw_string": "y"
+                }
+              ]
+            },
             "references": [
               {
                 "string": {
@@ -943,7 +999,15 @@
             ]
           },
           {
-            "name": "x",
+            "name": {
+              "range": "TestCompile/patterns/edge/4.d2,8:7:44-8:8:45",
+              "value": [
+                {
+                  "string": "x",
+                  "raw_string": "x"
+                }
+              ]
+            },
             "references": [
               {
                 "string": {
@@ -1139,11 +1203,27 @@
           {
             "edge_id": {
               "src_path": [
-                "x"
+                {
+                  "range": "TestCompile/patterns/edge/4.d2,8:7:44-8:8:45",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
               ],
               "src_arrow": false,
               "dst_path": [
-                "y"
+                {
+                  "range": "TestCompile/patterns/edge/4.d2,5:3:31-5:4:32",
+                  "value": [
+                    {
+                      "string": "y",
+                      "raw_string": "y"
+                    }
+                  ]
+                }
               ],
               "dst_arrow": true,
               "index": 0,
@@ -1391,13 +1471,45 @@
     {
       "edge_id": {
         "src_path": [
-          "app_a",
-          "x"
+          {
+            "range": "TestCompile/patterns/edge/4.d2,0:0:0-0:5:5",
+            "value": [
+              {
+                "string": "app_a",
+                "raw_string": "app_a"
+              }
+            ]
+          },
+          {
+            "range": "TestCompile/patterns/edge/4.d2,1:3:12-1:4:13",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "app_b",
-          "y"
+          {
+            "range": "TestCompile/patterns/edge/4.d2,4:1:19-4:6:24",
+            "value": [
+              {
+                "string": "app_b",
+                "raw_string": "app_b"
+              }
+            ]
+          },
+          {
+            "range": "TestCompile/patterns/edge/4.d2,5:3:31-5:4:32",
+            "value": [
+              {
+                "string": "y",
+                "raw_string": "y"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -1556,13 +1668,45 @@
     {
       "edge_id": {
         "src_path": [
-          "app_b",
-          "x"
+          {
+            "range": "TestCompile/patterns/edge/4.d2,4:1:19-4:6:24",
+            "value": [
+              {
+                "string": "app_b",
+                "raw_string": "app_b"
+              }
+            ]
+          },
+          {
+            "range": "TestCompile/patterns/edge/4.d2,8:7:44-8:8:45",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "app_a",
-          "y"
+          {
+            "range": "TestCompile/patterns/edge/4.d2,0:0:0-0:5:5",
+            "value": [
+              {
+                "string": "app_a",
+                "raw_string": "app_a"
+              }
+            ]
+          },
+          {
+            "range": "TestCompile/patterns/edge/4.d2,8:18:55-8:19:56",
+            "value": [
+              {
+                "string": "y",
+                "raw_string": "y"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,

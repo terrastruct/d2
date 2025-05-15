@@ -175,6 +175,7 @@
           "height": 0
         },
         "style": {},
+        "iconStyle": {},
         "near_key": null,
         "shape": {
           "value": ""
@@ -222,6 +223,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "rectangle"
@@ -239,7 +241,7 @@
         "name": "one",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -249,10 +251,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,4:4:29-4:9:34",
                         "value": [
                           {
-                            "string": "santa"
+                            "string": "santa",
+                            "raw_string": "santa"
                           }
                         ]
                       }
@@ -277,6 +280,7 @@
               "height": 0
             },
             "style": {},
+            "iconStyle": {},
             "near_key": null,
             "shape": {
               "value": ""
@@ -324,6 +328,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"
@@ -341,7 +346,7 @@
         "name": "two",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -351,10 +356,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,7:4:52-7:10:58",
                         "value": [
                           {
-                            "string": "clause"
+                            "string": "clause",
+                            "raw_string": "clause"
                           }
                         ]
                       }
@@ -379,6 +385,7 @@
               "height": 0
             },
             "style": {},
+            "iconStyle": {},
             "near_key": null,
             "shape": {
               "value": ""
@@ -426,6 +433,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"

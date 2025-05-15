@@ -1,5 +1,13 @@
 {
   "name": "",
+  "config": {
+    "sketch": false,
+    "themeID": 0,
+    "darkThemeID": null,
+    "pad": null,
+    "center": null,
+    "layoutEngine": null
+  },
   "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
@@ -19,6 +27,7 @@
       "fill": "B6",
       "fillPattern": "dots",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -61,6 +70,7 @@
       "fill": "B6",
       "fillPattern": "dots",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -103,6 +113,7 @@
       "fill": "AB4",
       "fillPattern": "dots",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -145,6 +156,7 @@
       "fill": "N5",
       "fillPattern": "dots",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -187,6 +199,7 @@
       "fill": "AB4",
       "fillPattern": "dots",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -229,6 +242,7 @@
       "fill": "AA4",
       "fillPattern": "dots",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -271,6 +285,7 @@
       "fill": "N5",
       "fillPattern": "dots",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -313,6 +328,7 @@
       "fill": "AA4",
       "fillPattern": "dots",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -355,6 +371,7 @@
       "fill": "AB4",
       "fillPattern": "dots",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -397,6 +414,7 @@
       "fill": "N7",
       "fillPattern": "dots",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -439,6 +457,7 @@
       "fill": "AA4",
       "fillPattern": "dots",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -481,6 +500,7 @@
       "fill": "B3",
       "fillPattern": "dots",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -523,6 +543,7 @@
       "fill": "N4",
       "fillPattern": "dots",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -565,6 +586,7 @@
       "fill": "B6",
       "fillPattern": "dots",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -607,6 +629,7 @@
       "fill": "B6",
       "fillPattern": "dots",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -649,6 +672,7 @@
       "fill": "N5",
       "fillPattern": "dots",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -691,6 +715,7 @@
       "fill": "N7",
       "fillPattern": "dots",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": false,
       "multiple": true,
@@ -743,6 +768,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 55.5,
@@ -790,6 +816,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 55.5,
@@ -837,6 +864,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 279,
@@ -884,6 +912,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 279,
@@ -931,6 +960,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 507,
@@ -978,6 +1008,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 507,
@@ -1025,6 +1056,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 705,
@@ -1072,6 +1104,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 704,
@@ -1119,6 +1152,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 890,
@@ -1166,6 +1200,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 890,
@@ -1213,6 +1248,7 @@
       "labelHeight": 0,
       "labelPosition": "",
       "labelPercentage": 0,
+      "link": "",
       "route": [
         {
           "x": 1102,
@@ -1253,6 +1289,7 @@
     "borderRadius": 0,
     "fill": "N7",
     "stroke": "",
+    "animated": false,
     "shadow": false,
     "3d": false,
     "multiple": false,

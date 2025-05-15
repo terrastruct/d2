@@ -1,7 +1,15 @@
 {
   "fields": [
     {
-      "name": "jon",
+      "name": {
+        "range": "x.d2,0:5:5-0:8:8",
+        "value": [
+          {
+            "string": "jon",
+            "raw_string": "jon"
+          }
+        ]
+      },
       "references": [
         {
           "string": {
@@ -59,7 +67,15 @@
       ]
     },
     {
-      "name": "jan",
+      "name": {
+        "range": "x.d2,0:10:10-0:13:13",
+        "value": [
+          {
+            "string": "jan",
+            "raw_string": "jan"
+          }
+        ]
+      },
       "references": [
         {
           "string": {

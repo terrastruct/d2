@@ -1,15 +1,39 @@
 {
   "fields": [
     {
-      "name": "table",
+      "name": {
+        "range": "TestCompile/patterns/alixander-review/7.d2,8:0:53-8:5:58",
+        "value": [
+          {
+            "string": "table",
+            "raw_string": "table"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/patterns/alixander-review/7.d2,2:2:8-2:7:13",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "fill",
+                  "name": {
+                    "range": "TestCompile/patterns/alixander-review/7.d2,2:8:14-2:12:18",
+                    "value": [
+                      {
+                        "string": "fill",
+                        "raw_string": "fill"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/patterns/alixander-review/7.d2,9:14:76-9:18:80",
@@ -541,7 +565,15 @@
             ]
           },
           {
-            "name": "shape",
+            "name": {
+              "range": "TestCompile/patterns/alixander-review/7.d2,10:2:83-10:7:88",
+              "value": [
+                {
+                  "string": "shape",
+                  "raw_string": "shape"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "TestCompile/patterns/alixander-review/7.d2,10:9:90-10:18:99",
@@ -620,7 +652,15 @@
             ]
           },
           {
-            "name": "a",
+            "name": {
+              "range": "TestCompile/patterns/alixander-review/7.d2,11:2:102-11:3:103",
+              "value": [
+                {
+                  "string": "a",
+                  "raw_string": "a"
+                }
+              ]
+            },
             "primary": {
               "value": {
                 "range": "TestCompile/patterns/alixander-review/7.d2,11:5:105-11:6:106",
@@ -635,11 +675,27 @@
             "composite": {
               "fields": [
                 {
-                  "name": "style",
+                  "name": {
+                    "range": "TestCompile/patterns/alixander-review/7.d2,5:2:34-5:7:39",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  },
                   "composite": {
                     "fields": [
                       {
-                        "name": "fill",
+                        "name": {
+                          "range": "TestCompile/patterns/alixander-review/7.d2,5:8:40-5:12:44",
+                          "value": [
+                            {
+                              "string": "fill",
+                              "raw_string": "fill"
+                            }
+                          ]
+                        },
                         "primary": {
                           "value": {
                             "range": "TestCompile/patterns/alixander-review/7.d2,5:14:46-5:17:49",

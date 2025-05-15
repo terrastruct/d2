@@ -151,6 +151,7 @@
           "height": 0
         },
         "style": {},
+        "iconStyle": {},
         "near_key": null,
         "shape": {
           "value": ""
@@ -198,6 +199,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "rectangle"
@@ -215,7 +217,7 @@
         "name": "c",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
@@ -225,10 +227,11 @@
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestCreate/add_layer/2.d2,4:4:24-4:5:25",
                         "value": [
                           {
-                            "string": "x"
+                            "string": "x",
+                            "raw_string": "x"
                           }
                         ]
                       }
@@ -253,6 +256,7 @@
               "height": 0
             },
             "style": {},
+            "iconStyle": {},
             "near_key": null,
             "shape": {
               "value": ""
@@ -300,6 +304,7 @@
                 "height": 0
               },
               "style": {},
+              "iconStyle": {},
               "near_key": null,
               "shape": {
                 "value": "rectangle"
@@ -332,6 +337,7 @@
               "height": 0
             },
             "style": {},
+            "iconStyle": {},
             "near_key": null,
             "shape": {
               "value": ""

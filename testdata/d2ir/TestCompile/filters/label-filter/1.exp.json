@@ -1,15 +1,39 @@
 {
   "fields": [
     {
-      "name": "x",
+      "name": {
+        "range": "TestCompile/filters/label-filter/1.d2,1:0:1-1:1:2",
+        "value": [
+          {
+            "string": "x",
+            "raw_string": "x"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "opacity",
+                  "name": {
+                    "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
+                    "value": [
+                      {
+                        "string": "opacity",
+                        "raw_string": "opacity"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/filters/label-filter/1.d2,9:17:80-9:18:81",
@@ -684,15 +708,39 @@
       ]
     },
     {
-      "name": "y",
+      "name": {
+        "range": "TestCompile/filters/label-filter/1.d2,2:0:3-2:1:4",
+        "value": [
+          {
+            "string": "y",
+            "raw_string": "y"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "opacity",
+                  "name": {
+                    "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
+                    "value": [
+                      {
+                        "string": "opacity",
+                        "raw_string": "opacity"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/filters/label-filter/1.d2,6:17:42-6:20:45",
@@ -1205,7 +1253,15 @@
       ]
     },
     {
-      "name": "p",
+      "name": {
+        "range": "TestCompile/filters/label-filter/1.d2,3:0:5-3:1:6",
+        "value": [
+          {
+            "string": "p",
+            "raw_string": "p"
+          }
+        ]
+      },
       "primary": {
         "value": {
           "range": "TestCompile/filters/label-filter/1.d2,3:3:8-3:4:9",
@@ -1220,11 +1276,27 @@
       "composite": {
         "fields": [
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "opacity",
+                  "name": {
+                    "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
+                    "value": [
+                      {
+                        "string": "opacity",
+                        "raw_string": "opacity"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/filters/label-filter/1.d2,13:17:118-13:20:121",
@@ -1909,15 +1981,39 @@
       ]
     },
     {
-      "name": "a",
+      "name": {
+        "range": "TestCompile/filters/label-filter/1.d2,4:0:10-4:1:11",
+        "value": [
+          {
+            "string": "a",
+            "raw_string": "a"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "opacity",
+                  "name": {
+                    "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
+                    "value": [
+                      {
+                        "string": "opacity",
+                        "raw_string": "opacity"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/filters/label-filter/1.d2,6:17:42-6:20:45",
@@ -2499,15 +2595,39 @@
       ]
     },
     {
-      "name": "z",
+      "name": {
+        "range": "TestCompile/filters/label-filter/1.d2,4:5:15-4:6:16",
+        "value": [
+          {
+            "string": "z",
+            "raw_string": "z"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "style",
+            "name": {
+              "range": "TestCompile/filters/label-filter/1.d2,6:2:27-6:7:32",
+              "value": [
+                {
+                  "string": "style",
+                  "raw_string": "style"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "opacity",
+                  "name": {
+                    "range": "TestCompile/filters/label-filter/1.d2,6:8:33-6:15:40",
+                    "value": [
+                      {
+                        "string": "opacity",
+                        "raw_string": "opacity"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/filters/label-filter/1.d2,6:17:42-6:20:45",
@@ -3093,11 +3213,27 @@
     {
       "edge_id": {
         "src_path": [
-          "a"
+          {
+            "range": "TestCompile/filters/label-filter/1.d2,4:0:10-4:1:11",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "z"
+          {
+            "range": "TestCompile/filters/label-filter/1.d2,4:5:15-4:6:16",
+            "value": [
+              {
+                "string": "z",
+                "raw_string": "z"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,
@@ -3117,11 +3253,27 @@
       "map": {
         "fields": [
           {
-            "name": "target-arrowhead",
+            "name": {
+              "range": "TestCompile/filters/label-filter/1.d2,17:1:155-17:17:171",
+              "value": [
+                {
+                  "string": "target-arrowhead",
+                  "raw_string": "target-arrowhead"
+                }
+              ]
+            },
             "composite": {
               "fields": [
                 {
-                  "name": "shape",
+                  "name": {
+                    "range": "TestCompile/filters/label-filter/1.d2,17:18:172-17:23:177",
+                    "value": [
+                      {
+                        "string": "shape",
+                        "raw_string": "shape"
+                      }
+                    ]
+                  },
                   "primary": {
                     "value": {
                       "range": "TestCompile/filters/label-filter/1.d2,17:25:179-17:32:186",

@@ -111,8 +111,8 @@ func main() {
 
 markdown -> code -> ex
 ex: |tex
-	\\displaylines{x = a + b \\\\ y = b + c}
-	\\sum_{k=1}^{n} h_{k} \\int_{0}^{1} \\bigl(\\partial_{k} f(x_{k-1}+t h_{k} e_{k}) -\\partial_{k} f(a)\\bigr) \\,dt
+	\displaylines{x = a + b \\ y = b + c}
+	\sum_{k=1}^{n} h_{k} \int_{0}^{1} \bigl(\partial_{k} f(x_{k-1}+t h_{k} e_{k}) -\partial_{k} f(a)\bigr) \,dt
 |
 `,
 		},
@@ -218,8 +218,8 @@ func main() {
 
 markdown -> code -> ex
 ex: |tex
-	\\displaylines{x = a + b \\\\ y = b + c}
-	\\sum_{k=1}^{n} h_{k} \\int_{0}^{1} \\bigl(\\partial_{k} f(x_{k-1}+t h_{k} e_{k}) -\\partial_{k} f(a)\\bigr) \\,dt
+	\displaylines{x = a + b \\ y = b + c}
+	\sum_{k=1}^{n} h_{k} \int_{0}^{1} \bigl(\partial_{k} f(x_{k-1}+t h_{k} e_{k}) -\partial_{k} f(a)\bigr) \,dt
 |
 `,
 		},

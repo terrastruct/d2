@@ -1,11 +1,27 @@
 {
   "fields": [
     {
-      "name": "fast",
+      "name": {
+        "range": "TestCompile/patterns/double-glob/edge/1.d2,0:0:0-0:4:4",
+        "value": [
+          {
+            "string": "fast",
+            "raw_string": "fast"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "a",
+            "name": {
+              "range": "TestCompile/patterns/double-glob/edge/1.d2,1:2:10-1:3:11",
+              "value": [
+                {
+                  "string": "a",
+                  "raw_string": "a"
+                }
+              ]
+            },
             "references": [
               {
                 "string": {
@@ -63,7 +79,15 @@
             ]
           },
           {
-            "name": "far",
+            "name": {
+              "range": "TestCompile/patterns/double-glob/edge/1.d2,2:2:14-2:5:17",
+              "value": [
+                {
+                  "string": "far",
+                  "raw_string": "far"
+                }
+              ]
+            },
             "references": [
               {
                 "string": {
@@ -376,11 +400,27 @@
       ]
     },
     {
-      "name": "task",
+      "name": {
+        "range": "TestCompile/patterns/double-glob/edge/1.d2,5:0:21-5:4:25",
+        "value": [
+          {
+            "string": "task",
+            "raw_string": "task"
+          }
+        ]
+      },
       "composite": {
         "fields": [
           {
-            "name": "a",
+            "name": {
+              "range": "TestCompile/patterns/double-glob/edge/1.d2,6:2:31-6:3:32",
+              "value": [
+                {
+                  "string": "a",
+                  "raw_string": "a"
+                }
+              ]
+            },
             "references": [
               {
                 "string": {
@@ -690,12 +730,36 @@
     {
       "edge_id": {
         "src_path": [
-          "task",
-          "a"
+          {
+            "range": "TestCompile/patterns/double-glob/edge/1.d2,5:0:21-5:4:25",
+            "value": [
+              {
+                "string": "task",
+                "raw_string": "task"
+              }
+            ]
+          },
+          {
+            "range": "TestCompile/patterns/double-glob/edge/1.d2,6:2:31-6:3:32",
+            "value": [
+              {
+                "string": "a",
+                "raw_string": "a"
+              }
+            ]
+          }
         ],
         "src_arrow": false,
         "dst_path": [
-          "fast"
+          {
+            "range": "TestCompile/patterns/double-glob/edge/1.d2,0:0:0-0:4:4",
+            "value": [
+              {
+                "string": "fast",
+                "raw_string": "fast"
+              }
+            ]
+          }
         ],
         "dst_arrow": true,
         "index": 0,

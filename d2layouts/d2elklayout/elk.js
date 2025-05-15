@@ -5,15 +5,7 @@
     define([], f);
   } else {
     var g;
-    if (typeof window !== "undefined") {
-      g = window;
-    } else if (typeof global !== "undefined") {
-      g = global;
-    } else if (typeof self !== "undefined") {
-      g = self;
-    } else {
-      g = this;
-    }
+    g = this;
     g.ELK = f();
   }
 })(function () {
@@ -337,9 +329,6 @@
 
               // --------------    FAKE ELEMENTS GWT ASSUMES EXIST   --------------
               var $wnd = { Error: {} };
-              if (typeof window !== "undefined") $wnd = window;
-              else if (typeof global !== "undefined") $wnd = global; // nodejs
-              else if (typeof self !== "undefined") $wnd = self; // web worker
 
               var $moduleName, $moduleBase;
 
@@ -59795,13 +59784,8 @@
                     }, 0);
                   };
                 }
-                if (typeof document === uke && typeof self !== uke) {
-                  var i = new h(self);
-                  self.onmessage = i.saveDispatch;
-                } else if (typeof module !== uke && module.exports) {
-                  Object.defineProperty(exports, "__esModule", { value: true });
-                  module.exports = { default: j, Worker: j };
-                }
+                Object.defineProperty(exports, "__esModule", { value: true });
+                module.exports = { default: j, Worker: j };
               }
               function aae(a) {
                 if (a.N) return;
@@ -105682,16 +105666,7 @@
               // --------------    RUN GWT INITIALIZATION CODE    --------------
               gwtOnLoad(null, "elk", null);
             }.call(this));
-          }.call(
-            this,
-            typeof global !== "undefined"
-              ? global
-              : typeof self !== "undefined"
-              ? self
-              : typeof window !== "undefined"
-              ? window
-              : {}
-          ));
+          }.call(this, {}));
         },
         {},
       ],

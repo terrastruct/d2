@@ -1,5 +1,13 @@
 {
   "name": "",
+  "config": {
+    "sketch": false,
+    "themeID": 0,
+    "darkThemeID": null,
+    "pad": null,
+    "center": null,
+    "layoutEngine": null
+  },
   "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
@@ -19,6 +27,7 @@
       "fill": "B6",
       "fillPattern": "dots",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": true,
       "multiple": false,
@@ -61,6 +70,7 @@
       "fill": "N5",
       "fillPattern": "dots",
       "stroke": "B1",
+      "animated": false,
       "shadow": false,
       "3d": true,
       "multiple": false,
@@ -104,6 +114,7 @@
     "borderRadius": 0,
     "fill": "N7",
     "stroke": "",
+    "animated": false,
     "shadow": false,
     "3d": false,
     "multiple": false,
