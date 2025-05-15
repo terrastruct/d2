@@ -1,5 +1,7 @@
 #### Features 🚀
 
+- `cross` arrowhead shape is available [#2190](https://github.com/terrastruct/d2/pull/2190)
+
 #### Improvements 🧹
 
 #### Bugfixes ⛑️
