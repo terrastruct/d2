@@ -939,10 +939,13 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 
 			return dstPath == filterValue
 		default:
-			f := refctx.ScopeMap.Parent().(*Field)
-			propName := refctx.Key.Key.Last().ScalarString()
-			value := refctx.Key.Value.ScalarBox().Unbox().ScalarString()
-			return c._ampersandPropertyFilter(propName, value, f, refctx.Key)
+			parent := refctx.ScopeMap.Parent()
+			if field, ok := parent.(*Field); ok {
+				propName := refctx.Key.Key.Last().ScalarString()
+				value := refctx.Key.Value.ScalarBox().Unbox().ScalarString()
+				return c._ampersandPropertyFilter(propName, value, field, refctx.Key)
+			}
+			return false
 		}
 	}
 	for _, f := range fa {
