@@ -760,8 +760,7 @@ func (c *compiler) compileStyleField(styles *d2graph.Style, f *d2ir.Field) {
 		fields := f.Map().Fields
 		for i := 0; i < len(fields); i++ {
 			field := fields[i]
-			field.Name.SetString(f.Name.ScalarString() + "." + field.Name.ScalarString())
-			c.compileStyleField(styles, field)
+			c.compileCompositeStyle(styles, field, f.Name.ScalarString())
 		}
 	}
 	if f.Primary() == nil {
@@ -770,6 +769,31 @@ func (c *compiler) compileStyleField(styles *d2graph.Style, f *d2ir.Field) {
 	compileStyleFieldInit(styles, f)
 	scalar := f.Primary().Value
 	err := styles.Apply(f.Name.ScalarString(), scalar.ScalarString())
+	if err != nil {
+		c.errorf(scalar, err.Error())
+		return
+	}
+}
+
+func (c *compiler) compileCompositeStyle(styles *d2graph.Style, f *d2ir.Field, parent string) {
+	if _, ok := d2ast.CompositeStyleKeywords[strings.ToLower(parent)]; !(ok && f.Name.IsUnquoted()) {
+		c.errorf(f.LastRef().AST(), `invalid composite style keyword: "%s"`, f.Name.ScalarString())
+		return
+	}
+
+	allowedStyle := d2ast.CompositeStyleKeywords[strings.ToLower(parent)]
+
+	if allowedStyle != strings.ToLower(f.Name.ScalarString()) {
+		c.errorf(f.LastRef().AST(), `invalid style "%s" for composite style keyword: "%s"`, f.Name.ScalarString(), parent)
+	}
+
+	if f.Primary() == nil {
+		return
+	}
+
+	compileCompositeStyleFieldInit(styles, f, parent)
+	scalar := f.Primary().Value
+	err := styles.ApplyComposite(f.Name.ScalarString(), scalar.ScalarString(), parent)
 	if err != nil {
 		c.errorf(scalar, err.Error())
 		return
@@ -798,8 +822,6 @@ func compileStyleFieldInit(styles *d2graph.Style, f *d2ir.Field) {
 		styles.ThreeDee = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "multiple":
 		styles.Multiple = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
-	case "multiple.opacity":
-		styles.MultipleOpacity = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "font":
 		styles.Font = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "font-size":
@@ -820,6 +842,15 @@ func compileStyleFieldInit(styles *d2graph.Style, f *d2ir.Field) {
 		styles.DoubleBorder = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "text-transform":
 		styles.TextTransform = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+	}
+}
+
+func compileCompositeStyleFieldInit(styles *d2graph.Style, f *d2ir.Field, parent string) {
+	switch f.Name.ScalarString() {
+	case "opacity":
+		if parent == "multiple" {
+			styles.MultipleOpacity = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+		}
 	}
 }
 

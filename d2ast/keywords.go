@@ -64,10 +64,9 @@ var StyleKeywords = map[string]struct{}{
 	"text-transform": {},
 
 	// Only for shapes
-	"shadow":           {},
-	"multiple":         {},
-	"multiple.opacity": {},
-	"double-border":    {},
+	"shadow":        {},
+	"multiple":      {},
+	"double-border": {},
 
 	// Only for squares
 	"3d": {},
@@ -75,6 +74,10 @@ var StyleKeywords = map[string]struct{}{
 	// Only for edges
 	"animated": {},
 	"filled":   {},
+}
+
+var CompositeStyleKeywords = map[string]string{
+	"multiple": "opacity",
 }
 
 // TODO maybe autofmt should allow other values, and transform them to conform

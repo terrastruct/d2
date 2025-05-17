@@ -400,15 +400,6 @@ func (s *Style) Apply(key, value string) error {
 			return errors.New(`expected "multiple" to be true or false`)
 		}
 		s.Multiple.Value = value
-	case "multiple.opacity":
-		if s.MultipleOpacity == nil {
-			break
-		}
-		f, err := strconv.ParseFloat(value, 64)
-		if err != nil || (f < 0 || f > 1) {
-			return errors.New(`expected "opacity" to be a number between 0.0 and 1.0`)
-		}
-		s.MultipleOpacity.Value = value
 	case "font":
 		if s.Font == nil {
 			break
@@ -500,6 +491,25 @@ func (s *Style) Apply(key, value string) error {
 		return fmt.Errorf("unknown style key: %s", key)
 	}
 
+	return nil
+}
+
+func (s *Style) ApplyComposite(key, value, parent string) error {
+	switch key {
+	case "opacity":
+		f, err := strconv.ParseFloat(value, 64)
+		if err != nil || (f < 0 || f > 1) {
+			return errors.New(`expected "opacity" to be a number between 0.0 and 1.0`)
+		}
+		if parent == "multiple" {
+			if s.MultipleOpacity == nil {
+				break
+			}
+			s.MultipleOpacity.Value = value
+		}
+	default:
+		return fmt.Errorf("unknown style key: %s", key)
+	}
 	return nil
 }
 
