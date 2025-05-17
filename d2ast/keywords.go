@@ -41,6 +41,7 @@ var CompositeReservedKeywords = map[string]struct{}{
 	"constraint":       {},
 	"label":            {},
 	"icon":             {},
+	"multiple":         {},
 }
 
 // StyleKeywords are reserved keywords which cannot exist outside of the "style" keyword
@@ -73,6 +74,10 @@ var StyleKeywords = map[string]struct{}{
 	// Only for edges
 	"animated": {},
 	"filled":   {},
+}
+
+var CompositeStyleKeywords = map[string]string{
+	"multiple": "opacity",
 }
 
 // TODO maybe autofmt should allow other values, and transform them to conform
