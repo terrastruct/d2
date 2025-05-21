@@ -304,6 +304,19 @@ a <-> e
 f <-> g: {style.animated: true}
 x -- x: {style.animated: true}
 
+-- sketch-cross-arrowhead --
+vars: {
+  d2-config: {
+    sketch: true
+  }
+}
+
+start <-> end: {
+    style.stroke-width: 6
+    source-arrowhead.shape: cross
+    target-arrowhead.shape: cross
+}
+
 -- sequence-edge-group-tall-edge-label --
 Sequence: {
   shape: sequence_diagram
