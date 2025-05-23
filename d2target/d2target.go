@@ -810,6 +810,8 @@ const (
 	CircleArrowhead           Arrowhead = "circle"
 	FilledCircleArrowhead     Arrowhead = "filled-circle"
 	CrossArrowhead            Arrowhead = "cross"
+	BoxArrowhead              Arrowhead = "box"
+	FilledBoxArrowhead        Arrowhead = "filled-box"
 
 	// For fat arrows
 	LineArrowhead Arrowhead = "line"
@@ -861,6 +863,11 @@ func ToArrowhead(arrowheadType string, filled *bool) Arrowhead {
 		return TriangleArrowhead
 	case string(CrossArrowhead):
 		return CrossArrowhead
+	case string(BoxArrowhead):
+		if filled != nil && *filled {
+			return FilledBoxArrowhead
+		}
+		return BoxArrowhead
 	case string(CfOne):
 		return CfOne
 	case string(CfMany):
