@@ -631,21 +631,26 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection, i
 
 		inset := strokeWidth / 2
 		if isTarget {
-			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
-				inset, inset,
-				inset, height-inset,
-				width-inset, height-inset,
-				width-inset, inset,
+			childPathEl.D = fmt.Sprintf("M%f,%f %f,%f",
+				width/2, height/2,
+				width, height/2,
 			)
 		} else {
-			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
-				inset, inset,
-				inset, height-inset,
-				width-inset, height-inset,
-				width-inset, inset,
+			childPathEl.D = fmt.Sprintf("M%f,%f %f,%f",
+				width/2, height/2,
+				0., height/2,
 			)
 		}
-		path = polygonEl.Render()
+
+		gEl := d2themes.NewThemableElement("g", inlineTheme)
+		gEl.Fill = d2target.BG_COLOR
+		gEl.Stroke = connection.Stroke
+		gEl.ClassName = "connection"
+		gEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+		gEl.Content = fmt.Sprintf("%s%s",
+			crossEl.Render(), childPathEl.Render(),
+		)
+		path = gEl.Render()
 	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
 		offset := 3.0 + float64(connection.StrokeWidth)*1.8
 
