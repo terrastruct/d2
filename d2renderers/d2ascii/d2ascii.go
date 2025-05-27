@@ -64,6 +64,11 @@ func (g *Grid) String() string {
 		lines = append(lines, strings.TrimRight(string(row), " "))
 	}
 	
+	// Remove leading empty lines
+	for len(lines) > 0 && lines[0] == "" {
+		lines = lines[1:]
+	}
+	
 	// Remove trailing empty lines
 	for len(lines) > 0 && lines[len(lines)-1] == "" {
 		lines = lines[:len(lines)-1]
@@ -122,6 +127,14 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	// Approximate character size: 8x16 pixels
 	charWidth := int(math.Ceil(float64(width) / 8.0))
 	charHeight := int(math.Ceil(float64(height) / 16.0))
+	
+	// Ensure minimum grid size
+	if charWidth < 1 {
+		charWidth = 1
+	}
+	if charHeight < 1 {
+		charHeight = 1
+	}
 	
 	grid := NewGrid(charWidth, charHeight)
 

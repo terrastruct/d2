@@ -1,0 +1,19 @@
+server: {
+  shape: rectangle
+  label: "Web Server"
+}
+
+database: {
+  shape: cylinder
+  label: "Database"
+}
+
+user: {
+  shape: person
+  label: "User"
+}
+
+user -> server: "HTTP Request"
+server -> database: "Query"
+database -> server: "Results"
+server -> user: "Response" 
