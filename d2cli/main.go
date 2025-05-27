@@ -28,6 +28,7 @@ import (
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/d2renderers/d2animate"
+	"oss.terrastruct.com/d2/d2renderers/d2ascii"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2renderers/d2svg/appendix"
@@ -871,6 +872,30 @@ func renderSingle(ctx context.Context, ms *xmain.State, compileDur time.Duration
 
 func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, outputFormat exportExtension) ([]byte, error) {
 	toPNG := outputFormat == PNG
+	toASCII := outputFormat == ASCII
+
+	// Handle ASCII rendering separately
+	if toASCII {
+		asciiOpts := &d2ascii.RenderOpts{
+			Pad: opts.Pad,
+		}
+		ascii, err := d2ascii.Render(diagram, asciiOpts)
+		if err != nil {
+			return nil, err
+		}
+
+		if opts.MasterID == "" {
+			err = os.MkdirAll(filepath.Dir(outputPath), 0755)
+			if err != nil {
+				return ascii, err
+			}
+			err = Write(ms, outputPath, ascii)
+			if err != nil {
+				return ascii, err
+			}
+		}
+		return ascii, nil
+	}
 
 	var scale *float64
 	if opts.Scale != nil {
