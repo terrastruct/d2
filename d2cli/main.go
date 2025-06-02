@@ -28,6 +28,7 @@ import (
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/d2renderers/d2animate"
+	"oss.terrastruct.com/d2/d2renderers/d2ascii"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2renderers/d2svg/appendix"
@@ -103,7 +104,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
-	stdoutFormatFlag := ms.Opts.String("", "stdout-format", "", "", "output format when writing to stdout (svg, png). Usage: d2 input.d2 --stdout-format png - > output.png")
+	stdoutFormatFlag := ms.Opts.String("", "stdout-format", "", "", "output format when writing to stdout (svg, png, ascii). Usage: d2 input.d2 --stdout-format png - > output.png")
 	if err != nil {
 		return err
 	}
@@ -870,6 +871,21 @@ func renderSingle(ctx context.Context, ms *xmain.State, compileDur time.Duration
 }
 
 func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, outputFormat exportExtension) ([]byte, error) {
+	if outputFormat == ASCII {
+		renderOpts := &d2ascii.RenderOpts{
+			Scale: opts.Scale,
+		}
+		asciiArtist := d2ascii.NewASCIIartist()
+		ascii, err := asciiArtist.Render(diagram, renderOpts)
+		if err != nil {
+			return ascii, err
+		}
+		err = Write(ms, outputPath, ascii)
+		if err != nil {
+			return ascii, err
+		}
+		return ascii, nil
+	}
 	toPNG := outputFormat == PNG
 
 	var scale *float64
