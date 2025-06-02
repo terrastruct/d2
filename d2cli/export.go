@@ -18,8 +18,8 @@ const ASCII exportExtension = ".txt"
 var SUPPORTED_EXTENSIONS = []exportExtension{SVG, PNG, PDF, PPTX, GIF, ASCII}
 
 var STDOUT_FORMAT_MAP = map[string]exportExtension{
-	"png": PNG,
-	"svg": SVG,
+	"png":   PNG,
+	"svg":   SVG,
 	"ascii": ASCII,
 }
 
