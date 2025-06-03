@@ -1,3 +1,9 @@
+- id: d2
+  name: d2
+  description: Compiles and renders d2 files
+  entry: sh -ec 'for f in "${@}"; do d2 --omit-version "${f}"; done' --
+  language: golang
+  files: \.d2$
 - id: d2-fmt
   name: d2 fmt
   description: Format d2 files
