@@ -1203,3 +1203,21 @@ customer4: |md
 | {
   shape: c4-person
 }
+
+-- edge-special-text --
+a -> b: |latex
+  \lim_{h \rightarrow 0 } \frac{f(x+h)-f(x)}{h}
+|
+
+c -> d: |md
+  **Bold text** and *italic text*
+  
+  - Item 1
+  - Item 2
+|
+
+e -> f: |go
+  func main() {
+    fmt.Println("Hello World")
+  }
+|
