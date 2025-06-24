@@ -1203,3 +1203,41 @@ customer4: |md
 | {
   shape: c4-person
 }
+
+-- edge-special-text --
+a -> b: |latex
+  \lim_{h \rightarrow 0 } \frac{f(x+h)-f(x)}{h}
+|
+
+c -> d: |md
+  **Bold text** and *italic text*
+
+  - Item 1
+  - Item 2
+|
+
+e -> f: |go
+  func main() {
+    fmt.Println("Hello World")
+  }
+|
+z -> x: regular
+
+-- edge-special-text-sequence --
+shape: sequence_diagram
+
+Alice -> Bob: |latex
+  f(x) = x^2 + 2x + 1
+|
+
+Bob -> Charlie: |md
+  **Authentication** required
+
+  Please provide *credentials*
+|
+
+Charlie -> Alice: |go
+func main() {
+  fmt.Println("Hello World")
+}
+|
