@@ -1022,12 +1022,13 @@ func IsShape(s string) bool {
 }
 
 type MText struct {
-	Text     string `json:"text"`
-	FontSize int    `json:"fontSize"`
-	IsBold   bool   `json:"isBold"`
-	IsItalic bool   `json:"isItalic"`
-	Language string `json:"language"`
-	Shape    string `json:"shape"`
+	Text        string `json:"text"`
+	FontSize    int    `json:"fontSize"`
+	IsBold      bool   `json:"isBold"`
+	IsItalic    bool   `json:"isItalic"`
+	IsUnderline bool   `json:"isUnderline"`
+	Language    string `json:"language"`
+	Shape       string `json:"shape"`
 
 	Dimensions TextDimensions `json:"dimensions,omitempty"`
 }

@@ -1189,6 +1189,23 @@ a -> md -> b
 }
 `,
 		}, {
+			name: "class_underline",
+			script: `manager: BatchManager {
+  shape: class
+  -num: int {
+    style.underline: true
+  }
+  -timeout: int
+  -pid
+
+  +getStatus(): Enum {
+    style.underline: true
+  }
+  +getJobs(): "Job[]"
+  +setTimeout(seconds int)
+}
+`,
+		}, {
 			name: "sql_tables",
 			script: `
 direction: left

@@ -41,7 +41,7 @@
           "name": "num",
           "type": "int",
           "visibility": "private",
-          "underline": false
+          "underline": true
         },
         {
           "name": "timeout",
@@ -61,7 +61,7 @@
           "name": "getStatus()",
           "return": "Enum",
           "visibility": "public",
-          "underline": false
+          "underline": true
         },
         {
           "name": "getJobs()",

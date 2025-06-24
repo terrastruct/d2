@@ -203,14 +203,16 @@
         {
           "name": "field",
           "type": "[]string",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         }
       ],
       "methods": [
         {
           "name": "method(a uint64)",
           "return": "(x, y int)",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         }
       ],
       "columns": null,
