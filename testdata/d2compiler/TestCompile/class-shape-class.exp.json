@@ -250,7 +250,8 @@
             {
               "name": "length()",
               "return": "int",
-              "visibility": "public"
+              "visibility": "public",
+              "underline": false
             }
           ]
         },

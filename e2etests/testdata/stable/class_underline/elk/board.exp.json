@@ -12,14 +12,14 @@
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
-      "id": "class1",
+      "id": "manager",
       "type": "class",
       "pos": {
         "x": 12,
         "y": 12
       },
-      "width": 319,
-      "height": 184,
+      "width": 422,
+      "height": 368,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -41,18 +41,43 @@
           "name": "num",
           "type": "int",
           "visibility": "private",
-          "underline": false
+          "underline": true
         },
         {
           "name": "timeout",
           "type": "int",
           "visibility": "private",
           "underline": false
+        },
+        {
+          "name": "pid",
+          "type": "",
+          "visibility": "private",
+          "underline": false
         }
       ],
-      "methods": null,
+      "methods": [
+        {
+          "name": "getStatus()",
+          "return": "Enum",
+          "visibility": "public",
+          "underline": true
+        },
+        {
+          "name": "getJobs()",
+          "return": "Job[]",
+          "visibility": "public",
+          "underline": false
+        },
+        {
+          "name": "setTimeout(seconds int)",
+          "return": "void",
+          "visibility": "public",
+          "underline": false
+        }
+      ],
       "columns": null,
-      "label": "class with rows",
+      "label": "BatchManager",
       "fontSize": 20,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -60,51 +85,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 214,
-      "labelHeight": 31,
-      "zIndex": 0,
-      "level": 1,
-      "primaryAccentColor": "B2",
-      "secondaryAccentColor": "AA2",
-      "neutralAccentColor": "N2"
-    },
-    {
-      "id": "class2",
-      "type": "class",
-      "pos": {
-        "x": 351,
-        "y": 58
-      },
-      "width": 362,
-      "height": 92,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "N1",
-      "stroke": "N7",
-      "animated": false,
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "double-border": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "class without rows",
-      "fontSize": 20,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "N1",
-      "italic": false,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 257,
+      "labelWidth": 170,
       "labelHeight": 31,
       "zIndex": 0,
       "level": 1,

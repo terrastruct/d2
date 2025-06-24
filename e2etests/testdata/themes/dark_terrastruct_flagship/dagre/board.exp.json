@@ -687,22 +687,26 @@
         {
           "name": "id",
           "type": "int",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         },
         {
           "name": "price",
           "type": "decimal",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         },
         {
           "name": "sku",
           "type": "string",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         },
         {
           "name": "name",
           "type": "string",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         }
       ],
       "methods": null,

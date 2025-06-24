@@ -125,12 +125,14 @@
         {
           "name": "public() bool",
           "return": "void",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         },
         {
           "name": "private() int",
           "return": "void",
-          "visibility": "private"
+          "visibility": "private",
+          "underline": false
         }
       ],
       "columns": null,
