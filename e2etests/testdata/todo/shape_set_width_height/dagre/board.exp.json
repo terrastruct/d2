@@ -503,34 +503,40 @@
         {
           "name": "num",
           "type": "int",
-          "visibility": "private"
+          "visibility": "private",
+          "underline": false
         },
         {
           "name": "timeout",
           "type": "int",
-          "visibility": "private"
+          "visibility": "private",
+          "underline": false
         },
         {
           "name": "pid",
           "type": "",
-          "visibility": "private"
+          "visibility": "private",
+          "underline": false
         }
       ],
       "methods": [
         {
           "name": "getStatus()",
           "return": "Enum",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         },
         {
           "name": "getJobs()",
           "return": "Job[]",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         },
         {
           "name": "setTimeout(seconds int)",
           "return": "void",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         }
       ],
       "columns": null,
