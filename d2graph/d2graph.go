@@ -281,26 +281,27 @@ func (r Reference) InEdge() bool {
 }
 
 type Style struct {
-	Opacity       *Scalar `json:"opacity,omitempty"`
-	Stroke        *Scalar `json:"stroke,omitempty"`
-	Fill          *Scalar `json:"fill,omitempty"`
-	FillPattern   *Scalar `json:"fillPattern,omitempty"`
-	StrokeWidth   *Scalar `json:"strokeWidth,omitempty"`
-	StrokeDash    *Scalar `json:"strokeDash,omitempty"`
-	BorderRadius  *Scalar `json:"borderRadius,omitempty"`
-	Shadow        *Scalar `json:"shadow,omitempty"`
-	ThreeDee      *Scalar `json:"3d,omitempty"`
-	Multiple      *Scalar `json:"multiple,omitempty"`
-	Font          *Scalar `json:"font,omitempty"`
-	FontSize      *Scalar `json:"fontSize,omitempty"`
-	FontColor     *Scalar `json:"fontColor,omitempty"`
-	Animated      *Scalar `json:"animated,omitempty"`
-	Bold          *Scalar `json:"bold,omitempty"`
-	Italic        *Scalar `json:"italic,omitempty"`
-	Underline     *Scalar `json:"underline,omitempty"`
-	Filled        *Scalar `json:"filled,omitempty"`
-	DoubleBorder  *Scalar `json:"doubleBorder,omitempty"`
-	TextTransform *Scalar `json:"textTransform,omitempty"`
+	Opacity         *Scalar `json:"opacity,omitempty"`
+	Stroke          *Scalar `json:"stroke,omitempty"`
+	Fill            *Scalar `json:"fill,omitempty"`
+	FillPattern     *Scalar `json:"fillPattern,omitempty"`
+	StrokeWidth     *Scalar `json:"strokeWidth,omitempty"`
+	StrokeDash      *Scalar `json:"strokeDash,omitempty"`
+	BorderRadius    *Scalar `json:"borderRadius,omitempty"`
+	Shadow          *Scalar `json:"shadow,omitempty"`
+	ThreeDee        *Scalar `json:"3d,omitempty"`
+	Multiple        *Scalar `json:"multiple,omitempty"`
+	MultipleOpacity *Scalar `json:"multipleOpacity,omitempty"`
+	Font            *Scalar `json:"font,omitempty"`
+	FontSize        *Scalar `json:"fontSize,omitempty"`
+	FontColor       *Scalar `json:"fontColor,omitempty"`
+	Animated        *Scalar `json:"animated,omitempty"`
+	Bold            *Scalar `json:"bold,omitempty"`
+	Italic          *Scalar `json:"italic,omitempty"`
+	Underline       *Scalar `json:"underline,omitempty"`
+	Filled          *Scalar `json:"filled,omitempty"`
+	DoubleBorder    *Scalar `json:"doubleBorder,omitempty"`
+	TextTransform   *Scalar `json:"textTransform,omitempty"`
 }
 
 // NoneTextTransform will return a boolean if the text should not have any
@@ -486,6 +487,15 @@ func (s *Style) Apply(key, value string) error {
 			return fmt.Errorf(`expected "text-transform" to be one of (%s)`, strings.Join(d2ast.TextTransforms, ", "))
 		}
 		s.TextTransform.Value = value
+	case "multipleopacity":
+		if s.MultipleOpacity == nil {
+			break
+		}
+		f, err := strconv.ParseFloat(value, 64)
+		if err != nil || (f < 0 || f > 1) {
+			return errors.New(`expected "opacity" to be a number between 0.0 and 1.0`)
+		}
+		s.MultipleOpacity.Value = value
 	default:
 		return fmt.Errorf("unknown style key: %s", key)
 	}

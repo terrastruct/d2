@@ -756,6 +756,35 @@ func (c *compiler) compileStyleField(styles *d2graph.Style, f *d2ir.Field) {
 		c.errorf(f.LastRef().AST(), `invalid style keyword: "%s"`, f.Name.ScalarString())
 		return
 	}
+
+	if f.Map() != nil {
+		for _, ff := range f.Map().Fields {
+			if ff.Name.ScalarString() == "opacity" && ff.Name.IsUnquoted() {
+				if ff.Primary() == nil {
+					c.errorf(ff.LastPrimaryKey(), `invalid "opacity" field`)
+				} else {
+					scalar := ff.Primary().Value
+					switch f.Name.ScalarString() {
+					case "multiple":
+						styles.MultipleOpacity = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+						err := styles.Apply(f.Name.ScalarString()+ff.Name.ScalarString(), scalar.ScalarString())
+						if err != nil {
+							c.errorf(scalar, err.Error())
+							return
+						}
+					default:
+						c.errorf(f.Name, `invalid "opacity" style for "%s"`, f.Name.ScalarString())
+						return
+					}
+				}
+			} else {
+				if ff.LastPrimaryKey() != nil {
+					c.errorf(ff.LastPrimaryKey(), `unexpected field %s`, ff.Name.ScalarString())
+				}
+			}
+		}
+	}
+
 	if f.Primary() == nil {
 		return
 	}

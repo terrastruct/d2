@@ -1204,6 +1204,14 @@ customer4: |md
   shape: c4-person
 }
 
+-- multiple opacity --
+a: {
+  style: {
+    multiple: true
+    multiple.opacity: 0.5
+  }
+}
+
 -- edge-special-text --
 a -> b: |latex
   \lim_{h \rightarrow 0 } \frac{f(x+h)-f(x)}{h}
@@ -1241,3 +1249,4 @@ func main() {
   fmt.Println("Hello World")
 }
 |
+

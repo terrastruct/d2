@@ -41,6 +41,7 @@ var CompositeReservedKeywords = map[string]struct{}{
 	"constraint":       {},
 	"label":            {},
 	"icon":             {},
+	"multiple":         {},
 }
 
 // StyleKeywords are reserved keywords which cannot exist outside of the "style" keyword
