@@ -76,10 +76,6 @@ var StyleKeywords = map[string]struct{}{
 	"filled":   {},
 }
 
-var CompositeStyleKeywords = map[string]string{
-	"multiple": "opacity",
-}
-
 // TODO maybe autofmt should allow other values, and transform them to conform
 // e.g. left-center becomes center-left
 var NearConstantsArray = []string{
