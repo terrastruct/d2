@@ -198,7 +198,8 @@
             {
               "name": "firstName?",
               "type": "string",
-              "visibility": "public"
+              "visibility": "public",
+              "underline": false
             }
           ],
           "methods": null

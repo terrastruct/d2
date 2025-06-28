@@ -1011,10 +1011,12 @@ func (c *compiler) compileClass(obj *d2graph.Object) {
 			if typ == f.IDVal {
 				typ = ""
 			}
+			underline := f.Attributes.Style.Underline != nil && f.Attributes.Style.Underline.Value == "true"
 			obj.Class.Fields = append(obj.Class.Fields, d2target.ClassField{
 				Name:       name,
 				Type:       typ,
 				Visibility: visibility,
+				Underline:  underline,
 			})
 		} else {
 			// TODO: Not great, AST should easily allow specifying alternate primary field
@@ -1023,10 +1025,12 @@ func (c *compiler) compileClass(obj *d2graph.Object) {
 			if returnType == f.IDVal {
 				returnType = "void"
 			}
+			underline := f.Attributes.Style.Underline != nil && f.Attributes.Style.Underline.Value == "true"
 			obj.Class.Methods = append(obj.Class.Methods, d2target.ClassMethod{
 				Name:       name,
 				Return:     returnType,
 				Visibility: visibility,
+				Underline:  underline,
 			})
 		}
 	}

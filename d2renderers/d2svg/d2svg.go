@@ -109,7 +109,7 @@ func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height in
 	return left, top, width, height
 }
 
-func renderLegend(buf *bytes.Buffer, diagram *d2target.Diagram, diagramHash string, theme *d2themes.Theme) error {
+func RenderLegend(buf *bytes.Buffer, diagram *d2target.Diagram, diagramHash string, theme *d2themes.Theme) error {
 	if diagram.Legend == nil || (len(diagram.Legend.Shapes) == 0 && len(diagram.Legend.Connections) == 0) {
 		return nil
 	}
@@ -553,6 +553,51 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection, i
 		}
 
 		path = circleEl.Render()
+	case d2target.CrossArrowhead:
+		inset := strokeWidth / 8
+		rotationAngle := math.Pi / 4
+		origin := geo.NewPoint(width/2, height/2)
+		newOrigin := geo.NewPoint(math.Cos(rotationAngle)*origin.X-math.Sin(rotationAngle)*origin.Y, math.Sin(rotationAngle)*origin.X+math.Cos(rotationAngle)*origin.Y)
+
+		crossEl := d2themes.NewThemableElement("polygon", inlineTheme)
+		crossEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f, %f,%f %f,%f %f,%f %f,%f %f,%f %f,%f %f,%f %f,%f",
+			0., height/2+inset,
+			width/2-inset, height/2+inset,
+			width/2-inset, height,
+			width/2+inset, height,
+			width/2+inset, height/2+inset,
+			width, height/2+inset,
+			width, height/2-inset,
+			width/2+inset, height/2-inset,
+			width/2+inset, 0.,
+			width/2-inset, 0.,
+			width/2-inset, height/2-inset,
+			0., height/2-inset,
+		)
+		crossEl.Transform = fmt.Sprintf("translate(%f, %f) rotate(45)", -newOrigin.X+width/2, -newOrigin.Y+height/2)
+
+		childPathEl := d2themes.NewThemableElement("path", inlineTheme)
+		if isTarget {
+			childPathEl.D = fmt.Sprintf("M%f,%f %f,%f",
+				width/2, height/2,
+				width, height/2,
+			)
+		} else {
+			childPathEl.D = fmt.Sprintf("M%f,%f %f,%f",
+				width/2, height/2,
+				0., height/2,
+			)
+		}
+
+		gEl := d2themes.NewThemableElement("g", inlineTheme)
+		gEl.Fill = d2target.BG_COLOR
+		gEl.Stroke = connection.Stroke
+		gEl.ClassName = "connection"
+		gEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+		gEl.Content = fmt.Sprintf("%s%s",
+			crossEl.Render(), childPathEl.Render(),
+		)
+		path = gEl.Render()
 	case d2target.FilledBoxArrowhead:
 		polygonEl := d2themes.NewThemableElement("polygon", inlineTheme)
 		polygonEl.ClassName = "connection"
@@ -967,46 +1012,141 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 	}
 
 	if connection.Label != "" {
-		fontClass := "text"
-		if connection.FontFamily == "mono" {
-			fontClass = "text-mono"
-		}
-		if connection.Bold {
-			fontClass += "-bold"
-		} else if connection.Italic {
-			fontClass += "-italic"
-		}
-		if connection.Underline {
-			fontClass += " text-underline"
-		}
-		if connection.Fill != color.Empty {
-			rectEl := d2themes.NewThemableElement("rect", inlineTheme)
-			rectEl.Rx = 10
-			rectEl.X, rectEl.Y = labelTL.X-4, labelTL.Y-3
-			rectEl.Width, rectEl.Height = float64(connection.LabelWidth)+8, float64(connection.LabelHeight)+6
-			rectEl.Fill = connection.Fill
-			fmt.Fprint(writer, rectEl.Render())
-		}
+		if connection.Language == "latex" {
+			render, err := d2latex.Render(connection.Label)
+			if err != nil {
+				return labelMask, err
+			}
+			// Remove XML declaration and DOCTYPE from LaTeX SVG output
+			xmlDecl := `<?xml version="1.0" encoding="UTF-8"?>`
+			doctype := `<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">`
+			render = strings.ReplaceAll(render, xmlDecl, "")
+			render = strings.ReplaceAll(render, doctype, "")
+			gEl := d2themes.NewThemableElement("g", inlineTheme)
+			gEl.SetTranslate(labelTL.X, labelTL.Y)
+			gEl.Color = connection.Color
+			gEl.Content = render
+			fmt.Fprint(writer, gEl.Render())
+		} else if connection.Language == "markdown" {
+			render, err := textmeasure.RenderMarkdown(connection.Label)
+			if err != nil {
+				return labelMask, err
+			}
 
-		textEl := d2themes.NewThemableElement("text", inlineTheme)
-		textEl.X = labelTL.X + float64(connection.LabelWidth)/2
-		textEl.Y = labelTL.Y + float64(connection.FontSize)
-		textEl.ClassName = fontClass
-		textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "middle", connection.FontSize)
-		textEl.Content = RenderText(connection.Label, textEl.X, float64(connection.LabelHeight))
+			fmt.Fprintf(writer, `<g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="%f" y="%f" width="%d" height="%d">`,
+				labelTL.X, labelTL.Y, connection.LabelWidth, connection.LabelHeight,
+			)
 
-		if connection.Link != "" {
-			textEl.ClassName += " text-underline text-link"
+			render = strings.ReplaceAll(render, "<hr>", "<hr />")
 
-			fmt.Fprintf(writer, `<a href="%s" xlink:href="%[1]s">`, svg.EscapeText(connection.Link))
+			mdEl := d2themes.NewThemableElement("div", inlineTheme)
+			mdEl.ClassName = "md"
+			mdEl.Content = render
+
+			var styles []string
+			if connection.FontSize != textmeasure.MarkdownFontSize {
+				styles = append(styles, fmt.Sprintf("font-size:%vpx", connection.FontSize))
+			}
+			if connection.Fill != "" && connection.Fill != "transparent" {
+				styles = append(styles, fmt.Sprintf(`background-color:%s`, connection.Fill))
+			}
+			if !color.IsThemeColor(connection.Color) {
+				styles = append(styles, fmt.Sprintf(`color:%s`, connection.Color))
+			}
+
+			mdEl.Style = strings.Join(styles, ";")
+
+			fmt.Fprint(writer, mdEl.Render())
+			fmt.Fprint(writer, `</foreignObject></g>`)
+		} else if connection.Language != "" {
+			lexer := lexers.Get(connection.Language)
+			if lexer == nil {
+				lexer = lexers.Fallback
+			}
+			for _, isLight := range []bool{true, false} {
+				theme := "github"
+				if !isLight {
+					theme = "catppuccin-mocha"
+				}
+				style := styles.Get(theme)
+				if style == nil {
+					return labelMask, errors.New(`code snippet style "github" not found`)
+				}
+				iterator, err := lexer.Tokenise(nil, connection.Label)
+				if err != nil {
+					return labelMask, err
+				}
+
+				svgStyles := styleToSVG(style)
+				class := "light-code"
+				if !isLight {
+					class = "dark-code"
+				}
+				var fontSize string
+				if connection.FontSize != d2fonts.FONT_SIZE_M {
+					fontSize = fmt.Sprintf(` style="font-size:%v"`, connection.FontSize)
+				}
+				fmt.Fprintf(writer, `<g transform="translate(%f %f)" class="%s"%s>`,
+					labelTL.X, labelTL.Y, class, fontSize,
+				)
+
+				lineHeight := textmeasure.CODE_LINE_HEIGHT
+				for index, tokens := range chroma.SplitTokensIntoLines(iterator.Tokens()) {
+					fmt.Fprintf(writer, "<text class=\"text-mono\" x=\"0\" y=\"%fem\">", 1+float64(index)*lineHeight)
+					for _, token := range tokens {
+						text := svgEscaper.Replace(token.String())
+						attr := styleAttr(svgStyles, token.Type)
+						if attr != "" {
+							text = fmt.Sprintf("<tspan %s>%s</tspan>", attr, text)
+						}
+						fmt.Fprint(writer, text)
+					}
+					fmt.Fprint(writer, "</text>")
+				}
+				fmt.Fprint(writer, "</g>")
+			}
 		} else {
-			textEl.Fill = connection.GetFontColor()
-		}
+			fontClass := "text"
+			if connection.FontFamily == "mono" {
+				fontClass = "text-mono"
+			}
+			if connection.Bold {
+				fontClass += "-bold"
+			} else if connection.Italic {
+				fontClass += "-italic"
+			}
+			if connection.Underline {
+				fontClass += " text-underline"
+			}
+			if connection.Fill != color.Empty {
+				rectEl := d2themes.NewThemableElement("rect", inlineTheme)
+				rectEl.Rx = 10
+				rectEl.X, rectEl.Y = labelTL.X-4, labelTL.Y-3
+				rectEl.Width, rectEl.Height = float64(connection.LabelWidth)+8, float64(connection.LabelHeight)+6
+				rectEl.Fill = connection.Fill
+				fmt.Fprint(writer, rectEl.Render())
+			}
 
-		fmt.Fprint(writer, textEl.Render())
+			textEl := d2themes.NewThemableElement("text", inlineTheme)
+			textEl.X = labelTL.X + float64(connection.LabelWidth)/2
+			textEl.Y = labelTL.Y + float64(connection.FontSize)
+			textEl.ClassName = fontClass
+			textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "middle", connection.FontSize)
+			textEl.Content = RenderText(connection.Label, textEl.X, float64(connection.LabelHeight))
 
-		if connection.Link != "" {
-			fmt.Fprintf(writer, "</a>")
+			if connection.Link != "" {
+				textEl.ClassName += " text-underline text-link"
+
+				fmt.Fprintf(writer, `<a href="%s" xlink:href="%[1]s">`, svg.EscapeText(connection.Link))
+			} else {
+				textEl.Fill = connection.GetFontColor()
+			}
+
+			fmt.Fprint(writer, textEl.Render())
+
+			if connection.Link != "" {
+				fmt.Fprintf(writer, "</a>")
+			}
 		}
 	}
 
@@ -1709,6 +1849,11 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			if err != nil {
 				return labelMask, err
 			}
+			// Remove XML declaration and DOCTYPE from LaTeX SVG output
+			xmlDecl := `<?xml version="1.0" encoding="UTF-8"?>`
+			doctype := `<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">`
+			render = strings.ReplaceAll(render, xmlDecl, "")
+			render = strings.ReplaceAll(render, doctype, "")
 			gEl := d2themes.NewThemableElement("g", inlineTheme)
 
 			labelPosition := label.FromString(targetShape.LabelPosition)
@@ -2412,7 +2557,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 
 	if diagram.Legend != nil && (len(diagram.Legend.Shapes) > 0 || len(diagram.Legend.Connections) > 0) {
 		legendBuf := &bytes.Buffer{}
-		err := renderLegend(legendBuf, diagram, diagramHash, inlineTheme)
+		err := RenderLegend(legendBuf, diagram, diagramHash, inlineTheme)
 		if err != nil {
 			return nil, err
 		}
@@ -2515,6 +2660,14 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 			if s.Language == "markdown" {
 				hasMarkdown = true
 				break
+			}
+		}
+		if !hasMarkdown {
+			for _, c := range diagram.Connections {
+				if c.Language == "markdown" {
+					hasMarkdown = true
+					break
+				}
 			}
 		}
 		if hasMarkdown {

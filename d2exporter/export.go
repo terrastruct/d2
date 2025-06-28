@@ -449,6 +449,7 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 	connection.Label = text.Text
 	connection.LabelWidth = text.Dimensions.Width
 	connection.LabelHeight = text.Dimensions.Height
+	connection.Language = edge.Language
 
 	if edge.LabelPosition != nil {
 		connection.LabelPosition = *edge.LabelPosition

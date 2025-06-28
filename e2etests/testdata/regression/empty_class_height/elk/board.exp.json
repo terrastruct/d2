@@ -40,12 +40,14 @@
         {
           "name": "num",
           "type": "int",
-          "visibility": "private"
+          "visibility": "private",
+          "underline": false
         },
         {
           "name": "timeout",
           "type": "int",
-          "visibility": "private"
+          "visibility": "private",
+          "underline": false
         }
       ],
       "methods": null,

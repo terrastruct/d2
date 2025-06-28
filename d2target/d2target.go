@@ -810,6 +810,7 @@ const (
 	FilledDiamondArrowhead    Arrowhead = "filled-diamond"
 	CircleArrowhead           Arrowhead = "circle"
 	FilledCircleArrowhead     Arrowhead = "filled-circle"
+	CrossArrowhead            Arrowhead = "cross"
 	BoxArrowhead              Arrowhead = "box"
 	FilledBoxArrowhead        Arrowhead = "filled-box"
 
@@ -837,6 +838,7 @@ var Arrowheads = map[string]struct{}{
 	string(CfMany):            {},
 	string(CfOneRequired):     {},
 	string(CfManyRequired):    {},
+	string(CrossArrowhead):    {},
 }
 
 func ToArrowhead(arrowheadType string, filled *bool) Arrowhead {
@@ -860,6 +862,8 @@ func ToArrowhead(arrowheadType string, filled *bool) Arrowhead {
 			return UnfilledTriangleArrowhead
 		}
 		return TriangleArrowhead
+	case string(CrossArrowhead):
+		return CrossArrowhead
 	case string(BoxArrowhead):
 		if filled != nil && *filled {
 			return FilledBoxArrowhead
@@ -914,6 +918,11 @@ func (arrowhead Arrowhead) Dimensions(strokeWidth float64) (width, height float6
 		baseHeight = 9
 		widthMultiplier = 5.5
 		heightMultiplier = 4.5
+	case CrossArrowhead:
+		baseWidth = 7
+		baseHeight = 7
+		widthMultiplier = 5
+		heightMultiplier = 5
 	case FilledCircleArrowhead, CircleArrowhead:
 		baseWidth = 8
 		baseHeight = 8
@@ -1014,12 +1023,13 @@ func IsShape(s string) bool {
 }
 
 type MText struct {
-	Text     string `json:"text"`
-	FontSize int    `json:"fontSize"`
-	IsBold   bool   `json:"isBold"`
-	IsItalic bool   `json:"isItalic"`
-	Language string `json:"language"`
-	Shape    string `json:"shape"`
+	Text        string `json:"text"`
+	FontSize    int    `json:"fontSize"`
+	IsBold      bool   `json:"isBold"`
+	IsItalic    bool   `json:"isItalic"`
+	IsUnderline bool   `json:"isUnderline"`
+	Language    string `json:"language"`
+	Shape       string `json:"shape"`
 
 	Dimensions TextDimensions `json:"dimensions,omitempty"`
 }

@@ -304,6 +304,19 @@ a <-> e
 f <-> g: {style.animated: true}
 x -- x: {style.animated: true}
 
+-- sketch-cross-arrowhead --
+vars: {
+  d2-config: {
+    sketch: true
+  }
+}
+
+start <-> end: {
+    style.stroke-width: 6
+    source-arrowhead.shape: cross
+    target-arrowhead.shape: cross
+}
+
 -- sequence-edge-group-tall-edge-label --
 Sequence: {
   shape: sequence_diagram
@@ -1198,3 +1211,42 @@ a: {
     multiple.opacity: 0.5
   }
 }
+
+-- edge-special-text --
+a -> b: |latex
+  \lim_{h \rightarrow 0 } \frac{f(x+h)-f(x)}{h}
+|
+
+c -> d: |md
+  **Bold text** and *italic text*
+
+  - Item 1
+  - Item 2
+|
+
+e -> f: |go
+  func main() {
+    fmt.Println("Hello World")
+  }
+|
+z -> x: regular
+
+-- edge-special-text-sequence --
+shape: sequence_diagram
+
+Alice -> Bob: |latex
+  f(x) = x^2 + 2x + 1
+|
+
+Bob -> Charlie: |md
+  **Authentication** required
+
+  Please provide *credentials*
+|
+
+Charlie -> Alice: |go
+func main() {
+  fmt.Println("Hello World")
+}
+|
+

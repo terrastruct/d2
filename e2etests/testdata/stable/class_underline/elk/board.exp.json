@@ -1,0 +1,139 @@
+{
+  "name": "",
+  "config": {
+    "sketch": false,
+    "themeID": 0,
+    "darkThemeID": null,
+    "pad": null,
+    "center": null,
+    "layoutEngine": null
+  },
+  "isFolderOnly": false,
+  "fontFamily": "SourceSansPro",
+  "shapes": [
+    {
+      "id": "manager",
+      "type": "class",
+      "pos": {
+        "x": 12,
+        "y": 12
+      },
+      "width": 422,
+      "height": 368,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N1",
+      "stroke": "N7",
+      "animated": false,
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": [
+        {
+          "name": "num",
+          "type": "int",
+          "visibility": "private",
+          "underline": true
+        },
+        {
+          "name": "timeout",
+          "type": "int",
+          "visibility": "private",
+          "underline": false
+        },
+        {
+          "name": "pid",
+          "type": "",
+          "visibility": "private",
+          "underline": false
+        }
+      ],
+      "methods": [
+        {
+          "name": "getStatus()",
+          "return": "Enum",
+          "visibility": "public",
+          "underline": true
+        },
+        {
+          "name": "getJobs()",
+          "return": "Job[]",
+          "visibility": "public",
+          "underline": false
+        },
+        {
+          "name": "setTimeout(seconds int)",
+          "return": "void",
+          "visibility": "public",
+          "underline": false
+        }
+      ],
+      "columns": null,
+      "label": "BatchManager",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 170,
+      "labelHeight": 31,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
+    }
+  ],
+  "connections": [],
+  "root": {
+    "id": "",
+    "type": "",
+    "pos": {
+      "x": 0,
+      "y": 0
+    },
+    "width": 0,
+    "height": 0,
+    "opacity": 0,
+    "strokeDash": 0,
+    "strokeWidth": 0,
+    "borderRadius": 0,
+    "fill": "N7",
+    "stroke": "",
+    "animated": false,
+    "shadow": false,
+    "3d": false,
+    "multiple": false,
+    "double-border": false,
+    "tooltip": "",
+    "link": "",
+    "icon": null,
+    "iconPosition": "",
+    "blend": false,
+    "fields": null,
+    "methods": null,
+    "columns": null,
+    "label": "",
+    "fontSize": 0,
+    "fontFamily": "",
+    "language": "",
+    "color": "",
+    "italic": false,
+    "bold": false,
+    "underline": false,
+    "labelWidth": 0,
+    "labelHeight": 0,
+    "zIndex": 0,
+    "level": 0
+  }
+}
