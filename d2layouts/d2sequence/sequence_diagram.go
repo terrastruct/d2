@@ -361,13 +361,26 @@ func (sd *sequenceDiagram) placeActors() {
 	for rank, actor := range sd.actors {
 		var yOffset float64
 		if actor.HasOutsideBottomLabel() {
-			actor.LabelPosition = go2.Pointer(label.OutsideBottomCenter.String())
+			if actor.IconPosition == nil {
+				actor.LabelPosition = go2.Pointer(label.OutsideBottomCenter.String())
+			}
 			yOffset = sd.maxActorHeight - actor.Height
 			if actor.HasLabel() {
 				yOffset -= float64(actor.LabelDimensions.Height)
 			}
 		} else {
-			actor.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
+			if actor.Icon != nil && actor.Shape.Value != d2target.ShapeImage {
+				if actor.LabelPosition == nil {
+					actor.LabelPosition = go2.Pointer(label.OutsideTopCenter.String())
+				}
+				if actor.IconPosition == nil {
+					actor.IconPosition = go2.Pointer(label.InsideMiddleCenter.String())
+				}
+			} else {
+				if actor.IconPosition == nil {
+					actor.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
+				}
+			}
 			yOffset = sd.maxActorHeight - actor.Height
 		}
 		halfWidth := actor.Width / 2.
