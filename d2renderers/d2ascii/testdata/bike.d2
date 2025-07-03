@@ -1,0 +1,44 @@
+frame: {
+  shape: rectangle
+  label: "Frame"
+}
+
+front_wheel: {
+  shape: circle
+  label: "Front Wheel"
+}
+
+back_wheel: {
+  shape: circle
+  label: "Back Wheel"
+}
+
+handlebar: {
+  shape: rectangle
+  label: "Handlebar"
+}
+
+seat: {
+  shape: rectangle
+  label: "Seat"
+}
+
+pedal: {
+  shape: diamond
+  label: "Pedal"
+}
+
+chain: {
+  shape: oval
+  label: "Chain"
+}
+
+# Connections
+frame -> front_wheel: "front fork"
+frame -> back_wheel: "rear axle"
+frame -> handlebar: "steering"
+frame -> seat: "support"
+frame -> pedal: "crank"
+pedal -> back_wheel: "drive"
+chain -> back_wheel: "power"
+chain -> pedal: "loop" 
