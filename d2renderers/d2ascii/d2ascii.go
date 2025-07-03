@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"math"
+	"regexp"
 	"slices"
 	"strings"
 	"unicode"
@@ -13,17 +14,46 @@ import (
 )
 
 type ASCIIartist struct {
-	canvas [][]string
-	FW     float64
-	FH     float64
-	chars  map[string]string
-	entr   string
-	bcurve string
-	tcurve string
-	SCALE  float64
+	canvas  [][]string
+	FW      float64
+	FH      float64
+	chars   map[string]string
+	entr    string
+	bcurve  string
+	tcurve  string
+	SCALE   float64
+	diagram d2target.Diagram
 }
 type RenderOpts struct {
 	Scale *float64
+}
+type Boundary struct {
+	TL []int
+	BR []int
+}
+
+func (b *Boundary) Contains(x int, y int) bool {
+	return x >= b.TL[0] && x <= b.BR[0] && y >= b.TL[1] && y <= b.BR[1]
+}
+
+func NewBoundary(TL []int, BR []int) *Boundary {
+	boundary := &Boundary{
+		TL: TL,
+		BR: BR,
+	}
+	return boundary
+}
+
+func (a *ASCIIartist) GetBoundary(s d2target.Shape) ([]int, []int) {
+	x1 := int(math.Round((float64(s.Pos.X) / a.FW) * a.SCALE))
+	y1 := int(math.Round((float64(s.Pos.Y) / a.FH) * a.SCALE))
+	x2 := int(math.Round(((float64(s.Pos.X) + float64(s.Width) - 1) / a.FW) * a.SCALE))
+	y2 := int(math.Round(((float64(s.Pos.Y) + float64(s.Height) - 1) / a.FH) * a.SCALE))
+	return []int{x1, y1}, []int{x2, y2}
+}
+
+func (a *ASCIIartist) GetActualBoundary(s d2target.Shape) ([]int, []int) {
+	return []int{s.Pos.X, s.Pos.Y}, []int{s.Pos.X + s.Width, s.Pos.Y + s.Height}
 }
 
 func NewASCIIartist() *ASCIIartist {
@@ -39,8 +69,9 @@ func NewASCIIartist() *ASCIIartist {
 			"HOR": "─", "VER": "│", "LVER": "▏", "RVER": "▕",
 			"TLC": "┌", "TRC": "┐", "BLC": "└", "BRC": "┘",
 			"BS": "╲", "FS": "╱", "X": "╳", "US": "_", "OL": "‾",
-			"DOT": ".", "HPN": "-", "TLD": "`",
+			"DOT": ".", "HPN": "-", "TLD": "`", "TDO": "┬", "TLE": "┤", "TRI": "├", "TUP": "┴",
 		},
+		diagram: *d2target.NewDiagram(),
 	}
 
 	return artist
@@ -51,6 +82,7 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 	}
 	xOffset := 0
 	yOffset := 0
+	a.diagram = *diagram
 	tl, br := diagram.NestedBoundingBox()
 	if tl.X < 0 {
 		xOffset = -tl.X
@@ -691,14 +723,37 @@ func (d *ASCIIartist) drawDiamond(x, y, w, h float64, label, labelPosition strin
 		d.drawLabel(lx, ly, label)
 	}
 }
+
 func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Point, dstArrow d2target.Arrowhead, label string) {
 	// conn.Route, conn.DstArrow, conn.Label
 	routes := conn.Route
 	label := conn.Label
+	re := regexp.MustCompile(` -> | <-> | -- `)
+	re1 := regexp.MustCompile(`\(([^}]*)\)`)
+	re2 := regexp.MustCompile(`(.*)\(`)
+	match1 := re1.FindStringSubmatch(conn.ID)
+	match2 := re2.FindStringSubmatch(conn.ID)
+	var frmShapeBoundary Boundary
+	var toShapeBoundary Boundary
+	if len(match1) > 0 {
+		_ID := ""
+		if len(match2) > 0 {
+			_ID = match2[1]
+		}
+		for _, shape := range aa.diagram.Shapes {
+			if shape.ID == _ID+re.Split(match1[1], -1)[0] {
+				frmShapeBoundary = *NewBoundary(aa.GetBoundary(shape))
+				// _frmShapeBoundary = *NewBoundary(aa.GetActualBoundary(shape))
+			} else if shape.ID == _ID+re.Split(match1[1], -1)[1] {
+				toShapeBoundary = *NewBoundary(aa.GetBoundary(shape))
+				// _toShapeBoundary = *NewBoundary(aa.GetActualBoundary(shape))
+			}
+		}
+	}
 	for i := range routes {
 		routes[i].X, routes[i].Y = aa.calibrateXY(routes[i].X, routes[i].Y)
+		routes[i].X -= 1
 	}
-
 	// Determine turn directions
 	turnDir := map[string]string{}
 	_routes := make([][2]float64, len(routes))
@@ -765,7 +820,6 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 				fy += sy
 				continue
 			}
-
 			key := fmt.Sprintf("%d_%d", x, y)
 			if char, ok := corners[turnDir[key]]; ok {
 				aa.canvas[y][x] = char
@@ -811,9 +865,29 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 						aa.canvas[ly][lx+j] = string(ch)
 					}
 				}
-			} else if !(x == int(math.Round(ax)) && y == int(math.Round(ay))) {
+			} else {
+				overWrite := false
+				if aa.canvas[y][x] != " " {
+					overWrite = true
+				}
 				if sx == 0 {
-					aa.canvas[y][x] = aa.chars["VER"]
+					if overWrite && (y == frmShapeBoundary.BR[1] || y == frmShapeBoundary.TL[1]) && aa.canvas[y][x] == "─" {
+						if sy > 0 {
+							aa.canvas[y][x] = aa.chars["TDO"]
+						} else {
+							aa.canvas[y][x] = aa.chars["TUP"]
+						}
+					} else if overWrite && (y == toShapeBoundary.BR[1] || y == toShapeBoundary.TL[1]) && aa.canvas[y][x] == "─" {
+						if sy > 0 {
+							aa.canvas[y][x] = aa.chars["TUP"]
+						} else {
+							aa.canvas[y][x] = aa.chars["TDO"]
+						}
+					} else if overWrite && ((aa.canvas[y][x] == "_" && (y == frmShapeBoundary.BR[1] || y == toShapeBoundary.BR[1])) || (aa.canvas[y][x] == "‾" && (y == frmShapeBoundary.TL[1] || y == toShapeBoundary.TL[1]))) {
+						// skip
+					} else {
+						aa.canvas[y][x] = aa.chars["VER"]
+					}
 				} else {
 					aa.canvas[y][x] = aa.chars["HOR"]
 				}
@@ -843,7 +917,9 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 				if labelPos.I == i-1 && int(math.Round(ay))+labelPos.Y*geo.Sign(sy) == y {
 					aa.canvas[y][x] = " "
 					for j, ch := range label {
-						aa.canvas[y][labelPos.X+j] = string(ch)
+						if y < len(aa.canvas) && (labelPos.X+j) < len(aa.canvas[0]) {
+							aa.canvas[y][labelPos.X+j] = string(ch)
+						}
 					}
 				}
 			}
