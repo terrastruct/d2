@@ -1633,6 +1633,12 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					el.Stroke = stroke
 					el.Style = style
 					el.Rx = borderRadius
+
+					// Apply global mask for border labels
+					if targetShape.Label != "" && label.FromString(targetShape.LabelPosition).IsBorder() {
+						el.Mask = fmt.Sprintf("url(#%s)", diagramHash)
+					}
+
 					fmt.Fprint(writer, el.Render())
 				}
 			} else {
@@ -1824,7 +1830,11 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			float64(targetShape.LabelWidth),
 			float64(targetShape.LabelHeight),
 		)
-		labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight, 0.75)
+
+		if labelPosition.IsBorder() {
+			// Border labels participate in the global mask system like connections
+			labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight, 1.0)
+		}
 
 		fontClass := "text"
 		if targetShape.FontFamily == "mono" {
@@ -2014,7 +2024,12 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			textEl.Content = RenderText(targetShape.Label, textEl.X, float64(targetShape.LabelHeight))
 			fmt.Fprint(writer, textEl.Render())
 			if targetShape.Blend {
-				labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight-d2graph.INNER_LABEL_PADDING, 1)
+				if labelPosition.IsBorder() {
+					// Border labels with blend participate in global mask
+					labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight-d2graph.INNER_LABEL_PADDING, 1)
+				} else {
+					labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight-d2graph.INNER_LABEL_PADDING, 1)
+				}
 			}
 		}
 	}
