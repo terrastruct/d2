@@ -1634,7 +1634,6 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					el.Style = style
 					el.Rx = borderRadius
 
-					// Apply global mask for border labels
 					if targetShape.Label != "" && label.FromString(targetShape.LabelPosition).IsBorder() {
 						el.Mask = fmt.Sprintf("url(#%s)", diagramHash)
 					}
@@ -1832,7 +1831,6 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		)
 
 		if labelPosition.IsBorder() {
-			// Border labels participate in the global mask system like connections
 			labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight, 1.0)
 		}
 
@@ -2023,14 +2021,6 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "middle", targetShape.FontSize)
 			textEl.Content = RenderText(targetShape.Label, textEl.X, float64(targetShape.LabelHeight))
 			fmt.Fprint(writer, textEl.Render())
-			if targetShape.Blend {
-				if labelPosition.IsBorder() {
-					// Border labels with blend participate in global mask
-					labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight-d2graph.INNER_LABEL_PADDING, 1)
-				} else {
-					labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight-d2graph.INNER_LABEL_PADDING, 1)
-				}
-			}
 		}
 	}
 	if targetShape.Tooltip != "" {
