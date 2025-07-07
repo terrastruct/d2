@@ -845,15 +845,88 @@ func pathData(connection d2target.Connection, srcAdj, dstAdj *geo.Point) string 
 }
 
 func makeLabelMask(labelTL *geo.Point, width, height int, opacity float64) string {
+	return makeLabelMaskWithTransform(labelTL, width, height, opacity, nil)
+}
+
+func makeLabelMaskWithTransform(labelTL *geo.Point, width, height int, opacity float64, shapePos *geo.Point) string {
 	fill := "black"
 	if opacity != 1 {
 		fill = fmt.Sprintf("rgba(0,0,0,%.2f)", opacity)
 	}
+
+	x := labelTL.X - 2
+	y := labelTL.Y
+
+	// In sketch mode, shapes use transform="translate(shapePos.X, shapePos.Y)"
+	// so we need to adjust mask coordinates to account for this transform
+	if shapePos != nil {
+		x -= shapePos.X
+		y -= shapePos.Y
+	}
+
 	return fmt.Sprintf(`<rect x="%f" y="%f" width="%d" height="%d" fill="%s"></rect>`,
-		labelTL.X-2, labelTL.Y,
+		x, y,
 		width+4,
 		height,
 		fill,
+	)
+}
+
+// border label mask is minimal, intending to only cover the portion of the border that passes through the label
+// otherwise, when the inside background and outside background colors don't match, there's a bigger discrepancy
+func makeBorderLabelMask(labelPosition label.Position, labelTL *geo.Point, labelWidth, labelHeight int, shapeBox *geo.Box, strokeWidth int, opacity float64, shapePos *geo.Point) string {
+	fill := "black"
+	if opacity != 1 {
+		fill = fmt.Sprintf("rgba(0,0,0,%.2f)", opacity)
+	}
+
+	// In sketch mode, multiply stroke width by 3 for mask calculations to account for
+	// the hand-drawn style that can be wider and more irregular
+	effectiveStrokeWidth := float64(strokeWidth)
+	if shapePos != nil {
+		effectiveStrokeWidth *= 3
+	}
+
+	var maskX, maskY, maskWidth, maskHeight float64
+
+	switch labelPosition {
+	case label.BorderTopLeft, label.BorderTopCenter, label.BorderTopRight:
+		maskX = labelTL.X - 2
+		maskY = shapeBox.TopLeft.Y - effectiveStrokeWidth/2
+		maskWidth = float64(labelWidth + 4)
+		maskHeight = effectiveStrokeWidth
+
+	case label.BorderBottomLeft, label.BorderBottomCenter, label.BorderBottomRight:
+		maskX = labelTL.X - 2
+		maskY = shapeBox.TopLeft.Y + shapeBox.Height - effectiveStrokeWidth/2
+		maskWidth = float64(labelWidth + 4)
+		maskHeight = effectiveStrokeWidth
+
+	case label.BorderLeftTop, label.BorderLeftMiddle, label.BorderLeftBottom:
+		maskX = shapeBox.TopLeft.X - effectiveStrokeWidth/2
+		maskY = labelTL.Y - 2
+		maskWidth = effectiveStrokeWidth
+		maskHeight = float64(labelHeight + 4)
+
+	case label.BorderRightTop, label.BorderRightMiddle, label.BorderRightBottom:
+		maskX = shapeBox.TopLeft.X + shapeBox.Width - effectiveStrokeWidth/2
+		maskY = labelTL.Y - 2
+		maskWidth = effectiveStrokeWidth
+		maskHeight = float64(labelHeight + 4)
+
+	default:
+		// never gets here
+		return ""
+	}
+
+	// In sketch mode, adjust coordinates to account for shape transform
+	if shapePos != nil {
+		maskX -= shapePos.X
+		maskY -= shapePos.Y
+	}
+
+	return fmt.Sprintf(`<rect x="%f" y="%f" width="%f" height="%f" fill="%s"></rect>`,
+		maskX, maskY, maskWidth, maskHeight, fill,
 	)
 }
 
@@ -1556,7 +1629,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				fmt.Fprint(writer, renderDoubleOval(multipleTL, width, height, fill, "", stroke, style, inlineTheme))
 			}
 			if jsRunner != nil {
-				out, err := d2sketch.DoubleOval(jsRunner, targetShape)
+				out, err := d2sketch.DoubleOval(jsRunner, targetShape, diagramHash)
 				if err != nil {
 					return "", err
 				}
@@ -1569,7 +1642,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				fmt.Fprint(writer, renderOval(multipleTL, width, height, fill, "", stroke, style, inlineTheme))
 			}
 			if jsRunner != nil {
-				out, err := d2sketch.Oval(jsRunner, targetShape)
+				out, err := d2sketch.Oval(jsRunner, targetShape, diagramHash)
 				if err != nil {
 					return "", err
 				}
@@ -1617,7 +1690,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					fmt.Fprint(writer, el.Render())
 				}
 				if jsRunner != nil {
-					out, err := d2sketch.Rect(jsRunner, targetShape)
+					out, err := d2sketch.Rect(jsRunner, targetShape, diagramHash)
 					if err != nil {
 						return "", err
 					}
@@ -1633,6 +1706,11 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					el.Stroke = stroke
 					el.Style = style
 					el.Rx = borderRadius
+
+					if targetShape.Label != "" && label.FromString(targetShape.LabelPosition).IsBorder() {
+						el.Mask = fmt.Sprintf("url(#%s)", diagramHash)
+					}
+
 					fmt.Fprint(writer, el.Render())
 				}
 			} else {
@@ -1661,7 +1739,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					fmt.Fprint(writer, el.Render())
 				}
 				if jsRunner != nil {
-					out, err := d2sketch.DoubleRect(jsRunner, targetShape)
+					out, err := d2sketch.DoubleRect(jsRunner, targetShape, diagramHash)
 					if err != nil {
 						return "", err
 					}
@@ -1709,7 +1787,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			}
 
 			if jsRunner != nil {
-				out, err := d2sketch.Paths(jsRunner, targetShape, s.GetSVGPathData())
+				out, err := d2sketch.Paths(jsRunner, targetShape, diagramHash, s.GetSVGPathData())
 				if err != nil {
 					return "", err
 				}
@@ -1741,7 +1819,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		}
 
 		if jsRunner != nil {
-			out, err := d2sketch.Paths(jsRunner, targetShape, s.GetSVGPathData())
+			out, err := d2sketch.Paths(jsRunner, targetShape, diagramHash, s.GetSVGPathData())
 			if err != nil {
 				return "", err
 			}
@@ -1752,6 +1830,11 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			el.FillPattern = targetShape.FillPattern
 			el.Stroke = stroke
 			el.Style = style
+
+			if targetShape.Label != "" && label.FromString(targetShape.LabelPosition).IsBorder() {
+				el.Mask = fmt.Sprintf("url(#%s)", diagramHash)
+			}
+
 			for _, pathData := range s.GetSVGPathData() {
 				el.D = pathData
 				fmt.Fprint(writer, el.Render())
@@ -1801,7 +1884,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	if targetShape.Label != "" && targetShape.Opacity != 0 {
 		labelPosition := label.FromString(targetShape.LabelPosition)
 		var box *geo.Box
-		if labelPosition.IsOutside() {
+		if labelPosition.IsOutside() || labelPosition.IsBorder() {
 			box = s.GetBox().Copy()
 			// if it is 3d/multiple, place label using box around those
 			if targetShape.ThreeDee {
@@ -1824,7 +1907,14 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			float64(targetShape.LabelWidth),
 			float64(targetShape.LabelHeight),
 		)
-		labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight, 0.75)
+
+		if labelPosition.IsBorder() {
+			if jsRunner != nil {
+				labelMask = makeBorderLabelMask(labelPosition, labelTL, targetShape.LabelWidth, targetShape.LabelHeight, box, targetShape.StrokeWidth, 1.0, tl)
+			} else {
+				labelMask = makeBorderLabelMask(labelPosition, labelTL, targetShape.LabelWidth, targetShape.LabelHeight, box, targetShape.StrokeWidth, 1.0, nil)
+			}
+		}
 
 		fontClass := "text"
 		if targetShape.FontFamily == "mono" {
@@ -2013,9 +2103,6 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "middle", targetShape.FontSize)
 			textEl.Content = RenderText(targetShape.Label, textEl.X, float64(targetShape.LabelHeight))
 			fmt.Fprint(writer, textEl.Render())
-			if targetShape.Blend {
-				labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight-d2graph.INNER_LABEL_PADDING, 1)
-			}
 		}
 	}
 	if targetShape.Tooltip != "" {

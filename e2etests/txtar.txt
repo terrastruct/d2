@@ -1252,3 +1252,59 @@ UserB: {
   label.near: bottom-center
   icon: https://icons.terrastruct.com/azure/General%20Service%20Icons/User%20Icon.svg
 }
+
+-- border-container --
+vars: {
+  d2-config: {
+    theme-id: 300
+  }
+}
+style.fill: black
+env: Your environment {
+  style.fill: black
+  style.stroke-dash: 2
+  style.double-border: false
+  style.stroke: "#1e402d"
+  label.near: border-bottom-center
+  style.font-color: "#3ddb89"
+  app: Your applicaton {
+    style.stroke: "#3d9069"
+    style.fill: "#222a25"
+    style.font-color: "#63c08c"
+
+    *.style.stroke: "#adf1c6"
+    *.style.fill: "#306a4a"
+    *.style.font-color: "#eef9f3"
+    Workflow
+    SDK
+    Workers
+    Workflow -> SDK: hello {
+      style.stroke: "#fbfdfd"
+      style.font-color: "#adf1c6"
+    }
+  }
+}
+
+-- border-label --
+*.label.near: border-bottom-center
+
+rectangle.shape: rectangle
+square.shape: square
+page.shape: page
+parallelogram.shape: parallelogram
+document.shape: document
+cylinder.shape: cylinder
+queue.shape: queue
+package.shape: package
+step.shape: step
+callout.shape: callout
+stored_data.shape: stored_data
+person.shape: person
+diamond.shape: diamond
+oval.shape: oval
+circle.shape: circle
+hexagon.shape: hexagon
+cloud.shape: cloud
+
+cloud2.shape: cloud
+cloud2.height: 400

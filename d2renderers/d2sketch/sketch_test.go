@@ -1358,6 +1358,37 @@ customer -> item: true
 `,
 		},
 		{
+			name:    "border-container",
+			themeID: 300,
+			script: `
+style.fill: black
+env: Your environment {
+  style.fill: blue
+  style.stroke-dash: 2
+  style.double-border: false
+  style.stroke: "#1e402d"
+  label.near: border-bottom-center
+  style.font-color: "#3ddb89"
+  app: Your applicaton {
+    style.stroke: "#3d9069"
+    style.fill: "#222a25"
+    style.font-color: "#63c08c"
+
+    *.style.stroke: "#adf1c6"
+    *.style.fill: "#306a4a"
+    *.style.font-color: "#eef9f3"
+    Workflow
+    SDK
+    Workers
+    Workflow -> SDK: hello {
+      style.stroke: "#fbfdfd"
+      style.font-color: "#adf1c6"
+    }
+  }
+}
+`,
+		},
+		{
 			name: "test-gradient-fill-values-in-sketch-mode",
 			script: `
 				x->y

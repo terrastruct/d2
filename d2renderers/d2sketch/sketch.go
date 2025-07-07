@@ -73,7 +73,7 @@ func defineFillPattern(buf *bytes.Buffer, source, diagramHash string, luminanceC
 	}
 }
 
-func Rect(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
+func Rect(r jsrunner.JSRunner, shape d2target.Shape, diagramHash string) (string, error) {
 	js := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
 		fill: "#000",
 		stroke: "#000",
@@ -91,6 +91,11 @@ func Rect(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "shape"
 	pathEl.Style = shape.CSSStyle()
+
+	if shape.Label != "" && label.FromString(shape.LabelPosition).IsBorder() {
+		pathEl.Mask = fmt.Sprintf("url(#%s)", diagramHash)
+	}
+
 	for _, p := range paths {
 		pathEl.D = p
 		output += pathEl.Render()
@@ -100,6 +105,11 @@ func Rect(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	sketchOEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	sketchOEl.Width = float64(shape.Width)
 	sketchOEl.Height = float64(shape.Height)
+
+	if shape.Label != "" && label.FromString(shape.LabelPosition).IsBorder() {
+		sketchOEl.Mask = fmt.Sprintf("url(#%s)", diagramHash)
+	}
+
 	renderedSO, err := d2themes.NewThemableSketchOverlay(sketchOEl, pathEl.Fill).Render()
 	if err != nil {
 		return "", err
@@ -109,7 +119,7 @@ func Rect(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	return output, nil
 }
 
-func DoubleRect(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
+func DoubleRect(r jsrunner.JSRunner, shape d2target.Shape, diagramHash string) (string, error) {
 	jsBigRect := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
 		fill: "#000",
 		stroke: "#000",
@@ -139,6 +149,11 @@ func DoubleRect(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "shape"
 	pathEl.Style = shape.CSSStyle()
+
+	if shape.Label != "" && label.FromString(shape.LabelPosition).IsBorder() {
+		pathEl.Mask = fmt.Sprintf("url(#%s)", diagramHash)
+	}
+
 	for _, p := range pathsBigRect {
 		pathEl.D = p
 		output += pathEl.Render()
@@ -151,6 +166,11 @@ func DoubleRect(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	pathEl.Fill = "transparent"
 	pathEl.ClassName = "shape"
 	pathEl.Style = shape.CSSStyle()
+
+	if shape.Label != "" && label.FromString(shape.LabelPosition).IsBorder() {
+		pathEl.Mask = fmt.Sprintf("url(#%s)", diagramHash)
+	}
+
 	for _, p := range pathsSmallRect {
 		pathEl.D = p
 		output += pathEl.Render()
@@ -160,6 +180,11 @@ func DoubleRect(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	sketchOEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	sketchOEl.Width = float64(shape.Width)
 	sketchOEl.Height = float64(shape.Height)
+
+	if shape.Label != "" && label.FromString(shape.LabelPosition).IsBorder() {
+		sketchOEl.Mask = fmt.Sprintf("url(#%s)", diagramHash)
+	}
+
 	renderedSO, err := d2themes.NewThemableSketchOverlay(sketchOEl, shape.Fill).Render()
 	if err != nil {
 		return "", err
@@ -169,7 +194,7 @@ func DoubleRect(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	return output, nil
 }
 
-func Oval(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
+func Oval(r jsrunner.JSRunner, shape d2target.Shape, diagramHash string) (string, error) {
 	js := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
 		fill: "#000",
 		stroke: "#000",
@@ -187,6 +212,11 @@ func Oval(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "shape"
 	pathEl.Style = shape.CSSStyle()
+
+	if shape.Label != "" && label.FromString(shape.LabelPosition).IsBorder() {
+		pathEl.Mask = fmt.Sprintf("url(#%s)", diagramHash)
+	}
+
 	for _, p := range paths {
 		pathEl.D = p
 		output += pathEl.Render()
@@ -196,6 +226,11 @@ func Oval(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	soElement.SetTranslate(float64(shape.Pos.X+shape.Width/2), float64(shape.Pos.Y+shape.Height/2))
 	soElement.Rx = float64(shape.Width / 2)
 	soElement.Ry = float64(shape.Height / 2)
+
+	if shape.Label != "" && label.FromString(shape.LabelPosition).IsBorder() {
+		soElement.Mask = fmt.Sprintf("url(#%s)", diagramHash)
+	}
+
 	renderedSO, err := d2themes.NewThemableSketchOverlay(
 		soElement,
 		pathEl.Fill,
@@ -208,7 +243,7 @@ func Oval(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	return output, nil
 }
 
-func DoubleOval(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
+func DoubleOval(r jsrunner.JSRunner, shape d2target.Shape, diagramHash string) (string, error) {
 	jsBigCircle := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
 		fill: "#000",
 		stroke: "#000",
@@ -238,6 +273,11 @@ func DoubleOval(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "shape"
 	pathEl.Style = shape.CSSStyle()
+
+	if shape.Label != "" && label.FromString(shape.LabelPosition).IsBorder() {
+		pathEl.Mask = fmt.Sprintf("url(#%s)", diagramHash)
+	}
+
 	for _, p := range pathsBigCircle {
 		pathEl.D = p
 		output += pathEl.Render()
@@ -250,6 +290,11 @@ func DoubleOval(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	pathEl.Fill = "transparent"
 	pathEl.ClassName = "shape"
 	pathEl.Style = shape.CSSStyle()
+
+	if shape.Label != "" && label.FromString(shape.LabelPosition).IsBorder() {
+		pathEl.Mask = fmt.Sprintf("url(#%s)", diagramHash)
+	}
+
 	for _, p := range pathsSmallCircle {
 		pathEl.D = p
 		output += pathEl.Render()
@@ -258,6 +303,11 @@ func DoubleOval(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	soElement.SetTranslate(float64(shape.Pos.X+shape.Width/2), float64(shape.Pos.Y+shape.Height/2))
 	soElement.Rx = float64(shape.Width / 2)
 	soElement.Ry = float64(shape.Height / 2)
+
+	if shape.Label != "" && label.FromString(shape.LabelPosition).IsBorder() {
+		soElement.Mask = fmt.Sprintf("url(#%s)", diagramHash)
+	}
+
 	renderedSO, err := d2themes.NewThemableSketchOverlay(
 		soElement,
 		shape.Fill,
@@ -271,7 +321,7 @@ func DoubleOval(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 }
 
 // TODO need to personalize this per shape like we do in Terrastruct app
-func Paths(r jsrunner.JSRunner, shape d2target.Shape, paths []string) (string, error) {
+func Paths(r jsrunner.JSRunner, shape d2target.Shape, diagramHash string, paths []string) (string, error) {
 	output := ""
 	for _, path := range paths {
 		js := fmt.Sprintf(`node = rc.path("%s", {
@@ -289,12 +339,22 @@ func Paths(r jsrunner.JSRunner, shape d2target.Shape, paths []string) (string, e
 		pathEl.FillPattern = shape.FillPattern
 		pathEl.ClassName = "shape"
 		pathEl.Style = shape.CSSStyle()
+
+		if shape.Label != "" && label.FromString(shape.LabelPosition).IsBorder() {
+			pathEl.Mask = fmt.Sprintf("url(#%s)", diagramHash)
+		}
+
 		for _, p := range sketchPaths {
 			pathEl.D = p
 			output += pathEl.Render()
 		}
 
 		soElement := d2themes.NewThemableElement("path", nil)
+
+		if shape.Label != "" && label.FromString(shape.LabelPosition).IsBorder() {
+			soElement.Mask = fmt.Sprintf("url(#%s)", diagramHash)
+		}
+
 		for _, p := range sketchPaths {
 			soElement.D = p
 			renderedSO, err := d2themes.NewThemableSketchOverlay(

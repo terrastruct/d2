@@ -47,6 +47,22 @@ const (
 	InsideBottomCenter
 	InsideBottomRight
 
+	BorderTopLeft
+	BorderTopCenter
+	BorderTopRight
+
+	BorderLeftTop
+	BorderLeftMiddle
+	BorderLeftBottom
+
+	BorderRightTop
+	BorderRightMiddle
+	BorderRightBottom
+
+	BorderBottomLeft
+	BorderBottomCenter
+	BorderBottomRight
+
 	UnlockedTop
 	UnlockedMiddle
 	UnlockedBottom
@@ -102,6 +118,34 @@ func FromString(s string) Position {
 		return InsideBottomCenter
 	case "INSIDE_BOTTOM_RIGHT":
 		return InsideBottomRight
+
+	case "BORDER_TOP_LEFT":
+		return BorderTopLeft
+	case "BORDER_TOP_CENTER":
+		return BorderTopCenter
+	case "BORDER_TOP_RIGHT":
+		return BorderTopRight
+
+	case "BORDER_LEFT_TOP":
+		return BorderLeftTop
+	case "BORDER_LEFT_MIDDLE":
+		return BorderLeftMiddle
+	case "BORDER_LEFT_BOTTOM":
+		return BorderLeftBottom
+
+	case "BORDER_RIGHT_TOP":
+		return BorderRightTop
+	case "BORDER_RIGHT_MIDDLE":
+		return BorderRightMiddle
+	case "BORDER_RIGHT_BOTTOM":
+		return BorderRightBottom
+
+	case "BORDER_BOTTOM_LEFT":
+		return BorderBottomLeft
+	case "BORDER_BOTTOM_CENTER":
+		return BorderBottomCenter
+	case "BORDER_BOTTOM_RIGHT":
+		return BorderBottomRight
 
 	case "UNLOCKED_TOP":
 		return UnlockedTop
@@ -165,6 +209,34 @@ func (position Position) String() string {
 	case InsideBottomRight:
 		return "INSIDE_BOTTOM_RIGHT"
 
+	case BorderTopLeft:
+		return "BORDER_TOP_LEFT"
+	case BorderTopCenter:
+		return "BORDER_TOP_CENTER"
+	case BorderTopRight:
+		return "BORDER_TOP_RIGHT"
+
+	case BorderLeftTop:
+		return "BORDER_LEFT_TOP"
+	case BorderLeftMiddle:
+		return "BORDER_LEFT_MIDDLE"
+	case BorderLeftBottom:
+		return "BORDER_LEFT_BOTTOM"
+
+	case BorderRightTop:
+		return "BORDER_RIGHT_TOP"
+	case BorderRightMiddle:
+		return "BORDER_RIGHT_MIDDLE"
+	case BorderRightBottom:
+		return "BORDER_RIGHT_BOTTOM"
+
+	case BorderBottomLeft:
+		return "BORDER_BOTTOM_LEFT"
+	case BorderBottomCenter:
+		return "BORDER_BOTTOM_CENTER"
+	case BorderBottomRight:
+		return "BORDER_BOTTOM_RIGHT"
+
 	case UnlockedTop:
 		return "UNLOCKED_TOP"
 	case UnlockedMiddle:
@@ -186,7 +258,12 @@ func (position Position) IsShapePosition() bool {
 
 		InsideTopLeft, InsideTopCenter, InsideTopRight,
 		InsideMiddleLeft, InsideMiddleCenter, InsideMiddleRight,
-		InsideBottomLeft, InsideBottomCenter, InsideBottomRight:
+		InsideBottomLeft, InsideBottomCenter, InsideBottomRight,
+
+		BorderTopLeft, BorderTopCenter, BorderTopRight,
+		BorderLeftTop, BorderLeftMiddle, BorderLeftBottom,
+		BorderRightTop, BorderRightMiddle, BorderRightBottom,
+		BorderBottomLeft, BorderBottomCenter, BorderBottomRight:
 		return true
 	default:
 		return false
@@ -220,6 +297,18 @@ func (position Position) IsOutside() bool {
 func (position Position) IsUnlocked() bool {
 	switch position {
 	case UnlockedTop, UnlockedMiddle, UnlockedBottom:
+		return true
+	default:
+		return false
+	}
+}
+
+func (position Position) IsBorder() bool {
+	switch position {
+	case BorderTopLeft, BorderTopCenter, BorderTopRight,
+		BorderLeftTop, BorderLeftMiddle, BorderLeftBottom,
+		BorderRightTop, BorderRightMiddle, BorderRightBottom,
+		BorderBottomLeft, BorderBottomCenter, BorderBottomRight:
 		return true
 	default:
 		return false
@@ -285,6 +374,34 @@ func (position Position) Mirrored() Position {
 		return InsideTopCenter
 	case InsideBottomRight:
 		return InsideTopLeft
+
+	case BorderTopLeft:
+		return BorderBottomRight
+	case BorderTopCenter:
+		return BorderBottomCenter
+	case BorderTopRight:
+		return BorderBottomLeft
+
+	case BorderLeftTop:
+		return BorderRightBottom
+	case BorderLeftMiddle:
+		return BorderRightMiddle
+	case BorderLeftBottom:
+		return BorderRightTop
+
+	case BorderRightTop:
+		return BorderLeftBottom
+	case BorderRightMiddle:
+		return BorderLeftMiddle
+	case BorderRightBottom:
+		return BorderLeftTop
+
+	case BorderBottomLeft:
+		return BorderTopRight
+	case BorderBottomCenter:
+		return BorderTopCenter
+	case BorderBottomRight:
+		return BorderTopLeft
 
 	case UnlockedTop:
 		return UnlockedBottom
@@ -372,6 +489,46 @@ func (labelPosition Position) GetPointOnBox(box *geo.Box, padding, width, height
 	case InsideBottomRight:
 		p.X += box.Width - width - padding
 		p.Y += box.Height - height - padding
+
+	case BorderTopLeft:
+		p.X += padding
+		p.Y -= height / 2
+	case BorderTopCenter:
+		p.X = boxCenter.X - width/2
+		p.Y -= height / 2
+	case BorderTopRight:
+		p.X += box.Width - width - padding
+		p.Y -= height / 2
+
+	case BorderLeftTop:
+		p.X -= width / 2
+		p.Y += padding
+	case BorderLeftMiddle:
+		p.X -= width / 2
+		p.Y = boxCenter.Y - height/2
+	case BorderLeftBottom:
+		p.X -= width / 2
+		p.Y += box.Height - height - padding
+
+	case BorderRightTop:
+		p.X += box.Width - width/2
+		p.Y += padding
+	case BorderRightMiddle:
+		p.X += box.Width - width/2
+		p.Y = boxCenter.Y - height/2
+	case BorderRightBottom:
+		p.X += box.Width - width/2
+		p.Y += box.Height - height - padding
+
+	case BorderBottomLeft:
+		p.X += padding
+		p.Y += box.Height - height/2
+	case BorderBottomCenter:
+		p.X = boxCenter.X - width/2
+		p.Y += box.Height - height/2
+	case BorderBottomRight:
+		p.X += box.Width - width - padding
+		p.Y += box.Height - height/2
 	}
 
 	return p
