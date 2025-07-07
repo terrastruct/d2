@@ -845,12 +845,27 @@ func pathData(connection d2target.Connection, srcAdj, dstAdj *geo.Point) string 
 }
 
 func makeLabelMask(labelTL *geo.Point, width, height int, opacity float64) string {
+	return makeLabelMaskWithTransform(labelTL, width, height, opacity, nil)
+}
+
+func makeLabelMaskWithTransform(labelTL *geo.Point, width, height int, opacity float64, shapePos *geo.Point) string {
 	fill := "black"
 	if opacity != 1 {
 		fill = fmt.Sprintf("rgba(0,0,0,%.2f)", opacity)
 	}
+	
+	x := labelTL.X - 2
+	y := labelTL.Y
+	
+	// In sketch mode, shapes use transform="translate(shapePos.X, shapePos.Y)"
+	// so we need to adjust mask coordinates to account for this transform
+	if shapePos != nil {
+		x -= shapePos.X
+		y -= shapePos.Y
+	}
+	
 	return fmt.Sprintf(`<rect x="%f" y="%f" width="%d" height="%d" fill="%s"></rect>`,
-		labelTL.X-2, labelTL.Y,
+		x, y,
 		width+4,
 		height,
 		fill,
@@ -1556,7 +1571,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				fmt.Fprint(writer, renderDoubleOval(multipleTL, width, height, fill, "", stroke, style, inlineTheme))
 			}
 			if jsRunner != nil {
-				out, err := d2sketch.DoubleOval(jsRunner, targetShape)
+				out, err := d2sketch.DoubleOval(jsRunner, targetShape, diagramHash)
 				if err != nil {
 					return "", err
 				}
@@ -1569,7 +1584,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				fmt.Fprint(writer, renderOval(multipleTL, width, height, fill, "", stroke, style, inlineTheme))
 			}
 			if jsRunner != nil {
-				out, err := d2sketch.Oval(jsRunner, targetShape)
+				out, err := d2sketch.Oval(jsRunner, targetShape, diagramHash)
 				if err != nil {
 					return "", err
 				}
@@ -1617,7 +1632,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					fmt.Fprint(writer, el.Render())
 				}
 				if jsRunner != nil {
-					out, err := d2sketch.Rect(jsRunner, targetShape)
+					out, err := d2sketch.Rect(jsRunner, targetShape, diagramHash)
 					if err != nil {
 						return "", err
 					}
@@ -1666,7 +1681,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					fmt.Fprint(writer, el.Render())
 				}
 				if jsRunner != nil {
-					out, err := d2sketch.DoubleRect(jsRunner, targetShape)
+					out, err := d2sketch.DoubleRect(jsRunner, targetShape, diagramHash)
 					if err != nil {
 						return "", err
 					}
@@ -1714,7 +1729,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			}
 
 			if jsRunner != nil {
-				out, err := d2sketch.Paths(jsRunner, targetShape, s.GetSVGPathData())
+				out, err := d2sketch.Paths(jsRunner, targetShape, diagramHash, s.GetSVGPathData())
 				if err != nil {
 					return "", err
 				}
@@ -1746,7 +1761,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		}
 
 		if jsRunner != nil {
-			out, err := d2sketch.Paths(jsRunner, targetShape, s.GetSVGPathData())
+			out, err := d2sketch.Paths(jsRunner, targetShape, diagramHash, s.GetSVGPathData())
 			if err != nil {
 				return "", err
 			}
@@ -1831,7 +1846,12 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		)
 
 		if labelPosition.IsBorder() {
-			labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight, 1.0)
+			if jsRunner != nil {
+				// In sketch mode, apply transform adjustment to mask coordinates
+				labelMask = makeLabelMaskWithTransform(labelTL, targetShape.LabelWidth, targetShape.LabelHeight, 1.0, tl)
+			} else {
+				labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight, 1.0)
+			}
 		}
 
 		fontClass := "text"
