@@ -1830,11 +1830,11 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			el.FillPattern = targetShape.FillPattern
 			el.Stroke = stroke
 			el.Style = style
-			
+
 			if targetShape.Label != "" && label.FromString(targetShape.LabelPosition).IsBorder() {
 				el.Mask = fmt.Sprintf("url(#%s)", diagramHash)
 			}
-			
+
 			for _, pathData := range s.GetSVGPathData() {
 				el.D = pathData
 				fmt.Fprint(writer, el.Render())
@@ -1884,7 +1884,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	if targetShape.Label != "" && targetShape.Opacity != 0 {
 		labelPosition := label.FromString(targetShape.LabelPosition)
 		var box *geo.Box
-		if labelPosition.IsOutside() {
+		if labelPosition.IsOutside() || labelPosition.IsBorder() {
 			box = s.GetBox().Copy()
 			// if it is 3d/multiple, place label using box around those
 			if targetShape.ThreeDee {

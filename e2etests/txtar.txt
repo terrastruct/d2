@@ -1287,6 +1287,7 @@ env: Your environment {
 
 -- border-label --
 *.label.near: border-bottom-center
+
 rectangle.shape: rectangle
 square.shape: square
 page.shape: page
@@ -1304,3 +1305,6 @@ oval.shape: oval
 circle.shape: circle
 hexagon.shape: hexagon
 cloud.shape: cloud
+
+cloud2.shape: cloud
+cloud2.height: 400

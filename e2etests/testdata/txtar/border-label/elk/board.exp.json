@@ -16,7 +16,7 @@
       "type": "rectangle",
       "pos": {
         "x": 12,
-        "y": 38
+        "y": 179
       },
       "width": 111,
       "height": 66,
@@ -58,7 +58,7 @@
       "type": "rectangle",
       "pos": {
         "x": 143,
-        "y": 24
+        "y": 165
       },
       "width": 94,
       "height": 94,
@@ -100,7 +100,7 @@
       "type": "page",
       "pos": {
         "x": 257,
-        "y": 27
+        "y": 168
       },
       "width": 79,
       "height": 87,
@@ -142,7 +142,7 @@
       "type": "parallelogram",
       "pos": {
         "x": 356,
-        "y": 38
+        "y": 179
       },
       "width": 196,
       "height": 66,
@@ -184,7 +184,7 @@
       "type": "document",
       "pos": {
         "x": 572,
-        "y": 33
+        "y": 174
       },
       "width": 117,
       "height": 76,
@@ -226,7 +226,7 @@
       "type": "cylinder",
       "pos": {
         "x": 709,
-        "y": 12
+        "y": 153
       },
       "width": 104,
       "height": 118,
@@ -268,7 +268,7 @@
       "type": "queue",
       "pos": {
         "x": 833,
-        "y": 38
+        "y": 179
       },
       "width": 141,
       "height": 66,
@@ -310,7 +310,7 @@
       "type": "package",
       "pos": {
         "x": 994,
-        "y": 34
+        "y": 175
       },
       "width": 103,
       "height": 73,
@@ -352,7 +352,7 @@
       "type": "step",
       "pos": {
         "x": 1117,
-        "y": 20
+        "y": 161
       },
       "width": 116,
       "height": 101,
@@ -394,7 +394,7 @@
       "type": "callout",
       "pos": {
         "x": 1253,
-        "y": 25
+        "y": 166
       },
       "width": 95,
       "height": 91,
@@ -436,7 +436,7 @@
       "type": "stored_data",
       "pos": {
         "x": 1368,
-        "y": 38
+        "y": 179
       },
       "width": 151,
       "height": 66,
@@ -478,7 +478,7 @@
       "type": "person",
       "pos": {
         "x": 1539,
-        "y": 38
+        "y": 179
       },
       "width": 63,
       "height": 66,
@@ -520,7 +520,7 @@
       "type": "diamond",
       "pos": {
         "x": 1622,
-        "y": 25
+        "y": 166
       },
       "width": 156,
       "height": 92,
@@ -562,7 +562,7 @@
       "type": "oval",
       "pos": {
         "x": 1798,
-        "y": 36
+        "y": 177
       },
       "width": 97,
       "height": 70,
@@ -604,7 +604,7 @@
       "type": "oval",
       "pos": {
         "x": 1915,
-        "y": 19
+        "y": 160
       },
       "width": 103,
       "height": 103,
@@ -646,7 +646,7 @@
       "type": "hexagon",
       "pos": {
         "x": 2038,
-        "y": 36
+        "y": 177
       },
       "width": 128,
       "height": 69,
@@ -688,7 +688,7 @@
       "type": "cloud",
       "pos": {
         "x": 2186,
-        "y": 29
+        "y": 170
       },
       "width": 104,
       "height": 84,
@@ -721,6 +721,49 @@
       "bold": true,
       "underline": false,
       "labelWidth": 40,
+      "labelHeight": 21,
+      "labelPosition": "BORDER_BOTTOM_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "cloud2",
+      "type": "cloud",
+      "pos": {
+        "x": 2310,
+        "y": 12
+      },
+      "width": 108,
+      "height": 400,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N7",
+      "stroke": "B1",
+      "animated": false,
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "contentAspectRatio": 3.4160583941605833,
+      "label": "cloud2",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 48,
       "labelHeight": 21,
       "labelPosition": "BORDER_BOTTOM_CENTER",
       "zIndex": 0,
