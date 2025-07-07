@@ -1363,7 +1363,7 @@ customer -> item: true
 			script: `
 style.fill: black
 env: Your environment {
-  style.fill: black
+  style.fill: blue
   style.stroke-dash: 2
   style.double-border: false
   style.stroke: "#1e402d"

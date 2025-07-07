@@ -1284,3 +1284,23 @@ env: Your environment {
     }
   }
 }
+
+-- border-label --
+*.label.near: border-bottom-center
+rectangle.shape: rectangle
+square.shape: square
+page.shape: page
+parallelogram.shape: parallelogram
+document.shape: document
+cylinder.shape: cylinder
+queue.shape: queue
+package.shape: package
+step.shape: step
+callout.shape: callout
+stored_data.shape: stored_data
+person.shape: person
+diamond.shape: diamond
+oval.shape: oval
+circle.shape: circle
+hexagon.shape: hexagon
+cloud.shape: cloud
