@@ -588,7 +588,10 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			if earliestRef != nil && scope.Range.Before(earliestRef.MapKey.Range) {
 				// Since the original mk was trimmed to common, we set to the edge that
 				// the ref's scope is in
-				mk.Edges[0] = earliestRef.Edge
+				// Only replace with earliestRef.Edge if it's not a glob pattern
+				if !earliestRef.Edge.Src.HasGlob() && !earliestRef.Edge.Dst.HasGlob() {
+					mk.Edges[0] = earliestRef.Edge
+				}
 				// We can't reference an edge before it's been defined
 				earliestRef.Scope.InsertAfter(earliestRef.MapKey, mk)
 			} else {
