@@ -2811,6 +2811,29 @@ layers: {
 }
 `,
 		},
+		{
+			name: "set-globbed-edge-in-scenario",
+			text: `x -> y
+
+scenarios: {
+  k: {
+		(** -> **)[*].style.opacity: 0
+  }
+}
+`,
+			boardPath: []string{"k"},
+			key:       `(x -> y)[0].style.opacity`,
+			value:     go2.Pointer("1"),
+			exp: `x -> y
+
+scenarios: {
+  k: {
+    (** -> **)[*].style.opacity: 0
+    (x -> y)[0].style.opacity: 1
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
