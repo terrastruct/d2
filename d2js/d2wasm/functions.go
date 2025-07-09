@@ -475,7 +475,7 @@ func GetBoardAtPosition(args []js.Value) (interface{}, error) {
 		Column: column,
 	})
 	if err != nil {
-		return nil, &WASMError{Message: err.Error(), Code: 500}
+		return BoardPositionResponse{BoardPath: boardPath, Err: err.Error()}, nil
 	}
 
 	return BoardPositionResponse{BoardPath: boardPath}, nil

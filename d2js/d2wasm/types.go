@@ -29,6 +29,7 @@ type RefRangesResponse struct {
 
 type BoardPositionResponse struct {
 	BoardPath []string `json:"boardPath"`
+	Err       string   `json:"err"`
 }
 
 type CompileRequest struct {
