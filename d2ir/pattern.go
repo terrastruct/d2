@@ -25,15 +25,11 @@ func (m *Map) _doubleGlob(fa *[]*Field) {
 			continue
 		}
 		if _, ok := d2ast.ReservedKeywords[f.Name.ScalarString()]; ok && f.Name.IsUnquoted() {
-			if f.Name.ScalarString() == "layers" {
+			if _, ok := d2ast.BoardKeywords[f.Name.ScalarString()]; ok {
 				continue
 			}
-			if _, ok := d2ast.BoardKeywords[f.Name.ScalarString()]; !ok {
-				continue
-			}
-			// We don't ever want to append layers, scenarios or steps directly.
 			if f.Map() != nil {
-				f.Map()._tripleGlob(fa)
+				f.Map()._doubleGlob(fa)
 			}
 			continue
 		}

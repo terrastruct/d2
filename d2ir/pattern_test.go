@@ -279,6 +279,13 @@ Spiderman 3
 			name: "scenarios",
 			run: func(t testing.TB) {
 				m, err := compile(t, `
+a
+b
+c
+d
+
+**: something
+** -> **
 
 scenarios: {
   meow: {
@@ -288,14 +295,6 @@ scenarios: {
 	h
   }
 }
-
-a
-b
-c
-d
-
-**: something
-** -> **
 `)
 				assert.Success(t, err)
 				assertQuery(t, m, 10, 24, nil, "")
