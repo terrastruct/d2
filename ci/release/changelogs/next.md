@@ -10,6 +10,7 @@
 #### Bugfixes ⛑️
 
 - actors in sequence diagrams with labels and icons together no longer overlap, position keywords now work too [#2548](https://github.com/terrastruct/d2/pull/2548)
+- fix double glob behavior in scenarios (wasn't propagating correctly) [#2557](https://github.com/terrastruct/d2/pull/2557)
 
 ---
 
