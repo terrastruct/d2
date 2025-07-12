@@ -13,15 +13,17 @@ const PNG exportExtension = ".png"
 const PPTX exportExtension = ".pptx"
 const PDF exportExtension = ".pdf"
 const SVG exportExtension = ".svg"
+const ASCII exportExtension = ".txt"
 
-var SUPPORTED_EXTENSIONS = []exportExtension{SVG, PNG, PDF, PPTX, GIF}
+var SUPPORTED_EXTENSIONS = []exportExtension{SVG, PNG, PDF, PPTX, GIF, ASCII}
 
 var STDOUT_FORMAT_MAP = map[string]exportExtension{
-	"png": PNG,
-	"svg": SVG,
+	"png":   PNG,
+	"svg":   SVG,
+	"ascii": ASCII,
 }
 
-var SUPPORTED_STDOUT_FORMATS = []string{"png", "svg"}
+var SUPPORTED_STDOUT_FORMATS = []string{"png", "svg", "ascii"}
 
 func getOutputFormat(stdoutFormatFlag *string, outputPath string) (exportExtension, error) {
 	if stdoutFormatFlag != nil && *stdoutFormatFlag != "" {
