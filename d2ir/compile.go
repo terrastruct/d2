@@ -484,7 +484,7 @@ func (c *compiler) ampersandFilterMap(dst *Map, ast, scopeAST *d2ast.Map) bool {
 					return false
 				}
 				var ks string
-				if gctx.refctx.Key.HasMultiGlob() {
+				if gctx.refctx.Key.HasTripleGlob() {
 					ks = d2format.Format(d2ast.MakeKeyPathString(IDA(dst)))
 				} else {
 					ks = d2format.Format(d2ast.MakeKeyPathString(BoardIDA(dst)))
@@ -516,7 +516,7 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 			for _, g := range previousGlobs {
 				gctx2 := g.copy()
 				gctx2.refctx.ScopeMap = dst
-				if !g.refctx.Key.HasMultiGlob() {
+				if !g.refctx.Key.HasTripleGlob() {
 					// Triple globs already apply independently to each board
 					gctx2.copyApplied(g)
 				}
@@ -528,7 +528,7 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 				// We don't want globs applied in a given scenario to affect future boards
 				// Copying the applied fields and edges keeps the applications scoped to this board
 				// Note that this is different from steps, where applications carry over
-				if !g.refctx.Key.HasMultiGlob() {
+				if !g.refctx.Key.HasTripleGlob() {
 					// Triple globs already apply independently to each board
 					g2.copyApplied(g)
 				}

@@ -1830,6 +1830,25 @@ k: {
 			},
 		},
 		{
+			name: "scenario-glob",
+
+			text: `**.style.opacity: 0.2
+x.style.opacity: 1
+z
+
+scenarios: {
+  y: {
+    z.style.opacity: 1
+  }
+}
+
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, "x", g.Scenarios[0].Objects[0].ID)
+				assert.Equal(t, "1", g.Scenarios[0].Objects[0].Style.Opacity.Value)
+			},
+		},
+		{
 			name: "import-scenario",
 
 			text: `a
