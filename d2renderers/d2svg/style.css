@@ -10,3 +10,17 @@
   mix-blend-mode: multiply;
   opacity: 0.5;
 }
+
+/* More specific rules to override external styles */
+/* Only target path elements with connection class, not polygons in markers */
+svg path.connection {
+  fill: none !important;
+  background: none !important;
+}
+/* Don't override opacity for blend elements */
+svg .connection:not(.blend) {
+  background: none !important;
+}
+svg .shape {
+  background: none !important;
+}
