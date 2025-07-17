@@ -2111,7 +2111,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			fmt.Fprint(writer, textEl.Render())
 		}
 	}
-	if targetShape.Tooltip != "" {
+	if targetShape.Tooltip != "" && targetShape.TooltipPosition == "" {
 		fmt.Fprintf(writer, `<title>%s</title>`,
 			svg.EscapeText(targetShape.Tooltip),
 		)
