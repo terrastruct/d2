@@ -224,8 +224,9 @@ type Attributes struct {
 	VerticalGap   *Scalar `json:"verticalGap,omitempty"`
 	HorizontalGap *Scalar `json:"horizontalGap,omitempty"`
 
-	LabelPosition *Scalar `json:"labelPosition,omitempty"`
-	IconPosition  *Scalar `json:"iconPosition,omitempty"`
+	LabelPosition   *Scalar `json:"labelPosition,omitempty"`
+	IconPosition    *Scalar `json:"iconPosition,omitempty"`
+	TooltipPosition *Scalar `json:"tooltipPosition,omitempty"`
 
 	// These names are attached to the rendered elements in SVG
 	// so that users can target them however they like outside of D2

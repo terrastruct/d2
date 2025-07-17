@@ -3073,6 +3073,52 @@ obj {
 			},
 		},
 		{
+			name: "tooltip-near-parent",
+			text: `hey: sushi {
+	tooltip.near: top-left
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "sushi", g.Objects[0].Attributes.Label.Value)
+				tassert.Equal(t, "top-left", g.Objects[0].Attributes.TooltipPosition.Value)
+			},
+		},
+		{
+			name: "tooltip-near-composite-separate",
+			text: `hey: {
+	tooltip: hover text
+	tooltip.near: bottom-right
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "hover text", g.Objects[0].Attributes.Tooltip.Value)
+				tassert.Equal(t, "bottom-right", g.Objects[0].Attributes.TooltipPosition.Value)
+			},
+		},
+		{
+			name: "tooltip-near-composite-together",
+			text: `hey: {
+	tooltip: hover text {
+		near: center-left
+  }
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "hover text", g.Objects[0].Attributes.Tooltip.Value)
+				tassert.Equal(t, "center-left", g.Objects[0].Attributes.TooltipPosition.Value)
+			},
+		},
+		{
+			name: "tooltip-near-invalid",
+			text: `hey: {
+	tooltip: hover text {
+		near: outside-top-left
+  }
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/tooltip-near-invalid.d2:3:3: invalid "near" field`,
+		},
+		{
 			name: "label-near-invalid-edge",
 			text: `hey: {
   label: sushi {

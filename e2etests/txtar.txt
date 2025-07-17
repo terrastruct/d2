@@ -1308,3 +1308,432 @@ cloud.shape: cloud
 
 cloud2.shape: cloud
 cloud2.height: 400
+
+-- tooltip-positioning --
+grid-columns: 8
+
+rect_top_left: Rectangle {
+  tooltip: Top Left {
+    near: top-left
+  }
+}
+
+rect_top_center: Rectangle {
+  tooltip: Top Center {
+    near: top-center
+  }
+}
+
+rect_top_right: Rectangle {
+  tooltip: Top Right {
+    near: top-right
+  }
+}
+
+rect_center_left: Rectangle {
+  tooltip: Center Left {
+    near: center-left
+  }
+}
+
+rect_center_right: Rectangle {
+  tooltip: Center Right {
+    near: center-right
+  }
+}
+
+rect_bottom_left: Rectangle {
+  tooltip: Bottom Left {
+    near: bottom-left
+  }
+}
+
+rect_bottom_center: Rectangle {
+  tooltip: Bottom Center {
+    near: bottom-center
+  }
+}
+
+rect_bottom_right: Rectangle {
+  tooltip: Bottom Right {
+    near: bottom-right
+  }
+}
+
+# Circle shape with all positions
+circle_top_left: Circle {
+  shape: circle
+  tooltip: Circle Top Left {
+    near: top-left
+  }
+}
+
+circle_top_center: Circle {
+  shape: circle
+  tooltip: Circle Top Center {
+    near: top-center
+  }
+}
+
+circle_top_right: Circle {
+  shape: circle
+  tooltip: Circle Top Right {
+    near: top-right
+  }
+}
+
+circle_center_left: Circle {
+  shape: circle
+  tooltip: Circle Center Left {
+    near: center-left
+  }
+}
+
+circle_center_right: Circle {
+  shape: circle
+  tooltip: Circle Center Right {
+    near: center-right
+  }
+}
+
+circle_bottom_left: Circle {
+  shape: circle
+  tooltip: Circle Bottom Left {
+    near: bottom-left
+  }
+}
+
+circle_bottom_center: Circle {
+  shape: circle
+  tooltip: Circle Bottom Center {
+    near: bottom-center
+  }
+}
+
+circle_bottom_right: Circle {
+  shape: circle
+  tooltip: Circle Bottom Right {
+    near: bottom-right
+  }
+}
+
+# Diamond shape with all positions
+diamond_top_left: Diamond {
+  shape: diamond
+  tooltip: Diamond Top Left {
+    near: top-left
+  }
+}
+
+diamond_top_center: Diamond {
+  shape: diamond
+  tooltip: Diamond Top Center {
+    near: top-center
+  }
+}
+
+diamond_top_right: Diamond {
+  shape: diamond
+  tooltip: Diamond Top Right {
+    near: top-right
+  }
+}
+
+diamond_center_left: Diamond {
+  shape: diamond
+  tooltip: Diamond Center Left {
+    near: center-left
+  }
+}
+
+diamond_center_right: Diamond {
+  shape: diamond
+  tooltip: Diamond Center Right {
+    near: center-right
+  }
+}
+
+diamond_bottom_left: Diamond {
+  shape: diamond
+  tooltip: Diamond Bottom Left {
+    near: bottom-left
+  }
+}
+
+diamond_bottom_center: Diamond {
+  shape: diamond
+  tooltip: Diamond Bottom Center {
+    near: bottom-center
+  }
+}
+
+diamond_bottom_right: Diamond {
+  shape: diamond
+  tooltip: Diamond Bottom Right {
+    near: bottom-right
+  }
+}
+
+# Cloud shape with all positions
+cloud_top_left: Cloud {
+  shape: cloud
+  tooltip: Cloud Top Left {
+    near: top-left
+  }
+}
+
+cloud_top_center: Cloud {
+  shape: cloud
+  tooltip: Cloud Top Center {
+    near: top-center
+  }
+}
+
+cloud_top_right: Cloud {
+  shape: cloud
+  tooltip: Cloud Top Right {
+    near: top-right
+  }
+}
+
+cloud_center_left: Cloud {
+  shape: cloud
+  tooltip: Cloud Center Left {
+    near: center-left
+  }
+}
+
+cloud_center_right: Cloud {
+  shape: cloud
+  tooltip: Cloud Center Right {
+    near: center-right
+  }
+}
+
+cloud_bottom_left: Cloud {
+  shape: cloud
+  tooltip: Cloud Bottom Left {
+    near: bottom-left
+  }
+}
+
+cloud_bottom_center: Cloud {
+  shape: cloud
+  tooltip: Cloud Bottom Center {
+    near: bottom-center
+  }
+}
+
+cloud_bottom_right: Cloud {
+  shape: cloud
+  tooltip: Cloud Bottom Right {
+    near: bottom-right
+  }
+}
+
+# Hexagon shape with all positions
+hex_top_left: Hexagon {
+  shape: hexagon
+  tooltip: Hexagon Top Left {
+    near: top-left
+  }
+}
+
+hex_top_center: Hexagon {
+  shape: hexagon
+  tooltip: Hexagon Top Center {
+    near: top-center
+  }
+}
+
+hex_top_right: Hexagon {
+  shape: hexagon
+  tooltip: Hexagon Top Right {
+    near: top-right
+  }
+}
+
+hex_center_left: Hexagon {
+  shape: hexagon
+  tooltip: Hexagon Center Left {
+    near: center-left
+  }
+}
+
+hex_center_right: Hexagon {
+  shape: hexagon
+  tooltip: Hexagon Center Right {
+    near: center-right
+  }
+}
+
+hex_bottom_left: Hexagon {
+  shape: hexagon
+  tooltip: Hexagon Bottom Left {
+    near: bottom-left
+  }
+}
+
+hex_bottom_center: Hexagon {
+  shape: hexagon
+  tooltip: Hexagon Bottom Center {
+    near: bottom-center
+  }
+}
+
+hex_bottom_right: Hexagon {
+  shape: hexagon
+  tooltip: Hexagon Bottom Right {
+    near: bottom-right
+  }
+}
+
+# Cylinder shape with all positions
+cyl_top_left: Cylinder {
+  shape: cylinder
+  tooltip: Cylinder Top Left {
+    near: top-left
+  }
+}
+
+cyl_top_center: Cylinder {
+  shape: cylinder
+  tooltip: Cylinder Top Center {
+    near: top-center
+  }
+}
+
+cyl_top_right: Cylinder {
+  shape: cylinder
+  tooltip: Cylinder Top Right {
+    near: top-right
+  }
+}
+
+cyl_center_left: Cylinder {
+  shape: cylinder
+  tooltip: Cylinder Center Left {
+    near: center-left
+  }
+}
+
+cyl_center_right: Cylinder {
+  shape: cylinder
+  tooltip: Cylinder Center Right {
+    near: center-right
+  }
+}
+
+cyl_bottom_left: Cylinder {
+  shape: cylinder
+  tooltip: Cylinder Bottom Left {
+    near: bottom-left
+  }
+}
+
+cyl_bottom_center: Cylinder {
+  shape: cylinder
+  tooltip: Cylinder Bottom Center {
+    near: bottom-center
+  }
+}
+
+cyl_bottom_right: Cylinder {
+  shape: cylinder
+  tooltip: Cylinder Bottom Right {
+    near: bottom-right
+  }
+}
+
+rect_top_left_long: Rectangle {
+  tooltip: |md
+    # Longform
+
+    Beneath this stone lies Murphy,\
+    They buried him today,\
+    He lived the life of Riley,\
+    While Riley was away.
+  | {
+    near: top-left
+  }
+}
+
+rect_top_center_long: Rectangle {
+  tooltip: |md
+    # Longform
+
+    Beneath this stone lies Murphy,\
+    They buried him today,\
+    He lived the life of Riley,\
+    While Riley was away.
+  | {
+    near: top-center
+  }
+}
+
+rect_top_right_long: Rectangle {
+  tooltip: |md
+    # Longform
+
+    Beneath this stone lies Murphy,\
+    They buried him today,\
+    He lived the life of Riley,\
+    While Riley was away.
+  | {
+    near: top-right
+  }
+}
+
+rect_center_left_long: Rectangle {
+  tooltip: |md
+    # Longform
+
+    Beneath this stone lies Murphy,\
+    They buried him today,\
+    He lived the life of Riley,\
+    While Riley was away.
+  | {
+    near: center-left
+  }
+}
+
+rect_center_right_long: Rectangle {
+  tooltip: |md
+    # Longform
+
+    Beneath this stone lies Murphy,\
+    They buried him today,\
+    He lived the life of Riley,\
+    While Riley was away.
+  | {
+    near: center-right
+  }
+}
+
+rect_bottom_left_long: Rectangle {
+  tooltip: |md
+    While Riley was away.
+  | {
+    near: bottom-left
+  }
+}
+
+rect_bottom_center_long: Rectangle {
+  tooltip: |md
+    While Riley was away.
+  | {
+    near: bottom-center
+  }
+}
+
+rect_bottom_right_long: Rectangle {
+  tooltip: |md
+    Beneath this stone lies Murphy
+  | {
+    near: bottom-right
+  }
+}
+
+okay: |md
+  okay
+|

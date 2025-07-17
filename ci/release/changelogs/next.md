@@ -4,6 +4,7 @@
 - `style.underline` support for class fields and methods [#2544](https://github.com/terrastruct/d2/pull/2544)
 - markdown, latex, and code can be used as edge labels [#2545](https://github.com/terrastruct/d2/pull/2545)
 - border-x label positioning functionality [#2549](https://github.com/terrastruct/d2/pull/2549)
+- tooltips with `near` set always show even without hover [#2564](https://github.com/terrastruct/d2/pull/2564)
 
 #### Improvements 🧹
 

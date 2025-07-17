@@ -482,20 +482,38 @@ func (c *compiler) compilePosition(attrs *d2graph.Attributes, f *d2ir.Field) {
 					scalar := f.Primary().Value
 					switch scalar := scalar.(type) {
 					case *d2ast.Null:
-						attrs.LabelPosition = nil
+						switch name.ScalarString() {
+						case "label":
+							attrs.LabelPosition = nil
+						case "icon":
+							attrs.IconPosition = nil
+						case "tooltip":
+							attrs.TooltipPosition = nil
+						}
 					default:
-						if _, ok := d2ast.LabelPositions[scalar.ScalarString()]; !ok {
-							c.errorf(f.LastPrimaryKey(), `invalid "near" field`)
-						} else {
-							switch name.ScalarString() {
-							case "label":
-								attrs.LabelPosition = &d2graph.Scalar{}
-								attrs.LabelPosition.Value = scalar.ScalarString()
-								attrs.LabelPosition.MapKey = f.LastPrimaryKey()
-							case "icon":
-								attrs.IconPosition = &d2graph.Scalar{}
-								attrs.IconPosition.Value = scalar.ScalarString()
-								attrs.IconPosition.MapKey = f.LastPrimaryKey()
+						switch name.ScalarString() {
+						case "label", "icon":
+							if _, ok := d2ast.LabelPositions[scalar.ScalarString()]; !ok {
+								c.errorf(f.LastPrimaryKey(), `invalid "near" field`)
+							} else {
+								switch name.ScalarString() {
+								case "label":
+									attrs.LabelPosition = &d2graph.Scalar{}
+									attrs.LabelPosition.Value = scalar.ScalarString()
+									attrs.LabelPosition.MapKey = f.LastPrimaryKey()
+								case "icon":
+									attrs.IconPosition = &d2graph.Scalar{}
+									attrs.IconPosition.Value = scalar.ScalarString()
+									attrs.IconPosition.MapKey = f.LastPrimaryKey()
+								}
+							}
+						case "tooltip":
+							if _, ok := d2ast.TooltipPositions[scalar.ScalarString()]; !ok {
+								c.errorf(f.LastPrimaryKey(), `invalid "near" field`)
+							} else {
+								attrs.TooltipPosition = &d2graph.Scalar{}
+								attrs.TooltipPosition.Value = scalar.ScalarString()
+								attrs.TooltipPosition.MapKey = f.LastPrimaryKey()
 							}
 						}
 					}
@@ -537,7 +555,7 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 						}
 					}
 				}
-			case "label", "icon":
+			case "label", "icon", "tooltip":
 				c.compilePosition(attrs, f)
 			default:
 				c.errorf(f.LastPrimaryKey(), "reserved field %v does not accept composite", f.Name.ScalarString())
@@ -597,6 +615,24 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Tooltip = &d2graph.Scalar{}
 		attrs.Tooltip.Value = scalar.ScalarString()
 		attrs.Tooltip.MapKey = f.LastPrimaryKey()
+
+		rendered, err := textmeasure.RenderMarkdown(scalar.ScalarString())
+		if err != nil {
+			c.errorf(f.LastPrimaryKey(), "malformed Markdown")
+		}
+		rendered = "<div>" + rendered + "</div>"
+		var xmlParsed interface{}
+		err = xml.Unmarshal([]byte(rendered), &xmlParsed)
+		if err != nil {
+			switch xmlErr := err.(type) {
+			case *xml.SyntaxError:
+				c.errorf(f.LastPrimaryKey(), "malformed Markdown: %s", xmlErr.Msg)
+			default:
+				c.errorf(f.LastPrimaryKey(), "malformed Markdown: %s", err.Error())
+			}
+		}
+
+		c.compilePosition(attrs, f)
 	case "width":
 		_, err := strconv.Atoi(scalar.ScalarString())
 		if err != nil {

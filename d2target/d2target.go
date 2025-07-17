@@ -16,6 +16,7 @@ import (
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/shape"
 	"oss.terrastruct.com/d2/lib/svg"
+	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
 const (
@@ -294,9 +295,16 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 		}
 
 		if targetShape.Tooltip != "" || targetShape.Link != "" {
-			// 16 is the icon radius
-			y1 = go2.Min(y1, targetShape.Pos.Y-targetShape.StrokeWidth-16)
-			x2 = go2.Max(x2, targetShape.Pos.X+targetShape.StrokeWidth+targetShape.Width+16)
+			if targetShape.TooltipPosition != "" {
+				tooltipMinX, tooltipMinY, tooltipMaxX, tooltipMaxY := calculateTooltipBounds(targetShape)
+				x1 = go2.Min(x1, tooltipMinX)
+				y1 = go2.Min(y1, tooltipMinY)
+				x2 = go2.Max(x2, tooltipMaxX)
+				y2 = go2.Max(y2, tooltipMaxY)
+			} else {
+				y1 = go2.Min(y1, targetShape.Pos.Y-targetShape.StrokeWidth-16)
+				x2 = go2.Max(x2, targetShape.Pos.X+targetShape.StrokeWidth+targetShape.Width+16)
+			}
 		}
 		if targetShape.Shadow {
 			y2 = go2.Max(y2, targetShape.Pos.Y+targetShape.Height+int(math.Ceil(float64(targetShape.StrokeWidth)/2.))+SHADOW_SIZE_Y)
@@ -396,6 +404,86 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 	}
 
 	return Point{x1, y1}, Point{x2, y2}
+}
+
+func CalculateTooltipPosition(shapeX, shapeY, shapeWidth, shapeHeight float64, tooltipWidth, tooltipHeight int, position string) (x, y float64) {
+	padding := 10.0
+
+	switch position {
+	case "top-left":
+		x = shapeX
+		y = shapeY - float64(tooltipHeight) - padding
+	case "top-center":
+		x = shapeX + shapeWidth/2 - float64(tooltipWidth)/2
+		y = shapeY - float64(tooltipHeight) - padding
+	case "top-right":
+		x = shapeX + shapeWidth - float64(tooltipWidth)
+		y = shapeY - float64(tooltipHeight) - padding
+	case "center-left":
+		x = shapeX - float64(tooltipWidth) - padding
+		y = shapeY + shapeHeight/2 - float64(tooltipHeight)/2
+	case "center-right":
+		x = shapeX + shapeWidth + padding
+		y = shapeY + shapeHeight/2 - float64(tooltipHeight)/2
+	case "bottom-left":
+		x = shapeX
+		y = shapeY + shapeHeight + padding
+	case "bottom-center":
+		x = shapeX + shapeWidth/2 - float64(tooltipWidth)/2
+		y = shapeY + shapeHeight + padding
+	case "bottom-right":
+		x = shapeX + shapeWidth - float64(tooltipWidth)
+		y = shapeY + shapeHeight + padding
+	default:
+		x = shapeX + shapeWidth/2 - float64(tooltipWidth)/2
+		y = shapeY - float64(tooltipHeight) - padding
+	}
+
+	return x, y
+}
+
+func calculateTooltipBounds(targetShape Shape) (minX, minY, maxX, maxY int) {
+	if targetShape.Tooltip == "" || targetShape.TooltipPosition == "" {
+		return 0, 0, 0, 0
+	}
+
+	var tooltipWidth, tooltipHeight int
+
+	ruler, err := textmeasure.NewRuler()
+	if err != nil {
+		textLength := len(targetShape.Tooltip)
+		tooltipWidth = go2.Min(textLength*8+20, 200)
+		tooltipHeight = 30
+	} else {
+		var fontFamily *d2fonts.FontFamily
+		if ff, exists := d2fonts.D2_FONT_TO_FAMILY[targetShape.FontFamily]; exists {
+			fontFamily = &ff
+		}
+
+		width, height, err := textmeasure.MeasureMarkdown(targetShape.Tooltip, ruler, fontFamily, targetShape.FontSize)
+		if err != nil {
+			textLength := len(targetShape.Tooltip)
+			tooltipWidth = go2.Min(textLength*8+20, 200)
+			tooltipHeight = 30
+		} else {
+			tooltipWidth = width + 20
+			tooltipHeight = height + 20
+		}
+	}
+
+	shapeX := float64(targetShape.Pos.X)
+	shapeY := float64(targetShape.Pos.Y)
+	shapeWidth := float64(targetShape.Width)
+	shapeHeight := float64(targetShape.Height)
+
+	x, y := CalculateTooltipPosition(shapeX, shapeY, shapeWidth, shapeHeight, tooltipWidth, tooltipHeight, targetShape.TooltipPosition)
+
+	minX = int(math.Floor(x))
+	minY = int(math.Floor(y))
+	maxX = int(math.Ceil(x)) + tooltipWidth
+	maxY = int(math.Ceil(y)) + tooltipHeight
+
+	return minX, minY, maxX, maxY
 }
 
 func (diagram Diagram) GetNestedCorpus() string {
@@ -521,7 +609,8 @@ type Shape struct {
 
 	Text
 
-	LabelPosition string `json:"labelPosition,omitempty"`
+	LabelPosition   string `json:"labelPosition,omitempty"`
+	TooltipPosition string `json:"tooltipPosition,omitempty"`
 
 	ZIndex int `json:"zIndex"`
 	Level  int `json:"level"`
