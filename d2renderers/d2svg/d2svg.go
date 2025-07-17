@@ -1605,7 +1605,10 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		} else {
 			drawClass(writer, diagramHash, targetShape, inlineTheme)
 		}
-		addAppendixItems(appendixWriter, diagramHash, targetShape, s)
+		err := addAppendixItems(appendixWriter, diagramHash, targetShape, s)
+		if err != nil {
+			return "", err
+		}
 		fmt.Fprint(writer, `</g>`)
 		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
@@ -1619,7 +1622,10 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		} else {
 			drawTable(writer, diagramHash, targetShape, inlineTheme)
 		}
-		addAppendixItems(appendixWriter, diagramHash, targetShape, s)
+		err := addAppendixItems(appendixWriter, diagramHash, targetShape, s)
+		if err != nil {
+			return "", err
+		}
 		fmt.Fprint(writer, `</g>`)
 		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
@@ -2105,12 +2111,15 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			fmt.Fprint(writer, textEl.Render())
 		}
 	}
-	if targetShape.Tooltip != "" {
+	if targetShape.Tooltip != "" && targetShape.TooltipPosition == "" {
 		fmt.Fprintf(writer, `<title>%s</title>`,
 			svg.EscapeText(targetShape.Tooltip),
 		)
 	}
-	addAppendixItems(appendixWriter, diagramHash, targetShape, s)
+	err = addAppendixItems(appendixWriter, diagramHash, targetShape, s)
+	if err != nil {
+		return "", err
+	}
 
 	fmt.Fprint(writer, closingTag)
 	return labelMask, nil
@@ -2138,7 +2147,7 @@ func applyIconBorderRadius(clipPathID string, shape d2target.Shape) string {
 	return out + `fill="none" /> </clipPath>`
 }
 
-func addAppendixItems(writer io.Writer, diagramHash string, targetShape d2target.Shape, s shape.Shape) {
+func addAppendixItems(writer io.Writer, diagramHash string, targetShape d2target.Shape, s shape.Shape) error {
 	var p1, p2 *geo.Point
 	if targetShape.Tooltip != "" || targetShape.Link != "" {
 		bothIcons := targetShape.Tooltip != "" && targetShape.Link != ""
@@ -2177,15 +2186,23 @@ func addAppendixItems(writer io.Writer, diagramHash string, targetShape d2target
 	}
 
 	if targetShape.Tooltip != "" {
-		x := int(math.Ceil(p1.X))
-		y := int(math.Ceil(p1.Y))
+		if targetShape.TooltipPosition != "" {
+			tt, err := renderPositionedTooltip(targetShape, targetShape.TooltipPosition)
+			if err != nil {
+				return err
+			}
+			fmt.Fprint(writer, tt)
+		} else {
+			x := int(math.Ceil(p1.X))
+			y := int(math.Ceil(p1.Y))
 
-		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon"><title>%s</title>%s</g>`,
-			x-appendixIconRadius,
-			y-appendixIconRadius,
-			svg.EscapeText(targetShape.Tooltip),
-			fmt.Sprintf(TooltipIcon, diagramHash, svg.SVGID(targetShape.ID)),
-		)
+			fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon"><title>%s</title>%s</g>`,
+				x-appendixIconRadius,
+				y-appendixIconRadius,
+				svg.EscapeText(targetShape.Tooltip),
+				fmt.Sprintf(TooltipIcon, diagramHash, svg.SVGID(targetShape.ID)),
+			)
+		}
 	}
 	if targetShape.Link != "" {
 		if p2 == nil {
@@ -2199,6 +2216,129 @@ func addAppendixItems(writer io.Writer, diagramHash string, targetShape d2target
 			fmt.Sprintf(LinkIcon, diagramHash, svg.SVGID(targetShape.ID)),
 		)
 	}
+	return nil
+}
+
+func calculateTooltipPosition(targetShape d2target.Shape, tooltipPosition string, tooltipWidth, tooltipHeight int) (x, y float64, tailDirection string, tailX, tailY float64) {
+	shapeX := float64(targetShape.Pos.X)
+	shapeY := float64(targetShape.Pos.Y)
+	shapeWidth := float64(targetShape.Width)
+	shapeHeight := float64(targetShape.Height)
+
+	x, y = d2target.CalculateTooltipPosition(shapeX, shapeY, shapeWidth, shapeHeight, tooltipWidth, tooltipHeight, tooltipPosition)
+
+	switch tooltipPosition {
+	case "top-left":
+		tailDirection = "bottom"
+		tailX = 20
+		tailY = float64(tooltipHeight)
+	case "top-center":
+		tailDirection = "bottom"
+		tailX = float64(tooltipWidth) / 2
+		tailY = float64(tooltipHeight)
+	case "top-right":
+		tailDirection = "bottom"
+		tailX = float64(tooltipWidth) - 20
+		tailY = float64(tooltipHeight)
+	case "center-left":
+		tailDirection = "right"
+		tailX = float64(tooltipWidth)
+		tailY = float64(tooltipHeight) / 2
+	case "center-right":
+		tailDirection = "left"
+		tailX = 0
+		tailY = float64(tooltipHeight) / 2
+	case "bottom-left":
+		tailDirection = "top"
+		tailX = 20
+		tailY = 0
+	case "bottom-center":
+		tailDirection = "top"
+		tailX = float64(tooltipWidth) / 2
+		tailY = 0
+	case "bottom-right":
+		tailDirection = "top"
+		tailX = float64(tooltipWidth) - 20
+		tailY = 0
+	default:
+		tailDirection = "bottom"
+		tailX = float64(tooltipWidth) / 2
+		tailY = float64(tooltipHeight)
+	}
+
+	return x, y, tailDirection, tailX, tailY
+}
+
+func renderTooltipTail(tailDirection string, tailX, tailY float64) string {
+	tailSize := 8.0
+
+	switch tailDirection {
+	case "top":
+		return fmt.Sprintf(`<path d="M %f %f L %f %f L %f %f Z" fill="white" stroke="#DEE1EB" stroke-width="1"/>`,
+			tailX-tailSize/2, tailY,
+			tailX+tailSize/2, tailY,
+			tailX, tailY-tailSize)
+	case "bottom":
+		return fmt.Sprintf(`<path d="M %f %f L %f %f L %f %f Z" fill="white" stroke="#DEE1EB" stroke-width="1"/>`,
+			tailX-tailSize/2, tailY,
+			tailX+tailSize/2, tailY,
+			tailX, tailY+tailSize)
+	case "left":
+		return fmt.Sprintf(`<path d="M %f %f L %f %f L %f %f Z" fill="white" stroke="#DEE1EB" stroke-width="1"/>`,
+			tailX, tailY-tailSize/2,
+			tailX, tailY+tailSize/2,
+			tailX-tailSize, tailY)
+	case "right":
+		return fmt.Sprintf(`<path d="M %f %f L %f %f L %f %f Z" fill="white" stroke="#DEE1EB" stroke-width="1"/>`,
+			tailX, tailY-tailSize/2,
+			tailX, tailY+tailSize/2,
+			tailX+tailSize, tailY)
+	default:
+		return ""
+	}
+}
+
+func renderPositionedTooltip(targetShape d2target.Shape, tooltipPosition string) (string, error) {
+	if targetShape.Tooltip == "" || tooltipPosition == "" {
+		return "", nil
+	}
+
+	var tooltipWidth, tooltipHeight int
+	var tooltipContent string
+
+	ruler, err := textmeasure.NewRuler()
+	if err != nil {
+		return "", err
+	}
+	fontFamily := go2.Pointer(d2fonts.SourceSansPro)
+	fontSize := d2fonts.FONT_SIZE_M
+
+	width, height, err := textmeasure.MeasureMarkdown(targetShape.Tooltip, ruler, fontFamily, fontSize)
+	if err != nil {
+		return "", err
+	}
+	tooltipWidth = width + 20
+	tooltipHeight = height + 20
+
+	render, err := textmeasure.RenderMarkdown(targetShape.Tooltip)
+	if err != nil {
+		return "", err
+	}
+	x, y, tailDirection, tailX, tailY := calculateTooltipPosition(targetShape, tooltipPosition, tooltipWidth, tooltipHeight)
+
+	tooltipContent = fmt.Sprintf(
+		`<foreignObject x="%f" y="%f" width="%d" height="%d"><div xmlns="http://www.w3.org/1999/xhtml" class="md color-N1">%s</div></foreignObject>`,
+		x+10, y+10, tooltipWidth-20, tooltipHeight-20, render,
+	)
+
+	tooltipBox := fmt.Sprintf(
+		`<rect x="%f" y="%f" width="%d" height="%d" rx="4" ry="4" fill="white" stroke="#DEE1EB" stroke-width="1"/>`,
+		x, y, tooltipWidth, tooltipHeight,
+	)
+
+	tail := renderTooltipTail(tailDirection, tailX+x, tailY+y)
+
+	return fmt.Sprintf(`<g class="positioned-tooltip">%s%s%s</g>`, tooltipBox, tail, tooltipContent), nil
 }
 
 func RenderText(text string, x, height float64) string {

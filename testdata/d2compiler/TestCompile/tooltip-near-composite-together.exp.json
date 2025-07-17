@@ -1,0 +1,192 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-composite-together.d2,0:0:0-5:0:56",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-composite-together.d2,0:0:0-4:1:55",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-composite-together.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-composite-together.d2,0:0:0-0:3:3",
+                    "value": [
+                      {
+                        "string": "hey",
+                        "raw_string": "hey"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-composite-together.d2,0:5:5-4:1:55",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-composite-together.d2,1:1:8-3:3:53",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-composite-together.d2,1:1:8-1:8:15",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-composite-together.d2,1:1:8-1:8:15",
+                              "value": [
+                                {
+                                  "string": "tooltip",
+                                  "raw_string": "tooltip"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-composite-together.d2,1:10:17-1:20:27",
+                          "value": [
+                            {
+                              "string": "hover text",
+                              "raw_string": "hover text"
+                            }
+                          ]
+                        }
+                      },
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-composite-together.d2,1:21:28-3:3:53",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-composite-together.d2,2:2:32-2:19:49",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-composite-together.d2,2:2:32-2:6:36",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-composite-together.d2,2:2:32-2:6:36",
+                                        "value": [
+                                          {
+                                            "string": "near",
+                                            "raw_string": "near"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-composite-together.d2,2:8:38-2:19:49",
+                                    "value": [
+                                      {
+                                        "string": "center-left",
+                                        "raw_string": "center-left"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "iconStyle": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "hey",
+        "id_val": "hey",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-composite-together.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-composite-together.d2,0:0:0-0:3:3",
+                    "value": [
+                      {
+                        "string": "hey",
+                        "raw_string": "hey"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "hey"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "iconStyle": {},
+          "tooltip": {
+            "value": "hover text"
+          },
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null,
+          "tooltipPosition": {
+            "value": "center-left"
+          }
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

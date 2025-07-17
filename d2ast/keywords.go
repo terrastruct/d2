@@ -41,6 +41,7 @@ var CompositeReservedKeywords = map[string]struct{}{
 	"constraint":       {},
 	"label":            {},
 	"icon":             {},
+	"tooltip":          {},
 }
 
 // StyleKeywords are reserved keywords which cannot exist outside of the "style" keyword
@@ -139,6 +140,20 @@ var LabelPositionsArray = []string{
 }
 var LabelPositions map[string]struct{}
 
+var TooltipPositionsArray = []string{
+	"top-left",
+	"top-center",
+	"top-right",
+
+	"center-left",
+	"center-right",
+
+	"bottom-left",
+	"bottom-center",
+	"bottom-right",
+}
+var TooltipPositions map[string]struct{}
+
 var LabelPositionsMapping = map[string]label.Position{
 	"top-left":   label.InsideTopLeft,
 	"top-center": label.InsideTopCenter,
@@ -228,5 +243,10 @@ func init() {
 	LabelPositions = make(map[string]struct{}, len(LabelPositionsArray))
 	for _, k := range LabelPositionsArray {
 		LabelPositions[k] = struct{}{}
+	}
+
+	TooltipPositions = make(map[string]struct{}, len(TooltipPositionsArray))
+	for _, k := range TooltipPositionsArray {
+		TooltipPositions[k] = struct{}{}
 	}
 }
