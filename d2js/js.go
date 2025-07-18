@@ -12,6 +12,7 @@ func main() {
 	api := d2wasm.NewD2API()
 
 	api.Register("getCompletions", d2wasm.GetCompletions)
+	api.Register("getHover", d2wasm.GetHover)
 	api.Register("getParentID", d2wasm.GetParentID)
 	api.Register("getObjOrder", d2wasm.GetObjOrder)
 	api.Register("getRefRanges", d2wasm.GetRefRanges)

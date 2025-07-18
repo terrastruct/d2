@@ -542,3 +542,43 @@ func GetCompletions(args []js.Value) (interface{}, error) {
 		Items: items,
 	}, nil
 }
+
+func GetHover(args []js.Value) (interface{}, error) {
+	if len(args) < 3 {
+		return nil, &WASMError{Message: "missing required arguments", Code: 400}
+	}
+
+	text := args[0].String()
+	line := args[1].Int()
+	column := args[2].Int()
+
+	hover, err := d2lsp.GetHoverInfo(text, line, column)
+	if err != nil {
+		return nil, &WASMError{Message: err.Error(), Code: 500}
+	}
+
+	if hover == nil {
+		return nil, nil
+	}
+
+	// Convert to map for JSON serialization
+	hoverResponse := map[string]interface{}{
+		"contents": hover.Contents,
+		"language": hover.Language,
+	}
+
+	if hover.Range != nil {
+		hoverResponse["range"] = map[string]interface{}{
+			"start": map[string]interface{}{
+				"line":   hover.Range.Start.Line,
+				"column": hover.Range.Start.Column,
+			},
+			"end": map[string]interface{}{
+				"line":   hover.Range.End.Line,
+				"column": hover.Range.End.Column,
+			},
+		}
+	}
+
+	return hoverResponse, nil
+}

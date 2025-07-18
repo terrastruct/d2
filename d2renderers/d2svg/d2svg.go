@@ -6,6 +6,7 @@ import (
 	"bytes"
 	_ "embed"
 	"encoding/base64"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"hash/fnv"
@@ -3303,10 +3304,10 @@ func sortObjects(allObjects []DiagramObject) {
 }
 
 func hash(s string) string {
-	const secret = "lalalas"
-	h := fnv.New32a()
-	h.Write([]byte(fmt.Sprintf("%s%s", s, secret)))
-	return fmt.Sprint(h.Sum32())
+	h := fnv.New64a()
+	h.Write([]byte(s))
+	bs := h.Sum(nil)
+	return hex.EncodeToString(bs)
 }
 
 func RenderMultiboard(diagram *d2target.Diagram, opts *RenderOpts) ([][]byte, error) {
