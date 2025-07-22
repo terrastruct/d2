@@ -270,6 +270,8 @@ let us know and we'll be happy to include it here!
 - **Zed extension**: [https://github.com/gabeidx/zed-d2](https://github.com/gabeidx/zed-d2)
 - **Hexo blog extension**: [https://github.com/leverimmy/hexo-d2](https://github.com/leverimmy/hexo-d2)
 - **Rehype Plugin**: [https://github.com/stereobooster/beoe/tree/main/packages/rehype-d2](https://github.com/stereobooster/beoe/tree/main/packages/rehype-d2)
+- **AsyncAPI to D2**: [https://github.com/holydocs/messageflow](https://github.com/holydocs/messageflow)
+- **Database Schemas to D2**: [https://github.com/holydocs/dberd](https://github.com/holydocs/dberd)
 
 ### Misc
 
