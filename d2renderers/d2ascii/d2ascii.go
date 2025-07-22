@@ -224,6 +224,14 @@ func (a *ASCIIartist) drawLabel(x, y int, label string) {
 
 func (a *ASCIIartist) drawRect(x, y, w, h float64, label, labelPosition, symbol string) {
 	x1, y1, wC, hC := a.calibrate(x, y, w, h)
+	if label != "" && hC%2 == 0 {
+		if hC > 2 {
+			hC--
+			y1++
+		} else {
+			hC++
+		}
+	}
 	x2, y2 := x1+wC, y1+hC
 	corners := map[string]string{
 		fmt.Sprintf("%d_%d", x1, y1):     a.chars["TLC"],
@@ -841,7 +849,7 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 						lx = int(cx + 1)
 					}
 					for j, ch := range conn.DstLabel.Label {
-						aa.canvas[ly][lx+j] = string(ch)
+						aa.canvas[ly][lx+j+2] = string(ch)
 					}
 				}
 			} else if i == 1 && x == int(math.Round(ax)) && y == int(math.Round(ay)) && conn.SrcArrow != d2target.NoArrowhead {
@@ -862,7 +870,7 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 						lx = int(cx + 1)
 					}
 					for j, ch := range conn.SrcLabel.Label {
-						aa.canvas[ly][lx+j] = string(ch)
+						aa.canvas[ly][lx+j+1] = string(ch)
 					}
 				}
 			} else {
@@ -889,7 +897,23 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 						aa.canvas[y][x] = aa.chars["VER"]
 					}
 				} else {
-					aa.canvas[y][x] = aa.chars["HOR"]
+					if overWrite {
+					}
+					if overWrite && (x == frmShapeBoundary.BR[0]-1 || x == frmShapeBoundary.TL[0]-1) && aa.canvas[y][x] == "│" {
+						if sx > 0 {
+							aa.canvas[y][x] = aa.chars["TRI"]
+						} else {
+							aa.canvas[y][x] = aa.chars["TLE"]
+						}
+					} else if overWrite && (x == toShapeBoundary.BR[0]-1 || y == toShapeBoundary.TL[0]-1) && aa.canvas[y][x] == "│" {
+						if sx > 0 {
+							aa.canvas[y][x] = aa.chars["TLE"]
+						} else {
+							aa.canvas[y][x] = aa.chars["TRI"]
+						}
+					} else {
+						aa.canvas[y][x] = aa.chars["HOR"]
+					}
 				}
 			}
 			if strings.Trim(label, " ") != "" {
@@ -898,11 +922,16 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 				bestIndex := -1
 				bestX := 0.0
 				for i := 0; i < len(routes)-1; i++ {
-					diff := math.Abs(routes[i].Y - routes[i+1].Y)
+					diffY := math.Abs(routes[i].Y - routes[i+1].Y)
+					diffX := math.Abs(routes[i].X - routes[i+1].X)
+					diff := math.Max(diffY, diffX)
 					if diff > maxDiff {
 						maxDiff = diff
 						bestIndex = i
 						bestX = routes[i].X
+						if diff == diffX {
+							bestX = routes[i].X + (float64(geo.Sign(sx)) * diff / 2)
+						}
 					}
 				}
 				labelPos := struct {
@@ -914,11 +943,18 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 					X: int(math.Round(bestX)) - len(label)/2,
 					Y: int(math.Round(maxDiff / 2)),
 				}
-				if labelPos.I == i-1 && int(math.Round(ay))+labelPos.Y*geo.Sign(sy) == y {
+				if sy != 0 && labelPos.I == i-1 && int(math.Round(ay))+int(math.Round(maxDiff/2))*geo.Sign(sy) == y {
 					aa.canvas[y][x] = " "
 					for j, ch := range label {
 						if y < len(aa.canvas) && (labelPos.X+j) < len(aa.canvas[0]) {
 							aa.canvas[y][labelPos.X+j] = string(ch)
+						}
+					}
+				} else if sx != 0 && labelPos.I == i-1 && int(math.Round(ax))+int(math.Round(maxDiff/2))*geo.Sign(sx) == x {
+					//aa.canvas[y][x] = " "
+					for j, ch := range label {
+						if y < len(aa.canvas) && (labelPos.X+j) < len(aa.canvas[0]) {
+							aa.canvas[y-1][labelPos.X+j] = string(ch)
 						}
 					}
 				}
