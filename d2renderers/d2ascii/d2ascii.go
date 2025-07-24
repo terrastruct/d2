@@ -758,6 +758,7 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 			}
 		}
 	}
+	routes = mergeRoutes(routes)
 	for i := range routes {
 		routes[i].X, routes[i].Y = aa.calibrateXY(routes[i].X, routes[i].Y)
 		routes[i].X -= 1
@@ -861,16 +862,16 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 					if math.Abs(sx) > 0 {
 						ly = int(cy - 1)
 						if sx > 0 {
-							lx = int(cx) - 1 - len(conn.SrcLabel.Label)
+							lx = int(ax)
 						} else {
-							lx = int(cx)
+							lx = int(ax) - 1 - len(conn.SrcLabel.Label)
 						}
 					} else if math.Abs(sy) > 0 {
 						ly = int(cy - 1)
 						lx = int(cx + 1)
 					}
 					for j, ch := range conn.SrcLabel.Label {
-						aa.canvas[ly][lx+j+1] = string(ch)
+						aa.canvas[ly][lx+j] = string(ch)
 					}
 				}
 			} else {
@@ -957,16 +958,17 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 				} else if sx != 0 && labelPos.I == i-1 && int(math.Round(ax))+int(math.Round(maxDiff/2))*geo.Sign(sx) == x {
 					//aa.canvas[y][x] = " "
 					yFactor := 0
-					if strings.Contains(conn.LabelPosition, "top") {
+					if strings.Contains(conn.LabelPosition, "TOP") {
 						yFactor = -1
-					} else if strings.Contains(conn.LabelPosition, "bottom") {
+					} else if strings.Contains(conn.LabelPosition, "BOTTOM") {
 						yFactor = 1
 					}
-					if strings.Contains(conn.LabelPosition, "left") {
+					if strings.Contains(conn.LabelPosition, "LEFT") {
 						labelPos.X = int(routes[labelPos.I+abs((geo.Sign(sx)-1)/2)].X)
-					} else if strings.Contains(conn.LabelPosition, "right") {
-						labelPos.X = int(routes[labelPos.I+((geo.Sign(sx)+1)/2)].X)
+					} else if strings.Contains(conn.LabelPosition, "RIGHT") {
+						labelPos.X = int(routes[labelPos.I+((geo.Sign(sx)+1)/2)].X) - len(_label)/2
 					}
+
 					for j, ch := range _label {
 						if y < len(aa.canvas) && (labelPos.X+j) < len(aa.canvas[0]) {
 							aa.canvas[y+yFactor][labelPos.X+j] = string(ch)
@@ -979,7 +981,22 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 		}
 	}
 }
-
+func mergeRoutes(routes []*geo.Point) []*geo.Point {
+	mRoutes := []*geo.Point{routes[0]}
+	var pt = routes[0]
+	dir := geo.Sign(routes[0].X-routes[1].X)*1 + geo.Sign(routes[0].Y-routes[1].Y)*2
+	for j := 1; j < len(routes); j++ {
+		if dir != geo.Sign(pt.X-routes[j].X)*1+geo.Sign(pt.Y-routes[j].Y)*2 {
+			mRoutes = append(mRoutes, pt)
+			dir = geo.Sign(pt.X-routes[j].X)*1 + geo.Sign(pt.Y-routes[j].Y)*2
+		}
+		pt = routes[j]
+	}
+	if mRoutes[len(mRoutes)-1].X != pt.X || mRoutes[len(mRoutes)-1].Y != pt.Y {
+		mRoutes = append(mRoutes, pt)
+	}
+	return mRoutes
+}
 func max(a, b int) int {
 	if a > b {
 		return a
