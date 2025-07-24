@@ -180,7 +180,7 @@ func (a *ASCIIartist) toByteArray() []byte {
 func (a *ASCIIartist) calibrate(x, y, w, h float64) (int, int, int, int) {
 	xC := int(math.Round((x / a.FW) * a.SCALE))
 	yC := int(math.Round((y / a.FH) * a.SCALE))
-	wC := int(math.Round((w / a.FW) * a.SCALE))
+	wC := int(math.Floor((w / a.FW) * a.SCALE))
 	hC := int(math.Round((h / a.FH) * a.SCALE))
 	return xC, yC, wC, hC
 }
