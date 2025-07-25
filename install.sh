@@ -1078,7 +1078,41 @@ fetch_release_info() {
 }
 
 curl_gh() {
-  sh_c curl -fL ${GITHUB_TOKEN:+"-H \"Authorization: Bearer \$GITHUB_TOKEN\""} "$@"
+  retry_curl_gh "$@"
+}
+
+retry_curl_gh() {
+  local max_attempts=3
+  local attempt=1
+  local delay=1
+  
+  while [ $attempt -le $max_attempts ]; do
+    set +e
+    sh_c curl -fL ${GITHUB_TOKEN:+"-H \"Authorization: Bearer \$GITHUB_TOKEN\""} "$@"
+    local exit_code=$?
+    set -e
+    
+    # Success case
+    if [ $exit_code -eq 0 ]; then
+      return 0
+    fi
+    
+    # Retry on HTTP errors (exit code 22) which includes 403, 429, 5xx
+    if [ $exit_code -eq 22 ] && [ $attempt -lt $max_attempts ]; then
+      warn "GitHub API request failed (attempt $attempt/$max_attempts), retrying in ${delay}s..."
+      sleep $delay
+      delay=$((delay * 2))
+      attempt=$((attempt + 1))
+    else
+      # Log the reason for failure
+      if [ $exit_code -eq 22 ]; then
+        warn "GitHub API request failed after $max_attempts attempts, giving up"
+      else
+        warn "GitHub API request failed with non-retryable error (exit code: $exit_code)"
+      fi
+      return $exit_code
+    fi
+  done
 }
 
 fetch_gh() {
