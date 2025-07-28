@@ -282,8 +282,7 @@ func run(t *testing.T, tc testCase) {
 			err2 = diff.Testdata(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
 		}
 
-		// Only generate ASCII for txtar and any tests with ascii
-		if strings.Contains(dataPath, "txtar") || strings.Contains(dataPath, "ascii") {
+		if (strings.Contains(dataPath, "txtar") || strings.Contains(dataPath, "ascii")) && strings.Contains(dataPath, "elk") {
 			asciiArtist := d2ascii.NewASCIIartist()
 			asciiRenderOpts := &d2ascii.RenderOpts{
 				Scale: renderOpts.Scale,

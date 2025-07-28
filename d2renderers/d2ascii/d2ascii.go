@@ -748,11 +748,12 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 		if len(match2) > 0 {
 			_ID = match2[1]
 		}
+		splitResult := re.Split(match1[1], -1)
 		for _, shape := range aa.diagram.Shapes {
-			if shape.ID == _ID+re.Split(match1[1], -1)[0] {
+			if len(splitResult) > 0 && shape.ID == _ID+splitResult[0] {
 				frmShapeBoundary = *NewBoundary(aa.GetBoundary(shape))
 				// _frmShapeBoundary = *NewBoundary(aa.GetActualBoundary(shape))
-			} else if shape.ID == _ID+re.Split(match1[1], -1)[1] {
+			} else if len(splitResult) > 1 && shape.ID == _ID+splitResult[1] {
 				toShapeBoundary = *NewBoundary(aa.GetBoundary(shape))
 				// _toShapeBoundary = *NewBoundary(aa.GetActualBoundary(shape))
 			}
@@ -818,6 +819,14 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 			}
 			x = int(math.Round(fx))
 			y = int(math.Round(fy))
+			
+			// Check canvas bounds
+			if y < 0 || y >= len(aa.canvas) || x < 0 || x >= len(aa.canvas[y]) {
+				fx += sx
+				fy += sy
+				continue
+			}
+			
 			isAlphaNumeric := false
 			for _, r := range aa.canvas[y][x] {
 				if unicode.IsLetter(r) || unicode.IsDigit(r) {
@@ -876,43 +885,43 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 				}
 			} else {
 				overWrite := false
-				if aa.canvas[y][x] != " " {
+				if y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) && aa.canvas[y][x] != " " {
 					overWrite = true
 				}
 				if sx == 0 {
-					if overWrite && (y == frmShapeBoundary.BR[1] || y == frmShapeBoundary.TL[1]) && aa.canvas[y][x] == "─" {
+					if overWrite && y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) && len(frmShapeBoundary.BR) > 1 && len(frmShapeBoundary.TL) > 1 && (y == frmShapeBoundary.BR[1] || y == frmShapeBoundary.TL[1]) && aa.canvas[y][x] == "─" {
 						if sy > 0 {
 							aa.canvas[y][x] = aa.chars["TDO"]
 						} else {
 							aa.canvas[y][x] = aa.chars["TUP"]
 						}
-					} else if overWrite && (y == toShapeBoundary.BR[1] || y == toShapeBoundary.TL[1]) && aa.canvas[y][x] == "─" {
+					} else if overWrite && y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) && len(toShapeBoundary.BR) > 1 && len(toShapeBoundary.TL) > 1 && (y == toShapeBoundary.BR[1] || y == toShapeBoundary.TL[1]) && aa.canvas[y][x] == "─" {
 						if sy > 0 {
 							aa.canvas[y][x] = aa.chars["TUP"]
 						} else {
 							aa.canvas[y][x] = aa.chars["TDO"]
 						}
-					} else if overWrite && ((aa.canvas[y][x] == "_" && (y == frmShapeBoundary.BR[1] || y == toShapeBoundary.BR[1])) || (aa.canvas[y][x] == "‾" && (y == frmShapeBoundary.TL[1] || y == toShapeBoundary.TL[1]))) {
+					} else if overWrite && y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) && len(frmShapeBoundary.BR) > 1 && len(frmShapeBoundary.TL) > 1 && len(toShapeBoundary.BR) > 1 && len(toShapeBoundary.TL) > 1 && ((aa.canvas[y][x] == "_" && (y == frmShapeBoundary.BR[1] || y == toShapeBoundary.BR[1])) || (aa.canvas[y][x] == "‾" && (y == frmShapeBoundary.TL[1] || y == toShapeBoundary.TL[1]))) {
 						// skip
-					} else {
+					} else if y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) {
 						aa.canvas[y][x] = aa.chars["VER"]
 					}
 				} else {
 					if overWrite {
 					}
-					if overWrite && (x == frmShapeBoundary.BR[0]-1 || x == frmShapeBoundary.TL[0]-1) && aa.canvas[y][x] == "│" {
+					if overWrite && y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) && len(frmShapeBoundary.BR) > 0 && len(frmShapeBoundary.TL) > 0 && (x == frmShapeBoundary.BR[0]-1 || x == frmShapeBoundary.TL[0]-1) && aa.canvas[y][x] == "│" {
 						if sx > 0 {
 							aa.canvas[y][x] = aa.chars["TRI"]
 						} else {
 							aa.canvas[y][x] = aa.chars["TLE"]
 						}
-					} else if overWrite && (x == toShapeBoundary.BR[0]-1 || y == toShapeBoundary.TL[0]-1) && aa.canvas[y][x] == "│" {
+					} else if overWrite && y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) && len(toShapeBoundary.BR) > 0 && len(toShapeBoundary.TL) > 0 && (x == toShapeBoundary.BR[0]-1 || x == toShapeBoundary.TL[0]-1) && aa.canvas[y][x] == "│" {
 						if sx > 0 {
 							aa.canvas[y][x] = aa.chars["TLE"]
 						} else {
 							aa.canvas[y][x] = aa.chars["TRI"]
 						}
-					} else {
+					} else if y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) {
 						aa.canvas[y][x] = aa.chars["HOR"]
 					}
 				}
@@ -949,9 +958,11 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 					Y: int(math.Round(maxDiff / 2)),
 				}
 				if sy != 0 && labelPos.I == i-1 && int(math.Round(ay))+int(math.Round(maxDiff/2))*geo.Sign(sy) == y {
-					aa.canvas[y][x] = " "
+					if y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) {
+						aa.canvas[y][x] = " "
+					}
 					for j, ch := range _label {
-						if y < len(aa.canvas) && (labelPos.X+j) < len(aa.canvas[0]) {
+						if y >= 0 && y < len(aa.canvas) && (labelPos.X+j) >= 0 && (labelPos.X+j) < len(aa.canvas[0]) {
 							aa.canvas[y][labelPos.X+j] = string(ch)
 						}
 					}
@@ -970,7 +981,7 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 					}
 
 					for j, ch := range _label {
-						if y < len(aa.canvas) && (labelPos.X+j) < len(aa.canvas[0]) {
+						if (y+yFactor) >= 0 && (y+yFactor) < len(aa.canvas) && (labelPos.X+j) >= 0 && (labelPos.X+j) < len(aa.canvas[0]) {
 							aa.canvas[y+yFactor][labelPos.X+j] = string(ch)
 						}
 					}
