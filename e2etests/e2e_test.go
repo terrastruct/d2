@@ -25,6 +25,7 @@ import (
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/d2renderers/d2animate"
+	"oss.terrastruct.com/d2/d2renderers/d2ascii"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/log"
@@ -275,13 +276,25 @@ func run(t *testing.T, tc testCase) {
 		err = xml.Unmarshal(svgBytes, &xmlParsed)
 		assert.Success(t, err)
 
-		var err2 error
+		var err2, err3 error
 		err = diff.TestdataJSON(filepath.Join(dataPath, "board"), diagram)
 		if os.Getenv("SKIP_SVG_CHECK") == "" {
 			err2 = diff.Testdata(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
 		}
+
+		// Only generate ASCII for txtar and any tests with ascii
+		if strings.Contains(dataPath, "txtar") || strings.Contains(dataPath, "ascii") {
+			asciiArtist := d2ascii.NewASCIIartist()
+			asciiRenderOpts := &d2ascii.RenderOpts{
+				Scale: renderOpts.Scale,
+			}
+			asciiBytes, err := asciiArtist.Render(diagram, asciiRenderOpts)
+			assert.Success(t, err)
+			err3 = diff.Testdata(filepath.Join(dataPath, "ascii"), ".txt", asciiBytes)
+		}
 		assert.Success(t, err)
 		assert.Success(t, err2)
+		assert.Success(t, err3)
 	}
 }
 
