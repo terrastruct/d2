@@ -374,6 +374,17 @@ func (a *ASCIIartist) drawRect(x, y, w, h float64, label, labelPosition, symbol 
 			hC++
 		}
 	}
+	// Adjust width for optimal label symmetry
+	if label != "" {
+		availableSpace := wC - len(label)
+		if availableSpace < 2 {
+			// Ensure minimum of 1 space on each side
+			wC = len(label) + 2
+		} else if availableSpace%2 == 1 {
+			// Odd available space - adjust width to make it even
+			wC++ // Add one to make even spacing possible
+		}
+	}
 	x2, y2 := x1+wC, y1+hC
 	corners := map[string]string{
 		fmt.Sprintf("%d_%d", x1, y1):     a.chars["TLC"],
@@ -404,6 +415,15 @@ func (a *ASCIIartist) drawRect(x, y, w, h float64, label, labelPosition, symbol 
 }
 func (a *ASCIIartist) drawPage(x, y, w, h float64, label, labelPosition string) {
 	xi, yi, wi, hi := a.calibrate(x, y, w, h)
+	// Adjust width for optimal label symmetry
+	if label != "" {
+		availableSpace := wi - len(label)
+		if availableSpace < 2 {
+			wi = len(label) + 2
+		} else if availableSpace%2 == 1 {
+			wi++
+		}
+	}
 	x1, y1 := xi, yi
 	x2, y2 := xi+wi-1, yi+hi-1
 	x3 := x2 - wi/3
@@ -537,6 +557,15 @@ func (a *ASCIIartist) drawStoredData(x, y, w, h float64, label, labelPosition st
 	} else if hi%2 == 0 {
 		hi++
 	}
+	// Adjust width for optimal label symmetry
+	if label != "" {
+		availableSpace := wi - len(label)
+		if availableSpace < 2 {
+			wi = len(label) + 2
+		} else if availableSpace%2 == 1 {
+			wi++
+		}
+	}
 	x1, y1 := xi, yi
 	x2, y2 := xi+wi-1, yi+hi-1
 	hoffset := (hi + 1) / 2
@@ -580,6 +609,15 @@ func (a *ASCIIartist) drawStoredData(x, y, w, h float64, label, labelPosition st
 }
 func (a *ASCIIartist) drawCylinder(x, y, w, h float64, label, labelPosition string) {
 	xi, yi, wi, hi := a.calibrate(x, y, w, h)
+	// Adjust width for optimal label symmetry
+	if label != "" {
+		availableSpace := wi - len(label)
+		if availableSpace < 2 {
+			wi = len(label) + 2
+		} else if availableSpace%2 == 1 {
+			wi++
+		}
+	}
 	x1, y1 := xi, yi
 	x2, y2 := xi+wi-1, yi+hi-1
 
