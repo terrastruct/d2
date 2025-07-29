@@ -252,12 +252,21 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 		}
 	}
 	// Draw connections
+	// First pass: draw routes without arrowheads (like sequence diagram lifelines)
 	for _, conn := range diagram.Connections {
 		for _, r := range conn.Route {
 			r.X += float64(xOffset)
 			r.Y += float64(yOffset)
 		}
-		a.drawRoute(conn)
+		if conn.DstArrow == d2target.NoArrowhead && conn.SrcArrow == d2target.NoArrowhead {
+			a.drawRoute(conn)
+		}
+	}
+	// Second pass: draw routes with arrowheads (so they can detect boundaries and push back)
+	for _, conn := range diagram.Connections {
+		if conn.DstArrow != d2target.NoArrowhead || conn.SrcArrow != d2target.NoArrowhead {
+			a.drawRoute(conn)
+		}
 	}
 	return a.toByteArray(), nil
 }
@@ -961,6 +970,127 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 		routes[i].X, routes[i].Y = aa.calibrateXY(routes[i].X, routes[i].Y)
 		routes[i].X -= 1
 	}
+	
+	// Adjust route points to avoid overriding existing characters (like lifelines)
+	if len(routes) >= 2 {
+		// Adjust start point: look at first 2 points to determine direction, keep shifting until empty space
+		if len(routes) >= 2 {
+			firstX := routes[0].X
+			firstY := routes[0].Y
+			secondX := routes[1].X
+			secondY := routes[1].Y
+			
+			// Determine line direction and keep shifting until empty space
+			if math.Abs(firstY-secondY) < 0.1 { // Horizontal line
+				deltaX := 0.0
+				if secondX > firstX {
+					deltaX = 1.0 // Shift start point towards second point (right)
+				} else if secondX < firstX {
+					deltaX = -1.0 // Shift start point towards second point (left)
+				}
+				
+				if deltaX != 0 {
+					// Keep shifting start point towards second point until we find empty space
+					for {
+						x := int(math.Round(routes[0].X))
+						y := int(math.Round(routes[0].Y))
+						if y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) {
+							if aa.canvas[y][x] == " " {
+								break // Found empty space
+							}
+							routes[0].X += deltaX
+						} else {
+							break // Out of bounds
+						}
+					}
+				}
+			} else if math.Abs(firstX-secondX) < 0.1 { // Vertical line
+				deltaY := 0.0
+				if secondY > firstY {
+					deltaY = 1.0 // Shift start point towards second point (down)
+				} else if secondY < firstY {
+					deltaY = -1.0 // Shift start point towards second point (up)
+				}
+				
+				if deltaY != 0 {
+					// Keep shifting start point towards second point until we find empty space
+					for {
+						x := int(math.Round(routes[0].X))
+						y := int(math.Round(routes[0].Y))
+						if y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) {
+							if aa.canvas[y][x] == " " {
+								break // Found empty space
+							}
+							routes[0].Y += deltaY
+						} else {
+							break // Out of bounds
+						}
+					}
+				}
+			}
+		}
+		
+		// Adjust end point: look at last 2 points to determine direction, keep shifting until empty space
+		if len(routes) >= 2 {
+			lastIdx := len(routes) - 1
+			secondLastIdx := lastIdx - 1
+			
+			lastX := routes[lastIdx].X
+			lastY := routes[lastIdx].Y
+			secondLastX := routes[secondLastIdx].X
+			secondLastY := routes[secondLastIdx].Y
+			
+			// Determine line direction and keep shifting until empty space
+			if math.Abs(lastY-secondLastY) < 0.1 { // Horizontal line
+				deltaX := 0.0
+				if secondLastX > lastX {
+					deltaX = 1.0 // Shift end point towards second-to-last point (right)
+				} else if secondLastX < lastX {
+					deltaX = -1.0 // Shift end point towards second-to-last point (left)
+				}
+				
+				if deltaX != 0 {
+					// Keep shifting end point towards second-to-last point until we find empty space
+					for {
+						x := int(math.Round(routes[lastIdx].X))
+						y := int(math.Round(routes[lastIdx].Y))
+						if y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) {
+							if aa.canvas[y][x] == " " {
+								break // Found empty space
+							}
+							routes[lastIdx].X += deltaX
+						} else {
+							break // Out of bounds
+						}
+					}
+				}
+			} else if math.Abs(lastX-secondLastX) < 0.1 { // Vertical line
+				deltaY := 0.0
+				if secondLastY > lastY {
+					deltaY = 1.0 // Shift end point towards second-to-last point (down)
+				} else if secondLastY < lastY {
+					deltaY = -1.0 // Shift end point towards second-to-last point (up)
+				}
+				
+				if deltaY != 0 {
+					// Keep shifting end point towards second-to-last point until we find empty space
+					for {
+						x := int(math.Round(routes[lastIdx].X))
+						y := int(math.Round(routes[lastIdx].Y))
+						if y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) {
+							if aa.canvas[y][x] == " " {
+								break // Found empty space
+							}
+							routes[lastIdx].Y += deltaY
+						} else {
+							break // Out of bounds
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	// Determine turn directions
 	turnDir := map[string]string{}
 	_routes := make([][2]float64, len(routes))
@@ -1118,11 +1248,7 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 					} else if overWrite && y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) && len(frmShapeBoundary.BR) > 1 && len(frmShapeBoundary.TL) > 1 && len(toShapeBoundary.BR) > 1 && len(toShapeBoundary.TL) > 1 && ((aa.canvas[y][x] == "_" && (y == frmShapeBoundary.BR[1] || y == toShapeBoundary.BR[1])) || (aa.canvas[y][x] == "‾" && (y == frmShapeBoundary.TL[1] || y == toShapeBoundary.TL[1]))) {
 						// skip
 					} else if y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) {
-						// Don't overwrite arrow characters with vertical lines
-						currentChar := aa.canvas[y][x]
-						if currentChar != "▲" && currentChar != "▼" && currentChar != "◀" && currentChar != "▶" {
-							aa.canvas[y][x] = aa.chars["VER"]
-						}
+						aa.canvas[y][x] = aa.chars["VER"]
 					}
 				} else {
 					if overWrite && y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) && len(frmShapeBoundary.BR) > 0 && len(frmShapeBoundary.TL) > 0 && (x == frmShapeBoundary.BR[0]-1 || x == frmShapeBoundary.TL[0]-1) && aa.canvas[y][x] == "│" {
@@ -1138,11 +1264,7 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 							aa.canvas[y][x] = aa.chars["TRI"]
 						}
 					} else if y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) {
-						// Don't overwrite arrow characters with horizontal lines
-						currentChar := aa.canvas[y][x]
-						if currentChar != "▲" && currentChar != "▼" && currentChar != "◀" && currentChar != "▶" {
-							aa.canvas[y][x] = aa.chars["HOR"]
-						}
+						aa.canvas[y][x] = aa.chars["HOR"]
 					}
 				}
 			}
