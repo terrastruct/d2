@@ -983,7 +983,24 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 				aa.canvas[y][x] = char
 			} else if i == len(routes)-1 && x == int(math.Round(cx)) && y == int(math.Round(cy)) && conn.DstArrow != d2target.NoArrowhead {
 				arrowKey := fmt.Sprintf("%d%d", geo.Sign(sx), geo.Sign(sy))
-				aa.canvas[y][x] = arrows[arrowKey]
+				// Check if we're about to place arrow on a shape boundary character
+				if y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) && 
+				   (aa.canvas[y][x] == "─" || aa.canvas[y][x] == "│" || 
+				    aa.canvas[y][x] == "┌" || aa.canvas[y][x] == "┐" || 
+				    aa.canvas[y][x] == "└" || aa.canvas[y][x] == "┘" ||
+				    aa.canvas[y][x] == "╭" || aa.canvas[y][x] == "╮" || 
+				    aa.canvas[y][x] == "╰" || aa.canvas[y][x] == "╯") {
+					// Place arrow one step back to avoid touching boundary
+					arrowX := x - int(math.Round(sx))
+					arrowY := y - int(math.Round(sy))
+					if arrowY >= 0 && arrowY < len(aa.canvas) && arrowX >= 0 && arrowX < len(aa.canvas[arrowY]) {
+						aa.canvas[arrowY][arrowX] = arrows[arrowKey]
+					} else {
+						aa.canvas[y][x] = arrows[arrowKey]
+					}
+				} else {
+					aa.canvas[y][x] = arrows[arrowKey]
+				}
 				if conn.DstLabel != nil {
 					ly := 0
 					lx := 0
