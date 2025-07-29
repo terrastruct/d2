@@ -1147,7 +1147,11 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 					} else if overWrite && y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) && len(frmShapeBoundary.BR) > 1 && len(frmShapeBoundary.TL) > 1 && len(toShapeBoundary.BR) > 1 && len(toShapeBoundary.TL) > 1 && ((aa.canvas[y][x] == "_" && (y == frmShapeBoundary.BR[1] || y == toShapeBoundary.BR[1])) || (aa.canvas[y][x] == "‾" && (y == frmShapeBoundary.TL[1] || y == toShapeBoundary.TL[1]))) {
 						// skip
 					} else if y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) {
-						aa.canvas[y][x] = aa.chars["VER"]
+						// Don't overwrite arrow characters with vertical lines
+						currentChar := aa.canvas[y][x]
+						if currentChar != "▲" && currentChar != "▼" && currentChar != "◀" && currentChar != "▶" {
+							aa.canvas[y][x] = aa.chars["VER"]
+						}
 					}
 				} else {
 					if overWrite && y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) && len(frmShapeBoundary.BR) > 0 && len(frmShapeBoundary.TL) > 0 && (x == frmShapeBoundary.BR[0]-1 || x == frmShapeBoundary.TL[0]-1) && aa.canvas[y][x] == "│" {
@@ -1163,7 +1167,11 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 							aa.canvas[y][x] = aa.chars["TRI"]
 						}
 					} else if y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) {
-						aa.canvas[y][x] = aa.chars["HOR"]
+						// Don't overwrite arrow characters with horizontal lines
+						currentChar := aa.canvas[y][x]
+						if currentChar != "▲" && currentChar != "▼" && currentChar != "◀" && currentChar != "▶" {
+							aa.canvas[y][x] = aa.chars["HOR"]
+						}
 					}
 				}
 			}
