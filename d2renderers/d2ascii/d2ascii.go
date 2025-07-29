@@ -176,8 +176,48 @@ func (a *ASCIIartist) toByteArray() []byte {
 			break
 		}
 	}
+	
+	// Post-process to compress consecutive vertical-only lines
+	var prevVerticalColumns []int
 	for i := startRow; i < len(a.canvas); i++ {
-		buf.WriteString(strings.Join(a.canvas[i], ""))
+		line := strings.Join(a.canvas[i], "")
+		
+		// Find positions of vertical characters and check if line is vertical-only
+		var verticalColumns []int
+		isOnlyVerticalRoute := true
+		for pos, char := range line {
+			if char == '│' {
+				verticalColumns = append(verticalColumns, pos)
+			} else if char != ' ' {
+				isOnlyVerticalRoute = false
+			}
+		}
+		
+		// Check if this line has vertical characters in same columns as previous
+		hasVerticals := len(verticalColumns) > 0
+		sameColumns := len(verticalColumns) == len(prevVerticalColumns)
+		if sameColumns {
+			for j, col := range verticalColumns {
+				if j >= len(prevVerticalColumns) || col != prevVerticalColumns[j] {
+					sameColumns = false
+					break
+				}
+			}
+		}
+		
+		// Skip if this is vertical-only line with same columns as previous vertical-only line
+		if isOnlyVerticalRoute && hasVerticals && sameColumns && len(prevVerticalColumns) > 0 {
+			continue
+		}
+		
+		// Update previous columns only if this line is vertical-only
+		if isOnlyVerticalRoute && hasVerticals {
+			prevVerticalColumns = verticalColumns
+		} else {
+			prevVerticalColumns = nil
+		}
+		
+		buf.WriteString(line)
 		buf.WriteByte('\n')
 	}
 	return buf.Bytes()
