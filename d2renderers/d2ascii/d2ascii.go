@@ -180,7 +180,7 @@ func (a *ASCIIartist) toByteArray() []byte {
 func (a *ASCIIartist) calibrate(x, y, w, h float64) (int, int, int, int) {
 	xC := int(math.Round((x / a.FW) * a.SCALE))
 	yC := int(math.Round((y / a.FH) * a.SCALE))
-	wC := int(math.Floor((w / a.FW) * a.SCALE))
+	wC := int(math.Round((w / a.FW) * a.SCALE))
 	hC := int(math.Round((h / a.FH) * a.SCALE))
 	return xC, yC, wC, hC
 }
@@ -789,7 +789,7 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 		"01-10": aa.chars["BRC"], "100-1": aa.chars["BRC"],
 	}
 	arrows := map[string]string{
-		"0-1": "▴", "10": "▸", "01": "▾", "-10": "◂",
+		"0-1": "▲", "10": "▶", "01": "▼", "-10": "◀",
 	}
 
 	x := int(math.Round(routes[0].X))
@@ -819,14 +819,14 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 			}
 			x = int(math.Round(fx))
 			y = int(math.Round(fy))
-			
+
 			// Check canvas bounds
 			if y < 0 || y >= len(aa.canvas) || x < 0 || x >= len(aa.canvas[y]) {
 				fx += sx
 				fy += sy
 				continue
 			}
-			
+
 			isAlphaNumeric := false
 			for _, r := range aa.canvas[y][x] {
 				if unicode.IsLetter(r) || unicode.IsDigit(r) {
