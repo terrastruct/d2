@@ -871,7 +871,7 @@ func renderSingle(ctx context.Context, ms *xmain.State, compileDur time.Duration
 }
 
 func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, outputFormat exportExtension) ([]byte, error) {
-	if outputFormat == ASCII {
+	if outputFormat == TXT {
 		renderOpts := &d2ascii.RenderOpts{
 			Scale: opts.Scale,
 		}
