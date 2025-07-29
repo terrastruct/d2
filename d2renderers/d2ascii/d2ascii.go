@@ -52,7 +52,6 @@ func (a *ASCIIartist) GetBoundary(s d2target.Shape) ([]int, []int) {
 	return []int{x1, y1}, []int{x2, y2}
 }
 
-
 func NewASCIIartist() *ASCIIartist {
 	artist := &ASCIIartist{
 		FW:     9.75,
@@ -176,47 +175,58 @@ func (a *ASCIIartist) toByteArray() []byte {
 			break
 		}
 	}
-	
-	// Post-process to compress consecutive vertical-only lines
-	var prevVerticalColumns []int
+
+	// Post-process to compress consecutive route-only lines (vertical or horizontal)
+	var prevRouteColumns []int
+	var prevRouteType rune
 	for i := startRow; i < len(a.canvas); i++ {
 		line := strings.Join(a.canvas[i], "")
-		
-		// Find positions of vertical characters and check if line is vertical-only
-		var verticalColumns []int
-		isOnlyVerticalRoute := true
+
+		// Find positions of route characters and check if line is route-only
+		var routeColumns []int
+		var routeType rune
+		isOnlyRouteChars := true
 		for pos, char := range line {
-			if char == '│' {
-				verticalColumns = append(verticalColumns, pos)
+			if char == '│' || char == '─' {
+				routeColumns = append(routeColumns, pos)
+				if routeType == 0 {
+					routeType = char
+				} else if routeType != char {
+					// Mixed route types on same line, don't compress
+					isOnlyRouteChars = false
+					break
+				}
 			} else if char != ' ' {
-				isOnlyVerticalRoute = false
+				isOnlyRouteChars = false
 			}
 		}
-		
-		// Check if this line has vertical characters in same columns as previous
-		hasVerticals := len(verticalColumns) > 0
-		sameColumns := len(verticalColumns) == len(prevVerticalColumns)
-		if sameColumns {
-			for j, col := range verticalColumns {
-				if j >= len(prevVerticalColumns) || col != prevVerticalColumns[j] {
-					sameColumns = false
+
+		// Check if this line has route characters in same columns and type as previous
+		hasRoutes := len(routeColumns) > 0
+		samePattern := len(routeColumns) == len(prevRouteColumns) && routeType == prevRouteType
+		if samePattern {
+			for j, col := range routeColumns {
+				if j >= len(prevRouteColumns) || col != prevRouteColumns[j] {
+					samePattern = false
 					break
 				}
 			}
 		}
-		
-		// Skip if this is vertical-only line with same columns as previous vertical-only line
-		if isOnlyVerticalRoute && hasVerticals && sameColumns && len(prevVerticalColumns) > 0 {
+
+		// Skip if this is route-only line with same pattern as previous route-only line
+		if isOnlyRouteChars && hasRoutes && samePattern && len(prevRouteColumns) > 0 {
 			continue
 		}
-		
-		// Update previous columns only if this line is vertical-only
-		if isOnlyVerticalRoute && hasVerticals {
-			prevVerticalColumns = verticalColumns
+
+		// Update previous pattern only if this line is route-only
+		if isOnlyRouteChars && hasRoutes {
+			prevRouteColumns = routeColumns
+			prevRouteType = routeType
 		} else {
-			prevVerticalColumns = nil
+			prevRouteColumns = nil
+			prevRouteType = 0
 		}
-		
+
 		buf.WriteString(line)
 		buf.WriteByte('\n')
 	}
