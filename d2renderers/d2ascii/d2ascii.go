@@ -52,9 +52,6 @@ func (a *ASCIIartist) GetBoundary(s d2target.Shape) ([]int, []int) {
 	return []int{x1, y1}, []int{x2, y2}
 }
 
-func (a *ASCIIartist) GetActualBoundary(s d2target.Shape) ([]int, []int) {
-	return []int{s.Pos.X, s.Pos.Y}, []int{s.Pos.X + s.Width, s.Pos.Y + s.Height}
-}
 
 func NewASCIIartist() *ASCIIartist {
 	artist := &ASCIIartist{
@@ -580,7 +577,7 @@ func (a *ASCIIartist) drawStep(x, y, w, h float64, label, labelPosition string) 
 	for x := x1; x <= x2; x++ {
 		for y := y1; y <= y2; y++ {
 			_x, _y := x-x1, y-y1
-			if (x < x1+ih/2 && _x-_y == 0) || (x > x2-ih/2 && abs(_x-_y) == iw-ih/2) {
+			if (x < x1+ih/2 && _x-_y == 0) || (x > x2-ih/2 && absInt(_x-_y) == iw-ih/2) {
 				a.canvas[y][x] = a.chars["BS"]
 			} else if (x < x1+ih/2 && _x+_y == ih-1) || (x > x2-ih/2 && _x+_y == iw-1+ih/2) {
 				a.canvas[y][x] = a.chars["FS"]
@@ -651,9 +648,9 @@ func (a *ASCIIartist) drawDocument(x, y, w, h float64, label, labelPosition stri
 		if i < hcurve {
 			lcurve[i] = rune(a.bcurve[i])
 			rcurve[i] = rune(a.tcurve[i])
-		} else if abs(i-n+1) < hcurve {
-			lcurve[i] = rune(a.bcurve[abs(i-n+1)])
-			rcurve[i] = rune(a.tcurve[abs(i-n+1)])
+		} else if absInt(i-n+1) < hcurve {
+			lcurve[i] = rune(a.bcurve[absInt(i-n+1)])
+			rcurve[i] = rune(a.tcurve[absInt(i-n+1)])
 		} else {
 			lcurve[i] = rune(a.bcurve[3])
 			rcurve[i] = rune(a.tcurve[3])
@@ -721,7 +718,7 @@ func (d *ASCIIartist) drawDiamond(x, y, w, h float64, label, labelPosition strin
 	for i := 0; i < len(diagPath)-1; i++ {
 		a, c := diagPath[i], diagPath[i+1]
 		dx, dy := c[0]-a[0], c[1]-a[1]
-		step := max(abs(dx), abs(dy))
+		step := max(absInt(dx), absInt(dy))
 		sx, sy := float64(dx)/float64(step), float64(dy)/float64(step)
 		fx, fy := float64(a[0]), float64(a[1])
 		for j := 0; j < step; j++ {
@@ -760,10 +757,8 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 		for _, shape := range aa.diagram.Shapes {
 			if len(splitResult) > 0 && shape.ID == _ID+splitResult[0] {
 				frmShapeBoundary = *NewBoundary(aa.GetBoundary(shape))
-				// _frmShapeBoundary = *NewBoundary(aa.GetActualBoundary(shape))
 			} else if len(splitResult) > 1 && shape.ID == _ID+splitResult[1] {
 				toShapeBoundary = *NewBoundary(aa.GetBoundary(shape))
-				// _toShapeBoundary = *NewBoundary(aa.GetActualBoundary(shape))
 			}
 		}
 	}
@@ -915,8 +910,6 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 						aa.canvas[y][x] = aa.chars["VER"]
 					}
 				} else {
-					if overWrite {
-					}
 					if overWrite && y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) && len(frmShapeBoundary.BR) > 0 && len(frmShapeBoundary.TL) > 0 && (x == frmShapeBoundary.BR[0]-1 || x == frmShapeBoundary.TL[0]-1) && aa.canvas[y][x] == "│" {
 						if sx > 0 {
 							aa.canvas[y][x] = aa.chars["TRI"]
@@ -975,7 +968,6 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 						}
 					}
 				} else if sx != 0 && labelPos.I == i-1 && int(math.Round(ax))+int(math.Round(maxDiff/2))*geo.Sign(sx) == x {
-					//aa.canvas[y][x] = " "
 					yFactor := 0
 					if strings.Contains(conn.LabelPosition, "TOP") {
 						yFactor = -1
@@ -983,7 +975,7 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 						yFactor = 1
 					}
 					if strings.Contains(conn.LabelPosition, "LEFT") {
-						labelPos.X = int(routes[labelPos.I+abs((geo.Sign(sx)-1)/2)].X)
+						labelPos.X = int(routes[labelPos.I+absInt((geo.Sign(sx)-1)/2)].X)
 					} else if strings.Contains(conn.LabelPosition, "RIGHT") {
 						labelPos.X = int(routes[labelPos.I+((geo.Sign(sx)+1)/2)].X) - len(_label)/2
 					}
@@ -1016,24 +1008,6 @@ func mergeRoutes(routes []*geo.Point) []*geo.Point {
 	}
 	return mRoutes
 }
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}
-func sign(x int) int {
-	if x == 0 {
-		return 0
-	}
-	if x < 0 {
-		return -1
-	}
-	return 1
-}
-func abs(a int) int {
-	if a < 0 {
-		return -a
-	}
-	return a
+func absInt(a int) int {
+	return int(math.Abs(float64(a)))
 }
