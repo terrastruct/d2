@@ -290,12 +290,35 @@ func (a *ASCIIartist) toByteArray() []byte {
 			break
 		}
 	}
+	
+	// Find the rightmost column with non-space content
+	endCol := 0
+	if len(a.canvas) > 0 {
+		for col := len(a.canvas[0]) - 1; col >= 0; col-- {
+			hasContent := false
+			for row := startRow; row <= endRow; row++ {
+				if col < len(a.canvas[row]) && a.canvas[row][col] != " " {
+					hasContent = true
+					break
+				}
+			}
+			if hasContent {
+				endCol = col
+				break
+			}
+		}
+	}
 
 	// Post-process to compress consecutive route-only lines (vertical or horizontal)
 	var prevRouteColumns []int
 	var prevRouteType rune
 	for i := startRow; i <= endRow; i++ {
-		line := strings.Join(a.canvas[i], "")
+		// Only include characters up to endCol
+		rowData := a.canvas[i]
+		if endCol+1 < len(rowData) {
+			rowData = rowData[:endCol+1]
+		}
+		line := strings.Join(rowData, "")
 
 		// Find positions of route characters and check if line is route-only
 		var routeColumns []int
