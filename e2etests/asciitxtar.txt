@@ -41,3 +41,8 @@ logs: {shape: page}
 
 network.data processor -> api server
 **.shape: rectangle
+
+-- simple-sequence --
+shape: sequence_diagram
+alice -> bob: hello
+bob -> alice: jello
