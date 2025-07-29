@@ -183,9 +183,18 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 	w = int(math.Round((float64(w) / a.FW) * a.SCALE))
 	h = int(math.Round((float64(h) / a.FH) * a.SCALE))
 
-	a.canvas = make([][]string, h+1)
+	// Add padding to account for potential width/height adjustments in drawing functions
+	maxLabelLen := 0
+	for _, shape := range diagram.Shapes {
+		if len(shape.Label) > maxLabelLen {
+			maxLabelLen = len(shape.Label)
+		}
+	}
+	padding := maxLabelLen + 2  // Match the maximum possible adjustment in drawRect
+
+	a.canvas = make([][]string, h+padding+1)
 	for i := range a.canvas {
-		a.canvas[i] = make([]string, w+1)
+		a.canvas[i] = make([]string, w+padding+1)
 		for j := range a.canvas[i] {
 			a.canvas[i][j] = " "
 		}
@@ -255,6 +264,8 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 func (a *ASCIIartist) toByteArray() []byte {
 	var buf bytes.Buffer
 	startRow := 0
+	endRow := len(a.canvas) - 1
+	
 	// Skip empty lines at the beginning
 	for i, row := range a.canvas {
 		if strings.TrimSpace(strings.Join(row, "")) != "" {
@@ -262,11 +273,19 @@ func (a *ASCIIartist) toByteArray() []byte {
 			break
 		}
 	}
+	
+	// Skip empty lines at the end
+	for i := len(a.canvas) - 1; i >= 0; i-- {
+		if strings.TrimSpace(strings.Join(a.canvas[i], "")) != "" {
+			endRow = i
+			break
+		}
+	}
 
 	// Post-process to compress consecutive route-only lines (vertical or horizontal)
 	var prevRouteColumns []int
 	var prevRouteType rune
-	for i := startRow; i < len(a.canvas); i++ {
+	for i := startRow; i <= endRow; i++ {
 		line := strings.Join(a.canvas[i], "")
 
 		// Find positions of route characters and check if line is route-only
