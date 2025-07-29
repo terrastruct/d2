@@ -36,6 +36,15 @@ func (b *Boundary) Contains(x int, y int) bool {
 	return x >= b.TL[0] && x <= b.BR[0] && y >= b.TL[1] && y <= b.BR[1]
 }
 
+// OnBoundary checks if a point is on the boundary (perimeter) of the shape
+func (b *Boundary) OnBoundary(x int, y int) bool {
+	if x < b.TL[0] || x > b.BR[0] || y < b.TL[1] || y > b.BR[1] {
+		return false // Outside the boundary
+	}
+	// Point is on boundary if it's on any edge
+	return x == b.TL[0] || x == b.BR[0] || y == b.TL[1] || y == b.BR[1]
+}
+
 func NewBoundary(TL []int, BR []int) *Boundary {
 	boundary := &Boundary{
 		TL: TL,
@@ -72,10 +81,11 @@ func NewASCIIartist() *ASCIIartist {
 
 	return artist
 }
+
 // calculateExtendedBounds calculates bounds including connection labels
 func (a *ASCIIartist) calculateExtendedBounds(diagram *d2target.Diagram) (tl, br d2target.Point) {
 	tl, br = diagram.NestedBoundingBox()
-	
+
 	// Extend bounds to include connection labels
 	for _, conn := range diagram.Connections {
 		if conn.Label != "" && len(conn.Route) > 1 {
@@ -113,7 +123,7 @@ func (a *ASCIIartist) calculateExtendedBounds(diagram *d2target.Diagram) (tl, br
 				br.Y = int(labelY2)
 			}
 		}
-		
+
 		// Check destination and source arrow labels
 		if conn.DstLabel != nil && len(conn.Route) > 0 {
 			lastRoute := conn.Route[len(conn.Route)-1]
@@ -134,7 +144,7 @@ func (a *ASCIIartist) calculateExtendedBounds(diagram *d2target.Diagram) (tl, br
 				br.Y = int(labelY2)
 			}
 		}
-		
+
 		if conn.SrcLabel != nil && len(conn.Route) > 0 {
 			firstRoute := conn.Route[0]
 			labelX := firstRoute.X - float64(len(conn.SrcLabel.Label))*a.FW
@@ -155,7 +165,7 @@ func (a *ASCIIartist) calculateExtendedBounds(diagram *d2target.Diagram) (tl, br
 			}
 		}
 	}
-	
+
 	return tl, br
 }
 
@@ -190,7 +200,7 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 			maxLabelLen = len(shape.Label)
 		}
 	}
-	padding := maxLabelLen + 2  // Match the maximum possible adjustment in drawRect
+	padding := maxLabelLen + 2 // Match the maximum possible adjustment in drawRect
 
 	a.canvas = make([][]string, h+padding+1)
 	for i := range a.canvas {
@@ -265,7 +275,7 @@ func (a *ASCIIartist) toByteArray() []byte {
 	var buf bytes.Buffer
 	startRow := 0
 	endRow := len(a.canvas) - 1
-	
+
 	// Skip empty lines at the beginning
 	for i, row := range a.canvas {
 		if strings.TrimSpace(strings.Join(row, "")) != "" {
@@ -273,7 +283,7 @@ func (a *ASCIIartist) toByteArray() []byte {
 			break
 		}
 	}
-	
+
 	// Skip empty lines at the end
 	for i := len(a.canvas) - 1; i >= 0; i-- {
 		if strings.TrimSpace(strings.Join(a.canvas[i], "")) != "" {
@@ -1040,13 +1050,32 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 				aa.canvas[y][x] = char
 			} else if i == len(routes)-1 && x == int(math.Round(cx)) && y == int(math.Round(cy)) && conn.DstArrow != d2target.NoArrowhead {
 				arrowKey := fmt.Sprintf("%d%d", geo.Sign(sx), geo.Sign(sy))
-				// Check if we're about to place arrow on a shape boundary character
-				if y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) && 
-				   (aa.canvas[y][x] == "─" || aa.canvas[y][x] == "│" || 
-				    aa.canvas[y][x] == "┌" || aa.canvas[y][x] == "┐" || 
-				    aa.canvas[y][x] == "└" || aa.canvas[y][x] == "┘" ||
-				    aa.canvas[y][x] == "╭" || aa.canvas[y][x] == "╮" || 
-				    aa.canvas[y][x] == "╰" || aa.canvas[y][x] == "╯") {
+				// Check if we're about to place arrow on a shape boundary using coordinates
+				// Only push back if the arrow would overwrite an actual boundary character
+				isOnBoundary := false
+				if len(toShapeBoundary.TL) > 1 && len(toShapeBoundary.BR) > 1 {
+					coordOnBoundary := toShapeBoundary.OnBoundary(x, y)
+					
+					if coordOnBoundary {
+						// Check what character is already at this position
+						char := ""
+						if y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) {
+							char = aa.canvas[y][x]
+						}
+						
+						// Only push back if we would overwrite a boundary character
+						isBoundaryChar := (char == "─" || char == "│" || 
+						                  char == "┌" || char == "┐" || 
+						                  char == "└" || char == "┘" ||
+						                  char == "╭" || char == "╮" || 
+						                  char == "╰" || char == "╯")
+						
+						isOnBoundary = isBoundaryChar
+						
+					}
+				}
+
+				if isOnBoundary {
 					// Place arrow one step back to avoid touching boundary
 					arrowX := x - int(math.Round(sx))
 					arrowY := y - int(math.Round(sy))
