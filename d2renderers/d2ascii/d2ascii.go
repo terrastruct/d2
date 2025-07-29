@@ -72,10 +72,11 @@ func NewASCIIartist() *ASCIIartist {
 
 	return artist
 }
+
 // calculateExtendedBounds calculates bounds including connection labels
 func (a *ASCIIartist) calculateExtendedBounds(diagram *d2target.Diagram) (tl, br d2target.Point) {
 	tl, br = diagram.NestedBoundingBox()
-	
+
 	// Extend bounds to include connection labels
 	for _, conn := range diagram.Connections {
 		if conn.Label != "" && len(conn.Route) > 1 {
@@ -113,7 +114,7 @@ func (a *ASCIIartist) calculateExtendedBounds(diagram *d2target.Diagram) (tl, br
 				br.Y = int(labelY2)
 			}
 		}
-		
+
 		// Check destination and source arrow labels
 		if conn.DstLabel != nil && len(conn.Route) > 0 {
 			lastRoute := conn.Route[len(conn.Route)-1]
@@ -134,7 +135,7 @@ func (a *ASCIIartist) calculateExtendedBounds(diagram *d2target.Diagram) (tl, br
 				br.Y = int(labelY2)
 			}
 		}
-		
+
 		if conn.SrcLabel != nil && len(conn.Route) > 0 {
 			firstRoute := conn.Route[0]
 			labelX := firstRoute.X - float64(len(conn.SrcLabel.Label))*a.FW
@@ -155,7 +156,7 @@ func (a *ASCIIartist) calculateExtendedBounds(diagram *d2target.Diagram) (tl, br
 			}
 		}
 	}
-	
+
 	return tl, br
 }
 
@@ -190,7 +191,7 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 			maxLabelLen = len(shape.Label)
 		}
 	}
-	padding := maxLabelLen + 2  // Match the maximum possible adjustment in drawRect
+	padding := maxLabelLen + 2 // Match the maximum possible adjustment in drawRect
 
 	a.canvas = make([][]string, h+padding+1)
 	for i := range a.canvas {
@@ -274,7 +275,7 @@ func (a *ASCIIartist) toByteArray() []byte {
 	var buf bytes.Buffer
 	startRow := 0
 	endRow := len(a.canvas) - 1
-	
+
 	// Skip empty lines at the beginning
 	for i, row := range a.canvas {
 		if strings.TrimSpace(strings.Join(row, "")) != "" {
@@ -282,7 +283,7 @@ func (a *ASCIIartist) toByteArray() []byte {
 			break
 		}
 	}
-	
+
 	// Skip empty lines at the end
 	for i := len(a.canvas) - 1; i >= 0; i-- {
 		if strings.TrimSpace(strings.Join(a.canvas[i], "")) != "" {
@@ -290,7 +291,7 @@ func (a *ASCIIartist) toByteArray() []byte {
 			break
 		}
 	}
-	
+
 	// Find the rightmost column with non-space content
 	endCol := 0
 	if len(a.canvas) > 0 {
@@ -384,6 +385,39 @@ func (a *ASCIIartist) calibrateXY(x, y float64) (float64, float64) {
 	return xC, yC
 }
 
+// hasConnectionsAtRightEdge checks if a shape has connections starting or ending at its right edge
+func (a *ASCIIartist) hasConnectionsAtRightEdge(shape d2target.Shape) bool {
+	shapeRight := float64(shape.Pos.X + shape.Width)
+	shapeTop := float64(shape.Pos.Y)
+	shapeBottom := float64(shape.Pos.Y + shape.Height)
+	
+	for _, conn := range a.diagram.Connections {
+		if len(conn.Route) == 0 {
+			continue
+		}
+		
+		// Check if connection starts or ends at the right edge of this shape
+		firstPoint := conn.Route[0]
+		lastPoint := conn.Route[len(conn.Route)-1]
+		
+		tolerance := a.FW / 2 // Allow some tolerance for edge detection
+		
+		// Check if first point is at right edge
+		if math.Abs(firstPoint.X-shapeRight) < tolerance &&
+			firstPoint.Y >= shapeTop && firstPoint.Y <= shapeBottom {
+			return true
+		}
+		
+		// Check if last point is at right edge
+		if math.Abs(lastPoint.X-shapeRight) < tolerance &&
+			lastPoint.Y >= shapeTop && lastPoint.Y <= shapeBottom {
+			return true
+		}
+	}
+	
+	return false
+}
+
 func (a *ASCIIartist) labelY(y1, y2, h int, label, labelPosition string) int {
 	ly := -1
 	if strings.Contains(labelPosition, "OUTSIDE") {
@@ -432,8 +466,21 @@ func (a *ASCIIartist) drawRect(x, y, w, h float64, label, labelPosition, symbol 
 			// Ensure minimum of 1 space on each side
 			wC = len(label) + 2
 		} else if availableSpace%2 == 1 {
-			// Odd available space - adjust width to make it even
-			wC-- // Reduce one to make even spacing possible
+			// Find the shape being drawn to check for right edge connections
+			var currentShape *d2target.Shape
+			for i := range a.diagram.Shapes {
+				shape := &a.diagram.Shapes[i]
+				if math.Abs(float64(shape.Pos.X)-x) < 1 && math.Abs(float64(shape.Pos.Y)-y) < 1 &&
+					math.Abs(float64(shape.Width)-w) < 1 && math.Abs(float64(shape.Height)-h) < 1 {
+					currentShape = shape
+					break
+				}
+			}
+			
+			// Only reduce width if there are no connections at the right edge
+			if currentShape == nil || !a.hasConnectionsAtRightEdge(*currentShape) {
+				wC-- // Reduce one to make even spacing possible
+			}
 		}
 	}
 	x2, y2 := x1+wC, y1+hC
@@ -472,7 +519,21 @@ func (a *ASCIIartist) drawPage(x, y, w, h float64, label, labelPosition string) 
 		if availableSpace < 2 {
 			wi = len(label) + 2
 		} else if availableSpace%2 == 1 {
-			wi--
+			// Find the shape being drawn to check for right edge connections
+			var currentShape *d2target.Shape
+			for i := range a.diagram.Shapes {
+				shape := &a.diagram.Shapes[i]
+				if math.Abs(float64(shape.Pos.X)-x) < 1 && math.Abs(float64(shape.Pos.Y)-y) < 1 &&
+					math.Abs(float64(shape.Width)-w) < 1 && math.Abs(float64(shape.Height)-h) < 1 {
+					currentShape = shape
+					break
+				}
+			}
+			
+			// Only reduce width if there are no connections at the right edge
+			if currentShape == nil || !a.hasConnectionsAtRightEdge(*currentShape) {
+				wi--
+			}
 		}
 	}
 	x1, y1 := xi, yi
@@ -614,7 +675,21 @@ func (a *ASCIIartist) drawStoredData(x, y, w, h float64, label, labelPosition st
 		if availableSpace < 2 {
 			wi = len(label) + 2
 		} else if availableSpace%2 == 1 {
-			wi--
+			// Find the shape being drawn to check for right edge connections
+			var currentShape *d2target.Shape
+			for i := range a.diagram.Shapes {
+				shape := &a.diagram.Shapes[i]
+				if math.Abs(float64(shape.Pos.X)-x) < 1 && math.Abs(float64(shape.Pos.Y)-y) < 1 &&
+					math.Abs(float64(shape.Width)-w) < 1 && math.Abs(float64(shape.Height)-h) < 1 {
+					currentShape = shape
+					break
+				}
+			}
+			
+			// Only reduce width if there are no connections at the right edge
+			if currentShape == nil || !a.hasConnectionsAtRightEdge(*currentShape) {
+				wi--
+			}
 		}
 	}
 	x1, y1 := xi, yi
@@ -666,7 +741,21 @@ func (a *ASCIIartist) drawCylinder(x, y, w, h float64, label, labelPosition stri
 		if availableSpace < 2 {
 			wi = len(label) + 2
 		} else if availableSpace%2 == 1 {
-			wi--
+			// Find the shape being drawn to check for right edge connections
+			var currentShape *d2target.Shape
+			for i := range a.diagram.Shapes {
+				shape := &a.diagram.Shapes[i]
+				if math.Abs(float64(shape.Pos.X)-x) < 1 && math.Abs(float64(shape.Pos.Y)-y) < 1 &&
+					math.Abs(float64(shape.Width)-w) < 1 && math.Abs(float64(shape.Height)-h) < 1 {
+					currentShape = shape
+					break
+				}
+			}
+			
+			// Only reduce width if there are no connections at the right edge
+			if currentShape == nil || !a.hasConnectionsAtRightEdge(*currentShape) {
+				wi--
+			}
 		}
 	}
 	x1, y1 := xi, yi
@@ -993,7 +1082,7 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 		routes[i].X, routes[i].Y = aa.calibrateXY(routes[i].X, routes[i].Y)
 		routes[i].X -= 1
 	}
-	
+
 	// Adjust route points to avoid overriding existing characters (like lifelines)
 	if len(routes) >= 2 {
 		// Adjust start point: look at first 2 points to determine direction, keep shifting until empty space
@@ -1002,7 +1091,7 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 			firstY := routes[0].Y
 			secondX := routes[1].X
 			secondY := routes[1].Y
-			
+
 			// Determine line direction and keep shifting until empty space
 			if math.Abs(firstY-secondY) < 0.1 { // Horizontal line
 				deltaX := 0.0
@@ -1011,7 +1100,7 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 				} else if secondX < firstX {
 					deltaX = -1.0 // Shift start point towards second point (left)
 				}
-				
+
 				if deltaX != 0 {
 					// Keep shifting start point towards second point until we find empty space
 					for {
@@ -1034,7 +1123,7 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 				} else if secondY < firstY {
 					deltaY = -1.0 // Shift start point towards second point (up)
 				}
-				
+
 				if deltaY != 0 {
 					// Keep shifting start point towards second point until we find empty space
 					for {
@@ -1052,17 +1141,17 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 				}
 			}
 		}
-		
+
 		// Adjust end point: look at last 2 points to determine direction, keep shifting until empty space
 		if len(routes) >= 2 {
 			lastIdx := len(routes) - 1
 			secondLastIdx := lastIdx - 1
-			
+
 			lastX := routes[lastIdx].X
 			lastY := routes[lastIdx].Y
 			secondLastX := routes[secondLastIdx].X
 			secondLastY := routes[secondLastIdx].Y
-			
+
 			// Determine line direction and keep shifting until empty space
 			if math.Abs(lastY-secondLastY) < 0.1 { // Horizontal line
 				deltaX := 0.0
@@ -1071,7 +1160,7 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 				} else if secondLastX < lastX {
 					deltaX = -1.0 // Shift end point towards second-to-last point (left)
 				}
-				
+
 				if deltaX != 0 {
 					// Keep shifting end point towards second-to-last point until we find empty space
 					for {
@@ -1094,7 +1183,7 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 				} else if secondLastY < lastY {
 					deltaY = -1.0 // Shift end point towards second-to-last point (up)
 				}
-				
+
 				if deltaY != 0 {
 					// Keep shifting end point towards second-to-last point until we find empty space
 					for {
@@ -1113,7 +1202,7 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 			}
 		}
 	}
-	
+
 	// Determine turn directions
 	turnDir := map[string]string{}
 	_routes := make([][2]float64, len(routes))
@@ -1194,12 +1283,12 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) { //(routes []*geo.Po
 			} else if i == len(routes)-1 && x == int(math.Round(cx)) && y == int(math.Round(cy)) && conn.DstArrow != d2target.NoArrowhead {
 				arrowKey := fmt.Sprintf("%d%d", geo.Sign(sx), geo.Sign(sy))
 				// Check if we're about to place arrow on a shape boundary character
-				if y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) && 
-				   (aa.canvas[y][x] == "─" || aa.canvas[y][x] == "│" || 
-				    aa.canvas[y][x] == "┌" || aa.canvas[y][x] == "┐" || 
-				    aa.canvas[y][x] == "└" || aa.canvas[y][x] == "┘" ||
-				    aa.canvas[y][x] == "╭" || aa.canvas[y][x] == "╮" || 
-				    aa.canvas[y][x] == "╰" || aa.canvas[y][x] == "╯") {
+				if y >= 0 && y < len(aa.canvas) && x >= 0 && x < len(aa.canvas[y]) &&
+					(aa.canvas[y][x] == "─" || aa.canvas[y][x] == "│" ||
+						aa.canvas[y][x] == "┌" || aa.canvas[y][x] == "┐" ||
+						aa.canvas[y][x] == "└" || aa.canvas[y][x] == "┘" ||
+						aa.canvas[y][x] == "╭" || aa.canvas[y][x] == "╮" ||
+						aa.canvas[y][x] == "╰" || aa.canvas[y][x] == "╯") {
 					// Place arrow one step back to avoid touching boundary
 					arrowX := x - int(math.Round(sx))
 					arrowY := y - int(math.Round(sy))
