@@ -45,6 +45,7 @@ func TestE2E(t *testing.T) {
 	t.Run("root", testRoot)
 	t.Run("themes", testThemes)
 	t.Run("txtar", testTxtar)
+	t.Run("asciitxtar", testASCIITxtar)
 }
 
 func testSanity(t *testing.T) {
@@ -89,6 +90,127 @@ func testTxtar(t *testing.T) {
 		})
 	}
 	runa(t, tcs)
+}
+
+func testASCIITxtar(t *testing.T) {
+	archive, err := txtar.ParseFile("./asciitxtar.txt")
+	assert.Success(t, err)
+	
+	for _, f := range archive.Files {
+		tc := testCase{
+			name:   f.Name,
+			script: string(f.Data),
+		}
+		
+		t.Run(tc.name, func(t *testing.T) {
+			if tc.skip {
+				t.Skip()
+			}
+			t.Parallel()
+			
+			runASCIITxtarTest(t, tc)
+		})
+	}
+}
+
+func runASCIITxtarTest(t *testing.T, tc testCase) {
+	ctx := context.Background()
+	ctx = log.WithTB(ctx, t)
+	ctx = log.Leveled(ctx, slog.LevelDebug)
+
+	ruler, err := textmeasure.NewRuler()
+	trequire.Nil(t, err)
+
+	serde(t, tc, ruler)
+
+	plugin := &d2plugin.ELKPlugin
+	layoutResolver := func(engine string) (d2graph.LayoutGraph, error) {
+		return d2elklayout.DefaultLayout, nil
+	}
+
+	compileOpts := &d2lib.CompileOptions{
+		Ruler:          ruler,
+		Layout:         go2.Pointer("elk"),
+		LayoutResolver: layoutResolver,
+	}
+	renderOpts := &d2svg.RenderOpts{
+		Pad:     go2.Pointer(int64(0)),
+		ThemeID: tc.themeID,
+	}
+
+	diagram, g, err := d2lib.Compile(ctx, tc.script, compileOpts, renderOpts)
+	if tc.expErr != "" {
+		assert.Error(t, err)
+		assert.ErrorString(t, err, tc.expErr)
+		return
+	}
+	assert.Success(t, err)
+
+	pluginInfo, err := plugin.Info(ctx)
+	assert.Success(t, err)
+
+	err = d2plugin.FeatureSupportCheck(pluginInfo, g)
+	if tc.elkFeatureError != "" {
+		assert.Error(t, err)
+		assert.ErrorString(t, err, tc.elkFeatureError)
+		return
+	}
+	assert.Success(t, err)
+
+	if tc.assertions != nil {
+		t.Run("assertions", func(t *testing.T) {
+			tc.assertions(t, diagram)
+		})
+	}
+
+	// Generate master ID for multiboard rendering
+	if len(diagram.Layers) > 0 || len(diagram.Scenarios) > 0 || len(diagram.Steps) > 0 {
+		masterID, err := diagram.HashID(nil)
+		assert.Success(t, err)
+		renderOpts.MasterID = masterID
+	}
+
+	// Render SVG
+	boards, err := d2svg.RenderMultiboard(diagram, renderOpts)
+	assert.Success(t, err)
+
+	var svgBytes []byte
+	if len(boards) == 1 {
+		svgBytes = boards[0]
+	} else {
+		svgBytes, err = d2animate.Wrap(diagram, boards, *renderOpts, 1000)
+		assert.Success(t, err)
+	}
+
+	// Check that it's valid SVG
+	var xmlParsed interface{}
+	err = xml.Unmarshal(svgBytes, &xmlParsed)
+	assert.Success(t, err)
+
+	// Output files to asciitxtar subdirectory for each test
+	testName := strings.TrimPrefix(t.Name(), "TestE2E/asciitxtar/")
+	outputDir := filepath.Join("testdata", "asciitxtar", testName)
+	
+	err = os.MkdirAll(outputDir, 0755)
+	assert.Success(t, err)
+
+	// Write SVG file
+	var err2, err3 error
+	if os.Getenv("SKIP_SVG_CHECK") == "" {
+		err2 = diff.Testdata(filepath.Join(outputDir, "sketch"), ".svg", svgBytes)
+	}
+
+	// Render and write ASCII file
+	asciiArtist := d2ascii.NewASCIIartist()
+	asciiRenderOpts := &d2ascii.RenderOpts{
+		Scale: renderOpts.Scale,
+	}
+	asciiBytes, err := asciiArtist.Render(diagram, asciiRenderOpts)
+	assert.Success(t, err)
+	err3 = diff.Testdata(filepath.Join(outputDir, "ascii"), ".txt", asciiBytes)
+
+	assert.Success(t, err2)
+	assert.Success(t, err3)
 }
 
 type testCase struct {
@@ -276,24 +398,14 @@ func run(t *testing.T, tc testCase) {
 		err = xml.Unmarshal(svgBytes, &xmlParsed)
 		assert.Success(t, err)
 
-		var err2, err3 error
+		var err2 error
 		err = diff.TestdataJSON(filepath.Join(dataPath, "board"), diagram)
 		if os.Getenv("SKIP_SVG_CHECK") == "" {
 			err2 = diff.Testdata(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
 		}
 
-		if (strings.Contains(dataPath, "txtar") || strings.Contains(dataPath, "ascii")) && strings.Contains(dataPath, "elk") {
-			asciiArtist := d2ascii.NewASCIIartist()
-			asciiRenderOpts := &d2ascii.RenderOpts{
-				Scale: renderOpts.Scale,
-			}
-			asciiBytes, err := asciiArtist.Render(diagram, asciiRenderOpts)
-			assert.Success(t, err)
-			err3 = diff.Testdata(filepath.Join(dataPath, "ascii"), ".txt", asciiBytes)
-		}
 		assert.Success(t, err)
 		assert.Success(t, err2)
-		assert.Success(t, err3)
 	}
 }
 
