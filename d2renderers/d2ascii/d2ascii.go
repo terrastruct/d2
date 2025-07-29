@@ -382,7 +382,7 @@ func (a *ASCIIartist) drawRect(x, y, w, h float64, label, labelPosition, symbol 
 			wC = len(label) + 2
 		} else if availableSpace%2 == 1 {
 			// Odd available space - adjust width to make it even
-			wC++ // Add one to make even spacing possible
+			wC-- // Reduce one to make even spacing possible
 		}
 	}
 	x2, y2 := x1+wC, y1+hC
@@ -421,7 +421,7 @@ func (a *ASCIIartist) drawPage(x, y, w, h float64, label, labelPosition string) 
 		if availableSpace < 2 {
 			wi = len(label) + 2
 		} else if availableSpace%2 == 1 {
-			wi++
+			wi--
 		}
 	}
 	x1, y1 := xi, yi
@@ -563,7 +563,7 @@ func (a *ASCIIartist) drawStoredData(x, y, w, h float64, label, labelPosition st
 		if availableSpace < 2 {
 			wi = len(label) + 2
 		} else if availableSpace%2 == 1 {
-			wi++
+			wi--
 		}
 	}
 	x1, y1 := xi, yi
@@ -615,7 +615,7 @@ func (a *ASCIIartist) drawCylinder(x, y, w, h float64, label, labelPosition stri
 		if availableSpace < 2 {
 			wi = len(label) + 2
 		} else if availableSpace%2 == 1 {
-			wi++
+			wi--
 		}
 	}
 	x1, y1 := xi, yi
