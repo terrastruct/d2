@@ -171,8 +171,16 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 }
 func (a *ASCIIartist) toByteArray() []byte {
 	var buf bytes.Buffer
-	for _, row := range a.canvas {
-		buf.WriteString(strings.Join(row, ""))
+	startRow := 0
+	// Skip empty lines at the beginning
+	for i, row := range a.canvas {
+		if strings.TrimSpace(strings.Join(row, "")) != "" {
+			startRow = i
+			break
+		}
+	}
+	for i := startRow; i < len(a.canvas); i++ {
+		buf.WriteString(strings.Join(a.canvas[i], ""))
 		buf.WriteByte('\n')
 	}
 	return buf.Bytes()
