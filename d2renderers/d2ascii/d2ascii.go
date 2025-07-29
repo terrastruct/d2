@@ -72,6 +72,93 @@ func NewASCIIartist() *ASCIIartist {
 
 	return artist
 }
+// calculateExtendedBounds calculates bounds including connection labels
+func (a *ASCIIartist) calculateExtendedBounds(diagram *d2target.Diagram) (tl, br d2target.Point) {
+	tl, br = diagram.NestedBoundingBox()
+	
+	// Extend bounds to include connection labels
+	for _, conn := range diagram.Connections {
+		if conn.Label != "" && len(conn.Route) > 1 {
+			// Find longest route segment for label placement
+			maxDiff := 0.0
+			bestX := 0.0
+			for i := 0; i < len(conn.Route)-1; i++ {
+				diffY := math.Abs(conn.Route[i].Y - conn.Route[i+1].Y)
+				diffX := math.Abs(conn.Route[i].X - conn.Route[i+1].X)
+				diff := math.Max(diffY, diffX)
+				if diff > maxDiff {
+					maxDiff = diff
+					bestX = conn.Route[i].X
+					if diff == diffX {
+						bestX = conn.Route[i].X + (math.Copysign(1, conn.Route[i+1].X-conn.Route[i].X) * diff / 2)
+					}
+				}
+			}
+			labelX := bestX - float64(len(conn.Label))/2*a.FW
+			labelX2 := bestX + float64(len(conn.Label))/2*a.FW
+			// Estimate Y position (this is approximate since exact positioning is complex)
+			midY := (conn.Route[0].Y + conn.Route[len(conn.Route)-1].Y) / 2
+			labelY := midY - a.FH
+			labelY2 := midY + a.FH
+			if int(labelX) < tl.X {
+				tl.X = int(labelX)
+			}
+			if int(labelX2) > br.X {
+				br.X = int(labelX2)
+			}
+			if int(labelY) < tl.Y {
+				tl.Y = int(labelY)
+			}
+			if int(labelY2) > br.Y {
+				br.Y = int(labelY2)
+			}
+		}
+		
+		// Check destination and source arrow labels
+		if conn.DstLabel != nil && len(conn.Route) > 0 {
+			lastRoute := conn.Route[len(conn.Route)-1]
+			labelX := lastRoute.X - float64(len(conn.DstLabel.Label))*a.FW
+			labelX2 := lastRoute.X + float64(len(conn.DstLabel.Label))*a.FW
+			labelY := lastRoute.Y - a.FH
+			labelY2 := lastRoute.Y + a.FH
+			if int(labelX) < tl.X {
+				tl.X = int(labelX)
+			}
+			if int(labelX2) > br.X {
+				br.X = int(labelX2)
+			}
+			if int(labelY) < tl.Y {
+				tl.Y = int(labelY)
+			}
+			if int(labelY2) > br.Y {
+				br.Y = int(labelY2)
+			}
+		}
+		
+		if conn.SrcLabel != nil && len(conn.Route) > 0 {
+			firstRoute := conn.Route[0]
+			labelX := firstRoute.X - float64(len(conn.SrcLabel.Label))*a.FW
+			labelX2 := firstRoute.X + float64(len(conn.SrcLabel.Label))*a.FW
+			labelY := firstRoute.Y - a.FH
+			labelY2 := firstRoute.Y + a.FH
+			if int(labelX) < tl.X {
+				tl.X = int(labelX)
+			}
+			if int(labelX2) > br.X {
+				br.X = int(labelX2)
+			}
+			if int(labelY) < tl.Y {
+				tl.Y = int(labelY)
+			}
+			if int(labelY2) > br.Y {
+				br.Y = int(labelY2)
+			}
+		}
+	}
+	
+	return tl, br
+}
+
 func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	if opts == nil {
 		opts = &RenderOpts{}
@@ -79,7 +166,7 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 	xOffset := 0
 	yOffset := 0
 	a.diagram = *diagram
-	tl, br := diagram.NestedBoundingBox()
+	tl, br := a.calculateExtendedBounds(diagram)
 	if tl.X < 0 {
 		xOffset = -tl.X
 		br.X += -tl.X
