@@ -96,19 +96,19 @@ func testTxtar(t *testing.T) {
 func testASCIITxtar(t *testing.T) {
 	archive, err := txtar.ParseFile("./asciitxtar.txt")
 	assert.Success(t, err)
-	
+
 	for _, f := range archive.Files {
 		tc := testCase{
 			name:   f.Name,
 			script: string(f.Data),
 		}
-		
+
 		t.Run(tc.name, func(t *testing.T) {
 			if tc.skip {
 				t.Skip()
 			}
 			t.Parallel()
-			
+
 			runASCIITxtarTest(t, tc)
 		})
 	}
@@ -191,7 +191,7 @@ func runASCIITxtarTest(t *testing.T, tc testCase) {
 	// Output files to asciitxtar subdirectory for each test
 	testName := strings.TrimPrefix(t.Name(), "TestE2E/asciitxtar/")
 	outputDir := filepath.Join("testdata", "asciitxtar", testName)
-	
+
 	err = os.MkdirAll(outputDir, 0755)
 	assert.Success(t, err)
 
@@ -201,25 +201,25 @@ func runASCIITxtarTest(t *testing.T, tc testCase) {
 		err2 = diff.Testdata(filepath.Join(outputDir, "sketch"), ".svg", svgBytes)
 	}
 
-	// Render and write ASCII files for both extended and standard modes
-	asciiArtist := d2ascii.NewASCIIartist()
-	
+	extendedAsciiArtist := d2ascii.NewASCIIartist()
+
 	// Extended (Unicode) ASCII
 	extendedRenderOpts := &d2ascii.RenderOpts{
 		Scale:   renderOpts.Scale,
 		Charset: charset.Unicode,
 	}
-	extendedBytes, err := asciiArtist.Render(diagram, extendedRenderOpts)
+	extendedBytes, err := extendedAsciiArtist.Render(diagram, extendedRenderOpts)
 	assert.Success(t, err)
 	err3 = diff.Testdata(filepath.Join(outputDir, "extended"), ".txt", extendedBytes)
-	
+
 	// Standard ASCII
 	var err4 error
+	standardAsciiArtist := d2ascii.NewASCIIartist()
 	standardRenderOpts := &d2ascii.RenderOpts{
 		Scale:   renderOpts.Scale,
 		Charset: charset.ASCII,
 	}
-	standardBytes, err := asciiArtist.Render(diagram, standardRenderOpts)
+	standardBytes, err := standardAsciiArtist.Render(diagram, standardRenderOpts)
 	assert.Success(t, err)
 	err4 = diff.Testdata(filepath.Join(outputDir, "standard"), ".txt", standardBytes)
 

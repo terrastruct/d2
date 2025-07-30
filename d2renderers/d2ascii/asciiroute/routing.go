@@ -10,16 +10,22 @@ import (
 
 // processRoute applies all route processing steps: merge, calibrate, and adjust
 func processRoute(rd RouteDrawer, routes []*geo.Point) []*geo.Point {
-	routes = mergeRoutes(routes)
-	calibrateRoutes(rd, routes)
-	
-	// Adjust route endpoints to avoid overlapping with existing characters
-	if len(routes) >= 2 {
-		adjustRouteStartPoint(rd, routes)
-		adjustRouteEndPoint(rd, routes)
+	// Create a deep copy of routes to avoid modifying the original
+	routesCopy := make([]*geo.Point, len(routes))
+	for i, pt := range routes {
+		routesCopy[i] = &geo.Point{X: pt.X, Y: pt.Y}
 	}
 	
-	return routes
+	routesCopy = mergeRoutes(routesCopy)
+	calibrateRoutes(rd, routesCopy)
+	
+	// Adjust route endpoints to avoid overlapping with existing characters
+	if len(routesCopy) >= 2 {
+		adjustRouteStartPoint(rd, routesCopy)
+		adjustRouteEndPoint(rd, routesCopy)
+	}
+	
+	return routesCopy
 }
 
 // parseConnectionBoundaries extracts source and destination shape boundaries from connection ID

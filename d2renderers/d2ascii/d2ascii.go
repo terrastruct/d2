@@ -181,10 +181,19 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 	if opts == nil {
 		opts = &RenderOpts{}
 	}
-	// Allow changing character set for this render
+	// Use the specified charset for this render, or default to the artist's charset
+	chars := a.chars
 	if opts.Charset == charset.ASCII {
-		a.chars = charset.New(charset.ASCII)
+		chars = charset.New(charset.ASCII)
+	} else if opts.Charset == charset.Unicode {
+		chars = charset.New(charset.Unicode)
 	}
+	// Store original charset and restore it after render
+	originalChars := a.chars
+	a.chars = chars
+	defer func() {
+		a.chars = originalChars
+	}()
 	xOffset := 0
 	yOffset := 0
 	a.diagram = *diagram
@@ -294,7 +303,7 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 			asciiroute.DrawRoute(a, conn)
 		}
 	}
-	return a.canvas.ToByteArray(), nil
+	return a.canvas.ToByteArray(a.chars), nil
 }
 
 func (a *ASCIIartist) calibrateXY(x, y float64) (float64, float64) {

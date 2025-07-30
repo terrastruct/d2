@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"strings"
 	"unicode"
+	
+	"oss.terrastruct.com/d2/d2renderers/d2ascii/charset"
 )
 
 // Canvas represents an ASCII art canvas
@@ -78,7 +80,7 @@ func (c *Canvas) ContainsAlphaNumeric(x, y int) bool {
 }
 
 // ToByteArray converts the canvas to a byte array, trimming empty space
-func (c *Canvas) ToByteArray() []byte {
+func (c *Canvas) ToByteArray(chars charset.Set) []byte {
 	var buf bytes.Buffer
 	startRow := 0
 	endRow := len(c.grid) - 1
@@ -132,8 +134,13 @@ func (c *Canvas) ToByteArray() []byte {
 		var routeColumns []int
 		var routeType rune
 		isOnlyRouteChars := true
+		
+		// Get the route characters from the charset
+		verticalChar := []rune(chars.Vertical())[0]
+		horizontalChar := []rune(chars.Horizontal())[0]
+		
 		for pos, char := range line {
-			if char == '│' || char == '─' {
+			if char == verticalChar || char == horizontalChar {
 				routeColumns = append(routeColumns, pos)
 				if routeType == 0 {
 					routeType = char

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math"
 
-	"oss.terrastruct.com/d2/d2renderers/d2ascii/charset"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 )
@@ -153,7 +152,7 @@ func drawArrowhead(rd RouteDrawer, x, y int, sx, sy float64, arrows map[string]s
 	
 	// Check if we're about to place arrow on a shape boundary character
 	if canvas.IsInBounds(x, y) &&
-		isShapeBoundaryChar(canvas.Get(x, y)) {
+		isShapeBoundaryChar(rd, canvas.Get(x, y)) {
 		// Place arrow one step back to avoid touching boundary
 		arrowX := x - int(math.Round(sx))
 		arrowY := y - int(math.Round(sy))
@@ -177,34 +176,36 @@ func containsAlphaNumeric(rd RouteDrawer, x, y int) bool {
 	return rd.GetCanvas().ContainsAlphaNumeric(x, y)
 }
 
-func isShapeBoundaryChar(char string) bool {
-	return char == charset.UnicodeHorizontal || char == charset.UnicodeVertical ||
-		char == charset.UnicodeTopLeftCorner || char == charset.UnicodeTopRightCorner ||
-		char == charset.UnicodeBottomLeftCorner || char == charset.UnicodeBottomRightCorner ||
-		char == charset.UnicodeTopLeftArc || char == charset.UnicodeTopRightArc ||
-		char == charset.UnicodeBottomLeftArc || char == charset.UnicodeBottomRightArc
+func isShapeBoundaryChar(rd RouteDrawer, char string) bool {
+	chars := rd.GetChars()
+	return char == chars.Horizontal() || char == chars.Vertical() ||
+		char == chars.TopLeftCorner() || char == chars.TopRightCorner() ||
+		char == chars.BottomLeftCorner() || char == chars.BottomRightCorner() ||
+		char == chars.TopLeftArc() || char == chars.TopRightArc() ||
+		char == chars.BottomLeftArc() || char == chars.BottomRightArc()
 }
 
 func shouldDrawTJunction(rd RouteDrawer, x, y int, frmBoundary, toBoundary Boundary, isVertical bool) bool {
 	canvas := rd.GetCanvas()
+	chars := rd.GetChars()
 	if isVertical {
 		// Check if we're crossing a horizontal boundary line
 		if (y == frmBoundary.BR.Y || y == frmBoundary.TL.Y) &&
-			canvas.Get(x, y) == charset.UnicodeHorizontal {
+			canvas.Get(x, y) == chars.Horizontal() {
 			return true
 		}
 		if (y == toBoundary.BR.Y || y == toBoundary.TL.Y) &&
-			canvas.Get(x, y) == charset.UnicodeHorizontal {
+			canvas.Get(x, y) == chars.Horizontal() {
 			return true
 		}
 	} else {
 		// Check if we're crossing a vertical boundary line
 		if (x == frmBoundary.BR.X-1 || x == frmBoundary.TL.X-1) &&
-			canvas.Get(x, y) == charset.UnicodeVertical {
+			canvas.Get(x, y) == chars.Vertical() {
 			return true
 		}
 		if (x == toBoundary.BR.X-1 || x == toBoundary.TL.X-1) &&
-			canvas.Get(x, y) == charset.UnicodeVertical {
+			canvas.Get(x, y) == chars.Vertical() {
 			return true
 		}
 	}
@@ -213,8 +214,9 @@ func shouldDrawTJunction(rd RouteDrawer, x, y int, frmBoundary, toBoundary Bound
 
 func shouldSkipOverwrite(rd RouteDrawer, x, y int, frmBoundary, toBoundary Boundary) bool {
 	canvas := rd.GetCanvas()
-	if (canvas.Get(x, y) == charset.UnicodeUnderscore && (y == frmBoundary.BR.Y || y == toBoundary.BR.Y)) ||
-		(canvas.Get(x, y) == charset.UnicodeOverline && (y == frmBoundary.TL.Y || y == toBoundary.TL.Y)) {
+	chars := rd.GetChars()
+	if (canvas.Get(x, y) == chars.Underscore() && (y == frmBoundary.BR.Y || y == toBoundary.BR.Y)) ||
+		(canvas.Get(x, y) == chars.Overline() && (y == frmBoundary.TL.Y || y == toBoundary.TL.Y)) {
 		return true
 	}
 	return false
