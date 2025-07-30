@@ -29,6 +29,7 @@ import (
 	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/d2renderers/d2animate"
 	"oss.terrastruct.com/d2/d2renderers/d2ascii"
+	"oss.terrastruct.com/d2/d2renderers/d2ascii/charset"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2renderers/d2svg/appendix"
@@ -138,6 +139,11 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	saltFlag := ms.Opts.String("", "salt", "", "", "Add a salt value to ensure the output uses unique IDs. This is useful when generating multiple identical diagrams to be included in the same HTML doc, so that duplicate IDs do not cause invalid HTML. The salt value is a string that will be appended to IDs in the output.")
 
 	omitVersionFlag, err := ms.Opts.Bool("OMIT_VERSION", "omit-version", "", false, "omit D2 version from generated image")
+	if err != nil {
+		return err
+	}
+
+	asciiModeFlag := ms.Opts.String("D2_ASCII_MODE", "ascii-mode", "", "extended", "ASCII rendering mode for text outputs. Options: 'standard' (basic ASCII chars) or 'extended' (Unicode chars)")
 	if err != nil {
 		return err
 	}
@@ -361,6 +367,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 			pw:              pw,
 			fontFamily:      fontFamily,
 			outputFormat:    outputFormat,
+			asciiMode:       *asciiModeFlag,
 		})
 		if err != nil {
 			return err
@@ -391,7 +398,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	ctx, cancel := timelib.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
-	_, written, err := compile(ctx, ms, plugins, nil, layoutFlag, renderOpts, fontFamily, *animateIntervalFlag, inputPath, outputPath, boardPath, noChildren, *bundleFlag, *forceAppendixFlag, pw.Page, outputFormat)
+	_, written, err := compile(ctx, ms, plugins, nil, layoutFlag, renderOpts, fontFamily, *animateIntervalFlag, inputPath, outputPath, boardPath, noChildren, *bundleFlag, *forceAppendixFlag, pw.Page, outputFormat, *asciiModeFlag)
 	if err != nil {
 		if written {
 			return fmt.Errorf("failed to fully compile (partial render written) %s: %w", ms.HumanPath(inputPath), err)
@@ -466,7 +473,7 @@ func RouterResolver(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plu
 	}
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs fs.FS, layout *string, renderOpts d2svg.RenderOpts, fontFamily *d2fonts.FontFamily, animateInterval int64, inputPath, outputPath string, boardPath []string, noChildren, bundle, forceAppendix bool, page playwright.Page, ext exportExtension) (_ []byte, written bool, _ error) {
+func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs fs.FS, layout *string, renderOpts d2svg.RenderOpts, fontFamily *d2fonts.FontFamily, animateInterval int64, inputPath, outputPath string, boardPath []string, noChildren, bundle, forceAppendix bool, page playwright.Page, ext exportExtension, asciiMode string) (_ []byte, written bool, _ error) {
 	start := time.Now()
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
@@ -633,9 +640,9 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs
 		var boards [][]byte
 		var err error
 		if noChildren {
-			boards, err = renderSingle(ctx, ms, compileDur, plugin, renderOpts, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram, ext)
+			boards, err = renderSingle(ctx, ms, compileDur, plugin, renderOpts, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram, ext, asciiMode)
 		} else {
-			boards, err = render(ctx, ms, compileDur, plugin, renderOpts, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram, ext)
+			boards, err = render(ctx, ms, compileDur, plugin, renderOpts, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram, ext, asciiMode)
 		}
 		if err != nil {
 			return nil, false, err
@@ -774,7 +781,7 @@ func relink(currDiagramPath string, d *d2target.Diagram, linkToOutput map[string
 	return nil
 }
 
-func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, ext exportExtension) ([][]byte, error) {
+func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, ext exportExtension, asciiMode string) ([][]byte, error) {
 	if diagram.Name != "" {
 		ext := filepath.Ext(outputPath)
 		outputPath = strings.TrimSuffix(outputPath, ext)
@@ -820,21 +827,21 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 
 	var boards [][]byte
 	for _, dl := range diagram.Layers {
-		childrenBoards, err := render(ctx, ms, compileDur, plugin, opts, inputPath, layersOutputPath, bundle, forceAppendix, page, ruler, dl, ext)
+		childrenBoards, err := render(ctx, ms, compileDur, plugin, opts, inputPath, layersOutputPath, bundle, forceAppendix, page, ruler, dl, ext, asciiMode)
 		if err != nil {
 			return nil, err
 		}
 		boards = append(boards, childrenBoards...)
 	}
 	for _, dl := range diagram.Scenarios {
-		childrenBoards, err := render(ctx, ms, compileDur, plugin, opts, inputPath, scenariosOutputPath, bundle, forceAppendix, page, ruler, dl, ext)
+		childrenBoards, err := render(ctx, ms, compileDur, plugin, opts, inputPath, scenariosOutputPath, bundle, forceAppendix, page, ruler, dl, ext, asciiMode)
 		if err != nil {
 			return nil, err
 		}
 		boards = append(boards, childrenBoards...)
 	}
 	for _, dl := range diagram.Steps {
-		childrenBoards, err := render(ctx, ms, compileDur, plugin, opts, inputPath, stepsOutputPath, bundle, forceAppendix, page, ruler, dl, ext)
+		childrenBoards, err := render(ctx, ms, compileDur, plugin, opts, inputPath, stepsOutputPath, bundle, forceAppendix, page, ruler, dl, ext, asciiMode)
 		if err != nil {
 			return nil, err
 		}
@@ -843,7 +850,7 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 
 	if !diagram.IsFolderOnly {
 		start := time.Now()
-		out, err := _render(ctx, ms, plugin, opts, inputPath, boardOutputPath, bundle, forceAppendix, page, ruler, diagram, ext)
+		out, err := _render(ctx, ms, plugin, opts, inputPath, boardOutputPath, bundle, forceAppendix, page, ruler, diagram, ext, asciiMode)
 		if err != nil {
 			return boards, err
 		}
@@ -857,9 +864,9 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 	return boards, nil
 }
 
-func renderSingle(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, outputFormat exportExtension) ([][]byte, error) {
+func renderSingle(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, outputFormat exportExtension, asciiMode string) ([][]byte, error) {
 	start := time.Now()
-	out, err := _render(ctx, ms, plugin, opts, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram, outputFormat)
+	out, err := _render(ctx, ms, plugin, opts, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram, outputFormat, asciiMode)
 	if err != nil {
 		return [][]byte{}, err
 	}
@@ -870,10 +877,19 @@ func renderSingle(ctx context.Context, ms *xmain.State, compileDur time.Duration
 	return [][]byte{out}, nil
 }
 
-func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, outputFormat exportExtension) ([]byte, error) {
+func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, outputFormat exportExtension, asciiMode string) ([]byte, error) {
 	if outputFormat == TXT {
+		var charsetType charset.Type
+		switch asciiMode {
+		case "standard":
+			charsetType = charset.ASCII
+		default: // "extended" or any other value defaults to Unicode
+			charsetType = charset.Unicode
+		}
+		
 		renderOpts := &d2ascii.RenderOpts{
-			Scale: opts.Scale,
+			Scale:   opts.Scale,
+			Charset: charsetType,
 		}
 		asciiArtist := d2ascii.NewASCIIartist()
 		ascii, err := asciiArtist.Render(diagram, renderOpts)
