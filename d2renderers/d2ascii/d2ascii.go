@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"oss.terrastruct.com/d2/d2renderers/d2ascii/asciicanvas"
+	"oss.terrastruct.com/d2/d2renderers/d2ascii/charset"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 )
@@ -39,7 +40,7 @@ type ASCIIartist struct {
 	canvas  *asciicanvas.Canvas
 	FW      float64
 	FH      float64
-	chars   *CharacterSet
+	chars   charset.Set
 	entr    string
 	bcurve  string
 	tcurve  string
@@ -48,6 +49,7 @@ type ASCIIartist struct {
 }
 type RenderOpts struct {
 	Scale *float64
+	Charset charset.Type
 }
 // Point represents a 2D coordinate
 type Point struct {
@@ -79,142 +81,7 @@ func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
 	return Point{X: x1, Y: y1}, Point{X: x2, Y: y2}
 }
 
-// Character sets for drawing
-const (
-	// Box drawing characters
-	charTopLeftArc     = "╭"
-	charTopRightArc    = "╮"
-	charBottomLeftArc  = "╰"
-	charBottomRightArc = "╯"
-	charHorizontal     = "─"
-	charVertical       = "│"
-	charLeftVertical   = "▏"
-	charRightVertical  = "▕"
-	charTopLeftCorner  = "┌"
-	charTopRightCorner = "┐"
-	charBottomLeftCorner = "└"
-	charBottomRightCorner = "┘"
-	charBackslash      = "╲"
-	charForwardSlash   = "╱"
-	charCross          = "╳"
-	charUnderscore     = "_"
-	charOverline       = "‾"
-	charDot            = "."
-	charHyphen         = "-"
-	charTilde          = "`"
-	charTDown          = "┬"
-	charTLeft          = "┤"
-	charTRight         = "├"
-	charTUp            = "┴"
-	
-	// Arrow characters
-	charArrowUp    = "▲"
-	charArrowRight = "▶"
-	charArrowDown  = "▼"
-	charArrowLeft  = "◀"
-	
-	// Symbol characters
-	charCloud  = "☁"
-	charCircle = "●"
-	charOval   = "⬭"
-	charStar   = "*"
-)
 
-// CharacterSet holds all drawing characters
-type CharacterSet struct {
-	// Corners
-	TopLeftArc     string
-	TopRightArc    string
-	BottomLeftArc  string
-	BottomRightArc string
-	TopLeftCorner  string
-	TopRightCorner string
-	BottomLeftCorner string
-	BottomRightCorner string
-	
-	// Lines
-	Horizontal string
-	Vertical   string
-	LeftVertical  string
-	RightVertical string
-	Backslash  string
-	ForwardSlash string
-	Cross      string
-	
-	// Junctions
-	TDown  string
-	TLeft  string
-	TRight string
-	TUp    string
-	
-	// Other
-	Underscore string
-	Overline   string
-	Dot        string
-	Hyphen     string
-	Tilde      string
-	
-	// Symbols
-	Cloud  string
-	Circle string
-	Oval   string
-	Star   string
-	
-	// Arrows
-	ArrowUp    string
-	ArrowRight string
-	ArrowDown  string
-	ArrowLeft  string
-}
-
-// newCharacterSet creates a new character set with default values
-func newCharacterSet() *CharacterSet {
-	return &CharacterSet{
-		// Corners
-		TopLeftArc:     charTopLeftArc,
-		TopRightArc:    charTopRightArc,
-		BottomLeftArc:  charBottomLeftArc,
-		BottomRightArc: charBottomRightArc,
-		TopLeftCorner:  charTopLeftCorner,
-		TopRightCorner: charTopRightCorner,
-		BottomLeftCorner: charBottomLeftCorner,
-		BottomRightCorner: charBottomRightCorner,
-		
-		// Lines
-		Horizontal: charHorizontal,
-		Vertical:   charVertical,
-		LeftVertical:  charLeftVertical,
-		RightVertical: charRightVertical,
-		Backslash:  charBackslash,
-		ForwardSlash: charForwardSlash,
-		Cross:      charCross,
-		
-		// Junctions
-		TDown:  charTDown,
-		TLeft:  charTLeft,
-		TRight: charTRight,
-		TUp:    charTUp,
-		
-		// Other
-		Underscore: charUnderscore,
-		Overline:   charOverline,
-		Dot:        charDot,
-		Hyphen:     charHyphen,
-		Tilde:      charTilde,
-		
-		// Symbols
-		Cloud:  charCloud,
-		Circle: charCircle,
-		Oval:   charOval,
-		Star:   charStar,
-		
-		// Arrows
-		ArrowUp:    charArrowUp,
-		ArrowRight: charArrowRight,
-		ArrowDown:  charArrowDown,
-		ArrowLeft:  charArrowLeft,
-	}
-}
 
 func NewASCIIartist() *ASCIIartist {
 	artist := &ASCIIartist{
@@ -224,7 +91,7 @@ func NewASCIIartist() *ASCIIartist {
 		entr:    "\n",
 		bcurve:  "`-._",
 		tcurve:  ".-`‾",
-		chars:   newCharacterSet(),
+		chars:   charset.New(charset.Unicode),
 		diagram: *d2target.NewDiagram(),
 	}
 
@@ -322,6 +189,10 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 	if opts == nil {
 		opts = &RenderOpts{}
 	}
+	// Allow changing character set for this render
+	if opts.Charset == charset.ASCII {
+		a.chars = charset.New(charset.ASCII)
+	}
 	xOffset := 0
 	yOffset := 0
 	a.diagram = *diagram
@@ -393,11 +264,11 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 			symbol := ""
 			switch shape.Type {
 			case d2target.ShapeCloud:
-				symbol = charCloud
+				symbol = a.chars.Cloud()
 			case d2target.ShapeCircle:
-				symbol = charCircle
+				symbol = a.chars.Circle()
 			case d2target.ShapeOval:
-				symbol = charOval
+				symbol = a.chars.Oval()
 			default:
 				symbol = ""
 			}
@@ -548,9 +419,9 @@ func (a *ASCIIartist) fillRectangle(x1, y1, x2, y2 int, corners map[string]strin
 			} else if strings.TrimSpace(symbol) != "" && yi == y1 && xi == x1+1 {
 				a.canvas.Set(xi, yi, symbol)
 			} else if xi == x1 || xi == x2-1 {
-				a.canvas.Set(xi, yi, a.chars.Vertical)
+				a.canvas.Set(xi, yi, a.chars.Vertical())
 			} else if yi == y1 || yi == y2-1 {
-				a.canvas.Set(xi, yi, a.chars.Horizontal)
+				a.canvas.Set(xi, yi, a.chars.Horizontal())
 			}
 		}
 	}
@@ -570,10 +441,10 @@ func (a *ASCIIartist) drawRect(x, y, w, h float64, label, labelPosition, symbol 
 	wC = a.adjustWidthForLabel(wC, label, x, y, w, h)
 	x2, y2 := x1+wC, y1+hC
 	corners := map[string]string{
-		fmt.Sprintf("%d_%d", x1, y1):     a.chars.TopLeftCorner,
-		fmt.Sprintf("%d_%d", x2-1, y1):   a.chars.TopRightCorner,
-		fmt.Sprintf("%d_%d", x1, y2-1):   a.chars.BottomLeftCorner,
-		fmt.Sprintf("%d_%d", x2-1, y2-1): a.chars.BottomRightCorner,
+		fmt.Sprintf("%d_%d", x1, y1):     a.chars.TopLeftCorner(),
+		fmt.Sprintf("%d_%d", x2-1, y1):   a.chars.TopRightCorner(),
+		fmt.Sprintf("%d_%d", x1, y2-1):   a.chars.BottomLeftCorner(),
+		fmt.Sprintf("%d_%d", x2-1, y2-1): a.chars.BottomRightCorner(),
 	}
 	a.fillRectangle(x1, y1, x2, y2, corners, symbol)
 
@@ -589,10 +460,10 @@ func (a *ASCIIartist) drawPage(x, y, w, h float64, label, labelPosition string) 
 	y3 := y2 - hi/2
 
 	corners := map[string]string{
-		fmt.Sprintf("%d_%d", x1, y1): a.chars.TopLeftCorner,
-		fmt.Sprintf("%d_%d", x2, y1): a.chars.TopRightCorner,
-		fmt.Sprintf("%d_%d", x1, y2): a.chars.BottomLeftCorner,
-		fmt.Sprintf("%d_%d", x2, y2): a.chars.BottomRightCorner,
+		fmt.Sprintf("%d_%d", x1, y1): a.chars.TopLeftCorner(),
+		fmt.Sprintf("%d_%d", x2, y1): a.chars.TopRightCorner(),
+		fmt.Sprintf("%d_%d", x1, y2): a.chars.BottomLeftCorner(),
+		fmt.Sprintf("%d_%d", x2, y2): a.chars.BottomRightCorner(),
 	}
 
 	for x := x1; x <= x2; x++ {
@@ -601,21 +472,21 @@ func (a *ASCIIartist) drawPage(x, y, w, h float64, label, labelPosition string) 
 			if val, ok := corners[key]; ok && !(x > x3 && y < y3) {
 				a.canvas.Set(x, y, val)
 			} else if x == x1 || (x == x2 && y > y3) {
-				a.canvas.Set(x, y, a.chars.Vertical)
+				a.canvas.Set(x, y, a.chars.Vertical())
 			} else if (y == y1 && x < x3) || y == y2 {
-				a.canvas.Set(x, y, a.chars.Horizontal)
+				a.canvas.Set(x, y, a.chars.Horizontal())
 			} else if (x == x3 && y == y1) || (x == x2 && y == y3) {
-				a.canvas.Set(x, y, a.chars.TopRightCorner)
+				a.canvas.Set(x, y, a.chars.TopRightCorner())
 			} else if x == x3 && y == y3 {
-				a.canvas.Set(x, y, a.chars.BottomLeftCorner)
+				a.canvas.Set(x, y, a.chars.BottomLeftCorner())
 			} else if x == x2 && y == y3 {
-				a.canvas.Set(x, y, a.chars.TopRightCorner)
+				a.canvas.Set(x, y, a.chars.TopRightCorner())
 			} else if x == x3 && y < y3 {
-				a.canvas.Set(x, y, a.chars.Vertical)
+				a.canvas.Set(x, y, a.chars.Vertical())
 			} else if x > x3 && y == y3 {
-				a.canvas.Set(x, y, a.chars.Horizontal)
+				a.canvas.Set(x, y, a.chars.Horizontal())
 			} else if x > x3 && x < x2 && y < y3 && y > y1 {
-				a.canvas.Set(x, y, a.chars.Backslash)
+				a.canvas.Set(x, y, a.chars.Backslash())
 			} else {
 				a.canvas.Set(x, y, " ")
 			}
@@ -634,15 +505,15 @@ func (a *ASCIIartist) drawHex(x, y, w, h float64, label, labelPosition string) {
 		for j := y1; j <= y2; j++ {
 			switch {
 			case j == y1 && i >= (x1+hoffset) && i <= (x2-hoffset):
-				a.canvas.Set(i, j, a.chars.Overline)
+				a.canvas.Set(i, j, a.chars.Overline())
 			case j == y2 && i >= (x1+hoffset) && i <= (x2-hoffset):
-				a.canvas.Set(i, j, a.chars.Underscore)
+				a.canvas.Set(i, j, a.chars.Underscore())
 			case hoffset%2 == 1 && (i == x1 || i == x2) && (y1+hoffset-1) == j:
-				a.canvas.Set(i, j, a.chars.Cross)
+				a.canvas.Set(i, j, a.chars.Cross())
 			case ((j-y1)+(i-x1)+1) == hoffset || ((y2-j)+(x2-i)+1) == hoffset:
-				a.canvas.Set(i, j, a.chars.ForwardSlash)
+				a.canvas.Set(i, j, a.chars.ForwardSlash())
 			case ((j-y1)+(x2-i)+1) == hoffset || ((y2-j)+(i-x1)+1) == hoffset:
-				a.canvas.Set(i, j, a.chars.Backslash)
+				a.canvas.Set(i, j, a.chars.Backslash())
 			}
 		}
 	}
@@ -669,27 +540,27 @@ func (a *ASCIIartist) drawPerson(x, y, w, h float64, label, labelPosition string
 
 			switch {
 			case y == y2:
-				a.canvas.Set(x, y, a.chars.Overline)
+				a.canvas.Set(x, y, a.chars.Overline())
 			case y >= y1+head && y < y2:
 				if (relX + relY) == body {
-					a.canvas.Set(x, y, a.chars.ForwardSlash)
+					a.canvas.Set(x, y, a.chars.ForwardSlash())
 				} else if (float64(relXBody - relYBody - 1)) == math.Abs(float64(wi-(hi-head))) {
-					a.canvas.Set(x, y, a.chars.Backslash)
+					a.canvas.Set(x, y, a.chars.Backslash())
 				} else if y == y1+head && x >= x1+s && x <= x2-s {
-					a.canvas.Set(x, y, a.chars.Overline)
+					a.canvas.Set(x, y, a.chars.Overline())
 				}
 			case y < y1+head:
 				if y == y1 && x >= x1+hoffset && x <= x2-hoffset {
-					a.canvas.Set(x, y, a.chars.Overline)
+					a.canvas.Set(x, y, a.chars.Overline())
 				}
 				if y == y1+head-1 && x >= x1+hoffset && x <= x2-hoffset {
-					a.canvas.Set(x, y, a.chars.Underscore)
+					a.canvas.Set(x, y, a.chars.Underscore())
 				}
 				if (y == y1 && x == x1+hoffset-1) || (y == y1+head-1 && x == x2-hoffset+1) {
-					a.canvas.Set(x, y, a.chars.ForwardSlash)
+					a.canvas.Set(x, y, a.chars.ForwardSlash())
 				}
 				if (y == y1+head-1 && x == x1+hoffset-1) || (y == y1 && x == x2-hoffset+1) {
-					a.canvas.Set(x, y, a.chars.Backslash)
+					a.canvas.Set(x, y, a.chars.Backslash())
 				}
 			}
 		}
@@ -716,25 +587,25 @@ func (a *ASCIIartist) drawStoredData(x, y, w, h float64, label, labelPosition st
 
 			switch {
 			case y == y1+hoffset-1 && x == x1:
-				a.canvas.Set(x, y, a.chars.Vertical)
+				a.canvas.Set(x, y, a.chars.Vertical())
 			case x < x1+hoffset:
 				if y < y1+hoffset && (relX+relY) == hoffset-1 {
-					a.canvas.Set(x, y, a.chars.ForwardSlash)
+					a.canvas.Set(x, y, a.chars.ForwardSlash())
 				} else if y >= y1+hoffset && int(math.Abs(float64(relX-relY))) == hoffset-1 {
-					a.canvas.Set(x, y, a.chars.Backslash)
+					a.canvas.Set(x, y, a.chars.Backslash())
 				}
 			case x >= x1+hoffset:
 				if y == y1 && x < x2 {
-					a.canvas.Set(x, y, a.chars.Overline)
+					a.canvas.Set(x, y, a.chars.Overline())
 				} else if y == y2 && x < x2 {
-					a.canvas.Set(x, y, a.chars.Underscore)
+					a.canvas.Set(x, y, a.chars.Underscore())
 				} else if x > x2-hoffset {
 					if y == y1+hoffset-1 && x == x2-(hoffset-1) {
-						a.canvas.Set(x, y, a.chars.Vertical)
+						a.canvas.Set(x, y, a.chars.Vertical())
 					} else if (relX + relY) == wi-1 {
-						a.canvas.Set(x, y, a.chars.ForwardSlash)
+						a.canvas.Set(x, y, a.chars.ForwardSlash())
 					} else if int(math.Abs(float64(relX-relY))) == int(math.Abs(float64(wi-hi))) {
-						a.canvas.Set(x, y, a.chars.Backslash)
+						a.canvas.Set(x, y, a.chars.Backslash())
 					}
 				}
 			}
@@ -754,25 +625,25 @@ func (a *ASCIIartist) drawCylinder(x, y, w, h float64, label, labelPosition stri
 		for iy := y1; iy <= y2; iy++ {
 			switch {
 			case iy != y1 && iy != y2 && (ix == x1 || ix == x2):
-				a.canvas.Set(ix, iy, a.chars.Vertical)
+				a.canvas.Set(ix, iy, a.chars.Vertical())
 			case iy == y1 || iy == y2 || iy == y1+1:
 				if iy == y1 {
 					if ix == x1+1 || ix == x2-1 {
-						a.canvas.Set(ix, iy, a.chars.Dot)
+						a.canvas.Set(ix, iy, a.chars.Dot())
 					} else if ix == x1+2 || ix == x2-2 {
-						a.canvas.Set(ix, iy, a.chars.Hyphen)
+						a.canvas.Set(ix, iy, a.chars.Hyphen())
 					} else if ix > x1+2 && ix < x2-2 {
-						a.canvas.Set(ix, iy, a.chars.Overline)
+						a.canvas.Set(ix, iy, a.chars.Overline())
 					}
 				} else if iy == y2 || iy == y1+1 {
 					if ix == x1+1 {
-						a.canvas.Set(ix, iy, a.chars.Backslash)
+						a.canvas.Set(ix, iy, a.chars.Backslash())
 					} else if ix == x2-1 {
-						a.canvas.Set(ix, iy, a.chars.ForwardSlash)
+						a.canvas.Set(ix, iy, a.chars.ForwardSlash())
 					} else if ix == x1+2 || ix == x2-2 {
-						a.canvas.Set(ix, iy, a.chars.Hyphen)
+						a.canvas.Set(ix, iy, a.chars.Hyphen())
 					} else if ix > x1+2 && ix < x2-2 {
-						a.canvas.Set(ix, iy, a.chars.Underscore)
+						a.canvas.Set(ix, iy, a.chars.Underscore())
 					}
 				}
 			}
@@ -792,12 +663,12 @@ func (a *ASCIIartist) drawPackage(x, y, w, h float64, label, labelPosition strin
 	x3, y3 := x1+wi/2, y1+1
 
 	corners := map[string]string{
-		fmt.Sprintf("%d_%d", x1, y1): a.chars.TopLeftCorner,
-		fmt.Sprintf("%d_%d", x3, y1): a.chars.TopRightCorner,
-		fmt.Sprintf("%d_%d", x2, y3): a.chars.TopRightCorner,
-		fmt.Sprintf("%d_%d", x3, y3): a.chars.BottomLeftCorner,
-		fmt.Sprintf("%d_%d", x1, y2): a.chars.BottomLeftCorner,
-		fmt.Sprintf("%d_%d", x2, y2): a.chars.BottomRightCorner,
+		fmt.Sprintf("%d_%d", x1, y1): a.chars.TopLeftCorner(),
+		fmt.Sprintf("%d_%d", x3, y1): a.chars.TopRightCorner(),
+		fmt.Sprintf("%d_%d", x2, y3): a.chars.TopRightCorner(),
+		fmt.Sprintf("%d_%d", x3, y3): a.chars.BottomLeftCorner(),
+		fmt.Sprintf("%d_%d", x1, y2): a.chars.BottomLeftCorner(),
+		fmt.Sprintf("%d_%d", x2, y2): a.chars.BottomRightCorner(),
 	}
 
 	for ix := x1; ix <= x2; ix++ {
@@ -806,9 +677,9 @@ func (a *ASCIIartist) drawPackage(x, y, w, h float64, label, labelPosition strin
 			if char, ok := corners[key]; ok {
 				a.canvas.Set(ix, iy, char)
 			} else if (iy == y1 && ix > x1 && ix < x3) || (iy == y2 && ix > x1 && ix < x2) || (iy == y3 && ix > x3 && ix < x2) {
-				a.canvas.Set(ix, iy, a.chars.Horizontal)
+				a.canvas.Set(ix, iy, a.chars.Horizontal())
 			} else if (ix == x1 && iy > y1 && iy < y2) || (ix == x2 && iy > y3 && iy < y2) {
-				a.canvas.Set(ix, iy, a.chars.Vertical)
+				a.canvas.Set(ix, iy, a.chars.Vertical())
 			}
 		}
 	}
@@ -824,11 +695,11 @@ func (a *ASCIIartist) drawParallelogram(x, y, w, h float64, label, labelPosition
 		for iy := y1; iy <= y2; iy++ {
 			_x, _y := ix-x1, iy-y1
 			if (_x+_y == hi-1) || (_x+_y == wi-1) {
-				a.canvas.Set(ix, iy, a.chars.ForwardSlash)
+				a.canvas.Set(ix, iy, a.chars.ForwardSlash())
 			} else if iy == y1 && ix >= x1+hi && ix < x2 {
-				a.canvas.Set(ix, iy, a.chars.Overline)
+				a.canvas.Set(ix, iy, a.chars.Overline())
 			} else if iy == y2 && ix > x1 && ix <= x2-hi {
-				a.canvas.Set(ix, iy, a.chars.Underscore)
+				a.canvas.Set(ix, iy, a.chars.Underscore())
 			}
 		}
 	}
@@ -844,15 +715,15 @@ func (a *ASCIIartist) drawQueue(x, y, w, h float64, label, labelPosition string)
 		for iy := y1; iy <= y2; iy++ {
 			switch {
 			case (iy == y1 && (ix == x1+1 || ix == x2-2)) || (iy == y2 && ix == x2-1):
-				a.canvas.Set(ix, iy, a.chars.ForwardSlash)
+				a.canvas.Set(ix, iy, a.chars.ForwardSlash())
 			case (iy == y1 && ix == x2-1) || (iy == y2 && (ix == x1+1 || ix == x2-2)):
-				a.canvas.Set(ix, iy, a.chars.Backslash)
+				a.canvas.Set(ix, iy, a.chars.Backslash())
 			case (ix == x1 || ix == x2 || ix == x2-3) && (iy > y1 && iy < y2):
-				a.canvas.Set(ix, iy, a.chars.Vertical)
+				a.canvas.Set(ix, iy, a.chars.Vertical())
 			case iy == y1 && ix > x1+1 && ix < x2-1:
-				a.canvas.Set(ix, iy, a.chars.Overline)
+				a.canvas.Set(ix, iy, a.chars.Overline())
 			case iy == y2 && ix > x1+1 && ix < x2-3:
-				a.canvas.Set(ix, iy, a.chars.Underscore)
+				a.canvas.Set(ix, iy, a.chars.Underscore())
 			}
 		}
 	}
@@ -870,13 +741,13 @@ func (a *ASCIIartist) drawStep(x, y, w, h float64, label, labelPosition string) 
 		for y := y1; y <= y2; y++ {
 			_x, _y := x-x1, y-y1
 			if (x < x1+ih/2 && _x-_y == 0) || (x > x2-ih/2 && absInt(_x-_y) == iw-ih/2) {
-				a.canvas.Set(x, y, a.chars.Backslash)
+				a.canvas.Set(x, y, a.chars.Backslash())
 			} else if (x < x1+ih/2 && _x+_y == ih-1) || (x > x2-ih/2 && _x+_y == iw-1+ih/2) {
-				a.canvas.Set(x, y, a.chars.ForwardSlash)
+				a.canvas.Set(x, y, a.chars.ForwardSlash())
 			} else if y == y1 && x > x1 && x < x2-ih/2 {
-				a.canvas.Set(x, y, a.chars.Overline)
+				a.canvas.Set(x, y, a.chars.Overline())
 			} else if y == y2 && x > x1 && x < x2-ih/2 {
-				a.canvas.Set(x, y, a.chars.Underscore)
+				a.canvas.Set(x, y, a.chars.Underscore())
 			}
 		}
 	}
@@ -894,10 +765,10 @@ func (a *ASCIIartist) drawCallout(x, y, w, h float64, label, labelPosition strin
 	tail := ih / 2
 
 	corners := map[string]string{
-		fmt.Sprintf("%d_%d", x1, y1):      a.chars.TopLeftCorner,
-		fmt.Sprintf("%d_%d", x2, y1):      a.chars.TopRightCorner,
-		fmt.Sprintf("%d_%d", x1, y2-tail): a.chars.BottomLeftCorner,
-		fmt.Sprintf("%d_%d", x2, y2-tail): a.chars.BottomRightCorner,
+		fmt.Sprintf("%d_%d", x1, y1):      a.chars.TopLeftCorner(),
+		fmt.Sprintf("%d_%d", x2, y1):      a.chars.TopRightCorner(),
+		fmt.Sprintf("%d_%d", x1, y2-tail): a.chars.BottomLeftCorner(),
+		fmt.Sprintf("%d_%d", x2, y2-tail): a.chars.BottomRightCorner(),
 	}
 
 	for x := x1; x <= x2; x++ {
@@ -907,13 +778,13 @@ func (a *ASCIIartist) drawCallout(x, y, w, h float64, label, labelPosition strin
 			if char, ok := corners[k]; ok {
 				a.canvas.Set(x, y, char)
 			} else if (y == y1 || y == y2-tail) && x > x1 && x < x2 {
-				a.canvas.Set(x, y, a.chars.Horizontal)
+				a.canvas.Set(x, y, a.chars.Horizontal())
 			} else if (x == x1 || x == x2) && y > y1 && y < y2-tail {
-				a.canvas.Set(x, y, a.chars.Vertical)
+				a.canvas.Set(x, y, a.chars.Vertical())
 			} else if x == x2-(tail+2) && y > y2-tail {
-				a.canvas.Set(x, y, a.chars.Vertical)
+				a.canvas.Set(x, y, a.chars.Vertical())
 			} else if y > y2-tail && relX+relY == iw {
-				a.canvas.Set(x, y, a.chars.ForwardSlash)
+				a.canvas.Set(x, y, a.chars.ForwardSlash())
 			}
 		}
 	}
@@ -949,8 +820,8 @@ func (a *ASCIIartist) drawDocument(x, y, w, h float64, label, labelPosition stri
 		}
 	}
 	corners := map[string]string{
-		fmt.Sprintf("%d_%d", x1, y1): a.chars.TopLeftCorner,
-		fmt.Sprintf("%d_%d", x2, y1): a.chars.TopRightCorner,
+		fmt.Sprintf("%d_%d", x1, y1): a.chars.TopLeftCorner(),
+		fmt.Sprintf("%d_%d", x2, y1): a.chars.TopRightCorner(),
 	}
 
 	for x := x1; x <= x2; x++ {
@@ -961,9 +832,9 @@ func (a *ASCIIartist) drawDocument(x, y, w, h float64, label, labelPosition stri
 			if char, ok := corners[k]; ok {
 				a.canvas.Set(x, y, char)
 			} else if y == y1 && x > x1 && x < x2 {
-				a.canvas.Set(x, y, a.chars.Horizontal)
+				a.canvas.Set(x, y, a.chars.Horizontal())
 			} else if (x == x1 || x == x2) && y > y1 && y < y2 {
-				a.canvas.Set(x, y, a.chars.Vertical)
+				a.canvas.Set(x, y, a.chars.Vertical())
 			} else if y == y2 && x > x1 && relX <= n && curveIndex >= 0 && curveIndex < len(lcurve) {
 				a.canvas.Set(x, y, string(lcurve[curveIndex]))
 			} else if y == y2-1 && relX > n && x < x2 && (relX-int(iw/2)) < len(rcurve) {
@@ -1000,9 +871,9 @@ func (d *ASCIIartist) drawDiamond(x, y, w, h float64, label, labelPosition strin
 		for y := y1; y <= y2; y++ {
 			relX, relY := x-x1, y-y1
 			if (y == y1 || y == y2) && relX == iw/2 {
-				d.canvas.Set(x, y, d.chars.Tilde)
+				d.canvas.Set(x, y, d.chars.Tilde())
 			} else if (x == x1 || x == x2) && relY == ih/2 {
-				d.canvas.Set(x, y, d.chars.Hyphen)
+				d.canvas.Set(x, y, d.chars.Hyphen())
 			}
 		}
 	}
@@ -1018,7 +889,7 @@ func (d *ASCIIartist) drawDiamond(x, y, w, h float64, label, labelPosition strin
 			fy += sy
 			x := int(math.Round(fx))
 			y := int(math.Round(fy))
-			d.canvas.Set(x, y, charStar)
+			d.canvas.Set(x, y, d.chars.Star())
 		}
 	}
 
@@ -1079,13 +950,13 @@ func (aa *ASCIIartist) drawRoute(conn d2target.Connection) {
 	}
 
 	corners := map[string]string{
-		"-100-1": aa.chars.BottomLeftCorner, "0110": aa.chars.BottomLeftCorner,
-		"-1001": aa.chars.TopLeftCorner, "0-110": aa.chars.TopLeftCorner,
-		"0-1-10": aa.chars.TopRightCorner, "1001": aa.chars.TopRightCorner,
-		"01-10": aa.chars.BottomRightCorner, "100-1": aa.chars.BottomRightCorner,
+		"-100-1": aa.chars.BottomLeftCorner(), "0110": aa.chars.BottomLeftCorner(),
+		"-1001": aa.chars.TopLeftCorner(), "0-110": aa.chars.TopLeftCorner(),
+		"0-1-10": aa.chars.TopRightCorner(), "1001": aa.chars.TopRightCorner(),
+		"01-10": aa.chars.BottomRightCorner(), "100-1": aa.chars.BottomRightCorner(),
 	}
 	arrows := map[string]string{
-		"0-1": charArrowUp, "10": charArrowRight, "01": charArrowDown, "-10": charArrowLeft,
+		"0-1": aa.chars.ArrowUp(), "10": aa.chars.ArrowRight(), "01": aa.chars.ArrowDown(), "-10": aa.chars.ArrowLeft(),
 	}
 
 	for i := 1; i < len(routes); i++ {
@@ -1240,11 +1111,11 @@ func (aa *ASCIIartist) calculateTurnDirections(routes []*geo.Point) map[string]s
 
 // isShapeBoundaryChar checks if a character is a shape boundary
 func (aa *ASCIIartist) isShapeBoundaryChar(char string) bool {
-	return char == charHorizontal || char == charVertical ||
-		char == charTopLeftCorner || char == charTopRightCorner ||
-		char == charBottomLeftCorner || char == charBottomRightCorner ||
-		char == charTopLeftArc || char == charTopRightArc ||
-		char == charBottomLeftArc || char == charBottomRightArc
+	return char == charset.UnicodeHorizontal || char == charset.UnicodeVertical ||
+		char == charset.UnicodeTopLeftCorner || char == charset.UnicodeTopRightCorner ||
+		char == charset.UnicodeBottomLeftCorner || char == charset.UnicodeBottomRightCorner ||
+		char == charset.UnicodeTopLeftArc || char == charset.UnicodeTopRightArc ||
+		char == charset.UnicodeBottomLeftArc || char == charset.UnicodeBottomRightArc
 }
 
 // drawArrowhead places an arrowhead at the given position
@@ -1326,14 +1197,14 @@ func (aa *ASCIIartist) drawRouteSegment(x, y int, sx, sy float64, frmBoundary, t
 func (aa *ASCIIartist) drawVerticalSegment(x, y int, sy float64, overWrite bool, frmBoundary, toBoundary Boundary) {
 	if overWrite && aa.shouldDrawTJunction(x, y, frmBoundary, toBoundary, true) {
 		if sy > 0 {
-			aa.canvas.Set(x, y, aa.chars.TDown)
+			aa.canvas.Set(x, y, aa.chars.TDown())
 		} else {
-			aa.canvas.Set(x, y, aa.chars.TUp)
+			aa.canvas.Set(x, y, aa.chars.TUp())
 		}
 	} else if overWrite && aa.shouldSkipOverwrite(x, y, frmBoundary, toBoundary) {
 		// skip
 	} else {
-		aa.canvas.Set(x, y, aa.chars.Vertical)
+		aa.canvas.Set(x, y, aa.chars.Vertical())
 	}
 }
 
@@ -1341,12 +1212,12 @@ func (aa *ASCIIartist) drawVerticalSegment(x, y int, sy float64, overWrite bool,
 func (aa *ASCIIartist) drawHorizontalSegment(x, y int, sx float64, overWrite bool, frmBoundary, toBoundary Boundary) {
 	if overWrite && aa.shouldDrawTJunction(x, y, frmBoundary, toBoundary, false) {
 		if sx > 0 {
-			aa.canvas.Set(x, y, aa.chars.TRight)
+			aa.canvas.Set(x, y, aa.chars.TRight())
 		} else {
-			aa.canvas.Set(x, y, aa.chars.TLeft)
+			aa.canvas.Set(x, y, aa.chars.TLeft())
 		}
 	} else {
-		aa.canvas.Set(x, y, aa.chars.Horizontal)
+		aa.canvas.Set(x, y, aa.chars.Horizontal())
 	}
 }
 
@@ -1360,21 +1231,21 @@ func (aa *ASCIIartist) shouldDrawTJunction(x, y int, frmBoundary, toBoundary Bou
 	if isVertical {
 		// Check if we're crossing a horizontal boundary line
 		if (y == frmBoundary.BR.Y || y == frmBoundary.TL.Y) &&
-			aa.canvas.Get(x, y) == charHorizontal {
+			aa.canvas.Get(x, y) == charset.UnicodeHorizontal {
 			return true
 		}
 		if (y == toBoundary.BR.Y || y == toBoundary.TL.Y) &&
-			aa.canvas.Get(x, y) == charHorizontal {
+			aa.canvas.Get(x, y) == charset.UnicodeHorizontal {
 			return true
 		}
 	} else {
 		// Check if we're crossing a vertical boundary line
 		if (x == frmBoundary.BR.X-1 || x == frmBoundary.TL.X-1) &&
-			aa.canvas.Get(x, y) == charVertical {
+			aa.canvas.Get(x, y) == charset.UnicodeVertical {
 			return true
 		}
 		if (x == toBoundary.BR.X-1 || x == toBoundary.TL.X-1) &&
-			aa.canvas.Get(x, y) == charVertical {
+			aa.canvas.Get(x, y) == charset.UnicodeVertical {
 			return true
 		}
 	}
@@ -1383,8 +1254,8 @@ func (aa *ASCIIartist) shouldDrawTJunction(x, y int, frmBoundary, toBoundary Bou
 
 // shouldSkipOverwrite determines if we should skip overwriting certain characters
 func (aa *ASCIIartist) shouldSkipOverwrite(x, y int, frmBoundary, toBoundary Boundary) bool {
-	if (aa.canvas.Get(x, y) == charUnderscore && (y == frmBoundary.BR.Y || y == toBoundary.BR.Y)) ||
-		(aa.canvas.Get(x, y) == charOverline && (y == frmBoundary.TL.Y || y == toBoundary.TL.Y)) {
+	if (aa.canvas.Get(x, y) == charset.UnicodeUnderscore && (y == frmBoundary.BR.Y || y == toBoundary.BR.Y)) ||
+		(aa.canvas.Get(x, y) == charset.UnicodeOverline && (y == frmBoundary.TL.Y || y == toBoundary.TL.Y)) {
 		return true
 	}
 	return false
