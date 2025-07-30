@@ -26,6 +26,7 @@ import (
 	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/d2renderers/d2animate"
 	"oss.terrastruct.com/d2/d2renderers/d2ascii"
+	"oss.terrastruct.com/d2/d2renderers/d2ascii/charset"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/log"
@@ -200,17 +201,31 @@ func runASCIITxtarTest(t *testing.T, tc testCase) {
 		err2 = diff.Testdata(filepath.Join(outputDir, "sketch"), ".svg", svgBytes)
 	}
 
-	// Render and write ASCII file
+	// Render and write ASCII files for both extended and standard modes
 	asciiArtist := d2ascii.NewASCIIartist()
-	asciiRenderOpts := &d2ascii.RenderOpts{
-		Scale: renderOpts.Scale,
+	
+	// Extended (Unicode) ASCII
+	extendedRenderOpts := &d2ascii.RenderOpts{
+		Scale:   renderOpts.Scale,
+		Charset: charset.Unicode,
 	}
-	asciiBytes, err := asciiArtist.Render(diagram, asciiRenderOpts)
+	extendedBytes, err := asciiArtist.Render(diagram, extendedRenderOpts)
 	assert.Success(t, err)
-	err3 = diff.Testdata(filepath.Join(outputDir, "ascii"), ".txt", asciiBytes)
+	err3 = diff.Testdata(filepath.Join(outputDir, "extended"), ".txt", extendedBytes)
+	
+	// Standard ASCII
+	var err4 error
+	standardRenderOpts := &d2ascii.RenderOpts{
+		Scale:   renderOpts.Scale,
+		Charset: charset.ASCII,
+	}
+	standardBytes, err := asciiArtist.Render(diagram, standardRenderOpts)
+	assert.Success(t, err)
+	err4 = diff.Testdata(filepath.Join(outputDir, "standard"), ".txt", standardBytes)
 
 	assert.Success(t, err2)
 	assert.Success(t, err3)
+	assert.Success(t, err4)
 }
 
 type testCase struct {
