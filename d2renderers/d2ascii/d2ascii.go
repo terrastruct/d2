@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"oss.terrastruct.com/d2/d2renderers/d2ascii/asciicanvas"
+	"oss.terrastruct.com/d2/d2renderers/d2ascii/asciishapes"
 	"oss.terrastruct.com/d2/d2renderers/d2ascii/charset"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
@@ -20,20 +21,10 @@ const (
 	defaultScale      = 1.0
 )
 
-// Shape drawing constants
+// Route drawing constants
 const (
-	minCylinderHeight = 5
-	minStoredDataHeight = 5
-	headHeight = 2
-	maxCurveHeight = 3
 	maxRouteAttempts = 200
-)
-
-// Label positioning constants
-const (
-	minLabelPadding = 2
 	labelOffsetX = 2
-	labelOffsetY = 1
 )
 
 type ASCIIartist struct {
@@ -220,7 +211,7 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 			maxLabelLen = len(shape.Label)
 		}
 	}
-	padding := maxLabelLen + minLabelPadding // Match the maximum possible adjustment in drawRect
+	padding := maxLabelLen + asciishapes.MinLabelPadding // Match the maximum possible adjustment in drawRect
 
 	a.canvas = asciicanvas.New(w+padding+1, h+padding+1)
 
@@ -231,35 +222,45 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 		}
 		shape.Pos.X += xOffset
 		shape.Pos.Y += yOffset
+		
+		// Create shape context
+		ctx := &asciishapes.Context{
+			Canvas: a.canvas,
+			Chars:  a.chars,
+			FW:     a.FW,
+			FH:     a.FH,
+			Scale:  a.SCALE,
+		}
+		
 		switch shape.Type {
 		case d2target.ShapeRectangle:
-			a.drawRect(float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition, "")
+			asciishapes.DrawRect(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition, "")
 		case d2target.ShapeSquare:
-			a.drawRect(float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition, "")
+			asciishapes.DrawRect(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition, "")
 		case d2target.ShapePage:
-			a.drawPage(float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawPage(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
 		case d2target.ShapeHexagon:
-			a.drawHex(float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawHex(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
 		case d2target.ShapePerson:
-			a.drawPerson(float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawPerson(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
 		case d2target.ShapeStoredData:
-			a.drawStoredData(float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawStoredData(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
 		case d2target.ShapeCylinder:
-			a.drawCylinder(float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawCylinder(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
 		case d2target.ShapePackage:
-			a.drawPackage(float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawPackage(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
 		case d2target.ShapeParallelogram:
-			a.drawParallelogram(float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawParallelogram(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
 		case d2target.ShapeQueue:
-			a.drawQueue(float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawQueue(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
 		case d2target.ShapeStep:
-			a.drawStep(float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawStep(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
 		case d2target.ShapeCallout:
-			a.drawCallout(float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawCallout(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
 		case d2target.ShapeDocument:
-			a.drawDocument(float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawDocument(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
 		case d2target.ShapeDiamond:
-			a.drawDiamond(float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawDiamond(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
 		default:
 			symbol := ""
 			switch shape.Type {
@@ -272,7 +273,7 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 			default:
 				symbol = ""
 			}
-			a.drawRect(float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition, symbol)
+			asciishapes.DrawRect(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition, symbol)
 		}
 	}
 	// Draw connections
@@ -294,612 +295,12 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 	}
 	return a.canvas.ToByteArray(), nil
 }
-func (a *ASCIIartist) calibrate(x, y, w, h float64) (int, int, int, int) {
-	xC := int(math.Round((x / a.FW) * a.SCALE))
-	yC := int(math.Round((y / a.FH) * a.SCALE))
-	wC := int(math.Round((w / a.FW) * a.SCALE))
-	hC := int(math.Round((h / a.FH) * a.SCALE))
-	return xC, yC, wC, hC
-}
 
 func (a *ASCIIartist) calibrateXY(x, y float64) (float64, float64) {
 	xC := float64(math.Round((x / a.FW) * a.SCALE))
 	yC := float64(math.Round((y / a.FH) * a.SCALE))
 	return xC, yC
 }
-
-// hasConnectionsAtRightEdge checks if a shape has connections starting or ending at its right edge
-func (a *ASCIIartist) hasConnectionsAtRightEdge(shape d2target.Shape) bool {
-	shapeRight := float64(shape.Pos.X + shape.Width)
-	shapeTop := float64(shape.Pos.Y)
-	shapeBottom := float64(shape.Pos.Y + shape.Height)
-	
-	for _, conn := range a.diagram.Connections {
-		if len(conn.Route) == 0 {
-			continue
-		}
-		
-		// Check if connection starts or ends at the right edge of this shape
-		firstPoint := conn.Route[0]
-		lastPoint := conn.Route[len(conn.Route)-1]
-		
-		tolerance := a.FW / 2 // Allow some tolerance for edge detection
-		
-		// Check if first point is at right edge
-		if math.Abs(firstPoint.X-shapeRight) < tolerance &&
-			firstPoint.Y >= shapeTop && firstPoint.Y <= shapeBottom {
-			return true
-		}
-		
-		// Check if last point is at right edge
-		if math.Abs(lastPoint.X-shapeRight) < tolerance &&
-			lastPoint.Y >= shapeTop && lastPoint.Y <= shapeBottom {
-			return true
-		}
-	}
-	
-	return false
-}
-
-// shapeDrawingContext holds common parameters for shape drawing
-type shapeDrawingContext struct {
-	x1, y1, x2, y2 int
-	width, height  int
-	label         string
-	labelPosition string
-}
-
-// adjustWidthForLabel adjusts width to ensure label fits with proper symmetry
-func (a *ASCIIartist) adjustWidthForLabel(width int, label string, x, y, w, h float64) int {
-	if label == "" {
-		return width
-	}
-	
-	availableSpace := width - len(label)
-	if availableSpace < minLabelPadding {
-		return len(label) + minLabelPadding
-	}
-	
-	if availableSpace%2 == 1 {
-		// Find the shape being drawn to check for right edge connections
-		for i := range a.diagram.Shapes {
-			shape := &a.diagram.Shapes[i]
-			if math.Abs(float64(shape.Pos.X)-x) < 1 && math.Abs(float64(shape.Pos.Y)-y) < 1 &&
-				math.Abs(float64(shape.Width)-w) < 1 && math.Abs(float64(shape.Height)-h) < 1 {
-				// Only reduce width if there are no connections at the right edge
-				if !a.hasConnectionsAtRightEdge(*shape) {
-					return width - 1
-				}
-				break
-			}
-		}
-	}
-	
-	return width
-}
-
-func (a *ASCIIartist) labelY(y1, y2, h int, label, labelPosition string) int {
-	ly := -1
-	if strings.Contains(labelPosition, "OUTSIDE") {
-		if strings.Contains(labelPosition, "BOTTOM") {
-			ly = y2 + 1
-		} else if strings.Contains(labelPosition, "TOP") {
-			ly = y1 - 1
-		}
-	} else {
-		if strings.Contains(labelPosition, "TOP") {
-			ly = y1 + 1
-		} else if strings.Contains(labelPosition, "MIDDLE") {
-			ly = y1 + h/2
-		} else if strings.Contains(labelPosition, "BOTTOM") {
-			ly = y2 - 1
-		}
-	}
-	return ly
-}
-
-
-// drawShapeLabel draws a centered label for a shape
-func (a *ASCIIartist) drawShapeLabel(x1, y1, x2, y2, width, height int, label, labelPosition string) {
-	if label == "" {
-		return
-	}
-	ly := a.labelY(y1, y2, height, label, labelPosition)
-	lx := x1 + (width-len(label))/2
-	a.canvas.DrawLabel(lx, ly, label)
-}
-
-// fillRectangle fills a rectangular area with appropriate border characters
-func (a *ASCIIartist) fillRectangle(x1, y1, x2, y2 int, corners map[string]string, symbol string) {
-	for xi := x1; xi < x2; xi++ {
-		for yi := y1; yi < y2; yi++ {
-			key := fmt.Sprintf("%d_%d", xi, yi)
-			if val, ok := corners[key]; ok {
-				a.canvas.Set(xi, yi, val)
-			} else if strings.TrimSpace(symbol) != "" && yi == y1 && xi == x1+1 {
-				a.canvas.Set(xi, yi, symbol)
-			} else if xi == x1 || xi == x2-1 {
-				a.canvas.Set(xi, yi, a.chars.Vertical())
-			} else if yi == y1 || yi == y2-1 {
-				a.canvas.Set(xi, yi, a.chars.Horizontal())
-			}
-		}
-	}
-}
-
-func (a *ASCIIartist) drawRect(x, y, w, h float64, label, labelPosition, symbol string) {
-	x1, y1, wC, hC := a.calibrate(x, y, w, h)
-	if label != "" && hC%2 == 0 {
-		if hC > 2 {
-			hC--
-			y1++
-		} else {
-			hC++
-		}
-	}
-	// Adjust width for optimal label symmetry
-	wC = a.adjustWidthForLabel(wC, label, x, y, w, h)
-	x2, y2 := x1+wC, y1+hC
-	corners := map[string]string{
-		fmt.Sprintf("%d_%d", x1, y1):     a.chars.TopLeftCorner(),
-		fmt.Sprintf("%d_%d", x2-1, y1):   a.chars.TopRightCorner(),
-		fmt.Sprintf("%d_%d", x1, y2-1):   a.chars.BottomLeftCorner(),
-		fmt.Sprintf("%d_%d", x2-1, y2-1): a.chars.BottomRightCorner(),
-	}
-	a.fillRectangle(x1, y1, x2, y2, corners, symbol)
-
-	a.drawShapeLabel(x1, y1, x2, y2, wC, hC, label, labelPosition)
-}
-func (a *ASCIIartist) drawPage(x, y, w, h float64, label, labelPosition string) {
-	xi, yi, wi, hi := a.calibrate(x, y, w, h)
-	// Adjust width for optimal label symmetry
-	wi = a.adjustWidthForLabel(wi, label, x, y, w, h)
-	x1, y1 := xi, yi
-	x2, y2 := xi+wi-1, yi+hi-1
-	x3 := x2 - wi/3
-	y3 := y2 - hi/2
-
-	corners := map[string]string{
-		fmt.Sprintf("%d_%d", x1, y1): a.chars.TopLeftCorner(),
-		fmt.Sprintf("%d_%d", x2, y1): a.chars.TopRightCorner(),
-		fmt.Sprintf("%d_%d", x1, y2): a.chars.BottomLeftCorner(),
-		fmt.Sprintf("%d_%d", x2, y2): a.chars.BottomRightCorner(),
-	}
-
-	for x := x1; x <= x2; x++ {
-		for y := y1; y <= y2; y++ {
-			key := fmt.Sprintf("%d_%d", x, y)
-			if val, ok := corners[key]; ok && !(x > x3 && y < y3) {
-				a.canvas.Set(x, y, val)
-			} else if x == x1 || (x == x2 && y > y3) {
-				a.canvas.Set(x, y, a.chars.Vertical())
-			} else if (y == y1 && x < x3) || y == y2 {
-				a.canvas.Set(x, y, a.chars.Horizontal())
-			} else if (x == x3 && y == y1) || (x == x2 && y == y3) {
-				a.canvas.Set(x, y, a.chars.TopRightCorner())
-			} else if x == x3 && y == y3 {
-				a.canvas.Set(x, y, a.chars.BottomLeftCorner())
-			} else if x == x2 && y == y3 {
-				a.canvas.Set(x, y, a.chars.TopRightCorner())
-			} else if x == x3 && y < y3 {
-				a.canvas.Set(x, y, a.chars.Vertical())
-			} else if x > x3 && y == y3 {
-				a.canvas.Set(x, y, a.chars.Horizontal())
-			} else if x > x3 && x < x2 && y < y3 && y > y1 {
-				a.canvas.Set(x, y, a.chars.Backslash())
-			} else {
-				a.canvas.Set(x, y, " ")
-			}
-		}
-	}
-
-	a.drawShapeLabel(x1, y1, x2, y2, wi, hi, label, labelPosition)
-}
-func (a *ASCIIartist) drawHex(x, y, w, h float64, label, labelPosition string) {
-	xi, yi, wi, hi := a.calibrate(x, y, w, h)
-	x1, y1 := xi, yi
-	x2, y2 := xi+wi-1, yi+hi-1
-	hoffset := int(math.Ceil(float64(hi) / 2.0))
-
-	for i := x1; i <= x2; i++ {
-		for j := y1; j <= y2; j++ {
-			switch {
-			case j == y1 && i >= (x1+hoffset) && i <= (x2-hoffset):
-				a.canvas.Set(i, j, a.chars.Overline())
-			case j == y2 && i >= (x1+hoffset) && i <= (x2-hoffset):
-				a.canvas.Set(i, j, a.chars.Underscore())
-			case hoffset%2 == 1 && (i == x1 || i == x2) && (y1+hoffset-1) == j:
-				a.canvas.Set(i, j, a.chars.Cross())
-			case ((j-y1)+(i-x1)+1) == hoffset || ((y2-j)+(x2-i)+1) == hoffset:
-				a.canvas.Set(i, j, a.chars.ForwardSlash())
-			case ((j-y1)+(x2-i)+1) == hoffset || ((y2-j)+(i-x1)+1) == hoffset:
-				a.canvas.Set(i, j, a.chars.Backslash())
-			}
-		}
-	}
-
-	a.drawShapeLabel(x1, y1, x2, y2, wi, hi, label, labelPosition)
-}
-func (a *ASCIIartist) drawPerson(x, y, w, h float64, label, labelPosition string) {
-	xi, yi, wi, hi := a.calibrate(x, y, w, h)
-	x1, y1 := xi, yi
-	x2, y2 := xi+wi-1, yi+hi-1
-	head := headHeight
-	body := hi - 2
-	hw := 2
-	if wi%2 == 1 {
-		hw = 3
-	}
-	hoffset := (wi - hw) / 2
-	s := body - 1
-
-	for x := x1; x <= x2; x++ {
-		for y := y1; y <= y2; y++ {
-			relX, relY := x-x1, y-y1
-			relXBody, relYBody := relX, relY-head
-
-			switch {
-			case y == y2:
-				a.canvas.Set(x, y, a.chars.Overline())
-			case y >= y1+head && y < y2:
-				if (relX + relY) == body {
-					a.canvas.Set(x, y, a.chars.ForwardSlash())
-				} else if (float64(relXBody - relYBody - 1)) == math.Abs(float64(wi-(hi-head))) {
-					a.canvas.Set(x, y, a.chars.Backslash())
-				} else if y == y1+head && x >= x1+s && x <= x2-s {
-					a.canvas.Set(x, y, a.chars.Overline())
-				}
-			case y < y1+head:
-				if y == y1 && x >= x1+hoffset && x <= x2-hoffset {
-					a.canvas.Set(x, y, a.chars.Overline())
-				}
-				if y == y1+head-1 && x >= x1+hoffset && x <= x2-hoffset {
-					a.canvas.Set(x, y, a.chars.Underscore())
-				}
-				if (y == y1 && x == x1+hoffset-1) || (y == y1+head-1 && x == x2-hoffset+1) {
-					a.canvas.Set(x, y, a.chars.ForwardSlash())
-				}
-				if (y == y1+head-1 && x == x1+hoffset-1) || (y == y1 && x == x2-hoffset+1) {
-					a.canvas.Set(x, y, a.chars.Backslash())
-				}
-			}
-		}
-	}
-
-	a.drawShapeLabel(x1, y1, x2, y2, wi, hi, label, labelPosition)
-}
-func (a *ASCIIartist) drawStoredData(x, y, w, h float64, label, labelPosition string) {
-	xi, yi, wi, hi := a.calibrate(x, y, w, h)
-	if hi < minStoredDataHeight {
-		hi = minStoredDataHeight
-	} else if hi%2 == 0 {
-		hi++
-	}
-	// Adjust width for optimal label symmetry
-	wi = a.adjustWidthForLabel(wi, label, x, y, w, h)
-	x1, y1 := xi, yi
-	x2, y2 := xi+wi-1, yi+hi-1
-	hoffset := (hi + 1) / 2
-
-	for x := x1; x <= x2; x++ {
-		for y := y1; y <= y2; y++ {
-			relX, relY := x-x1, y-y1
-
-			switch {
-			case y == y1+hoffset-1 && x == x1:
-				a.canvas.Set(x, y, a.chars.Vertical())
-			case x < x1+hoffset:
-				if y < y1+hoffset && (relX+relY) == hoffset-1 {
-					a.canvas.Set(x, y, a.chars.ForwardSlash())
-				} else if y >= y1+hoffset && int(math.Abs(float64(relX-relY))) == hoffset-1 {
-					a.canvas.Set(x, y, a.chars.Backslash())
-				}
-			case x >= x1+hoffset:
-				if y == y1 && x < x2 {
-					a.canvas.Set(x, y, a.chars.Overline())
-				} else if y == y2 && x < x2 {
-					a.canvas.Set(x, y, a.chars.Underscore())
-				} else if x > x2-hoffset {
-					if y == y1+hoffset-1 && x == x2-(hoffset-1) {
-						a.canvas.Set(x, y, a.chars.Vertical())
-					} else if (relX + relY) == wi-1 {
-						a.canvas.Set(x, y, a.chars.ForwardSlash())
-					} else if int(math.Abs(float64(relX-relY))) == int(math.Abs(float64(wi-hi))) {
-						a.canvas.Set(x, y, a.chars.Backslash())
-					}
-				}
-			}
-		}
-	}
-
-	a.drawShapeLabel(x1, y1, x2, y2, wi, hi, label, labelPosition)
-}
-func (a *ASCIIartist) drawCylinder(x, y, w, h float64, label, labelPosition string) {
-	xi, yi, wi, hi := a.calibrate(x, y, w, h)
-	// Adjust width for optimal label symmetry
-	wi = a.adjustWidthForLabel(wi, label, x, y, w, h)
-	x1, y1 := xi, yi
-	x2, y2 := xi+wi-1, yi+hi-1
-
-	for ix := x1; ix <= x2; ix++ {
-		for iy := y1; iy <= y2; iy++ {
-			switch {
-			case iy != y1 && iy != y2 && (ix == x1 || ix == x2):
-				a.canvas.Set(ix, iy, a.chars.Vertical())
-			case iy == y1 || iy == y2 || iy == y1+1:
-				if iy == y1 {
-					if ix == x1+1 || ix == x2-1 {
-						a.canvas.Set(ix, iy, a.chars.Dot())
-					} else if ix == x1+2 || ix == x2-2 {
-						a.canvas.Set(ix, iy, a.chars.Hyphen())
-					} else if ix > x1+2 && ix < x2-2 {
-						a.canvas.Set(ix, iy, a.chars.Overline())
-					}
-				} else if iy == y2 || iy == y1+1 {
-					if ix == x1+1 {
-						a.canvas.Set(ix, iy, a.chars.Backslash())
-					} else if ix == x2-1 {
-						a.canvas.Set(ix, iy, a.chars.ForwardSlash())
-					} else if ix == x1+2 || ix == x2-2 {
-						a.canvas.Set(ix, iy, a.chars.Hyphen())
-					} else if ix > x1+2 && ix < x2-2 {
-						a.canvas.Set(ix, iy, a.chars.Underscore())
-					}
-				}
-			}
-		}
-	}
-
-	if label != "" {
-		ly := a.labelY(y1+1, y2, hi, label, labelPosition)
-		lx := x1 + (wi-len(label))/2
-		a.canvas.DrawLabel(lx, ly, label)
-	}
-}
-func (a *ASCIIartist) drawPackage(x, y, w, h float64, label, labelPosition string) {
-	xi, yi, wi, hi := a.calibrate(x, y, w, h)
-	x1, y1 := xi, yi
-	x2, y2 := xi+wi-1, yi+hi-1
-	x3, y3 := x1+wi/2, y1+1
-
-	corners := map[string]string{
-		fmt.Sprintf("%d_%d", x1, y1): a.chars.TopLeftCorner(),
-		fmt.Sprintf("%d_%d", x3, y1): a.chars.TopRightCorner(),
-		fmt.Sprintf("%d_%d", x2, y3): a.chars.TopRightCorner(),
-		fmt.Sprintf("%d_%d", x3, y3): a.chars.BottomLeftCorner(),
-		fmt.Sprintf("%d_%d", x1, y2): a.chars.BottomLeftCorner(),
-		fmt.Sprintf("%d_%d", x2, y2): a.chars.BottomRightCorner(),
-	}
-
-	for ix := x1; ix <= x2; ix++ {
-		for iy := y1; iy <= y2; iy++ {
-			key := fmt.Sprintf("%d_%d", ix, iy)
-			if char, ok := corners[key]; ok {
-				a.canvas.Set(ix, iy, char)
-			} else if (iy == y1 && ix > x1 && ix < x3) || (iy == y2 && ix > x1 && ix < x2) || (iy == y3 && ix > x3 && ix < x2) {
-				a.canvas.Set(ix, iy, a.chars.Horizontal())
-			} else if (ix == x1 && iy > y1 && iy < y2) || (ix == x2 && iy > y3 && iy < y2) {
-				a.canvas.Set(ix, iy, a.chars.Vertical())
-			}
-		}
-	}
-
-	a.drawShapeLabel(x1, y1, x2, y2, wi, hi, label, labelPosition)
-}
-func (a *ASCIIartist) drawParallelogram(x, y, w, h float64, label, labelPosition string) {
-	xi, yi, wi, hi := a.calibrate(x, y, w, h)
-	x1, y1 := xi, yi
-	x2, y2 := xi+wi-1, yi+hi-1
-
-	for ix := x1; ix <= x2; ix++ {
-		for iy := y1; iy <= y2; iy++ {
-			_x, _y := ix-x1, iy-y1
-			if (_x+_y == hi-1) || (_x+_y == wi-1) {
-				a.canvas.Set(ix, iy, a.chars.ForwardSlash())
-			} else if iy == y1 && ix >= x1+hi && ix < x2 {
-				a.canvas.Set(ix, iy, a.chars.Overline())
-			} else if iy == y2 && ix > x1 && ix <= x2-hi {
-				a.canvas.Set(ix, iy, a.chars.Underscore())
-			}
-		}
-	}
-
-	a.drawShapeLabel(x1, y1, x2, y2, wi, hi, label, labelPosition)
-}
-func (a *ASCIIartist) drawQueue(x, y, w, h float64, label, labelPosition string) {
-	xi, yi, wi, hi := a.calibrate(x, y, w, h)
-	x1, y1 := xi, yi
-	x2, y2 := xi+wi-1, yi+hi-1
-
-	for ix := x1; ix <= x2; ix++ {
-		for iy := y1; iy <= y2; iy++ {
-			switch {
-			case (iy == y1 && (ix == x1+1 || ix == x2-2)) || (iy == y2 && ix == x2-1):
-				a.canvas.Set(ix, iy, a.chars.ForwardSlash())
-			case (iy == y1 && ix == x2-1) || (iy == y2 && (ix == x1+1 || ix == x2-2)):
-				a.canvas.Set(ix, iy, a.chars.Backslash())
-			case (ix == x1 || ix == x2 || ix == x2-3) && (iy > y1 && iy < y2):
-				a.canvas.Set(ix, iy, a.chars.Vertical())
-			case iy == y1 && ix > x1+1 && ix < x2-1:
-				a.canvas.Set(ix, iy, a.chars.Overline())
-			case iy == y2 && ix > x1+1 && ix < x2-3:
-				a.canvas.Set(ix, iy, a.chars.Underscore())
-			}
-		}
-	}
-
-	a.drawShapeLabel(x1, y1, x2, y2, wi, hi, label, labelPosition)
-}
-func (a *ASCIIartist) drawStep(x, y, w, h float64, label, labelPosition string) {
-	ix, iy, iw, ih := a.calibrate(x, y, w, h)
-	if ih%2 == 1 {
-		ih++
-	}
-	x1, y1, x2, y2 := ix, iy, ix+iw-1, iy+ih-1
-
-	for x := x1; x <= x2; x++ {
-		for y := y1; y <= y2; y++ {
-			_x, _y := x-x1, y-y1
-			if (x < x1+ih/2 && _x-_y == 0) || (x > x2-ih/2 && absInt(_x-_y) == iw-ih/2) {
-				a.canvas.Set(x, y, a.chars.Backslash())
-			} else if (x < x1+ih/2 && _x+_y == ih-1) || (x > x2-ih/2 && _x+_y == iw-1+ih/2) {
-				a.canvas.Set(x, y, a.chars.ForwardSlash())
-			} else if y == y1 && x > x1 && x < x2-ih/2 {
-				a.canvas.Set(x, y, a.chars.Overline())
-			} else if y == y2 && x > x1 && x < x2-ih/2 {
-				a.canvas.Set(x, y, a.chars.Underscore())
-			}
-		}
-	}
-
-	if label != "" {
-		ly := a.labelY(y1, y2, ih, label, labelPosition)
-		lx := x1 + (iw-len(label))/2
-		a.canvas.DrawLabel(lx, ly, label)
-	}
-}
-func (a *ASCIIartist) drawCallout(x, y, w, h float64, label, labelPosition string) {
-	ix, iy, iw, ih := a.calibrate(x, y, w, h)
-	x1, y1, x2, y2 := ix, iy, ix+iw-1, iy+ih-1
-	body := (ih + 1) / 2
-	tail := ih / 2
-
-	corners := map[string]string{
-		fmt.Sprintf("%d_%d", x1, y1):      a.chars.TopLeftCorner(),
-		fmt.Sprintf("%d_%d", x2, y1):      a.chars.TopRightCorner(),
-		fmt.Sprintf("%d_%d", x1, y2-tail): a.chars.BottomLeftCorner(),
-		fmt.Sprintf("%d_%d", x2, y2-tail): a.chars.BottomRightCorner(),
-	}
-
-	for x := x1; x <= x2; x++ {
-		for y := y1; y <= y2; y++ {
-			relX, relY := x-x1, y-y1
-			k := fmt.Sprintf("%d_%d", x, y)
-			if char, ok := corners[k]; ok {
-				a.canvas.Set(x, y, char)
-			} else if (y == y1 || y == y2-tail) && x > x1 && x < x2 {
-				a.canvas.Set(x, y, a.chars.Horizontal())
-			} else if (x == x1 || x == x2) && y > y1 && y < y2-tail {
-				a.canvas.Set(x, y, a.chars.Vertical())
-			} else if x == x2-(tail+2) && y > y2-tail {
-				a.canvas.Set(x, y, a.chars.Vertical())
-			} else if y > y2-tail && relX+relY == iw {
-				a.canvas.Set(x, y, a.chars.ForwardSlash())
-			}
-		}
-	}
-
-	if label != "" {
-		ly := a.labelY(y1, y2, body, label, labelPosition)
-		lx := x1 + (iw-len(label))/2
-		a.canvas.DrawLabel(lx, ly, label)
-	}
-}
-func (a *ASCIIartist) drawDocument(x, y, w, h float64, label, labelPosition string) {
-	ix, iy, iw, ih := a.calibrate(x, y, w, h)
-	x1, y1, x2, y2 := ix, iy, ix+iw-1, iy+ih-1
-	n := (iw - 2) / 2
-	j := n / 2
-	if j > maxCurveHeight {
-		j = maxCurveHeight
-	}
-	hcurve := j + 1
-
-	lcurve := make([]rune, n)
-	rcurve := make([]rune, n)
-	for i := 0; i < n; i++ {
-		if i < hcurve {
-			lcurve[i] = rune(a.bcurve[i])
-			rcurve[i] = rune(a.tcurve[i])
-		} else if absInt(i-n+1) < hcurve {
-			lcurve[i] = rune(a.bcurve[absInt(i-n+1)])
-			rcurve[i] = rune(a.tcurve[absInt(i-n+1)])
-		} else {
-			lcurve[i] = rune(a.bcurve[3])
-			rcurve[i] = rune(a.tcurve[3])
-		}
-	}
-	corners := map[string]string{
-		fmt.Sprintf("%d_%d", x1, y1): a.chars.TopLeftCorner(),
-		fmt.Sprintf("%d_%d", x2, y1): a.chars.TopRightCorner(),
-	}
-
-	for x := x1; x <= x2; x++ {
-		for y := y1; y <= y2; y++ {
-			relX := x - x1
-			curveIndex := relX - 1
-			k := fmt.Sprintf("%d_%d", x, y)
-			if char, ok := corners[k]; ok {
-				a.canvas.Set(x, y, char)
-			} else if y == y1 && x > x1 && x < x2 {
-				a.canvas.Set(x, y, a.chars.Horizontal())
-			} else if (x == x1 || x == x2) && y > y1 && y < y2 {
-				a.canvas.Set(x, y, a.chars.Vertical())
-			} else if y == y2 && x > x1 && relX <= n && curveIndex >= 0 && curveIndex < len(lcurve) {
-				a.canvas.Set(x, y, string(lcurve[curveIndex]))
-			} else if y == y2-1 && relX > n && x < x2 && (relX-int(iw/2)) < len(rcurve) {
-				a.canvas.Set(x, y, string(rcurve[relX-int(iw/2)]))
-			}
-		}
-	}
-
-	if label != "" {
-		ly := a.labelY(y1, y2, ih-2, label, labelPosition)
-		lx := x1 + (iw-len(label))/2
-		a.canvas.DrawLabel(lx, ly, label)
-	}
-}
-func (d *ASCIIartist) drawDiamond(x, y, w, h float64, label, labelPosition string) {
-	ix, iy, iw, ih := d.calibrate(x, y, w, h)
-	if ih%2 == 0 {
-		ih++
-	}
-	if iw%2 == 0 {
-		iw++
-	}
-	x1, y1, x2, y2 := ix, iy, ix+iw-1, iy+ih-1
-
-	diagPath := [][2]int{
-		{x1, y1 + ih/2},
-		{x1 + iw/2, y1},
-		{x2, y1 + ih/2},
-		{x1 + iw/2, y2},
-		{x1, y1 + ih/2},
-	}
-
-	for x := x1; x <= x2; x++ {
-		for y := y1; y <= y2; y++ {
-			relX, relY := x-x1, y-y1
-			if (y == y1 || y == y2) && relX == iw/2 {
-				d.canvas.Set(x, y, d.chars.Tilde())
-			} else if (x == x1 || x == x2) && relY == ih/2 {
-				d.canvas.Set(x, y, d.chars.Hyphen())
-			}
-		}
-	}
-
-	for i := 0; i < len(diagPath)-1; i++ {
-		a, c := diagPath[i], diagPath[i+1]
-		dx, dy := c[0]-a[0], c[1]-a[1]
-		step := max(absInt(dx), absInt(dy))
-		sx, sy := float64(dx)/float64(step), float64(dy)/float64(step)
-		fx, fy := float64(a[0]), float64(a[1])
-		for j := 0; j < step; j++ {
-			fx += sx
-			fy += sy
-			x := int(math.Round(fx))
-			y := int(math.Round(fy))
-			d.canvas.Set(x, y, d.chars.Star())
-		}
-	}
-
-	if label != "" {
-		ly := d.labelY(y1, y2, ih, label, labelPosition)
-		lx := x1 + (iw-len(label))/2
-		d.canvas.DrawLabel(lx, ly, label)
-	}
-}
-
 // parseConnectionBoundaries extracts source and destination shape boundaries from connection ID
 func (aa *ASCIIartist) parseConnectionBoundaries(connID string) (frmShapeBoundary, toShapeBoundary Boundary) {
 	re := regexp.MustCompile(` -> | <-> | -- `)
