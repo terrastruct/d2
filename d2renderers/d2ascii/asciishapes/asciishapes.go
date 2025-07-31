@@ -9,11 +9,11 @@ import (
 )
 
 type Context struct {
-	Canvas *asciicanvas.Canvas
-	Chars  charset.Set
-	FW     float64
-	FH     float64
-	Scale  float64
+	Canvas   *asciicanvas.Canvas
+	Chars    charset.Set
+	FW       float64
+	FH       float64
+	Scale    float64
 }
 
 const (
@@ -31,6 +31,8 @@ func (ctx *Context) Calibrate(x, y, w, h float64) (int, int, int, int) {
 	yC := int(math.Round((y / ctx.FH) * ctx.Scale))
 	wC := int(math.Round((w / ctx.FW) * ctx.Scale))
 	hC := int(math.Round((h / ctx.FH) * ctx.Scale))
+
+
 	return xC, yC, wC, hC
 }
 

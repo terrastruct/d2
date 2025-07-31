@@ -46,10 +46,23 @@ func NewBoundary(tl, br Point) *Boundary {
 }
 
 func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
-	x1 := int(math.Round((float64(s.Pos.X) / a.FW) * a.SCALE))
-	y1 := int(math.Round((float64(s.Pos.Y) / a.FH) * a.SCALE))
-	x2 := int(math.Round(((float64(s.Pos.X) + float64(s.Width) - 1) / a.FW) * a.SCALE))
-	y2 := int(math.Round(((float64(s.Pos.Y) + float64(s.Height) - 1) / a.FH) * a.SCALE))
+	// For multiple shapes, expand boundary to match the expanded rendering
+	posX := float64(s.Pos.X)
+	posY := float64(s.Pos.Y)
+	width := float64(s.Width)
+	height := float64(s.Height)
+	
+	if s.Multiple {
+		posX -= d2target.MULTIPLE_OFFSET    // Move left to include shadow area
+		width += d2target.MULTIPLE_OFFSET   // Include shadow width
+		height += d2target.MULTIPLE_OFFSET  // Include shadow height
+	}
+	
+	x1 := int(math.Round((posX / a.FW) * a.SCALE))
+	y1 := int(math.Round((posY / a.FH) * a.SCALE))
+	x2 := int(math.Round(((posX + width - 1) / a.FW) * a.SCALE))
+	y2 := int(math.Round(((posY + height - 1) / a.FH) * a.SCALE))
+
 	return Point{X: x1, Y: y1}, Point{X: x2, Y: y2}
 }
 
@@ -216,11 +229,11 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 		preserveWidth := hasConnectionsAtRightEdge(shape, diagram.Connections, a.FW)
 
 		ctx := &asciishapes.Context{
-			Canvas: a.canvas,
-			Chars:  a.chars,
-			FW:     a.FW,
-			FH:     a.FH,
-			Scale:  a.SCALE,
+			Canvas:   a.canvas,
+			Chars:    a.chars,
+			FW:       a.FW,
+			FH:       a.FH,
+			Scale:    a.SCALE,
 		}
 
 		if preserveWidth && shape.Label != "" {
@@ -231,35 +244,51 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 			}
 		}
 
+		// For multiple shapes, expand to fill the entire space that would be occupied by the multiple effect
+		drawX := float64(shape.Pos.X)
+		drawY := float64(shape.Pos.Y)
+		drawWidth := float64(shape.Width)
+		drawHeight := float64(shape.Height)
+		
+		if shape.Multiple {
+			// Move position to top-left of total occupied area (shadow extends left and down)
+			drawX -= d2target.MULTIPLE_OFFSET  // Move left to include shadow area
+			// Y stays the same since shadow goes down, not up
+			
+			// Expand size to fill entire multiple effect area
+			drawWidth += d2target.MULTIPLE_OFFSET   // Include shadow width
+			drawHeight += d2target.MULTIPLE_OFFSET  // Include shadow height
+		}
+		
 		switch shape.Type {
 		case d2target.ShapeRectangle:
-			asciishapes.DrawRect(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition, "")
+			asciishapes.DrawRect(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition, "")
 		case d2target.ShapeSquare:
-			asciishapes.DrawRect(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition, "")
+			asciishapes.DrawRect(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition, "")
 		case d2target.ShapePage:
-			asciishapes.DrawPage(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawPage(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapeHexagon:
-			asciishapes.DrawHex(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawHex(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapePerson:
-			asciishapes.DrawPerson(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawPerson(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapeStoredData:
-			asciishapes.DrawStoredData(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawStoredData(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapeCylinder:
-			asciishapes.DrawCylinder(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawCylinder(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapePackage:
-			asciishapes.DrawPackage(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawPackage(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapeParallelogram:
-			asciishapes.DrawParallelogram(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawParallelogram(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapeQueue:
-			asciishapes.DrawQueue(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawQueue(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapeStep:
-			asciishapes.DrawStep(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawStep(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapeCallout:
-			asciishapes.DrawCallout(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawCallout(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapeDocument:
-			asciishapes.DrawDocument(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawDocument(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapeDiamond:
-			asciishapes.DrawDiamond(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition)
+			asciishapes.DrawDiamond(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		default:
 			symbol := ""
 			switch shape.Type {
@@ -272,7 +301,7 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 			default:
 				symbol = ""
 			}
-			asciishapes.DrawRect(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition, symbol)
+			asciishapes.DrawRect(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition, symbol)
 		}
 	}
 	for _, conn := range diagram.Connections {
