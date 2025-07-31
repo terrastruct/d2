@@ -10,7 +10,7 @@
 .Op Fl -theme Em 0
 .Op Fl -salt Ar string
 .Ar file.d2
-.Op Ar file.svg | file.png
+.Op Ar file.svg | file.png | file.pdf | file.pptx | file.gif | file.txt
 .Nm d2
 .Ar layout Op Ar name
 .Nm d2
@@ -27,6 +27,14 @@ to
 .Ar file.svg
 |
 .Ar file.png
+|
+.Ar file.pdf
+|
+.Ar file.pptx
+|
+.Ar file.gif
+|
+.Ar file.txt
 .Ns .
 .Pp
 It defaults to
@@ -143,7 +151,7 @@ Print usage information and exit
 Print version information and exit
 .Ns .
 .It Fl -stdout-format Ar string
-Set the output format when writing to stdout. Supported formats are: png, svg, ascii. Only used when output is set to stdout (-)
+Set the output format when writing to stdout. Supported formats are: png, svg, ascii, txt, pdf, pptx, gif. Only used when output is set to stdout (-)
 .Ns .
 .It Fl -no-xml-tag Ar false
 Omit XML tag (<?xml ...?>) from output SVG files. Useful when generating SVGs for direct HTML embedding
