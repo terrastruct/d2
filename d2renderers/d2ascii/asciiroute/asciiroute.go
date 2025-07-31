@@ -50,7 +50,7 @@ func DrawRoute(rd RouteDrawer, conn d2target.Connection) {
 	routes := conn.Route
 	label := conn.Label
 
-	frmShapeBoundary, toShapeBoundary := parseConnectionBoundaries(rd, conn.ID)
+	frmShapeBoundary, toShapeBoundary := getConnectionBoundaries(rd, conn.Src, conn.Dst)
 
 	routes = processRoute(rd, routes)
 

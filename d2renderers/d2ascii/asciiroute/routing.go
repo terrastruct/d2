@@ -3,7 +3,6 @@ package asciiroute
 import (
 	"fmt"
 	"math"
-	"regexp"
 
 	"oss.terrastruct.com/d2/lib/geo"
 )
@@ -27,29 +26,16 @@ func processRoute(rd RouteDrawer, routes []*geo.Point) []*geo.Point {
 	return routesCopy
 }
 
-func parseConnectionBoundaries(rd RouteDrawer, connID string) (frmShapeBoundary, toShapeBoundary Boundary) {
-	re := regexp.MustCompile(` -> | <-> | -- `)
-	re1 := regexp.MustCompile(`\(([^}]*)\)`)
-	re2 := regexp.MustCompile(`(.*)\(`)
-	match1 := re1.FindStringSubmatch(connID)
-	match2 := re2.FindStringSubmatch(connID)
-
-	if len(match1) > 0 {
-		parentID := ""
-		if len(match2) > 0 {
-			parentID = match2[1]
-		}
-		splitResult := re.Split(match1[1], -1)
-		diagram := rd.GetDiagram()
-		if diagram != nil {
-			for _, shape := range diagram.Shapes {
-				if len(splitResult) > 0 && shape.ID == parentID+splitResult[0] {
-					tl, br := rd.GetBoundaryForShape(shape)
-					frmShapeBoundary = *NewBoundary(tl, br)
-				} else if len(splitResult) > 1 && shape.ID == parentID+splitResult[1] {
-					tl, br := rd.GetBoundaryForShape(shape)
-					toShapeBoundary = *NewBoundary(tl, br)
-				}
+func getConnectionBoundaries(rd RouteDrawer, srcID, dstID string) (frmShapeBoundary, toShapeBoundary Boundary) {
+	diagram := rd.GetDiagram()
+	if diagram != nil {
+		for _, shape := range diagram.Shapes {
+			if shape.ID == srcID {
+				tl, br := rd.GetBoundaryForShape(shape)
+				frmShapeBoundary = *NewBoundary(tl, br)
+			} else if shape.ID == dstID {
+				tl, br := rd.GetBoundaryForShape(shape)
+				toShapeBoundary = *NewBoundary(tl, br)
 			}
 		}
 	}
