@@ -215,4 +215,3 @@ func shouldSkipOverwrite(rd RouteDrawer, x, y int, frmBoundary, toBoundary Bound
 	}
 	return false
 }
-
