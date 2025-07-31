@@ -17,6 +17,9 @@ func processRoute(rd RouteDrawer, routes []*geo.Point) []*geo.Point {
 	routesCopy = mergeRoutes(routesCopy)
 	calibrateRoutes(rd, routesCopy)
 
+	// Force all route segments to be horizontal or vertical (after calibration)
+	routesCopy = forceHorizontalVerticalRoute(routesCopy)
+
 	// Adjust route endpoints to avoid overlapping with existing characters
 	if len(routesCopy) >= 2 {
 		adjustRouteStartPoint(rd, routesCopy)
@@ -24,6 +27,52 @@ func processRoute(rd RouteDrawer, routes []*geo.Point) []*geo.Point {
 	}
 
 	return routesCopy
+}
+
+// forceHorizontalVerticalRoute transforms diagonal segments into horizontal and vertical segments
+func forceHorizontalVerticalRoute(routes []*geo.Point) []*geo.Point {
+	if len(routes) < 2 {
+		return routes
+	}
+
+	// Check if any diagonal segments exist
+	hasDiagonals := false
+	for i := 1; i < len(routes); i++ {
+		prev := routes[i-1]
+		curr := routes[i]
+		deltaX := math.Abs(curr.X - prev.X)
+		deltaY := math.Abs(curr.Y - prev.Y)
+
+		if deltaX > 0.5 && deltaY > 0.5 {
+			hasDiagonals = true
+			break
+		}
+	}
+
+	if !hasDiagonals {
+		return routes
+	}
+
+	// Transform diagonal segments
+	var newRoutes []*geo.Point
+	newRoutes = append(newRoutes, routes[0])
+
+	for i := 1; i < len(routes); i++ {
+		prev := newRoutes[len(newRoutes)-1]
+		curr := routes[i]
+		deltaX := math.Abs(curr.X - prev.X)
+		deltaY := math.Abs(curr.Y - prev.Y)
+
+		if deltaX > 0.5 && deltaY > 0.5 {
+			// Break diagonal into horizontal then vertical
+			intermediate := &geo.Point{X: curr.X, Y: prev.Y}
+			newRoutes = append(newRoutes, intermediate)
+		}
+
+		newRoutes = append(newRoutes, curr)
+	}
+
+	return newRoutes
 }
 
 func getConnectionBoundaries(rd RouteDrawer, srcID, dstID string) (frmShapeBoundary, toShapeBoundary Boundary) {
