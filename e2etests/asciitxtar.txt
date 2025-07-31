@@ -92,3 +92,29 @@ shape: sequence_diagram
 alice -> bob: hello
 bob -> alice: jello
 alice -> carl: bye
+
+-- all-shapes --
+rectangle.shape: rectangle
+square.shape: square
+page.shape: page
+parallelogram.shape: parallelogram
+document.shape: document
+cylinder.shape: cylinder
+queue.shape: queue
+package.shape: package
+step.shape: step
+callout.shape: callout
+stored_data.shape: stored_data
+person.shape: person
+diamond.shape: diamond
+oval.shape: oval
+circle.shape: circle
+hexagon.shape: hexagon
+cloud.shape: cloud
+
+rectangle -> square -> page
+parallelogram -> document -> cylinder
+queue -> package -> step
+callout -> stored_data -> person
+diamond -> oval -> circle
+hexagon -> cloud

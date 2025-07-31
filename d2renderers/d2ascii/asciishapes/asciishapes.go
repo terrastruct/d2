@@ -1,7 +1,6 @@
 package asciishapes
 
 import (
-	"fmt"
 	"math"
 	"strings"
 
@@ -62,23 +61,6 @@ func DrawShapeLabel(ctx *Context, x1, y1, x2, y2, width, height int, label, labe
 	ly := LabelY(y1, y2, height, label, labelPosition)
 	lx := x1 + (width-len(label))/2
 	ctx.Canvas.DrawLabel(lx, ly, label)
-}
-
-func FillRectangle(ctx *Context, x1, y1, x2, y2 int, corners map[string]string, symbol string) {
-	for xi := x1; xi < x2; xi++ {
-		for yi := y1; yi < y2; yi++ {
-			key := fmt.Sprintf("%d_%d", xi, yi)
-			if val, ok := corners[key]; ok {
-				ctx.Canvas.Set(xi, yi, val)
-			} else if strings.TrimSpace(symbol) != "" && yi == y1 && xi == x1+1 {
-				ctx.Canvas.Set(xi, yi, symbol)
-			} else if xi == x1 || xi == x2-1 {
-				ctx.Canvas.Set(xi, yi, ctx.Chars.Vertical())
-			} else if yi == y1 || yi == y2-1 {
-				ctx.Canvas.Set(xi, yi, ctx.Chars.Horizontal())
-			}
-		}
-	}
 }
 
 func adjustWidthForLabel(ctx *Context, x, y, w, h float64, width int, label string) int {

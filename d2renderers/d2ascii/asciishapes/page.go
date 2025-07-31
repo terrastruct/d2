@@ -5,46 +5,43 @@ import (
 )
 
 func DrawPage(ctx *Context, x, y, w, h float64, label, labelPosition string) {
-	xi, yi, wi, hi := ctx.Calibrate(x, y, w, h)
-	wi = adjustWidthForLabel(ctx, x, y, w, h, wi, label)
-	x1, y1 := xi, yi
-	x2, y2 := xi+wi-1, yi+hi-1
-	x3 := x2 - wi/3
-	y3 := y2 - hi/2
 
+	x1, y1, wC, hC := ctx.Calibrate(x, y, w, h)
+	if label != "" && hC%2 == 0 {
+		if hC > 2 {
+			hC--
+			y1++
+		} else {
+			hC++
+		}
+	}
+	wC = adjustWidthForLabel(ctx, x, y, w, h, wC, label)
+	x2, y2 := x1+wC, y1+hC
 	corners := map[string]string{
-		fmt.Sprintf("%d_%d", x1, y1): ctx.Chars.TopLeftCorner(),
-		fmt.Sprintf("%d_%d", x2, y1): ctx.Chars.TopRightCorner(),
-		fmt.Sprintf("%d_%d", x1, y2): ctx.Chars.BottomLeftCorner(),
-		fmt.Sprintf("%d_%d", x2, y2): ctx.Chars.BottomRightCorner(),
+		fmt.Sprintf("%d_%d", x1, y1):     ctx.Chars.TopLeftCorner(),
+		fmt.Sprintf("%d_%d", x2-1, y1):   ctx.Chars.TopRightCorner(),
+		fmt.Sprintf("%d_%d", x1, y2-1):   ctx.Chars.BottomLeftCorner(),
+		fmt.Sprintf("%d_%d", x2-1, y2-1): ctx.Chars.BottomRightCorner(),
 	}
 
-	for x := x1; x <= x2; x++ {
-		for y := y1; y <= y2; y++ {
-			key := fmt.Sprintf("%d_%d", x, y)
-			if val, ok := corners[key]; ok && !(x > x3 && y < y3) {
-				ctx.Canvas.Set(x, y, val)
-			} else if x == x1 || (x == x2 && y > y3) {
-				ctx.Canvas.Set(x, y, ctx.Chars.Vertical())
-			} else if (y == y1 && x < x3) || y == y2 {
-				ctx.Canvas.Set(x, y, ctx.Chars.Horizontal())
-			} else if (x == x3 && y == y1) || (x == x2 && y == y3) {
-				ctx.Canvas.Set(x, y, ctx.Chars.TopRightCorner())
-			} else if x == x3 && y == y3 {
-				ctx.Canvas.Set(x, y, ctx.Chars.BottomLeftCorner())
-			} else if x == x2 && y == y3 {
-				ctx.Canvas.Set(x, y, ctx.Chars.TopRightCorner())
-			} else if x == x3 && y < y3 {
-				ctx.Canvas.Set(x, y, ctx.Chars.Vertical())
-			} else if x > x3 && y == y3 {
-				ctx.Canvas.Set(x, y, ctx.Chars.Horizontal())
-			} else if x > x3 && x < x2 && y < y3 && y > y1 {
-				ctx.Canvas.Set(x, y, ctx.Chars.Backslash())
-			} else {
-				ctx.Canvas.Set(x, y, " ")
+	for xi := x1; xi < x2; xi++ {
+		for yi := y1; yi < y2; yi++ {
+			key := fmt.Sprintf("%d_%d", xi, yi)
+			if val, ok := corners[key]; ok {
+				ctx.Canvas.Set(xi, yi, val)
+			} else if xi == x1 || xi == x2-1 {
+				ctx.Canvas.Set(xi, yi, ctx.Chars.Vertical())
+			} else if yi == y1 || yi == y2-1 {
+				ctx.Canvas.Set(xi, yi, ctx.Chars.Horizontal())
 			}
 		}
 	}
+	// The fold
+	ctx.Canvas.Set(x2-1, y1, " ")
+	ctx.Canvas.Set(x2-2, y1, ctx.Chars.TopRightCorner())
+	ctx.Canvas.Set(x2-2, y1+1, ctx.Chars.Backslash())
+	ctx.Canvas.Set(x2-1, y1+1, ctx.Chars.TopRightCorner())
 
-	DrawShapeLabel(ctx, x1, y1, x2, y2, wi, hi, label, labelPosition)
+	DrawShapeLabel(ctx, x1, y1, x2, y2, wC, hC, label, labelPosition)
+
 }

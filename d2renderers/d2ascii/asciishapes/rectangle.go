@@ -2,6 +2,7 @@ package asciishapes
 
 import (
 	"fmt"
+	"strings"
 )
 
 func DrawRect(ctx *Context, x, y, w, h float64, label, labelPosition, symbol string) {
@@ -22,6 +23,21 @@ func DrawRect(ctx *Context, x, y, w, h float64, label, labelPosition, symbol str
 		fmt.Sprintf("%d_%d", x1, y2-1):   ctx.Chars.BottomLeftCorner(),
 		fmt.Sprintf("%d_%d", x2-1, y2-1): ctx.Chars.BottomRightCorner(),
 	}
-	FillRectangle(ctx, x1, y1, x2, y2, corners, symbol)
+
+	for xi := x1; xi < x2; xi++ {
+		for yi := y1; yi < y2; yi++ {
+			key := fmt.Sprintf("%d_%d", xi, yi)
+			if val, ok := corners[key]; ok {
+				ctx.Canvas.Set(xi, yi, val)
+			} else if strings.TrimSpace(symbol) != "" && yi == y1 && xi == x1+1 {
+				ctx.Canvas.Set(xi, yi, symbol)
+			} else if xi == x1 || xi == x2-1 {
+				ctx.Canvas.Set(xi, yi, ctx.Chars.Vertical())
+			} else if yi == y1 || yi == y2-1 {
+				ctx.Canvas.Set(xi, yi, ctx.Chars.Horizontal())
+			}
+		}
+	}
+
 	DrawShapeLabel(ctx, x1, y1, x2, y2, wC, hC, label, labelPosition)
 }
