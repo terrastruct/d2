@@ -59,7 +59,6 @@ func parseConnectionBoundaries(rd RouteDrawer, connID string) (frmShapeBoundary,
 func calibrateRoutes(rd RouteDrawer, routes []*geo.Point) {
 	for i := range routes {
 		routes[i].X, routes[i].Y = rd.CalibrateXY(routes[i].X, routes[i].Y)
-		routes[i].X -= 1
 	}
 }
 

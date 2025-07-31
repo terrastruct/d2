@@ -118,3 +118,14 @@ queue -> package -> step
 callout -> stored_data -> person
 diamond -> oval -> circle
 hexagon -> cloud
+
+-- terminal-horizontal --
+vars: {
+  d2-config: {
+    layout-engine: elk
+    # Terminal theme code
+    theme-id: 300
+  }
+}
+direction: right
+a -> b: hello world
