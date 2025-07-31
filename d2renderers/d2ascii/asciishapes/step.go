@@ -1,6 +1,5 @@
 package asciishapes
 
-// DrawStep draws a step shape
 func DrawStep(ctx *Context, x, y, w, h float64, label, labelPosition string) {
 	ix, iy, iw, ih := ctx.Calibrate(x, y, w, h)
 	if ih%2 == 1 {

@@ -3,29 +3,28 @@ package charset
 // UnicodeSet implements the Set interface using Unicode box-drawing characters
 type UnicodeSet struct{}
 
-// NewUnicode creates a new Unicode character set
 func NewUnicode() Set {
 	return &UnicodeSet{}
 }
 
 // Corners
-func (u *UnicodeSet) TopLeftArc() string     { return "╭" }
-func (u *UnicodeSet) TopRightArc() string    { return "╮" }
-func (u *UnicodeSet) BottomLeftArc() string  { return "╰" }
-func (u *UnicodeSet) BottomRightArc() string { return "╯" }
-func (u *UnicodeSet) TopLeftCorner() string  { return "┌" }
-func (u *UnicodeSet) TopRightCorner() string { return "┐" }
-func (u *UnicodeSet) BottomLeftCorner() string { return "└" }
+func (u *UnicodeSet) TopLeftArc() string        { return "╭" }
+func (u *UnicodeSet) TopRightArc() string       { return "╮" }
+func (u *UnicodeSet) BottomLeftArc() string     { return "╰" }
+func (u *UnicodeSet) BottomRightArc() string    { return "╯" }
+func (u *UnicodeSet) TopLeftCorner() string     { return "┌" }
+func (u *UnicodeSet) TopRightCorner() string    { return "┐" }
+func (u *UnicodeSet) BottomLeftCorner() string  { return "└" }
 func (u *UnicodeSet) BottomRightCorner() string { return "┘" }
 
 // Lines
-func (u *UnicodeSet) Horizontal() string     { return "─" }
-func (u *UnicodeSet) Vertical() string       { return "│" }
-func (u *UnicodeSet) LeftVertical() string   { return "▏" }
-func (u *UnicodeSet) RightVertical() string  { return "▕" }
-func (u *UnicodeSet) Backslash() string      { return "╲" }
-func (u *UnicodeSet) ForwardSlash() string   { return "╱" }
-func (u *UnicodeSet) Cross() string          { return "╳" }
+func (u *UnicodeSet) Horizontal() string    { return "─" }
+func (u *UnicodeSet) Vertical() string      { return "│" }
+func (u *UnicodeSet) LeftVertical() string  { return "▏" }
+func (u *UnicodeSet) RightVertical() string { return "▕" }
+func (u *UnicodeSet) Backslash() string     { return "╲" }
+func (u *UnicodeSet) ForwardSlash() string  { return "╱" }
+func (u *UnicodeSet) Cross() string         { return "╳" }
 
 // Junctions
 func (u *UnicodeSet) TDown() string  { return "┬" }

@@ -2,7 +2,6 @@ package asciishapes
 
 import "fmt"
 
-// DrawDocument draws a document shape with wavy bottom
 func DrawDocument(ctx *Context, x, y, w, h float64, label, labelPosition string) {
 	ix, iy, iw, ih := ctx.Calibrate(x, y, w, h)
 	x1, y1, x2, y2 := ix, iy, ix+iw-1, iy+ih-1
@@ -15,7 +14,7 @@ func DrawDocument(ctx *Context, x, y, w, h float64, label, labelPosition string)
 
 	bcurve := "`-._"
 	tcurve := ".-`‾"
-	
+
 	lcurve := make([]rune, n)
 	rcurve := make([]rune, n)
 	for i := 0; i < n; i++ {

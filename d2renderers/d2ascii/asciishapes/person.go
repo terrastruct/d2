@@ -2,7 +2,6 @@ package asciishapes
 
 import "math"
 
-// DrawPerson draws a person shape
 func DrawPerson(ctx *Context, x, y, w, h float64, label, labelPosition string) {
 	xi, yi, wi, hi := ctx.Calibrate(x, y, w, h)
 	x1, y1 := xi, yi

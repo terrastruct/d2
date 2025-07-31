@@ -2,7 +2,6 @@ package asciishapes
 
 import "math"
 
-// DrawStoredData draws a stored data/database shape
 func DrawStoredData(ctx *Context, x, y, w, h float64, label, labelPosition string) {
 	xi, yi, wi, hi := ctx.Calibrate(x, y, w, h)
 	if hi < MinStoredDataHeight {
@@ -10,7 +9,6 @@ func DrawStoredData(ctx *Context, x, y, w, h float64, label, labelPosition strin
 	} else if hi%2 == 0 {
 		hi++
 	}
-	// Adjust width for optimal label symmetry
 	wi = adjustWidthForLabel(ctx, x, y, w, h, wi, label)
 	x1, y1 := xi, yi
 	x2, y2 := xi+wi-1, yi+hi-1

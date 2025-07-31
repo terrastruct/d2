@@ -9,27 +9,24 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/d2ascii/charset"
 )
 
-// Context provides the drawing context for shapes
 type Context struct {
 	Canvas *asciicanvas.Canvas
 	Chars  charset.Set
-	FW     float64 // Font width
-	FH     float64 // Font height
+	FW     float64
+	FH     float64
 	Scale  float64
 }
 
-// Constants for shape drawing
 const (
-	MinLabelPadding = 2
-	LabelOffsetX    = 2
-	LabelOffsetY    = 1
-	HeadHeight      = 2
-	MinCylinderHeight = 5
+	MinLabelPadding     = 2
+	LabelOffsetX        = 2
+	LabelOffsetY        = 1
+	HeadHeight          = 2
+	MinCylinderHeight   = 5
 	MinStoredDataHeight = 5
-	MaxCurveHeight = 3
+	MaxCurveHeight      = 3
 )
 
-// Calibrate converts coordinates from diagram space to canvas space
 func (ctx *Context) Calibrate(x, y, w, h float64) (int, int, int, int) {
 	xC := int(math.Round((x / ctx.FW) * ctx.Scale))
 	yC := int(math.Round((y / ctx.FH) * ctx.Scale))
@@ -38,7 +35,6 @@ func (ctx *Context) Calibrate(x, y, w, h float64) (int, int, int, int) {
 	return xC, yC, wC, hC
 }
 
-// LabelY calculates the Y position for a label
 func LabelY(y1, y2, h int, label, labelPosition string) int {
 	ly := -1
 	if strings.Contains(labelPosition, "OUTSIDE") {
@@ -59,7 +55,6 @@ func LabelY(y1, y2, h int, label, labelPosition string) int {
 	return ly
 }
 
-// DrawShapeLabel draws a centered label for a shape
 func DrawShapeLabel(ctx *Context, x1, y1, x2, y2, width, height int, label, labelPosition string) {
 	if label == "" {
 		return
@@ -69,7 +64,6 @@ func DrawShapeLabel(ctx *Context, x1, y1, x2, y2, width, height int, label, labe
 	ctx.Canvas.DrawLabel(lx, ly, label)
 }
 
-// FillRectangle fills a rectangular area with appropriate border characters
 func FillRectangle(ctx *Context, x1, y1, x2, y2 int, corners map[string]string, symbol string) {
 	for xi := x1; xi < x2; xi++ {
 		for yi := y1; yi < y2; yi++ {
@@ -87,21 +81,19 @@ func FillRectangle(ctx *Context, x1, y1, x2, y2 int, corners map[string]string, 
 	}
 }
 
-// adjustWidthForLabel adjusts width to ensure label fits with proper symmetry
 func adjustWidthForLabel(ctx *Context, x, y, w, h float64, width int, label string) int {
 	if label == "" {
 		return width
 	}
-	
+
 	availableSpace := width - len(label)
 	if availableSpace < MinLabelPadding {
 		return len(label) + MinLabelPadding
 	}
-	
+
 	if availableSpace%2 == 1 {
-		// Reduce by 1 for even spacing
 		return width - 1
 	}
-	
+
 	return width
 }

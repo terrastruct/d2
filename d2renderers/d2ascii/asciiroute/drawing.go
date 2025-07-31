@@ -8,10 +8,9 @@ import (
 	"oss.terrastruct.com/d2/lib/geo"
 )
 
-// drawSegmentBetweenPoints draws a route segment between two points
-func drawSegmentBetweenPoints(rd RouteDrawer, start, end *geo.Point, segmentIndex int, conn d2target.Connection, 
+func drawSegmentBetweenPoints(rd RouteDrawer, start, end *geo.Point, segmentIndex int, conn d2target.Connection,
 	corners, arrows, turnDir map[string]string, frmBoundary, toBoundary Boundary, labelPos *RouteLabelPosition, label string) {
-	
+
 	ax, ay := start.X, start.Y
 	cx, cy := end.X, end.Y
 
@@ -28,7 +27,7 @@ func drawSegmentBetweenPoints(rd RouteDrawer, start, end *geo.Point, segmentInde
 	attempt := 0
 	x := int(math.Round(ax))
 	y := int(math.Round(ay))
-	
+
 	for {
 		attempt++
 		if x == int(math.Round(cx)) && y == int(math.Round(cy)) || attempt == MaxRouteAttempts {
@@ -52,26 +51,25 @@ func drawSegmentBetweenPoints(rd RouteDrawer, start, end *geo.Point, segmentInde
 		if labelPos != nil && labelPos.ShouldDrawAt(segmentIndex-1, x, y, ax, ay, sx, sy) {
 			drawConnectionLabel(rd, labelPos, label, conn.LabelPosition, x, y, sx, sy, conn.Route, segmentIndex)
 		}
-		
+
 		fx += sx
 		fy += sy
 	}
 }
 
-// drawRoutePoint draws the appropriate character at a route point
-func drawRoutePoint(rd RouteDrawer, x, y int, sx, sy float64, segmentIndex, routeLen int, 
+func drawRoutePoint(rd RouteDrawer, x, y int, sx, sy float64, segmentIndex, routeLen int,
 	ax, ay, cx, cy float64, conn d2target.Connection, corners, arrows, turnDir map[string]string,
 	frmBoundary, toBoundary Boundary) {
-	
+
 	canvas := rd.GetCanvas()
 	key := fmt.Sprintf("%d_%d", x, y)
-	
+
 	// Check for corners first
 	if char, ok := corners[turnDir[key]]; ok {
 		canvas.Set(x, y, char)
 		return
 	}
-	
+
 	// Check for destination arrow
 	if segmentIndex == routeLen-1 && x == int(math.Round(cx)) && y == int(math.Round(cy)) && conn.DstArrow != d2target.NoArrowhead {
 		drawArrowhead(rd, x, y, sx, sy, arrows)
@@ -80,7 +78,7 @@ func drawRoutePoint(rd RouteDrawer, x, y int, sx, sy float64, segmentIndex, rout
 		}
 		return
 	}
-	
+
 	// Check for source arrow
 	if segmentIndex == 1 && x == int(math.Round(ax)) && y == int(math.Round(ay)) && conn.SrcArrow != d2target.NoArrowhead {
 		arrowKey := fmt.Sprintf("%d%d", geo.Sign(sx)*-1, geo.Sign(sy)*-1)
@@ -90,12 +88,11 @@ func drawRoutePoint(rd RouteDrawer, x, y int, sx, sy float64, segmentIndex, rout
 		}
 		return
 	}
-	
+
 	// Default: draw route segment
 	drawRouteSegment(rd, x, y, sx, sy, frmBoundary, toBoundary)
 }
 
-// drawRouteSegment draws a single segment of the route (horizontal/vertical line)
 func drawRouteSegment(rd RouteDrawer, x, y int, sx, sy float64, frmBoundary, toBoundary Boundary) {
 	if !isInBounds(rd, x, y) {
 		return
@@ -103,7 +100,7 @@ func drawRouteSegment(rd RouteDrawer, x, y int, sx, sy float64, frmBoundary, toB
 
 	canvas := rd.GetCanvas()
 	overWrite := canvas.Get(x, y) != " "
-	
+
 	if sx == 0 { // Vertical line
 		drawVerticalSegment(rd, x, y, sy, overWrite, frmBoundary, toBoundary)
 	} else { // Horizontal line
@@ -111,11 +108,10 @@ func drawRouteSegment(rd RouteDrawer, x, y int, sx, sy float64, frmBoundary, toB
 	}
 }
 
-// drawVerticalSegment draws a vertical line segment
 func drawVerticalSegment(rd RouteDrawer, x, y int, sy float64, overWrite bool, frmBoundary, toBoundary Boundary) {
 	canvas := rd.GetCanvas()
 	chars := rd.GetChars()
-	
+
 	if overWrite && shouldDrawTJunction(rd, x, y, frmBoundary, toBoundary, true) {
 		if sy > 0 {
 			canvas.Set(x, y, chars.TDown())
@@ -129,11 +125,10 @@ func drawVerticalSegment(rd RouteDrawer, x, y int, sy float64, overWrite bool, f
 	}
 }
 
-// drawHorizontalSegment draws a horizontal line segment
 func drawHorizontalSegment(rd RouteDrawer, x, y int, sx float64, overWrite bool, frmBoundary, toBoundary Boundary) {
 	canvas := rd.GetCanvas()
 	chars := rd.GetChars()
-	
+
 	if overWrite && shouldDrawTJunction(rd, x, y, frmBoundary, toBoundary, false) {
 		if sx > 0 {
 			canvas.Set(x, y, chars.TRight())
@@ -145,11 +140,10 @@ func drawHorizontalSegment(rd RouteDrawer, x, y int, sx float64, overWrite bool,
 	}
 }
 
-// drawArrowhead places an arrowhead at the given position
 func drawArrowhead(rd RouteDrawer, x, y int, sx, sy float64, arrows map[string]string) {
 	canvas := rd.GetCanvas()
 	arrowKey := fmt.Sprintf("%d%d", geo.Sign(sx), geo.Sign(sy))
-	
+
 	// Check if we're about to place arrow on a shape boundary character
 	if canvas.IsInBounds(x, y) &&
 		isShapeBoundaryChar(rd, canvas.Get(x, y)) {
@@ -221,4 +215,3 @@ func shouldSkipOverwrite(rd RouteDrawer, x, y int, frmBoundary, toBoundary Bound
 	}
 	return false
 }
-

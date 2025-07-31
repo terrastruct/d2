@@ -2,7 +2,6 @@ package d2ascii
 
 import (
 	"math"
-	"slices"
 
 	"oss.terrastruct.com/d2/d2renderers/d2ascii/asciicanvas"
 	"oss.terrastruct.com/d2/d2renderers/d2ascii/asciiroute"
@@ -11,17 +10,15 @@ import (
 	"oss.terrastruct.com/d2/d2target"
 )
 
-// Font dimensions
 const (
 	defaultFontWidth  = 9.75
 	defaultFontHeight = 18.0
 	defaultScale      = 1.0
 )
 
-// Route drawing constants (re-exported from asciiroute)
 const (
 	maxRouteAttempts = asciiroute.MaxRouteAttempts
-	labelOffsetX = asciiroute.LabelOffsetX
+	labelOffsetX     = asciiroute.LabelOffsetX
 )
 
 type ASCIIartist struct {
@@ -36,16 +33,14 @@ type ASCIIartist struct {
 	diagram d2target.Diagram
 }
 type RenderOpts struct {
-	Scale *float64
+	Scale   *float64
 	Charset charset.Type
 }
-// Point represents a 2D coordinate (kept for compatibility)
+
 type Point = asciiroute.Point
 
-// Boundary represents a shape boundary (kept for compatibility)
 type Boundary = asciiroute.Boundary
 
-// NewBoundary creates a new boundary (kept for compatibility)
 func NewBoundary(tl, br Point) *Boundary {
 	return asciiroute.NewBoundary(tl, br)
 }
@@ -58,13 +53,12 @@ func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
 	return Point{X: x1, Y: y1}, Point{X: x2, Y: y2}
 }
 
-// Implement RouteDrawer interface
 func (a *ASCIIartist) GetCanvas() *asciicanvas.Canvas { return a.canvas }
-func (a *ASCIIartist) GetChars() charset.Set { return a.chars }
-func (a *ASCIIartist) GetDiagram() *d2target.Diagram { return &a.diagram }
-func (a *ASCIIartist) GetFontWidth() float64 { return a.FW }
-func (a *ASCIIartist) GetFontHeight() float64 { return a.FH }
-func (a *ASCIIartist) GetScale() float64 { return a.SCALE }
+func (a *ASCIIartist) GetChars() charset.Set          { return a.chars }
+func (a *ASCIIartist) GetDiagram() *d2target.Diagram  { return &a.diagram }
+func (a *ASCIIartist) GetFontWidth() float64          { return a.FW }
+func (a *ASCIIartist) GetFontHeight() float64         { return a.FH }
+func (a *ASCIIartist) GetScale() float64              { return a.SCALE }
 func (a *ASCIIartist) GetBoundaryForShape(s d2target.Shape) (asciiroute.Point, asciiroute.Point) {
 	p1, p2 := a.GetBoundary(s)
 	return asciiroute.Point{X: p1.X, Y: p1.Y}, asciiroute.Point{X: p2.X, Y: p2.Y}
@@ -72,8 +66,6 @@ func (a *ASCIIartist) GetBoundaryForShape(s d2target.Shape) (asciiroute.Point, a
 func (a *ASCIIartist) CalibrateXY(x, y float64) (float64, float64) {
 	return a.calibrateXY(x, y)
 }
-
-
 
 func NewASCIIartist() *ASCIIartist {
 	artist := &ASCIIartist{
@@ -90,14 +82,11 @@ func NewASCIIartist() *ASCIIartist {
 	return artist
 }
 
-// calculateExtendedBounds calculates bounds including connection labels
 func (a *ASCIIartist) calculateExtendedBounds(diagram *d2target.Diagram) (tl, br d2target.Point) {
 	tl, br = diagram.NestedBoundingBox()
 
-	// Extend bounds to include connection labels
 	for _, conn := range diagram.Connections {
 		if conn.Label != "" && len(conn.Route) > 1 {
-			// Find longest route segment for label placement
 			maxDiff := 0.0
 			bestX := 0.0
 			for i := 0; i < len(conn.Route)-1; i++ {
@@ -114,7 +103,6 @@ func (a *ASCIIartist) calculateExtendedBounds(diagram *d2target.Diagram) (tl, br
 			}
 			labelX := bestX - float64(len(conn.Label))/2*a.FW
 			labelX2 := bestX + float64(len(conn.Label))/2*a.FW
-			// Estimate Y position (this is approximate since exact positioning is complex)
 			midY := (conn.Route[0].Y + conn.Route[len(conn.Route)-1].Y) / 2
 			labelY := midY - a.FH
 			labelY2 := midY + a.FH
@@ -132,7 +120,6 @@ func (a *ASCIIartist) calculateExtendedBounds(diagram *d2target.Diagram) (tl, br
 			}
 		}
 
-		// Check destination and source arrow labels
 		if conn.DstLabel != nil && len(conn.Route) > 0 {
 			lastRoute := conn.Route[len(conn.Route)-1]
 			labelX := lastRoute.X - float64(len(conn.DstLabel.Label))*a.FW
@@ -181,14 +168,12 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 	if opts == nil {
 		opts = &RenderOpts{}
 	}
-	// Use the specified charset for this render, or default to the artist's charset
 	chars := a.chars
 	if opts.Charset == charset.ASCII {
 		chars = charset.New(charset.ASCII)
 	} else if opts.Charset == charset.Unicode {
 		chars = charset.New(charset.Unicode)
 	}
-	// Store original charset and restore it after render
 	originalChars := a.chars
 	a.chars = chars
 	defer func() {
@@ -214,29 +199,22 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 	w = int(math.Round((float64(w) / a.FW) * a.SCALE))
 	h = int(math.Round((float64(h) / a.FH) * a.SCALE))
 
-	// Add padding to account for potential width/height adjustments in drawing functions
 	maxLabelLen := 0
 	for _, shape := range diagram.Shapes {
 		if len(shape.Label) > maxLabelLen {
 			maxLabelLen = len(shape.Label)
 		}
 	}
-	padding := maxLabelLen + asciishapes.MinLabelPadding // Match the maximum possible adjustment in drawRect
+	padding := maxLabelLen + asciishapes.MinLabelPadding
 
 	a.canvas = asciicanvas.New(w+padding+1, h+padding+1)
 
-	// Draw shapes
 	for _, shape := range diagram.Shapes {
-		if shape.Classes != nil && slices.Contains(shape.Classes, "NONE") {
-			continue
-		}
 		shape.Pos.X += xOffset
 		shape.Pos.Y += yOffset
-		
-		// Check if this shape has connections at right edge
+
 		preserveWidth := hasConnectionsAtRightEdge(shape, diagram.Connections, a.FW)
-		
-		// Create shape context
+
 		ctx := &asciishapes.Context{
 			Canvas: a.canvas,
 			Chars:  a.chars,
@@ -244,18 +222,15 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 			FH:     a.FH,
 			Scale:  a.SCALE,
 		}
-		
-		// If shape has right edge connections, preserve its width by adjusting before drawing
+
 		if preserveWidth && shape.Label != "" {
-			// Calculate what the calibrated width would be
 			wC := int(math.Round((float64(shape.Width) / a.FW) * a.SCALE))
 			availableSpace := wC - len(shape.Label)
 			if availableSpace >= asciishapes.MinLabelPadding && availableSpace%2 == 1 {
-				// The shape drawing function would reduce width by 1, so we compensate
 				shape.Width += int(a.FW / a.SCALE)
 			}
 		}
-		
+
 		switch shape.Type {
 		case d2target.ShapeRectangle:
 			asciishapes.DrawRect(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition, "")
@@ -300,8 +275,6 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 			asciishapes.DrawRect(ctx, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height), shape.Label, shape.LabelPosition, symbol)
 		}
 	}
-	// Draw connections
-	// First pass: draw routes without arrowheads (like sequence diagram lifelines)
 	for _, conn := range diagram.Connections {
 		for _, r := range conn.Route {
 			r.X += float64(xOffset)
@@ -311,7 +284,6 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 			asciiroute.DrawRoute(a, conn)
 		}
 	}
-	// Second pass: draw routes with arrowheads (so they can detect boundaries and push back)
 	for _, conn := range diagram.Connections {
 		if conn.DstArrow != d2target.NoArrowhead || conn.SrcArrow != d2target.NoArrowhead {
 			asciiroute.DrawRoute(a, conn)
@@ -330,35 +302,31 @@ func absInt(a int) int {
 	return int(math.Abs(float64(a)))
 }
 
-// hasConnectionsAtRightEdge checks if a shape has connections starting or ending at its right edge
 func hasConnectionsAtRightEdge(shape d2target.Shape, connections []d2target.Connection, fontWidth float64) bool {
 	shapeRight := float64(shape.Pos.X + shape.Width)
 	shapeTop := float64(shape.Pos.Y)
 	shapeBottom := float64(shape.Pos.Y + shape.Height)
-	
+
 	for _, conn := range connections {
 		if len(conn.Route) == 0 {
 			continue
 		}
-		
-		// Check if connection starts or ends at the right edge of this shape
+
 		firstPoint := conn.Route[0]
 		lastPoint := conn.Route[len(conn.Route)-1]
-		
-		tolerance := fontWidth / 2 // Allow some tolerance for edge detection
-		
-		// Check if first point is at right edge
+
+		tolerance := fontWidth / 2
+
 		if math.Abs(firstPoint.X-shapeRight) < tolerance &&
 			firstPoint.Y >= shapeTop && firstPoint.Y <= shapeBottom {
 			return true
 		}
-		
-		// Check if last point is at right edge
+
 		if math.Abs(lastPoint.X-shapeRight) < tolerance &&
 			lastPoint.Y >= shapeTop && lastPoint.Y <= shapeBottom {
 			return true
 		}
 	}
-	
+
 	return false
 }

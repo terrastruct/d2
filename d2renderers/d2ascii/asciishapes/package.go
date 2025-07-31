@@ -2,7 +2,6 @@ package asciishapes
 
 import "fmt"
 
-// DrawPackage draws a package shape
 func DrawPackage(ctx *Context, x, y, w, h float64, label, labelPosition string) {
 	xi, yi, wi, hi := ctx.Calibrate(x, y, w, h)
 	x1, y1 := xi, yi

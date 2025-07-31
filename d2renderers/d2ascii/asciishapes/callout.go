@@ -2,7 +2,6 @@ package asciishapes
 
 import "fmt"
 
-// DrawCallout draws a callout shape
 func DrawCallout(ctx *Context, x, y, w, h float64, label, labelPosition string) {
 	ix, iy, iw, ih := ctx.Calibrate(x, y, w, h)
 	x1, y1, x2, y2 := ix, iy, ix+iw-1, iy+ih-1

@@ -3,29 +3,28 @@ package charset
 // ASCIISet implements the Set interface using standard ASCII characters
 type ASCIISet struct{}
 
-// NewASCII creates a new ASCII character set
 func NewASCII() Set {
 	return &ASCIISet{}
 }
 
 // Corners
-func (a *ASCIISet) TopLeftArc() string     { return "." }
-func (a *ASCIISet) TopRightArc() string    { return "." }
-func (a *ASCIISet) BottomLeftArc() string  { return "'" }
-func (a *ASCIISet) BottomRightArc() string { return "'" }
-func (a *ASCIISet) TopLeftCorner() string  { return "+" }
-func (a *ASCIISet) TopRightCorner() string { return "+" }
-func (a *ASCIISet) BottomLeftCorner() string { return "+" }
+func (a *ASCIISet) TopLeftArc() string        { return "." }
+func (a *ASCIISet) TopRightArc() string       { return "." }
+func (a *ASCIISet) BottomLeftArc() string     { return "'" }
+func (a *ASCIISet) BottomRightArc() string    { return "'" }
+func (a *ASCIISet) TopLeftCorner() string     { return "+" }
+func (a *ASCIISet) TopRightCorner() string    { return "+" }
+func (a *ASCIISet) BottomLeftCorner() string  { return "+" }
 func (a *ASCIISet) BottomRightCorner() string { return "+" }
 
 // Lines
-func (a *ASCIISet) Horizontal() string     { return "-" }
-func (a *ASCIISet) Vertical() string       { return "|" }
-func (a *ASCIISet) LeftVertical() string   { return "|" }
-func (a *ASCIISet) RightVertical() string  { return "|" }
-func (a *ASCIISet) Backslash() string      { return "\\" }
-func (a *ASCIISet) ForwardSlash() string   { return "/" }
-func (a *ASCIISet) Cross() string          { return "X" }
+func (a *ASCIISet) Horizontal() string    { return "-" }
+func (a *ASCIISet) Vertical() string      { return "|" }
+func (a *ASCIISet) LeftVertical() string  { return "|" }
+func (a *ASCIISet) RightVertical() string { return "|" }
+func (a *ASCIISet) Backslash() string     { return "\\" }
+func (a *ASCIISet) ForwardSlash() string  { return "/" }
+func (a *ASCIISet) Cross() string         { return "X" }
 
 // Junctions
 func (a *ASCIISet) TDown() string  { return "+" }

@@ -8,34 +8,32 @@ import (
 	"oss.terrastruct.com/d2/lib/geo"
 )
 
-// processRoute applies all route processing steps: merge, calibrate, and adjust
 func processRoute(rd RouteDrawer, routes []*geo.Point) []*geo.Point {
 	// Create a deep copy of routes to avoid modifying the original
 	routesCopy := make([]*geo.Point, len(routes))
 	for i, pt := range routes {
 		routesCopy[i] = &geo.Point{X: pt.X, Y: pt.Y}
 	}
-	
+
 	routesCopy = mergeRoutes(routesCopy)
 	calibrateRoutes(rd, routesCopy)
-	
+
 	// Adjust route endpoints to avoid overlapping with existing characters
 	if len(routesCopy) >= 2 {
 		adjustRouteStartPoint(rd, routesCopy)
 		adjustRouteEndPoint(rd, routesCopy)
 	}
-	
+
 	return routesCopy
 }
 
-// parseConnectionBoundaries extracts source and destination shape boundaries from connection ID
 func parseConnectionBoundaries(rd RouteDrawer, connID string) (frmShapeBoundary, toShapeBoundary Boundary) {
 	re := regexp.MustCompile(` -> | <-> | -- `)
 	re1 := regexp.MustCompile(`\(([^}]*)\)`)
 	re2 := regexp.MustCompile(`(.*)\(`)
 	match1 := re1.FindStringSubmatch(connID)
 	match2 := re2.FindStringSubmatch(connID)
-	
+
 	if len(match1) > 0 {
 		parentID := ""
 		if len(match2) > 0 {
@@ -58,7 +56,6 @@ func parseConnectionBoundaries(rd RouteDrawer, connID string) (frmShapeBoundary,
 	return
 }
 
-// calibrateRoutes adjusts route coordinates to canvas scale
 func calibrateRoutes(rd RouteDrawer, routes []*geo.Point) {
 	for i := range routes {
 		routes[i].X, routes[i].Y = rd.CalibrateXY(routes[i].X, routes[i].Y)
@@ -66,12 +63,11 @@ func calibrateRoutes(rd RouteDrawer, routes []*geo.Point) {
 	}
 }
 
-// mergeRoutes combines consecutive route points in the same direction
 func mergeRoutes(routes []*geo.Point) []*geo.Point {
 	if len(routes) < 2 {
 		return routes
 	}
-	
+
 	mRoutes := []*geo.Point{routes[0]}
 	var pt = routes[0]
 	dir := geo.Sign(routes[0].X-routes[1].X)*1 + geo.Sign(routes[0].Y-routes[1].Y)*2
@@ -89,18 +85,17 @@ func mergeRoutes(routes []*geo.Point) []*geo.Point {
 	return mRoutes
 }
 
-// calculateTurnDirections determines corner types for route points
 func calculateTurnDirections(routes []*geo.Point) map[string]string {
 	turnDir := map[string]string{}
 	if len(routes) < 3 {
 		return turnDir
 	}
-	
+
 	for i := 1; i < len(routes)-1; i++ {
 		curr := routes[i]
 		prev := routes[i-1]
 		next := routes[i+1]
-		
+
 		key := fmt.Sprintf("%d_%d", int(math.Round(curr.X)), int(math.Round(curr.Y)))
 		dir := fmt.Sprintf("%d%d%d%d",
 			geo.Sign(curr.X-prev.X), geo.Sign(curr.Y-prev.Y),
@@ -111,12 +106,11 @@ func calculateTurnDirections(routes []*geo.Point) map[string]string {
 	return turnDir
 }
 
-// adjustRouteStartPoint shifts the start point to find empty space
 func adjustRouteStartPoint(rd RouteDrawer, routes []*geo.Point) {
 	if len(routes) < 2 {
 		return
 	}
-	
+
 	firstX := routes[0].X
 	firstY := routes[0].Y
 	secondX := routes[1].X
@@ -148,12 +142,11 @@ func adjustRouteStartPoint(rd RouteDrawer, routes []*geo.Point) {
 	}
 }
 
-// adjustRouteEndPoint shifts the end point to find empty space
 func adjustRouteEndPoint(rd RouteDrawer, routes []*geo.Point) {
 	if len(routes) < 2 {
 		return
 	}
-	
+
 	lastIdx := len(routes) - 1
 	secondLastIdx := lastIdx - 1
 
@@ -188,7 +181,6 @@ func adjustRouteEndPoint(rd RouteDrawer, routes []*geo.Point) {
 	}
 }
 
-// shiftPointUntilEmpty keeps shifting a point by delta until empty space is found
 func shiftPointUntilEmpty(rd RouteDrawer, x, y *float64, deltaX, deltaY float64) {
 	canvas := rd.GetCanvas()
 	for {

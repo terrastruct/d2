@@ -2,7 +2,6 @@ package asciishapes
 
 import "math"
 
-// DrawDiamond draws a diamond shape
 func DrawDiamond(ctx *Context, x, y, w, h float64, label, labelPosition string) {
 	ix, iy, iw, ih := ctx.Calibrate(x, y, w, h)
 	if ih%2 == 0 {

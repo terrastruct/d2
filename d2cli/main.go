@@ -886,7 +886,7 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 		default: // "extended" or any other value defaults to Unicode
 			charsetType = charset.Unicode
 		}
-		
+
 		renderOpts := &d2ascii.RenderOpts{
 			Scale:   opts.Scale,
 			Charset: charsetType,

@@ -9,54 +9,52 @@ import (
 
 // RouteLabelPosition holds calculated position for route label
 type RouteLabelPosition struct {
-	I        int     // Index of route segment
-	X        int     // X coordinate for label
-	Y        int     // Y coordinate offset
-	MaxDiff  float64 // Maximum difference for the segment
+	I       int     // Index of route segment
+	X       int     // X coordinate for label
+	Y       int     // Y coordinate offset
+	MaxDiff float64 // Maximum difference for the segment
 }
 
-// ShouldDrawAt checks if label should be drawn at current position
 func (pos *RouteLabelPosition) ShouldDrawAt(currentIndex, x, y int, ax, ay, sx, sy float64) bool {
 	if pos.I != currentIndex {
 		return false
 	}
-	
+
 	if sy != 0 {
 		return int(math.Round(ay))+int(math.Round(pos.MaxDiff/2))*geo.Sign(sy) == y
 	}
-	
+
 	if sx != 0 {
 		return int(math.Round(ax))+int(math.Round(pos.MaxDiff/2))*geo.Sign(sx) == x
 	}
-	
+
 	return false
 }
 
-// calculateBestLabelPosition finds the best position for a connection label
 func calculateBestLabelPosition(rd RouteDrawer, routes []*geo.Point, label string) *RouteLabelPosition {
 	if len(routes) < 2 {
 		return nil
 	}
-	
+
 	fw := rd.GetFontWidth()
 	fh := rd.GetFontHeight()
-	
+
 	maxDiff := 0.0
 	bestIndex := -1
 	bestX := 0.0
 	scaleOld := 0.0
-	
+
 	for i := 0; i < len(routes)-1; i++ {
 		diffY := math.Abs(routes[i].Y - routes[i+1].Y)
 		diffX := math.Abs(routes[i].X - routes[i+1].X)
 		diff := math.Max(diffY, diffX)
 		scale := (math.Abs(float64(geo.Sign(diffX)))*fw + math.Abs(float64(geo.Sign(diffY)))*fh)
-		
+
 		if diff*scale > maxDiff*scaleOld {
 			maxDiff = diff
 			bestIndex = i
 			bestX = routes[i].X
-			
+
 			// Center label on horizontal segments
 			if diff == diffX && i+1 < len(routes) {
 				direction := geo.Sign(routes[i+1].X - routes[i].X)
@@ -65,11 +63,11 @@ func calculateBestLabelPosition(rd RouteDrawer, routes []*geo.Point, label strin
 		}
 		scaleOld = scale
 	}
-	
+
 	if bestIndex == -1 {
 		return nil
 	}
-	
+
 	return &RouteLabelPosition{
 		I:       bestIndex,
 		X:       int(math.Round(bestX)) - len(label)/2,
@@ -78,10 +76,9 @@ func calculateBestLabelPosition(rd RouteDrawer, routes []*geo.Point, label strin
 	}
 }
 
-// drawConnectionLabel draws a label on a connection route
 func drawConnectionLabel(rd RouteDrawer, labelPos *RouteLabelPosition, label, labelPosition string, x, y int, sx, sy float64, routes []*geo.Point, i int) {
 	canvas := rd.GetCanvas()
-	
+
 	if sy != 0 {
 		// Vertical segment - clear current position and draw label horizontally
 		if isInBounds(rd, x, y) {
@@ -100,7 +97,7 @@ func drawConnectionLabel(rd RouteDrawer, labelPos *RouteLabelPosition, label, la
 		} else if strings.Contains(labelPosition, "BOTTOM") {
 			yFactor = 1
 		}
-		
+
 		// Adjust X position based on LEFT/RIGHT preference
 		xPos := labelPos.X
 		if strings.Contains(labelPosition, "LEFT") {
@@ -108,7 +105,7 @@ func drawConnectionLabel(rd RouteDrawer, labelPos *RouteLabelPosition, label, la
 		} else if strings.Contains(labelPosition, "RIGHT") {
 			xPos = int(routes[labelPos.I+((geo.Sign(sx)+1)/2)].X) - len(label)/2
 		}
-		
+
 		for j, ch := range label {
 			if isInBounds(rd, xPos+j, y+yFactor) {
 				canvas.Set(xPos+j, y+yFactor, string(ch))
@@ -117,7 +114,6 @@ func drawConnectionLabel(rd RouteDrawer, labelPos *RouteLabelPosition, label, la
 	}
 }
 
-// drawDestinationLabel draws a label near the destination arrow
 func drawDestinationLabel(rd RouteDrawer, label string, cx, cy, sx, sy float64) {
 	canvas := rd.GetCanvas()
 	ly := 0
@@ -138,7 +134,6 @@ func drawDestinationLabel(rd RouteDrawer, label string, cx, cy, sx, sy float64) 
 	}
 }
 
-// drawSourceLabel draws a label near the source arrow
 func drawSourceLabel(rd RouteDrawer, label string, ax, cy, cx, sx, sy float64) {
 	canvas := rd.GetCanvas()
 	ly := 0

@@ -4,7 +4,6 @@ import (
 	"fmt"
 )
 
-// DrawRect draws a rectangle shape
 func DrawRect(ctx *Context, x, y, w, h float64, label, labelPosition, symbol string) {
 	x1, y1, wC, hC := ctx.Calibrate(x, y, w, h)
 	if label != "" && hC%2 == 0 {
@@ -15,7 +14,6 @@ func DrawRect(ctx *Context, x, y, w, h float64, label, labelPosition, symbol str
 			hC++
 		}
 	}
-	// Adjust width for optimal label symmetry
 	wC = adjustWidthForLabel(ctx, x, y, w, h, wC, label)
 	x2, y2 := x1+wC, y1+hC
 	corners := map[string]string{
