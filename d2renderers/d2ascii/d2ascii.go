@@ -233,6 +233,9 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 		shape.Pos.X += xOffset
 		shape.Pos.Y += yOffset
 		
+		// Check if this shape has connections at right edge
+		preserveWidth := hasConnectionsAtRightEdge(shape, diagram.Connections, a.FW)
+		
 		// Create shape context
 		ctx := &asciishapes.Context{
 			Canvas: a.canvas,
@@ -240,6 +243,17 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 			FW:     a.FW,
 			FH:     a.FH,
 			Scale:  a.SCALE,
+		}
+		
+		// If shape has right edge connections, preserve its width by adjusting before drawing
+		if preserveWidth && shape.Label != "" {
+			// Calculate what the calibrated width would be
+			wC := int(math.Round((float64(shape.Width) / a.FW) * a.SCALE))
+			availableSpace := wC - len(shape.Label)
+			if availableSpace >= asciishapes.MinLabelPadding && availableSpace%2 == 1 {
+				// The shape drawing function would reduce width by 1, so we compensate
+				shape.Width += int(a.FW / a.SCALE)
+			}
 		}
 		
 		switch shape.Type {
@@ -314,4 +328,37 @@ func (a *ASCIIartist) calibrateXY(x, y float64) (float64, float64) {
 
 func absInt(a int) int {
 	return int(math.Abs(float64(a)))
+}
+
+// hasConnectionsAtRightEdge checks if a shape has connections starting or ending at its right edge
+func hasConnectionsAtRightEdge(shape d2target.Shape, connections []d2target.Connection, fontWidth float64) bool {
+	shapeRight := float64(shape.Pos.X + shape.Width)
+	shapeTop := float64(shape.Pos.Y)
+	shapeBottom := float64(shape.Pos.Y + shape.Height)
+	
+	for _, conn := range connections {
+		if len(conn.Route) == 0 {
+			continue
+		}
+		
+		// Check if connection starts or ends at the right edge of this shape
+		firstPoint := conn.Route[0]
+		lastPoint := conn.Route[len(conn.Route)-1]
+		
+		tolerance := fontWidth / 2 // Allow some tolerance for edge detection
+		
+		// Check if first point is at right edge
+		if math.Abs(firstPoint.X-shapeRight) < tolerance &&
+			firstPoint.Y >= shapeTop && firstPoint.Y <= shapeBottom {
+			return true
+		}
+		
+		// Check if last point is at right edge
+		if math.Abs(lastPoint.X-shapeRight) < tolerance &&
+			lastPoint.Y >= shapeTop && lastPoint.Y <= shapeBottom {
+			return true
+		}
+	}
+	
+	return false
 }

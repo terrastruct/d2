@@ -11,7 +11,7 @@ func DrawStoredData(ctx *Context, x, y, w, h float64, label, labelPosition strin
 		hi++
 	}
 	// Adjust width for optimal label symmetry
-	wi = adjustWidthForLabel(wi, label)
+	wi = adjustWidthForLabel(ctx, x, y, w, h, wi, label)
 	x1, y1 := xi, yi
 	x2, y2 := xi+wi-1, yi+hi-1
 	hoffset := (hi + 1) / 2

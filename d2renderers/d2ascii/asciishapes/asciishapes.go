@@ -86,3 +86,22 @@ func FillRectangle(ctx *Context, x1, y1, x2, y2 int, corners map[string]string, 
 		}
 	}
 }
+
+// adjustWidthForLabel adjusts width to ensure label fits with proper symmetry
+func adjustWidthForLabel(ctx *Context, x, y, w, h float64, width int, label string) int {
+	if label == "" {
+		return width
+	}
+	
+	availableSpace := width - len(label)
+	if availableSpace < MinLabelPadding {
+		return len(label) + MinLabelPadding
+	}
+	
+	if availableSpace%2 == 1 {
+		// Reduce by 1 for even spacing
+		return width - 1
+	}
+	
+	return width
+}
