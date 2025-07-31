@@ -129,3 +129,31 @@ vars: {
 }
 direction: right
 a -> b: hello world
+
+-- overextended-lines --
+k: {
+  cell tower: {
+    satellites: {
+      shape: stored_data
+    }
+
+    transmitter
+
+    satellites -> transmitter: send
+    satellites -> transmitter: send
+    satellites -> transmitter: send
+  }
+
+  online portal: {
+    ui: {shape: hexagon}
+  }
+
+  data processor: {
+    storage: {
+      shape: cylinder
+      style.multiple: true
+    }
+  }
+
+  cell tower.transmitter -> data processor.storage: phone logs
+}
