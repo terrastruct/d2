@@ -143,13 +143,16 @@ Print usage information and exit
 Print version information and exit
 .Ns .
 .It Fl -stdout-format Ar string
-Set the output format when writing to stdout. Supported formats are: png, svg. Only used when output is set to stdout (-)
+Set the output format when writing to stdout. Supported formats are: png, svg, ascii. Only used when output is set to stdout (-)
 .Ns .
 .It Fl -no-xml-tag Ar false
 Omit XML tag (<?xml ...?>) from output SVG files. Useful when generating SVGs for direct HTML embedding
 .Ns .
 .It Fl -omit-version Ar false
 omit D2 version from generated image
+.Ns .
+.It Fl -ascii-mode Ar extended
+ASCII rendering mode for text outputs. Options: 'standard' (basic ASCII chars) or 'extended' (Unicode chars)
 .Ns .
 .El
 .Sh SUBCOMMANDS
@@ -205,6 +208,8 @@ See --animate-interval flag.
 See --timeout flag.
 .It Ev Sy D2_CHECK
 See --check flag.
+.It Ev Sy D2_ASCII_MODE
+See --ascii-mode flag.
 .El
 .Bl -tag -width Ds
 .It Ev Sy DEBUG
