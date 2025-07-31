@@ -105,7 +105,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
-	stdoutFormatFlag := ms.Opts.String("", "stdout-format", "", "", "output format when writing to stdout (svg, png, ascii). Usage: d2 input.d2 --stdout-format png - > output.png")
+	stdoutFormatFlag := ms.Opts.String("", "stdout-format", "", "", "output format when writing to stdout (svg, png, ascii, txt, pdf, pptx, gif). Usage: d2 input.d2 --stdout-format png - > output.png")
 	if err != nil {
 		return err
 	}

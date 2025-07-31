@@ -21,9 +21,13 @@ var STDOUT_FORMAT_MAP = map[string]exportExtension{
 	"png":   PNG,
 	"svg":   SVG,
 	"ascii": TXT,
+	"txt":   TXT,
+	"pdf":   PDF,
+	"pptx":  PPTX,
+	"gif":   GIF,
 }
 
-var SUPPORTED_STDOUT_FORMATS = []string{"png", "svg", "ascii"}
+var SUPPORTED_STDOUT_FORMATS = []string{"png", "svg", "ascii", "txt", "pdf", "pptx", "gif"}
 
 func getOutputFormat(stdoutFormatFlag *string, outputPath string) (exportExtension, error) {
 	if stdoutFormatFlag != nil && *stdoutFormatFlag != "" {
