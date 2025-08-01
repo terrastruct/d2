@@ -1071,7 +1071,7 @@ c4person -> styling.c4styled -> styling.c4sized
 
 -- legend --
 vars: {
-  d2-legend: {
+  d2-legend: "凡例"{
     a: {
       label: Microservice
     }

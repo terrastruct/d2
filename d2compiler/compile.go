@@ -155,6 +155,10 @@ func (c *compiler) compileLegend(g *d2graph.Graph, m *d2ir.Map) {
 		Edges:   legendGraph.Edges,
 	}
 
+	if legendField.Primary() != nil && legendField.Primary().Value != nil {
+		legend.Label = legendField.Primary().Value.ScalarString()
+	}
+
 	if len(legend.Objects) > 0 || len(legend.Edges) > 0 {
 		g.Legend = legend
 	}

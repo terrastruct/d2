@@ -97,6 +97,7 @@ type Diagram struct {
 }
 
 type Legend struct {
+	Label       string       `json:"label,omitempty"`
 	Shapes      []Shape      `json:"shapes,omitempty"`
 	Connections []Connection `json:"connections,omitempty"`
 }
@@ -545,7 +546,11 @@ func (diagram Diagram) GetCorpus() string {
 	}
 
 	if diagram.Legend != nil {
-		corpus += "Legend"
+		if diagram.Legend.Label != "" {
+			corpus += diagram.Legend.Label
+		} else {
+			corpus += "Legend"
+		}
 		for _, s := range diagram.Legend.Shapes {
 			corpus += s.Label
 		}

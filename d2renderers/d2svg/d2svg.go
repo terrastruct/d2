@@ -198,8 +198,12 @@ func RenderLegend(buf *bytes.Buffer, diagram *d2target.Diagram, diagramHash stri
 	legendEl.Rx = 4
 	fmt.Fprint(buf, legendEl.Render())
 
-	fmt.Fprintf(buf, `<text class="text-bold" x="%d" y="%d" style="font-size: %dpx;">Legend</text>`,
-		legendX+LEGEND_PADDING, legendY+LEGEND_PADDING+LEGEND_FONT_SIZE, LEGEND_FONT_SIZE+2)
+	legendLabel := "Legend"
+	if diagram.Legend.Label != "" {
+		legendLabel = diagram.Legend.Label
+	}
+	fmt.Fprintf(buf, `<text class="text-bold" x="%d" y="%d" style="font-size: %dpx;">%s</text>`,
+		legendX+LEGEND_PADDING, legendY+LEGEND_PADDING+LEGEND_FONT_SIZE, LEGEND_FONT_SIZE+2, html.EscapeString(legendLabel))
 
 	currentY := legendY + LEGEND_PADDING*2 + LEGEND_FONT_SIZE
 

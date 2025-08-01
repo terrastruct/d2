@@ -48,7 +48,9 @@ func Export(ctx context.Context, g *d2graph.Graph, fontFamily *d2fonts.FontFamil
 	}
 
 	if g.Legend != nil {
-		legend := &d2target.Legend{}
+		legend := &d2target.Legend{
+			Label: g.Legend.Label,
+		}
 
 		if len(g.Legend.Objects) > 0 {
 			legend.Shapes = make([]d2target.Shape, len(g.Legend.Objects))

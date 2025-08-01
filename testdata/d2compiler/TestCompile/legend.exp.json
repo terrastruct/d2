@@ -3,11 +3,11 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,0:0:0-32:0:535",
+      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,0:0:0-32:0:543",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,1:3:4-27:1:492",
+            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,1:3:4-27:1:500",
             "key": {
               "range": "d2/testdata/d2compiler/TestCompile/legend.d2,1:3:4-1:7:8",
               "path": [
@@ -27,11 +27,11 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,1:9:10-27:1:492",
+                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,1:9:10-27:1:500",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,2:2:14-26:3:490",
+                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,2:2:14-26:3:498",
                       "key": {
                         "range": "d2/testdata/d2compiler/TestCompile/legend.d2,2:2:14-2:11:23",
                         "path": [
@@ -48,20 +48,30 @@
                           }
                         ]
                       },
-                      "primary": {},
+                      "primary": {
+                        "double_quoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/legend.d2,2:13:25-2:21:33",
+                          "value": [
+                            {
+                              "string": "凡例",
+                              "raw_string": "凡例"
+                            }
+                          ]
+                        }
+                      },
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/legend.d2,2:13:25-26:3:490",
+                          "range": "d2/testdata/d2compiler/TestCompile/legend.d2,2:21:33-26:3:498",
                           "nodes": [
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,3:4:31-8:5:152",
+                                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,3:4:39-8:5:160",
                                 "key": {
-                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,3:4:31-3:8:35",
+                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,3:4:39-3:8:43",
                                   "path": [
                                     {
                                       "unquoted_string": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/legend.d2,3:4:31-3:8:35",
+                                        "range": "d2/testdata/d2compiler/TestCompile/legend.d2,3:4:39-3:8:43",
                                         "value": [
                                           {
                                             "string": "User",
@@ -74,7 +84,7 @@
                                 },
                                 "primary": {
                                   "double_quoted_string": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,3:10:37-3:50:77",
+                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,3:10:45-3:50:85",
                                     "value": [
                                       {
                                         "string": "A person who interacts with the system",
@@ -85,17 +95,17 @@
                                 },
                                 "value": {
                                   "map": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,3:51:78-8:5:152",
+                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,3:51:86-8:5:160",
                                     "nodes": [
                                       {
                                         "map_key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile/legend.d2,4:6:86-4:19:99",
+                                          "range": "d2/testdata/d2compiler/TestCompile/legend.d2,4:6:94-4:19:107",
                                           "key": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,4:6:86-4:11:91",
+                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,4:6:94-4:11:99",
                                             "path": [
                                               {
                                                 "unquoted_string": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,4:6:86-4:11:91",
+                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,4:6:94-4:11:99",
                                                   "value": [
                                                     {
                                                       "string": "shape",
@@ -109,7 +119,7 @@
                                           "primary": {},
                                           "value": {
                                             "unquoted_string": {
-                                              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,4:13:93-4:19:99",
+                                              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,4:13:101-4:19:107",
                                               "value": [
                                                 {
                                                   "string": "person",
@@ -122,13 +132,13 @@
                                       },
                                       {
                                         "map_key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile/legend.d2,5:6:106-7:7:146",
+                                          "range": "d2/testdata/d2compiler/TestCompile/legend.d2,5:6:114-7:7:154",
                                           "key": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,5:6:106-5:11:111",
+                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,5:6:114-5:11:119",
                                             "path": [
                                               {
                                                 "unquoted_string": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,5:6:106-5:11:111",
+                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,5:6:114-5:11:119",
                                                   "value": [
                                                     {
                                                       "string": "style",
@@ -142,17 +152,17 @@
                                           "primary": {},
                                           "value": {
                                             "map": {
-                                              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,5:13:113-7:7:146",
+                                              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,5:13:121-7:7:154",
                                               "nodes": [
                                                 {
                                                   "map_key": {
-                                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,6:8:123-6:23:138",
+                                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,6:8:131-6:23:146",
                                                     "key": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,6:8:123-6:12:127",
+                                                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,6:8:131-6:12:135",
                                                       "path": [
                                                         {
                                                           "unquoted_string": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,6:8:123-6:12:127",
+                                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,6:8:131-6:12:135",
                                                             "value": [
                                                               {
                                                                 "string": "fill",
@@ -166,7 +176,7 @@
                                                     "primary": {},
                                                     "value": {
                                                       "double_quoted_string": {
-                                                        "range": "d2/testdata/d2compiler/TestCompile/legend.d2,6:14:129-6:23:138",
+                                                        "range": "d2/testdata/d2compiler/TestCompile/legend.d2,6:14:137-6:23:146",
                                                         "value": [
                                                           {
                                                             "string": "#f5f5f5",
@@ -189,13 +199,13 @@
                             },
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,10:4:158-13:5:251",
+                                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,10:4:166-13:5:259",
                                 "key": {
-                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,10:4:158-10:12:166",
+                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,10:4:166-10:12:174",
                                   "path": [
                                     {
                                       "unquoted_string": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/legend.d2,10:4:158-10:12:166",
+                                        "range": "d2/testdata/d2compiler/TestCompile/legend.d2,10:4:166-10:12:174",
                                         "value": [
                                           {
                                             "string": "Database",
@@ -208,7 +218,7 @@
                                 },
                                 "primary": {
                                   "double_quoted_string": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,10:14:168-10:39:193",
+                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,10:14:176-10:39:201",
                                     "value": [
                                       {
                                         "string": "Stores application data",
@@ -219,17 +229,17 @@
                                 },
                                 "value": {
                                   "map": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,10:40:194-13:5:251",
+                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,10:40:202-13:5:259",
                                     "nodes": [
                                       {
                                         "map_key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile/legend.d2,11:6:202-11:21:217",
+                                          "range": "d2/testdata/d2compiler/TestCompile/legend.d2,11:6:210-11:21:225",
                                           "key": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,11:6:202-11:11:207",
+                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,11:6:210-11:11:215",
                                             "path": [
                                               {
                                                 "unquoted_string": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,11:6:202-11:11:207",
+                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,11:6:210-11:11:215",
                                                   "value": [
                                                     {
                                                       "string": "shape",
@@ -243,7 +253,7 @@
                                           "primary": {},
                                           "value": {
                                             "unquoted_string": {
-                                              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,11:13:209-11:21:217",
+                                              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,11:13:217-11:21:225",
                                               "value": [
                                                 {
                                                   "string": "cylinder",
@@ -256,13 +266,13 @@
                                       },
                                       {
                                         "map_key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile/legend.d2,12:6:224-12:27:245",
+                                          "range": "d2/testdata/d2compiler/TestCompile/legend.d2,12:6:232-12:27:253",
                                           "key": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,12:6:224-12:16:234",
+                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,12:6:232-12:16:242",
                                             "path": [
                                               {
                                                 "unquoted_string": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,12:6:224-12:11:229",
+                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,12:6:232-12:11:237",
                                                   "value": [
                                                     {
                                                       "string": "style",
@@ -273,7 +283,7 @@
                                               },
                                               {
                                                 "unquoted_string": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,12:12:230-12:16:234",
+                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,12:12:238-12:16:242",
                                                   "value": [
                                                     {
                                                       "string": "fill",
@@ -287,7 +297,7 @@
                                           "primary": {},
                                           "value": {
                                             "double_quoted_string": {
-                                              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,12:18:236-12:27:245",
+                                              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,12:18:244-12:27:253",
                                               "value": [
                                                 {
                                                   "string": "#b5d3ff",
@@ -305,13 +315,13 @@
                             },
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,15:4:257-17:5:339",
+                                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,15:4:265-17:5:347",
                                 "key": {
-                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,15:4:257-15:15:268",
+                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,15:4:265-15:15:276",
                                   "path": [
                                     {
                                       "unquoted_string": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/legend.d2,15:4:257-15:15:268",
+                                        "range": "d2/testdata/d2compiler/TestCompile/legend.d2,15:4:265-15:15:276",
                                         "value": [
                                           {
                                             "string": "HiddenShape",
@@ -324,7 +334,7 @@
                                 },
                                 "primary": {
                                   "double_quoted_string": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,15:17:270-15:55:308",
+                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,15:17:278-15:55:316",
                                     "value": [
                                       {
                                         "string": "This should not appear in the legend",
@@ -335,17 +345,17 @@
                                 },
                                 "value": {
                                   "map": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,15:56:309-17:5:339",
+                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,15:56:317-17:5:347",
                                     "nodes": [
                                       {
                                         "map_key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile/legend.d2,16:6:317-16:22:333",
+                                          "range": "d2/testdata/d2compiler/TestCompile/legend.d2,16:6:325-16:22:341",
                                           "key": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,16:6:317-16:19:330",
+                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,16:6:325-16:19:338",
                                             "path": [
                                               {
                                                 "unquoted_string": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,16:6:317-16:11:322",
+                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,16:6:325-16:11:330",
                                                   "value": [
                                                     {
                                                       "string": "style",
@@ -356,7 +366,7 @@
                                               },
                                               {
                                                 "unquoted_string": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,16:12:323-16:19:330",
+                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,16:12:331-16:19:338",
                                                   "value": [
                                                     {
                                                       "string": "opacity",
@@ -370,7 +380,7 @@
                                           "primary": {},
                                           "value": {
                                             "number": {
-                                              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,16:21:332-16:22:333",
+                                              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,16:21:340-16:22:341",
                                               "raw": "0",
                                               "value": "0"
                                             }
@@ -384,16 +394,16 @@
                             },
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:4:345-21:5:410",
+                                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:4:353-21:5:418",
                                 "edges": [
                                   {
-                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:4:345-19:20:361",
+                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:4:353-19:20:369",
                                     "src": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:4:345-19:8:349",
+                                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:4:353-19:8:357",
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:4:345-19:8:349",
+                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:4:353-19:8:357",
                                             "value": [
                                               {
                                                 "string": "User",
@@ -406,11 +416,11 @@
                                     },
                                     "src_arrow": "",
                                     "dst": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:12:353-19:20:361",
+                                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:12:361-19:20:369",
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:12:353-19:20:361",
+                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:12:361-19:20:369",
                                             "value": [
                                               {
                                                 "string": "Database",
@@ -426,7 +436,7 @@
                                 ],
                                 "primary": {
                                   "double_quoted_string": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:22:363-19:34:375",
+                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:22:371-19:34:383",
                                     "value": [
                                       {
                                         "string": "Reads data",
@@ -437,17 +447,17 @@
                                 },
                                 "value": {
                                   "map": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:35:376-21:5:410",
+                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:35:384-21:5:418",
                                     "nodes": [
                                       {
                                         "map_key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile/legend.d2,20:6:384-20:26:404",
+                                          "range": "d2/testdata/d2compiler/TestCompile/legend.d2,20:6:392-20:26:412",
                                           "key": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,20:6:384-20:18:396",
+                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,20:6:392-20:18:404",
                                             "path": [
                                               {
                                                 "unquoted_string": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,20:6:384-20:11:389",
+                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,20:6:392-20:11:397",
                                                   "value": [
                                                     {
                                                       "string": "style",
@@ -458,7 +468,7 @@
                                               },
                                               {
                                                 "unquoted_string": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,20:12:390-20:18:396",
+                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,20:12:398-20:18:404",
                                                   "value": [
                                                     {
                                                       "string": "stroke",
@@ -472,7 +482,7 @@
                                           "primary": {},
                                           "value": {
                                             "double_quoted_string": {
-                                              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,20:20:398-20:26:404",
+                                              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,20:20:406-20:26:412",
                                               "value": [
                                                 {
                                                   "string": "blue",
@@ -490,16 +500,16 @@
                             },
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:4:416-25:5:486",
+                                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:4:424-25:5:494",
                                 "edges": [
                                   {
-                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:4:416-23:20:432",
+                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:4:424-23:20:440",
                                     "src": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:4:416-23:12:424",
+                                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:4:424-23:12:432",
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:4:416-23:12:424",
+                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:4:424-23:12:432",
                                             "value": [
                                               {
                                                 "string": "Database",
@@ -512,11 +522,11 @@
                                     },
                                     "src_arrow": "",
                                     "dst": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:16:428-23:20:432",
+                                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:16:436-23:20:440",
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:16:428-23:20:432",
+                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:16:436-23:20:440",
                                             "value": [
                                               {
                                                 "string": "User",
@@ -532,7 +542,7 @@
                                 ],
                                 "primary": {
                                   "double_quoted_string": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:22:434-23:39:451",
+                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:22:442-23:39:459",
                                     "value": [
                                       {
                                         "string": "Returns results",
@@ -543,17 +553,17 @@
                                 },
                                 "value": {
                                   "map": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:40:452-25:5:486",
+                                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:40:460-25:5:494",
                                     "nodes": [
                                       {
                                         "map_key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile/legend.d2,24:6:460-24:26:480",
+                                          "range": "d2/testdata/d2compiler/TestCompile/legend.d2,24:6:468-24:26:488",
                                           "key": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,24:6:460-24:23:477",
+                                            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,24:6:468-24:23:485",
                                             "path": [
                                               {
                                                 "unquoted_string": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,24:6:460-24:11:465",
+                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,24:6:468-24:11:473",
                                                   "value": [
                                                     {
                                                       "string": "style",
@@ -564,7 +574,7 @@
                                               },
                                               {
                                                 "unquoted_string": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,24:12:466-24:23:477",
+                                                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,24:12:474-24:23:485",
                                                   "value": [
                                                     {
                                                       "string": "stroke-dash",
@@ -578,7 +588,7 @@
                                           "primary": {},
                                           "value": {
                                             "number": {
-                                              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,24:25:479-24:26:480",
+                                              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,24:25:487-24:26:488",
                                               "raw": "5",
                                               "value": "5"
                                             }
@@ -602,13 +612,13 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,29:0:494-29:10:504",
+            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,29:0:502-29:10:512",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,29:0:494-29:4:498",
+              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,29:0:502-29:4:506",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,29:0:494-29:4:498",
+                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,29:0:502-29:4:506",
                     "value": [
                       {
                         "string": "user",
@@ -622,7 +632,7 @@
             "primary": {},
             "value": {
               "unquoted_string": {
-                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,29:6:500-29:10:504",
+                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,29:6:508-29:10:512",
                 "value": [
                   {
                     "string": "User",
@@ -635,13 +645,13 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,30:0:505-30:12:517",
+            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,30:0:513-30:12:525",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,30:0:505-30:2:507",
+              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,30:0:513-30:2:515",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,30:0:505-30:2:507",
+                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,30:0:513-30:2:515",
                     "value": [
                       {
                         "string": "db",
@@ -655,7 +665,7 @@
             "primary": {},
             "value": {
               "unquoted_string": {
-                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,30:4:509-30:12:517",
+                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,30:4:517-30:12:525",
                 "value": [
                   {
                     "string": "Database",
@@ -668,16 +678,16 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:0:518-31:16:534",
+            "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:0:526-31:16:542",
             "edges": [
               {
-                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:0:518-31:10:528",
+                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:0:526-31:10:536",
                 "src": {
-                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:0:518-31:4:522",
+                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:0:526-31:4:530",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:0:518-31:4:522",
+                        "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:0:526-31:4:530",
                         "value": [
                           {
                             "string": "user",
@@ -690,11 +700,11 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:8:526-31:10:528",
+                  "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:8:534-31:10:536",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:8:526-31:10:528",
+                        "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:8:534-31:10:536",
                         "value": [
                           {
                             "string": "db",
@@ -711,7 +721,7 @@
             "primary": {},
             "value": {
               "unquoted_string": {
-                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:12:530-31:16:534",
+                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:12:538-31:16:542",
                 "value": [
                   {
                     "string": "Uses",
@@ -749,6 +759,7 @@
       "zIndex": 0
     },
     "legend": {
+      "label": "凡例",
       "objects": [
         {
           "id": "User",
@@ -756,11 +767,11 @@
           "references": [
             {
               "key": {
-                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,3:4:31-3:8:35",
+                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,3:4:39-3:8:43",
                 "path": [
                   {
                     "unquoted_string": {
-                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,3:4:31-3:8:35",
+                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,3:4:39-3:8:43",
                       "value": [
                         {
                           "string": "User",
@@ -776,11 +787,11 @@
             },
             {
               "key": {
-                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:4:345-19:8:349",
+                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:4:353-19:8:357",
                 "path": [
                   {
                     "unquoted_string": {
-                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:4:345-19:8:349",
+                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:4:353-19:8:357",
                       "value": [
                         {
                           "string": "User",
@@ -796,11 +807,11 @@
             },
             {
               "key": {
-                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:16:428-23:20:432",
+                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:16:436-23:20:440",
                 "path": [
                   {
                     "unquoted_string": {
-                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:16:428-23:20:432",
+                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:16:436-23:20:440",
                       "value": [
                         {
                           "string": "User",
@@ -854,11 +865,11 @@
           "references": [
             {
               "key": {
-                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,10:4:158-10:12:166",
+                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,10:4:166-10:12:174",
                 "path": [
                   {
                     "unquoted_string": {
-                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,10:4:158-10:12:166",
+                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,10:4:166-10:12:174",
                       "value": [
                         {
                           "string": "Database",
@@ -874,11 +885,11 @@
             },
             {
               "key": {
-                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:12:353-19:20:361",
+                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:12:361-19:20:369",
                 "path": [
                   {
                     "unquoted_string": {
-                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:12:353-19:20:361",
+                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,19:12:361-19:20:369",
                       "value": [
                         {
                           "string": "Database",
@@ -894,11 +905,11 @@
             },
             {
               "key": {
-                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:4:416-23:12:424",
+                "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:4:424-23:12:432",
                 "path": [
                   {
                     "unquoted_string": {
-                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:4:416-23:12:424",
+                      "range": "d2/testdata/d2compiler/TestCompile/legend.d2,23:4:424-23:12:432",
                       "value": [
                         {
                           "string": "Database",
@@ -1080,11 +1091,11 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,29:0:494-29:4:498",
+              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,29:0:502-29:4:506",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,29:0:494-29:4:498",
+                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,29:0:502-29:4:506",
                     "value": [
                       {
                         "string": "user",
@@ -1100,11 +1111,11 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:0:518-31:4:522",
+              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:0:526-31:4:530",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:0:518-31:4:522",
+                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:0:526-31:4:530",
                     "value": [
                       {
                         "string": "user",
@@ -1146,11 +1157,11 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,30:0:505-30:2:507",
+              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,30:0:513-30:2:515",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,30:0:505-30:2:507",
+                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,30:0:513-30:2:515",
                     "value": [
                       {
                         "string": "db",
@@ -1166,11 +1177,11 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:8:526-31:10:528",
+              "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:8:534-31:10:536",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:8:526-31:10:528",
+                    "range": "d2/testdata/d2compiler/TestCompile/legend.d2,31:8:534-31:10:536",
                     "value": [
                       {
                         "string": "db",

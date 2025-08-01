@@ -11,6 +11,7 @@
 
 - labels on scenario/step boards can be set with primary value (like layers) [#2579](https://github.com/terrastruct/d2/pull/2579)
 - autoformatter preserves order of boards [#2580](https://github.com/terrastruct/d2/pull/2580)
+- rename "Legend" with a title/label of your choosing (especially useful for non-English diagrams) [#2582](https://github.com/terrastruct/d2/pull/2582)
 
 #### Bugfixes ⛑️
 
