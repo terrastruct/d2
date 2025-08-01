@@ -1737,3 +1737,23 @@ rect_bottom_right_long: Rectangle {
 okay: |md
   okay
 |
+
+-- legend-leak --
+vars:"d2 v0.7.0" {
+  d2-config: {
+    layout-engine: dagre
+  }
+
+  d2-legend:"凡例" {
+    a: {shape:c4-person}
+    b: {shape:person}
+    c: {shape: cylinder}
+
+    "" -> "": bad { style.stroke-dash: 2 }
+    "" -> "": good { style.stroke: red }
+  }
+
+}
+style: {fill-pattern: dots; fill:"radial-gradient(#fbfbf8, #e3e3f0)"; stroke: "#a0a0a0"; stroke-width: 1; border-radius: 8}
+
+a->b

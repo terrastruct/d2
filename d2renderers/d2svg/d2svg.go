@@ -106,6 +106,78 @@ func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height in
 	width = br.X - tl.X + pad*2
 	height = br.Y - tl.Y + pad*2
 
+	// Account for legend dimensions if present
+	if diagram.Legend != nil && (len(diagram.Legend.Shapes) > 0 || len(diagram.Legend.Connections) > 0) {
+		totalHeight := LEGEND_PADDING + LEGEND_FONT_SIZE + LEGEND_ITEM_SPACING
+		maxLabelWidth := 0
+		itemCount := 0
+		
+		ruler, err := textmeasure.NewRuler()
+		if err == nil && ruler != nil {
+			for _, s := range diagram.Legend.Shapes {
+				if s.Label == "" {
+					continue
+				}
+				mtext := &d2target.MText{
+					Text:     s.Label,
+					FontSize: LEGEND_FONT_SIZE,
+				}
+				dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
+				maxLabelWidth = go2.IntMax(maxLabelWidth, dims.Width)
+				totalHeight += go2.IntMax(dims.Height, LEGEND_ICON_SIZE) + LEGEND_ITEM_SPACING
+				itemCount++
+			}
+
+			for _, c := range diagram.Legend.Connections {
+				if c.Label == "" {
+					continue
+				}
+				mtext := &d2target.MText{
+					Text:     c.Label,
+					FontSize: LEGEND_FONT_SIZE,
+				}
+				dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
+				maxLabelWidth = go2.IntMax(maxLabelWidth, dims.Width)
+				totalHeight += go2.IntMax(dims.Height, LEGEND_ICON_SIZE) + LEGEND_ITEM_SPACING
+				itemCount++
+			}
+
+			if itemCount > 0 {
+				totalHeight -= LEGEND_ITEM_SPACING / 2
+			}
+			
+			if itemCount > 0 && len(diagram.Legend.Connections) > 0 {
+				totalHeight += LEGEND_PADDING * 1.5
+			} else {
+				totalHeight += LEGEND_PADDING * 1.2
+			}
+
+			if totalHeight > 0 && maxLabelWidth > 0 {
+				legendWidth := LEGEND_PADDING*2 + LEGEND_ICON_SIZE + LEGEND_PADDING + maxLabelWidth
+				legendY := br.Y - totalHeight
+				if legendY < tl.Y {
+					legendY = tl.Y
+				}
+
+				legendRight := br.X + LEGEND_CORNER_PADDING + legendWidth
+				if left+width < legendRight {
+					width = legendRight - left + pad/2
+				}
+
+				if legendY < top {
+					diffY := top - legendY
+					top -= diffY
+					height += diffY
+				}
+
+				legendBottom := legendY + totalHeight
+				if top+height < legendBottom {
+					height = legendBottom - top + pad/2
+				}
+			}
+		}
+	}
+
 	return left, top, width, height
 }
 
