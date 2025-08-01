@@ -432,10 +432,11 @@ func (c *compiler) resolveSubstitution(vars *Map, node Node, substitution *d2ast
 }
 
 func (c *compiler) overlay(base *Map, f *Field) {
-	if f.Map() == nil || f.Primary() != nil {
+	if f.Map() == nil {
 		c.errorf(f.References[0].Context_.Key, "invalid %s", NodeBoardKind(f))
 		return
 	}
+
 	base = base.CopyBase(f)
 	// Certain fields should never carry forward.
 	// If you give your scenario a label, you don't want all steps in a scenario to be labeled the same.

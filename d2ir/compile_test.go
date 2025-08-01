@@ -497,21 +497,6 @@ steps: {
 			},
 		},
 		{
-			name: "steps_panic",
-			run: func(t testing.TB) {
-				_, err := compile(t, `steps: {
-  shape: sql_table
-  id: int {constraint: primary_key}
-}
-scenarios: {
-  shape: sql_table
-  hey: int {constraint: primary_key}
-}`)
-				assert.ErrorString(t, err, `TestCompile/steps/steps_panic.d2:3:3: invalid step
-TestCompile/steps/steps_panic.d2:7:3: invalid scenario`)
-			},
-		},
-		{
 			name: "recursive",
 			run: func(t testing.TB) {
 				m, err := compile(t, `x -> y
