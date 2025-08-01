@@ -908,9 +908,7 @@ install_d2_standalone() {
   VERSION=${VERSION:-latest}
   header "installing d2-$VERSION"
 
-  if [ "$VERSION" = latest ]; then
-    fetch_release_info
-  fi
+  ensure_version
 
   if command -v d2 >/dev/null; then
     INSTALLED_VERSION="$(d2 --version)"
@@ -924,12 +922,11 @@ install_d2_standalone() {
     fi
   fi
 
-  ARCHIVE="d2-$VERSION-$OS-$ARCH.tar.gz"
+  ARCHIVE="d2-v$VERSION-$OS-$ARCH.tar.gz"
   log "installing standalone release $ARCHIVE from github"
 
-  fetch_release_info
-  asset_line=$(sh_c 'cat "$RELEASE_INFO" | grep -n "$ARCHIVE" | cut -d: -f1 | head -n1')
-  asset_url=$(sh_c 'sed -n $((asset_line-3))p "$RELEASE_INFO" | sed "s/^.*: \"\(.*\)\",$/\1/g"')
+  ensure_version
+  asset_url="https://github.com/$REPO/releases/download/v$VERSION/$ARCHIVE"
   fetch_gh "$asset_url" "$CACHE_DIR/$ARCHIVE" 'application/octet-stream'
 
   ensure_prefix_sh_c
@@ -950,9 +947,7 @@ install_tala_standalone() {
 
   header "installing tala-$VERSION"
 
-  if [ "$VERSION" = latest ]; then
-    fetch_release_info
-  fi
+  ensure_version
 
   if command -v d2plugin-tala >/dev/null; then
     INSTALLED_VERSION="$(d2plugin-tala --version)"
@@ -966,13 +961,11 @@ install_tala_standalone() {
     fi
   fi
 
-  ARCHIVE="tala-$VERSION-$OS-$ARCH.tar.gz"
+  ARCHIVE="tala-v$VERSION-$OS-$ARCH.tar.gz"
   log "installing standalone release $ARCHIVE from github"
 
-  fetch_release_info
-  asset_line=$(sh_c 'cat "$RELEASE_INFO" | grep -n "$ARCHIVE" | cut -d: -f1 | head -n1')
-  asset_url=$(sh_c 'sed -n $((asset_line-3))p "$RELEASE_INFO" | sed "s/^.*: \"\(.*\)\",$/\1/g"')
-
+  ensure_version
+  asset_url="https://github.com/$REPO/releases/download/v$VERSION/$ARCHIVE"
   fetch_gh "$asset_url" "$CACHE_DIR/$ARCHIVE" 'application/octet-stream'
 
   ensure_prefix_sh_c
@@ -1060,37 +1053,29 @@ cache_dir() {
   fi
 }
 
-fetch_release_info() {
-  if [ -n "${RELEASE_INFO-}" ]; then
-    return 0
-  fi
-
-  log "fetching info on $VERSION version of $REPO"
-  RELEASE_INFO=$(mktempd)/release-info.json
-  
+ensure_version() {
   if [ "$VERSION" = latest ]; then
-    # Use redirect method to avoid GitHub API rate limits
-    log "using redirect method to fetch latest version"
+    log "fetching latest version of $REPO"
     redirect_url=$(curl -fsSLI -o /dev/null -w "%{url_effective}" "https://github.com/$REPO/releases/latest")
     if [ $? -ne 0 ]; then
       warn "redirect method failed, falling back to API"
-      release_info_url="https://api.github.com/repos/$REPO/releases/$VERSION"
-      DRY_RUN= fetch_gh "$release_info_url" "$RELEASE_INFO" 'application/json'
-      VERSION=$(cat "$RELEASE_INFO" | grep -m1 tag_name | sed 's/^.*: "\(.*\)",$/\1/g')
+      release_info_url="https://api.github.com/repos/$REPO/releases/latest"
+      release_info=$(mktempd)/release-info.json
+      DRY_RUN= fetch_gh "$release_info_url" "$release_info" 'application/json'
+      VERSION=$(cat "$release_info" | grep -m1 tag_name | sed 's/^.*: "\(.*\)",$/\1/g')
+      # Remove 'v' prefix if present
+      VERSION="${VERSION#v}"
+      log "detected latest version via API: $VERSION"
     else
       # Extract version from redirected URL
       VERSION="${redirect_url##*/}"
       # Remove 'v' prefix if present
       VERSION="${VERSION#v}"
       log "detected latest version: $VERSION"
-      # Still need to fetch release info for asset URLs
-      release_info_url="https://api.github.com/repos/$REPO/releases/tags/v$VERSION"
-      DRY_RUN= fetch_gh "$release_info_url" "$RELEASE_INFO" 'application/json'
     fi
   else
-    release_info_url="https://api.github.com/repos/$REPO/releases/tags/$VERSION"
-    DRY_RUN= fetch_gh "$release_info_url" "$RELEASE_INFO" 'application/json'
-    VERSION=$(cat "$RELEASE_INFO" | grep -m1 tag_name | sed 's/^.*: "\(.*\)",$/\1/g')
+    # Remove 'v' prefix if present for user-specified versions
+    VERSION="${VERSION#v}"
   fi
 }
 
