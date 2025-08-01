@@ -111,7 +111,7 @@ func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height in
 		totalHeight := LEGEND_PADDING + LEGEND_FONT_SIZE + LEGEND_ITEM_SPACING
 		maxLabelWidth := 0
 		itemCount := 0
-		
+
 		ruler, err := textmeasure.NewRuler()
 		if err == nil && ruler != nil {
 			for _, s := range diagram.Legend.Shapes {
@@ -145,7 +145,7 @@ func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height in
 			if itemCount > 0 {
 				totalHeight -= LEGEND_ITEM_SPACING / 2
 			}
-			
+
 			if itemCount > 0 && len(diagram.Legend.Connections) > 0 {
 				totalHeight += LEGEND_PADDING * 1.5
 			} else {
