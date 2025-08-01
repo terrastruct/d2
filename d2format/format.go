@@ -292,9 +292,7 @@ func (p *printer) _map(m *d2ast.Map) {
 		}
 	}
 
-	layerNodes := []d2ast.MapNodeBox{}
-	scenarioNodes := []d2ast.MapNodeBox{}
-	stepNodes := []d2ast.MapNodeBox{}
+	boardNodes := []d2ast.MapNodeBox{}
 
 	prev := d2ast.Node(m)
 	for i := 0; i < len(m.Nodes); i++ {
@@ -302,20 +300,10 @@ func (p *printer) _map(m *d2ast.Map) {
 		n := nb.Unbox()
 		// extract out layer, scenario, and step nodes and skip
 		if nb.IsBoardNode() {
-			switch nb.MapKey.Key.Path[0].Unbox().ScalarString() {
-			case "layers":
-				// remove useless
-				if nb.MapKey.Value.Map != nil && len(nb.MapKey.Value.Map.Nodes) > 0 {
-					layerNodes = append(layerNodes, nb)
-				}
-			case "scenarios":
-				if nb.MapKey.Value.Map != nil && len(nb.MapKey.Value.Map.Nodes) > 0 {
-					scenarioNodes = append(scenarioNodes, nb)
-				}
-			case "steps":
-				if nb.MapKey.Value.Map != nil && len(nb.MapKey.Value.Map.Nodes) > 0 {
-					stepNodes = append(stepNodes, nb)
-				}
+			boardType := nb.MapKey.Key.Path[0].Unbox().ScalarString()
+			if (boardType == "layers" || boardType == "scenarios" || boardType == "steps") &&
+				nb.MapKey.Value.Map != nil && len(nb.MapKey.Value.Map.Nodes) > 0 {
+				boardNodes = append(boardNodes, nb)
 			}
 			prev = n
 			continue
@@ -347,20 +335,15 @@ func (p *printer) _map(m *d2ast.Map) {
 		prev = n
 	}
 
-	boards := []d2ast.MapNodeBox{}
-	boards = append(boards, layerNodes...)
-	boards = append(boards, scenarioNodes...)
-	boards = append(boards, stepNodes...)
-
 	// draw board nodes
-	for i := 0; i < len(boards); i++ {
-		n := boards[i].Unbox()
+	for i := 0; i < len(boardNodes); i++ {
+		n := boardNodes[i].Unbox()
 		// if this board is the very first line of the file, don't add an extra newline
 		if n.GetRange().Start.Line != 0 {
 			p.sb.WriteByte('\n')
 		}
 		// if scope only has boards, don't newline the first board
-		if i != 0 || len(m.Nodes) > len(boards) {
+		if i != 0 || len(m.Nodes) > len(boardNodes) {
 			p.sb.WriteByte('\n')
 		}
 

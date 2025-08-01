@@ -768,6 +768,19 @@ only-layers: {
   }
 }
 
+scenarios: {
+  scenario-1: {
+    non-step
+
+    steps: {
+      step-1: {
+        Test
+      }
+      step-2
+    }
+  }
+}
+
 layers: {
   Test super nested: {
     base-layer
@@ -785,28 +798,15 @@ layers: {
   }
 }
 
-scenarios: {
-  scenario-1: {
-    non-step
-
-    steps: {
-      step-1: {
-        Test
-      }
-      step-2
-    }
+steps: {
+  1: {
+    step-1-content
   }
 }
 
 scenarios: {
   scenario-2: {
     scenario-2-content
-  }
-}
-
-steps: {
-  1: {
-    step-1-content
   }
 }
 `,
