@@ -25,7 +25,7 @@ type Boundary struct {
 }
 
 func (b *Boundary) Contains(x int, y int) bool {
-	return x >= b.TL.X && x <= b.BR.X && y >= b.TL.Y && y <= b.BR.Y
+	return x > b.TL.X && x < b.BR.X && y > b.TL.Y && y < b.BR.Y
 }
 
 func NewBoundary(tl, br Point) *Boundary {
@@ -52,7 +52,7 @@ func DrawRoute(rd RouteDrawer, conn d2target.Connection) {
 
 	frmShapeBoundary, toShapeBoundary := getConnectionBoundaries(rd, conn.Src, conn.Dst)
 
-	routes = processRoute(rd, routes)
+	routes = processRoute(rd, routes, frmShapeBoundary, toShapeBoundary)
 
 	turnDir := calculateTurnDirections(routes)
 

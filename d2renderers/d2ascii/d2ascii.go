@@ -51,13 +51,13 @@ func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
 	posY := float64(s.Pos.Y)
 	width := float64(s.Width)
 	height := float64(s.Height)
-	
+
 	if s.Multiple {
-		posX -= d2target.MULTIPLE_OFFSET    // Move left to include shadow area
-		width += d2target.MULTIPLE_OFFSET   // Include shadow width
-		height += d2target.MULTIPLE_OFFSET  // Include shadow height
+		posX -= d2target.MULTIPLE_OFFSET   // Move left to include shadow area
+		width += d2target.MULTIPLE_OFFSET  // Include shadow width
+		height += d2target.MULTIPLE_OFFSET // Include shadow height
 	}
-	
+
 	x1 := int(math.Round((posX / a.FW) * a.SCALE))
 	y1 := int(math.Round((posY / a.FH) * a.SCALE))
 	x2 := int(math.Round(((posX + width - 1) / a.FW) * a.SCALE))
@@ -229,11 +229,11 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 		preserveWidth := hasConnectionsAtRightEdge(shape, diagram.Connections, a.FW)
 
 		ctx := &asciishapes.Context{
-			Canvas:   a.canvas,
-			Chars:    a.chars,
-			FW:       a.FW,
-			FH:       a.FH,
-			Scale:    a.SCALE,
+			Canvas: a.canvas,
+			Chars:  a.chars,
+			FW:     a.FW,
+			FH:     a.FH,
+			Scale:  a.SCALE,
 		}
 
 		if preserveWidth && shape.Label != "" {
@@ -249,17 +249,17 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 		drawY := float64(shape.Pos.Y)
 		drawWidth := float64(shape.Width)
 		drawHeight := float64(shape.Height)
-		
+
 		if shape.Multiple {
 			// Move position to top-left of total occupied area (shadow extends left and down)
-			drawX -= d2target.MULTIPLE_OFFSET  // Move left to include shadow area
+			drawX -= d2target.MULTIPLE_OFFSET // Move left to include shadow area
 			// Y stays the same since shadow goes down, not up
-			
+
 			// Expand size to fill entire multiple effect area
-			drawWidth += d2target.MULTIPLE_OFFSET   // Include shadow width
-			drawHeight += d2target.MULTIPLE_OFFSET  // Include shadow height
+			drawWidth += d2target.MULTIPLE_OFFSET  // Include shadow width
+			drawHeight += d2target.MULTIPLE_OFFSET // Include shadow height
 		}
-		
+
 		switch shape.Type {
 		case d2target.ShapeRectangle:
 			asciishapes.DrawRect(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition, "")

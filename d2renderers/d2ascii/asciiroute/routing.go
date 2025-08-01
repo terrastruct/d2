@@ -7,7 +7,7 @@ import (
 	"oss.terrastruct.com/d2/lib/geo"
 )
 
-func processRoute(rd RouteDrawer, routes []*geo.Point) []*geo.Point {
+func processRoute(rd RouteDrawer, routes []*geo.Point, fromBoundary, toBoundary Boundary) []*geo.Point {
 	// Create a deep copy of routes to avoid modifying the original
 	routesCopy := make([]*geo.Point, len(routes))
 	for i, pt := range routes {
@@ -22,8 +22,8 @@ func processRoute(rd RouteDrawer, routes []*geo.Point) []*geo.Point {
 
 	// Adjust route endpoints to avoid overlapping with existing characters
 	if len(routesCopy) >= 2 {
-		adjustRouteStartPoint(rd, routesCopy)
-		adjustRouteEndPoint(rd, routesCopy)
+		adjustRouteStartPoint(rd, routesCopy, fromBoundary)
+		adjustRouteEndPoint(rd, routesCopy, toBoundary)
 	}
 
 	return routesCopy
@@ -140,7 +140,7 @@ func calculateTurnDirections(routes []*geo.Point) map[string]string {
 	return turnDir
 }
 
-func adjustRouteStartPoint(rd RouteDrawer, routes []*geo.Point) {
+func adjustRouteStartPoint(rd RouteDrawer, routes []*geo.Point, fromBoundary Boundary) {
 	if len(routes) < 2 {
 		return
 	}
@@ -149,6 +149,25 @@ func adjustRouteStartPoint(rd RouteDrawer, routes []*geo.Point) {
 	firstY := routes[0].Y
 	secondX := routes[1].X
 	secondY := routes[1].Y
+
+	// Check if end point is inside the to boundary
+	// Move along the vector of the last segment until outside the boundary if so
+	if fromBoundary.Contains(int(math.Round(firstX)), int(math.Round(firstY))) {
+		vectorX := secondX - firstX
+		vectorY := secondY - firstY
+
+		length := math.Sqrt(vectorX*vectorX + vectorY*vectorY)
+		if length > 0 {
+			vectorX /= length
+			vectorY /= length
+
+			for fromBoundary.Contains(int(math.Round(routes[0].X)), int(math.Round(routes[0].Y))) {
+				routes[0].X += vectorX
+				routes[0].Y += vectorY
+			}
+		}
+		return
+	}
 
 	// Determine line direction and keep shifting until empty space
 	if math.Abs(firstY-secondY) < 0.1 { // Horizontal line
@@ -176,7 +195,7 @@ func adjustRouteStartPoint(rd RouteDrawer, routes []*geo.Point) {
 	}
 }
 
-func adjustRouteEndPoint(rd RouteDrawer, routes []*geo.Point) {
+func adjustRouteEndPoint(rd RouteDrawer, routes []*geo.Point, toBoundary Boundary) {
 	if len(routes) < 2 {
 		return
 	}
@@ -188,6 +207,25 @@ func adjustRouteEndPoint(rd RouteDrawer, routes []*geo.Point) {
 	lastY := routes[lastIdx].Y
 	secondLastX := routes[secondLastIdx].X
 	secondLastY := routes[secondLastIdx].Y
+
+	// Check if end point is inside the to boundary
+	// Move along the vector of the last segment until outside the boundary if so
+	if toBoundary.Contains(int(math.Round(lastX)), int(math.Round(lastY))) {
+		vectorX := lastX - secondLastX
+		vectorY := lastY - secondLastY
+
+		length := math.Sqrt(vectorX*vectorX + vectorY*vectorY)
+		if length > 0 {
+			vectorX /= length
+			vectorY /= length
+
+			for toBoundary.Contains(int(math.Round(routes[lastIdx].X)), int(math.Round(routes[lastIdx].Y))) {
+				routes[lastIdx].X -= vectorX
+				routes[lastIdx].Y -= vectorY
+			}
+		}
+		return
+	}
 
 	// Determine line direction and keep shifting until empty space
 	if math.Abs(lastY-secondLastY) < 0.1 { // Horizontal line
