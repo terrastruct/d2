@@ -329,11 +329,11 @@ install_d2_standalone() {
     fi
   fi
 
-  ARCHIVE="d2-v$VERSION-$OS-$ARCH.tar.gz"
+  ARCHIVE="d2-$VERSION-$OS-$ARCH.tar.gz"
   log "installing standalone release $ARCHIVE from github"
 
   ensure_version
-  asset_url="https://github.com/$REPO/releases/download/v$VERSION/$ARCHIVE"
+  asset_url="https://github.com/$REPO/releases/download/$VERSION/$ARCHIVE"
   fetch_gh "$asset_url" "$CACHE_DIR/$ARCHIVE" 'application/octet-stream'
 
   ensure_prefix_sh_c
@@ -368,11 +368,11 @@ install_tala_standalone() {
     fi
   fi
 
-  ARCHIVE="tala-v$VERSION-$OS-$ARCH.tar.gz"
+  ARCHIVE="tala-$VERSION-$OS-$ARCH.tar.gz"
   log "installing standalone release $ARCHIVE from github"
 
   ensure_version
-  asset_url="https://github.com/$REPO/releases/download/v$VERSION/$ARCHIVE"
+  asset_url="https://github.com/$REPO/releases/download/$VERSION/$ARCHIVE"
   fetch_gh "$asset_url" "$CACHE_DIR/$ARCHIVE" 'application/octet-stream'
 
   ensure_prefix_sh_c
@@ -470,20 +470,19 @@ ensure_version() {
       release_info=$(mktempd)/release-info.json
       DRY_RUN= fetch_gh "$release_info_url" "$release_info" 'application/json'
       VERSION=$(cat "$release_info" | grep -m1 tag_name | sed 's/^.*: "\(.*\)",$/\1/g')
-      # Remove 'v' prefix if present
-      VERSION="${VERSION#v}"
       log "detected latest version via API: $VERSION"
     else
       # Extract version from redirected URL
       VERSION="${redirect_url##*/}"
-      # Remove 'v' prefix if present
-      VERSION="${VERSION#v}"
       log "detected latest version: $VERSION"
     fi
-  else
-    # Remove 'v' prefix if present for user-specified versions
-    VERSION="${VERSION#v}"
   fi
+  
+  # Ensure VERSION has 'v' prefix
+  case "$VERSION" in
+    v*) ;;
+    *) VERSION="v$VERSION" ;;
+  esac
 }
 
 curl_gh() {
