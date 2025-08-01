@@ -812,6 +812,49 @@ steps: {
 `,
 		},
 		{
+			name: "boards-order-preserved",
+			in: `k
+
+layers: {
+  a: {
+    x
+  }
+}
+
+scenarios: {
+  b: {
+    x
+  }
+}
+
+layers: {
+  c: {
+    x
+  }
+}
+`,
+			exp: `k
+
+layers: {
+  a: {
+    x
+  }
+}
+
+scenarios: {
+  b: {
+    x
+  }
+}
+
+layers: {
+  c: {
+    x
+  }
+}
+`,
+		},
+		{
 			name: "substitution_mid_string",
 			in: `vars: {
   test: hello
