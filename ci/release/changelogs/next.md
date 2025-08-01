@@ -9,6 +9,8 @@
 
 #### Improvements 🧹
 
+- labels on scenario/step boards can be set with primary value (like layers) [#2579](https://github.com/terrastruct/d2/pull/2579)
+
 #### Bugfixes ⛑️
 
 - actors in sequence diagrams with labels and icons together no longer overlap, position keywords now work too [#2548](https://github.com/terrastruct/d2/pull/2548)

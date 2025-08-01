@@ -4210,9 +4210,16 @@ layers: {
     RJ
   }
 }
+
+scenarios: {
+  x: b {
+    k
+  }
+}
 `, "")
 				assert.Equal(t, "one", g.Layers[0].Root.Label.Value)
 				assert.Equal(t, "two", g.Layers[1].Root.Label.Value)
+				assert.Equal(t, "b", g.Scenarios[0].Root.Label.Value)
 			},
 		},
 		{
