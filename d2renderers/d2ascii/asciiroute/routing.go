@@ -3,12 +3,11 @@ package asciiroute
 import (
 	"fmt"
 	"math"
-	"regexp"
 
 	"oss.terrastruct.com/d2/lib/geo"
 )
 
-func processRoute(rd RouteDrawer, routes []*geo.Point) []*geo.Point {
+func processRoute(rd RouteDrawer, routes []*geo.Point, fromBoundary, toBoundary Boundary) []*geo.Point {
 	// Create a deep copy of routes to avoid modifying the original
 	routesCopy := make([]*geo.Point, len(routes))
 	for i, pt := range routes {
@@ -18,38 +17,74 @@ func processRoute(rd RouteDrawer, routes []*geo.Point) []*geo.Point {
 	routesCopy = mergeRoutes(routesCopy)
 	calibrateRoutes(rd, routesCopy)
 
+	// Force all route segments to be horizontal or vertical (after calibration)
+	routesCopy = forceHorizontalVerticalRoute(routesCopy)
+
 	// Adjust route endpoints to avoid overlapping with existing characters
 	if len(routesCopy) >= 2 {
-		adjustRouteStartPoint(rd, routesCopy)
-		adjustRouteEndPoint(rd, routesCopy)
+		adjustRouteStartPoint(rd, routesCopy, fromBoundary)
+		adjustRouteEndPoint(rd, routesCopy, toBoundary)
 	}
 
 	return routesCopy
 }
 
-func parseConnectionBoundaries(rd RouteDrawer, connID string) (frmShapeBoundary, toShapeBoundary Boundary) {
-	re := regexp.MustCompile(` -> | <-> | -- `)
-	re1 := regexp.MustCompile(`\(([^}]*)\)`)
-	re2 := regexp.MustCompile(`(.*)\(`)
-	match1 := re1.FindStringSubmatch(connID)
-	match2 := re2.FindStringSubmatch(connID)
+// forceHorizontalVerticalRoute transforms diagonal segments into horizontal and vertical segments
+func forceHorizontalVerticalRoute(routes []*geo.Point) []*geo.Point {
+	if len(routes) < 2 {
+		return routes
+	}
 
-	if len(match1) > 0 {
-		parentID := ""
-		if len(match2) > 0 {
-			parentID = match2[1]
+	// Check if any diagonal segments exist
+	hasDiagonals := false
+	for i := 1; i < len(routes); i++ {
+		prev := routes[i-1]
+		curr := routes[i]
+		deltaX := math.Abs(curr.X - prev.X)
+		deltaY := math.Abs(curr.Y - prev.Y)
+
+		if deltaX > 0.5 && deltaY > 0.5 {
+			hasDiagonals = true
+			break
 		}
-		splitResult := re.Split(match1[1], -1)
-		diagram := rd.GetDiagram()
-		if diagram != nil {
-			for _, shape := range diagram.Shapes {
-				if len(splitResult) > 0 && shape.ID == parentID+splitResult[0] {
-					tl, br := rd.GetBoundaryForShape(shape)
-					frmShapeBoundary = *NewBoundary(tl, br)
-				} else if len(splitResult) > 1 && shape.ID == parentID+splitResult[1] {
-					tl, br := rd.GetBoundaryForShape(shape)
-					toShapeBoundary = *NewBoundary(tl, br)
-				}
+	}
+
+	if !hasDiagonals {
+		return routes
+	}
+
+	// Transform diagonal segments
+	var newRoutes []*geo.Point
+	newRoutes = append(newRoutes, routes[0])
+
+	for i := 1; i < len(routes); i++ {
+		prev := newRoutes[len(newRoutes)-1]
+		curr := routes[i]
+		deltaX := math.Abs(curr.X - prev.X)
+		deltaY := math.Abs(curr.Y - prev.Y)
+
+		if deltaX > 0.5 && deltaY > 0.5 {
+			// Break diagonal into horizontal then vertical
+			intermediate := &geo.Point{X: curr.X, Y: prev.Y}
+			newRoutes = append(newRoutes, intermediate)
+		}
+
+		newRoutes = append(newRoutes, curr)
+	}
+
+	return newRoutes
+}
+
+func getConnectionBoundaries(rd RouteDrawer, srcID, dstID string) (frmShapeBoundary, toShapeBoundary Boundary) {
+	diagram := rd.GetDiagram()
+	if diagram != nil {
+		for _, shape := range diagram.Shapes {
+			if shape.ID == srcID {
+				tl, br := rd.GetBoundaryForShape(shape)
+				frmShapeBoundary = *NewBoundary(tl, br)
+			} else if shape.ID == dstID {
+				tl, br := rd.GetBoundaryForShape(shape)
+				toShapeBoundary = *NewBoundary(tl, br)
 			}
 		}
 	}
@@ -59,7 +94,6 @@ func parseConnectionBoundaries(rd RouteDrawer, connID string) (frmShapeBoundary,
 func calibrateRoutes(rd RouteDrawer, routes []*geo.Point) {
 	for i := range routes {
 		routes[i].X, routes[i].Y = rd.CalibrateXY(routes[i].X, routes[i].Y)
-		routes[i].X -= 1
 	}
 }
 
@@ -106,7 +140,7 @@ func calculateTurnDirections(routes []*geo.Point) map[string]string {
 	return turnDir
 }
 
-func adjustRouteStartPoint(rd RouteDrawer, routes []*geo.Point) {
+func adjustRouteStartPoint(rd RouteDrawer, routes []*geo.Point, fromBoundary Boundary) {
 	if len(routes) < 2 {
 		return
 	}
@@ -115,6 +149,25 @@ func adjustRouteStartPoint(rd RouteDrawer, routes []*geo.Point) {
 	firstY := routes[0].Y
 	secondX := routes[1].X
 	secondY := routes[1].Y
+
+	// Check if end point is inside the to boundary
+	// Move along the vector of the last segment until outside the boundary if so
+	if fromBoundary.Contains(int(math.Round(firstX)), int(math.Round(firstY))) {
+		vectorX := secondX - firstX
+		vectorY := secondY - firstY
+
+		length := math.Sqrt(vectorX*vectorX + vectorY*vectorY)
+		if length > 0 {
+			vectorX /= length
+			vectorY /= length
+
+			for fromBoundary.Contains(int(math.Round(routes[0].X)), int(math.Round(routes[0].Y))) {
+				routes[0].X += vectorX
+				routes[0].Y += vectorY
+			}
+		}
+		return
+	}
 
 	// Determine line direction and keep shifting until empty space
 	if math.Abs(firstY-secondY) < 0.1 { // Horizontal line
@@ -142,7 +195,7 @@ func adjustRouteStartPoint(rd RouteDrawer, routes []*geo.Point) {
 	}
 }
 
-func adjustRouteEndPoint(rd RouteDrawer, routes []*geo.Point) {
+func adjustRouteEndPoint(rd RouteDrawer, routes []*geo.Point, toBoundary Boundary) {
 	if len(routes) < 2 {
 		return
 	}
@@ -154,6 +207,25 @@ func adjustRouteEndPoint(rd RouteDrawer, routes []*geo.Point) {
 	lastY := routes[lastIdx].Y
 	secondLastX := routes[secondLastIdx].X
 	secondLastY := routes[secondLastIdx].Y
+
+	// Check if end point is inside the to boundary
+	// Move along the vector of the last segment until outside the boundary if so
+	if toBoundary.Contains(int(math.Round(lastX)), int(math.Round(lastY))) {
+		vectorX := lastX - secondLastX
+		vectorY := lastY - secondLastY
+
+		length := math.Sqrt(vectorX*vectorX + vectorY*vectorY)
+		if length > 0 {
+			vectorX /= length
+			vectorY /= length
+
+			for toBoundary.Contains(int(math.Round(routes[lastIdx].X)), int(math.Round(routes[lastIdx].Y))) {
+				routes[lastIdx].X -= vectorX
+				routes[lastIdx].Y -= vectorY
+			}
+		}
+		return
+	}
 
 	// Determine line direction and keep shifting until empty space
 	if math.Abs(lastY-secondLastY) < 0.1 { // Horizontal line

@@ -31,6 +31,7 @@ func (ctx *Context) Calibrate(x, y, w, h float64) (int, int, int, int) {
 	yC := int(math.Round((y / ctx.FH) * ctx.Scale))
 	wC := int(math.Round((w / ctx.FW) * ctx.Scale))
 	hC := int(math.Round((h / ctx.FH) * ctx.Scale))
+
 	return xC, yC, wC, hC
 }
 

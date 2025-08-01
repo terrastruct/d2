@@ -1,6 +1,8 @@
 package asciishapes
 
-import "math"
+import (
+	"math"
+)
 
 func DrawStoredData(ctx *Context, x, y, w, h float64, label, labelPosition string) {
 	xi, yi, wi, hi := ctx.Calibrate(x, y, w, h)
@@ -9,7 +11,6 @@ func DrawStoredData(ctx *Context, x, y, w, h float64, label, labelPosition strin
 	} else if hi%2 == 0 {
 		hi++
 	}
-	wi = adjustWidthForLabel(ctx, x, y, w, h, wi, label)
 	x1, y1 := xi, yi
 	x2, y2 := xi+wi-1, yi+hi-1
 	hoffset := (hi + 1) / 2

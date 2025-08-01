@@ -474,6 +474,16 @@ func RouterResolver(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plu
 }
 
 func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs fs.FS, layout *string, renderOpts d2svg.RenderOpts, fontFamily *d2fonts.FontFamily, animateInterval int64, inputPath, outputPath string, boardPath []string, noChildren, bundle, forceAppendix bool, page playwright.Page, ext exportExtension, asciiMode string) (_ []byte, written bool, _ error) {
+	// Force ELK layout for ascii outputs
+	if ext == TXT {
+		if layout == nil || *layout != "elk" {
+			if ms.Log.Debug != nil {
+				ms.Log.Debug.Printf("switching layout engine to ELK for ASCII format")
+			}
+		}
+		layout = go2.Pointer("elk")
+	}
+
 	start := time.Now()
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
