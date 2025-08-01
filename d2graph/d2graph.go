@@ -69,6 +69,7 @@ type Graph struct {
 }
 
 type Legend struct {
+	Label   string    `json:"label,omitempty"`
 	Objects []*Object `json:"objects,omitempty"`
 	Edges   []*Edge   `json:"edges,omitempty"`
 }
