@@ -272,7 +272,7 @@ a -> b: italic font
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "x.d2", `x -> y`)
 				err := runTestMain(t, ctx, dir, env, "--animate-interval=2", "x.d2", "x.png")
-				assert.ErrorString(t, err, `failed to wait xmain test: e2etests-cli/d2: bad usage: -animate-interval can only be used when exporting to SVG or GIF.
+				assert.ErrorString(t, err, `failed to wait xmain test: e2etests-cli/d2: bad usage: --animate-interval can only be used when exporting to SVG or GIF.
 You provided: .png`)
 			},
 		},
