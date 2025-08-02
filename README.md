@@ -253,7 +253,7 @@ let us know and we'll be happy to include it here!
 - **ROS2 D2 Exporter**: [https://github.com/Greenroom-Robotics/ros-d2](https://github.com/Greenroom-Robotics/ros-d2)
 - **D2 org-mode support**: [https://github.com/xcapaldi/ob-d2](https://github.com/xcapaldi/ob-d2)
 - **Python D2 diagram builder**: [https://github.com/MrBlenny/py-d2](https://github.com/MrBlenny/py-d2)
-- **Clojure D2 transpiler**: [https://github.com/judepayne/dictim](https://github.com/judepayne/dictim)
+- **D2 datafied! (CLI + Clojure lib)**: [https://github.com/judepayne/dictim](https://github.com/judepayne/dictim)
 - **JavaScript D2 diagram builder**: [https://github.com/Kreshnik/d2lang-js](https://github.com/Kreshnik/d2lang-js)
 - **C# & dotnet SDK**: [https://github.com/Stephanvs/d2lang-cs](https://github.com/Stephanvs/d2lang-cs)
 - **Maven plugin**: [https://github.com/andrinmeier/unofficial-d2lang-maven-plugin](https://github.com/andrinmeier/unofficial-d2lang-maven-plugin)
