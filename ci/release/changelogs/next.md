@@ -6,6 +6,7 @@
 - markdown, latex, and code can be used as edge labels [#2545](https://github.com/terrastruct/d2/pull/2545)
 - border-x label positioning functionality [#2549](https://github.com/terrastruct/d2/pull/2549)
 - tooltips with `near` set always show even without hover [#2564](https://github.com/terrastruct/d2/pull/2564)
+- CLI supports customizing monospace fonts with `--font-mono`, `--font-mono-bold`, `--font-mono-italic`, and `--font-mono-semibold` flags [#2590](https://github.com/terrastruct/d2/pull/2590)
 
 #### Improvements 🧹
 

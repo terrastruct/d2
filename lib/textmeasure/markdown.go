@@ -103,7 +103,7 @@ func init() {
 	)
 }
 
-func MeasureMarkdown(mdText string, ruler *Ruler, fontFamily *d2fonts.FontFamily, fontSize int) (width, height int, err error) {
+func MeasureMarkdown(mdText string, ruler *Ruler, fontFamily *d2fonts.FontFamily, monoFontFamily *d2fonts.FontFamily, fontSize int) (width, height int, err error) {
 	render, err := RenderMarkdown(mdText)
 	if err != nil {
 		return width, height, err
@@ -126,7 +126,7 @@ func MeasureMarkdown(mdText string, ruler *Ruler, fontFamily *d2fonts.FontFamily
 
 	// TODO consider setting a max width + (manual) text wrapping
 	bodyNode := doc.Find("body").First().Nodes[0]
-	bodyAttrs := ruler.measureNode(0, bodyNode, fontFamily, fontSize, d2fonts.FONT_STYLE_REGULAR)
+	bodyAttrs := ruler.measureNode(0, bodyNode, fontFamily, monoFontFamily, fontSize, d2fonts.FONT_STYLE_REGULAR)
 
 	return int(math.Ceil(bodyAttrs.width)), int(math.Ceil(bodyAttrs.height)), nil
 }
@@ -214,7 +214,7 @@ func (b *blockAttrs) isNotEmpty() bool {
 }
 
 // measures node dimensions to match rendering with styles in github-markdown.css
-func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.FontFamily, fontSize int, fontStyle d2fonts.FontStyle) blockAttrs {
+func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.FontFamily, monoFontFamily *d2fonts.FontFamily, fontSize int, fontStyle d2fonts.FontStyle) blockAttrs {
 	if fontFamily == nil {
 		fontFamily = go2.Pointer(d2fonts.SourceSansPro)
 	}
@@ -300,7 +300,11 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 		case "b", "strong":
 			fontStyle = d2fonts.FONT_STYLE_BOLD
 		case "pre", "code":
-			fontFamily = go2.Pointer(d2fonts.SourceCodePro)
+			if monoFontFamily != nil {
+				fontFamily = monoFontFamily
+			} else {
+				fontFamily = go2.Pointer(d2fonts.SourceCodePro)
+			}
 			fontStyle = d2fonts.FONT_STYLE_REGULAR
 			isCode = true
 		}
@@ -324,7 +328,7 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 				inlineBlock = nil
 			}
 			for child := n.FirstChild; child != nil; child = child.NextSibling {
-				childBlock := ruler.measureNode(depth+1, child, fontFamily, fontSize, fontStyle)
+				childBlock := ruler.measureNode(depth+1, child, fontFamily, monoFontFamily, fontSize, fontStyle)
 
 				if child.Type == html.ElementNode && isBlockElement(child.Data) {
 					if inlineBlock != nil {
@@ -442,14 +446,14 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 			// Iterate over child nodes (tbody, thead, tr)
 			for child := n.FirstChild; child != nil; child = child.NextSibling {
 				if child.Type == html.ElementNode && (child.Data == "tbody" || child.Data == "thead" || child.Data == "tfoot") {
-					childAttrs := ruler.measureNode(depth+1, child, fontFamily, fontSize, fontStyle)
+					childAttrs := ruler.measureNode(depth+1, child, fontFamily, monoFontFamily, fontSize, fontStyle)
 					tableHeight += childAttrs.height
 
 					if childColumnWidths, ok := childAttrs.extraData.([][]float64); ok {
 						columnWidths = mergeColumnWidths(columnWidths, childColumnWidths)
 					}
 				} else if child.Type == html.ElementNode && child.Data == "tr" {
-					rowAttrs := ruler.measureNode(depth+1, child, fontFamily, fontSize, fontStyle)
+					rowAttrs := ruler.measureNode(depth+1, child, fontFamily, monoFontFamily, fontSize, fontStyle)
 					tableHeight += rowAttrs.height
 
 					if rowCellWidths, ok := rowAttrs.extraData.([]float64); ok {
@@ -483,7 +487,7 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 			// Iterate over tr elements
 			for child := n.FirstChild; child != nil; child = child.NextSibling {
 				if child.Type == html.ElementNode && child.Data == "tr" {
-					childAttrs := ruler.measureNode(depth+1, child, fontFamily, fontSize, fontStyle)
+					childAttrs := ruler.measureNode(depth+1, child, fontFamily, monoFontFamily, fontSize, fontStyle)
 					sectionHeight += childAttrs.height
 					sectionWidth = go2.Max(sectionWidth, childAttrs.width)
 
@@ -509,7 +513,7 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 
 			for child := n.FirstChild; child != nil; child = child.NextSibling {
 				// Pass the header-specific font style to child measurements
-				childAttrs := ruler.measureNode(depth+1, child, fontFamily, fontSize, cellFontStyle)
+				childAttrs := ruler.measureNode(depth+1, child, fontFamily, monoFontFamily, fontSize, cellFontStyle)
 				cellContentWidth = go2.Max(cellContentWidth, childAttrs.width)
 				cellContentHeight += childAttrs.height
 			}
@@ -544,7 +548,7 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 						childFontStyle = d2fonts.FONT_STYLE_SEMIBOLD
 					}
 
-					childAttrs := ruler.measureNode(depth+1, child, fontFamily, fontSize, childFontStyle)
+					childAttrs := ruler.measureNode(depth+1, child, fontFamily, monoFontFamily, fontSize, childFontStyle)
 					cellPaddingH := 13.0 * 2
 					cellPaddingV := 6.0 * 2
 

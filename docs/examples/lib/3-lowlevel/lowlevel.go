@@ -20,10 +20,10 @@ func main() {
 	graph, config, _ := d2compiler.Compile("", strings.NewReader("x -> y"), nil)
 	graph.ApplyTheme(d2themescatalog.NeutralDefault.ID)
 	ruler, _ := textmeasure.NewRuler()
-	_ = graph.SetDimensions(nil, ruler, nil)
+	_ = graph.SetDimensions(nil, ruler, nil, nil)
 	ctx := log.WithDefault(context.Background())
 	_ = d2dagrelayout.Layout(ctx, graph, nil)
-	diagram, _ := d2exporter.Export(ctx, graph, nil)
+	diagram, _ := d2exporter.Export(ctx, graph, nil, nil)
 	diagram.Config = config
 	out, _ := d2svg.Render(diagram, &d2svg.RenderOpts{
 		ThemeID: &d2themescatalog.NeutralDefault.ID,

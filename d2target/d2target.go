@@ -80,9 +80,10 @@ type Diagram struct {
 	Name   string  `json:"name"`
 	Config *Config `json:"config,omitempty"`
 	// See docs on the same field in d2graph to understand what it means.
-	IsFolderOnly bool                `json:"isFolderOnly"`
-	Description  string              `json:"description,omitempty"`
-	FontFamily   *d2fonts.FontFamily `json:"fontFamily,omitempty"`
+	IsFolderOnly   bool                `json:"isFolderOnly"`
+	Description    string              `json:"description,omitempty"`
+	FontFamily     *d2fonts.FontFamily `json:"fontFamily,omitempty"`
+	MonoFontFamily *d2fonts.FontFamily `json:"monoFontFamily,omitempty"`
 
 	Shapes      []Shape      `json:"shapes"`
 	Connections []Connection `json:"connections"`
@@ -461,7 +462,7 @@ func calculateTooltipBounds(targetShape Shape) (minX, minY, maxX, maxY int) {
 			fontFamily = &ff
 		}
 
-		width, height, err := textmeasure.MeasureMarkdown(targetShape.Tooltip, ruler, fontFamily, targetShape.FontSize)
+		width, height, err := textmeasure.MeasureMarkdown(targetShape.Tooltip, ruler, fontFamily, nil, targetShape.FontSize)
 		if err != nil {
 			textLength := len(targetShape.Tooltip)
 			tooltipWidth = go2.Min(textLength*8+20, 200)

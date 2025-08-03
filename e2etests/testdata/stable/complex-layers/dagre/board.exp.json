@@ -10,6 +10,7 @@
   },
   "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
+  "monoFontFamily": "SourceCodePro",
   "shapes": [
     {
       "id": "desc",
@@ -227,6 +228,7 @@
       "name": "window",
       "isFolderOnly": false,
       "fontFamily": "SourceSansPro",
+      "monoFontFamily": "SourceCodePro",
       "shapes": [
         {
           "id": "blinds",
@@ -360,6 +362,7 @@
       "name": "roof",
       "isFolderOnly": false,
       "fontFamily": "SourceSansPro",
+      "monoFontFamily": "SourceCodePro",
       "shapes": [
         {
           "id": "shingles",
@@ -535,6 +538,7 @@
       "name": "garage",
       "isFolderOnly": false,
       "fontFamily": "SourceSansPro",
+      "monoFontFamily": "SourceCodePro",
       "shapes": [
         {
           "id": "tools",
@@ -668,6 +672,7 @@
       "name": "repair",
       "isFolderOnly": false,
       "fontFamily": "SourceSansPro",
+      "monoFontFamily": "SourceCodePro",
       "shapes": [
         {
           "id": "desc",
@@ -759,6 +764,7 @@
           "name": "1",
           "isFolderOnly": false,
           "fontFamily": "SourceSansPro",
+          "monoFontFamily": "SourceCodePro",
           "shapes": [
             {
               "id": "desc",
@@ -976,6 +982,7 @@
           "name": "2",
           "isFolderOnly": false,
           "fontFamily": "SourceSansPro",
+          "monoFontFamily": "SourceCodePro",
           "shapes": [
             {
               "id": "desc",
@@ -1284,6 +1291,7 @@
           "name": "3",
           "isFolderOnly": false,
           "fontFamily": "SourceSansPro",
+          "monoFontFamily": "SourceCodePro",
           "shapes": [
             {
               "id": "desc",
@@ -1724,6 +1732,7 @@
           "name": "4",
           "isFolderOnly": false,
           "fontFamily": "SourceSansPro",
+          "monoFontFamily": "SourceCodePro",
           "shapes": [
             {
               "id": "desc",
@@ -2258,6 +2267,7 @@
       "name": "storm",
       "isFolderOnly": false,
       "fontFamily": "SourceSansPro",
+      "monoFontFamily": "SourceCodePro",
       "shapes": [
         {
           "id": "desc",
