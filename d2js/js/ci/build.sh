@@ -4,7 +4,7 @@ set -eu
 cd -- "$(dirname "$0")/.."
 
 cd ../..
-sh_c "GOOS=js GOARCH=wasm go build -ldflags='-s -w' -trimpath -o main.wasm ./d2js"
+sh_c "GOOS=js GOARCH=wasm go build -ldflags='-s -w' -gcflags='-l=4' -trimpath -o main.wasm ./d2js"
 sh_c "mv main.wasm ./d2js/js/wasm/d2.wasm"
 
 if [ ! -f ./d2js/js/wasm/d2.wasm ]; then
