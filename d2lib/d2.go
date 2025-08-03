@@ -218,7 +218,7 @@ func applyDefaults(compileOpts *CompileOptions, renderOpts *d2svg.RenderOpts) {
 	if renderOpts.Sketch == nil {
 		renderOpts.Sketch = go2.Pointer(false)
 	}
-	if *renderOpts.Sketch {
+	if *renderOpts.Sketch && compileOpts.FontFamily == nil {
 		compileOpts.FontFamily = go2.Pointer(d2fonts.HandDrawn)
 	}
 	if renderOpts.Pad == nil {
