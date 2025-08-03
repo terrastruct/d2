@@ -39,6 +39,9 @@ type CompileOptions struct {
 	// TODO maybe some will want to configure code font too, but that's much lower priority
 	FontFamily *d2fonts.FontFamily
 
+	// MonoFontFamily controls the font family used for code/mono texts
+	MonoFontFamily *d2fonts.FontFamily
+
 	InputPath string
 }
 
@@ -98,7 +101,7 @@ func compile(ctx context.Context, g *d2graph.Graph, compileOpts *CompileOptions,
 	}
 
 	if len(g.Objects) > 0 {
-		err := g.SetDimensions(compileOpts.MeasuredTexts, compileOpts.Ruler, compileOpts.FontFamily)
+		err := g.SetDimensions(compileOpts.MeasuredTexts, compileOpts.Ruler, compileOpts.FontFamily, compileOpts.MonoFontFamily)
 		if err != nil {
 			return nil, err
 		}
@@ -119,7 +122,7 @@ func compile(ctx context.Context, g *d2graph.Graph, compileOpts *CompileOptions,
 		}
 	}
 
-	d, err := d2exporter.Export(ctx, g, compileOpts.FontFamily)
+	d, err := d2exporter.Export(ctx, g, compileOpts.FontFamily, compileOpts.MonoFontFamily)
 	if err != nil {
 		return nil, err
 	}

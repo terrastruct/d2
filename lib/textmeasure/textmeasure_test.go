@@ -110,7 +110,7 @@ func TestTextMeasureMarkdown(t *testing.T) {
 	}
 
 	for text, dims := range mdTexts {
-		width, height, err := textmeasure.MeasureMarkdown(text, ruler, nil, textmeasure.MarkdownFontSize)
+		width, height, err := textmeasure.MeasureMarkdown(text, ruler, nil, nil, textmeasure.MarkdownFontSize)
 		if err != nil {
 			t.Fatal(err)
 		}

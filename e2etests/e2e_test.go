@@ -265,7 +265,7 @@ func serde(t *testing.T, tc testCase, ruler *textmeasure.Ruler) {
 	})
 	trequire.Nil(t, err)
 	if len(g.Objects) > 0 {
-		err = g.SetDimensions(nil, ruler, nil)
+		err = g.SetDimensions(nil, ruler, nil, nil)
 		trequire.Nil(t, err)
 	}
 	b, err := d2graph.SerializeGraph(g)

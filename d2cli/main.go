@@ -125,6 +125,10 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	fontItalicFlag := ms.Opts.String("D2_FONT_ITALIC", "font-italic", "", "", "path to .ttf file to use for the italic font. If none provided, Source Sans Pro Regular-Italic is used.")
 	fontBoldFlag := ms.Opts.String("D2_FONT_BOLD", "font-bold", "", "", "path to .ttf file to use for the bold font. If none provided, Source Sans Pro Bold is used.")
 	fontSemiboldFlag := ms.Opts.String("D2_FONT_SEMIBOLD", "font-semibold", "", "", "path to .ttf file to use for the semibold font. If none provided, Source Sans Pro Semibold is used.")
+	fontMonoFlag := ms.Opts.String("D2_FONT_MONO", "font-mono", "", "", "path to .ttf file to use for the monospace font. If none provided, Source Code Pro Regular is used.")
+	fontMonoBoldFlag := ms.Opts.String("D2_FONT_MONO_BOLD", "font-mono-bold", "", "", "path to .ttf file to use for the monospace bold font. If none provided, Source Code Pro Bold is used.")
+	fontMonoItalicFlag := ms.Opts.String("D2_FONT_MONO_ITALIC", "font-mono-italic", "", "", "path to .ttf file to use for the monospace italic font. If none provided, Source Code Pro Italic is used.")
+	fontMonoSemiboldFlag := ms.Opts.String("D2_FONT_MONO_SEMIBOLD", "font-mono-semibold", "", "", "path to .ttf file to use for the monospace semibold font. If none provided, Source Code Pro Semibold is used.")
 
 	checkFlag, err := ms.Opts.Bool("D2_CHECK", "check", "", false, "check that the specified files are formatted correctly.")
 	if err != nil {
@@ -167,7 +171,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		return nil
 	}
 
-	fontFamily, err := loadFonts(ms, *fontRegularFlag, *fontItalicFlag, *fontBoldFlag, *fontSemiboldFlag)
+	fontFamily, monoFontFamily, err := loadFonts(ms, *fontRegularFlag, *fontItalicFlag, *fontBoldFlag, *fontSemiboldFlag, *fontMonoFlag, *fontMonoBoldFlag, *fontMonoItalicFlag, *fontMonoSemiboldFlag)
 	if err != nil {
 		return xmain.UsageErrorf("failed to load specified fonts: %v", err)
 	}
@@ -366,6 +370,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 			forceAppendix:   *forceAppendixFlag,
 			pw:              pw,
 			fontFamily:      fontFamily,
+			monoFontFamily:  monoFontFamily,
 			outputFormat:    outputFormat,
 			asciiMode:       *asciiModeFlag,
 		})
@@ -398,7 +403,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	ctx, cancel := timelib.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
-	_, written, err := compile(ctx, ms, plugins, nil, layoutFlag, renderOpts, fontFamily, *animateIntervalFlag, inputPath, outputPath, boardPath, noChildren, *bundleFlag, *forceAppendixFlag, pw.Page, outputFormat, *asciiModeFlag)
+	_, written, err := compile(ctx, ms, plugins, nil, layoutFlag, renderOpts, fontFamily, monoFontFamily, *animateIntervalFlag, inputPath, outputPath, boardPath, noChildren, *bundleFlag, *forceAppendixFlag, pw.Page, outputFormat, *asciiModeFlag)
 	if err != nil {
 		if written {
 			return fmt.Errorf("failed to fully compile (partial render written) %s: %w", ms.HumanPath(inputPath), err)
@@ -473,7 +478,7 @@ func RouterResolver(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plu
 	}
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs fs.FS, layout *string, renderOpts d2svg.RenderOpts, fontFamily *d2fonts.FontFamily, animateInterval int64, inputPath, outputPath string, boardPath []string, noChildren, bundle, forceAppendix bool, page playwright.Page, ext exportExtension, asciiMode string) (_ []byte, written bool, _ error) {
+func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs fs.FS, layout *string, renderOpts d2svg.RenderOpts, fontFamily *d2fonts.FontFamily, monoFontFamily *d2fonts.FontFamily, animateInterval int64, inputPath, outputPath string, boardPath []string, noChildren, bundle, forceAppendix bool, page playwright.Page, ext exportExtension, asciiMode string) (_ []byte, written bool, _ error) {
 	// Use ELK layout for ascii outputs when layout is dagre or unspecified
 	if ext == TXT {
 		if layout == nil || *layout == "dagre" {
@@ -502,6 +507,7 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs
 	opts := &d2lib.CompileOptions{
 		Ruler:          ruler,
 		FontFamily:     fontFamily,
+		MonoFontFamily: monoFontFamily,
 		InputPath:      inputPath,
 		LayoutResolver: LayoutResolver(ctx, ms, plugins),
 		Layout:         layout,
@@ -1301,43 +1307,90 @@ func loadFont(ms *xmain.State, path string) ([]byte, error) {
 	return ttf, nil
 }
 
-func loadFonts(ms *xmain.State, pathToRegular, pathToItalic, pathToBold, pathToSemibold string) (*d2fonts.FontFamily, error) {
-	if pathToRegular == "" && pathToItalic == "" && pathToBold == "" && pathToSemibold == "" {
-		return nil, nil
+func loadFonts(ms *xmain.State, pathToRegular, pathToItalic, pathToBold, pathToSemibold, pathToMono, pathToMonoBold, pathToMonoItalic, pathToMonoSemibold string) (*d2fonts.FontFamily, *d2fonts.FontFamily, error) {
+	if pathToRegular == "" && pathToItalic == "" && pathToBold == "" && pathToSemibold == "" &&
+		pathToMono == "" && pathToMonoBold == "" && pathToMonoItalic == "" && pathToMonoSemibold == "" {
+		return nil, nil, nil
 	}
 
 	var regularTTF []byte
 	var italicTTF []byte
 	var boldTTF []byte
 	var semiboldTTF []byte
+	var monoTTF []byte
+	var monoBoldTTF []byte
+	var monoItalicTTF []byte
+	var monoSemiboldTTF []byte
 
 	var err error
 	if pathToRegular != "" {
 		regularTTF, err = loadFont(ms, pathToRegular)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 	}
 	if pathToItalic != "" {
 		italicTTF, err = loadFont(ms, pathToItalic)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 	}
 	if pathToBold != "" {
 		boldTTF, err = loadFont(ms, pathToBold)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 	}
 	if pathToSemibold != "" {
 		semiboldTTF, err = loadFont(ms, pathToSemibold)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 	}
 
-	return d2fonts.AddFontFamily("custom", regularTTF, italicTTF, boldTTF, semiboldTTF)
+	if pathToMono != "" {
+		monoTTF, err = loadFont(ms, pathToMono)
+		if err != nil {
+			return nil, nil, err
+		}
+	}
+	if pathToMonoBold != "" {
+		monoBoldTTF, err = loadFont(ms, pathToMonoBold)
+		if err != nil {
+			return nil, nil, err
+		}
+	}
+	if pathToMonoItalic != "" {
+		monoItalicTTF, err = loadFont(ms, pathToMonoItalic)
+		if err != nil {
+			return nil, nil, err
+		}
+	}
+	if pathToMonoSemibold != "" {
+		monoSemiboldTTF, err = loadFont(ms, pathToMonoSemibold)
+		if err != nil {
+			return nil, nil, err
+		}
+	}
+
+	var fontFamily *d2fonts.FontFamily
+	var monoFontFamily *d2fonts.FontFamily
+
+	if pathToRegular != "" || pathToItalic != "" || pathToBold != "" || pathToSemibold != "" {
+		fontFamily, err = d2fonts.AddFontFamily("custom", regularTTF, italicTTF, boldTTF, semiboldTTF)
+		if err != nil {
+			return nil, nil, err
+		}
+	}
+
+	if pathToMono != "" || pathToMonoBold != "" || pathToMonoItalic != "" || pathToMonoSemibold != "" {
+		monoFontFamily, err = d2fonts.AddFontFamily("customMono", monoTTF, monoItalicTTF, monoBoldTTF, monoSemiboldTTF)
+		if err != nil {
+			return nil, nil, err
+		}
+	}
+
+	return fontFamily, monoFontFamily, nil
 }
 
 const LAYERS = "layers"

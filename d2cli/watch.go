@@ -57,6 +57,7 @@ type watcherOpts struct {
 	forceAppendix   bool
 	pw              png.Playwright
 	fontFamily      *d2fonts.FontFamily
+	monoFontFamily  *d2fonts.FontFamily
 	outputFormat    exportExtension
 	asciiMode       string
 }
@@ -443,7 +444,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 		if w.boardPath != "" {
 			boardPath = strings.Split(w.boardPath, string(os.PathSeparator))
 		}
-		svg, _, err := compile(ctx, w.ms, w.plugins, &fs, w.layout, w.renderOpts, w.fontFamily, w.animateInterval, w.inputPath, w.outputPath, boardPath, false, w.bundle, w.forceAppendix, w.pw.Page, w.outputFormat, w.asciiMode)
+		svg, _, err := compile(ctx, w.ms, w.plugins, &fs, w.layout, w.renderOpts, w.fontFamily, w.monoFontFamily, w.animateInterval, w.inputPath, w.outputPath, boardPath, false, w.bundle, w.forceAppendix, w.pw.Page, w.outputFormat, w.asciiMode)
 		w.boardpathMu.Unlock()
 		errs := ""
 		if err != nil {

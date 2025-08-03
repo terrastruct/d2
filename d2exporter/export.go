@@ -19,7 +19,7 @@ import (
 	"oss.terrastruct.com/d2/lib/label"
 )
 
-func Export(ctx context.Context, g *d2graph.Graph, fontFamily *d2fonts.FontFamily) (*d2target.Diagram, error) {
+func Export(ctx context.Context, g *d2graph.Graph, fontFamily *d2fonts.FontFamily, monoFontFamily *d2fonts.FontFamily) (*d2target.Diagram, error) {
 	diagram := d2target.NewDiagram()
 	applyStyles(&diagram.Root, g.Root)
 	if g.Root.Label.MapKey == nil {
@@ -36,6 +36,11 @@ func Export(ctx context.Context, g *d2graph.Graph, fontFamily *d2fonts.FontFamil
 		fontFamily = go2.Pointer(d2fonts.SourceCodePro)
 	}
 	diagram.FontFamily = fontFamily
+	if monoFontFamily == nil {
+		diagram.MonoFontFamily = go2.Pointer(d2fonts.SourceCodePro)
+	} else {
+		diagram.MonoFontFamily = monoFontFamily
+	}
 
 	diagram.Shapes = make([]d2target.Shape, len(g.Objects))
 	for i := range g.Objects {

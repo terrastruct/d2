@@ -352,6 +352,11 @@ func AddFontFamily(name string, regularTTF, italicTTF, boldTTF, semiboldTTF []by
 	defer FontFamiliesMu.Unlock()
 	customFontFamily := FontFamily(name)
 
+	fallbackFamily := SourceSansPro
+	if strings.Contains(strings.ToLower(name), "mono") {
+		fallbackFamily = SourceCodePro
+	}
+
 	regularFont := Font{
 		Family: customFontFamily,
 		Style:  FONT_STYLE_REGULAR,
@@ -363,7 +368,7 @@ func AddFontFamily(name string, regularTTF, italicTTF, boldTTF, semiboldTTF []by
 		}
 	} else {
 		fallbackFont := Font{
-			Family: SourceSansPro,
+			Family: fallbackFamily,
 			Style:  FONT_STYLE_REGULAR,
 		}
 		FontFaces.Set(regularFont, FontFaces.Get(fallbackFont))
@@ -381,7 +386,7 @@ func AddFontFamily(name string, regularTTF, italicTTF, boldTTF, semiboldTTF []by
 		}
 	} else {
 		fallbackFont := Font{
-			Family: SourceSansPro,
+			Family: fallbackFamily,
 			Style:  FONT_STYLE_ITALIC,
 		}
 		FontFaces.Set(italicFont, FontFaces.Get(fallbackFont))
@@ -399,7 +404,7 @@ func AddFontFamily(name string, regularTTF, italicTTF, boldTTF, semiboldTTF []by
 		}
 	} else {
 		fallbackFont := Font{
-			Family: SourceSansPro,
+			Family: fallbackFamily,
 			Style:  FONT_STYLE_BOLD,
 		}
 		FontFaces.Set(boldFont, FontFaces.Get(fallbackFont))
@@ -417,7 +422,7 @@ func AddFontFamily(name string, regularTTF, italicTTF, boldTTF, semiboldTTF []by
 		}
 	} else {
 		fallbackFont := Font{
-			Family: SourceSansPro,
+			Family: fallbackFamily,
 			Style:  FONT_STYLE_SEMIBOLD,
 		}
 		FontFaces.Set(semiboldFont, FontFaces.Get(fallbackFont))
