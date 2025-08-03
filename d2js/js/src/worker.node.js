@@ -4,6 +4,11 @@ let currentPort;
 let d2;
 let elk;
 
+function loadScript(content) {
+  const func = new Function(content);
+  func.call(globalThis);
+}
+
 export function setupMessageHandler(isNode, port, initWasm) {
   currentPort = port;
 
@@ -14,8 +19,8 @@ export function setupMessageHandler(isNode, port, initWasm) {
       case "init":
         try {
           if (isNode) {
-            eval(data.wasmExecContent);
-            eval(data.elkContent);
+            loadScript(data.wasmExecContent);
+            loadScript(data.elkContent);
           }
           d2 = await initWasm(data.wasm);
           elk = new ELK();
