@@ -27,10 +27,14 @@ export function setupMessageHandler(isNode, port, initWasm) {
 
       case "compile":
         try {
-          const elkGraph = await d2.getELKGraph(JSON.stringify(data));
-          const elkGraph2 = JSON.parse(elkGraph).data;
-          const layout = await elk.layout(elkGraph2);
-          globalThis.elkResult = layout;
+          if (data.options.layout === "elk" || data.options.layout == null) {
+            const elkGraph = await d2.getELKGraph(JSON.stringify(data));
+            const response = JSON.parse(elkGraph);
+            if (response.error) throw new Error(response.error.message);
+            const elkGraph2 = response.data;
+            const layout = await elk.layout(elkGraph2);
+            globalThis.elkResult = layout;
+          }
           const result = await d2.compile(JSON.stringify(data));
           const response = JSON.parse(result);
           if (response.error) throw new Error(response.error.message);
@@ -45,7 +49,10 @@ export function setupMessageHandler(isNode, port, initWasm) {
           const result = await d2.render(JSON.stringify(data));
           const response = JSON.parse(result);
           if (response.error) throw new Error(response.error.message);
-          currentPort.postMessage({ type: "result", data: atob(response.data) });
+          const decoded = new TextDecoder().decode(
+            Uint8Array.from(atob(response.data), (c) => c.charCodeAt(0))
+          );
+          currentPort.postMessage({ type: "result", data: decoded });
         } catch (err) {
           currentPort.postMessage({ type: "error", error: err.message });
         }

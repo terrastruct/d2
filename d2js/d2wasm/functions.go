@@ -151,7 +151,7 @@ func GetELKGraph(args []js.Value) (interface{}, error) {
 	if err != nil {
 		return nil, &WASMError{Message: fmt.Sprintf("text ruler cannot be initialized: %s", err.Error()), Code: 500}
 	}
-	err = g.SetDimensions(nil, ruler, nil)
+	err = g.SetDimensions(nil, ruler, nil, nil)
 	if err != nil {
 		return nil, err
 	}
