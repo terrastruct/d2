@@ -1,5 +1,4 @@
 import { describe, expect, test } from "bun:test";
-import { D2 } from "../../dist/node-esm/index.js";
 
 describe("D2 ESM Integration", () => {
     test("can import main entry point without error", async () => {
@@ -28,6 +27,7 @@ describe("D2 ESM Integration", () => {
   });
   
   test("can import and use ESM build", async () => {
+    const { D2 } = await import("../../dist/node-esm/index.js");
     const d2 = new D2();
     const result = await d2.compile("x -> y");
     expect(result.diagram).toBeDefined();

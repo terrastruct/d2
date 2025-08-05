@@ -39,8 +39,9 @@
   ],
   "scripts": {
     "build": "./make.sh build",
-    "test": "bun test test/unit",
-    "test:all": "bun run test && bun run test:import",
+    "test:unit": "bun test test/unit",
+    "test:integration": "bun test test/integration",
+    "test:all": "bun run test",
     "dev": "bun --watch dev-server.js"
   },
   "keywords": [
