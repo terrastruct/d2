@@ -448,7 +448,10 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 
 	// Use synchronous layout function
-	val, err := runner.RunString(`elkLayoutSync(graph)`)
+	val, err := runner.RunString(`
+		elkLayoutSync(graph);
+		graph;
+	`)
 	if err != nil {
 		return fmt.Errorf("elkLayoutSync failed: %v", err)
 	}

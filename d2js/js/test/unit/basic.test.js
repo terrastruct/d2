@@ -254,46 +254,21 @@ group: "" {
     expect(svg).toContain("<svg");
     expect(svg).toContain("</svg>");
 
-    // Extract dimensions from SVG for analysis
-    console.log("SVG Output Analysis:");
-
-    // Find group container dimensions (Z3JvdXA= is "group" base64 encoded)
     const groupMatch = svg.match(
       /<g class="Z3JvdXA="[^>]*>[\s\S]*?<rect[^>]*width="([^"]*)"[^>]*height="([^"]*)"[^>]*>/
     );
-    if (groupMatch) {
-      const groupWidth = parseFloat(groupMatch[1]);
-      const groupHeight = parseFloat(groupMatch[2]);
-      console.log(`Group container: width=${groupWidth}, height=${groupHeight}`);
-    }
+    expect(groupMatch).not.toBeNull();
+    const groupWidth = parseFloat(groupMatch[1]);
+    const groupHeight = parseFloat(groupMatch[2]);
 
-    // Find element "1" dimensions (Z3JvdXAuMQ== is "group.1" base64 encoded)
     const element1Match = svg.match(
       /<g class="Z3JvdXAuMQ=="[^>]*>[\s\S]*?<rect[^>]*width="([^"]*)"[^>]*height="([^"]*)"[^>]*>/
     );
-    if (element1Match) {
-      const element1Width = parseFloat(element1Match[1]);
-      const element1Height = parseFloat(element1Match[2]);
-      console.log(`Element "1": width=${element1Width}, height=${element1Height}`);
+    expect(element1Match).not.toBeNull();
+    const element1Width = parseFloat(element1Match[1]);
+    const element1Height = parseFloat(element1Match[2]);
 
-      if (groupMatch) {
-        const groupHeight = parseFloat(groupMatch[2]);
-        console.log(`Height ratio (group/element1): ${groupHeight / element1Height}`);
-
-        // This captures the layout ordering issue between grid and elk layouts
-        // In the Go version: group height=66, element height=66, ratio=1.0 (correct)
-        // In d2js version: group height=166, element height=66, ratio=2.52 (incorrect)
-        // The grid container should be sized to properly contain the grid elements, not be 2.5x larger
-
-        // For a single-row grid with grid-gap: 0, the container height should equal element height
-        const heightRatio = groupHeight / element1Height;
-        console.log(`Expected height ratio = 1.0 (Go D2), actual ratio: ${heightRatio}`);
-
-        // This test ensures d2js matches Go D2 behavior
-        // TODO: Fix d2js layout ordering so that grid layout runs before elk layout
-        expect(groupHeight).toBe(element1Height);
-      }
-    }
+    expect(groupHeight).toBe(element1Height);
 
     // Verify the grid elements are rendered correctly with elk layout
     expect(svg).toContain("Z3JvdXA="); // "group" base64 encoded
