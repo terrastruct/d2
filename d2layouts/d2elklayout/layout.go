@@ -464,7 +464,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		if err != nil {
 			return err
 		}
-		
+
 		if err := json.Unmarshal([]byte(resultStr.String()), &jsonOut); err != nil {
 			return err
 		}
