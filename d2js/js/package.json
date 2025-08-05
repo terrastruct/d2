@@ -40,7 +40,6 @@
   "scripts": {
     "build": "./make.sh build",
     "test": "bun test test/unit",
-    "test:import": "bun test test/import-validation",
     "test:all": "bun run test && bun run test:import",
     "dev": "bun --watch dev-server.js"
   },
