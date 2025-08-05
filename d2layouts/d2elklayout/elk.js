@@ -59759,6 +59759,10 @@
                         break;
                       case "layout":
                         qvd(b.graph, b.layoutOptions || {}, b.options || {});
+                        // Expose qvd globally for synchronous access
+                        if (typeof globalThis !== 'undefined') {
+                          globalThis.__elkQvd = qvd;
+                        }
                         f.postMessage({ id: b.id, data: b.graph });
                         break;
                     }
@@ -59772,6 +59776,10 @@
                   };
                 }
                 function j(b) {
+                  // Expose j globally for synchronous usage
+                  if (typeof globalThis !== 'undefined') {
+                    globalThis.__elkWorkerClass = j;
+                  }
                   var c = this;
                   this.dispatcher = new h({
                     postMessage: function (a) {
@@ -105809,3 +105817,52 @@
     [3]
   )(3);
 });
+
+// Add synchronous layout wrapper for d2
+(function() {
+  if (typeof globalThis !== 'undefined') {
+    globalThis.elkLayoutSync = function(graph) {
+      // Use the exposed Worker class if available
+      var WorkerClass = globalThis.__elkWorkerClass;
+      
+      if (WorkerClass) {
+        // Create a worker instance
+        var worker = new WorkerClass();
+        
+        // Set up a dummy onmessage handler (required by the worker)
+        worker.onmessage = function() {};
+        
+        // Trigger qvd exposure by calling layout once with a valid dummy graph
+        if (!globalThis.__elkQvd) {
+          worker.dispatcher.dispatch({
+            data: {
+              cmd: 'layout',
+              graph: { id: 'dummy', children: [], edges: [] },
+              layoutOptions: {},
+              options: {},
+              id: 0
+            }
+          });
+        }
+        
+        // Now use the exposed qvd function if available
+        if (globalThis.__elkQvd) {
+          globalThis.__elkQvd(graph, {}, {});
+        } else {
+          // Fallback: dispatch the layout command directly
+          worker.dispatcher.dispatch({
+            data: {
+              cmd: 'layout',
+              graph: graph,
+              layoutOptions: {},
+              options: {},
+              id: 1
+            }
+          });
+        }
+      }
+      
+      return graph;
+    };
+  }
+})();

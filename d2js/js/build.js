@@ -93,7 +93,6 @@ async function buildAndCopy(buildType) {
       resolve(ROOT_DIR, "wasm/wasm_exec.js"),
       join(config.outdir, "wasm_exec.js")
     );
-    await copyFile(resolve(ROOT_DIR, "src/elk.js"), join(config.outdir, "elk.js"));
   }
 }
 

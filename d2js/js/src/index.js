@@ -37,7 +37,6 @@ export class D2 {
   async init() {
     this.worker = await createWorker();
 
-    const elkContent = await loadFile("./elk.js");
     const wasmExecContent = await loadFile("./wasm_exec.js");
     const wasmBinary = await loadFile("./d2.wasm");
 
@@ -59,7 +58,6 @@ export class D2 {
       data: {
         wasm: wasmBinary,
         wasmExecContent: isNode ? wasmExecContent.toString() : null,
-        elkContent: isNode ? elkContent.toString() : null,
         wasmExecUrl: isNode
           ? null
           : URL.createObjectURL(

@@ -1,6 +1,5 @@
 let currentPort;
 let d2;
-let elk;
 
 function loadScript(content) {
   const func = new Function(content);
@@ -18,10 +17,8 @@ export function setupMessageHandler(isNode, port, initWasm) {
         try {
           if (isNode) {
             loadScript(data.wasmExecContent);
-            loadScript(data.elkContent);
           }
           d2 = await initWasm(data.wasm);
-          elk = new ELK();
           currentPort.postMessage({ type: "ready" });
         } catch (err) {
           currentPort.postMessage({ type: "error", error: err.message });
@@ -30,22 +27,6 @@ export function setupMessageHandler(isNode, port, initWasm) {
 
       case "compile":
         try {
-          // We use Go to get the intermediate ELK graph
-          // Then natively run elk layout
-          // This is due to elk.layout being an async function, which a
-          // single-threaded WASM call cannot complete without giving control back
-          // So we compute it, store it here, then during elk layout, instead
-          // of computing again, we use this variable (and unset it for next call)
-          // If the layout option has not been set, we generate the elk layout now
-          // anyway to support `layout-engine: elk` in d2-config vars
-          if (data.options.layout === "elk" || data.options.layout == null) {
-            const elkGraph = await d2.getELKGraph(JSON.stringify(data));
-            const response = JSON.parse(elkGraph);
-            if (response.error) throw new Error(response.error.message);
-            const elkGraph2 = response.data;
-            const layout = await elk.layout(elkGraph2);
-            globalThis.elkResult = layout;
-          }
           const result = await d2.compile(JSON.stringify(data));
           const response = JSON.parse(result);
           if (response.error) throw new Error(response.error.message);

@@ -2,7 +2,6 @@ import { parentPort } from "node:worker_threads";
 
 let currentPort;
 let d2;
-let elk;
 
 function loadScript(content) {
   const func = new Function(content);
@@ -20,10 +19,8 @@ export function setupMessageHandler(isNode, port, initWasm) {
         try {
           if (isNode) {
             loadScript(data.wasmExecContent);
-            loadScript(data.elkContent);
           }
           d2 = await initWasm(data.wasm);
-          elk = new ELK();
           currentPort.postMessage({ type: "ready" });
         } catch (err) {
           currentPort.postMessage({ type: "error", error: err.message });
@@ -32,14 +29,6 @@ export function setupMessageHandler(isNode, port, initWasm) {
 
       case "compile":
         try {
-          if (data.options.layout === "elk" || data.options.layout == null) {
-            const elkGraph = await d2.getELKGraph(JSON.stringify(data));
-            const response = JSON.parse(elkGraph);
-            if (response.error) throw new Error(response.error.message);
-            const elkGraph2 = response.data;
-            const layout = await elk.layout(elkGraph2);
-            globalThis.elkResult = layout;
-          }
           const result = await d2.compile(JSON.stringify(data));
           const response = JSON.parse(result);
           if (response.error) throw new Error(response.error.message);
