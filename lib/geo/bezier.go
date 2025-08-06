@@ -89,7 +89,7 @@ func NewBezierCurve(points []*Point) *BezierCurve {
 		}
 	}
 	localCurve := newBezierCurveImpl(localPoints...)
-	
+
 	curve := &BezierCurve{
 		curve:  localCurve,
 		points: points,
