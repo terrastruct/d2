@@ -232,6 +232,34 @@ layers: {
     await d2.worker.terminate();
   }, 20000);
 
+  test("theme overrides work correctly", async () => {
+    const d2 = new D2();
+
+    // B1 controls arrow/border color
+    const resultOverridden = await d2.compile(`
+vars: {
+  d2-config: {
+    theme-overrides: {
+      B1: "#000000"
+    }
+  }
+}
+
+a -> b
+`);
+
+    expect(resultOverridden.renderOptions.themeOverrides).toBeDefined();
+    expect(resultOverridden.renderOptions.themeOverrides.b1).toBe("#000000");
+
+    const svgOverridden = await d2.render(
+      resultOverridden.diagram,
+      resultOverridden.renderOptions
+    );
+
+    expect(svgOverridden).toContain("fill:#000000");
+    await d2.worker.terminate();
+  }, 20000);
+
   test("grid layout with elk engine matches go rendering", async () => {
     const d2 = new D2();
     const source = `vars: {
