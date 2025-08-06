@@ -1,8 +1,12 @@
 var setTimeout = function(f) {f()};
 const elk = new ELK();
 
-// Initialize the synchronous layout function for goja
+// Initialize the synchronous layout function
 if (typeof elkLayoutSync === 'function') {
-  // Call it once with a dummy graph to trigger initialization
-  elkLayoutSync({ id: 'init', children: [], edges: [] });
+  // Pre-initialize with a dummy graph to ensure WASM modules are ready
+  try {
+    elkLayoutSync({ id: 'init', children: [], edges: [] });
+  } catch (e) {
+    // Ignore initialization errors
+  }
 }
