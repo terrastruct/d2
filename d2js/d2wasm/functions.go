@@ -280,17 +280,19 @@ func Compile(args []js.Value) (interface{}, error) {
 		Diagram:   *diagram,
 		Graph:     *g,
 		RenderOptions: RenderOptions{
-			ThemeID:         renderOpts.ThemeID,
-			DarkThemeID:     renderOpts.DarkThemeID,
-			Sketch:          renderOpts.Sketch,
-			Pad:             renderOpts.Pad,
-			Center:          renderOpts.Center,
-			Scale:           renderOpts.Scale,
-			ForceAppendix:   input.Opts.ForceAppendix,
-			Target:          input.Opts.Target,
-			AnimateInterval: input.Opts.AnimateInterval,
-			Salt:            input.Opts.Salt,
-			NoXMLTag:        input.Opts.NoXMLTag,
+			ThemeID:            renderOpts.ThemeID,
+			DarkThemeID:        renderOpts.DarkThemeID,
+			ThemeOverrides:     renderOpts.ThemeOverrides,
+			DarkThemeOverrides: renderOpts.DarkThemeOverrides,
+			Sketch:             renderOpts.Sketch,
+			Pad:                renderOpts.Pad,
+			Center:             renderOpts.Center,
+			Scale:              renderOpts.Scale,
+			ForceAppendix:      input.Opts.ForceAppendix,
+			Target:             input.Opts.Target,
+			AnimateInterval:    input.Opts.AnimateInterval,
+			Salt:               input.Opts.Salt,
+			NoXMLTag:           input.Opts.NoXMLTag,
 		},
 	}, nil
 }
@@ -381,6 +383,12 @@ func Render(args []js.Value) (interface{}, error) {
 	}
 	if input.Opts != nil && input.Opts.DarkThemeID != nil {
 		renderOpts.DarkThemeID = input.Opts.DarkThemeID
+	}
+	if input.Opts != nil && input.Opts.ThemeOverrides != nil {
+		renderOpts.ThemeOverrides = input.Opts.ThemeOverrides
+	}
+	if input.Opts != nil && input.Opts.DarkThemeOverrides != nil {
+		renderOpts.DarkThemeOverrides = input.Opts.DarkThemeOverrides
 	}
 	if input.Opts != nil && input.Opts.Scale != nil {
 		renderOpts.Scale = input.Opts.Scale

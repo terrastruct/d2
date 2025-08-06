@@ -6,6 +6,8 @@ include changes to the main d2 project.**
 ## Next
 
 - Fix TypeScript signatures
+- Fix theme-overrides not applying
+- Fix grids in ELK layouts
 
 ## [0.1.22]
 ### March 20, 2025
