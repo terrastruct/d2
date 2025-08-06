@@ -159,18 +159,20 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 	runner := jsrunner.NewJSRunner()
 
+	// Load ELK for both Goja and WASM engines
 	if runner.Engine() == jsrunner.Goja {
 		console := runner.NewObject()
 		if err := runner.Set("console", console); err != nil {
 			return err
 		}
+	}
 
-		if _, err := runner.RunString(elkJS); err != nil {
-			return err
-		}
-		if _, err := runner.RunString(setupJS); err != nil {
-			return err
-		}
+	// Load ELK JS for both engines
+	if _, err := runner.RunString(elkJS); err != nil {
+		return err
+	}
+	if _, err := runner.RunString(setupJS); err != nil {
+		return err
 	}
 
 	elkGraph := &ELKGraph{
@@ -440,38 +442,34 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		return err
 	}
 
-	var val jsrunner.JSValue
-	if runner.Engine() == jsrunner.Goja {
-		loadScript := fmt.Sprintf(`var graph = %s`, raw)
-
-		if _, err := runner.RunString(loadScript); err != nil {
-			return err
-		}
-
-		val, err = runner.RunString(`elk.layout(graph)
-.then(s => s)
-.catch(err => err.message)
-`)
-	} else {
-		val, err = runner.MustGet("elkResult")
-	}
-	if err != nil {
+	loadScript := fmt.Sprintf(`var graph = %s`, raw)
+	if _, err := runner.RunString(loadScript); err != nil {
 		return err
 	}
 
-	result, err := runner.WaitPromise(ctx, val)
+	// Use synchronous layout function
+	val, err := runner.RunString(`
+		elkLayoutSync(graph);
+		graph;
+	`)
 	if err != nil {
-		return fmt.Errorf("ELK layout error: %v", err)
+		return fmt.Errorf("elkLayoutSync failed: %v", err)
 	}
 
 	var jsonOut map[string]interface{}
-	switch out := result.(type) {
-	case string:
-		return fmt.Errorf("ELK layout error: %s", out)
-	case map[string]interface{}:
-		jsonOut = out
-	default:
-		return fmt.Errorf("ELK unexpected return: %v", out)
+	// The result should be the modified graph object directly
+	if val != nil {
+		// Convert JSValue to map
+		resultStr, err := runner.RunString(`JSON.stringify(graph)`)
+		if err != nil {
+			return err
+		}
+
+		if err := json.Unmarshal([]byte(resultStr.String()), &jsonOut); err != nil {
+			return err
+		}
+	} else {
+		return fmt.Errorf("ELK layout returned nil")
 	}
 
 	jsonBytes, err := json.Marshal(jsonOut)

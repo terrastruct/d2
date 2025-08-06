@@ -231,4 +231,50 @@ layers: {
     }
     await d2.worker.terminate();
   }, 20000);
+
+  test("grid layout with elk engine matches go rendering", async () => {
+    const d2 = new D2();
+    const source = `vars: {
+  d2-config: {
+    layout-engine: elk
+  }
+}
+
+group: "" {
+  grid-rows: 1
+  grid-gap: 0
+  1
+  2
+  3
+}`;
+    const result = await d2.compile(source);
+    expect(result.diagram).toBeDefined();
+
+    const svg = await d2.render(result.diagram);
+    expect(svg).toContain("<svg");
+    expect(svg).toContain("</svg>");
+
+    const groupMatch = svg.match(
+      /<g class="Z3JvdXA="[^>]*>[\s\S]*?<rect[^>]*width="([^"]*)"[^>]*height="([^"]*)"[^>]*>/
+    );
+    expect(groupMatch).not.toBeNull();
+    const groupWidth = parseFloat(groupMatch[1]);
+    const groupHeight = parseFloat(groupMatch[2]);
+
+    const element1Match = svg.match(
+      /<g class="Z3JvdXAuMQ=="[^>]*>[\s\S]*?<rect[^>]*width="([^"]*)"[^>]*height="([^"]*)"[^>]*>/
+    );
+    expect(element1Match).not.toBeNull();
+    const element1Width = parseFloat(element1Match[1]);
+    const element1Height = parseFloat(element1Match[2]);
+
+    expect(groupHeight).toBe(element1Height);
+
+    // Verify the grid elements are rendered correctly with elk layout
+    expect(svg).toContain("Z3JvdXA="); // "group" base64 encoded
+    expect(svg).toContain(">1</text>"); // Should contain the "1" element
+    expect(svg).toContain(">2</text>"); // Should contain the "2" element
+    expect(svg).toContain(">3</text>"); // Should contain the "3" element
+    await d2.worker.terminate();
+  }, 20000);
 });

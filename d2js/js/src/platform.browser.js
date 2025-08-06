@@ -1,6 +1,5 @@
 import { wasmBinary, wasmExecJs } from "./wasm-loader.browser.js";
 import workerScript from "./worker.js" with { type: "text" };
-import elkScript from "./elk.js" with { type: "text" };
 
 // For the browser version, we build the wasm files into a file (wasm-loader.browser.js)
 // and loading a file just reads the text, so there's no external dependency calls
@@ -15,7 +14,7 @@ export async function loadFile(path) {
 }
 
 export async function createWorker() {
-  let blob = new Blob([wasmExecJs, elkScript, workerScript], {
+  let blob = new Blob([wasmExecJs, workerScript], {
     type: "text/javascript;charset=utf-8",
   });
 

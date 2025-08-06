@@ -59759,6 +59759,10 @@
                         break;
                       case "layout":
                         qvd(b.graph, b.layoutOptions || {}, b.options || {});
+                        // Expose qvd globally for synchronous access
+                        if (typeof globalThis !== "undefined") {
+                          globalThis.__elkQvd = qvd;
+                        }
                         f.postMessage({ id: b.id, data: b.graph });
                         break;
                     }
@@ -59772,6 +59776,10 @@
                   };
                 }
                 function j(b) {
+                  // Expose j globally for synchronous usage
+                  if (typeof globalThis !== "undefined") {
+                    globalThis.__elkWorkerClass = j;
+                  }
                   var c = this;
                   this.dispatcher = new h({
                     postMessage: function (a) {
@@ -105809,3 +105817,98 @@
     [3]
   )(3);
 });
+
+// Add synchronous layout wrapper for d2
+(function () {
+  if (typeof globalThis !== "undefined") {
+    // Store initialized worker instance globally to reuse
+    var globalWorker = null;
+    var initializationAttempted = false;
+
+    globalThis.elkLayoutSync = function (graph) {
+      // Use the exposed Worker class if available
+      var WorkerClass = globalThis.__elkWorkerClass;
+
+      if (WorkerClass) {
+        // Initialize worker only once
+        if (!globalWorker) {
+          if (!initializationAttempted) {
+            initializationAttempted = true;
+            try {
+              // Create a worker instance
+              globalWorker = new WorkerClass();
+
+              // Set up a dummy onmessage handler (required by the worker)
+              globalWorker.onmessage = function () {};
+
+              // Ensure the worker's dispatcher is ready
+              if (!globalWorker.dispatcher) {
+                // If dispatcher is not immediately available, try to wait for it
+                var attempts = 0;
+                while (!globalWorker.dispatcher && attempts < 100) {
+                  // Give the event loop a chance to initialize
+                  if (typeof setTimeout !== "undefined") {
+                    // Use a synchronous workaround
+                    var start = Date.now();
+                    while (Date.now() - start < 1) {
+                      // Busy wait for 1ms
+                    }
+                  }
+                  attempts++;
+                }
+              }
+
+              // Initialize internal WASM modules by triggering a dummy layout
+              if (globalWorker.dispatcher) {
+                try {
+                  globalWorker.dispatcher.dispatch({
+                    data: {
+                      cmd: "layout",
+                      graph: { id: "init", children: [], edges: [] },
+                      layoutOptions: {},
+                      options: {},
+                      id: 0,
+                    },
+                  });
+                } catch (initError) {
+                  // Initialization error, but continue
+                  console.warn("ELK initialization warning:", initError);
+                }
+              }
+            } catch (e) {
+              console.error("Failed to initialize ELK worker:", e);
+              globalWorker = null;
+              initializationAttempted = false;
+              return graph;
+            }
+          }
+        }
+
+        // Now perform the actual layout
+        if (globalWorker && globalWorker.dispatcher) {
+          try {
+            // Check if qvd function was exposed during initialization
+            if (globalThis.__elkQvd) {
+              globalThis.__elkQvd(graph, {}, {});
+            } else {
+              // Dispatch the layout command directly
+              globalWorker.dispatcher.dispatch({
+                data: {
+                  cmd: "layout",
+                  graph: graph,
+                  layoutOptions: {},
+                  options: {},
+                  id: 1,
+                },
+              });
+            }
+          } catch (layoutError) {
+            console.error("ELK layout error:", layoutError);
+          }
+        }
+      }
+
+      return graph;
+    };
+  }
+})();

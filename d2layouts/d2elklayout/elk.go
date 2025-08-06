@@ -1,5 +1,3 @@
-//go:build !js && !wasm
-
 package d2elklayout
 
 import (
