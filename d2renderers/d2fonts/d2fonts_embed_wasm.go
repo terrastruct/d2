@@ -185,7 +185,7 @@ func initializeFontFaces(fontFacesFS embed.FS) error {
 	// HandDrawn font duplicates for missing styles
 	fuzzyRegular := FontFaces.Get(Font{Family: HandDrawn, Style: FONT_STYLE_REGULAR})
 	FontFaces.Set(Font{Family: HandDrawn, Style: FONT_STYLE_ITALIC}, fuzzyRegular)
-	
+
 	fuzzyBold := FontFaces.Get(Font{Family: HandDrawn, Style: FONT_STYLE_BOLD})
 	FontFaces.Set(Font{Family: HandDrawn, Style: FONT_STYLE_SEMIBOLD}, fuzzyBold)
 
