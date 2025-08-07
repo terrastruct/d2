@@ -1,7 +1,6 @@
 package d2latex
 
 import (
-	_ "embed"
 	"fmt"
 	"math"
 	"regexp"
@@ -14,18 +13,11 @@ import (
 
 var pxPerEx = 8
 
-//go:embed polyfills.js
-var polyfillsJS string
-
-//go:embed setup.js
-var setupJS string
-
-//go:embed mathjax.js
-var mathjaxJS string
-
 // Matches this
 // <svg style="background: white;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="563" height="326" viewBox="-100 -100 563 326"><style type="text/css">
 var svgRe = regexp.MustCompile(`<svg[^>]+width="([0-9\.]+)ex" height="([0-9\.]+)ex"[^>]+>`)
+
+// mathjaxJS will be set by the build-specific files
 
 func Render(s string) (_ string, err error) {
 	defer xdefer.Errorf(&err, "latex failed to parse")
