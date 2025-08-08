@@ -41,7 +41,7 @@
     "build": "./make.sh build",
     "test:unit": "bun test test/unit",
     "test:integration": "bun test test/integration",
-    "test:all": "bun run test",
+    "test": "bun run test:unit && bun run test:integration",
     "dev": "bun --watch dev-server.js"
   },
   "keywords": [
@@ -54,7 +54,6 @@
   ],
   "license": "MPL-2.0",
   "devDependencies": {
-    "bun": "latest",
-    "typescript": "^5.9.2"
-  }
+    "bun": "latest" 
+   }
 }
