@@ -5,7 +5,8 @@ include changes to the main d2 project.**
 
 ## Next
 
-- Fix TypeScript signatures
+- Fixed ESM and CJS builds of d2.js [#2286](https://github.com/terrastruct/d2/issues/2286) + [#1448](https://github.com/terrastruct/d2/issues/1448)
+
 
 ## [0.1.22]
 ### March 20, 2025

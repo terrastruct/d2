@@ -1,6 +1,5 @@
 #### Features 🚀
 
-- Fixed ESM and CJS builds of d2.js [#2286](https://github.com/terrastruct/d2/issues/2286) + [#1448](https://github.com/terrastruct/d2/issues/1448)
 - ASCII renders. Output `txt` for d2 to render diagrams as ASCII art [#2572](https://github.com/terrastruct/d2/pull/2572)
 - `cross` arrowhead shape is available [#2190](https://github.com/terrastruct/d2/pull/2190)
 - `style.underline` support for class fields and methods [#2544](https://github.com/terrastruct/d2/pull/2544)
