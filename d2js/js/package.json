@@ -15,35 +15,33 @@
   "publishConfig": {
     "access": "public"
   },
-  "type": "module",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
+  "main": "./dist/node-cjs/index.js",
+  "module": "./dist/node-esm/index.js",
+  "types": "./index.d.ts",
   "exports": {
     ".": {
+      "types": "./index.d.ts",
       "browser": "./dist/browser/index.js",
-      "import": {
-        "browser": "./dist/browser/index.js",
-        "default": "./dist/node-esm/index.js",
-        "types": "./index.d.ts"
-      },
-      "require": {
-        "default": "./dist/node-cjs/index.js",
-        "types": "./index.d.ts"
-      },
+      "import": "./dist/node-esm/index.js",
+      "require": "./dist/node-cjs/index.js",
       "default": "./dist/node-esm/index.js"
     },
-    "./worker": "./dist/browser/worker.js"
+    "./worker": {
+      "browser": "./dist/browser/worker.js",
+      "import": "./dist/node-esm/worker.js",
+      "require": "./dist/node-cjs/worker.js",
+      "default": "./dist/node-esm/worker.js"
+    }
   },
   "files": [
     "dist",
     "index.d.ts"
   ],
-  "types": "./index.d.ts",
   "scripts": {
     "build": "./make.sh build",
-    "test": "bun test test/unit",
+    "test:unit": "bun test test/unit",
     "test:integration": "bun test test/integration",
-    "test:all": "bun run test && bun run test:integration",
+    "test": "bun run test:unit && bun run test:integration",
     "dev": "bun --watch dev-server.js"
   },
   "keywords": [
@@ -56,6 +54,6 @@
   ],
   "license": "MPL-2.0",
   "devDependencies": {
-    "bun": "latest"
-  }
+    "bun": "latest" 
+   }
 }

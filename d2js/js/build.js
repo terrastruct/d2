@@ -1,5 +1,5 @@
 import { build } from "bun";
-import { copyFile, mkdir, writeFile, readFile, rm } from "node:fs/promises";
+import { copyFile, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 
 const __dirname = new URL(".", import.meta.url).pathname;
