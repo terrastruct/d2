@@ -28,30 +28,9 @@ await writeFile(
 const browserWorkerTemplate = await readFile(join(SRC_DIR, "worker.browser.js"), "utf8");
 const browserWorkerWithElk = browserWorkerTemplate.replace(
   'throw new Error("ELK library not available in browser environment");',
-  `// Load the ELK library directly embedded
-      console.log("Loading embedded ELK library in browser...");
-      const elkLibrary = ${JSON.stringify(elkJs)};
-      const setupLibrary = ${JSON.stringify(setupJs)};
-      
-      // Load ELK
-      loadScript(elkLibrary);
-      console.log("After loading embedded elkJS, ELK available:", typeof globalThis.ELK);
-      
-      // Load setup
-      loadScript(setupLibrary);
-      console.log("After loading embedded setupJS, ELK available:", typeof globalThis.ELK);
-      console.log("After loading embedded setupJS, elk variable available:", typeof globalThis.elk);
-      
-      // Ensure elk is available globally for WASM
-      if (typeof globalThis.elk === "undefined" && typeof globalThis.ELK !== "undefined") {
-        globalThis.elk = new globalThis.ELK();
-        console.log("Created elk instance:", typeof globalThis.elk);
-      }
-      
-      // Also make sure it's available in the global scope for WASM
-      if (typeof globalThis.self !== "undefined") {
-        globalThis.self.elk = globalThis.elk;
-      }`
+  `loadScript(${JSON.stringify(elkJs)});
+loadScript(${JSON.stringify(setupJs)});
+`
 );
 
 await writeFile(join(SRC_DIR, "worker.browser.embedded.js"), browserWorkerWithElk);
