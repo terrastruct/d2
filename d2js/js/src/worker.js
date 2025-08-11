@@ -19,17 +19,10 @@ function loadELK() {
       const elkJS = readFileSync(join(__dirname, "elk.js"), "utf8");
       const setupJS = readFileSync(join(__dirname, "setup.js"), "utf8");
 
-      console.log("Loading ELK library...");
       // Load the ELK library
       loadScript(elkJS);
-      console.log("After loading elkJS, ELK available:", typeof globalThis.ELK);
       try {
         loadScript(setupJS);
-        console.log("After loading setupJS, ELK available:", typeof globalThis.ELK);
-        console.log(
-          "After loading setupJS, elk variable available:",
-          typeof globalThis.elk
-        );
       } catch (err) {
         console.error("Error loading setupJS:", err);
         throw err;
@@ -41,7 +34,6 @@ function loadELK() {
         typeof globalThis.ELK !== "undefined"
       ) {
         globalThis.elk = new globalThis.ELK();
-        console.log("Created elk instance:", typeof globalThis.elk);
       }
 
       // Also make sure it's available in the global scope for WASM

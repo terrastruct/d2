@@ -10,7 +10,6 @@ function loadScript(content) {
 function loadELK() {
   if (typeof globalThis.ELK === "undefined") {
     try {
-      console.log("Loading ELK library in browser...");
       // Load the ELK library from the files
       // In a real browser implementation, these would be loaded via fetch
       // For now, we'll throw an error if ELK is not available
