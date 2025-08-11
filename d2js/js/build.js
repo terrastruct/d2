@@ -13,6 +13,8 @@ await mkdir("./dist/node-cjs", { recursive: true });
 
 const wasmBinary = await readFile("./wasm/d2.wasm");
 const wasmExecJs = await readFile("./wasm/wasm_exec.js", "utf8");
+const elkJs = await readFile("./src/elk.js", "utf8");
+const setupJs = await readFile("./src/setup.js", "utf8");
 
 await writeFile(
   join(SRC_DIR, "wasm-loader.browser.js"),
@@ -21,6 +23,38 @@ await writeFile(
   )}"), c => c.charCodeAt(0));
    export const wasmExecJs = ${JSON.stringify(wasmExecJs)};`
 );
+
+// Create browser worker with embedded ELK
+const browserWorkerTemplate = await readFile(join(SRC_DIR, "worker.browser.js"), "utf8");
+const browserWorkerWithElk = browserWorkerTemplate.replace(
+  'throw new Error("ELK library not available in browser environment");',
+  `// Load the ELK library directly embedded
+      console.log("Loading embedded ELK library in browser...");
+      const elkLibrary = ${JSON.stringify(elkJs)};
+      const setupLibrary = ${JSON.stringify(setupJs)};
+      
+      // Load ELK
+      loadScript(elkLibrary);
+      console.log("After loading embedded elkJS, ELK available:", typeof globalThis.ELK);
+      
+      // Load setup
+      loadScript(setupLibrary);
+      console.log("After loading embedded setupJS, ELK available:", typeof globalThis.ELK);
+      console.log("After loading embedded setupJS, elk variable available:", typeof globalThis.elk);
+      
+      // Ensure elk is available globally for WASM
+      if (typeof globalThis.elk === "undefined" && typeof globalThis.ELK !== "undefined") {
+        globalThis.elk = new globalThis.ELK();
+        console.log("Created elk instance:", typeof globalThis.elk);
+      }
+      
+      // Also make sure it's available in the global scope for WASM
+      if (typeof globalThis.self !== "undefined") {
+        globalThis.self.elk = globalThis.elk;
+      }`
+);
+
+await writeFile(join(SRC_DIR, "worker.browser.embedded.js"), browserWorkerWithElk);
 
 const commonConfig = {
   minify: true,
@@ -38,7 +72,7 @@ async function buildDynamicFiles(platform) {
   const workerSource =
     platform === "node"
       ? join(SRC_DIR, "worker.node.js")
-      : join(SRC_DIR, "worker.browser.js");
+      : join(SRC_DIR, "worker.browser.embedded.js");
 
   const workerTarget = join(SRC_DIR, "worker.js");
   const workerContent = await readFile(workerSource, "utf8");
@@ -93,6 +127,9 @@ async function buildAndCopy(buildType) {
       resolve(ROOT_DIR, "wasm/wasm_exec.js"),
       join(config.outdir, "wasm_exec.js")
     );
+    // Copy ELK library files
+    await copyFile(resolve(ROOT_DIR, "src/elk.js"), join(config.outdir, "elk.js"));
+    await copyFile(resolve(ROOT_DIR, "src/setup.js"), join(config.outdir, "setup.js"));
   }
 }
 

@@ -6,6 +6,22 @@ function loadScript(content) {
   func.call(globalThis);
 }
 
+// Load ELK library for WASM environment
+function loadELK() {
+  if (typeof globalThis.ELK === "undefined") {
+    try {
+      console.log("Loading ELK library in browser...");
+      // Load the ELK library from the files
+      // In a real browser implementation, these would be loaded via fetch
+      // For now, we'll throw an error if ELK is not available
+      throw new Error("ELK library not available in browser environment");
+    } catch (err) {
+      console.error("Failed to load ELK library in browser:", err);
+      throw new Error("ELK library is required but not available in browser environment");
+    }
+  }
+}
+
 export function setupMessageHandler(isNode, port, initWasm) {
   currentPort = port;
 
@@ -18,6 +34,7 @@ export function setupMessageHandler(isNode, port, initWasm) {
           if (isNode) {
             loadScript(data.wasmExecContent);
           }
+          loadELK(); // Load ELK library before initializing WASM
           d2 = await initWasm(data.wasm);
           currentPort.postMessage({ type: "ready" });
         } catch (err) {
