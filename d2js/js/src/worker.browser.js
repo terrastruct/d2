@@ -1,3 +1,5 @@
+// elkJs and setupJs variables are prepended by build.js
+
 let currentPort;
 let d2;
 
@@ -9,14 +11,13 @@ function loadScript(content) {
 // Load ELK library for WASM environment
 function loadELK() {
   if (typeof globalThis.ELK === "undefined") {
-    try {
-      // Load the ELK library from the files
-      // In a real browser implementation, these would be loaded via fetch
-      // For now, we'll throw an error if ELK is not available
-      throw new Error("ELK library not available in browser environment");
-    } catch (err) {
-      console.error("Failed to load ELK library in browser:", err);
-      throw new Error("ELK library is required but not available in browser environment");
+    // Load the embedded ELK library
+    loadScript(elkJs);
+    loadScript(setupJs);
+
+    // Ensure elk is available globally for WASM
+    if (typeof globalThis.elk === "undefined" && typeof globalThis.ELK !== "undefined") {
+      globalThis.elk = new globalThis.ELK();
     }
   }
 }
