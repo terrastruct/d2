@@ -11,7 +11,6 @@ function loadScript(content) {
   func.call(globalThis);
 }
 
-// Load ELK library for WASM environment
 function loadELK() {
   if (typeof globalThis.ELK === "undefined") {
     try {
@@ -19,33 +18,11 @@ function loadELK() {
       const elkJS = readFileSync(join(__dirname, "elk.js"), "utf8");
       const setupJS = readFileSync(join(__dirname, "setup.js"), "utf8");
 
-      // Load the ELK library
       loadScript(elkJS);
-      try {
-        loadScript(setupJS);
-      } catch (err) {
-        console.error("Error loading setupJS:", err);
-        throw err;
-      }
-
-      // Make sure elk is available globally for WASM
-      if (
-        typeof globalThis.elk === "undefined" &&
-        typeof globalThis.ELK !== "undefined"
-      ) {
-        globalThis.elk = new globalThis.ELK();
-      }
-
-      // Also make sure it's available in the global scope for WASM
-      if (typeof globalThis.window !== "undefined") {
-        globalThis.window.elk = globalThis.elk;
-      }
-      if (typeof globalThis.self !== "undefined") {
-        globalThis.self.elk = globalThis.elk;
-      }
+      loadScript(setupJS);
     } catch (err) {
       console.error("Failed to load ELK library:", err);
-      throw err; // Don't provide fallback, let it fail
+      throw err;
     }
   }
 }
@@ -62,7 +39,7 @@ export function setupMessageHandler(isNode, port, initWasm) {
           if (isNode) {
             loadScript(data.wasmExecContent);
           }
-          loadELK(); // Load ELK library before initializing WASM
+          loadELK();
           d2 = await initWasm(data.wasm);
           currentPort.postMessage({ type: "ready" });
         } catch (err) {

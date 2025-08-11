@@ -35,7 +35,6 @@ async function buildDynamicFiles(platform) {
   await writeFile(join(SRC_DIR, "platform.js"), platformContent);
 
   if (platform === "node") {
-    // For Node, just use worker.node.js as-is
     const workerContent = await readFile(join(SRC_DIR, "worker.node.js"), "utf8");
     await writeFile(join(SRC_DIR, "worker.js"), workerContent);
   } else {
@@ -44,12 +43,9 @@ async function buildDynamicFiles(platform) {
     const elkJs = await readFile(join(SRC_DIR, "elk.js"), "utf8");
     const setupJs = await readFile(join(SRC_DIR, "setup.js"), "utf8");
     const workerBase = await readFile(join(SRC_DIR, "worker.browser.js"), "utf8");
-
-    // Create the ELK variable declarations and prepend to worker
     const elkVars = `const elkJs = ${JSON.stringify(elkJs)};
 const setupJs = ${JSON.stringify(setupJs)};
 `;
-
     await writeFile(join(SRC_DIR, "worker.js"), elkVars + workerBase);
   }
 }

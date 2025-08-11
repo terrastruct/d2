@@ -8,16 +8,14 @@ function loadScript(content) {
   func.call(globalThis);
 }
 
-// Load ELK library for WASM environment
 function loadELK() {
   if (typeof globalThis.ELK === "undefined") {
-    // Load the embedded ELK library
-    loadScript(elkJs);
-    loadScript(setupJs);
-
-    // Ensure elk is available globally for WASM
-    if (typeof globalThis.elk === "undefined" && typeof globalThis.ELK !== "undefined") {
-      globalThis.elk = new globalThis.ELK();
+    try {
+      loadScript(elkJs);
+      loadScript(setupJs);
+    } catch (err) {
+      console.error("Failed to load ELK library:", err);
+      throw err;
     }
   }
 }
@@ -34,7 +32,7 @@ export function setupMessageHandler(isNode, port, initWasm) {
           if (isNode) {
             loadScript(data.wasmExecContent);
           }
-          loadELK(); // Load ELK library before initializing WASM
+          loadELK();
           d2 = await initWasm(data.wasm);
           currentPort.postMessage({ type: "ready" });
         } catch (err) {
