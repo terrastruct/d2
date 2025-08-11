@@ -40,8 +40,14 @@ async function buildDynamicFiles(platform) {
   } else {
     // For browser, prepend the ELK variables to worker.browser.js
     // since the worker runs in a blob and can't use ES6 imports
-    const elkJs = await readFile(join(SRC_DIR, "elk.js"), "utf8");
-    const setupJs = await readFile(join(SRC_DIR, "setup.js"), "utf8");
+    const elkJs = await readFile(
+      resolve(ROOT_DIR, "../../d2layouts/d2elklayout/elk.js"),
+      "utf8"
+    );
+    const setupJs = await readFile(
+      resolve(ROOT_DIR, "../../d2layouts/d2elklayout/setup.js"),
+      "utf8"
+    );
     const workerBase = await readFile(join(SRC_DIR, "worker.browser.js"), "utf8");
     const elkVars = `const elkJs = ${JSON.stringify(elkJs)};
 const setupJs = ${JSON.stringify(setupJs)};
@@ -98,9 +104,15 @@ async function buildAndCopy(buildType) {
       resolve(ROOT_DIR, "wasm/wasm_exec.js"),
       join(config.outdir, "wasm_exec.js")
     );
-    // Copy ELK library files
-    await copyFile(resolve(ROOT_DIR, "src/elk.js"), join(config.outdir, "elk.js"));
-    await copyFile(resolve(ROOT_DIR, "src/setup.js"), join(config.outdir, "setup.js"));
+    // Copy ELK library files from d2elklayout
+    await copyFile(
+      resolve(ROOT_DIR, "../../d2layouts/d2elklayout/elk.js"),
+      join(config.outdir, "elk.js")
+    );
+    await copyFile(
+      resolve(ROOT_DIR, "../../d2layouts/d2elklayout/setup.js"),
+      join(config.outdir, "setup.js")
+    );
   }
 }
 
