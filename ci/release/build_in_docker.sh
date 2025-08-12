@@ -4,7 +4,7 @@ cd -- "$(dirname "$0")/../.."
 . ./ci/sub/lib.sh
 
 tag="$(sh_c docker build \
-  --build-arg GOVERSION="1.24.0.linux-$ARCH" \
+  --build-arg GOVERSION="1.24.6.linux-$ARCH" \
   -qf ./ci/release/linux/Dockerfile ./ci/release/linux)"
 docker_run \
   -e DRY_RUN \

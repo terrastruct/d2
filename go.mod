@@ -2,7 +2,7 @@ module oss.terrastruct.com/d2
 
 go 1.24
 
-toolchain go1.24.0
+toolchain go1.24.6
 
 require (
 	github.com/PuerkitoBio/goquery v1.10.0
