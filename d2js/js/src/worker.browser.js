@@ -64,6 +64,28 @@ export function setupMessageHandler(isNode, port, initWasm) {
           currentPort.postMessage({ type: "error", error: err.message });
         }
         break;
+
+      case "encode":
+        try {
+          const result = d2.encode(data);
+          const response = JSON.parse(result);
+          if (response.error) throw new Error(response.error.message);
+          currentPort.postMessage({ type: "result", data: response.data.result });
+        } catch (err) {
+          currentPort.postMessage({ type: "error", error: err.message });
+        }
+        break;
+
+      case "decode":
+        try {
+          const result = d2.decode(data);
+          const response = JSON.parse(result);
+          if (response.error) throw new Error(response.error.message);
+          currentPort.postMessage({ type: "result", data: response.data.result });
+        } catch (err) {
+          currentPort.postMessage({ type: "error", error: err.message });
+        }
+        break;
     }
   };
 
