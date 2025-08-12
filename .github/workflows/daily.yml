@@ -32,6 +32,12 @@ jobs:
           go-version-file: ./go.mod
           cache: true
 
+      - name: Install binaryen for wasm-opt
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y binaryen
+
       - name: Publish nightly version to NPM
         if: steps.check_changes.outputs.has_changes == 'true'
         run: |

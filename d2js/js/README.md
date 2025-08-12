@@ -151,6 +151,15 @@ All [RenderOptions](#renderoptions) properties in addition to:
 
 D2.js uses Bun, so install this first.
 
+For optimal WASM file size, also install binaryen:
+```bash
+# macOS
+brew install binaryen
+
+# Ubuntu/Debian
+sudo apt-get install binaryen
+```
+
 ### Building from source
 
 ```bash
