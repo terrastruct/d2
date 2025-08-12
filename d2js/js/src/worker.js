@@ -1,4 +1,7 @@
 import { parentPort } from "node:worker_threads";
+import { readFileSync } from "node:fs";
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 
 let currentPort;
 let d2;
@@ -6,6 +9,22 @@ let d2;
 function loadScript(content) {
   const func = new Function(content);
   func.call(globalThis);
+}
+
+function loadELK() {
+  if (typeof globalThis.ELK === "undefined") {
+    try {
+      const __dirname = dirname(fileURLToPath(import.meta.url));
+      const elkJS = readFileSync(join(__dirname, "elk.js"), "utf8");
+      const setupJS = readFileSync(join(__dirname, "setup.js"), "utf8");
+
+      loadScript(elkJS);
+      loadScript(setupJS);
+    } catch (err) {
+      console.error("Failed to load ELK library:", err);
+      throw err;
+    }
+  }
 }
 
 export function setupMessageHandler(isNode, port, initWasm) {
@@ -20,6 +39,7 @@ export function setupMessageHandler(isNode, port, initWasm) {
           if (isNode) {
             loadScript(data.wasmExecContent);
           }
+          loadELK();
           d2 = await initWasm(data.wasm);
           currentPort.postMessage({ type: "ready" });
         } catch (err) {

@@ -52,18 +52,18 @@ describe("D2 Unit Tests", () => {
     const d2 = new D2();
     const result = await d2.compile(
       `
-vars: {
-  d2-config: {
-    theme-id: 4
-    dark-theme-id: 200
-    pad: 10
-    center: true
-    sketch: true
-    layout-engine: elk
+  vars: {
+    d2-config: {
+      theme-id: 4
+      dark-theme-id: 200
+      pad: 10
+      center: true
+      sketch: true
+      layout-engine: elk
+    }
   }
-}
-x -> y
-`
+  x -> y
+  `
     );
     expect(result.renderOptions.sketch).toBe(true);
     expect(result.renderOptions.themeID).toBe(4);
@@ -77,18 +77,18 @@ x -> y
     const d2 = new D2();
     const result = await d2.compile(
       `
-vars: {
-  d2-config: {
-    theme-id: 4
-    dark-theme-id: 200
-    pad: 10
-    center: true
-    sketch: true
-    layout-engine: elk
+  vars: {
+    d2-config: {
+      theme-id: 4
+      dark-theme-id: 200
+      pad: 10
+      center: true
+      sketch: true
+      layout-engine: elk
+    }
   }
-}
-x -> y
-`,
+  x -> y
+  `,
       {
         sketch: false,
         themeID: 100,
@@ -147,13 +147,13 @@ x -> y
   test("animated multi-board works", async () => {
     const d2 = new D2();
     const source = `
-x -> y
-layers: {
-  numbers: {
-    1 -> 2
+  x -> y
+  layers: {
+    numbers: {
+      1 -> 2
+    }
   }
-}
-`;
+  `;
     const options = { target: "*", animateInterval: 1000 };
     const result = await d2.compile(source, options);
     const svg = await d2.render(result.diagram, result.renderOptions);
@@ -197,13 +197,13 @@ layers: {
   test("handles unanimated multi-board error correctly", async () => {
     const d2 = new D2();
     const source = `
-x -> y
-layers: {
-  numbers: {
-    1 -> 2
+  x -> y
+  layers: {
+    numbers: {
+      1 -> 2
+    }
   }
-}
-`;
+  `;
     const result = await d2.compile(source);
     try {
       await d2.render(result.diagram, { target: "*" });
@@ -237,16 +237,16 @@ layers: {
 
     // B1 controls arrow/border color
     const resultOverridden = await d2.compile(`
-vars: {
-  d2-config: {
-    theme-overrides: {
-      B1: "#000000"
+  vars: {
+    d2-config: {
+      theme-overrides: {
+        B1: "#000000"
+      }
     }
   }
-}
 
-a -> b
-`);
+  a -> b
+  `);
 
     expect(resultOverridden.renderOptions.themeOverrides).toBeDefined();
     expect(resultOverridden.renderOptions.themeOverrides.b1).toBe("#000000");
@@ -263,18 +263,18 @@ a -> b
   test("grid layout with elk engine matches go rendering", async () => {
     const d2 = new D2();
     const source = `vars: {
-  d2-config: {
-    layout-engine: elk
+    d2-config: {
+      layout-engine: elk
+    }
   }
-}
 
-group: "" {
-  grid-rows: 1
-  grid-gap: 0
-  1
-  2
-  3
-}`;
+  group: "" {
+    grid-rows: 1
+    grid-gap: 0
+    1
+    2
+    3
+  }`;
     const result = await d2.compile(source);
     expect(result.diagram).toBeDefined();
 
@@ -305,4 +305,110 @@ group: "" {
     expect(svg).toContain(">3</text>"); // Should contain the "3" element
     await d2.worker.terminate();
   }, 20000);
+
+  test("layout engine switching works (dagre -> elk)", async () => {
+    const d2 = new D2();
+
+    // Test diagram
+    const testDiagram = `a -> b
+  a -> c
+  b -> d
+  c -> d`;
+
+    // First compile with dagre using d2-config
+    const dagreSource = `${testDiagram}
+
+  vars: {
+    d2-config: {
+      layout-engine: dagre
+    }
+  }`;
+
+    const dagreResult = await d2.compile(dagreSource);
+    expect(dagreResult.diagram).toBeDefined();
+
+    // Then compile with elk using d2-config
+    const elkSource = `${testDiagram}
+
+  vars: {
+    d2-config: {
+      layout-engine: elk
+    }
+  }`;
+
+    const elkResult = await d2.compile(elkSource);
+    expect(elkResult.diagram).toBeDefined();
+
+    // Both should render successfully
+    const dagreSvg = await d2.render(dagreResult.diagram);
+    expect(dagreSvg).toContain("<svg");
+    expect(dagreSvg).toContain("</svg>");
+
+    const elkSvg = await d2.render(elkResult.diagram);
+    expect(elkSvg).toContain("<svg");
+    expect(elkSvg).toContain("</svg>");
+
+    await d2.worker.terminate();
+  }, 30000);
+
+  test("layout engine switching works (elk -> dagre -> elk)", async () => {
+    const d2 = new D2();
+
+    // Test diagram
+    const testDiagram = `a -> b
+  a -> c
+  b -> d
+  c -> d`;
+
+    // Start with ELK
+    const elkSource1 = `${testDiagram}
+
+  vars: {
+    d2-config: {
+      layout-engine: elk
+    }
+  }`;
+
+    const elkResult1 = await d2.compile(elkSource1);
+    expect(elkResult1.diagram).toBeDefined();
+
+    // Switch to Dagre
+    const dagreSource = `${testDiagram}
+
+  vars: {
+    d2-config: {
+      layout-engine: dagre
+    }
+  }`;
+
+    const dagreResult = await d2.compile(dagreSource);
+    expect(dagreResult.diagram).toBeDefined();
+
+    // Switch back to ELK (this should trigger the panic without the fix)
+    const elkSource2 = `${testDiagram}
+
+  vars: {
+    d2-config: {
+      layout-engine: elk
+    }
+  }`;
+
+    const elkResult2 = await d2.compile(elkSource2);
+    expect(elkResult2.diagram).toBeDefined();
+
+    // All should render successfully
+    const elkSvg1 = await d2.render(elkResult1.diagram);
+    expect(elkSvg1).toContain("<svg");
+    expect(elkSvg1).toContain("</svg>");
+
+    const dagreSvg = await d2.render(dagreResult.diagram);
+    expect(dagreSvg).toContain("<svg");
+    expect(dagreSvg).toContain("</svg>");
+
+    const elkSvg2 = await d2.render(elkResult2.diagram);
+    expect(elkSvg2).toContain("<svg");
+    expect(elkSvg2).toContain("</svg>");
+
+    await d2.worker.terminate();
+  }, 30000);
 });

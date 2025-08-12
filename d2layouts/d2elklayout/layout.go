@@ -159,20 +159,19 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 	runner := jsrunner.NewJSRunner()
 
-	// Load ELK for both Goja and WASM engines
+	// Load ELK for both Goja engine only
+	// WASM/JS loads it natively
 	if runner.Engine() == jsrunner.Goja {
 		console := runner.NewObject()
 		if err := runner.Set("console", console); err != nil {
 			return err
 		}
-	}
-
-	// Load ELK JS for both engines
-	if _, err := runner.RunString(elkJS); err != nil {
-		return err
-	}
-	if _, err := runner.RunString(setupJS); err != nil {
-		return err
+		if _, err := runner.RunString(elkJS); err != nil {
+			return err
+		}
+		if _, err := runner.RunString(setupJS); err != nil {
+			return err
+		}
 	}
 
 	elkGraph := &ELKGraph{

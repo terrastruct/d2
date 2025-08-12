@@ -19,7 +19,7 @@ await writeFile(
   `export const wasmBinary = Uint8Array.from(atob("${Buffer.from(wasmBinary).toString(
     "base64"
   )}"), c => c.charCodeAt(0));
-   export const wasmExecJs = ${JSON.stringify(wasmExecJs)};`
+export const wasmExecJs = ${JSON.stringify(wasmExecJs)};`
 );
 
 const commonConfig = {
@@ -32,17 +32,28 @@ async function buildDynamicFiles(platform) {
       ? `export * from "./platform.node.js";`
       : `export * from "./platform.browser.js";`;
 
-  const platformPath = join(SRC_DIR, "platform.js");
-  await writeFile(platformPath, platformContent);
+  await writeFile(join(SRC_DIR, "platform.js"), platformContent);
 
-  const workerSource =
-    platform === "node"
-      ? join(SRC_DIR, "worker.node.js")
-      : join(SRC_DIR, "worker.browser.js");
-
-  const workerTarget = join(SRC_DIR, "worker.js");
-  const workerContent = await readFile(workerSource, "utf8");
-  await writeFile(workerTarget, workerContent);
+  if (platform === "node") {
+    const workerContent = await readFile(join(SRC_DIR, "worker.node.js"), "utf8");
+    await writeFile(join(SRC_DIR, "worker.js"), workerContent);
+  } else {
+    // For browser, prepend the ELK variables to worker.browser.js
+    // since the worker runs in a blob and can't use ES6 imports
+    const elkJs = await readFile(
+      resolve(ROOT_DIR, "../../d2layouts/d2elklayout/elk.js"),
+      "utf8"
+    );
+    const setupJs = await readFile(
+      resolve(ROOT_DIR, "../../d2layouts/d2elklayout/setup.js"),
+      "utf8"
+    );
+    const workerBase = await readFile(join(SRC_DIR, "worker.browser.js"), "utf8");
+    const elkVars = `const elkJs = ${JSON.stringify(elkJs)};
+const setupJs = ${JSON.stringify(setupJs)};
+`;
+    await writeFile(join(SRC_DIR, "worker.js"), elkVars + workerBase);
+  }
 }
 
 async function buildAndCopy(buildType) {
@@ -92,6 +103,15 @@ async function buildAndCopy(buildType) {
     await copyFile(
       resolve(ROOT_DIR, "wasm/wasm_exec.js"),
       join(config.outdir, "wasm_exec.js")
+    );
+    // Copy ELK library files from d2elklayout
+    await copyFile(
+      resolve(ROOT_DIR, "../../d2layouts/d2elklayout/elk.js"),
+      join(config.outdir, "elk.js")
+    );
+    await copyFile(
+      resolve(ROOT_DIR, "../../d2layouts/d2elklayout/setup.js"),
+      join(config.outdir, "setup.js")
     );
   }
 }

@@ -1,9 +1,23 @@
+// elkJs and setupJs variables are prepended by build.js
+
 let currentPort;
 let d2;
 
 function loadScript(content) {
   const func = new Function(content);
   func.call(globalThis);
+}
+
+function loadELK() {
+  if (typeof globalThis.ELK === "undefined") {
+    try {
+      loadScript(elkJs);
+      loadScript(setupJs);
+    } catch (err) {
+      console.error("Failed to load ELK library:", err);
+      throw err;
+    }
+  }
 }
 
 export function setupMessageHandler(isNode, port, initWasm) {
@@ -18,6 +32,7 @@ export function setupMessageHandler(isNode, port, initWasm) {
           if (isNode) {
             loadScript(data.wasmExecContent);
           }
+          loadELK();
           d2 = await initWasm(data.wasm);
           currentPort.postMessage({ type: "ready" });
         } catch (err) {
