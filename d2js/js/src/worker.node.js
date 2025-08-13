@@ -104,6 +104,17 @@ export function setupMessageHandler(isNode, port, initWasm) {
           currentPort.postMessage({ type: "error", error: err.message });
         }
         break;
+
+      case "jsVersion":
+        try {
+          const result = d2.jsVersion();
+          const response = JSON.parse(result);
+          if (response.error) throw new Error(response.error.message);
+          currentPort.postMessage({ type: "result", data: response.data });
+        } catch (err) {
+          currentPort.postMessage({ type: "error", error: err.message });
+        }
+        break;
     }
   };
 

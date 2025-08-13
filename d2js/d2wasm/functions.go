@@ -521,6 +521,14 @@ func GetVersion(args []js.Value) (interface{}, error) {
 	return version.Version, nil
 }
 
+// Injected at build time
+// See d2js/js/ci/build.sh
+var jsVersion = "HEAD"
+
+func GetJSVersion(args []js.Value) (interface{}, error) {
+	return jsVersion, nil
+}
+
 func GetCompletions(args []js.Value) (interface{}, error) {
 	if len(args) < 3 {
 		return nil, &WASMError{Message: "missing required arguments", Code: 400}

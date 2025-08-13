@@ -101,4 +101,8 @@ export class D2 {
   async version() {
     return this.sendMessage("version");
   }
+
+  async jsVersion() {
+    return this.sendMessage("jsVersion");
+  }
 }
