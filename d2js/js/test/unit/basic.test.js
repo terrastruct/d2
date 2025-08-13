@@ -411,4 +411,13 @@ describe("D2 Unit Tests", () => {
 
     await d2.worker.terminate();
   }, 30000);
+
+  test("version returns a string", async () => {
+    const d2 = new D2();
+    const version = await d2.version();
+    expect(version).toBeDefined();
+    expect(typeof version).toBe("string");
+    expect(version).toContain("v");
+    await d2.worker.terminate();
+  }, 20000);
 });
