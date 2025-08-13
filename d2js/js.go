@@ -22,6 +22,7 @@ func main() {
 	api.Register("encode", d2wasm.Encode)
 	api.Register("decode", d2wasm.Decode)
 	api.Register("version", d2wasm.GetVersion)
+	api.Register("jsVersion", d2wasm.GetJSVersion)
 
 	api.ExportTo(js.Global())
 
