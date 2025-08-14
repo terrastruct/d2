@@ -4,10 +4,11 @@ package d2latex
 
 import (
 	"bytes"
-	"compress/gzip"
 	_ "embed"
 	"fmt"
 	"io"
+
+	"github.com/andybalholm/brotli"
 )
 
 //go:embed polyfills.js
@@ -16,27 +17,23 @@ var polyfillsJS string
 //go:embed setup.js
 var setupJS string
 
-//go:embed mathjax.js.gz
-var mathjaxJSGz []byte
+//go:embed mathjax.js.br
+var mathjaxJSBr []byte
 
 var mathjaxJS string
 
 func init() {
 	// Decompress MathJax for WASM builds
 	var err error
-	mathjaxJS, err = decompressGzip(mathjaxJSGz)
+	mathjaxJS, err = decompressBrotli(mathjaxJSBr)
 	if err != nil {
 		panic(fmt.Sprintf("Failed to decompress MathJax: %v", err))
 	}
 }
 
-// decompressGzip decompresses gzipped data
-func decompressGzip(compressed []byte) (string, error) {
-	reader, err := gzip.NewReader(bytes.NewReader(compressed))
-	if err != nil {
-		return "", fmt.Errorf("failed to create gzip reader: %w", err)
-	}
-	defer reader.Close()
+// decompressBrotli decompresses brotli compressed data
+func decompressBrotli(compressed []byte) (string, error) {
+	reader := brotli.NewReader(bytes.NewReader(compressed))
 
 	decompressed, err := io.ReadAll(reader)
 	if err != nil {
