@@ -1,4 +1,4 @@
-//go:build !js || !wasm
+//go:build js && wasm
 
 package main
 
@@ -11,7 +11,6 @@ import (
 func main() {
 	api := d2wasm.NewD2API()
 
-	// Register all functions for non-WASM builds (including LSP functions)
 	api.Register("getCompletions", d2wasm.GetCompletions)
 	api.Register("getParentID", d2wasm.GetParentID)
 	api.Register("getObjOrder", d2wasm.GetObjOrder)
