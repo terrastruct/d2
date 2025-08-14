@@ -57,5 +57,8 @@
   "license": "MPL-2.0",
   "devDependencies": {
     "bun": "latest"
+  },
+  "dependencies": {
+    "pako": "^2.1.0"
   }
 }
