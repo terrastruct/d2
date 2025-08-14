@@ -27,8 +27,6 @@ import (
 //go:embed setup.js
 var setupJS string
 
-//go:embed dagre.js
-var dagreJS string
 
 const (
 	MIN_RANK_SEP    = 60
