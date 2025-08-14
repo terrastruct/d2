@@ -11,14 +11,9 @@ import (
 func main() {
 	api := d2wasm.NewD2API()
 
-	api.Register("getCompletions", d2wasm.GetCompletions)
-	api.Register("getParentID", d2wasm.GetParentID)
-	api.Register("getObjOrder", d2wasm.GetObjOrder)
-	api.Register("getRefRanges", d2wasm.GetRefRanges)
-	api.Register("getELKGraph", d2wasm.GetELKGraph)
+	// Only register functions that are used by JS/WASM builds
 	api.Register("compile", d2wasm.Compile)
 	api.Register("render", d2wasm.Render)
-	api.Register("getBoardAtPosition", d2wasm.GetBoardAtPosition)
 	api.Register("encode", d2wasm.Encode)
 	api.Register("decode", d2wasm.Decode)
 	api.Register("version", d2wasm.GetVersion)
