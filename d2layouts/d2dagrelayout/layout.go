@@ -27,7 +27,6 @@ import (
 //go:embed setup.js
 var setupJS string
 
-
 const (
 	MIN_RANK_SEP    = 60
 	EDGE_LABEL_GAP  = 20

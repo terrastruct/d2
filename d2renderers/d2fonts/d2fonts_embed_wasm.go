@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/andybalholm/brotli"
+
 	"oss.terrastruct.com/d2/lib/syncmap"
 )
 

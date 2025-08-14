@@ -2,8 +2,6 @@
 
 package d2wasm
 
-const DEFAULT_INPUT_PATH = "index"
-
 import (
 	"context"
 	"encoding/json"
@@ -13,7 +11,6 @@ import (
 
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2compiler"
-	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2elklayout"
 	"oss.terrastruct.com/d2/d2lsp"
 	"oss.terrastruct.com/d2/d2oracle"
@@ -21,6 +18,8 @@ import (
 	"oss.terrastruct.com/d2/lib/memfs"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
+
+const DEFAULT_INPUT_PATH = "index"
 
 func GetParentID(args []js.Value) (interface{}, error) {
 	if len(args) < 1 {
