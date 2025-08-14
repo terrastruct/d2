@@ -1,6 +1,7 @@
 package d2compiler
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"html"
@@ -387,6 +388,13 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 			return
 		}
 		c.compileStyle(&obj.Attributes.Style, f.Map())
+		return
+	} else if f.Name.ScalarString() == "layout" && f.Name.IsUnquoted() {
+		if f.Map() == nil || len(f.Map().Fields) == 0 {
+			c.errorf(f.LastRef().AST(), `"layout" expected to be set to a map of key-values, or contain an additional keyword like "layout.elk.algorithm: stress"`)
+			return
+		}
+		c.compileLayout(&obj.Attributes.Layout, f.Map())
 		return
 	}
 
@@ -853,6 +861,49 @@ func compileStyleFieldInit(styles *d2graph.Style, f *d2ir.Field) {
 	}
 }
 
+func (c *compiler) compileLayout(layout **json.RawMessage, m *d2ir.Map) {
+	// Convert the D2 map to a JSON object
+	layoutMap := make(map[string]interface{})
+	c.convertMapToJSON(m, layoutMap)
+	
+	// Marshal to JSON
+	jsonBytes, err := json.Marshal(layoutMap)
+	if err != nil {
+		c.errorf(m.AST(), "failed to compile layout options: %s", err.Error())
+		return
+	}
+	
+	
+	rawMsg := json.RawMessage(jsonBytes)
+	*layout = &rawMsg
+}
+
+func (c *compiler) convertMapToJSON(m *d2ir.Map, result map[string]interface{}) {
+	for _, f := range m.Fields {
+		key := f.Name.ScalarString()
+		
+		if f.Primary() != nil && f.Primary().Value != nil {
+			// Simple scalar value
+			val := f.Primary().Value.ScalarString()
+			// Try to convert to appropriate types
+			if intVal, err := strconv.ParseInt(val, 10, 64); err == nil {
+				result[key] = intVal
+			} else if floatVal, err := strconv.ParseFloat(val, 64); err == nil {
+				result[key] = floatVal
+			} else if boolVal, err := strconv.ParseBool(val); err == nil {
+				result[key] = boolVal
+			} else {
+				result[key] = val
+			}
+		} else if f.Map() != nil {
+			// Nested map
+			nested := make(map[string]interface{})
+			c.convertMapToJSON(f.Map(), nested)
+			result[key] = nested
+		}
+	}
+}
+
 func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 	edge, err := obj.Connect(e.ID.SrcPath, e.ID.DstPath, e.ID.SrcArrow, e.ID.DstArrow, "")
 	if err != nil {
@@ -937,6 +988,12 @@ func (c *compiler) compileEdgeField(edge *d2graph.Edge, f *d2ir.Field) {
 			return
 		}
 		c.compileStyle(&edge.Attributes.Style, f.Map())
+		return
+	} else if f.Name.ScalarString() == "layout" {
+		if f.Map() == nil {
+			return
+		}
+		c.compileLayout(&edge.Attributes.Layout, f.Map())
 		return
 	}
 
