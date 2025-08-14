@@ -47,7 +47,6 @@ var fuzzyBubblesBoldBr []byte
 //go:embed ttf/*
 var fontFacesFS embed.FS
 
-
 func init() {
 	FontEncodings = syncmap.New[Font, string]()
 

@@ -28,4 +28,3 @@ func init() {
 		panic(fmt.Sprintf("Failed to decompress MathJax: %v", err))
 	}
 }
-

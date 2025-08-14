@@ -22,4 +22,3 @@ func init() {
 		panic(fmt.Sprintf("Failed to decompress paper texture: %v", err))
 	}
 }
-
