@@ -26,7 +26,7 @@ console.log(
 
 // Store compressed WASM as base64 and include brotli decoder in the loader
 // Don't decompress immediately - let the consumer decompress when needed
-const brotliDecoder = await readFile("./decode.min.js", "utf8");
+const brotliDecoder = await readFile("./vendor/decode.min.js", "utf8");
 
 await writeFile(
   join(SRC_DIR, "wasm-loader.browser.js"),
@@ -82,7 +82,7 @@ async function buildDynamicFiles(platform) {
     const workerBase = await readFile(join(SRC_DIR, "worker.browser.js"), "utf8");
 
     // Bundle brotli decoder directly into the worker
-    const brotliDecoder = await readFile(resolve(ROOT_DIR, "decode.min.js"), "utf8");
+    const brotliDecoder = await readFile(resolve(ROOT_DIR, "vendor/decode.min.js"), "utf8");
 
     const elkVars = `${brotliDecoder}
 const elkJsCompressed = "${Buffer.from(elkJsCompressed).toString("base64")}";
