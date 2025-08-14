@@ -1,7 +1,7 @@
 import { build } from "bun";
 import { copyFile, mkdir, writeFile, readFile, rm } from "node:fs/promises";
 import { join, resolve } from "node:path";
-import pako from "pako";
+import { brotliCompressSync } from "node:zlib";
 
 const __dirname = new URL(".", import.meta.url).pathname;
 const ROOT_DIR = resolve(__dirname);
@@ -15,7 +15,7 @@ await mkdir("./dist/node-cjs", { recursive: true });
 const wasmBinary = await readFile("./wasm/d2.wasm");
 const wasmExecJs = await readFile("./wasm/wasm_exec.js", "utf8");
 
-const compressedWasm = pako.deflate(wasmBinary, { level: 9 });
+const compressedWasm = brotliCompressSync(wasmBinary);
 console.log(
   `WASM compression: ${(wasmBinary.length / 1024 / 1024).toFixed(2)}MB → ${(
     compressedWasm.length /
@@ -24,15 +24,18 @@ console.log(
   ).toFixed(2)}MB`
 );
 
-// Store compressed WASM as base64 and include pako inflate in the loader
+// Store compressed WASM as base64 and include brotli decoder in the loader
 // Don't decompress immediately - let the consumer decompress when needed
+const brotliDecoder = await readFile("./decode.min.js", "utf8");
+
 await writeFile(
   join(SRC_DIR, "wasm-loader.browser.js"),
-  `import pako from "pako";
+  `${brotliDecoder}
 
 export const wasmBinaryCompressed = "${Buffer.from(compressedWasm).toString("base64")}";
 export function getWasmBinary() {
-  return pako.inflate(Uint8Array.from(atob(wasmBinaryCompressed), c => c.charCodeAt(0))).buffer;
+  const compressedBytes = Uint8Array.from(atob(wasmBinaryCompressed), c => c.charCodeAt(0));
+  return BrotliDecode(compressedBytes);
 }
 export const wasmExecJs = ${JSON.stringify(wasmExecJs)};`
 );
@@ -65,10 +68,8 @@ async function buildDynamicFiles(platform) {
     );
 
     // Compress elk.js and setup.js
-    const elkJsCompressed = pako.deflate(new TextEncoder().encode(elkJs), { level: 9 });
-    const setupJsCompressed = pako.deflate(new TextEncoder().encode(setupJs), {
-      level: 9,
-    });
+    const elkJsCompressed = brotliCompressSync(new TextEncoder().encode(elkJs));
+    const setupJsCompressed = brotliCompressSync(new TextEncoder().encode(setupJs));
 
     console.log(
       `ELK compression: ${(elkJs.length / 1024 / 1024).toFixed(2)}MB → ${(
@@ -80,15 +81,14 @@ async function buildDynamicFiles(platform) {
 
     const workerBase = await readFile(join(SRC_DIR, "worker.browser.js"), "utf8");
 
-    // Bundle pako's inflate function directly into the worker
-    const pakoPath = resolve(ROOT_DIR, "node_modules/pako/dist/pako_inflate.min.js");
-    const pakoInflate = await readFile(pakoPath, "utf8");
+    // Bundle brotli decoder directly into the worker
+    const brotliDecoder = await readFile(resolve(ROOT_DIR, "decode.min.js"), "utf8");
 
-    const elkVars = `${pakoInflate}
+    const elkVars = `${brotliDecoder}
 const elkJsCompressed = "${Buffer.from(elkJsCompressed).toString("base64")}";
 const setupJsCompressed = "${Buffer.from(setupJsCompressed).toString("base64")}";
-const elkJs = new TextDecoder().decode(pako.inflate(Uint8Array.from(atob(elkJsCompressed), c => c.charCodeAt(0))));
-const setupJs = new TextDecoder().decode(pako.inflate(Uint8Array.from(atob(setupJsCompressed), c => c.charCodeAt(0))));
+const elkJs = new TextDecoder().decode(BrotliDecode(Uint8Array.from(atob(elkJsCompressed), c => c.charCodeAt(0))));
+const setupJs = new TextDecoder().decode(BrotliDecode(Uint8Array.from(atob(setupJsCompressed), c => c.charCodeAt(0))));
 `;
     await writeFile(join(SRC_DIR, "worker.js"), elkVars + workerBase);
   }
