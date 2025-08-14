@@ -3,15 +3,12 @@
 package d2fonts
 
 import (
-	"bytes"
 	"embed"
 	_ "embed"
 	"fmt"
-	"io"
 	"strings"
 
-	"github.com/andybalholm/brotli"
-
+	"oss.terrastruct.com/d2/lib/compression"
 	"oss.terrastruct.com/d2/lib/syncmap"
 )
 
@@ -50,73 +47,62 @@ var fuzzyBubblesBoldBr []byte
 //go:embed ttf/*
 var fontFacesFS embed.FS
 
-// decompressBrotli decompresses brotli compressed data
-func decompressBrotli(compressed []byte) (string, error) {
-	reader := brotli.NewReader(bytes.NewReader(compressed))
-
-	decompressed, err := io.ReadAll(reader)
-	if err != nil {
-		return "", fmt.Errorf("failed to decompress: %w", err)
-	}
-
-	return string(decompressed), nil
-}
 
 func init() {
 	FontEncodings = syncmap.New[Font, string]()
 
 	// Decompress and register SourceSansPro fonts
-	if str, err := decompressBrotli(sourceSansProRegularBr); err != nil {
+	if str, err := compression.DecompressBrotli(sourceSansProRegularBr); err != nil {
 		panic(fmt.Sprintf("Failed to decompress SourceSansPro-Regular: %v", err))
 	} else {
 		FontEncodings.Set(Font{Family: SourceSansPro, Style: FONT_STYLE_REGULAR}, str)
 	}
 
-	if str, err := decompressBrotli(sourceSansProBoldBr); err != nil {
+	if str, err := compression.DecompressBrotli(sourceSansProBoldBr); err != nil {
 		panic(fmt.Sprintf("Failed to decompress SourceSansPro-Bold: %v", err))
 	} else {
 		FontEncodings.Set(Font{Family: SourceSansPro, Style: FONT_STYLE_BOLD}, str)
 	}
 
-	if str, err := decompressBrotli(sourceSansProSemiboldBr); err != nil {
+	if str, err := compression.DecompressBrotli(sourceSansProSemiboldBr); err != nil {
 		panic(fmt.Sprintf("Failed to decompress SourceSansPro-Semibold: %v", err))
 	} else {
 		FontEncodings.Set(Font{Family: SourceSansPro, Style: FONT_STYLE_SEMIBOLD}, str)
 	}
 
-	if str, err := decompressBrotli(sourceSansProItalicBr); err != nil {
+	if str, err := compression.DecompressBrotli(sourceSansProItalicBr); err != nil {
 		panic(fmt.Sprintf("Failed to decompress SourceSansPro-Italic: %v", err))
 	} else {
 		FontEncodings.Set(Font{Family: SourceSansPro, Style: FONT_STYLE_ITALIC}, str)
 	}
 
 	// Decompress and register SourceCodePro fonts
-	if str, err := decompressBrotli(sourceCodeProRegularBr); err != nil {
+	if str, err := compression.DecompressBrotli(sourceCodeProRegularBr); err != nil {
 		panic(fmt.Sprintf("Failed to decompress SourceCodePro-Regular: %v", err))
 	} else {
 		FontEncodings.Set(Font{Family: SourceCodePro, Style: FONT_STYLE_REGULAR}, str)
 	}
 
-	if str, err := decompressBrotli(sourceCodeProBoldBr); err != nil {
+	if str, err := compression.DecompressBrotli(sourceCodeProBoldBr); err != nil {
 		panic(fmt.Sprintf("Failed to decompress SourceCodePro-Bold: %v", err))
 	} else {
 		FontEncodings.Set(Font{Family: SourceCodePro, Style: FONT_STYLE_BOLD}, str)
 	}
 
-	if str, err := decompressBrotli(sourceCodeProSemiboldBr); err != nil {
+	if str, err := compression.DecompressBrotli(sourceCodeProSemiboldBr); err != nil {
 		panic(fmt.Sprintf("Failed to decompress SourceCodePro-Semibold: %v", err))
 	} else {
 		FontEncodings.Set(Font{Family: SourceCodePro, Style: FONT_STYLE_SEMIBOLD}, str)
 	}
 
-	if str, err := decompressBrotli(sourceCodeProItalicBr); err != nil {
+	if str, err := compression.DecompressBrotli(sourceCodeProItalicBr); err != nil {
 		panic(fmt.Sprintf("Failed to decompress SourceCodePro-Italic: %v", err))
 	} else {
 		FontEncodings.Set(Font{Family: SourceCodePro, Style: FONT_STYLE_ITALIC}, str)
 	}
 
 	// Decompress and register FuzzyBubbles fonts
-	if str, err := decompressBrotli(fuzzyBubblesRegularBr); err != nil {
+	if str, err := compression.DecompressBrotli(fuzzyBubblesRegularBr); err != nil {
 		panic(fmt.Sprintf("Failed to decompress FuzzyBubbles-Regular: %v", err))
 	} else {
 		FontEncodings.Set(Font{Family: HandDrawn, Style: FONT_STYLE_REGULAR}, str)
@@ -124,7 +110,7 @@ func init() {
 		FontEncodings.Set(Font{Family: HandDrawn, Style: FONT_STYLE_ITALIC}, str)
 	}
 
-	if str, err := decompressBrotli(fuzzyBubblesBoldBr); err != nil {
+	if str, err := compression.DecompressBrotli(fuzzyBubblesBoldBr); err != nil {
 		panic(fmt.Sprintf("Failed to decompress FuzzyBubbles-Bold: %v", err))
 	} else {
 		FontEncodings.Set(Font{Family: HandDrawn, Style: FONT_STYLE_BOLD}, str)

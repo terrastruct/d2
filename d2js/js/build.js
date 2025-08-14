@@ -82,7 +82,10 @@ async function buildDynamicFiles(platform) {
     const workerBase = await readFile(join(SRC_DIR, "worker.browser.js"), "utf8");
 
     // Bundle brotli decoder directly into the worker
-    const brotliDecoder = await readFile(resolve(ROOT_DIR, "vendor/decode.min.js"), "utf8");
+    const brotliDecoder = await readFile(
+      resolve(ROOT_DIR, "vendor/decode.min.js"),
+      "utf8"
+    );
 
     const elkVars = `${brotliDecoder}
 const elkJsCompressed = "${Buffer.from(elkJsCompressed).toString("base64")}";
