@@ -20,6 +20,8 @@ import (
 	"oss.terrastruct.com/d2/d2oracle"
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2renderers/d2animate"
+	"oss.terrastruct.com/d2/d2renderers/d2ascii"
+	"oss.terrastruct.com/d2/d2renderers/d2ascii/charset"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2renderers/d2svg/appendix"
@@ -29,6 +31,7 @@ import (
 	"oss.terrastruct.com/d2/lib/textmeasure"
 	"oss.terrastruct.com/d2/lib/urlenc"
 	"oss.terrastruct.com/d2/lib/version"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 const DEFAULT_INPUT_PATH = "index"
@@ -242,6 +245,12 @@ func Compile(args []js.Value) (interface{}, error) {
 		compileOpts.Layout = input.Opts.Layout
 	}
 
+	if input.Opts != nil && input.Opts.ASCII != nil && *input.Opts.ASCII {
+		if compileOpts.Layout == nil || *compileOpts.Layout == "dagre" {
+			compileOpts.Layout = go2.Pointer("elk")
+		}
+	}
+
 	renderOpts := &d2svg.RenderOpts{}
 	if input.Opts != nil && input.Opts.Sketch != nil {
 		renderOpts.Sketch = input.Opts.Sketch
@@ -293,6 +302,8 @@ func Compile(args []js.Value) (interface{}, error) {
 			AnimateInterval:    input.Opts.AnimateInterval,
 			Salt:               input.Opts.Salt,
 			NoXMLTag:           input.Opts.NoXMLTag,
+			ASCII:              input.Opts.ASCII,
+			ASCIIMode:          input.Opts.ASCIIMode,
 		},
 	}, nil
 }
@@ -395,6 +406,40 @@ func Render(args []js.Value) (interface{}, error) {
 	}
 	if input.Opts != nil && input.Opts.NoXMLTag != nil {
 		renderOpts.NoXMLTag = input.Opts.NoXMLTag
+	}
+
+	if input.Opts != nil && input.Opts.ASCII != nil && *input.Opts.ASCII {
+		if !noChildren && animateInterval > 0 {
+			return nil, &WASMError{Message: "ASCII rendering does not support multi-board animation", Code: 400}
+		}
+		if !noChildren {
+			return nil, &WASMError{Message: "ASCII rendering does not support multi-board targets", Code: 400}
+		}
+
+		artist := d2ascii.NewASCIIartist()
+		asciiOpts := &d2ascii.RenderOpts{}
+		if input.Opts.Scale != nil {
+			asciiOpts.Scale = input.Opts.Scale
+		}
+		// Set charset based on ASCII mode (default to "extended"/Unicode)
+		var charsetType charset.Type
+		asciiMode := "extended" // Default
+		if input.Opts.ASCIIMode != nil {
+			asciiMode = *input.Opts.ASCIIMode
+		}
+		switch asciiMode {
+		case "standard":
+			charsetType = charset.ASCII
+		default: // "extended" or any other value defaults to Unicode
+			charsetType = charset.Unicode
+		}
+		asciiOpts.Charset = charsetType
+
+		out, err := artist.Render(diagram, asciiOpts)
+		if err != nil {
+			return nil, &WASMError{Message: fmt.Sprintf("ASCII render failed: %s", err.Error()), Code: 500}
+		}
+		return out, nil
 	}
 
 	forceAppendix := input.Opts != nil && input.Opts.ForceAppendix != nil && *input.Opts.ForceAppendix

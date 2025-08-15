@@ -429,4 +429,66 @@ describe("D2 Unit Tests", () => {
     expect(jsVersion.length).toBeGreaterThan(0);
     await d2.worker.terminate();
   }, 20000);
+
+  test("ASCII render works", async () => {
+    const d2 = new D2();
+    const result = await d2.compile("x -> y");
+    const ascii = await d2.render(result.diagram, { ascii: true });
+    expect(ascii).toBeDefined();
+    expect(typeof ascii).toBe("string");
+    expect(ascii).toContain("x");
+    expect(ascii).toContain("y");
+    // ASCII art uses box drawing characters for connections
+    expect(ascii).toContain("┌") ||
+      expect(ascii).toContain("└") ||
+      expect(ascii).toContain("│");
+    await d2.worker.terminate();
+  }, 20000);
+
+  test("ASCII render with multiple shapes works", async () => {
+    const d2 = new D2();
+    const result = await d2.compile(`
+      a: {shape: rectangle}
+      b: {shape: circle} 
+      c: {shape: diamond}
+      a -> b
+      b -> c
+    `);
+    const ascii = await d2.render(result.diagram, { ascii: true });
+    expect(ascii).toBeDefined();
+    expect(typeof ascii).toBe("string");
+    expect(ascii).toContain("a");
+    expect(ascii).toContain("b");
+    expect(ascii).toContain("c");
+    await d2.worker.terminate();
+  }, 20000);
+
+  test("ASCII mode options work correctly", async () => {
+    const d2 = new D2();
+    const result = await d2.compile("x -> y");
+    
+    // Test extended mode (default)
+    const asciiExtended = await d2.render(result.diagram, { 
+      ascii: true, 
+      asciiMode: "extended" 
+    });
+    expect(asciiExtended).toBeDefined();
+    expect(typeof asciiExtended).toBe("string");
+    expect(asciiExtended).toMatch(/[┌┐└┘│─]/); // Should contain Unicode box chars
+    
+    // Test standard mode
+    const asciiStandard = await d2.render(result.diagram, { 
+      ascii: true, 
+      asciiMode: "standard" 
+    });
+    expect(asciiStandard).toBeDefined();
+    expect(typeof asciiStandard).toBe("string");
+    expect(asciiStandard).not.toMatch(/[┌┐└┘│─]/); // Should not contain Unicode box chars
+    expect(asciiStandard).toMatch(/[+\-|]/); // Should contain basic ASCII chars
+    
+    // Modes should produce different outputs
+    expect(asciiExtended).not.toBe(asciiStandard);
+    
+    await d2.worker.terminate();
+  }, 20000);
 });
