@@ -7,6 +7,7 @@ toolchain go1.24.6
 require (
 	github.com/PuerkitoBio/goquery v1.10.0
 	github.com/alecthomas/chroma/v2 v2.14.0
+	github.com/andybalholm/brotli v1.2.0
 	github.com/coder/websocket v1.8.12
 	github.com/dop251/goja v0.0.0-20240927123429-241b342198c2
 	github.com/dsoprea/go-exif/v3 v3.0.1

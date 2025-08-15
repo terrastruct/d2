@@ -76,9 +76,6 @@ var lines string
 //go:embed grain.txt
 var grain string
 
-//go:embed paper.txt
-var paper string
-
 type RenderOpts struct {
 	Pad                *int64
 	Sketch             *bool

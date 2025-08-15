@@ -3,123 +3,105 @@
 package d2fonts
 
 import (
-	"bytes"
-	"compress/gzip"
 	"embed"
 	_ "embed"
 	"fmt"
-	"io"
 	"strings"
 
+	"oss.terrastruct.com/d2/lib/compression"
 	"oss.terrastruct.com/d2/lib/syncmap"
 )
 
 // Compressed font data for WASM builds
 
-//go:embed encoded/SourceSansPro-Regular.txt.gz
-var sourceSansProRegularGz []byte
+//go:embed encoded/SourceSansPro-Regular.txt.br
+var sourceSansProRegularBr []byte
 
-//go:embed encoded/SourceSansPro-Bold.txt.gz
-var sourceSansProBoldGz []byte
+//go:embed encoded/SourceSansPro-Bold.txt.br
+var sourceSansProBoldBr []byte
 
-//go:embed encoded/SourceSansPro-Semibold.txt.gz
-var sourceSansProSemiboldGz []byte
+//go:embed encoded/SourceSansPro-Semibold.txt.br
+var sourceSansProSemiboldBr []byte
 
-//go:embed encoded/SourceSansPro-Italic.txt.gz
-var sourceSansProItalicGz []byte
+//go:embed encoded/SourceSansPro-Italic.txt.br
+var sourceSansProItalicBr []byte
 
-//go:embed encoded/SourceCodePro-Regular.txt.gz
-var sourceCodeProRegularGz []byte
+//go:embed encoded/SourceCodePro-Regular.txt.br
+var sourceCodeProRegularBr []byte
 
-//go:embed encoded/SourceCodePro-Bold.txt.gz
-var sourceCodeProBoldGz []byte
+//go:embed encoded/SourceCodePro-Bold.txt.br
+var sourceCodeProBoldBr []byte
 
-//go:embed encoded/SourceCodePro-Semibold.txt.gz
-var sourceCodeProSemiboldGz []byte
+//go:embed encoded/SourceCodePro-Semibold.txt.br
+var sourceCodeProSemiboldBr []byte
 
-//go:embed encoded/SourceCodePro-Italic.txt.gz
-var sourceCodeProItalicGz []byte
+//go:embed encoded/SourceCodePro-Italic.txt.br
+var sourceCodeProItalicBr []byte
 
-//go:embed encoded/FuzzyBubbles-Regular.txt.gz
-var fuzzyBubblesRegularGz []byte
+//go:embed encoded/FuzzyBubbles-Regular.txt.br
+var fuzzyBubblesRegularBr []byte
 
-//go:embed encoded/FuzzyBubbles-Bold.txt.gz
-var fuzzyBubblesBoldGz []byte
+//go:embed encoded/FuzzyBubbles-Bold.txt.br
+var fuzzyBubblesBoldBr []byte
 
 //go:embed ttf/*
 var fontFacesFS embed.FS
-
-// decompressGzip decompresses gzipped data
-func decompressGzip(compressed []byte) (string, error) {
-	reader, err := gzip.NewReader(bytes.NewReader(compressed))
-	if err != nil {
-		return "", fmt.Errorf("failed to create gzip reader: %w", err)
-	}
-	defer reader.Close()
-
-	decompressed, err := io.ReadAll(reader)
-	if err != nil {
-		return "", fmt.Errorf("failed to decompress: %w", err)
-	}
-
-	return string(decompressed), nil
-}
 
 func init() {
 	FontEncodings = syncmap.New[Font, string]()
 
 	// Decompress and register SourceSansPro fonts
-	if str, err := decompressGzip(sourceSansProRegularGz); err != nil {
+	if str, err := compression.DecompressBrotli(sourceSansProRegularBr); err != nil {
 		panic(fmt.Sprintf("Failed to decompress SourceSansPro-Regular: %v", err))
 	} else {
 		FontEncodings.Set(Font{Family: SourceSansPro, Style: FONT_STYLE_REGULAR}, str)
 	}
 
-	if str, err := decompressGzip(sourceSansProBoldGz); err != nil {
+	if str, err := compression.DecompressBrotli(sourceSansProBoldBr); err != nil {
 		panic(fmt.Sprintf("Failed to decompress SourceSansPro-Bold: %v", err))
 	} else {
 		FontEncodings.Set(Font{Family: SourceSansPro, Style: FONT_STYLE_BOLD}, str)
 	}
 
-	if str, err := decompressGzip(sourceSansProSemiboldGz); err != nil {
+	if str, err := compression.DecompressBrotli(sourceSansProSemiboldBr); err != nil {
 		panic(fmt.Sprintf("Failed to decompress SourceSansPro-Semibold: %v", err))
 	} else {
 		FontEncodings.Set(Font{Family: SourceSansPro, Style: FONT_STYLE_SEMIBOLD}, str)
 	}
 
-	if str, err := decompressGzip(sourceSansProItalicGz); err != nil {
+	if str, err := compression.DecompressBrotli(sourceSansProItalicBr); err != nil {
 		panic(fmt.Sprintf("Failed to decompress SourceSansPro-Italic: %v", err))
 	} else {
 		FontEncodings.Set(Font{Family: SourceSansPro, Style: FONT_STYLE_ITALIC}, str)
 	}
 
 	// Decompress and register SourceCodePro fonts
-	if str, err := decompressGzip(sourceCodeProRegularGz); err != nil {
+	if str, err := compression.DecompressBrotli(sourceCodeProRegularBr); err != nil {
 		panic(fmt.Sprintf("Failed to decompress SourceCodePro-Regular: %v", err))
 	} else {
 		FontEncodings.Set(Font{Family: SourceCodePro, Style: FONT_STYLE_REGULAR}, str)
 	}
 
-	if str, err := decompressGzip(sourceCodeProBoldGz); err != nil {
+	if str, err := compression.DecompressBrotli(sourceCodeProBoldBr); err != nil {
 		panic(fmt.Sprintf("Failed to decompress SourceCodePro-Bold: %v", err))
 	} else {
 		FontEncodings.Set(Font{Family: SourceCodePro, Style: FONT_STYLE_BOLD}, str)
 	}
 
-	if str, err := decompressGzip(sourceCodeProSemiboldGz); err != nil {
+	if str, err := compression.DecompressBrotli(sourceCodeProSemiboldBr); err != nil {
 		panic(fmt.Sprintf("Failed to decompress SourceCodePro-Semibold: %v", err))
 	} else {
 		FontEncodings.Set(Font{Family: SourceCodePro, Style: FONT_STYLE_SEMIBOLD}, str)
 	}
 
-	if str, err := decompressGzip(sourceCodeProItalicGz); err != nil {
+	if str, err := compression.DecompressBrotli(sourceCodeProItalicBr); err != nil {
 		panic(fmt.Sprintf("Failed to decompress SourceCodePro-Italic: %v", err))
 	} else {
 		FontEncodings.Set(Font{Family: SourceCodePro, Style: FONT_STYLE_ITALIC}, str)
 	}
 
 	// Decompress and register FuzzyBubbles fonts
-	if str, err := decompressGzip(fuzzyBubblesRegularGz); err != nil {
+	if str, err := compression.DecompressBrotli(fuzzyBubblesRegularBr); err != nil {
 		panic(fmt.Sprintf("Failed to decompress FuzzyBubbles-Regular: %v", err))
 	} else {
 		FontEncodings.Set(Font{Family: HandDrawn, Style: FONT_STYLE_REGULAR}, str)
@@ -127,7 +109,7 @@ func init() {
 		FontEncodings.Set(Font{Family: HandDrawn, Style: FONT_STYLE_ITALIC}, str)
 	}
 
-	if str, err := decompressGzip(fuzzyBubblesBoldGz); err != nil {
+	if str, err := compression.DecompressBrotli(fuzzyBubblesBoldBr); err != nil {
 		panic(fmt.Sprintf("Failed to decompress FuzzyBubbles-Bold: %v", err))
 	} else {
 		FontEncodings.Set(Font{Family: HandDrawn, Style: FONT_STYLE_BOLD}, str)
