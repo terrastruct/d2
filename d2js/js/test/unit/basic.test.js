@@ -466,29 +466,29 @@ describe("D2 Unit Tests", () => {
   test("ASCII mode options work correctly", async () => {
     const d2 = new D2();
     const result = await d2.compile("x -> y");
-    
+
     // Test extended mode (default)
-    const asciiExtended = await d2.render(result.diagram, { 
-      ascii: true, 
-      asciiMode: "extended" 
+    const asciiExtended = await d2.render(result.diagram, {
+      ascii: true,
+      asciiMode: "extended",
     });
     expect(asciiExtended).toBeDefined();
     expect(typeof asciiExtended).toBe("string");
     expect(asciiExtended).toMatch(/[┌┐└┘│─]/); // Should contain Unicode box chars
-    
+
     // Test standard mode
-    const asciiStandard = await d2.render(result.diagram, { 
-      ascii: true, 
-      asciiMode: "standard" 
+    const asciiStandard = await d2.render(result.diagram, {
+      ascii: true,
+      asciiMode: "standard",
     });
     expect(asciiStandard).toBeDefined();
     expect(typeof asciiStandard).toBe("string");
     expect(asciiStandard).not.toMatch(/[┌┐└┘│─]/); // Should not contain Unicode box chars
     expect(asciiStandard).toMatch(/[+\-|]/); // Should contain basic ASCII chars
-    
+
     // Modes should produce different outputs
     expect(asciiExtended).not.toBe(asciiStandard);
-    
+
     await d2.worker.terminate();
   }, 20000);
 });
