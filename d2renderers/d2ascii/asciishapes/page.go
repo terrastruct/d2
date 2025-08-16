@@ -15,7 +15,7 @@ func DrawPage(ctx *Context, x, y, w, h float64, label, labelPosition string) {
 			hC++
 		}
 	}
-	wC = adjustWidthForLabel(ctx, x, y, w, h, wC, label)
+	wC = AdjustWidthForLabel(ctx, x, y, w, h, wC, label)
 	x2, y2 := x1+wC, y1+hC
 	corners := map[string]string{
 		fmt.Sprintf("%d_%d", x1, y1):     ctx.Chars.TopLeftCorner(),

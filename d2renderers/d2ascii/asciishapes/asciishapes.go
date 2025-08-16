@@ -81,7 +81,7 @@ func DrawShapeLabel(ctx *Context, x1, y1, x2, y2, width, height int, label, labe
 	ctx.Canvas.DrawLabel(lx, ly, label)
 }
 
-func adjustWidthForLabel(ctx *Context, x, y, w, h float64, width int, label string) int {
+func AdjustWidthForLabel(ctx *Context, x, y, w, h float64, width int, label string) int {
 	if label == "" {
 		fmt.Printf("\033[36m[D2ASCII-SHAPE]     No label, keeping width: %d\033[0m\n", width)
 		return width

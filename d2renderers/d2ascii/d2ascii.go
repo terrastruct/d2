@@ -66,13 +66,33 @@ func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
 			posX, posY, width, height)
 	}
 
-	x1 := int(math.Round((posX / a.FW) * a.SCALE))
-	y1 := int(math.Round((posY / a.FH) * a.SCALE))
-	x2 := int(math.Round(((posX + width - 1) / a.FW) * a.SCALE))
-	y2 := int(math.Round(((posY + height - 1) / a.FH) * a.SCALE))
+	// Use the same calibration logic as the drawing functions
+	ctx := &asciishapes.Context{
+		Canvas: a.canvas,
+		Chars:  a.chars,
+		FW:     a.FW,
+		FH:     a.FH,
+		Scale:  a.SCALE,
+	}
+	x1, y1, wC, hC := ctx.Calibrate(posX, posY, width, height)
 	
-	fmt.Printf("\033[36m[D2ASCII-SHAPE]   Boundary calibrated: (%.0f,%.0f)-(%.0f,%.0f) -> (%d,%d)-(%d,%d)\033[0m\n", 
-		posX, posY, posX+width-1, posY+height-1, x1, y1, x2, y2)
+	// Apply the same height adjustments as DrawRect for labels
+	if s.Label != "" && hC%2 == 0 {
+		if hC > 2 {
+			hC--
+			y1++
+		} else {
+			hC++
+		}
+	}
+	
+	// Apply the same width adjustments as DrawRect for labels
+	wC = asciishapes.AdjustWidthForLabel(ctx, posX, posY, width, height, wC, s.Label)
+	
+	x2, y2 := x1+wC, y1+hC
+	
+	fmt.Printf("\033[36m[D2ASCII-SHAPE]   Boundary matches actual draw bounds: (%d,%d)-(%d,%d) [%dx%d]\033[0m\n", 
+		x1, y1, x2, y2, wC, hC)
 
 	return Point{X: x1, Y: y1}, Point{X: x2, Y: y2}
 }

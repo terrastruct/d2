@@ -23,9 +23,9 @@ func DrawRect(ctx *Context, x, y, w, h float64, label, labelPosition, symbol str
 				originalHC, hC)
 		}
 	}
-	wC = adjustWidthForLabel(ctx, x, y, w, h, wC, label)
+	wC = AdjustWidthForLabel(ctx, x, y, w, h, wC, label)
 	x2, y2 := x1+wC, y1+hC
-	fmt.Printf("\033[36m[D2ASCII-SHAPE]     Final bounds: (%d,%d) to (%d,%d) [%dx%d]\033[0m\n", 
+	fmt.Printf("\033[36m[D2ASCII-SHAPE]     Final draw bounds: (%d,%d) to (%d,%d) [%dx%d] (actual shape area)\033[0m\n", 
 		x1, y1, x2, y2, wC, hC)
 	corners := map[string]string{
 		fmt.Sprintf("%d_%d", x1, y1):     ctx.Chars.TopLeftCorner(),
