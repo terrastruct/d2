@@ -58,7 +58,7 @@ func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
 		posX, posY, width, height)
 
 	if s.Multiple {
-		fmt.Printf("\033[36m[D2ASCII-SHAPE]   Multiple shape, expanding boundary by %.0f\033[0m\n", d2target.MULTIPLE_OFFSET)
+		fmt.Printf("\033[36m[D2ASCII-SHAPE]   Multiple shape, expanding boundary by %d\033[0m\n", d2target.MULTIPLE_OFFSET)
 		posX -= d2target.MULTIPLE_OFFSET   // Move left to include shadow area
 		width += d2target.MULTIPLE_OFFSET  // Include shadow width
 		height += d2target.MULTIPLE_OFFSET // Include shadow height
@@ -83,6 +83,26 @@ func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
 			y1++
 		} else {
 			hC++
+		}
+	}
+	
+	// Apply the same width adjustments as the drawing code
+	preserveWidth := hasConnectionsAtRightEdge(s, a.diagram.Connections, a.FW)
+	if preserveWidth && s.Label != "" {
+		availableSpace := wC - len(s.Label)
+		if availableSpace >= asciishapes.MinLabelPadding && availableSpace%2 == 1 {
+			// Adjust the original width before recalibrating
+			width += a.FW / a.SCALE
+			x1, y1, wC, hC = ctx.Calibrate(posX, posY, width, height)
+			// Reapply height adjustments
+			if s.Label != "" && hC%2 == 0 {
+				if hC > 2 {
+					hC--
+					y1++
+				} else {
+					hC++
+				}
+			}
 		}
 	}
 	
@@ -297,7 +317,7 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 		drawHeight := float64(shape.Height)
 
 		if shape.Multiple {
-			fmt.Printf("\033[36m[D2ASCII-SHAPE]   Multiple shape adjustments: offset=%.0f\033[0m\n", d2target.MULTIPLE_OFFSET)
+			fmt.Printf("\033[36m[D2ASCII-SHAPE]   Multiple shape adjustments: offset=%d\033[0m\n", d2target.MULTIPLE_OFFSET)
 			// Move position to top-left of total occupied area (shadow extends left and down)
 			drawX -= d2target.MULTIPLE_OFFSET // Move left to include shadow area
 			// Y stays the same since shadow goes down, not up

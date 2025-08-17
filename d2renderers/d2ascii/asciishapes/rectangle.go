@@ -3,8 +3,6 @@ package asciishapes
 import (
 	"fmt"
 	"strings"
-
-	"github.com/davecgh/go-spew/spew"
 )
 
 func DrawRect(ctx *Context, x, y, w, h float64, label, labelPosition, symbol string) {
@@ -40,7 +38,6 @@ func DrawRect(ctx *Context, x, y, w, h float64, label, labelPosition, symbol str
 	for xi := x1; xi <= x2; xi++ {
 		for yi := y1; yi <= y2; yi++ {
 			key := fmt.Sprintf("%d_%d", xi, yi)
-			spew.Dump(key)
 			if val, ok := corners[key]; ok {
 				ctx.Canvas.Set(xi, yi, val)
 			} else if strings.TrimSpace(symbol) != "" && yi == y1 && xi == x1+1 {
