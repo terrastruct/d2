@@ -14,14 +14,20 @@ func drawSegmentBetweenPoints(rd RouteDrawer, start, end *geo.Point, segmentInde
 	ax, ay := start.X, start.Y
 	cx, cy := end.X, end.Y
 
+	fmt.Printf("[D2ASCII]   Drawing segment %d: (%.2f,%.2f) -> (%.2f,%.2f)\n",
+		segmentIndex-1, ax, ay, cx, cy)
+
 	sx := cx - ax
 	sy := cy - ay
 	step := math.Max(math.Abs(sx), math.Abs(sy))
 	if step == 0 {
+		fmt.Printf("[D2ASCII]   Zero-length segment, skipping\n")
 		return
 	}
 	sx /= step
 	sy /= step
+
+	fmt.Printf("[D2ASCII]   Step vector: (%.2f, %.2f), total steps: %.0f\n", sx, sy, step)
 
 	fx, fy := ax, ay
 	attempt := 0
@@ -31,13 +37,25 @@ func drawSegmentBetweenPoints(rd RouteDrawer, start, end *geo.Point, segmentInde
 	for {
 		attempt++
 		if x == int(math.Round(cx)) && y == int(math.Round(cy)) || attempt == MaxRouteAttempts {
+			if attempt == MaxRouteAttempts {
+				fmt.Printf("[D2ASCII]   Max route attempts (%d) reached\n", MaxRouteAttempts)
+			} else {
+				fmt.Printf("[D2ASCII]   Reached segment endpoint at (%d, %d)\n", x, y)
+			}
 			break
 		}
 		x = int(math.Round(fx))
 		y = int(math.Round(fy))
 
 		// Skip if out of bounds or contains alphanumeric character
-		if !isInBounds(rd, x, y) || containsAlphaNumeric(rd, x, y) {
+		if !isInBounds(rd, x, y) {
+			fmt.Printf("[D2ASCII]   Position (%d, %d) out of bounds, skipping\n", x, y)
+			fx += sx
+			fy += sy
+			continue
+		}
+		if containsAlphaNumeric(rd, x, y) {
+			fmt.Printf("[D2ASCII]   Position (%d, %d) contains alphanumeric, skipping\n", x, y)
 			fx += sx
 			fy += sy
 			continue
@@ -63,17 +81,21 @@ func drawRoutePoint(rd RouteDrawer, x, y int, sx, sy float64, segmentIndex, rout
 
 	canvas := rd.GetCanvas()
 	key := fmt.Sprintf("%d_%d", x, y)
+	existingChar := canvas.Get(x, y)
 
 	// Check for corners first
 	if char, ok := corners[turnDir[key]]; ok {
+		fmt.Printf("[D2ASCII]     Drawing corner at (%d, %d): '%s' (direction: %s)\n", x, y, char, turnDir[key])
 		canvas.Set(x, y, char)
 		return
 	}
 
 	// Check for destination arrow
 	if segmentIndex == routeLen-1 && x == int(math.Round(cx)) && y == int(math.Round(cy)) && conn.DstArrow != d2target.NoArrowhead {
+		fmt.Printf("[D2ASCII]     Drawing destination arrow at (%d, %d)\n", x, y)
 		drawArrowhead(rd, x, y, sx, sy, arrows)
 		if conn.DstLabel != nil {
+			fmt.Printf("[D2ASCII]     Drawing destination label: %s\n", conn.DstLabel.Label)
 			drawDestinationLabel(rd, conn.DstLabel.Label, cx, cy, sx, sy)
 		}
 		return
@@ -81,15 +103,19 @@ func drawRoutePoint(rd RouteDrawer, x, y int, sx, sy float64, segmentIndex, rout
 
 	// Check for source arrow
 	if segmentIndex == 1 && x == int(math.Round(ax)) && y == int(math.Round(ay)) && conn.SrcArrow != d2target.NoArrowhead {
+		fmt.Printf("[D2ASCII]     Drawing source arrow at (%d, %d)\n", x, y)
 		arrowKey := fmt.Sprintf("%d%d", geo.Sign(sx)*-1, geo.Sign(sy)*-1)
 		canvas.Set(x, y, arrows[arrowKey])
 		if conn.SrcLabel != nil {
+			fmt.Printf("[D2ASCII]     Drawing source label: %s\n", conn.SrcLabel.Label)
 			drawSourceLabel(rd, conn.SrcLabel.Label, ax, cy, cx, sx, sy)
 		}
 		return
 	}
 
 	// Default: draw route segment
+	fmt.Printf("[D2ASCII]     Drawing route segment at (%d, %d), existing: '%s'\n",
+		x, y, existingChar)
 	drawRouteSegment(rd, x, y, sx, sy, frmBoundary, toBoundary)
 }
 
@@ -99,12 +125,23 @@ func drawRouteSegment(rd RouteDrawer, x, y int, sx, sy float64, frmBoundary, toB
 	}
 
 	canvas := rd.GetCanvas()
-	overWrite := canvas.Get(x, y) != " "
+	existingChar := canvas.Get(x, y)
+	overWrite := existingChar != " "
 
 	if sx == 0 { // Vertical line
+		fmt.Printf("[D2ASCII]       Drawing vertical segment at (%d, %d), overwrite=%t, existing='%s'\n",
+			x, y, overWrite, existingChar)
 		drawVerticalSegment(rd, x, y, sy, overWrite, frmBoundary, toBoundary)
 	} else { // Horizontal line
+		fmt.Printf("[D2ASCII]       Drawing horizontal segment at (%d, %d), overwrite=%t, existing='%s'\n",
+			x, y, overWrite, existingChar)
 		drawHorizontalSegment(rd, x, y, sx, overWrite, frmBoundary, toBoundary)
+	}
+
+	newChar := canvas.Get(x, y)
+	if newChar != existingChar {
+		fmt.Printf("[D2ASCII]       Character placed: '%s' -> '%s' at (%d, %d)\n",
+			existingChar, newChar, x, y)
 	}
 }
 
@@ -114,13 +151,16 @@ func drawVerticalSegment(rd RouteDrawer, x, y int, sy float64, overWrite bool, f
 
 	if overWrite && shouldDrawTJunction(rd, x, y, frmBoundary, toBoundary, true) {
 		if sy > 0 {
+			fmt.Printf("[D2ASCII]         Drawing T-junction down at (%d, %d)\n", x, y)
 			canvas.Set(x, y, chars.TDown())
 		} else {
+			fmt.Printf("[D2ASCII]         Drawing T-junction up at (%d, %d)\n", x, y)
 			canvas.Set(x, y, chars.TUp())
 		}
 	} else if overWrite && shouldSkipOverwrite(rd, x, y, frmBoundary, toBoundary) {
-		// skip
+		fmt.Printf("[D2ASCII]         Skipping overwrite at (%d, %d)\n", x, y)
 	} else {
+		fmt.Printf("[D2ASCII]         Drawing vertical line at (%d, %d)\n", x, y)
 		canvas.Set(x, y, chars.Vertical())
 	}
 }
@@ -131,11 +171,14 @@ func drawHorizontalSegment(rd RouteDrawer, x, y int, sx float64, overWrite bool,
 
 	if overWrite && shouldDrawTJunction(rd, x, y, frmBoundary, toBoundary, false) {
 		if sx > 0 {
+			fmt.Printf("[D2ASCII]         Drawing T-junction right at (%d, %d)\n", x, y)
 			canvas.Set(x, y, chars.TRight())
 		} else {
+			fmt.Printf("[D2ASCII]         Drawing T-junction left at (%d, %d)\n", x, y)
 			canvas.Set(x, y, chars.TLeft())
 		}
 	} else {
+		fmt.Printf("[D2ASCII]         Drawing horizontal line at (%d, %d)\n", x, y)
 		canvas.Set(x, y, chars.Horizontal())
 	}
 }

@@ -28,6 +28,10 @@ export interface RenderOptions {
   salt?: string;
   /** Omit XML tag (<?xml ...?>) from output SVG files. Useful when generating SVGs for direct HTML embedding. */
   noXMLTag?: boolean;
+  /** Render as ASCII instead of SVG [default: false] */
+  ascii?: boolean;
+  /** ASCII rendering mode for text outputs. Options: 'standard' (basic ASCII chars) or 'extended' (Unicode chars) [default: 'extended'] */
+  asciiMode?: "standard" | "extended";
 }
 
 export interface CompileOptions extends RenderOptions {

@@ -52,6 +52,8 @@ type RenderOptions struct {
 	AnimateInterval    *int64                   `json:"animateInterval"`
 	Salt               *string                  `json:"salt"`
 	NoXMLTag           *bool                    `json:"noXMLTag"`
+	ASCII              *bool                    `json:"ascii"`
+	ASCIIMode          *string                  `json:"asciiMode"`
 }
 
 type CompileOptions struct {

@@ -90,12 +90,30 @@
         min-width: 100%;
         max-height: 90vh;
       }
+
+      #output pre {
+        font-family: monospace;
+        white-space: pre;
+        overflow-x: auto;
+        background: #f5f5f5;
+        padding: 16px;
+        border-radius: 4px;
+      }
     </style>
   </head>
 
   <body>
     <div class="controls">
-      <textarea id="input">x -> y</textarea>
+      <textarea id="input">
+server: {shape: rectangle}
+database: {shape: cylinder}
+user: {shape: person}
+
+user -> server: "HTTP request"
+server -> database: "SQL query"
+database -> server: "result"
+server -> user: "response"</textarea
+      >
       <div class="options-group">
         <div class="option">
           <div class="option-toggle">
@@ -135,6 +153,30 @@
                 Disabled
               </label>
             </div>
+          </div>
+        </div>
+        <div class="option">
+          <div class="option-toggle">
+            <label class="checkbox-label">
+              <input type="checkbox" id="ascii-toggle" class="option-toggle-box" />
+              <span>ASCII Mode</span>
+            </label>
+          </div>
+          <div class="option-select">
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="ascii-select" value="true" checked />
+                Enabled
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="ascii-select" value="false" />
+                Disabled
+              </label>
+            </div>
+            <select id="ascii-mode-select">
+              <option selected value="extended">Extended (Unicode)</option>
+              <option value="standard">Standard (ASCII)</option>
+            </select>
           </div>
         </div>
         <div class="option">
@@ -384,6 +426,13 @@
         const layout = document.getElementById("layout-toggle").checked
           ? document.querySelector('input[name="layout-select"]:checked').value
           : null;
+        const ascii = document.getElementById("ascii-toggle").checked
+          ? document.querySelector('input[name="ascii-select"]:checked').value == "true"
+          : null;
+        const asciiModeSelector = document.getElementById("ascii-mode-select");
+        const asciiMode = ascii
+          ? asciiModeSelector.options[asciiModeSelector.selectedIndex].value
+          : null;
         const sketch = document.getElementById("sketch-toggle").checked
           ? document.querySelector('input[name="sketch-select"]:checked').value == "true"
           : null;
@@ -430,7 +479,7 @@
         try {
           const result = await d2.compile(input, {
             layout,
-            sketch,
+            sketch: ascii ? false : sketch, // Disable sketch when ASCII is enabled
             themeId,
             darkThemeId,
             scale,
@@ -445,14 +494,39 @@
             fontSemibold,
             fontBold,
             noXmlTag: true,
+            ascii: ascii,
+            asciiMode: asciiMode,
           });
-          const svg = await d2.render(result.diagram, result.renderOptions);
-          document.getElementById("output").innerHTML = svg;
+          const output = await d2.render(result.diagram, {
+            ...result.renderOptions,
+            ascii: ascii,
+            asciiMode: asciiMode,
+          });
+
+          if (ascii) {
+            document.getElementById("output").innerHTML = `<pre>${output}</pre>`;
+          } else {
+            document.getElementById("output").innerHTML = output;
+          }
         } catch (err) {
           console.error(err);
           document.getElementById("output").textContent = err.message;
         }
       };
+
+      // Make ASCII and Sketch modes mutually exclusive
+      document.getElementById("ascii-toggle").addEventListener("change", function () {
+        if (this.checked) {
+          document.getElementById("sketch-toggle").checked = false;
+        }
+      });
+
+      document.getElementById("sketch-toggle").addEventListener("change", function () {
+        if (this.checked) {
+          document.getElementById("ascii-toggle").checked = false;
+        }
+      });
+
       compile();
     </script>
   </body>

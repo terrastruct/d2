@@ -1,6 +1,7 @@
 package asciiroute
 
 import (
+	"fmt"
 	"math"
 	"strings"
 
@@ -25,7 +26,7 @@ type Boundary struct {
 }
 
 func (b *Boundary) Contains(x int, y int) bool {
-	return x > b.TL.X && x < b.BR.X && y > b.TL.Y && y < b.BR.Y
+	return x >= b.TL.X && x <= b.BR.X && y >= b.TL.Y && y <= b.BR.Y
 }
 
 func NewBoundary(tl, br Point) *Boundary {
@@ -50,22 +51,46 @@ func DrawRoute(rd RouteDrawer, conn d2target.Connection) {
 	routes := conn.Route
 	label := conn.Label
 
+	fmt.Printf("[D2ASCII] Starting edge route for connection %s -> %s\n", conn.Src, conn.Dst)
+	fmt.Printf("[D2ASCII] Initial route points (%d points):\n", len(routes))
+	for i, pt := range routes {
+		fmt.Printf("[D2ASCII]   Point %d: (%.2f, %.2f)\n", i, pt.X, pt.Y)
+	}
+
 	frmShapeBoundary, toShapeBoundary := getConnectionBoundaries(rd, conn.Src, conn.Dst)
+	fmt.Printf("[D2ASCII] Source boundary: TL(%d,%d) BR(%d,%d)\n",
+		frmShapeBoundary.TL.X, frmShapeBoundary.TL.Y,
+		frmShapeBoundary.BR.X, frmShapeBoundary.BR.Y)
+	fmt.Printf("[D2ASCII] Dest boundary: TL(%d,%d) BR(%d,%d)\n",
+		toShapeBoundary.TL.X, toShapeBoundary.TL.Y,
+		toShapeBoundary.BR.X, toShapeBoundary.BR.Y)
 
 	routes = processRoute(rd, routes, frmShapeBoundary, toShapeBoundary)
 
 	turnDir := calculateTurnDirections(routes)
+	fmt.Printf("[D2ASCII] Turn directions calculated: %d turns\n", len(turnDir))
+	for key, dir := range turnDir {
+		fmt.Printf("[D2ASCII]   Turn at %s: direction %s\n", key, dir)
+	}
 
 	var labelPos *RouteLabelPosition
 	if strings.TrimSpace(label) != "" {
 		labelPos = calculateBestLabelPosition(rd, routes, label)
+		if labelPos != nil {
+			fmt.Printf("[D2ASCII] Label position calculated: segment %d, pos (%d, %d), maxDiff %.2f\n",
+				labelPos.I, labelPos.X, labelPos.Y, labelPos.MaxDiff)
+		}
 	}
 
 	corners, arrows := getCharacterMaps(rd)
 
+	fmt.Printf("[D2ASCII] Drawing %d segments\n", len(routes)-1)
 	for i := 1; i < len(routes); i++ {
+		fmt.Printf("[D2ASCII] Drawing segment %d: (%.2f,%.2f) -> (%.2f,%.2f)\n",
+			i-1, routes[i-1].X, routes[i-1].Y, routes[i].X, routes[i].Y)
 		drawSegmentBetweenPoints(rd, routes[i-1], routes[i], i, conn, corners, arrows, turnDir, frmShapeBoundary, toShapeBoundary, labelPos, label)
 	}
+	fmt.Printf("[D2ASCII] Edge route completed for %s -> %s\n", conn.Src, conn.Dst)
 }
 
 func getCharacterMaps(rd RouteDrawer) (corners, arrows map[string]string) {
