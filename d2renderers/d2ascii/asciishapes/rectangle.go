@@ -5,13 +5,14 @@ import (
 	"strings"
 )
 
-func DrawRect(ctx *Context, x, y, w, h float64, label, labelPosition, symbol string) {
+func DrawRect(ctx *Context, x, y, w, h float64, label, labelPosition, symbol string, preserveHeight ...bool) {
 	fmt.Printf("\033[36m[D2ASCII-SHAPE]   DrawRect: (%.0f,%.0f) %.0fx%.0f, label='%s', symbol='%s'\033[0m\n",
 		x, y, w, h, label, symbol)
 
 	x1, y1, wC, hC := ctx.Calibrate(x, y, w, h)
 	originalHC := hC
-	if label != "" && hC%2 == 0 {
+	shouldPreserveHeight := len(preserveHeight) > 0 && preserveHeight[0]
+	if label != "" && hC%2 == 0 && !shouldPreserveHeight {
 		if hC > 2 {
 			hC--
 			y1++

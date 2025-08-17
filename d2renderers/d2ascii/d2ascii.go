@@ -79,12 +79,23 @@ func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
 	
 	// Apply the same width adjustments as the drawing code
 	preserveWidth := hasConnectionsAtRightEdge(s, a.diagram.Connections, a.FW)
+	preserveHeight := hasConnectionsAtTopEdge(s, a.diagram.Connections, a.FH)
 	if preserveWidth && s.Label != "" {
 		availableSpace := wC - len(s.Label)
 		if availableSpace >= asciishapes.MinLabelPadding && availableSpace%2 == 1 {
 			// Adjust the original width before recalibrating
 			width += float64(int(a.FW / a.SCALE))
 			x1, y1, wC, hC = ctx.Calibrate(posX, posY, width, height)
+		}
+	}
+	
+	// Apply the same height adjustments as DrawRect for labels
+	if s.Label != "" && hC%2 == 0 && !preserveHeight {
+		if hC > 2 {
+			hC--
+			y1++
+		} else {
+			hC++
 		}
 	}
 	
@@ -269,6 +280,7 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 			float64(originalX), float64(originalY), shape.Pos.X, shape.Pos.Y)
 
 		preserveWidth := hasConnectionsAtRightEdge(shape, diagram.Connections, a.FW)
+		preserveHeight := hasConnectionsAtTopEdge(shape, diagram.Connections, a.FH)
 		fmt.Printf("\033[36m[D2ASCII-SHAPE]   Right edge connections detected: %t\033[0m\n", preserveWidth)
 
 		ctx := &asciishapes.Context{
@@ -319,10 +331,10 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 		switch shape.Type {
 		case d2target.ShapeRectangle:
 			fmt.Printf("\033[36m[D2ASCII-SHAPE]   -> DrawRect\033[0m\n")
-			asciishapes.DrawRect(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition, "")
+			asciishapes.DrawRect(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition, "", preserveHeight)
 		case d2target.ShapeSquare:
 			fmt.Printf("\033[36m[D2ASCII-SHAPE]   -> DrawRect (square)\033[0m\n")
-			asciishapes.DrawRect(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition, "")
+			asciishapes.DrawRect(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition, "", preserveHeight)
 		case d2target.ShapePage:
 			asciishapes.DrawPage(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapeHexagon:
@@ -359,7 +371,7 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 			default:
 				symbol = ""
 			}
-			asciishapes.DrawRect(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition, symbol)
+			asciishapes.DrawRect(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition, symbol, preserveHeight)
 		}
 	}
 	for _, conn := range diagram.Connections {
@@ -414,6 +426,43 @@ func hasConnectionsAtRightEdge(shape d2target.Shape, connections []d2target.Conn
 		if math.Abs(lastPoint.X-shapeRight) < tolerance &&
 			lastPoint.Y >= shapeTop && lastPoint.Y <= shapeBottom {
 			return true
+		}
+	}
+
+	return false
+}
+
+func hasConnectionsAtTopEdge(shape d2target.Shape, connections []d2target.Connection, fontHeight float64) bool {
+	shapeTop := float64(shape.Pos.Y)
+	shapeLeft := float64(shape.Pos.X)
+	shapeRight := float64(shape.Pos.X + shape.Width)
+
+	for _, conn := range connections {
+		if len(conn.Route) < 2 {
+			continue
+		}
+
+		// Check if route has horizontal segments connecting to top edge
+		for i := 0; i < len(conn.Route)-1; i++ {
+			p1 := conn.Route[i]
+			p2 := conn.Route[i+1]
+			
+			// Check if this is a horizontal segment
+			if math.Abs(p1.Y-p2.Y) < 0.1 {
+				segmentY := p1.Y
+				segmentLeft := math.Min(p1.X, p2.X)
+				segmentRight := math.Max(p1.X, p2.X)
+				
+				tolerance := fontHeight
+				
+				// Check if horizontal segment connects to shape's top edge
+				if math.Abs(segmentY-shapeTop) < tolerance &&
+					segmentRight >= shapeLeft && segmentLeft <= shapeRight {
+					fmt.Printf("\033[36m[D2ASCII-SHAPE]     Found horizontal top connection: segment Y=%.2f vs shape Y=%.2f\033[0m\n", 
+						segmentY, shapeTop)
+					return true
+				}
+			}
 		}
 	}
 
