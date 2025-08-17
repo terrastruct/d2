@@ -1,3 +1,15 @@
+-- three-right --
+direction: right
+x -> y -> z
+x -> z
+x -> y: okay
+
+-- three-down --
+direction: down
+x -> y -> z
+x -> z
+x -> y: okay
+
 -- basic-simple --
 x -> y
 
