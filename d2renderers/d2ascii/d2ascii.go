@@ -76,15 +76,6 @@ func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
 	}
 	x1, y1, wC, hC := ctx.Calibrate(posX, posY, width, height)
 	
-	// Apply the same height adjustments as DrawRect for labels
-	if s.Label != "" && hC%2 == 0 {
-		if hC > 2 {
-			hC--
-			y1++
-		} else {
-			hC++
-		}
-	}
 	
 	// Apply the same width adjustments as the drawing code
 	preserveWidth := hasConnectionsAtRightEdge(s, a.diagram.Connections, a.FW)
@@ -94,15 +85,6 @@ func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
 			// Adjust the original width before recalibrating
 			width += float64(int(a.FW / a.SCALE))
 			x1, y1, wC, hC = ctx.Calibrate(posX, posY, width, height)
-			// Reapply height adjustments
-			if s.Label != "" && hC%2 == 0 {
-				if hC > 2 {
-					hC--
-					y1++
-				} else {
-					hC++
-				}
-			}
 		}
 	}
 	

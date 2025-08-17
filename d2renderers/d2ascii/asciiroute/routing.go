@@ -49,7 +49,7 @@ func processRoute(rd RouteDrawer, routes []*geo.Point, fromBoundary, toBoundary 
 		fmt.Printf("[D2ASCII] Step 5: Adjusting end point to avoid overlaps\n")
 		endIdx := len(routesCopy) - 1
 		endBefore := fmt.Sprintf("(%.2f, %.2f)", routesCopy[endIdx].X, routesCopy[endIdx].Y)
-		adjustRouteEndPoint(rd, routesCopy, toBoundary)
+		routesCopy = adjustRouteEndPoint(rd, routesCopy, toBoundary)
 		fmt.Printf("[D2ASCII]   End point: %s -> (%.2f, %.2f)\n", endBefore, routesCopy[endIdx].X, routesCopy[endIdx].Y)
 	}
 
@@ -252,9 +252,9 @@ func adjustRouteStartPoint(rd RouteDrawer, routes []*geo.Point, fromBoundary Bou
 	}
 }
 
-func adjustRouteEndPoint(rd RouteDrawer, routes []*geo.Point, toBoundary Boundary) {
+func adjustRouteEndPoint(rd RouteDrawer, routes []*geo.Point, toBoundary Boundary) []*geo.Point {
 	if len(routes) < 2 {
-		return
+		return routes
 	}
 
 	lastIdx := len(routes) - 1
@@ -268,9 +268,12 @@ func adjustRouteEndPoint(rd RouteDrawer, routes []*geo.Point, toBoundary Boundar
 	fmt.Printf("[D2ASCII]   Adjusting end point: (%.2f, %.2f) <- (%.2f, %.2f)\n", 
 		lastX, lastY, secondLastX, secondLastY)
 
+	lastXInt := int(math.Round(lastX))
+	lastYInt := int(math.Round(lastY))
+
 	// Check if end point is inside the to boundary
 	// Move along the vector of the last segment until outside the boundary if so
-	if toBoundary.Contains(int(math.Round(lastX)), int(math.Round(lastY))) {
+	if toBoundary.Contains(lastXInt, lastYInt) {
 		fmt.Printf("[D2ASCII]   End point inside dest boundary, moving along vector\n")
 		vectorX := lastX - secondLastX
 		vectorY := lastY - secondLastY
@@ -290,8 +293,9 @@ func adjustRouteEndPoint(rd RouteDrawer, routes []*geo.Point, toBoundary Boundar
 			fmt.Printf("[D2ASCII]   Moved %d steps to exit boundary: (%.2f, %.2f)\n", 
 				steps, routes[lastIdx].X, routes[lastIdx].Y)
 		}
-		return
+		return routes
 	}
+
 
 	// Determine line direction and keep shifting until empty space
 	if math.Abs(lastY-secondLastY) < 0.1 { // Horizontal line
@@ -323,6 +327,8 @@ func adjustRouteEndPoint(rd RouteDrawer, routes []*geo.Point, toBoundary Boundar
 			shiftPointUntilEmpty(rd, &routes[lastIdx].X, &routes[lastIdx].Y, 0, deltaY)
 		}
 	}
+	
+	return routes
 }
 
 func shiftPointUntilEmpty(rd RouteDrawer, x, y *float64, deltaX, deltaY float64) {
