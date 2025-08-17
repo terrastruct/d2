@@ -9,7 +9,7 @@ import (
 
 func processRoute(rd RouteDrawer, routes []*geo.Point, fromBoundary, toBoundary Boundary) []*geo.Point {
 	fmt.Printf("[D2ASCII] Processing route with %d points\n", len(routes))
-	
+
 	// Create a deep copy of routes to avoid modifying the original
 	routesCopy := make([]*geo.Point, len(routes))
 	for i, pt := range routes {
@@ -45,7 +45,7 @@ func processRoute(rd RouteDrawer, routes []*geo.Point, fromBoundary, toBoundary 
 		startBefore := fmt.Sprintf("(%.2f, %.2f)", routesCopy[0].X, routesCopy[0].Y)
 		adjustRouteStartPoint(rd, routesCopy, fromBoundary)
 		fmt.Printf("[D2ASCII]   Start point: %s -> (%.2f, %.2f)\n", startBefore, routesCopy[0].X, routesCopy[0].Y)
-		
+
 		fmt.Printf("[D2ASCII] Step 5: Adjusting end point to avoid overlaps\n")
 		endIdx := len(routesCopy) - 1
 		endBefore := fmt.Sprintf("(%.2f, %.2f)", routesCopy[endIdx].X, routesCopy[endIdx].Y)
@@ -134,7 +134,7 @@ func calibrateRoutes(rd RouteDrawer, routes []*geo.Point) {
 	for i := range routes {
 		origX, origY := routes[i].X, routes[i].Y
 		routes[i].X, routes[i].Y = rd.CalibrateXY(routes[i].X, routes[i].Y)
-		fmt.Printf("[D2ASCII]   Calibrate point %d: (%.2f, %.2f) -> (%.2f, %.2f)\n", 
+		fmt.Printf("[D2ASCII]   Calibrate point %d: (%.2f, %.2f) -> (%.2f, %.2f)\n",
 			i, origX, origY, routes[i].X, routes[i].Y)
 	}
 }
@@ -192,7 +192,7 @@ func adjustRouteStartPoint(rd RouteDrawer, routes []*geo.Point, fromBoundary Bou
 	secondX := routes[1].X
 	secondY := routes[1].Y
 
-	fmt.Printf("[D2ASCII]   Adjusting start point: (%.2f, %.2f) -> (%.2f, %.2f)\n", 
+	fmt.Printf("[D2ASCII]   Adjusting start point: (%.2f, %.2f) -> (%.2f, %.2f)\n",
 		firstX, firstY, secondX, secondY)
 
 	// Check if end point is inside the to boundary
@@ -214,7 +214,7 @@ func adjustRouteStartPoint(rd RouteDrawer, routes []*geo.Point, fromBoundary Bou
 				routes[0].Y += vectorY
 				steps++
 			}
-			fmt.Printf("[D2ASCII]   Moved %d steps to exit boundary: (%.2f, %.2f)\n", 
+			fmt.Printf("[D2ASCII]   Moved %d steps to exit boundary: (%.2f, %.2f)\n",
 				steps, routes[0].X, routes[0].Y)
 		}
 		return
@@ -265,7 +265,7 @@ func adjustRouteEndPoint(rd RouteDrawer, routes []*geo.Point, toBoundary Boundar
 	secondLastX := routes[secondLastIdx].X
 	secondLastY := routes[secondLastIdx].Y
 
-	fmt.Printf("[D2ASCII]   Adjusting end point: (%.2f, %.2f) <- (%.2f, %.2f)\n", 
+	fmt.Printf("[D2ASCII]   Adjusting end point: (%.2f, %.2f) <- (%.2f, %.2f)\n",
 		lastX, lastY, secondLastX, secondLastY)
 
 	lastXInt := int(math.Round(lastX))
@@ -290,12 +290,11 @@ func adjustRouteEndPoint(rd RouteDrawer, routes []*geo.Point, toBoundary Boundar
 				routes[lastIdx].Y -= vectorY
 				steps++
 			}
-			fmt.Printf("[D2ASCII]   Moved %d steps to exit boundary: (%.2f, %.2f)\n", 
+			fmt.Printf("[D2ASCII]   Moved %d steps to exit boundary: (%.2f, %.2f)\n",
 				steps, routes[lastIdx].X, routes[lastIdx].Y)
 		}
 		return routes
 	}
-
 
 	// Determine line direction and keep shifting until empty space
 	if math.Abs(lastY-secondLastY) < 0.1 { // Horizontal line
@@ -327,7 +326,7 @@ func adjustRouteEndPoint(rd RouteDrawer, routes []*geo.Point, toBoundary Boundar
 			shiftPointUntilEmpty(rd, &routes[lastIdx].X, &routes[lastIdx].Y, 0, deltaY)
 		}
 	}
-	
+
 	return routes
 }
 
@@ -341,11 +340,11 @@ func shiftPointUntilEmpty(rd RouteDrawer, x, y *float64, deltaX, deltaY float64)
 		if canvas.IsInBounds(xi, yi) {
 			char := canvas.Get(xi, yi)
 			if char == " " {
-				fmt.Printf("[D2ASCII]     Found empty space after %d steps: (%.2f, %.2f) -> (%.2f, %.2f)\n", 
+				fmt.Printf("[D2ASCII]     Found empty space after %d steps: (%.2f, %.2f) -> (%.2f, %.2f)\n",
 					steps, startX, startY, *x, *y)
 				break // Found empty space
 			}
-			fmt.Printf("[D2ASCII]     Position (%d, %d) occupied by '%s', shifting by (%.2f, %.2f)\n", 
+			fmt.Printf("[D2ASCII]     Position (%d, %d) occupied by '%s', shifting by (%.2f, %.2f)\n",
 				xi, yi, string(char), deltaX, deltaY)
 			*x += deltaX
 			*y += deltaY

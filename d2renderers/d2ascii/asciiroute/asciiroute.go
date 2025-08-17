@@ -58,11 +58,11 @@ func DrawRoute(rd RouteDrawer, conn d2target.Connection) {
 	}
 
 	frmShapeBoundary, toShapeBoundary := getConnectionBoundaries(rd, conn.Src, conn.Dst)
-	fmt.Printf("[D2ASCII] Source boundary: TL(%d,%d) BR(%d,%d)\n", 
-		frmShapeBoundary.TL.X, frmShapeBoundary.TL.Y, 
+	fmt.Printf("[D2ASCII] Source boundary: TL(%d,%d) BR(%d,%d)\n",
+		frmShapeBoundary.TL.X, frmShapeBoundary.TL.Y,
 		frmShapeBoundary.BR.X, frmShapeBoundary.BR.Y)
-	fmt.Printf("[D2ASCII] Dest boundary: TL(%d,%d) BR(%d,%d)\n", 
-		toShapeBoundary.TL.X, toShapeBoundary.TL.Y, 
+	fmt.Printf("[D2ASCII] Dest boundary: TL(%d,%d) BR(%d,%d)\n",
+		toShapeBoundary.TL.X, toShapeBoundary.TL.Y,
 		toShapeBoundary.BR.X, toShapeBoundary.BR.Y)
 
 	routes = processRoute(rd, routes, frmShapeBoundary, toShapeBoundary)
@@ -77,7 +77,7 @@ func DrawRoute(rd RouteDrawer, conn d2target.Connection) {
 	if strings.TrimSpace(label) != "" {
 		labelPos = calculateBestLabelPosition(rd, routes, label)
 		if labelPos != nil {
-			fmt.Printf("[D2ASCII] Label position calculated: segment %d, pos (%d, %d), maxDiff %.2f\n", 
+			fmt.Printf("[D2ASCII] Label position calculated: segment %d, pos (%d, %d), maxDiff %.2f\n",
 				labelPos.I, labelPos.X, labelPos.Y, labelPos.MaxDiff)
 		}
 	}
@@ -86,7 +86,7 @@ func DrawRoute(rd RouteDrawer, conn d2target.Connection) {
 
 	fmt.Printf("[D2ASCII] Drawing %d segments\n", len(routes)-1)
 	for i := 1; i < len(routes); i++ {
-		fmt.Printf("[D2ASCII] Drawing segment %d: (%.2f,%.2f) -> (%.2f,%.2f)\n", 
+		fmt.Printf("[D2ASCII] Drawing segment %d: (%.2f,%.2f) -> (%.2f,%.2f)\n",
 			i-1, routes[i-1].X, routes[i-1].Y, routes[i].X, routes[i].Y)
 		drawSegmentBetweenPoints(rd, routes[i-1], routes[i], i, conn, corners, arrows, turnDir, frmShapeBoundary, toShapeBoundary, labelPos, label)
 	}

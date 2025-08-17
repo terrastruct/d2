@@ -14,7 +14,7 @@ func drawSegmentBetweenPoints(rd RouteDrawer, start, end *geo.Point, segmentInde
 	ax, ay := start.X, start.Y
 	cx, cy := end.X, end.Y
 
-	fmt.Printf("[D2ASCII]   Drawing segment %d: (%.2f,%.2f) -> (%.2f,%.2f)\n", 
+	fmt.Printf("[D2ASCII]   Drawing segment %d: (%.2f,%.2f) -> (%.2f,%.2f)\n",
 		segmentIndex-1, ax, ay, cx, cy)
 
 	sx := cx - ax
@@ -114,7 +114,7 @@ func drawRoutePoint(rd RouteDrawer, x, y int, sx, sy float64, segmentIndex, rout
 	}
 
 	// Default: draw route segment
-	fmt.Printf("[D2ASCII]     Drawing route segment at (%d, %d), existing: '%s'\n", 
+	fmt.Printf("[D2ASCII]     Drawing route segment at (%d, %d), existing: '%s'\n",
 		x, y, existingChar)
 	drawRouteSegment(rd, x, y, sx, sy, frmBoundary, toBoundary)
 }
@@ -129,18 +129,18 @@ func drawRouteSegment(rd RouteDrawer, x, y int, sx, sy float64, frmBoundary, toB
 	overWrite := existingChar != " "
 
 	if sx == 0 { // Vertical line
-		fmt.Printf("[D2ASCII]       Drawing vertical segment at (%d, %d), overwrite=%t, existing='%s'\n", 
+		fmt.Printf("[D2ASCII]       Drawing vertical segment at (%d, %d), overwrite=%t, existing='%s'\n",
 			x, y, overWrite, existingChar)
 		drawVerticalSegment(rd, x, y, sy, overWrite, frmBoundary, toBoundary)
 	} else { // Horizontal line
-		fmt.Printf("[D2ASCII]       Drawing horizontal segment at (%d, %d), overwrite=%t, existing='%s'\n", 
+		fmt.Printf("[D2ASCII]       Drawing horizontal segment at (%d, %d), overwrite=%t, existing='%s'\n",
 			x, y, overWrite, existingChar)
 		drawHorizontalSegment(rd, x, y, sx, overWrite, frmBoundary, toBoundary)
 	}
 
 	newChar := canvas.Get(x, y)
 	if newChar != existingChar {
-		fmt.Printf("[D2ASCII]       Character placed: '%s' -> '%s' at (%d, %d)\n", 
+		fmt.Printf("[D2ASCII]       Character placed: '%s' -> '%s' at (%d, %d)\n",
 			existingChar, newChar, x, y)
 	}
 }

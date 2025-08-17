@@ -36,7 +36,7 @@ func DrawPage(ctx *Context, x, y, w, h float64, label, labelPosition string) {
 			}
 		}
 	}
-	// The fold  
+	// The fold
 	ctx.Canvas.Set(x2, y1, " ")
 	ctx.Canvas.Set(x2-1, y1, ctx.Chars.TopRightCorner())
 	ctx.Canvas.Set(x2-1, y1+1, ctx.Chars.Backslash())

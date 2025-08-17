@@ -48,13 +48,13 @@ func NewBoundary(tl, br Point) *Boundary {
 
 func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
 	fmt.Printf("\033[36m[D2ASCII-SHAPE] GetBoundary for shape %s (%s)\033[0m\n", s.ID, s.Type)
-	
+
 	// For multiple shapes, expand boundary to match the expanded rendering
 	posX := float64(s.Pos.X)
 	posY := float64(s.Pos.Y)
 	width := float64(s.Width)
 	height := float64(s.Height)
-	fmt.Printf("\033[36m[D2ASCII-SHAPE]   Original dimensions: (%.0f,%.0f) %.0fx%.0f\033[0m\n", 
+	fmt.Printf("\033[36m[D2ASCII-SHAPE]   Original dimensions: (%.0f,%.0f) %.0fx%.0f\033[0m\n",
 		posX, posY, width, height)
 
 	if s.Multiple {
@@ -62,7 +62,7 @@ func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
 		posX -= d2target.MULTIPLE_OFFSET   // Move left to include shadow area
 		width += d2target.MULTIPLE_OFFSET  // Include shadow width
 		height += d2target.MULTIPLE_OFFSET // Include shadow height
-		fmt.Printf("\033[36m[D2ASCII-SHAPE]   Expanded dimensions: (%.0f,%.0f) %.0fx%.0f\033[0m\n", 
+		fmt.Printf("\033[36m[D2ASCII-SHAPE]   Expanded dimensions: (%.0f,%.0f) %.0fx%.0f\033[0m\n",
 			posX, posY, width, height)
 	}
 
@@ -75,8 +75,7 @@ func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
 		Scale:  a.SCALE,
 	}
 	x1, y1, wC, hC := ctx.Calibrate(posX, posY, width, height)
-	
-	
+
 	// Apply the same width adjustments as the drawing code
 	preserveWidth := hasConnectionsAtRightEdge(s, a.diagram.Connections, a.FW)
 	preserveHeight := hasConnectionsAtTopEdge(s, a.diagram.Connections, a.FH)
@@ -88,7 +87,7 @@ func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
 			x1, y1, wC, hC = ctx.Calibrate(posX, posY, width, height)
 		}
 	}
-	
+
 	// Apply the same height adjustments as DrawRect for labels
 	if s.Label != "" && hC%2 == 0 && !preserveHeight {
 		if hC > 2 {
@@ -98,13 +97,13 @@ func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
 			hC++
 		}
 	}
-	
+
 	// Apply the same width adjustments as DrawRect for labels
 	wC = asciishapes.AdjustWidthForLabel(ctx, posX, posY, width, height, wC, s.Label)
-	
+
 	x2, y2 := x1+wC, y1+hC
-	
-	fmt.Printf("\033[36m[D2ASCII-SHAPE]   Boundary matches actual draw bounds: (%d,%d)-(%d,%d) [%dx%d]\033[0m\n", 
+
+	fmt.Printf("\033[36m[D2ASCII-SHAPE]   Boundary matches actual draw bounds: (%d,%d)-(%d,%d) [%dx%d]\033[0m\n",
 		x1, y1, x2, y2, wC, hC)
 
 	return Point{X: x1, Y: y1}, Point{X: x2, Y: y2}
@@ -270,13 +269,13 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 
 	fmt.Printf("\033[36m[D2ASCII-SHAPE] Processing %d shapes with offset (%d, %d)\033[0m\n", len(diagram.Shapes), xOffset, yOffset)
 	for i, shape := range diagram.Shapes {
-		fmt.Printf("\033[36m[D2ASCII-SHAPE] Shape %d (%s): %s at (%.0f,%.0f) size %.0fx%.0f\033[0m\n", 
+		fmt.Printf("\033[36m[D2ASCII-SHAPE] Shape %d (%s): %s at (%.0f,%.0f) size %.0fx%.0f\033[0m\n",
 			i, shape.ID, shape.Type, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height))
-		
+
 		originalX, originalY := shape.Pos.X, shape.Pos.Y
 		shape.Pos.X += xOffset
 		shape.Pos.Y += yOffset
-		fmt.Printf("\033[36m[D2ASCII-SHAPE]   Position adjusted: (%.0f,%.0f) -> (%d,%d)\033[0m\n", 
+		fmt.Printf("\033[36m[D2ASCII-SHAPE]   Position adjusted: (%.0f,%.0f) -> (%d,%d)\033[0m\n",
 			float64(originalX), float64(originalY), shape.Pos.X, shape.Pos.Y)
 
 		preserveWidth := hasConnectionsAtRightEdge(shape, diagram.Connections, a.FW)
@@ -295,11 +294,11 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 		if preserveWidth && shape.Label != "" {
 			wC := int(math.Round((float64(shape.Width) / a.FW) * a.SCALE))
 			availableSpace := wC - len(shape.Label)
-			fmt.Printf("\033[36m[D2ASCII-SHAPE]   Width preservation check: calibrated=%d, label=%d chars, available=%d\033[0m\n", 
+			fmt.Printf("\033[36m[D2ASCII-SHAPE]   Width preservation check: calibrated=%d, label=%d chars, available=%d\033[0m\n",
 				wC, len(shape.Label), availableSpace)
 			if availableSpace >= asciishapes.MinLabelPadding && availableSpace%2 == 1 {
 				shape.Width += int(a.FW / a.SCALE)
-				fmt.Printf("\033[36m[D2ASCII-SHAPE]   Width adjusted for even spacing: %d -> %d\033[0m\n", 
+				fmt.Printf("\033[36m[D2ASCII-SHAPE]   Width adjusted for even spacing: %d -> %d\033[0m\n",
 					originalWidth, shape.Width)
 			}
 		}
@@ -319,12 +318,12 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 			// Expand size to fill entire multiple effect area
 			drawWidth += d2target.MULTIPLE_OFFSET  // Include shadow width
 			drawHeight += d2target.MULTIPLE_OFFSET // Include shadow height
-			fmt.Printf("\033[36m[D2ASCII-SHAPE]   Multiple dimensions: (%.0f,%.0f) %.0fx%.0f -> (%.0f,%.0f) %.0fx%.0f\033[0m\n", 
+			fmt.Printf("\033[36m[D2ASCII-SHAPE]   Multiple dimensions: (%.0f,%.0f) %.0fx%.0f -> (%.0f,%.0f) %.0fx%.0f\033[0m\n",
 				float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height),
 				drawX, drawY, drawWidth, drawHeight)
 		}
 
-		fmt.Printf("\033[36m[D2ASCII-SHAPE]   Final draw parameters: (%.0f,%.0f) %.0fx%.0f, label='%s'\033[0m\n", 
+		fmt.Printf("\033[36m[D2ASCII-SHAPE]   Final draw parameters: (%.0f,%.0f) %.0fx%.0f, label='%s'\033[0m\n",
 			drawX, drawY, drawWidth, drawHeight, shape.Label)
 
 		fmt.Printf("\033[36m[D2ASCII-SHAPE]   Drawing shape type: %s\033[0m\n", shape.Type)
@@ -394,7 +393,7 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 func (a *ASCIIartist) calibrateXY(x, y float64) (float64, float64) {
 	xC := float64(math.Round((x / a.FW) * a.SCALE))
 	yC := float64(math.Round((y / a.FH) * a.SCALE))
-	fmt.Printf("[D2ASCII]     CalibrateXY: (%.2f, %.2f) -> (%.2f, %.2f) [FW=%.2f, FH=%.2f, SCALE=%.2f]\n", 
+	fmt.Printf("[D2ASCII]     CalibrateXY: (%.2f, %.2f) -> (%.2f, %.2f) [FW=%.2f, FH=%.2f, SCALE=%.2f]\n",
 		x, y, xC, yC, a.FW, a.FH, a.SCALE)
 	return xC, yC
 }
@@ -446,19 +445,19 @@ func hasConnectionsAtTopEdge(shape d2target.Shape, connections []d2target.Connec
 		for i := 0; i < len(conn.Route)-1; i++ {
 			p1 := conn.Route[i]
 			p2 := conn.Route[i+1]
-			
+
 			// Check if this is a horizontal segment
 			if math.Abs(p1.Y-p2.Y) < 0.1 {
 				segmentY := p1.Y
 				segmentLeft := math.Min(p1.X, p2.X)
 				segmentRight := math.Max(p1.X, p2.X)
-				
+
 				tolerance := fontHeight
-				
+
 				// Check if horizontal segment connects to shape's top edge
 				if math.Abs(segmentY-shapeTop) < tolerance &&
 					segmentRight >= shapeLeft && segmentLeft <= shapeRight {
-					fmt.Printf("\033[36m[D2ASCII-SHAPE]     Found horizontal top connection: segment Y=%.2f vs shape Y=%.2f\033[0m\n", 
+					fmt.Printf("\033[36m[D2ASCII-SHAPE]     Found horizontal top connection: segment Y=%.2f vs shape Y=%.2f\033[0m\n",
 						segmentY, shapeTop)
 					return true
 				}
