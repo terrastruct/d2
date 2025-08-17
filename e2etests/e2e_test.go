@@ -208,7 +208,7 @@ func runASCIITxtarTest(t *testing.T, tc testCase) {
 		Scale:   renderOpts.Scale,
 		Charset: charset.Unicode,
 	}
-	extendedBytes, err := extendedAsciiArtist.Render(diagram, extendedRenderOpts)
+	extendedBytes, err := extendedAsciiArtist.Render(ctx, diagram, extendedRenderOpts)
 	assert.Success(t, err)
 	err3 = diff.Testdata(filepath.Join(outputDir, "extended"), ".txt", extendedBytes)
 
@@ -219,7 +219,7 @@ func runASCIITxtarTest(t *testing.T, tc testCase) {
 		Scale:   renderOpts.Scale,
 		Charset: charset.ASCII,
 	}
-	standardBytes, err := standardAsciiArtist.Render(diagram, standardRenderOpts)
+	standardBytes, err := standardAsciiArtist.Render(ctx, diagram, standardRenderOpts)
 	assert.Success(t, err)
 	err4 = diff.Testdata(filepath.Join(outputDir, "standard"), ".txt", standardBytes)
 

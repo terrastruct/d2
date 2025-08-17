@@ -47,7 +47,7 @@ func DrawDiamond(ctx *Context, x, y, w, h float64, label, labelPosition string) 
 	}
 
 	if label != "" {
-		ly := LabelY(y1, y2, ih, label, labelPosition)
+		ly := LabelY(ctx.Ctx, y1, y2, ih, label, labelPosition)
 		lx := x1 + (iw-len(label))/2
 		ctx.Canvas.DrawLabel(lx, ly, label)
 	}
