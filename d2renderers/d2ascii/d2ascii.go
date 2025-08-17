@@ -1,7 +1,8 @@
 package d2ascii
 
 import (
-	"fmt"
+	"context"
+	"log/slog"
 	"math"
 
 	"oss.terrastruct.com/d2/d2renderers/d2ascii/asciicanvas"
@@ -9,6 +10,7 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/d2ascii/asciishapes"
 	"oss.terrastruct.com/d2/d2renderers/d2ascii/charset"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/lib/log"
 )
 
 const (
@@ -32,6 +34,7 @@ type ASCIIartist struct {
 	tcurve  string
 	SCALE   float64
 	diagram d2target.Diagram
+	ctx     context.Context
 }
 type RenderOpts struct {
 	Scale   *float64
@@ -47,34 +50,29 @@ func NewBoundary(tl, br Point) *Boundary {
 }
 
 func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
-	fmt.Printf("\033[36m[D2ASCII-SHAPE] GetBoundary for shape %s (%s)\033[0m\n", s.ID, s.Type)
 
 	// For multiple shapes, expand boundary to match the expanded rendering
 	posX := float64(s.Pos.X)
 	posY := float64(s.Pos.Y)
 	width := float64(s.Width)
 	height := float64(s.Height)
-	fmt.Printf("\033[36m[D2ASCII-SHAPE]   Original dimensions: (%.0f,%.0f) %.0fx%.0f\033[0m\n",
-		posX, posY, width, height)
 
 	if s.Multiple {
-		fmt.Printf("\033[36m[D2ASCII-SHAPE]   Multiple shape, expanding boundary by %d\033[0m\n", d2target.MULTIPLE_OFFSET)
 		posX -= d2target.MULTIPLE_OFFSET   // Move left to include shadow area
 		width += d2target.MULTIPLE_OFFSET  // Include shadow width
 		height += d2target.MULTIPLE_OFFSET // Include shadow height
-		fmt.Printf("\033[36m[D2ASCII-SHAPE]   Expanded dimensions: (%.0f,%.0f) %.0fx%.0f\033[0m\n",
-			posX, posY, width, height)
 	}
 
 	// Use the same calibration logic as the drawing functions
-	ctx := &asciishapes.Context{
+	shapeCtx := &asciishapes.Context{
 		Canvas: a.canvas,
 		Chars:  a.chars,
 		FW:     a.FW,
 		FH:     a.FH,
 		Scale:  a.SCALE,
+		Ctx:    a.ctx,
 	}
-	x1, y1, wC, hC := ctx.Calibrate(posX, posY, width, height)
+	x1, y1, wC, hC := shapeCtx.Calibrate(posX, posY, width, height)
 
 	// Apply the same width adjustments as the drawing code
 	preserveWidth := hasConnectionsAtRightEdge(s, a.diagram.Connections, a.FW)
@@ -84,7 +82,7 @@ func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
 		if availableSpace >= asciishapes.MinLabelPadding && availableSpace%2 == 1 {
 			// Adjust the original width before recalibrating
 			width += float64(int(a.FW / a.SCALE))
-			x1, y1, wC, hC = ctx.Calibrate(posX, posY, width, height)
+			x1, y1, wC, hC = shapeCtx.Calibrate(posX, posY, width, height)
 		}
 	}
 
@@ -99,12 +97,9 @@ func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
 	}
 
 	// Apply the same width adjustments as DrawRect for labels
-	wC = asciishapes.AdjustWidthForLabel(ctx, posX, posY, width, height, wC, s.Label)
+	wC = asciishapes.AdjustWidthForLabel(shapeCtx, posX, posY, width, height, wC, s.Label)
 
 	x2, y2 := x1+wC, y1+hC
-
-	fmt.Printf("\033[36m[D2ASCII-SHAPE]   Boundary matches actual draw bounds: (%d,%d)-(%d,%d) [%dx%d]\033[0m\n",
-		x1, y1, x2, y2, wC, hC)
 
 	return Point{X: x1, Y: y1}, Point{X: x2, Y: y2}
 }
@@ -115,6 +110,7 @@ func (a *ASCIIartist) GetDiagram() *d2target.Diagram  { return &a.diagram }
 func (a *ASCIIartist) GetFontWidth() float64          { return a.FW }
 func (a *ASCIIartist) GetFontHeight() float64         { return a.FH }
 func (a *ASCIIartist) GetScale() float64              { return a.SCALE }
+func (a *ASCIIartist) GetContext() context.Context    { return a.ctx }
 func (a *ASCIIartist) GetBoundaryForShape(s d2target.Shape) (asciiroute.Point, asciiroute.Point) {
 	p1, p2 := a.GetBoundary(s)
 	return asciiroute.Point{X: p1.X, Y: p1.Y}, asciiroute.Point{X: p2.X, Y: p2.Y}
@@ -220,10 +216,11 @@ func (a *ASCIIartist) calculateExtendedBounds(diagram *d2target.Diagram) (tl, br
 	return tl, br
 }
 
-func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
+func (a *ASCIIartist) Render(ctx context.Context, diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	if opts == nil {
 		opts = &RenderOpts{}
 	}
+	a.ctx = ctx
 	chars := a.chars
 	if opts.Charset == charset.ASCII {
 		chars = charset.New(charset.ASCII)
@@ -262,44 +259,40 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 		}
 	}
 	padding := maxLabelLen + asciishapes.MinLabelPadding
-	fmt.Printf("\033[36m[D2ASCII-SHAPE] Canvas padding calculated: maxLabelLen=%d, padding=%d\033[0m\n", maxLabelLen, padding)
-	fmt.Printf("\033[36m[D2ASCII-SHAPE] Creating canvas: %dx%d (base: %dx%d + padding)\033[0m\n", w+padding+1, h+padding+1, w, h)
+	log.Debug(ctx, "canvas setup", slog.Int("maxLabelLen", maxLabelLen), slog.Int("padding", padding), slog.Int("width", w+padding+1), slog.Int("height", h+padding+1))
 
 	a.canvas = asciicanvas.New(w+padding+1, h+padding+1)
 
-	fmt.Printf("\033[36m[D2ASCII-SHAPE] Processing %d shapes with offset (%d, %d)\033[0m\n", len(diagram.Shapes), xOffset, yOffset)
+	log.Debug(ctx, "processing shapes", slog.Int("count", len(diagram.Shapes)), slog.Int("xOffset", xOffset), slog.Int("yOffset", yOffset))
 	for i, shape := range diagram.Shapes {
-		fmt.Printf("\033[36m[D2ASCII-SHAPE] Shape %d (%s): %s at (%.0f,%.0f) size %.0fx%.0f\033[0m\n",
-			i, shape.ID, shape.Type, float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height))
+		log.Debug(ctx, "processing shape", slog.Int("index", i), slog.String("id", shape.ID), slog.String("type", shape.Type), slog.Float64("x", float64(shape.Pos.X)), slog.Float64("y", float64(shape.Pos.Y)), slog.Float64("width", float64(shape.Width)), slog.Float64("height", float64(shape.Height)))
 
 		originalX, originalY := shape.Pos.X, shape.Pos.Y
 		shape.Pos.X += xOffset
 		shape.Pos.Y += yOffset
-		fmt.Printf("\033[36m[D2ASCII-SHAPE]   Position adjusted: (%.0f,%.0f) -> (%d,%d)\033[0m\n",
-			float64(originalX), float64(originalY), shape.Pos.X, shape.Pos.Y)
+		log.Debug(ctx, "position adjusted", slog.Float64("originalX", float64(originalX)), slog.Float64("originalY", float64(originalY)), slog.Int("newX", shape.Pos.X), slog.Int("newY", shape.Pos.Y))
 
 		preserveWidth := hasConnectionsAtRightEdge(shape, diagram.Connections, a.FW)
 		preserveHeight := hasConnectionsAtTopEdge(shape, diagram.Connections, a.FH)
-		fmt.Printf("\033[36m[D2ASCII-SHAPE]   Right edge connections detected: %t\033[0m\n", preserveWidth)
+		log.Debug(ctx, "edge connections", slog.Bool("preserveWidth", preserveWidth))
 
-		ctx := &asciishapes.Context{
+		shapeCtx := &asciishapes.Context{
 			Canvas: a.canvas,
 			Chars:  a.chars,
 			FW:     a.FW,
 			FH:     a.FH,
 			Scale:  a.SCALE,
+			Ctx:    ctx,
 		}
 
 		originalWidth := shape.Width
 		if preserveWidth && shape.Label != "" {
 			wC := int(math.Round((float64(shape.Width) / a.FW) * a.SCALE))
 			availableSpace := wC - len(shape.Label)
-			fmt.Printf("\033[36m[D2ASCII-SHAPE]   Width preservation check: calibrated=%d, label=%d chars, available=%d\033[0m\n",
-				wC, len(shape.Label), availableSpace)
+			log.Debug(ctx, "width preservation check", slog.Int("calibrated", wC), slog.Int("labelChars", len(shape.Label)), slog.Int("available", availableSpace))
 			if availableSpace >= asciishapes.MinLabelPadding && availableSpace%2 == 1 {
 				shape.Width += int(a.FW / a.SCALE)
-				fmt.Printf("\033[36m[D2ASCII-SHAPE]   Width adjusted for even spacing: %d -> %d\033[0m\n",
-					originalWidth, shape.Width)
+				log.Debug(ctx, "width adjusted", slog.Int("originalWidth", originalWidth), slog.Int("newWidth", shape.Width))
 			}
 		}
 
@@ -310,7 +303,7 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 		drawHeight := float64(shape.Height)
 
 		if shape.Multiple {
-			fmt.Printf("\033[36m[D2ASCII-SHAPE]   Multiple shape adjustments: offset=%d\033[0m\n", d2target.MULTIPLE_OFFSET)
+			log.Debug(ctx, "multiple shape adjustments", slog.Int("offset", d2target.MULTIPLE_OFFSET))
 			// Move position to top-left of total occupied area (shadow extends left and down)
 			drawX -= d2target.MULTIPLE_OFFSET // Move left to include shadow area
 			// Y stays the same since shadow goes down, not up
@@ -318,46 +311,41 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 			// Expand size to fill entire multiple effect area
 			drawWidth += d2target.MULTIPLE_OFFSET  // Include shadow width
 			drawHeight += d2target.MULTIPLE_OFFSET // Include shadow height
-			fmt.Printf("\033[36m[D2ASCII-SHAPE]   Multiple dimensions: (%.0f,%.0f) %.0fx%.0f -> (%.0f,%.0f) %.0fx%.0f\033[0m\n",
-				float64(shape.Pos.X), float64(shape.Pos.Y), float64(shape.Width), float64(shape.Height),
-				drawX, drawY, drawWidth, drawHeight)
+			log.Debug(ctx, "multiple dimensions", slog.Float64("origX", float64(shape.Pos.X)), slog.Float64("origY", float64(shape.Pos.Y)), slog.Float64("origW", float64(shape.Width)), slog.Float64("origH", float64(shape.Height)), slog.Float64("drawX", drawX), slog.Float64("drawY", drawY), slog.Float64("drawW", drawWidth), slog.Float64("drawH", drawHeight))
 		}
 
-		fmt.Printf("\033[36m[D2ASCII-SHAPE]   Final draw parameters: (%.0f,%.0f) %.0fx%.0f, label='%s'\033[0m\n",
-			drawX, drawY, drawWidth, drawHeight, shape.Label)
+		log.Debug(ctx, "final draw parameters", slog.Float64("x", drawX), slog.Float64("y", drawY), slog.Float64("width", drawWidth), slog.Float64("height", drawHeight), slog.String("label", shape.Label))
 
-		fmt.Printf("\033[36m[D2ASCII-SHAPE]   Drawing shape type: %s\033[0m\n", shape.Type)
+		log.Debug(ctx, "drawing shape", slog.String("type", shape.Type))
 		switch shape.Type {
 		case d2target.ShapeRectangle:
-			fmt.Printf("\033[36m[D2ASCII-SHAPE]   -> DrawRect\033[0m\n")
-			asciishapes.DrawRect(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition, "", preserveHeight)
+			asciishapes.DrawRect(shapeCtx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition, "", preserveHeight)
 		case d2target.ShapeSquare:
-			fmt.Printf("\033[36m[D2ASCII-SHAPE]   -> DrawRect (square)\033[0m\n")
-			asciishapes.DrawRect(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition, "", preserveHeight)
+			asciishapes.DrawRect(shapeCtx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition, "", preserveHeight)
 		case d2target.ShapePage:
-			asciishapes.DrawPage(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
+			asciishapes.DrawPage(shapeCtx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapeHexagon:
-			asciishapes.DrawHex(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
+			asciishapes.DrawHex(shapeCtx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapePerson:
-			asciishapes.DrawPerson(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
+			asciishapes.DrawPerson(shapeCtx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapeStoredData:
-			asciishapes.DrawStoredData(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
+			asciishapes.DrawStoredData(shapeCtx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapeCylinder:
-			asciishapes.DrawCylinder(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
+			asciishapes.DrawCylinder(shapeCtx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapePackage:
-			asciishapes.DrawPackage(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
+			asciishapes.DrawPackage(shapeCtx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapeParallelogram:
-			asciishapes.DrawParallelogram(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
+			asciishapes.DrawParallelogram(shapeCtx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapeQueue:
-			asciishapes.DrawQueue(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
+			asciishapes.DrawQueue(shapeCtx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapeStep:
-			asciishapes.DrawStep(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
+			asciishapes.DrawStep(shapeCtx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapeCallout:
-			asciishapes.DrawCallout(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
+			asciishapes.DrawCallout(shapeCtx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapeDocument:
-			asciishapes.DrawDocument(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
+			asciishapes.DrawDocument(shapeCtx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapeDiamond:
-			asciishapes.DrawDiamond(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
+			asciishapes.DrawDiamond(shapeCtx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		default:
 			symbol := ""
 			switch shape.Type {
@@ -370,7 +358,7 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 			default:
 				symbol = ""
 			}
-			asciishapes.DrawRect(ctx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition, symbol, preserveHeight)
+			asciishapes.DrawRect(shapeCtx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition, symbol, preserveHeight)
 		}
 	}
 	for _, conn := range diagram.Connections {
@@ -393,8 +381,6 @@ func (a *ASCIIartist) Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byt
 func (a *ASCIIartist) calibrateXY(x, y float64) (float64, float64) {
 	xC := float64(math.Round((x / a.FW) * a.SCALE))
 	yC := float64(math.Round((y / a.FH) * a.SCALE))
-	fmt.Printf("[D2ASCII]     CalibrateXY: (%.2f, %.2f) -> (%.2f, %.2f) [FW=%.2f, FH=%.2f, SCALE=%.2f]\n",
-		x, y, xC, yC, a.FW, a.FH, a.SCALE)
 	return xC, yC
 }
 
@@ -457,8 +443,6 @@ func hasConnectionsAtTopEdge(shape d2target.Shape, connections []d2target.Connec
 				// Check if horizontal segment connects to shape's top edge
 				if math.Abs(segmentY-shapeTop) < tolerance &&
 					segmentRight >= shapeLeft && segmentLeft <= shapeRight {
-					fmt.Printf("\033[36m[D2ASCII-SHAPE]     Found horizontal top connection: segment Y=%.2f vs shape Y=%.2f\033[0m\n",
-						segmentY, shapeTop)
 					return true
 				}
 			}

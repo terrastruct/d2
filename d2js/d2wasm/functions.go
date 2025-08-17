@@ -416,6 +416,7 @@ func Render(args []js.Value) (interface{}, error) {
 			return nil, &WASMError{Message: "ASCII rendering does not support multi-board targets", Code: 400}
 		}
 
+		ctx := log.WithDefault(context.Background())
 		artist := d2ascii.NewASCIIartist()
 		asciiOpts := &d2ascii.RenderOpts{}
 		if input.Opts.Scale != nil {
@@ -435,7 +436,7 @@ func Render(args []js.Value) (interface{}, error) {
 		}
 		asciiOpts.Charset = charsetType
 
-		out, err := artist.Render(diagram, asciiOpts)
+		out, err := artist.Render(ctx, diagram, asciiOpts)
 		if err != nil {
 			return nil, &WASMError{Message: fmt.Sprintf("ASCII render failed: %s", err.Error()), Code: 500}
 		}

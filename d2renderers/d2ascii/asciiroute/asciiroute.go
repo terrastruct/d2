@@ -1,13 +1,15 @@
 package asciiroute
 
 import (
-	"fmt"
+	"context"
+	"log/slog"
 	"math"
 	"strings"
 
 	"oss.terrastruct.com/d2/d2renderers/d2ascii/asciicanvas"
 	"oss.terrastruct.com/d2/d2renderers/d2ascii/charset"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/lib/log"
 )
 
 const (
@@ -45,52 +47,47 @@ type RouteDrawer interface {
 	GetScale() float64
 	GetBoundaryForShape(s d2target.Shape) (Point, Point)
 	CalibrateXY(x, y float64) (float64, float64)
+	GetContext() context.Context
 }
 
 func DrawRoute(rd RouteDrawer, conn d2target.Connection) {
 	routes := conn.Route
 	label := conn.Label
+	ctx := rd.GetContext()
 
-	fmt.Printf("[D2ASCII] Starting edge route for connection %s -> %s\n", conn.Src, conn.Dst)
-	fmt.Printf("[D2ASCII] Initial route points (%d points):\n", len(routes))
+	log.Debug(ctx, "starting edge route", slog.String("src", conn.Src), slog.String("dst", conn.Dst))
+	log.Debug(ctx, "initial route points", slog.Int("count", len(routes)))
 	for i, pt := range routes {
-		fmt.Printf("[D2ASCII]   Point %d: (%.2f, %.2f)\n", i, pt.X, pt.Y)
+		log.Debug(ctx, "route point", slog.Int("index", i), slog.Float64("x", pt.X), slog.Float64("y", pt.Y))
 	}
 
 	frmShapeBoundary, toShapeBoundary := getConnectionBoundaries(rd, conn.Src, conn.Dst)
-	fmt.Printf("[D2ASCII] Source boundary: TL(%d,%d) BR(%d,%d)\n",
-		frmShapeBoundary.TL.X, frmShapeBoundary.TL.Y,
-		frmShapeBoundary.BR.X, frmShapeBoundary.BR.Y)
-	fmt.Printf("[D2ASCII] Dest boundary: TL(%d,%d) BR(%d,%d)\n",
-		toShapeBoundary.TL.X, toShapeBoundary.TL.Y,
-		toShapeBoundary.BR.X, toShapeBoundary.BR.Y)
+	log.Debug(ctx, "boundaries", slog.Int("srcTLX", frmShapeBoundary.TL.X), slog.Int("srcTLY", frmShapeBoundary.TL.Y), slog.Int("srcBRX", frmShapeBoundary.BR.X), slog.Int("srcBRY", frmShapeBoundary.BR.Y), slog.Int("dstTLX", toShapeBoundary.TL.X), slog.Int("dstTLY", toShapeBoundary.TL.Y), slog.Int("dstBRX", toShapeBoundary.BR.X), slog.Int("dstBRY", toShapeBoundary.BR.Y))
 
-	routes = processRoute(rd, routes, frmShapeBoundary, toShapeBoundary)
+	routes = processRoute(ctx, rd, routes, frmShapeBoundary, toShapeBoundary)
 
 	turnDir := calculateTurnDirections(routes)
-	fmt.Printf("[D2ASCII] Turn directions calculated: %d turns\n", len(turnDir))
+	log.Debug(ctx, "turn directions calculated", slog.Int("count", len(turnDir)))
 	for key, dir := range turnDir {
-		fmt.Printf("[D2ASCII]   Turn at %s: direction %s\n", key, dir)
+		log.Debug(ctx, "turn direction", slog.String("key", key), slog.String("dir", dir))
 	}
 
 	var labelPos *RouteLabelPosition
 	if strings.TrimSpace(label) != "" {
 		labelPos = calculateBestLabelPosition(rd, routes, label)
 		if labelPos != nil {
-			fmt.Printf("[D2ASCII] Label position calculated: segment %d, pos (%d, %d), maxDiff %.2f\n",
-				labelPos.I, labelPos.X, labelPos.Y, labelPos.MaxDiff)
+			log.Debug(ctx, "label position calculated", slog.Int("segmentIndex", labelPos.I), slog.Int("x", labelPos.X), slog.Int("y", labelPos.Y), slog.Float64("maxDiff", labelPos.MaxDiff))
 		}
 	}
 
 	corners, arrows := getCharacterMaps(rd)
 
-	fmt.Printf("[D2ASCII] Drawing %d segments\n", len(routes)-1)
+	log.Debug(ctx, "drawing segments", slog.Int("count", len(routes)-1))
 	for i := 1; i < len(routes); i++ {
-		fmt.Printf("[D2ASCII] Drawing segment %d: (%.2f,%.2f) -> (%.2f,%.2f)\n",
-			i-1, routes[i-1].X, routes[i-1].Y, routes[i].X, routes[i].Y)
-		drawSegmentBetweenPoints(rd, routes[i-1], routes[i], i, conn, corners, arrows, turnDir, frmShapeBoundary, toShapeBoundary, labelPos, label)
+		log.Debug(ctx, "drawing segment", slog.Int("index", i-1), slog.Float64("x1", routes[i-1].X), slog.Float64("y1", routes[i-1].Y), slog.Float64("x2", routes[i].X), slog.Float64("y2", routes[i].Y))
+		drawSegmentBetweenPoints(ctx, rd, routes[i-1], routes[i], i, conn, corners, arrows, turnDir, frmShapeBoundary, toShapeBoundary, labelPos, label)
 	}
-	fmt.Printf("[D2ASCII] Edge route completed for %s -> %s\n", conn.Src, conn.Dst)
+	log.Debug(ctx, "edge route completed", slog.String("src", conn.Src), slog.String("dst", conn.Dst))
 }
 
 func getCharacterMaps(rd RouteDrawer) (corners, arrows map[string]string) {

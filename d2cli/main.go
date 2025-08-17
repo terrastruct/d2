@@ -912,7 +912,7 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 			Charset: charsetType,
 		}
 		asciiArtist := d2ascii.NewASCIIartist()
-		ascii, err := asciiArtist.Render(diagram, renderOpts)
+		ascii, err := asciiArtist.Render(ctx, diagram, renderOpts)
 		if err != nil {
 			return ascii, err
 		}

@@ -2,12 +2,14 @@ package asciishapes
 
 import (
 	"fmt"
+	"log/slog"
 	"strings"
+
+	"oss.terrastruct.com/d2/lib/log"
 )
 
 func DrawRect(ctx *Context, x, y, w, h float64, label, labelPosition, symbol string, preserveHeight ...bool) {
-	fmt.Printf("\033[36m[D2ASCII-SHAPE]   DrawRect: (%.0f,%.0f) %.0fx%.0f, label='%s', symbol='%s'\033[0m\n",
-		x, y, w, h, label, symbol)
+	log.Debug(ctx.Ctx, "drawing rectangle", slog.Float64("x", x), slog.Float64("y", y), slog.Float64("w", w), slog.Float64("h", h), slog.String("label", label), slog.String("symbol", symbol))
 
 	x1, y1, wC, hC := ctx.Calibrate(x, y, w, h)
 	originalHC := hC
@@ -16,18 +18,15 @@ func DrawRect(ctx *Context, x, y, w, h float64, label, labelPosition, symbol str
 		if hC > 2 {
 			hC--
 			y1++
-			fmt.Printf("\033[36m[D2ASCII-SHAPE]     Height adjustment for label centering: %d -> %d, y1: %d -> %d\033[0m\n",
-				originalHC, hC, y1-1, y1)
+			log.Debug(ctx.Ctx, "height adjustment for label centering", slog.Int("original", originalHC), slog.Int("new", hC), slog.Int("oldY1", y1-1), slog.Int("newY1", y1))
 		} else {
 			hC++
-			fmt.Printf("\033[36m[D2ASCII-SHAPE]     Height expanded for small shape: %d -> %d\033[0m\n",
-				originalHC, hC)
+			log.Debug(ctx.Ctx, "height expanded for small shape", slog.Int("original", originalHC), slog.Int("new", hC))
 		}
 	}
 	wC = AdjustWidthForLabel(ctx, x, y, w, h, wC, label)
 	x2, y2 := x1+wC, y1+hC
-	fmt.Printf("\033[36m[D2ASCII-SHAPE]     Final draw bounds: (%d,%d) to (%d,%d) [%dx%d] (actual shape area)\033[0m\n",
-		x1, y1, x2, y2, wC, hC)
+	log.Debug(ctx.Ctx, "final draw bounds", slog.Int("x1", x1), slog.Int("y1", y1), slog.Int("x2", x2), slog.Int("y2", y2), slog.Int("w", wC), slog.Int("h", hC))
 	corners := map[string]string{
 		fmt.Sprintf("%d_%d", x1, y1): ctx.Chars.TopLeftCorner(),
 		fmt.Sprintf("%d_%d", x2, y1): ctx.Chars.TopRightCorner(),
@@ -53,7 +52,7 @@ func DrawRect(ctx *Context, x, y, w, h float64, label, labelPosition, symbol str
 			charsDrawn++
 		}
 	}
-	fmt.Printf("\033[36m[D2ASCII-SHAPE]     Drew %d border characters\033[0m\n", charsDrawn)
+	log.Debug(ctx.Ctx, "drew border characters", slog.Int("count", charsDrawn))
 
 	DrawShapeLabel(ctx, x1, y1, x2, y2, wC, hC, label, labelPosition)
 }

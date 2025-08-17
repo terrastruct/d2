@@ -1,33 +1,35 @@
 package asciiroute
 
 import (
+	"context"
 	"fmt"
+	"log/slog"
 	"math"
 
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/d2/lib/log"
 )
 
-func drawSegmentBetweenPoints(rd RouteDrawer, start, end *geo.Point, segmentIndex int, conn d2target.Connection,
+func drawSegmentBetweenPoints(ctx context.Context, rd RouteDrawer, start, end *geo.Point, segmentIndex int, conn d2target.Connection,
 	corners, arrows, turnDir map[string]string, frmBoundary, toBoundary Boundary, labelPos *RouteLabelPosition, label string) {
 
 	ax, ay := start.X, start.Y
 	cx, cy := end.X, end.Y
 
-	fmt.Printf("[D2ASCII]   Drawing segment %d: (%.2f,%.2f) -> (%.2f,%.2f)\n",
-		segmentIndex-1, ax, ay, cx, cy)
+	log.Debug(ctx, "drawing segment", slog.Int("index", segmentIndex-1), slog.Float64("x1", ax), slog.Float64("y1", ay), slog.Float64("x2", cx), slog.Float64("y2", cy))
 
 	sx := cx - ax
 	sy := cy - ay
 	step := math.Max(math.Abs(sx), math.Abs(sy))
 	if step == 0 {
-		fmt.Printf("[D2ASCII]   Zero-length segment, skipping\n")
+		log.Debug(ctx, "zero-length segment, skipping")
 		return
 	}
 	sx /= step
 	sy /= step
 
-	fmt.Printf("[D2ASCII]   Step vector: (%.2f, %.2f), total steps: %.0f\n", sx, sy, step)
+	log.Debug(ctx, "step vector", slog.Float64("x", sx), slog.Float64("y", sy), slog.Float64("steps", step))
 
 	fx, fy := ax, ay
 	attempt := 0
@@ -38,9 +40,9 @@ func drawSegmentBetweenPoints(rd RouteDrawer, start, end *geo.Point, segmentInde
 		attempt++
 		if x == int(math.Round(cx)) && y == int(math.Round(cy)) || attempt == MaxRouteAttempts {
 			if attempt == MaxRouteAttempts {
-				fmt.Printf("[D2ASCII]   Max route attempts (%d) reached\n", MaxRouteAttempts)
+				log.Debug(ctx, "max route attempts reached", slog.Int("attempts", MaxRouteAttempts))
 			} else {
-				fmt.Printf("[D2ASCII]   Reached segment endpoint at (%d, %d)\n", x, y)
+				log.Debug(ctx, "reached segment endpoint", slog.Int("x", x), slog.Int("y", y))
 			}
 			break
 		}
@@ -49,13 +51,13 @@ func drawSegmentBetweenPoints(rd RouteDrawer, start, end *geo.Point, segmentInde
 
 		// Skip if out of bounds or contains alphanumeric character
 		if !isInBounds(rd, x, y) {
-			fmt.Printf("[D2ASCII]   Position (%d, %d) out of bounds, skipping\n", x, y)
+			log.Debug(ctx, "position out of bounds, skipping", slog.Int("x", x), slog.Int("y", y))
 			fx += sx
 			fy += sy
 			continue
 		}
 		if containsAlphaNumeric(rd, x, y) {
-			fmt.Printf("[D2ASCII]   Position (%d, %d) contains alphanumeric, skipping\n", x, y)
+			log.Debug(ctx, "position contains alphanumeric, skipping", slog.Int("x", x), slog.Int("y", y))
 			fx += sx
 			fy += sy
 			continue
@@ -85,17 +87,17 @@ func drawRoutePoint(rd RouteDrawer, x, y int, sx, sy float64, segmentIndex, rout
 
 	// Check for corners first
 	if char, ok := corners[turnDir[key]]; ok {
-		fmt.Printf("[D2ASCII]     Drawing corner at (%d, %d): '%s' (direction: %s)\n", x, y, char, turnDir[key])
+		log.Debug(rd.GetContext(), "drawing corner", slog.Int("x", x), slog.Int("y", y), slog.String("char", char), slog.String("direction", turnDir[key]))
 		canvas.Set(x, y, char)
 		return
 	}
 
 	// Check for destination arrow
 	if segmentIndex == routeLen-1 && x == int(math.Round(cx)) && y == int(math.Round(cy)) && conn.DstArrow != d2target.NoArrowhead {
-		fmt.Printf("[D2ASCII]     Drawing destination arrow at (%d, %d)\n", x, y)
+		log.Debug(rd.GetContext(), "drawing destination arrow", slog.Int("x", x), slog.Int("y", y))
 		drawArrowhead(rd, x, y, sx, sy, arrows)
 		if conn.DstLabel != nil {
-			fmt.Printf("[D2ASCII]     Drawing destination label: %s\n", conn.DstLabel.Label)
+			log.Debug(rd.GetContext(), "drawing destination label", slog.String("label", conn.DstLabel.Label))
 			drawDestinationLabel(rd, conn.DstLabel.Label, cx, cy, sx, sy)
 		}
 		return
@@ -103,23 +105,22 @@ func drawRoutePoint(rd RouteDrawer, x, y int, sx, sy float64, segmentIndex, rout
 
 	// Check for source arrow
 	if segmentIndex == 1 && x == int(math.Round(ax)) && y == int(math.Round(ay)) && conn.SrcArrow != d2target.NoArrowhead {
-		fmt.Printf("[D2ASCII]     Drawing source arrow at (%d, %d)\n", x, y)
+		log.Debug(rd.GetContext(), "drawing source arrow", slog.Int("x", x), slog.Int("y", y))
 		arrowKey := fmt.Sprintf("%d%d", geo.Sign(sx)*-1, geo.Sign(sy)*-1)
 		canvas.Set(x, y, arrows[arrowKey])
 		if conn.SrcLabel != nil {
-			fmt.Printf("[D2ASCII]     Drawing source label: %s\n", conn.SrcLabel.Label)
+			log.Debug(rd.GetContext(), "drawing source label", slog.String("label", conn.SrcLabel.Label))
 			drawSourceLabel(rd, conn.SrcLabel.Label, ax, cy, cx, sx, sy)
 		}
 		return
 	}
 
 	// Default: draw route segment
-	fmt.Printf("[D2ASCII]     Drawing route segment at (%d, %d), existing: '%s'\n",
-		x, y, existingChar)
-	drawRouteSegment(rd, x, y, sx, sy, frmBoundary, toBoundary)
+	log.Debug(rd.GetContext(), "drawing route segment", slog.Int("x", x), slog.Int("y", y), slog.String("existing", string(existingChar)))
+	drawRouteSegment(rd.GetContext(), rd, x, y, sx, sy, frmBoundary, toBoundary)
 }
 
-func drawRouteSegment(rd RouteDrawer, x, y int, sx, sy float64, frmBoundary, toBoundary Boundary) {
+func drawRouteSegment(ctx context.Context, rd RouteDrawer, x, y int, sx, sy float64, frmBoundary, toBoundary Boundary) {
 	if !isInBounds(rd, x, y) {
 		return
 	}
@@ -129,56 +130,53 @@ func drawRouteSegment(rd RouteDrawer, x, y int, sx, sy float64, frmBoundary, toB
 	overWrite := existingChar != " "
 
 	if sx == 0 { // Vertical line
-		fmt.Printf("[D2ASCII]       Drawing vertical segment at (%d, %d), overwrite=%t, existing='%s'\n",
-			x, y, overWrite, existingChar)
-		drawVerticalSegment(rd, x, y, sy, overWrite, frmBoundary, toBoundary)
+		log.Debug(ctx, "drawing vertical segment", slog.Int("x", x), slog.Int("y", y), slog.Bool("overwrite", overWrite), slog.String("existing", string(existingChar)))
+		drawVerticalSegment(ctx, rd, x, y, sy, overWrite, frmBoundary, toBoundary)
 	} else { // Horizontal line
-		fmt.Printf("[D2ASCII]       Drawing horizontal segment at (%d, %d), overwrite=%t, existing='%s'\n",
-			x, y, overWrite, existingChar)
-		drawHorizontalSegment(rd, x, y, sx, overWrite, frmBoundary, toBoundary)
+		log.Debug(ctx, "drawing horizontal segment", slog.Int("x", x), slog.Int("y", y), slog.Bool("overwrite", overWrite), slog.String("existing", string(existingChar)))
+		drawHorizontalSegment(ctx, rd, x, y, sx, overWrite, frmBoundary, toBoundary)
 	}
 
 	newChar := canvas.Get(x, y)
 	if newChar != existingChar {
-		fmt.Printf("[D2ASCII]       Character placed: '%s' -> '%s' at (%d, %d)\n",
-			existingChar, newChar, x, y)
+		log.Debug(ctx, "character placed", slog.String("from", string(existingChar)), slog.String("to", string(newChar)), slog.Int("x", x), slog.Int("y", y))
 	}
 }
 
-func drawVerticalSegment(rd RouteDrawer, x, y int, sy float64, overWrite bool, frmBoundary, toBoundary Boundary) {
+func drawVerticalSegment(ctx context.Context, rd RouteDrawer, x, y int, sy float64, overWrite bool, frmBoundary, toBoundary Boundary) {
 	canvas := rd.GetCanvas()
 	chars := rd.GetChars()
 
 	if overWrite && shouldDrawTJunction(rd, x, y, frmBoundary, toBoundary, true) {
 		if sy > 0 {
-			fmt.Printf("[D2ASCII]         Drawing T-junction down at (%d, %d)\n", x, y)
+			log.Debug(ctx, "drawing T-junction down", slog.Int("x", x), slog.Int("y", y))
 			canvas.Set(x, y, chars.TDown())
 		} else {
-			fmt.Printf("[D2ASCII]         Drawing T-junction up at (%d, %d)\n", x, y)
+			log.Debug(ctx, "drawing T-junction up", slog.Int("x", x), slog.Int("y", y))
 			canvas.Set(x, y, chars.TUp())
 		}
 	} else if overWrite && shouldSkipOverwrite(rd, x, y, frmBoundary, toBoundary) {
-		fmt.Printf("[D2ASCII]         Skipping overwrite at (%d, %d)\n", x, y)
+		log.Debug(ctx, "skipping overwrite", slog.Int("x", x), slog.Int("y", y))
 	} else {
-		fmt.Printf("[D2ASCII]         Drawing vertical line at (%d, %d)\n", x, y)
+		log.Debug(ctx, "drawing vertical line", slog.Int("x", x), slog.Int("y", y))
 		canvas.Set(x, y, chars.Vertical())
 	}
 }
 
-func drawHorizontalSegment(rd RouteDrawer, x, y int, sx float64, overWrite bool, frmBoundary, toBoundary Boundary) {
+func drawHorizontalSegment(ctx context.Context, rd RouteDrawer, x, y int, sx float64, overWrite bool, frmBoundary, toBoundary Boundary) {
 	canvas := rd.GetCanvas()
 	chars := rd.GetChars()
 
 	if overWrite && shouldDrawTJunction(rd, x, y, frmBoundary, toBoundary, false) {
 		if sx > 0 {
-			fmt.Printf("[D2ASCII]         Drawing T-junction right at (%d, %d)\n", x, y)
+			log.Debug(ctx, "drawing T-junction right", slog.Int("x", x), slog.Int("y", y))
 			canvas.Set(x, y, chars.TRight())
 		} else {
-			fmt.Printf("[D2ASCII]         Drawing T-junction left at (%d, %d)\n", x, y)
+			log.Debug(ctx, "drawing T-junction left", slog.Int("x", x), slog.Int("y", y))
 			canvas.Set(x, y, chars.TLeft())
 		}
 	} else {
-		fmt.Printf("[D2ASCII]         Drawing horizontal line at (%d, %d)\n", x, y)
+		log.Debug(ctx, "drawing horizontal line", slog.Int("x", x), slog.Int("y", y))
 		canvas.Set(x, y, chars.Horizontal())
 	}
 }

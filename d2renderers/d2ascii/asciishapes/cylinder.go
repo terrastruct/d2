@@ -36,7 +36,7 @@ func DrawCylinder(ctx *Context, x, y, w, h float64, label, labelPosition string)
 	}
 
 	if label != "" {
-		ly := LabelY(y1+1, y2, hi, label, labelPosition)
+		ly := LabelY(ctx.Ctx, y1+1, y2, hi, label, labelPosition)
 		lx := x1 + (wi-len(label))/2
 		ctx.Canvas.DrawLabel(lx, ly, label)
 	}

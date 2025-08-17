@@ -1,14 +1,17 @@
 package asciiroute
 
 import (
+	"context"
 	"fmt"
+	"log/slog"
 	"math"
 
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/d2/lib/log"
 )
 
-func processRoute(rd RouteDrawer, routes []*geo.Point, fromBoundary, toBoundary Boundary) []*geo.Point {
-	fmt.Printf("[D2ASCII] Processing route with %d points\n", len(routes))
+func processRoute(ctx context.Context, rd RouteDrawer, routes []*geo.Point, fromBoundary, toBoundary Boundary) []*geo.Point {
+	log.Debug(ctx, "processing route", slog.Int("points", len(routes)))
 
 	// Create a deep copy of routes to avoid modifying the original
 	routesCopy := make([]*geo.Point, len(routes))
@@ -16,46 +19,46 @@ func processRoute(rd RouteDrawer, routes []*geo.Point, fromBoundary, toBoundary 
 		routesCopy[i] = &geo.Point{X: pt.X, Y: pt.Y}
 	}
 
-	fmt.Printf("[D2ASCII] Step 1: Merging collinear route segments\n")
+	log.Debug(ctx, "step 1: merging collinear route segments")
 	beforeMerge := len(routesCopy)
 	routesCopy = mergeRoutes(routesCopy)
-	fmt.Printf("[D2ASCII]   Merged from %d to %d points\n", beforeMerge, len(routesCopy))
+	log.Debug(ctx, "merged points", slog.Int("before", beforeMerge), slog.Int("after", len(routesCopy)))
 	for i, pt := range routesCopy {
-		fmt.Printf("[D2ASCII]   After merge point %d: (%.2f, %.2f)\n", i, pt.X, pt.Y)
+		log.Debug(ctx, "after merge point", slog.Int("index", i), slog.Float64("x", pt.X), slog.Float64("y", pt.Y))
 	}
 
-	fmt.Printf("[D2ASCII] Step 2: Calibrating coordinates to ASCII grid\n")
-	calibrateRoutes(rd, routesCopy)
+	log.Debug(ctx, "step 2: calibrating coordinates to ASCII grid")
+	calibrateRoutes(ctx, rd, routesCopy)
 	for i, pt := range routesCopy {
-		fmt.Printf("[D2ASCII]   Calibrated point %d: (%.2f, %.2f)\n", i, pt.X, pt.Y)
+		log.Debug(ctx, "calibrated point", slog.Int("index", i), slog.Float64("x", pt.X), slog.Float64("y", pt.Y))
 	}
 
 	// Force all route segments to be horizontal or vertical (after calibration)
-	fmt.Printf("[D2ASCII] Step 3: Forcing horizontal/vertical segments\n")
+	log.Debug(ctx, "step 3: forcing horizontal/vertical segments")
 	beforeForce := len(routesCopy)
 	routesCopy = forceHorizontalVerticalRoute(routesCopy)
-	fmt.Printf("[D2ASCII]   Adjusted from %d to %d points\n", beforeForce, len(routesCopy))
+	log.Debug(ctx, "adjusted points", slog.Int("before", beforeForce), slog.Int("after", len(routesCopy)))
 	for i, pt := range routesCopy {
-		fmt.Printf("[D2ASCII]   After H/V force point %d: (%.2f, %.2f)\n", i, pt.X, pt.Y)
+		log.Debug(ctx, "after h/v force point", slog.Int("index", i), slog.Float64("x", pt.X), slog.Float64("y", pt.Y))
 	}
 
 	// Adjust route endpoints to avoid overlapping with existing characters
 	if len(routesCopy) >= 2 {
-		fmt.Printf("[D2ASCII] Step 4: Adjusting start point to avoid overlaps\n")
+		log.Debug(ctx, "step 4: adjusting start point to avoid overlaps")
 		startBefore := fmt.Sprintf("(%.2f, %.2f)", routesCopy[0].X, routesCopy[0].Y)
-		adjustRouteStartPoint(rd, routesCopy, fromBoundary)
-		fmt.Printf("[D2ASCII]   Start point: %s -> (%.2f, %.2f)\n", startBefore, routesCopy[0].X, routesCopy[0].Y)
+		adjustRouteStartPoint(ctx, rd, routesCopy, fromBoundary)
+		log.Debug(ctx, "start point adjusted", slog.String("before", startBefore), slog.Float64("afterX", routesCopy[0].X), slog.Float64("afterY", routesCopy[0].Y))
 
-		fmt.Printf("[D2ASCII] Step 5: Adjusting end point to avoid overlaps\n")
+		log.Debug(ctx, "step 5: adjusting end point to avoid overlaps")
 		endIdx := len(routesCopy) - 1
 		endBefore := fmt.Sprintf("(%.2f, %.2f)", routesCopy[endIdx].X, routesCopy[endIdx].Y)
-		routesCopy = adjustRouteEndPoint(rd, routesCopy, toBoundary)
-		fmt.Printf("[D2ASCII]   End point: %s -> (%.2f, %.2f)\n", endBefore, routesCopy[endIdx].X, routesCopy[endIdx].Y)
+		routesCopy = adjustRouteEndPoint(ctx, rd, routesCopy, toBoundary)
+		log.Debug(ctx, "end point adjusted", slog.String("before", endBefore), slog.Float64("afterX", routesCopy[endIdx].X), slog.Float64("afterY", routesCopy[endIdx].Y))
 	}
 
-	fmt.Printf("[D2ASCII] Final processed route (%d points):\n", len(routesCopy))
+	log.Debug(ctx, "final processed route", slog.Int("points", len(routesCopy)))
 	for i, pt := range routesCopy {
-		fmt.Printf("[D2ASCII]   Final point %d: (%.2f, %.2f)\n", i, pt.X, pt.Y)
+		log.Debug(ctx, "final point", slog.Int("index", i), slog.Float64("x", pt.X), slog.Float64("y", pt.Y))
 	}
 
 	return routesCopy
@@ -76,15 +79,12 @@ func forceHorizontalVerticalRoute(routes []*geo.Point) []*geo.Point {
 		deltaY := math.Abs(curr.Y - prev.Y)
 
 		if deltaX > 0.5 && deltaY > 0.5 {
-			fmt.Printf("[D2ASCII]   Found diagonal segment %d: (%.2f,%.2f) -> (%.2f,%.2f), deltaX=%.2f, deltaY=%.2f\n",
-				i-1, prev.X, prev.Y, curr.X, curr.Y, deltaX, deltaY)
 			hasDiagonals = true
 			break
 		}
 	}
 
 	if !hasDiagonals {
-		fmt.Printf("[D2ASCII]   No diagonal segments found, keeping route as-is\n")
 		return routes
 	}
 
@@ -101,10 +101,6 @@ func forceHorizontalVerticalRoute(routes []*geo.Point) []*geo.Point {
 		if deltaX > 0.5 && deltaY > 0.5 {
 			// Break diagonal into horizontal then vertical
 			intermediate := &geo.Point{X: curr.X, Y: prev.Y}
-			fmt.Printf("[D2ASCII]   Breaking diagonal: (%.2f,%.2f) -> (%.2f,%.2f) into H: (%.2f,%.2f) -> (%.2f,%.2f) and V: (%.2f,%.2f) -> (%.2f,%.2f)\n",
-				prev.X, prev.Y, curr.X, curr.Y,
-				prev.X, prev.Y, intermediate.X, intermediate.Y,
-				intermediate.X, intermediate.Y, curr.X, curr.Y)
 			newRoutes = append(newRoutes, intermediate)
 		}
 
@@ -130,12 +126,11 @@ func getConnectionBoundaries(rd RouteDrawer, srcID, dstID string) (frmShapeBound
 	return
 }
 
-func calibrateRoutes(rd RouteDrawer, routes []*geo.Point) {
+func calibrateRoutes(ctx context.Context, rd RouteDrawer, routes []*geo.Point) {
 	for i := range routes {
 		origX, origY := routes[i].X, routes[i].Y
 		routes[i].X, routes[i].Y = rd.CalibrateXY(routes[i].X, routes[i].Y)
-		fmt.Printf("[D2ASCII]   Calibrate point %d: (%.2f, %.2f) -> (%.2f, %.2f)\n",
-			i, origX, origY, routes[i].X, routes[i].Y)
+		log.Debug(ctx, "calibrate point", slog.Int("index", i), slog.Float64("origX", origX), slog.Float64("origY", origY), slog.Float64("newX", routes[i].X), slog.Float64("newY", routes[i].Y))
 	}
 }
 
@@ -182,7 +177,7 @@ func calculateTurnDirections(routes []*geo.Point) map[string]string {
 	return turnDir
 }
 
-func adjustRouteStartPoint(rd RouteDrawer, routes []*geo.Point, fromBoundary Boundary) {
+func adjustRouteStartPoint(ctx context.Context, rd RouteDrawer, routes []*geo.Point, fromBoundary Boundary) {
 	if len(routes) < 2 {
 		return
 	}
@@ -192,13 +187,12 @@ func adjustRouteStartPoint(rd RouteDrawer, routes []*geo.Point, fromBoundary Bou
 	secondX := routes[1].X
 	secondY := routes[1].Y
 
-	fmt.Printf("[D2ASCII]   Adjusting start point: (%.2f, %.2f) -> (%.2f, %.2f)\n",
-		firstX, firstY, secondX, secondY)
+	log.Debug(ctx, "adjusting start point", slog.Float64("firstX", firstX), slog.Float64("firstY", firstY), slog.Float64("secondX", secondX), slog.Float64("secondY", secondY))
 
 	// Check if end point is inside the to boundary
 	// Move along the vector of the last segment until outside the boundary if so
 	if fromBoundary.Contains(int(math.Round(firstX)), int(math.Round(firstY))) {
-		fmt.Printf("[D2ASCII]   Start point inside source boundary, moving along vector\n")
+		log.Debug(ctx, "start point inside source boundary, moving along vector")
 		vectorX := secondX - firstX
 		vectorY := secondY - firstY
 
@@ -206,7 +200,7 @@ func adjustRouteStartPoint(rd RouteDrawer, routes []*geo.Point, fromBoundary Bou
 		if length > 0 {
 			vectorX /= length
 			vectorY /= length
-			fmt.Printf("[D2ASCII]   Movement vector: (%.2f, %.2f)\n", vectorX, vectorY)
+			log.Debug(ctx, "movement vector", slog.Float64("x", vectorX), slog.Float64("y", vectorY))
 
 			steps := 0
 			for fromBoundary.Contains(int(math.Round(routes[0].X)), int(math.Round(routes[0].Y))) {
@@ -214,45 +208,44 @@ func adjustRouteStartPoint(rd RouteDrawer, routes []*geo.Point, fromBoundary Bou
 				routes[0].Y += vectorY
 				steps++
 			}
-			fmt.Printf("[D2ASCII]   Moved %d steps to exit boundary: (%.2f, %.2f)\n",
-				steps, routes[0].X, routes[0].Y)
+			log.Debug(ctx, "moved to exit boundary", slog.Int("steps", steps), slog.Float64("x", routes[0].X), slog.Float64("y", routes[0].Y))
 		}
 		return
 	}
 
 	// Determine line direction and keep shifting until empty space
 	if math.Abs(firstY-secondY) < 0.1 { // Horizontal line
-		fmt.Printf("[D2ASCII]   Horizontal line detected\n")
+		log.Debug(ctx, "horizontal line detected")
 		deltaX := 0.0
 		if secondX > firstX {
 			deltaX = 1.0 // Shift start point towards second point (right)
-			fmt.Printf("[D2ASCII]   Shifting start point right\n")
+			log.Debug(ctx, "shifting start point right")
 		} else if secondX < firstX {
 			deltaX = -1.0 // Shift start point towards second point (left)
-			fmt.Printf("[D2ASCII]   Shifting start point left\n")
+			log.Debug(ctx, "shifting start point left")
 		}
 
 		if deltaX != 0 {
-			shiftPointUntilEmpty(rd, &routes[0].X, &routes[0].Y, deltaX, 0)
+			shiftPointUntilEmpty(ctx, rd, &routes[0].X, &routes[0].Y, deltaX, 0)
 		}
 	} else if math.Abs(firstX-secondX) < 0.1 { // Vertical line
-		fmt.Printf("[D2ASCII]   Vertical line detected\n")
+		log.Debug(ctx, "vertical line detected")
 		deltaY := 0.0
 		if secondY > firstY {
 			deltaY = 1.0 // Shift start point towards second point (down)
-			fmt.Printf("[D2ASCII]   Shifting start point down\n")
+			log.Debug(ctx, "shifting start point down")
 		} else if secondY < firstY {
 			deltaY = -1.0 // Shift start point towards second point (up)
-			fmt.Printf("[D2ASCII]   Shifting start point up\n")
+			log.Debug(ctx, "shifting start point up")
 		}
 
 		if deltaY != 0 {
-			shiftPointUntilEmpty(rd, &routes[0].X, &routes[0].Y, 0, deltaY)
+			shiftPointUntilEmpty(ctx, rd, &routes[0].X, &routes[0].Y, 0, deltaY)
 		}
 	}
 }
 
-func adjustRouteEndPoint(rd RouteDrawer, routes []*geo.Point, toBoundary Boundary) []*geo.Point {
+func adjustRouteEndPoint(ctx context.Context, rd RouteDrawer, routes []*geo.Point, toBoundary Boundary) []*geo.Point {
 	if len(routes) < 2 {
 		return routes
 	}
@@ -265,8 +258,7 @@ func adjustRouteEndPoint(rd RouteDrawer, routes []*geo.Point, toBoundary Boundar
 	secondLastX := routes[secondLastIdx].X
 	secondLastY := routes[secondLastIdx].Y
 
-	fmt.Printf("[D2ASCII]   Adjusting end point: (%.2f, %.2f) <- (%.2f, %.2f)\n",
-		lastX, lastY, secondLastX, secondLastY)
+	log.Debug(ctx, "adjusting end point", slog.Float64("lastX", lastX), slog.Float64("lastY", lastY), slog.Float64("secondLastX", secondLastX), slog.Float64("secondLastY", secondLastY))
 
 	lastXInt := int(math.Round(lastX))
 	lastYInt := int(math.Round(lastY))
@@ -274,7 +266,7 @@ func adjustRouteEndPoint(rd RouteDrawer, routes []*geo.Point, toBoundary Boundar
 	// Check if end point is inside the to boundary
 	// Move along the vector of the last segment until outside the boundary if so
 	if toBoundary.Contains(lastXInt, lastYInt) {
-		fmt.Printf("[D2ASCII]   End point inside dest boundary, moving along vector\n")
+		log.Debug(ctx, "end point inside dest boundary, moving along vector")
 		vectorX := lastX - secondLastX
 		vectorY := lastY - secondLastY
 
@@ -282,7 +274,7 @@ func adjustRouteEndPoint(rd RouteDrawer, routes []*geo.Point, toBoundary Boundar
 		if length > 0 {
 			vectorX /= length
 			vectorY /= length
-			fmt.Printf("[D2ASCII]   Movement vector: (%.2f, %.2f)\n", vectorX, vectorY)
+			log.Debug(ctx, "movement vector", slog.Float64("x", vectorX), slog.Float64("y", vectorY))
 
 			steps := 0
 			for toBoundary.Contains(int(math.Round(routes[lastIdx].X)), int(math.Round(routes[lastIdx].Y))) {
@@ -290,47 +282,46 @@ func adjustRouteEndPoint(rd RouteDrawer, routes []*geo.Point, toBoundary Boundar
 				routes[lastIdx].Y -= vectorY
 				steps++
 			}
-			fmt.Printf("[D2ASCII]   Moved %d steps to exit boundary: (%.2f, %.2f)\n",
-				steps, routes[lastIdx].X, routes[lastIdx].Y)
+			log.Debug(ctx, "moved to exit boundary", slog.Int("steps", steps), slog.Float64("x", routes[lastIdx].X), slog.Float64("y", routes[lastIdx].Y))
 		}
 		return routes
 	}
 
 	// Determine line direction and keep shifting until empty space
 	if math.Abs(lastY-secondLastY) < 0.1 { // Horizontal line
-		fmt.Printf("[D2ASCII]   Horizontal line detected\n")
+		log.Debug(ctx, "horizontal line detected")
 		deltaX := 0.0
 		if secondLastX > lastX {
 			deltaX = 1.0 // Shift end point towards second-to-last point (right)
-			fmt.Printf("[D2ASCII]   Shifting end point right\n")
+			log.Debug(ctx, "shifting end point right")
 		} else if secondLastX < lastX {
 			deltaX = -1.0 // Shift end point towards second-to-last point (left)
-			fmt.Printf("[D2ASCII]   Shifting end point left\n")
+			log.Debug(ctx, "shifting end point left")
 		}
 
 		if deltaX != 0 {
-			shiftPointUntilEmpty(rd, &routes[lastIdx].X, &routes[lastIdx].Y, deltaX, 0)
+			shiftPointUntilEmpty(ctx, rd, &routes[lastIdx].X, &routes[lastIdx].Y, deltaX, 0)
 		}
 	} else if math.Abs(lastX-secondLastX) < 0.1 { // Vertical line
-		fmt.Printf("[D2ASCII]   Vertical line detected\n")
+		log.Debug(ctx, "vertical line detected")
 		deltaY := 0.0
 		if secondLastY > lastY {
 			deltaY = 1.0 // Shift end point towards second-to-last point (down)
-			fmt.Printf("[D2ASCII]   Shifting end point down\n")
+			log.Debug(ctx, "shifting end point down")
 		} else if secondLastY < lastY {
 			deltaY = -1.0 // Shift end point towards second-to-last point (up)
-			fmt.Printf("[D2ASCII]   Shifting end point up\n")
+			log.Debug(ctx, "shifting end point up")
 		}
 
 		if deltaY != 0 {
-			shiftPointUntilEmpty(rd, &routes[lastIdx].X, &routes[lastIdx].Y, 0, deltaY)
+			shiftPointUntilEmpty(ctx, rd, &routes[lastIdx].X, &routes[lastIdx].Y, 0, deltaY)
 		}
 	}
 
 	return routes
 }
 
-func shiftPointUntilEmpty(rd RouteDrawer, x, y *float64, deltaX, deltaY float64) {
+func shiftPointUntilEmpty(ctx context.Context, rd RouteDrawer, x, y *float64, deltaX, deltaY float64) {
 	canvas := rd.GetCanvas()
 	startX, startY := *x, *y
 	steps := 0
@@ -340,17 +331,15 @@ func shiftPointUntilEmpty(rd RouteDrawer, x, y *float64, deltaX, deltaY float64)
 		if canvas.IsInBounds(xi, yi) {
 			char := canvas.Get(xi, yi)
 			if char == " " {
-				fmt.Printf("[D2ASCII]     Found empty space after %d steps: (%.2f, %.2f) -> (%.2f, %.2f)\n",
-					steps, startX, startY, *x, *y)
+				log.Debug(ctx, "found empty space", slog.Int("steps", steps), slog.Float64("startX", startX), slog.Float64("startY", startY), slog.Float64("x", *x), slog.Float64("y", *y))
 				break // Found empty space
 			}
-			fmt.Printf("[D2ASCII]     Position (%d, %d) occupied by '%s', shifting by (%.2f, %.2f)\n",
-				xi, yi, string(char), deltaX, deltaY)
+			log.Debug(ctx, "position occupied, shifting", slog.Int("x", xi), slog.Int("y", yi), slog.String("char", string(char)), slog.Float64("deltaX", deltaX), slog.Float64("deltaY", deltaY))
 			*x += deltaX
 			*y += deltaY
 			steps++
 		} else {
-			fmt.Printf("[D2ASCII]     Position (%d, %d) out of bounds, stopping\n", xi, yi)
+			log.Debug(ctx, "position out of bounds, stopping", slog.Int("x", xi), slog.Int("y", yi))
 			break // Out of bounds
 		}
 	}
