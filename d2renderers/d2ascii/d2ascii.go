@@ -1,9 +1,11 @@
+// Set DEBUG_ASCII=1 environment variable to enable verbose ASCII rendering debug logs.
 package d2ascii
 
 import (
 	"context"
 	"log/slog"
 	"math"
+	"os"
 
 	"oss.terrastruct.com/d2/d2renderers/d2ascii/asciicanvas"
 	"oss.terrastruct.com/d2/d2renderers/d2ascii/asciiroute"
@@ -219,6 +221,10 @@ func (a *ASCIIartist) calculateExtendedBounds(diagram *d2target.Diagram) (tl, br
 func (a *ASCIIartist) Render(ctx context.Context, diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	if opts == nil {
 		opts = &RenderOpts{}
+	}
+
+	if os.Getenv("DEBUG_ASCII") == "" {
+		ctx = log.Leveled(ctx, slog.LevelInfo)
 	}
 	a.ctx = ctx
 	chars := a.chars
