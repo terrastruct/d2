@@ -92,7 +92,7 @@ func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
 		availableSpace := wC - len(s.Label)
 		if availableSpace >= asciishapes.MinLabelPadding && availableSpace%2 == 1 {
 			// Adjust the original width before recalibrating
-			width += a.FW / a.SCALE
+			width += float64(int(a.FW / a.SCALE))
 			x1, y1, wC, hC = ctx.Calibrate(posX, posY, width, height)
 			// Reapply height adjustments
 			if s.Label != "" && hC%2 == 0 {
