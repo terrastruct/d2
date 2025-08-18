@@ -5,6 +5,8 @@
 
 D2.js is a JavaScript wrapper around D2, the modern diagram scripting language. It enables running D2 directly in browsers and Node environments through WebAssembly.
 
+For an example of usage, see [https://play.d2lang.com](https://play.d2lang.com), which is powered by d2.js and is [open-source](https://github.com/terrastruct/d2-playground).
+
 ## Features
 
 - 🌐 **Universal** - Works in both browser and Node environments
@@ -38,8 +40,6 @@ For example,
 ```bash
 yarn add @terrastruct/d2@nightly
 ```
-
-A demo using the nightly build is hosted [here](https://alixander-d2js.web.val.run/).
 
 ## Usage
 
@@ -151,7 +151,7 @@ All [RenderOptions](#renderoptions) properties in addition to:
 
 D2.js uses Bun, so install this first.
 
-For optimal WASM file size, also install binaryen:
+Optional: For optimal WASM file size, also install binaryen:
 ```bash
 # macOS
 brew install binaryen
@@ -182,6 +182,12 @@ You can browse the examples by running the dev server:
 ```
 
 Visit `http://localhost:3000` to see the example page.
+
+### Tests
+
+```bash
+./make.sh test
+```
 
 ### Publishing
 
