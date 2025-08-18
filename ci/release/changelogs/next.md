@@ -21,6 +21,10 @@
 - fix double glob behavior in scenarios (wasn't propagating correctly) [#2557](https://github.com/terrastruct/d2/pull/2557)
 - fix diagram bounding box not accounting for legend in some cases [#2584](https://github.com/terrastruct/d2/pull/2584)
 
+#### Breaking Changes
+
+- If you are using D2 as a library/API, passing in a FontFamily with `sketch` renders will now use the font, instead of previously ignoring it.
+
 ---
 
 For the latest d2.js changes, see separate [changelog](https://github.com/terrastruct/d2/blob/master/d2js/js/CHANGELOG.md).
