@@ -8,6 +8,8 @@ include changes to the main d2 project.**
 - Fix TypeScript signatures
 - Fix theme-overrides not applying
 - Fix grids in ELK layouts
+- Significantly reduce bundle size
+- Support D2 0.7.1
 
 ## [0.1.22]
 ### March 20, 2025
