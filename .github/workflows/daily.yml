@@ -35,8 +35,13 @@ jobs:
       - name: Install binaryen for wasm-opt
         if: steps.check_changes.outputs.has_changes == 'true'
         run: |
-          sudo apt-get update
-          sudo apt-get install -y binaryen
+          # Install newer version of binaryen from GitHub releases
+          BINARYEN_VERSION="version_123"
+          curl -L "https://github.com/WebAssembly/binaryen/releases/download/${BINARYEN_VERSION}/binaryen-${BINARYEN_VERSION}-x86_64-linux.tar.gz" | tar -xz
+          sudo cp binaryen-${BINARYEN_VERSION}/bin/* /usr/local/bin/
+          sudo cp -r binaryen-${BINARYEN_VERSION}/lib/* /usr/local/lib/ || true
+          sudo cp -r binaryen-${BINARYEN_VERSION}/include/* /usr/local/include/ || true
+          wasm-opt --version
 
       - name: Publish nightly version to NPM
         if: steps.check_changes.outputs.has_changes == 'true'
