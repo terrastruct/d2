@@ -217,3 +217,45 @@ api server -> logs: persist
 logs: {shape: page; style.multiple: true}
 
 network.data processor -> api server
+
+-- uml-class --
+x -> D2 Parser -> y
+D2 Parser: {
+  shape: class
+
+  +reader: io.RuneReader
+  # Default visibility is + so no need to specify.
+  readerPos: d2ast.Position
+
+  # Private field.
+  -lookahead: "[]rune"
+
+  # Escape the # to prevent being parsed as comment
+  # lookaheadPos: d2ast.Position
+  # Or just wrap in quotes
+  "#peekn(n int)": (s string, eof bool)
+
+  +peek(): (r rune, eof bool)
+  rewind()
+  commit()
+}
+
+-- sql-table --
+costumes: {
+  shape: sql_table
+  id: int {constraint: primary_key}
+  silliness: int
+  monster: int
+  last_updated: timestamp
+}
+
+monsters: {
+  shape: sql_table
+  id: int {constraint: primary_key}
+  movie: string
+  weight: int
+  last_updated: timestamp
+}
+
+costumes.monster -> monsters.id
+

@@ -21,9 +21,9 @@ func DrawDocument(ctx *Context, x, y, w, h float64, label, labelPosition string)
 		if i < hcurve {
 			lcurve[i] = rune(bcurve[i])
 			rcurve[i] = rune(tcurve[i])
-		} else if absInt(i-n+1) < hcurve {
-			lcurve[i] = rune(bcurve[absInt(i-n+1)])
-			rcurve[i] = rune(tcurve[absInt(i-n+1)])
+		} else if abs(i-n+1) < hcurve {
+			lcurve[i] = rune(bcurve[abs(i-n+1)])
+			rcurve[i] = rune(tcurve[abs(i-n+1)])
 		} else {
 			lcurve[i] = rune(bcurve[3])
 			rcurve[i] = rune(tcurve[3])

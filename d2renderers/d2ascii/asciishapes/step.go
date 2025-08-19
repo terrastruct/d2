@@ -10,7 +10,7 @@ func DrawStep(ctx *Context, x, y, w, h float64, label, labelPosition string) {
 	for x := x1; x <= x2; x++ {
 		for y := y1; y <= y2; y++ {
 			_x, _y := x-x1, y-y1
-			if (x < x1+ih/2 && _x-_y == 0) || (x > x2-ih/2 && absInt(_x-_y) == iw-ih/2) {
+			if (x < x1+ih/2 && _x-_y == 0) || (x > x2-ih/2 && abs(_x-_y) == iw-ih/2) {
 				ctx.Canvas.Set(x, y, ctx.Chars.Backslash())
 			} else if (x < x1+ih/2 && _x+_y == ih-1) || (x > x2-ih/2 && _x+_y == iw-1+ih/2) {
 				ctx.Canvas.Set(x, y, ctx.Chars.ForwardSlash())
