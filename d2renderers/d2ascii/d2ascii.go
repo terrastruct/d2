@@ -352,6 +352,10 @@ func (a *ASCIIartist) Render(ctx context.Context, diagram *d2target.Diagram, opt
 			asciishapes.DrawDocument(shapeCtx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
 		case d2target.ShapeDiamond:
 			asciishapes.DrawDiamond(shapeCtx, drawX, drawY, drawWidth, drawHeight, shape.Label, shape.LabelPosition)
+		case d2target.ShapeClass:
+			asciishapes.DrawClass(shapeCtx, drawX, drawY, drawWidth, drawHeight, shape)
+		case d2target.ShapeSQLTable:
+			asciishapes.DrawSQLTable(shapeCtx, drawX, drawY, drawWidth, drawHeight, shape)
 		default:
 			symbol := ""
 			switch shape.Type {

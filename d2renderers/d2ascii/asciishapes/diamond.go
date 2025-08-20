@@ -34,7 +34,7 @@ func DrawDiamond(ctx *Context, x, y, w, h float64, label, labelPosition string) 
 	for i := 0; i < len(diagPath)-1; i++ {
 		a, c := diagPath[i], diagPath[i+1]
 		dx, dy := c[0]-a[0], c[1]-a[1]
-		step := max(absInt(dx), absInt(dy))
+		step := max(abs(dx), abs(dy))
 		sx, sy := float64(dx)/float64(step), float64(dy)/float64(step)
 		fx, fy := float64(a[0]), float64(a[1])
 		for j := 0; j < step; j++ {
