@@ -138,14 +138,14 @@ func drawDestinationLabel(rd RouteDrawer, label string, cx, cy, sx, sy float64) 
 	lines := strings.Split(label, "\n")
 	ly := 0
 	lx := 0
-	
+
 	maxLineLen := 0
 	for _, line := range lines {
 		if len(line) > maxLineLen {
 			maxLineLen = len(line)
 		}
 	}
-	
+
 	if math.Abs(sx) > 0 {
 		ly = int(cy - 1)
 		if sx > 0 {
@@ -157,7 +157,7 @@ func drawDestinationLabel(rd RouteDrawer, label string, cx, cy, sx, sy float64) 
 		ly = int(cy - 1)
 		lx = int(cx + 1)
 	}
-	
+
 	for lineIdx, line := range lines {
 		for j, ch := range line {
 			canvas.Set(lx+j+LabelOffsetX, ly+lineIdx, string(ch))
@@ -170,14 +170,14 @@ func drawSourceLabel(rd RouteDrawer, label string, ax, cy, cx, sx, sy float64) {
 	lines := strings.Split(label, "\n")
 	ly := 0
 	lx := 0
-	
+
 	maxLineLen := 0
 	for _, line := range lines {
 		if len(line) > maxLineLen {
 			maxLineLen = len(line)
 		}
 	}
-	
+
 	if math.Abs(sx) > 0 {
 		ly = int(cy - 1)
 		if sx > 0 {
@@ -189,7 +189,7 @@ func drawSourceLabel(rd RouteDrawer, label string, ax, cy, cx, sx, sy float64) {
 		ly = int(cy - 1)
 		lx = int(cx + 1)
 	}
-	
+
 	for lineIdx, line := range lines {
 		for j, ch := range line {
 			canvas.Set(lx+j, ly+lineIdx, string(ch))

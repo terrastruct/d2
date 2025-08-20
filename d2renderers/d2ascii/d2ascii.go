@@ -12,6 +12,7 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/d2ascii/asciishapes"
 	"oss.terrastruct.com/d2/d2renderers/d2ascii/charset"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/log"
 )
 
@@ -274,9 +275,9 @@ func (a *ASCIIartist) Render(ctx context.Context, diagram *d2target.Diagram, opt
 		log.Debug(ctx, "processing shape", slog.Int("index", i), slog.String("id", shape.ID), slog.String("type", shape.Type), slog.Float64("x", float64(shape.Pos.X)), slog.Float64("y", float64(shape.Pos.Y)), slog.Float64("width", float64(shape.Width)), slog.Float64("height", float64(shape.Height)))
 
 		originalX, originalY := shape.Pos.X, shape.Pos.Y
-		shape.Pos.X += xOffset
-		shape.Pos.Y += yOffset
-		log.Debug(ctx, "position adjusted", slog.Float64("originalX", float64(originalX)), slog.Float64("originalY", float64(originalY)), slog.Int("newX", shape.Pos.X), slog.Int("newY", shape.Pos.Y))
+		adjustedX := shape.Pos.X + xOffset
+		adjustedY := shape.Pos.Y + yOffset
+		log.Debug(ctx, "position adjusted", slog.Float64("originalX", float64(originalX)), slog.Float64("originalY", float64(originalY)), slog.Int("newX", adjustedX), slog.Int("newY", adjustedY))
 
 		preserveWidth := hasConnectionsAtRightEdge(shape, diagram.Connections, a.FW)
 		preserveHeight := hasConnectionsAtTopEdge(shape, diagram.Connections, a.FH)
@@ -292,20 +293,21 @@ func (a *ASCIIartist) Render(ctx context.Context, diagram *d2target.Diagram, opt
 		}
 
 		originalWidth := shape.Width
+		adjustedWidth := shape.Width
 		if preserveWidth && shape.Label != "" {
 			wC := int(math.Round((float64(shape.Width) / a.FW) * a.SCALE))
 			availableSpace := wC - len(shape.Label)
 			log.Debug(ctx, "width preservation check", slog.Int("calibrated", wC), slog.Int("labelChars", len(shape.Label)), slog.Int("available", availableSpace))
 			if availableSpace >= asciishapes.MinLabelPadding && availableSpace%2 == 1 {
-				shape.Width += int(a.FW / a.SCALE)
-				log.Debug(ctx, "width adjusted", slog.Int("originalWidth", originalWidth), slog.Int("newWidth", shape.Width))
+				adjustedWidth += int(a.FW / a.SCALE)
+				log.Debug(ctx, "width adjusted", slog.Int("originalWidth", originalWidth), slog.Int("newWidth", adjustedWidth))
 			}
 		}
 
 		// For multiple shapes, expand to fill the entire space that would be occupied by the multiple effect
-		drawX := float64(shape.Pos.X)
-		drawY := float64(shape.Pos.Y)
-		drawWidth := float64(shape.Width)
+		drawX := float64(adjustedX)
+		drawY := float64(adjustedY)
+		drawWidth := float64(adjustedWidth)
 		drawHeight := float64(shape.Height)
 
 		if shape.Multiple {
@@ -372,17 +374,35 @@ func (a *ASCIIartist) Render(ctx context.Context, diagram *d2target.Diagram, opt
 		}
 	}
 	for _, conn := range diagram.Connections {
-		for _, r := range conn.Route {
-			r.X += float64(xOffset)
-			r.Y += float64(yOffset)
+		adjustedRoute := make([]*geo.Point, len(conn.Route))
+		for i, r := range conn.Route {
+			adjustedRoute[i] = &geo.Point{
+				X: r.X + float64(xOffset),
+				Y: r.Y + float64(yOffset),
+			}
 		}
+
+		tempConn := conn
+		tempConn.Route = adjustedRoute
+
 		if conn.DstArrow == d2target.NoArrowhead && conn.SrcArrow == d2target.NoArrowhead {
-			asciiroute.DrawRoute(a, conn)
+			asciiroute.DrawRoute(a, tempConn)
 		}
 	}
 	for _, conn := range diagram.Connections {
 		if conn.DstArrow != d2target.NoArrowhead || conn.SrcArrow != d2target.NoArrowhead {
-			asciiroute.DrawRoute(a, conn)
+			adjustedRoute := make([]*geo.Point, len(conn.Route))
+			for i, r := range conn.Route {
+				adjustedRoute[i] = &geo.Point{
+					X: r.X + float64(xOffset),
+					Y: r.Y + float64(yOffset),
+				}
+			}
+
+			tempConn := conn
+			tempConn.Route = adjustedRoute
+
+			asciiroute.DrawRoute(a, tempConn)
 		}
 	}
 	return a.canvas.ToByteArray(a.chars), nil

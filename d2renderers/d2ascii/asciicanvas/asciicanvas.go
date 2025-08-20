@@ -109,7 +109,7 @@ func (c *Canvas) ToByteArray(chars charset.Set) []byte {
 				break
 			}
 		}
-		
+
 		// Find rightmost column with content
 		for col := len(c.grid[0]) - 1; col >= 0; col-- {
 			hasContent := false
