@@ -55,8 +55,11 @@ func (c *Canvas) DrawLabel(x, y int, label string) {
 	if !c.IsInBounds(x, y) {
 		return
 	}
-	for i, ch := range label {
-		c.Set(x+i, y, string(ch))
+	lines := strings.Split(label, "\n")
+	for lineIdx, line := range lines {
+		for i, ch := range line {
+			c.Set(x+i, y+lineIdx, string(ch))
+		}
 	}
 }
 
@@ -89,8 +92,25 @@ func (c *Canvas) ToByteArray(chars charset.Set) []byte {
 		}
 	}
 
+	startCol := 0
 	endCol := 0
 	if len(c.grid) > 0 {
+		// Find leftmost column with content
+		for col := 0; col < len(c.grid[0]); col++ {
+			hasContent := false
+			for row := startRow; row <= endRow; row++ {
+				if col < len(c.grid[row]) && c.grid[row][col] != " " {
+					hasContent = true
+					break
+				}
+			}
+			if hasContent {
+				startCol = col
+				break
+			}
+		}
+
+		// Find rightmost column with content
 		for col := len(c.grid[0]) - 1; col >= 0; col-- {
 			hasContent := false
 			for row := startRow; row <= endRow; row++ {
@@ -110,8 +130,11 @@ func (c *Canvas) ToByteArray(chars charset.Set) []byte {
 	var prevRouteType rune
 	for i := startRow; i <= endRow; i++ {
 		rowData := c.grid[i]
-		if endCol+1 < len(rowData) {
-			rowData = rowData[:endCol+1]
+		if startCol < len(rowData) {
+			rowData = rowData[startCol:]
+		}
+		if endCol-startCol+1 < len(rowData) {
+			rowData = rowData[:endCol-startCol+1]
 		}
 		line := strings.Join(rowData, "")
 
