@@ -42,6 +42,10 @@ type CompileOptions struct {
 	// MonoFontFamily controls the font family used for code/mono texts
 	MonoFontFamily *d2fonts.FontFamily
 
+	// ASCII indicates that the output will be rendered as ASCII text, which affects font choices
+	// for layout calculations to ensure alignment with character grid
+	ASCII bool
+
 	InputPath string
 }
 
@@ -226,5 +230,12 @@ func applyDefaults(compileOpts *CompileOptions, renderOpts *d2svg.RenderOpts) {
 	}
 	if renderOpts.Center == nil {
 		renderOpts.Center = go2.Pointer(false)
+	}
+
+	if compileOpts.ASCII {
+		if compileOpts.Layout == nil || *compileOpts.Layout == "dagre" {
+			compileOpts.Layout = go2.Pointer("elk")
+		}
+		compileOpts.FontFamily = go2.Pointer(d2fonts.SourceCodePro)
 	}
 }

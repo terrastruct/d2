@@ -31,7 +31,6 @@ import (
 	"oss.terrastruct.com/d2/lib/textmeasure"
 	"oss.terrastruct.com/d2/lib/urlenc"
 	"oss.terrastruct.com/d2/lib/version"
-	"oss.terrastruct.com/util-go/go2"
 )
 
 const DEFAULT_INPUT_PATH = "index"
@@ -181,6 +180,7 @@ func Compile(args []js.Value) (interface{}, error) {
 
 	compileOpts := &d2lib.CompileOptions{
 		UTF16Pos: true,
+		ASCII:    input.Opts != nil && input.Opts.ASCII != nil && *input.Opts.ASCII,
 	}
 
 	inputPath := DEFAULT_INPUT_PATH
@@ -243,12 +243,6 @@ func Compile(args []js.Value) (interface{}, error) {
 
 	if input.Opts != nil && input.Opts.Layout != nil {
 		compileOpts.Layout = input.Opts.Layout
-	}
-
-	if input.Opts != nil && input.Opts.ASCII != nil && *input.Opts.ASCII {
-		if compileOpts.Layout == nil || *compileOpts.Layout == "dagre" {
-			compileOpts.Layout = go2.Pointer("elk")
-		}
 	}
 
 	renderOpts := &d2svg.RenderOpts{}
