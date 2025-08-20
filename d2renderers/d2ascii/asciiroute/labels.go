@@ -68,9 +68,17 @@ func calculateBestLabelPosition(rd RouteDrawer, routes []*geo.Point, label strin
 		return nil
 	}
 
+	lines := strings.Split(label, "\n")
+	maxLineLen := 0
+	for _, line := range lines {
+		if len(line) > maxLineLen {
+			maxLineLen = len(line)
+		}
+	}
+
 	return &RouteLabelPosition{
 		I:       bestIndex,
-		X:       int(math.Round(bestX)) - len(label)/2,
+		X:       int(math.Round(bestX)) - maxLineLen/2,
 		Y:       int(math.Round(maxDiff / 2)),
 		MaxDiff: maxDiff,
 	}
@@ -78,15 +86,18 @@ func calculateBestLabelPosition(rd RouteDrawer, routes []*geo.Point, label strin
 
 func drawConnectionLabel(rd RouteDrawer, labelPos *RouteLabelPosition, label, labelPosition string, x, y int, sx, sy float64, routes []*geo.Point, i int) {
 	canvas := rd.GetCanvas()
+	lines := strings.Split(label, "\n")
 
 	if sy != 0 {
 		// Vertical segment - clear current position and draw label horizontally
 		if isInBounds(rd, x, y) {
 			canvas.Set(x, y, " ")
 		}
-		for j, ch := range label {
-			if isInBounds(rd, labelPos.X+j, y) {
-				canvas.Set(labelPos.X+j, y, string(ch))
+		for lineIdx, line := range lines {
+			for j, ch := range line {
+				if isInBounds(rd, labelPos.X+j, y+lineIdx) {
+					canvas.Set(labelPos.X+j, y+lineIdx, string(ch))
+				}
 			}
 		}
 	} else if sx != 0 {
@@ -103,12 +114,20 @@ func drawConnectionLabel(rd RouteDrawer, labelPos *RouteLabelPosition, label, la
 		if strings.Contains(labelPosition, "LEFT") {
 			xPos = int(routes[labelPos.I+absInt((geo.Sign(sx)-1)/2)].X)
 		} else if strings.Contains(labelPosition, "RIGHT") {
-			xPos = int(routes[labelPos.I+((geo.Sign(sx)+1)/2)].X) - len(label)/2
+			maxLineLen := 0
+			for _, line := range lines {
+				if len(line) > maxLineLen {
+					maxLineLen = len(line)
+				}
+			}
+			xPos = int(routes[labelPos.I+((geo.Sign(sx)+1)/2)].X) - maxLineLen/2
 		}
 
-		for j, ch := range label {
-			if isInBounds(rd, xPos+j, y+yFactor) {
-				canvas.Set(xPos+j, y+yFactor, string(ch))
+		for lineIdx, line := range lines {
+			for j, ch := range line {
+				if isInBounds(rd, xPos+j, y+yFactor+lineIdx) {
+					canvas.Set(xPos+j, y+yFactor+lineIdx, string(ch))
+				}
 			}
 		}
 	}
@@ -116,12 +135,21 @@ func drawConnectionLabel(rd RouteDrawer, labelPos *RouteLabelPosition, label, la
 
 func drawDestinationLabel(rd RouteDrawer, label string, cx, cy, sx, sy float64) {
 	canvas := rd.GetCanvas()
+	lines := strings.Split(label, "\n")
 	ly := 0
 	lx := 0
+	
+	maxLineLen := 0
+	for _, line := range lines {
+		if len(line) > maxLineLen {
+			maxLineLen = len(line)
+		}
+	}
+	
 	if math.Abs(sx) > 0 {
 		ly = int(cy - 1)
 		if sx > 0 {
-			lx = int(cx) - 1 - len(label)
+			lx = int(cx) - 1 - maxLineLen
 		} else {
 			lx = int(cx)
 		}
@@ -129,27 +157,42 @@ func drawDestinationLabel(rd RouteDrawer, label string, cx, cy, sx, sy float64) 
 		ly = int(cy - 1)
 		lx = int(cx + 1)
 	}
-	for j, ch := range label {
-		canvas.Set(lx+j+LabelOffsetX, ly, string(ch))
+	
+	for lineIdx, line := range lines {
+		for j, ch := range line {
+			canvas.Set(lx+j+LabelOffsetX, ly+lineIdx, string(ch))
+		}
 	}
 }
 
 func drawSourceLabel(rd RouteDrawer, label string, ax, cy, cx, sx, sy float64) {
 	canvas := rd.GetCanvas()
+	lines := strings.Split(label, "\n")
 	ly := 0
 	lx := 0
+	
+	maxLineLen := 0
+	for _, line := range lines {
+		if len(line) > maxLineLen {
+			maxLineLen = len(line)
+		}
+	}
+	
 	if math.Abs(sx) > 0 {
 		ly = int(cy - 1)
 		if sx > 0 {
 			lx = int(ax)
 		} else {
-			lx = int(ax) - 1 - len(label)
+			lx = int(ax) - 1 - maxLineLen
 		}
 	} else if math.Abs(sy) > 0 {
 		ly = int(cy - 1)
 		lx = int(cx + 1)
 	}
-	for j, ch := range label {
-		canvas.Set(lx+j, ly, string(ch))
+	
+	for lineIdx, line := range lines {
+		for j, ch := range line {
+			canvas.Set(lx+j, ly+lineIdx, string(ch))
+		}
 	}
 }
