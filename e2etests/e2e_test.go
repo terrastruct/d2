@@ -27,6 +27,7 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/d2animate"
 	"oss.terrastruct.com/d2/d2renderers/d2ascii"
 	"oss.terrastruct.com/d2/d2renderers/d2ascii/charset"
+	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/log"
@@ -133,6 +134,7 @@ func runASCIITxtarTest(t *testing.T, tc testCase) {
 		Ruler:          ruler,
 		Layout:         go2.Pointer("elk"),
 		LayoutResolver: layoutResolver,
+		FontFamily:     go2.Pointer(d2fonts.SourceCodePro),
 	}
 	renderOpts := &d2svg.RenderOpts{
 		Pad:     go2.Pointer(int64(0)),
