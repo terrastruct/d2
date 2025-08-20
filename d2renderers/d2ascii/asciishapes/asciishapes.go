@@ -27,6 +27,7 @@ const (
 	HeadHeight          = 2
 	MinCylinderHeight   = 5
 	MinStoredDataHeight = 5
+	MinPersonHeight     = 5
 	MaxCurveHeight      = 3
 )
 
