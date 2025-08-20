@@ -76,7 +76,16 @@ func DrawShapeLabel(ctx *Context, x1, y1, x2, y2, width, height int, label, labe
 	log.Debug(ctx.Ctx, "drawing shape label", slog.String("label", label), slog.Int("x1", x1), slog.Int("y1", y1), slog.Int("x2", x2), slog.Int("y2", y2), slog.Int("width", width), slog.Int("height", height))
 
 	ly := LabelY(ctx.Ctx, y1, y2, height, label, labelPosition)
-	lx := x1 + (width-len(label))/2
+
+	lines := strings.Split(label, "\n")
+	maxLineLen := 0
+	for _, line := range lines {
+		if len(line) > maxLineLen {
+			maxLineLen = len(line)
+		}
+	}
+
+	lx := x1 + (width-maxLineLen)/2
 	log.Debug(ctx.Ctx, "label position calculated", slog.Int("x", lx), slog.Int("y", ly))
 	ctx.Canvas.DrawLabel(lx, ly, label)
 }

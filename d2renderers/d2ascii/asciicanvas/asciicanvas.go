@@ -55,8 +55,11 @@ func (c *Canvas) DrawLabel(x, y int, label string) {
 	if !c.IsInBounds(x, y) {
 		return
 	}
-	for i, ch := range label {
-		c.Set(x+i, y, string(ch))
+	lines := strings.Split(label, "\n")
+	for lineIdx, line := range lines {
+		for i, ch := range line {
+			c.Set(x+i, y+lineIdx, string(ch))
+		}
 	}
 }
 
