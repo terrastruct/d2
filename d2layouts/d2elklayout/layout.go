@@ -122,6 +122,7 @@ var DefaultOpts = ConfigurableOpts{
 
 var port_spacing = 40.
 var edge_node_spacing = 40
+var edge_edge_between_layers_spacing = 50
 
 type elkOpts struct {
 	EdgeNode                     int       `json:"elk.spacing.edgeNode,omitempty"`
@@ -155,6 +156,22 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	if opts == nil {
 		opts = &DefaultOpts
 	}
+	
+	// Override all spacing variables for ASCII mode to minimize excessive spacing
+	if g.ASCII {
+		// Create a copy of opts to avoid modifying the default
+		asciiOpts := *opts
+		asciiOpts.Padding = "[top=1,left=1,bottom=1,right=1]"
+		asciiOpts.NodeSpacing = 5
+		asciiOpts.EdgeNodeSpacing = 2
+		asciiOpts.SelfLoopSpacing = 5
+		opts = &asciiOpts
+		// Override global spacing variables for ASCII mode
+		port_spacing = 5.
+		edge_node_spacing = 2
+		edge_edge_between_layers_spacing = 2
+	}
+	
 	defer xdefer.Errorf(&err, "failed to ELK layout")
 
 	runner := jsrunner.NewJSRunner()
@@ -178,7 +195,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		ID: "",
 		LayoutOptions: &elkOpts{
 			Thoroughness:                 8,
-			EdgeEdgeBetweenLayersSpacing: 50,
+			EdgeEdgeBetweenLayersSpacing: edge_edge_between_layers_spacing,
 			EdgeNode:                     edge_node_spacing,
 			HierarchyHandling:            "INCLUDE_CHILDREN",
 			FixedAlignment:               "BALANCED",
@@ -195,8 +212,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		},
 	}
 	if elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing == DefaultOpts.SelfLoopSpacing {
-		// +5 for a tiny bit of padding
-		elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, childrenMaxSelfLoop(g.Root, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+5)
+		// Use smaller padding for ASCII mode
+		selfLoopPadding := 5
+		if g.ASCII {
+			selfLoopPadding = 1
+		}
+		elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, childrenMaxSelfLoop(g.Root, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+selfLoopPadding)
 	}
 	switch g.Root.Direction.Value {
 	case "down":
@@ -283,7 +304,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			n.LayoutOptions = &elkOpts{
 				ForceNodeModelOrder:          true,
 				Thoroughness:                 8,
-				EdgeEdgeBetweenLayersSpacing: 50,
+				EdgeEdgeBetweenLayersSpacing: edge_edge_between_layers_spacing,
 				HierarchyHandling:            "INCLUDE_CHILDREN",
 				FixedAlignment:               "BALANCED",
 				EdgeNode:                     edge_node_spacing,
@@ -299,7 +320,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				},
 			}
 			if n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing == DefaultOpts.SelfLoopSpacing {
-				n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, childrenMaxSelfLoop(obj, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+5)
+				selfLoopPadding := 5
+				if g.ASCII {
+					selfLoopPadding = 1
+				}
+				n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, childrenMaxSelfLoop(obj, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+selfLoopPadding)
 			}
 
 			switch elkGraph.LayoutOptions.Direction {
