@@ -132,6 +132,7 @@ func runASCIITxtarTest(t *testing.T, tc testCase) {
 	compileOpts := &d2lib.CompileOptions{
 		Ruler:          ruler,
 		LayoutResolver: layoutResolver,
+		Layout:         go2.Pointer("elk"),
 		ASCII:          true,
 	}
 	renderOpts := &d2svg.RenderOpts{
