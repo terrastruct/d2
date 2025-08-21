@@ -105,6 +105,7 @@ func compile(ctx context.Context, g *d2graph.Graph, compileOpts *CompileOptions,
 	}
 
 	if len(g.Objects) > 0 {
+		g.ASCII = compileOpts.ASCII
 		err := g.SetDimensions(compileOpts.MeasuredTexts, compileOpts.Ruler, compileOpts.FontFamily, compileOpts.MonoFontFamily)
 		if err != nil {
 			return nil, err

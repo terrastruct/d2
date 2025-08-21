@@ -257,10 +257,18 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		if obj.HasLabel() && obj.HasIcon() {
 			// this gives shapes extra height for their label if they also have an icon
-			obj.Height += float64(obj.LabelDimensions.Height + label.PADDING)
+			iconLabelPadding := label.PADDING
+			if g.ASCII {
+				iconLabelPadding = 1
+			}
+			obj.Height += float64(obj.LabelDimensions.Height + iconLabelPadding)
 		}
 
-		margin, _ := obj.SpacingOpt(label.PADDING, label.PADDING, false)
+		labelPadding := float64(label.PADDING)
+		if g.ASCII {
+			labelPadding = 1.
+		}
+		margin, _ := obj.SpacingOpt(labelPadding, labelPadding, false)
 		width := margin.Left + obj.Width + margin.Right
 		height := margin.Top + obj.Height + margin.Bottom
 		adjustments[obj] = margin
@@ -308,7 +316,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		if obj.IsContainer() {
 			padding := parsePadding(opts.Padding)
-			padding = adjustPadding(obj, width, height, padding)
+			padding = adjustPadding(g, obj, width, height, padding)
 			n.LayoutOptions.Padding = padding.String()
 		}
 
@@ -1015,7 +1023,7 @@ func (padding shapePadding) String() string {
 	return fmt.Sprintf("[top=%d,left=%d,bottom=%d,right=%d]", padding.top, padding.left, padding.bottom, padding.right)
 }
 
-func adjustPadding(obj *d2graph.Object, width, height float64, padding shapePadding) shapePadding {
+func adjustPadding(g *d2graph.Graph, obj *d2graph.Object, width, height float64, padding shapePadding) shapePadding {
 	if !obj.IsContainer() {
 		return padding
 	}
@@ -1023,8 +1031,12 @@ func adjustPadding(obj *d2graph.Object, width, height float64, padding shapePadd
 	// compute extra space padding for label/icon
 	var extraTop, extraBottom, extraLeft, extraRight int
 	if obj.HasLabel() && obj.LabelPosition != nil {
-		labelHeight := obj.LabelDimensions.Height + 2*label.PADDING
-		labelWidth := obj.LabelDimensions.Width + 2*label.PADDING
+		labelPadding := 2 * label.PADDING
+		if g.ASCII {
+			labelPadding = 2
+		}
+		labelHeight := obj.LabelDimensions.Height + labelPadding
+		labelWidth := obj.LabelDimensions.Width + labelPadding
 		switch label.FromString(*obj.LabelPosition) {
 		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
 			// Note: for corners we only add height
@@ -1038,7 +1050,11 @@ func adjustPadding(obj *d2graph.Object, width, height float64, padding shapePadd
 		}
 	}
 	if obj.HasIcon() && obj.IconPosition != nil {
-		iconSize := d2target.MAX_ICON_SIZE + 2*label.PADDING
+		iconPadding := 2 * label.PADDING
+		if g.ASCII {
+			iconPadding = 2
+		}
+		iconSize := d2target.MAX_ICON_SIZE + iconPadding
 		switch label.FromString(*obj.IconPosition) {
 		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
 			extraTop = go2.Max(extraTop, iconSize)

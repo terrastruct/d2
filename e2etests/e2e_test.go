@@ -119,7 +119,7 @@ func runASCIITxtarTest(t *testing.T, tc testCase) {
 	ctx = log.WithTB(ctx, t)
 	ctx = log.Leveled(ctx, slog.LevelDebug)
 
-	ruler, err := textmeasure.NewRuler()
+	ruler, err := textmeasure.NewASCIIRuler()
 	trequire.Nil(t, err)
 
 	serde(t, tc, ruler)

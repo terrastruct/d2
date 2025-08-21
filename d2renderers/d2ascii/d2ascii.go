@@ -17,8 +17,8 @@ import (
 )
 
 const (
-	defaultFontWidth  = 9.6
-	defaultFontHeight = 19.2
+	defaultFontWidth  = 1
+	defaultFontHeight = 1
 	defaultScale      = 1.0
 )
 

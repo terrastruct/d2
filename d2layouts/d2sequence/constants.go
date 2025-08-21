@@ -12,6 +12,13 @@ const MIN_ACTOR_DISTANCE = 150.
 
 const MIN_ACTOR_WIDTH = 100.
 
+// ASCII-specific constants for minimal spacing
+const ASCII_HORIZONTAL_PAD = 1.
+const ASCII_LABEL_HORIZONTAL_PAD = 2.
+const ASCII_VERTICAL_PAD = 1.
+const ASCII_MIN_ACTOR_DISTANCE = 10.
+const ASCII_MIN_ACTOR_WIDTH = 7.  // Minimum width for ASCII actors
+
 const SELF_MESSAGE_HORIZONTAL_TRAVEL = 80.
 
 const GROUP_CONTAINER_PADDING = 12.
@@ -46,3 +53,39 @@ const (
 	MESSAGE_Z_INDEX  = 4
 	NOTE_Z_INDEX     = 5
 )
+
+// Helper functions to get appropriate constants based on ASCII mode
+func getMinActorWidth(isASCII bool) float64 {
+	if isASCII {
+		return ASCII_MIN_ACTOR_WIDTH
+	}
+	return MIN_ACTOR_WIDTH
+}
+
+func getHorizontalPad(isASCII bool) float64 {
+	if isASCII {
+		return ASCII_HORIZONTAL_PAD
+	}
+	return HORIZONTAL_PAD
+}
+
+func getLabelHorizontalPad(isASCII bool) float64 {
+	if isASCII {
+		return ASCII_LABEL_HORIZONTAL_PAD
+	}
+	return LABEL_HORIZONTAL_PAD
+}
+
+func getVerticalPad(isASCII bool) float64 {
+	if isASCII {
+		return ASCII_VERTICAL_PAD
+	}
+	return VERTICAL_PAD
+}
+
+func getMinActorDistance(isASCII bool) float64 {
+	if isASCII {
+		return ASCII_MIN_ACTOR_DISTANCE
+	}
+	return MIN_ACTOR_DISTANCE
+}

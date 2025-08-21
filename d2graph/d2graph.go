@@ -56,6 +56,9 @@ type Graph struct {
 	Layers    []*Graph `json:"layers,omitempty"`
 	Scenarios []*Graph `json:"scenarios,omitempty"`
 	Steps     []*Graph `json:"steps,omitempty"`
+	
+	// ASCII indicates that this graph is being rendered for ASCII output
+	ASCII bool `json:"-"`
 
 	Theme *d2themes.Theme `json:"theme,omitempty"`
 
@@ -1606,6 +1609,10 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
 		s := shape.NewShape(shapeType, contentBox)
 		paddingX, paddingY := s.GetDefaultPadding()
+		// Use minimal padding for ASCII rendering
+		if ruler != nil && ruler.IsASCII() {
+			paddingX, paddingY = 1., 1.
+		}
 		if desiredWidth != 0 {
 			paddingX = 0.
 		}
@@ -1619,6 +1626,10 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			case shape.TABLE_TYPE, shape.CLASS_TYPE, shape.CODE_TYPE, shape.TEXT_TYPE:
 			default:
 				labelHeight := float64(labelDims.Height + INNER_LABEL_PADDING)
+				// Use minimal padding for ASCII rendering
+				if ruler != nil && ruler.IsASCII() {
+					labelHeight = 1.
+				}
 				// Evenly pad enough to fit label above icon
 				if desiredWidth == 0 {
 					paddingX += labelHeight
@@ -1633,7 +1644,12 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			case shape.TABLE_TYPE, shape.CLASS_TYPE, shape.CODE_TYPE:
 			default:
 				if obj.Link != nil && obj.Tooltip != nil {
-					paddingX += 64
+					tooltipPadding := 64.
+					// Use minimal padding for ASCII rendering
+					if ruler != nil && ruler.IsASCII() {
+						tooltipPadding = 1.
+					}
+					paddingX += tooltipPadding
 				}
 			}
 		}

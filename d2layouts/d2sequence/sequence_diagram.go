@@ -125,14 +125,15 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) (*s
 		sd.root = actor.Parent
 		sd.objectRank[actor] = rank
 
-		if actor.Width < MIN_ACTOR_WIDTH {
+		minActorWidth := getMinActorWidth(sd.root.Graph.ASCII)
+		if actor.Width < minActorWidth {
 			dslShape := strings.ToLower(actor.Shape.Value)
 			switch dslShape {
 			case d2target.ShapePerson, d2target.ShapeOval, d2target.ShapeSquare, d2target.ShapeCircle:
 				// scale shape up to min width uniformly
-				actor.Height *= MIN_ACTOR_WIDTH / actor.Width
+				actor.Height *= minActorWidth / actor.Width
 			}
-			actor.Width = MIN_ACTOR_WIDTH
+			actor.Width = minActorWidth
 		}
 		sd.maxActorHeight = math.Max(sd.maxActorHeight, actor.Height)
 
@@ -167,10 +168,10 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) (*s
 		if rank != len(actors)-1 {
 			actorHW := actor.Width / 2.
 			nextActorHW := actors[rank+1].Width / 2.
-			sd.actorXStep[rank] = math.Max(actorHW+nextActorHW+HORIZONTAL_PAD, MIN_ACTOR_DISTANCE)
-			sd.actorXStep[rank] = math.Max(maxNoteWidth/2.+HORIZONTAL_PAD, sd.actorXStep[rank])
+			sd.actorXStep[rank] = math.Max(actorHW+nextActorHW+getHorizontalPad(sd.root.Graph.ASCII), getMinActorDistance(sd.root.Graph.ASCII))
+			sd.actorXStep[rank] = math.Max(maxNoteWidth/2.+getHorizontalPad(sd.root.Graph.ASCII), sd.actorXStep[rank])
 			if rank > 0 {
-				sd.actorXStep[rank-1] = math.Max(maxNoteWidth/2.+HORIZONTAL_PAD, sd.actorXStep[rank-1])
+				sd.actorXStep[rank-1] = math.Max(maxNoteWidth/2.+getHorizontalPad(sd.root.Graph.ASCII), sd.actorXStep[rank-1])
 			}
 		}
 	}
@@ -184,7 +185,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) (*s
 		if rankDiff != 0 {
 			distributedLabelWidth := float64(message.LabelDimensions.Width) / rankDiff
 			for rank := go2.IntMin(sd.objectRank[message.Src], sd.objectRank[message.Dst]); rank <= go2.IntMax(sd.objectRank[message.Src], sd.objectRank[message.Dst])-1; rank++ {
-				sd.actorXStep[rank] = math.Max(sd.actorXStep[rank], distributedLabelWidth+LABEL_HORIZONTAL_PAD)
+				sd.actorXStep[rank] = math.Max(sd.actorXStep[rank], distributedLabelWidth+getLabelHorizontalPad(sd.root.Graph.ASCII))
 			}
 		} else {
 			// self edge
@@ -204,8 +205,8 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) (*s
 		}
 	}
 
-	sd.yStep += VERTICAL_PAD
-	sd.maxActorHeight += VERTICAL_PAD
+	sd.yStep += getVerticalPad(sd.root.Graph.ASCII)
+	sd.maxActorHeight += getVerticalPad(sd.root.Graph.ASCII)
 	if sd.root.HasLabel() {
 		sd.maxActorHeight += float64(sd.root.LabelDimensions.Height)
 	}
@@ -250,9 +251,9 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 			for _, p := range m.Route {
 				labelHeight := float64(m.LabelDimensions.Height) / 2.
 				edgePad := math.Max(labelHeight+GROUP_CONTAINER_PADDING, MIN_MESSAGE_DISTANCE/2.)
-				minX = math.Min(minX, p.X-HORIZONTAL_PAD)
+				minX = math.Min(minX, p.X-getHorizontalPad(sd.root.Graph.ASCII))
 				minY = math.Min(minY, p.Y-edgePad)
-				maxX = math.Max(maxX, p.X+HORIZONTAL_PAD)
+				maxX = math.Max(maxX, p.X+getHorizontalPad(sd.root.Graph.ASCII))
 				maxY = math.Max(maxY, p.Y+edgePad)
 			}
 		}
@@ -277,9 +278,9 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 			}
 		}
 		if inGroup {
-			minX = math.Min(minX, n.TopLeft.X-HORIZONTAL_PAD)
+			minX = math.Min(minX, n.TopLeft.X-getHorizontalPad(sd.root.Graph.ASCII))
 			minY = math.Min(minY, n.TopLeft.Y-MIN_MESSAGE_DISTANCE/2.)
-			maxX = math.Max(maxX, n.TopLeft.X+n.Width+HORIZONTAL_PAD)
+			maxX = math.Max(maxX, n.TopLeft.X+n.Width+getHorizontalPad(sd.root.Graph.ASCII))
 			maxY = math.Max(maxY, n.TopLeft.Y+n.Height+MIN_MESSAGE_DISTANCE/2.)
 		}
 	}
