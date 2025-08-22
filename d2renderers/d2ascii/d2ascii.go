@@ -146,19 +146,19 @@ func NewASCIIartist() *ASCIIartist {
 func (a *ASCIIartist) calculateExtendedBounds(diagram *d2target.Diagram) (tl, br d2target.Point) {
 	tl, br = diagram.NestedBoundingBox()
 	log.Debug(a.ctx, "initial bounding box", slog.Int("tl.X", tl.X), slog.Int("tl.Y", tl.Y), slog.Int("br.X", br.X), slog.Int("br.Y", br.Y))
-	
+
 	// Log each shape's contribution to bounds
 	for i, shape := range diagram.Shapes {
-		log.Debug(a.ctx, "shape bounds", 
-			slog.Int("index", i), 
-			slog.String("id", shape.ID), 
+		log.Debug(a.ctx, "shape bounds",
+			slog.Int("index", i),
+			slog.String("id", shape.ID),
 			slog.String("label", shape.Label),
-			slog.Int("pos.X", shape.Pos.X), 
-			slog.Int("pos.Y", shape.Pos.Y), 
-			slog.Int("width", shape.Width), 
+			slog.Int("pos.X", shape.Pos.X),
+			slog.Int("pos.Y", shape.Pos.Y),
+			slog.Int("width", shape.Width),
 			slog.Int("height", shape.Height),
-			slog.Int("right_edge", shape.Pos.X + shape.Width),
-			slog.Int("bottom_edge", shape.Pos.Y + shape.Height))
+			slog.Int("right_edge", shape.Pos.X+shape.Width),
+			slog.Int("bottom_edge", shape.Pos.Y+shape.Height))
 	}
 
 	for _, conn := range diagram.Connections {

@@ -156,12 +156,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	if opts == nil {
 		opts = &DefaultOpts
 	}
-	
-	// Override all spacing variables for ASCII mode to minimize excessive spacing
+
+	// Override all spacing variables for ASCII mode - use larger values for orthogonal routing
 	if g.ASCII {
 		// Create a copy of opts to avoid modifying the default
 		asciiOpts := *opts
-		asciiOpts.Padding = "[top=1,left=1,bottom=1,right=1]"
+		asciiOpts.Padding = "[top=5,left=5,bottom=5,right=5]"
 		asciiOpts.NodeSpacing = 5
 		asciiOpts.EdgeNodeSpacing = 2
 		asciiOpts.SelfLoopSpacing = 5
@@ -171,7 +171,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		edge_node_spacing = 2
 		edge_edge_between_layers_spacing = 2
 	}
-	
+
 	defer xdefer.Errorf(&err, "failed to ELK layout")
 
 	runner := jsrunner.NewJSRunner()
@@ -656,8 +656,13 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 
-		startIndex, endIndex = edge.TraceToShape(points, startIndex, endIndex)
-		points = points[startIndex : endIndex+1]
+		// Use ASCII-adjusted padding if in ASCII mode
+		// padding := float64(label.PADDING)
+		// if g.ASCII {
+		//   padding = 1.0
+		// }
+		// startIndex, endIndex = edge.TraceToShape(points, startIndex, endIndex, padding)
+		// points = points[startIndex : endIndex+1]
 
 		if edge.Label.Value != "" {
 			edge.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())

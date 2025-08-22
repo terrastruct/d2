@@ -411,7 +411,7 @@ func (obj *Object) GetIconTopLeft() *geo.Point {
 	return iconPosition.GetPointOnBox(box, label.PADDING, d2target.MAX_ICON_SIZE, d2target.MAX_ICON_SIZE)
 }
 
-func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (newStart, newEnd int) {
+func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int, labelPadding float64) (newStart, newEnd int) {
 	srcShape := edge.Src.ToShape()
 	dstShape := edge.Dst.ToShape()
 
@@ -424,12 +424,12 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 		if labelPosition.IsOutside() {
 			labelWidth := float64(edge.Src.LabelDimensions.Width)
 			labelHeight := float64(edge.Src.LabelDimensions.Height)
-			labelTL := labelPosition.GetPointOnBox(edge.Src.Box, label.PADDING, labelWidth, labelHeight)
+			labelTL := labelPosition.GetPointOnBox(edge.Src.Box, labelPadding, labelWidth, labelHeight)
 
 			labelBox := geo.NewBox(labelTL, labelWidth, labelHeight)
 			// add left/right padding to box
-			labelBox.TopLeft.X -= label.PADDING
-			labelBox.Width += 2 * label.PADDING
+			labelBox.TopLeft.X -= labelPadding
+			labelBox.Width += 2 * labelPadding
 
 			for labelBox.Contains(startingSegment.End) && startIndex+1 > endIndex {
 				startingSegment.Start = startingSegment.End
@@ -459,7 +459,7 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 		if iconPosition.IsOutside() {
 			iconWidth := float64(d2target.MAX_ICON_SIZE)
 			iconHeight := float64(d2target.MAX_ICON_SIZE)
-			iconTL := iconPosition.GetPointOnBox(edge.Src.Box, label.PADDING, iconWidth, iconHeight)
+			iconTL := iconPosition.GetPointOnBox(edge.Src.Box, labelPadding, iconWidth, iconHeight)
 
 			iconBox := geo.NewBox(iconTL, iconWidth, iconHeight)
 			for iconBox.Contains(startingSegment.End) && startIndex+1 > endIndex {
@@ -507,12 +507,12 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 		if labelPosition.IsOutside() {
 			labelWidth := float64(edge.Dst.LabelDimensions.Width)
 			labelHeight := float64(edge.Dst.LabelDimensions.Height)
-			labelTL := labelPosition.GetPointOnBox(edge.Dst.Box, label.PADDING, labelWidth, labelHeight)
+			labelTL := labelPosition.GetPointOnBox(edge.Dst.Box, labelPadding, labelWidth, labelHeight)
 
 			labelBox := geo.NewBox(labelTL, labelWidth, labelHeight)
 			// add left/right padding to box
-			labelBox.TopLeft.X -= label.PADDING
-			labelBox.Width += 2 * label.PADDING
+			labelBox.TopLeft.X -= labelPadding
+			labelBox.Width += 2 * labelPadding
 			for labelBox.Contains(endingSegment.Start) && endIndex-1 > startIndex {
 				endingSegment.End = endingSegment.Start
 				endingSegment.Start = points[endIndex-2]
@@ -542,7 +542,7 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 			iconSize := d2target.GetIconSize(edge.Dst.Box, iconPosition.String())
 			iconWidth := float64(iconSize)
 			iconHeight := float64(iconSize)
-			labelTL := iconPosition.GetPointOnBox(edge.Dst.Box, label.PADDING, iconWidth, iconHeight)
+			labelTL := iconPosition.GetPointOnBox(edge.Dst.Box, labelPadding, iconWidth, iconHeight)
 
 			iconBox := geo.NewBox(labelTL, iconWidth, iconHeight)
 			for iconBox.Contains(endingSegment.Start) && endIndex-1 > startIndex {
