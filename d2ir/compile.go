@@ -3,6 +3,7 @@ package d2ir
 import (
 	"html"
 	"io/fs"
+	"maps"
 	"net/url"
 	"path"
 	"strconv"
@@ -452,13 +453,11 @@ func (g *globContext) copy() *globContext {
 }
 
 func (g *globContext) copyApplied(from *globContext) {
-	g.appliedFields = make(map[string]struct{})
-	for k, v := range from.appliedFields {
-		g.appliedFields[k] = v
+	if g.appliedFields = maps.Clone(from.appliedFields); g.appliedFields == nil {
+		g.appliedFields = make(map[string]struct{})
 	}
-	g.appliedEdges = make(map[string]struct{})
-	for k, v := range from.appliedEdges {
-		g.appliedEdges[k] = v
+	if g.appliedEdges = maps.Clone(from.appliedEdges); g.appliedEdges == nil {
+		g.appliedEdges = make(map[string]struct{})
 	}
 }
 
