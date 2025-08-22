@@ -63,10 +63,9 @@ func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
 	log.Debug(a.ctx, "original shape dimensions", slog.Float64("posX", posX), slog.Float64("posY", posY), slog.Float64("width", width), slog.Float64("height", height))
 
 	if s.Multiple {
-		posX -= d2target.MULTIPLE_OFFSET   // Move left to include shadow area
-		width += d2target.MULTIPLE_OFFSET  // Include shadow width
-		height += d2target.MULTIPLE_OFFSET // Include shadow height
-		log.Debug(a.ctx, "multiple shape adjusted", slog.Float64("newPosX", posX), slog.Float64("newWidth", width), slog.Float64("newHeight", height))
+		// ASCII rendering doesn't need offset - multiple shapes are indicated by character style, not shadows
+		// Use offset of 0 to prevent boundary inflation that breaks edge routing
+		log.Debug(a.ctx, "multiple shape - no boundary adjustment needed for ASCII", slog.String("id", s.ID))
 	}
 
 	// Use the same calibration logic as the drawing functions
@@ -346,15 +345,9 @@ func (a *ASCIIartist) Render(ctx context.Context, diagram *d2target.Diagram, opt
 		drawHeight := float64(shape.Height)
 
 		if shape.Multiple {
-			log.Debug(ctx, "multiple shape adjustments", slog.Int("offset", d2target.MULTIPLE_OFFSET))
-			// Move position to top-left of total occupied area (shadow extends left and down)
-			drawX -= d2target.MULTIPLE_OFFSET // Move left to include shadow area
-			// Y stays the same since shadow goes down, not up
-
-			// Expand size to fill entire multiple effect area
-			drawWidth += d2target.MULTIPLE_OFFSET  // Include shadow width
-			drawHeight += d2target.MULTIPLE_OFFSET // Include shadow height
-			log.Debug(ctx, "multiple dimensions", slog.Float64("origX", float64(shape.Pos.X)), slog.Float64("origY", float64(shape.Pos.Y)), slog.Float64("origW", float64(shape.Width)), slog.Float64("origH", float64(shape.Height)), slog.Float64("drawX", drawX), slog.Float64("drawY", drawY), slog.Float64("drawW", drawWidth), slog.Float64("drawH", drawHeight))
+			// ASCII rendering handles multiple shapes through character styling, not position/size offsets
+			// No dimensional adjustments needed - just draw at original size and position
+			log.Debug(ctx, "multiple shape - using original dimensions for ASCII", slog.String("id", shape.ID))
 		}
 
 		log.Debug(ctx, "final draw parameters", slog.Float64("x", drawX), slog.Float64("y", drawY), slog.Float64("width", drawWidth), slog.Float64("height", drawHeight), slog.String("label", shape.Label))
