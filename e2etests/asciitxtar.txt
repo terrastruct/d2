@@ -42,7 +42,6 @@ network: {
 
 user: {
   shape: person
-  width: 130
 }
 
 user -> network.cell tower: make call
@@ -87,7 +86,6 @@ network: {
 
 user: {
   shape: person
-  width: 130
 }
 
 user -> network.cell tower: make call
