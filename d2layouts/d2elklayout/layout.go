@@ -161,15 +161,15 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	if g.ASCII {
 		// Create a copy of opts to avoid modifying the default
 		asciiOpts := *opts
-		asciiOpts.Padding = "[top=5,left=5,bottom=5,right=5]"
-		asciiOpts.NodeSpacing = 5
+		asciiOpts.Padding = "[top=2,left=3,bottom=3,right=3]"
+		asciiOpts.NodeSpacing = 3
 		asciiOpts.EdgeNodeSpacing = 2
 		asciiOpts.SelfLoopSpacing = 5
 		opts = &asciiOpts
 		// Override global spacing variables for ASCII mode
-		port_spacing = 5.
-		edge_node_spacing = 2
-		edge_edge_between_layers_spacing = 2
+		port_spacing = 3.
+		edge_node_spacing = 3
+		edge_edge_between_layers_spacing = 1
 	}
 
 	defer xdefer.Errorf(&err, "failed to ELK layout")

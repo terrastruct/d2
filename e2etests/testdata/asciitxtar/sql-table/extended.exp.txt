@@ -1,23 +1,23 @@
-┌───────────────────────────┐                                
-│         costumes          │                                
-│                           │                                
-├───────────────────────────┤                                
-│id                     int │                                
-│silliness              int │                                
-│monster                int │                                
-│last_updated     timestamp │                                
-│                           │                                
-│                           │─┐                              
-│                           │ │                              
-└───────────────────────────┘ │                              
-                              │                              
-                              │ ┌───────────────────────────┐
-                              │ │         monsters          │
-                              │ │                           │
-                              │ ├───────────────────────────┤
-                              └▶│id                     int │
-                                │movie               string │
-                                │weight                 int │
-                                │last_updated     timestamp │
-                                │                           │
-                                └───────────────────────────┘
+┌───────────────────────────┐                                  
+│         costumes          │                                  
+│                           │                                  
+├───────────────────────────┤                                  
+│id                     int │                                  
+│silliness              int │                                  
+│monster                int │                                  
+│last_updated     timestamp │                                  
+│                           │                                  
+│                           │──┐                               
+│                           │  │                               
+└───────────────────────────┘  │                               
+                               │                               
+                               │  ┌───────────────────────────┐
+                               │  │         monsters          │
+                               │  │                           │
+                               │  ├───────────────────────────┤
+                               └─▶│id                     int │
+                                  │movie               string │
+                                  │weight                 int │
+                                  │last_updated     timestamp │
+                                  │                           │
+                                  └───────────────────────────┘
