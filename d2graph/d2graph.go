@@ -1056,7 +1056,17 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 		// └─┴─┴───────┴──────┴───┴──┘
 		//  └─PrefixPadding        └──TypePadding
 		//     ├───────┤   +  ├───┤  = maxWidth
-		dims.Width = d2target.PrefixPadding + d2target.PrefixWidth + maxWidth + d2target.CenterPadding + d2target.TypePadding
+		// Use smaller padding for ASCII rendering since each unit is a character, not a pixel
+		prefixPadding, prefixWidth, centerPadding, typePadding := d2target.PrefixPadding, d2target.PrefixWidth, d2target.CenterPadding, d2target.TypePadding
+		if ruler != nil && ruler.IsASCII() {
+			// ASCII-friendly padding - much smaller since each unit is a character
+			prefixPadding = 1   // was 10
+			prefixWidth = 1     // was 20
+			centerPadding = 2   // was 50
+			typePadding = 1     // was 20
+		}
+		
+		dims.Width = prefixPadding + prefixWidth + maxWidth + centerPadding + typePadding
 
 		// All rows should be the same height
 		var anyRowText *d2target.MText
