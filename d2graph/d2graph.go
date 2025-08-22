@@ -1127,10 +1127,21 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 
 		// The rows get padded a little due to header font being larger than row font
 		dims.Height = go2.Max(12, labelDims.Height*(len(obj.SQLTable.Columns)+1))
-		headerWidth := d2target.HeaderPadding + labelDims.Width + d2target.HeaderPadding
-		rowsWidth := d2target.NamePadding + maxNameWidth + d2target.TypePadding + maxTypeWidth + d2target.TypePadding + maxConstraintWidth
+		
+		// Use smaller padding for ASCII rendering since each unit is a character, not a pixel
+		namePadding, typePadding, constraintPadding, headerPadding := d2target.NamePadding, d2target.TypePadding, d2target.ConstraintPadding, d2target.HeaderPadding
+		if ruler != nil && ruler.IsASCII() {
+			// ASCII-friendly padding - much smaller since each unit is a character
+			namePadding = 1      // was 10
+			typePadding = 1      // was 20
+			constraintPadding = 1 // was 20
+			headerPadding = 1    // was 10
+		}
+
+		headerWidth := headerPadding + labelDims.Width + headerPadding
+		rowsWidth := namePadding + maxNameWidth + typePadding + maxTypeWidth + typePadding + maxConstraintWidth
 		if maxConstraintWidth != 0 {
-			rowsWidth += d2target.ConstraintPadding
+			rowsWidth += constraintPadding
 		}
 		dims.Width = go2.Max(12, go2.Max(headerWidth, rowsWidth))
 	}
