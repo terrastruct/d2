@@ -1005,8 +1005,13 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 		labelDims.Width += fontSize
 		labelDims.Height += fontSize
 	} else if withLabelPadding {
-		labelDims.Width += INNER_LABEL_PADDING
-		labelDims.Height += INNER_LABEL_PADDING
+		// Use smaller padding for ASCII rendering since each unit is a character, not a pixel
+		padding := INNER_LABEL_PADDING
+		if ruler != nil && ruler.IsASCII() {
+			padding = 1 // was 5
+		}
+		labelDims.Width += padding
+		labelDims.Height += padding
 	}
 
 	switch dslShape {
@@ -1572,15 +1577,24 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			dslShape != d2target.ShapeClass {
 
 			if dslShape == d2target.ShapeCircle || dslShape == d2target.ShapeSquare {
+				// Use smaller default size for ASCII rendering
 				sideLength := DEFAULT_SHAPE_SIZE
+				if ruler != nil && ruler.IsASCII() {
+					sideLength = 7 // was 100
+				}
 				if desiredWidth != 0 || desiredHeight != 0 {
 					sideLength = float64(go2.Max(desiredWidth, desiredHeight))
 				}
 				obj.Width = sideLength
 				obj.Height = sideLength
 			} else {
-				obj.Width = DEFAULT_SHAPE_SIZE
-				obj.Height = DEFAULT_SHAPE_SIZE
+				// Use smaller default size for ASCII rendering
+				defaultSize := DEFAULT_SHAPE_SIZE
+				if ruler != nil && ruler.IsASCII() {
+					defaultSize = 7 // was 100
+				}
+				obj.Width = defaultSize
+				obj.Height = defaultSize
 				if desiredWidth != 0 {
 					obj.Width = float64(desiredWidth)
 				}

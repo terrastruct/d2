@@ -15,11 +15,9 @@
                               | |         monsters          |
                               | |                           |
                               | +---------------------------+
-                              | |id                     int |
-                              | |movie               string |
-                              | |weight                 int |
-                              | |last_updated     timestamp |
-                              | |                           |
-                              +>|                           |
+                              +>|id                     int |
+                                |movie               string |
+                                |weight                 int |
+                                |last_updated     timestamp |
                                 |                           |
                                 +---------------------------+
