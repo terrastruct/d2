@@ -55,18 +55,11 @@ func NewBoundary(tl, br Point) *Boundary {
 func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
 	log.Debug(a.ctx, "GetBoundary called", slog.String("id", s.ID), slog.String("label", s.Label))
 
-	// For multiple shapes, expand boundary to match the expanded rendering
 	posX := float64(s.Pos.X)
 	posY := float64(s.Pos.Y)
 	width := float64(s.Width)
 	height := float64(s.Height)
 	log.Debug(a.ctx, "original shape dimensions", slog.Float64("posX", posX), slog.Float64("posY", posY), slog.Float64("width", width), slog.Float64("height", height))
-
-	if s.Multiple {
-		// ASCII rendering doesn't need offset - multiple shapes are indicated by character style, not shadows
-		// Use offset of 0 to prevent boundary inflation that breaks edge routing
-		log.Debug(a.ctx, "multiple shape - no boundary adjustment needed for ASCII", slog.String("id", s.ID))
-	}
 
 	// Use the same calibration logic as the drawing functions
 	shapeCtx := &asciishapes.Context{
@@ -338,17 +331,10 @@ func (a *ASCIIartist) Render(ctx context.Context, diagram *d2target.Diagram, opt
 			}
 		}
 
-		// For multiple shapes, expand to fill the entire space that would be occupied by the multiple effect
 		drawX := float64(adjustedX)
 		drawY := float64(adjustedY)
 		drawWidth := float64(adjustedWidth)
 		drawHeight := float64(shape.Height)
-
-		if shape.Multiple {
-			// ASCII rendering handles multiple shapes through character styling, not position/size offsets
-			// No dimensional adjustments needed - just draw at original size and position
-			log.Debug(ctx, "multiple shape - using original dimensions for ASCII", slog.String("id", shape.ID))
-		}
 
 		log.Debug(ctx, "final draw parameters", slog.Float64("x", drawX), slog.Float64("y", drawY), slog.Float64("width", drawWidth), slog.Float64("height", drawHeight), slog.String("label", shape.Label))
 

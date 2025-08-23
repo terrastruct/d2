@@ -286,13 +286,16 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 
 		labelPadding := float64(label.PADDING)
+		width := obj.Width
+		height := obj.Height
 		if g.ASCII {
 			labelPadding = 1.
+		} else {
+			margin, _ := obj.SpacingOpt(labelPadding, labelPadding, false)
+			width = margin.Left + obj.Width + margin.Right
+			height = margin.Top + obj.Height + margin.Bottom
+			adjustments[obj] = margin
 		}
-		margin, _ := obj.SpacingOpt(labelPadding, labelPadding, false)
-		width := margin.Left + obj.Width + margin.Right
-		height := margin.Top + obj.Height + margin.Bottom
-		adjustments[obj] = margin
 
 		n := &ELKNode{
 			ID:     obj.AbsID(),
@@ -639,20 +642,22 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		var originalSrcTL, originalDstTL *geo.Point
 		// if the edge passes through 3d/multiple, use the offset box for tracing to border
-		if srcDx, srcDy := edge.Src.GetModifierElementAdjustments(); srcDx != 0 || srcDy != 0 {
-			if start.X > edge.Src.TopLeft.X+srcDx &&
-				start.Y < edge.Src.TopLeft.Y+edge.Src.Height-srcDy {
-				originalSrcTL = edge.Src.TopLeft.Copy()
-				edge.Src.TopLeft.X += srcDx
-				edge.Src.TopLeft.Y -= srcDy
+		if !g.ASCII {
+			if srcDx, srcDy := edge.Src.GetModifierElementAdjustments(); srcDx != 0 || srcDy != 0 {
+				if start.X > edge.Src.TopLeft.X+srcDx &&
+					start.Y < edge.Src.TopLeft.Y+edge.Src.Height-srcDy {
+					originalSrcTL = edge.Src.TopLeft.Copy()
+					edge.Src.TopLeft.X += srcDx
+					edge.Src.TopLeft.Y -= srcDy
+				}
 			}
-		}
-		if dstDx, dstDy := edge.Dst.GetModifierElementAdjustments(); dstDx != 0 || dstDy != 0 {
-			if end.X > edge.Dst.TopLeft.X+dstDx &&
-				end.Y < edge.Dst.TopLeft.Y+edge.Dst.Height-dstDy {
-				originalDstTL = edge.Dst.TopLeft.Copy()
-				edge.Dst.TopLeft.X += dstDx
-				edge.Dst.TopLeft.Y -= dstDy
+			if dstDx, dstDy := edge.Dst.GetModifierElementAdjustments(); dstDx != 0 || dstDy != 0 {
+				if end.X > edge.Dst.TopLeft.X+dstDx &&
+					end.Y < edge.Dst.TopLeft.Y+edge.Dst.Height-dstDy {
+					originalDstTL = edge.Dst.TopLeft.Copy()
+					edge.Dst.TopLeft.X += dstDx
+					edge.Dst.TopLeft.Y -= dstDy
+				}
 			}
 		}
 
@@ -728,7 +733,10 @@ func deleteBends(g *d2graph.Graph) {
 			}
 
 			isHorizontal := math.Ceil(start.Y) == math.Ceil(corner.Y)
-			dx, dy := endpoint.GetModifierElementAdjustments()
+			var dx, dy float64
+			if !g.ASCII {
+				dx, dy = endpoint.GetModifierElementAdjustments()
+			}
 
 			// Make sure it's still attached
 			switch {

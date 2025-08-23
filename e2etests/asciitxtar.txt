@@ -7,8 +7,6 @@ c: {
   d.shape: cylinder
 }
 
-a.b -> c.d
-
 -- three-right --
 direction: right
 x -> y -> z
@@ -187,6 +185,7 @@ k: {
   cell tower: {
     satellites: {
       shape: stored_data
+      style.multiple: true
     }
 
     transmitter
@@ -203,6 +202,7 @@ k: {
   data processor: {
     storage: {
       shape: cylinder
+      style.multiple: true
     }
   }
 
@@ -211,6 +211,7 @@ k: {
 
 user: {
   shape: person
+  width: 130
 }
 
 user -> network.cell tower: make call
@@ -220,7 +221,7 @@ user -> network.online portal.ui: access {
 
 api server -> network.online portal.ui: display
 api server -> logs: persist
-logs: {shape: page}
+logs: {shape: page; style.multiple: true}
 
 network.data processor -> api server
 
