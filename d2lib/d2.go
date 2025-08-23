@@ -237,6 +237,5 @@ func applyDefaults(compileOpts *CompileOptions, renderOpts *d2svg.RenderOpts) {
 		if compileOpts.Layout == nil || *compileOpts.Layout == "dagre" {
 			compileOpts.Layout = go2.Pointer("elk")
 		}
-		compileOpts.FontFamily = go2.Pointer(d2fonts.SourceCodePro)
 	}
 }
