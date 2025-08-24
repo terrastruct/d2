@@ -599,6 +599,14 @@ layers: {
 `,
 		},
 		{
+			name: "add_layer/6",
+			text: `a
+`,
+			key: `layers."b.c"`,
+
+			expErr: `failed to create "layers.\"b.c\"": board names cannot contain dots or quotes`,
+		},
+		{
 			name: "layers-edge",
 
 			text: `a
