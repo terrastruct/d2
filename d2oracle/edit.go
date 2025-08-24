@@ -423,6 +423,10 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 		if mk.Key != nil && len(mk.Key.Path) == 2 {
 			boardType := mk.Key.Path[0].Unbox().ScalarString()
 			if boardType == "layers" || boardType == "scenarios" || boardType == "steps" {
+				boardName := mk.Key.Path[1].Unbox().ScalarString()
+				if strings.ContainsAny(boardName, ".\"") {
+					return fmt.Errorf("board names cannot contain dots or quotes")
+				}
 				// Force map structure
 				var containerMap *d2ast.Map
 				for _, n := range scope.Nodes {
