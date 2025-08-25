@@ -123,6 +123,109 @@ var DefaultOpts = ConfigurableOpts{
 var port_spacing = 40.
 var edge_node_spacing = 40
 
+// mergeLayoutOptions merges user-defined layout options with base ELK options using deep merge
+func mergeLayoutOptions(baseOptions *elkOpts, layoutJSON *json.RawMessage) *elkOpts {
+	if layoutJSON == nil {
+		return baseOptions
+	}
+	
+	// Debug: print what we received
+	fmt.Printf("DEBUG ELK: Received layout JSON: %s\n", string(*layoutJSON))
+	
+	// Parse the JSON layout options
+	var userOptions map[string]interface{}
+	if err := json.Unmarshal(*layoutJSON, &userOptions); err != nil {
+		// Log error but don't fail - use base options
+		fmt.Printf("DEBUG ELK: Failed to unmarshal layout options: %v\n", err)
+		return baseOptions  
+	}
+	
+	// Flatten user options to match base options structure
+	flatUserOptions := make(map[string]interface{})
+	flattenForELK(userOptions, "", flatUserOptions)
+	
+	fmt.Printf("DEBUG ELK: Flattened user options: %+v\n", flatUserOptions)
+	
+	// Marshal base options to map for merging
+	baseJSON, err := json.Marshal(baseOptions)
+	if err != nil {
+		return baseOptions
+	}
+	
+	var baseMap map[string]interface{}
+	if err := json.Unmarshal(baseJSON, &baseMap); err != nil {
+		return baseOptions
+	}
+	
+	// Merge flattened user options with base options (user options override)
+	mergedMap := deepMerge(baseMap, flatUserOptions)
+	
+	// Debug: show what we're about to send to ELK
+	fmt.Printf("DEBUG ELK: Final merged options: %+v\n", mergedMap)
+	
+	// Convert back to elkOpts
+	mergedJSON, err := json.Marshal(mergedMap)
+	if err != nil {
+		return baseOptions
+	}
+	
+	fmt.Printf("DEBUG ELK: Final JSON sent to ELK: %s\n", string(mergedJSON))
+	
+	var merged elkOpts
+	if err := json.Unmarshal(mergedJSON, &merged); err != nil {
+		fmt.Printf("DEBUG ELK: Failed to unmarshal final options: %v\n", err)
+		return baseOptions
+	}
+	
+	return &merged
+}
+
+// deepMerge recursively merges two maps, with values from 'override' taking precedence
+func deepMerge(base, override map[string]interface{}) map[string]interface{} {
+	result := make(map[string]interface{})
+	
+	// Copy base map
+	for k, v := range base {
+		result[k] = v
+	}
+	
+	// Merge override values
+	for k, v := range override {
+		if baseVal, exists := result[k]; exists {
+			// If both values are maps, merge recursively
+			if baseMap, baseIsMap := baseVal.(map[string]interface{}); baseIsMap {
+				if overrideMap, overrideIsMap := v.(map[string]interface{}); overrideIsMap {
+					result[k] = deepMerge(baseMap, overrideMap)
+					continue
+				}
+			}
+		}
+		// Otherwise, override takes precedence
+		result[k] = v
+	}
+	
+	return result
+}
+
+// flattenForELK converts nested D2 layout structure to flat ELK key format
+// e.g. {"elk": {"algorithm": "stress"}} becomes {"elk.algorithm": "stress"}
+func flattenForELK(input map[string]interface{}, prefix string, result map[string]interface{}) {
+	for key, value := range input {
+		fullKey := key
+		if prefix != "" {
+			fullKey = prefix + "." + key
+		}
+		
+		if valueMap, ok := value.(map[string]interface{}); ok {
+			// Recursively flatten nested maps
+			flattenForELK(valueMap, fullKey, result)
+		} else {
+			// Store the flattened key-value pair
+			result[fullKey] = value
+		}
+	}
+}
+
 type elkOpts struct {
 	EdgeNode                     int       `json:"elk.spacing.edgeNode,omitempty"`
 	FixedAlignment               string    `json:"elk.layered.nodePlacement.bk.fixedAlignment,omitempty"`
@@ -174,41 +277,46 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 	}
 
-	elkGraph := &ELKGraph{
-		ID: "",
-		LayoutOptions: &elkOpts{
-			Thoroughness:                 8,
-			EdgeEdgeBetweenLayersSpacing: 50,
-			EdgeNode:                     edge_node_spacing,
-			HierarchyHandling:            "INCLUDE_CHILDREN",
-			FixedAlignment:               "BALANCED",
-			ConsiderModelOrder:           "NODES_AND_EDGES",
-			CycleBreakingStrategy:        "GREEDY_MODEL_ORDER",
-			NodeSizeConstraints:          "MINIMUM_SIZE",
-			ContentAlignment:             "H_CENTER V_CENTER",
-			ConfigurableOpts: ConfigurableOpts{
-				Algorithm:       opts.Algorithm,
-				NodeSpacing:     opts.NodeSpacing,
-				EdgeNodeSpacing: opts.EdgeNodeSpacing,
-				SelfLoopSpacing: opts.SelfLoopSpacing,
-			},
+	baseRootOpts := &elkOpts{
+		Thoroughness:                 8,
+		EdgeEdgeBetweenLayersSpacing: 50,
+		EdgeNode:                     edge_node_spacing,
+		HierarchyHandling:            "INCLUDE_CHILDREN",
+		FixedAlignment:               "BALANCED",
+		ConsiderModelOrder:           "NODES_AND_EDGES",
+		CycleBreakingStrategy:        "GREEDY_MODEL_ORDER",
+		NodeSizeConstraints:          "MINIMUM_SIZE",
+		ContentAlignment:             "H_CENTER V_CENTER",
+		ConfigurableOpts: ConfigurableOpts{
+			Algorithm:       opts.Algorithm,
+			NodeSpacing:     opts.NodeSpacing,
+			EdgeNodeSpacing: opts.EdgeNodeSpacing,
+			SelfLoopSpacing: opts.SelfLoopSpacing,
 		},
+	}
+	
+	elkGraph := &ELKGraph{
+		ID:            "",
+		LayoutOptions: mergeLayoutOptions(baseRootOpts, g.Root.Attributes.Layout),
 	}
 	if elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing == DefaultOpts.SelfLoopSpacing {
 		// +5 for a tiny bit of padding
 		elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, childrenMaxSelfLoop(g.Root, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+5)
 	}
-	switch g.Root.Direction.Value {
-	case "down":
-		elkGraph.LayoutOptions.Direction = Down
-	case "up":
-		elkGraph.LayoutOptions.Direction = Up
-	case "right":
-		elkGraph.LayoutOptions.Direction = Right
-	case "left":
-		elkGraph.LayoutOptions.Direction = Left
-	default:
-		elkGraph.LayoutOptions.Direction = Down
+	// Only set direction if not already set by layout options
+	if elkGraph.LayoutOptions.Direction == "" {
+		switch g.Root.Direction.Value {
+		case "down":
+			elkGraph.LayoutOptions.Direction = Down
+		case "up":
+			elkGraph.LayoutOptions.Direction = Up
+		case "right":
+			elkGraph.LayoutOptions.Direction = Right
+		case "left":
+			elkGraph.LayoutOptions.Direction = Left
+		default:
+			elkGraph.LayoutOptions.Direction = Down
+		}
 	}
 
 	// set label and icon positions for ELK
@@ -272,7 +380,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 
 		if len(obj.ChildrenArray) > 0 {
-			n.LayoutOptions = &elkOpts{
+			baseOpts := &elkOpts{
 				ForceNodeModelOrder:          true,
 				Thoroughness:                 8,
 				EdgeEdgeBetweenLayersSpacing: 50,
@@ -290,6 +398,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 					Padding:         opts.Padding,
 				},
 			}
+			n.LayoutOptions = mergeLayoutOptions(baseOpts, obj.Attributes.Layout)
 			if n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing == DefaultOpts.SelfLoopSpacing {
 				n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, childrenMaxSelfLoop(obj, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+5)
 			}
@@ -301,9 +410,10 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				n.LayoutOptions.NodeSizeMinimum = fmt.Sprintf("(%d, %d)", int(math.Ceil(width)), int(math.Ceil(height)))
 			}
 		} else {
-			n.LayoutOptions = &elkOpts{
+			baseOpts := &elkOpts{
 				SelfLoopDistribution: "EQUALLY",
 			}
+			n.LayoutOptions = mergeLayoutOptions(baseOpts, obj.Attributes.Layout)
 		}
 
 		if obj.IsContainer() {
