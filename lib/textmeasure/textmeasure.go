@@ -101,6 +101,9 @@ type Ruler struct {
 
 	// when drawing text also union Ruler.bounds with Dot
 	boundsWithDot bool
+	
+	// isASCII indicates this ruler should use 1x1 measurements for ASCII rendering
+	isASCII bool
 }
 
 // New creates a new Ruler capable of drawing runes contained in the provided atlas. Orig and Dot
@@ -155,6 +158,9 @@ func NewRuler() (*Ruler, error) {
 }
 
 func (r *Ruler) HasFontFamilyLoaded(fontFamily *d2fonts.FontFamily) bool {
+	if r.isASCII {
+		return true
+	}
 	for _, fontStyle := range d2fonts.FontStyles {
 		font := d2fonts.Font{
 			Family: *fontFamily,
@@ -226,6 +232,9 @@ func (t *Ruler) scaleUnicode(w float64, font d2fonts.Font, s string) float64 {
 }
 
 func (t *Ruler) MeasureMono(font d2fonts.Font, s string) (width, height int) {
+	if t.isASCII {
+		return t.measureASCII(s)
+	}
 	originalBoundsWithDot := t.boundsWithDot
 	t.boundsWithDot = true
 	width, height = t.Measure(font, s)
@@ -234,12 +243,19 @@ func (t *Ruler) MeasureMono(font d2fonts.Font, s string) (width, height int) {
 }
 
 func (t *Ruler) Measure(font d2fonts.Font, s string) (width, height int) {
+	if t.isASCII {
+		return t.measureASCII(s)
+	}
 	w, h := t.MeasurePrecise(font, s)
 	w = t.scaleUnicode(w, font, s)
 	return int(math.Ceil(w)), int(math.Ceil(h))
 }
 
 func (t *Ruler) MeasurePrecise(font d2fonts.Font, s string) (width, height float64) {
+	if t.isASCII {
+		w, h := t.measureASCII(s)
+		return float64(w), float64(h)
+	}
 	if _, ok := t.atlases[font]; !ok {
 		t.addFontSize(font)
 	}
@@ -318,4 +334,49 @@ func (ruler *Ruler) spaceWidth(font d2fonts.Font) float64 {
 	}
 	spaceRune, _ := utf8.DecodeRuneInString(" ")
 	return ruler.atlases[font].glyph(spaceRune).advance
+}
+
+// NewASCIIRuler creates a fake ruler for ASCII rendering that measures each character as 1x1
+func NewASCIIRuler() (*Ruler, error) {
+	origin := geo.NewPoint(0, 0)
+	return &Ruler{
+		Orig:             origin,
+		Dot:              origin.Copy(),
+		LineHeightFactor: 1.,
+		lineHeights:      make(map[d2fonts.Font]float64),
+		tabWidths:        make(map[d2fonts.Font]float64),
+		atlases:          make(map[d2fonts.Font]*atlas),
+		ttfs:             make(map[d2fonts.Font]*truetype.Font),
+		isASCII:          true,
+	}, nil
+}
+
+// measureASCII returns 1x1 measurement for each character in ASCII rendering
+func (r *Ruler) measureASCII(s string) (width, height int) {
+	if s == "" {
+		return 0, 0
+	}
+	
+	lines := strings.Split(s, "\n")
+	maxWidth := 0
+	for _, line := range lines {
+		lineWidth := 0
+		for _, ch := range line {
+			if ch == '\t' {
+				lineWidth += TAB_SIZE
+			} else {
+				lineWidth++
+			}
+		}
+		if lineWidth > maxWidth {
+			maxWidth = lineWidth
+		}
+	}
+	
+	return maxWidth, len(lines)
+}
+
+// IsASCII returns true if this ruler is in ASCII mode
+func (r *Ruler) IsASCII() bool {
+	return r.isASCII
 }

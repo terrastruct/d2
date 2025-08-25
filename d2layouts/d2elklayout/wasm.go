@@ -104,10 +104,18 @@ func ConvertGraph(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts)
 
 		if obj.HasLabel() && obj.HasIcon() {
 			// this gives shapes extra height for their label if they also have an icon
-			obj.Height += float64(obj.LabelDimensions.Height + label.PADDING)
+			iconLabelPadding := label.PADDING
+			if g.ASCII {
+				iconLabelPadding = 1
+			}
+			obj.Height += float64(obj.LabelDimensions.Height + iconLabelPadding)
 		}
 
-		margin, _ := obj.SpacingOpt(label.PADDING, label.PADDING, false)
+		labelPadding := float64(label.PADDING)
+		if g.ASCII {
+			labelPadding = 1.
+		}
+		margin, _ := obj.SpacingOpt(labelPadding, labelPadding, false)
 		width := margin.Left + obj.Width + margin.Right
 		height := margin.Top + obj.Height + margin.Bottom
 		adjustments[obj] = margin
@@ -155,7 +163,7 @@ func ConvertGraph(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts)
 
 		if obj.IsContainer() {
 			padding := parsePadding(opts.Padding)
-			padding = adjustPadding(obj, width, height, padding)
+			padding = adjustPadding(g, obj, width, height, padding)
 			n.LayoutOptions.Padding = padding.String()
 		}
 

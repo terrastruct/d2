@@ -2,6 +2,7 @@ package asciiroute
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"math"
 	"strings"
@@ -56,15 +57,43 @@ func DrawRoute(rd RouteDrawer, conn d2target.Connection) {
 	ctx := rd.GetContext()
 
 	log.Debug(ctx, "starting edge route", slog.String("src", conn.Src), slog.String("dst", conn.Dst))
+	// fmt.Printf("DEBUG EDGE: %s -> %s, SrcArrow=%v DstArrow=%v, RoutePoints=%d\n", conn.Src, conn.Dst, conn.SrcArrow, conn.DstArrow, len(routes))
 	log.Debug(ctx, "initial route points", slog.Int("count", len(routes)))
+	fmt.Printf("ORIGINAL ROUTE %s->%s: ", conn.Src, conn.Dst)
 	for i, pt := range routes {
 		log.Debug(ctx, "route point", slog.Int("index", i), slog.Float64("x", pt.X), slog.Float64("y", pt.Y))
+		fmt.Printf("[%d](%.3f,%.3f) ", i, pt.X, pt.Y)
 	}
+	fmt.Printf("\n")
 
 	frmShapeBoundary, toShapeBoundary := getConnectionBoundaries(rd, conn.Src, conn.Dst)
 	log.Debug(ctx, "boundaries", slog.Int("srcTLX", frmShapeBoundary.TL.X), slog.Int("srcTLY", frmShapeBoundary.TL.Y), slog.Int("srcBRX", frmShapeBoundary.BR.X), slog.Int("srcBRY", frmShapeBoundary.BR.Y), slog.Int("dstTLX", toShapeBoundary.TL.X), slog.Int("dstTLY", toShapeBoundary.TL.Y), slog.Int("dstBRX", toShapeBoundary.BR.X), slog.Int("dstBRY", toShapeBoundary.BR.Y))
 
+	// Debug shape coordinates and dimensions
+	diagram := rd.GetDiagram()
+	if diagram != nil {
+		for _, shape := range diagram.Shapes {
+			if shape.ID == conn.Src {
+				fmt.Printf("SHAPE %s: pos=(%d,%d) size=(%dx%d) boundary=TL(%d,%d)-BR(%d,%d)\n",
+					shape.ID, shape.Pos.X, shape.Pos.Y, shape.Width, shape.Height,
+					frmShapeBoundary.TL.X, frmShapeBoundary.TL.Y, frmShapeBoundary.BR.X, frmShapeBoundary.BR.Y)
+			} else if shape.ID == conn.Dst {
+				fmt.Printf("SHAPE %s: pos=(%d,%d) size=(%dx%d) boundary=TL(%d,%d)-BR(%d,%d)\n",
+					shape.ID, shape.Pos.X, shape.Pos.Y, shape.Width, shape.Height,
+					toShapeBoundary.TL.X, toShapeBoundary.TL.Y, toShapeBoundary.BR.X, toShapeBoundary.BR.Y)
+			}
+		}
+	}
+
+	// Skip shape boundary adjustment for now to see raw routes
 	routes = processRoute(ctx, rd, routes, frmShapeBoundary, toShapeBoundary)
+
+	fmt.Printf("PROCESSED ROUTE %s->%s: ", conn.Src, conn.Dst)
+	for i, pt := range routes {
+		fmt.Printf("[%d](%.3f,%.3f) ", i, pt.X, pt.Y)
+	}
+	fmt.Printf("\n")
+
 
 	turnDir := calculateTurnDirections(routes)
 	log.Debug(ctx, "turn directions calculated", slog.Int("count", len(turnDir)))
@@ -97,6 +126,9 @@ func getCharacterMaps(rd RouteDrawer) (corners, arrows map[string]string) {
 		"-1001": chars.TopLeftCorner(), "0-110": chars.TopLeftCorner(),
 		"0-1-10": chars.TopRightCorner(), "1001": chars.TopRightCorner(),
 		"01-10": chars.BottomRightCorner(), "100-1": chars.BottomRightCorner(),
+		// These are straight lines, not corners - they should not be in this map
+		// "0101": chars.Vertical(), "1010": chars.Horizontal(),
+		// "-10-1": chars.Vertical(), "01-01": chars.Horizontal(),
 	}
 	arrows = map[string]string{
 		"0-1": chars.ArrowUp(), "10": chars.ArrowRight(), "01": chars.ArrowDown(), "-10": chars.ArrowLeft(),
