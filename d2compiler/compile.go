@@ -865,15 +865,14 @@ func (c *compiler) compileLayout(layout **json.RawMessage, m *d2ir.Map) {
 	// Convert the D2 map to a JSON object
 	layoutMap := make(map[string]interface{})
 	c.convertMapToJSON(m, layoutMap)
-	
+
 	// Marshal to JSON
 	jsonBytes, err := json.Marshal(layoutMap)
 	if err != nil {
 		c.errorf(m.AST(), "failed to compile layout options: %s", err.Error())
 		return
 	}
-	
-	
+
 	rawMsg := json.RawMessage(jsonBytes)
 	*layout = &rawMsg
 }
@@ -881,7 +880,7 @@ func (c *compiler) compileLayout(layout **json.RawMessage, m *d2ir.Map) {
 func (c *compiler) convertMapToJSON(m *d2ir.Map, result map[string]interface{}) {
 	for _, f := range m.Fields {
 		key := f.Name.ScalarString()
-		
+
 		if f.Primary() != nil && f.Primary().Value != nil {
 			// Simple scalar value
 			val := f.Primary().Value.ScalarString()

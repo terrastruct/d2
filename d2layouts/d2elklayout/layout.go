@@ -128,67 +128,67 @@ func mergeLayoutOptions(baseOptions *elkOpts, layoutJSON *json.RawMessage) *elkO
 	if layoutJSON == nil {
 		return baseOptions
 	}
-	
+
 	// Debug: print what we received
 	fmt.Printf("DEBUG ELK: Received layout JSON: %s\n", string(*layoutJSON))
-	
+
 	// Parse the JSON layout options
 	var userOptions map[string]interface{}
 	if err := json.Unmarshal(*layoutJSON, &userOptions); err != nil {
 		// Log error but don't fail - use base options
 		fmt.Printf("DEBUG ELK: Failed to unmarshal layout options: %v\n", err)
-		return baseOptions  
+		return baseOptions
 	}
-	
+
 	// Flatten user options to match base options structure
 	flatUserOptions := make(map[string]interface{})
 	flattenForELK(userOptions, "", flatUserOptions)
-	
+
 	fmt.Printf("DEBUG ELK: Flattened user options: %+v\n", flatUserOptions)
-	
+
 	// Marshal base options to map for merging
 	baseJSON, err := json.Marshal(baseOptions)
 	if err != nil {
 		return baseOptions
 	}
-	
+
 	var baseMap map[string]interface{}
 	if err := json.Unmarshal(baseJSON, &baseMap); err != nil {
 		return baseOptions
 	}
-	
+
 	// Merge flattened user options with base options (user options override)
 	mergedMap := deepMerge(baseMap, flatUserOptions)
-	
+
 	// Debug: show what we're about to send to ELK
 	fmt.Printf("DEBUG ELK: Final merged options: %+v\n", mergedMap)
-	
+
 	// Convert back to elkOpts
 	mergedJSON, err := json.Marshal(mergedMap)
 	if err != nil {
 		return baseOptions
 	}
-	
+
 	fmt.Printf("DEBUG ELK: Final JSON sent to ELK: %s\n", string(mergedJSON))
-	
+
 	var merged elkOpts
 	if err := json.Unmarshal(mergedJSON, &merged); err != nil {
 		fmt.Printf("DEBUG ELK: Failed to unmarshal final options: %v\n", err)
 		return baseOptions
 	}
-	
+
 	return &merged
 }
 
 // deepMerge recursively merges two maps, with values from 'override' taking precedence
 func deepMerge(base, override map[string]interface{}) map[string]interface{} {
 	result := make(map[string]interface{})
-	
+
 	// Copy base map
 	for k, v := range base {
 		result[k] = v
 	}
-	
+
 	// Merge override values
 	for k, v := range override {
 		if baseVal, exists := result[k]; exists {
@@ -203,7 +203,7 @@ func deepMerge(base, override map[string]interface{}) map[string]interface{} {
 		// Otherwise, override takes precedence
 		result[k] = v
 	}
-	
+
 	return result
 }
 
@@ -215,7 +215,7 @@ func flattenForELK(input map[string]interface{}, prefix string, result map[strin
 		if prefix != "" {
 			fullKey = prefix + "." + key
 		}
-		
+
 		if valueMap, ok := value.(map[string]interface{}); ok {
 			// Recursively flatten nested maps
 			flattenForELK(valueMap, fullKey, result)
@@ -294,7 +294,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			SelfLoopSpacing: opts.SelfLoopSpacing,
 		},
 	}
-	
+
 	elkGraph := &ELKGraph{
 		ID:            "",
 		LayoutOptions: mergeLayoutOptions(baseRootOpts, g.Root.Attributes.Layout),
