@@ -178,15 +178,36 @@ func (p *Presentation) SaveTo(filePath string) error {
 	zipWriter := zip.NewWriter(f)
 	defer zipWriter.Close()
 
+	var slideFileNames []string
+	for i := range p.Slides {
+		slideFileName := fmt.Sprintf("slide%d", i+1)
+		slideFileNames = append(slideFileNames, slideFileName)
+	}
+
+	err = addFileFromTemplate(zipWriter, "[Content_Types].xml", CONTENT_TYPES_XML, ContentTypesXmlContent{
+		FileNames: slideFileNames,
+	})
+	if err != nil {
+		return err
+	}
+
 	if err = copyPptxTemplateTo(zipWriter); err != nil {
 		return err
 	}
 
-	var slideFileNames []string
+	err = addFileFromTemplate(zipWriter, "_rels/.rels", ROOT_RELS_XML, nil)
+	if err != nil {
+		return err
+	}
+
+	err = addFileFromTemplate(zipWriter, "ppt/slideMasters/_rels/slideMaster1.xml.rels", SLIDEMASTER_RELS_XML, nil)
+	if err != nil {
+		return err
+	}
+
 	for i, slide := range p.Slides {
 		imageID := fmt.Sprintf("slide%dImage", i+1)
 		slideFileName := fmt.Sprintf("slide%d", i+1)
-		slideFileNames = append(slideFileNames, slideFileName)
 
 		imageWriter, err := zipWriter.Create(fmt.Sprintf("ppt/media/%s.png", imageID))
 		if err != nil {
@@ -197,7 +218,7 @@ func (p *Presentation) SaveTo(filePath string) error {
 			return err
 		}
 
-		err = addFileFromTemplate(zipWriter, fmt.Sprintf("ppt/slides/_rels/%s.xml.rels", slideFileName), RELS_SLIDE_XML, getSlideXmlRelsContent(imageID, slide))
+		err = addFileFromTemplate(zipWriter, fmt.Sprintf("ppt/slides/_rels/%s.xml.rels", slideFileName), RELS_SLIDE_XML, getSlideXmlRelsContent(imageID, slide, i+1))
 		if err != nil {
 			return err
 		}
@@ -206,13 +227,6 @@ func (p *Presentation) SaveTo(filePath string) error {
 		if err != nil {
 			return err
 		}
-	}
-
-	err = addFileFromTemplate(zipWriter, "[Content_Types].xml", CONTENT_TYPES_XML, ContentTypesXmlContent{
-		FileNames: slideFileNames,
-	})
-	if err != nil {
-		return err
 	}
 
 	err = addFileFromTemplate(zipWriter, "ppt/_rels/presentation.xml.rels", RELS_PRESENTATION_XML, getRelsPresentationXmlContent(slideFileNames))
@@ -274,7 +288,15 @@ func copyPptxTemplateTo(w *zip.Writer) error {
 		fmt.Printf("error creating zip reader: %v", err)
 	}
 
+	skipFiles := map[string]bool{
+		"_rels/.rels": true,
+		"ppt/slideMasters/_rels/slideMaster1.xml.rels": true,
+	}
+
 	for _, f := range zipReader.File {
+		if skipFiles[f.Name] {
+			continue
+		}
 		if err := w.Copy(f); err != nil {
 			return fmt.Errorf("error copying %s: %v", f.Name, err)
 		}
@@ -297,7 +319,7 @@ type RelsSlideXmlContent struct {
 	Links          []RelsSlideXmlLinkContent
 }
 
-func getSlideXmlRelsContent(imageID string, slide *Slide) RelsSlideXmlContent {
+func getSlideXmlRelsContent(imageID string, slide *Slide, currentSlideNum int) RelsSlideXmlContent {
 	content := RelsSlideXmlContent{
 		FileName:       imageID,
 		RelationshipID: imageID,
@@ -411,9 +433,9 @@ type RelsPresentationXmlContent struct {
 
 func getRelsPresentationXmlContent(slideFileNames []string) RelsPresentationXmlContent {
 	var content RelsPresentationXmlContent
-	for _, name := range slideFileNames {
+	for i, name := range slideFileNames {
 		content.Slides = append(content.Slides, RelsPresentationSlideXmlContent{
-			RelationshipID: name,
+			RelationshipID: fmt.Sprintf("rId%d", i+2),
 			FileName:       name,
 		})
 	}
@@ -447,11 +469,10 @@ func getPresentationXmlContent(slideFileNames []string) PresentationXmlContent {
 		SlideWidth:  SLIDE_WIDTH,
 		SlideHeight: SLIDE_HEIGHT,
 	}
-	for i, name := range slideFileNames {
+	for i := range slideFileNames {
 		content.Slides = append(content.Slides, PresentationSlideXmlContent{
-			// in the exported presentation, the first slide ID was 256, so keeping it here for compatibility
 			ID:             256 + i,
-			RelationshipID: name,
+			RelationshipID: fmt.Sprintf("rId%d", i+2),
 		})
 	}
 	return content
@@ -466,12 +487,16 @@ type CoreXmlContent struct {
 	Creator        string
 	Description    string
 	LastModifiedBy string
-	Created        string
-	Modified       string
 }
 
 //go:embed templates/app.xml
 var APP_XML string
+
+//go:embed templates/root_rels.xml
+var ROOT_RELS_XML string
+
+//go:embed templates/slidemaster_rels.xml
+var SLIDEMASTER_RELS_XML string
 
 type AppXmlContent struct {
 	SlideCount         int
