@@ -203,7 +203,7 @@ func validatePresentationRels(reader *zip.Reader) error {
 
 	rIdPattern := regexp.MustCompile(`Id="(rId\d+)"`)
 	matches := rIdPattern.FindAllStringSubmatch(contentStr, -1)
-	
+
 	rIdCounts := make(map[string]int)
 	for _, match := range matches {
 		rId := match[1]
