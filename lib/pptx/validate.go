@@ -41,6 +41,10 @@ func Validate(pptxContent []byte, nSlides int) error {
 		return fmt.Errorf("invalid presentation.xml: %v", err)
 	}
 
+	if err := validatePresentationRels(zipReader); err != nil {
+		return fmt.Errorf("invalid presentation relationships: %v", err)
+	}
+
 	for i := 0; i < nSlides; i++ {
 		slideNum := i + 1
 		if err := checkFile(zipReader, fmt.Sprintf("ppt/slides/slide%d.xml", slideNum)); err != nil {
@@ -178,6 +182,43 @@ func validatePresentationXml(reader *zip.Reader) error {
 		if !strings.HasPrefix(match[1], "rId") {
 			return fmt.Errorf("invalid r:id format: %s (should start with 'rId')", match[1])
 		}
+	}
+
+	return nil
+}
+
+func validatePresentationRels(reader *zip.Reader) error {
+	f, err := reader.Open("ppt/_rels/presentation.xml.rels")
+	if err != nil {
+		return fmt.Errorf("error opening presentation.xml.rels: %v", err)
+	}
+	defer f.Close()
+
+	content, err := io.ReadAll(f)
+	if err != nil {
+		return fmt.Errorf("error reading presentation.xml.rels: %v", err)
+	}
+
+	contentStr := string(content)
+
+	rIdPattern := regexp.MustCompile(`Id="(rId\d+)"`)
+	matches := rIdPattern.FindAllStringSubmatch(contentStr, -1)
+	
+	rIdCounts := make(map[string]int)
+	for _, match := range matches {
+		rId := match[1]
+		rIdCounts[rId]++
+	}
+
+	var duplicates []string
+	for rId, count := range rIdCounts {
+		if count > 1 {
+			duplicates = append(duplicates, rId)
+		}
+	}
+
+	if len(duplicates) > 0 {
+		return fmt.Errorf("duplicate relationship IDs found in presentation.xml.rels: %v", duplicates)
 	}
 
 	return nil
