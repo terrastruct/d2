@@ -435,7 +435,7 @@ func getRelsPresentationXmlContent(slideFileNames []string) RelsPresentationXmlC
 	var content RelsPresentationXmlContent
 	for i, name := range slideFileNames {
 		content.Slides = append(content.Slides, RelsPresentationSlideXmlContent{
-			RelationshipID: fmt.Sprintf("rId%d", i+2),
+			RelationshipID: fmt.Sprintf("rId%d", i+7),
 			FileName:       name,
 		})
 	}
@@ -472,7 +472,7 @@ func getPresentationXmlContent(slideFileNames []string) PresentationXmlContent {
 	for i := range slideFileNames {
 		content.Slides = append(content.Slides, PresentationSlideXmlContent{
 			ID:             256 + i,
-			RelationshipID: fmt.Sprintf("rId%d", i+2),
+			RelationshipID: fmt.Sprintf("rId%d", i+7),
 		})
 	}
 	return content
