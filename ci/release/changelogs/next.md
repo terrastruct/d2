@@ -9,6 +9,8 @@
 
 #### Bugfixes ⛑️
 
+- exports: pptx follows standards more closely, addressing warnings from some Powerpoint software [#2645](https://github.com/terrastruct/d2/pull/2645)
+
 ---
 
 For the latest d2.js changes, see separate [changelog](https://github.com/terrastruct/d2/blob/master/d2js/js/CHANGELOG.md).
