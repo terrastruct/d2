@@ -155,7 +155,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) error {
 		}
 		// if edge is grid child, use simple routing
 		e.Route = []*geo.Point{e.Src.Center(), e.Dst.Center()}
-		e.TraceToShape(e.Route, 0, 1)
+		e.TraceToShape(e.Route, 0, 1, float64(label.PADDING))
 		if e.Label.Value != "" {
 			e.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
 		}

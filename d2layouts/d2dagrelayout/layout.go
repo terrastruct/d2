@@ -330,7 +330,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 
-		startIndex, endIndex = edge.TraceToShape(points, startIndex, endIndex)
+		startIndex, endIndex = edge.TraceToShape(points, startIndex, endIndex, float64(label.PADDING))
 		points = points[startIndex : endIndex+1]
 
 		// build a curved path from the dagre route

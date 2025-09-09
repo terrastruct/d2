@@ -188,11 +188,22 @@ func adjustRouteStartPoint(ctx context.Context, rd RouteDrawer, routes []*geo.Po
 	secondY := routes[1].Y
 
 	log.Debug(ctx, "adjusting start point", slog.Float64("firstX", firstX), slog.Float64("firstY", firstY), slog.Float64("secondX", secondX), slog.Float64("secondY", secondY))
+	fmt.Printf("ADJUST START: from (%.3f,%.3f) to (%.3f,%.3f)\n", firstX, firstY, secondX, secondY)
+	fmt.Printf("START SEGMENT: deltaX=%.3f deltaY=%.3f\n", secondX-firstX, secondY-firstY)
+	if math.Abs(firstY-secondY) < 0.1 {
+		fmt.Printf("START: This is a HORIZONTAL line (Y diff=%.3f < 0.1)\n", math.Abs(firstY-secondY))
+	} else if math.Abs(firstX-secondX) < 0.1 {
+		fmt.Printf("START: This is a VERTICAL line (X diff=%.3f < 0.1)\n", math.Abs(firstX-secondX))
+	} else {
+		fmt.Printf("START: This is a DIAGONAL line (X diff=%.3f, Y diff=%.3f)\n", math.Abs(firstX-secondX), math.Abs(firstY-secondY))
+	}
 
 	// Check if end point is inside the to boundary
 	// Move along the vector of the last segment until outside the boundary if so
 	if fromBoundary.Contains(int(math.Round(firstX)), int(math.Round(firstY))) {
 		log.Debug(ctx, "start point inside source boundary, moving along vector")
+		fmt.Printf("START BOUNDARY: point (%.0f,%.0f) is inside boundary TL(%d,%d)-BR(%d,%d)\n",
+			firstX, firstY, fromBoundary.TL.X, fromBoundary.TL.Y, fromBoundary.BR.X, fromBoundary.BR.Y)
 		vectorX := secondX - firstX
 		vectorY := secondY - firstY
 
@@ -201,6 +212,7 @@ func adjustRouteStartPoint(ctx context.Context, rd RouteDrawer, routes []*geo.Po
 			vectorX /= length
 			vectorY /= length
 			log.Debug(ctx, "movement vector", slog.Float64("x", vectorX), slog.Float64("y", vectorY))
+			fmt.Printf("START VECTOR: moving along segment direction (%.3f,%.3f)\n", vectorX, vectorY)
 
 			steps := 0
 			for fromBoundary.Contains(int(math.Round(routes[0].X)), int(math.Round(routes[0].Y))) {
@@ -209,12 +221,13 @@ func adjustRouteStartPoint(ctx context.Context, rd RouteDrawer, routes []*geo.Po
 				steps++
 			}
 			log.Debug(ctx, "moved to exit boundary", slog.Int("steps", steps), slog.Float64("x", routes[0].X), slog.Float64("y", routes[0].Y))
+			fmt.Printf("START MOVED: after %d steps to (%.3f,%.3f)\n", steps, routes[0].X, routes[0].Y)
 		}
 		return
 	}
 
 	// Determine line direction and keep shifting until empty space
-	if math.Abs(firstY-secondY) < 0.1 { // Horizontal line
+	if math.Abs(firstX-secondX) < 0.1 { // Vertical line (X coordinates are same)
 		log.Debug(ctx, "horizontal line detected")
 		deltaX := 0.0
 		if secondX > firstX {
@@ -288,7 +301,7 @@ func adjustRouteEndPoint(ctx context.Context, rd RouteDrawer, routes []*geo.Poin
 	}
 
 	// Determine line direction and keep shifting until empty space
-	if math.Abs(lastY-secondLastY) < 0.1 { // Horizontal line
+	if math.Abs(lastY-secondLastY) < 0.1 { // Horizontal line (Y coordinates are same)
 		log.Debug(ctx, "horizontal line detected")
 		deltaX := 0.0
 		if secondLastX > lastX {
@@ -302,7 +315,7 @@ func adjustRouteEndPoint(ctx context.Context, rd RouteDrawer, routes []*geo.Poin
 		if deltaX != 0 {
 			shiftPointUntilEmpty(ctx, rd, &routes[lastIdx].X, &routes[lastIdx].Y, deltaX, 0)
 		}
-	} else if math.Abs(lastX-secondLastX) < 0.1 { // Vertical line
+	} else if math.Abs(lastX-secondLastX) < 0.1 { // Vertical line (X coordinates are same)
 		log.Debug(ctx, "vertical line detected")
 		deltaY := 0.0
 		if secondLastY > lastY {
