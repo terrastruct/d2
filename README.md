@@ -4,7 +4,7 @@
     A modern diagram scripting language that turns text to diagrams.
   </h2>
 
-[Docs](https://d2lang.com) | [Cheat sheet](./docs/assets/cheat_sheet.pdf) | [Comparisons](https://text-to-diagram.com) | [Playground](https://play.d2lang.com) | [IDE](https://app.terrastruct.com)
+[Docs](https://d2lang.com) | [Cheat sheet](./docs/assets/cheat_sheet.pdf) | [Comparisons](https://text-to-diagram.com) | [Playground](https://play.d2lang.com) | [IDE](https://d2studio.ai)
 
 [![ci](https://github.com/terrastruct/d2/actions/workflows/ci.yml/badge.svg)](https://github.com/terrastruct/d2/actions/workflows/ci.yml)
 [![daily](https://github.com/terrastruct/d2/actions/workflows/daily.yml/badge.svg)](https://github.com/terrastruct/d2/actions/workflows/daily.yml)
@@ -18,7 +18,7 @@
 <a href="https://play.d2lang.com">
 <img src="./docs/assets/playground_button.png" alt="D2 Playground button" width="200" />
 </a>
-<a href="https://app.terrastruct.com">
+<a href="https://d2studio.ai">
 <img src="./docs/assets/studio_button.png" alt="D2 Studio button" width="200" />
 </a>
 
@@ -278,7 +278,7 @@ let us know and we'll be happy to include it here!
 
 - **Comparison site**: [https://github.com/terrastruct/text-to-diagram-site](https://github.com/terrastruct/text-to-diagram-site)
 - **Playground**: [https://github.com/terrastruct/d2-playground](https://github.com/terrastruct/d2-playground)
-- **IDE (paid)**: [https://app.terrastruct.com](https://app.terrastruct.com)
+- **IDE (paid)**: [https://d2studio.ai](https://d2studio.ai)
 - **Language docs**: [https://github.com/terrastruct/d2-docs](https://github.com/terrastruct/d2-docs)
 - **Hosted icons**: [https://icons.terrastruct.com](https://icons.terrastruct.com)
 
