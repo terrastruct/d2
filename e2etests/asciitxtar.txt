@@ -1,3 +1,14 @@
+-- shape-container --
+a: {
+  b.shape: step
+}
+
+c: {
+  d.shape: cylinder
+}
+
+a.b -> c.d
+
 -- three-right --
 direction: right
 x -> y -> z
@@ -42,7 +53,6 @@ network: {
 
 user: {
   shape: person
-  width: 130
 }
 
 user -> network.cell tower: make call
@@ -87,7 +97,6 @@ network: {
 
 user: {
   shape: person
-  width: 130
 }
 
 user -> network.cell tower: make call
@@ -267,3 +276,8 @@ b: "A"
 shape: sequence_diagram
 alice -> bob: What does it mean\nto be well-adjusted?
 bob -> alice: The ability to play bridge or\ngolf as if they were games.
+
+-- long-sequence --
+shape: sequence_diagram
+alice -> bob: What does it mean to be well-adjusted?
+bob -> alice: The ability to play bridge or golf as if they were games.

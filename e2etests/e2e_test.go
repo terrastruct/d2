@@ -119,7 +119,7 @@ func runASCIITxtarTest(t *testing.T, tc testCase) {
 	ctx = log.WithTB(ctx, t)
 	ctx = log.Leveled(ctx, slog.LevelDebug)
 
-	ruler, err := textmeasure.NewRuler()
+	ruler, err := textmeasure.NewASCIIRuler()
 	trequire.Nil(t, err)
 
 	serde(t, tc, ruler)
@@ -131,8 +131,9 @@ func runASCIITxtarTest(t *testing.T, tc testCase) {
 
 	compileOpts := &d2lib.CompileOptions{
 		Ruler:          ruler,
-		Layout:         go2.Pointer("elk"),
 		LayoutResolver: layoutResolver,
+		Layout:         go2.Pointer("elk"),
+		ASCII:          true,
 	}
 	renderOpts := &d2svg.RenderOpts{
 		Pad:     go2.Pointer(int64(0)),

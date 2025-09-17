@@ -56,6 +56,9 @@ type Graph struct {
 	Layers    []*Graph `json:"layers,omitempty"`
 	Scenarios []*Graph `json:"scenarios,omitempty"`
 	Steps     []*Graph `json:"steps,omitempty"`
+	
+	// ASCII indicates that this graph is being rendered for ASCII output
+	ASCII bool `json:"-"`
 
 	Theme *d2themes.Theme `json:"theme,omitempty"`
 
@@ -1002,8 +1005,13 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 		labelDims.Width += fontSize
 		labelDims.Height += fontSize
 	} else if withLabelPadding {
-		labelDims.Width += INNER_LABEL_PADDING
-		labelDims.Height += INNER_LABEL_PADDING
+		// Use smaller padding for ASCII rendering since each unit is a character, not a pixel
+		padding := INNER_LABEL_PADDING
+		if ruler != nil && ruler.IsASCII() {
+			padding = 1 // was 5
+		}
+		labelDims.Width += padding
+		labelDims.Height += padding
 	}
 
 	switch dslShape {
@@ -1053,7 +1061,17 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 		// └─┴─┴───────┴──────┴───┴──┘
 		//  └─PrefixPadding        └──TypePadding
 		//     ├───────┤   +  ├───┤  = maxWidth
-		dims.Width = d2target.PrefixPadding + d2target.PrefixWidth + maxWidth + d2target.CenterPadding + d2target.TypePadding
+		// Use smaller padding for ASCII rendering since each unit is a character, not a pixel
+		prefixPadding, prefixWidth, centerPadding, typePadding := d2target.PrefixPadding, d2target.PrefixWidth, d2target.CenterPadding, d2target.TypePadding
+		if ruler != nil && ruler.IsASCII() {
+			// ASCII-friendly padding - much smaller since each unit is a character
+			prefixPadding = 1   // was 10
+			prefixWidth = 1     // was 20
+			centerPadding = 2   // was 50
+			typePadding = 1     // was 20
+		}
+		
+		dims.Width = prefixPadding + prefixWidth + maxWidth + centerPadding + typePadding
 
 		// All rows should be the same height
 		var anyRowText *d2target.MText
@@ -1114,15 +1132,175 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 
 		// The rows get padded a little due to header font being larger than row font
 		dims.Height = go2.Max(12, labelDims.Height*(len(obj.SQLTable.Columns)+1))
-		headerWidth := d2target.HeaderPadding + labelDims.Width + d2target.HeaderPadding
-		rowsWidth := d2target.NamePadding + maxNameWidth + d2target.TypePadding + maxTypeWidth + d2target.TypePadding + maxConstraintWidth
+		
+		// Use smaller padding for ASCII rendering since each unit is a character, not a pixel
+		namePadding, typePadding, constraintPadding, headerPadding := d2target.NamePadding, d2target.TypePadding, d2target.ConstraintPadding, d2target.HeaderPadding
+		if ruler != nil && ruler.IsASCII() {
+			// ASCII-friendly padding - much smaller since each unit is a character
+			namePadding = 1      // was 10
+			typePadding = 1      // was 20
+			constraintPadding = 1 // was 20
+			headerPadding = 1    // was 10
+		}
+
+		headerWidth := headerPadding + labelDims.Width + headerPadding
+		rowsWidth := namePadding + maxNameWidth + typePadding + maxTypeWidth + typePadding + maxConstraintWidth
 		if maxConstraintWidth != 0 {
-			rowsWidth += d2target.ConstraintPadding
+			rowsWidth += constraintPadding
 		}
 		dims.Width = go2.Max(12, go2.Max(headerWidth, rowsWidth))
 	}
 
 	return &dims, nil
+}
+
+// getMaxReasonableASCIIWidth returns the maximum reasonable width for a shape in ASCII mode
+func getMaxReasonableASCIIWidth(shapeType string, fitWidth float64) float64 {
+	switch shapeType {
+	case shape.PERSON_TYPE:
+		// Person shapes should stay compact - too wide looks odd
+		return math.Max(fitWidth, 12)
+	case shape.CIRCLE_TYPE:
+		// Circles must remain square, so width is constrained by height
+		return math.Max(fitWidth, 15)
+	case shape.DIAMOND_TYPE:
+		// Diamonds can be wider but not excessively so
+		return math.Max(fitWidth, 20)
+	case shape.HEXAGON_TYPE, shape.CYLINDER_TYPE, shape.STORED_DATA_TYPE:
+		// These shapes can handle moderate width
+		return math.Max(fitWidth, 25)
+	case shape.CALLOUT_TYPE, shape.STEP_TYPE, shape.PARALLELOGRAM_TYPE, shape.QUEUE_TYPE:
+		// These shapes work well with moderate width
+		return math.Max(fitWidth, 20)
+	case shape.DOCUMENT_TYPE, shape.PAGE_TYPE, shape.PACKAGE_TYPE:
+		// Document-like shapes can be reasonably wide  
+		return math.Max(fitWidth, 30)
+	case shape.OVAL_TYPE, shape.CLOUD_TYPE:
+		// These can be wider since they're meant to be wide
+		return math.Max(fitWidth, 35)
+	default:
+		// Default rectangular shapes can handle reasonable width
+		return math.Max(fitWidth, 25)
+	}
+}
+
+// getMaxReasonableASCIIHeight returns the maximum reasonable height for a shape in ASCII mode
+func getMaxReasonableASCIIHeight(shapeType string, fitHeight float64) float64 {
+	switch shapeType {
+	case shape.PERSON_TYPE:
+		// Person shapes can be taller (full body)
+		return math.Max(fitHeight, 10)
+	case shape.CIRCLE_TYPE:
+		// Circles must remain square
+		return math.Max(fitHeight, 15)
+	case shape.DIAMOND_TYPE:
+		// Diamonds should not be too tall
+		return math.Max(fitHeight, 10)
+	case shape.HEXAGON_TYPE, shape.CYLINDER_TYPE, shape.STORED_DATA_TYPE:
+		// These shapes work well with moderate height
+		return math.Max(fitHeight, 12)
+	case shape.CALLOUT_TYPE, shape.STEP_TYPE, shape.PARALLELOGRAM_TYPE:
+		// These shapes should stay relatively low
+		return math.Max(fitHeight, 8)
+	case shape.QUEUE_TYPE, shape.PACKAGE_TYPE, shape.PAGE_TYPE:
+		// These are typically not very tall
+		return math.Max(fitHeight, 10)
+	case shape.DOCUMENT_TYPE:
+		// Documents can be taller
+		return math.Max(fitHeight, 15)
+	case shape.OVAL_TYPE, shape.CLOUD_TYPE:
+		// These should not be too tall (wider than tall)
+		return math.Max(fitHeight, 8)
+	default:
+		// Default rectangular shapes can handle moderate height
+		return math.Max(fitHeight, 12)
+	}
+}
+
+// getASCIIDimensionsToFit returns ASCII-appropriate dimensions based on actual ASCII shape implementations
+func getASCIIDimensionsToFit(shapeType string, contentWidth, contentHeight, paddingX, paddingY float64) (float64, float64) {
+	// Base content dimensions
+	baseWidth := contentWidth + paddingX
+	baseHeight := contentHeight + paddingY
+	
+	switch shapeType {
+	case shape.PERSON_TYPE:
+		// Person: MinPersonHeight=5, needs width for body+arms, head takes HeadHeight=2
+		return math.Max(baseWidth, 4), math.Max(baseHeight, 5)
+		
+	case shape.CIRCLE_TYPE:
+		// Circle: Must be square, needs enough space for circular border
+		size := math.Max(math.Max(baseWidth, baseHeight), 5)
+		return size, size
+		
+	case shape.DIAMOND_TYPE:
+		// Diamond: Forces odd dimensions, needs space for diagonal paths
+		width := math.Max(baseWidth, 5)
+		height := math.Max(baseHeight, 5)
+		// Ensure odd dimensions like the implementation
+		if int(width)%2 == 0 { width++ }
+		if int(height)%2 == 0 { height++ }
+		return width, height
+		
+	case shape.HEXAGON_TYPE:
+		// Hexagon: Uses hoffset=height/2, needs width for top/bottom lines + diagonals
+		return math.Max(baseWidth, 7), math.Max(baseHeight, 5)
+		
+	case shape.CYLINDER_TYPE:
+		// Cylinder: MinCylinderHeight=5, needs width>=6 for ellipse (x1+2, x2-2 must be valid)
+		return math.Max(baseWidth, 6), math.Max(baseHeight, 5)
+		
+	case shape.STORED_DATA_TYPE:
+		// StoredData: MinStoredDataHeight=5, forces odd height, needs width for straight+curved parts
+		height := math.Max(baseHeight, 5)
+		if int(height)%2 == 0 { height++ }
+		return math.Max(baseWidth, 5), height
+		
+	case shape.CALLOUT_TYPE:
+		// Callout: Needs space for speech bubble tail (x2-(tail+2) must be valid)
+		return math.Max(baseWidth, 6), math.Max(baseHeight, 4)
+		
+	case shape.STEP_TYPE:
+		// Step: Forces even height, width must be >= height for diagonal cuts
+		height := math.Max(baseHeight, 4)
+		if int(height)%2 == 1 { height++ }
+		width := math.Max(baseWidth, height) // width >= height for cuts to show
+		return math.Max(width, 6), height
+		
+	case shape.PARALLELOGRAM_TYPE:
+		// Parallelogram: Width must be > height for top/bottom lines (ix>=x1+hi, ix<=x2-hi)
+		height := math.Max(baseHeight, 3)
+		width := math.Max(baseWidth, height+2) // needs width > height for lines
+		return math.Max(width, 5), height
+		
+	case shape.QUEUE_TYPE:
+		// Queue: Needs width>4 for x2-3 to be different from x1,x2
+		return math.Max(baseWidth, 6), math.Max(baseHeight, 3)
+		
+	case shape.PACKAGE_TYPE:
+		// Package: Uses x3=x1+wi/2 for tab, needs space for tab to be visible
+		return math.Max(baseWidth, 5), math.Max(baseHeight, 3)
+		
+	case shape.DOCUMENT_TYPE:
+		// Document: Uses MaxCurveHeight=3, n=(iw-2)/2 for curves, needs width>=6 for curves
+		return math.Max(baseWidth, 7), math.Max(baseHeight, 4)
+		
+	case shape.PAGE_TYPE:
+		// Page: Like rectangle but with fold, needs width>=4 for fold (x2-1 valid), height>=3
+		return math.Max(baseWidth, 4), math.Max(baseHeight, 3)
+		
+	case shape.OVAL_TYPE:
+		// Oval: Wider than tall, needs space for curved edges
+		return math.Max(baseWidth, 5), math.Max(baseHeight, 3)
+		
+	case shape.CLOUD_TYPE:
+		// Cloud: Complex shape with curves, needs substantial space
+		return math.Max(baseWidth, 6), math.Max(baseHeight, 4)
+		
+	default:
+		// Default rectangular shapes (including SQUARE_TYPE, REAL_SQUARE_TYPE): corners + lines
+		return math.Max(baseWidth, 3), math.Max(baseHeight, 3)
+	}
 }
 
 // resizes the object to fit content of the given width and height in its inner box with the given padding.
@@ -1133,7 +1311,12 @@ func (obj *Object) SizeToContent(contentWidth, contentHeight, paddingX, paddingY
 	s := shape.NewShape(shapeType, geo.NewBox(geo.NewPoint(0, 0), contentWidth, contentHeight))
 
 	var fitWidth, fitHeight float64
-	if shapeType == shape.PERSON_TYPE {
+	isASCII := obj.Graph != nil && obj.Graph.ASCII
+
+	if isASCII {
+		// Use ASCII-appropriate dimensions
+		fitWidth, fitHeight = getASCIIDimensionsToFit(shapeType, contentWidth, contentHeight, paddingX, paddingY)
+	} else if shapeType == shape.PERSON_TYPE {
 		fitWidth = contentWidth + paddingX
 		fitHeight = contentHeight + paddingY
 	} else {
@@ -1143,7 +1326,15 @@ func (obj *Object) SizeToContent(contentWidth, contentHeight, paddingX, paddingY
 	var desiredWidth int
 	if obj.WidthAttr != nil {
 		desiredWidth, _ = strconv.Atoi(obj.WidthAttr.Value)
-		obj.Width = float64(desiredWidth)
+		if isASCII {
+			// For ASCII, intelligently scale user dimensions based on shape requirements
+			maxReasonableWidth := getMaxReasonableASCIIWidth(shapeType, fitWidth)
+			scaledWidth := math.Min(float64(desiredWidth), maxReasonableWidth)
+			scaledWidth = math.Max(scaledWidth, fitWidth) // Never go below minimum
+			obj.Width = scaledWidth
+		} else {
+			obj.Width = float64(desiredWidth)
+		}
 	} else {
 		obj.Width = fitWidth
 	}
@@ -1151,7 +1342,15 @@ func (obj *Object) SizeToContent(contentWidth, contentHeight, paddingX, paddingY
 	var desiredHeight int
 	if obj.HeightAttr != nil {
 		desiredHeight, _ = strconv.Atoi(obj.HeightAttr.Value)
-		obj.Height = float64(desiredHeight)
+		if isASCII {
+			// For ASCII, intelligently scale user dimensions based on shape requirements  
+			maxReasonableHeight := getMaxReasonableASCIIHeight(shapeType, fitHeight)
+			scaledHeight := math.Min(float64(desiredHeight), maxReasonableHeight)
+			scaledHeight = math.Max(scaledHeight, fitHeight) // Never go below minimum
+			obj.Height = scaledHeight
+		} else {
+			obj.Height = float64(desiredHeight)
+		}
 	} else {
 		obj.Height = fitHeight
 	}
@@ -1162,15 +1361,45 @@ func (obj *Object) SizeToContent(contentWidth, contentHeight, paddingX, paddingY
 	}
 
 	if s.AspectRatio1() {
-		sideLength := math.Max(obj.Width, obj.Height)
-		obj.Width = sideLength
-		obj.Height = sideLength
+		// Shapes that must be square (circles, real squares)
+		if isASCII {
+			// For ASCII circles, maintain square but within reasonable limits
+			maxSize := math.Min(getMaxReasonableASCIIWidth(shapeType, obj.Width), getMaxReasonableASCIIHeight(shapeType, obj.Height))
+			sideLength := math.Min(math.Max(obj.Width, obj.Height), maxSize)
+			obj.Width = sideLength
+			obj.Height = sideLength
+		} else {
+			sideLength := math.Max(obj.Width, obj.Height)
+			obj.Width = sideLength
+			obj.Height = sideLength
+		}
 	} else if desiredHeight == 0 || desiredWidth == 0 {
+		// Apply shape-specific aspect ratio limits
 		switch shapeType {
 		case shape.PERSON_TYPE:
-			obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.PERSON_AR_LIMIT)
+			if isASCII {
+				// ASCII person should be taller than wide but not extreme
+				obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, 2.5)
+			} else {
+				obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.PERSON_AR_LIMIT)
+			}
 		case shape.OVAL_TYPE:
-			obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.OVAL_AR_LIMIT)
+			if isASCII {
+				// ASCII ovals should be wider than tall
+				obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, 4.0)
+			} else {
+				obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.OVAL_AR_LIMIT)
+			}
+		case shape.CLOUD_TYPE:
+			if isASCII {
+				// ASCII clouds should be wider than tall
+				obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, 3.0)
+			}
+		case shape.PARALLELOGRAM_TYPE, shape.STEP_TYPE:
+			if isASCII {
+				// These shapes work better when wider than tall
+				obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, 2.0)
+			}
 		}
 	}
 	if shapeType == shape.CLOUD_TYPE {
@@ -1548,15 +1777,24 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			dslShape != d2target.ShapeClass {
 
 			if dslShape == d2target.ShapeCircle || dslShape == d2target.ShapeSquare {
+				// Use smaller default size for ASCII rendering
 				sideLength := DEFAULT_SHAPE_SIZE
+				if ruler != nil && ruler.IsASCII() {
+					sideLength = 7 // was 100
+				}
 				if desiredWidth != 0 || desiredHeight != 0 {
 					sideLength = float64(go2.Max(desiredWidth, desiredHeight))
 				}
 				obj.Width = sideLength
 				obj.Height = sideLength
 			} else {
-				obj.Width = DEFAULT_SHAPE_SIZE
-				obj.Height = DEFAULT_SHAPE_SIZE
+				// Use smaller default size for ASCII rendering
+				defaultSize := DEFAULT_SHAPE_SIZE
+				if ruler != nil && ruler.IsASCII() {
+					defaultSize = 7 // was 100
+				}
+				obj.Width = defaultSize
+				obj.Height = defaultSize
 				if desiredWidth != 0 {
 					obj.Width = float64(desiredWidth)
 				}
@@ -1606,6 +1844,10 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
 		s := shape.NewShape(shapeType, contentBox)
 		paddingX, paddingY := s.GetDefaultPadding()
+		// Use minimal padding for ASCII rendering
+		if ruler != nil && ruler.IsASCII() {
+			paddingX, paddingY = 1., 1.
+		}
 		if desiredWidth != 0 {
 			paddingX = 0.
 		}
@@ -1619,6 +1861,10 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			case shape.TABLE_TYPE, shape.CLASS_TYPE, shape.CODE_TYPE, shape.TEXT_TYPE:
 			default:
 				labelHeight := float64(labelDims.Height + INNER_LABEL_PADDING)
+				// Use minimal padding for ASCII rendering
+				if ruler != nil && ruler.IsASCII() {
+					labelHeight = 1.
+				}
 				// Evenly pad enough to fit label above icon
 				if desiredWidth == 0 {
 					paddingX += labelHeight
@@ -1633,7 +1879,12 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			case shape.TABLE_TYPE, shape.CLASS_TYPE, shape.CODE_TYPE:
 			default:
 				if obj.Link != nil && obj.Tooltip != nil {
-					paddingX += 64
+					tooltipPadding := 64.
+					// Use minimal padding for ASCII rendering
+					if ruler != nil && ruler.IsASCII() {
+						tooltipPadding = 1.
+					}
+					paddingX += tooltipPadding
 				}
 			}
 		}

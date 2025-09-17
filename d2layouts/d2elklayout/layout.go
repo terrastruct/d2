@@ -122,6 +122,7 @@ var DefaultOpts = ConfigurableOpts{
 
 var port_spacing = 40.
 var edge_node_spacing = 40
+var edge_edge_between_layers_spacing = 50
 
 type elkOpts struct {
 	EdgeNode                     int       `json:"elk.spacing.edgeNode,omitempty"`
@@ -155,6 +156,22 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	if opts == nil {
 		opts = &DefaultOpts
 	}
+
+	// Override all spacing variables for ASCII mode - use larger values for orthogonal routing
+	if g.ASCII {
+		// Create a copy of opts to avoid modifying the default
+		asciiOpts := *opts
+		asciiOpts.Padding = "[top=2,left=3,bottom=3,right=3]"
+		asciiOpts.NodeSpacing = 3
+		asciiOpts.EdgeNodeSpacing = 2
+		asciiOpts.SelfLoopSpacing = 5
+		opts = &asciiOpts
+		// Override global spacing variables for ASCII mode
+		port_spacing = 3.
+		edge_node_spacing = 3
+		edge_edge_between_layers_spacing = 1
+	}
+
 	defer xdefer.Errorf(&err, "failed to ELK layout")
 
 	runner := jsrunner.NewJSRunner()
@@ -178,7 +195,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		ID: "",
 		LayoutOptions: &elkOpts{
 			Thoroughness:                 8,
-			EdgeEdgeBetweenLayersSpacing: 50,
+			EdgeEdgeBetweenLayersSpacing: edge_edge_between_layers_spacing,
 			EdgeNode:                     edge_node_spacing,
 			HierarchyHandling:            "INCLUDE_CHILDREN",
 			FixedAlignment:               "BALANCED",
@@ -195,8 +212,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		},
 	}
 	if elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing == DefaultOpts.SelfLoopSpacing {
-		// +5 for a tiny bit of padding
-		elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, childrenMaxSelfLoop(g.Root, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+5)
+		// Use smaller padding for ASCII mode
+		selfLoopPadding := 5
+		if g.ASCII {
+			selfLoopPadding = 1
+		}
+		elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, childrenMaxSelfLoop(g.Root, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+selfLoopPadding)
 	}
 	switch g.Root.Direction.Value {
 	case "down":
@@ -257,13 +278,24 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		if obj.HasLabel() && obj.HasIcon() {
 			// this gives shapes extra height for their label if they also have an icon
-			obj.Height += float64(obj.LabelDimensions.Height + label.PADDING)
+			iconLabelPadding := label.PADDING
+			if g.ASCII {
+				iconLabelPadding = 1
+			}
+			obj.Height += float64(obj.LabelDimensions.Height + iconLabelPadding)
 		}
 
-		margin, _ := obj.SpacingOpt(label.PADDING, label.PADDING, false)
-		width := margin.Left + obj.Width + margin.Right
-		height := margin.Top + obj.Height + margin.Bottom
-		adjustments[obj] = margin
+		labelPadding := float64(label.PADDING)
+		width := obj.Width
+		height := obj.Height
+		if g.ASCII {
+			labelPadding = 1.
+		} else {
+			margin, _ := obj.SpacingOpt(labelPadding, labelPadding, false)
+			width = margin.Left + obj.Width + margin.Right
+			height = margin.Top + obj.Height + margin.Bottom
+			adjustments[obj] = margin
+		}
 
 		n := &ELKNode{
 			ID:     obj.AbsID(),
@@ -275,7 +307,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			n.LayoutOptions = &elkOpts{
 				ForceNodeModelOrder:          true,
 				Thoroughness:                 8,
-				EdgeEdgeBetweenLayersSpacing: 50,
+				EdgeEdgeBetweenLayersSpacing: edge_edge_between_layers_spacing,
 				HierarchyHandling:            "INCLUDE_CHILDREN",
 				FixedAlignment:               "BALANCED",
 				EdgeNode:                     edge_node_spacing,
@@ -291,7 +323,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				},
 			}
 			if n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing == DefaultOpts.SelfLoopSpacing {
-				n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, childrenMaxSelfLoop(obj, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+5)
+				selfLoopPadding := 5
+				if g.ASCII {
+					selfLoopPadding = 1
+				}
+				n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, childrenMaxSelfLoop(obj, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+selfLoopPadding)
 			}
 
 			switch elkGraph.LayoutOptions.Direction {
@@ -308,7 +344,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		if obj.IsContainer() {
 			padding := parsePadding(opts.Padding)
-			padding = adjustPadding(obj, width, height, padding)
+			padding = adjustPadding(g, obj, width, height, padding)
 			n.LayoutOptions.Padding = padding.String()
 		}
 
@@ -606,25 +642,32 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		var originalSrcTL, originalDstTL *geo.Point
 		// if the edge passes through 3d/multiple, use the offset box for tracing to border
-		if srcDx, srcDy := edge.Src.GetModifierElementAdjustments(); srcDx != 0 || srcDy != 0 {
-			if start.X > edge.Src.TopLeft.X+srcDx &&
-				start.Y < edge.Src.TopLeft.Y+edge.Src.Height-srcDy {
-				originalSrcTL = edge.Src.TopLeft.Copy()
-				edge.Src.TopLeft.X += srcDx
-				edge.Src.TopLeft.Y -= srcDy
+		if !g.ASCII {
+			if srcDx, srcDy := edge.Src.GetModifierElementAdjustments(); srcDx != 0 || srcDy != 0 {
+				if start.X > edge.Src.TopLeft.X+srcDx &&
+					start.Y < edge.Src.TopLeft.Y+edge.Src.Height-srcDy {
+					originalSrcTL = edge.Src.TopLeft.Copy()
+					edge.Src.TopLeft.X += srcDx
+					edge.Src.TopLeft.Y -= srcDy
+				}
 			}
-		}
-		if dstDx, dstDy := edge.Dst.GetModifierElementAdjustments(); dstDx != 0 || dstDy != 0 {
-			if end.X > edge.Dst.TopLeft.X+dstDx &&
-				end.Y < edge.Dst.TopLeft.Y+edge.Dst.Height-dstDy {
-				originalDstTL = edge.Dst.TopLeft.Copy()
-				edge.Dst.TopLeft.X += dstDx
-				edge.Dst.TopLeft.Y -= dstDy
+			if dstDx, dstDy := edge.Dst.GetModifierElementAdjustments(); dstDx != 0 || dstDy != 0 {
+				if end.X > edge.Dst.TopLeft.X+dstDx &&
+					end.Y < edge.Dst.TopLeft.Y+edge.Dst.Height-dstDy {
+					originalDstTL = edge.Dst.TopLeft.Copy()
+					edge.Dst.TopLeft.X += dstDx
+					edge.Dst.TopLeft.Y -= dstDy
+				}
 			}
 		}
 
-		startIndex, endIndex = edge.TraceToShape(points, startIndex, endIndex)
-		points = points[startIndex : endIndex+1]
+		// Use ASCII-adjusted padding if in ASCII mode
+		// padding := float64(label.PADDING)
+		// if g.ASCII {
+		//   padding = 1.0
+		// }
+		// startIndex, endIndex = edge.TraceToShape(points, startIndex, endIndex, padding)
+		// points = points[startIndex : endIndex+1]
 
 		if edge.Label.Value != "" {
 			edge.LabelPosition = go2.Pointer(label.InsideMiddleCenter.String())
@@ -690,7 +733,10 @@ func deleteBends(g *d2graph.Graph) {
 			}
 
 			isHorizontal := math.Ceil(start.Y) == math.Ceil(corner.Y)
-			dx, dy := endpoint.GetModifierElementAdjustments()
+			var dx, dy float64
+			if !g.ASCII {
+				dx, dy = endpoint.GetModifierElementAdjustments()
+			}
 
 			// Make sure it's still attached
 			switch {
@@ -1015,7 +1061,7 @@ func (padding shapePadding) String() string {
 	return fmt.Sprintf("[top=%d,left=%d,bottom=%d,right=%d]", padding.top, padding.left, padding.bottom, padding.right)
 }
 
-func adjustPadding(obj *d2graph.Object, width, height float64, padding shapePadding) shapePadding {
+func adjustPadding(g *d2graph.Graph, obj *d2graph.Object, width, height float64, padding shapePadding) shapePadding {
 	if !obj.IsContainer() {
 		return padding
 	}
@@ -1023,8 +1069,12 @@ func adjustPadding(obj *d2graph.Object, width, height float64, padding shapePadd
 	// compute extra space padding for label/icon
 	var extraTop, extraBottom, extraLeft, extraRight int
 	if obj.HasLabel() && obj.LabelPosition != nil {
-		labelHeight := obj.LabelDimensions.Height + 2*label.PADDING
-		labelWidth := obj.LabelDimensions.Width + 2*label.PADDING
+		labelPadding := 2 * label.PADDING
+		if g.ASCII {
+			labelPadding = 2
+		}
+		labelHeight := obj.LabelDimensions.Height + labelPadding
+		labelWidth := obj.LabelDimensions.Width + labelPadding
 		switch label.FromString(*obj.LabelPosition) {
 		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
 			// Note: for corners we only add height
@@ -1038,7 +1088,11 @@ func adjustPadding(obj *d2graph.Object, width, height float64, padding shapePadd
 		}
 	}
 	if obj.HasIcon() && obj.IconPosition != nil {
-		iconSize := d2target.MAX_ICON_SIZE + 2*label.PADDING
+		iconPadding := 2 * label.PADDING
+		if g.ASCII {
+			iconPadding = 2
+		}
+		iconSize := d2target.MAX_ICON_SIZE + iconPadding
 		switch label.FromString(*obj.IconPosition) {
 		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
 			extraTop = go2.Max(extraTop, iconSize)
