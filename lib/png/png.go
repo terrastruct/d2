@@ -43,7 +43,17 @@ func (pw *Playwright) Cleanup() error {
 }
 
 func startPlaywright(pw *playwright.Playwright) (Playwright, error) {
-	browser, err := pw.Chromium.Launch()
+	args := []string{
+		"--no-sandbox",                    // Removes security overhead
+		"--disable-dev-shm-usage",         // Prevents /dev/shm issues
+		"--disable-background-timer-throttling", // Prevents CPU throttling
+		"--disable-backgrounding-occluded-windows", // Keeps rendering active
+		"--disable-features=TranslateUI",  // Reduces feature overhead
+		"--disable-ipc-flooding-protection", // Removes IPC limits
+	}
+	browser, err := pw.Chromium.Launch(playwright.BrowserTypeLaunchOptions{
+		Args: args,
+	})
 	if err != nil {
 		return Playwright{}, fmt.Errorf("failed to launch Chromium: %w", err)
 	}
