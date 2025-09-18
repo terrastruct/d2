@@ -8,6 +8,8 @@
   - empty left columns are cropped [#2626](https://github.com/terrastruct/d2/pull/2626)
 - exports:
   - Chromium download through CLI for PNG exports is prompted [#2655](https://github.com/terrastruct/d2/pull/2655)
+- renders:
+  - remote images are fetched more reliably [#2659](https://github.com/terrastruct/d2/pull/2659)
 
 #### Bugfixes ⛑️
 
