@@ -177,6 +177,9 @@ omit D2 version from generated image
 .It Fl -ascii-mode Ar extended
 ASCII rendering mode for text outputs. Options: 'standard' (basic ASCII chars) or 'extended' (Unicode chars)
 .Ns .
+.It Fl -chromium-path Ar string
+Path to chromium executable for PNG exports. If not specified, will try system Chrome, then Chromium, then bundled Chromium
+.Ns .
 .El
 .Sh SUBCOMMANDS
 .Bl -tag -width Fl
@@ -241,6 +244,8 @@ See --timeout flag.
 See --check flag.
 .It Ev Sy D2_ASCII_MODE
 See --ascii-mode flag.
+.It Ev Sy D2_CHROMIUM_PATH
+See --chromium-path flag.
 .El
 .Bl -tag -width Ds
 .It Ev Sy DEBUG
