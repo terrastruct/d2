@@ -8,6 +8,7 @@
   - empty left columns are cropped [#2626](https://github.com/terrastruct/d2/pull/2626)
 - exports:
   - Chromium download through CLI for PNG exports is prompted [#2655](https://github.com/terrastruct/d2/pull/2655)
+  - Svg export now supports adding tooltips on connections
 
 #### Bugfixes ⛑️
 
