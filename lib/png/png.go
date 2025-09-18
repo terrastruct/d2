@@ -91,6 +91,10 @@ func InitPlaywright() (Playwright, error) {
 }
 
 func InitPlaywrightWithPrompt() (Playwright, error) {
+	if os.Getenv("CI") != "" {
+		return InitPlaywright()
+	}
+
 	fmt.Print("D2 needs to install Chromium v130.0.6723.19 to render images. Continue? (y/N): ")
 	reader := bufio.NewReader(os.Stdin)
 	response, err := reader.ReadString('\n')
