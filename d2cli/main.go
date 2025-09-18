@@ -780,6 +780,20 @@ func relink(currDiagramPath string, d *d2target.Diagram, linkToOutput map[string
 			}
 		}
 	}
+	for i, connection := range d.Connections {
+		if connection.Link != "" {
+			for k, v := range linkToOutput {
+				if connection.Link == k {
+					rel, err := filepath.Rel(filepath.Dir(linkToOutput[currDiagramPath]), v)
+					if err != nil {
+						return err
+					}
+					d.Connections[i].Link = rel
+					break
+				}
+			}
+		}
+	}
 	for _, board := range d.Layers {
 		err := relink(strings.Join([]string{currDiagramPath, "layers", board.Name}, "."), board, linkToOutput)
 		if err != nil {
