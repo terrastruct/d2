@@ -19,6 +19,7 @@ import (
 // ConvertSVG scales the image by 2x
 const SCALE = 2.
 
+
 type Playwright struct {
 	PW      *playwright.Playwright
 	Browser playwright.Browser
@@ -51,11 +52,26 @@ func startPlaywright(pw *playwright.Playwright) (Playwright, error) {
 		"--disable-features=TranslateUI",  // Reduces feature overhead
 		"--disable-ipc-flooding-protection", // Removes IPC limits
 	}
-	browser, err := pw.Chromium.Launch(playwright.BrowserTypeLaunchOptions{
+
+	launchOptions := playwright.BrowserTypeLaunchOptions{
 		Args: args,
-	})
+	}
+
+	// Try system Chrome first
+	launchOptions.Channel = playwright.String("chrome")
+	browser, err := pw.Chromium.Launch(launchOptions)
 	if err != nil {
-		return Playwright{}, fmt.Errorf("failed to launch Chromium: %w", err)
+		// Fall back to system Chromium
+		launchOptions.Channel = playwright.String("chromium")
+		browser, err = pw.Chromium.Launch(launchOptions)
+		if err != nil {
+			// Fall back to bundled Chromium
+			launchOptions.Channel = nil
+			browser, err = pw.Chromium.Launch(launchOptions)
+			if err != nil {
+				return Playwright{}, fmt.Errorf("failed to launch Chromium: %w", err)
+			}
+		}
 	}
 	context, err := browser.NewContext()
 	if err != nil {
@@ -73,12 +89,19 @@ func startPlaywright(pw *playwright.Playwright) (Playwright, error) {
 }
 
 func InitPlaywright() (Playwright, error) {
+	// Try to skip browser installation first
 	err := playwright.Install(&playwright.RunOptions{
-		Verbose:  false,
-		Browsers: []string{"chromium"},
+		SkipInstallBrowsers: true,
 	})
 	if err != nil {
-		return Playwright{}, fmt.Errorf("failed to install Playwright: %w", err)
+		// Fall back to installing browsers if needed
+		err = playwright.Install(&playwright.RunOptions{
+			Verbose:  false,
+			Browsers: []string{"chromium"},
+		})
+		if err != nil {
+			return Playwright{}, fmt.Errorf("failed to install Playwright: %w", err)
+		}
 	}
 
 	pw, err := playwright.Run()
