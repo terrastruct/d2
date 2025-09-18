@@ -6,6 +6,8 @@
   - sql_table and uml class shapes are supported [#2623](https://github.com/terrastruct/d2/pull/2623)
   - newlines are handled [#2626](https://github.com/terrastruct/d2/pull/2626)
   - empty left columns are cropped [#2626](https://github.com/terrastruct/d2/pull/2626)
+- exports:
+  - Chromium path for Playwright can be specified. If not specified, installation through CLI is prompted [#2654](https://github.com/terrastruct/d2/pull/2654)
 
 #### Bugfixes ⛑️
 
