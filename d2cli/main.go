@@ -331,7 +331,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	var pw png.Playwright
 	if outputFormat.requiresPNGRenderer() {
-		pw, err = png.InitPlaywrightWithPath(*chromiumPathFlag)
+		pw, err = png.InitPlaywrightFromCLI(*chromiumPathFlag)
 		if err != nil {
 			return err
 		}

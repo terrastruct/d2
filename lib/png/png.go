@@ -1,9 +1,11 @@
 package png
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/base64"
 	"fmt"
+	"os"
 	"strings"
 
 	_ "embed"
@@ -18,7 +20,6 @@ import (
 
 // ConvertSVG scales the image by 2x
 const SCALE = 2.
-
 
 type Playwright struct {
 	PW      *playwright.Playwright
@@ -73,12 +74,12 @@ func launchBrowser(pw *playwright.Playwright, opts playwright.BrowserTypeLaunchO
 
 func startPlaywrightWithPath(pw *playwright.Playwright, chromiumPath string) (Playwright, error) {
 	args := []string{
-		"--no-sandbox",                    // Removes security overhead
-		"--disable-dev-shm-usage",         // Prevents /dev/shm issues
-		"--disable-background-timer-throttling", // Prevents CPU throttling
+		"--no-sandbox",                             // Removes security overhead
+		"--disable-dev-shm-usage",                  // Prevents /dev/shm issues
+		"--disable-background-timer-throttling",    // Prevents CPU throttling
 		"--disable-backgrounding-occluded-windows", // Keeps rendering active
-		"--disable-features=TranslateUI",  // Reduces feature overhead
-		"--disable-ipc-flooding-protection", // Removes IPC limits
+		"--disable-features=TranslateUI",           // Reduces feature overhead
+		"--disable-ipc-flooding-protection",        // Removes IPC limits
 	}
 
 	launchOptions := playwright.BrowserTypeLaunchOptions{
@@ -119,16 +120,41 @@ func startPlaywrightWithPath(pw *playwright.Playwright, chromiumPath string) (Pl
 }
 
 func InitPlaywright() (Playwright, error) {
-	return InitPlaywrightWithPath("")
+	return InitPlaywrightWithOpts("", false)
 }
 
-func InitPlaywrightWithPath(chromiumPath string) (Playwright, error) {
+func InitPlaywrightFromCLI(chromiumPath string) (Playwright, error) {
+	return InitPlaywrightWithOpts(chromiumPath, true)
+}
+
+func promptForInstall() bool {
+	fmt.Fprintf(os.Stderr, "\nNo suitable browser found for PNG/PDF export.\n")
+	fmt.Fprintf(os.Stderr, "D2 needs to download Chromium (~150MB) for rendering.\n")
+	fmt.Fprintf(os.Stderr, "\nAlternatives:\n")
+	fmt.Fprintf(os.Stderr, "  - Install Chrome or Chromium on your system\n")
+	fmt.Fprintf(os.Stderr, "  - Use --chromium-path to specify a browser location\n")
+	fmt.Fprintf(os.Stderr, "\nDownload Chromium now? (y/n): ")
+
+	reader := bufio.NewReader(os.Stdin)
+	response, err := reader.ReadString('\n')
+	if err != nil {
+		return false
+	}
+
+	response = strings.TrimSpace(strings.ToLower(response))
+	return response == "y" || response == "yes"
+}
+
+func InitPlaywrightWithOpts(chromiumPath string, interactive bool) (Playwright, error) {
 	// Try to skip browser installation first
 	err := playwright.Install(&playwright.RunOptions{
 		SkipInstallBrowsers: true,
 	})
 	if err != nil {
-		// Fall back to installing browsers if needed
+		if interactive && !promptForInstall() {
+			return Playwright{}, fmt.Errorf("browser installation cancelled by user")
+		}
+
 		err = playwright.Install(&playwright.RunOptions{
 			Verbose:  false,
 			Browsers: []string{"chromium"},
