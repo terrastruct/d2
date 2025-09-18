@@ -152,11 +152,6 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		return err
 	}
 
-	chromiumPathFlag := ms.Opts.String("D2_CHROMIUM_PATH", "chromium-path", "", "", "path to chromium executable for PNG exports. If not specified, will try system Chrome, then Chromium, then bundled Chromium.")
-	if err != nil {
-		return err
-	}
-
 	plugins, err := d2plugin.ListPlugins(ctx)
 	if err != nil {
 		return err
@@ -331,7 +326,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	var pw png.Playwright
 	if outputFormat.requiresPNGRenderer() {
-		pw, err = png.InitPlaywrightFromCLI(*chromiumPathFlag)
+		pw, err = png.InitPlaywright()
 		if err != nil {
 			return err
 		}
