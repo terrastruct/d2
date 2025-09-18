@@ -1302,6 +1302,11 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 	if connection.DstLabel != nil && connection.DstLabel.Label != "" {
 		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.DstLabel.Label, true, inlineTheme))
 	}
+	if connection.Tooltip != "" {
+		fmt.Fprintf(writer, `<title>%s</title>`,
+			svg.EscapeText(connection.Tooltip),
+		)
+	}
 	fmt.Fprintf(writer, `</g>`)
 	return
 }
