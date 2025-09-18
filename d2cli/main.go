@@ -326,7 +326,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	var pw png.Playwright
 	if outputFormat.requiresPNGRenderer() {
-		pw, err = png.InitPlaywright()
+		pw, err = png.InitPlaywrightWithPrompt()
 		if err != nil {
 			return err
 		}
@@ -1288,7 +1288,7 @@ func populateLayoutOpts(ctx context.Context, ms *xmain.State, ps []d2plugin.Plug
 }
 
 func initPlaywright() error {
-	pw, err := png.InitPlaywright()
+	pw, err := png.InitPlaywrightWithPrompt()
 	if err != nil {
 		return err
 	}
