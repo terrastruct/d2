@@ -88,19 +88,27 @@ func drawRoutePoint(rd RouteDrawer, x, y int, sx, sy float64, segmentIndex, rout
 	// Check for corners first
 	if char, ok := corners[turnDir[key]]; ok {
 		log.Debug(rd.GetContext(), "drawing corner", slog.Int("x", x), slog.Int("y", y), slog.String("char", char), slog.String("direction", turnDir[key]))
+		// fmt.Printf("DEBUG CORNER: pos(%d,%d) dir='%s' char='%s' existing='%c'\n", x, y, turnDir[key], char, existingChar)
 		canvas.Set(x, y, char)
 		return
+	} else if dir, exists := turnDir[key]; exists {
+		// This is expected for straight lines like '0101', '1010' etc - they're not corners
+		if dir != "0101" && dir != "1010" && dir != "-10-1" && dir != "01-01" {
+		}
 	}
 
 	// Check for destination arrow
 	if segmentIndex == routeLen-1 && x == int(math.Round(cx)) && y == int(math.Round(cy)) && conn.DstArrow != d2target.NoArrowhead {
 		log.Debug(rd.GetContext(), "drawing destination arrow", slog.Int("x", x), slog.Int("y", y))
+		// fmt.Printf("DEBUG DST ARROW: pos(%d,%d) arrowType=%v sx=%f sy=%f routeEnd=(%.1f,%.1f)\n", x, y, conn.DstArrow, sx, sy, cx, cy)
+		// fmt.Printf("DEBUG DST ARROW: checking conditions - segmentIndex=%d routeLen-1=%d x=%d cx_rounded=%d y=%d cy_rounded=%d\n", segmentIndex, routeLen-1, x, int(math.Round(cx)), y, int(math.Round(cy)))
 		drawArrowhead(rd, x, y, sx, sy, arrows)
 		if conn.DstLabel != nil {
 			log.Debug(rd.GetContext(), "drawing destination label", slog.String("label", conn.DstLabel.Label))
 			drawDestinationLabel(rd, conn.DstLabel.Label, cx, cy, sx, sy)
 		}
 		return
+	} else if segmentIndex == routeLen-1 && x == int(math.Round(cx)) && y == int(math.Round(cy)) {
 	}
 
 	// Check for source arrow
@@ -117,6 +125,7 @@ func drawRoutePoint(rd RouteDrawer, x, y int, sx, sy float64, segmentIndex, rout
 
 	// Default: draw route segment
 	log.Debug(rd.GetContext(), "drawing route segment", slog.Int("x", x), slog.Int("y", y), slog.String("existing", string(existingChar)))
+	// fmt.Printf("DEBUG SEGMENT: pos(%d,%d) sx=%f sy=%f existing='%c' segmentIndex=%d routeLen=%d\n", x, y, sx, sy, existingChar, segmentIndex, routeLen)
 	drawRouteSegment(rd.GetContext(), rd, x, y, sx, sy, frmBoundary, toBoundary)
 }
 
@@ -191,12 +200,14 @@ func drawArrowhead(rd RouteDrawer, x, y int, sx, sy float64, arrows map[string]s
 		// Place arrow one step back to avoid touching boundary
 		arrowX := x - int(math.Round(sx))
 		arrowY := y - int(math.Round(sy))
+		// fmt.Printf("DEBUG ARROWHEAD BOUNDARY: moving from (%d,%d) to (%d,%d)\n", x, y, arrowX, arrowY)
 		if canvas.IsInBounds(arrowX, arrowY) {
 			canvas.Set(arrowX, arrowY, arrows[arrowKey])
 		} else {
 			canvas.Set(x, y, arrows[arrowKey])
 		}
 	} else {
+		// fmt.Printf("DEBUG ARROWHEAD SET: pos(%d,%d) char='%s'\n", x, y, arrowChar)
 		canvas.Set(x, y, arrows[arrowKey])
 	}
 }

@@ -17,8 +17,8 @@ import (
 )
 
 const (
-	defaultFontWidth  = 9.75
-	defaultFontHeight = 18.0
+	defaultFontWidth  = 1
+	defaultFontHeight = 1
 	defaultScale      = 1.0
 )
 
@@ -53,18 +53,13 @@ func NewBoundary(tl, br Point) *Boundary {
 }
 
 func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
+	log.Debug(a.ctx, "GetBoundary called", slog.String("id", s.ID), slog.String("label", s.Label))
 
-	// For multiple shapes, expand boundary to match the expanded rendering
 	posX := float64(s.Pos.X)
 	posY := float64(s.Pos.Y)
 	width := float64(s.Width)
 	height := float64(s.Height)
-
-	if s.Multiple {
-		posX -= d2target.MULTIPLE_OFFSET   // Move left to include shadow area
-		width += d2target.MULTIPLE_OFFSET  // Include shadow width
-		height += d2target.MULTIPLE_OFFSET // Include shadow height
-	}
+	log.Debug(a.ctx, "original shape dimensions", slog.Float64("posX", posX), slog.Float64("posY", posY), slog.Float64("width", width), slog.Float64("height", height))
 
 	// Use the same calibration logic as the drawing functions
 	shapeCtx := &asciishapes.Context{
@@ -76,6 +71,7 @@ func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
 		Ctx:    a.ctx,
 	}
 	x1, y1, wC, hC := shapeCtx.Calibrate(posX, posY, width, height)
+	log.Debug(a.ctx, "calibrated dimensions", slog.Int("x1", x1), slog.Int("y1", y1), slog.Int("wC", wC), slog.Int("hC", hC))
 
 	// Apply the same width adjustments as the drawing code
 	preserveWidth := hasConnectionsAtRightEdge(s, a.diagram.Connections, a.FW)
@@ -101,8 +97,10 @@ func (a *ASCIIartist) GetBoundary(s d2target.Shape) (Point, Point) {
 
 	// Apply the same width adjustments as DrawRect for labels
 	wC = asciishapes.AdjustWidthForLabel(shapeCtx, posX, posY, width, height, wC, s.Label)
+	log.Debug(a.ctx, "final width after label adjustment", slog.Int("wC", wC))
 
 	x2, y2 := x1+wC, y1+hC
+	log.Debug(a.ctx, "final boundary", slog.Int("x1", x1), slog.Int("y1", y1), slog.Int("x2", x2), slog.Int("y2", y2))
 
 	return Point{X: x1, Y: y1}, Point{X: x2, Y: y2}
 }
@@ -139,6 +137,21 @@ func NewASCIIartist() *ASCIIartist {
 
 func (a *ASCIIartist) calculateExtendedBounds(diagram *d2target.Diagram) (tl, br d2target.Point) {
 	tl, br = diagram.NestedBoundingBox()
+	log.Debug(a.ctx, "initial bounding box", slog.Int("tl.X", tl.X), slog.Int("tl.Y", tl.Y), slog.Int("br.X", br.X), slog.Int("br.Y", br.Y))
+
+	// Log each shape's contribution to bounds
+	for i, shape := range diagram.Shapes {
+		log.Debug(a.ctx, "shape bounds",
+			slog.Int("index", i),
+			slog.String("id", shape.ID),
+			slog.String("label", shape.Label),
+			slog.Int("pos.X", shape.Pos.X),
+			slog.Int("pos.Y", shape.Pos.Y),
+			slog.Int("width", shape.Width),
+			slog.Int("height", shape.Height),
+			slog.Int("right_edge", shape.Pos.X+shape.Width),
+			slog.Int("bottom_edge", shape.Pos.Y+shape.Height))
+	}
 
 	for _, conn := range diagram.Connections {
 		if conn.Label != "" && len(conn.Route) > 1 {
@@ -243,32 +256,46 @@ func (a *ASCIIartist) Render(ctx context.Context, diagram *d2target.Diagram, opt
 	yOffset := 0
 	a.diagram = *diagram
 	tl, br := a.calculateExtendedBounds(diagram)
+	log.Debug(ctx, "extended bounds calculated", slog.Int("tl.X", tl.X), slog.Int("tl.Y", tl.Y), slog.Int("br.X", br.X), slog.Int("br.Y", br.Y))
 	if tl.X < 0 {
 		xOffset = -tl.X
 		br.X += -tl.X
 		tl.X = 0
+		log.Debug(ctx, "adjusted for negative X", slog.Int("xOffset", xOffset), slog.Int("new_br.X", br.X))
 	}
 	if tl.Y < 0 {
 		yOffset = -tl.Y
 		br.Y += -tl.Y
 		tl.Y = 0
+		log.Debug(ctx, "adjusted for negative Y", slog.Int("yOffset", yOffset), slog.Int("new_br.Y", br.Y))
 	}
 	w := int(math.Ceil(float64(br.X - tl.X)))
 	h := int(math.Ceil(float64(br.Y - tl.Y)))
+	log.Debug(ctx, "raw canvas dimensions", slog.Int("width", w), slog.Int("height", h))
 
 	w = int(math.Round((float64(w) / a.FW) * a.SCALE))
 	h = int(math.Round((float64(h) / a.FH) * a.SCALE))
 
-	maxLabelLen := 0
-	for _, shape := range diagram.Shapes {
-		if len(shape.Label) > maxLabelLen {
-			maxLabelLen = len(shape.Label)
-		}
-	}
-	padding := maxLabelLen + asciishapes.MinLabelPadding
-	log.Debug(ctx, "canvas setup", slog.Int("maxLabelLen", maxLabelLen), slog.Int("padding", padding), slog.Int("width", w+padding+1), slog.Int("height", h+padding+1))
+	// Calculate the actual needed canvas size based on shape positions after offset adjustments
+	canvasWidth := br.X + xOffset
+	canvasHeight := br.Y + yOffset
+	log.Debug(ctx, "calculated canvas size", slog.Int("canvasWidth", canvasWidth), slog.Int("canvasHeight", canvasHeight), slog.Int("xOffset", xOffset), slog.Int("yOffset", yOffset))
 
-	a.canvas = asciicanvas.New(w+padding+1, h+padding+1)
+	// Use the larger of the two width calculations to ensure all content fits
+	if w < canvasWidth {
+		w = canvasWidth
+		log.Debug(ctx, "using absolute canvas width", slog.Int("width", w))
+	}
+	if h < canvasHeight {
+		h = canvasHeight
+		log.Debug(ctx, "using absolute canvas height", slog.Int("height", h))
+	}
+
+	// Add minimal padding for label overflow
+	padding := 2
+	log.Debug(ctx, "canvas setup", slog.Int("padding", padding), slog.Int("final_width", w+padding), slog.Int("final_height", h+padding))
+
+	a.canvas = asciicanvas.New(w+padding, h+padding)
 
 	log.Debug(ctx, "processing shapes", slog.Int("count", len(diagram.Shapes)), slog.Int("xOffset", xOffset), slog.Int("yOffset", yOffset))
 	for i, shape := range diagram.Shapes {
@@ -304,23 +331,10 @@ func (a *ASCIIartist) Render(ctx context.Context, diagram *d2target.Diagram, opt
 			}
 		}
 
-		// For multiple shapes, expand to fill the entire space that would be occupied by the multiple effect
 		drawX := float64(adjustedX)
 		drawY := float64(adjustedY)
 		drawWidth := float64(adjustedWidth)
 		drawHeight := float64(shape.Height)
-
-		if shape.Multiple {
-			log.Debug(ctx, "multiple shape adjustments", slog.Int("offset", d2target.MULTIPLE_OFFSET))
-			// Move position to top-left of total occupied area (shadow extends left and down)
-			drawX -= d2target.MULTIPLE_OFFSET // Move left to include shadow area
-			// Y stays the same since shadow goes down, not up
-
-			// Expand size to fill entire multiple effect area
-			drawWidth += d2target.MULTIPLE_OFFSET  // Include shadow width
-			drawHeight += d2target.MULTIPLE_OFFSET // Include shadow height
-			log.Debug(ctx, "multiple dimensions", slog.Float64("origX", float64(shape.Pos.X)), slog.Float64("origY", float64(shape.Pos.Y)), slog.Float64("origW", float64(shape.Width)), slog.Float64("origH", float64(shape.Height)), slog.Float64("drawX", drawX), slog.Float64("drawY", drawY), slog.Float64("drawW", drawWidth), slog.Float64("drawH", drawHeight))
-		}
 
 		log.Debug(ctx, "final draw parameters", slog.Float64("x", drawX), slog.Float64("y", drawY), slog.Float64("width", drawWidth), slog.Float64("height", drawHeight), slog.String("label", shape.Label))
 
