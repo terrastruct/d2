@@ -152,6 +152,11 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		return err
 	}
 
+	playwrightBrowserFlag := ms.Opts.String("D2_PLAYWRIGHT_BROWSER", "playwright-browser", "", "extended", "Any of the browsers listed here: https://playwright.dev/docs/browsers")
+	if err != nil {
+		return err
+	}
+
 	plugins, err := d2plugin.ListPlugins(ctx)
 	if err != nil {
 		return err
@@ -324,7 +329,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	var pw png.Playwright
 	if outputFormat.requiresPNGRenderer() {
-		pw, err = png.InitPlaywrightWithPrompt()
+		pw, err = png.InitPlaywrightWithPrompt(*playwrightBrowserFlag)
 		if err != nil {
 			return err
 		}
@@ -361,21 +366,22 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 			ms.Log.Debug.Printf("GIF export: animate-interval not specified, defaulting to 1000ms")
 		}
 		w, err := newWatcher(ctx, ms, watcherOpts{
-			plugins:         plugins,
-			layout:          layoutFlag,
-			renderOpts:      renderOpts,
-			animateInterval: animateInterval,
-			host:            *hostFlag,
-			port:            *portFlag,
-			inputPath:       inputPath,
-			outputPath:      outputPath,
-			bundle:          *bundleFlag,
-			forceAppendix:   *forceAppendixFlag,
-			pw:              pw,
-			fontFamily:      fontFamily,
-			monoFontFamily:  monoFontFamily,
-			outputFormat:    outputFormat,
-			asciiMode:       *asciiModeFlag,
+			plugins:           plugins,
+			layout:            layoutFlag,
+			renderOpts:        renderOpts,
+			animateInterval:   animateInterval,
+			host:              *hostFlag,
+			port:              *portFlag,
+			inputPath:         inputPath,
+			outputPath:        outputPath,
+			bundle:            *bundleFlag,
+			forceAppendix:     *forceAppendixFlag,
+			pw:                pw,
+			fontFamily:        fontFamily,
+			monoFontFamily:    monoFontFamily,
+			outputFormat:      outputFormat,
+			asciiMode:         *asciiModeFlag,
+			playwrightBrowser: *playwrightBrowserFlag,
 		})
 		if err != nil {
 			return err
@@ -1298,7 +1304,7 @@ func populateLayoutOpts(ctx context.Context, ms *xmain.State, ps []d2plugin.Plug
 }
 
 func initPlaywright() error {
-	pw, err := png.InitPlaywrightWithPrompt()
+	pw, err := png.InitPlaywrightWithPrompt("chromium")
 	if err != nil {
 		return err
 	}
