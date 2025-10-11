@@ -4,6 +4,7 @@ package d2svg
 
 import (
 	"bytes"
+
 	_ "embed"
 	"encoding/base64"
 	"errors"
@@ -11,10 +12,9 @@ import (
 	"hash/fnv"
 	"html"
 	"io"
+	"math"
 	"sort"
 	"strings"
-
-	"math"
 
 	"github.com/alecthomas/chroma/v2"
 	"github.com/alecthomas/chroma/v2/formatters"
@@ -84,6 +84,8 @@ type RenderOpts struct {
 	DarkThemeID        *int64
 	ThemeOverrides     *d2target.ThemeOverrides
 	DarkThemeOverrides *d2target.ThemeOverrides
+	CodeTheme          string
+	CodeDarkTheme      string
 	Font               string
 	// the svg will be scaled by this factor, if unset the svg will fit to screen
 	Scale *float64
@@ -178,7 +180,7 @@ func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height in
 	return left, top, width, height
 }
 
-func RenderLegend(buf *bytes.Buffer, diagram *d2target.Diagram, diagramHash string, theme *d2themes.Theme) error {
+func RenderLegend(buf *bytes.Buffer, diagram *d2target.Diagram, diagramHash string, theme *d2themes.Theme, codeTheme string, codeDarkTheme string) error {
 	if diagram.Legend == nil || (len(diagram.Legend.Shapes) == 0 && len(diagram.Legend.Connections) == 0) {
 		return nil
 	}
@@ -285,7 +287,7 @@ func RenderLegend(buf *bytes.Buffer, diagram *d2target.Diagram, diagramHash stri
 		iconX := legendX + LEGEND_PADDING
 		iconY := currentY
 
-		shapeIcon, err := renderLegendShapeIcon(s, iconX, iconY, diagramHash, theme)
+		shapeIcon, err := renderLegendShapeIcon(s, iconX, iconY, diagramHash, theme, codeTheme, codeDarkTheme)
 		if err != nil {
 			return err
 		}
@@ -332,7 +334,7 @@ func RenderLegend(buf *bytes.Buffer, diagram *d2target.Diagram, diagramHash stri
 		iconX := legendX + LEGEND_PADDING
 		iconY := currentY + LEGEND_ICON_SIZE/2
 
-		connIcon, err := renderLegendConnectionIcon(c, iconX, iconY, theme)
+		connIcon, err := renderLegendConnectionIcon(c, iconX, iconY, theme, codeTheme, codeDarkTheme)
 		if err != nil {
 			return err
 		}
@@ -364,7 +366,7 @@ func RenderLegend(buf *bytes.Buffer, diagram *d2target.Diagram, diagramHash stri
 	return nil
 }
 
-func renderLegendShapeIcon(s d2target.Shape, x, y int, diagramHash string, theme *d2themes.Theme) (string, error) {
+func renderLegendShapeIcon(s d2target.Shape, x, y int, diagramHash string, theme *d2themes.Theme, codeTheme string, codeDarkTheme string) (string, error) {
 	iconShape := s
 	const sizeFactor = 5
 	iconShape.Pos.X = 0
@@ -377,7 +379,7 @@ func renderLegendShapeIcon(s d2target.Shape, x, y int, diagramHash string, theme
 	finalBuf := &bytes.Buffer{}
 	fmt.Fprintf(finalBuf, `<g transform="translate(%d, %d) scale(%f)">`,
 		x, y, 1.0/sizeFactor)
-	_, err := drawShape(buf, appendixBuf, diagramHash, iconShape, nil, theme)
+	_, err := drawShape(buf, appendixBuf, diagramHash, iconShape, nil, theme, codeTheme, codeDarkTheme)
 	if err != nil {
 		return "", err
 	}
@@ -389,7 +391,7 @@ func renderLegendShapeIcon(s d2target.Shape, x, y int, diagramHash string, theme
 	return finalBuf.String(), nil
 }
 
-func renderLegendConnectionIcon(c d2target.Connection, x, y int, theme *d2themes.Theme) (string, error) {
+func renderLegendConnectionIcon(c d2target.Connection, x, y int, theme *d2themes.Theme, codeTheme string, codeDarkTheme string) (string, error) {
 	finalBuf := &bytes.Buffer{}
 
 	buf := &bytes.Buffer{}
@@ -426,7 +428,7 @@ func renderLegendConnectionIcon(c d2target.Connection, x, y int, theme *d2themes
 	fmt.Fprintf(finalBuf, `<g transform="translate(%d, %d) scale(%f)">`,
 		x, y, 1.0/sizeFactor)
 
-	_, err := drawConnection(buf, legendHash, legendConn, markers, idToShape, nil, theme)
+	_, err := drawConnection(buf, legendHash, legendConn, markers, idToShape, nil, theme, codeTheme, codeDarkTheme)
 	if err != nil {
 		return "", err
 	}
@@ -466,7 +468,6 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection, i
 		polygonEl.Fill = connection.Stroke
 		polygonEl.ClassName = "connection"
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
-
 		if isTarget {
 			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
 				0., 0.,
@@ -1003,7 +1004,7 @@ func makeBorderLabelMask(labelPosition label.Position, labelTL *geo.Point, label
 	)
 }
 
-func drawConnection(writer io.Writer, diagramHash string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, jsRunner jsrunner.JSRunner, inlineTheme *d2themes.Theme) (labelMask string, _ error) {
+func drawConnection(writer io.Writer, diagramHash string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, jsRunner jsrunner.JSRunner, inlineTheme *d2themes.Theme, codeTheme string, codeDarkTheme string) (labelMask string, _ error) {
 	opacityStyle := ""
 	if connection.Opacity != 1.0 {
 		opacityStyle = fmt.Sprintf(" style='opacity:%f'", connection.Opacity)
@@ -1209,10 +1210,14 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 			if lexer == nil {
 				lexer = lexers.Fallback
 			}
+			var theme string
 			for _, isLight := range []bool{true, false} {
-				theme := "github"
+
+				if isLight {
+					theme = codeTheme
+				}
 				if !isLight {
-					theme = "catppuccin-mocha"
+					theme = codeDarkTheme
 				}
 				style := styles.Get(theme)
 				if style == nil {
@@ -1599,7 +1604,7 @@ func render3DHexagon(diagramHash string, targetShape d2target.Shape, inlineTheme
 	return borderMask + mainShapeRendered + renderedSides + renderedBorder
 }
 
-func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape d2target.Shape, jsRunner jsrunner.JSRunner, inlineTheme *d2themes.Theme) (labelMask string, err error) {
+func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape d2target.Shape, jsRunner jsrunner.JSRunner, inlineTheme *d2themes.Theme, codeTheme string, codeDarkTheme string) (labelMask string, err error) {
 	closingTag := "</g>"
 	if targetShape.Link != "" {
 
@@ -2104,11 +2109,15 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			if lexer == nil {
 				lexer = lexers.Fallback
 			}
+			var theme string
 			for _, isLight := range []bool{true, false} {
-				theme := "github"
-				if !isLight {
-					theme = "catppuccin-mocha"
+				if isLight {
+					theme = codeTheme
 				}
+				if !isLight {
+					theme = codeDarkTheme
+				}
+
 				style := styles.Get(theme)
 				if style == nil {
 					return labelMask, errors.New(`code snippet style "github" not found`)
@@ -2735,6 +2744,10 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	pad := DEFAULT_PADDING
 	themeID := d2themescatalog.NeutralDefault.ID
 	darkThemeID := DEFAULT_DARK_THEME
+
+	codeTheme := "github"
+	codeDarkTheme := "catppuccin-mocha"
+
 	var scale *float64
 	if opts != nil {
 		if opts.Pad != nil {
@@ -2752,6 +2765,14 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		}
 		darkThemeID = opts.DarkThemeID
 		scale = opts.Scale
+
+		if opts.CodeTheme != "" {
+			codeTheme = opts.CodeTheme
+		}
+		if opts.CodeDarkTheme != "" {
+			codeDarkTheme = opts.CodeDarkTheme
+		}
+
 	} else {
 		opts = &RenderOpts{}
 	}
@@ -2829,7 +2850,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	}
 	for _, obj := range allObjects {
 		if c, is := obj.(d2target.Connection); is {
-			labelMask, err := drawConnection(buf, isolatedDiagramHash, c, markers, idToShape, jsRunner, inlineTheme)
+			labelMask, err := drawConnection(buf, isolatedDiagramHash, c, markers, idToShape, jsRunner, inlineTheme, codeTheme, codeDarkTheme)
 			if err != nil {
 				return nil, err
 			}
@@ -2837,7 +2858,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 				labelMasks = append(labelMasks, labelMask)
 			}
 		} else if s, is := obj.(d2target.Shape); is {
-			labelMask, err := drawShape(buf, appendixItemBuf, diagramHash, s, jsRunner, inlineTheme)
+			labelMask, err := drawShape(buf, appendixItemBuf, diagramHash, s, jsRunner, inlineTheme, codeTheme, codeDarkTheme)
 			if err != nil {
 				return nil, err
 			} else if labelMask != "" {
@@ -2852,7 +2873,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 
 	if diagram.Legend != nil && (len(diagram.Legend.Shapes) > 0 || len(diagram.Legend.Connections) > 0) {
 		legendBuf := &bytes.Buffer{}
-		err := RenderLegend(legendBuf, diagram, diagramHash, inlineTheme)
+		err := RenderLegend(legendBuf, diagram, diagramHash, inlineTheme, codeTheme, codeDarkTheme)
 		if err != nil {
 			return nil, err
 		}
