@@ -1210,12 +1210,8 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 			if lexer == nil {
 				lexer = lexers.Fallback
 			}
-			var theme string
 			for _, isLight := range []bool{true, false} {
-
-				if isLight {
-					theme = codeTheme
-				}
+				theme := codeTheme
 				if !isLight {
 					theme = codeDarkTheme
 				}
@@ -2109,11 +2105,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			if lexer == nil {
 				lexer = lexers.Fallback
 			}
-			var theme string
 			for _, isLight := range []bool{true, false} {
-				if isLight {
-					theme = codeTheme
-				}
+				theme := codeTheme
 				if !isLight {
 					theme = codeDarkTheme
 				}
