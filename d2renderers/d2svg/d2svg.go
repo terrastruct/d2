@@ -41,8 +41,7 @@ import (
 )
 
 const (
-	DEFAULT_PADDING = 100
-
+	DEFAULT_PADDING    = 100
 	appendixIconRadius = 16
 
 	// Legend constants
@@ -1217,7 +1216,7 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 				}
 				style := styles.Get(theme)
 				if style == nil {
-					return labelMask, errors.New(`code snippet style "github" not found`)
+					return labelMask, errors.New(`code snippet style not found`)
 				}
 				iterator, err := lexer.Tokenise(nil, connection.Label)
 				if err != nil {
@@ -2113,7 +2112,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 
 				style := styles.Get(theme)
 				if style == nil {
-					return labelMask, errors.New(`code snippet style "github" not found`)
+					return labelMask, errors.New(`code snippet style not found`)
 				}
 				formatter := formatters.Get("svg")
 				if formatter == nil {
@@ -2731,6 +2730,8 @@ func appendOnTrigger(buf *bytes.Buffer, source string, triggers []string, newCon
 }
 
 var DEFAULT_DARK_THEME *int64 = nil // no theme selected
+var DEFAULT_CODE_THEME = "github"
+var DEFAULT_CODE_DARK_THEME = "catppuccin-mocha"
 
 func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	var jsRunner jsrunner.JSRunner
@@ -2738,8 +2739,8 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	themeID := d2themescatalog.NeutralDefault.ID
 	darkThemeID := DEFAULT_DARK_THEME
 
-	codeTheme := "github"
-	codeDarkTheme := "catppuccin-mocha"
+	codeTheme := DEFAULT_CODE_THEME
+	codeDarkTheme := DEFAULT_CODE_DARK_THEME
 
 	var scale *float64
 	if opts != nil {
