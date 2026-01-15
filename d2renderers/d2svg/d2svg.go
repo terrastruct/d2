@@ -96,6 +96,15 @@ type RenderOpts struct {
 	OmitVersion *bool
 }
 
+// escapeClassNames escapes HTML special characters in class names to produce valid SVG attributes.
+func escapeClassNames(classes []string) []string {
+	escaped := make([]string, len(classes))
+	for i, class := range classes {
+		escaped[i] = html.EscapeString(class)
+	}
+	return escaped
+}
+
 func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height int) {
 	tl, br := diagram.BoundingBox()
 	left = tl.X - pad
@@ -1010,7 +1019,7 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 	}
 
 	classes := []string{base64.URLEncoding.EncodeToString([]byte(svg.EscapeText(connection.ID)))}
-	classes = append(classes, connection.Classes...)
+	classes = append(classes, escapeClassNames(connection.Classes)...)
 	classStr := fmt.Sprintf(` class="%s"`, strings.Join(classes, " "))
 
 	fmt.Fprintf(writer, `<g%s%s>`, classStr, opacityStyle)
@@ -1628,7 +1637,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	if targetShape.Animated {
 		classes = append(classes, "animated-shape")
 	}
-	classes = append(classes, targetShape.Classes...)
+	classes = append(classes, escapeClassNames(targetShape.Classes)...)
 	classStr := fmt.Sprintf(` class="%s"`, strings.Join(classes, " "))
 	fmt.Fprintf(writer, `<g%s%s>`, classStr, opacityStyle)
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
