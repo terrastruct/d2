@@ -1,5 +1,6 @@
 #### Features 🚀
 
+- labels: `icon-top` and `icon-bottom` `label.near` values position the label beside the icon [#XXXX](https://github.com/terrastruct/d2/pull/XXXX)
 - exports: gif exports work with `animate: true` keyword [#2663](https://github.com/terrastruct/d2/pull/2663)
 
 #### Improvements 🧹

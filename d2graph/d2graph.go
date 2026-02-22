@@ -1914,6 +1914,8 @@ func (obj *Object) SpacingOpt(labelPadding, iconPadding float64, maxIconSize boo
 			padding.Left = labelWidth
 		case label.InsideMiddleRight:
 			padding.Right = labelWidth
+		case label.IconTop, label.IconBottom:
+			// Handled after icon section — label is positioned relative to icon
 		}
 	}
 
@@ -1944,6 +1946,40 @@ func (obj *Object) SpacingOpt(labelPadding, iconPadding float64, maxIconSize boo
 			padding.Left = math.Max(padding.Left, iconSize)
 		case label.InsideMiddleRight:
 			padding.Right = math.Max(padding.Right, iconSize)
+		}
+	}
+
+	// For icon-relative label positions, compute combined icon+label margin
+	if obj.HasLabel() && obj.HasIcon() && obj.LabelPosition != nil && obj.IconPosition != nil {
+		labelPos := label.FromString(*obj.LabelPosition)
+		if labelPos.IsIconRelative() {
+			iconPos := label.FromString(*obj.IconPosition)
+			iconSz := float64(d2target.MAX_ICON_SIZE + iconPadding)
+			if !maxIconSize {
+				iconSz = float64(d2target.GetIconSize(obj.Box, iconPos.String())) + iconPadding
+			}
+
+			var labelWidth, labelHeight float64
+			if obj.LabelDimensions.Width > 0 {
+				labelWidth = float64(obj.LabelDimensions.Width) + labelPadding
+			}
+			if obj.LabelDimensions.Height > 0 {
+				labelHeight = float64(obj.LabelDimensions.Height) + labelPadding
+			}
+
+			combinedWidth := iconSz + float64(label.PADDING) + labelWidth
+			combinedHeight := math.Max(iconSz, labelHeight)
+
+			switch iconPos {
+			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
+				margin.Top = math.Max(margin.Top, combinedHeight)
+			case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+				margin.Bottom = math.Max(margin.Bottom, combinedHeight)
+			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
+				margin.Left = math.Max(margin.Left, combinedWidth)
+			case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+				margin.Right = math.Max(margin.Right, combinedWidth)
+			}
 		}
 	}
 
