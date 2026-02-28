@@ -11,11 +11,9 @@ import (
 )
 
 const (
-	MIN_RADIUS      = 200
-	PADDING         = 20
-	MIN_SEGMENT_LEN = 10
-	ARC_STEPS       = 30 // high resolution for smooth arcs
-
+	MIN_RADIUS = 200
+	PADDING    = 20
+	ARC_STEPS  = 30 // high resolution for smooth arcs
 )
 
 // Layout arranges nodes in a circle, ensures label/icon positions are set,
@@ -107,96 +105,46 @@ func createCircularArc(edge *d2graph.Edge) {
 	path[0] = srcCenter
 	path[len(path)-1] = dstCenter
 
-	// Use TraceToShape to clip route to node borders
+	startIndex, endIndex := findTraceIndices(path, edge.Src.Box, edge.Dst.Box)
+
+	// Use TraceToShape to clip route to node borders.
+	// For curved routes, we must start from the first segment that leaves the
+	// source box and the first segment that enters the destination box.
 	edge.Route = path
-	startIndex, endIndex := edge.TraceToShape(edge.Route, 0, len(edge.Route)-1)
+	startIndex, endIndex = edge.TraceToShape(edge.Route, startIndex, endIndex)
 	if startIndex < endIndex {
 		edge.Route = edge.Route[startIndex : endIndex+1]
 	}
 	edge.IsCurve = true
 }
 
-// clampPointOutsideBox walks forward from 'startIdx' until the path segment
-// leaves the bounding box. Then it sets path[startIdx] to the intersection.
-// If we never find it, we return (startIdx, path[startIdx]) meaning we can't clamp.
-func clampPointOutsideBox(box *geo.Box, path []*geo.Point, startIdx int) (int, *geo.Point) {
-	if startIdx >= len(path)-1 {
-		return startIdx, path[startIdx]
-	}
-	// If path[startIdx] is outside, no clamp needed
-	if !boxContains(box, path[startIdx]) {
-		return startIdx, path[startIdx]
-	}
+func findTraceIndices(path []*geo.Point, srcBox, dstBox *geo.Box) (int, int) {
+	startIndex := 0
+	endIndex := len(path) - 1
 
-	// Walk forward looking for outside
-	for i := startIdx + 1; i < len(path); i++ {
-		insideNext := boxContains(box, path[i])
-		if insideNext {
-			// still inside -> keep going
-			continue
+	if srcBox != nil {
+		for i := 1; i < len(path)-1; i++ {
+			if !srcBox.Contains(path[i]) {
+				startIndex = i - 1
+				break
+			}
 		}
-		// crossing from inside to outside between path[i-1], path[i]
-		seg := geo.NewSegment(path[i-1], path[i])
-		inters := boxIntersections(box, *seg)
-		if len(inters) > 0 {
-			// use first intersection
-			return i, inters[0]
+	}
+
+	if dstBox != nil {
+		for i := len(path) - 2; i > 0; i-- {
+			if !dstBox.Contains(path[i]) {
+				endIndex = i + 1
+				break
+			}
 		}
-		// fallback => no intersection found
-		return i, path[i]
-	}
-	// entire remainder is inside, so we can't clamp
-	// Just return the end
-	last := len(path) - 1
-	return last, path[last]
-}
-
-// clampPointOutsideBoxReverse scans backward from endIdx while path[j] is in the box.
-// Once we find crossing (outside→inside), we return (j, intersection).
-func clampPointOutsideBoxReverse(box *geo.Box, path []*geo.Point, endIdx int) (int, *geo.Point) {
-	if endIdx <= 0 {
-		return endIdx, path[endIdx]
-	}
-	if !boxContains(box, path[endIdx]) {
-		// already outside
-		return endIdx, path[endIdx]
 	}
 
-	for j := endIdx - 1; j >= 0; j-- {
-		if boxContains(box, path[j]) {
-			continue
-		}
-		// crossing from outside -> inside between path[j], path[j+1]
-		seg := geo.NewSegment(path[j], path[j+1])
-		inters := boxIntersections(box, *seg)
-		if len(inters) > 0 {
-			return j, inters[0]
-		}
-		return j, path[j]
+	// Fallback for degenerate routes where we couldn't find proper crossing points.
+	if startIndex >= endIndex {
+		return 0, len(path) - 1
 	}
-
-	// entire path inside
-	return 0, path[0]
-}
-
-// Helper if your geo.Box doesn’t implement Contains()
-func boxContains(b *geo.Box, p *geo.Point) bool {
-	// typical bounding-box check
-	return p.X >= b.TopLeft.X &&
-		p.X <= b.TopLeft.X+b.Width &&
-		p.Y >= b.TopLeft.Y &&
-		p.Y <= b.TopLeft.Y+b.Height
-}
-
-// Helper if your geo.Box doesn’t implement Intersections(geo.Segment) yet
-func boxIntersections(b *geo.Box, seg geo.Segment) []*geo.Point {
-	// We'll assume d2's standard geo.Box has a built-in Intersections(*Segment) method.
-	// If not, implement manually. For example, checking each of the 4 edges:
-	//   left, right, top, bottom
-	// For simplicity, if you do have b.Intersections(...) you can just do:
-	//     return b.Intersections(seg)
-	return b.Intersections(seg)
-	// If you don't have that, you'd code the line-rect intersection yourself.
+	return startIndex, endIndex
 }
 
 // positionLabelsIcons is basically your logic that sets default label/icon positions if needed
