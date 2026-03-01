@@ -1773,3 +1773,24 @@ style: {fill-pattern: dots; fill:"radial-gradient(#fbfbf8, #e3e3f0)"; stroke: "#
 
 a->b
 
+-- cycle-diagram --
+1: "" {
+  shape: cycle
+  a -> b -> c -> d
+}
+2: "" {
+  shape: cycle
+  a -> b -> c
+}
+3: "" {
+  shape: cycle
+  a -> b
+}
+4: "" {
+  shape: cycle
+  a -> b -> c -> d -> e -> f
+}
+5: "" {
+  shape: cycle
+  a -> b -> c -> d -> e
+}
