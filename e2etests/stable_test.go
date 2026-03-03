@@ -1421,6 +1421,32 @@ Linear program: {
 `,
 		},
 		{
+			name: "typst",
+			script: `a: |typst
+#set page(width: 10cm, height: auto)
+$"Hello, Typst!"$
+|
+b: |typst
+$integral_0^infinity x^2 dif x$
+|
+z: |typst
+*Bold* and _italic_
+|
+z -> a
+z -> b
+a -> c
+b -> c
+formula -> c
+c: mixed together
+c -> solution: we get
+Math: {
+  formula: |typst
+    $sum_(i=0)^infinity i^2 = infinity$
+  |
+}
+`,
+		},
+		{
 			name: "direction",
 			script: `a -> b -> c -> d -> e
 b: {

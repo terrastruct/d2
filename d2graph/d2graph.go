@@ -22,6 +22,7 @@ import (
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2latex"
+	"oss.terrastruct.com/d2/d2renderers/d2typst"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
@@ -956,6 +957,12 @@ func (obj *Object) GetLabelSize(mtexts []*d2target.MText, ruler *textmeasure.Rul
 	default:
 		if obj.Language == "latex" {
 			width, height, err := d2latex.Measure(obj.Text().Text)
+			if err != nil {
+				return nil, err
+			}
+			dims = d2target.NewTextDimensions(width, height)
+		} else if obj.Language == "typst" {
+			width, height, err := d2typst.Measure(obj.Text().Text)
 			if err != nil {
 				return nil, err
 			}

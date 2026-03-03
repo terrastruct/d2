@@ -1,6 +1,7 @@
 #### Features 🚀
 
 - exports: gif exports work with `animate: true` keyword [#2663](https://github.com/terrastruct/d2/pull/2663)
+- typst: Typst markup language support for advanced typesetting in diagram labels [#1435](https://github.com/terrastruct/d2/issues/1435)
 
 #### Improvements 🧹
 

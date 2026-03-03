@@ -26,6 +26,7 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2latex"
 	"oss.terrastruct.com/d2/d2renderers/d2sketch"
+	"oss.terrastruct.com/d2/d2renderers/d2typst"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
@@ -1173,6 +1174,19 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 			gEl.Color = connection.Color
 			gEl.Content = render
 			fmt.Fprint(writer, gEl.Render())
+		} else if connection.Language == "typst" {
+			render, err := d2typst.Render(connection.Label)
+			if err != nil {
+				return labelMask, err
+			}
+			// Remove XML declaration from Typst SVG output
+			xmlDecl := `<?xml version="1.0" encoding="UTF-8"?>`
+			render = strings.ReplaceAll(render, xmlDecl, "")
+			gEl := d2themes.NewThemableElement("g", inlineTheme)
+			gEl.SetTranslate(labelTL.X, labelTL.Y)
+			gEl.Color = connection.Color
+			gEl.Content = render
+			fmt.Fprint(writer, gEl.Render())
 		} else if connection.Language == "markdown" {
 			render, err := textmeasure.RenderMarkdown(connection.Label)
 			if err != nil {
@@ -2018,6 +2032,35 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			doctype := `<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">`
 			render = strings.ReplaceAll(render, xmlDecl, "")
 			render = strings.ReplaceAll(render, doctype, "")
+			gEl := d2themes.NewThemableElement("g", inlineTheme)
+
+			labelPosition := label.FromString(targetShape.LabelPosition)
+			if labelPosition == label.Unset {
+				labelPosition = label.InsideMiddleCenter
+			}
+			var box *geo.Box
+			if labelPosition.IsOutside() {
+				box = s.GetBox()
+			} else {
+				box = s.GetInnerBox()
+			}
+			labelTL := labelPosition.GetPointOnBox(box, label.PADDING,
+				float64(targetShape.LabelWidth),
+				float64(targetShape.LabelHeight),
+			)
+			gEl.SetTranslate(labelTL.X, labelTL.Y)
+
+			gEl.Color = targetShape.Stroke
+			gEl.Content = render
+			fmt.Fprint(writer, gEl.Render())
+		} else if targetShape.Language == "typst" {
+			render, err := d2typst.Render(targetShape.Label)
+			if err != nil {
+				return labelMask, err
+			}
+			// Remove XML declaration from Typst SVG output
+			xmlDecl := `<?xml version="1.0" encoding="UTF-8"?>`
+			render = strings.ReplaceAll(render, xmlDecl, "")
 			gEl := d2themes.NewThemableElement("g", inlineTheme)
 
 			labelPosition := label.FromString(targetShape.LabelPosition)
