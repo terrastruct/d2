@@ -84,6 +84,9 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
+	codeThemeFlag := ms.Opts.String("CODE_THEME", "code-theme", "", "github", "Chroma syntax highlighting theme for code blocks.")
+	codeDarkThemeFlag := ms.Opts.String("CODE_DARK_THEME", "code-dark-theme", "", "catppuccin-mocha", "Chroma syntax highlighting theme for code blocks in dark mode.")
+
 	padFlag, err := ms.Opts.Int64("D2_PAD", "pad", "", d2svg.DEFAULT_PADDING, "pixels padded around the rendered diagram")
 	if err != nil {
 		return err
@@ -337,15 +340,17 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 
 	renderOpts := d2svg.RenderOpts{
-		Pad:         padFlag,
-		Sketch:      sketchFlag,
-		Center:      centerFlag,
-		ThemeID:     themeFlag,
-		DarkThemeID: darkThemeFlag,
-		Scale:       scale,
-		NoXMLTag:    noXMLTagFlag,
-		Salt:        saltFlag,
-		OmitVersion: omitVersionFlag,
+		Pad:           padFlag,
+		Sketch:        sketchFlag,
+		Center:        centerFlag,
+		ThemeID:       themeFlag,
+		DarkThemeID:   darkThemeFlag,
+		CodeTheme:     *codeThemeFlag,
+		CodeDarkTheme: *codeDarkThemeFlag,
+		Scale:         scale,
+		NoXMLTag:      noXMLTagFlag,
+		Salt:          saltFlag,
+		OmitVersion:   omitVersionFlag,
 	}
 
 	if *watchFlag {
@@ -946,6 +951,8 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 		MasterID:           opts.MasterID,
 		ThemeID:            opts.ThemeID,
 		DarkThemeID:        opts.DarkThemeID,
+		CodeTheme:          opts.CodeTheme,
+		CodeDarkTheme:      opts.CodeDarkTheme,
 		ThemeOverrides:     opts.ThemeOverrides,
 		DarkThemeOverrides: opts.DarkThemeOverrides,
 		NoXMLTag:           opts.NoXMLTag,
@@ -1045,6 +1052,8 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 			Scale:              scale,
 			ThemeID:            opts.ThemeID,
 			DarkThemeID:        opts.DarkThemeID,
+			CodeTheme:          opts.CodeTheme,
+			CodeDarkTheme:      opts.CodeDarkTheme,
 			ThemeOverrides:     opts.ThemeOverrides,
 			DarkThemeOverrides: opts.DarkThemeOverrides,
 			OmitVersion:        opts.OmitVersion,
@@ -1153,6 +1162,8 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 			Scale:              scale,
 			ThemeID:            opts.ThemeID,
 			DarkThemeID:        opts.DarkThemeID,
+			CodeTheme:          opts.CodeTheme,
+			CodeDarkTheme:      opts.CodeDarkTheme,
 			ThemeOverrides:     opts.ThemeOverrides,
 			DarkThemeOverrides: opts.DarkThemeOverrides,
 			OmitVersion:        opts.OmitVersion,
@@ -1448,6 +1459,8 @@ func renderPNGsForGIF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plug
 			Scale:              scale,
 			ThemeID:            opts.ThemeID,
 			DarkThemeID:        opts.DarkThemeID,
+			CodeTheme:          opts.CodeTheme,
+			CodeDarkTheme:      opts.CodeDarkTheme,
 			ThemeOverrides:     opts.ThemeOverrides,
 			DarkThemeOverrides: opts.DarkThemeOverrides,
 			OmitVersion:        opts.OmitVersion,
