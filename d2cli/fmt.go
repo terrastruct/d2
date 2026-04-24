@@ -54,6 +54,12 @@ func fmtCmd(ctx context.Context, ms *xmain.State, check bool) (err error) {
 					return err
 				}
 			}
+		} else if !check && inputPath == "-" {
+			// still output unchanged file to prevent deletion in
+			// automated setups
+			if err := ms.WritePath(inputPath, output); err != nil {
+				return err
+			}
 		}
 	}
 
