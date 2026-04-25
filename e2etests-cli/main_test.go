@@ -976,6 +976,24 @@ bank.Equities.app14522 -> bank.Fixed Income.app14500: security reference
 			},
 		},
 		{
+			name: "animated-connections-gif",
+			// skipCI: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `a -> b: {style.animated: true; icon: https://icons.terrastruct.com/essentials%2F213-alarm.svg}
+a -> c: {style.animated: true}
+a <-> d: {style.animated: true; style.stroke-dash: 2}
+a <-> e: {style.animated: true}
+f <-> g: {style.animated: true}
+x -- x: {style.animated: true}
+`)
+				err := runTestMain(t, ctx, dir, env, "--animate-interval=1000", "in.d2", "out.gif")
+				assert.Success(t, err)
+
+				gifBytes := readFile(t, dir, "out.gif")
+				testdataIgnoreDiff(t, ".gif", gifBytes)
+			},
+		},
+		{
 			name: "stdin",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				stdin := bytes.NewBufferString(`x -> y`)

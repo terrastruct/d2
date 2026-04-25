@@ -1,6 +1,9 @@
 #### Features 🚀
 
 - exports: gif exports work with `animate: true` keyword [#2663](https://github.com/terrastruct/d2/pull/2663)
+- animations:
+  - unidirectional connections with an icon and `animate: true` animate the icon [#2666](https://github.com/terrastruct/d2/pull/2666)
+  - unidirectional connections with no `stroke-dash` and `animate: true` animate the path growing [#2666](https://github.com/terrastruct/d2/pull/2666)
 
 #### Improvements 🧹
 
@@ -13,6 +16,8 @@
   - `animate-interval` is no longer required, defaults to 1000ms for gifs [#2663](https://github.com/terrastruct/d2/pull/2663)
 - renders:
   - remote images are fetched more reliably [#2659](https://github.com/terrastruct/d2/pull/2659)
+- vars:
+  - `animate-interval` may be set as a `d2-config` variable [#2666](https://github.com/terrastruct/d2/pull/2666)
 
 #### Bugfixes ⛑️
 

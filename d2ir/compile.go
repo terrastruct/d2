@@ -212,7 +212,7 @@ func (c *compiler) validateConfigs(configs *Field) {
 				c.errorf(f.LastRef().AST(), `%d is not a valid theme ID`, valInt)
 				continue
 			}
-		case "pad":
+		case "pad", "animate-interval":
 			_, err := strconv.Atoi(val)
 			if err != nil {
 				c.errorf(f.LastRef().AST(), `expected an integer for "%s", got "%s"`, f.Name.ScalarString(), val)

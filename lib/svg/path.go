@@ -179,7 +179,7 @@ func getPathStringIncrement(pathType string) (int, error) {
 }
 
 // This function finds the length of a path in SVG notation
-func pathLength(pathData []string) (float64, error) {
+func PathLength(pathData []string) (float64, error) {
 	var x, y, pathLength float64
 	var prevPosition geo.Point
 	var increment int
@@ -231,7 +231,7 @@ func SplitPath(path string, percentage float64) (string, string, error) {
 
 	pastHalf := false
 	pathData := strings.Split(path, " ")
-	pathLen, err := pathLength(pathData)
+	pathLen, err := PathLength(pathData)
 
 	if err != nil {
 		return "", "", err

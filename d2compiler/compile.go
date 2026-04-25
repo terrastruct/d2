@@ -1547,6 +1547,12 @@ func compileConfig(ir *d2ir.Map) (*d2target.Config, error) {
 		config.Center = &val
 	}
 
+	f = configMap.GetField(d2ast.FlatUnquotedString("animate-interval"))
+	if f != nil {
+		val, _ := strconv.Atoi(f.Primary().Value.ScalarString())
+		config.AnimateInterval = go2.Pointer(int64(val))
+	}
+
 	f = configMap.GetField(d2ast.FlatUnquotedString("theme-overrides"))
 	if f != nil {
 		overrides, err := compileThemeOverrides(f.Map())

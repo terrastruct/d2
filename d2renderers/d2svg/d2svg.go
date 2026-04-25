@@ -90,10 +90,11 @@ type RenderOpts struct {
 
 	// MasterID is passed when the diagram should use something other than its own hash for unique targeting
 	// Currently, that's when multi-boards are collapsed
-	MasterID    string
-	NoXMLTag    *bool
-	Salt        *string
-	OmitVersion *bool
+	MasterID        string
+	NoXMLTag        *bool
+	Salt            *string
+	OmitVersion     *bool
+	AnimateInterval int
 }
 
 func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height int) {
@@ -426,7 +427,7 @@ func renderLegendConnectionIcon(c d2target.Connection, x, y int, theme *d2themes
 	fmt.Fprintf(finalBuf, `<g transform="translate(%d, %d) scale(%f)">`,
 		x, y, 1.0/sizeFactor)
 
-	_, err := drawConnection(buf, legendHash, legendConn, markers, idToShape, nil, theme)
+	_, err := drawConnection(buf, legendHash, legendConn, markers, idToShape, nil, theme, 0)
 	if err != nil {
 		return "", err
 	}
@@ -1003,7 +1004,7 @@ func makeBorderLabelMask(labelPosition label.Position, labelTL *geo.Point, label
 	)
 }
 
-func drawConnection(writer io.Writer, diagramHash string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, jsRunner jsrunner.JSRunner, inlineTheme *d2themes.Theme) (labelMask string, _ error) {
+func drawConnection(writer io.Writer, diagramHash string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, jsRunner jsrunner.JSRunner, inlineTheme *d2themes.Theme, animateInterval int) (labelMask string, _ error) {
 	opacityStyle := ""
 	if connection.Opacity != 1.0 {
 		opacityStyle = fmt.Sprintf(" style='opacity:%f'", connection.Opacity)
@@ -1042,23 +1043,7 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 		markerEnd = fmt.Sprintf(`marker-end="url(#%s)" `, id)
 	}
 
-	if connection.Icon != nil {
-		iconPos := connection.GetIconPosition()
-		if iconPos != nil {
-			connectionIconClipPath := ""
-			if connection.IconBorderRadius != 0 {
-				connectionIconClipPath = fmt.Sprintf(` clip-path="inset(0 round %fpx)"`, connection.IconBorderRadius)
-			}
-			fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d"%s />`,
-				html.EscapeString(connection.Icon.String()),
-				iconPos.X,
-				iconPos.Y,
-				d2target.DEFAULT_ICON_SIZE,
-				d2target.DEFAULT_ICON_SIZE,
-				connectionIconClipPath,
-			)
-		}
-	}
+	animatedIcon := connection.Animated && connection.Icon != nil
 
 	var labelTL *geo.Point
 	if connection.Label != "" {
@@ -1070,7 +1055,7 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 		width := connection.LabelWidth
 		height := connection.LabelHeight
 
-		if connection.Icon != nil {
+		if connection.Icon != nil && !animatedIcon {
 			width += d2target.CONNECTION_ICON_LABEL_GAP + d2target.DEFAULT_ICON_SIZE
 			maskTL.X -= float64(d2target.CONNECTION_ICON_LABEL_GAP + d2target.DEFAULT_ICON_SIZE)
 		}
@@ -1080,7 +1065,7 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 		} else {
 			labelMask = makeLabelMask(maskTL, width, height, 0.75)
 		}
-	} else if connection.Icon != nil {
+	} else if connection.Icon != nil && !animatedIcon {
 		iconPos := connection.GetIconPosition()
 		if iconPos != nil {
 			maskTL := &geo.Point{
@@ -1106,20 +1091,60 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 		}
 		fmt.Fprint(writer, out)
 
-		// render sketch arrowheads separately
-		arrowPaths, err := d2sketch.Arrowheads(jsRunner, connection, srcAdj, dstAdj)
-		if err != nil {
-			return "", err
+		animatedGrow := connection.Animated && connection.Icon == nil && connection.StrokeDash == 0 && !connection.IsBidirectional()
+		if animatedGrow && connection.DstArrow != d2target.NoArrowhead {
+			arrowJS, extraJS := d2sketch.ArrowheadJS(jsRunner, connection.DstArrow, connection.Stroke, connection.StrokeWidth)
+			if arrowJS != "" {
+				roughPaths, err := d2sketch.ComputeRoughPaths(jsRunner, arrowJS)
+				if err != nil {
+					return "", err
+				}
+				if extraJS != "" {
+					extraPaths, err := d2sketch.ComputeRoughPaths(jsRunner, extraJS)
+					if err != nil {
+						return "", err
+					}
+					roughPaths = append(roughPaths, extraPaths...)
+				}
+
+				arrowStyle := fmt.Sprintf(`offset-path: path('%s'); offset-rotate: auto; offset-distance: 0%%;`, path)
+				for _, rp := range roughPaths {
+					pathEl := d2themes.NewThemableElement("path", inlineTheme)
+					pathEl.D = rp.Attrs.D
+					pathEl.Fill = rp.Style.Fill
+					pathEl.Stroke = rp.Style.Stroke
+					pathEl.ClassName = "connection animated-arrowhead"
+					pathEl.Style = arrowStyle + rp.StyleCSS()
+					fmt.Fprint(writer, pathEl.Render())
+				}
+			}
+
+			modifiedConnection := connection
+			modifiedConnection.DstArrow = d2target.NoArrowhead
+			arrowPaths, err := d2sketch.Arrowheads(jsRunner, modifiedConnection, srcAdj, dstAdj)
+			if err != nil {
+				return "", err
+			}
+			fmt.Fprint(writer, arrowPaths)
+		} else {
+			// render sketch arrowheads separately
+			arrowPaths, err := d2sketch.Arrowheads(jsRunner, connection, srcAdj, dstAdj)
+			if err != nil {
+				return "", err
+			}
+			fmt.Fprint(writer, arrowPaths)
 		}
-		fmt.Fprint(writer, arrowPaths)
 	} else {
+		animatedGrow := connection.Animated && connection.Icon == nil && connection.StrokeDash == 0 && !connection.IsBidirectional()
 		animatedClass := ""
-		if connection.Animated {
+		if connection.Animated && connection.Icon == nil && (connection.StrokeDash != 0 || connection.IsBidirectional()) {
 			animatedClass = " animated-connection"
+		} else if animatedGrow {
+			animatedClass = " animated-connection-grow"
 		}
 
 		// If connection is animated and bidirectional
-		if connection.Animated && ((connection.DstArrow == d2target.NoArrowhead && connection.SrcArrow == d2target.NoArrowhead) || (connection.DstArrow != d2target.NoArrowhead && connection.SrcArrow != d2target.NoArrowhead)) {
+		if connection.Animated && connection.Icon == nil && connection.IsBidirectional() {
 			// There is no pure CSS way to animate bidirectional connections in two directions, so we split it up
 			path1, path2, err := svg.SplitPath(path, 0.5)
 
@@ -1152,8 +1177,70 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 			pathEl.Stroke = connection.Stroke
 			pathEl.ClassName = fmt.Sprintf("connection%s", animatedClass)
 			pathEl.Style = connection.CSSStyle()
-			pathEl.Attributes = fmt.Sprintf("%s%s%s", markerStart, markerEnd, mask)
+
+			pathAttrs := fmt.Sprintf("%s%s%s", markerStart, markerEnd, mask)
+			if animatedGrow {
+				if connection.DstArrow != d2target.NoArrowhead {
+					pathAttrs = fmt.Sprintf("%s%s", markerStart, mask)
+				}
+			}
+			if animatedGrow {
+				pathData := strings.Split(strings.TrimSpace(path), " ")
+				pathLen, err := svg.PathLength(pathData)
+				if err == nil {
+					pathEl.Style += fmt.Sprintf("stroke-dasharray:%f;stroke-dashoffset:%f;", pathLen, pathLen)
+				}
+			}
+			pathEl.Attributes = pathAttrs
 			fmt.Fprint(writer, pathEl.Render())
+
+			if animatedGrow && connection.DstArrow != d2target.NoArrowhead {
+				arrowWidth, arrowHeight := connection.DstArrow.Dimensions(float64(connection.StrokeWidth))
+
+				var arrowShape string
+				arrowStyle := fmt.Sprintf(`offset-path: path('%s'); offset-rotate: auto; offset-distance: 0%%;`, path)
+				switch connection.DstArrow {
+				case d2target.TriangleArrowhead:
+					polygonEl := d2themes.NewThemableElement("polygon", inlineTheme)
+					polygonEl.Fill = connection.Stroke
+					polygonEl.ClassName = "connection animated-arrowhead"
+					polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+					polygonEl.Style = arrowStyle
+					polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f",
+						-arrowWidth/2, -arrowHeight/2,
+						arrowWidth/2, 0.,
+						-arrowWidth/2, arrowHeight/2,
+					)
+					arrowShape = polygonEl.Render()
+				case d2target.ArrowArrowhead:
+					polygonEl := d2themes.NewThemableElement("polygon", inlineTheme)
+					polygonEl.Fill = connection.Stroke
+					polygonEl.ClassName = "connection animated-arrowhead"
+					polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+					polygonEl.Style = arrowStyle
+					polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
+						-arrowWidth/2, -arrowHeight/2,
+						arrowWidth/2, 0.,
+						-arrowWidth/2, arrowHeight/2,
+						-arrowWidth/2+arrowWidth/4, 0.,
+					)
+					arrowShape = polygonEl.Render()
+				default:
+					polygonEl := d2themes.NewThemableElement("polygon", inlineTheme)
+					polygonEl.Fill = connection.Stroke
+					polygonEl.ClassName = "connection animated-arrowhead"
+					polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+					polygonEl.Style = arrowStyle
+					polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f",
+						-arrowWidth/2, -arrowHeight/2,
+						arrowWidth/2, 0.,
+						-arrowWidth/2, arrowHeight/2,
+					)
+					arrowShape = polygonEl.Render()
+				}
+
+				fmt.Fprint(writer, arrowShape)
+			}
 		}
 	}
 
@@ -1302,6 +1389,45 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 	if connection.DstLabel != nil && connection.DstLabel.Label != "" {
 		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.DstLabel.Label, true, inlineTheme))
 	}
+
+	if animatedIcon {
+		iconCenterOffset := float64(d2target.DEFAULT_ICON_SIZE) / 2
+		animationPath := path
+
+		connectionIconClipPath := ""
+		if connection.IconBorderRadius != 0 {
+			connectionIconClipPath = fmt.Sprintf(` clip-path="inset(0 round %fpx)"`, connection.IconBorderRadius)
+		}
+
+		iconStyle := fmt.Sprintf(`offset-path: path('%s'); offset-rotate: 0deg; offset-distance: 0%%;`, animationPath)
+
+		fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d"%s class="animated-icon" style="%s"/>`,
+			html.EscapeString(connection.Icon.String()),
+			-iconCenterOffset,
+			-iconCenterOffset,
+			d2target.DEFAULT_ICON_SIZE,
+			d2target.DEFAULT_ICON_SIZE,
+			connectionIconClipPath,
+			iconStyle,
+		)
+	} else if connection.Icon != nil {
+		iconPos := connection.GetIconPosition()
+		if iconPos != nil {
+			connectionIconClipPath := ""
+			if connection.IconBorderRadius != 0 {
+				connectionIconClipPath = fmt.Sprintf(` clip-path="inset(0 round %fpx)"`, connection.IconBorderRadius)
+			}
+			fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d"%s />`,
+				html.EscapeString(connection.Icon.String()),
+				iconPos.X,
+				iconPos.Y,
+				d2target.DEFAULT_ICON_SIZE,
+				d2target.DEFAULT_ICON_SIZE,
+				connectionIconClipPath,
+			)
+		}
+	}
+
 	fmt.Fprintf(writer, `</g>`)
 	return
 }
@@ -2526,6 +2652,60 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		buf,
 		source,
 		[]string{
+			`animated-connection-grow`,
+		},
+		`
+@keyframes pathdraw {
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+.animated-connection-grow {
+	animation: pathdraw 1s linear infinite;
+}
+`,
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
+			`animated-arrowhead`,
+		},
+		`
+@keyframes arrowheadpath {
+	to {
+		offset-distance: 100%;
+	}
+}
+.animated-arrowhead {
+	animation: arrowheadpath 1s linear infinite;
+}
+`,
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
+			`animated-icon`,
+		},
+		`
+@keyframes iconpath {
+	to {
+		offset-distance: 100%;
+	}
+}
+.animated-icon {
+	animation: iconpath 1s linear infinite;
+}
+`,
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
 			`animated-shape`,
 		},
 		`
@@ -2736,6 +2916,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	themeID := d2themescatalog.NeutralDefault.ID
 	darkThemeID := DEFAULT_DARK_THEME
 	var scale *float64
+	animateInterval := 0
 	if opts != nil {
 		if opts.Pad != nil {
 			pad = int(*opts.Pad)
@@ -2752,8 +2933,13 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		}
 		darkThemeID = opts.DarkThemeID
 		scale = opts.Scale
+		animateInterval = opts.AnimateInterval
 	} else {
 		opts = &RenderOpts{}
+	}
+
+	if diagram.Config != nil && diagram.Config.AnimateInterval != nil {
+		animateInterval = int(*diagram.Config.AnimateInterval)
 	}
 
 	buf := &bytes.Buffer{}
@@ -2829,7 +3015,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	}
 	for _, obj := range allObjects {
 		if c, is := obj.(d2target.Connection); is {
-			labelMask, err := drawConnection(buf, isolatedDiagramHash, c, markers, idToShape, jsRunner, inlineTheme)
+			labelMask, err := drawConnection(buf, isolatedDiagramHash, c, markers, idToShape, jsRunner, inlineTheme, animateInterval)
 			if err != nil {
 				return nil, err
 			}

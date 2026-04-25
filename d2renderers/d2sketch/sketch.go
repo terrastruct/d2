@@ -371,48 +371,56 @@ func Paths(r jsrunner.JSRunner, shape d2target.Shape, diagramHash string, paths 
 }
 
 func Connection(r jsrunner.JSRunner, connection d2target.Connection, path, attrs string) (string, error) {
+	animatedGrow := connection.Animated && connection.Icon == nil && connection.StrokeDash == 0 && !connection.IsBidirectional()
 	animatedClass := ""
-	if connection.Animated {
+	if connection.Animated && connection.Icon == nil && (connection.StrokeDash != 0 || connection.IsBidirectional()) {
 		animatedClass = " animated-connection"
+	} else if animatedGrow {
+		animatedClass = " animated-connection-grow"
 	}
 
-	if connection.Animated {
-		// If connection is animated and bidirectional
-		if (connection.DstArrow == d2target.NoArrowhead && connection.SrcArrow == d2target.NoArrowhead) || (connection.DstArrow != d2target.NoArrowhead && connection.SrcArrow != d2target.NoArrowhead) {
-			// There is no pure CSS way to animate bidirectional connections in two directions, so we split it up
-			path1, path2, err := svg.SplitPath(path, 0.5)
+	// If connection is animated and bidirectional
+	if connection.Animated && connection.Icon == nil && connection.IsBidirectional() {
+		// There is no pure CSS way to animate bidirectional connections in two directions, so we split it up
+		path1, path2, err := svg.SplitPath(path, 0.5)
 
-			if err != nil {
-				return "", err
-			}
-
-			pathEl1 := d2themes.NewThemableElement("path", nil)
-			pathEl1.D = path1
-			pathEl1.Fill = color.None
-			pathEl1.Stroke = connection.Stroke
-			pathEl1.ClassName = fmt.Sprintf("connection%s", animatedClass)
-			pathEl1.Style = connection.CSSStyle()
-			pathEl1.Style += "animation-direction: reverse;"
-			pathEl1.Attributes = attrs
-
-			pathEl2 := d2themes.NewThemableElement("path", nil)
-			pathEl2.D = path2
-			pathEl2.Fill = color.None
-			pathEl2.Stroke = connection.Stroke
-			pathEl2.ClassName = fmt.Sprintf("connection%s", animatedClass)
-			pathEl2.Style = connection.CSSStyle()
-			pathEl2.Attributes = attrs
-			return pathEl1.Render() + " " + pathEl2.Render(), nil
-		} else {
-			pathEl := d2themes.NewThemableElement("path", nil)
-			pathEl.D = path
-			pathEl.Fill = color.None
-			pathEl.Stroke = connection.Stroke
-			pathEl.ClassName = fmt.Sprintf("connection%s", animatedClass)
-			pathEl.Style = connection.CSSStyle()
-			pathEl.Attributes = attrs
-			return pathEl.Render(), nil
+		if err != nil {
+			return "", err
 		}
+
+		pathEl1 := d2themes.NewThemableElement("path", nil)
+		pathEl1.D = path1
+		pathEl1.Fill = color.None
+		pathEl1.Stroke = connection.Stroke
+		pathEl1.ClassName = fmt.Sprintf("connection%s", animatedClass)
+		pathEl1.Style = connection.CSSStyle()
+		pathEl1.Style += "animation-direction: reverse;"
+		pathEl1.Attributes = attrs
+
+		pathEl2 := d2themes.NewThemableElement("path", nil)
+		pathEl2.D = path2
+		pathEl2.Fill = color.None
+		pathEl2.Stroke = connection.Stroke
+		pathEl2.ClassName = fmt.Sprintf("connection%s", animatedClass)
+		pathEl2.Style = connection.CSSStyle()
+		pathEl2.Attributes = attrs
+		return pathEl1.Render() + " " + pathEl2.Render(), nil
+	} else if connection.Animated && connection.Icon == nil {
+		pathEl := d2themes.NewThemableElement("path", nil)
+		pathEl.D = path
+		pathEl.Fill = color.None
+		pathEl.Stroke = connection.Stroke
+		pathEl.ClassName = fmt.Sprintf("connection%s", animatedClass)
+		pathEl.Style = connection.CSSStyle()
+		if animatedGrow {
+			pathData := strings.Split(strings.TrimSpace(path), " ")
+			pathLen, err := svg.PathLength(pathData)
+			if err == nil {
+				pathEl.Style += fmt.Sprintf("stroke-dasharray:%f;stroke-dashoffset:%f;", pathLen, pathLen)
+			}
+		}
+		pathEl.Attributes = attrs
+		return pathEl.Render(), nil
 	} else {
 		roughness := 0.5
 		js := fmt.Sprintf(`node = rc.path("%s", {roughness: %f, seed: 1});`, path, roughness)
@@ -749,19 +757,23 @@ func computeRoughPaths(r jsrunner.JSRunner, js string) ([]roughPath, error) {
 	return extractRoughPaths(r)
 }
 
-type attrs struct {
+func ComputeRoughPaths(r jsrunner.JSRunner, js string) ([]roughPath, error) {
+	return computeRoughPaths(r, js)
+}
+
+type Attrs struct {
 	D string `json:"d"`
 }
 
-type style struct {
+type Style struct {
 	Stroke      string `json:"stroke,omitempty"`
 	StrokeWidth string `json:"strokeWidth,omitempty"`
 	Fill        string `json:"fill,omitempty"`
 }
 
 type roughPath struct {
-	Attrs attrs `json:"attrs"`
-	Style style `json:"style"`
+	Attrs Attrs `json:"attrs"`
+	Style Style `json:"style"`
 }
 
 func (rp roughPath) StyleCSS() string {

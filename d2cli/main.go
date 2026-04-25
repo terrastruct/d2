@@ -337,15 +337,16 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 
 	renderOpts := d2svg.RenderOpts{
-		Pad:         padFlag,
-		Sketch:      sketchFlag,
-		Center:      centerFlag,
-		ThemeID:     themeFlag,
-		DarkThemeID: darkThemeFlag,
-		Scale:       scale,
-		NoXMLTag:    noXMLTagFlag,
-		Salt:        saltFlag,
-		OmitVersion: omitVersionFlag,
+		Pad:             padFlag,
+		Sketch:          sketchFlag,
+		Center:          centerFlag,
+		ThemeID:         themeFlag,
+		DarkThemeID:     darkThemeFlag,
+		Scale:           scale,
+		NoXMLTag:        noXMLTagFlag,
+		Salt:            saltFlag,
+		OmitVersion:     omitVersionFlag,
+		AnimateInterval: int(*animateIntervalFlag),
 	}
 
 	if *watchFlag {
