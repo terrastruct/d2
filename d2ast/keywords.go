@@ -30,7 +30,8 @@ var SimpleReservedKeywords = map[string]struct{}{
 
 // ReservedKeywordHolders are reserved keywords that are meaningless on its own and must hold composites
 var ReservedKeywordHolders = map[string]struct{}{
-	"style": {},
+	"style":  {},
+	"layout": {},
 }
 
 // CompositeReservedKeywords are reserved keywords that can hold composites

@@ -1,13 +1,14 @@
 l: Left Constant Near {
+  layout_: layout
   direction: right
   near: center-left
 
-  default -> layout -> here
+  default -> layout_ -> here
   default: {
     direction: right
     dagre -- elk -- tala: or
   }
-  default.* -> layout: runs this
+  default.* -> layout_: runs this
 
   here: {
     grid-columns: 3
@@ -54,7 +55,7 @@ l: Left Constant Near {
   here.this.row 1 <- default.tala: straight edge across nested types {class: green}
 }
 
-center -> directions: default layout
+center -> directions: default layout_
 
 center: {
   rectangle: {shape: "rectangle"}
