@@ -1,4 +1,4 @@
-package dark_theme_test
+package dual_theme_test
 
 import (
 	"context"
@@ -25,23 +25,31 @@ import (
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
-func TestDarkTheme(t *testing.T) {
+func TestDualTheme(t *testing.T) {
 	t.Parallel()
 
-	// Build test cases from shared scripts
 	var tcs []testCase
+	// Create test cases for both sketch and non-sketch modes from shared scripts
 	for name, script := range svgtestdata.Scripts {
 		tcs = append(tcs, testCase{
 			name:   name,
 			script: script,
+			sketch: false,
+		})
+		tcs = append(tcs, testCase{
+			name:   name + "_sketch",
+			script: script,
+			sketch: true,
 		})
 	}
+
 	runa(t, tcs)
 }
 
 type testCase struct {
 	name   string
 	script string
+	sketch bool
 	skip   bool
 }
 
@@ -70,8 +78,13 @@ func run(t *testing.T, tc testCase) {
 	}
 
 	renderOpts := &d2svg.RenderOpts{
-		ThemeID: go2.Pointer(int64(200)),
+		ThemeID:     go2.Pointer(int64(0)),   // NeutralDefault light theme
+		DarkThemeID: go2.Pointer(int64(200)), // DarkMauve dark theme
 	}
+	if tc.sketch {
+		renderOpts.Sketch = go2.Pointer(true)
+	}
+
 	layoutResolver := func(engine string) (d2graph.LayoutGraph, error) {
 		return d2dagrelayout.DefaultLayout, nil
 	}
@@ -85,8 +98,8 @@ func run(t *testing.T, tc testCase) {
 		return
 	}
 
-	dataPath := filepath.Join("testdata", strings.TrimPrefix(t.Name(), "TestDarkTheme/"))
-	pathGotSVG := filepath.Join(dataPath, "dark_theme.got.svg")
+	dataPath := filepath.Join("testdata", strings.TrimPrefix(t.Name(), "TestDualTheme/"))
+	pathGotSVG := filepath.Join(dataPath, "dual_theme.got.svg")
 
 	svgBytes, err := d2svg.Render(diagram, renderOpts)
 	assert.Success(t, err)
@@ -100,6 +113,6 @@ func run(t *testing.T, tc testCase) {
 	err = xml.Unmarshal(svgBytes, &xmlParsed)
 	assert.Success(t, err)
 
-	err = diff.Testdata(filepath.Join(dataPath, "dark_theme"), ".svg", svgBytes)
+	err = diff.Testdata(filepath.Join(dataPath, "dual_theme"), ".svg", svgBytes)
 	assert.Success(t, err)
 }

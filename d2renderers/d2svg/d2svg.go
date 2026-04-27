@@ -3123,18 +3123,155 @@ func ThemeCSS(diagramHash string, themeID *int64, darkThemeID *int64, overrides,
 	if themeID == nil {
 		themeID = &d2themescatalog.NeutralDefault.ID
 	}
+
+	if darkThemeID != nil {
+		// Use light-dark() CSS function when both light and dark themes are provided
+		out, err := dualThemeRulesets(diagramHash, *themeID, *darkThemeID, overrides, darkOverrides)
+		if err != nil {
+			return "", err
+		}
+		// Add color-scheme to svg root so it works correctly when viewed directly in browsers
+		return "svg:root { color-scheme: light dark; }" + out, nil
+	}
+
+	// Single theme only
 	out, err := singleThemeRulesets(diagramHash, *themeID, overrides)
 	if err != nil {
 		return "", err
 	}
 
-	if darkThemeID != nil {
-		darkOut, err := singleThemeRulesets(diagramHash, *darkThemeID, darkOverrides)
+	return out, nil
+}
+
+func dualThemeRulesets(diagramHash string, lightThemeID int64, darkThemeID int64, lightOverrides, darkOverrides *d2target.ThemeOverrides) (rulesets string, err error) {
+	out := ""
+	lightTheme := d2themescatalog.Find(lightThemeID)
+	lightTheme.ApplyOverrides(lightOverrides)
+	darkTheme := d2themescatalog.Find(darkThemeID)
+	darkTheme.ApplyOverrides(darkOverrides)
+
+	// Global theme colors using light-dark()
+	for _, property := range []string{"fill", "stroke", "background-color", "color"} {
+		out += fmt.Sprintf(`
+		.%s .%s-N1{%s:light-dark(%s, %s);}
+		.%s .%s-N2{%s:light-dark(%s, %s);}
+		.%s .%s-N3{%s:light-dark(%s, %s);}
+		.%s .%s-N4{%s:light-dark(%s, %s);}
+		.%s .%s-N5{%s:light-dark(%s, %s);}
+		.%s .%s-N6{%s:light-dark(%s, %s);}
+		.%s .%s-N7{%s:light-dark(%s, %s);}
+		.%s .%s-B1{%s:light-dark(%s, %s);}
+		.%s .%s-B2{%s:light-dark(%s, %s);}
+		.%s .%s-B3{%s:light-dark(%s, %s);}
+		.%s .%s-B4{%s:light-dark(%s, %s);}
+		.%s .%s-B5{%s:light-dark(%s, %s);}
+		.%s .%s-B6{%s:light-dark(%s, %s);}
+		.%s .%s-AA2{%s:light-dark(%s, %s);}
+		.%s .%s-AA4{%s:light-dark(%s, %s);}
+		.%s .%s-AA5{%s:light-dark(%s, %s);}
+		.%s .%s-AB4{%s:light-dark(%s, %s);}
+		.%s .%s-AB5{%s:light-dark(%s, %s);}`,
+			diagramHash, property, property, lightTheme.Colors.Neutrals.N1, darkTheme.Colors.Neutrals.N1,
+			diagramHash, property, property, lightTheme.Colors.Neutrals.N2, darkTheme.Colors.Neutrals.N2,
+			diagramHash, property, property, lightTheme.Colors.Neutrals.N3, darkTheme.Colors.Neutrals.N3,
+			diagramHash, property, property, lightTheme.Colors.Neutrals.N4, darkTheme.Colors.Neutrals.N4,
+			diagramHash, property, property, lightTheme.Colors.Neutrals.N5, darkTheme.Colors.Neutrals.N5,
+			diagramHash, property, property, lightTheme.Colors.Neutrals.N6, darkTheme.Colors.Neutrals.N6,
+			diagramHash, property, property, lightTheme.Colors.Neutrals.N7, darkTheme.Colors.Neutrals.N7,
+			diagramHash, property, property, lightTheme.Colors.B1, darkTheme.Colors.B1,
+			diagramHash, property, property, lightTheme.Colors.B2, darkTheme.Colors.B2,
+			diagramHash, property, property, lightTheme.Colors.B3, darkTheme.Colors.B3,
+			diagramHash, property, property, lightTheme.Colors.B4, darkTheme.Colors.B4,
+			diagramHash, property, property, lightTheme.Colors.B5, darkTheme.Colors.B5,
+			diagramHash, property, property, lightTheme.Colors.B6, darkTheme.Colors.B6,
+			diagramHash, property, property, lightTheme.Colors.AA2, darkTheme.Colors.AA2,
+			diagramHash, property, property, lightTheme.Colors.AA4, darkTheme.Colors.AA4,
+			diagramHash, property, property, lightTheme.Colors.AA5, darkTheme.Colors.AA5,
+			diagramHash, property, property, lightTheme.Colors.AB4, darkTheme.Colors.AB4,
+			diagramHash, property, property, lightTheme.Colors.AB5, darkTheme.Colors.AB5,
+		)
+	}
+
+	// Appendix
+	out += fmt.Sprintf(".%s .appendix text.text{fill:light-dark(%s, %s)}", diagramHash, lightTheme.Colors.Neutrals.N1, darkTheme.Colors.Neutrals.N1)
+
+	// Markdown specific rulesets
+	out += fmt.Sprintf(".%s .md{--color-fg-default:light-dark(%s, %s);--color-fg-muted:light-dark(%s, %s);--color-fg-subtle:light-dark(%s, %s);--color-canvas-default:light-dark(%s, %s);--color-canvas-subtle:light-dark(%s, %s);--color-border-default:light-dark(%s, %s);--color-border-muted:light-dark(%s, %s);--color-neutral-muted:light-dark(%s, %s);--color-accent-fg:light-dark(%s, %s);--color-accent-emphasis:light-dark(%s, %s);--color-attention-subtle:light-dark(%s, %s);--color-danger-fg:%s;}",
+		diagramHash,
+		lightTheme.Colors.Neutrals.N1, darkTheme.Colors.Neutrals.N1,
+		lightTheme.Colors.Neutrals.N2, darkTheme.Colors.Neutrals.N2,
+		lightTheme.Colors.Neutrals.N3, darkTheme.Colors.Neutrals.N3,
+		lightTheme.Colors.Neutrals.N7, darkTheme.Colors.Neutrals.N7,
+		lightTheme.Colors.Neutrals.N6, darkTheme.Colors.Neutrals.N6,
+		lightTheme.Colors.B1, darkTheme.Colors.B1,
+		lightTheme.Colors.B2, darkTheme.Colors.B2,
+		lightTheme.Colors.Neutrals.N6, darkTheme.Colors.Neutrals.N6,
+		lightTheme.Colors.B2, darkTheme.Colors.B2,
+		lightTheme.Colors.B2, darkTheme.Colors.B2,
+		lightTheme.Colors.Neutrals.N2, darkTheme.Colors.Neutrals.N2,
+		"red",
+	)
+
+	// Sketch style specific rulesets - calculate luminance for both themes
+	lightLuminances := make(map[string]string)
+	darkLuminances := make(map[string]string)
+
+	for colorName, colorValue := range map[string]string{
+		color.B1: lightTheme.Colors.B1, color.B2: lightTheme.Colors.B2, color.B3: lightTheme.Colors.B3,
+		color.B4: lightTheme.Colors.B4, color.B5: lightTheme.Colors.B5, color.B6: lightTheme.Colors.B6,
+		color.AA2: lightTheme.Colors.AA2, color.AA4: lightTheme.Colors.AA4, color.AA5: lightTheme.Colors.AA5,
+		color.AB4: lightTheme.Colors.AB4, color.AB5: lightTheme.Colors.AB5,
+		color.N1: lightTheme.Colors.Neutrals.N1, color.N2: lightTheme.Colors.Neutrals.N2, color.N3: lightTheme.Colors.Neutrals.N3,
+		color.N4: lightTheme.Colors.Neutrals.N4, color.N5: lightTheme.Colors.Neutrals.N5, color.N6: lightTheme.Colors.Neutrals.N6, color.N7: lightTheme.Colors.Neutrals.N7,
+	} {
+		lc, err := color.LuminanceCategory(colorValue)
 		if err != nil {
 			return "", err
 		}
-		out += fmt.Sprintf("@media screen and (prefers-color-scheme:dark){%s}", darkOut)
+		lightLuminances[colorName] = lc
 	}
+
+	for colorName, colorValue := range map[string]string{
+		color.B1: darkTheme.Colors.B1, color.B2: darkTheme.Colors.B2, color.B3: darkTheme.Colors.B3,
+		color.B4: darkTheme.Colors.B4, color.B5: darkTheme.Colors.B5, color.B6: darkTheme.Colors.B6,
+		color.AA2: darkTheme.Colors.AA2, color.AA4: darkTheme.Colors.AA4, color.AA5: darkTheme.Colors.AA5,
+		color.AB4: darkTheme.Colors.AB4, color.AB5: darkTheme.Colors.AB5,
+		color.N1: darkTheme.Colors.Neutrals.N1, color.N2: darkTheme.Colors.Neutrals.N2, color.N3: darkTheme.Colors.Neutrals.N3,
+		color.N4: darkTheme.Colors.Neutrals.N4, color.N5: darkTheme.Colors.Neutrals.N5, color.N6: darkTheme.Colors.Neutrals.N6, color.N7: darkTheme.Colors.Neutrals.N7,
+	} {
+		lc, err := color.LuminanceCategory(colorValue)
+		if err != nil {
+			return "", err
+		}
+		darkLuminances[colorName] = lc
+	}
+
+	// Sketch overlay patterns depend on color luminance - both the pattern URL (e.g. url(#streaks-darker-...))
+	// and mix-blend-mode (darken/color-burn/overlay/lighten) are determined by whether the color is
+	// bright/normal/dark/darker. The same color class (e.g. B1) can have different luminance in light vs dark
+	// themes (dark blue vs light purple), so we use light-dark() with appropriate patterns and blend modes.
+	for _, colorName := range []string{color.B1, color.B2, color.B3, color.B4, color.B5, color.B6,
+		color.AA2, color.AA4, color.AA5, color.AB4, color.AB5,
+		color.N1, color.N2, color.N3, color.N4, color.N5, color.N6, color.N7} {
+		lightLc := lightLuminances[colorName]
+		darkLc := darkLuminances[colorName]
+
+		if lightLc == darkLc {
+			// Same luminance in both themes - simple rule
+			out += fmt.Sprintf(".%s .sketch-overlay-%s{fill:url(#streaks-%s-%s);mix-blend-mode:%s}",
+				diagramHash, colorName, lightLc, diagramHash, blendMode(lightLc))
+		} else {
+			// Different luminances - use light-dark() for both URL and blend mode
+			out += fmt.Sprintf(".%s .sketch-overlay-%s{fill:light-dark(url(#streaks-%s-%s),url(#streaks-%s-%s));mix-blend-mode:light-dark(%s,%s)}",
+				diagramHash, colorName,
+				lightLc, diagramHash, darkLc, diagramHash,
+				blendMode(lightLc), blendMode(darkLc))
+		}
+	}
+
+	// Code display - show light code in light mode, dark code in dark mode
+	out += "." + diagramHash + " .light-code{display: light-dark(block, none)}"
+	out += "." + diagramHash + " .dark-code{display: light-dark(none, block)}"
 
 	return out, nil
 }
