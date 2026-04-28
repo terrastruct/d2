@@ -1987,6 +1987,31 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			float64(targetShape.LabelHeight),
 		)
 
+		if labelPosition.IsIconRelative() && targetShape.Icon != nil {
+			iconPosition := label.FromString(targetShape.IconPosition)
+			var iconBox *geo.Box
+			if iconPosition.IsOutside() {
+				iconBox = s.GetBox()
+			} else {
+				iconBox = s.GetInnerBox()
+			}
+			iconSize := d2target.GetIconSize(iconBox, targetShape.IconPosition)
+			iconTL := iconPosition.GetPointOnBox(iconBox, label.PADDING, float64(iconSize), float64(iconSize))
+
+			isRightSide := strings.Contains(targetShape.IconPosition, "RIGHT")
+			if isRightSide {
+				labelTL.X = iconTL.X - label.PADDING - float64(targetShape.LabelWidth)
+			} else {
+				labelTL.X = iconTL.X + float64(iconSize) + label.PADDING
+			}
+
+			if labelPosition == label.IconTop {
+				labelTL.Y = iconTL.Y
+			} else {
+				labelTL.Y = iconTL.Y + float64(iconSize) - float64(targetShape.LabelHeight)
+			}
+		}
+
 		if labelPosition.IsBorder() {
 			if jsRunner != nil {
 				labelMask = makeBorderLabelMask(labelPosition, labelTL, targetShape.LabelWidth, targetShape.LabelHeight, box, targetShape.StrokeWidth, 1.0, tl)
@@ -2174,12 +2199,21 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				fmt.Fprint(writer, rectEl.Render())
 			}
 			textEl := d2themes.NewThemableElement("text", inlineTheme)
-			textEl.X = labelTL.X + float64(targetShape.LabelWidth)/2
+			textAnchor := "middle"
+			if labelPosition.IsIconRelative() && strings.Contains(targetShape.IconPosition, "RIGHT") {
+				textEl.X = labelTL.X + float64(targetShape.LabelWidth)
+				textAnchor = "end"
+			} else if labelPosition.IsIconRelative() {
+				textEl.X = labelTL.X
+				textAnchor = "start"
+			} else {
+				textEl.X = labelTL.X + float64(targetShape.LabelWidth)/2
+			}
 			// text is vertically positioned at its baseline which is at labelTL+FontSize
 			textEl.Y = labelTL.Y + float64(targetShape.FontSize)
 			textEl.Fill = targetShape.GetFontColor()
 			textEl.ClassName = fontClass
-			textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "middle", targetShape.FontSize)
+			textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", textAnchor, targetShape.FontSize)
 			textEl.Content = RenderText(targetShape.Label, textEl.X, float64(targetShape.LabelHeight))
 			fmt.Fprint(writer, textEl.Render())
 		}

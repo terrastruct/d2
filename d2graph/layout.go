@@ -304,6 +304,8 @@ func (obj *Object) GetMargin() geo.Spacing {
 			margin.Left = labelWidth
 		case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
 			margin.Right = labelWidth
+		case label.IconTop, label.IconBottom:
+			// Handled after icon section — label is positioned relative to icon
 		}
 
 		// if an outside label is larger than the object add margin accordingly
@@ -347,6 +349,31 @@ func (obj *Object) GetMargin() geo.Spacing {
 			margin.Left = math.Max(margin.Left, iconSize)
 		case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
 			margin.Right = math.Max(margin.Right, iconSize)
+		}
+	}
+
+	// For icon-relative label positions, compute combined icon+label margin
+	if obj.HasLabel() && obj.HasIcon() && obj.LabelPosition != nil && obj.IconPosition != nil {
+		labelPos := label.FromString(*obj.LabelPosition)
+		if labelPos.IsIconRelative() {
+			iconPos := label.FromString(*obj.IconPosition)
+			iconSz := float64(d2target.MAX_ICON_SIZE + label.PADDING)
+			labelWidth := float64(obj.LabelDimensions.Width + label.PADDING)
+			labelHeight := float64(obj.LabelDimensions.Height + label.PADDING)
+
+			combinedWidth := iconSz + float64(label.PADDING) + labelWidth
+			combinedHeight := math.Max(iconSz, labelHeight)
+
+			switch iconPos {
+			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
+				margin.Top = math.Max(margin.Top, combinedHeight)
+			case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+				margin.Bottom = math.Max(margin.Bottom, combinedHeight)
+			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
+				margin.Left = math.Max(margin.Left, combinedWidth)
+			case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+				margin.Right = math.Max(margin.Right, combinedWidth)
+			}
 		}
 	}
 

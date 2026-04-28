@@ -66,6 +66,9 @@ const (
 	UnlockedTop
 	UnlockedMiddle
 	UnlockedBottom
+
+	IconTop
+	IconBottom
 )
 
 func FromString(s string) Position {
@@ -153,6 +156,11 @@ func FromString(s string) Position {
 		return UnlockedMiddle
 	case "UNLOCKED_BOTTOM":
 		return UnlockedBottom
+
+	case "ICON_TOP":
+		return IconTop
+	case "ICON_BOTTOM":
+		return IconBottom
 	default:
 		return Unset
 	}
@@ -244,6 +252,11 @@ func (position Position) String() string {
 	case UnlockedBottom:
 		return "UNLOCKED_BOTTOM"
 
+	case IconTop:
+		return "ICON_TOP"
+	case IconBottom:
+		return "ICON_BOTTOM"
+
 	default:
 		return ""
 	}
@@ -263,7 +276,9 @@ func (position Position) IsShapePosition() bool {
 		BorderTopLeft, BorderTopCenter, BorderTopRight,
 		BorderLeftTop, BorderLeftMiddle, BorderLeftBottom,
 		BorderRightTop, BorderRightMiddle, BorderRightBottom,
-		BorderBottomLeft, BorderBottomCenter, BorderBottomRight:
+		BorderBottomLeft, BorderBottomCenter, BorderBottomRight,
+
+		IconTop, IconBottom:
 		return true
 	default:
 		return false
@@ -287,7 +302,8 @@ func (position Position) IsOutside() bool {
 	case OutsideTopLeft, OutsideTopCenter, OutsideTopRight,
 		OutsideBottomLeft, OutsideBottomCenter, OutsideBottomRight,
 		OutsideLeftTop, OutsideLeftMiddle, OutsideLeftBottom,
-		OutsideRightTop, OutsideRightMiddle, OutsideRightBottom:
+		OutsideRightTop, OutsideRightMiddle, OutsideRightBottom,
+		IconTop, IconBottom:
 		return true
 	default:
 		return false
@@ -318,6 +334,15 @@ func (position Position) IsBorder() bool {
 func (position Position) IsOnEdge() bool {
 	switch position {
 	case InsideMiddleLeft, InsideMiddleCenter, InsideMiddleRight, UnlockedMiddle:
+		return true
+	default:
+		return false
+	}
+}
+
+func (position Position) IsIconRelative() bool {
+	switch position {
+	case IconTop, IconBottom:
 		return true
 	default:
 		return false
@@ -409,6 +434,11 @@ func (position Position) Mirrored() Position {
 		return UnlockedTop
 	case UnlockedMiddle:
 		return UnlockedMiddle
+
+	case IconTop:
+		return IconTop
+	case IconBottom:
+		return IconBottom
 
 	default:
 		return Unset
@@ -529,6 +559,11 @@ func (labelPosition Position) GetPointOnBox(box *geo.Box, padding, width, height
 	case BorderBottomRight:
 		p.X += box.Width - width - padding
 		p.Y += box.Height - height/2
+
+	case IconTop, IconBottom:
+		// Fallback: real positioning is handled by the SVG renderer
+		// which has access to icon coordinates
+		p.Y -= padding + height
 	}
 
 	return p

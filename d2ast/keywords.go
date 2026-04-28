@@ -137,6 +137,9 @@ var LabelPositionsArray = []string{
 	"border-bottom-left",
 	"border-bottom-center",
 	"border-bottom-right",
+
+	"icon-top",
+	"icon-bottom",
 }
 var LabelPositions map[string]struct{}
 
@@ -198,6 +201,9 @@ var LabelPositionsMapping = map[string]label.Position{
 	"border-bottom-left":   label.BorderBottomLeft,
 	"border-bottom-center": label.BorderBottomCenter,
 	"border-bottom-right":  label.BorderBottomRight,
+
+	"icon-top":    label.IconTop,
+	"icon-bottom": label.IconBottom,
 }
 
 var FillPatterns = []string{
