@@ -86,7 +86,7 @@ func compileIR(ast *d2ast.Map, m *d2ir.Map) (*d2graph.Graph, error) {
 
 func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 	ir = ir.Copy(nil).(*d2ir.Map)
-	// c.preprocessSeqDiagrams(ir)
+	c.preprocessSeqDiagrams(ir)
 	c.compileMap(g.Root, ir)
 	c.setDefaultShapes(g)
 	if len(c.err.Errors) == 0 {
@@ -1483,23 +1483,15 @@ func isCrossEdgeGroupEdge(m *d2ir.Map, e *d2ir.Edge) bool {
 	return false
 }
 
-func isEdgeGroup(n d2ir.Node) bool {
-	return n.Map().EdgeCountRecursive() > 0
-}
-
-func parentSeqDiagram(n d2ir.Node) *d2ir.Map {
-	for {
-		m := d2ir.ParentMap(n)
-		if m == nil {
-			return nil
-		}
-		for _, f := range m.Fields {
-			if f.Name.ScalarString() == "shape" && f.Name.IsUnquoted() && f.Primary_.Value.ScalarString() == d2target.ShapeSequenceDiagram {
-				return m
+func isEdgeGroup(f *d2ir.Field) bool {
+	if f.Map() != nil {
+		for _, f := range f.Map().Fields {
+			if f.Name.ScalarString() == "shape" && f.Name.IsUnquoted() && f.Primary_.Value.ScalarString() == d2target.ShapeSequenceDiagramEdgeGroup {
+				return true
 			}
 		}
-		n = m
 	}
+	return false
 }
 
 func compileConfig(ir *d2ir.Map) (*d2target.Config, error) {

@@ -165,7 +165,6 @@ small code: |go
 `,
 		},
 		{
-			// issue https://github.com/terrastruct/d2/issues/748
 			name: "sequence_diagram_edge_group_span_field",
 			script: `
 Office chatter: {
@@ -187,8 +186,6 @@ Office chatter: {
 `,
 		},
 		{
-			// issue https://github.com/terrastruct/d2/issues/748
-			skip: true,
 			name: "sequence_diagram_ambiguous_edge_group",
 			script: `
 Office chatter: {
@@ -196,6 +193,7 @@ Office chatter: {
   alice: Alice
   bob: Bobby
   awkward small talk: {
+		shape: edge-group
     awkward small talk.ok
     alice -> bob: uhm, hi
     bob -> alice: oh, hello
