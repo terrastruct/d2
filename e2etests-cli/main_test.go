@@ -1625,6 +1625,93 @@ c
 				assert.False(t, strings.Contains(string(noVersionEnvSvg), "data-d2-version="))
 			},
 		},
+		{
+			name: "multi-output-svg",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "test.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "test.d2", "out1.svg", "out2.svg")
+				assert.Success(t, err)
+				svg1 := readFile(t, dir, "out1.svg")
+				svg2 := readFile(t, dir, "out2.svg")
+				assert.True(t, len(svg1) > 0)
+				assert.True(t, len(svg2) > 0)
+				assert.Equal(t, string(svg1), string(svg2))
+			},
+		},
+		{
+			name:   "multi-output-different-formats",
+			skipCI: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "test.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "test.d2", "out.svg", "out.pdf")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "out.svg")
+				pdf := readFile(t, dir, "out.pdf")
+				assert.True(t, len(svg) > 0)
+				assert.True(t, len(pdf) > 0)
+				assert.True(t, strings.Contains(string(svg), "<svg"))
+				assert.True(t, strings.HasPrefix(string(pdf), "%PDF"))
+			},
+		},
+		{
+			name:   "multi-output-three-formats",
+			skipCI: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "test.d2", `a -> b -> c`)
+				err := runTestMain(t, ctx, dir, env, "test.d2", "out.svg", "out.pdf", "out2.svg")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "out.svg")
+				pdf := readFile(t, dir, "out.pdf")
+				svg2 := readFile(t, dir, "out2.svg")
+				assert.True(t, len(svg) > 0)
+				assert.True(t, len(pdf) > 0)
+				assert.True(t, len(svg2) > 0)
+				assert.Equal(t, string(svg), string(svg2))
+			},
+		},
+		{
+			name:   "multi-output-animate-svg-gif",
+			skipCI: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "animation.d2", `steps: {
+  1: { x -> y }
+  2: { y -> z }
+}`)
+				err := runTestMain(t, ctx, dir, env, "--animate-interval=1000", "animation.d2", "out.svg", "out.gif")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "out.svg")
+				gif := readFile(t, dir, "out.gif")
+				assert.True(t, len(svg) > 0)
+				assert.True(t, len(gif) > 0)
+			},
+		},
+		{
+			name: "multi-output-invalid-format-continues",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "test.d2", `x -> y`)
+				// Request animation on non-animatable format, but should still produce SVG
+				err := runTestMain(t, ctx, dir, env, "--animate-interval=1000", "test.d2", "out.svg", "out.png")
+				// Should fail because PNG doesn't support animation
+				assert.ErrorString(t, err, "failed to wait xmain test: e2etests-cli/d2: bad usage: --animate-interval can only be used when exporting to SVG or GIF.\nYou provided: .png")
+			},
+		},
+		{
+			name: "multi-output-unsupported-format",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "test.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "test.d2", "out.svg", "out.tiff", "out.png")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "out.svg")
+				assert.True(t, len(svg) > 0)
+				assert.True(t, strings.Contains(string(svg), "<svg"))
+				// out.tiff should actually be SVG (defaults to SVG for unknown extensions)
+				tiff := readFile(t, dir, "out.tiff")
+				assert.True(t, len(tiff) > 0)
+				assert.True(t, strings.Contains(string(tiff), "<svg"))
+				png := readFile(t, dir, "out.png")
+				assert.True(t, len(png) > 0)
+			},
+		},
 	}
 
 	ctx := context.Background()
