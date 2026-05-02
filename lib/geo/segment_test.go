@@ -31,3 +31,56 @@ func TestSegmentIntersections(t *testing.T) {
 	intersections = s1.Intersections(*s5)
 	assert.Equal(t, len(intersections), 0)
 }
+
+func TestSegmentIntersectCircle(t *testing.T) {
+	origin := NewPoint(0, 0)
+
+	// segment passing through the origin → 2 intersections at (-r, 0) and (r, 0)
+	s := NewSegment(NewPoint(-10, 0), NewPoint(10, 0))
+	pts := s.IntersectCircle(origin, 5)
+	assert.Equal(t, 2, len(pts))
+	assert.True(t, pts[0].Equals(NewPoint(-5, 0)))
+	assert.True(t, pts[1].Equals(NewPoint(5, 0)))
+
+	// segment crossing the circle once with one endpoint inside
+	s = NewSegment(NewPoint(0, 0), NewPoint(10, 0))
+	pts = s.IntersectCircle(origin, 5)
+	assert.Equal(t, 1, len(pts))
+	assert.True(t, pts[0].Equals(NewPoint(5, 0)))
+
+	// segment entirely outside the circle, no crossing
+	s = NewSegment(NewPoint(10, 10), NewPoint(20, 20))
+	pts = s.IntersectCircle(origin, 5)
+	assert.Equal(t, 0, len(pts))
+
+	// segment entirely inside the circle, no crossing
+	s = NewSegment(NewPoint(-1, 0), NewPoint(1, 0))
+	pts = s.IntersectCircle(origin, 5)
+	assert.Equal(t, 0, len(pts))
+
+	// segment endpoint on the circle
+	s = NewSegment(NewPoint(0, 0), NewPoint(5, 0))
+	pts = s.IntersectCircle(origin, 5)
+	assert.Equal(t, 1, len(pts))
+	assert.True(t, pts[0].Equals(NewPoint(5, 0)))
+
+	// vertical segment chord intersecting the circle at two points
+	s = NewSegment(NewPoint(3, -10), NewPoint(3, 10))
+	pts = s.IntersectCircle(origin, 5)
+	assert.Equal(t, 2, len(pts))
+	assert.True(t, pts[0].Equals(NewPoint(3, -4)))
+	assert.True(t, pts[1].Equals(NewPoint(3, 4)))
+
+	// circle centered off origin
+	c := NewPoint(10, 10)
+	s = NewSegment(NewPoint(0, 10), NewPoint(20, 10))
+	pts = s.IntersectCircle(c, 5)
+	assert.Equal(t, 2, len(pts))
+	assert.True(t, pts[0].Equals(NewPoint(5, 10)))
+	assert.True(t, pts[1].Equals(NewPoint(15, 10)))
+
+	// degenerate zero-length segment returns nil
+	s = NewSegment(NewPoint(7, 7), NewPoint(7, 7))
+	pts = s.IntersectCircle(origin, 5)
+	assert.Nil(t, pts)
+}
