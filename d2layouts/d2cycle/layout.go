@@ -7,6 +7,7 @@ import (
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
+	"oss.terrastruct.com/d2/lib/shape"
 	"oss.terrastruct.com/util-go/go2"
 )
 
@@ -108,6 +109,16 @@ func createCircularArc(edge *d2graph.Edge, radius float64) {
 		angle := startAngle + t*(endAngle-startAngle)
 		path = append(path, geo.NewPoint(radius*math.Cos(angle), radius*math.Sin(angle)))
 	}
+
+	// path[0] / path[len-1] sit on the bounding-box border of the source /
+	// destination shape. For non-rectangular shapes (circle, oval, hexagon,
+	// cloud, ...) the bounding box border is not the shape border, so trace
+	// each endpoint inward from the shape center to the actual shape outline.
+	// TraceToShapeBorder is a no-op for rectangular shapes.
+	srcShape := edge.Src.ToShape()
+	dstShape := edge.Dst.ToShape()
+	path[0] = shape.TraceToShapeBorder(srcShape, path[0], srcCenter)
+	path[len(path)-1] = shape.TraceToShapeBorder(dstShape, path[len(path)-1], dstCenter)
 
 	edge.Route = path
 	edge.IsCurve = true

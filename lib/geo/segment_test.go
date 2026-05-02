@@ -79,6 +79,14 @@ func TestSegmentIntersectCircle(t *testing.T) {
 	assert.True(t, pts[0].Equals(NewPoint(5, 10)))
 	assert.True(t, pts[1].Equals(NewPoint(15, 10)))
 
+	// tangent contact: the segment grazes the circle at a single point and
+	// must not be reported twice (regression test for the duplicated-root
+	// case when the discriminant is zero).
+	s = NewSegment(NewPoint(-10, 5), NewPoint(10, 5))
+	pts = s.IntersectCircle(origin, 5)
+	assert.Equal(t, 1, len(pts))
+	assert.True(t, pts[0].Equals(NewPoint(0, 5)))
+
 	// degenerate zero-length segment returns nil
 	s = NewSegment(NewPoint(7, 7), NewPoint(7, 7))
 	pts = s.IntersectCircle(origin, 5)
