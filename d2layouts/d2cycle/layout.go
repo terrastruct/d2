@@ -85,21 +85,17 @@ func createCircularArc(edge *d2graph.Edge, radius float64) {
 		dstAngle += 2 * math.Pi
 	}
 	sweep := dstAngle - srcAngle
+	srcShape := edge.Src.ToShape()
+	dstShape := edge.Dst.ToShape()
 	if sweep <= 0 {
-		fallbackStraightRoute(edge, srcCenter, dstCenter)
+		fallbackStraightRoute(edge, srcShape, dstShape, srcCenter, dstCenter)
 		return
 	}
 
 	startAngle, hasStart := nextBoundaryAngle(edge.Src.Box, origin, radius, srcAngle, sweep, true)
-	if !hasStart {
-		startAngle = srcAngle
-	}
 	endAngle, hasEnd := nextBoundaryAngle(edge.Dst.Box, origin, radius, srcAngle, sweep, false)
-	if !hasEnd {
-		endAngle = dstAngle
-	}
-	if endAngle <= startAngle {
-		fallbackStraightRoute(edge, srcCenter, dstCenter)
+	if !hasStart || !hasEnd || endAngle <= startAngle {
+		fallbackStraightRoute(edge, srcShape, dstShape, srcCenter, dstCenter)
 		return
 	}
 
@@ -115,8 +111,6 @@ func createCircularArc(edge *d2graph.Edge, radius float64) {
 	// cloud, ...) the bounding box border is not the shape border, so trace
 	// each endpoint inward from the shape center to the actual shape outline.
 	// TraceToShapeBorder is a no-op for rectangular shapes.
-	srcShape := edge.Src.ToShape()
-	dstShape := edge.Dst.ToShape()
 	path[0] = shape.TraceToShapeBorder(srcShape, path[0], srcCenter)
 	path[len(path)-1] = shape.TraceToShapeBorder(dstShape, path[len(path)-1], dstCenter)
 
@@ -124,9 +118,39 @@ func createCircularArc(edge *d2graph.Edge, radius float64) {
 	edge.IsCurve = true
 }
 
-func fallbackStraightRoute(edge *d2graph.Edge, srcCenter, dstCenter *geo.Point) {
-	edge.Route = []*geo.Point{srcCenter, dstCenter}
+// fallbackStraightRoute renders a straight connection whose endpoints are
+// clipped to the source and destination shape borders along the line between
+// the two centers, used when the analytic arc geometry degenerates (zero
+// sweep, no boundary crossing in the arc range, etc.).
+func fallbackStraightRoute(edge *d2graph.Edge, srcShape, dstShape shape.Shape, srcCenter, dstCenter *geo.Point) {
+	srcBorder := clipToShapeBorder(srcShape, edge.Src.Box, srcCenter, dstCenter)
+	dstBorder := clipToShapeBorder(dstShape, edge.Dst.Box, dstCenter, srcCenter)
+	edge.Route = []*geo.Point{srcBorder, dstBorder}
 	edge.IsCurve = false
+}
+
+// clipToShapeBorder returns the point where a ray from `from` (assumed inside
+// `box`) toward `toward` first exits the actual shape outline. The bounding
+// box is consulted first to obtain a rectangular border point, then the shape
+// helper refines it for non-rectangular shapes.
+func clipToShapeBorder(shp shape.Shape, box *geo.Box, from, toward *geo.Point) *geo.Point {
+	dx := toward.X - from.X
+	dy := toward.Y - from.Y
+	dist := math.Hypot(dx, dy)
+	if dist == 0 {
+		return from
+	}
+	// Extend the ray well past `toward` so the segment definitely exits the
+	// box even when `toward` itself sits inside the box.
+	diag := math.Hypot(box.Width, box.Height)
+	scale := (dist + 2*diag) / dist
+	extended := geo.NewPoint(from.X+dx*scale, from.Y+dy*scale)
+
+	rectBorder := extended
+	if pts := box.Intersections(geo.Segment{Start: from, End: extended}); len(pts) > 0 {
+		rectBorder = pts[0]
+	}
+	return shape.TraceToShapeBorder(shp, rectBorder, from)
 }
 
 // nextBoundaryAngle scans the angles where the layout circle crosses an edge
