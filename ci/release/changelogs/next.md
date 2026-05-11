@@ -13,6 +13,8 @@
   - `animate-interval` is no longer required, defaults to 1000ms for gifs [#2663](https://github.com/terrastruct/d2/pull/2663)
 - renders:
   - remote images are fetched more reliably [#2659](https://github.com/terrastruct/d2/pull/2659)
+- d2cli:
+  - Update the body background that match the SVG background [#2745](https://github.com/terrastruct/d2/pull/2745)
 
 #### Bugfixes ⛑️
 

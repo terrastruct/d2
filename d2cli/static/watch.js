@@ -26,6 +26,14 @@ function init(reconnectDelay) {
       // we can't just set `d2SVG.innerHTML = msg.svg` need to parse this as xml not html
       const parsedXML = new DOMParser().parseFromString(msg.svg, "text/xml");
       d2SVG.replaceChildren(parsedXML.documentElement);
+
+      // Update the body/container background that match the SVG background
+      const bgRect = d2SVG.querySelector("rect");
+      if (bgRect && bgRect.hasAttribute("fill")) {
+        const bgColor = bgRect.getAttribute("fill");
+        document.body.style.backgroundColor = bgColor;
+      }
+
       changeFavicon("/static/favicon.ico");
       const svgEl = d2SVG.querySelector(".d2-svg");
       // just use inner SVG in watch mode
