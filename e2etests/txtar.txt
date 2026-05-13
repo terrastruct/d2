@@ -837,6 +837,17 @@ producer -> consumer: {
   b.shape: hexagon
   a -> b -> c
 }
+5: "" {
+  shape: cycle
+  a
+}
+6: "" {
+  shape: cycle
+  a: {
+    x -> y
+  }
+  a -> b
+}
 
 -- model-view --
 # Models

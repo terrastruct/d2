@@ -23,6 +23,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) e
 		return nil
 	}
 
+	if layout != nil {
+		if err := layout(ctx, g); err != nil {
+			return err
+		}
+	}
+
 	for _, obj := range g.Objects {
 		positionLabelsIcons(obj)
 	}
@@ -31,13 +37,19 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) e
 	positionObjects(objects, radius)
 
 	for _, edge := range g.Edges {
-		createCircularArc(edge)
+		if isCycleEdge(g, edge) {
+			createCircularArc(edge)
+		}
 	}
 
 	return nil
 }
 
 func calculateRadius(objects []*d2graph.Object) float64 {
+	if len(objects) == 1 {
+		return 0
+	}
+
 	numObjects := float64(len(objects))
 	maxSize := 0.0
 	for _, obj := range objects {
@@ -56,8 +68,15 @@ func positionObjects(objects []*d2graph.Object, radius float64) {
 		angle := angleOffset + (2 * math.Pi * float64(i) / numObjects)
 		x := radius * math.Cos(angle)
 		y := radius * math.Sin(angle)
-		obj.TopLeft = geo.NewPoint(x-obj.Box.Width/2, y-obj.Box.Height/2)
+		obj.MoveWithDescendantsTo(x-obj.Box.Width/2, y-obj.Box.Height/2)
 	}
+}
+
+func isCycleEdge(g *d2graph.Graph, edge *d2graph.Edge) bool {
+	if edge.Src == nil || edge.Dst == nil {
+		return false
+	}
+	return edge.Src.Parent == g.Root && edge.Dst.Parent == g.Root
 }
 
 func createCircularArc(edge *d2graph.Edge) {
