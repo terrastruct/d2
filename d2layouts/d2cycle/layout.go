@@ -68,7 +68,19 @@ func positionObjects(objects []*d2graph.Object, radius float64) {
 		angle := angleOffset + (2 * math.Pi * float64(i) / numObjects)
 		x := radius * math.Cos(angle)
 		y := radius * math.Sin(angle)
-		obj.MoveWithDescendantsTo(x-obj.Box.Width/2, y-obj.Box.Height/2)
+		moveObjectAndDescendantEdges(obj, x-obj.Box.Width/2, y-obj.Box.Height/2)
+	}
+}
+
+func moveObjectAndDescendantEdges(obj *d2graph.Object, x, y float64) {
+	dx := x - obj.TopLeft.X
+	dy := y - obj.TopLeft.Y
+	obj.MoveWithDescendants(dx, dy)
+
+	for _, edge := range obj.Graph.Edges {
+		if edge.Src.IsDescendantOf(obj) && edge.Dst.IsDescendantOf(obj) {
+			edge.Move(dx, dy)
+		}
 	}
 }
 

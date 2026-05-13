@@ -142,4 +142,10 @@ a -> b
 	if got := len(internalEdge.Route); got != 2 {
 		t.Fatalf("expected internal nested edge route from core layout, got %d points", got)
 	}
+	if internalEdge.Route[0].X != x.Center().X || internalEdge.Route[0].Y != x.Center().Y {
+		t.Fatalf("expected internal edge route start to move with nested source, got %v want %v", internalEdge.Route[0], x.Center())
+	}
+	if internalEdge.Route[1].X != y.Center().X || internalEdge.Route[1].Y != y.Center().Y {
+		t.Fatalf("expected internal edge route end to move with nested destination, got %v want %v", internalEdge.Route[1], y.Center())
+	}
 }
