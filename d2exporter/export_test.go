@@ -10,7 +10,6 @@ import (
 	tassert "github.com/stretchr/testify/assert"
 
 	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
 	"oss.terrastruct.com/util-go/go2"
 
 	"oss.terrastruct.com/d2/d2compiler"
@@ -20,6 +19,7 @@ import (
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/internal/testdiff"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/textmeasure"
@@ -294,7 +294,7 @@ func run(t *testing.T, tc testCase) {
 		got.Connections[i].LabelPosition = ""
 	}
 
-	err = diff.TestdataJSON(filepath.Join("..", "testdata", "d2exporter", t.Name()), got)
+	err = testdiff.TestdataJSON(filepath.Join("..", "testdata", "d2exporter", t.Name()), got)
 	assert.Success(t, err)
 }
 

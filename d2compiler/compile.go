@@ -1251,6 +1251,9 @@ func (c *compiler) validatePositionsCompatibility(g *d2graph.Graph) {
 					if o.OuterSequenceDiagram() != nil {
 						c.errorf(pos.MapKey, `position keywords cannot be used inside shape "sequence_diagram"`)
 					}
+					if o.OuterCycleDiagram() != nil {
+						c.errorf(pos.MapKey, `position keywords cannot be used inside shape "cycle"`)
+					}
 					if o.Parent.GridColumns != nil || o.Parent.GridRows != nil {
 						c.errorf(pos.MapKey, `position keywords cannot be used with grids`)
 					}
@@ -1288,6 +1291,14 @@ func (c *compiler) validateEdges(g *d2graph.Graph) {
 		}
 		if edge.Dst.IsSequenceDiagram() && edge.Src.IsDescendantOf(edge.Dst) {
 			c.errorf(edge.GetAstEdge(), "edge from sequence diagram %#v cannot enter itself", edge.Dst.AbsID())
+			continue
+		}
+		if edge.Src.IsCycleDiagram() && edge.Dst.IsDescendantOf(edge.Src) {
+			c.errorf(edge.GetAstEdge(), "edge from cycle diagram %#v cannot enter itself", edge.Src.AbsID())
+			continue
+		}
+		if edge.Dst.IsCycleDiagram() && edge.Src.IsDescendantOf(edge.Dst) {
+			c.errorf(edge.GetAstEdge(), "edge from cycle diagram %#v cannot enter itself", edge.Dst.AbsID())
 			continue
 		}
 	}

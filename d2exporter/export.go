@@ -223,7 +223,7 @@ func toShape(obj *d2graph.Object, g *d2graph.Graph) d2target.Shape {
 	shape.Italic = text.IsItalic
 	shape.FontSize = text.FontSize
 
-	if obj.IsSequenceDiagram() {
+	if obj.IsSequenceDiagram() || obj.IsCycleDiagram() {
 		shape.StrokeWidth = 0
 	}
 

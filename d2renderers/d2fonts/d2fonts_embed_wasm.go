@@ -6,7 +6,6 @@ import (
 	"embed"
 	_ "embed"
 	"fmt"
-	"strings"
 
 	"oss.terrastruct.com/d2/lib/compression"
 	"oss.terrastruct.com/d2/lib/syncmap"
@@ -129,7 +128,7 @@ func init() {
 // trimEncodings removes trailing newlines from all font encodings
 func trimEncodings() {
 	FontEncodings.Range(func(k Font, v string) bool {
-		FontEncodings.Set(k, strings.TrimSuffix(v, "\n"))
+		FontEncodings.Set(k, trimFontEncoding(v))
 		return true
 	})
 }

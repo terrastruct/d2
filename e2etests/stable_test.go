@@ -1084,7 +1084,7 @@ A code block continues until it reaches a line that is not indented
 		},
 		{
 			name:   "giant_markdown_test",
-			script: mdTestScript(testMarkdown),
+			script: mdTestScript(normalizeTestScript(testMarkdown)),
 		},
 		{
 			name: "code_snippet",

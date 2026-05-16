@@ -1,11 +1,15 @@
 package d2ir_test
 
 import (
+	"os"
+	"path/filepath"
+	"strings"
 	"testing"
 
 	"oss.terrastruct.com/util-go/assert"
 
 	"oss.terrastruct.com/d2/d2ir"
+	"oss.terrastruct.com/d2/d2parser"
 )
 
 func testCompileImports(t *testing.T) {
@@ -125,6 +129,24 @@ label: meow`,
 			},
 		},
 		{
+			name: "os/absolute_path",
+			run: func(t testing.TB) {
+				dir := t.TempDir()
+				indexPath := filepath.Join(dir, "index.d2")
+				err := os.WriteFile(indexPath, []byte("x: @x"), 0600)
+				assert.Success(t, err)
+				err = os.WriteFile(filepath.Join(dir, "x.d2"), []byte("shape: circle\nlabel: meow"), 0600)
+				assert.Success(t, err)
+
+				m, err := compileFile(t, indexPath)
+				assert.Success(t, err)
+				assertQuery(t, m, 3, 0, nil, "")
+				assertQuery(t, m, 2, 0, nil, "x")
+				assertQuery(t, m, 0, 0, "circle", "x.shape")
+				assertQuery(t, m, 0, 0, "meow", "x.label")
+			},
+		},
+		{
 			name: "nested/spread",
 			run: func(t testing.TB) {
 				m, err := compileFS(t, "index.d2", map[string]string{
@@ -240,7 +262,16 @@ label: meow`,
 					_, err := compileFS(t, "index.d2", map[string]string{
 						"index.d2": "...@x.d2",
 					})
-					assert.ErrorString(t, err, `index.d2:1:1: failed to import "x.d2": open x.d2: no such file or directory`)
+					assert.Error(t, err)
+					errText := err.Error()
+					if !strings.HasPrefix(errText, `index.d2:1:1: failed to import "x.d2": open x.d2: `) {
+						t.Fatalf("unexpected import error: %v", err)
+					}
+					if !strings.Contains(errText, "no such file or directory") &&
+						!strings.Contains(errText, "The system cannot find the file specified") &&
+						!strings.Contains(errText, "file does not exist") {
+						t.Fatalf("unexpected import error: %v", err)
+					}
 				},
 			},
 			{
@@ -292,4 +323,19 @@ x.d2:1:7: connection missing source`)
 		}
 		runa(t, tca)
 	})
+}
+
+func compileFile(t testing.TB, filePath string) (*d2ir.Map, error) {
+	t.Helper()
+
+	b, err := os.ReadFile(filePath)
+	if err != nil {
+		return nil, err
+	}
+	ast, err := d2parser.Parse(filePath, strings.NewReader(string(b)), nil)
+	if err != nil {
+		return nil, err
+	}
+	m, _, err := d2ir.Compile(ast, nil)
+	return m, err
 }

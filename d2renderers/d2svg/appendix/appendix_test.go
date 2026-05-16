@@ -12,13 +12,13 @@ import (
 	tassert "github.com/stretchr/testify/assert"
 
 	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2renderers/d2svg/appendix"
+	"oss.terrastruct.com/d2/internal/testdiff"
 	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
@@ -142,6 +142,8 @@ func runa(t *testing.T, tcs []testCase) {
 }
 
 func run(t *testing.T, tc testCase) {
+	tc.script = strings.ReplaceAll(tc.script, "\r\n", "\n")
+
 	ctx := context.Background()
 	ctx = log.WithTB(ctx, t)
 	ctx = log.Leveled(ctx, slog.LevelDebug)
@@ -177,12 +179,11 @@ func run(t *testing.T, tc testCase) {
 	assert.Success(t, err)
 	err = os.WriteFile(pathGotSVG, svgBytes, 0600)
 	assert.Success(t, err)
-	defer os.Remove(pathGotSVG)
 
 	var xmlParsed interface{}
 	err = xml.Unmarshal(svgBytes, &xmlParsed)
 	assert.Success(t, err)
 
-	err = diff.Testdata(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
+	err = testdiff.Testdata(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
 	assert.Success(t, err)
 }

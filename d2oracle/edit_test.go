@@ -18,6 +18,7 @@ import (
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2oracle"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/internal/testdiff"
 )
 
 // TODO: make assertions less specific
@@ -8316,7 +8317,7 @@ func (tc editTest) run(t *testing.T) {
 		Err:   fmt.Sprintf("%#v", err),
 	}
 
-	err = diff.TestdataJSON(filepath.Join("..", "testdata", "d2oracle", t.Name()), got)
+	err = testdiff.TestdataJSON(filepath.Join("..", "testdata", "d2oracle", t.Name()), got)
 	assert.Success(t, err)
 }
 

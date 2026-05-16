@@ -12,7 +12,6 @@ import (
 	tassert "github.com/stretchr/testify/assert"
 
 	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
 	"oss.terrastruct.com/util-go/go2"
 
 	"oss.terrastruct.com/d2/d2graph"
@@ -22,6 +21,7 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
+	"oss.terrastruct.com/d2/internal/testdiff"
 	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
@@ -1461,13 +1461,12 @@ func run(t *testing.T, tc testCase) {
 	assert.Success(t, err)
 	err = os.WriteFile(pathGotSVG, svgBytes, 0600)
 	assert.Success(t, err)
-	defer os.Remove(pathGotSVG)
 
 	var xmlParsed interface{}
 	err = xml.Unmarshal(svgBytes, &xmlParsed)
 	assert.Success(t, err)
 
 	// We want the visual diffs to compare, but there's floating point precision differences between CI and user machines, so don't compare raw strings
-	err = diff.Testdata(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
+	err = testdiff.Testdata(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
 	assert.Success(t, err)
 }

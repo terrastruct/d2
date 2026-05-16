@@ -442,7 +442,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 		w.boardpathMu.Lock()
 		var boardPath []string
 		if w.boardPath != "" {
-			boardPath = strings.Split(w.boardPath, string(os.PathSeparator))
+			boardPath = strings.Split(w.boardPath, "/")
 		}
 		svg, _, err := compile(ctx, w.ms, w.plugins, &fs, w.layout, w.renderOpts, w.fontFamily, w.monoFontFamily, w.animateInterval, w.inputPath, w.outputPath, boardPath, false, w.bundle, w.forceAppendix, w.pw.Browser, w.outputFormat, w.asciiMode)
 		w.boardpathMu.Unlock()

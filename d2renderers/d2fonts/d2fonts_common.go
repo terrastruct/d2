@@ -11,6 +11,7 @@ package d2fonts
 import (
 	"encoding/base64"
 	"fmt"
+	"strings"
 	"sync"
 
 	"oss.terrastruct.com/d2/lib/font"
@@ -107,6 +108,10 @@ var FontFamiliesMu sync.Mutex
 
 var FontEncodings syncmap.SyncMap[Font, string]
 var FontFaces syncmap.SyncMap[Font, []byte]
+
+func trimFontEncoding(encoding string) string {
+	return strings.TrimRight(encoding, "\r\n")
+}
 
 var D2_FONT_TO_FAMILY = map[string]FontFamily{
 	"default": SourceSansPro,

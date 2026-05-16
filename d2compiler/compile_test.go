@@ -16,6 +16,7 @@ import (
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/internal/testdiff"
 )
 
 func TestCompile(t *testing.T) {
@@ -3238,6 +3239,12 @@ grid.cell -> grid.cell.c: no
 grid.cell -> grid.cell.c.d: no
 seq -> seq.e: no
 seq -> seq.e.f: no
+cycle: {
+  shape: cycle
+  e.f
+}
+cycle -> cycle.e: no
+cycle -> cycle.e.f: no
 `,
 			expErr: `d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:13:1: edge from constant near "tl" cannot enter itself
 d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:14:1: edge from constant near "tl" cannot enter itself
@@ -3246,7 +3253,9 @@ d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:18:1: edge
 d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:15:1: edge from grid diagram "grid" cannot enter itself
 d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:16:1: edge from grid diagram "grid" cannot enter itself
 d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:19:1: edge from sequence diagram "seq" cannot enter itself
-d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:20:1: edge from sequence diagram "seq" cannot enter itself`,
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:20:1: edge from sequence diagram "seq" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:25:1: edge from cycle diagram "cycle" cannot enter itself
+d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:26:1: edge from cycle diagram "cycle" cannot enter itself`,
 		},
 		{
 			name: "grid_nested",
@@ -3690,6 +3699,18 @@ d2/testdata/d2compiler/TestCompile/no_arrowheads_in_shape.d2:2:3: "source-arrowh
 d2/testdata/d2compiler/TestCompile/fixed-pos-shape-hierarchy.d2:5:2: position keywords cannot be used with shape "hierarchy"`,
 		},
 		{
+			name: "fixed-pos-shape-cycle",
+			text: `x: {
+  shape: cycle
+  a -> b
+  a.top: 20
+  a.left: 20
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/fixed-pos-shape-cycle.d2:4:3: position keywords cannot be used inside shape "cycle"
+d2/testdata/d2compiler/TestCompile/fixed-pos-shape-cycle.d2:5:3: position keywords cannot be used inside shape "cycle"`,
+		},
+		{
 			name: "vars-in-imports",
 			text: `dev: {
   vars: {
@@ -4085,7 +4106,7 @@ svc_1.t2 -> b: do with B
 				Err:   err,
 			}
 
-			err = diff.TestdataJSON(filepath.Join("..", "testdata", "d2compiler", t.Name()), got)
+			err = testdiff.TestdataJSON(filepath.Join("..", "testdata", "d2compiler", t.Name()), got)
 			assert.Success(t, err)
 		})
 	}
@@ -6349,7 +6370,7 @@ func assertCompile(t *testing.T, text string, expErr string) (*d2graph.Graph, *d
 		Err:   err,
 	}
 
-	err = diff.TestdataJSON(filepath.Join("..", "testdata", "d2compiler", t.Name()), got)
+	err = testdiff.TestdataJSON(filepath.Join("..", "testdata", "d2compiler", t.Name()), got)
 	assert.Success(t, err)
 	return g, config
 }

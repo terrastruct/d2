@@ -33,6 +33,14 @@
       {
         "range": "d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2,19:0:255-19:14:269",
         "errmsg": "d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:20:1: edge from sequence diagram \"seq\" cannot enter itself"
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2,24:0:306-24:16:322",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:25:1: edge from cycle diagram \"cycle\" cannot enter itself"
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2,25:0:327-25:18:345",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/parent_graph_edge_to_descendant.d2:26:1: edge from cycle diagram \"cycle\" cannot enter itself"
       }
     ]
   }
