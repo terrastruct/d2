@@ -1,6 +1,7 @@
 #### Features 🚀
 
 - exports: gif exports work with `animate: true` keyword [#2663](https://github.com/terrastruct/d2/pull/2663)
+- layouts: add `shape: cycle` for circular nested diagrams
 
 #### Improvements 🧹
 
