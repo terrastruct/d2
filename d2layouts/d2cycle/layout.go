@@ -23,12 +23,18 @@ type anglePoint struct {
 	point *geo.Point
 }
 
-// Layout arranges the root children around a circle and routes their edges as
-// cubic Bezier arcs trimmed to each shape's visible perimeter.
-func Layout(_ context.Context, g *d2graph.Graph, _ d2graph.LayoutGraph) error {
+// Layout arranges the root children around a circle and routes their root-level
+// edges as cubic Bezier arcs trimmed to each shape's visible perimeter.
+func Layout(ctx context.Context, g *d2graph.Graph, coreLayout d2graph.LayoutGraph) error {
 	objects := g.Root.ChildrenArray
 	if len(objects) == 0 {
 		return nil
+	}
+
+	if coreLayout != nil {
+		if err := coreLayout(ctx, g); err != nil {
+			return err
+		}
 	}
 
 	for _, obj := range g.Objects {
@@ -40,7 +46,9 @@ func Layout(_ context.Context, g *d2graph.Graph, _ d2graph.LayoutGraph) error {
 
 	center := geo.NewPoint(0, 0)
 	for _, edge := range g.Edges {
-		routeCircularArc(edge, center)
+		if isCycleEdge(g, edge) {
+			routeCircularArc(edge, center)
+		}
 	}
 	normalizeGraph(g)
 	return nil
@@ -48,7 +56,7 @@ func Layout(_ context.Context, g *d2graph.Graph, _ d2graph.LayoutGraph) error {
 
 func calculateRadius(objects []*d2graph.Object) float64 {
 	if len(objects) < 2 {
-		return minRadius
+		return 0
 	}
 
 	maxHalfDiagonal := 0.
@@ -64,8 +72,34 @@ func positionObjects(objects []*d2graph.Object, radius float64) {
 	for i, obj := range objects {
 		angle := -math.Pi/2 + 2*math.Pi*float64(i)/float64(len(objects))
 		center := pointOnCircle(geo.NewPoint(0, 0), radius, angle)
-		obj.TopLeft = geo.NewPoint(center.X-obj.Width/2, center.Y-obj.Height/2)
+		moveObjectAndInternalEdges(obj, center.X-obj.Width/2, center.Y-obj.Height/2)
 	}
+}
+
+func moveObjectAndInternalEdges(obj *d2graph.Object, x, y float64) {
+	if obj.TopLeft == nil {
+		obj.TopLeft = geo.NewPoint(0, 0)
+	}
+
+	dx := x - obj.TopLeft.X
+	dy := y - obj.TopLeft.Y
+	obj.MoveWithDescendants(dx, dy)
+
+	for _, edge := range obj.Graph.Edges {
+		if edge.Src != nil &&
+			edge.Dst != nil &&
+			edge.Src.IsDescendantOf(obj) &&
+			edge.Dst.IsDescendantOf(obj) {
+			edge.Move(dx, dy)
+		}
+	}
+}
+
+func isCycleEdge(g *d2graph.Graph, edge *d2graph.Edge) bool {
+	if edge.Src == nil || edge.Dst == nil {
+		return false
+	}
+	return edge.Src.Parent == g.Root && edge.Dst.Parent == g.Root
 }
 
 func normalizeGraph(g *d2graph.Graph) {
