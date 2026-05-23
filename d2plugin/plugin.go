@@ -45,6 +45,15 @@ func (f *PluginSpecificFlag) AddToOpts(opts *xmain.Opts) {
 			val = int64(defaultType)
 		}
 		opts.Int64("", f.Name, "", val, f.Usage)
+	case "float64":
+		var val float64
+		switch defaultType := f.Default.(type) {
+		case float64:
+			val = defaultType
+		case int64:
+			val = float64(defaultType)
+		}
+		opts.Float64("", f.Name, "", val, f.Usage)
 	case "[]int64":
 		var slice []int64
 		switch defaultType := f.Default.(type) {

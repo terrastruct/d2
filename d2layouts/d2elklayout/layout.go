@@ -110,6 +110,13 @@ type ConfigurableOpts struct {
 	Padding         string `json:"elk.padding,omitempty"`
 	EdgeNodeSpacing int    `json:"spacing.edgeNodeBetweenLayers,omitempty"`
 	SelfLoopSpacing int    `json:"elk.spacing.nodeSelfLoop"`
+
+	// Options previously hardcoded inside Layout(). Exposed so callers
+	// can compact the layout without forking the shim.
+	EdgeEdgeSpacing    int     `json:"elk.layered.spacing.edgeEdgeBetweenLayers,omitempty"`
+	Thoroughness       int     `json:"elk.layered.thoroughness,omitempty"`
+	AspectRatio        float64 `json:"elk.aspectRatio,omitempty"`
+	CompactionStrategy string  `json:"elk.layered.compaction.postCompaction.strategy,omitempty"`
 }
 
 var DefaultOpts = ConfigurableOpts{
@@ -118,17 +125,23 @@ var DefaultOpts = ConfigurableOpts{
 	Padding:         "[top=50,left=50,bottom=50,right=50]",
 	EdgeNodeSpacing: 40.0,
 	SelfLoopSpacing: 50.0,
+	// Previously hardcoded in Layout(); keeping the same defaults so the
+	// out-of-the-box render is unchanged when these flags are omitted.
+	EdgeEdgeSpacing: 50,
+	Thoroughness:    8,
 }
 
 var port_spacing = 40.
 var edge_node_spacing = 40
 
 type elkOpts struct {
-	EdgeNode                     int       `json:"elk.spacing.edgeNode,omitempty"`
-	FixedAlignment               string    `json:"elk.layered.nodePlacement.bk.fixedAlignment,omitempty"`
-	Thoroughness                 int       `json:"elk.layered.thoroughness,omitempty"`
-	EdgeEdgeBetweenLayersSpacing int       `json:"elk.layered.spacing.edgeEdgeBetweenLayers,omitempty"`
-	Direction                    Direction `json:"elk.direction"`
+	EdgeNode       int       `json:"elk.spacing.edgeNode,omitempty"`
+	FixedAlignment string    `json:"elk.layered.nodePlacement.bk.fixedAlignment,omitempty"`
+	Direction      Direction `json:"elk.direction"`
+	// Thoroughness and EdgeEdgeBetweenLayersSpacing previously lived here
+	// with hardcoded defaults of 8 and 50. They've moved to
+	// ConfigurableOpts so callers can override them; defaults are
+	// preserved in DefaultOpts.
 	HierarchyHandling            string    `json:"elk.hierarchyHandling,omitempty"`
 	InlineEdgeLabels             bool      `json:"elk.edgeLabels.inline,omitempty"`
 	ForceNodeModelOrder          bool      `json:"elk.layered.crossingMinimization.forceNodeModelOrder,omitempty"`
@@ -177,20 +190,22 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	elkGraph := &ELKGraph{
 		ID: "",
 		LayoutOptions: &elkOpts{
-			Thoroughness:                 8,
-			EdgeEdgeBetweenLayersSpacing: 50,
-			EdgeNode:                     edge_node_spacing,
-			HierarchyHandling:            "INCLUDE_CHILDREN",
-			FixedAlignment:               "BALANCED",
-			ConsiderModelOrder:           "NODES_AND_EDGES",
-			CycleBreakingStrategy:        "GREEDY_MODEL_ORDER",
-			NodeSizeConstraints:          "MINIMUM_SIZE",
-			ContentAlignment:             "H_CENTER V_CENTER",
+			EdgeNode:              edge_node_spacing,
+			HierarchyHandling:     "INCLUDE_CHILDREN",
+			FixedAlignment:        "BALANCED",
+			ConsiderModelOrder:    "NODES_AND_EDGES",
+			CycleBreakingStrategy: "GREEDY_MODEL_ORDER",
+			NodeSizeConstraints:   "MINIMUM_SIZE",
+			ContentAlignment:      "H_CENTER V_CENTER",
 			ConfigurableOpts: ConfigurableOpts{
-				Algorithm:       opts.Algorithm,
-				NodeSpacing:     opts.NodeSpacing,
-				EdgeNodeSpacing: opts.EdgeNodeSpacing,
-				SelfLoopSpacing: opts.SelfLoopSpacing,
+				Algorithm:          opts.Algorithm,
+				NodeSpacing:        opts.NodeSpacing,
+				EdgeNodeSpacing:    opts.EdgeNodeSpacing,
+				SelfLoopSpacing:    opts.SelfLoopSpacing,
+				Thoroughness:       valueOr(opts.Thoroughness, DefaultOpts.Thoroughness),
+				EdgeEdgeSpacing:    valueOr(opts.EdgeEdgeSpacing, DefaultOpts.EdgeEdgeSpacing),
+				AspectRatio:        opts.AspectRatio,
+				CompactionStrategy: opts.CompactionStrategy,
 			},
 		},
 	}
@@ -273,21 +288,23 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		if len(obj.ChildrenArray) > 0 {
 			n.LayoutOptions = &elkOpts{
-				ForceNodeModelOrder:          true,
-				Thoroughness:                 8,
-				EdgeEdgeBetweenLayersSpacing: 50,
-				HierarchyHandling:            "INCLUDE_CHILDREN",
-				FixedAlignment:               "BALANCED",
-				EdgeNode:                     edge_node_spacing,
-				ConsiderModelOrder:           "NODES_AND_EDGES",
-				CycleBreakingStrategy:        "GREEDY_MODEL_ORDER",
-				NodeSizeConstraints:          "MINIMUM_SIZE",
-				ContentAlignment:             "H_CENTER V_CENTER",
+				ForceNodeModelOrder:   true,
+				HierarchyHandling:     "INCLUDE_CHILDREN",
+				FixedAlignment:        "BALANCED",
+				EdgeNode:              edge_node_spacing,
+				ConsiderModelOrder:    "NODES_AND_EDGES",
+				CycleBreakingStrategy: "GREEDY_MODEL_ORDER",
+				NodeSizeConstraints:   "MINIMUM_SIZE",
+				ContentAlignment:      "H_CENTER V_CENTER",
 				ConfigurableOpts: ConfigurableOpts{
 					NodeSpacing:     opts.NodeSpacing,
 					EdgeNodeSpacing: opts.EdgeNodeSpacing,
 					SelfLoopSpacing: opts.SelfLoopSpacing,
 					Padding:         opts.Padding,
+					Thoroughness:    valueOr(opts.Thoroughness, DefaultOpts.Thoroughness),
+					EdgeEdgeSpacing: valueOr(opts.EdgeEdgeSpacing, DefaultOpts.EdgeEdgeSpacing),
+					// aspectRatio and compaction strategy apply at the
+					// graph root, not per container; intentionally omitted here.
 				},
 			}
 			if n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing == DefaultOpts.SelfLoopSpacing {
@@ -944,6 +961,16 @@ func countEdgeIntersects(g *d2graph.Graph, sEdge *d2graph.Edge, s geo.Segment) (
 
 	}
 	return crossingsCount, overlapsCount, closeOverlapsCount, touchingCount
+}
+
+// valueOr returns v when it's non-zero, else fallback. Lets the user
+// override formerly-hardcoded options via CLI flags without clobbering
+// the existing defaults when the flag is omitted.
+func valueOr(v, fallback int) int {
+	if v == 0 {
+		return fallback
+	}
+	return v
 }
 
 func childrenMaxSelfLoop(parent *d2graph.Object, isWidth bool) int {

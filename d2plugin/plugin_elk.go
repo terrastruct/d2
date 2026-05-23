@@ -59,6 +59,34 @@ func (p elkPlugin) Flags(context.Context) ([]PluginSpecificFlag, error) {
 			Usage:   "spacing to be preserved between a node and its self loops",
 			Tag:     "elk.spacing.nodeSelfLoop",
 		},
+		{
+			Name:    "elk-edgeEdgeBetweenLayers",
+			Type:    "int64",
+			Default: int64(d2elklayout.DefaultOpts.EdgeEdgeSpacing),
+			Usage:   "spacing to be preserved between parallel edges crossing the same layer band (channel width for converging edge bundles)",
+			Tag:     "elk.layered.spacing.edgeEdgeBetweenLayers",
+		},
+		{
+			Name:    "elk-thoroughness",
+			Type:    "int64",
+			Default: int64(d2elklayout.DefaultOpts.Thoroughness),
+			Usage:   "how much time the layouter should spend on optimization (1-100, higher = better but slower)",
+			Tag:     "elk.layered.thoroughness",
+		},
+		{
+			Name:    "elk-aspectRatio",
+			Type:    "float64",
+			Default: float64(0),
+			Usage:   "preferred aspect ratio (width/height) for the drawing; 0 disables the constraint",
+			Tag:     "elk.aspectRatio",
+		},
+		{
+			Name:    "elk-compactionStrategy",
+			Type:    "string",
+			Default: "",
+			Usage:   "post-layout compaction strategy: NONE, LEFT, RIGHTUP, EDGE_LENGTH, LEFT_RIGHT_CONSTRAINT_LOCKING, LEFT_RIGHT_CONNECTION_LOCKING (empty = no post-compaction)",
+			Tag:     "elk.layered.compaction.postCompaction.strategy",
+		},
 	}, nil
 }
 
