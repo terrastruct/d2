@@ -2744,6 +2744,24 @@ ok: {
 			},
 		},
 		{
+			name: "sql-column-type-matches-name",
+			text: `x: {
+  shape: sql_table
+  date: date
+  id
+  created {constraint: primary_key}
+}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				table := g.Objects[0].SQLTable
+				tassert.Equal(t, "date", table.Columns[0].Name.Label)
+				tassert.Equal(t, "date", table.Columns[0].Type.Label)
+				tassert.Equal(t, "id", table.Columns[1].Name.Label)
+				tassert.Empty(t, table.Columns[1].Type.Label)
+				tassert.Equal(t, "created", table.Columns[2].Name.Label)
+				tassert.Empty(t, table.Columns[2].Type.Label)
+			},
+		},
+		{
 			name: "sql-null-constraint",
 			text: `x: {
   shape: sql_table
