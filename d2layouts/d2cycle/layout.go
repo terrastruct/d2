@@ -16,6 +16,8 @@ const (
 	MIN_SEGMENT_LEN = 10
 	ARC_STEPS       = 30 // high resolution for smooth arcs
 
+	angleEpsilon = 1e-6
+	pointEpsilon = 1e-7
 )
 
 // Layout arranges nodes in a circle, ensures label/icon positions are set,
@@ -75,8 +77,8 @@ func positionObjects(objects []*d2graph.Object, radius float64) {
 }
 
 // createCircularArc samples a smooth arc from center to center, then
-// forces the endpoints onto each shape's border, and finally calls
-// TraceToShape to clip any additional overrun.
+// trims it so that the curve starts/ends exactly on the node border
+// while remaining circular (i.e. endpoints stay on the circle).
 func createCircularArc(edge *d2graph.Edge) {
 	if edge.Src == nil || edge.Dst == nil {
 		return
@@ -94,26 +96,143 @@ func createCircularArc(edge *d2graph.Edge) {
 
 	arcRadius := math.Hypot(srcCenter.X, srcCenter.Y)
 
-	// Sample points along the arc
+	startAngle := findCircleExitAngle(edge.Src.Box, arcRadius, srcAngle, dstAngle)
+	endAngle := findCircleEntryAngle(edge.Dst.Box, arcRadius, srcAngle, dstAngle)
+
+	// If we fail to compute a sane trim (should be rare), fall back to the
+	// previous behavior to avoid breaking rendering.
+	if !(startAngle+angleEpsilon < endAngle) {
+		path := make([]*geo.Point, 0, ARC_STEPS+1)
+		for i := 0; i <= ARC_STEPS; i++ {
+			t := float64(i) / float64(ARC_STEPS)
+			angle := srcAngle + t*(dstAngle-srcAngle)
+			x := arcRadius * math.Cos(angle)
+			y := arcRadius * math.Sin(angle)
+			path = append(path, geo.NewPoint(x, y))
+		}
+		path[0] = srcCenter
+		path[len(path)-1] = dstCenter
+		edge.Route = path
+		startIndex, endIndex := edge.TraceToShape(edge.Route, 0, len(edge.Route)-1)
+		if startIndex < endIndex {
+			edge.Route = edge.Route[startIndex : endIndex+1]
+		}
+		edge.IsCurve = true
+		return
+	}
+
 	path := make([]*geo.Point, 0, ARC_STEPS+1)
 	for i := 0; i <= ARC_STEPS; i++ {
 		t := float64(i) / float64(ARC_STEPS)
-		angle := srcAngle + t*(dstAngle-srcAngle)
+		angle := startAngle + t*(endAngle-startAngle)
 		x := arcRadius * math.Cos(angle)
 		y := arcRadius * math.Sin(angle)
 		path = append(path, geo.NewPoint(x, y))
 	}
-	// Set start/end to exact centers
-	path[0] = srcCenter
-	path[len(path)-1] = dstCenter
 
-	// Use TraceToShape to clip route to node borders
 	edge.Route = path
-	startIndex, endIndex := edge.TraceToShape(edge.Route, 0, len(edge.Route)-1)
-	if startIndex < endIndex {
-		edge.Route = edge.Route[startIndex : endIndex+1]
-	}
 	edge.IsCurve = true
+}
+
+func findCircleExitAngle(box *geo.Box, radius, srcAngle, dstAngle float64) float64 {
+	pts := circleBoxIntersections(box, radius)
+	bestAngle := srcAngle
+	found := false
+	for _, p := range pts {
+		a := normalizeAngleAtOrAbove(math.Atan2(p.Y, p.X), srcAngle)
+		if a < srcAngle+angleEpsilon || a > dstAngle-angleEpsilon {
+			continue
+		}
+		if !found || a < bestAngle {
+			bestAngle = a
+			found = true
+		}
+	}
+	if found {
+		return bestAngle
+	}
+	return srcAngle
+}
+
+func findCircleEntryAngle(box *geo.Box, radius, srcAngle, dstAngle float64) float64 {
+	pts := circleBoxIntersections(box, radius)
+	bestAngle := dstAngle
+	found := false
+	for _, p := range pts {
+		a := normalizeAngleAtOrAbove(math.Atan2(p.Y, p.X), srcAngle)
+		if a < srcAngle+angleEpsilon || a > dstAngle-angleEpsilon {
+			continue
+		}
+		if !found || a > bestAngle {
+			bestAngle = a
+			found = true
+		}
+	}
+	if found {
+		return bestAngle
+	}
+	return dstAngle
+}
+
+func normalizeAngleAtOrAbove(angle, min float64) float64 {
+	for angle < min {
+		angle += 2 * math.Pi
+	}
+	return angle
+}
+
+func circleBoxIntersections(box *geo.Box, radius float64) []*geo.Point {
+	if box == nil || radius <= 0 {
+		return nil
+	}
+	xMin := box.TopLeft.X
+	xMax := box.TopLeft.X + box.Width
+	yMin := box.TopLeft.Y
+	yMax := box.TopLeft.Y + box.Height
+
+	addUnique := func(out []*geo.Point, p *geo.Point) []*geo.Point {
+		for _, e := range out {
+			if math.Abs(e.X-p.X) <= pointEpsilon && math.Abs(e.Y-p.Y) <= pointEpsilon {
+				return out
+			}
+		}
+		return append(out, p)
+	}
+
+	var pts []*geo.Point
+
+	addX := func(x float64) {
+		if math.Abs(x) > radius {
+			return
+		}
+		y := math.Sqrt(math.Max(0, radius*radius-x*x))
+		if y >= yMin-angleEpsilon && y <= yMax+angleEpsilon {
+			pts = addUnique(pts, geo.NewPoint(x, y))
+		}
+		if -y >= yMin-angleEpsilon && -y <= yMax+angleEpsilon {
+			pts = addUnique(pts, geo.NewPoint(x, -y))
+		}
+	}
+
+	addY := func(y float64) {
+		if math.Abs(y) > radius {
+			return
+		}
+		x := math.Sqrt(math.Max(0, radius*radius-y*y))
+		if x >= xMin-angleEpsilon && x <= xMax+angleEpsilon {
+			pts = addUnique(pts, geo.NewPoint(x, y))
+		}
+		if -x >= xMin-angleEpsilon && -x <= xMax+angleEpsilon {
+			pts = addUnique(pts, geo.NewPoint(-x, y))
+		}
+	}
+
+	addX(xMin)
+	addX(xMax)
+	addY(yMin)
+	addY(yMax)
+
+	return pts
 }
 
 // clampPointOutsideBox walks forward from 'startIdx' until the path segment
