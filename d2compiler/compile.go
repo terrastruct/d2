@@ -1538,7 +1538,7 @@ func compileConfig(ir *d2ir.Map) (*d2target.Config, error) {
 
 	f = configMap.GetField(d2ast.FlatUnquotedString("layout-engine"))
 	if f != nil {
-		config.LayoutEngine = go2.Pointer(f.Primary().Value.ScalarString())
+		config.LayoutEngine = go2.Pointer(strings.ToLower(f.Primary().Value.ScalarString()))
 	}
 
 	f = configMap.GetField(d2ast.FlatUnquotedString("center"))
