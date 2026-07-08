@@ -545,7 +545,7 @@ func (obj *Object) GetFill() string {
 		return color.N7
 	}
 
-	if shape == "" || strings.EqualFold(shape, d2target.ShapeSquare) || strings.EqualFold(shape, d2target.ShapeCircle) || strings.EqualFold(shape, d2target.ShapeOval) || strings.EqualFold(shape, d2target.ShapeRectangle) || strings.EqualFold(shape, d2target.ShapeHierarchy) {
+	if shape == "" || strings.EqualFold(shape, d2target.ShapeSquare) || strings.EqualFold(shape, d2target.ShapeCircle) || strings.EqualFold(shape, d2target.ShapeOval) || strings.EqualFold(shape, d2target.ShapeRectangle) || strings.EqualFold(shape, d2target.ShapeCycle) || strings.EqualFold(shape, d2target.ShapeHierarchy) {
 		if level == 1 {
 			if !obj.IsContainer() {
 				return color.B6
@@ -675,7 +675,7 @@ func (obj *Object) Text() *d2target.MText {
 
 	if obj.OuterSequenceDiagram() == nil {
 		// Note: during grid layout when children are temporarily removed `IsContainer` is false
-		if (obj.IsContainer() || obj.IsGridDiagram()) && obj.Shape.Value != "text" {
+		if (obj.IsContainer() || obj.IsGridDiagram() || obj.IsCycleDiagram()) && obj.Shape.Value != "text" {
 			fontSize = obj.Level().LabelSize()
 		}
 	} else {

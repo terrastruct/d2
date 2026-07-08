@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2layouts/d2cycle"
 	"oss.terrastruct.com/d2/d2layouts/d2grid"
 	"oss.terrastruct.com/d2/d2layouts/d2near"
 	"oss.terrastruct.com/d2/d2layouts/d2sequence"
@@ -24,6 +25,7 @@ type DiagramType string
 const (
 	DefaultGraphType  DiagramType = ""
 	ConstantNearGraph DiagramType = "constant-near"
+	CycleDiagram      DiagramType = "cycle-diagram"
 	GridDiagram       DiagramType = "grid-diagram"
 	SequenceDiagram   DiagramType = "sequence-diagram"
 )
@@ -96,12 +98,12 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 		curr := queue[0]
 		queue = queue[1:]
 
-		isGridCellContainer := graphInfo.DiagramType == GridDiagram &&
+		isCycleOrGridCellContainer := (graphInfo.DiagramType == CycleDiagram || graphInfo.DiagramType == GridDiagram) &&
 			curr.IsContainer() && curr.Parent == g.Root
 		gi := NestedGraphInfo(curr)
 
-		if isGridCellContainer && gi.isDefault() {
-			// if we are in a grid diagram, and our children have descendants
+		if isCycleOrGridCellContainer && gi.isDefault() {
+			// if we are in a grid/cycle diagram, and our children have descendants
 			// we need to run layout on them first, even if they are not special diagram types
 
 			// First we extract the grid cell container as a nested graph with includeSelf=true
@@ -254,6 +256,12 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 				return err
 			}
 
+		case CycleDiagram:
+			log.Debug(ctx, "layout cycle", slog.Any("rootlevel", g.RootLevel), slog.Any("shapes", g.PrintString()))
+			if err = d2cycle.Layout(ctx, g); err != nil {
+				return err
+			}
+
 		case SequenceDiagram:
 			log.Debug(ctx, "layout sequence", slog.Any("rootlevel", g.RootLevel), slog.Any("shapes", g.PrintString()))
 			err = d2sequence.Layout(ctx, g, coreLayout)
@@ -362,6 +370,8 @@ func NestedGraphInfo(obj *d2graph.Object) (gi GraphInfo) {
 	}
 	if obj.IsSequenceDiagram() {
 		gi.DiagramType = SequenceDiagram
+	} else if obj.IsCycleDiagram() {
+		gi.DiagramType = CycleDiagram
 	} else if obj.IsGridDiagram() {
 		gi.DiagramType = GridDiagram
 	}

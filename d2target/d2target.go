@@ -1072,6 +1072,7 @@ const (
 	ShapeSQLTable        = "sql_table"
 	ShapeImage           = "image"
 	ShapeSequenceDiagram = "sequence_diagram"
+	ShapeCycle           = "cycle"
 	ShapeHierarchy       = "hierarchy"
 )
 
@@ -1100,6 +1101,7 @@ var Shapes = []string{
 	ShapeSQLTable,
 	ShapeImage,
 	ShapeSequenceDiagram,
+	ShapeCycle,
 	ShapeHierarchy,
 }
 
@@ -1170,6 +1172,7 @@ var DSL_SHAPE_TO_SHAPE_TYPE = map[string]string{
 	ShapeSQLTable:        shape.TABLE_TYPE,
 	ShapeImage:           shape.IMAGE_TYPE,
 	ShapeSequenceDiagram: shape.SQUARE_TYPE,
+	ShapeCycle:           shape.SQUARE_TYPE,
 	ShapeHierarchy:       shape.SQUARE_TYPE,
 }
 

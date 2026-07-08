@@ -1254,6 +1254,9 @@ func (c *compiler) validatePositionsCompatibility(g *d2graph.Graph) {
 					if o.Parent.GridColumns != nil || o.Parent.GridRows != nil {
 						c.errorf(pos.MapKey, `position keywords cannot be used with grids`)
 					}
+					if o.Parent.IsCycleDiagram() {
+						c.errorf(pos.MapKey, `position keywords cannot be used inside shape "cycle"`)
+					}
 				}
 			}
 		}
@@ -1280,6 +1283,22 @@ func (c *compiler) validateEdges(g *d2graph.Graph) {
 		}
 		if edge.Dst.Parent.IsGridDiagram() && edge.Src.IsDescendantOf(edge.Dst) {
 			c.errorf(edge.GetAstEdge(), "edge from grid cell %#v cannot enter itself", edge.Dst.AbsID())
+			continue
+		}
+		if edge.Src.IsCycleDiagram() && edge.Dst.IsDescendantOf(edge.Src) {
+			c.errorf(edge.GetAstEdge(), "edge from cycle diagram %#v cannot enter itself", edge.Src.AbsID())
+			continue
+		}
+		if edge.Dst.IsCycleDiagram() && edge.Src.IsDescendantOf(edge.Dst) {
+			c.errorf(edge.GetAstEdge(), "edge from cycle diagram %#v cannot enter itself", edge.Dst.AbsID())
+			continue
+		}
+		if edge.Src.Parent.IsCycleDiagram() && edge.Dst.IsDescendantOf(edge.Src) {
+			c.errorf(edge.GetAstEdge(), "edge from cycle node %#v cannot enter itself", edge.Src.AbsID())
+			continue
+		}
+		if edge.Dst.Parent.IsCycleDiagram() && edge.Src.IsDescendantOf(edge.Dst) {
+			c.errorf(edge.GetAstEdge(), "edge from cycle node %#v cannot enter itself", edge.Dst.AbsID())
 			continue
 		}
 		if edge.Src.IsSequenceDiagram() && edge.Dst.IsDescendantOf(edge.Src) {
