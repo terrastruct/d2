@@ -19,6 +19,7 @@
 - exports: pptx follows standards more closely, addressing warnings from some Powerpoint software [#2645](https://github.com/terrastruct/d2/pull/2645)
 - d2sequence: fix edge case of invalid sequence diagrams [#2660](https://github.com/terrastruct/d2/pull/2660)
 - d2svg: Text may overflow legend bounds when monospace font is used [#2674](https://github.com/terrastruct/d2/pull/2674)
+- d2svg: animated connections honor reduced motion preferences [#2778](https://github.com/terrastruct/d2/pull/2778)
 
 ---
 
