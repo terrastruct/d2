@@ -16,6 +16,12 @@
 	}
 }
 
+@media (prefers-reduced-motion: reduce) {
+	.animated-connection {
+		animation: none !important;
+	}
+}
+
 .d2-1180799665 .text-italic {
 	font-family: "d2-1180799665-font-italic";
 }

@@ -1,10 +1,34 @@
 package d2svg
 
 import (
+	"bytes"
+	"strings"
 	"testing"
 
+	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2target"
 )
+
+func TestEmbedFontsReducedMotion(t *testing.T) {
+	var buf bytes.Buffer
+	fontFamily := d2fonts.SourceSansPro
+	monoFontFamily := d2fonts.SourceCodePro
+	EmbedFonts(&buf, "diagram", `<path class="animated-connection" />`, &fontFamily, &monoFontFamily, "")
+
+	css := buf.String()
+	if !strings.Contains(css, "@media (prefers-reduced-motion: reduce)") {
+		t.Fatal("animated connections should honor the reduced-motion preference")
+	}
+	if !strings.Contains(css, "animation: none !important;") {
+		t.Fatal("reduced-motion rule should override the inline connection animation")
+	}
+
+	buf.Reset()
+	EmbedFonts(&buf, "diagram", `<path class="connection" />`, &fontFamily, &monoFontFamily, "")
+	if strings.Contains(buf.String(), "prefers-reduced-motion") {
+		t.Fatal("static diagrams should not include the reduced-motion rule")
+	}
+}
 
 func TestSortObjects(t *testing.T) {
 	allObjects := []DiagramObject{

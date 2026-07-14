@@ -12,6 +12,12 @@
 	}
 }
 
+@media (prefers-reduced-motion: reduce) {
+	.animated-connection {
+		animation: none !important;
+	}
+}
+
 .d2-4155204744 .text-bold {
 	font-family: "d2-4155204744-font-bold";
 }
