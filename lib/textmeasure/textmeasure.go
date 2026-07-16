@@ -10,6 +10,7 @@ import (
 
 	"github.com/golang/freetype/truetype"
 	"github.com/rivo/uniseg"
+	"golang.org/x/image/math/fixed"
 
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/lib/geo"
@@ -182,6 +183,27 @@ func (r *Ruler) addFontSize(font d2fonts.Font) {
 	r.tabWidths[font] = atlas.glyph(' ').advance * TAB_SIZE
 }
 
+func (t *Ruler) measureAdvanceWidth(font d2fonts.Font, s string) (float64, bool) {
+	sizelessFont := font
+	sizelessFont.Size = SIZELESS_FONT_SIZE
+	ttf, ok := t.ttfs[sizelessFont]
+	if !ok {
+		return 0, false
+	}
+
+	var width fixed.Int26_6
+	scale := fixed.I(font.Size)
+	for _, r := range s {
+		index := ttf.Index(r)
+		if index == 0 && r != 0 {
+			return 0, false
+		}
+		width += ttf.HMetric(scale, index).AdvanceWidth
+	}
+
+	return float64(width) / 64, true
+}
+
 func (t *Ruler) scaleUnicode(w float64, font d2fonts.Font, s string) float64 {
 	// Weird unicode stuff is going on when this is true
 	// See https://github.com/rivo/uniseg#grapheme-clusters
@@ -191,6 +213,13 @@ func (t *Ruler) scaleUnicode(w float64, font d2fonts.Font, s string) float64 {
 	if uniseg.GraphemeClusterCount(s) != len(s) {
 		for _, line := range strings.Split(s, "\n") {
 			lineW, _ := t.MeasurePrecise(font, line)
+			// Font subsets omit layout tables such as GPOS. Use the original
+			// glyph advances so supported Unicode runes are not measured as the
+			// replacement glyph used by the fixed-size atlas.
+			if advanceWidth, ok := t.measureAdvanceWidth(font, line); ok {
+				w = math.Max(w, math.Max(lineW, advanceWidth))
+				continue
+			}
 			gr := uniseg.NewGraphemes(line)
 
 			mono := d2fonts.SourceCodePro.Font(font.Size, font.Style)

@@ -2063,6 +2063,16 @@ results -> favorable -> will of the people
 `,
 		},
 		{
+			name:      "unicode_markdown_title",
+			justDagre: true,
+			script: `title: |md
+  # Cloud Run Egress Architecture — Backend / Exporter / Autolayout / Fetcher
+| { near: top-center }
+
+x -> y
+`,
+		},
+		{
 			name: "text_font_sizes",
 			script: `bear: { shape: text; style.font-size: 22; style.bold: true }
 mama bear: { shape: text; style.font-size: 28; style.italic: true }
