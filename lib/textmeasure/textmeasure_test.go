@@ -101,6 +101,7 @@ _italics are all measured correctly_
 	"`inline code`": {103, 24},
 	"`code`":        {46, 24},
 	"`a`":           {21, 24},
+	`# Cloud Run Egress Architecture — Backend / Exporter / Autolayout / Fetcher`: {1022, 51},
 }
 
 func TestTextMeasureMarkdown(t *testing.T) {

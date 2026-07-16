@@ -1,0 +1,127 @@
+title: {
+  shape: text
+  label: |md
+    # Cloud Run Egress Architecture — Backend / Exporter / Autolayout / Fetcher
+  |
+  near: top-center
+}
+
+Cloud_Run_Services: {
+  label: "Cloud Run Services"
+  style: {
+    fill: "#fbfbfd"
+  }
+
+  Backend: {
+    label: "Backend\n(tag: egress-web)\nDirect VPC egress: ALL_TRAFFIC"
+    style: {fill: "#e8f0fe"}
+  }
+
+  Exporter: {
+    label: "Exporter\n(tag: egress-sentry)\nDirect VPC egress: ALL_TRAFFIC"
+    style: {fill: "#e7f8ef"}
+  }
+
+  Autolayout: {
+    label: "Autolayout\n(tag: egress-none)\nDirect VPC egress: ALL_TRAFFIC"
+    style: {fill: "#fdeee8"}
+  }
+
+  Fetcher: {
+    label: "Fetcher\n(tag: egress-fetcher)\nDirect VPC egress: ALL_TRAFFIC"
+    style: {fill: "#fff7cc"}
+  }
+}
+
+VPC: {
+  label: "Your VPC (firewall / routes apply here)"
+  style: {
+    fill: "#f4f6fb"
+  }
+
+  FW: {
+    shape: page
+    label: |md
+      ## Egress Firewall Policies
+
+      - Allow DNS (UDP/TCP 53) → 169.254.169.254
+      - Deny Metadata (TCP 80/443) → 169.254.169.254
+      - Allow → SWP VIP:80,443 (for tags: egress-web, egress-sentry, egress-fetcher)
+      - Allow private RFC1918/required backends (optional)
+      - Deny-All catch-all (per tag; e.g., egress-none)
+    |
+  }
+
+  SWP: {
+    label: "Secure Web Proxy (SWP)\nExplicit HTTP/HTTPS proxy\n(domain/URL policy, logs)"
+    shape: cylinder
+  }
+
+  NAT: {
+    label: "Cloud NAT\nEgress IPs to Internet"
+    shape: cylinder
+  }
+}
+
+Internet: {
+  shape: cloud
+  label: "Internet"
+}
+
+Sentry: {
+  label: "sentry.io"
+}
+
+ImageHosts: {
+  label: "Any image hosts"
+}
+
+# Ingress constraints to Autolayout (IAM-based)
+Cloud_Run_Services.Backend -> Cloud_Run_Services.Autolayout: {
+  label: "ingress (Run Invoker SA)"
+  style: {stroke-dash: 3}
+}
+
+Cloud_Run_Services.Exporter -> Cloud_Run_Services.Autolayout: {
+  label: "ingress (Run Invoker SA)"
+  style: {stroke-dash: 3}
+}
+
+# Backend calls Fetcher for arbitrary image fetching
+Cloud_Run_Services.Backend -> Cloud_Run_Services.Fetcher: {
+  label: "HTTPS (OIDC) call for image fetching"
+  style: {stroke-dash: 3}
+}
+
+# Service egress paths into VPC and through SWP
+Cloud_Run_Services.Backend -> VPC.SWP: "via VPC FW → SWP"
+Cloud_Run_Services.Exporter -> VPC.SWP: "via VPC FW → SWP"
+Cloud_Run_Services.Fetcher -> VPC.SWP: "via VPC FW → SWP"
+
+# Autolayout egress explicitly denied
+Cloud_Run_Services.Autolayout -> VPC.FW: {
+  label: "egress denied"
+  style: {stroke-dash: 3; stroke: "#cc0000"}
+}
+
+# SWP to NAT to Internet
+VPC.SWP -> VPC.NAT: ""
+VPC.NAT -> Internet: ""
+
+# Internet to SaaS destinations
+Internet -> Sentry: ""
+Internet -> ImageHosts: ""
+
+# SWP policy notes
+PolicyNotes: {
+  shape: page
+  label: |md
+    ## SWP Policy Examples
+
+    - Source = Exporter SA → allow *.sentry.io only
+    - Source = Backend SA → allow broader HTTPS (still block RFC1918/link-local)
+    - Source = Fetcher SA (optional) → general web allow with deny lists
+  |
+}
+
+VPC.FW -> PolicyNotes: {style: {stroke-dash: 3}}
