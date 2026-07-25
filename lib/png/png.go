@@ -13,7 +13,7 @@ import (
 	exif "github.com/dsoprea/go-exif/v3"
 	exifcommon "github.com/dsoprea/go-exif/v3/common"
 	pngstruct "github.com/dsoprea/go-png-image-structure/v2"
-	"github.com/playwright-community/playwright-go"
+	"github.com/mxschmitt/playwright-go"
 
 	"oss.terrastruct.com/d2/lib/compression"
 	"oss.terrastruct.com/d2/lib/version"

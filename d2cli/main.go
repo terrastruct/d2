@@ -15,7 +15,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/playwright-community/playwright-go"
+	"github.com/mxschmitt/playwright-go"
 	"github.com/spf13/pflag"
 	"go.uber.org/multierr"
 
