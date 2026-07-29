@@ -41,6 +41,7 @@
                     </a:prstGeom>
                 </p:spPr>
             </p:pic>
+            {{if gt .HeaderHeight 0}}
             <p:sp>
                 <p:nvSpPr>
                     <p:cNvPr id="95" name="{{.Description}}" />
@@ -94,6 +95,7 @@
                     </a:p>
                 </p:txBody>
             </p:sp>
+            {{end}}
             {{range .Links}}
             <p:sp>
                 <p:nvSpPr>

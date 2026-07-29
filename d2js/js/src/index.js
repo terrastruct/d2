@@ -1,10 +1,5 @@
 import { createWorker, loadFile } from "./platform.js";
 
-const DEFAULT_OPTIONS = {
-  layout: "dagre",
-  sketch: false,
-};
-
 export class D2 {
   constructor() {
     this.ready = this.init();
@@ -42,7 +37,6 @@ export class D2 {
   async init() {
     this.worker = await createWorker();
 
-    const elkContent = await loadFile("./elk.js");
     const wasmExecContent = await loadFile("./wasm_exec.js");
     const wasmBinary = await loadFile("./d2.wasm");
 
@@ -64,7 +58,6 @@ export class D2 {
       data: {
         wasm: wasmBinary,
         wasmExecContent: isNode ? wasmExecContent.toString() : null,
-        elkContent: isNode ? elkContent.toString() : null,
         wasmExecUrl: isNode
           ? null
           : URL.createObjectURL(
@@ -86,17 +79,15 @@ export class D2 {
   }
 
   async compile(input, options = {}) {
-    const opts = { ...DEFAULT_OPTIONS, ...options };
     const request =
       typeof input === "string"
-        ? { fs: { index: input }, options: opts }
-        : { ...input, options: { ...opts, ...input.options } };
+        ? { fs: { index: input }, options }
+        : { ...input, options: { ...options, ...input.options } };
     return this.sendMessage("compile", request);
   }
 
   async render(diagram, options = {}) {
-    const opts = { ...DEFAULT_OPTIONS, ...options };
-    return this.sendMessage("render", { diagram, options: opts });
+    return this.sendMessage("render", { diagram, options });
   }
 
   async encode(script) {
@@ -105,5 +96,13 @@ export class D2 {
 
   async decode(encoded) {
     return this.sendMessage("decode", encoded);
+  }
+
+  async version() {
+    return this.sendMessage("version");
+  }
+
+  async jsVersion() {
+    return this.sendMessage("jsVersion");
   }
 }

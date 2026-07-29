@@ -41,6 +41,7 @@ var CompositeReservedKeywords = map[string]struct{}{
 	"constraint":       {},
 	"label":            {},
 	"icon":             {},
+	"tooltip":          {},
 }
 
 // StyleKeywords are reserved keywords which cannot exist outside of the "style" keyword
@@ -120,8 +121,38 @@ var LabelPositionsArray = []string{
 	"outside-bottom-left",
 	"outside-bottom-center",
 	"outside-bottom-right",
+
+	"border-top-left",
+	"border-top-center",
+	"border-top-right",
+
+	"border-left-top",
+	"border-left-center",
+	"border-left-bottom",
+
+	"border-right-top",
+	"border-right-center",
+	"border-right-bottom",
+
+	"border-bottom-left",
+	"border-bottom-center",
+	"border-bottom-right",
 }
 var LabelPositions map[string]struct{}
+
+var TooltipPositionsArray = []string{
+	"top-left",
+	"top-center",
+	"top-right",
+
+	"center-left",
+	"center-right",
+
+	"bottom-left",
+	"bottom-center",
+	"bottom-right",
+}
+var TooltipPositions map[string]struct{}
 
 var LabelPositionsMapping = map[string]label.Position{
 	"top-left":   label.InsideTopLeft,
@@ -151,6 +182,22 @@ var LabelPositionsMapping = map[string]label.Position{
 	"outside-bottom-left":   label.OutsideBottomLeft,
 	"outside-bottom-center": label.OutsideBottomCenter,
 	"outside-bottom-right":  label.OutsideBottomRight,
+
+	"border-top-left":   label.BorderTopLeft,
+	"border-top-center": label.BorderTopCenter,
+	"border-top-right":  label.BorderTopRight,
+
+	"border-left-top":    label.BorderLeftTop,
+	"border-left-center": label.BorderLeftMiddle,
+	"border-left-bottom": label.BorderLeftBottom,
+
+	"border-right-top":    label.BorderRightTop,
+	"border-right-center": label.BorderRightMiddle,
+	"border-right-bottom": label.BorderRightBottom,
+
+	"border-bottom-left":   label.BorderBottomLeft,
+	"border-bottom-center": label.BorderBottomCenter,
+	"border-bottom-right":  label.BorderBottomRight,
 }
 
 var FillPatterns = []string{
@@ -196,5 +243,10 @@ func init() {
 	LabelPositions = make(map[string]struct{}, len(LabelPositionsArray))
 	for _, k := range LabelPositionsArray {
 		LabelPositions[k] = struct{}{}
+	}
+
+	TooltipPositions = make(map[string]struct{}, len(TooltipPositionsArray))
+	for _, k := range TooltipPositionsArray {
+		TooltipPositions[k] = struct{}{}
 	}
 }

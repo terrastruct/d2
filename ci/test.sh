@@ -6,4 +6,4 @@ if [ "$*" = "" ]; then
   set ./...
 fi
 
-go test --timeout=30m "$@"
+CI=1 go test --timeout=30m "$@"

@@ -1,6 +1,7 @@
 import { build } from "bun";
 import { copyFile, mkdir, writeFile, readFile, rm } from "node:fs/promises";
 import { join, resolve } from "node:path";
+import { brotliCompressSync } from "node:zlib";
 
 const __dirname = new URL(".", import.meta.url).pathname;
 const ROOT_DIR = resolve(__dirname);
@@ -14,12 +15,29 @@ await mkdir("./dist/node-cjs", { recursive: true });
 const wasmBinary = await readFile("./wasm/d2.wasm");
 const wasmExecJs = await readFile("./wasm/wasm_exec.js", "utf8");
 
+const compressedWasm = brotliCompressSync(wasmBinary);
+console.log(
+  `WASM compression: ${(wasmBinary.length / 1024 / 1024).toFixed(2)}MB → ${(
+    compressedWasm.length /
+    1024 /
+    1024
+  ).toFixed(2)}MB`
+);
+
+// Store compressed WASM as base64 and include brotli decoder in the loader
+// Don't decompress immediately - let the consumer decompress when needed
+const brotliDecoder = await readFile("./vendor/decode.min.js", "utf8");
+
 await writeFile(
   join(SRC_DIR, "wasm-loader.browser.js"),
-  `export const wasmBinary = Uint8Array.from(atob("${Buffer.from(wasmBinary).toString(
-    "base64"
-  )}"), c => c.charCodeAt(0));
-   export const wasmExecJs = ${JSON.stringify(wasmExecJs)};`
+  `${brotliDecoder}
+
+export const wasmBinaryCompressed = "${Buffer.from(compressedWasm).toString("base64")}";
+export function getWasmBinary() {
+  const compressedBytes = Uint8Array.from(atob(wasmBinaryCompressed), c => c.charCodeAt(0));
+  return BrotliDecode(compressedBytes);
+}
+export const wasmExecJs = ${JSON.stringify(wasmExecJs)};`
 );
 
 const commonConfig = {
@@ -32,17 +50,51 @@ async function buildDynamicFiles(platform) {
       ? `export * from "./platform.node.js";`
       : `export * from "./platform.browser.js";`;
 
-  const platformPath = join(SRC_DIR, "platform.js");
-  await writeFile(platformPath, platformContent);
+  await writeFile(join(SRC_DIR, "platform.js"), platformContent);
 
-  const workerSource =
-    platform === "node"
-      ? join(SRC_DIR, "worker.node.js")
-      : join(SRC_DIR, "worker.browser.js");
+  if (platform === "node") {
+    const workerContent = await readFile(join(SRC_DIR, "worker.node.js"), "utf8");
+    await writeFile(join(SRC_DIR, "worker.js"), workerContent);
+  } else {
+    // For browser, prepend the ELK variables to worker.browser.js
+    // since the worker runs in a blob and can't use ES6 imports
+    const elkJs = await readFile(
+      resolve(ROOT_DIR, "../../d2layouts/d2elklayout/elk.js"),
+      "utf8"
+    );
+    const setupJs = await readFile(
+      resolve(ROOT_DIR, "../../d2layouts/d2elklayout/setup.js"),
+      "utf8"
+    );
 
-  const workerTarget = join(SRC_DIR, "worker.js");
-  const workerContent = await readFile(workerSource, "utf8");
-  await writeFile(workerTarget, workerContent);
+    // Compress elk.js and setup.js
+    const elkJsCompressed = brotliCompressSync(new TextEncoder().encode(elkJs));
+    const setupJsCompressed = brotliCompressSync(new TextEncoder().encode(setupJs));
+
+    console.log(
+      `ELK compression: ${(elkJs.length / 1024 / 1024).toFixed(2)}MB → ${(
+        elkJsCompressed.length /
+        1024 /
+        1024
+      ).toFixed(2)}MB`
+    );
+
+    const workerBase = await readFile(join(SRC_DIR, "worker.browser.js"), "utf8");
+
+    // Bundle brotli decoder directly into the worker
+    const brotliDecoder = await readFile(
+      resolve(ROOT_DIR, "vendor/decode.min.js"),
+      "utf8"
+    );
+
+    const elkVars = `${brotliDecoder}
+const elkJsCompressed = "${Buffer.from(elkJsCompressed).toString("base64")}";
+const setupJsCompressed = "${Buffer.from(setupJsCompressed).toString("base64")}";
+const elkJs = new TextDecoder().decode(BrotliDecode(Uint8Array.from(atob(elkJsCompressed), c => c.charCodeAt(0))));
+const setupJs = new TextDecoder().decode(BrotliDecode(Uint8Array.from(atob(setupJsCompressed), c => c.charCodeAt(0))));
+`;
+    await writeFile(join(SRC_DIR, "worker.js"), elkVars + workerBase);
+  }
 }
 
 async function buildAndCopy(buildType) {
@@ -93,7 +145,15 @@ async function buildAndCopy(buildType) {
       resolve(ROOT_DIR, "wasm/wasm_exec.js"),
       join(config.outdir, "wasm_exec.js")
     );
-    await copyFile(resolve(ROOT_DIR, "src/elk.js"), join(config.outdir, "elk.js"));
+    // Copy ELK library files from d2elklayout
+    await copyFile(
+      resolve(ROOT_DIR, "../../d2layouts/d2elklayout/elk.js"),
+      join(config.outdir, "elk.js")
+    );
+    await copyFile(
+      resolve(ROOT_DIR, "../../d2layouts/d2elklayout/setup.js"),
+      join(config.outdir, "setup.js")
+    );
   }
 }
 

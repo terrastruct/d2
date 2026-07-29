@@ -3,10 +3,10 @@ let nodeModules = null;
 async function loadNodeModules() {
   if (!nodeModules) {
     nodeModules = {
-      fs: await import("fs/promises"),
-      path: await import("path"),
-      url: await import("url"),
-      worker: await import("worker_threads"),
+      fs: await import("node:fs/promises"),
+      path: await import("node:path"),
+      url: await import("node:url"),
+      worker: await import("node:worker_threads"),
     };
   }
   return nodeModules;

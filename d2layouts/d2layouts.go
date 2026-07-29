@@ -343,6 +343,10 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 		}
 	}
 
+	if err := validateObjectPositions(g.Objects); err != nil {
+		return err
+	}
+
 	log.Debug(ctx, "done", slog.Any("rootlevel", g.RootLevel), slog.Any("shapes", g.PrintString()))
 	return err
 }
@@ -533,6 +537,18 @@ func boundingBox(g *d2graph.Graph) (tl, br *geo.Point) {
 	}
 
 	return tl, br
+}
+
+func validateObjectPositions(objects []*d2graph.Object) error {
+	for _, obj := range objects {
+		if obj.TopLeft == nil {
+			continue
+		}
+		if math.IsInf(obj.TopLeft.X, 0) || math.IsInf(obj.TopLeft.Y, 0) {
+			return fmt.Errorf("object %q has invalid position with infinity value: x=%f, y=%f", obj.AbsID(), obj.TopLeft.X, obj.TopLeft.Y)
+		}
+	}
+	return nil
 }
 
 func FitToGraph(container *d2graph.Object, nestedGraph *d2graph.Graph, padding geo.Spacing) {

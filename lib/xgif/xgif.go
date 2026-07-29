@@ -15,8 +15,14 @@ import (
 	"image/color"
 	"image/gif"
 	"image/png"
+	"math"
+
+	"golang.org/x/sync/errgroup"
+
+	d2png "oss.terrastruct.com/d2/lib/png"
 
 	"github.com/ericpauley/go-quantize/quantize"
+	"github.com/playwright-community/playwright-go"
 
 	"oss.terrastruct.com/util-go/go2"
 )
@@ -24,6 +30,67 @@ import (
 const INFINITE_LOOP = 0
 
 var BG_COLOR = color.White
+
+const fps = 30
+const workers = 16
+
+func ConvertAnimatedSVGToPNGs(browser playwright.Browser, svg []byte, durationMs int) ([][]byte, error) {
+	totalFrames := (durationMs / 1000) * fps
+	out := make([][]byte, totalFrames)
+
+	batchSize := int(math.Ceil(float64(totalFrames) / float64(workers)))
+
+	g := new(errgroup.Group)
+	g.SetLimit(workers)
+
+	for w := 0; w < workers; w++ {
+		w := w
+		g.Go(func() error {
+			context, err := browser.NewContext(playwright.BrowserNewContextOptions{
+				DeviceScaleFactor: playwright.Float(1.0),
+			})
+			if err != nil {
+				return err
+			}
+			defer context.Close()
+
+			page, err := context.NewPage()
+			if err != nil {
+				return err
+			}
+			defer page.Close()
+
+			if err := d2png.MountSVG(page, string(svg)); err != nil {
+				return err
+			}
+
+			for frameIndex := w * batchSize; frameIndex < min((w+1)*batchSize, totalFrames); frameIndex++ {
+				t := float64(frameIndex) / float64(fps)
+				if err := d2png.SetAnimationTime(page, t); err != nil {
+					return err
+				}
+				_, err = page.Evaluate(`() => new Promise(r => requestAnimationFrame(() => r()))`)
+				if err != nil {
+					return err
+				}
+
+				pngBuf, err := d2png.ScreenshotSVG(page)
+				if err != nil {
+					return err
+				}
+
+				out[frameIndex] = pngBuf
+			}
+			return nil
+		})
+	}
+
+	if err := g.Wait(); err != nil {
+		return nil, err
+	}
+
+	return out, nil
+}
 
 func AnimatePNGs(pngs [][]byte, animIntervalMs int) ([]byte, error) {
 	var width, height int
@@ -39,7 +106,7 @@ func AnimatePNGs(pngs [][]byte, animIntervalMs int) ([]byte, error) {
 		height = go2.Max(height, bounds.Dy())
 	}
 
-	interval := animIntervalMs / 10 // gif animation interval is in 100ths of a second
+	interval := int(math.Round(100.0 / float64(fps)))
 	anim := &gif.GIF{
 		LoopCount: INFINITE_LOOP,
 		Config: image.Config{
@@ -48,53 +115,67 @@ func AnimatePNGs(pngs [][]byte, animIntervalMs int) ([]byte, error) {
 		},
 	}
 
-	for _, pngImage := range pngImgs {
-		// 1. convert the PNG into a GIF compatible image (Bitmap) by quantizing it to 255 colors
-		buf := bytes.NewBuffer(nil)
-		err := gif.Encode(buf, pngImage, &gif.Options{
-			NumColors: 256, // GIFs can have up to 256 colors
-			Quantizer: quantize.MedianCutQuantizer{},
-		})
-		if err != nil {
-			return nil, err
-		}
-		gifImg, err := gif.Decode(buf)
-		if err != nil {
-			return nil, err
-		}
-		palettedImg, ok := gifImg.(*image.Paletted)
-		if !ok {
-			return nil, fmt.Errorf("decoded gif image could not be cast as *image.Paletted")
-		}
+	anim.Image = make([]*image.Paletted, len(pngImgs))
+	anim.Delay = make([]int, len(pngImgs))
 
-		// 2. make GIF frames of the same size, keeping images centered and with a white background
-		bounds := pngImage.Bounds()
-		top := (height - bounds.Dy()) / 2
-		bottom := top + bounds.Dy()
-		left := (width - bounds.Dx()) / 2
-		right := left + bounds.Dx()
+	g := new(errgroup.Group)
+	g.SetLimit(workers)
 
-		var bgIndex int
-		if len(palettedImg.Palette) == 256 {
-			bgIndex = findWhiteIndex(palettedImg.Palette)
-			palettedImg.Palette[bgIndex] = BG_COLOR
-		} else {
-			bgIndex = len(palettedImg.Palette)
-			palettedImg.Palette = append(palettedImg.Palette, BG_COLOR)
-		}
-		frame := image.NewPaletted(image.Rect(0, 0, width, height), palettedImg.Palette)
-		for x := 0; x < width; x++ {
-			for y := 0; y < height; y++ {
-				if x <= left || y <= top || x >= right || y >= bottom {
-					frame.SetColorIndex(x, y, uint8(bgIndex))
-				} else {
-					frame.SetColorIndex(x, y, palettedImg.ColorIndexAt(x-left, y-top))
+	for i := 0; i < len(pngImgs); i++ {
+		i := i
+		g.Go(func() error {
+			pngImage := pngImgs[i]
+			// 1. convert the PNG into a GIF compatible image (Bitmap) by quantizing it to 255 colors
+			buf := bytes.NewBuffer(nil)
+			err := gif.Encode(buf, pngImage, &gif.Options{
+				NumColors: 256, // GIFs can have up to 256 colors
+				Quantizer: quantize.MedianCutQuantizer{},
+			})
+			if err != nil {
+				return err
+			}
+			gifImg, err := gif.Decode(buf)
+			if err != nil {
+				return err
+			}
+			palettedImg, ok := gifImg.(*image.Paletted)
+			if !ok {
+				return fmt.Errorf("decoded gif image could not be cast as *image.Paletted")
+			}
+
+			// 2. make GIF frames of the same size, keeping images centered and with a white background
+			bounds := pngImage.Bounds()
+			top := (height - bounds.Dy()) / 2
+			bottom := top + bounds.Dy()
+			left := (width - bounds.Dx()) / 2
+			right := left + bounds.Dx()
+
+			var bgIndex int
+			if len(palettedImg.Palette) == 256 {
+				bgIndex = findWhiteIndex(palettedImg.Palette)
+				palettedImg.Palette[bgIndex] = BG_COLOR
+			} else {
+				bgIndex = len(palettedImg.Palette)
+				palettedImg.Palette = append(palettedImg.Palette, BG_COLOR)
+			}
+			frame := image.NewPaletted(image.Rect(0, 0, width, height), palettedImg.Palette)
+			for x := 0; x < width; x++ {
+				for y := 0; y < height; y++ {
+					if x <= left || y <= top || x >= right || y >= bottom {
+						frame.SetColorIndex(x, y, uint8(bgIndex))
+					} else {
+						frame.SetColorIndex(x, y, palettedImg.ColorIndexAt(x-left, y-top))
+					}
 				}
 			}
-		}
 
-		anim.Image = append(anim.Image, frame)
-		anim.Delay = append(anim.Delay, interval)
+			anim.Image[i] = frame
+			anim.Delay[i] = interval
+			return nil
+		})
+	}
+	if err := g.Wait(); err != nil {
+		return nil, err
 	}
 
 	buf := bytes.NewBuffer(nil)

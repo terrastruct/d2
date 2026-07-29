@@ -1,0 +1,100 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/import/#10.d2,0:0:0-3:0:591",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/import/#10.d2,0:0:0-2:1:590",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/import/#10.d2,0:0:0-0:6:6",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/import/#10.d2,0:0:0-0:6:6",
+                  "value": [
+                    {
+                      "string": "gcloud",
+                      "raw_string": "gcloud"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {
+            "map": {
+              "range": "d2/testdata/d2parser/TestParse/import/#10.d2,0:8:8-2:1:590",
+              "nodes": [
+                {
+                  "map_key": {
+                    "range": "d2/testdata/d2parser/TestParse/import/#10.d2,1:2:12-1:22:32",
+                    "key": {
+                      "range": "d2/testdata/d2parser/TestParse/import/#10.d2,1:2:12-1:6:16",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2parser/TestParse/import/#10.d2,1:2:12-1:6:16",
+                            "value": [
+                              {
+                                "string": "icon",
+                                "raw_string": "icon"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2parser/TestParse/import/#10.d2,1:8:18-1:22:32",
+                        "value": [
+                          {
+                            "string": "data:image/png",
+                            "raw_string": "data:image/png"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "map_key": {
+                    "range": "d2/testdata/d2parser/TestParse/import/#10.d2,1:23:33-1:578:588",
+                    "key": {
+                      "range": "d2/testdata/d2parser/TestParse/import/#10.d2,1:23:33-1:578:588",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2parser/TestParse/import/#10.d2,1:23:33-1:578:588",
+                            "value": [
+                              {
+                                "string": "base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAADACAMAAAB/Pny7AAAAjVBMVEVChfT///89fOM3gPTk7P0+g/R0oPaKr+0rc+E0d+I5euNYjObt9P1lmiVBORw0KGgoAAAANSUhEUgAAAiVBORw0KGgoAAAANSUhEUgAAAiVBORw0KGgoAAAANSUhEUgAAABORw0KGgoAAAANSUhEUgAAAMwAAADACAMAAAB/Pny7AAAAjVBMVEVChfT///89fOM3gPTk7P0+g/R0oPaKr+0rc+E0d+I5euNYjObt9P1lmiVBORw0KGgoAAAANSUhEUgAAAiVBORw0KGgoAAAANSUhEUgAAAiVBORw0KGgoAAAANSUhEUgAAABORw0KGgoAAAANSUhEUgAAAMwAAADACAMAAAB/Pny7AAAAjVBMVEVChfT///89fOM3gPTk7P0+g/R0oPaKr+0rc+E0d+I5euNYjObt9P1lmiVBORw0KGgoAAAANSUhEUgAAAiVBORw0KGgoAAAANSUhEUgAAAiVBORw0KGgoAAAANSUhEUgAAA",
+                                "raw_string": "base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAADACAMAAAB/Pny7AAAAjVBMVEVChfT///89fOM3gPTk7P0+g/R0oPaKr+0rc+E0d+I5euNYjObt9P1lmiVBORw0KGgoAAAANSUhEUgAAAiVBORw0KGgoAAAANSUhEUgAAAiVBORw0KGgoAAAANSUhEUgAAABORw0KGgoAAAANSUhEUgAAAMwAAADACAMAAAB/Pny7AAAAjVBMVEVChfT///89fOM3gPTk7P0+g/R0oPaKr+0rc+E0d+I5euNYjObt9P1lmiVBORw0KGgoAAAANSUhEUgAAAiVBORw0KGgoAAAANSUhEUgAAAiVBORw0KGgoAAAANSUhEUgAAABORw0KGgoAAAANSUhEUgAAAMwAAADACAMAAAB/Pny7AAAAjVBMVEVChfT///89fOM3gPTk7P0+g/R0oPaKr+0rc+E0d+I5euNYjObt9P1lmiVBORw0KGgoAAAANSUhEUgAAAiVBORw0KGgoAAAANSUhEUgAAAiVBORw0KGgoAAAANSUhEUgAAA"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {}
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "err": {
+    "errs": [
+      {
+        "range": "d2/testdata/d2parser/TestParse/import/#10.d2,1:23:33-1:578:588",
+        "errmsg": "d2/testdata/d2parser/TestParse/import/#10.d2:2:24: key length 555 exceeds maximum allowed length of 518"
+      }
+    ]
+  }
+}

@@ -1,0 +1,576 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:0:0-3:0:31",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:0:0-0:21:21",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:0:0-0:16:16",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "k",
+                        "raw_string": "k"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:4:4-0:5:5",
+                    "value": [
+                      {
+                        "string": "c",
+                        "raw_string": "c"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:6:6-0:11:11",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:12:12-0:16:16",
+                    "value": [
+                      {
+                        "string": "fill",
+                        "raw_string": "fill"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "unquoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:18:18-0:21:21",
+                "value": [
+                  {
+                    "string": "red",
+                    "raw_string": "red"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,2:0:23-2:7:30",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,2:0:23-2:1:24",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,2:0:23-2:1:24",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "import": {
+                "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,2:3:26-2:7:30",
+                "spread": false,
+                "pre": "",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,2:4:27-2:7:30",
+                      "value": [
+                        {
+                          "string": "imp",
+                          "raw_string": "imp"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "iconStyle": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "b",
+        "id_val": "b",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:0:0-0:16:16",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "k",
+                        "raw_string": "k"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:4:4-0:5:5",
+                    "value": [
+                      {
+                        "string": "c",
+                        "raw_string": "c"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:6:6-0:11:11",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:12:12-0:16:16",
+                    "value": [
+                      {
+                        "string": "fill",
+                        "raw_string": "fill"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,2:0:23-2:1:24",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,2:0:23-2:1:24",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:0:0-0:16:16",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "k",
+                        "raw_string": "k"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:4:4-0:5:5",
+                    "value": [
+                      {
+                        "string": "c",
+                        "raw_string": "c"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:6:6-0:11:11",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:12:12-0:16:16",
+                    "value": [
+                      {
+                        "string": "fill",
+                        "raw_string": "fill"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,2:0:23-2:1:24",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,2:0:23-2:1:24",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "b"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "iconStyle": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "k",
+        "id_val": "k",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/imp.d2,1:0:1-1:1:2",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/imp.d2,1:0:1-1:1:2",
+                    "value": [
+                      {
+                        "string": "k",
+                        "raw_string": "k"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:0:0-0:16:16",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "k",
+                        "raw_string": "k"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:4:4-0:5:5",
+                    "value": [
+                      {
+                        "string": "c",
+                        "raw_string": "c"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:6:6-0:11:11",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:12:12-0:16:16",
+                    "value": [
+                      {
+                        "string": "fill",
+                        "raw_string": "fill"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 1,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "k"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "iconStyle": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "c",
+        "id_val": "c",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/imp.d2,2:2:8-2:3:9",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/imp.d2,2:2:8-2:3:9",
+                    "value": [
+                      {
+                        "string": "c",
+                        "raw_string": "c"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:0:0-0:16:16",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "k",
+                        "raw_string": "k"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:4:4-0:5:5",
+                    "value": [
+                      {
+                        "string": "c",
+                        "raw_string": "c"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:6:6-0:11:11",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/import-style-2.d2,0:12:12-0:16:16",
+                    "value": [
+                      {
+                        "string": "fill",
+                        "raw_string": "fill"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 2,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "c"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "fill": {
+              "value": "red"
+            }
+          },
+          "iconStyle": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

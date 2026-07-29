@@ -10,6 +10,7 @@
   },
   "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
+  "monoFontFamily": "SourceCodePro",
   "shapes": [
     {
       "id": "without",
@@ -155,7 +156,8 @@
         {
           "name": "a",
           "type": "b",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         }
       ],
       "methods": null,
@@ -426,7 +428,8 @@
         {
           "name": "a",
           "type": "b",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         }
       ],
       "methods": null,

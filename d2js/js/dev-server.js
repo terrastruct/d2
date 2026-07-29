@@ -10,8 +10,33 @@ const MIME_TYPES = {
   ".svg": "image/svg+xml",
 };
 
+async function isPortAvailable(port) {
+  try {
+    const server = Bun.serve({
+      port,
+      fetch() {
+        return new Response("test");
+      },
+    });
+    server.stop();
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+async function findAvailablePort(startPort = 3000) {
+  let port = startPort;
+  while (!(await isPortAvailable(port))) {
+    port++;
+  }
+  return port;
+}
+
+const port = await findAvailablePort(3000);
+
 const server = Bun.serve({
-  port: 3000,
+  port,
   async fetch(request) {
     const url = new URL(request.url);
     let filePath = url.pathname.slice(1); // Remove leading "/"
@@ -69,4 +94,4 @@ const server = Bun.serve({
   },
 });
 
-console.log(`Server running at http://localhost:3000`);
+console.log(`Server running at http://localhost:${port}`);

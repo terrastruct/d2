@@ -180,6 +180,7 @@
           "height": 0
         },
         "style": {},
+        "iconStyle": {},
         "near_key": null,
         "shape": {
           "value": ""
@@ -223,19 +224,22 @@
             {
               "name": "field here",
               "type": "",
-              "visibility": "public"
+              "visibility": "public",
+              "underline": false
             }
           ],
           "methods": [
             {
               "name": "GetType()",
               "return": "string",
-              "visibility": "public"
+              "visibility": "public",
+              "underline": false
             },
             {
               "name": "Is()",
               "return": "bool",
-              "visibility": "public"
+              "visibility": "public",
+              "underline": false
             }
           ]
         },
@@ -248,6 +252,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "class"

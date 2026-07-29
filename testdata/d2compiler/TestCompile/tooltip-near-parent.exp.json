@@ -1,0 +1,171 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-parent.d2,0:0:0-3:0:39",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-parent.d2,0:0:0-2:1:38",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-parent.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-parent.d2,0:0:0-0:3:3",
+                    "value": [
+                      {
+                        "string": "hey",
+                        "raw_string": "hey"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {
+              "unquoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-parent.d2,0:5:5-0:10:10",
+                "value": [
+                  {
+                    "string": "sushi",
+                    "raw_string": "sushi"
+                  }
+                ]
+              }
+            },
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-parent.d2,0:11:11-2:1:38",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-parent.d2,1:1:14-1:23:36",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-parent.d2,1:1:14-1:13:26",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-parent.d2,1:1:14-1:8:21",
+                              "value": [
+                                {
+                                  "string": "tooltip",
+                                  "raw_string": "tooltip"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-parent.d2,1:9:22-1:13:26",
+                              "value": [
+                                {
+                                  "string": "near",
+                                  "raw_string": "near"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-parent.d2,1:15:28-1:23:36",
+                          "value": [
+                            {
+                              "string": "top-left",
+                              "raw_string": "top-left"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "iconStyle": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "hey",
+        "id_val": "hey",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-parent.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/tooltip-near-parent.d2,0:0:0-0:3:3",
+                    "value": [
+                      {
+                        "string": "hey",
+                        "raw_string": "hey"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "sushi"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "iconStyle": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null,
+          "tooltipPosition": {
+            "value": "top-left"
+          }
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

@@ -95,11 +95,12 @@ func getBoardMap(path string, fs map[string]string, boardPath []string) (*d2ir.M
 
 func GetBoardAtPosition(text string, pos d2ast.Position) ([]string, error) {
 	r := strings.NewReader(text)
+	pos.Byte = -1
 	ast, err := d2parser.Parse("", r, nil)
 	if err != nil {
-		return nil, err
+		// Even when there is an error, we can still parse broken syntax and perhaps extract something meaningful
+		return getBoardPathAtPosition(*ast, nil, pos), err
 	}
-	pos.Byte = -1
 	return getBoardPathAtPosition(*ast, nil, pos), nil
 }
 

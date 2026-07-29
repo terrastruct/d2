@@ -328,7 +328,7 @@ containers: {
   Steps
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/image_children_Steps.d2:4:3: steps is only allowed at a board root`,
+			expErr: `d2/testdata/d2compiler/TestCompile/image_children_Steps.d2:4:3: steps must be declared at a board root scope`,
 		},
 		{
 			name: "name-with-dot-underscore",
@@ -717,6 +717,146 @@ x: {
 				}
 				if g.Edges[0].Label.Value != "Well, it's garish, ugly, and derelicts have used it for a toilet." {
 					t.Fatalf("unexpected g.Edges[0].Label: %#v", g.Edges[0].Label)
+				}
+			},
+		},
+		{
+			name: "legend",
+
+			text: `
+			vars: {
+  d2-legend: "凡例"{
+    User: "A person who interacts with the system" {
+      shape: person
+      style: {
+        fill: "#f5f5f5"
+      }
+    }
+
+    Database: "Stores application data" {
+      shape: cylinder
+      style.fill: "#b5d3ff"
+    }
+
+    HiddenShape: "This should not appear in the legend" {
+      style.opacity: 0
+    }
+
+    User -> Database: "Reads data" {
+      style.stroke: "blue"
+    }
+
+    Database -> User: "Returns results" {
+      style.stroke-dash: 5
+    }
+  }
+}
+
+user: User
+db: Database
+user -> db: Uses
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if g.Legend == nil {
+					t.Fatal("Expected Legend to be non-nil")
+					return
+				}
+
+				if g.Legend.Label != "凡例" {
+					t.Errorf("Expected label")
+				}
+
+				// 2. Verify the correct objects are in the legend
+				if len(g.Legend.Objects) != 2 {
+					t.Errorf("Expected 2 objects in legend, got %d", len(g.Legend.Objects))
+				}
+
+				// Check for User object
+				hasUser := false
+				hasDatabase := false
+				for _, obj := range g.Legend.Objects {
+					if obj.ID == "User" {
+						hasUser = true
+						if obj.Shape.Value != "person" {
+							t.Errorf("User shape incorrect, expected 'person', got: %s", obj.Shape.Value)
+						}
+					} else if obj.ID == "Database" {
+						hasDatabase = true
+						if obj.Shape.Value != "cylinder" {
+							t.Errorf("Database shape incorrect, expected 'cylinder', got: %s", obj.Shape.Value)
+						}
+					} else if obj.ID == "HiddenShape" {
+						t.Errorf("HiddenShape should not be in legend due to opacity: 0")
+					}
+				}
+
+				if !hasUser {
+					t.Errorf("User object missing from legend")
+				}
+				if !hasDatabase {
+					t.Errorf("Database object missing from legend")
+				}
+
+				// 3. Verify the correct edges are in the legend
+				if len(g.Legend.Edges) != 2 {
+					t.Errorf("Expected 2 edges in legend, got %d", len(g.Legend.Edges))
+				}
+
+				// Check for expected edges
+				hasReadsEdge := false
+				hasReturnsEdge := false
+				for _, edge := range g.Legend.Edges {
+					if edge.Label.Value == "Reads data" {
+						hasReadsEdge = true
+						// Check edge properties
+						if edge.Style.Stroke == nil {
+							t.Errorf("Reads edge stroke is nil")
+						} else if edge.Style.Stroke.Value != "blue" {
+							t.Errorf("Reads edge stroke incorrect, expected 'blue', got: %s", edge.Style.Stroke.Value)
+						}
+					} else if edge.Label.Value == "Returns results" {
+						hasReturnsEdge = true
+						// Check edge properties
+						if edge.Style.StrokeDash == nil {
+							t.Errorf("Returns edge stroke-dash is nil")
+						} else if edge.Style.StrokeDash.Value != "5" {
+							t.Errorf("Returns edge stroke-dash incorrect, expected '5', got: %s", edge.Style.StrokeDash.Value)
+						}
+					} else if edge.Label.Value == "Hidden connection" {
+						t.Errorf("Hidden connection should not be in legend due to opacity: 0")
+					}
+				}
+
+				if !hasReadsEdge {
+					t.Errorf("'Reads data' edge missing from legend")
+				}
+				if !hasReturnsEdge {
+					t.Errorf("'Returns results' edge missing from legend")
+				}
+
+				// 4. Verify the regular diagram content is still there
+				userObj, hasUserObj := g.Root.HasChild([]string{"user"})
+				if !hasUserObj {
+					t.Errorf("Main diagram missing 'user' object")
+				} else if userObj.Label.Value != "User" {
+					t.Errorf("User label incorrect, expected 'User', got: %s", userObj.Label.Value)
+				}
+
+				dbObj, hasDBObj := g.Root.HasChild([]string{"db"})
+				if !hasDBObj {
+					t.Errorf("Main diagram missing 'db' object")
+				} else if dbObj.Label.Value != "Database" {
+					t.Errorf("DB label incorrect, expected 'Database', got: %s", dbObj.Label.Value)
+				}
+
+				// Check the main edge
+				if len(g.Edges) == 0 {
+					t.Errorf("No edges found in main diagram")
+				} else {
+					mainEdge := g.Edges[0]
+					if mainEdge.Label.Value != "Uses" {
+						t.Errorf("Main edge label incorrect, expected 'Uses', got: %s", mainEdge.Label.Value)
+					}
 				}
 			},
 		},
@@ -1523,6 +1663,22 @@ x -> y: {
 			},
 		},
 		{
+			name: "url_relative_link",
+
+			text: `x: {
+  link: /google
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if len(g.Objects) != 1 {
+					t.Fatal(g.Objects)
+				}
+				if g.Objects[0].Link.Value != "/google" {
+					t.Fatal(g.Objects[0].Link.Value)
+				}
+			},
+		},
+		{
 			name: "non_url_link",
 
 			text: `x: {
@@ -1561,6 +1717,223 @@ steps: {
 				assert.Equal(t, 1, len(g.Layers))
 				assert.Equal(t, 1, len(g.Layers[0].Steps))
 			},
+		},
+		{
+			name: "composite-glob-filter",
+
+			text: `
+*: {
+  &shape: [a; b]
+}
+k
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/composite-glob-filter.d2:3:3: glob filters cannot be composites
+d2/testdata/d2compiler/TestCompile/composite-glob-filter.d2:3:3: glob filters cannot be composites`,
+		},
+		{
+			name: "imported-glob-leaf-filter",
+
+			text: `
+***: {
+  &leaf: true
+  style: {
+    font-size: 30
+  }
+}
+a: {
+	...@x
+}
+`,
+			files: map[string]string{
+				"x.d2": `
+b
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 2, len(g.Objects))
+				assert.Equal(t, "b", g.Objects[0].Label.Value)
+				assert.Equal(t, "a", g.Objects[1].Label.Value)
+				assert.Equal(t, "30", g.Objects[0].Style.FontSize.Value)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[1].Style.FontSize)
+			},
+		},
+		{
+			name: "import-nested-var",
+
+			text: `...@models.environment
+`,
+			files: map[string]string{
+				"models.d2": `
+vars: {
+  c: {
+    k
+  }
+}
+
+environment: {
+  ...${c}
+}
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 1, len(g.Objects))
+				assert.Equal(t, "k", g.Objects[0].AbsID())
+			},
+		},
+		{
+			name: "import-connections",
+
+			text: `b.c -> b.d
+
+b: @imp
+`,
+			files: map[string]string{
+				"imp.d2": `
+c
+d
+d -> c
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 2, len(g.Edges))
+			},
+		},
+		{
+			name: "import-style-1",
+
+			text: `b.c.style.fill: red
+
+b: @imp
+`,
+			files: map[string]string{
+				"imp.d2": `c`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 2, len(g.Objects))
+				assert.Equal(t, "c", g.Objects[1].Label.Value)
+				assert.Equal(t, "red", g.Objects[1].Style.Fill.Value)
+			},
+		},
+		{
+			name: "import-style-2",
+
+			text: `b.k.c.style.fill: red
+
+b: @imp
+`,
+			files: map[string]string{
+				"imp.d2": `
+k: {
+  c
+}
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, "c", g.Objects[2].Label.Value)
+				assert.Equal(t, "red", g.Objects[2].Style.Fill.Value)
+			},
+		},
+		{
+			name: "scenario-glob",
+
+			text: `**.style.opacity: 0.2
+x.style.opacity: 1
+z
+
+scenarios: {
+  y: {
+    z.style.opacity: 1
+  }
+}
+
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, "x", g.Scenarios[0].Objects[0].ID)
+				assert.Equal(t, "1", g.Scenarios[0].Objects[0].Style.Opacity.Value)
+			},
+		},
+		{
+			name: "import-scenario",
+
+			text: `a
+
+...@test
+`,
+			files: map[string]string{
+				"test.d2": `
+x
+
+scenarios: {
+  production: {
+    x.tooltip: foo
+  }
+}
+
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 2, len(g.Scenarios[0].Objects))
+			},
+		},
+		{
+			name: "import-steps",
+
+			text: `a
+
+...@test
+`,
+			files: map[string]string{
+				"test.d2": `
+x
+
+steps: {
+  1: {
+    x.tooltip: foo
+  }
+  2: {
+    x.tooltip: do
+  }
+}
+`,
+			},
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 2, len(g.Steps[0].Objects))
+				assert.Equal(t, 2, len(g.Steps[1].Objects))
+			},
+		},
+		{
+			name: "import-classes-boards",
+
+			text: `classes: {
+  a: {
+		label: hi
+  }
+}
+
+layers: {
+  asdf: {
+    qwer: {
+      layers: {
+        ok: {
+          bok
+				}
+      }
+    }
+  }
+  wert: {
+    classes: @classes
+  }
+}
+
+`,
+			files: map[string]string{
+				"classes.d2": `
+c: {
+	label: bye
+}
+`,
+			},
+			expErr: `d2/testdata/d2compiler/TestCompile/import-classes-boards.d2:10:7: layers must be declared at a board root scope`,
 		},
 		{
 			name: "import_url_link",
@@ -2704,6 +3077,52 @@ obj {
 			},
 		},
 		{
+			name: "tooltip-near-parent",
+			text: `hey: sushi {
+	tooltip.near: top-left
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "sushi", g.Objects[0].Attributes.Label.Value)
+				tassert.Equal(t, "top-left", g.Objects[0].Attributes.TooltipPosition.Value)
+			},
+		},
+		{
+			name: "tooltip-near-composite-separate",
+			text: `hey: {
+	tooltip: hover text
+	tooltip.near: bottom-right
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "hover text", g.Objects[0].Attributes.Tooltip.Value)
+				tassert.Equal(t, "bottom-right", g.Objects[0].Attributes.TooltipPosition.Value)
+			},
+		},
+		{
+			name: "tooltip-near-composite-together",
+			text: `hey: {
+	tooltip: hover text {
+		near: center-left
+  }
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "hover text", g.Objects[0].Attributes.Tooltip.Value)
+				tassert.Equal(t, "center-left", g.Objects[0].Attributes.TooltipPosition.Value)
+			},
+		},
+		{
+			name: "tooltip-near-invalid",
+			text: `hey: {
+	tooltip: hover text {
+		near: outside-top-left
+  }
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/tooltip-near-invalid.d2:3:3: invalid "near" field`,
+		},
+		{
 			name: "label-near-invalid-edge",
 			text: `hey: {
   label: sushi {
@@ -2990,6 +3409,62 @@ x*: {
 			},
 		},
 		{
+			name: "glob-spread-vars/1",
+			text: `vars: {
+  b: {
+    1
+  }
+}
+
+a: {
+  ...${b}
+  *.style.fill: red
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, "1", g.Objects[1].Label.Value)
+				assert.Equal(t, "red", g.Objects[1].Style.Fill.Value)
+			},
+		},
+		{
+			name: "glob-spread-vars/2",
+			text: `vars: {
+  b: {
+    1
+		2
+  }
+}
+
+a: {
+  ...${b}
+  ** -> _.ok
+}
+
+ok
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.Equal(t, 2, len(g.Edges))
+			},
+		},
+		{
+			name: "import-var-chain",
+
+			text: `...@dev
+`,
+			files: map[string]string{
+				"dev.d2": `
+vars: {
+  a: {
+    b
+  }
+  c: {
+    ...${a}
+  }
+}
+`,
+			},
+		},
+		{
 			name: "var_in_markdown",
 			text: `vars: {
   v: ok
@@ -3014,6 +3489,22 @@ x: |md
 				tassert.True(t, strings.Contains(g.Objects[0].Attributes.Label.Value, "hey ${v}"))
 				// Code blocks untouched
 				tassert.True(t, strings.Contains(g.Objects[0].Attributes.Label.Value, "bye ${v}"))
+			},
+		},
+		{
+			name: "var_nested_in_markdown",
+			text: `vars: {
+  v: {
+		g: ok
+  }
+}
+
+x: |md
+  m${v.g}y
+|
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.True(t, strings.Contains(g.Objects[0].Attributes.Label.Value, "moky"))
 			},
 		},
 		{
@@ -3534,6 +4025,14 @@ svc_1.t2 -> b: do with B
 				tassert.Equal(t, "d2/testdata/d2compiler/TestCompile/meow.d2", g.Layers[0].Layers[0].AST.Range.Path)
 			},
 		},
+		{
+			name: "invalid_gradient_color_stop",
+			text: `
+				x
+				x.style.fill: "linear-gradient(#ggg, #000)"
+			`,
+			expErr: `d2/testdata/d2compiler/TestCompile/invalid_gradient_color_stop.d2:3:19: expected "fill" to be a valid named color ("orange"), a hex code ("#f0ff3a"), or a gradient ("linear-gradient(red, blue)")`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -3715,9 +4214,16 @@ layers: {
     RJ
   }
 }
+
+scenarios: {
+  x: b {
+    k
+  }
+}
 `, "")
 				assert.Equal(t, "one", g.Layers[0].Root.Label.Value)
 				assert.Equal(t, "two", g.Layers[1].Root.Label.Value)
+				assert.Equal(t, "b", g.Scenarios[0].Root.Label.Value)
 			},
 		},
 		{
@@ -4407,6 +4913,24 @@ a: {
 `, "")
 					assert.Equal(t, "a", g.Objects[0].ID)
 					assert.Equal(t, 2, len(g.Objects[0].SQLTable.Columns[0].Constraint))
+				},
+			},
+			{
+				name: "comment-array",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+  list: [
+    "a";
+    "b";
+    "c";
+    "d"
+    # e
+  ]
+}
+
+a
+`, "")
 				},
 			},
 			{
@@ -5264,6 +5788,53 @@ d: {
 			},
 		},
 		{
+			name: "level-filter",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+**: {
+  &level: 0
+  style.fill: red
+}
+**: {
+  &level: 1
+  style.stroke: yellow
+}
+(** -> **)[*]: {
+  &src.level: 0
+  &dst.level: 0
+  style.stroke: blue
+}
+a.b.c
+
+x -> y
+a: {
+  1 -> 2
+}
+a.1 -> x
+`, ``)
+				assert.Equal(t, "a", g.Objects[0].ID)
+				assert.Equal(t, "red", g.Objects[0].Attributes.Style.Fill.Value)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Attributes.Style.Stroke)
+
+				assert.Equal(t, "b", g.Objects[1].ID)
+				assert.Equal(t, "yellow", g.Objects[1].Attributes.Style.Stroke.Value)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[1].Attributes.Style.Fill)
+
+				assert.Equal(t, "c", g.Objects[2].ID)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Fill)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Stroke)
+
+				assert.Equal(t, "(x -> y)[0]", g.Edges[0].AbsID())
+				assert.Equal(t, "blue", g.Edges[0].Attributes.Style.Stroke.Value)
+
+				assert.Equal(t, "a.(1 -> 2)[0]", g.Edges[1].AbsID())
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[1].Attributes.Style.Stroke)
+
+				assert.Equal(t, "(a.1 -> x)[0]", g.Edges[2].AbsID())
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[2].Attributes.Style.Stroke)
+			},
+		},
+		{
 			name: "connected-filter",
 			run: func(t *testing.T) {
 				g, _ := assertCompile(t, `
@@ -5280,6 +5851,37 @@ c
 				assert.Equal(t, "red", g.Objects[1].Attributes.Style.Fill.Value)
 				assert.Equal(t, "c", g.Objects[2].ID)
 				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Fill)
+			},
+		},
+		{
+			name: "and-filter",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+*: {
+  &shape: person
+  &connected: true
+  style.fill: red
+}
+(** -> **)[*]: {
+  &src: a
+  &dst: c
+  style.stroke: yellow
+}
+a -> b
+a.shape: person
+a -> c
+`, ``)
+				assert.Equal(t, "a", g.Objects[0].ID)
+				assert.Equal(t, "red", g.Objects[0].Attributes.Style.Fill.Value)
+				assert.Equal(t, "b", g.Objects[1].ID)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[1].Attributes.Style.Fill)
+				assert.Equal(t, "c", g.Objects[2].ID)
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[2].Attributes.Style.Fill)
+
+				assert.Equal(t, "(a -> b)[0]", g.Edges[0].AbsID())
+				assert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[0].Attributes.Style.Stroke)
+				assert.Equal(t, "(a -> c)[0]", g.Edges[1].AbsID())
+				assert.Equal(t, "yellow", g.Edges[1].Attributes.Style.Stroke.Value)
 			},
 		},
 		{
@@ -5413,6 +6015,306 @@ b -> c
 `, ``)
 				assert.Equal(t, "red", g.Objects[0].Style.Stroke.Value)
 				assert.Equal(t, "red", g.Edges[0].Style.Stroke.Value)
+			},
+		},
+		{
+			name: "merge-glob-values",
+			run: func(t *testing.T) {
+				assertCompile(t, `
+"a"
+*.style.stroke-width: 2
+*.style.font-size: 14
+a.width: 339
+`, ``)
+			},
+		},
+		{
+			name: "mixed-edge-quoting",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+"a"."b"."c"."z1" -> "a"."b"."c"."z2"
+`, ``)
+				assert.Equal(t, 5, len(g.Objects))
+			},
+		},
+		{
+			name: "suspension-lazy",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a -> b
+c
+**: suspend
+(** -> **)[*]: suspend
+d
+`, ``)
+				assert.Equal(t, 1, len(g.Objects))
+			},
+		},
+		{
+			name: "suspension-quotes",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a -> b
+c
+**: suspend
+(** -> **)[*]: suspend
+d: "suspend"
+d -> d: "suspend"
+`, ``)
+				assert.Equal(t, 1, len(g.Objects))
+				assert.Equal(t, 1, len(g.Edges))
+			},
+		},
+		{
+			name: "unsuspend-edge-label",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a -> b: hello
+c
+**: suspend
+(** -> **)[*]: suspend
+
+(* -> *)[*]: unsuspend
+`, ``)
+				assert.Equal(t, 2, len(g.Objects))
+				assert.Equal(t, 1, len(g.Edges))
+				assert.Equal(t, "hello", g.Edges[0].Label.Value)
+			},
+		},
+		{
+			name: "glob-edge-filter",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+x -> y: {class: foo}
+a -> b
+
+
+(** -> **)[*]: {
+  &class: foo
+  source-arrowhead: 1
+  target-arrowhead: * {
+    shape: diamond
+  }
+}
+`, ``)
+				assert.Equal(t, 2, len(g.Edges))
+				assert.Equal(t, "(x -> y)[0]", g.Edges[0].AbsID())
+				assert.Equal(t, "(a -> b)[0]", g.Edges[1].AbsID())
+				assert.Equal(t, "1", g.Edges[0].SrcArrowhead.Label.Value)
+				assert.Equal(t, (*d2graph.Attributes)(nil), g.Edges[1].SrcArrowhead)
+				assert.Equal(t, "diamond", g.Edges[0].DstArrowhead.Shape.Value)
+				assert.Equal(t, "*", g.Edges[0].DstArrowhead.Label.Value)
+				assert.Equal(t, (*d2graph.Attributes)(nil), g.Edges[1].DstArrowhead)
+			},
+		},
+		{
+			name: "unsuspend-edge-filter",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a -> b
+**: suspend
+(** -> **)[*]: suspend
+(* -> *)[*]: unsuspend {
+  &dst: a
+}
+`, ``)
+				assert.Equal(t, 0, len(g.Objects))
+				assert.Equal(t, 0, len(g.Edges))
+			},
+		},
+		{
+			name: "unsuspend-edge-child",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a: {
+  b -> c
+}
+
+**: suspend
+(** -> **)[*]: suspend
+(** -> **)[*]: unsuspend {
+  &dst: a.c
+}
+`, ``)
+				assert.Equal(t, 3, len(g.Objects))
+				assert.Equal(t, 1, len(g.Edges))
+			},
+		},
+		{
+			name: "unsuspend-cross-container-edge-label",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a: {
+  b
+}
+c: {
+  d
+}
+a.b -> c.d: likes
+**: suspend
+(** -> **)[*]: suspend
+(** -> **)[*]: unsuspend {
+  &label: likes
+}
+`, ``)
+				assert.Equal(t, 4, len(g.Objects))
+				assert.Equal(t, 1, len(g.Edges))
+			},
+		},
+		{
+			name: "unsuspend-shape-label",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a: hello
+*: suspend
+*: unsuspend
+`, ``)
+				assert.Equal(t, 1, len(g.Objects))
+				assert.Equal(t, "hello", g.Objects[0].Label.Value)
+			},
+		},
+		{
+			name: "suspend-shape",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a: hello
+*: suspend
+`, ``)
+				assert.Equal(t, 0, len(g.Objects))
+			},
+		},
+		{
+			name: "edge-glob-ampersand-filter/1",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+  (* -> *)[*]: {
+    &src: a
+    style.stroke-dash: 3
+  }
+  (* -> *)[*]: {
+    &dst: c
+    style.stroke: blue
+  }
+  (* -> *)[*]: {
+    &src: b
+    &dst: c
+    style.fill: red
+  }
+  a -> b
+  b -> c
+  a -> c
+  `, ``)
+				tassert.Equal(t, 3, len(g.Edges))
+
+				tassert.Equal(t, "a", g.Edges[0].Src.ID)
+				tassert.Equal(t, "b", g.Edges[0].Dst.ID)
+				tassert.Equal(t, "3", g.Edges[0].Style.StrokeDash.Value)
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[0].Style.Stroke)
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[0].Style.Fill)
+
+				tassert.Equal(t, "b", g.Edges[1].Src.ID)
+				tassert.Equal(t, "c", g.Edges[1].Dst.ID)
+				tassert.Equal(t, "blue", g.Edges[1].Style.Stroke.Value)
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[1].Style.StrokeDash)
+				tassert.Equal(t, "red", g.Edges[1].Style.Fill.Value)
+
+				tassert.Equal(t, "a", g.Edges[2].Src.ID)
+				tassert.Equal(t, "c", g.Edges[2].Dst.ID)
+				tassert.Equal(t, "3", g.Edges[2].Style.StrokeDash.Value)
+				tassert.Equal(t, "blue", g.Edges[2].Style.Stroke.Value)
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[2].Style.Fill)
+			},
+		},
+		{
+			name: "edge-glob-ampersand-filter/2",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a: {
+		shape: circle
+		style: {
+				fill: blue
+				opacity: 0.8
+		}
+}
+b: {
+		shape: rectangle
+		style: {
+				fill: red
+				opacity: 0.5
+		}
+}
+c: {
+		shape: diamond
+		style.fill: green
+		style.opacity: 0.8
+}
+
+(* -> *)[*]: {
+		&src.style.fill: blue
+		style.stroke-dash: 3
+}
+(* -> *)[*]: {
+		&dst.style.opacity: 0.8
+		style.stroke: cyan
+}
+(* -> *)[*]: {
+		&src.shape: rectangle
+		&dst.style.fill: green
+		style.stroke-width: 5
+}
+
+a -> b
+b -> c
+a -> c
+        `, ``)
+
+				tassert.Equal(t, 3, len(g.Edges))
+
+				tassert.Equal(t, "a", g.Edges[0].Src.ID)
+				tassert.Equal(t, "b", g.Edges[0].Dst.ID)
+				tassert.Equal(t, "3", g.Edges[0].Style.StrokeDash.Value)
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[0].Style.Stroke)
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[0].Style.StrokeWidth)
+
+				tassert.Equal(t, "b", g.Edges[1].Src.ID)
+				tassert.Equal(t, "c", g.Edges[1].Dst.ID)
+				tassert.Equal(t, "cyan", g.Edges[1].Style.Stroke.Value)
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[1].Style.StrokeDash)
+				tassert.Equal(t, "5", g.Edges[1].Style.StrokeWidth.Value)
+
+				tassert.Equal(t, "a", g.Edges[2].Src.ID)
+				tassert.Equal(t, "c", g.Edges[2].Dst.ID)
+				tassert.Equal(t, "3", g.Edges[2].Style.StrokeDash.Value)
+				tassert.Equal(t, "cyan", g.Edges[2].Style.Stroke.Value)
+				tassert.Equal(t, (*d2graph.Scalar)(nil), g.Edges[2].Style.StrokeWidth)
+			},
+		},
+		{
+			name: "md-shape",
+			run: func(t *testing.T) {
+				g, _ := assertCompile(t, `
+a.shape: circle
+a: |md #hi |
+
+b.shape: circle
+b.label: |md #hi |
+
+c: |md #hi |
+c.shape: circle
+
+d.label: |md #hi |
+d.shape: circle
+
+e: {
+  shape: circle
+  label: |md #hi |
+}
+        `, ``)
+				tassert.Equal(t, 5, len(g.Objects))
+				for _, obj := range g.Objects {
+					tassert.Equal(t, "circle", obj.Shape.Value, "Object "+obj.ID+" should have circle shape")
+					tassert.Equal(t, "markdown", obj.Language, "Object "+obj.ID+" should have md language")
+				}
 			},
 		},
 	}

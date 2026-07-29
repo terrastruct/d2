@@ -21,6 +21,7 @@ type SpecialRules struct {
 	OuterContainerDoubleBorder bool `json:"outerContainerDoubleBorder"`
 	ContainerDots              bool `json:"containerDots"`
 	CapsLock                   bool `json:"capsLock"`
+	C4                         bool `json:"c4"`
 
 	AllPaper bool `json:"allPaper"`
 }

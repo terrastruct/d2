@@ -1,9 +1,11 @@
 package png
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/base64"
 	"fmt"
+	"os"
 	"strings"
 
 	_ "embed"
@@ -13,6 +15,7 @@ import (
 	pngstruct "github.com/dsoprea/go-png-image-structure/v2"
 	"github.com/playwright-community/playwright-go"
 
+	"oss.terrastruct.com/d2/lib/compression"
 	"oss.terrastruct.com/d2/lib/version"
 )
 
@@ -43,11 +46,23 @@ func (pw *Playwright) Cleanup() error {
 }
 
 func startPlaywright(pw *playwright.Playwright) (Playwright, error) {
-	browser, err := pw.Chromium.Launch()
+	// Optimizations for a very tightly scoped Playwright instance
+	browser, err := pw.Chromium.Launch(playwright.BrowserTypeLaunchOptions{
+		Args: []string{
+			"--no-sandbox",                             // Removes security overhead
+			"--disable-dev-shm-usage",                  // Prevents /dev/shm issues
+			"--disable-background-timer-throttling",    // Prevents CPU throttling
+			"--disable-backgrounding-occluded-windows", // Keeps rendering active
+			"--disable-features=TranslateUI",           // Reduces feature overhead
+			"--disable-ipc-flooding-protection",        // Removes IPC limits
+		},
+	})
 	if err != nil {
 		return Playwright{}, fmt.Errorf("failed to launch Chromium: %w", err)
 	}
-	context, err := browser.NewContext()
+	context, err := browser.NewContext(playwright.BrowserNewContextOptions{
+		DeviceScaleFactor: playwright.Float(2.0),
+	})
 	if err != nil {
 		return Playwright{}, fmt.Errorf("failed to start new Playwright browser context: %w", err)
 	}
@@ -78,32 +93,97 @@ func InitPlaywright() (Playwright, error) {
 	return startPlaywright(pw)
 }
 
-//go:embed generate_png.js
-var genPNGScript string
+func InitPlaywrightWithPrompt() (Playwright, error) {
+	if os.Getenv("CI") != "" {
+		return InitPlaywright()
+	}
+
+	// Just try running first. This only works if drivers and browsers are already installed
+	pw, err := playwright.Run()
+	if err == nil {
+		return startPlaywright(pw)
+	}
+
+	fmt.Print("D2 needs to install Chromium v130.0.6723.19 to render non-SVG images. Continue? (y/N): ")
+	reader := bufio.NewReader(os.Stdin)
+	response, err := reader.ReadString('\n')
+	if err != nil {
+		return Playwright{}, fmt.Errorf("failed to read user input: %w", err)
+	}
+	response = strings.TrimSpace(strings.ToLower(response))
+	if response != "y" && response != "yes" {
+		return Playwright{}, fmt.Errorf("chromium installation cancelled by user")
+	}
+
+	return InitPlaywright()
+}
 
 const pngPrefix = "data:image/png;base64,"
 
-// ConvertSVG converts the given SVG into a PNG.
-// Note that the resulting PNG has 2x the size (width and height) of the original SVG (see generate_png.js)
-func ConvertSVG(page playwright.Page, svg []byte) ([]byte, error) {
-	encodedSVG := base64.StdEncoding.EncodeToString(svg)
-	pngInterface, err := page.Evaluate(genPNGScript, map[string]interface{}{
-		"imgString": "data:image/svg+xml;charset=utf-8;base64," + encodedSVG,
-		"scale":     int(SCALE),
+func MountSVG(page playwright.Page, svgMarkup string) error {
+	decompressed := compression.UnzipEmbeddedSVGImages([]byte(svgMarkup))
+	html := `<!doctype html><meta charset="utf-8">
+<style>
+  html,body{margin:0;background:#fff}
+  #stage{display:inline-block}
+</style>
+<div id="stage">` + string(decompressed) + `</div>
+<script>
+  const s = document.querySelector('svg');
+  if (s && s.pauseAnimations) s.pauseAnimations();
+</script>`
+	_, err := page.Goto("data:text/html;base64," + base64.StdEncoding.EncodeToString([]byte(html)))
+	if err != nil {
+		return err
+	}
+	return page.Locator("svg").First().WaitFor()
+}
+
+func SetAnimationTime(page playwright.Page, t float64) error {
+	_, err := page.Evaluate(`(t) => {
+	  const s = document.querySelector('svg');
+	  if (!s) return;
+	  if (s.pauseAnimations) s.pauseAnimations();
+	  if (s.setCurrentTime) s.setCurrentTime(t);
+	  // Pause & scrub CSS/Web Animations too:
+	  for (const a of document.getAnimations()) { a.pause(); a.currentTime = t * 1000; }
+	}`, t)
+	return err
+}
+
+func ScreenshotSVG(page playwright.Page) ([]byte, error) {
+	return page.Locator("svg").First().Screenshot()
+}
+
+func ConvertSVG(browser playwright.Browser, svg []byte) ([]byte, error) {
+	context, err := browser.NewContext(playwright.BrowserNewContextOptions{
+		DeviceScaleFactor: playwright.Float(2.0),
 	})
 	if err != nil {
-		return nil, fmt.Errorf("failed to generate png: %w", err)
+		return nil, err
+	}
+	defer context.Close()
+
+	page, err := context.NewPage()
+	if err != nil {
+		return nil, err
+	}
+	defer page.Close()
+
+	if err := MountSVG(page, string(svg)); err != nil {
+		return nil, err
 	}
 
-	pngString := pngInterface.(string)
-	if !strings.HasPrefix(pngString, pngPrefix) {
-		if len(pngString) > 50 {
-			pngString = pngString[0:50] + "..."
-		}
-		return nil, fmt.Errorf("invalid PNG: %q", pngString)
+	if err := SetAnimationTime(page, 0); err != nil {
+		return nil, err
 	}
-	splicedPNGString := pngString[len(pngPrefix):]
-	return base64.StdEncoding.DecodeString(splicedPNGString)
+	_, _ = page.Evaluate(`() => new Promise(r => requestAnimationFrame(() => r())))`)
+
+	png, err := ScreenshotSVG(page)
+	if err != nil {
+		return nil, err
+	}
+	return png, nil
 }
 
 func AddExif(png []byte) ([]byte, error) {

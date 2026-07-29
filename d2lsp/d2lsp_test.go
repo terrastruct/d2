@@ -153,6 +153,7 @@ func TestGetBoardAtPosition(t *testing.T) {
 		path     string
 		position d2ast.Position
 		want     []string
+		expErr   bool
 	}{
 		{
 			name: "cursor in layer",
@@ -264,6 +265,21 @@ layers: {
 			want:     []string{"steps", "first"},
 		},
 		{
+			name: "cursor in broken step",
+			fs: map[string]string{
+				"index.d2": `
+		steps: {
+			first: {
+				(x -> y)[]
+			}
+		}`,
+			},
+			path:     "index.d2",
+			position: d2ast.Position{Line: 3, Column: 4},
+			want:     []string{"steps", "first"},
+			expErr:   true,
+		},
+		{
 			name: "cursor outside any board",
 			fs: map[string]string{
 				"index.d2": `
@@ -309,7 +325,11 @@ layers: {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got, err := d2lsp.GetBoardAtPosition(tt.fs[tt.path], tt.position)
-			assert.Success(t, err)
+			if tt.expErr {
+				assert.True(t, err != nil)
+			} else {
+				assert.Success(t, err)
+			}
 			if tt.want == nil {
 				assert.Equal(t, true, got == nil)
 			} else {

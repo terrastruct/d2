@@ -171,6 +171,29 @@ a -> b: hi {
   style.underline: true
 }
 
+-- icon-style --
+
+AWS Firewall Manager : {
+  icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAWS-Firewall-Manager.svg
+  icon.style.border-radius: 5
+}
+
+lambda : {
+  shape: image
+  icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+  icon.style.border-radius: 20
+}
+
+AWS Cloud : {
+  icon: https://icons.terrastruct.com/aws%2F_Group%20Icons%2FAWS-Cloud_light-bg.svg
+  icon.style.border-radius: 0
+}
+
+Mesh : {
+  icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAWS-App-Mesh.svg
+  icon.style.border-radius: 999
+}
+
 -- none-fill --
 
 vars: {
@@ -280,6 +303,19 @@ a <-> d: {style.animated: true}
 a <-> e
 f <-> g: {style.animated: true}
 x -- x: {style.animated: true}
+
+-- sketch-cross-arrowhead --
+vars: {
+  d2-config: {
+    sketch: true
+  }
+}
+
+start <-> end: {
+    style.stroke-width: 6
+    source-arrowhead.shape: cross
+    target-arrowhead.shape: cross
+}
 
 -- sequence-edge-group-tall-edge-label --
 Sequence: {
@@ -775,6 +811,967 @@ a -> b: hello {
 b -> c: {
   icon: https://icons.terrastruct.com/essentials%2F213-alarm.svg
 }
+
+direction: right
+producer -> consumer: {
+  icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-Simple-Queue-Service-SQS.svg
+  icon.style.border-radius: 20
+}
+
+-- model-view --
+# Models
+user.style.fill: blue
+softwareSystem: {
+  serviceA.class: ok
+  serviceB
+  serviceC.class: ok
+  serviceD
+
+  serviceA -> serviceB
+  serviceA -> serviceD
+  serviceC -> serviceB
+}
+externalSystem
+user -> softwareSystem
+softwareSystem -> externalSystem
+
+# Clear models
+**: suspend
+(** -> **)[*]: suspend
+
+# Include all top-level objects
+*: unsuspend
+# Include all objects with a certain class
+**: unsuspend {
+  &class: ok
+}
+# Include all connections/objects connected to an object
+(** -> externalSystem)[*]: unsuspend
+
+-- sequence-diagram-note-md --
+shape: sequence_diagram
+x -> y: hello
+x.x: |md
+  ## A man who fishes for marlin in ponds
+
+  - ...dramatic pause
+
+  will put his money in Etruscan bonds.
+|
+
+y.z: |latex
+  \\lim_{h \\rightarrow 0 } \\frac{f(x+h)-f(x)}{h}
+|
+
+x.z: |python
+  1 + 1 = 2
+|
+
+-- md-label --
+rectangle.shape: rectangle
+rectangle: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+square.shape: square
+square: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+page.shape: page
+page: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+parallelogram.shape: parallelogram
+parallelogram: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+document.shape: document
+document: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+cylinder.shape: cylinder
+cylinder: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+queue.shape: queue
+queue: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+package.shape: package
+package: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+step.shape: step
+step: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+callout.shape: callout
+callout: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+stored_data.shape: stored_data
+stored_data: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+person.shape: person
+person: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+diamond.shape: diamond
+diamond: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+oval.shape: oval
+oval: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+circle.shape: circle
+circle: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+hexagon.shape: hexagon
+hexagon: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+cloud.shape: cloud
+cloud: |md
+  # hello
+
+  - world
+
+  blah blah
+|
+
+-- c4-person-shape --
+c4mdperson.shape: c4-person
+c4mdperson: |md
+## Personal Banking Customer
+
+[person]
+
+A customer of the bank, with\
+personal bank accounts
+  |
+c4person: {
+  shape: c4-person
+  label: "C4 Style Person"
+}
+regular_person -> c4mdperson
+
+regular_person: {
+  shape: person
+  label: "Standard Person"
+}
+
+c4person -> regular_person: "Compare shapes"
+
+styling: {
+  c4styled: {
+    shape: c4-person
+    style.fill: "#91BEEA"
+    style.stroke: "#2E6195"
+    style.stroke-width: 2
+  }
+
+  c4sized: {
+    shape: c4-person
+    width: 150
+    height: 180
+    label: "Custom Size"
+  }
+}
+
+c4person -> styling.c4styled -> styling.c4sized
+**: {
+  &shape: c4-person
+  style.fill: "#08427b"
+  style.stroke: black
+  style.font-color: white
+  style.stroke-width: 1
+}
+
+-- legend-mono --
+vars: {
+  d2-config: {
+    theme-id: 300
+  }
+
+  d2-legend {
+    a: {
+      label: Microservice
+    }
+  }
+}
+
+a
+
+-- legend --
+vars: {
+  d2-legend: "凡例"{
+    a: {
+      label: Microservice
+    }
+    b: Database {
+      shape: cylinder
+      style.stroke-dash: 2
+    }
+    a <-> b: Good relationship {
+      style.stroke: red
+      style.stroke-dash: 2
+      style.stroke-width: 1
+    }
+    a -> b: Bad relationship
+    a -> b: Tenuous {
+      target-arrowhead.shape: circle
+    }
+  }
+}
+
+api-1
+api-2
+
+api-1 -> postgres
+api-2 -> postgres
+
+postgres: {
+  shape: cylinder
+}
+postgres -> external: {
+  style.stroke: black
+}
+
+api-1 <-> api-2: {
+  style.stroke: red
+  style.stroke-dash: 2
+}
+api-1 -> api-3: {
+  target-arrowhead.shape: circle
+}
+
+-- dark-theme-md --
+
+vars: {
+	d2-config: {
+		dark-theme-id: 200
+	}
+}
+a.shape: rectangle
+a: |md
+  # hey
+|
+
+-- small-c4-person --
+
+a.shape: c4-person
+a: c4-person
+a.width: 180
+
+-- c4-person-label --
+c4mdperson: |md
+## Personal Banking Customer
+
+[person]
+
+A customer of the bank, with personal bank accounts
+  | {
+    shape: c4-person
+    label.near: center-center
+  }
+
+c4mdperson2: |md
+## Personal Banking Customer
+
+[person]
+
+A customer of the bank, with personal bank accounts
+  | {
+    shape: c4-person
+    label.near: top-center
+  }
+
+c4mdperson3: |md
+## Personal Banking Customer
+
+[person]
+
+A customer of the bank, with personal bank accounts
+  | {
+    shape: c4-person
+    label.near: bottom-center
+  }
+
+customer1: |md
+  ## Personal Banking Customer
+  [person]
+
+  A customer of the bank, with pekkrsonal bank ccountskks.
+| {
+  shape: c4-person
+}
+
+customer2: |md
+  ## Personal Banking Customerk
+  [person]
+
+  A customer of the bank, with pekkrsonal bank accountskks.
+
+  A customer of the bank, with pekkrsonal bank accountskks.
+
+  A customer of the bank, with pekkrsonal bank accountskks.
+| {
+  shape: c4-person
+}
+
+customer3: |md
+  ## Personal Banking Customer
+  [person]
+
+  A customer of the bank, with pekkrsonal bank accountskks.
+| {
+  shape: c4-person
+}
+
+customer4: |md
+  ## Personal Banking Customer
+  [person]
+
+  A customer of the bank, with pekkrsonal bank accountskks.
+| {
+  shape: c4-person
+}
+
+-- edge-special-text --
+a -> b: |latex
+  \lim_{h \rightarrow 0 } \frac{f(x+h)-f(x)}{h}
+|
+
+c -> d: |md
+  **Bold text** and *italic text*
+
+  - Item 1
+  - Item 2
+|
+
+e -> f: |go
+  func main() {
+    fmt.Println("Hello World")
+  }
+|
+z -> x: regular
+
+-- edge-special-text-sequence --
+shape: sequence_diagram
+
+Alice -> Bob: |latex
+  f(x) = x^2 + 2x + 1
+|
+
+Bob -> Charlie: |md
+  **Authentication** required
+
+  Please provide *credentials*
+|
+
+Charlie -> Alice: |go
+func main() {
+  fmt.Println("Hello World")
+}
+|
+
+-- sequence-icon-label --
+shape: sequence_diagram
+
+User: {
+  icon: https://icons.terrastruct.com/azure/General%20Service%20Icons/User%20Icon.svg
+}
+UserB: {
+  label.near: bottom-center
+  icon: https://icons.terrastruct.com/azure/General%20Service%20Icons/User%20Icon.svg
+}
+
+-- border-container --
+vars: {
+  d2-config: {
+    theme-id: 300
+  }
+}
+style.fill: black
+env: Your environment {
+  style.fill: black
+  style.stroke-dash: 2
+  style.double-border: false
+  style.stroke: "#1e402d"
+  label.near: border-bottom-center
+  style.font-color: "#3ddb89"
+  app: Your applicaton {
+    style.stroke: "#3d9069"
+    style.fill: "#222a25"
+    style.font-color: "#63c08c"
+
+    *.style.stroke: "#adf1c6"
+    *.style.fill: "#306a4a"
+    *.style.font-color: "#eef9f3"
+    Workflow
+    SDK
+    Workers
+    Workflow -> SDK: hello {
+      style.stroke: "#fbfdfd"
+      style.font-color: "#adf1c6"
+    }
+  }
+}
+
+-- border-label --
+*.label.near: border-bottom-center
+
+rectangle.shape: rectangle
+square.shape: square
+page.shape: page
+parallelogram.shape: parallelogram
+document.shape: document
+cylinder.shape: cylinder
+queue.shape: queue
+package.shape: package
+step.shape: step
+callout.shape: callout
+stored_data.shape: stored_data
+person.shape: person
+diamond.shape: diamond
+oval.shape: oval
+circle.shape: circle
+hexagon.shape: hexagon
+cloud.shape: cloud
+
+cloud2.shape: cloud
+cloud2.height: 400
+
+-- tooltip-positioning --
+grid-columns: 8
+
+rect_top_left: Rectangle {
+  tooltip: Top Left {
+    near: top-left
+  }
+}
+
+rect_top_center: Rectangle {
+  tooltip: Top Center {
+    near: top-center
+  }
+}
+
+rect_top_right: Rectangle {
+  tooltip: Top Right {
+    near: top-right
+  }
+}
+
+rect_center_left: Rectangle {
+  tooltip: Center Left {
+    near: center-left
+  }
+}
+
+rect_center_right: Rectangle {
+  tooltip: Center Right {
+    near: center-right
+  }
+}
+
+rect_bottom_left: Rectangle {
+  tooltip: Bottom Left {
+    near: bottom-left
+  }
+}
+
+rect_bottom_center: Rectangle {
+  tooltip: Bottom Center {
+    near: bottom-center
+  }
+}
+
+rect_bottom_right: Rectangle {
+  tooltip: Bottom Right {
+    near: bottom-right
+  }
+}
+
+# Circle shape with all positions
+circle_top_left: Circle {
+  shape: circle
+  tooltip: Circle Top Left {
+    near: top-left
+  }
+}
+
+circle_top_center: Circle {
+  shape: circle
+  tooltip: Circle Top Center {
+    near: top-center
+  }
+}
+
+circle_top_right: Circle {
+  shape: circle
+  tooltip: Circle Top Right {
+    near: top-right
+  }
+}
+
+circle_center_left: Circle {
+  shape: circle
+  tooltip: Circle Center Left {
+    near: center-left
+  }
+}
+
+circle_center_right: Circle {
+  shape: circle
+  tooltip: Circle Center Right {
+    near: center-right
+  }
+}
+
+circle_bottom_left: Circle {
+  shape: circle
+  tooltip: Circle Bottom Left {
+    near: bottom-left
+  }
+}
+
+circle_bottom_center: Circle {
+  shape: circle
+  tooltip: Circle Bottom Center {
+    near: bottom-center
+  }
+}
+
+circle_bottom_right: Circle {
+  shape: circle
+  tooltip: Circle Bottom Right {
+    near: bottom-right
+  }
+}
+
+# Diamond shape with all positions
+diamond_top_left: Diamond {
+  shape: diamond
+  tooltip: Diamond Top Left {
+    near: top-left
+  }
+}
+
+diamond_top_center: Diamond {
+  shape: diamond
+  tooltip: Diamond Top Center {
+    near: top-center
+  }
+}
+
+diamond_top_right: Diamond {
+  shape: diamond
+  tooltip: Diamond Top Right {
+    near: top-right
+  }
+}
+
+diamond_center_left: Diamond {
+  shape: diamond
+  tooltip: Diamond Center Left {
+    near: center-left
+  }
+}
+
+diamond_center_right: Diamond {
+  shape: diamond
+  tooltip: Diamond Center Right {
+    near: center-right
+  }
+}
+
+diamond_bottom_left: Diamond {
+  shape: diamond
+  tooltip: Diamond Bottom Left {
+    near: bottom-left
+  }
+}
+
+diamond_bottom_center: Diamond {
+  shape: diamond
+  tooltip: Diamond Bottom Center {
+    near: bottom-center
+  }
+}
+
+diamond_bottom_right: Diamond {
+  shape: diamond
+  tooltip: Diamond Bottom Right {
+    near: bottom-right
+  }
+}
+
+# Cloud shape with all positions
+cloud_top_left: Cloud {
+  shape: cloud
+  tooltip: Cloud Top Left {
+    near: top-left
+  }
+}
+
+cloud_top_center: Cloud {
+  shape: cloud
+  tooltip: Cloud Top Center {
+    near: top-center
+  }
+}
+
+cloud_top_right: Cloud {
+  shape: cloud
+  tooltip: Cloud Top Right {
+    near: top-right
+  }
+}
+
+cloud_center_left: Cloud {
+  shape: cloud
+  tooltip: Cloud Center Left {
+    near: center-left
+  }
+}
+
+cloud_center_right: Cloud {
+  shape: cloud
+  tooltip: Cloud Center Right {
+    near: center-right
+  }
+}
+
+cloud_bottom_left: Cloud {
+  shape: cloud
+  tooltip: Cloud Bottom Left {
+    near: bottom-left
+  }
+}
+
+cloud_bottom_center: Cloud {
+  shape: cloud
+  tooltip: Cloud Bottom Center {
+    near: bottom-center
+  }
+}
+
+cloud_bottom_right: Cloud {
+  shape: cloud
+  tooltip: Cloud Bottom Right {
+    near: bottom-right
+  }
+}
+
+# Hexagon shape with all positions
+hex_top_left: Hexagon {
+  shape: hexagon
+  tooltip: Hexagon Top Left {
+    near: top-left
+  }
+}
+
+hex_top_center: Hexagon {
+  shape: hexagon
+  tooltip: Hexagon Top Center {
+    near: top-center
+  }
+}
+
+hex_top_right: Hexagon {
+  shape: hexagon
+  tooltip: Hexagon Top Right {
+    near: top-right
+  }
+}
+
+hex_center_left: Hexagon {
+  shape: hexagon
+  tooltip: Hexagon Center Left {
+    near: center-left
+  }
+}
+
+hex_center_right: Hexagon {
+  shape: hexagon
+  tooltip: Hexagon Center Right {
+    near: center-right
+  }
+}
+
+hex_bottom_left: Hexagon {
+  shape: hexagon
+  tooltip: Hexagon Bottom Left {
+    near: bottom-left
+  }
+}
+
+hex_bottom_center: Hexagon {
+  shape: hexagon
+  tooltip: Hexagon Bottom Center {
+    near: bottom-center
+  }
+}
+
+hex_bottom_right: Hexagon {
+  shape: hexagon
+  tooltip: Hexagon Bottom Right {
+    near: bottom-right
+  }
+}
+
+# Cylinder shape with all positions
+cyl_top_left: Cylinder {
+  shape: cylinder
+  tooltip: Cylinder Top Left {
+    near: top-left
+  }
+}
+
+cyl_top_center: Cylinder {
+  shape: cylinder
+  tooltip: Cylinder Top Center {
+    near: top-center
+  }
+}
+
+cyl_top_right: Cylinder {
+  shape: cylinder
+  tooltip: Cylinder Top Right {
+    near: top-right
+  }
+}
+
+cyl_center_left: Cylinder {
+  shape: cylinder
+  tooltip: Cylinder Center Left {
+    near: center-left
+  }
+}
+
+cyl_center_right: Cylinder {
+  shape: cylinder
+  tooltip: Cylinder Center Right {
+    near: center-right
+  }
+}
+
+cyl_bottom_left: Cylinder {
+  shape: cylinder
+  tooltip: Cylinder Bottom Left {
+    near: bottom-left
+  }
+}
+
+cyl_bottom_center: Cylinder {
+  shape: cylinder
+  tooltip: Cylinder Bottom Center {
+    near: bottom-center
+  }
+}
+
+cyl_bottom_right: Cylinder {
+  shape: cylinder
+  tooltip: Cylinder Bottom Right {
+    near: bottom-right
+  }
+}
+
+rect_top_left_long: Rectangle {
+  tooltip: |md
+    # Longform
+
+    Beneath this stone lies Murphy,\
+    They buried him today,\
+    He lived the life of Riley,\
+    While Riley was away.
+  | {
+    near: top-left
+  }
+}
+
+rect_top_center_long: Rectangle {
+  tooltip: |md
+    # Longform
+
+    Beneath this stone lies Murphy,\
+    They buried him today,\
+    He lived the life of Riley,\
+    While Riley was away.
+  | {
+    near: top-center
+  }
+}
+
+rect_top_right_long: Rectangle {
+  tooltip: |md
+    # Longform
+
+    Beneath this stone lies Murphy,\
+    They buried him today,\
+    He lived the life of Riley,\
+    While Riley was away.
+  | {
+    near: top-right
+  }
+}
+
+rect_center_left_long: Rectangle {
+  tooltip: |md
+    # Longform
+
+    Beneath this stone lies Murphy,\
+    They buried him today,\
+    He lived the life of Riley,\
+    While Riley was away.
+  | {
+    near: center-left
+  }
+}
+
+rect_center_right_long: Rectangle {
+  tooltip: |md
+    # Longform
+
+    Beneath this stone lies Murphy,\
+    They buried him today,\
+    He lived the life of Riley,\
+    While Riley was away.
+  | {
+    near: center-right
+  }
+}
+
+rect_bottom_left_long: Rectangle {
+  tooltip: |md
+    While Riley was away.
+  | {
+    near: bottom-left
+  }
+}
+
+rect_bottom_center_long: Rectangle {
+  tooltip: |md
+    While Riley was away.
+  | {
+    near: bottom-center
+  }
+}
+
+rect_bottom_right_long: Rectangle {
+  tooltip: |md
+    Beneath this stone lies Murphy
+  | {
+    near: bottom-right
+  }
+}
+
+okay: |md
+  okay
+|
+
+-- legend-leak --
+vars:"d2 v0.7.0" {
+  d2-config: {
+    layout-engine: dagre
+  }
+
+  d2-legend:"凡例" {
+    a: {shape:c4-person}
+    b: {shape:person}
+    c: {shape: cylinder}
+
+    "" -> "": bad { style.stroke-dash: 2 }
+    "" -> "": good { style.stroke: red }
+  }
+
+}
+style: {fill-pattern: dots; fill:"radial-gradient(#fbfbf8, #e3e3f0)"; stroke: "#a0a0a0"; stroke-width: 1; border-radius: 8}
+
+a->b
 
 -- cycle-diagram --
 1: "" {

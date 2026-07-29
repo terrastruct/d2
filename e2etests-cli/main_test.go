@@ -58,6 +58,64 @@ func TestCLI_E2E(t *testing.T) {
 			},
 		},
 		{
+			name:   "png-with-remote-icons",
+			skipCI: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `direction: right
+
+title: {
+  label: Normal deployment
+  near: bottom-center
+  shape: text
+  style.font-size: 40
+  style.underline: true
+}
+
+local: {
+  code: {
+    icon: https://icons.terrastruct.com/dev/go.svg
+  }
+}
+local.code -> github.dev: commit
+
+github: {
+  icon: https://icons.terrastruct.com/dev/github.svg
+  dev
+  master: {
+    workflows
+  }
+
+  dev -> master.workflows: merge trigger
+}
+
+github.master.workflows -> aws.builders: upload and run
+
+aws: {
+  builders -> s3: upload binaries
+  ec2 <- s3: pull binaries
+
+  builders: {
+    icon: https://icons.terrastruct.com/aws/Developer%20Tools/AWS-CodeBuild_light-bg.svg
+  }
+  s3: {
+    icon: https://icons.terrastruct.com/aws/Storage/Amazon-S3-Glacier_light-bg.svg
+  }
+  ec2: {
+    icon: https://icons.terrastruct.com/aws/_Group%20Icons/EC2-instance-container_light-bg.svg
+  }
+}
+
+local.code -> aws.ec2: {
+  style.opacity: 0.0
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "hello-world.d2", "hello-world.png")
+				assert.Success(t, err)
+				png := readFile(t, dir, "hello-world.png")
+				testdataIgnoreDiff(t, ".png", png)
+			},
+		},
+		{
 			name: "center",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `x -> y`)
@@ -272,7 +330,7 @@ a -> b: italic font
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "x.d2", `x -> y`)
 				err := runTestMain(t, ctx, dir, env, "--animate-interval=2", "x.d2", "x.png")
-				assert.ErrorString(t, err, `failed to wait xmain test: e2etests-cli/d2: bad usage: -animate-interval can only be used when exporting to SVG or GIF.
+				assert.ErrorString(t, err, `failed to wait xmain test: e2etests-cli/d2: bad usage: --animate-interval can only be used when exporting to SVG or GIF.
 You provided: .png`)
 			},
 		},
@@ -733,6 +791,188 @@ a.b.c.d
 				gifBytes := readFile(t, dir, "out.gif")
 				err = xgif.Validate(gifBytes, 1, 10)
 				assert.Success(t, err)
+			},
+		},
+		{
+			name:   "animated-gif",
+			skipCI: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `bank:   {
+  style.fill: white
+  Corporate:   {
+    style.fill: white
+    app14506: Data Source\ntco:      100,000\nowner: Lakshmi  {
+      style:  {
+        fill: '#fce7c6'
+      }
+    }
+  }
+  Equities:   {
+    app14491: Risk Global\ntco:      600,000\nowner: Wendy  {
+      style:  {
+        fill: '#f6c889'
+      }
+    }
+    app14492: Credit guard\ntco:      100,000\nowner: Lakshmi  {
+      style:  {
+        fill: '#fce7c6'
+      }
+    }
+    app14520: Seven heaven\ntco:      100,000\nowner: Tomos  {
+      style:  {
+        fill: '#fce7c6'
+      }
+    }
+    app14522: Apac Ace\ntco:      400,000\nowner: Wendy  {
+      style:  {
+        fill: '#f9d8a7'
+      }
+    }
+    app14527: Risk Global\ntco:      900,000\nowner: Tomos  {
+      style:  {
+        fill: '#f4b76c'
+      }
+    }
+  }
+  Securities:   {
+    style.fill: white
+    app14517: Zone out\ntco:      500,000\nowner: Wendy  {
+      style:  {
+        fill: '#f6c889'
+      }
+    }
+  }
+  Finance:   {
+    style.fill: white
+    app14488: Credit guard\ntco:      700,000\nowner: India  {
+      style:  {
+        fill: '#f6c889'
+      }
+    }
+    app14502: Ark Crypto\ntco:    1,500,000\nowner: Wendy  {
+      style:  {
+        fill: '#ed800c'
+      }
+    }
+    app14510: Data Solar\ntco:    1,200,000\nowner: Deepak  {
+      style:  {
+        fill: '#f1a64f'
+      }
+    }
+  }
+  Risk:   {
+    style.fill: white
+    app14490: Seven heaven\ntco:            0\nowner: Joesph  {
+      style:  {
+        fill: '#fce7c6'
+      }
+    }
+    app14507: Crypto Bot\ntco:    1,100,000\nowner: Wendy  {
+      style:  {
+        fill: '#f1a64f'
+      }
+    }
+  }
+  Funds:   {
+    style.fill: white
+    app14497: Risk Global\ntco:      500,000\nowner: Joesph  {
+      style:  {
+        fill: '#f6c889'
+      }
+    }
+  }
+  Fixed Income:   {
+    style.fill: white
+    app14523: ARC3\ntco:      600,000\nowner: Wendy  {
+      style:  {
+        fill: '#f6c889'
+      }
+    }
+    app14500: Acmaze\ntco:      100,000\nowner: Tomos  {
+      style:  {
+        fill: '#fce7c6'
+      }
+    }
+  }
+}
+bank.Risk.app14490 -> bank.Equities.app14527: client master
+bank.Equities.app14491 -> bank.Equities.app14527: greeks  {
+  style:  {
+    stroke-dash: 5
+    animated: true
+    stroke: red
+  }
+}
+bank.Funds.app14497 -> bank.Equities.app14520: allocations  {
+  style:  {
+    stroke-dash: 5
+    animated: true
+    stroke: brown
+  }
+}
+bank.Equities.app14527 -> bank.Corporate.app14506: trades  {
+  style:  {
+    stroke-dash: 5
+    animated: false
+    stroke: blue
+  }
+}
+bank.Fixed Income.app14523 -> bank.Equities.app14491: orders  {
+  style:  {
+    stroke-dash: 10
+    animated: false
+    stroke: green
+  }
+}
+bank.Finance.app14488 -> bank.Equities.app14527: greeks  {
+  style:  {
+    stroke-dash: 5
+    animated: true
+    stroke: red
+  }
+}
+bank.Equities.app14527 -> bank.Equities.app14522: orders  {
+  style:  {
+    stroke-dash: 10
+    animated: false
+    stroke: green
+  }
+}
+bank.Equities.app14522 -> bank.Finance.app14510: orders  {
+  style:  {
+    stroke-dash: 10
+    animated: false
+    stroke: green
+  }
+}
+bank.Equities.app14527 -> bank.Finance.app14502: greeks  {
+  style:  {
+    stroke-dash: 5
+    animated: true
+    stroke: red
+  }
+}
+bank.Equities.app14527 -> bank.Risk.app14507: allocations  {
+  style:  {
+    stroke-dash: 5
+    animated: true
+    stroke: brown
+  }
+}
+bank.Securities.app14517 -> bank.Equities.app14492: trades  {
+  style:  {
+    stroke-dash: 5
+    animated: false
+    stroke: blue
+  }
+}
+bank.Equities.app14522 -> bank.Fixed Income.app14500: security reference
+`)
+				err := runTestMain(t, ctx, dir, env, "--animate-interval=1000", "in.d2", "out.gif")
+				assert.Success(t, err)
+
+				gifBytes := readFile(t, dir, "out.gif")
+				testdataIgnoreDiff(t, ".gif", gifBytes)
 			},
 		},
 		{
@@ -1344,6 +1584,45 @@ c
 
 				_, err = waitLogs(ctx, stderr, doneRE)
 				assert.Success(t, err)
+			},
+		},
+		{
+			name: "validate-against-correct-d2",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "correct.d2", `x -> y`)
+				err := runTestMainPersist(t, ctx, dir, env, "validate", "correct.d2")
+				assert.Success(t, err)
+			},
+		},
+		{
+			name: "validate-against-incorrect-d2",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "incorrect.d2", `x > y`)
+				err := runTestMainPersist(t, ctx, dir, env, "validate", "incorrect.d2")
+				assert.Error(t, err)
+			},
+		},
+		{
+			name: "omit-version",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "test.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "--omit-version", "test.d2", "no-version.svg")
+				assert.Success(t, err)
+				noVersionSvg := readFile(t, dir, "no-version.svg")
+				assert.False(t, strings.Contains(string(noVersionSvg), "data-d2-version="))
+
+				writeFile(t, dir, "test.d2", `x -> y`)
+				err = runTestMain(t, ctx, dir, env, "test.d2", "with-version.svg")
+				assert.Success(t, err)
+				withVersionSvg := readFile(t, dir, "with-version.svg")
+				assert.True(t, strings.Contains(string(withVersionSvg), "data-d2-version="))
+
+				env.Setenv("OMIT_VERSION", "1")
+				writeFile(t, dir, "test.d2", `x -> y`)
+				err = runTestMain(t, ctx, dir, env, "test.d2", "no-version-env.svg")
+				assert.Success(t, err)
+				noVersionEnvSvg := readFile(t, dir, "no-version-env.svg")
+				assert.False(t, strings.Contains(string(noVersionEnvSvg), "data-d2-version="))
 			},
 		},
 	}

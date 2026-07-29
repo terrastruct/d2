@@ -25,6 +25,7 @@ var LightCatalog = []d2themes.Theme{
 	Terminal,
 	TerminalGrayscale,
 	Origami,
+	C4,
 }
 
 var DarkCatalog = []d2themes.Theme{

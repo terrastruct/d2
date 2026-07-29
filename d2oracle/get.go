@@ -48,51 +48,35 @@ func ReplaceBoardNode(ast, ast2 *d2ast.Map, boardPath []string) bool {
 		return false
 	}
 
-	findMap := func(root *d2ast.Map, name string) *d2ast.Map {
-		for _, n := range root.Nodes {
-			if n.MapKey != nil && n.MapKey.Key != nil && n.MapKey.Key.Path[0].Unbox().ScalarString() == name {
-				return n.MapKey.Value.Map
-			}
-		}
-		return nil
-	}
+	return replaceBoardNodeInMap(ast, ast2, boardPath, "layers") ||
+		replaceBoardNodeInMap(ast, ast2, boardPath, "scenarios") ||
+		replaceBoardNodeInMap(ast, ast2, boardPath, "steps")
+}
 
-	layersMap := findMap(ast, "layers")
-	scenariosMap := findMap(ast, "scenarios")
-	stepsMap := findMap(ast, "steps")
+func replaceBoardNodeInMap(ast, ast2 *d2ast.Map, boardPath []string, boardType string) bool {
+	var matches []*d2ast.Map
 
-	if layersMap != nil {
-		m := findMap(layersMap, boardPath[0])
-		if m != nil {
-			if len(boardPath) > 1 {
-				return ReplaceBoardNode(m, ast2, boardPath[1:])
-			} else {
-				m.Nodes = ast2.Nodes
-				return true
-			}
+	for _, n := range ast.Nodes {
+		if n.MapKey != nil && n.MapKey.Key != nil &&
+			n.MapKey.Key.Path[0].Unbox().ScalarString() == boardType &&
+			n.MapKey.Value.Map != nil {
+			matches = append(matches, n.MapKey.Value.Map)
 		}
 	}
 
-	if scenariosMap != nil {
-		m := findMap(scenariosMap, boardPath[0])
-		if m != nil {
-			if len(boardPath) > 1 {
-				return ReplaceBoardNode(m, ast2, boardPath[1:])
-			} else {
-				m.Nodes = ast2.Nodes
-				return true
-			}
-		}
-	}
-
-	if stepsMap != nil {
-		m := findMap(stepsMap, boardPath[0])
-		if m != nil {
-			if len(boardPath) > 1 {
-				return ReplaceBoardNode(m, ast2, boardPath[1:])
-			} else {
-				m.Nodes = ast2.Nodes
-				return true
+	for _, boardMap := range matches {
+		for _, n := range boardMap.Nodes {
+			if n.MapKey != nil && n.MapKey.Key != nil &&
+				n.MapKey.Key.Path[0].Unbox().ScalarString() == boardPath[0] &&
+				n.MapKey.Value.Map != nil {
+				if len(boardPath) > 1 {
+					if ReplaceBoardNode(n.MapKey.Value.Map, ast2, boardPath[1:]) {
+						return true
+					}
+				} else {
+					n.MapKey.Value.Map.Nodes = ast2.Nodes
+					return true
+				}
 			}
 		}
 	}

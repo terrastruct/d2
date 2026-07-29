@@ -1,0 +1,811 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,0:0:0-8:0:102",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,0:0:0-0:6:6",
+            "edges": [
+              {
+                "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,0:0:0-0:6:6",
+                "src": {
+                  "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,0:0:0-0:1:1",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,0:5:5-0:6:6",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,0:5:5-0:6:6",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,2:0:8-7:1:101",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,2:0:8-2:9:17",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,2:0:8-2:9:17",
+                    "value": [
+                      {
+                        "string": "scenarios",
+                        "raw_string": "scenarios"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,2:11:19-7:1:101",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,3:2:23-6:3:99",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,3:2:23-3:3:24",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,3:2:23-3:3:24",
+                              "value": [
+                                {
+                                  "string": "k",
+                                  "raw_string": "k"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,3:5:26-6:3:99",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,4:4:32-4:34:62",
+                                "edges": [
+                                  {
+                                    "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,4:5:33-4:13:41",
+                                    "src": {
+                                      "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,4:5:33-4:7:35",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,4:5:33-4:7:35",
+                                            "value": [
+                                              {
+                                                "string": "**",
+                                                "raw_string": "**"
+                                              }
+                                            ],
+                                            "pattern": [
+                                              "*",
+                                              "",
+                                              "*"
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "src_arrow": "",
+                                    "dst": {
+                                      "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,4:11:39-4:13:41",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,4:11:39-4:13:41",
+                                            "value": [
+                                              {
+                                                "string": "**",
+                                                "raw_string": "**"
+                                              }
+                                            ],
+                                            "pattern": [
+                                              "*",
+                                              "",
+                                              "*"
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "dst_arrow": ">"
+                                  }
+                                ],
+                                "edge_index": {
+                                  "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,4:14:42-4:17:45",
+                                  "int": null,
+                                  "glob": true
+                                },
+                                "edge_key": {
+                                  "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,4:18:46-4:31:59",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,4:18:46-4:23:51",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,4:24:52-4:31:59",
+                                        "value": [
+                                          {
+                                            "string": "opacity",
+                                            "raw_string": "opacity"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,4:33:61-4:34:62",
+                                    "raw": "0",
+                                    "value": "0"
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,5:4:67-5:32:95",
+                                "edges": [
+                                  {
+                                    "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,5:5:68-5:11:74",
+                                    "src": {
+                                      "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,5:5:68-5:6:69",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,5:5:68-5:6:69",
+                                            "value": [
+                                              {
+                                                "string": "x",
+                                                "raw_string": "x"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "src_arrow": "",
+                                    "dst": {
+                                      "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,5:10:73-5:11:74",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,5:10:73-5:11:74",
+                                            "value": [
+                                              {
+                                                "string": "y",
+                                                "raw_string": "y"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "dst_arrow": ">"
+                                  }
+                                ],
+                                "edge_index": {
+                                  "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,5:12:75-5:15:78",
+                                  "int": 0,
+                                  "glob": false
+                                },
+                                "edge_key": {
+                                  "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,5:16:79-5:29:92",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,5:16:79-5:21:84",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,5:22:85-5:29:92",
+                                        "value": [
+                                          {
+                                            "string": "opacity",
+                                            "raw_string": "opacity"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,5:31:94-5:32:95",
+                                    "raw": "1",
+                                    "value": "1"
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "iconStyle": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": [
+      {
+        "index": 0,
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "iconStyle": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ],
+    "objects": [
+      {
+        "id": "x",
+        "id_val": "x",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "x"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "iconStyle": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "y",
+        "id_val": "y",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,0:5:5-0:6:6",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,0:5:5-0:6:6",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "y"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "iconStyle": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ],
+    "scenarios": [
+      {
+        "name": "k",
+        "isFolderOnly": false,
+        "ast": {
+          "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,0:0:0-1:0:0",
+          "nodes": [
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {}
+              }
+            },
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,0:5:5-0:6:6",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {}
+              }
+            },
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "edges": [
+                  {
+                    "range": ",0:0:0-0:0:0",
+                    "src": {
+                      "range": ",0:0:0-0:0:0",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "x"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "src_arrow": "",
+                    "dst": {
+                      "range": ",0:0:0-0:0:0",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "y"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "dst_arrow": ">"
+                  }
+                ],
+                "primary": {},
+                "value": {
+                  "map": {
+                    "range": ",0:0:0-1:0:0",
+                    "nodes": [
+                      {
+                        "map_key": {
+                          "range": ",0:0:0-0:0:0",
+                          "key": {
+                            "range": ",0:0:0-0:0:0",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,4:18:46-4:23:51",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": ",1:0:0-2:0:0",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": ",0:0:0-0:0:0",
+                                    "key": {
+                                      "range": ",0:0:0-0:0:0",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,4:24:52-4:31:59",
+                                            "value": [
+                                              {
+                                                "string": "opacity",
+                                                "raw_string": "opacity"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {
+                                      "number": {
+                                        "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,5:31:94-5:32:95",
+                                        "raw": "1",
+                                        "value": "1"
+                                      }
+                                    },
+                                    "value": {}
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "attributes": {
+            "label": {
+              "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "style": {},
+            "iconStyle": {},
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": null
+          },
+          "zIndex": 0
+        },
+        "edges": [
+          {
+            "index": 0,
+            "isCurve": false,
+            "src_arrow": false,
+            "dst_arrow": true,
+            "references": [
+              {
+                "map_key_edge_index": 0
+              },
+              {
+                "map_key_edge_index": 0
+              },
+              {
+                "map_key_edge_index": 0
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": ""
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {
+                "opacity": {
+                  "value": "1"
+                }
+              },
+              "iconStyle": {},
+              "near_key": null,
+              "shape": {
+                "value": ""
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          }
+        ],
+        "objects": [
+          {
+            "id": "x",
+            "id_val": "x",
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,0:0:0-0:1:1",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": 0
+              },
+              {
+                "key": {
+                  "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,5:5:68-5:6:69",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,5:5:68-5:6:69",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": 0
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "x"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {},
+              "iconStyle": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          },
+          {
+            "id": "y",
+            "id_val": "y",
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,0:5:5-0:6:6",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,0:5:5-0:6:6",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": 0
+              },
+              {
+                "key": {
+                  "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,5:10:73-5:11:74",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestSet/set-globbed-edge-in-scenario.d2,5:10:73-5:11:74",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": 0
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "y"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {},
+              "iconStyle": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          }
+        ]
+      }
+    ]
+  },
+  "err": "<nil>"
+}

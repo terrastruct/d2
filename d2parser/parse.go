@@ -984,6 +984,14 @@ func (p *parser) parseKey() (k *d2ast.KeyPath) {
 			k = nil
 		} else {
 			k.Range.End = k.Path[len(k.Path)-1].Unbox().GetRange().End
+			for _, part := range k.Path {
+				if part.Unbox() != nil {
+					if len(part.Unbox().ScalarString()) > 518 {
+						p.errorf(k.Range.Start, k.Range.End, "key length %d exceeds maximum allowed length of 518", len(part.Unbox().ScalarString()))
+						break
+					}
+				}
+			}
 		}
 	}()
 
@@ -1665,6 +1673,20 @@ func (p *parser) parseValue() d2ast.ValueBox {
 	if strings.EqualFold(s.ScalarString(), "null") {
 		box.Null = &d2ast.Null{
 			Range: s.Range,
+		}
+		return box
+	}
+	if strings.EqualFold(s.ScalarString(), "suspend") {
+		box.Suspension = &d2ast.Suspension{
+			Range: s.Range,
+			Value: true,
+		}
+		return box
+	}
+	if strings.EqualFold(s.ScalarString(), "unsuspend") {
+		box.Suspension = &d2ast.Suspension{
+			Range: s.Range,
+			Value: false,
 		}
 		return box
 	}

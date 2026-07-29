@@ -34,11 +34,11 @@ func (j *jsRunner) Engine() Engine {
 }
 
 func (j *jsRunner) MustGet(key string) (JSValue, error) {
-	result := j.global.Get("elkResult")
+	result := j.global.Get(key)
 	if result.IsUndefined() {
 		return nil, fmt.Errorf("key %q not found in global scope", key)
 	}
-	defer j.global.Set("elkResult", js.Undefined())
+	defer j.global.Set(key, js.Undefined())
 	return &jsValue{val: result}, nil
 }
 

@@ -1,0 +1,207 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/var_nested_in_markdown.d2,0:0:0-9:0:50",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/var_nested_in_markdown.d2,0:0:0-4:1:28",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/var_nested_in_markdown.d2,0:0:0-0:4:4",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/var_nested_in_markdown.d2,0:0:0-0:4:4",
+                    "value": [
+                      {
+                        "string": "vars",
+                        "raw_string": "vars"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/var_nested_in_markdown.d2,0:6:6-4:1:28",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/var_nested_in_markdown.d2,1:2:10-3:3:26",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/var_nested_in_markdown.d2,1:2:10-1:3:11",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/var_nested_in_markdown.d2,1:2:10-1:3:11",
+                              "value": [
+                                {
+                                  "string": "v",
+                                  "raw_string": "v"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/var_nested_in_markdown.d2,1:5:13-3:3:26",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/var_nested_in_markdown.d2,2:2:17-2:7:22",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/var_nested_in_markdown.d2,2:2:17-2:3:18",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/var_nested_in_markdown.d2,2:2:17-2:3:18",
+                                        "value": [
+                                          {
+                                            "string": "g",
+                                            "raw_string": "g"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/var_nested_in_markdown.d2,2:5:20-2:7:22",
+                                    "value": [
+                                      {
+                                        "string": "ok",
+                                        "raw_string": "ok"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/var_nested_in_markdown.d2,6:0:30-8:1:49",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/var_nested_in_markdown.d2,6:0:30-6:1:31",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/var_nested_in_markdown.d2,6:0:30-6:1:31",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "block_string": {
+                "range": "d2/testdata/d2compiler/TestCompile/var_nested_in_markdown.d2,6:3:33-8:1:49",
+                "quote": "",
+                "tag": "md",
+                "value": "moky"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "iconStyle": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "x",
+        "id_val": "x",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/var_nested_in_markdown.d2,6:0:30-6:1:31",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/var_nested_in_markdown.d2,6:0:30-6:1:31",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "moky"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "iconStyle": {},
+          "near_key": null,
+          "language": "markdown",
+          "shape": {
+            "value": "text"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

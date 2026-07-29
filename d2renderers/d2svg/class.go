@@ -47,9 +47,7 @@ func classHeader(diagramHash string, shape d2target.Shape, box *geo.Box, text st
 	return str
 }
 
-func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText string, fontSize float64, inlineTheme *d2themes.Theme) string {
-	// Row is made up of prefix, name, and type
-	// e.g. | + firstName   string  |
+func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText string, fontSize float64, underline bool, inlineTheme *d2themes.Theme) string {
 	prefixTL := label.InsideMiddleLeft.GetPointOnBox(
 		box,
 		d2target.PrefixPadding,
@@ -74,12 +72,17 @@ func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText str
 
 	textEl.X = prefixTL.X + d2target.PrefixWidth
 	textEl.Fill = shape.Fill
+	textEl.ClassName = "text-mono"
+	if underline {
+		textEl.ClassName += " text-underline"
+	}
 	textEl.Content = svg.EscapeText(nameText)
 	out += textEl.Render()
 
 	textEl.X = typeTR.X
 	textEl.Y = typeTR.Y + fontSize*3/4
 	textEl.Fill = shape.SecondaryAccentColor
+	textEl.ClassName = "text-mono"
 	textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "end", fontSize)
 	textEl.Content = svg.EscapeText(typeText)
 	out += textEl.Render()
@@ -118,7 +121,7 @@ func drawClass(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 	rowBox.TopLeft.Y += headerBox.Height
 	for _, f := range targetShape.Fields {
 		fmt.Fprint(writer,
-			classRow(targetShape, rowBox, f.VisibilityToken(), f.Name, f.Type, float64(targetShape.FontSize), inlineTheme),
+			classRow(targetShape, rowBox, f.VisibilityToken(), f.Name, f.Type, float64(targetShape.FontSize), f.Underline, inlineTheme),
 		)
 		rowBox.TopLeft.Y += rowHeight
 	}
@@ -139,7 +142,7 @@ func drawClass(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 
 	for _, m := range targetShape.Methods {
 		fmt.Fprint(writer,
-			classRow(targetShape, rowBox, m.VisibilityToken(), m.Name, m.Return, float64(targetShape.FontSize), inlineTheme),
+			classRow(targetShape, rowBox, m.VisibilityToken(), m.Name, m.Return, float64(targetShape.FontSize), m.Underline, inlineTheme),
 		)
 		rowBox.TopLeft.Y += rowHeight
 	}

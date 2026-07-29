@@ -19,7 +19,7 @@ import (
 	"oss.terrastruct.com/d2/lib/label"
 )
 
-func Export(ctx context.Context, g *d2graph.Graph, fontFamily *d2fonts.FontFamily) (*d2target.Diagram, error) {
+func Export(ctx context.Context, g *d2graph.Graph, fontFamily *d2fonts.FontFamily, monoFontFamily *d2fonts.FontFamily) (*d2target.Diagram, error) {
 	diagram := d2target.NewDiagram()
 	applyStyles(&diagram.Root, g.Root)
 	if g.Root.Label.MapKey == nil {
@@ -36,6 +36,11 @@ func Export(ctx context.Context, g *d2graph.Graph, fontFamily *d2fonts.FontFamil
 		fontFamily = go2.Pointer(d2fonts.SourceCodePro)
 	}
 	diagram.FontFamily = fontFamily
+	if monoFontFamily == nil {
+		diagram.MonoFontFamily = go2.Pointer(d2fonts.SourceCodePro)
+	} else {
+		diagram.MonoFontFamily = monoFontFamily
+	}
 
 	diagram.Shapes = make([]d2target.Shape, len(g.Objects))
 	for i := range g.Objects {
@@ -45,6 +50,28 @@ func Export(ctx context.Context, g *d2graph.Graph, fontFamily *d2fonts.FontFamil
 	diagram.Connections = make([]d2target.Connection, len(g.Edges))
 	for i := range g.Edges {
 		diagram.Connections[i] = toConnection(g.Edges[i], g.Theme)
+	}
+
+	if g.Legend != nil {
+		legend := &d2target.Legend{
+			Label: g.Legend.Label,
+		}
+
+		if len(g.Legend.Objects) > 0 {
+			legend.Shapes = make([]d2target.Shape, len(g.Legend.Objects))
+			for i, obj := range g.Legend.Objects {
+				legend.Shapes[i] = toShape(obj, g)
+			}
+		}
+
+		if len(g.Legend.Edges) > 0 {
+			legend.Connections = make([]d2target.Connection, len(g.Legend.Edges))
+			for i, edge := range g.Legend.Edges {
+				legend.Connections[i] = toConnection(edge, g.Theme)
+			}
+		}
+
+		diagram.Legend = legend
 	}
 
 	return diagram, nil
@@ -78,6 +105,46 @@ func applyTheme(shape *d2target.Shape, obj *d2graph.Object, theme *d2themes.Them
 		}
 		if theme.SpecialRules.Mono {
 			shape.FontFamily = "mono"
+		}
+		if theme.SpecialRules.C4 && len(obj.ChildrenArray) > 0 {
+			if obj.Style.Fill == nil {
+				shape.Fill = "transparent"
+			}
+			if obj.Style.Stroke == nil {
+				shape.Stroke = color.AA2
+			}
+			if obj.Style.StrokeDash == nil {
+				shape.StrokeDash = 5
+			}
+			if obj.Style.FontColor == nil {
+				shape.Color = color.N1
+			}
+		}
+		if theme.SpecialRules.C4 && obj.Level() == 1 && len(obj.ChildrenArray) == 0 &&
+			obj.Shape.Value != d2target.ShapePerson && obj.Shape.Value != d2target.ShapeC4Person {
+			if obj.Style.Fill == nil {
+				shape.Fill = color.B6
+			}
+			if obj.Style.Stroke == nil {
+				shape.Stroke = color.B5
+			}
+		}
+		if theme.SpecialRules.C4 && (obj.Shape.Value == d2target.ShapePerson || obj.Shape.Value == d2target.ShapeC4Person) {
+			if obj.Style.Fill == nil {
+				shape.Fill = color.B2
+			}
+			if obj.Style.Stroke == nil {
+				shape.Stroke = color.B1
+			}
+		}
+		if theme.SpecialRules.C4 && obj.Level() > 1 && len(obj.ChildrenArray) == 0 &&
+			obj.Shape.Value != d2target.ShapePerson && obj.Shape.Value != d2target.ShapeC4Person {
+			if obj.Style.Fill == nil {
+				shape.Fill = color.B4
+			}
+			if obj.Style.Stroke == nil {
+				shape.Stroke = color.B3
+			}
 		}
 	}
 }
@@ -134,6 +201,9 @@ func applyStyles(shape *d2target.Shape, obj *d2graph.Object) {
 	if obj.Style.DoubleBorder != nil {
 		shape.DoubleBorder, _ = strconv.ParseBool(obj.Style.DoubleBorder.Value)
 	}
+	if obj.IconStyle.BorderRadius != nil {
+		shape.IconBorderRadius, _ = strconv.Atoi(obj.IconStyle.BorderRadius.Value)
+	}
 }
 
 func toShape(obj *d2graph.Object, g *d2graph.Graph) d2target.Shape {
@@ -146,6 +216,7 @@ func toShape(obj *d2graph.Object, g *d2graph.Graph) d2target.Shape {
 	shape.Pos = d2target.NewPoint(int(obj.TopLeft.X), int(obj.TopLeft.Y))
 	shape.Width = int(obj.Width)
 	shape.Height = int(obj.Height)
+	shape.Language = obj.Language
 
 	text := obj.Text()
 	shape.Bold = text.IsBold
@@ -164,12 +235,18 @@ func toShape(obj *d2graph.Object, g *d2graph.Graph) d2target.Shape {
 	applyStyles(shape, obj)
 	applyTheme(shape, obj, g.Theme)
 	shape.Color = text.GetColor(shape.Italic)
+	if g.Theme != nil && g.Theme.SpecialRules.C4 {
+		if obj.Style.FontColor == nil {
+			if len(obj.ChildrenArray) > 0 {
+				shape.Color = color.N1
+			} else {
+				shape.Color = color.N7
+			}
+		}
+	}
 	applyStyles(shape, obj)
 
-	switch obj.Shape.Value {
-	case d2target.ShapeCode, d2target.ShapeText:
-		shape.Language = obj.Language
-		shape.Label = obj.Label.Value
+	switch strings.ToLower(obj.Shape.Value) {
 	case d2target.ShapeClass:
 		shape.Class = *obj.Class
 		// The label is the header for classes and tables, which is set in client to be 4 px larger than the object's set font size
@@ -195,6 +272,9 @@ func toShape(obj *d2graph.Object, g *d2graph.Graph) d2target.Shape {
 
 	if obj.Tooltip != nil {
 		shape.Tooltip = obj.Tooltip.Value
+	}
+	if obj.TooltipPosition != nil {
+		shape.TooltipPosition = obj.TooltipPosition.Value
 	}
 	if obj.Style.Animated != nil {
 		shape.Animated, _ = strconv.ParseBool(obj.Style.Animated.Value)
@@ -346,6 +426,10 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 		}
 	}
 
+	if edge.IconStyle.BorderRadius != nil {
+		connection.IconBorderRadius, _ = strconv.ParseFloat(edge.IconStyle.BorderRadius.Value, 64)
+	}
+
 	if edge.Style.Italic != nil {
 		connection.Italic, _ = strconv.ParseBool(edge.Style.Italic.Value)
 	}
@@ -372,6 +456,7 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 	connection.Label = text.Text
 	connection.LabelWidth = text.Dimensions.Width
 	connection.LabelHeight = text.Dimensions.Height
+	connection.Language = edge.Language
 
 	if edge.LabelPosition != nil {
 		connection.LabelPosition = *edge.LabelPosition
@@ -391,6 +476,18 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 
 	connection.Src = edge.Src.AbsID()
 	connection.Dst = edge.Dst.AbsID()
+
+	if theme != nil && theme.SpecialRules.C4 {
+		if edge.Style.StrokeDash == nil {
+			connection.StrokeDash = 5
+		}
+		if edge.Style.Stroke == nil {
+			connection.Stroke = color.AA4
+		}
+		if edge.Style.FontColor == nil {
+			connection.Color = color.N2
+		}
+	}
 
 	return *connection
 }

@@ -34,8 +34,7 @@ func Serve(p Plugin) xmain.RunFunc {
 				return xmain.UsageErrorf("failed to parse flags: %v", err)
 			}
 			if errors.Is(err, pflag.ErrHelp) {
-				// At some point we want to write a friendly help.
-				return info(ctx, p, ms)
+				return help(ctx, p, ms)
 			}
 		}
 
@@ -80,6 +79,18 @@ func info(ctx context.Context, p Plugin, ms *xmain.State) error {
 		return err
 	}
 	_, err = ms.Stdout.Write(b)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func help(ctx context.Context, p Plugin, ms *xmain.State) error {
+	info, err := p.Info(ctx)
+	if err != nil {
+		return err
+	}
+	_, err = ms.Stdout.Write([]byte(info.LongHelp + "\n"))
 	if err != nil {
 		return err
 	}

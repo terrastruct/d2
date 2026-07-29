@@ -60,7 +60,7 @@ func readInput(filepath string) (string, error) {
 
 	data, err := os.ReadFile(filepath)
 	if err != nil {
-		return "", xmain.UsageErrorf(err.Error())
+		return "", xmain.UsageErrorf("%s", err.Error())
 	}
 	return string(data), nil
 }

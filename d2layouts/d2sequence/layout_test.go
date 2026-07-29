@@ -10,6 +10,7 @@ import (
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2layouts"
 	"oss.terrastruct.com/d2/d2layouts/d2sequence"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
@@ -357,7 +358,7 @@ container -> c: edge 1
 		return nil
 	}
 
-	if err = d2sequence.Layout(ctx, g, layoutFn); err != nil {
+	if err = d2layouts.LayoutNested(ctx, g, d2layouts.NestedGraphInfo(g.Root), layoutFn, d2layouts.DefaultRouter); err != nil {
 		t.Fatal(err)
 	}
 

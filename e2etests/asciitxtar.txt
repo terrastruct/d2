@@ -1,0 +1,269 @@
+-- three-right --
+direction: right
+x -> y -> z
+x -> z
+x -> y: okay
+
+-- three-down --
+direction: down
+x -> y -> z
+x -> z
+x -> y: okay
+
+-- basic-simple --
+x -> y
+
+-- network-vertical --
+network: {
+  cell tower: {
+    satellites: {
+      shape: stored_data
+    }
+
+    transmitter
+
+    satellites -> transmitter: send
+    satellites -> transmitter: send
+    satellites -> transmitter: send
+  }
+
+  online portal: {
+    ui: {shape: hexagon}
+  }
+
+  data processor: {
+    storage: {
+      shape: cylinder
+    }
+  }
+
+  cell tower.transmitter -> data processor.storage: phone logs
+}
+
+user: {
+  shape: person
+  width: 130
+}
+
+user -> network.cell tower: make call
+user -> network.online portal.ui: access {
+  style.stroke-dash: 3
+}
+
+api server -> network.online portal.ui: display
+api server -> logs: persist
+logs: {shape: page}
+
+network.data processor -> api server
+**.shape: rectangle
+
+-- network-horizontal --
+direction: right
+network: {
+  cell tower: {
+    satellites: {
+      shape: stored_data
+    }
+
+    transmitter
+
+    satellites -> transmitter: send
+    satellites -> transmitter: send
+    satellites -> transmitter: send
+  }
+
+  online portal: {
+    ui: {shape: hexagon}
+  }
+
+  data processor: {
+    storage: {
+      shape: cylinder
+    }
+  }
+
+  cell tower.transmitter -> data processor.storage: phone logs
+}
+
+user: {
+  shape: person
+  width: 130
+}
+
+user -> network.cell tower: make call
+user -> network.online portal.ui: access {
+  style.stroke-dash: 3
+}
+
+api server -> network.online portal.ui: display
+api server -> logs: persist
+logs: {shape: page}
+
+network.data processor -> api server
+**.shape: rectangle
+
+-- simple-sequence --
+shape: sequence_diagram
+alice -> bob: hello
+bob -> alice: jello
+alice -> carl: bye
+
+-- all-shapes --
+rectangle.shape: rectangle
+square.shape: square
+page.shape: page
+parallelogram.shape: parallelogram
+document.shape: document
+cylinder.shape: cylinder
+queue.shape: queue
+package.shape: package
+step.shape: step
+callout.shape: callout
+stored_data.shape: stored_data
+person.shape: person
+diamond.shape: diamond
+oval.shape: oval
+circle.shape: circle
+hexagon.shape: hexagon
+cloud.shape: cloud
+
+rectangle -> square -> page
+parallelogram -> document -> cylinder
+queue -> package -> step
+callout -> stored_data -> person
+diamond -> oval -> circle
+hexagon -> cloud
+
+-- terminal-horizontal --
+vars: {
+  d2-config: {
+    layout-engine: elk
+    # Terminal theme code
+    theme-id: 300
+  }
+}
+direction: right
+a -> b: hello world
+
+-- overextended-lines --
+k: {
+  cell tower: {
+    satellites: {
+      shape: stored_data
+    }
+
+    transmitter
+
+    satellites -> transmitter: send
+    satellites -> transmitter: send
+    satellites -> transmitter: send
+  }
+
+  online portal: {
+    ui: {shape: hexagon}
+  }
+
+  data processor: {
+    storage: {
+      shape: cylinder
+      style.multiple: true
+    }
+  }
+
+  cell tower.transmitter -> data processor.storage: phone logs
+}
+
+-- curved-line --
+k: {
+  cell tower: {
+    satellites: {
+      shape: stored_data
+      style.multiple: true
+    }
+
+    transmitter
+
+    satellites -> transmitter: send
+    satellites -> transmitter: send
+    satellites -> transmitter: send
+  }
+
+  online portal: {
+    ui: {shape: hexagon}
+  }
+
+  data processor: {
+    storage: {
+      shape: cylinder
+      style.multiple: true
+    }
+  }
+
+  cell tower.transmitter -> data processor.storage: phone logs
+}
+
+user: {
+  shape: person
+  width: 130
+}
+
+user -> network.cell tower: make call
+user -> network.online portal.ui: access {
+  style.stroke-dash: 3
+}
+
+api server -> network.online portal.ui: display
+api server -> logs: persist
+logs: {shape: page; style.multiple: true}
+
+network.data processor -> api server
+
+-- uml-class --
+x -> D2 Parser -> y
+D2 Parser: {
+  shape: class
+
+  +reader: io.RuneReader
+  # Default visibility is + so no need to specify.
+  readerPos: d2ast.Position
+
+  # Private field.
+  -lookahead: "[]rune"
+
+  # Escape the # to prevent being parsed as comment
+  # lookaheadPos: d2ast.Position
+  # Or just wrap in quotes
+  "#peekn(n int)": (s string, eof bool)
+
+  +peek(): (r rune, eof bool)
+  rewind()
+  commit()
+}
+
+-- sql-table --
+costumes: {
+  shape: sql_table
+  id: int {constraint: primary_key}
+  silliness: int
+  monster: int
+  last_updated: timestamp
+}
+
+monsters: {
+  shape: sql_table
+  id: int {constraint: primary_key}
+  movie: string
+  weight: int
+  last_updated: timestamp
+}
+
+costumes.monster -> monsters.id
+
+-- basic-newlines --
+a: "A\na"
+b: "A"
+
+-- sequence-newlines --
+shape: sequence_diagram
+alice -> bob: What does it mean\nto be well-adjusted?
+bob -> alice: The ability to play bridge or\ngolf as if they were games.

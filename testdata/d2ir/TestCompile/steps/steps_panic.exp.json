@@ -1,0 +1,1061 @@
+{
+  "fields": [
+    {
+      "name": {
+        "range": "TestCompile/steps/steps_panic.d2,4:0:66-4:9:75",
+        "value": [
+          {
+            "string": "scenarios",
+            "raw_string": "scenarios"
+          }
+        ]
+      },
+      "composite": {
+        "fields": [
+          {
+            "name": {
+              "range": "TestCompile/steps/steps_panic.d2,5:2:81-5:7:86",
+              "value": [
+                {
+                  "string": "shape",
+                  "raw_string": "shape"
+                }
+              ]
+            },
+            "primary": {
+              "value": {
+                "range": "TestCompile/steps/steps_panic.d2,5:9:88-5:18:97",
+                "value": [
+                  {
+                    "string": "sql_table",
+                    "raw_string": "sql_table"
+                  }
+                ]
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/steps/steps_panic.d2,5:2:81-5:7:86",
+                  "value": [
+                    {
+                      "string": "shape",
+                      "raw_string": "shape"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/steps/steps_panic.d2,5:2:81-5:7:86",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/steps/steps_panic.d2,5:2:81-5:7:86",
+                        "value": [
+                          {
+                            "string": "shape",
+                            "raw_string": "shape"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/steps/steps_panic.d2,5:2:81-5:18:97",
+                    "key": {
+                      "range": "TestCompile/steps/steps_panic.d2,5:2:81-5:7:86",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/steps/steps_panic.d2,5:2:81-5:7:86",
+                            "value": [
+                              {
+                                "string": "shape",
+                                "raw_string": "shape"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/steps/steps_panic.d2,5:9:88-5:18:97",
+                        "value": [
+                          {
+                            "string": "sql_table",
+                            "raw_string": "sql_table"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              }
+            ]
+          },
+          {
+            "name": {
+              "range": "TestCompile/steps/steps_panic.d2,6:2:100-6:5:103",
+              "value": [
+                {
+                  "string": "hey",
+                  "raw_string": "hey"
+                }
+              ]
+            },
+            "composite": {
+              "fields": [
+                {
+                  "name": {
+                    "range": ",0:0:0-0:0:0",
+                    "value": [
+                      {
+                        "string": "label"
+                      }
+                    ]
+                  },
+                  "primary": {
+                    "value": {
+                      "range": "TestCompile/steps/steps_panic.d2,6:7:105-6:10:108",
+                      "value": [
+                        {
+                          "string": "int",
+                          "raw_string": "int"
+                        }
+                      ]
+                    }
+                  },
+                  "references": [
+                    {
+                      "string": null,
+                      "key_path": null,
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/steps/steps_panic.d2,6:2:100-6:36:134",
+                          "key": {
+                            "range": ",0:0:0-0:0:0",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": ",0:0:0-0:0:0",
+                                  "value": [
+                                    {
+                                      "string": "label"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {}
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    }
+                  ]
+                },
+                {
+                  "name": {
+                    "range": "TestCompile/steps/steps_panic.d2,6:12:110-6:22:120",
+                    "value": [
+                      {
+                        "string": "constraint",
+                        "raw_string": "constraint"
+                      }
+                    ]
+                  },
+                  "primary": {
+                    "value": {
+                      "range": "TestCompile/steps/steps_panic.d2,6:24:122-6:35:133",
+                      "value": [
+                        {
+                          "string": "primary_key",
+                          "raw_string": "primary_key"
+                        }
+                      ]
+                    }
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/steps/steps_panic.d2,6:12:110-6:22:120",
+                        "value": [
+                          {
+                            "string": "constraint",
+                            "raw_string": "constraint"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/steps/steps_panic.d2,6:12:110-6:22:120",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/steps/steps_panic.d2,6:12:110-6:22:120",
+                              "value": [
+                                {
+                                  "string": "constraint",
+                                  "raw_string": "constraint"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/steps/steps_panic.d2,6:12:110-6:35:133",
+                          "key": {
+                            "range": "TestCompile/steps/steps_panic.d2,6:12:110-6:22:120",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/steps/steps_panic.d2,6:12:110-6:22:120",
+                                  "value": [
+                                    {
+                                      "string": "constraint",
+                                      "raw_string": "constraint"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/steps/steps_panic.d2,6:24:122-6:35:133",
+                              "value": [
+                                {
+                                  "string": "primary_key",
+                                  "raw_string": "primary_key"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/steps/steps_panic.d2,6:2:100-6:5:103",
+                  "value": [
+                    {
+                      "string": "hey",
+                      "raw_string": "hey"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/steps/steps_panic.d2,6:2:100-6:5:103",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/steps/steps_panic.d2,6:2:100-6:5:103",
+                        "value": [
+                          {
+                            "string": "hey",
+                            "raw_string": "hey"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/steps/steps_panic.d2,6:2:100-6:36:134",
+                    "key": {
+                      "range": "TestCompile/steps/steps_panic.d2,6:2:100-6:5:103",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/steps/steps_panic.d2,6:2:100-6:5:103",
+                            "value": [
+                              {
+                                "string": "hey",
+                                "raw_string": "hey"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {
+                      "unquoted_string": {
+                        "range": "TestCompile/steps/steps_panic.d2,6:7:105-6:10:108",
+                        "value": [
+                          {
+                            "string": "int",
+                            "raw_string": "int"
+                          }
+                        ]
+                      }
+                    },
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/steps/steps_panic.d2,6:11:109-6:36:134",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/steps/steps_panic.d2,6:12:110-6:35:133",
+                              "key": {
+                                "range": "TestCompile/steps/steps_panic.d2,6:12:110-6:22:120",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/steps/steps_panic.d2,6:12:110-6:22:120",
+                                      "value": [
+                                        {
+                                          "string": "constraint",
+                                          "raw_string": "constraint"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "unquoted_string": {
+                                  "range": "TestCompile/steps/steps_panic.d2,6:24:122-6:35:133",
+                                  "value": [
+                                    {
+                                      "string": "primary_key",
+                                      "raw_string": "primary_key"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/steps/steps_panic.d2,4:0:66-4:9:75",
+            "value": [
+              {
+                "string": "scenarios",
+                "raw_string": "scenarios"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/steps/steps_panic.d2,4:0:66-4:9:75",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/steps/steps_panic.d2,4:0:66-4:9:75",
+                  "value": [
+                    {
+                      "string": "scenarios",
+                      "raw_string": "scenarios"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/steps/steps_panic.d2,4:0:66-7:1:136",
+              "key": {
+                "range": "TestCompile/steps/steps_panic.d2,4:0:66-4:9:75",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/steps/steps_panic.d2,4:0:66-4:9:75",
+                      "value": [
+                        {
+                          "string": "scenarios",
+                          "raw_string": "scenarios"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/steps/steps_panic.d2,4:11:77-7:1:136",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/steps/steps_panic.d2,5:2:81-5:18:97",
+                        "key": {
+                          "range": "TestCompile/steps/steps_panic.d2,5:2:81-5:7:86",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/steps/steps_panic.d2,5:2:81-5:7:86",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/steps/steps_panic.d2,5:9:88-5:18:97",
+                            "value": [
+                              {
+                                "string": "sql_table",
+                                "raw_string": "sql_table"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "map_key": {
+                        "range": "TestCompile/steps/steps_panic.d2,6:2:100-6:36:134",
+                        "key": {
+                          "range": "TestCompile/steps/steps_panic.d2,6:2:100-6:5:103",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/steps/steps_panic.d2,6:2:100-6:5:103",
+                                "value": [
+                                  {
+                                    "string": "hey",
+                                    "raw_string": "hey"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {
+                          "unquoted_string": {
+                            "range": "TestCompile/steps/steps_panic.d2,6:7:105-6:10:108",
+                            "value": [
+                              {
+                                "string": "int",
+                                "raw_string": "int"
+                              }
+                            ]
+                          }
+                        },
+                        "value": {
+                          "map": {
+                            "range": "TestCompile/steps/steps_panic.d2,6:11:109-6:36:134",
+                            "nodes": [
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/steps/steps_panic.d2,6:12:110-6:35:133",
+                                  "key": {
+                                    "range": "TestCompile/steps/steps_panic.d2,6:12:110-6:22:120",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/steps/steps_panic.d2,6:12:110-6:22:120",
+                                          "value": [
+                                            {
+                                              "string": "constraint",
+                                              "raw_string": "constraint"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/steps/steps_panic.d2,6:24:122-6:35:133",
+                                      "value": [
+                                        {
+                                          "string": "primary_key",
+                                          "raw_string": "primary_key"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        }
+      ]
+    },
+    {
+      "name": {
+        "range": "TestCompile/steps/steps_panic.d2,0:0:0-0:5:5",
+        "value": [
+          {
+            "string": "steps",
+            "raw_string": "steps"
+          }
+        ]
+      },
+      "composite": {
+        "fields": [
+          {
+            "name": {
+              "range": "TestCompile/steps/steps_panic.d2,1:2:11-1:7:16",
+              "value": [
+                {
+                  "string": "shape",
+                  "raw_string": "shape"
+                }
+              ]
+            },
+            "primary": {
+              "value": {
+                "range": "TestCompile/steps/steps_panic.d2,1:9:18-1:18:27",
+                "value": [
+                  {
+                    "string": "sql_table",
+                    "raw_string": "sql_table"
+                  }
+                ]
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/steps/steps_panic.d2,1:2:11-1:7:16",
+                  "value": [
+                    {
+                      "string": "shape",
+                      "raw_string": "shape"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/steps/steps_panic.d2,1:2:11-1:7:16",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/steps/steps_panic.d2,1:2:11-1:7:16",
+                        "value": [
+                          {
+                            "string": "shape",
+                            "raw_string": "shape"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/steps/steps_panic.d2,1:2:11-1:18:27",
+                    "key": {
+                      "range": "TestCompile/steps/steps_panic.d2,1:2:11-1:7:16",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/steps/steps_panic.d2,1:2:11-1:7:16",
+                            "value": [
+                              {
+                                "string": "shape",
+                                "raw_string": "shape"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/steps/steps_panic.d2,1:9:18-1:18:27",
+                        "value": [
+                          {
+                            "string": "sql_table",
+                            "raw_string": "sql_table"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              }
+            ]
+          },
+          {
+            "name": {
+              "range": "TestCompile/steps/steps_panic.d2,2:2:30-2:4:32",
+              "value": [
+                {
+                  "string": "id",
+                  "raw_string": "id"
+                }
+              ]
+            },
+            "composite": {
+              "fields": [
+                {
+                  "name": {
+                    "range": ",0:0:0-0:0:0",
+                    "value": [
+                      {
+                        "string": "label"
+                      }
+                    ]
+                  },
+                  "primary": {
+                    "value": {
+                      "range": "TestCompile/steps/steps_panic.d2,2:6:34-2:9:37",
+                      "value": [
+                        {
+                          "string": "int",
+                          "raw_string": "int"
+                        }
+                      ]
+                    }
+                  },
+                  "references": [
+                    {
+                      "string": null,
+                      "key_path": null,
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/steps/steps_panic.d2,2:2:30-2:35:63",
+                          "key": {
+                            "range": ",0:0:0-0:0:0",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": ",0:0:0-0:0:0",
+                                  "value": [
+                                    {
+                                      "string": "label"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {}
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    }
+                  ]
+                },
+                {
+                  "name": {
+                    "range": "TestCompile/steps/steps_panic.d2,2:11:39-2:21:49",
+                    "value": [
+                      {
+                        "string": "constraint",
+                        "raw_string": "constraint"
+                      }
+                    ]
+                  },
+                  "primary": {
+                    "value": {
+                      "range": "TestCompile/steps/steps_panic.d2,2:23:51-2:34:62",
+                      "value": [
+                        {
+                          "string": "primary_key",
+                          "raw_string": "primary_key"
+                        }
+                      ]
+                    }
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/steps/steps_panic.d2,2:11:39-2:21:49",
+                        "value": [
+                          {
+                            "string": "constraint",
+                            "raw_string": "constraint"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/steps/steps_panic.d2,2:11:39-2:21:49",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/steps/steps_panic.d2,2:11:39-2:21:49",
+                              "value": [
+                                {
+                                  "string": "constraint",
+                                  "raw_string": "constraint"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/steps/steps_panic.d2,2:11:39-2:34:62",
+                          "key": {
+                            "range": "TestCompile/steps/steps_panic.d2,2:11:39-2:21:49",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/steps/steps_panic.d2,2:11:39-2:21:49",
+                                  "value": [
+                                    {
+                                      "string": "constraint",
+                                      "raw_string": "constraint"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/steps/steps_panic.d2,2:23:51-2:34:62",
+                              "value": [
+                                {
+                                  "string": "primary_key",
+                                  "raw_string": "primary_key"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "due_to_glob": false,
+                      "due_to_lazy_glob": false
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/steps/steps_panic.d2,2:2:30-2:4:32",
+                  "value": [
+                    {
+                      "string": "id",
+                      "raw_string": "id"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/steps/steps_panic.d2,2:2:30-2:4:32",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/steps/steps_panic.d2,2:2:30-2:4:32",
+                        "value": [
+                          {
+                            "string": "id",
+                            "raw_string": "id"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/steps/steps_panic.d2,2:2:30-2:35:63",
+                    "key": {
+                      "range": "TestCompile/steps/steps_panic.d2,2:2:30-2:4:32",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/steps/steps_panic.d2,2:2:30-2:4:32",
+                            "value": [
+                              {
+                                "string": "id",
+                                "raw_string": "id"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {
+                      "unquoted_string": {
+                        "range": "TestCompile/steps/steps_panic.d2,2:6:34-2:9:37",
+                        "value": [
+                          {
+                            "string": "int",
+                            "raw_string": "int"
+                          }
+                        ]
+                      }
+                    },
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/steps/steps_panic.d2,2:10:38-2:35:63",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/steps/steps_panic.d2,2:11:39-2:34:62",
+                              "key": {
+                                "range": "TestCompile/steps/steps_panic.d2,2:11:39-2:21:49",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/steps/steps_panic.d2,2:11:39-2:21:49",
+                                      "value": [
+                                        {
+                                          "string": "constraint",
+                                          "raw_string": "constraint"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "unquoted_string": {
+                                  "range": "TestCompile/steps/steps_panic.d2,2:23:51-2:34:62",
+                                  "value": [
+                                    {
+                                      "string": "primary_key",
+                                      "raw_string": "primary_key"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "due_to_glob": false,
+                "due_to_lazy_glob": false
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/steps/steps_panic.d2,0:0:0-0:5:5",
+            "value": [
+              {
+                "string": "steps",
+                "raw_string": "steps"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/steps/steps_panic.d2,0:0:0-0:5:5",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/steps/steps_panic.d2,0:0:0-0:5:5",
+                  "value": [
+                    {
+                      "string": "steps",
+                      "raw_string": "steps"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/steps/steps_panic.d2,0:0:0-3:1:65",
+              "key": {
+                "range": "TestCompile/steps/steps_panic.d2,0:0:0-0:5:5",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/steps/steps_panic.d2,0:0:0-0:5:5",
+                      "value": [
+                        {
+                          "string": "steps",
+                          "raw_string": "steps"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/steps/steps_panic.d2,0:7:7-3:1:65",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/steps/steps_panic.d2,1:2:11-1:18:27",
+                        "key": {
+                          "range": "TestCompile/steps/steps_panic.d2,1:2:11-1:7:16",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/steps/steps_panic.d2,1:2:11-1:7:16",
+                                "value": [
+                                  {
+                                    "string": "shape",
+                                    "raw_string": "shape"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "unquoted_string": {
+                            "range": "TestCompile/steps/steps_panic.d2,1:9:18-1:18:27",
+                            "value": [
+                              {
+                                "string": "sql_table",
+                                "raw_string": "sql_table"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "map_key": {
+                        "range": "TestCompile/steps/steps_panic.d2,2:2:30-2:35:63",
+                        "key": {
+                          "range": "TestCompile/steps/steps_panic.d2,2:2:30-2:4:32",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/steps/steps_panic.d2,2:2:30-2:4:32",
+                                "value": [
+                                  {
+                                    "string": "id",
+                                    "raw_string": "id"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {
+                          "unquoted_string": {
+                            "range": "TestCompile/steps/steps_panic.d2,2:6:34-2:9:37",
+                            "value": [
+                              {
+                                "string": "int",
+                                "raw_string": "int"
+                              }
+                            ]
+                          }
+                        },
+                        "value": {
+                          "map": {
+                            "range": "TestCompile/steps/steps_panic.d2,2:10:38-2:35:63",
+                            "nodes": [
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/steps/steps_panic.d2,2:11:39-2:34:62",
+                                  "key": {
+                                    "range": "TestCompile/steps/steps_panic.d2,2:11:39-2:21:49",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/steps/steps_panic.d2,2:11:39-2:21:49",
+                                          "value": [
+                                            {
+                                              "string": "constraint",
+                                              "raw_string": "constraint"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/steps/steps_panic.d2,2:23:51-2:34:62",
+                                      "value": [
+                                        {
+                                          "string": "primary_key",
+                                          "raw_string": "primary_key"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        }
+      ]
+    }
+  ],
+  "edges": null
+}

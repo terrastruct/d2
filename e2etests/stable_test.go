@@ -1189,6 +1189,23 @@ a -> md -> b
 }
 `,
 		}, {
+			name: "class_underline",
+			script: `manager: BatchManager {
+  shape: class
+  -num: int {
+    style.underline: true
+  }
+  -timeout: int
+  -pid
+
+  +getStatus(): Enum {
+    style.underline: true
+  }
+  +getJobs(): "Job[]"
+  +setTimeout(seconds int)
+}
+`,
+		}, {
 			name: "sql_tables",
 			script: `
 direction: left
@@ -2898,6 +2915,7 @@ y: profits {
 		loadFromFile(t, "unfilled_triangle"),
 		loadFromFile(t, "grid_container_dimensions"),
 		loadFromFile(t, "grid_label_positions"),
+		loadFromFile(t, "cross_arrowhead"),
 	}
 
 	runa(t, tcs)

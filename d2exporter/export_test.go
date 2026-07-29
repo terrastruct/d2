@@ -39,6 +39,7 @@ func TestExport(t *testing.T) {
 	t.Run("connection", testConnection)
 	t.Run("label", testLabel)
 	t.Run("theme", testTheme)
+	t.Run("legend", testLegend)
 }
 
 func testShape(t *testing.T) {
@@ -204,6 +205,30 @@ func testTheme(t *testing.T) {
 	runa(t, tcs)
 }
 
+func testLegend(t *testing.T) {
+	tcs := []testCase{
+		{
+			name: "basic_legend",
+			dsl: `vars: {
+  d2-legend: {
+    legend: {
+      l1: Rectangles {shape: rectangle}
+      l2: Ovals {shape: oval}
+      l1 -> l2: Connection
+		}
+	}
+}
+x: {shape: rectangle}
+y: {shape: oval}
+x -> y: connects
+
+`,
+		},
+	}
+
+	runa(t, tcs)
+}
+
 func runa(t *testing.T, tcs []testCase) {
 	for _, tc := range tcs {
 		tc := tc
@@ -230,7 +255,7 @@ func run(t *testing.T, tc testCase) {
 	ruler, err := textmeasure.NewRuler()
 	assert.JSON(t, nil, err)
 
-	err = g.SetDimensions(nil, ruler, nil)
+	err = g.SetDimensions(nil, ruler, nil, nil)
 	assert.JSON(t, nil, err)
 
 	graphInfo := d2layouts.NestedGraphInfo(g.Root)
@@ -239,7 +264,7 @@ func run(t *testing.T, tc testCase) {
 		t.Fatal(err)
 	}
 
-	got, err := d2exporter.Export(ctx, g, nil)
+	got, err := d2exporter.Export(ctx, g, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

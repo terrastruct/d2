@@ -205,6 +205,7 @@
           "height": 0
         },
         "style": {},
+        "iconStyle": {},
         "near_key": null,
         "shape": {
           "value": ""
@@ -249,7 +250,8 @@
             {
               "name": "length()",
               "return": "int",
-              "visibility": "public"
+              "visibility": "public",
+              "underline": false
             }
           ]
         },
@@ -262,6 +264,7 @@
             "height": 0
           },
           "style": {},
+          "iconStyle": {},
           "near_key": null,
           "shape": {
             "value": "class"

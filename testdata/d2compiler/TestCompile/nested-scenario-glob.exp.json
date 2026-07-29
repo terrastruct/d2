@@ -1,0 +1,1441 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:0:0-15:0:146",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:0:0-0:21:21",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:0:0-0:16:16",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:0:0-0:2:2",
+                    "value": [
+                      {
+                        "string": "**",
+                        "raw_string": "**"
+                      }
+                    ],
+                    "pattern": [
+                      "*",
+                      "",
+                      "*"
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:3:3-0:8:8",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:9:9-0:16:16",
+                    "value": [
+                      {
+                        "string": "opacity",
+                        "raw_string": "opacity"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "number": {
+                "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:18:18-0:21:21",
+                "raw": "0.2",
+                "value": "1/5"
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,1:0:22-1:1:23",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,1:0:22-1:1:23",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,1:0:22-1:1:23",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,2:0:24-2:1:25",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,2:0:24-2:1:25",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,2:0:24-2:1:25",
+                    "value": [
+                      {
+                        "string": "z",
+                        "raw_string": "z"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,4:0:27-14:1:145",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,4:0:27-4:9:36",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,4:0:27-4:9:36",
+                    "value": [
+                      {
+                        "string": "scenarios",
+                        "raw_string": "scenarios"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,4:11:38-14:1:145",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,5:2:42-13:3:143",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,5:2:42-5:3:43",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,5:2:42-5:3:43",
+                              "value": [
+                                {
+                                  "string": "y",
+                                  "raw_string": "y"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,5:5:45-13:3:143",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,6:4:51-6:22:69",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,6:4:51-6:19:66",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,6:4:51-6:5:52",
+                                        "value": [
+                                          {
+                                            "string": "x",
+                                            "raw_string": "x"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,6:6:53-6:11:58",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,6:12:59-6:19:66",
+                                        "value": [
+                                          {
+                                            "string": "opacity",
+                                            "raw_string": "opacity"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,6:21:68-6:22:69",
+                                    "raw": "1",
+                                    "value": "1"
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,8:4:75-12:5:139",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,8:4:75-8:13:84",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,8:4:75-8:13:84",
+                                        "value": [
+                                          {
+                                            "string": "scenarios",
+                                            "raw_string": "scenarios"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "map": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,8:15:86-12:5:139",
+                                    "nodes": [
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,9:6:94-11:7:133",
+                                          "key": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,9:6:94-9:7:95",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,9:6:94-9:7:95",
+                                                  "value": [
+                                                    {
+                                                      "string": "b",
+                                                      "raw_string": "b"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "map": {
+                                              "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,9:9:97-11:7:133",
+                                              "nodes": [
+                                                {
+                                                  "map_key": {
+                                                    "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,10:8:107-10:26:125",
+                                                    "key": {
+                                                      "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,10:8:107-10:23:122",
+                                                      "path": [
+                                                        {
+                                                          "unquoted_string": {
+                                                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,10:8:107-10:9:108",
+                                                            "value": [
+                                                              {
+                                                                "string": "z",
+                                                                "raw_string": "z"
+                                                              }
+                                                            ]
+                                                          }
+                                                        },
+                                                        {
+                                                          "unquoted_string": {
+                                                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,10:10:109-10:15:114",
+                                                            "value": [
+                                                              {
+                                                                "string": "style",
+                                                                "raw_string": "style"
+                                                              }
+                                                            ]
+                                                          }
+                                                        },
+                                                        {
+                                                          "unquoted_string": {
+                                                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,10:16:115-10:23:122",
+                                                            "value": [
+                                                              {
+                                                                "string": "opacity",
+                                                                "raw_string": "opacity"
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      ]
+                                                    },
+                                                    "primary": {},
+                                                    "value": {
+                                                      "number": {
+                                                        "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,10:25:124-10:26:125",
+                                                        "raw": "1",
+                                                        "value": "1"
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "iconStyle": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "x",
+        "id_val": "x",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,1:0:22-1:1:23",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,1:0:22-1:1:23",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "x"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "opacity": {
+              "value": "0.2"
+            }
+          },
+          "iconStyle": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "z",
+        "id_val": "z",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,2:0:24-2:1:25",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,2:0:24-2:1:25",
+                    "value": [
+                      {
+                        "string": "z",
+                        "raw_string": "z"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "z"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "opacity": {
+              "value": "0.2"
+            }
+          },
+          "iconStyle": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ],
+    "scenarios": [
+      {
+        "name": "y",
+        "isFolderOnly": false,
+        "ast": {
+          "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:0:0-1:0:0",
+          "nodes": [
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,1:0:22-1:1:23",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {
+                  "map": {
+                    "range": ",1:0:0-2:0:0",
+                    "nodes": [
+                      {
+                        "map_key": {
+                          "range": ",0:0:0-0:0:0",
+                          "key": {
+                            "range": ",0:0:0-0:0:0",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:3:3-0:8:8",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": ",1:0:0-2:0:0",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": ",0:0:0-0:0:0",
+                                    "key": {
+                                      "range": ",0:0:0-0:0:0",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:9:9-0:16:16",
+                                            "value": [
+                                              {
+                                                "string": "opacity",
+                                                "raw_string": "opacity"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {
+                                      "number": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,6:21:68-6:22:69",
+                                        "raw": "1",
+                                        "value": "1"
+                                      }
+                                    },
+                                    "value": {}
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,2:0:24-2:1:25",
+                        "value": [
+                          {
+                            "string": "z",
+                            "raw_string": "z"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {
+                  "map": {
+                    "range": ",1:0:0-2:0:0",
+                    "nodes": [
+                      {
+                        "map_key": {
+                          "range": ",0:0:0-0:0:0",
+                          "key": {
+                            "range": ",0:0:0-0:0:0",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:3:3-0:8:8",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": ",1:0:0-2:0:0",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": ",0:0:0-0:0:0",
+                                    "key": {
+                                      "range": ",0:0:0-0:0:0",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:9:9-0:16:16",
+                                            "value": [
+                                              {
+                                                "string": "opacity",
+                                                "raw_string": "opacity"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {
+                                      "number": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:18:18-0:21:21",
+                                        "raw": "0.2",
+                                        "value": "1/5"
+                                      }
+                                    },
+                                    "value": {}
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,8:4:75-8:13:84",
+                        "value": [
+                          {
+                            "string": "scenarios",
+                            "raw_string": "scenarios"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {
+                  "map": {
+                    "range": ",1:0:0-2:0:0",
+                    "nodes": [
+                      {
+                        "map_key": {
+                          "range": ",0:0:0-0:0:0",
+                          "key": {
+                            "range": ",0:0:0-0:0:0",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,9:6:94-9:7:95",
+                                  "value": [
+                                    {
+                                      "string": "b",
+                                      "raw_string": "b"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,1:0:0-2:0:0",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": ",0:0:0-0:0:0",
+                                    "key": {
+                                      "range": ",0:0:0-0:0:0",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,1:0:22-1:1:23",
+                                            "value": [
+                                              {
+                                                "string": "x",
+                                                "raw_string": "x"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {},
+                                    "value": {
+                                      "map": {
+                                        "range": ",1:0:0-2:0:0",
+                                        "nodes": [
+                                          {
+                                            "map_key": {
+                                              "range": ",0:0:0-0:0:0",
+                                              "key": {
+                                                "range": ",0:0:0-0:0:0",
+                                                "path": [
+                                                  {
+                                                    "unquoted_string": {
+                                                      "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:3:3-0:8:8",
+                                                      "value": [
+                                                        {
+                                                          "string": "style",
+                                                          "raw_string": "style"
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                ]
+                                              },
+                                              "primary": {},
+                                              "value": {
+                                                "map": {
+                                                  "range": ",1:0:0-2:0:0",
+                                                  "nodes": [
+                                                    {
+                                                      "map_key": {
+                                                        "range": ",0:0:0-0:0:0",
+                                                        "key": {
+                                                          "range": ",0:0:0-0:0:0",
+                                                          "path": [
+                                                            {
+                                                              "unquoted_string": {
+                                                                "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:9:9-0:16:16",
+                                                                "value": [
+                                                                  {
+                                                                    "string": "opacity",
+                                                                    "raw_string": "opacity"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            }
+                                                          ]
+                                                        },
+                                                        "primary": {
+                                                          "number": {
+                                                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:18:18-0:21:21",
+                                                            "raw": "0.2",
+                                                            "value": "1/5"
+                                                          }
+                                                        },
+                                                        "value": {}
+                                                      }
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                },
+                                {
+                                  "map_key": {
+                                    "range": ",0:0:0-0:0:0",
+                                    "key": {
+                                      "range": ",0:0:0-0:0:0",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,2:0:24-2:1:25",
+                                            "value": [
+                                              {
+                                                "string": "z",
+                                                "raw_string": "z"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {},
+                                    "value": {
+                                      "map": {
+                                        "range": ",1:0:0-2:0:0",
+                                        "nodes": [
+                                          {
+                                            "map_key": {
+                                              "range": ",0:0:0-0:0:0",
+                                              "key": {
+                                                "range": ",0:0:0-0:0:0",
+                                                "path": [
+                                                  {
+                                                    "unquoted_string": {
+                                                      "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:3:3-0:8:8",
+                                                      "value": [
+                                                        {
+                                                          "string": "style",
+                                                          "raw_string": "style"
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                ]
+                                              },
+                                              "primary": {},
+                                              "value": {
+                                                "map": {
+                                                  "range": ",1:0:0-2:0:0",
+                                                  "nodes": [
+                                                    {
+                                                      "map_key": {
+                                                        "range": ",0:0:0-0:0:0",
+                                                        "key": {
+                                                          "range": ",0:0:0-0:0:0",
+                                                          "path": [
+                                                            {
+                                                              "unquoted_string": {
+                                                                "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:9:9-0:16:16",
+                                                                "value": [
+                                                                  {
+                                                                    "string": "opacity",
+                                                                    "raw_string": "opacity"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            }
+                                                          ]
+                                                        },
+                                                        "primary": {
+                                                          "number": {
+                                                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,10:25:124-10:26:125",
+                                                            "raw": "1",
+                                                            "value": "1"
+                                                          }
+                                                        },
+                                                        "value": {}
+                                                      }
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "attributes": {
+            "label": {
+              "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "style": {},
+            "iconStyle": {},
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": null
+          },
+          "zIndex": 0
+        },
+        "edges": null,
+        "objects": [
+          {
+            "id": "x",
+            "id_val": "x",
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,1:0:22-1:1:23",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,1:0:22-1:1:23",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              },
+              {
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,6:4:51-6:19:66",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,6:4:51-6:5:52",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,6:6:53-6:11:58",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,6:12:59-6:19:66",
+                        "value": [
+                          {
+                            "string": "opacity",
+                            "raw_string": "opacity"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "x"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {
+                "opacity": {
+                  "value": "1"
+                }
+              },
+              "iconStyle": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          },
+          {
+            "id": "z",
+            "id_val": "z",
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,2:0:24-2:1:25",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,2:0:24-2:1:25",
+                        "value": [
+                          {
+                            "string": "z",
+                            "raw_string": "z"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "z"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {
+                "opacity": {
+                  "value": "0.2"
+                }
+              },
+              "iconStyle": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          }
+        ],
+        "scenarios": [
+          {
+            "name": "b",
+            "isFolderOnly": false,
+            "ast": {
+              "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:0:0-1:0:0",
+              "nodes": [
+                {
+                  "map_key": {
+                    "range": ",0:0:0-0:0:0",
+                    "key": {
+                      "range": ",0:0:0-0:0:0",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,1:0:22-1:1:23",
+                            "value": [
+                              {
+                                "string": "x",
+                                "raw_string": "x"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": ",1:0:0-2:0:0",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": ",0:0:0-0:0:0",
+                              "key": {
+                                "range": ",0:0:0-0:0:0",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:3:3-0:8:8",
+                                      "value": [
+                                        {
+                                          "string": "style",
+                                          "raw_string": "style"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "map": {
+                                  "range": ",1:0:0-2:0:0",
+                                  "nodes": [
+                                    {
+                                      "map_key": {
+                                        "range": ",0:0:0-0:0:0",
+                                        "key": {
+                                          "range": ",0:0:0-0:0:0",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:9:9-0:16:16",
+                                                "value": [
+                                                  {
+                                                    "string": "opacity",
+                                                    "raw_string": "opacity"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "primary": {
+                                          "number": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:18:18-0:21:21",
+                                            "raw": "0.2",
+                                            "value": "1/5"
+                                          }
+                                        },
+                                        "value": {}
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "map_key": {
+                    "range": ",0:0:0-0:0:0",
+                    "key": {
+                      "range": ",0:0:0-0:0:0",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,2:0:24-2:1:25",
+                            "value": [
+                              {
+                                "string": "z",
+                                "raw_string": "z"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": ",1:0:0-2:0:0",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": ",0:0:0-0:0:0",
+                              "key": {
+                                "range": ",0:0:0-0:0:0",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:3:3-0:8:8",
+                                      "value": [
+                                        {
+                                          "string": "style",
+                                          "raw_string": "style"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "map": {
+                                  "range": ",1:0:0-2:0:0",
+                                  "nodes": [
+                                    {
+                                      "map_key": {
+                                        "range": ",0:0:0-0:0:0",
+                                        "key": {
+                                          "range": ",0:0:0-0:0:0",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,0:9:9-0:16:16",
+                                                "value": [
+                                                  {
+                                                    "string": "opacity",
+                                                    "raw_string": "opacity"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "primary": {
+                                          "number": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,10:25:124-10:26:125",
+                                            "raw": "1",
+                                            "value": "1"
+                                          }
+                                        },
+                                        "value": {}
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            "root": {
+              "id": "",
+              "id_val": "",
+              "attributes": {
+                "label": {
+                  "value": ""
+                },
+                "labelDimensions": {
+                  "width": 0,
+                  "height": 0
+                },
+                "style": {},
+                "iconStyle": {},
+                "near_key": null,
+                "shape": {
+                  "value": ""
+                },
+                "direction": {
+                  "value": ""
+                },
+                "constraint": null
+              },
+              "zIndex": 0
+            },
+            "edges": null,
+            "objects": [
+              {
+                "id": "x",
+                "id_val": "x",
+                "references": [
+                  {
+                    "key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,1:0:22-1:1:23",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,1:0:22-1:1:23",
+                            "value": [
+                              {
+                                "string": "x",
+                                "raw_string": "x"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "key_path_index": 0,
+                    "map_key_edge_index": -1
+                  },
+                  {
+                    "key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,6:4:51-6:19:66",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,6:4:51-6:5:52",
+                            "value": [
+                              {
+                                "string": "x",
+                                "raw_string": "x"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,6:6:53-6:11:58",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,6:12:59-6:19:66",
+                            "value": [
+                              {
+                                "string": "opacity",
+                                "raw_string": "opacity"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "key_path_index": 0,
+                    "map_key_edge_index": -1
+                  }
+                ],
+                "attributes": {
+                  "label": {
+                    "value": "x"
+                  },
+                  "labelDimensions": {
+                    "width": 0,
+                    "height": 0
+                  },
+                  "style": {
+                    "opacity": {
+                      "value": "0.2"
+                    }
+                  },
+                  "iconStyle": {},
+                  "near_key": null,
+                  "shape": {
+                    "value": "rectangle"
+                  },
+                  "direction": {
+                    "value": ""
+                  },
+                  "constraint": null
+                },
+                "zIndex": 0
+              },
+              {
+                "id": "z",
+                "id_val": "z",
+                "references": [
+                  {
+                    "key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,2:0:24-2:1:25",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,2:0:24-2:1:25",
+                            "value": [
+                              {
+                                "string": "z",
+                                "raw_string": "z"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "key_path_index": 0,
+                    "map_key_edge_index": -1
+                  },
+                  {
+                    "key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,10:8:107-10:23:122",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,10:8:107-10:9:108",
+                            "value": [
+                              {
+                                "string": "z",
+                                "raw_string": "z"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,10:10:109-10:15:114",
+                            "value": [
+                              {
+                                "string": "style",
+                                "raw_string": "style"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/nested-scenario-glob.d2,10:16:115-10:23:122",
+                            "value": [
+                              {
+                                "string": "opacity",
+                                "raw_string": "opacity"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "key_path_index": 0,
+                    "map_key_edge_index": -1
+                  }
+                ],
+                "attributes": {
+                  "label": {
+                    "value": "z"
+                  },
+                  "labelDimensions": {
+                    "width": 0,
+                    "height": 0
+                  },
+                  "style": {
+                    "opacity": {
+                      "value": "1"
+                    }
+                  },
+                  "iconStyle": {},
+                  "near_key": null,
+                  "shape": {
+                    "value": "rectangle"
+                  },
+                  "direction": {
+                    "value": ""
+                  },
+                  "constraint": null
+                },
+                "zIndex": 0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "err": null
+}

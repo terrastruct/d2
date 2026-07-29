@@ -86,6 +86,11 @@ func darkenCSS(colorString string) (string, error) {
 }
 
 func LuminanceCategory(colorString string) (string, error) {
+	// check if colorString matches the `url('#grad-<sha1-hash>')` format
+	// which is used to refer to a <linearGradient> or <radialGradient> element.
+	if IsURLGradientID(colorString) {
+		return "normal", nil
+	}
 	l, err := Luminance(colorString)
 	if err != nil {
 		return "", err
@@ -507,7 +512,18 @@ var NamedColors = []string{
 var ColorHexRegex = regexp.MustCompile(`^#(([0-9a-fA-F]{2}){3}|([0-9a-fA-F]){3})$`)
 
 func ValidColor(color string) bool {
-	if !go2.Contains(NamedColors, strings.ToLower(color)) && !ColorHexRegex.MatchString(color) && !IsGradient(color) {
+	if IsGradient(color) {
+		gradient, err := ParseGradient(color)
+		if err != nil {
+			return false
+		}
+		for _, colorStop := range gradient.ColorStops {
+			_, err = csscolorparser.Parse(colorStop.Color)
+			if err != nil {
+				return false
+			}
+		}
+	} else if !go2.Contains(NamedColors, strings.ToLower(color)) && !ColorHexRegex.MatchString(color) {
 		return false
 	}
 

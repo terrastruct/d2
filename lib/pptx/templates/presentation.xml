@@ -11,7 +11,7 @@
         <p:sldId id="{{.ID}}" r:id="{{.RelationshipID}}" />
         {{end}}
     </p:sldIdLst>
-    <p:sldSz cx="{{.SlideWidth}}" cy="{{.SlideHeight}}" type="screen4x3" />
+    <p:sldSz cx="{{.SlideWidth}}" cy="{{.SlideHeight}}" type="screen16x9" />
     <p:notesSz cx="6858000" cy="9144000" />
     <p:defaultTextStyle>
         <a:defPPr>

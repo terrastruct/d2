@@ -318,6 +318,7 @@ type Field struct {
 	// *Map.
 	parent    Node
 	importAST d2ast.Node
+	suspended bool
 
 	Name d2ast.String `json:"name"`
 
@@ -488,6 +489,7 @@ type Edge struct {
 	// *Map
 	parent    Node
 	importAST d2ast.Node
+	suspended bool
 
 	ID *EdgeID `json:"edge_id"`
 
@@ -648,7 +650,41 @@ func (rc *RefContext) EdgeIndex() int {
 func (rc *RefContext) Equal(rc2 *RefContext) bool {
 	// We intentionally ignore edges here because the same glob can produce multiple RefContexts that should be treated  the same with only the edge as the difference.
 	// Same with ScopeMap.
-	return rc.Key.Equals(rc2.Key) && rc.Scope == rc2.Scope && rc.ScopeAST == rc2.ScopeAST
+	if !(rc.Key.Equals(rc2.Key) && rc.Scope == rc2.Scope && rc.ScopeAST == rc2.ScopeAST) {
+		return false
+	}
+
+	// Check if suspension values match for suspension operations
+	// We don't want these two to equal
+	// 1. *: suspend
+	// 2. *: unsuspend
+	hasSuspension1 := (rc.Key.Primary.Suspension != nil || rc.Key.Value.Suspension != nil)
+	hasSuspension2 := (rc2.Key.Primary.Suspension != nil || rc2.Key.Value.Suspension != nil)
+
+	if hasSuspension1 || hasSuspension2 {
+		var val1, val2 bool
+		if rc.Key.Primary.Suspension != nil {
+			val1 = rc.Key.Primary.Suspension.Value
+		} else if rc.Key.Value.Suspension != nil {
+			val1 = rc.Key.Value.Suspension.Value
+		}
+
+		if rc2.Key.Primary.Suspension != nil {
+			val2 = rc2.Key.Primary.Suspension.Value
+		} else if rc2.Key.Value.Suspension != nil {
+			val2 = rc2.Key.Value.Suspension.Value
+		}
+
+		if hasSuspension1 && hasSuspension2 && val1 != val2 {
+			return false
+		}
+
+		if hasSuspension1 != hasSuspension2 {
+			return false
+		}
+	}
+
+	return true
 }
 
 func (m *Map) FieldCountRecursive() int {
@@ -669,7 +705,7 @@ func (m *Map) FieldCountRecursive() int {
 	return acc
 }
 
-func (m *Map) IsContainer() bool {
+func (c *compiler) IsContainer(m *Map) bool {
 	if m == nil {
 		return false
 	}
@@ -678,6 +714,20 @@ func (m *Map) IsContainer() bool {
 	for _, ref := range f.References {
 		if ref.Primary() && ref.Context_.Key != nil && ref.Context_.Key.Value.Map != nil {
 			for _, n := range ref.Context_.Key.Value.Map.Nodes {
+				if n.MapKey == nil {
+					if n.Import != nil {
+						impn, ok := c.peekImport(n.Import)
+						if ok {
+							for _, f := range impn.Fields {
+								_, isReserved := d2ast.ReservedKeywords[f.Name.ScalarString()]
+								if !(isReserved && f.Name.IsUnquoted()) {
+									return true
+								}
+							}
+						}
+					}
+					continue
+				}
 				if len(n.MapKey.Edges) > 0 {
 					return true
 				}
@@ -758,8 +808,10 @@ func (m *Map) getField(ida []d2ast.String) *Field {
 		if !strings.EqualFold(f.Name.ScalarString(), s.ScalarString()) {
 			continue
 		}
-		if f.Name.IsUnquoted() != s.IsUnquoted() {
-			continue
+		if _, isReserved := d2ast.ReservedKeywords[strings.ToLower(s.ScalarString())]; isReserved {
+			if f.Name.IsUnquoted() != s.IsUnquoted() {
+				continue
+			}
 		}
 		if len(rest) == 0 {
 			return f
@@ -807,7 +859,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 	filter := func(f *Field, passthrough bool) bool {
 		if gctx != nil {
 			var ks string
-			if refctx.Key.HasMultiGlob() {
+			if refctx.Key.HasTripleGlob() {
 				ks = d2format.Format(d2ast.MakeKeyPathString(IDA(f)))
 			} else {
 				ks = d2format.Format(d2ast.MakeKeyPathString(BoardIDA(f)))
@@ -904,16 +956,21 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 	}
 
 	if headString == "classes" && head.IsUnquoted() && NodeBoardKind(m) == "" {
-		return d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", headString)
+		return d2parser.Errorf(kp.Path[i].Unbox(), "%s must be declared at a board root scope", headString)
 	}
 
 	if findBoardKeyword(head) != -1 && head.IsUnquoted() && NodeBoardKind(m) == "" {
-		return d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", headString)
+		return d2parser.Errorf(kp.Path[i].Unbox(), "%s must be declared at a board root scope", headString)
 	}
 
 	for _, f := range m.Fields {
-		if !(f.Name != nil && strings.EqualFold(f.Name.ScalarString(), head.ScalarString()) && f.Name.IsUnquoted() == head.IsUnquoted()) {
+		if !(f.Name != nil && strings.EqualFold(f.Name.ScalarString(), head.ScalarString())) {
 			continue
+		}
+		if _, isReserved := d2ast.ReservedKeywords[strings.ToLower(f.Name.ScalarString())]; isReserved {
+			if f.Name.IsUnquoted() != head.IsUnquoted() {
+				continue
+			}
 		}
 
 		// Don't add references for fake common KeyPath from trimCommon in CreateEdge.
@@ -964,7 +1021,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 		}
 		for _, grefctx := range c.globRefContextStack {
 			var ks string
-			if grefctx.Key.HasMultiGlob() {
+			if grefctx.Key.HasTripleGlob() {
 				ks = d2format.Format(d2ast.MakeKeyPathString(IDA(f)))
 			} else {
 				ks = d2format.Format(d2ast.MakeKeyPathString(BoardIDA(f)))
@@ -1177,7 +1234,7 @@ func (m *Map) getEdges(eid *EdgeID, refctx *RefContext, gctx *globContext, ea *[
 			for _, e := range ea2 {
 				if gctx != nil {
 					var ks string
-					if refctx.Key.HasMultiGlob() {
+					if refctx.Key.HasTripleGlob() {
 						ks = d2format.Format(d2ast.MakeKeyPathString(IDA(e)))
 					} else {
 						ks = d2format.Format(d2ast.MakeKeyPathString(BoardIDA(e)))
@@ -1290,7 +1347,7 @@ func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, gctx *globContext, c *
 
 			if refctx.Edge.Src.HasMultiGlob() {
 				// If src has a double glob we only select leafs, those without children.
-				if src.Map().IsContainer() {
+				if c.IsContainer(src.Map()) {
 					continue
 				}
 				if NodeBoardKind(src) != "" || ParentBoard(src) != ParentBoard(dst) {
@@ -1299,7 +1356,7 @@ func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, gctx *globContext, c *
 			}
 			if refctx.Edge.Dst.HasMultiGlob() {
 				// If dst has a double glob we only select leafs, those without children.
-				if dst.Map().IsContainer() {
+				if c.IsContainer(dst.Map()) {
 					continue
 				}
 				if NodeBoardKind(dst) != "" || ParentBoard(src) != ParentBoard(dst) {
@@ -1395,7 +1452,7 @@ func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, c 
 		e2 := e.Copy(e.Parent()).(*Edge)
 		e2.ID = e2.ID.Copy()
 		e2.ID.Index = nil
-		if refctx.Key.HasMultiGlob() {
+		if refctx.Key.HasTripleGlob() {
 			ks = d2format.Format(d2ast.MakeKeyPathString(IDA(e2)))
 		} else {
 			ks = d2format.Format(d2ast.MakeKeyPathString(BoardIDA(e2)))

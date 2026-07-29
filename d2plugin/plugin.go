@@ -9,6 +9,7 @@ import (
 	"context"
 	"encoding/json"
 	"os/exec"
+	"strings"
 
 	"oss.terrastruct.com/util-go/xexec"
 	"oss.terrastruct.com/util-go/xmain"
@@ -170,7 +171,7 @@ func FindPlugin(ctx context.Context, ps []Plugin, name string) (Plugin, error) {
 		if err != nil {
 			return nil, err
 		}
-		if info.Name == name {
+		if strings.EqualFold(info.Name, name) {
 			return p, nil
 		}
 	}

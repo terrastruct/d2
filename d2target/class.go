@@ -21,15 +21,17 @@ type ClassField struct {
 	Name       string `json:"name"`
 	Type       string `json:"type"`
 	Visibility string `json:"visibility"`
+	Underline  bool   `json:"underline"`
 }
 
 func (cf ClassField) Text(fontSize int) *MText {
 	return &MText{
-		Text:     fmt.Sprintf("%s%s", cf.Name, cf.Type),
-		FontSize: fontSize,
-		IsBold:   false,
-		IsItalic: false,
-		Shape:    "class",
+		Text:        fmt.Sprintf("%s%s", cf.Name, cf.Type),
+		FontSize:    fontSize,
+		IsBold:      false,
+		IsItalic:    false,
+		IsUnderline: cf.Underline,
+		Shape:       "class",
 	}
 }
 
@@ -48,15 +50,17 @@ type ClassMethod struct {
 	Name       string `json:"name"`
 	Return     string `json:"return"`
 	Visibility string `json:"visibility"`
+	Underline  bool   `json:"underline"`
 }
 
 func (cm ClassMethod) Text(fontSize int) *MText {
 	return &MText{
-		Text:     fmt.Sprintf("%s%s", cm.Name, cm.Return),
-		FontSize: fontSize,
-		IsBold:   false,
-		IsItalic: false,
-		Shape:    "class",
+		Text:        fmt.Sprintf("%s%s", cm.Name, cm.Return),
+		FontSize:    fontSize,
+		IsBold:      false,
+		IsItalic:    false,
+		IsUnderline: cm.Underline,
+		Shape:       "class",
 	}
 }
 

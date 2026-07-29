@@ -4,7 +4,7 @@
     "errs": [
       {
         "range": "d2/testdata/d2compiler/TestCompile/image_children_Steps.d2,3:2:115-3:7:120",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/image_children_Steps.d2:4:3: steps is only allowed at a board root"
+        "errmsg": "d2/testdata/d2compiler/TestCompile/image_children_Steps.d2:4:3: steps must be declared at a board root scope"
       }
     ]
   }

@@ -1,0 +1,116 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/import-nested-var.d2,0:0:0-1:0:23",
+      "nodes": [
+        {
+          "import": {
+            "range": "d2/testdata/d2compiler/TestCompile/import-nested-var.d2,0:0:0-0:22:22",
+            "spread": true,
+            "pre": "",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2compiler/TestCompile/import-nested-var.d2,0:4:4-0:10:10",
+                  "value": [
+                    {
+                      "string": "models",
+                      "raw_string": "models"
+                    }
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2compiler/TestCompile/import-nested-var.d2,0:11:11-0:22:22",
+                  "value": [
+                    {
+                      "string": "environment",
+                      "raw_string": "environment"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "iconStyle": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "k",
+        "id_val": "k",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/models.d2,3:4:20-3:5:21",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/models.d2,3:4:20-3:5:21",
+                    "value": [
+                      {
+                        "string": "k",
+                        "raw_string": "k"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "k"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "iconStyle": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

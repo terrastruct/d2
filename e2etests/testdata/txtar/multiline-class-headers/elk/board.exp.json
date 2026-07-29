@@ -10,6 +10,7 @@
   },
   "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
+  "monoFontFamily": "SourceCodePro",
   "shapes": [
     {
       "id": "A",
@@ -40,22 +41,26 @@
         {
           "name": "LeftAligned",
           "type": "",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         },
         {
           "name": "CenterAligned",
           "type": "",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         },
         {
           "name": "RightAligned",
           "type": "",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         },
         {
           "name": "Justified",
           "type": "",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         }
       ],
       "methods": null,
@@ -105,22 +110,26 @@
         {
           "name": "LeftAligned",
           "type": "",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         },
         {
           "name": "CenterAligned",
           "type": "",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         },
         {
           "name": "RightAligned",
           "type": "",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         },
         {
           "name": "Justified",
           "type": "",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         }
       ],
       "methods": null,
@@ -170,22 +179,26 @@
         {
           "name": "LeftAligned",
           "type": "",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         },
         {
           "name": "CenterAligned",
           "type": "",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         },
         {
           "name": "RightAligned",
           "type": "",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         },
         {
           "name": "Justified",
           "type": "",
-          "visibility": "public"
+          "visibility": "public",
+          "underline": false
         }
       ],
       "methods": null,
