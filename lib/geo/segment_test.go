@@ -39,14 +39,17 @@ func TestSegmentIntersectCircle(t *testing.T) {
 	s := NewSegment(NewPoint(-10, 0), NewPoint(10, 0))
 	pts := s.IntersectCircle(origin, 5)
 	assert.Equal(t, 2, len(pts))
-	assert.True(t, pts[0].Equals(NewPoint(-5, 0)))
-	assert.True(t, pts[1].Equals(NewPoint(5, 0)))
+	assert.InDelta(t, -5, pts[0].X, 1e-9)
+	assert.InDelta(t, 0, pts[0].Y, 1e-9)
+	assert.InDelta(t, 5, pts[1].X, 1e-9)
+	assert.InDelta(t, 0, pts[1].Y, 1e-9)
 
 	// segment crossing the circle once with one endpoint inside
 	s = NewSegment(NewPoint(0, 0), NewPoint(10, 0))
 	pts = s.IntersectCircle(origin, 5)
 	assert.Equal(t, 1, len(pts))
-	assert.True(t, pts[0].Equals(NewPoint(5, 0)))
+	assert.InDelta(t, 5, pts[0].X, 1e-9)
+	assert.InDelta(t, 0, pts[0].Y, 1e-9)
 
 	// segment entirely outside the circle, no crossing
 	s = NewSegment(NewPoint(10, 10), NewPoint(20, 20))
@@ -62,22 +65,27 @@ func TestSegmentIntersectCircle(t *testing.T) {
 	s = NewSegment(NewPoint(0, 0), NewPoint(5, 0))
 	pts = s.IntersectCircle(origin, 5)
 	assert.Equal(t, 1, len(pts))
-	assert.True(t, pts[0].Equals(NewPoint(5, 0)))
+	assert.InDelta(t, 5, pts[0].X, 1e-9)
+	assert.InDelta(t, 0, pts[0].Y, 1e-9)
 
 	// vertical segment chord intersecting the circle at two points
 	s = NewSegment(NewPoint(3, -10), NewPoint(3, 10))
 	pts = s.IntersectCircle(origin, 5)
 	assert.Equal(t, 2, len(pts))
-	assert.True(t, pts[0].Equals(NewPoint(3, -4)))
-	assert.True(t, pts[1].Equals(NewPoint(3, 4)))
+	assert.InDelta(t, 3, pts[0].X, 1e-9)
+	assert.InDelta(t, -4, pts[0].Y, 1e-9)
+	assert.InDelta(t, 3, pts[1].X, 1e-9)
+	assert.InDelta(t, 4, pts[1].Y, 1e-9)
 
 	// circle centered off origin
 	c := NewPoint(10, 10)
 	s = NewSegment(NewPoint(0, 10), NewPoint(20, 10))
 	pts = s.IntersectCircle(c, 5)
 	assert.Equal(t, 2, len(pts))
-	assert.True(t, pts[0].Equals(NewPoint(5, 10)))
-	assert.True(t, pts[1].Equals(NewPoint(15, 10)))
+	assert.InDelta(t, 5, pts[0].X, 1e-9)
+	assert.InDelta(t, 10, pts[0].Y, 1e-9)
+	assert.InDelta(t, 15, pts[1].X, 1e-9)
+	assert.InDelta(t, 10, pts[1].Y, 1e-9)
 
 	// tangent contact: the segment grazes the circle at a single point and
 	// must not be reported twice (regression test for the duplicated-root
@@ -85,7 +93,8 @@ func TestSegmentIntersectCircle(t *testing.T) {
 	s = NewSegment(NewPoint(-10, 5), NewPoint(10, 5))
 	pts = s.IntersectCircle(origin, 5)
 	assert.Equal(t, 1, len(pts))
-	assert.True(t, pts[0].Equals(NewPoint(0, 5)))
+	assert.InDelta(t, 0, pts[0].X, 1e-9)
+	assert.InDelta(t, 5, pts[0].Y, 1e-9)
 
 	// degenerate zero-length segment returns nil
 	s = NewSegment(NewPoint(7, 7), NewPoint(7, 7))
