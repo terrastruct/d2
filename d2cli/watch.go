@@ -51,6 +51,7 @@ type watcherOpts struct {
 	port            string
 	inputPath       string
 	outputPath      string
+	cleanupOutput   bool
 	boardPath       string
 	pwd             string
 	bundle          bool
@@ -88,6 +89,8 @@ type watcher struct {
 
 	resMu sync.Mutex
 	res   *compileResult
+
+	cleanupOutputDir bool
 }
 
 type compileResult struct {
@@ -118,6 +121,13 @@ func newWatcher(ctx context.Context, ms *xmain.State, opts watcherOpts) (*watche
 }
 
 func (w *watcher) init() error {
+	if w.cleanupOutput && w.outputPath != "-" {
+		outputDir := watchOutputDir(w.outputPath)
+		if outputDir != "" {
+			_, err := os.Stat(outputDir)
+			w.cleanupOutputDir = errors.Is(err, os.ErrNotExist)
+		}
+	}
 	fw, err := fsnotify.NewWatcher()
 	if err != nil {
 		return err
@@ -151,20 +161,35 @@ func (w *watcher) initStaticFileServer() error {
 	return nil
 }
 
-func (w *watcher) run() error {
-	defer w.close()
+func (w *watcher) run() (err error) {
+	defer func() {
+		w.close()
+		if !w.cleanupOutput || w.outputPath == "-" {
+			return
+		}
+		cleanupErr := cleanupWatchOutput(w.outputPath, w.cleanupOutputDir)
+		if cleanupErr == nil {
+			return
+		}
+		if err == nil {
+			err = cleanupErr
+			return
+		}
+		w.ms.Log.Warn.Printf("failed to clean up watch output %s: %v", w.ms.HumanPath(w.outputPath), cleanupErr)
+	}()
 
 	w.goFunc(w.watchLoop)
 	w.goFunc(w.compileLoop)
 
-	err := w.goServe()
+	err = w.goServe()
 	if err != nil {
 		return err
 	}
 
 	w.wg.Wait()
 	w.close()
-	return w.err
+	err = w.err
+	return err
 }
 
 func (w *watcher) close() {
@@ -485,7 +510,33 @@ func (w *watcher) listen() error {
 	}
 	w.l = l
 	w.ms.Log.Success.Printf("listening on http://%v", w.l.Addr())
+	if w.cleanupOutput {
+		w.ms.Log.Info.Printf("press Ctrl-C to quit and remove %s", w.ms.HumanPath(w.outputPath))
+	} else {
+		w.ms.Log.Info.Printf("press Ctrl-C to quit")
+	}
 	return nil
+}
+
+func cleanupWatchOutput(outputPath string, removeDir bool) error {
+	err := os.Remove(outputPath)
+	if err != nil && !errors.Is(err, os.ErrNotExist) {
+		return err
+	}
+
+	outputDir := watchOutputDir(outputPath)
+	if !removeDir || outputDir == "" {
+		return nil
+	}
+	return os.RemoveAll(outputDir)
+}
+
+func watchOutputDir(outputPath string) string {
+	ext := filepath.Ext(outputPath)
+	if ext == "" {
+		return ""
+	}
+	return strings.TrimSuffix(outputPath, ext)
 }
 
 func (w *watcher) goServe() error {
