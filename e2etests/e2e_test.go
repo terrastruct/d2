@@ -15,7 +15,6 @@ import (
 	trequire "github.com/stretchr/testify/require"
 
 	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
 	"oss.terrastruct.com/util-go/go2"
 
 	"oss.terrastruct.com/d2/d2compiler"
@@ -29,6 +28,7 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/d2ascii/charset"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/internal/testdiff"
 	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
@@ -87,7 +87,7 @@ func testTxtar(t *testing.T) {
 	for _, f := range archive.Files {
 		tcs = append(tcs, testCase{
 			name:   f.Name,
-			script: string(f.Data),
+			script: normalizeTestScript(string(f.Data)),
 		})
 	}
 	runa(t, tcs)
@@ -100,7 +100,7 @@ func testASCIITxtar(t *testing.T) {
 	for _, f := range archive.Files {
 		tc := testCase{
 			name:   f.Name,
-			script: string(f.Data),
+			script: normalizeTestScript(string(f.Data)),
 		}
 
 		t.Run(tc.name, func(t *testing.T) {
@@ -112,6 +112,10 @@ func testASCIITxtar(t *testing.T) {
 			runASCIITxtarTest(t, tc)
 		})
 	}
+}
+
+func normalizeTestScript(script string) string {
+	return strings.ReplaceAll(script, "\r\n", "\n")
 }
 
 func runASCIITxtarTest(t *testing.T, tc testCase) {
@@ -198,7 +202,7 @@ func runASCIITxtarTest(t *testing.T, tc testCase) {
 	// Write SVG file
 	var err2, err3 error
 	if os.Getenv("SKIP_SVG_CHECK") == "" {
-		err2 = diff.Testdata(filepath.Join(outputDir, "sketch"), ".svg", svgBytes)
+		err2 = testdiff.Testdata(filepath.Join(outputDir, "sketch"), ".svg", svgBytes)
 	}
 
 	extendedAsciiArtist := d2ascii.NewASCIIartist()
@@ -210,7 +214,7 @@ func runASCIITxtarTest(t *testing.T, tc testCase) {
 	}
 	extendedBytes, err := extendedAsciiArtist.Render(ctx, diagram, extendedRenderOpts)
 	assert.Success(t, err)
-	err3 = diff.Testdata(filepath.Join(outputDir, "extended"), ".txt", extendedBytes)
+	err3 = testdiff.Testdata(filepath.Join(outputDir, "extended"), ".txt", extendedBytes)
 
 	// Standard ASCII
 	var err4 error
@@ -221,7 +225,7 @@ func runASCIITxtarTest(t *testing.T, tc testCase) {
 	}
 	standardBytes, err := standardAsciiArtist.Render(ctx, diagram, standardRenderOpts)
 	assert.Success(t, err)
-	err4 = diff.Testdata(filepath.Join(outputDir, "standard"), ".txt", standardBytes)
+	err4 = testdiff.Testdata(filepath.Join(outputDir, "standard"), ".txt", standardBytes)
 
 	assert.Success(t, err2)
 	assert.Success(t, err3)
@@ -414,9 +418,9 @@ func run(t *testing.T, tc testCase) {
 		assert.Success(t, err)
 
 		var err2 error
-		err = diff.TestdataJSON(filepath.Join(dataPath, "board"), diagram)
+		err = testdiff.TestdataJSON(filepath.Join(dataPath, "board"), diagram)
 		if os.Getenv("SKIP_SVG_CHECK") == "" {
-			err2 = diff.Testdata(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
+			err2 = testdiff.Testdata(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
 		}
 
 		assert.Success(t, err)
@@ -442,7 +446,7 @@ func loadFromFile(t *testing.T, name string) testCase {
 
 	return testCase{
 		name:   name,
-		script: string(d2Text),
+		script: normalizeTestScript(string(d2Text)),
 	}
 }
 

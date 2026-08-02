@@ -97,6 +97,14 @@ func NewBezierCurve(points []*Point) *BezierCurve {
 	return curve
 }
 
+func (bc BezierCurve) Points() []*Point {
+	points := make([]*Point, len(bc.points))
+	for i, p := range bc.points {
+		points[i] = p.Copy()
+	}
+	return points
+}
+
 func (bc BezierCurve) Intersections(segment Segment) []*Point {
 	return ComputeIntersections(
 		[]float64{

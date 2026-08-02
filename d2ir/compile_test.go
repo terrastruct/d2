@@ -8,12 +8,12 @@ import (
 	"testing"
 
 	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
 	"oss.terrastruct.com/util-go/mapfs"
 
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2ir"
 	"oss.terrastruct.com/d2/d2parser"
+	"oss.terrastruct.com/d2/internal/testdiff"
 )
 
 func TestCompile(t *testing.T) {
@@ -74,7 +74,7 @@ func compileFS(t testing.TB, path string, mfs map[string]string) (*d2ir.Map, err
 		return nil, err
 	}
 
-	err = diff.TestdataJSON(filepath.Join("..", "testdata", "d2ir", t.Name()), m)
+	err = testdiff.TestdataJSON(filepath.Join("..", "testdata", "d2ir", t.Name()), m)
 	if err != nil {
 		return nil, err
 	}

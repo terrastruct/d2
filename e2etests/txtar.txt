@@ -48,6 +48,38 @@ without.classEx -> with.classEx
 without.codeEx -> with.codeEx
 without.mdEx -> with.mdEx
 
+-- cycle-diagram --
+1: "" {
+  shape: cycle
+  a -> b -> c -> d -> a
+}
+2: Two nodes {
+  shape: cycle
+  a -> b
+}
+3: Non-rectangular shapes {
+  shape: cycle
+  a.shape: c4-person
+  b.shape: cloud
+  c.shape: queue
+  d.shape: document
+  a -> b -> c -> d -> a
+}
+4: Nested cycle {
+  shape: cycle
+  a: {
+    x -> y
+  }
+  b
+  a -> b
+}
+5: Edge labels {
+  shape: cycle
+  a -> b: advance to review
+  b -> c: ship to production
+  c -> a: retry intake
+}
+
 -- theme-overrides --
 
 direction: right
@@ -1772,4 +1804,3 @@ vars:"d2 v0.7.0" {
 style: {fill-pattern: dots; fill:"radial-gradient(#fbfbf8, #e3e3f0)"; stroke: "#a0a0a0"; stroke-width: 1; border-radius: 8}
 
 a->b
-

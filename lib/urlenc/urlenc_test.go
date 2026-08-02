@@ -3,6 +3,7 @@ package urlenc
 import (
 	"testing"
 
+	"oss.terrastruct.com/d2/internal/testdiff"
 	"oss.terrastruct.com/util-go/assert"
 )
 
@@ -179,7 +180,7 @@ feature -> etc: Candidate sources
 
 	encoded, err := Encode(script)
 	assert.Success(t, err)
-	assert.Testdata(t, ".txt", []byte(encoded))
+	testdiff.TestdataTB(t, ".txt", []byte(encoded))
 
 	decoded, err := Decode(encoded)
 	assert.Success(t, err)

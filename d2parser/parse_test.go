@@ -7,11 +7,11 @@ import (
 	"testing"
 
 	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
 
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2parser"
+	"oss.terrastruct.com/d2/internal/testdiff"
 )
 
 type testCase struct {
@@ -536,7 +536,7 @@ func runa(t *testing.T, tca []testCase) {
 				Err: err,
 			}
 
-			err = diff.TestdataJSON(filepath.Join("..", "testdata", "d2parser", t.Name()), got)
+			err = testdiff.TestdataJSON(filepath.Join("..", "testdata", "d2parser", t.Name()), got)
 			assert.Success(t, err)
 		})
 	}

@@ -18,13 +18,7 @@ func (c *compiler) pushImportStack(imp *d2ast.Import) (string, bool) {
 		return "", false
 	}
 	if len(c.importStack) > 0 {
-		if path.Ext(impPath) != ".d2" {
-			impPath += ".d2"
-		}
-
-		if !filepath.IsAbs(impPath) {
-			impPath = path.Join(path.Dir(c.importStack[len(c.importStack)-1]), impPath)
-		}
+		impPath = resolveImportPath(c.importStack[len(c.importStack)-1], impPath)
 	}
 
 	for i, p := range c.importStack {
@@ -131,13 +125,7 @@ func (c *compiler) peekImport(imp *d2ast.Import) (*Map, bool) {
 	}
 
 	if len(c.importStack) > 0 {
-		if path.Ext(impPath) != ".d2" {
-			impPath += ".d2"
-		}
-
-		if !filepath.IsAbs(impPath) {
-			impPath = path.Join(path.Dir(c.importStack[len(c.importStack)-1]), impPath)
-		}
+		impPath = resolveImportPath(c.importStack[len(c.importStack)-1], impPath)
 	}
 
 	var f fs.File
@@ -169,6 +157,29 @@ func (c *compiler) peekImport(imp *d2ast.Import) (*Map, bool) {
 	c.compileMap(ir, ast, ast)
 
 	return ir, true
+}
+
+func resolveImportPath(parentPath, impPath string) string {
+	if path.Ext(impPath) != ".d2" {
+		impPath += ".d2"
+	}
+
+	if isOSPath(parentPath) {
+		impPath = filepath.FromSlash(impPath)
+		if !filepath.IsAbs(impPath) {
+			impPath = filepath.Join(filepath.Dir(parentPath), impPath)
+		}
+		return impPath
+	}
+
+	if !path.IsAbs(impPath) {
+		impPath = path.Join(path.Dir(parentPath), impPath)
+	}
+	return impPath
+}
+
+func isOSPath(p string) bool {
+	return filepath.IsAbs(p) || strings.Contains(p, string(filepath.Separator))
 }
 
 func nilScopeMap(n Node) {

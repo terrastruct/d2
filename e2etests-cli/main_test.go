@@ -16,11 +16,11 @@ import (
 	"github.com/coder/websocket"
 
 	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
 	"oss.terrastruct.com/util-go/xmain"
 	"oss.terrastruct.com/util-go/xos"
 
 	"oss.terrastruct.com/d2/d2cli"
+	"oss.terrastruct.com/d2/internal/testdiff"
 	"oss.terrastruct.com/d2/lib/pptx"
 	"oss.terrastruct.com/d2/lib/xgif"
 )
@@ -122,7 +122,7 @@ local.code -> aws.ec2: {
 				err := runTestMain(t, ctx, dir, env, "--center=true", "hello-world.d2")
 				assert.Success(t, err)
 				svg := readFile(t, dir, "hello-world.svg")
-				assert.Testdata(t, ".svg", svg)
+				testdiff.TestdataTB(t, ".svg", svg)
 			},
 		},
 		{
@@ -149,7 +149,7 @@ local.code -> aws.ec2: {
 				err := runTestMain(t, ctx, dir, env, "test.d2", "layer-link.svg")
 				assert.Success(t, err)
 
-				assert.TestdataDir(t, filepath.Join(dir, "layer-link"))
+				testdiff.TestdataDir(t, filepath.Join(dir, "layer-link"))
 			},
 		},
 		{
@@ -173,7 +173,7 @@ if i'm wrong: {
 				err := runTestMain(t, ctx, dir, env, "index.d2")
 				assert.Success(t, err)
 
-				assert.TestdataDir(t, filepath.Join(dir, "index"))
+				testdiff.TestdataDir(t, filepath.Join(dir, "index"))
 			},
 		},
 		{
@@ -197,7 +197,7 @@ if i'm wrong: {
 				err := runTestMain(t, ctx, dir, env, "index.d2")
 				assert.Success(t, err)
 
-				assert.TestdataDir(t, filepath.Join(dir, "index"))
+				testdiff.TestdataDir(t, filepath.Join(dir, "index"))
 			},
 		},
 		{
@@ -220,7 +220,7 @@ if i'm wrong: {
 				err := runTestMain(t, ctx, dir, env, "--animate-interval=1400", "empty-base.d2")
 				assert.Success(t, err)
 				svg := readFile(t, dir, "empty-base.svg")
-				assert.Testdata(t, ".svg", svg)
+				testdiff.TestdataTB(t, ".svg", svg)
 				assert.Equal(t, 3, getNumBoards(string(svg)))
 			},
 		},
@@ -248,7 +248,7 @@ steps: {
 				err := runTestMain(t, ctx, dir, env, "--animate-interval=1400", "animation.d2")
 				assert.Success(t, err)
 				svg := readFile(t, dir, "animation.svg")
-				assert.Testdata(t, ".svg", svg)
+				testdiff.TestdataTB(t, ".svg", svg)
 			},
 		},
 		{
@@ -280,7 +280,7 @@ steps: {
 				err := runTestMain(t, ctx, dir, env, "--animate-interval=1400", "animation.d2")
 				assert.Success(t, err)
 				svg := readFile(t, dir, "animation.svg")
-				assert.Testdata(t, ".svg", svg)
+				testdiff.TestdataTB(t, ".svg", svg)
 			},
 		},
 		{
@@ -309,7 +309,7 @@ layers: {
 				err := runTestMain(t, ctx, dir, env, "linked.d2")
 				assert.Success(t, err)
 
-				assert.TestdataDir(t, filepath.Join(dir, "linked"))
+				testdiff.TestdataDir(t, filepath.Join(dir, "linked"))
 			},
 		},
 		{
@@ -322,7 +322,7 @@ a -> b: italic font
 				err := runTestMain(t, ctx, dir, env, "--font-bold=./RockSalt-Regular.ttf", "font.d2")
 				assert.Success(t, err)
 				svg := readFile(t, dir, "font.svg")
-				assert.Testdata(t, ".svg", svg)
+				testdiff.TestdataTB(t, ".svg", svg)
 			},
 		},
 		{
@@ -360,7 +360,7 @@ scenarios: {
 				err := runTestMain(t, ctx, dir, env, "--target", "", "target-root.d2", "target-root.svg")
 				assert.Success(t, err)
 				svg := readFile(t, dir, "target-root.svg")
-				assert.Testdata(t, ".svg", svg)
+				testdiff.TestdataTB(t, ".svg", svg)
 			},
 		},
 		{
@@ -377,7 +377,7 @@ scenarios: {
 				err := runTestMain(t, ctx, dir, env, "--target", "b", "target-b.d2", "target-b.svg")
 				assert.Success(t, err)
 				svg := readFile(t, dir, "target-b.svg")
-				assert.Testdata(t, ".svg", svg)
+				testdiff.TestdataTB(t, ".svg", svg)
 			},
 		},
 		{
@@ -395,7 +395,7 @@ scenarios: {
 				err := runTestMain(t, ctx, dir, env, "--target", `layers.a.layers."x / y . z"`, "target-nested-with-special-chars.d2", "target-nested-with-special-chars.svg")
 				assert.Success(t, err)
 				svg := readFile(t, dir, "target-nested-with-special-chars.svg")
-				assert.Testdata(t, ".svg", svg)
+				testdiff.TestdataTB(t, ".svg", svg)
 			},
 		},
 		{
@@ -428,7 +428,7 @@ layers: {
 				err := runTestMain(t, ctx, dir, env, "--target", `l1.index.l3`, "target-nested-index.d2", "target-nested-index.svg")
 				assert.Success(t, err)
 				svg := readFile(t, dir, "target-nested-index.svg")
-				assert.Testdata(t, ".svg", svg)
+				testdiff.TestdataTB(t, ".svg", svg)
 			},
 		},
 		{
@@ -453,7 +453,7 @@ layers: {
 				err := runTestMain(t, ctx, dir, env, "--target", `index.nest1.nest2`, "target-nested-index2.d2", "target-nested-index2.svg")
 				assert.Success(t, err)
 				svg := readFile(t, dir, "target-nested-index2.svg")
-				assert.Testdata(t, ".svg", svg)
+				testdiff.TestdataTB(t, ".svg", svg)
 			},
 		},
 		{
@@ -578,7 +578,7 @@ costumes.monster -> monsters.id
 				err := runTestMain(t, ctx, dir, env, "theme-override.d2", "theme-override.svg")
 				assert.Success(t, err)
 				svg := readFile(t, dir, "theme-override.svg")
-				assert.Testdata(t, ".svg", svg)
+				testdiff.TestdataTB(t, ".svg", svg)
 				// theme color is used in SVG
 				assert.NotEqual(t, -1, strings.Index(string(svg), "#2E2E2E"))
 			},
@@ -613,7 +613,7 @@ scenarios: {
 				err := runTestMain(t, ctx, dir, env, "life.d2")
 				assert.Success(t, err)
 
-				assert.TestdataDir(t, filepath.Join(dir, "life"))
+				testdiff.TestdataDir(t, filepath.Join(dir, "life"))
 			},
 		},
 		{
@@ -646,7 +646,7 @@ scenarios: {
 				err := runTestMain(t, ctx, dir, env, "life")
 				assert.Success(t, err)
 
-				assert.TestdataDir(t, filepath.Join(dir, "life"))
+				testdiff.TestdataDir(t, filepath.Join(dir, "life"))
 			},
 		},
 		{
@@ -988,7 +988,7 @@ bank.Equities.app14522 -> bank.Fixed Income.app14500: security reference
 				err := tms.Wait(ctx)
 				assert.Success(t, err)
 
-				assert.Testdata(t, ".svg", stdout.Bytes())
+				testdiff.TestdataTB(t, ".svg", stdout.Bytes())
 			},
 		},
 		{
@@ -998,7 +998,7 @@ bank.Equities.app14522 -> bank.Fixed Income.app14500: security reference
 				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
 				assert.Success(t, err)
 				svg := readFile(t, dir, "hello-world.svg")
-				assert.Testdata(t, ".svg", svg)
+				testdiff.TestdataTB(t, ".svg", svg)
 			},
 		},
 		{
@@ -1011,7 +1011,7 @@ bank.Equities.app14522 -> bank.Fixed Income.app14500: security reference
 				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
 				assert.Success(t, err)
 				svg := readFile(t, dir, "hello-world.svg")
-				assert.Testdata(t, ".svg", svg)
+				testdiff.TestdataTB(t, ".svg", svg)
 			},
 		},
 		{
@@ -1022,7 +1022,7 @@ bank.Equities.app14522 -> bank.Fixed Income.app14500: security reference
 				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
 				assert.Success(t, err)
 				svg := readFile(t, dir, "hello-world.svg")
-				assert.Testdata(t, ".svg", svg)
+				testdiff.TestdataTB(t, ".svg", svg)
 			},
 		},
 		{
@@ -1033,7 +1033,7 @@ bank.Equities.app14522 -> bank.Fixed Income.app14500: security reference
 				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
 				assert.Success(t, err)
 				svg := readFile(t, dir, "hello-world.svg")
-				assert.Testdata(t, ".svg", svg)
+				testdiff.TestdataTB(t, ".svg", svg)
 			},
 		},
 		{
@@ -1046,7 +1046,7 @@ bank.Equities.app14522 -> bank.Fixed Income.app14500: security reference
 				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
 				assert.Success(t, err)
 				svg := readFile(t, dir, "hello-world.svg")
-				assert.Testdata(t, ".svg", svg)
+				testdiff.TestdataTB(t, ".svg", svg)
 			},
 		},
 		{
@@ -1058,12 +1058,15 @@ bank.Equities.app14522 -> bank.Fixed Income.app14500: security reference
 				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
 				assert.Success(t, err)
 				svg := readFile(t, dir, "hello-world.svg")
-				assert.Testdata(t, ".svg", svg)
+				testdiff.TestdataTB(t, ".svg", svg)
 			},
 		},
 		{
 			name: "chain_icon_import",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				const iconDataURI = "data:image/svg+xml;base64," +
+					"PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiByeD0iNCIgZmlsbD0iIzJENzJDQiIvPjxjaXJjbGUgY3g9IjgiIGN5PSI4IiByPSIzIiBmaWxsPSIjRkZGIi8+PC9zdmc+"
+
 				writeFile(t, dir, "hello-world.d2", `...@y
 hello.class: Ecs`)
 				writeFile(t, dir, "y.d2", `
@@ -1075,17 +1078,17 @@ classes: {
     }
 }
 `)
-				writeFile(t, dir, "x.d2", `
+				writeFile(t, dir, "x.d2", fmt.Sprintf(`
 vars: {
     icons: {
-        ecs: "https://icons.terrastruct.com/aws%2FCompute%2FAmazon-Elastic-Container-Service.svg"
+        ecs: %q
     }
 }
-`)
+`, iconDataURI))
 				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
 				assert.Success(t, err)
 				svg := readFile(t, dir, "hello-world.svg")
-				assert.Testdata(t, ".svg", svg)
+				testdiff.TestdataTB(t, ".svg", svg)
 			},
 		},
 		{
@@ -1098,15 +1101,15 @@ vars: {
 				assert.Success(t, err)
 				t.Run("hello-world-x-y", func(t *testing.T) {
 					svg := readFile(t, dir, "hello-world/x/y.svg")
-					assert.Testdata(t, ".svg", svg)
+					testdiff.TestdataTB(t, ".svg", svg)
 				})
 				t.Run("hello-world-x", func(t *testing.T) {
 					svg := readFile(t, dir, "hello-world/x/index.svg")
-					assert.Testdata(t, ".svg", svg)
+					testdiff.TestdataTB(t, ".svg", svg)
 				})
 				t.Run("hello-world", func(t *testing.T) {
 					svg := readFile(t, dir, "hello-world/index.svg")
-					assert.Testdata(t, ".svg", svg)
+					testdiff.TestdataTB(t, ".svg", svg)
 				})
 			},
 		},
@@ -1127,7 +1130,7 @@ i used to read
 				err := runTestMain(t, ctx, dir, env, "--pad=10", "hello-world.d2")
 				assert.Success(t, err)
 				svg := readFile(t, dir, "hello-world.svg")
-				assert.Testdata(t, ".svg", svg)
+				testdiff.TestdataTB(t, ".svg", svg)
 			},
 		},
 		{
@@ -1715,7 +1718,7 @@ func removeD2Files(tb testing.TB, dir string) {
 }
 
 func testdataIgnoreDiff(tb testing.TB, ext string, got []byte) {
-	_ = diff.Testdata(filepath.Join("testdata", tb.Name()), ext, got)
+	_ = testdiff.Testdata(filepath.Join("testdata", tb.Name()), ext, got)
 }
 
 // getNumBoards gets the number of boards in an SVG file through a non-robust pattern search

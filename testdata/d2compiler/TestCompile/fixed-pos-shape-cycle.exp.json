@@ -1,0 +1,15 @@
+{
+  "graph": null,
+  "err": {
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/fixed-pos-shape-cycle.d2,3:2:31-3:11:40",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/fixed-pos-shape-cycle.d2:4:3: position keywords cannot be used inside shape \"cycle\""
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/fixed-pos-shape-cycle.d2,4:2:43-4:12:53",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/fixed-pos-shape-cycle.d2:5:3: position keywords cannot be used inside shape \"cycle\""
+      }
+    ]
+  }
+}

@@ -783,7 +783,7 @@ func relink(currDiagramPath string, d *d2target.Diagram, linkToOutput map[string
 					if err != nil {
 						return err
 					}
-					d.Shapes[i].Link = rel
+					d.Shapes[i].Link = filepath.ToSlash(rel)
 					break
 				}
 			}

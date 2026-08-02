@@ -5,7 +5,6 @@ package d2fonts
 import (
 	"embed"
 	_ "embed"
-	"strings"
 
 	"oss.terrastruct.com/d2/lib/syncmap"
 )
@@ -128,7 +127,7 @@ func init() {
 		}, fuzzyBubblesBoldBase64)
 
 	FontEncodings.Range(func(k Font, v string) bool {
-		FontEncodings.Set(k, strings.TrimSuffix(v, "\n"))
+		FontEncodings.Set(k, trimFontEncoding(v))
 		return true
 	})
 
