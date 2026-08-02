@@ -5,13 +5,13 @@
   "version": "0.1.33",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/terrastruct/d2.git",
+    "url": "git+https://github.com/d2lang/d2.git",
     "directory": "d2js/js"
   },
   "bugs": {
-    "url": "https://github.com/terrastruct/d2/issues"
+    "url": "https://github.com/d2lang/d2/issues"
   },
-  "homepage": "https://github.com/terrastruct/d2/tree/master/d2js/js#readme",
+  "homepage": "https://github.com/d2lang/d2/tree/master/d2js/js#readme",
   "publishConfig": {
     "access": "public"
   },

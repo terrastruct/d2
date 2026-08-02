@@ -25,7 +25,7 @@ This release is structured the same as our Unix releases for use with MSYS2.
 You may find our \`.msi\` installer more convenient as it handles putting \`d2.exe\` into
 your \`\$PATH\` for you.
 
-See https://github.com/terrastruct/d2/blob/master/docs/INSTALL.md#windows
+See https://github.com/d2lang/d2/blob/master/docs/INSTALL.md#windows
 EOF
 fi
 

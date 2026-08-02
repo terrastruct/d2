@@ -21,7 +21,7 @@ it depends on from ../sub/lib.
 
 > note: Remember for production releases you need to set the $TSTRUCT_OS_ARCH_BUILDER
 > variables as we must compile d2 directly on each release target to include dagre.
-> See https://github.com/terrastruct/d2/issues/31
+> See https://github.com/d2lang/d2/issues/31
 
 Use `--host-only` to build only the release for the host's `$OS-$ARCH` pair.
 

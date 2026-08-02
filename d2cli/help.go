@@ -139,7 +139,7 @@ func layoutNotFound(ctx context.Context, ps []d2plugin.Plugin, layout string) er
 	return xmain.UsageErrorf(`D2_LAYOUT "%s" is not bundled and could not be found in your $PATH.
 The available options are: %s. For details on each option, run "d2 layout".
 
-For more information on setup, please visit https://github.com/terrastruct/d2.`,
+For more information on setup, please visit https://github.com/d2lang/d2.`,
 		layout, strings.Join(names, ", "))
 }
 
