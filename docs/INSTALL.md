@@ -222,14 +222,14 @@ scoop install main/d2
 ```
 
 #### Chocolatey
-[![chocolatey/d2_badge](https://img.shields.io/chocolatey/v/d2)]([https://chocolatey.org/](https://community.chocolatey.org/packages/d2/0.6.6))
+[![chocolatey/d2_badge](https://img.shields.io/chocolatey/v/d2)](https://community.chocolatey.org/packages/d2)
 ```sh
 choco install d2
 ```
 
 ## Docker
 
-https://hub.docker.com/repository/docker/terrastruct/d2
+https://hub.docker.com/r/terrastruct/d2
 
 We publish `amd64` and `arm64` images based on `debian:latest` for each release.
 
