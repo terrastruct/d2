@@ -148,7 +148,7 @@ The code itself should be documented as appropriate with Go-style comments. No r
 
 If it's some new functionality, please submit a pull request to document it in the
 language docs:
-[https://github.com/terrastruct/d2-docs](https://github.com/terrastruct/d2-docs).
+[https://github.com/d2lang/d2-docs](https://github.com/d2lang/d2-docs).
 
 ### Questions
 

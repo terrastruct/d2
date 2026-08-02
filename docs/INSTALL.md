@@ -109,7 +109,7 @@ Adjust VERSION, OS, and ARCH as needed.
 
 ```sh
 VERSION=v0.0.13 OS=macos ARCH=amd64 curl -fsSLO \
-    "https://github.com/terrastruct/d2/releases/download/$VERSION/d2-$VERSION-$OS-$ARCH.tar.gz" \
+    "https://github.com/d2lang/d2/releases/download/$VERSION/d2-$VERSION-$OS-$ARCH.tar.gz" \
     && tar -xzf "d2-$VERSION-$OS-$ARCH.tar.gz" \
     && make -sC "d2-$VERSION" install
 ```
@@ -180,7 +180,7 @@ Remember, you need at least Go v1.20
 
 ## Windows
 
-We have prebuilt [releases](https://github.com/terrastruct/d2/releases) of d2 available for Windows via `.msi` installers. The installer
+We have prebuilt [releases](https://github.com/d2lang/d2/releases) of d2 available for Windows via `.msi` installers. The installer
 will add the `d2` binary to your `$PATH` so that you can execute `d2` in `cmd.exe` or
 `pwsh.exe`.
 

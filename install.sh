@@ -697,7 +697,7 @@ note: Deleting the unarchived releases will cause --uninstall to stop working.
 You can rerun install.sh to update your version of D2. install.sh will avoid reinstalling
 if the installed version is the latest unless --force is passed.
 
-See https://github.com/terrastruct/d2/blob/master/docs/INSTALL.md#security for
+See https://github.com/d2lang/d2/blob/master/docs/INSTALL.md#security for
 documentation on its security.
 EOF
 }
@@ -759,7 +759,7 @@ main() {
     flag_errusage "no arguments are accepted"
   fi
 
-  REPO=${REPO:-terrastruct/d2}
+  REPO=${REPO:-d2lang/d2}
   ensure_os
   ensure_arch
   ensure_prefix

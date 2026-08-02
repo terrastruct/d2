@@ -5,7 +5,7 @@
 
 D2.js is a JavaScript wrapper around D2, the modern diagram scripting language. It enables running D2 directly in browsers and Node environments through WebAssembly.
 
-For an example of usage, see [https://play.d2lang.com](https://play.d2lang.com), which is powered by d2.js and is [open-source](https://github.com/terrastruct/d2-playground).
+For an example of usage, see [https://play.d2lang.com](https://play.d2lang.com), which is powered by d2.js and is [open-source](https://github.com/d2lang/d2-playground).
 
 ## Features
 
@@ -163,7 +163,7 @@ sudo apt-get install binaryen
 ### Building from source
 
 ```bash
-git clone https://github.com/terrastruct/d2.git
+git clone https://github.com/d2lang/d2.git
 cd d2/d2js/js
 ./make.sh all
 ```
