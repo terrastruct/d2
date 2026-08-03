@@ -50,7 +50,7 @@ awk \
       print "  echo \"$PLAYWRIGHT_GO_DRIVER_SHA256  /tmp/playwright-core.tgz\" | sha256sum -c -; \\"
       print "  tar -xzf /tmp/playwright-core.tgz -C \"$driver_dir\"; \\"
       print "  rm /tmp/playwright-core.tgz; \\"
-      print "  chown -R debian:debian /home/debian/.cache/ms-playwright-go"
+      print "  chown -R debian:debian /home/debian/.cache"
       print "ENV PLAYWRIGHT_NODEJS_PATH=/usr/bin/node"
       print "ENV PLAYWRIGHT_DOWNLOAD_HOST=https://cdn.playwright.dev"
       print ""
