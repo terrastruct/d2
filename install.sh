@@ -377,7 +377,7 @@ LIB_FLAG=1
 # interpreted as a single -xyzq flag. The other deficiency is lack of support for short
 # flag syntax like -carg where the arg is not separated from the flag. This one is
 # unfixable I believe unfortunately but for combined short flags I have opened
-# https://github.com/terrastruct/ci/issues/6
+# https://github.com/d2lang/ci/issues/6
 #
 # flag_parse stores state in $FLAG, $FLAGRAW, $FLAGARG and $FLAGSHIFT.
 # FLAG contains the name of the flag without hyphens.

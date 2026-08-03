@@ -38,7 +38,7 @@ interested in, etc).
 ## CI
 
 Most of D2's CI is open sourced in its own
-[repository](https://github.com/terrastruct/ci), included as a submodule. After you clone
+[repository](https://github.com/d2lang/ci), included as a submodule. After you clone
 D2, make sure you initialize the submodules:
 
 ```sh
