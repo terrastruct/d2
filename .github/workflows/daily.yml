@@ -1,8 +1,8 @@
 name: daily
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '42 0 * * *' # daily at 00:42
+  # Scheduled publishing is paused until npm trusted publishing and durable
+  # package ownership are configured. Keep manual dispatch for verification.
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
