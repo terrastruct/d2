@@ -39,12 +39,11 @@ jobs:
           registry-url: https://registry.npmjs.org
           package-manager-cache: false
 
-      - uses: oven-sh/setup-bun@v2
-
-      - name: Install supported npm
+      - name: Install supported npm and Bun
         run: |
-          npm install --global npm@12.0.2
+          npm install --global npm@12.0.2 bun@1.3.14
           npm --version
+          bun --version
 
       - name: Install binaryen
         run: |
