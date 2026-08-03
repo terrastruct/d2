@@ -1,7 +1,6 @@
 import { parentPort } from "node:worker_threads";
 import { readFileSync } from "node:fs";
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { join } from "node:path";
 
 let currentPort;
 let d2;
@@ -14,9 +13,8 @@ function loadScript(content) {
 function loadELK() {
   if (typeof globalThis.ELK === "undefined") {
     try {
-      const __dirname = dirname(fileURLToPath(import.meta.url));
-      const elkJS = readFileSync(join(__dirname, "elk.js"), "utf8");
-      const setupJS = readFileSync(join(__dirname, "setup.js"), "utf8");
+      const elkJS = readFileSync(join(__D2_NODE_MODULE_DIR__, "elk.js"), "utf8");
+      const setupJS = readFileSync(join(__D2_NODE_MODULE_DIR__, "setup.js"), "utf8");
 
       loadScript(elkJS);
       loadScript(setupJS);
