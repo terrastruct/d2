@@ -15,7 +15,9 @@ if [ -n "${NPM_VERSION:-}" ]; then
   # Optimize with wasm-opt if available
   if command -v wasm-opt >/dev/null 2>&1; then
     echo "Optimizing WASM with wasm-opt..."
-    sh_c "wasm-opt -Oz --enable-bulk-memory-opt main.wasm -o main.wasm"
+    # -Oz can use quadratic memory on large Go WASM modules.
+    # https://github.com/WebAssembly/binaryen/issues/7644
+    sh_c "wasm-opt -O2 --enable-bulk-memory-opt main.wasm -o main.wasm"
   else
     echo "wasm-opt not found, skipping optimization (install with: brew install binaryen)"
   fi
