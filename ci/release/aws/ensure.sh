@@ -314,45 +314,7 @@ export DEBIAN_FRONTEND=noninteractive
 sudo -E apt-get update -y
 sudo -E apt-get dist-upgrade -y
 sudo -E apt-get update -y
-sudo -E apt-get install -y build-essential rsync
-
-# Docker from https://docs.docker.com/engine/install/ubuntu/
-sudo -E apt-get -y install \
-    ca-certificates \
-    curl \
-    gnupg \
-    lsb-release
-sudo mkdir -p /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --yes --dearmor -o /etc/apt/keyrings/docker.gpg
-echo \
-  "deb [arch=\$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  \$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo -E apt-get update -y
-sudo -E apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
-sudo groupadd docker || true
-sudo usermod -aG docker \$USER
-
-printf %s '$CI_DOCKER_TOKEN' | docker login -u terrastruct --password-stdin
-
-# For building images cross platform from the arm64 instance.
-# We could use QEMU with:
-#  sudo -E apt-get install -y qemu qemu-user-static
-# But we don't as playwright dependencies do not install on QEMU on either arm64 or amd64.
-if [ "\$(uname -m)" = aarch64 ]; then
-  if [ "\$(stat -c '%a' ~/.ssh/id_ed25519 2>/dev/null)" != 600 ]; then
-    echo '$CI_TSTRUCT_ID_ED25519' >~/.ssh/id_ed25519
-    chmod 600 ~/.ssh/id_ed25519
-  fi
-  if ! docker context ls | grep -qF ci-d2-linux-amd64; then
-    docker context create ci-d2-linux-amd64 --docker "host=ssh://$CI_D2_LINUX_AMD64"
-  fi
-  if ! docker buildx ls | grep -qF 'd2 *'; then
-    docker buildx create --use --name d2 --platform linux/arm64 default
-  fi
-  if ! docker buildx inspect d2 | grep -qF ci-d2-linux-amd64; then
-    docker buildx create --append --name d2 --platform linux/amd64 ci-d2-linux-amd64
-  fi
-fi
+sudo -E apt-get install -y build-essential ca-certificates curl rsync
 
 mkdir -p \$HOME/.local/bin
 mkdir -p \$HOME/.local/share/man
