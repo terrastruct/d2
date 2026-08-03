@@ -37,6 +37,7 @@ sh_c bun build.js
 if [ -n "${NPM_VERSION:-}" ]; then
   cp package.json package.json.bak
   trap 'rm -f .npmrc; mv package.json.bak package.json' EXIT
+  PUBLISH_MODE="${NPM_PUBLISH_MODE:-publish}"
 
   if [ "$NPM_VERSION" = "nightly" ]; then
     echo "Publishing nightly version to npm..."
@@ -59,33 +60,50 @@ if [ -n "${NPM_VERSION:-}" ]; then
   # Update package.json with the new version
   npm version "${PUBLISH_VERSION}" --no-git-tag-version
 
-  echo "Publishing to npm with tag '${NPM_TAG}'..."
-  if [ -n "${NPM_TOKEN-}" ]; then
-    # Create .npmrc file with auth token
-    echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-
-    if npm publish --tag "$NPM_TAG"; then
-      echo "Successfully published @terrastruct/d2@${PUBLISH_VERSION} to npm with tag '${NPM_TAG}'"
-
-      # For official releases, bump the patch version
-      if [ "$NPM_VERSION" != "nightly" ]; then
-        # Restore original package.json first
-        mv package.json.bak package.json
-
-        echo "Bumping version to ${NPM_VERSION}"
-        npm version "${NPM_VERSION}" --no-git-tag-version
-        git add package.json
-        git commit -m "Bump version to ${NPM_VERSION} [skip ci]"
-
-        # Cancel the trap since we manually restored and don't want it to execute on exit
-        trap - EXIT
+  case "$PUBLISH_MODE" in
+    stage)
+      echo "Staging package on npm with tag '${NPM_TAG}'..."
+      if npm stage publish --tag "$NPM_TAG"; then
+        echo "Successfully staged @terrastruct/d2@${PUBLISH_VERSION} on npm with tag '${NPM_TAG}'"
+      else
+        echoerr "Failed to stage package on npm"
+        exit 1
       fi
-    else
-      echoerr "Failed to publish package to npm"
+      ;;
+    publish)
+      if [ -z "${NPM_TOKEN-}" ]; then
+        echoerr "NPM_TOKEN environment variable is required for direct publishing"
+        exit 1
+      fi
+
+      # Create .npmrc file with auth token
+      echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+
+      echo "Publishing to npm with tag '${NPM_TAG}'..."
+      if npm publish --tag "$NPM_TAG"; then
+        echo "Successfully published @terrastruct/d2@${PUBLISH_VERSION} to npm with tag '${NPM_TAG}'"
+
+        # For official releases, bump the patch version
+        if [ "$NPM_VERSION" != "nightly" ]; then
+          # Restore original package.json first
+          mv package.json.bak package.json
+
+          echo "Bumping version to ${NPM_VERSION}"
+          npm version "${NPM_VERSION}" --no-git-tag-version
+          git add package.json
+          git commit -m "Bump version to ${NPM_VERSION} [skip ci]"
+
+          # Cancel the trap since we manually restored and don't want it to execute on exit
+          trap - EXIT
+        fi
+      else
+        echoerr "Failed to publish package to npm"
+        exit 1
+      fi
+      ;;
+    *)
+      echoerr "Unknown NPM_PUBLISH_MODE: ${PUBLISH_MODE}"
       exit 1
-    fi
-  else
-    echoerr "NPM_TOKEN environment variable is required for publishing to npm"
-    exit 1
-  fi
+      ;;
+  esac
 fi
