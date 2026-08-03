@@ -44,7 +44,7 @@ Subcommands:
   %[1]s validate file.d2  - Validates file.d2
 
 See more docs and the source code at https://oss.terrastruct.com/d2.
-Hosted icons at https://icons.terrastruct.com.
+Hosted icons at https://icons.d2lang.com.
 Playground runner at https://play.d2lang.com.
 `, filepath.Base(ms.Name), version.Version, ms.Opts.Defaults())
 }
