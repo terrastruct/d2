@@ -429,10 +429,10 @@ func getTooltipCompletions() []CompletionItem {
 func getIconCompletions() []CompletionItem {
 	return []CompletionItem{
 		{
-			Label:      "(URL, e.g. https://icons.terrastruct.com/xyz.svg)",
+			Label:      "(URL, e.g. https://icons.d2lang.com/xyz.svg)",
 			Kind:       KeywordCompletion,
 			Detail:     "icon URL",
-			InsertText: "https://icons.terrastruct.com/essentials%2F073-add.svg",
+			InsertText: "https://icons.d2lang.com/essentials%2F073-add.svg",
 		},
 	}
 }
