@@ -21,6 +21,7 @@ import (
 	"oss.terrastruct.com/util-go/xos"
 
 	"oss.terrastruct.com/d2/d2cli"
+	"oss.terrastruct.com/d2/lib/compression"
 	"oss.terrastruct.com/d2/lib/pptx"
 	"oss.terrastruct.com/d2/lib/xgif"
 )
@@ -1085,6 +1086,7 @@ vars: {
 				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
 				assert.Success(t, err)
 				svg := readFile(t, dir, "hello-world.svg")
+				svg = compression.UnzipEmbeddedSVGImages(svg)
 				assert.Testdata(t, ".svg", svg)
 			},
 		},
