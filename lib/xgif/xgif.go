@@ -22,7 +22,7 @@ import (
 	d2png "oss.terrastruct.com/d2/lib/png"
 
 	"github.com/ericpauley/go-quantize/quantize"
-	"github.com/playwright-community/playwright-go"
+	"github.com/mxschmitt/playwright-go"
 
 	"oss.terrastruct.com/util-go/go2"
 )
