@@ -48,13 +48,13 @@ jobs:
       - name: Install binaryen
         run: |
           BINARYEN_VERSION="version_123"
-          curl -fsSL "https://github.com/WebAssembly/binaryen/releases/download/${BINARYEN_VERSION}/binaryen-${BINARYEN_VERSION}-x86_64-linux.tar.gz" | tar -xz
-          sudo cp "binaryen-${BINARYEN_VERSION}"/bin/* /usr/local/bin/
+          curl -fsSL "https://github.com/WebAssembly/binaryen/releases/download/${BINARYEN_VERSION}/binaryen-${BINARYEN_VERSION}-x86_64-linux.tar.gz" | tar -xz -C "$RUNNER_TEMP"
+          sudo cp "$RUNNER_TEMP/binaryen-${BINARYEN_VERSION}"/bin/* /usr/local/bin/
           wasm-opt --version
 
       - name: Build and test package
         run: |
-          COLOR=1 ./make.sh js
+          CI_FORCE=1 CI_MAKE_ROOT=0 COLOR=1 ./make.sh js
           cd d2js/js
           bun test test/unit
 
@@ -62,4 +62,4 @@ jobs:
         env:
           NPM_PUBLISH_MODE: stage
           NPM_VERSION: ${{ inputs.version }}
-        run: COLOR=1 ./make.sh js
+        run: CI_FORCE=1 CI_MAKE_ROOT=0 COLOR=1 ./make.sh js
