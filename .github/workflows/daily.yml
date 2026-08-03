@@ -2,6 +2,9 @@ name: daily
 on:
   workflow_dispatch:
   # Keep daily CI available for manual verification while scheduled runs are paused.
+permissions:
+  actions: read
+  contents: read
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
@@ -17,7 +20,7 @@ jobs:
           cache: true
       - run: COLOR=1 CI_FORCE=1 ./make.sh all race
         env:
-          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
       - uses: actions/upload-artifact@v4
         if: always()
