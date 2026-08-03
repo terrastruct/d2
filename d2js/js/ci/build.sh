@@ -36,8 +36,13 @@ sh_c bun build.js
 
 if [ -n "${NPM_VERSION:-}" ]; then
   cp package.json package.json.bak
-  trap 'rm -f .npmrc; mv package.json.bak package.json' EXIT
   PUBLISH_MODE="${NPM_PUBLISH_MODE:-publish}"
+  if [ "$PUBLISH_MODE" = stage ] && [ -f package-lock.json ]; then
+    cp package-lock.json package-lock.json.stage.bak
+    trap 'rm -f .npmrc; mv package.json.bak package.json; mv package-lock.json.stage.bak package-lock.json' EXIT
+  else
+    trap 'rm -f .npmrc; mv package.json.bak package.json' EXIT
+  fi
 
   if [ "$NPM_VERSION" = "nightly" ]; then
     echo "Publishing nightly version to npm..."
