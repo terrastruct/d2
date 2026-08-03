@@ -46,6 +46,13 @@ must name a published, non-draft GitHub release with both Linux archives; `v0.7.
 default continuity fixture. Delete the continuity-test tag in Docker Hub after reviewing the
 workflow summary and manifest.
 
+The `v0.7.1` fixture embeds playwright-go v0.4702.0, whose original driver CDN no longer
+serves the required ZIP files. For that fixture only, the workflow reconstructs the same
+Playwright 1.47.2 driver layout from a checksum-pinned official `playwright-core` npm
+tarball and the image's Node runtime. Browser payloads use Playwright's current direct CDN.
+The published D2 archive remains unchanged. Other release versions use their tagged
+Dockerfile without this compatibility step.
+
 This test does not disable or replace the existing release script's Docker publishing path.
 
 ### _build.sh
