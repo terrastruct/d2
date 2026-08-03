@@ -6,7 +6,10 @@ cd -- "$(dirname "$0")/../../.."
 
 help() {
       cat <<EOF
-usage: $0 [-p|--push] [--latest] [--version=str]
+usage: $0 [--version=str]
+
+Build and load a local, single-platform Docker image. Production publishing is handled by
+the protected Publish Docker release GitHub workflow.
 EOF
 }
 
@@ -19,11 +22,13 @@ main() {
         ;;
       p|push)
         flag_noarg && shift "$FLAGSHIFT"
-        PUSH=1
+        echo "--push is disabled; use the Publish Docker release GitHub workflow" >&2
+        return 2
         ;;
       latest)
         flag_noarg && shift "$FLAGSHIFT"
-        LATEST=1
+        echo "--latest is disabled; use the Publish Docker release GitHub workflow" >&2
+        return 2
         ;;
       version)
         flag_reqarg && shift "$FLAGSHIFT"
@@ -35,6 +40,11 @@ main() {
     esac
   done
   shift "$FLAGSHIFT"
+
+  if [ -n "${RELEASE-}" ]; then
+    echo "RELEASE-driven Docker publishing is disabled; use the Publish Docker release GitHub workflow" >&2
+    return 2
+  fi
 
   if [ -z "${VERSION-}" ]; then
     VERSION=$(readlink ./ci/release/build/latest)
@@ -49,14 +59,7 @@ main() {
     ./ci/release/docker/entrypoint.sh \
     "./ci/release/build/$VERSION/docker/entrypoint.sh"
 
-  flags='--load'
-  if [ -n "${PUSH-}" -o -n "${RELEASE-}" ]; then
-    flags='--push --platform linux/amd64,linux/arm64'
-  fi
-  if [ -n "${LATEST-}" -o -n "${RELEASE-}" ]; then
-    flags="$flags -t $D2_DOCKER_IMAGE:latest"
-  fi
-  sh_c docker buildx build $flags \
+  sh_c docker buildx build --load \
     -t "$D2_DOCKER_IMAGE:$VERSION" \
     -f ./ci/release/docker/Dockerfile "./ci/release/build/$VERSION/docker"
 }

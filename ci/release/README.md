@@ -25,10 +25,53 @@ it depends on from ../sub/lib.
 
 Use `--host-only` to build only the release for the host's `$OS-$ARCH` pair.
 
-### build_docker.sh
+### Docker image helper
 
-Helper script called by build.sh to build D2 on each linux runner inside Docker.
-The Dockerfile is in ./linux/Dockerfile
+`./docker/build.sh` is retained as a load-only local development helper. It rejects
+`--push`, `--latest`, and inherited `RELEASE` publishing. The release script no longer
+calls it or publishes Docker tags from a legacy AWS SSH builder.
+
+### Production Docker publishing
+
+The manually dispatched `Publish Docker release` GitHub workflow is the production path
+for Docker Hub. It replaces only the Docker portion of the legacy AWS release path; the
+other release asset builders are unchanged.
+
+Run it from the protected `master` branch after the GitHub release is published. Enter the
+exact v-prefixed release version and leave `publish_latest` off unless this stable release
+should become the default Docker image. The workflow rejects `publish_latest` for a GitHub
+prerelease or a semver prerelease.
+
+The `docker-release` GitHub environment must provide a `DOCKERHUB_USERNAME` variable and a
+`DOCKERHUB_TOKEN` secret with write access to that user's `d2` repository. The current
+production namespace is fixed to `terrastruct/d2`, so `DOCKERHUB_USERNAME` must be
+`terrastruct`. The environment's deployment branch policy must allow only protected
+branches. Docker Hub tag immutability must remain enabled for version tags with
+`^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z]+([.-][0-9A-Za-z]+)*)?$`; `latest` remains outside
+that rule and mutable. This repository-side rule is the final overwrite guard.
+
+Before publishing a production tag, the workflow:
+
+1. verifies the protected-master dispatch, published non-draft semver GitHub release, exact
+   Linux amd64 and arm64 asset IDs, and their GitHub SHA-256 digests;
+2. explicitly peels the Git tag to a commit, requires that commit to be an ancestor of the
+   dispatched `master` commit, and uses that release commit's Dockerfile;
+3. builds on native GitHub-hosted amd64 and arm64 runners and pushes only untagged digests
+   with provenance;
+4. runs native version, SVG, and PNG smoke tests for both digests; and
+5. dry-runs and validates the exact two-platform manifest, including provenance
+   attestations; then
+6. immediately re-fetches the release and re-peels its tag, requiring the release ID,
+   publication/prerelease state, tag commit, asset IDs, and asset digests to be unchanged.
+
+Only then does it create the requested version tag. Existing version tags are immutable,
+so the workflow refuses to overwrite one. If `publish_latest` was explicitly selected, it
+updates `latest` from the immutable version-manifest digest only after the version manifest
+is published and verified. If verification or `latest` promotion fails after the version
+tag was created, use GitHub's **Re-run failed jobs** action: the same run accepts the
+existing version tag only when its descriptors exactly match that run's verified candidate,
+and the separate `latest` job can retry without touching the version tag. A new dispatch
+still refuses any existing version tag during preflight.
 
 ### Docker continuity test
 
@@ -39,11 +82,9 @@ runners, verifies the images, and publishes only
 `terrastruct/d2:continuity-test-<workflow-run-id>`. It never updates a release version tag or
 `latest`.
 
-Before dispatching it, configure the `docker-release` GitHub environment with a
-`DOCKERHUB_USERNAME` variable and a `DOCKERHUB_TOKEN` secret that can write to that user's
-`d2` repository. Dispatch the workflow from the protected `master` branch. The version input
-must name a published, non-draft GitHub release with both Linux archives; `v0.7.1` is the
-default continuity fixture. Delete the continuity-test tag in Docker Hub after reviewing the
+Dispatch the workflow from the protected `master` branch. The version input must name a
+published, non-draft GitHub release with both Linux archives; `v0.7.1` is the default
+continuity fixture. Delete the continuity-test tag in Docker Hub after reviewing the
 workflow summary and manifest.
 
 The `v0.7.1` fixture embeds playwright-go v0.4702.0, whose original driver CDN no longer
@@ -53,12 +94,12 @@ tarball and the image's Node runtime. Browser payloads use Playwright's current 
 The published D2 archive remains unchanged. Other release versions use their tagged
 Dockerfile without this compatibility step.
 
-This test does not disable or replace the existing release script's Docker publishing path.
+This remains a non-production regression test. The separate `Publish Docker release`
+workflow is the production publisher.
 
 ### _build.sh
 
-Called by build.sh (with --local or macOS) or build_docker.sh (on linux) to create the
-release archive.
+Called by build.sh to create a release archive.
 
 Do not invoke directly. If you want to produce a build for a single platform run build.sh
 as so:
