@@ -302,7 +302,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 
 	if *darkThemeFlag == -1 {
-		darkThemeFlag = nil // TODO this is a temporary solution: https://github.com/terrastruct/util-go/issues/7
+		darkThemeFlag = nil // TODO this is a temporary solution: https://github.com/d2lang/util-go/issues/7
 	}
 	if darkThemeFlag != nil {
 		match = d2themescatalog.Find(*darkThemeFlag)
