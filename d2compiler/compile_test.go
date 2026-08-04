@@ -4091,6 +4091,28 @@ svc_1.t2 -> b: do with B
 	}
 }
 
+func TestCompileCycleShape(t *testing.T) {
+	g, _, err := d2compiler.Compile("d2/testdata/d2compiler/TestCompileCycleShape.d2", strings.NewReader(`
+x: {
+  shape: cycle
+  a
+  b
+}
+`), nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(g.Objects) != 3 {
+		t.Fatalf("expected 3 objects: %#v", g.Objects)
+	}
+	if g.Objects[0].Shape.Value != d2target.ShapeCycle {
+		t.Fatalf("expected g.Objects[0].Shape.Value to be cycle: %#v", g.Objects[0].Shape.Value)
+	}
+	if !g.Objects[0].IsCycleDiagram() {
+		t.Fatalf("expected x to be a cycle diagram")
+	}
+}
+
 func TestCompile2(t *testing.T) {
 	t.Parallel()
 
