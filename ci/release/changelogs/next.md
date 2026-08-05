@@ -1,6 +1,7 @@
 #### Features 🚀
 
 - exports: gif exports work with `animate: true` keyword [#2663](https://github.com/d2lang/d2/pull/2663)
+- d2layouts: `shape: cycle` arranges objects in a circle and routes edges as circular arcs that start and end at shape borders [#1578](https://github.com/d2lang/d2/issues/1578)
 
 #### Improvements 🧹
 
