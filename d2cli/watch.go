@@ -43,23 +43,24 @@ var devMode = false
 var staticFS embed.FS
 
 type watcherOpts struct {
-	layout          *string
-	plugins         []d2plugin.Plugin
-	renderOpts      d2svg.RenderOpts
-	animateInterval int64
-	host            string
-	port            string
-	inputPath       string
-	outputPath      string
-	boardPath       string
-	pwd             string
-	bundle          bool
-	forceAppendix   bool
-	pw              png.Playwright
-	fontFamily      *d2fonts.FontFamily
-	monoFontFamily  *d2fonts.FontFamily
-	outputFormat    exportExtension
-	asciiMode       string
+	layout            *string
+	plugins           []d2plugin.Plugin
+	renderOpts        d2svg.RenderOpts
+	animateInterval   int64
+	host              string
+	port              string
+	inputPath         string
+	outputPath        string
+	boardPath         string
+	pwd               string
+	bundle            bool
+	forceAppendix     bool
+	pw                png.Playwright
+	fontFamily        *d2fonts.FontFamily
+	monoFontFamily    *d2fonts.FontFamily
+	outputFormat      exportExtension
+	asciiMode         string
+	playwrightBrowser string
 }
 
 type watcher struct {

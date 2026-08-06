@@ -77,10 +77,15 @@ func startPlaywright(pw *playwright.Playwright) (Playwright, error) {
 	}, nil
 }
 
-func InitPlaywright() (Playwright, error) {
+func InitPlaywright(playwrightBrowser string) (Playwright, error) {
+
+	if playwrightBrowser == "" {
+		playwrightBrowser = "chromium"
+	}
+
 	err := playwright.Install(&playwright.RunOptions{
 		Verbose:  false,
-		Browsers: []string{"chromium"},
+		Browsers: []string{playwrightBrowser},
 	})
 	if err != nil {
 		return Playwright{}, fmt.Errorf("failed to install Playwright: %w", err)
@@ -93,13 +98,16 @@ func InitPlaywright() (Playwright, error) {
 	return startPlaywright(pw)
 }
 
-func InitPlaywrightWithPrompt() (Playwright, error) {
+func InitPlaywrightWithPrompt(playwrightBrowser string) (Playwright, error) {
 	if os.Getenv("CI") != "" {
-		return InitPlaywright()
+		return InitPlaywright("")
 	}
 
 	// Just try running first. This only works if drivers and browsers are already installed
-	pw, err := playwright.Run()
+	pw, err := playwright.Run(
+		&playwright.RunOptions{
+			Browsers: []string{playwrightBrowser},
+		})
 	if err == nil {
 		return startPlaywright(pw)
 	}
@@ -115,7 +123,7 @@ func InitPlaywrightWithPrompt() (Playwright, error) {
 		return Playwright{}, fmt.Errorf("chromium installation cancelled by user")
 	}
 
-	return InitPlaywright()
+	return InitPlaywright(playwrightBrowser)
 }
 
 const pngPrefix = "data:image/png;base64,"
