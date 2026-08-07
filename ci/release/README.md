@@ -42,11 +42,13 @@ exact v-prefixed release version and leave `publish_latest` off unless this stab
 should become the default Docker image. The workflow rejects `publish_latest` for a GitHub
 prerelease or a semver prerelease.
 
-The `docker-release` GitHub environment must provide a `DOCKERHUB_USERNAME` variable and a
-`DOCKERHUB_TOKEN` secret with write access to that user's `d2` repository. The current
-production namespace is fixed to `terrastruct/d2`, so `DOCKERHUB_USERNAME` must be
-`terrastruct`. The environment's deployment branch policy must allow only protected
-branches. Docker Hub tag immutability must remain enabled for version tags with
+The `docker-release` GitHub environment must provide a `DOCKERHUB_USERNAME` variable set
+to `d2lang` and a `DOCKERHUB_TOKEN` secret containing a personal access token for that
+Docker ID. The Docker ID must have write access to both the canonical `d2lang/d2`
+repository and the maintained `terrastruct/d2` compatibility mirror. The environment's
+deployment branch policy must
+allow only protected branches. Docker Hub tag immutability must remain enabled on both
+repositories for version tags with
 `^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z]+([.-][0-9A-Za-z]+)*)?$`; `latest` remains outside
 that rule and mutable. This repository-side rule is the final overwrite guard.
 
@@ -64,13 +66,14 @@ Before publishing a production tag, the workflow:
 6. immediately re-fetches the release and re-peels its tag, requiring the release ID,
    publication/prerelease state, tag commit, asset IDs, and asset digests to be unchanged.
 
-Only then does it create the requested version tag. Existing version tags are immutable,
-so the workflow refuses to overwrite one. If `publish_latest` was explicitly selected, it
-updates `latest` from the immutable version-manifest digest only after the version manifest
-is published and verified. If verification or `latest` promotion fails after the version
-tag was created, use GitHub's **Re-run failed jobs** action: the same run accepts the
+Only then does it create the requested version tag in the canonical repository and its
+compatibility mirror. Existing version tags are immutable, so the workflow refuses to
+overwrite one. If `publish_latest` was explicitly selected, it updates `latest` in both
+repositories from the immutable version-manifest digest only after the version manifests
+are published and verified. If verification or `latest` promotion fails after a version
+tag was created, use GitHub's **Re-run failed jobs** action: the same run accepts an
 existing version tag only when its descriptors exactly match that run's verified candidate,
-and the separate `latest` job can retry without touching the version tag. A new dispatch
+and the separate `latest` job can retry without touching the version tags. A new dispatch
 still refuses any existing version tag during preflight.
 
 ### Docker continuity test
@@ -79,13 +82,14 @@ The manually dispatched `Docker continuity test` GitHub workflow proves that an 
 published D2 release can be rebuilt for Docker Hub without the legacy AWS builders. It
 downloads the release's exact Linux archives, builds on native GitHub-hosted amd64 and arm64
 runners, verifies the images, and publishes only
-`terrastruct/d2:continuity-test-<workflow-run-id>`. It never updates a release version tag or
-`latest`.
+`d2lang/d2:continuity-test-<workflow-run-id>-<attempt>` and the matching
+`terrastruct/d2` compatibility tag. It never updates a release version tag or `latest`.
 
 Dispatch the workflow from the protected `master` branch. The version input must name a
 published, non-draft GitHub release with both Linux archives; `v0.7.1` is the default
-continuity fixture. Delete the continuity-test tag in Docker Hub after reviewing the
-workflow summary and manifest.
+continuity fixture. The workflow removes both test tags after verification. If Docker Hub
+rejects the cleanup request, the workflow emits a warning identifying the two tags to
+delete manually.
 
 The `v0.7.1` fixture embeds playwright-go v0.4702.0, whose original driver CDN no longer
 serves the required ZIP files. For that fixture only, the workflow reconstructs the same
