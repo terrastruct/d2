@@ -268,7 +268,7 @@ let us know and we'll be happy to include it here!
 
 ### Misc
 
-- **Comparison site**: [https://github.com/terrastruct/text-to-diagram-site](https://github.com/terrastruct/text-to-diagram-site)
+- **Comparison site**: [https://github.com/d2lang/text-to-diagram-site](https://github.com/d2lang/text-to-diagram-site)
 - **Playground**: [https://github.com/d2lang/d2-playground](https://github.com/d2lang/d2-playground)
 - **Language docs**: [https://github.com/d2lang/d2-docs](https://github.com/d2lang/d2-docs)
 - **Hosted icons**: [https://icons.d2lang.com](https://icons.d2lang.com)
