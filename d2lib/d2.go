@@ -7,6 +7,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/d2lang/util-go/go2"
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2exporter"
@@ -19,7 +20,6 @@ import (
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/textmeasure"
-	"oss.terrastruct.com/util-go/go2"
 )
 
 type CompileOptions struct {

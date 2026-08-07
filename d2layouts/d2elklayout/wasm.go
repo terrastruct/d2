@@ -7,11 +7,11 @@ import (
 	"fmt"
 	"math"
 
+	"github.com/d2lang/util-go/go2"
+	"github.com/d2lang/util-go/xdefer"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
-	"oss.terrastruct.com/util-go/go2"
-	"oss.terrastruct.com/util-go/xdefer"
 )
 
 // This is mostly copy paste from Layout until elk.layout step

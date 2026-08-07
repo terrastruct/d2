@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/d2lang/util-go/go2"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
@@ -19,7 +20,6 @@ import (
 	"oss.terrastruct.com/d2/lib/color"
 	svglib "oss.terrastruct.com/d2/lib/svg"
 	"oss.terrastruct.com/d2/lib/textmeasure"
-	"oss.terrastruct.com/util-go/go2"
 )
 
 //        ┌──────────────┐

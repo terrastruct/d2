@@ -9,6 +9,7 @@ require (
 	github.com/alecthomas/chroma/v2 v2.14.0
 	github.com/andybalholm/brotli v1.2.0
 	github.com/coder/websocket v1.8.12
+	github.com/d2lang/util-go v0.2.0
 	github.com/dop251/goja v0.0.0-20240927123429-241b342198c2
 	github.com/dsoprea/go-exif/v3 v3.0.1
 	github.com/dsoprea/go-png-image-structure/v2 v2.0.0-20210512210324-29b889a6093d
@@ -30,7 +31,6 @@ require (
 	golang.org/x/text v0.22.0
 	golang.org/x/tools v0.25.0
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da
-	oss.terrastruct.com/util-go v0.0.0-20250213174338-243d8661088a
 )
 
 require (

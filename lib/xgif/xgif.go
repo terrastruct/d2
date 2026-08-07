@@ -24,7 +24,7 @@ import (
 	"github.com/ericpauley/go-quantize/quantize"
 	"github.com/mxschmitt/playwright-go"
 
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/util-go/go2"
 )
 
 const INFINITE_LOOP = 0

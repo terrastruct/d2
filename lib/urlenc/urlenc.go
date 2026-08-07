@@ -7,7 +7,7 @@ import (
 	"io"
 	"strings"
 
-	"oss.terrastruct.com/util-go/xdefer"
+	"github.com/d2lang/util-go/xdefer"
 )
 
 // Encode takes a D2 script and encodes it as a compressed base64 string for embedding in URLs.

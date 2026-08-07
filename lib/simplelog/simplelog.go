@@ -4,8 +4,8 @@ package simplelog
 import (
 	"context"
 
+	"github.com/d2lang/util-go/cmdlog"
 	"oss.terrastruct.com/d2/lib/log"
-	"oss.terrastruct.com/util-go/cmdlog"
 )
 
 type Logger interface {

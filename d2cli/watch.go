@@ -21,11 +21,11 @@ import (
 	"github.com/coder/websocket/wsjson"
 	"github.com/fsnotify/fsnotify"
 
-	"oss.terrastruct.com/util-go/xbrowser"
+	"github.com/d2lang/util-go/xbrowser"
 
-	"oss.terrastruct.com/util-go/xhttp"
+	"github.com/d2lang/util-go/xhttp"
 
-	"oss.terrastruct.com/util-go/xmain"
+	"github.com/d2lang/util-go/xmain"
 
 	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"

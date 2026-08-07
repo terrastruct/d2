@@ -19,8 +19,8 @@ import (
 	"github.com/spf13/pflag"
 	"go.uber.org/multierr"
 
-	"oss.terrastruct.com/util-go/go2"
-	"oss.terrastruct.com/util-go/xmain"
+	"github.com/d2lang/util-go/go2"
+	"github.com/d2lang/util-go/xmain"
 
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2graph"

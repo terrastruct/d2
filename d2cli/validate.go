@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/d2lang/util-go/xdefer"
+	"github.com/d2lang/util-go/xmain"
 	"oss.terrastruct.com/d2/d2lib"
-	"oss.terrastruct.com/util-go/xdefer"
-	"oss.terrastruct.com/util-go/xmain"
 )
 
 func validateCmd(ctx context.Context, ms *xmain.State) (err error) {

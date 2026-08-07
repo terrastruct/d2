@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"oss.terrastruct.com/util-go/xdefer"
-	"oss.terrastruct.com/util-go/xmain"
+	"github.com/d2lang/util-go/xdefer"
+	"github.com/d2lang/util-go/xmain"
 
 	"oss.terrastruct.com/d2/d2graph"
 	timelib "oss.terrastruct.com/d2/lib/time"
