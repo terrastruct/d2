@@ -3,7 +3,7 @@ package d2format
 import (
 	"strings"
 
-	"oss.terrastruct.com/d2/d2ast"
+	"github.com/d2lang/d2/d2ast"
 )
 
 func escapeSingleQuotedValue(s string) string {

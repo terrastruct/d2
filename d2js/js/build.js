@@ -44,6 +44,11 @@ const commonConfig = {
   minify: true,
 };
 
+const nodeEsmBanner = `import { dirname as __d2Dirname } from "node:path";
+import { fileURLToPath as __d2FileURLToPath } from "node:url";
+const __D2_NODE_MODULE_DIR__ = __d2Dirname(__d2FileURLToPath(import.meta.url));`;
+const nodeCjsBanner = `const __D2_NODE_MODULE_DIR__ = __dirname;`;
+
 async function buildDynamicFiles(platform) {
   const platformContent =
     platform === "node"
@@ -113,6 +118,7 @@ async function buildAndCopy(buildType) {
       format: "esm",
       target: "node",
       platform: "node",
+      banner: nodeEsmBanner,
       entrypoints: [resolve(SRC_DIR, "index.js"), resolve(SRC_DIR, "worker.js")],
     },
     "node-cjs": {
@@ -121,6 +127,7 @@ async function buildAndCopy(buildType) {
       format: "cjs",
       target: "node",
       platform: "node",
+      banner: nodeCjsBanner,
       entrypoints: [resolve(SRC_DIR, "index.js"), resolve(SRC_DIR, "worker.js")],
     },
   };
@@ -154,6 +161,10 @@ async function buildAndCopy(buildType) {
       resolve(ROOT_DIR, "../../d2layouts/d2elklayout/setup.js"),
       join(config.outdir, "setup.js")
     );
+
+    if (buildType === "node-cjs") {
+      await writeFile(join(config.outdir, "package.json"), '{"type":"commonjs"}\n');
+    }
   }
 }
 

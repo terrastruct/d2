@@ -15,38 +15,38 @@ import (
 	"strings"
 	"time"
 
-	"github.com/playwright-community/playwright-go"
+	"github.com/mxschmitt/playwright-go"
 	"github.com/spf13/pflag"
 	"go.uber.org/multierr"
 
-	"oss.terrastruct.com/util-go/go2"
-	"oss.terrastruct.com/util-go/xmain"
+	"github.com/d2lang/util-go/go2"
+	"github.com/d2lang/util-go/xmain"
 
-	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2lib"
-	"oss.terrastruct.com/d2/d2parser"
-	"oss.terrastruct.com/d2/d2plugin"
-	"oss.terrastruct.com/d2/d2renderers/d2animate"
-	"oss.terrastruct.com/d2/d2renderers/d2ascii"
-	"oss.terrastruct.com/d2/d2renderers/d2ascii/charset"
-	"oss.terrastruct.com/d2/d2renderers/d2fonts"
-	"oss.terrastruct.com/d2/d2renderers/d2svg"
-	"oss.terrastruct.com/d2/d2renderers/d2svg/appendix"
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/d2themes"
-	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
-	"oss.terrastruct.com/d2/lib/background"
-	"oss.terrastruct.com/d2/lib/imgbundler"
-	"oss.terrastruct.com/d2/lib/log"
-	"oss.terrastruct.com/d2/lib/pdf"
-	"oss.terrastruct.com/d2/lib/png"
-	"oss.terrastruct.com/d2/lib/pptx"
-	"oss.terrastruct.com/d2/lib/simplelog"
-	"oss.terrastruct.com/d2/lib/textmeasure"
-	timelib "oss.terrastruct.com/d2/lib/time"
-	"oss.terrastruct.com/d2/lib/version"
-	"oss.terrastruct.com/d2/lib/xgif"
+	"github.com/d2lang/d2/d2ast"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2lib"
+	"github.com/d2lang/d2/d2parser"
+	"github.com/d2lang/d2/d2plugin"
+	"github.com/d2lang/d2/d2renderers/d2animate"
+	"github.com/d2lang/d2/d2renderers/d2ascii"
+	"github.com/d2lang/d2/d2renderers/d2ascii/charset"
+	"github.com/d2lang/d2/d2renderers/d2fonts"
+	"github.com/d2lang/d2/d2renderers/d2svg"
+	"github.com/d2lang/d2/d2renderers/d2svg/appendix"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/d2themes"
+	"github.com/d2lang/d2/d2themes/d2themescatalog"
+	"github.com/d2lang/d2/lib/background"
+	"github.com/d2lang/d2/lib/imgbundler"
+	"github.com/d2lang/d2/lib/log"
+	"github.com/d2lang/d2/lib/pdf"
+	"github.com/d2lang/d2/lib/png"
+	"github.com/d2lang/d2/lib/pptx"
+	"github.com/d2lang/d2/lib/simplelog"
+	"github.com/d2lang/d2/lib/textmeasure"
+	timelib "github.com/d2lang/d2/lib/time"
+	"github.com/d2lang/d2/lib/version"
+	"github.com/d2lang/d2/lib/xgif"
 )
 
 func Run(ctx context.Context, ms *xmain.State) (err error) {
@@ -80,7 +80,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
-	darkThemeFlag, err := ms.Opts.Int64("D2_DARK_THEME", "dark-theme", "", -1, "the theme to use when the viewer's browser is in dark mode. When left unset -theme is used for both light and dark mode. Be aware that explicit styles set in D2 code will still be applied and this may produce unexpected results. We plan on resolving this by making style maps in D2 light/dark mode specific. See https://github.com/terrastruct/d2/issues/831.")
+	darkThemeFlag, err := ms.Opts.Int64("D2_DARK_THEME", "dark-theme", "", -1, "the theme to use when the viewer's browser is in dark mode. When left unset -theme is used for both light and dark mode. Be aware that explicit styles set in D2 code will still be applied and this may produce unexpected results. We plan on resolving this by making style maps in D2 light/dark mode specific. See https://github.com/d2lang/d2/issues/831.")
 	if err != nil {
 		return err
 	}
@@ -302,7 +302,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 
 	if *darkThemeFlag == -1 {
-		darkThemeFlag = nil // TODO this is a temporary solution: https://github.com/terrastruct/util-go/issues/7
+		darkThemeFlag = nil // TODO this is a temporary solution: https://github.com/d2lang/util-go/issues/7
 	}
 	if darkThemeFlag != nil {
 		match = d2themescatalog.Find(*darkThemeFlag)

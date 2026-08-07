@@ -8,14 +8,14 @@ import (
 
 	tassert "github.com/stretchr/testify/assert"
 
-	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
-	"oss.terrastruct.com/util-go/mapfs"
+	"github.com/d2lang/util-go/assert"
+	"github.com/d2lang/util-go/diff"
+	"github.com/d2lang/util-go/mapfs"
 
-	"oss.terrastruct.com/d2/d2compiler"
-	"oss.terrastruct.com/d2/d2format"
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2target"
+	"github.com/d2lang/d2/d2compiler"
+	"github.com/d2lang/d2/d2format"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2target"
 )
 
 func TestCompile(t *testing.T) {

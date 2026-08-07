@@ -19,12 +19,12 @@ import (
 
 	"golang.org/x/sync/errgroup"
 
-	d2png "oss.terrastruct.com/d2/lib/png"
+	d2png "github.com/d2lang/d2/lib/png"
 
 	"github.com/ericpauley/go-quantize/quantize"
-	"github.com/playwright-community/playwright-go"
+	"github.com/mxschmitt/playwright-go"
 
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/util-go/go2"
 )
 
 const INFINITE_LOOP = 0

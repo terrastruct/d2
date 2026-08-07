@@ -3,7 +3,7 @@ package d2ir
 import (
 	"fmt"
 
-	"oss.terrastruct.com/d2/d2parser"
+	"github.com/d2lang/d2/d2parser"
 )
 
 // QueryAll is only for tests and debugging.

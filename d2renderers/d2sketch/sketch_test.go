@@ -11,19 +11,19 @@ import (
 
 	tassert "github.com/stretchr/testify/assert"
 
-	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/util-go/assert"
+	"github.com/d2lang/util-go/diff"
+	"github.com/d2lang/util-go/go2"
 
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
-	"oss.terrastruct.com/d2/d2layouts/d2elklayout"
-	"oss.terrastruct.com/d2/d2lib"
-	"oss.terrastruct.com/d2/d2renderers/d2fonts"
-	"oss.terrastruct.com/d2/d2renderers/d2svg"
-	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
-	"oss.terrastruct.com/d2/lib/log"
-	"oss.terrastruct.com/d2/lib/textmeasure"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2layouts/d2dagrelayout"
+	"github.com/d2lang/d2/d2layouts/d2elklayout"
+	"github.com/d2lang/d2/d2lib"
+	"github.com/d2lang/d2/d2renderers/d2fonts"
+	"github.com/d2lang/d2/d2renderers/d2svg"
+	"github.com/d2lang/d2/d2themes/d2themescatalog"
+	"github.com/d2lang/d2/lib/log"
+	"github.com/d2lang/d2/lib/textmeasure"
 )
 
 func TestSketch(t *testing.T) {

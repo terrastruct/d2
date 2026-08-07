@@ -4,9 +4,9 @@ import (
 	"slices"
 	"testing"
 
-	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2lsp"
-	"oss.terrastruct.com/util-go/assert"
+	"github.com/d2lang/d2/d2ast"
+	"github.com/d2lang/d2/d2lsp"
+	"github.com/d2lang/util-go/assert"
 )
 
 func TestGetFieldRanges(t *testing.T) {

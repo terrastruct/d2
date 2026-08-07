@@ -1,0 +1,66 @@
+name: npm stage
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to stage, or "nightly" for a dated prerelease
+        required: true
+        type: string
+        default: nightly
+
+permissions:
+  contents: read
+
+concurrency:
+  group: npm-stage
+  cancel-in-progress: false
+
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: ./go.mod
+          cache: true
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Install supported npm and Bun
+        run: |
+          npm install --global npm@12.0.2 bun@1.3.14
+          npm --version
+          bun --version
+
+      - name: Install binaryen
+        run: |
+          BINARYEN_VERSION="version_123"
+          curl -fsSL "https://github.com/WebAssembly/binaryen/releases/download/${BINARYEN_VERSION}/binaryen-${BINARYEN_VERSION}-x86_64-linux.tar.gz" | tar -xz -C "$RUNNER_TEMP"
+          sudo cp "$RUNNER_TEMP/binaryen-${BINARYEN_VERSION}"/bin/* /usr/local/bin/
+          wasm-opt --version
+
+      - name: Build and test package
+        run: |
+          CI_FORCE=1 CI_MAKE_ROOT=0 COLOR=1 ./make.sh js
+          cd d2js/js
+          bun test test/unit
+
+      - name: Stage package for review
+        env:
+          NPM_PUBLISH_MODE: stage
+          NPM_VERSION: ${{ inputs.version }}
+        run: CI_FORCE=1 CI_MAKE_ROOT=0 COLOR=1 ./make.sh js

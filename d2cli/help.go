@@ -9,11 +9,11 @@ import (
 	"path/filepath"
 	"strings"
 
-	"oss.terrastruct.com/util-go/xmain"
+	"github.com/d2lang/util-go/xmain"
 
-	"oss.terrastruct.com/d2/d2plugin"
-	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
-	"oss.terrastruct.com/d2/lib/version"
+	"github.com/d2lang/d2/d2plugin"
+	"github.com/d2lang/d2/d2themes/d2themescatalog"
+	"github.com/d2lang/d2/lib/version"
 )
 
 func help(ms *xmain.State) {
@@ -43,8 +43,8 @@ Subcommands:
 	%[1]s play file.d2 - Opens the file in playground, an online web viewer (https://play.d2lang.com)
   %[1]s validate file.d2  - Validates file.d2
 
-See more docs and the source code at https://oss.terrastruct.com/d2.
-Hosted icons at https://icons.terrastruct.com.
+See more docs and the source code at https://github.com/d2lang/d2.
+Hosted icons at https://icons.d2lang.com.
 Playground runner at https://play.d2lang.com.
 `, filepath.Base(ms.Name), version.Version, ms.Opts.Defaults())
 }
@@ -139,7 +139,7 @@ func layoutNotFound(ctx context.Context, ps []d2plugin.Plugin, layout string) er
 	return xmain.UsageErrorf(`D2_LAYOUT "%s" is not bundled and could not be found in your $PATH.
 The available options are: %s. For details on each option, run "d2 layout".
 
-For more information on setup, please visit https://github.com/terrastruct/d2.`,
+For more information on setup, please visit https://github.com/d2lang/d2.`,
 		layout, strings.Join(names, ", "))
 }
 

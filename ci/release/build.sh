@@ -44,15 +44,6 @@ Flags:
 --uninstall
   Ensure a release using --host-only and uninstall it.
 
---push-docker
-  Push the built docker image. Unfortunately dockerx requires the multi-arch images be
-  pushed if required in the same invocation as build. dockerx cannot load multi-arch
-  images into the daemon for push later. It's not slow though to use --push-docker after
-  building the image as nearly all artifacts are cached.
-  Automatically set if called from release.sh
-
---latest-docker
-  Mark the built image with the latest tag. Automatically set if called from release.sh
 EOF
 }
 
@@ -97,14 +88,6 @@ main() {
         UNINSTALL=1
         HOST_ONLY=1
         ;;
-      push-docker)
-        flag_noarg && shift "$FLAGSHIFT"
-        PUSH_DOCKER=1
-        ;;
-      latest-docker)
-        flag_noarg && shift "$FLAGSHIFT"
-        LATEST_DOCKER=1
-        ;;
       *)
         flag_errusage "unrecognized flag $FLAGRAW"
         ;;
@@ -141,7 +124,6 @@ main() {
   runjob windows/arm64 'OS=windows ARCH=arm64 build' &
   waitjobs
 
-  runjob linux/docker build_docker &
   runjob windows/amd64/msi 'OS=windows ARCH=amd64 build_windows_msi' &
   waitjobs
 }
@@ -167,29 +149,6 @@ build_local() {
     ARCH \
     ARCHIVE
   sh_c ./ci/release/_build.sh
-}
-
-build_docker() {
-  if [ -n "${LOCAL-}" ]; then
-    sh_c ./ci/release/docker/build.sh \
-      --version="$VERSION" \
-      ${PUSH_DOCKER:+--push} \
-      ${LATEST_DOCKER:+--latest}
-    return 0
-  fi
-
-  sh_c lockfile_ssh "$CI_D2_LINUX_ARM64" .d2-build-lock
-  sh_c gitsync "$CI_D2_LINUX_ARM64" src/d2
-  sh_c rsync --archive --human-readable \
-    "$BUILD_DIR/d2-$VERSION"-linux-*.tar.gz \
-    "$CI_D2_LINUX_ARM64:src/d2/$BUILD_DIR/"
-  sh_c ssh "$CI_D2_LINUX_ARM64" \
-    "D2_DOCKER_IMAGE=${D2_DOCKER_IMAGE-}" \
-    "RELEASE=${RELEASE-}" \
-    ./src/d2/ci/release/docker/build.sh \
-    --version="$VERSION" \
-    ${PUSH_DOCKER:+--push} \
-    ${LATEST_DOCKER:+--latest}
 }
 
 build_windows_msi() {

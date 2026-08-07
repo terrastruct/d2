@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"oss.terrastruct.com/d2/d2ast"
+	"github.com/d2lang/d2/d2ast"
 )
 
 // TODO: edges with shared path should be fmted as <rel>.(x -> y)

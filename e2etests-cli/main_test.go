@@ -15,14 +15,15 @@ import (
 
 	"github.com/coder/websocket"
 
-	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
-	"oss.terrastruct.com/util-go/xmain"
-	"oss.terrastruct.com/util-go/xos"
+	"github.com/d2lang/util-go/assert"
+	"github.com/d2lang/util-go/diff"
+	"github.com/d2lang/util-go/xmain"
+	"github.com/d2lang/util-go/xos"
 
-	"oss.terrastruct.com/d2/d2cli"
-	"oss.terrastruct.com/d2/lib/pptx"
-	"oss.terrastruct.com/d2/lib/xgif"
+	"github.com/d2lang/d2/d2cli"
+	"github.com/d2lang/d2/lib/compression"
+	"github.com/d2lang/d2/lib/pptx"
+	"github.com/d2lang/d2/lib/xgif"
 )
 
 func TestCLI_E2E(t *testing.T) {
@@ -1085,6 +1086,7 @@ vars: {
 				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
 				assert.Success(t, err)
 				svg := readFile(t, dir, "hello-world.svg")
+				svg = compression.UnzipEmbeddedSVGImages(svg)
 				assert.Testdata(t, ".svg", svg)
 			},
 		},

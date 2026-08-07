@@ -5,10 +5,10 @@ import (
 	"sort"
 	"strings"
 
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/label"
-	"oss.terrastruct.com/d2/lib/shape"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/label"
+	"github.com/d2lang/d2/lib/shape"
 )
 
 const MIN_SEGMENT_LEN = 10

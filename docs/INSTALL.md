@@ -109,7 +109,7 @@ Adjust VERSION, OS, and ARCH as needed.
 
 ```sh
 VERSION=v0.0.13 OS=macos ARCH=amd64 curl -fsSLO \
-    "https://github.com/terrastruct/d2/releases/download/$VERSION/d2-$VERSION-$OS-$ARCH.tar.gz" \
+    "https://github.com/d2lang/d2/releases/download/$VERSION/d2-$VERSION-$OS-$ARCH.tar.gz" \
     && tar -xzf "d2-$VERSION-$OS-$ARCH.tar.gz" \
     && make -sC "d2-$VERSION" install
 ```
@@ -156,7 +156,7 @@ know where the release directory is for easy uninstall.
 You can always install from source:
 
 ```sh
-go install oss.terrastruct.com/d2@latest
+go install github.com/d2lang/d2@latest
 ```
 
 You need at least Go v1.20
@@ -180,7 +180,7 @@ Remember, you need at least Go v1.20
 
 ## Windows
 
-We have prebuilt [releases](https://github.com/terrastruct/d2/releases) of d2 available for Windows via `.msi` installers. The installer
+We have prebuilt [releases](https://github.com/d2lang/d2/releases) of d2 available for Windows via `.msi` installers. The installer
 will add the `d2` binary to your `$PATH` so that you can execute `d2` in `cmd.exe` or
 `pwsh.exe`.
 
@@ -222,14 +222,14 @@ scoop install main/d2
 ```
 
 #### Chocolatey
-[![chocolatey/d2_badge](https://img.shields.io/chocolatey/v/d2)]([https://chocolatey.org/](https://community.chocolatey.org/packages/d2/0.6.6))
+[![chocolatey/d2_badge](https://img.shields.io/chocolatey/v/d2)](https://community.chocolatey.org/packages/d2)
 ```sh
 choco install d2
 ```
 
 ## Docker
 
-https://hub.docker.com/repository/docker/terrastruct/d2
+https://hub.docker.com/r/terrastruct/d2
 
 We publish `amd64` and `arm64` images based on `debian:latest` for each release.
 

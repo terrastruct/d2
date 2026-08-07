@@ -11,8 +11,8 @@ import (
 	"github.com/golang/freetype/truetype"
 	"github.com/rivo/uniseg"
 
-	"oss.terrastruct.com/d2/d2renderers/d2fonts"
-	"oss.terrastruct.com/d2/lib/geo"
+	"github.com/d2lang/d2/d2renderers/d2fonts"
+	"github.com/d2lang/d2/lib/geo"
 )
 
 const TAB_SIZE = 4

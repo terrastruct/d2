@@ -11,16 +11,16 @@ import (
 
 	tassert "github.com/stretchr/testify/assert"
 
-	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
+	"github.com/d2lang/util-go/assert"
+	"github.com/d2lang/util-go/diff"
 
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
-	"oss.terrastruct.com/d2/d2lib"
-	"oss.terrastruct.com/d2/d2renderers/d2svg"
-	"oss.terrastruct.com/d2/d2renderers/d2svg/appendix"
-	"oss.terrastruct.com/d2/lib/log"
-	"oss.terrastruct.com/d2/lib/textmeasure"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2layouts/d2dagrelayout"
+	"github.com/d2lang/d2/d2lib"
+	"github.com/d2lang/d2/d2renderers/d2svg"
+	"github.com/d2lang/d2/d2renderers/d2svg/appendix"
+	"github.com/d2lang/d2/lib/log"
+	"github.com/d2lang/d2/lib/textmeasure"
 )
 
 func TestAppendix(t *testing.T) {

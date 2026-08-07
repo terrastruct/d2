@@ -15,7 +15,7 @@ ensure_goos
 ensure_goarch
 sh_c mkdir -p "$HW_BUILD_DIR/bin"
 sh_c GOOS="$GOOS" GOARCH="$GOARCH" CGO_ENABLED=0 go build -trimpath \
-  -ldflags "'-X oss.terrastruct.com/d2/lib/version.Version=$VERSION'" \
+  -ldflags "'-X github.com/d2lang/d2/lib/version.Version=$VERSION'" \
   -o "$HW_BUILD_DIR/bin/d2" .
 
 if [ "$GOOS" = windows ]; then

@@ -1,6 +1,6 @@
 package d2themescatalog
 
-import "oss.terrastruct.com/d2/d2themes"
+import "github.com/d2lang/d2/d2themes"
 
 var GrapeSoda = d2themes.Theme{
 	ID:   6,

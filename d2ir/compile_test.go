@@ -7,13 +7,13 @@ import (
 	"strings"
 	"testing"
 
-	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
-	"oss.terrastruct.com/util-go/mapfs"
+	"github.com/d2lang/util-go/assert"
+	"github.com/d2lang/util-go/diff"
+	"github.com/d2lang/util-go/mapfs"
 
-	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2ir"
-	"oss.terrastruct.com/d2/d2parser"
+	"github.com/d2lang/d2/d2ast"
+	"github.com/d2lang/d2/d2ir"
+	"github.com/d2lang/d2/d2parser"
 )
 
 func TestCompile(t *testing.T) {

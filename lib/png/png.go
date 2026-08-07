@@ -13,10 +13,10 @@ import (
 	exif "github.com/dsoprea/go-exif/v3"
 	exifcommon "github.com/dsoprea/go-exif/v3/common"
 	pngstruct "github.com/dsoprea/go-png-image-structure/v2"
-	"github.com/playwright-community/playwright-go"
+	"github.com/mxschmitt/playwright-go"
 
-	"oss.terrastruct.com/d2/lib/compression"
-	"oss.terrastruct.com/d2/lib/version"
+	"github.com/d2lang/d2/lib/compression"
+	"github.com/d2lang/d2/lib/version"
 )
 
 // ConvertSVG scales the image by 2x
@@ -104,7 +104,7 @@ func InitPlaywrightWithPrompt() (Playwright, error) {
 		return startPlaywright(pw)
 	}
 
-	fmt.Print("D2 needs to install Chromium v130.0.6723.19 to render non-SVG images. Continue? (y/N): ")
+	fmt.Print("D2 needs to install Chromium v149.0.7827.55 to render non-SVG images. Continue? (y/N): ")
 	reader := bufio.NewReader(os.Stdin)
 	response, err := reader.ReadString('\n')
 	if err != nil {

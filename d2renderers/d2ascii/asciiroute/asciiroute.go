@@ -6,10 +6,10 @@ import (
 	"math"
 	"strings"
 
-	"oss.terrastruct.com/d2/d2renderers/d2ascii/asciicanvas"
-	"oss.terrastruct.com/d2/d2renderers/d2ascii/charset"
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/lib/log"
+	"github.com/d2lang/d2/d2renderers/d2ascii/asciicanvas"
+	"github.com/d2lang/d2/d2renderers/d2ascii/charset"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/lib/log"
 )
 
 const (

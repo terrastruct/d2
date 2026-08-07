@@ -1,4 +1,4 @@
-# https://hub.docker.com/repository/docker/terrastruct/d2
+# https://hub.docker.com/r/terrastruct/d2
 FROM ubuntu:latest
 
 ARG TARGETARCH
@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y ca-certificates curl dumb-init sudo
 
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash -s - && \
   apt-get install -y nodejs
-RUN npx playwright@1.52.0 install --with-deps chromium
+RUN npx playwright@1.61.1 install --with-deps chromium
 
 RUN adduser --gecos '' --disabled-password debian \
   && echo "debian ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/nopasswd

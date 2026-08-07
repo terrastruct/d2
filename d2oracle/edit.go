@@ -7,19 +7,19 @@ import (
 	"strings"
 	"unicode"
 
-	"oss.terrastruct.com/util-go/xdefer"
+	"github.com/d2lang/util-go/xdefer"
 
-	"oss.terrastruct.com/util-go/xrand"
+	"github.com/d2lang/util-go/xrand"
 
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/util-go/go2"
 
-	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2compiler"
-	"oss.terrastruct.com/d2/d2format"
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2ir"
-	"oss.terrastruct.com/d2/d2parser"
-	"oss.terrastruct.com/d2/d2target"
+	"github.com/d2lang/d2/d2ast"
+	"github.com/d2lang/d2/d2compiler"
+	"github.com/d2lang/d2/d2format"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2ir"
+	"github.com/d2lang/d2/d2parser"
+	"github.com/d2lang/d2/d2target"
 )
 
 type OutsideScopeError struct{}

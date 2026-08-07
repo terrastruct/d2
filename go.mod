@@ -1,4 +1,4 @@
-module oss.terrastruct.com/d2
+module github.com/d2lang/d2
 
 go 1.25
 
@@ -9,6 +9,7 @@ require (
 	github.com/alecthomas/chroma/v2 v2.14.0
 	github.com/andybalholm/brotli v1.2.0
 	github.com/coder/websocket v1.8.12
+	github.com/d2lang/util-go v0.2.0
 	github.com/dop251/goja v0.0.0-20240927123429-241b342198c2
 	github.com/dsoprea/go-exif/v3 v3.0.1
 	github.com/dsoprea/go-png-image-structure/v2 v2.0.0-20210512210324-29b889a6093d
@@ -18,7 +19,7 @@ require (
 	github.com/jung-kurt/gofpdf v1.16.2
 	github.com/lucasb-eyer/go-colorful v1.2.0
 	github.com/mazznoer/csscolorparser v0.1.5
-	github.com/playwright-community/playwright-go v0.5200.0
+	github.com/mxschmitt/playwright-go v0.6100.0
 	github.com/rivo/uniseg v0.4.7
 	github.com/spf13/pflag v1.0.5
 	github.com/stretchr/testify v1.9.0
@@ -30,18 +31,17 @@ require (
 	golang.org/x/text v0.22.0
 	golang.org/x/tools v0.25.0
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da
-	oss.terrastruct.com/util-go v0.0.0-20250213174338-243d8661088a
 )
 
 require (
 	github.com/andybalholm/cascadia v1.3.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/deckarep/golang-set/v2 v2.7.0 // indirect
+	github.com/deckarep/golang-set/v2 v2.8.0 // indirect
 	github.com/dlclark/regexp2 v1.11.4 // indirect
 	github.com/dsoprea/go-logging v0.0.0-20200710184922-b02d349568dd // indirect
 	github.com/dsoprea/go-utility/v2 v2.0.0-20221003172846-a3e1774ef349 // indirect
 	github.com/go-errors/errors v1.5.1 // indirect
-	github.com/go-jose/go-jose/v3 v3.0.4 // indirect
+	github.com/go-jose/go-jose/v3 v3.0.5 // indirect
 	github.com/go-sourcemap/sourcemap v2.1.4+incompatible // indirect
 	github.com/go-stack/stack v1.8.1 // indirect
 	github.com/golang/geo v0.0.0-20230421003525-6adc56603217 // indirect

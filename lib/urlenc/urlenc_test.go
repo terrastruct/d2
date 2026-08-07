@@ -3,7 +3,7 @@ package urlenc
 import (
 	"testing"
 
-	"oss.terrastruct.com/util-go/assert"
+	"github.com/d2lang/util-go/assert"
 )
 
 func TestBasic(t *testing.T) {

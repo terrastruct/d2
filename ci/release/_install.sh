@@ -43,7 +43,7 @@ Flags:
   to install the release archive for your OS, whether it's apt, yum, brew or standalone
   if an unsupported package manager is used.
 
-  To install from source like a dev would, use go install oss.terrastruct.com/d2. There's
+  To install from source like a dev would, use go install github.com/d2lang/d2@latest. There's
   also ./ci/release/build.sh --install to build and install a proper standalone release
   including manpages. The proper release will also ensure d2 --version shows the correct
   version by embedding the commit hash into the binary.
@@ -104,7 +104,7 @@ note: Deleting the unarchived releases will cause --uninstall to stop working.
 You can rerun install.sh to update your version of D2. install.sh will avoid reinstalling
 if the installed version is the latest unless --force is passed.
 
-See https://github.com/terrastruct/d2/blob/master/docs/INSTALL.md#security for
+See https://github.com/d2lang/d2/blob/master/docs/INSTALL.md#security for
 documentation on its security.
 EOF
 }
@@ -166,7 +166,7 @@ main() {
     flag_errusage "no arguments are accepted"
   fi
 
-  REPO=${REPO:-terrastruct/d2}
+  REPO=${REPO:-d2lang/d2}
   ensure_os
   ensure_arch
   ensure_prefix

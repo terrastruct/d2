@@ -35,7 +35,7 @@ import (
 	"unicode/utf16"
 	"unicode/utf8"
 
-	"oss.terrastruct.com/util-go/xdefer"
+	"github.com/d2lang/util-go/xdefer"
 )
 
 // Node is the base interface implemented by all d2 AST nodes.

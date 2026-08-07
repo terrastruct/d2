@@ -4,11 +4,11 @@ import (
 	"context"
 	"math"
 
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/label"
-	"oss.terrastruct.com/d2/lib/shape"
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/label"
+	"github.com/d2lang/d2/lib/shape"
+	"github.com/d2lang/util-go/go2"
 )
 
 const (

@@ -9,9 +9,9 @@ import (
 	"strings"
 	"unicode"
 
-	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2parser"
-	"oss.terrastruct.com/d2/d2target"
+	"github.com/d2lang/d2/d2ast"
+	"github.com/d2lang/d2/d2parser"
+	"github.com/d2lang/d2/d2target"
 )
 
 type CompletionKind int
@@ -429,10 +429,10 @@ func getTooltipCompletions() []CompletionItem {
 func getIconCompletions() []CompletionItem {
 	return []CompletionItem{
 		{
-			Label:      "(URL, e.g. https://icons.terrastruct.com/xyz.svg)",
+			Label:      "(URL, e.g. https://icons.d2lang.com/xyz.svg)",
 			Kind:       KeywordCompletion,
 			Detail:     "icon URL",
-			InsertText: "https://icons.terrastruct.com/essentials%2F073-add.svg",
+			InsertText: "https://icons.d2lang.com/essentials%2F073-add.svg",
 		},
 	}
 }
