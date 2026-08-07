@@ -1,3 +1,4 @@
+// Deprecated: use github.com/d2lang/d2 instead.
 module oss.terrastruct.com/d2
 
 go 1.24
