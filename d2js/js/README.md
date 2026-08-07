@@ -1,6 +1,6 @@
 # D2.js
 
-[![npm version](https://badge.fury.io/js/%40terrastruct%2Fd2.svg)](https://www.npmjs.com/package/@terrastruct/d2)
+[![npm version](https://badge.fury.io/js/%40d2lang%2Fd2.svg)](https://www.npmjs.com/package/@d2lang/d2)
 [![License: MPL-2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://mozilla.org/MPL/2.0/)
 
 D2.js is a JavaScript wrapper around D2, the modern diagram scripting language. It enables running D2 directly in browsers and Node environments through WebAssembly.
@@ -19,17 +19,20 @@ For an example of usage, see [https://play.d2lang.com](https://play.d2lang.com),
 
 ```bash
 # npm
-npm install @terrastruct/d2
+npm install @d2lang/d2
 
 # yarn
-yarn add @terrastruct/d2
+yarn add @d2lang/d2
 
 # pnpm
-pnpm add @terrastruct/d2
+pnpm add @d2lang/d2
 
 # bun
-bun add @terrastruct/d2
+bun add @d2lang/d2
 ```
+
+`@terrastruct/d2` remains available as a compatibility package and receives the same
+releases during the namespace transition. New installations should use `@d2lang/d2`.
 
 ### Nightly
 
@@ -38,7 +41,7 @@ Use the `@nightly` tag to get the version that is built by daily CI on the maste
 For example,
 
 ```bash
-yarn add @terrastruct/d2@nightly
+yarn add @d2lang/d2@nightly
 ```
 
 ## Usage
@@ -49,9 +52,9 @@ D2.js uses webworkers to call a WASM file.
 
 ```javascript
 // Same for Node or browser
-import { D2 } from '@terrastruct/d2';
+import { D2 } from '@d2lang/d2';
 // Or using a CDN
-// import { D2 } from 'https://esm.sh/@terrastruct/d2';
+// import { D2 } from 'https://esm.sh/@d2lang/d2';
 
 const d2 = new D2();
 
@@ -62,7 +65,7 @@ const svg = await d2.render(result.diagram, result.renderOptions);
 Configuring render options (see [CompileOptions](#compileoptions) for all available options):
 
 ```javascript
-import { D2 } from '@terrastruct/d2';
+import { D2 } from '@d2lang/d2';
 
 const d2 = new D2();
 
@@ -77,7 +80,7 @@ const svg = await d2.render(result.diagram, result.renderOptions);
 In order to support [imports](https://d2lang.com/tour/imports), a mapping of D2 file paths to their content can be passed to the compiler.
 
 ```javascript
-import { D2 } from '@terrastruct/d2';
+import { D2 } from '@d2lang/d2';
 
 const d2 = new D2();
 

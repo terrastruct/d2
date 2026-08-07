@@ -8,7 +8,6 @@ on:
         required: true
         type: string
         default: nightly
-
 permissions:
   contents: read
 
@@ -17,12 +16,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  stage:
+  pack:
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    permissions:
-      contents: read
-      id-token: write
     steps:
       - uses: actions/checkout@v6
         with:
@@ -53,14 +50,116 @@ jobs:
           sudo cp "$RUNNER_TEMP/binaryen-${BINARYEN_VERSION}"/bin/* /usr/local/bin/
           wasm-opt --version
 
-      - name: Build and test package
+      - name: Build, test, and pack both package identities
+        env:
+          NPM_PACKAGE_TARGET: both
+          NPM_PACK_DIR: ${{ runner.temp }}/npm-packages
+          NPM_PUBLISH_MODE: pack
+          NPM_VERSION: ${{ inputs.version }}
         run: |
           CI_FORCE=1 CI_MAKE_ROOT=0 COLOR=1 ./make.sh js
           cd d2js/js
           bun test test/unit
 
-      - name: Stage package for review
+      - name: Upload immutable package tarballs
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-packages
+          path: ${{ runner.temp }}/npm-packages
+          if-no-files-found: error
+          compression-level: 0
+
+  stage:
+    name: stage-${{ matrix.package }}
+    needs: pack
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: npm-release
+    permissions:
+      contents: read
+      id-token: write
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - d2lang
+          - terrastruct
+    steps:
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Install supported npm
+        run: |
+          npm install --global npm@12.0.2
+          npm --version
+
+      - name: Download immutable package tarballs
+        uses: actions/download-artifact@v4
+        with:
+          name: npm-packages
+          path: ${{ runner.temp }}/npm-packages
+
+      - name: Verify and stage package for review
         env:
-          NPM_PUBLISH_MODE: stage
-          NPM_VERSION: ${{ inputs.version }}
-        run: CI_FORCE=1 CI_MAKE_ROOT=0 COLOR=1 ./make.sh js
+          PACKAGE_KEY: ${{ matrix.package }}
+        run: |
+          set -euo pipefail
+
+          manifest="$RUNNER_TEMP/npm-packages/manifest.json"
+          case "$PACKAGE_KEY" in
+            d2lang) package_name=@d2lang/d2 ;;
+            terrastruct) package_name=@terrastruct/d2 ;;
+            *)
+              echo "unexpected package key: $PACKAGE_KEY" >&2
+              exit 1
+              ;;
+          esac
+
+          metadata=$(node - "$manifest" "$package_name" <<'NODE'
+          const fs = require('fs');
+          const manifest = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+          const packageName = process.argv[3];
+          const record = manifest.packages && manifest.packages[packageName];
+          if (manifest.schemaVersion !== 1 || !record) {
+            process.exit(1);
+          }
+          process.stdout.write([
+            manifest.version,
+            manifest.tag,
+            record.filename,
+            record.shasum,
+            record.integrity,
+          ].join('\t'));
+          NODE
+          )
+          IFS=$'\t' read -r version tag filename expected_shasum expected_integrity <<<"$metadata"
+          if [[ -z "$version" || -z "$tag" || -z "$filename" ||
+            "$filename" != "${filename##*/}" ]]; then
+            echo "invalid npm package manifest" >&2
+            exit 1
+          fi
+
+          tarball="$RUNNER_TEMP/npm-packages/$filename"
+          test -f "$tarball"
+          node - "$tarball" "$expected_shasum" "$expected_integrity" <<'NODE'
+          const crypto = require('crypto');
+          const fs = require('fs');
+          const bytes = fs.readFileSync(process.argv[2]);
+          const expectedShasum = process.argv[3];
+          const expectedIntegrity = process.argv[4];
+          const shasum = crypto.createHash('sha1').update(bytes).digest('hex');
+          const integrity = `sha512-${crypto.createHash('sha512').update(bytes).digest('base64')}`;
+          if (shasum !== expectedShasum || integrity !== expectedIntegrity) {
+            throw new Error('npm tarball integrity mismatch');
+          }
+          NODE
+          tar -xOzf "$tarball" package/package.json | jq -e \
+            --arg name "$package_name" \
+            --arg version "$version" \
+            '.name == $name and .version == $version and .publishConfig.access == "public"' \
+            >/dev/null
+
+          npm stage publish "$tarball" --tag "$tag"

@@ -1,5 +1,40 @@
 # release
 
+## npm publishing
+
+`@d2lang/d2` is the canonical JavaScript package. `@terrastruct/d2` is published from the
+same built files as a compatibility package during the namespace transition. The
+`npm-stage.yml` workflow stages both package names for review with npm trusted publishing;
+each staged package has its own stage ID and must be reviewed and approved separately. If
+one stage succeeds and the other fails, use GitHub's **Re-run failed jobs** action on the
+same workflow run. That preserves the original commit and reuses the same immutable
+package artifact; do not use **Re-run all jobs** or start a fresh workflow dispatch to
+recover only one identity.
+
+Before staging an official version, bump `d2js/js/package.json` and `package-lock.json` to
+that exact version in a signed commit. Nightly stages derive their prerelease version from
+the checked-in version automatically. `@d2lang/d2` must already exist and both packages
+must separately trust the `d2lang/d2` `npm-stage.yml` workflow for stage-only publishing.
+Each trusted publisher is restricted to the `npm-release` GitHub environment, whose
+deployment branch policy accepts only protected branches. The workflow itself also
+refuses to pack from any ref other than `refs/heads/master`.
+The canonical package was bootstrapped once from the existing `@terrastruct/d2@0.1.33`
+built artifacts because npm does not allow a brand-new package to use staged publishing.
+
+Direct publishing is retained only for local bootstrap or recovery. It requires a
+short-lived `NPM_TOKEN` that can publish every selected package and is not stored in GitHub.
+The script pre-packs and preflights every selected package before publishing; a retry skips
+an existing version only when its registry tarball integrity exactly matches the local
+artifact.
+
+After the workflow finishes, confirm both matrix stage jobs are green and inspect the two
+pending records with `npm stage list` and `npm stage view <stage-id>`. Approve each only
+after their package versions and artifacts from `npm stage download <stage-id>` match.
+Use `npm stage approve <stage-id>` for each identity. If the release is abandoned, reject
+every pending half with
+`npm stage reject <stage-id>` before starting another run. A pending stage reserves its
+package/version, so list pending stages before retrying any failed job.
+
 ## _install.sh
 
 The template for the install script in the root of the d2 repository.
