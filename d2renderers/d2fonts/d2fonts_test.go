@@ -4,9 +4,9 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/d2lang/d2/lib/font"
 	"github.com/d2lang/util-go/assert"
 	"github.com/d2lang/util-go/diff"
-	"oss.terrastruct.com/d2/lib/font"
 )
 
 func TestCutFont(t *testing.T) {

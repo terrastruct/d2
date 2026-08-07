@@ -3,7 +3,7 @@ package textmeasure
 import (
 	"math"
 
-	"oss.terrastruct.com/d2/lib/geo"
+	"github.com/d2lang/d2/lib/geo"
 )
 
 type rect struct {

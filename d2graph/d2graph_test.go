@@ -6,8 +6,8 @@ import (
 
 	"github.com/d2lang/util-go/assert"
 
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2parser"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2parser"
 )
 
 func TestKey(t *testing.T) {

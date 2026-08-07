@@ -136,7 +136,7 @@ to install without executing them.
 Or if you have Go installed you can install from source though you won't get the manpage:
 
 ```sh
-go install oss.terrastruct.com/d2@latest
+go install github.com/d2lang/d2@latest
 ```
 
 You can also install a release from source which will include manpages.

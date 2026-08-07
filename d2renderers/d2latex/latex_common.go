@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/d2lang/d2/lib/jsrunner"
 	"github.com/d2lang/util-go/xdefer"
-	"oss.terrastruct.com/d2/lib/jsrunner"
 )
 
 var pxPerEx = 8

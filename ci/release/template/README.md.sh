@@ -8,7 +8,7 @@ ensure_arch
 cat <<EOF
 # d2
 
-For docs, more installation options and the source code see https://oss.terrastruct.com/d2
+For docs, more installation options and the source code see https://github.com/d2lang/d2
 
 version: $VERSION
 os: $OS

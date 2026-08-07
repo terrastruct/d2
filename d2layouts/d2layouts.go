@@ -8,14 +8,14 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2layouts/d2grid"
+	"github.com/d2lang/d2/d2layouts/d2near"
+	"github.com/d2lang/d2/d2layouts/d2sequence"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/label"
+	"github.com/d2lang/d2/lib/log"
 	"github.com/d2lang/util-go/go2"
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2layouts/d2grid"
-	"oss.terrastruct.com/d2/d2layouts/d2near"
-	"oss.terrastruct.com/d2/d2layouts/d2sequence"
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/label"
-	"oss.terrastruct.com/d2/lib/log"
 )
 
 type DiagramType string

@@ -19,7 +19,7 @@ import (
 
 	"golang.org/x/sync/errgroup"
 
-	d2png "oss.terrastruct.com/d2/lib/png"
+	d2png "github.com/d2lang/d2/lib/png"
 
 	"github.com/ericpauley/go-quantize/quantize"
 	"github.com/mxschmitt/playwright-go"

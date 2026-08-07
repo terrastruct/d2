@@ -3,8 +3,8 @@
 package d2themes
 
 import (
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/lib/color"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/lib/color"
 )
 
 type Theme struct {

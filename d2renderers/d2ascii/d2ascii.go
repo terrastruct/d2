@@ -7,13 +7,13 @@ import (
 	"math"
 	"os"
 
-	"oss.terrastruct.com/d2/d2renderers/d2ascii/asciicanvas"
-	"oss.terrastruct.com/d2/d2renderers/d2ascii/asciiroute"
-	"oss.terrastruct.com/d2/d2renderers/d2ascii/asciishapes"
-	"oss.terrastruct.com/d2/d2renderers/d2ascii/charset"
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/log"
+	"github.com/d2lang/d2/d2renderers/d2ascii/asciicanvas"
+	"github.com/d2lang/d2/d2renderers/d2ascii/asciiroute"
+	"github.com/d2lang/d2/d2renderers/d2ascii/asciishapes"
+	"github.com/d2lang/d2/d2renderers/d2ascii/charset"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/log"
 )
 
 const (

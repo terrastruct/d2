@@ -7,16 +7,16 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2compiler"
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2layouts"
-	"oss.terrastruct.com/d2/d2layouts/d2sequence"
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/label"
-	"oss.terrastruct.com/d2/lib/log"
-	"oss.terrastruct.com/d2/lib/shape"
+	"github.com/d2lang/d2/d2ast"
+	"github.com/d2lang/d2/d2compiler"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2layouts"
+	"github.com/d2lang/d2/d2layouts/d2sequence"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/label"
+	"github.com/d2lang/d2/lib/log"
+	"github.com/d2lang/d2/lib/shape"
 )
 
 func TestBasicSequenceDiagram(t *testing.T) {

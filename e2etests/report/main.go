@@ -14,8 +14,8 @@ import (
 	"text/template"
 	"time"
 
-	"oss.terrastruct.com/d2/lib/log"
-	timelib "oss.terrastruct.com/d2/lib/time"
+	"github.com/d2lang/d2/lib/log"
+	timelib "github.com/d2lang/d2/lib/time"
 )
 
 //go:embed template.html

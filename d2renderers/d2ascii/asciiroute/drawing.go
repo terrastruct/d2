@@ -6,9 +6,9 @@ import (
 	"log/slog"
 	"math"
 
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/log"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/log"
 )
 
 func drawSegmentBetweenPoints(ctx context.Context, rd RouteDrawer, start, end *geo.Point, segmentIndex int, conn d2target.Connection,

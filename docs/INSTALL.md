@@ -156,7 +156,7 @@ know where the release directory is for easy uninstall.
 You can always install from source:
 
 ```sh
-go install oss.terrastruct.com/d2@latest
+go install github.com/d2lang/d2@latest
 ```
 
 You need at least Go v1.20

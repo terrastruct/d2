@@ -1,4 +1,4 @@
-module oss.terrastruct.com/d2
+module github.com/d2lang/d2
 
 go 1.25
 

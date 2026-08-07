@@ -3,7 +3,7 @@ package d2svg
 import (
 	"testing"
 
-	"oss.terrastruct.com/d2/d2target"
+	"github.com/d2lang/d2/d2target"
 )
 
 func TestSortObjects(t *testing.T) {

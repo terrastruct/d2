@@ -3,7 +3,7 @@ package d2plugin
 import (
 	"fmt"
 
-	"oss.terrastruct.com/d2/d2graph"
+	"github.com/d2lang/d2/d2graph"
 )
 
 type PluginFeature string

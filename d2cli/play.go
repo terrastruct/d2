@@ -6,9 +6,9 @@ import (
 	"io"
 	"os"
 
+	"github.com/d2lang/d2/lib/urlenc"
 	"github.com/d2lang/util-go/xbrowser"
 	"github.com/d2lang/util-go/xmain"
-	"oss.terrastruct.com/d2/lib/urlenc"
 )
 
 func playCmd(ctx context.Context, ms *xmain.State) error {

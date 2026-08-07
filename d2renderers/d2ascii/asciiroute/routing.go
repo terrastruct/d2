@@ -6,8 +6,8 @@ import (
 	"log/slog"
 	"math"
 
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/log"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/log"
 )
 
 func processRoute(ctx context.Context, rd RouteDrawer, routes []*geo.Point, fromBoundary, toBoundary Boundary) []*geo.Point {

@@ -3,8 +3,8 @@ package d2grid
 import (
 	"strconv"
 
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/lib/geo"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/lib/geo"
 )
 
 type gridDiagram struct {
