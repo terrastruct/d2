@@ -229,7 +229,9 @@ choco install d2
 
 ## Docker
 
-https://hub.docker.com/r/terrastruct/d2
+The canonical image is [`d2lang/d2`](https://hub.docker.com/r/d2lang/d2).
+`terrastruct/d2` remains available as a maintained compatibility mirror for existing
+installations, but new usage should use `d2lang/d2`.
 
 We publish `amd64` and `arm64` images based on `debian:latest` for each release.
 
@@ -238,7 +240,7 @@ Example usage:
 ```sh
 echo 'x -> y' >helloworld.d2
 docker run --rm -it -u "$(id -u):$(id -g)" -v "$PWD:/home/debian/src" \
-  -p 127.0.0.1:8080:8080 terrastruct/d2:v0.1.2 --watch helloworld.d2
+  -p 127.0.0.1:8080:8080 d2lang/d2:v0.1.2 --watch helloworld.d2
 # Visit http://127.0.0.1:8080
 ```
 

@@ -1,4 +1,4 @@
-# https://hub.docker.com/r/terrastruct/d2
+# https://hub.docker.com/r/d2lang/d2
 FROM ubuntu:latest
 
 ARG TARGETARCH
