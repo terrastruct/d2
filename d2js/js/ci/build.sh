@@ -9,7 +9,7 @@ if [ -n "${NPM_VERSION:-}" ]; then
 else
   JS_VERSION=$(awk -F'"' '/"version"/ {print $4}' ./d2js/js/package.json)
 fi
-sh_c "GOOS=js GOARCH=wasm go build -ldflags='-s -w -X oss.terrastruct.com/d2/d2js/d2wasm.jsVersion=${JS_VERSION}' -trimpath -o main.wasm ./d2js"
+sh_c "GOOS=js GOARCH=wasm go build -ldflags='-s -w -X github.com/d2lang/d2/d2js/d2wasm.jsVersion=${JS_VERSION}' -trimpath -o main.wasm ./d2js"
 
 if [ -n "${NPM_VERSION:-}" ]; then
   # Optimize with wasm-opt if available

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"oss.terrastruct.com/d2/d2themes"
+	"github.com/d2lang/d2/d2themes"
 )
 
 var LightCatalog = []d2themes.Theme{

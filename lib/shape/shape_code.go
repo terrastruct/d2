@@ -1,8 +1,8 @@
 package shape
 
 import (
+	"github.com/d2lang/d2/lib/geo"
 	"github.com/d2lang/util-go/go2"
-	"oss.terrastruct.com/d2/lib/geo"
 )
 
 type shapeCode struct {

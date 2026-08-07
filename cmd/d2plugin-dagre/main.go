@@ -5,7 +5,7 @@ package main
 import (
 	"github.com/d2lang/util-go/xmain"
 
-	"oss.terrastruct.com/d2/d2plugin"
+	"github.com/d2lang/d2/d2plugin"
 )
 
 func main() {

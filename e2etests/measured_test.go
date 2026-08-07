@@ -4,7 +4,7 @@ import (
 	_ "embed"
 	"testing"
 
-	"oss.terrastruct.com/d2/d2target"
+	"github.com/d2lang/d2/d2target"
 )
 
 // testMeasured exercises the code paths that provide pre-measured texts

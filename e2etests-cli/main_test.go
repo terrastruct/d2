@@ -20,10 +20,10 @@ import (
 	"github.com/d2lang/util-go/xmain"
 	"github.com/d2lang/util-go/xos"
 
-	"oss.terrastruct.com/d2/d2cli"
-	"oss.terrastruct.com/d2/lib/compression"
-	"oss.terrastruct.com/d2/lib/pptx"
-	"oss.terrastruct.com/d2/lib/xgif"
+	"github.com/d2lang/d2/d2cli"
+	"github.com/d2lang/d2/lib/compression"
+	"github.com/d2lang/d2/lib/pptx"
+	"github.com/d2lang/d2/lib/xgif"
 )
 
 func TestCLI_E2E(t *testing.T) {

@@ -10,13 +10,13 @@ import (
 
 	"github.com/d2lang/util-go/go2"
 
-	"oss.terrastruct.com/d2/d2renderers/d2fonts"
-	"oss.terrastruct.com/d2/lib/color"
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/label"
-	"oss.terrastruct.com/d2/lib/shape"
-	"oss.terrastruct.com/d2/lib/svg"
-	"oss.terrastruct.com/d2/lib/textmeasure"
+	"github.com/d2lang/d2/d2renderers/d2fonts"
+	"github.com/d2lang/d2/lib/color"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/label"
+	"github.com/d2lang/d2/lib/shape"
+	"github.com/d2lang/d2/lib/svg"
+	"github.com/d2lang/d2/lib/textmeasure"
 )
 
 const (

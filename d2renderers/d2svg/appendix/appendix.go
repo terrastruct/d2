@@ -11,15 +11,15 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2renderers/d2fonts"
+	"github.com/d2lang/d2/d2renderers/d2svg"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/d2themes"
+	"github.com/d2lang/d2/lib/color"
+	svglib "github.com/d2lang/d2/lib/svg"
+	"github.com/d2lang/d2/lib/textmeasure"
 	"github.com/d2lang/util-go/go2"
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2renderers/d2fonts"
-	"oss.terrastruct.com/d2/d2renderers/d2svg"
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/d2themes"
-	"oss.terrastruct.com/d2/lib/color"
-	svglib "oss.terrastruct.com/d2/lib/svg"
-	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
 //        ┌──────────────┐

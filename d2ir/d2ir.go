@@ -9,10 +9,10 @@ import (
 
 	"github.com/d2lang/util-go/go2"
 
-	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2format"
-	"oss.terrastruct.com/d2/d2parser"
-	"oss.terrastruct.com/d2/d2target"
+	"github.com/d2lang/d2/d2ast"
+	"github.com/d2lang/d2/d2format"
+	"github.com/d2lang/d2/d2parser"
+	"github.com/d2lang/d2/d2target"
 )
 
 // Most errors returned by a node should be created with d2parser.Errorf

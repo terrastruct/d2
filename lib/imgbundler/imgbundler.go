@@ -20,8 +20,8 @@ import (
 
 	"golang.org/x/xerrors"
 
+	"github.com/d2lang/d2/lib/simplelog"
 	"github.com/d2lang/util-go/xdefer"
-	"oss.terrastruct.com/d2/lib/simplelog"
 )
 
 var imgCache sync.Map

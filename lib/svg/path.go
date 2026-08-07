@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"oss.terrastruct.com/d2/lib/geo"
+	"github.com/d2lang/d2/lib/geo"
 )
 
 type SvgPathContext struct {

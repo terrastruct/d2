@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"oss.terrastruct.com/d2/lib/env"
+	"github.com/d2lang/d2/lib/env"
 )
 
 func HumanDate(t time.Time) string {

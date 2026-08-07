@@ -13,11 +13,11 @@ import (
 	"github.com/d2lang/util-go/mapfs"
 	"github.com/d2lang/util-go/xjson"
 
-	"oss.terrastruct.com/d2/d2compiler"
-	"oss.terrastruct.com/d2/d2format"
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2oracle"
-	"oss.terrastruct.com/d2/d2target"
+	"github.com/d2lang/d2/d2compiler"
+	"github.com/d2lang/d2/d2format"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2oracle"
+	"github.com/d2lang/d2/d2target"
 )
 
 // TODO: make assertions less specific

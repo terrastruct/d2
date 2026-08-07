@@ -7,12 +7,12 @@ import (
 
 	"github.com/jung-kurt/gofpdf"
 
-	"oss.terrastruct.com/d2/d2parser"
-	"oss.terrastruct.com/d2/d2renderers/d2fonts"
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/d2themes"
-	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
-	"oss.terrastruct.com/d2/lib/color"
+	"github.com/d2lang/d2/d2parser"
+	"github.com/d2lang/d2/d2renderers/d2fonts"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/d2themes"
+	"github.com/d2lang/d2/d2themes/d2themescatalog"
+	"github.com/d2lang/d2/lib/color"
 )
 
 const TITLE_SEP = "  /  "

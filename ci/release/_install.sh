@@ -43,7 +43,7 @@ Flags:
   to install the release archive for your OS, whether it's apt, yum, brew or standalone
   if an unsupported package manager is used.
 
-  To install from source like a dev would, use go install oss.terrastruct.com/d2. There's
+  To install from source like a dev would, use go install github.com/d2lang/d2. There's
   also ./ci/release/build.sh --install to build and install a proper standalone release
   including manpages. The proper release will also ensure d2 --version shows the correct
   version by embedding the commit hash into the binary.

@@ -6,10 +6,10 @@ import (
 	"math"
 	"strings"
 
-	"oss.terrastruct.com/d2/d2renderers/d2sketch"
-	"oss.terrastruct.com/d2/d2renderers/d2svg"
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/lib/version"
+	"github.com/d2lang/d2/d2renderers/d2sketch"
+	"github.com/d2lang/d2/d2renderers/d2svg"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/lib/version"
 )
 
 var transitionDurationMS = 1

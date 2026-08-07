@@ -12,12 +12,12 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"oss.terrastruct.com/d2/d2chaos"
-	"oss.terrastruct.com/d2/d2compiler"
-	"oss.terrastruct.com/d2/d2exporter"
-	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
-	"oss.terrastruct.com/d2/lib/log"
-	"oss.terrastruct.com/d2/lib/textmeasure"
+	"github.com/d2lang/d2/d2chaos"
+	"github.com/d2lang/d2/d2compiler"
+	"github.com/d2lang/d2/d2exporter"
+	"github.com/d2lang/d2/d2layouts/d2dagrelayout"
+	"github.com/d2lang/d2/lib/log"
+	"github.com/d2lang/d2/lib/textmeasure"
 )
 
 // usage: D2_CHAOS_MAXI=100 D2_CHAOS_N=100 ./ci/test.sh ./d2chaos

@@ -4,13 +4,13 @@ import (
 	"context"
 	"fmt"
 
-	"oss.terrastruct.com/d2/d2format"
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
-	"oss.terrastruct.com/d2/d2lib"
-	"oss.terrastruct.com/d2/d2oracle"
-	"oss.terrastruct.com/d2/lib/log"
-	"oss.terrastruct.com/d2/lib/textmeasure"
+	"github.com/d2lang/d2/d2format"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2layouts/d2dagrelayout"
+	"github.com/d2lang/d2/d2lib"
+	"github.com/d2lang/d2/d2oracle"
+	"github.com/d2lang/d2/lib/log"
+	"github.com/d2lang/d2/lib/textmeasure"
 )
 
 // Remember to add if err != nil checks in production.

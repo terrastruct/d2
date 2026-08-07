@@ -5,12 +5,12 @@ import (
 	"html"
 	"io"
 
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/d2themes"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/label"
+	"github.com/d2lang/d2/lib/svg"
 	"github.com/d2lang/util-go/go2"
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/d2themes"
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/label"
-	"oss.terrastruct.com/d2/lib/svg"
 )
 
 // this func helps define a clipPath for shape class and sql_table to draw border-radius

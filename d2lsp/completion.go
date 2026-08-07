@@ -9,9 +9,9 @@ import (
 	"strings"
 	"unicode"
 
-	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2parser"
-	"oss.terrastruct.com/d2/d2target"
+	"github.com/d2lang/d2/d2ast"
+	"github.com/d2lang/d2/d2parser"
+	"github.com/d2lang/d2/d2target"
 )
 
 type CompletionKind int

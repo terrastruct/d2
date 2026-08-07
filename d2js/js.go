@@ -5,7 +5,7 @@ package main
 import (
 	"syscall/js"
 
-	"oss.terrastruct.com/d2/d2js/d2wasm"
+	"github.com/d2lang/d2/d2js/d2wasm"
 )
 
 func main() {

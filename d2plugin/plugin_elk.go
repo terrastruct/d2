@@ -7,9 +7,9 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2layouts/d2elklayout"
 	"github.com/d2lang/util-go/xmain"
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2layouts/d2elklayout"
 )
 
 var ELKPlugin = elkPlugin{}
