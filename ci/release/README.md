@@ -88,8 +88,13 @@ runners, verifies the images, and publishes only
 Dispatch the workflow from the protected `master` branch. The version input must name a
 published, non-draft GitHub release with both Linux archives; `v0.7.1` is the default
 continuity fixture. The workflow removes both test tags after verification. If Docker Hub
-rejects the cleanup request, the workflow emits a warning identifying the two tags to
-delete manually.
+rejects either cleanup request, the cleanup job fails instead of silently leaving a test
+tag behind. Because collaborators on personal Docker Hub repositories cannot delete tags,
+the `docker-release` environment must also provide two owner-scoped secrets with Read,
+Write, Delete permission: `DOCKERHUB_D2LANG_DELETE_TOKEN` from the `d2lang` Docker ID and
+`DOCKERHUB_TERRASTRUCT_DELETE_TOKEN` from the `terrastruct` Docker ID. Cleanup is restricted
+to the exact `d2lang/d2` and `terrastruct/d2` test tags for the current workflow run and
+verifies that each tag is absent after deletion.
 
 The `v0.7.1` fixture embeds playwright-go v0.4702.0, whose original driver CDN no longer
 serves the required ZIP files. For that fixture only, the workflow reconstructs the same

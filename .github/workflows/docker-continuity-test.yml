@@ -485,68 +485,107 @@ jobs:
             echo "- \`$LEGACY_DOCKER_IMAGE:$STAGE_TAG\`"
             echo "- digest: \`$primary_digest\`"
             echo
-            echo "The ephemeral tags are removed by the cleanup step when the Docker Hub API accepts the configured credentials."
+            echo "The cleanup step removes both ephemeral tags with their namespace-owner credentials."
           } >>"$GITHUB_STEP_SUMMARY"
 
       - name: Delete both continuity-test tags
         if: always()
         env:
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          DOCKERHUB_D2LANG_DELETE_TOKEN: ${{ secrets.DOCKERHUB_D2LANG_DELETE_TOKEN }}
+          DOCKERHUB_TERRASTRUCT_DELETE_TOKEN: ${{ secrets.DOCKERHUB_TERRASTRUCT_DELETE_TOKEN }}
         run: |
-          set -u
+          set -uo pipefail
 
           if [[ "$PRIMARY_DOCKER_IMAGE" != d2lang/d2 ||
             "$LEGACY_DOCKER_IMAGE" != terrastruct/d2 ||
             ! "$STAGE_TAG" =~ ^continuity-test-[0-9]+-[0-9]+$ ]]; then
-            echo "::warning::Refusing to delete unexpected Docker continuity targets."
-            exit 0
+            echo "::error::Refusing to delete unexpected Docker continuity targets."
+            exit 1
           fi
 
-          if ! auth_response=$(jq -nc \
-            --arg identifier "$DOCKERHUB_USERNAME" \
-            --arg secret "$DOCKERHUB_TOKEN" \
-            '{identifier: $identifier, secret: $secret}' | \
-            curl -fsS --retry 2 --retry-all-errors \
-              -H 'Content-Type: application/json' \
-              --data-binary @- \
-              https://hub.docker.com/v2/auth/token); then
-            echo "::warning::Docker Hub API authentication is unavailable; remove both $STAGE_TAG tags manually."
-            exit 0
-          fi
-          if ! access_token=$(jq -er '.access_token' <<<"$auth_response"); then
-            echo "::warning::Docker Hub API did not return an access token; remove both $STAGE_TAG tags manually."
-            exit 0
-          fi
-          echo "::add-mask::$access_token"
+          delete_tag() {
+            local image=$1
+            local username=$2
+            local delete_token=$3
+            local namespace repository response auth_response access_token http_code check_code
 
-          for image in "$PRIMARY_DOCKER_IMAGE" "$LEGACY_DOCKER_IMAGE"; do
+            if [[ -z "$delete_token" ]]; then
+              echo "::error::The owner-scoped delete token for $image is not configured."
+              return 1
+            fi
+
             namespace=${image%%/*}
             repository=${image#*/}
+            if [[ "$namespace" != "$username" || "$repository" != d2 ]]; then
+              echo "::error::Refusing mismatched Docker cleanup target $image for $username."
+              return 1
+            fi
+
+            if ! auth_response=$(jq -nc \
+              --arg identifier "$username" \
+              --arg secret "$delete_token" \
+              '{identifier: $identifier, secret: $secret}' | \
+              curl -fsS --retry 2 --retry-all-errors \
+                -H 'Content-Type: application/json' \
+                --data-binary @- \
+                https://hub.docker.com/v2/auth/token); then
+              echo "::error::Docker Hub API authentication failed for $username."
+              return 1
+            fi
+            if ! access_token=$(jq -er '.access_token' <<<"$auth_response"); then
+              echo "::error::Docker Hub API did not return an access token for $username."
+              return 1
+            fi
+            echo "::add-mask::$access_token"
+
             response="$RUNNER_TEMP/delete-${namespace}-${repository}.json"
-            if ! status=$(curl -sS --retry 2 --retry-all-errors \
+            if ! http_code=$(curl -sS --retry 2 --retry-all-errors \
               -o "$response" \
               -w '%{http_code}' \
               --request DELETE \
               -H "Authorization: Bearer $access_token" \
               "https://hub.docker.com/v2/namespaces/$namespace/repositories/$repository/tags/$STAGE_TAG"); then
-              echo "::warning::Docker Hub cleanup request failed for $image:$STAGE_TAG."
-              continue
+              echo "::error::Docker Hub cleanup request failed for $image:$STAGE_TAG."
+              return 1
             fi
-            case "$status" in
+            case "$http_code" in
               202|204)
                 echo "Deleted $image:$STAGE_TAG."
                 ;;
               404)
                 echo "$image:$STAGE_TAG was already absent."
-                ;;
-              401|403|405)
-                echo "::warning::Docker Hub API cleanup is not permitted for $image:$STAGE_TAG (HTTP $status); remove it manually."
+                return 0
                 ;;
               *)
-                echo "::warning::Docker Hub API cleanup returned HTTP $status for $image:$STAGE_TAG; remove it manually."
+                echo "::error::Docker Hub API cleanup returned HTTP $http_code for $image:$STAGE_TAG."
+                return 1
                 ;;
             esac
-          done
+
+            for _ in 1 2 3 4 5; do
+              check_code=$(curl -sS --retry 2 --retry-all-errors \
+                -o /dev/null \
+                -w '%{http_code}' \
+                --head \
+                -H "Authorization: Bearer $access_token" \
+                "https://hub.docker.com/v2/namespaces/$namespace/repositories/$repository/tags/$STAGE_TAG") || return 1
+              if [[ "$check_code" == 404 ]]; then
+                echo "Verified $image:$STAGE_TAG is absent."
+                return 0
+              fi
+              sleep 2
+            done
+
+            echo "::error::$image:$STAGE_TAG still exists after Docker Hub accepted the delete request."
+            return 1
+          }
+
+          cleanup_failed=0
+          delete_tag "$PRIMARY_DOCKER_IMAGE" d2lang \
+            "$DOCKERHUB_D2LANG_DELETE_TOKEN" || cleanup_failed=1
+          delete_tag "$LEGACY_DOCKER_IMAGE" terrastruct \
+            "$DOCKERHUB_TERRASTRUCT_DELETE_TOKEN" || cleanup_failed=1
+          exit "$cleanup_failed"
 
       - name: Clean up Docker credentials
         if: always()
