@@ -9,9 +9,9 @@ import (
 
 	tassert "github.com/stretchr/testify/assert"
 
-	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/util-go/assert"
+	"github.com/d2lang/util-go/diff"
+	"github.com/d2lang/util-go/go2"
 
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2exporter"

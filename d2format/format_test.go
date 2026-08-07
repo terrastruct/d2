@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"oss.terrastruct.com/util-go/assert"
+	"github.com/d2lang/util-go/assert"
 
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2parser"

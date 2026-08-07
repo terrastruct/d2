@@ -14,9 +14,9 @@ import (
 
 	tassert "github.com/stretchr/testify/assert"
 
+	"github.com/d2lang/util-go/go2"
 	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/simplelog"
-	"oss.terrastruct.com/util-go/go2"
 )
 
 //go:embed test_png.png

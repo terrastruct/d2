@@ -21,6 +21,7 @@ import (
 	"github.com/alecthomas/chroma/v2/lexers"
 	"github.com/alecthomas/chroma/v2/styles"
 
+	"github.com/d2lang/util-go/go2"
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
@@ -37,7 +38,6 @@ import (
 	"oss.terrastruct.com/d2/lib/svg"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 	"oss.terrastruct.com/d2/lib/version"
-	"oss.terrastruct.com/util-go/go2"
 )
 
 const (

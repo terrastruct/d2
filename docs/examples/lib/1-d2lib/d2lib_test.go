@@ -4,6 +4,8 @@ import (
 	"context"
 	"testing"
 
+	"github.com/d2lang/util-go/assert"
+	"github.com/d2lang/util-go/go2"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
 	"oss.terrastruct.com/d2/d2lib"
@@ -11,8 +13,6 @@ import (
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/textmeasure"
-	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/go2"
 )
 
 func TestMain_(t *testing.T) {

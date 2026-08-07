@@ -15,7 +15,7 @@ import (
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/util-go/go2"
 
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2format"

@@ -3,8 +3,8 @@ package shape
 import (
 	"math"
 
+	"github.com/d2lang/util-go/go2"
 	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/util-go/go2"
 )
 
 type shapeRealSquare struct {

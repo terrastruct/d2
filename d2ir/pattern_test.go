@@ -3,7 +3,7 @@ package d2ir_test
 import (
 	"testing"
 
-	"oss.terrastruct.com/util-go/assert"
+	"github.com/d2lang/util-go/assert"
 )
 
 func testCompilePatterns(t *testing.T) {

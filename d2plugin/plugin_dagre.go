@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"sync"
 
+	"github.com/d2lang/util-go/xmain"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
-	"oss.terrastruct.com/util-go/xmain"
 )
 
 var DagrePlugin = dagrePlugin{}

@@ -14,9 +14,9 @@ import (
 	"strconv"
 	"strings"
 
-	"oss.terrastruct.com/util-go/xdefer"
+	"github.com/d2lang/util-go/xdefer"
 
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/util-go/go2"
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2target"

@@ -9,6 +9,7 @@ import (
 
 	_ "embed"
 
+	"github.com/d2lang/util-go/go2"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/lib/color"
@@ -16,7 +17,6 @@ import (
 	"oss.terrastruct.com/d2/lib/jsrunner"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/svg"
-	"oss.terrastruct.com/util-go/go2"
 )
 
 //go:embed rough.js

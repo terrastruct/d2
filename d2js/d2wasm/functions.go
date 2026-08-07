@@ -9,6 +9,7 @@ import (
 	"strings"
 	"syscall/js"
 
+	"github.com/d2lang/util-go/go2"
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2format"
@@ -31,7 +32,6 @@ import (
 	"oss.terrastruct.com/d2/lib/textmeasure"
 	"oss.terrastruct.com/d2/lib/urlenc"
 	"oss.terrastruct.com/d2/lib/version"
-	"oss.terrastruct.com/util-go/go2"
 )
 
 const DEFAULT_INPUT_PATH = "index"

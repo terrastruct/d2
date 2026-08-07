@@ -6,9 +6,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"oss.terrastruct.com/util-go/xdefer"
+	"github.com/d2lang/util-go/xdefer"
 
-	"oss.terrastruct.com/util-go/xmain"
+	"github.com/d2lang/util-go/xmain"
 
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2parser"
