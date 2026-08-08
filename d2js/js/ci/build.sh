@@ -4,6 +4,14 @@ set -eu
 cd -- "$(dirname "$0")/.."
 
 cd ../..
+if ! cmp -s ./LICENSE.txt ./d2js/js/LICENSE.txt; then
+  echoerr "d2js/js/LICENSE.txt is out of sync with the repository license"
+  exit 1
+fi
+if ! cmp -s ./THIRD_PARTY_NOTICES.txt ./d2js/js/THIRD_PARTY_NOTICES.txt; then
+  echoerr "d2js/js/THIRD_PARTY_NOTICES.txt is out of sync with the repository notice"
+  exit 1
+fi
 if [ -n "${NPM_VERSION:-}" ]; then
   JS_VERSION="$NPM_VERSION"
 else
@@ -186,6 +194,14 @@ EOF
     if [ -z "$pack_filename" ] || [ -z "$pack_shasum" ] || [ -z "$pack_integrity" ] ||
       [ ! -f "$PACK_DIR/$pack_filename" ]; then
       echoerr "npm pack did not return complete metadata for ${package_name}"
+      exit 1
+    fi
+    if ! tar -xOzf "$PACK_DIR/$pack_filename" package/LICENSE.txt | cmp - LICENSE.txt; then
+      echoerr "${package_name} package does not contain the repository license"
+      exit 1
+    fi
+    if ! tar -xOzf "$PACK_DIR/$pack_filename" package/THIRD_PARTY_NOTICES.txt | cmp - THIRD_PARTY_NOTICES.txt; then
+      echoerr "${package_name} package does not contain the third-party notices"
       exit 1
     fi
 

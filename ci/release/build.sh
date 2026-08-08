@@ -155,6 +155,7 @@ build_windows_msi() {
   REMOTE_HOST=$CI_D2_WINDOWS_AMD64
 
   ln -sf "../build/$VERSION/windows-amd64/d2-$VERSION/bin/d2.exe" ./ci/release/windows/d2.exe
+  ln -sf "../build/$VERSION/windows-amd64/d2-$VERSION/THIRD_PARTY_NOTICES.txt" ./ci/release/windows/THIRD_PARTY_NOTICES.txt
   sh_c rsync --archive --human-readable --copy-links --delete ./ci/release/windows/ "'$REMOTE_HOST:windows/'"
   if ! echo "$VERSION" | grep '[0-9]\.[0-9]\.[0-9]'; then
     WIX_VERSION=0.0.0

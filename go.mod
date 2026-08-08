@@ -9,7 +9,7 @@ require (
 	github.com/alecthomas/chroma/v2 v2.14.0
 	github.com/andybalholm/brotli v1.2.0
 	github.com/coder/websocket v1.8.12
-	github.com/d2lang/dagro v0.0.0-20260808053601-40eebd4e6205
+	github.com/d2lang/dagro v0.0.0-20260808174325-2c6cb448da0c
 	github.com/d2lang/util-go v0.2.0
 	github.com/dop251/goja v0.0.0-20240927123429-241b342198c2
 	github.com/dsoprea/go-exif/v3 v3.0.1
