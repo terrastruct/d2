@@ -2,14 +2,10 @@ package d2dagrelayout
 
 import (
 	"context"
-	_ "embed"
-	"encoding/json"
 	"fmt"
 	"math"
 	"sort"
 	"strings"
-
-	"log/slog"
 
 	"github.com/d2lang/util-go/xdefer"
 
@@ -18,14 +14,10 @@ import (
 	"github.com/d2lang/d2/d2graph"
 	"github.com/d2lang/d2/d2target"
 	"github.com/d2lang/d2/lib/geo"
-	"github.com/d2lang/d2/lib/jsrunner"
 	"github.com/d2lang/d2/lib/label"
-	"github.com/d2lang/d2/lib/log"
 	"github.com/d2lang/d2/lib/shape"
+	"github.com/d2lang/dagro"
 )
-
-//go:embed setup.js
-var setupJS string
 
 const (
 	MIN_RANK_SEP    = 60
@@ -42,18 +34,6 @@ type ConfigurableOpts struct {
 var DefaultOpts = ConfigurableOpts{
 	NodeSep: 60,
 	EdgeSep: 20,
-}
-
-type DagreNode struct {
-	ID     string  `json:"id"`
-	X      float64 `json:"x"`
-	Y      float64 `json:"y"`
-	Width  float64 `json:"width"`
-	Height float64 `json:"height"`
-}
-
-type DagreEdge struct {
-	Points []*geo.Point `json:"points"`
 }
 
 type dagreOpts struct {
@@ -74,15 +54,6 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		opts = &DefaultOpts
 	}
 	defer xdefer.Errorf(&err, "failed to dagre layout")
-
-	debugJS := false
-	runner := jsrunner.NewJSRunner()
-	if _, err := runner.RunString(dagreJS); err != nil {
-		return err
-	}
-	if _, err := runner.RunString(setupJS); err != nil {
-		return err
-	}
 
 	rootAttrs := dagreOpts{
 		ConfigurableOpts: ConfigurableOpts{
@@ -131,20 +102,28 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		// Note: non-containers have both of these as padding (rootAttrs.NodeSep + rootAttrs.EdgeSep)
 	}
 
-	configJS := setGraphAttrs(rootAttrs)
-	if _, err := runner.RunString(configJS); err != nil {
-		return err
-	}
-
 	mapper := NewObjectMapper()
 	for _, obj := range g.Objects {
 		mapper.Register(obj)
 	}
-	loadScript := ""
+
+	dagreGraph := dagro.NewGraph(dagro.GraphOptions{Compound: true, Multigraph: true}).SetGraph(dagro.Attrs{
+		"ranksep": float64(rootAttrs.ranksep),
+		"edgesep": float64(rootAttrs.EdgeSep),
+		"nodesep": float64(rootAttrs.NodeSep),
+		"rankdir": rootAttrs.rankdir,
+	})
 	for _, obj := range g.Objects {
-		loadScript += mapper.generateAddNodeLine(obj, int(obj.Width), int(obj.Height))
+		id := mapper.ToID(obj)
+		dagreGraph.SetNode(id, dagro.Attrs{
+			"id":     id,
+			"width":  float64(int(obj.Width)),
+			"height": float64(int(obj.Height)),
+		})
 		if obj.Parent != g.Root {
-			loadScript += mapper.generateAddParentLine(obj, obj.Parent)
+			if err := dagreGraph.SetParent(id, mapper.ToID(obj.Parent)); err != nil {
+				return err
+			}
 		}
 	}
 
@@ -172,64 +151,70 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 
-		loadScript += mapper.generateAddEdgeLine(src, dst, edge.AbsID(), width, height)
+		dagreGraph.SetEdge(
+			mapper.ToID(src),
+			mapper.ToID(dst),
+			dagro.Attrs{
+				"width":    float64(width),
+				"height":   float64(height),
+				"labelpos": "c",
+			},
+			edge.AbsID(),
+		)
 	}
 
-	if debugJS {
-		log.Debug(ctx, "script", slog.Any("all", setupJS+configJS+loadScript))
-	}
-
-	if _, err := runner.RunString(loadScript); err != nil {
+	if err := dagro.Layout(dagreGraph); err != nil {
 		return err
 	}
 
-	if _, err := runner.RunString(`dagre.layout(g)`); err != nil {
-		if debugJS {
-			log.Warn(ctx, "layout error", slog.Any("err", err))
+	for _, id := range dagreGraph.Nodes() {
+		dn, ok := dagreGraph.Node(id).(dagro.Attrs)
+		if !ok {
+			return fmt.Errorf("dagro returned invalid node label for %q", id)
 		}
-		return err
-	}
-
-	for i := range g.Objects {
-		val, err := runner.RunString(fmt.Sprintf("JSON.stringify(g.node(g.nodes()[%d]))", i))
-		if err != nil {
-			return err
+		dnID, ok := dn["id"].(string)
+		if !ok {
+			return fmt.Errorf("dagro returned node %q without an id", id)
 		}
-		var dn DagreNode
-		if err := json.Unmarshal([]byte(val.String()), &dn); err != nil {
-			return err
+		obj := mapper.ToObj(dnID)
+		if obj == nil {
+			return fmt.Errorf("dagro returned unknown node id %q", dnID)
 		}
-		if debugJS {
-			log.Debug(ctx, "graph", slog.Any("json", dn))
+		x, xOK := dn["x"].(float64)
+		y, yOK := dn["y"].(float64)
+		width, widthOK := dn["width"].(float64)
+		height, heightOK := dn["height"].(float64)
+		if !xOK || !yOK || !widthOK || !heightOK {
+			return fmt.Errorf("dagro returned invalid geometry for node %q", id)
 		}
-
-		obj := mapper.ToObj(dn.ID)
 
 		// dagre gives center of node
-		obj.TopLeft = geo.NewPoint(math.Round(dn.X-dn.Width/2), math.Round(dn.Y-dn.Height/2))
-		obj.Width = math.Ceil(dn.Width)
-		obj.Height = math.Ceil(dn.Height)
+		obj.TopLeft = geo.NewPoint(math.Round(x-width/2), math.Round(y-height/2))
+		obj.Width = math.Ceil(width)
+		obj.Height = math.Ceil(height)
 	}
 
+	dagreEdges := dagreGraph.Edges()
+	if len(dagreEdges) != len(g.Edges) {
+		return fmt.Errorf("dagro returned %d edges, expected %d", len(dagreEdges), len(g.Edges))
+	}
 	for i, edge := range g.Edges {
-		val, err := runner.RunString(fmt.Sprintf("JSON.stringify(g.edge(g.edges()[%d]))", i))
-		if err != nil {
-			return err
+		de, ok := dagreGraph.Edge(dagreEdges[i]).(dagro.Attrs)
+		if !ok {
+			return fmt.Errorf("dagro returned invalid edge label for %q", dagreEdges[i].Name)
 		}
-		var de DagreEdge
-		if err := json.Unmarshal([]byte(val.String()), &de); err != nil {
-			return err
-		}
-		if debugJS {
-			log.Debug(ctx, "graph", slog.Any("json", de))
+		dagrePoints, ok := de["points"].([]dagro.Point)
+		if !ok {
+			return fmt.Errorf("dagro returned edge %q without points", dagreEdges[i].Name)
 		}
 
-		points := make([]*geo.Point, len(de.Points))
-		for i := range de.Points {
+		points := make([]*geo.Point, len(dagrePoints))
+		for i, point := range dagrePoints {
+			p := geo.NewPoint(point.X, point.Y)
 			if edge.SrcArrow && !edge.DstArrow {
-				points[len(de.Points)-i-1] = de.Points[i].Copy()
+				points[len(dagrePoints)-i-1] = p
 			} else {
-				points[i] = de.Points[i].Copy()
+				points[i] = p
 			}
 		}
 
@@ -392,21 +377,6 @@ func getEdgeEndpoints(g *d2graph.Graph, edge *d2graph.Edge) (*d2graph.Object, *d
 		src, dst = dst, src
 	}
 	return src, dst
-}
-
-func setGraphAttrs(attrs dagreOpts) string {
-	return fmt.Sprintf(`g.setGraph({
-  ranksep: %d,
-  edgesep: %d,
-  nodesep: %d,
-  rankdir: "%s",
-});
-`,
-		attrs.ranksep,
-		attrs.ConfigurableOpts.EdgeSep,
-		attrs.ConfigurableOpts.NodeSep,
-		attrs.rankdir,
-	)
 }
 
 // getLongestEdgeChainHead finds the longest chain in a container and gets its head

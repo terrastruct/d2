@@ -54,10 +54,6 @@ it depends on from ../sub/lib.
 - ./build.sh builds the release archives for each platform into ./build/<VERSION>/*.tar.gz
   Run with --help for usage.
 
-> note: Remember for production releases you need to set the $TSTRUCT_OS_ARCH_BUILDER
-> variables as we must compile d2 directly on each release target to include dagre.
-> See https://github.com/d2lang/d2/issues/31
-
 Use `--host-only` to build only the release for the host's `$OS-$ARCH` pair.
 
 ### Docker image helper

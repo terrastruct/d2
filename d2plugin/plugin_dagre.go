@@ -75,8 +75,10 @@ func (p *dagrePlugin) Info(ctx context.Context) (*PluginInfo, error) {
 		Type:      "bundled",
 		Features:  []PluginFeature{},
 		ShortHelp: "The directed graph layout library Dagre",
-		LongHelp: fmt.Sprintf(`dagre is a directed graph layout library for JavaScript.
+		LongHelp: fmt.Sprintf(`dagre is a directed graph layout algorithm implemented natively in Go by Dagro.
 See https://d2lang.com/tour/dagre for more.
+
+Dagro is a behavior-compatible port of Dagre 0.8.5: https://github.com/d2lang/dagro.
 
 Flags correspond to ones found at https://github.com/dagrejs/dagre/wiki.
 
