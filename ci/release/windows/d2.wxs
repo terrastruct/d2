@@ -16,6 +16,7 @@ This file was pieced together from:
 
         <Feature Id="Complete" Level="1">
             <ComponentRef Id="Executable" />
+            <ComponentRef Id="ThirdPartyNotices" />
         </Feature>
 
         <MajorUpgrade AllowSameVersionUpgrades='yes' DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit."/>
@@ -32,6 +33,9 @@ This file was pieced together from:
                       Permanent="no"
                       System="yes"
                       Value="[INSTALLDIR]" />
+                </Component>
+                <Component Id="ThirdPartyNotices" Guid="aa19f8b5-c7c4-4e94-b322-1cd32bf3d649">
+                    <File Id="ThirdPartyNoticesFile" Name="THIRD_PARTY_NOTICES.txt" Source="THIRD_PARTY_NOTICES.txt" KeyPath="yes" />
                 </Component>
             </Directory>
         </StandardDirectory>

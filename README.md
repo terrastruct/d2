@@ -193,9 +193,9 @@ bundled with the build or separately installed as a standalone binary.
 
 **Layout engines**:
 
-- [dagre](https://github.com/dagrejs/dagre) (default, bundled): A fast, directed graph
-  layout engine that produces layered/hierarchical layouts. Based on Graphviz's DOT
-  algorithm.
+- [Dagro](https://github.com/d2lang/dagro) (default, bundled): A native Go port of the
+  Dagre directed graph layout engine that produces layered/hierarchical layouts. Based
+  on Graphviz's DOT algorithm.
 - [ELK](https://github.com/kieler/elkjs) (bundled): A directed graph layout engine
   particularly suited for node-link diagrams with an inherent direction and ports.
 - [TALA](https://github.com/terrastruct/TALA) (binary): Novel layout engine designed

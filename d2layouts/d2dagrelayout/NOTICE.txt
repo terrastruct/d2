@@ -1,6 +1,6 @@
-dagre.js comes from https://github.com/dagrejs/dagre
+D2's Dagre layout uses Dagro, a native Go port of Dagre 0.8.5:
+https://github.com/d2lang/dagro
 
-Attribution:
-
-MIT License
-https://github.com/dagrejs/dagre/blob/master/LICENSE
+The complete Dagro, Dagre, and Graphlib attribution and MIT license text is in
+../../THIRD_PARTY_NOTICES.txt. D2 includes that file in its native, MSI, and
+npm/WASM release artifacts.
