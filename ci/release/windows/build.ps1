@@ -25,7 +25,7 @@ function Get-MsiProperty {
 
     $query = "SELECT ``Value`` FROM ``Property`` WHERE ``Property`` = '$Name'"
     $view = $Database.GetType().InvokeMember('OpenView', 'InvokeMethod', $null, $Database, @($query))
-    $view.GetType().InvokeMember('Execute', 'InvokeMethod', $null, $view, $null)
+    $null = $view.GetType().InvokeMember('Execute', 'InvokeMethod', $null, $view, $null)
     $record = $view.GetType().InvokeMember('Fetch', 'InvokeMethod', $null, $view, $null)
     if ($null -eq $record) {
         throw "MSI property $Name is missing"
