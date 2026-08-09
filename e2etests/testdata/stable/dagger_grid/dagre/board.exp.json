@@ -451,12 +451,12 @@
         "User": null,
         "Host": "icons.terrastruct.com",
         "Path": "/dev/docker.svg",
-        "RawPath": "/dev%2Fdocker.svg",
-        "OmitHost": false,
-        "ForceQuery": false,
-        "RawQuery": "",
         "Fragment": "",
-        "RawFragment": ""
+        "RawQuery": "",
+        "RawPath": "/dev%2Fdocker.svg",
+        "RawFragment": "",
+        "ForceQuery": false,
+        "OmitHost": false
       },
       "iconPosition": "INSIDE_MIDDLE_CENTER",
       "blend": false,

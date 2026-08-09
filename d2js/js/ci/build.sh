@@ -25,7 +25,8 @@ if [ -n "${NPM_VERSION:-}" ]; then
     echo "Optimizing WASM with wasm-opt..."
     # -Oz can use quadratic memory on large Go WASM modules.
     # https://github.com/WebAssembly/binaryen/issues/7644
-    sh_c "wasm-opt -O2 --enable-bulk-memory-opt main.wasm -o main.wasm"
+    # Go 1.26 emits saturating float-to-integer conversions.
+    sh_c "wasm-opt -O2 --enable-bulk-memory-opt --enable-nontrapping-float-to-int main.wasm -o main.wasm"
   else
     echo "wasm-opt not found, skipping optimization (install with: brew install binaryen)"
   fi

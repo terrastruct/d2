@@ -5,7 +5,7 @@ import (
 	"math"
 	"strings"
 
-	"github.com/jung-kurt/gofpdf"
+	"codeberg.org/go-pdf/fpdf"
 
 	"github.com/d2lang/d2/d2parser"
 	"github.com/d2lang/d2/d2renderers/d2fonts"
@@ -18,7 +18,7 @@ import (
 const TITLE_SEP = "  /  "
 
 type GoFPDF struct {
-	pdf *gofpdf.Fpdf
+	pdf *fpdf.Fpdf
 }
 
 type BoardTitle struct {
@@ -27,7 +27,7 @@ type BoardTitle struct {
 }
 
 func Init() *GoFPDF {
-	newGofPDF := gofpdf.NewCustom(&gofpdf.InitType{
+	newGofPDF := fpdf.NewCustom(&fpdf.InitType{
 		UnitStr: "pt",
 	})
 
@@ -67,7 +67,7 @@ func (g *GoFPDF) GetFillRGB(themeID int64, fill string) (color.RGB, error) {
 }
 
 func (g *GoFPDF) AddPDFPage(png []byte, titlePath []BoardTitle, themeID int64, fill string, shapes []d2target.Shape, pad int64, viewboxX, viewboxY float64, pageMap map[string]int, includeNav bool) error {
-	var opt gofpdf.ImageOptions
+	var opt fpdf.ImageOptions
 	opt.ImageType = "png"
 	boardPath := make([]string, len(titlePath))
 	for i, t := range titlePath {
@@ -105,7 +105,7 @@ func (g *GoFPDF) AddPDFPage(png []byte, titlePath []BoardTitle, themeID int64, f
 	}
 
 	// Add page
-	g.pdf.AddPageFormat("", gofpdf.SizeType{Wd: pageWidth, Ht: pageHeight + headerHeight})
+	g.pdf.AddPageFormat("", fpdf.SizeType{Wd: pageWidth, Ht: pageHeight + headerHeight})
 
 	if includeNav {
 		// Draw header

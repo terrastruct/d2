@@ -21,17 +21,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           submodules: recursive
 
-      - uses: actions/setup-go@v6
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: ./go.mod
           cache: true
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: "24"
           registry-url: https://registry.npmjs.org
@@ -45,8 +45,14 @@ jobs:
 
       - name: Install binaryen
         run: |
-          BINARYEN_VERSION="version_123"
-          curl -fsSL "https://github.com/WebAssembly/binaryen/releases/download/${BINARYEN_VERSION}/binaryen-${BINARYEN_VERSION}-x86_64-linux.tar.gz" | tar -xz -C "$RUNNER_TEMP"
+          BINARYEN_VERSION="version_131"
+          BINARYEN_SHA256="b5bf1f0eaf17c63ee588ff7a5954dc8f6ce2c26989051c66f24dfe9ece3e46db"
+          BINARYEN_ARCHIVE="$RUNNER_TEMP/binaryen-${BINARYEN_VERSION}-x86_64-linux.tar.gz"
+          curl -fsSL \
+            "https://github.com/WebAssembly/binaryen/releases/download/${BINARYEN_VERSION}/binaryen-${BINARYEN_VERSION}-x86_64-linux.tar.gz" \
+            -o "$BINARYEN_ARCHIVE"
+          echo "$BINARYEN_SHA256  $BINARYEN_ARCHIVE" | sha256sum --check --strict
+          tar -xzf "$BINARYEN_ARCHIVE" -C "$RUNNER_TEMP"
           sudo cp "$RUNNER_TEMP/binaryen-${BINARYEN_VERSION}"/bin/* /usr/local/bin/
           wasm-opt --version
 
@@ -62,7 +68,7 @@ jobs:
           bun test test/unit
 
       - name: Upload immutable package tarballs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: npm-packages
           path: ${{ runner.temp }}/npm-packages
@@ -85,7 +91,7 @@ jobs:
           - d2lang
           - terrastruct
     steps:
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: "24"
           registry-url: https://registry.npmjs.org
@@ -97,7 +103,7 @@ jobs:
           npm --version
 
       - name: Download immutable package tarballs
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: npm-packages
           path: ${{ runner.temp }}/npm-packages

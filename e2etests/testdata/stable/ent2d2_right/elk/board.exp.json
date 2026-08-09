@@ -19,7 +19,7 @@
         "x": 72,
         "y": 198
       },
-      "width": 201,
+      "width": 200,
       "height": 280,
       "opacity": 1,
       "strokeDash": 0,
@@ -50,7 +50,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -62,7 +62,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -92,7 +92,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -122,7 +122,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -151,10 +151,10 @@
       "id": "Pet",
       "type": "sql_table",
       "pos": {
-        "x": 571,
+        "x": 570,
         "y": 1406
       },
-      "width": 194,
+      "width": 193,
       "height": 108,
       "opacity": 1,
       "strokeDash": 0,
@@ -185,7 +185,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -197,7 +197,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -227,7 +227,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -256,10 +256,10 @@
       "id": "Card",
       "type": "sql_table",
       "pos": {
-        "x": 571,
+        "x": 570,
         "y": 618
       },
-      "width": 194,
+      "width": 193,
       "height": 108,
       "opacity": 1,
       "strokeDash": 0,
@@ -290,7 +290,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -302,7 +302,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -332,7 +332,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -361,7 +361,7 @@
       "id": "Post",
       "type": "sql_table",
       "pos": {
-        "x": 557,
+        "x": 556,
         "y": 1182
       },
       "width": 222,
@@ -395,7 +395,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -407,7 +407,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -465,7 +465,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -494,10 +494,10 @@
       "id": "Metadata",
       "type": "sql_table",
       "pos": {
-        "x": 595,
+        "x": 594,
         "y": 806
       },
-      "width": 146,
+      "width": 145,
       "height": 108,
       "opacity": 1,
       "strokeDash": 0,
@@ -528,7 +528,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -540,7 +540,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -570,7 +570,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": null,
@@ -597,7 +597,7 @@
       "id": "Info",
       "type": "sql_table",
       "pos": {
-        "x": 514,
+        "x": 513,
         "y": 994
       },
       "width": 308,
@@ -631,7 +631,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -643,7 +643,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -724,11 +724,11 @@
       "link": "",
       "route": [
         {
-          "x": 97.125,
+          "x": 97,
           "y": 478
         },
         {
-          "x": 97.125,
+          "x": 97,
           "y": 528
         },
         {
@@ -740,11 +740,11 @@
           "y": 148
         },
         {
-          "x": 139,
+          "x": 138.66600036621094,
           "y": 148
         },
         {
-          "x": 139,
+          "x": 138.66600036621094,
           "y": 198
         }
       ],
@@ -779,11 +779,11 @@
       "link": "",
       "route": [
         {
-          "x": 122.25,
+          "x": 122,
           "y": 478
         },
         {
-          "x": 122.25,
+          "x": 122,
           "y": 538
         },
         {
@@ -795,11 +795,11 @@
           "y": 99
         },
         {
-          "x": 206,
+          "x": 205.33299255371094,
           "y": 99
         },
         {
-          "x": 206,
+          "x": 205.33299255371094,
           "y": 198
         }
       ],
@@ -834,19 +834,19 @@
       "link": "",
       "route": [
         {
-          "x": 147.375,
+          "x": 147,
           "y": 478
         },
         {
-          "x": 147.375,
+          "x": 147,
           "y": 1366
         },
         {
-          "x": 668,
+          "x": 667,
           "y": 1366
         },
         {
-          "x": 668,
+          "x": 667,
           "y": 1406
         }
       ],
@@ -881,19 +881,19 @@
       "link": "",
       "route": [
         {
-          "x": 172.5,
+          "x": 172,
           "y": 478
         },
         {
-          "x": 172.5,
+          "x": 172,
           "y": 578
         },
         {
-          "x": 668,
+          "x": 667,
           "y": 578
         },
         {
-          "x": 668,
+          "x": 667,
           "y": 618
         }
       ],
@@ -928,19 +928,19 @@
       "link": "",
       "route": [
         {
-          "x": 197.625,
+          "x": 197,
           "y": 478
         },
         {
-          "x": 197.625,
+          "x": 197,
           "y": 1142
         },
         {
-          "x": 668,
+          "x": 667,
           "y": 1142
         },
         {
-          "x": 668,
+          "x": 667,
           "y": 1182
         }
       ],
@@ -975,19 +975,19 @@
       "link": "",
       "route": [
         {
-          "x": 222.75,
+          "x": 222,
           "y": 478
         },
         {
-          "x": 222.75,
+          "x": 222,
           "y": 766
         },
         {
-          "x": 668,
+          "x": 667,
           "y": 766
         },
         {
-          "x": 668,
+          "x": 667,
           "y": 806
         }
       ],
@@ -1022,19 +1022,19 @@
       "link": "",
       "route": [
         {
-          "x": 247.875,
+          "x": 247,
           "y": 478
         },
         {
-          "x": 247.875,
+          "x": 247,
           "y": 954
         },
         {
-          "x": 668,
+          "x": 667,
           "y": 954
         },
         {
-          "x": 668,
+          "x": 667,
           "y": 994
         }
       ],
