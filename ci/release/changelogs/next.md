@@ -14,7 +14,15 @@
   - Dagre is 7–9× faster
   - ELK is 40–53× faster
   - LaTeX is 21.6× faster on a four-formula diagram
-- performance: remove superlinear compiler and layout bottlenecks in large globs, repeated imports, nested diagrams, compound Dagre graphs, bend-heavy ELK layouts, and style-only scenario/step boards
+- performance: remove superlinear compiler and layout bottlenecks in large globs, repeated imports, nested diagrams, compound Dagre graphs, bend-heavy ELK layouts, and style-only scenario/step boards [#2827](https://github.com/d2lang/d2/pull/2827). Median Apple M4 single-CPU synthetic stress benchmarks for these targeted cliffs, rather than corpus-wide conversion averages, improve by:
+  - leading glob applied to 1,000 fields: 1.59s to 12ms (~133× faster)
+  - 100 references into the same 100-field import file: 54ms to 12ms (~4.6× faster)
+  - 4,000 flat fields: 67ms to 7ms (~9.6× faster)
+  - 3,200 distinct edges: 200ms to 19ms (~10.6× faster)
+  - 32-node base with 8 style-only scenarios and 8 steps (17 boards total): 40ms to 7.3ms (~5.5× faster)
+  - 340-object nested D2 Dagre layout: 1.30s to 0.88s (~32% faster)
+  - Dagro depth-100 compound layout: 3.60s to 0.90s (~4× faster)
+  - 250-node, 1,000-edge ELK layout: 337ms to 238ms (~30% faster)
 - d2ascii:
   - sql_table and uml class shapes are supported [#2623](https://github.com/d2lang/d2/pull/2623)
   - newlines are handled [#2626](https://github.com/d2lang/d2/pull/2626)
