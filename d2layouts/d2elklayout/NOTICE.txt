@@ -1,7 +1,23 @@
-elk.js comes from https://github.com/kieler/elkjs
-Currently on v0.8.2
+elk-go
+https://github.com/d2lang/elk-go
 
-Attribution:
+elk-go is a Go port of behavior and source from these upstream projects:
 
-EPL License 2.0
-https://github.com/kieler/elkjs/blob/master/LICENSE.md
+  Eclipse Layout Kernel 0.8.1
+  https://github.com/eclipse-elk/elk
+  commit 5dc0f65c78778beb74a36e0f470c6fe6ecdcef67
+
+  ELK.js 0.8.2
+  https://github.com/kieler/elkjs
+  commit cd0dc6b4e4bf1f221db04147f88b4d7c7041b834
+
+  GWT 2.9.0 Java runtime emulation
+  https://github.com/gwtproject/gwt
+  commit 8188fd9f8e1b70396ba02ce01b1d73a467225a64
+  Copyright 2008 Google Inc.
+
+The upstream ELK projects and elk-go are made available under the Eclipse
+Public License 2.0. Two GWT runtime adaptations remain available under the
+Apache License 2.0. Source code and complete licensing notices for the port are
+available at https://github.com/d2lang/elk-go and D2's root
+THIRD_PARTY_NOTICES.txt.
