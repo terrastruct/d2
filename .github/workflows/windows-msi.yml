@@ -184,6 +184,7 @@ jobs:
 
   build:
     needs: validate
+    if: ${{ github.event_name != 'pull_request' || vars.WIX7_EULA_ACCEPTED == 'true' }}
     runs-on: windows-2022
     timeout-minutes: 30
     env:

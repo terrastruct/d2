@@ -77,7 +77,9 @@ The installer uses WiX 7. Before the workflow can install or run WiX 7, a reposi
 must review the [WiX Open Source Maintenance Fee and EULA terms](https://docs.firegiant.com/wix/osmf/),
 confirm that any required sponsorship is in place, and set the `WIX7_EULA_ACCEPTED`
 repository variable to exactly `true`. That explicit owner-controlled gate enables the
-workflow to pass `-acceptEula wix7`; the build fails closed when the variable is absent.
+workflow to pass `-acceptEula wix7`. Pull requests still validate the pinned release inputs
+when the variable is absent, but skip the EULA-dependent MSI steps. Tag-triggered and
+manually dispatched builds fail closed when the variable is absent.
 
 ## build.sh
 
