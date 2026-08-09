@@ -30,6 +30,13 @@ type CompileOptions struct {
 	RouterResolver func(engine string) (d2graph.RouteEdges, error)
 	LayoutResolver func(engine string) (d2graph.LayoutGraph, error)
 
+	// LayoutReuse allows scenarios and steps whose layout inputs are unchanged
+	// to reuse the geometry of their base board. Callers should enable this only
+	// when LayoutResolver and RouterResolver return a stable built-in Dagre or
+	// ELK configuration for the duration of Compile. It is disabled by default
+	// so custom resolvers retain their existing per-board behavior.
+	LayoutReuse bool
+
 	Layout *string
 
 	// FontFamily controls the font family used for all texts that are not the following:
@@ -57,6 +64,10 @@ func Parse(ctx context.Context, input string, compileOpts *CompileOptions) (*d2a
 }
 
 func Compile(ctx context.Context, input string, compileOpts *CompileOptions, renderOpts *d2svg.RenderOpts) (*d2target.Diagram, *d2graph.Graph, error) {
+	return compileInput(ctx, input, compileOpts, renderOpts)
+}
+
+func compileInput(ctx context.Context, input string, compileOpts *CompileOptions, renderOpts *d2svg.RenderOpts) (*d2target.Diagram, *d2graph.Graph, error) {
 	if compileOpts == nil {
 		compileOpts = &CompileOptions{}
 	}
@@ -95,60 +106,90 @@ func Compile(ctx context.Context, input string, compileOpts *CompileOptions, ren
 }
 
 func compile(ctx context.Context, g *d2graph.Graph, compileOpts *CompileOptions, renderOpts *d2svg.RenderOpts) (*d2target.Diagram, error) {
+	d, _, err := compileBoard(ctx, g, compileOpts, renderOpts, nil, false)
+	return d, err
+}
+
+func compileBoard(ctx context.Context, g *d2graph.Graph, compileOpts *CompileOptions, renderOpts *d2svg.RenderOpts, reuse *layoutGeometry, captureForCaller bool) (*d2target.Diagram, *layoutGeometry, error) {
 	err := g.ApplyTheme(*renderOpts.ThemeID)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
+	var geometry *layoutGeometry
 	if len(g.Objects) > 0 {
 		err := g.SetDimensions(compileOpts.MeasuredTexts, compileOpts.Ruler, compileOpts.FontFamily, compileOpts.MonoFontFamily)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 
-		coreLayout, err := getLayout(compileOpts)
-		if err != nil {
-			return nil, err
+		needsGeometry := compileOpts.LayoutReuse && (reuse != nil || captureForCaller || len(g.Scenarios) > 0 || len(g.Steps) > 0)
+		var signature layoutInputSignature
+		reusable := false
+		if needsGeometry {
+			engine := ""
+			if compileOpts.Layout != nil {
+				engine = *compileOpts.Layout
+			}
+			signature, reusable, err = newLayoutInputSignature(g, engine)
+			if err != nil {
+				return nil, nil, err
+			}
 		}
-		edgeRouter, err := getEdgeRouter(compileOpts)
-		if err != nil {
-			return nil, err
+		// A built-in layout may surface context cancellation at the start of
+		// every board. Do not let geometry replay bypass that error path.
+		reused := ctx.Err() == nil && reusable && compileOpts.LayoutReuse && reuse.apply(g, signature)
+		if !reused {
+			coreLayout, err := getLayout(compileOpts)
+			if err != nil {
+				return nil, nil, err
+			}
+			edgeRouter, err := getEdgeRouter(compileOpts)
+			if err != nil {
+				return nil, nil, err
+			}
+			graphInfo := d2layouts.NestedGraphInfo(g.Root)
+			err = d2layouts.LayoutNested(ctx, g, graphInfo, coreLayout, edgeRouter)
+			if err != nil {
+				return nil, nil, err
+			}
 		}
-
-		graphInfo := d2layouts.NestedGraphInfo(g.Root)
-		err = d2layouts.LayoutNested(ctx, g, graphInfo, coreLayout, edgeRouter)
-		if err != nil {
-			return nil, err
+		if reusable && (captureForCaller || len(g.Scenarios) > 0 || len(g.Steps) > 0) {
+			geometry = captureLayoutGeometry(g, signature)
 		}
 	}
 
 	d, err := d2exporter.Export(ctx, g, compileOpts.FontFamily, compileOpts.MonoFontFamily)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	for _, l := range g.Layers {
-		ld, err := compile(ctx, l, compileOpts, renderOpts)
+		// Layers are independent boards rather than overlays of their parent, so
+		// retain their existing always-layout behavior.
+		ld, _, err := compileBoard(ctx, l, compileOpts, renderOpts, nil, false)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		d.Layers = append(d.Layers, ld)
 	}
 	for _, l := range g.Scenarios {
-		ld, err := compile(ctx, l, compileOpts, renderOpts)
+		ld, _, err := compileBoard(ctx, l, compileOpts, renderOpts, geometry, false)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		d.Scenarios = append(d.Scenarios, ld)
 	}
-	for _, l := range g.Steps {
-		ld, err := compile(ctx, l, compileOpts, renderOpts)
+	previous := geometry
+	for i, l := range g.Steps {
+		ld, stepGeometry, err := compileBoard(ctx, l, compileOpts, renderOpts, previous, i+1 < len(g.Steps))
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		d.Steps = append(d.Steps, ld)
+		previous = stepGeometry
 	}
-	return d, nil
+	return d, geometry, nil
 }
 
 func getLayout(opts *CompileOptions) (d2graph.LayoutGraph, error) {

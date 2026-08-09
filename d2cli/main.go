@@ -522,6 +522,7 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs
 		Layout:         layout,
 		RouterResolver: RouterResolver(ctx, ms, plugins),
 		FS:             fs,
+		LayoutReuse:    true,
 	}
 
 	if os.Getenv("D2_LSP_MODE") == "1" {

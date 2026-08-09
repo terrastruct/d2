@@ -180,7 +180,8 @@ func Compile(args []js.Value) (interface{}, error) {
 	}
 
 	compileOpts := &d2lib.CompileOptions{
-		UTF16Pos: true,
+		UTF16Pos:    true,
+		LayoutReuse: true,
 	}
 
 	inputPath := DEFAULT_INPUT_PATH

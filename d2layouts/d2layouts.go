@@ -91,6 +91,19 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 	// Iterate top-down from Root so all nested diagrams can process their own contents
 	queue := make([]*d2graph.Object, 0, len(g.Root.ChildrenArray))
 	queue = append(queue, g.Root.ChildrenArray...)
+	var batchedExtractions map[*d2graph.Object]*subgraphExtraction
+	var extractionBatch *subgraphExtractionBatch
+	if graphInfo.DiagramType != GridDiagram {
+		specs := collectNestedExtractions(g)
+		if len(specs) > 1 {
+			extractionBatch = extractSubgraphs(g, specs)
+			batchedExtractions = extractionBatch.extractions
+			queue = queue[:0]
+			for _, spec := range specs {
+				queue = append(queue, spec.container)
+			}
+		}
+	}
 
 	for len(queue) > 0 {
 		curr := queue[0]
@@ -99,6 +112,9 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 		isGridCellContainer := graphInfo.DiagramType == GridDiagram &&
 			curr.IsContainer() && curr.Parent == g.Root
 		gi := NestedGraphInfo(curr)
+		if extraction, ok := batchedExtractions[curr]; ok {
+			gi = extraction.graphInfo
+		}
 
 		if isGridCellContainer && gi.isDefault() {
 			// if we are in a grid diagram, and our children have descendants
@@ -193,12 +209,22 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 
 		if !gi.isDefault() {
 			// empty grid or sequence can have 0 objects..
-			if !gi.IsConstantNear && len(curr.Children) == 0 {
+			_, wasBatched := batchedExtractions[curr]
+			if !wasBatched && !gi.IsConstantNear && len(curr.Children) == 0 {
 				continue
 			}
 
 			// There is a nested diagram here, so extract its contents and process in the same way
-			nestedGraph, externalEdges, externalEdgeIDs := ExtractSubgraph(curr, gi.IsConstantNear)
+			var nestedGraph *d2graph.Graph
+			var externalEdges []*d2graph.Edge
+			var externalEdgeIDs []edgeIDs
+			if extraction, ok := batchedExtractions[curr]; ok {
+				nestedGraph = extraction.nestedGraph
+				externalEdges = extraction.externalEdges
+				externalEdgeIDs = extraction.externalEdgeIDs
+			} else {
+				nestedGraph, externalEdges, externalEdgeIDs = ExtractSubgraph(curr, gi.IsConstantNear)
+			}
 			extractedEdges = append(extractedEdges, externalEdges...)
 			extractedEdgeIDs = append(extractedEdgeIDs, externalEdgeIDs...)
 
@@ -213,6 +239,9 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 
 			err := LayoutNested(ctx, nestedGraph, nestedInfo, coreLayout, edgeRouter)
 			if err != nil {
+				if extraction, ok := batchedExtractions[curr]; ok {
+					extractionBatch.rollbackAfter(extraction.index)
+				}
 				return err
 			}
 			// coreLayout can overwrite graph contents with newly created *Object pointers
@@ -370,6 +399,210 @@ func NestedGraphInfo(obj *d2graph.Object) (gi GraphInfo) {
 
 type edgeIDs struct {
 	srcID, dstID string
+}
+
+type subgraphExtractionSpec struct {
+	container   *d2graph.Object
+	includeSelf bool
+	graphInfo   GraphInfo
+}
+
+type subgraphExtraction struct {
+	nestedGraph     *d2graph.Graph
+	externalEdges   []*d2graph.Edge
+	externalEdgeIDs []edgeIDs
+	graphInfo       GraphInfo
+	index           int
+	restoreInto     *d2graph.Object
+}
+
+type subgraphExtractionBatch struct {
+	g                  *d2graph.Graph
+	specs              []subgraphExtractionSpec
+	extractions        map[*d2graph.Object]*subgraphExtraction
+	restoreParentOrder []func()
+}
+
+// collectNestedExtractions returns the topmost nested diagrams in the same
+// breadth-first order used by LayoutNested. Their object sets are disjoint, so
+// they can be partitioned out of the parent graph together.
+func collectNestedExtractions(g *d2graph.Graph) []subgraphExtractionSpec {
+	queue := make([]*d2graph.Object, 0, len(g.Root.ChildrenArray))
+	queue = append(queue, g.Root.ChildrenArray...)
+	var specs []subgraphExtractionSpec
+	for len(queue) > 0 {
+		curr := queue[0]
+		queue = queue[1:]
+		gi := NestedGraphInfo(curr)
+		if !gi.isDefault() {
+			if !gi.IsConstantNear && len(curr.Children) == 0 {
+				continue
+			}
+			specs = append(specs, subgraphExtractionSpec{
+				container:   curr,
+				includeSelf: gi.IsConstantNear,
+				graphInfo:   gi,
+			})
+			continue
+		}
+		queue = append(queue, curr.ChildrenArray...)
+	}
+	return specs
+}
+
+// extractSubgraphs is the one-pass equivalent of calling ExtractSubgraph for
+// each disjoint nested diagram in order. An edge crossing two nested diagrams
+// belongs to the first extraction, matching the sequential implementation.
+func extractSubgraphs(g *d2graph.Graph, specs []subgraphExtractionSpec) *subgraphExtractionBatch {
+	extractions := make(map[*d2graph.Object]*subgraphExtraction, len(specs))
+	batch := &subgraphExtractionBatch{
+		g:           g,
+		specs:       specs,
+		extractions: extractions,
+	}
+	ownerIndex := make(map[*d2graph.Object]int, len(specs))
+	parentOrderSaved := make(map[*d2graph.Object]struct{})
+	for i, spec := range specs {
+		ownerIndex[spec.container] = i
+		restoreInto := spec.container
+		if spec.includeSelf {
+			restoreInto = spec.container.Parent
+			if restoreInto != nil {
+				if _, ok := parentOrderSaved[restoreInto]; !ok {
+					parentOrderSaved[restoreInto] = struct{}{}
+					batch.restoreParentOrder = append(batch.restoreParentOrder, SaveChildrenOrder(restoreInto))
+				}
+			}
+		}
+		nestedGraph := d2graph.NewGraph()
+		nestedGraph.RootLevel = int(spec.container.Level())
+		if spec.includeSelf {
+			nestedGraph.RootLevel--
+		}
+		nestedGraph.Root.Attributes = spec.container.Attributes
+		nestedGraph.Root.Box = &geo.Box{}
+		nestedGraph.Root.LabelPosition = spec.container.LabelPosition
+		nestedGraph.Root.IconPosition = spec.container.IconPosition
+		extractions[spec.container] = &subgraphExtraction{
+			nestedGraph: nestedGraph,
+			graphInfo:   spec.graphInfo,
+			index:       i,
+			restoreInto: restoreInto,
+		}
+	}
+
+	objectOwner := make(map[*d2graph.Object]int, len(g.Objects))
+	findOwner := func(obj *d2graph.Object) (int, bool) {
+		if owner, ok := objectOwner[obj]; ok {
+			return owner, true
+		}
+		for ancestor := obj; ancestor != nil; ancestor = ancestor.Parent {
+			owner, ok := ownerIndex[ancestor]
+			if !ok {
+				continue
+			}
+			if specs[owner].includeSelf || ancestor != obj {
+				return owner, true
+			}
+			break
+		}
+		return 0, false
+	}
+
+	remainingObjects := make([]*d2graph.Object, 0, len(g.Objects))
+	for _, obj := range g.Objects {
+		owner, ok := findOwner(obj)
+		if !ok {
+			remainingObjects = append(remainingObjects, obj)
+			continue
+		}
+		objectOwner[obj] = owner
+		extraction := extractions[specs[owner].container]
+		extraction.nestedGraph.Objects = append(extraction.nestedGraph.Objects, obj)
+	}
+	g.Objects = remainingObjects
+
+	remainingEdges := make([]*d2graph.Edge, 0, len(g.Edges))
+	for _, edge := range g.Edges {
+		srcOwner, srcNested := findOwner(edge.Src)
+		if d2sequence.IsLifelineEnd(edge.Dst) {
+			if srcNested {
+				extraction := extractions[specs[srcOwner].container]
+				extraction.nestedGraph.Edges = append(extraction.nestedGraph.Edges, edge)
+			} else {
+				remainingEdges = append(remainingEdges, edge)
+			}
+			continue
+		}
+
+		dstOwner, dstNested := findOwner(edge.Dst)
+		if srcNested && dstNested && srcOwner == dstOwner {
+			extraction := extractions[specs[srcOwner].container]
+			extraction.nestedGraph.Edges = append(extraction.nestedGraph.Edges, edge)
+			continue
+		}
+		if !srcNested && !dstNested {
+			remainingEdges = append(remainingEdges, edge)
+			continue
+		}
+
+		owner := srcOwner
+		if !srcNested || dstNested && dstOwner < owner {
+			owner = dstOwner
+		}
+		extraction := extractions[specs[owner].container]
+		extraction.externalEdges = append(extraction.externalEdges, edge)
+		extraction.externalEdgeIDs = append(extraction.externalEdgeIDs, edgeIDs{
+			srcID: edge.Src.AbsID(),
+			dstID: edge.Dst.AbsID(),
+		})
+	}
+	g.Edges = remainingEdges
+
+	// Mutate parent/root references only after all memberships have been
+	// classified; doing so earlier would change ancestry for later diagrams.
+	for _, spec := range specs {
+		extraction := extractions[spec.container]
+		for _, obj := range extraction.nestedGraph.Objects {
+			obj.Graph = extraction.nestedGraph
+		}
+		if spec.includeSelf {
+			if spec.container.Parent != nil {
+				spec.container.Parent.RemoveChild(spec.container)
+			}
+			extraction.nestedGraph.Root.ChildrenArray = []*d2graph.Object{spec.container}
+			spec.container.Parent = extraction.nestedGraph.Root
+			extraction.nestedGraph.Root.Children[strings.ToLower(spec.container.ID)] = spec.container
+		} else {
+			extraction.nestedGraph.Root.ChildrenArray = append(extraction.nestedGraph.Root.ChildrenArray, spec.container.ChildrenArray...)
+			for _, child := range spec.container.ChildrenArray {
+				child.Parent = extraction.nestedGraph.Root
+				extraction.nestedGraph.Root.Children[strings.ToLower(child.ID)] = child
+			}
+			for key := range spec.container.Children {
+				delete(spec.container.Children, key)
+			}
+			spec.container.ChildrenArray = nil
+		}
+	}
+
+	return batch
+}
+
+// rollbackAfter restores sibling diagrams that the batched fast path extracted
+// ahead of the diagram whose recursive layout failed. The failing diagram and
+// all earlier diagrams remain extracted, matching sequential ExtractSubgraph
+// side effects at the same error point.
+func (b *subgraphExtractionBatch) rollbackAfter(index int) {
+	for i := index + 1; i < len(b.specs); i++ {
+		spec := b.specs[i]
+		extraction := b.extractions[spec.container]
+		InjectNested(extraction.restoreInto, extraction.nestedGraph, false)
+		b.g.Edges = append(b.g.Edges, extraction.externalEdges...)
+	}
+	for _, restoreOrder := range b.restoreParentOrder {
+		restoreOrder()
+	}
 }
 
 func ExtractSubgraph(container *d2graph.Object, includeSelf bool) (nestedGraph *d2graph.Graph, externalEdges []*d2graph.Edge, externalEdgeIDs []edgeIDs) {
