@@ -8,6 +8,10 @@
 - d2sketch: replace the embedded Rough.js runtime with the native Go rough-go port without changing sketch output
 - d2elk: replace the embedded JavaScript runtime with the native Go elk-go port, preserving layouts apart from sub-pixel floating-point rounding
 - d2latex: replace the embedded MathJax JavaScript runtime with the native Go mathjax-go port without changing rendered formulas
+- performance: native Go engine migrations substantially reduce median end-to-end D2-to-SVG conversion time in Apple M4 benchmarks:
+  - Dagre is 7–9× faster
+  - ELK is 40–53× faster
+  - LaTeX is 21.6× faster on a four-formula diagram
 - d2ascii:
   - sql_table and uml class shapes are supported [#2623](https://github.com/d2lang/d2/pull/2623)
   - newlines are handled [#2626](https://github.com/d2lang/d2/pull/2626)
