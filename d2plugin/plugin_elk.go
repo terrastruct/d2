@@ -93,7 +93,7 @@ func (p elkPlugin) Info(ctx context.Context) (*PluginInfo, error) {
 		},
 		ShortHelp: "Eclipse Layout Kernel (ELK) with the Layered algorithm.",
 		LongHelp: fmt.Sprintf(`ELK is a layout engine offered by Eclipse.
-Originally written in Java, it has been ported to Javascript and cross-compiled into D2.
+Originally written in Java, the ELK.js 0.8.2 algorithms used by D2 are bundled through the native Go elk-go port. Layered remains the default.
 See https://d2lang.com/tour/elk for more.
 
 Flags correspond to ones found at https://www.eclipse.org/elk/reference.html.
