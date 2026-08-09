@@ -7,8 +7,8 @@ This file was pieced together from:
 3. Googling with trial and error
 -->
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
-    <Package Name="D2" UpgradeCode="ac84fee7-eb67-4f5d-a08d-adef69538690" Language="1033" Codepage="utf-8" Version="$(var.D2Version)" Manufacturer="Terrastruct, Inc." InstallerVersion="200">
-        <SummaryInformation Keywords="Installer" Description="The D2 Installer" Manufacturer="Terrastruct, Inc." Codepage="1252" />
+    <Package Name="D2" UpgradeCode="ac84fee7-eb67-4f5d-a08d-adef69538690" Language="1033" Codepage="utf-8" Version="$(var.D2Version)" Manufacturer="D2" InstallerVersion="200">
+        <SummaryInformation Keywords="Installer" Description="The D2 Installer" Manufacturer="D2" Codepage="1252" />
         <Icon Id="d2.ico" SourceFile="d2.ico" />
         <Property Id="ARPPRODUCTICON" Value="d2.ico" />
 
