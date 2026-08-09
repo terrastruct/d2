@@ -69,6 +69,59 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+mathjax-go
+https://github.com/d2lang/mathjax-go
+Copyright 2026 D2 contributors
+
+mathjax-go is a native Go translation and modification of the TeX-to-SVG
+pipeline used by D2's custom MathJax 3.2.2 component. The port is based on:
+
+  MathJax 3.2.2
+  https://github.com/mathjax/MathJax-src
+  commit ad8f5c21cb810236551da8c6512ba733e67357ee
+  Copyright (c) 2009-2022 The MathJax Consortium
+
+The translated TeX color support retains its additional upstream attribution:
+
+  Copyright (c) 2018-2022 Omar Al-Ithawi and The MathJax Consortium
+
+  mhchemParser 4.1.1
+  https://github.com/mhchem/mhchemParser
+  Copyright (c) 2015-2021 Martin Hensel
+
+MathJax, mhchemParser, and mathjax-go are made available under the Apache
+License 2.0. The complete Apache License 2.0 text appears below.
+
+Portions of mathjax-go's mhchem implementation adapt the initial Go translation
+structure from:
+
+  Luo-Studio/go-tex
+  https://github.com/Luo-Studio/go-tex
+  commit 60635a3613c51e710fd5cb57e1d7eeb7b3163a1f
+
+MIT License
+
+Copyright (c) 2026 luo-studio
+Copyright (c) erweixin (upstream RaTeX)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
 elk-go
 https://github.com/d2lang/elk-go
 

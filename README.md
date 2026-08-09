@@ -210,6 +210,9 @@ you like and works best for the diagram you're making.
 Sketch-mode rendering uses [rough-go](https://github.com/d2lang/rough-go), a native Go
 port of Rough.js 4.0.4.
 
+LaTeX labels use [mathjax-go](https://github.com/d2lang/mathjax-go), a native Go port of
+the MathJax 3.2.2 TeX-to-SVG pipeline.
+
 ## Comparison
 
 For a comparison against other popular text-to-diagram tools, see
