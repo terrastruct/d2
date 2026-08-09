@@ -10,7 +10,7 @@ require (
 	github.com/andybalholm/brotli v1.2.0
 	github.com/coder/websocket v1.8.12
 	github.com/d2lang/dagro v0.1.0
-	github.com/d2lang/rough-go v0.0.0-20260809023058-67cb01f42b09
+	github.com/d2lang/rough-go v0.0.0-20260809025506-62dc0c1adf11
 	github.com/d2lang/util-go v0.2.0
 	github.com/dop251/goja v0.0.0-20240927123429-241b342198c2
 	github.com/dsoprea/go-exif/v3 v3.0.1
