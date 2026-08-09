@@ -207,6 +207,9 @@ D2 intends to integrate with a variety of layout engines, e.g. `dot`, as well as
 single-purpose layout types like sequence diagrams. You can choose whichever layout engine
 you like and works best for the diagram you're making.
 
+Sketch-mode rendering uses [rough-go](https://github.com/d2lang/rough-go), a native Go
+port of Rough.js 4.0.4.
+
 ## Comparison
 
 For a comparison against other popular text-to-diagram tools, see
