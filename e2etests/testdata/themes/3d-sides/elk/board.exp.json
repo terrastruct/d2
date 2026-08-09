@@ -126,12 +126,12 @@
         "User": null,
         "Host": "www.pngkey.com",
         "Path": "/png/full/75-752805_elastic-beats-logo-png-transparent-design.png",
-        "RawPath": "",
-        "OmitHost": false,
-        "ForceQuery": false,
-        "RawQuery": "",
         "Fragment": "",
-        "RawFragment": ""
+        "RawQuery": "",
+        "RawPath": "",
+        "RawFragment": "",
+        "ForceQuery": false,
+        "OmitHost": false
       },
       "iconPosition": "INSIDE_MIDDLE_CENTER",
       "blend": false,

@@ -191,16 +191,25 @@ jobs:
       ARCHIVE_DIGEST: ${{ needs.validate.outputs.archive_digest }}
       VERSION: ${{ needs.validate.outputs.version }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ needs.validate.outputs.checkout_commit }}
           persist-credentials: false
 
-      - name: Install pinned WiX toolset
+      - name: Confirm WiX 7 EULA acceptance
+        shell: pwsh
+        env:
+          WIX7_EULA_ACCEPTED: ${{ vars.WIX7_EULA_ACCEPTED }}
+        run: |
+          if ($env:WIX7_EULA_ACCEPTED -cne 'true') {
+            throw 'Set the WIX7_EULA_ACCEPTED repository variable to true only after the repository owner verifies the WiX 7 OSMF terms and accepts the wix7 EULA.'
+          }
+
+      - name: Install pinned WiX 7 toolset
         shell: pwsh
         run: |
           dotnet --info
-          dotnet tool install --tool-path "$env:RUNNER_TEMP\wix" wix --version 4.0.0-preview.1
+          dotnet tool install --tool-path "$env:RUNNER_TEMP\wix" wix --version 7.0.0
           "$env:RUNNER_TEMP\wix" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Download and verify release archive
@@ -231,6 +240,7 @@ jobs:
         shell: pwsh
         env:
           ALLOW_FIXTURE_NOTICES: ${{ needs.validate.outputs.upload_release != 'true' && needs.validate.outputs.version == 'v0.7.1' }}
+          WIX7_EULA_ACCEPTED: ${{ vars.WIX7_EULA_ACCEPTED }}
         run: |
           $parameters = @{
             Version = $env:VERSION
@@ -243,7 +253,7 @@ jobs:
           ./ci/release/windows/build.ps1 @parameters
 
       - name: Upload verified MSI artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: windows-msi
           path: ${{ runner.temp }}/windows-msi/*.msi
@@ -267,7 +277,7 @@ jobs:
       TAG_COMMIT: ${{ needs.validate.outputs.tag_commit }}
       VERSION: ${{ needs.validate.outputs.version }}
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: windows-msi
           path: ${{ runner.temp }}/windows-msi

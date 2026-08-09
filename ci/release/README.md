@@ -73,6 +73,12 @@ closed instead of replacing it.
 The MSI remains unsigned. Authenticode signing is tracked separately in
 [issue #1078](https://github.com/d2lang/d2/issues/1078).
 
+The installer uses WiX 7. Before the workflow can install or run WiX 7, a repository owner
+must review the [WiX Open Source Maintenance Fee and EULA terms](https://docs.firegiant.com/wix/osmf/),
+confirm that any required sponsorship is in place, and set the `WIX7_EULA_ACCEPTED`
+repository variable to exactly `true`. That explicit owner-controlled gate enables the
+workflow to pass `-acceptEula wix7`; the build fails closed when the variable is absent.
+
 ## build.sh
 
 - ./build.sh builds the release archives for each platform into ./build/<VERSION>/*.tar.gz

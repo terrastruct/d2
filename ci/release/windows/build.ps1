@@ -39,6 +39,14 @@ if (-not (Test-Path -LiteralPath $ArchivePath -PathType Leaf)) {
 if (-not (Get-Command wix -ErrorAction SilentlyContinue)) {
     throw 'wix is not installed or is not on PATH'
 }
+$wixVersion = (& wix --version | Out-String).Trim()
+$wixSemVer = ($wixVersion -split '[+-]', 2)[0]
+if ($wixSemVer -cne '7.0.0') {
+    throw "WiX version is '$wixVersion', expected 7.0.0"
+}
+if ($env:WIX7_EULA_ACCEPTED -cne 'true') {
+    throw 'WiX 7 requires explicit acceptance of the wix7 EULA. Set WIX7_EULA_ACCEPTED=true only after the repository owner verifies the OSMF terms and accepts the EULA.'
+}
 
 $workingDirectory = Join-Path $env:RUNNER_TEMP "windows-msi-$Version"
 $archiveDirectory = Join-Path $workingDirectory 'archive'
@@ -100,7 +108,7 @@ Copy-Item -LiteralPath $noticesPath -Destination (Join-Path $wixDirectory 'THIRD
 $msiVersion = $Version.Substring(1).Split('-')[0]
 Push-Location $wixDirectory
 try {
-    & wix build -arch x64 -d "D2Version=$msiVersion" ./d2.wxs
+    & wix build -acceptEula wix7 -arch x64 -d "D2Version=$msiVersion" ./d2.wxs
     if ($LASTEXITCODE -ne 0) {
         throw "wix exited with status $LASTEXITCODE"
     }

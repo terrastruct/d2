@@ -4,6 +4,8 @@
 
 #### Improvements 🧹
 
+- maintenance: update the Go toolchain to 1.26.5 and refresh Go, d2.js, CI, and release dependencies
+- renders: update syntax highlighting and migrate archived font and PDF dependencies to maintained replacements
 - d2dagre: replace the embedded JavaScript runtime with the native Go Dagro port without changing layout output
 - d2sketch: replace the embedded Rough.js runtime with the native Go rough-go port without changing sketch output
 - d2elk: replace the embedded JavaScript runtime with the native Go elk-go port, preserving layouts apart from sub-pixel floating-point rounding

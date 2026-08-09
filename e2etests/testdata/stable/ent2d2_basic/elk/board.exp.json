@@ -16,7 +16,7 @@
       "id": "User",
       "type": "sql_table",
       "pos": {
-        "x": 376,
+        "x": 374,
         "y": 110
       },
       "width": 280,
@@ -50,7 +50,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -62,7 +62,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -92,7 +92,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -122,7 +122,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -154,7 +154,7 @@
         "x": 12,
         "y": 573
       },
-      "width": 194,
+      "width": 193,
       "height": 108,
       "opacity": 1,
       "strokeDash": 0,
@@ -185,7 +185,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -197,7 +197,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -227,7 +227,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -256,10 +256,10 @@
       "id": "Card",
       "type": "sql_table",
       "pos": {
-        "x": 226,
+        "x": 225,
         "y": 573
       },
-      "width": 194,
+      "width": 193,
       "height": 108,
       "opacity": 1,
       "strokeDash": 0,
@@ -290,7 +290,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -302,7 +302,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -332,7 +332,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -361,7 +361,7 @@
       "id": "Post",
       "type": "sql_table",
       "pos": {
-        "x": 440,
+        "x": 438,
         "y": 573
       },
       "width": 222,
@@ -395,7 +395,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -407,7 +407,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -465,7 +465,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -494,10 +494,10 @@
       "id": "Metadata",
       "type": "sql_table",
       "pos": {
-        "x": 682,
+        "x": 680,
         "y": 573
       },
-      "width": 146,
+      "width": 145,
       "height": 108,
       "opacity": 1,
       "strokeDash": 0,
@@ -528,7 +528,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -540,7 +540,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -570,7 +570,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": null,
@@ -597,7 +597,7 @@
       "id": "Info",
       "type": "sql_table",
       "pos": {
-        "x": 848,
+        "x": 845,
         "y": 573
       },
       "width": 308,
@@ -631,7 +631,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -643,7 +643,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -724,27 +724,27 @@
       "link": "",
       "route": [
         {
-          "x": 411,
+          "x": 409,
           "y": 254
         },
         {
-          "x": 411,
+          "x": 409,
           "y": 342
         },
         {
-          "x": 288,
+          "x": 286,
           "y": 342
         },
         {
-          "x": 288,
+          "x": 286,
           "y": 22
         },
         {
-          "x": 469.3330078125,
+          "x": 467.3330078125,
           "y": 22
         },
         {
-          "x": 469.3330078125,
+          "x": 467.3330078125,
           "y": 110
         }
       ],
@@ -779,27 +779,27 @@
       "link": "",
       "route": [
         {
-          "x": 446,
+          "x": 444,
           "y": 254
         },
         {
-          "x": 446,
+          "x": 444,
           "y": 352
         },
         {
-          "x": 228,
+          "x": 226,
           "y": 352
         },
         {
-          "x": 228,
+          "x": 226,
           "y": 12
         },
         {
-          "x": 562.666015625,
+          "x": 560.666015625,
           "y": 12
         },
         {
-          "x": 562.666015625,
+          "x": 560.666015625,
           "y": 110
         }
       ],
@@ -834,19 +834,19 @@
       "link": "",
       "route": [
         {
-          "x": 481,
+          "x": 479,
           "y": 254
         },
         {
-          "x": 481,
+          "x": 479,
           "y": 392
         },
         {
-          "x": 109,
+          "x": 108.5,
           "y": 392
         },
         {
-          "x": 109,
+          "x": 108.5,
           "y": 573
         }
       ],
@@ -881,19 +881,19 @@
       "link": "",
       "route": [
         {
-          "x": 516,
+          "x": 514,
           "y": 254
         },
         {
-          "x": 516,
+          "x": 514,
           "y": 442
         },
         {
-          "x": 323,
+          "x": 321.5,
           "y": 442
         },
         {
-          "x": 323,
+          "x": 321.5,
           "y": 573
         }
       ],
@@ -928,11 +928,11 @@
       "link": "",
       "route": [
         {
-          "x": 551,
+          "x": 549,
           "y": 254
         },
         {
-          "x": 551,
+          "x": 549,
           "y": 573
         }
       ],
@@ -967,19 +967,19 @@
       "link": "",
       "route": [
         {
-          "x": 586,
+          "x": 584,
           "y": 254
         },
         {
-          "x": 586,
+          "x": 584,
           "y": 442
         },
         {
-          "x": 755,
+          "x": 752.5,
           "y": 442
         },
         {
-          "x": 755,
+          "x": 752.5,
           "y": 573
         }
       ],
@@ -1014,19 +1014,19 @@
       "link": "",
       "route": [
         {
-          "x": 621,
+          "x": 619,
           "y": 254
         },
         {
-          "x": 621,
+          "x": 619,
           "y": 392
         },
         {
-          "x": 1002,
+          "x": 999,
           "y": 392
         },
         {
-          "x": 1002,
+          "x": 999,
           "y": 573
         }
       ],

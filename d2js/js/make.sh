@@ -9,15 +9,29 @@ fi
 PATH="$(cd -- "$(dirname "$0")" && pwd)/../../ci/sub/bin:$PATH"
 cd -- "$(dirname "$0")"
 
-if ! command -v bun >/dev/null 2>&1; then
+BUN_VERSION=$(awk -F'"' '$2 == "bun" { print $4 }' package.json)
+BUN_INSTALLER_COMMIT=0d9b296af33f2b851fcbf4df3e9ec89751734ba4
+if [ -z "$BUN_VERSION" ]; then
+  echoerr "Unable to read the Bun version from package.json"
+  exit 1
+fi
+
+if ! command -v bun >/dev/null 2>&1 || [ "$(bun --version)" != "$BUN_VERSION" ]; then
   if [ -n "${CI-}" ]; then
-    echo "Bun is not installed. Installing Bun..."
-    curl -fsSL https://bun.sh/install | bash
-    export PATH="$HOME/.bun/bin:$PATH"
+    echo "Installing Bun ${BUN_VERSION}..."
+    curl -fsSL \
+      "https://raw.githubusercontent.com/oven-sh/bun/${BUN_INSTALLER_COMMIT}/src/cli/install.sh" |
+      bash -s "bun-v${BUN_VERSION}"
+    export PATH="${BUN_INSTALL:-$HOME/.bun}/bin:$PATH"
   else
-    echoerr "You need bun to build d2.js: curl -fsSL https://bun.sh/install | bash"
+    echoerr "You need Bun ${BUN_VERSION} to build d2.js"
     exit 1
   fi
+fi
+
+if ! command -v bun >/dev/null 2>&1 || [ "$(bun --version)" != "$BUN_VERSION" ]; then
+  echoerr "Expected Bun ${BUN_VERSION} after installation"
+  exit 1
 fi
 
 _make "$@"

@@ -18,8 +18,6 @@ import (
 	"sync"
 	"time"
 
-	"golang.org/x/xerrors"
-
 	"github.com/d2lang/d2/lib/simplelog"
 	"github.com/d2lang/util-go/xdefer"
 )
@@ -140,13 +138,13 @@ func runWorkers(ctx context.Context, l simplelog.Logger, inputPath string, svg [
 	for {
 		select {
 		case <-ctx.Done():
-			return svg, xerrors.Errorf("failed to wait for workers: %w", ctx.Err())
+			return svg, fmt.Errorf("failed to wait for workers: %w", ctx.Err())
 		case <-t.C:
 			l.Info("fetching images...")
 		case repl, ok := <-replc:
 			if !ok {
 				if len(errhrefs) > 0 {
-					return svg, xerrors.Errorf("%v", errhrefs)
+					return svg, fmt.Errorf("%v", errhrefs)
 				}
 				return svg, nil
 			}
