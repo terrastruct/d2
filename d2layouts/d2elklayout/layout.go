@@ -1,4 +1,4 @@
-// d2elklayout is a wrapper around the Javascript port of ELK.
+// Package d2elklayout adapts D2 graphs to the native Go port of ELK.
 //
 // Coordinates are relative to parents.
 // See https://www.eclipse.org/elk/documentation/tooldevelopers/graphdatastructure/coordinatesystem.html
@@ -6,7 +6,6 @@ package d2elklayout
 
 import (
 	"context"
-	_ "embed"
 	"encoding/json"
 	"fmt"
 	"math"
@@ -14,6 +13,7 @@ import (
 	"strconv"
 	"strings"
 
+	elk "github.com/d2lang/elk-go"
 	"github.com/d2lang/util-go/xdefer"
 
 	"github.com/d2lang/util-go/go2"
@@ -21,13 +21,9 @@ import (
 	"github.com/d2lang/d2/d2graph"
 	"github.com/d2lang/d2/d2target"
 	"github.com/d2lang/d2/lib/geo"
-	"github.com/d2lang/d2/lib/jsrunner"
 	"github.com/d2lang/d2/lib/label"
 	"github.com/d2lang/d2/lib/shape"
 )
-
-//go:embed setup.js
-var setupJS string
 
 type ELKNode struct {
 	ID            string      `json:"id"`
@@ -156,22 +152,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		opts = &DefaultOpts
 	}
 	defer xdefer.Errorf(&err, "failed to ELK layout")
-
-	runner := jsrunner.NewJSRunner()
-
-	// Load ELK for both Goja engine only
-	// WASM/JS loads it natively
-	if runner.Engine() == jsrunner.Goja {
-		console := runner.NewObject()
-		if err := runner.Set("console", console); err != nil {
-			return err
-		}
-		if _, err := runner.RunString(elkJS); err != nil {
-			return err
-		}
-		if _, err := runner.RunString(setupJS); err != nil {
-			return err
-		}
+	if err := ctx.Err(); err != nil {
+		return err
 	}
 
 	elkGraph := &ELKGraph{
@@ -441,42 +423,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		return err
 	}
 
-	loadScript := fmt.Sprintf(`var graph = %s`, raw)
-	if _, err := runner.RunString(loadScript); err != nil {
-		return err
-	}
-
-	// Use synchronous layout function
-	val, err := runner.RunString(`
-		elkLayoutSync(graph);
-		graph;
-	`)
+	jsonOut, err := elk.LayoutJSON(raw)
 	if err != nil {
-		return fmt.Errorf("elkLayoutSync failed: %v", err)
+		return fmt.Errorf("native ELK layout failed: %w", err)
 	}
 
-	var jsonOut map[string]interface{}
-	// The result should be the modified graph object directly
-	if val != nil {
-		// Convert JSValue to map
-		resultStr, err := runner.RunString(`JSON.stringify(graph)`)
-		if err != nil {
-			return err
-		}
-
-		if err := json.Unmarshal([]byte(resultStr.String()), &jsonOut); err != nil {
-			return err
-		}
-	} else {
-		return fmt.Errorf("ELK layout returned nil")
-	}
-
-	jsonBytes, err := json.Marshal(jsonOut)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(jsonBytes, &elkGraph)
+	err = json.Unmarshal(jsonOut, &elkGraph)
 	if err != nil {
 		return err
 	}

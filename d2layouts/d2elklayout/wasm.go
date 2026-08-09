@@ -14,7 +14,8 @@ import (
 	"github.com/d2lang/util-go/xdefer"
 )
 
-// This is mostly copy paste from Layout until elk.layout step
+// ConvertGraph builds the pre-layout ELK graph exposed by the legacy WASM API.
+// Normal WASM compilation calls Layout and runs Elk-go directly.
 func ConvertGraph(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (_ *ELKGraph, err error) {
 	if opts == nil {
 		opts = &DefaultOpts

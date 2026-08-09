@@ -5,6 +5,7 @@
 #### Improvements 🧹
 
 - d2dagre: replace the embedded JavaScript runtime with the native Go Dagro port without changing layout output
+- d2elk: replace the embedded JavaScript runtime with the native Go elk-go port, preserving layouts apart from sub-pixel floating-point rounding
 - d2ascii:
   - sql_table and uml class shapes are supported [#2623](https://github.com/d2lang/d2/pull/2623)
   - newlines are handled [#2626](https://github.com/d2lang/d2/pull/2626)
