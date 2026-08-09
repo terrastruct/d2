@@ -14,6 +14,7 @@
   - Dagre is 7–9× faster
   - ELK is 40–53× faster
   - LaTeX is 21.6× faster on a four-formula diagram
+- performance: remove superlinear compiler and layout bottlenecks in large globs, repeated imports, nested diagrams, compound Dagre graphs, bend-heavy ELK layouts, and style-only scenario/step boards
 - d2ascii:
   - sql_table and uml class shapes are supported [#2623](https://github.com/d2lang/d2/pull/2623)
   - newlines are handled [#2626](https://github.com/d2lang/d2/pull/2626)

@@ -106,6 +106,18 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	for _, obj := range g.Objects {
 		mapper.Register(obj)
 	}
+	resolver := newEndpointResolver(g)
+	type endpointPair struct {
+		src, dst *d2graph.Object
+	}
+	resolvedEndpoints := make(map[*d2graph.Edge]endpointPair, len(g.Edges))
+	directedPairCounts := make(map[endpointPair]int, len(g.Edges))
+	for _, edge := range g.Edges {
+		src, dst := resolver.resolve(edge)
+		pair := endpointPair{src: src, dst: dst}
+		resolvedEndpoints[edge] = pair
+		directedPairCounts[pair]++
+	}
 
 	dagreGraph := dagro.NewGraph(dagro.GraphOptions{Compound: true, Multigraph: true}).SetGraph(dagro.Attrs{
 		"ranksep": float64(rootAttrs.ranksep),
@@ -128,17 +140,15 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 
 	for _, edge := range g.Edges {
-		src, dst := getEdgeEndpoints(g, edge)
+		pair := resolvedEndpoints[edge]
+		src, dst := pair.src, pair.dst
 
 		width := edge.LabelDimensions.Width
 		height := edge.LabelDimensions.Height
 
-		numEdges := 0
-		for _, e := range g.Edges {
-			otherSrc, otherDst := getEdgeEndpoints(g, e)
-			if (otherSrc == src && otherDst == dst) || (otherSrc == dst && otherDst == src) {
-				numEdges++
-			}
+		numEdges := directedPairCounts[pair]
+		if src != dst {
+			numEdges += directedPairCounts[endpointPair{src: dst, dst: src}]
 		}
 
 		// We want to leave some gap between multiple edges
@@ -360,17 +370,50 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	return nil
 }
 
-func getEdgeEndpoints(g *d2graph.Graph, edge *d2graph.Edge) (*d2graph.Object, *d2graph.Object) {
+type containerEndpoints struct {
+	head, tail *d2graph.Object
+}
+
+type endpointResolver struct {
+	g          *d2graph.Graph
+	containers map[*d2graph.Object]containerEndpoints
+}
+
+func newEndpointResolver(g *d2graph.Graph) *endpointResolver {
+	return &endpointResolver{
+		g:          g,
+		containers: make(map[*d2graph.Object]containerEndpoints),
+	}
+}
+
+func (r *endpointResolver) head(container *d2graph.Object) *d2graph.Object {
+	return r.endpoints(container).head
+}
+
+func (r *endpointResolver) tail(container *d2graph.Object) *d2graph.Object {
+	return r.endpoints(container).tail
+}
+
+func (r *endpointResolver) endpoints(container *d2graph.Object) containerEndpoints {
+	endpoints, ok := r.containers[container]
+	if !ok {
+		endpoints.head, endpoints.tail = getLongestEdgeChainEndpoints(r.g, container)
+		r.containers[container] = endpoints
+	}
+	return endpoints
+}
+
+func (r *endpointResolver) resolve(edge *d2graph.Edge) (*d2graph.Object, *d2graph.Object) {
 	// dagre doesn't work with edges to containers so we connect container edges to their first child instead (going all the way down)
 	// we will chop the edge where it intersects the container border so it only shows the edge from the container
 	src := edge.Src
 	for len(src.Children) > 0 && src.Class == nil && src.SQLTable == nil {
 		// We want to get the bottom node of sources, setting its rank higher than all children
-		src = getLongestEdgeChainTail(g, src)
+		src = r.tail(src)
 	}
 	dst := edge.Dst
 	for len(dst.Children) > 0 && dst.Class == nil && dst.SQLTable == nil {
-		dst = getLongestEdgeChainHead(g, dst)
+		dst = r.head(dst)
 	}
 	if edge.SrcArrow && !edge.DstArrow {
 		// for `b <- a`, edge.Edge is `a -> b` and we expect this routing result
@@ -379,26 +422,59 @@ func getEdgeEndpoints(g *d2graph.Graph, edge *d2graph.Edge) (*d2graph.Object, *d
 	return src, dst
 }
 
-// getLongestEdgeChainHead finds the longest chain in a container and gets its head
-// If there are multiple chains of the same length, get the head closest to the center
-func getLongestEdgeChainHead(g *d2graph.Graph, container *d2graph.Object) *d2graph.Object {
+func getEdgeEndpoints(g *d2graph.Graph, edge *d2graph.Edge) (*d2graph.Object, *d2graph.Object) {
+	return newEndpointResolver(g).resolve(edge)
+}
+
+type containerTopology struct {
+	container   *d2graph.Object
+	hasIncoming map[*d2graph.Object]bool
+	outgoing    map[*d2graph.Object][]*d2graph.Object
+}
+
+func newContainerTopology(g *d2graph.Graph, container *d2graph.Object) *containerTopology {
+	topology := &containerTopology{
+		container:   container,
+		hasIncoming: make(map[*d2graph.Object]bool, len(container.ChildrenArray)),
+		outgoing:    make(map[*d2graph.Object][]*d2graph.Object, len(container.ChildrenArray)+1),
+	}
+	for _, edge := range g.Edges {
+		src := inContainer(edge.Src, container)
+		dst := inContainer(edge.Dst, container)
+		if src == nil || dst == nil {
+			continue
+		}
+
+		// The original head test counts every edge from anywhere in the
+		// container to a direct child's subtree, including internal edges.
+		if dst != container {
+			topology.hasIncoming[dst] = true
+		}
+
+		// Preserve edge order and duplicates: the breadth-first walk's rank
+		// updates are order-sensitive even though the graph is usually acyclic.
+		if src != dst {
+			topology.outgoing[src] = append(topology.outgoing[src], dst)
+		}
+		// A container can enter the old traversal when an edge terminates on
+		// it. From there, every edge whose source is inside it is reachable.
+		if src != container && dst != container {
+			topology.outgoing[container] = append(topology.outgoing[container], dst)
+		}
+	}
+	return topology
+}
+
+func (t *containerTopology) longestChainEndpoints() (*d2graph.Object, *d2graph.Object) {
 	rank := make(map[*d2graph.Object]int)
 	chainLength := make(map[*d2graph.Object]int)
 
-	for _, obj := range container.ChildrenArray {
-		isHead := true
-		for _, e := range g.Edges {
-			if inContainer(e.Src, container) != nil && inContainer(e.Dst, obj) != nil {
-				isHead = false
-				break
-			}
-		}
-		if !isHead {
+	for _, obj := range t.container.ChildrenArray {
+		if t.hasIncoming[obj] {
 			continue
 		}
 		rank[obj] = 1
 		chainLength[obj] = 1
-		// BFS
 		queue := []*d2graph.Object{obj}
 		visited := make(map[*d2graph.Object]struct{})
 		for len(queue) > 0 {
@@ -408,96 +484,57 @@ func getLongestEdgeChainHead(g *d2graph.Graph, container *d2graph.Object) *d2gra
 				continue
 			}
 			visited[curr] = struct{}{}
-			for _, e := range g.Edges {
-				child := inContainer(e.Dst, container)
-				if child == curr {
-					continue
+			for _, child := range t.outgoing[curr] {
+				if rank[curr]+1 > rank[child] {
+					rank[child] = rank[curr] + 1
+					chainLength[obj] = go2.Max(chainLength[obj], rank[child])
 				}
-				if child != nil && inContainer(e.Src, curr) != nil {
-					if rank[curr]+1 > rank[child] {
-						rank[child] = rank[curr] + 1
-						chainLength[obj] = go2.Max(chainLength[obj], rank[child])
-					}
-					queue = append(queue, child)
-				}
+				queue = append(queue, child)
 			}
 		}
 	}
-	max := int(math.MinInt32)
-	for _, obj := range container.ChildrenArray {
-		if chainLength[obj] > max {
-			max = chainLength[obj]
+
+	maxChainLength := int(math.MinInt32)
+	maxRank := int(math.MinInt32)
+	for _, obj := range t.container.ChildrenArray {
+		maxChainLength = go2.Max(maxChainLength, chainLength[obj])
+		maxRank = go2.Max(maxRank, rank[obj])
+	}
+
+	var heads, tails []*d2graph.Object
+	for _, obj := range t.container.ChildrenArray {
+		if rank[obj] == 1 && chainLength[obj] == maxChainLength {
+			heads = append(heads, obj)
+		}
+		if rank[obj] == maxRank {
+			tails = append(tails, obj)
 		}
 	}
 
-	var heads []*d2graph.Object
-	for i, obj := range container.ChildrenArray {
-		if rank[obj] == 1 && chainLength[obj] == max {
-			heads = append(heads, container.ChildrenArray[i])
-		}
-	}
-
+	head := t.container.ChildrenArray[0]
 	if len(heads) > 0 {
-		return heads[int(math.Floor(float64(len(heads))/2.0))]
+		head = heads[len(heads)/2]
 	}
-	return container.ChildrenArray[0]
+	return head, tails[len(tails)/2]
+}
+
+func getLongestEdgeChainEndpoints(g *d2graph.Graph, container *d2graph.Object) (*d2graph.Object, *d2graph.Object) {
+	return newContainerTopology(g, container).longestChainEndpoints()
+}
+
+// getLongestEdgeChainHead finds the longest chain in a container and gets its head
+// If there are multiple chains of the same length, get the head closest to the center
+func getLongestEdgeChainHead(g *d2graph.Graph, container *d2graph.Object) *d2graph.Object {
+	head, _ := getLongestEdgeChainEndpoints(g, container)
+	return head
 }
 
 // getLongestEdgeChainTail gets the node at the end of the longest edge chain, because that will be the end of the container
 // and is what external connections should connect with.
 // If there are multiple of same length, get the one closest to the middle
 func getLongestEdgeChainTail(g *d2graph.Graph, container *d2graph.Object) *d2graph.Object {
-	rank := make(map[*d2graph.Object]int)
-
-	for _, obj := range container.ChildrenArray {
-		isHead := true
-		for _, e := range g.Edges {
-			if inContainer(e.Src, container) != nil && inContainer(e.Dst, obj) != nil {
-				isHead = false
-				break
-			}
-		}
-		if !isHead {
-			continue
-		}
-		rank[obj] = 1
-		// BFS
-		queue := []*d2graph.Object{obj}
-		visited := make(map[*d2graph.Object]struct{})
-		for len(queue) > 0 {
-			curr := queue[0]
-			queue = queue[1:]
-			if _, ok := visited[curr]; ok {
-				continue
-			}
-			visited[curr] = struct{}{}
-			for _, e := range g.Edges {
-				child := inContainer(e.Dst, container)
-				if child == curr {
-					continue
-				}
-				if child != nil && inContainer(e.Src, curr) != nil {
-					rank[child] = go2.Max(rank[child], rank[curr]+1)
-					queue = append(queue, child)
-				}
-			}
-		}
-	}
-	max := int(math.MinInt32)
-	for _, obj := range container.ChildrenArray {
-		if rank[obj] > max {
-			max = rank[obj]
-		}
-	}
-
-	var tails []*d2graph.Object
-	for i, obj := range container.ChildrenArray {
-		if rank[obj] == max {
-			tails = append(tails, container.ChildrenArray[i])
-		}
-	}
-
-	return tails[int(math.Floor(float64(len(tails))/2.0))]
+	_, tail := getLongestEdgeChainEndpoints(g, container)
+	return tail
 }
 
 func inContainer(obj, container *d2graph.Object) *d2graph.Object {
@@ -733,6 +770,27 @@ func shiftUp(g *d2graph.Graph, start, distance float64, isHorizontal bool) {
 // shift all nodes that are reachable via an edge or being directly below a shifting node or expanding container
 // expand containers to wrap shifted nodes
 func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance float64, isHorizontal, isMargin bool) map[*d2graph.Object]struct{} {
+	return shiftReachableDownIndexed(g, newCrossRankIndex(g), obj, start, distance, isHorizontal, isMargin)
+}
+
+type crossRankIndex struct {
+	incident map[*d2graph.Object][]*d2graph.Edge
+}
+
+func newCrossRankIndex(g *d2graph.Graph) *crossRankIndex {
+	index := &crossRankIndex{
+		incident: make(map[*d2graph.Object][]*d2graph.Edge, len(g.Objects)),
+	}
+	for _, edge := range g.Edges {
+		index.incident[edge.Src] = append(index.incident[edge.Src], edge)
+		if edge.Dst != edge.Src {
+			index.incident[edge.Dst] = append(index.incident[edge.Dst], edge)
+		}
+	}
+	return index
+}
+
+func shiftReachableDownIndexed(g *d2graph.Graph, index *crossRankIndex, obj *d2graph.Object, start, distance float64, isHorizontal, isMargin bool) map[*d2graph.Object]struct{} {
 	q := []*d2graph.Object{obj}
 
 	needsMove := make(map[*d2graph.Object]struct{})
@@ -846,7 +904,7 @@ func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance f
 				queue(child)
 			}
 
-			for _, e := range g.Edges {
+			for _, e := range index.incident[curr] {
 				if _, in := shiftedEdges[e]; in {
 					continue
 				}
@@ -1229,6 +1287,7 @@ func adjustRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
 }
 
 func adjustCrossRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
+	index := newCrossRankIndex(g)
 	var prevMarginTop, prevMarginBottom, prevMarginLeft, prevMarginRight map[*d2graph.Object]float64
 	if isHorizontal {
 		prevMarginLeft = make(map[*d2graph.Object]float64)
@@ -1247,26 +1306,26 @@ func adjustCrossRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool
 				margin.Bottom -= prevShift
 			}
 			if margin.Bottom > 0 {
-				increased := shiftReachableDown(g, obj, obj.TopLeft.Y+obj.Height, margin.Bottom, isHorizontal, true)
+				increased := shiftReachableDownIndexed(g, index, obj, obj.TopLeft.Y+obj.Height, margin.Bottom, isHorizontal, true)
 				for o := range increased {
 					prevMarginBottom[o] = math.Max(prevMarginBottom[o], margin.Bottom)
 				}
 			}
 			if padding.Bottom > 0 {
-				shiftReachableDown(g, obj, obj.TopLeft.Y+obj.Height, padding.Bottom, isHorizontal, false)
+				shiftReachableDownIndexed(g, index, obj, obj.TopLeft.Y+obj.Height, padding.Bottom, isHorizontal, false)
 				obj.Height += padding.Bottom
 			}
 			if prevShift, has := prevMarginTop[obj]; has {
 				margin.Top -= prevShift
 			}
 			if margin.Top > 0 {
-				increased := shiftReachableDown(g, obj, obj.TopLeft.Y, margin.Top, isHorizontal, true)
+				increased := shiftReachableDownIndexed(g, index, obj, obj.TopLeft.Y, margin.Top, isHorizontal, true)
 				for o := range increased {
 					prevMarginTop[o] = math.Max(prevMarginTop[o], margin.Top)
 				}
 			}
 			if padding.Top > 0 {
-				shiftReachableDown(g, obj, obj.TopLeft.Y, padding.Top, isHorizontal, false)
+				shiftReachableDownIndexed(g, index, obj, obj.TopLeft.Y, padding.Top, isHorizontal, false)
 				obj.Height += padding.Top
 			}
 		} else {
@@ -1274,26 +1333,26 @@ func adjustCrossRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool
 				margin.Right -= prevShift
 			}
 			if margin.Right > 0 {
-				increased := shiftReachableDown(g, obj, obj.TopLeft.X+obj.Width, margin.Right, isHorizontal, true)
+				increased := shiftReachableDownIndexed(g, index, obj, obj.TopLeft.X+obj.Width, margin.Right, isHorizontal, true)
 				for o := range increased {
 					prevMarginRight[o] = math.Max(prevMarginRight[o], margin.Right)
 				}
 			}
 			if padding.Right > 0 {
-				shiftReachableDown(g, obj, obj.TopLeft.X+obj.Width, padding.Right, isHorizontal, false)
+				shiftReachableDownIndexed(g, index, obj, obj.TopLeft.X+obj.Width, padding.Right, isHorizontal, false)
 				obj.Width += padding.Right
 			}
 			if prevShift, has := prevMarginLeft[obj]; has {
 				margin.Left -= prevShift
 			}
 			if margin.Left > 0 {
-				increased := shiftReachableDown(g, obj, obj.TopLeft.X, margin.Left, isHorizontal, true)
+				increased := shiftReachableDownIndexed(g, index, obj, obj.TopLeft.X, margin.Left, isHorizontal, true)
 				for o := range increased {
 					prevMarginLeft[o] = math.Max(prevMarginLeft[o], margin.Left)
 				}
 			}
 			if padding.Left > 0 {
-				shiftReachableDown(g, obj, obj.TopLeft.X, padding.Left, isHorizontal, false)
+				shiftReachableDownIndexed(g, index, obj, obj.TopLeft.X, padding.Left, isHorizontal, false)
 				obj.Width += padding.Left
 			}
 		}

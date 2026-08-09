@@ -21,6 +21,7 @@ func ConvertGraph(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts)
 		opts = &DefaultOpts
 	}
 	defer xdefer.Errorf(&err, "failed to ELK layout")
+	graphStats := collectELKGraphStats(g)
 
 	elkGraph := &ELKGraph{
 		ID: "",
@@ -44,7 +45,7 @@ func ConvertGraph(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts)
 	}
 	if elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing == DefaultOpts.SelfLoopSpacing {
 		// +5 for a tiny bit of padding
-		elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, childrenMaxSelfLoop(g.Root, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+5)
+		elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, graphStats.maxSelfLoopLabel(g.Root, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+5)
 	}
 	switch g.Root.Direction.Value {
 	case "down":
@@ -80,16 +81,9 @@ func ConvertGraph(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts)
 	}
 
 	walk(g.Root, nil, func(obj, parent *d2graph.Object) {
-		incoming := 0.
-		outgoing := 0.
-		for _, e := range g.Edges {
-			if e.Src == obj {
-				outgoing++
-			}
-			if e.Dst == obj {
-				incoming++
-			}
-		}
+		degree := graphStats.degrees[obj]
+		incoming := degree.incoming
+		outgoing := degree.outgoing
 		if incoming >= 2 || outgoing >= 2 {
 			switch g.Root.Direction.Value {
 			case "right", "left":
@@ -139,7 +133,7 @@ func ConvertGraph(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts)
 				},
 			}
 			if n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing == DefaultOpts.SelfLoopSpacing {
-				n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, childrenMaxSelfLoop(obj, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+5)
+				n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, graphStats.maxSelfLoopLabel(obj, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+5)
 			}
 
 			switch elkGraph.LayoutOptions.Direction {

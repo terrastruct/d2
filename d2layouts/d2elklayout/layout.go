@@ -119,6 +119,58 @@ var DefaultOpts = ConfigurableOpts{
 var port_spacing = 40.
 var edge_node_spacing = 40
 
+type objectDegree struct {
+	incoming float64
+	outgoing float64
+}
+
+type selfLoopLabelSize struct {
+	width  int
+	height int
+}
+
+// elkGraphStats contains the D2-specific graph-wide measurements used while
+// adapting a graph to ELK. Keeping them here avoids rescanning every edge for
+// every object and container.
+type elkGraphStats struct {
+	degrees          map[*d2graph.Object]objectDegree
+	selfLoopLabelMax map[*d2graph.Object]selfLoopLabelSize
+}
+
+func collectELKGraphStats(g *d2graph.Graph) elkGraphStats {
+	stats := elkGraphStats{
+		degrees:          make(map[*d2graph.Object]objectDegree, len(g.Objects)),
+		selfLoopLabelMax: make(map[*d2graph.Object]selfLoopLabelSize),
+	}
+	for _, edge := range g.Edges {
+		srcDegree := stats.degrees[edge.Src]
+		srcDegree.outgoing++
+		stats.degrees[edge.Src] = srcDegree
+
+		dstDegree := stats.degrees[edge.Dst]
+		dstDegree.incoming++
+		stats.degrees[edge.Dst] = dstDegree
+
+		if edge.Src != edge.Dst || edge.Label.Value == "" || edge.Src.Parent == nil {
+			continue
+		}
+		parent := edge.Src.Parent
+		labelSize := stats.selfLoopLabelMax[parent]
+		labelSize.width = go2.Max(labelSize.width, edge.LabelDimensions.Width)
+		labelSize.height = go2.Max(labelSize.height, edge.LabelDimensions.Height)
+		stats.selfLoopLabelMax[parent] = labelSize
+	}
+	return stats
+}
+
+func (s elkGraphStats) maxSelfLoopLabel(parent *d2graph.Object, isWidth bool) int {
+	size := s.selfLoopLabelMax[parent]
+	if isWidth {
+		return size.width
+	}
+	return size.height
+}
+
 type elkOpts struct {
 	EdgeNode                     int       `json:"elk.spacing.edgeNode,omitempty"`
 	FixedAlignment               string    `json:"elk.layered.nodePlacement.bk.fixedAlignment,omitempty"`
@@ -155,6 +207,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	if err := ctx.Err(); err != nil {
 		return err
 	}
+	graphStats := collectELKGraphStats(g)
 
 	elkGraph := &ELKGraph{
 		ID: "",
@@ -178,7 +231,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 	if elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing == DefaultOpts.SelfLoopSpacing {
 		// +5 for a tiny bit of padding
-		elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, childrenMaxSelfLoop(g.Root, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+5)
+		elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, graphStats.maxSelfLoopLabel(g.Root, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+5)
 	}
 	switch g.Root.Direction.Value {
 	case "down":
@@ -214,16 +267,9 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 
 	walk(g.Root, nil, func(obj, parent *d2graph.Object) {
-		incoming := 0.
-		outgoing := 0.
-		for _, e := range g.Edges {
-			if e.Src == obj {
-				outgoing++
-			}
-			if e.Dst == obj {
-				incoming++
-			}
-		}
+		degree := graphStats.degrees[obj]
+		incoming := degree.incoming
+		outgoing := degree.outgoing
 		if incoming >= 2 || outgoing >= 2 {
 			switch g.Root.Direction.Value {
 			case "right", "left":
@@ -273,7 +319,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				},
 			}
 			if n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing == DefaultOpts.SelfLoopSpacing {
-				n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, childrenMaxSelfLoop(obj, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+5)
+				n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, graphStats.maxSelfLoopLabel(obj, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+5)
 			}
 
 			switch elkGraph.LayoutOptions.Direction {
@@ -487,6 +533,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			objEdges[e.Dst] = append(objEdges[e.Dst], e)
 		}
 	}
+	descendantShifter := newDescendantShifter(g)
 
 	for _, obj := range g.Objects {
 		if margin, has := adjustments[obj]; has {
@@ -503,7 +550,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 					}
 				}
 				obj.TopLeft.X += margin.Left
-				obj.ShiftDescendants(margin.Left/2, 0)
+				descendantShifter.shift(obj, margin.Left/2, 0)
 				obj.Width -= margin.Left
 			}
 			if margin.Right > 0 {
@@ -516,7 +563,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 						e.Route[l-1].X -= margin.Right
 					}
 				}
-				obj.ShiftDescendants(-margin.Right/2, 0)
+				descendantShifter.shift(obj, -margin.Right/2, 0)
 				obj.Width -= margin.Right
 			}
 			if margin.Top > 0 {
@@ -530,7 +577,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 					}
 				}
 				obj.TopLeft.Y += margin.Top
-				obj.ShiftDescendants(0, margin.Top/2)
+				descendantShifter.shift(obj, 0, margin.Top/2)
 				obj.Height -= margin.Top
 			}
 			if margin.Bottom > 0 {
@@ -543,7 +590,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 						e.Route[l-1].Y -= margin.Bottom
 					}
 				}
-				obj.ShiftDescendants(0, -margin.Bottom/2)
+				descendantShifter.shift(obj, 0, -margin.Bottom/2)
 				obj.Height -= margin.Bottom
 			}
 		}
@@ -611,6 +658,18 @@ func dstPortID(obj *d2graph.Object, column string) string {
 // deleteBends is a shim for ELK to delete unnecessary bends
 // see https://github.com/terrastruct/d2/issues/1030
 func deleteBends(g *d2graph.Graph) {
+	hasCandidate := false
+	for _, edge := range g.Edges {
+		if edge.Src != edge.Dst && len(edge.Route) >= 4 {
+			hasCandidate = true
+			break
+		}
+	}
+	if !hasCandidate {
+		return
+	}
+	collisionIndex := newBendCollisionIndex(g)
+
 	// Get rid of S-shapes at the source and the target
 	// TODO there might be value in repeating this. removal of an S shape introducing another S shape that can still be removed
 	for _, isSource := range []bool{true, false} {
@@ -685,15 +744,15 @@ func deleteBends(g *d2graph.Graph) {
 			oldSegment := geo.NewSegment(start, corner)
 			newSegment := geo.NewSegment(newStart, end)
 
-			oldIntersects := countObjectIntersects(g, e.Src, e.Dst, *oldSegment)
-			newIntersects := countObjectIntersects(g, e.Src, e.Dst, *newSegment)
+			oldIntersects := collisionIndex.countObjectIntersects(e.Src, e.Dst, *oldSegment)
+			newIntersects := collisionIndex.countObjectIntersects(e.Src, e.Dst, *newSegment)
 
 			if newIntersects > oldIntersects {
 				continue
 			}
 
-			oldCrossingsCount, oldOverlapsCount, oldCloseOverlapsCount, oldTouchingCount := countEdgeIntersects(g, g.Edges[ei], *oldSegment)
-			newCrossingsCount, newOverlapsCount, newCloseOverlapsCount, newTouchingCount := countEdgeIntersects(g, g.Edges[ei], *newSegment)
+			oldCrossingsCount, oldOverlapsCount, oldCloseOverlapsCount, oldTouchingCount := collisionIndex.countEdgeIntersects(g.Edges[ei], *oldSegment)
+			newCrossingsCount, newOverlapsCount, newCloseOverlapsCount, newTouchingCount := collisionIndex.countEdgeIntersects(g.Edges[ei], *newSegment)
 
 			if newCrossingsCount > oldCrossingsCount {
 				continue
@@ -721,6 +780,7 @@ func deleteBends(g *d2graph.Graph) {
 					newStart,
 				)
 			}
+			collisionIndex.updateEdge(g.Edges[ei])
 		}
 	}
 
@@ -788,22 +848,22 @@ func deleteBends(g *d2graph.Graph) {
 			newS2 := geo.NewSegment(newCorner, end)
 
 			// Check that the new segments doesn't collide with anything new
-			oldIntersects := countObjectIntersects(g, e.Src, e.Dst, *oldS1) + countObjectIntersects(g, e.Src, e.Dst, *oldS2)
-			newIntersects := countObjectIntersects(g, e.Src, e.Dst, *newS1) + countObjectIntersects(g, e.Src, e.Dst, *newS2)
+			oldIntersects := collisionIndex.countObjectIntersects(e.Src, e.Dst, *oldS1) + collisionIndex.countObjectIntersects(e.Src, e.Dst, *oldS2)
+			newIntersects := collisionIndex.countObjectIntersects(e.Src, e.Dst, *newS1) + collisionIndex.countObjectIntersects(e.Src, e.Dst, *newS2)
 
 			if newIntersects > oldIntersects {
 				continue
 			}
 
-			oldCrossingsCount1, oldOverlapsCount1, oldCloseOverlapsCount1, oldTouchingCount1 := countEdgeIntersects(g, g.Edges[ei], *oldS1)
-			oldCrossingsCount2, oldOverlapsCount2, oldCloseOverlapsCount2, oldTouchingCount2 := countEdgeIntersects(g, g.Edges[ei], *oldS2)
+			oldCrossingsCount1, oldOverlapsCount1, oldCloseOverlapsCount1, oldTouchingCount1 := collisionIndex.countEdgeIntersects(g.Edges[ei], *oldS1)
+			oldCrossingsCount2, oldOverlapsCount2, oldCloseOverlapsCount2, oldTouchingCount2 := collisionIndex.countEdgeIntersects(g.Edges[ei], *oldS2)
 			oldCrossingsCount := oldCrossingsCount1 + oldCrossingsCount2
 			oldOverlapsCount := oldOverlapsCount1 + oldOverlapsCount2
 			oldCloseOverlapsCount := oldCloseOverlapsCount1 + oldCloseOverlapsCount2
 			oldTouchingCount := oldTouchingCount1 + oldTouchingCount2
 
-			newCrossingsCount1, newOverlapsCount1, newCloseOverlapsCount1, newTouchingCount1 := countEdgeIntersects(g, g.Edges[ei], *newS1)
-			newCrossingsCount2, newOverlapsCount2, newCloseOverlapsCount2, newTouchingCount2 := countEdgeIntersects(g, g.Edges[ei], *newS2)
+			newCrossingsCount1, newOverlapsCount1, newCloseOverlapsCount1, newTouchingCount1 := collisionIndex.countEdgeIntersects(g.Edges[ei], *newS1)
+			newCrossingsCount2, newOverlapsCount2, newCloseOverlapsCount2, newTouchingCount2 := collisionIndex.countEdgeIntersects(g.Edges[ei], *newS2)
 			newCrossingsCount := newCrossingsCount1 + newCrossingsCount2
 			newOverlapsCount := newOverlapsCount1 + newOverlapsCount2
 			newCloseOverlapsCount := newCloseOverlapsCount1 + newCloseOverlapsCount2
@@ -830,89 +890,10 @@ func deleteBends(g *d2graph.Graph) {
 			),
 				e.Route[i+3:]...,
 			)
+			collisionIndex.updateEdge(g.Edges[ei])
 			break
 		}
 	}
-}
-
-func countObjectIntersects(g *d2graph.Graph, src, dst *d2graph.Object, s geo.Segment) int {
-	count := 0
-	for i, o := range g.Objects {
-		if g.Objects[i] == src || g.Objects[i] == dst {
-			continue
-		}
-		if o.Intersects(s, float64(edge_node_spacing)-1) {
-			count++
-		}
-	}
-	return count
-}
-
-// countEdgeIntersects counts both crossings AND getting too close to a parallel segment
-func countEdgeIntersects(g *d2graph.Graph, sEdge *d2graph.Edge, s geo.Segment) (int, int, int, int) {
-	isHorizontal := math.Ceil(s.Start.Y) == math.Ceil(s.End.Y)
-	crossingsCount := 0
-	overlapsCount := 0
-	closeOverlapsCount := 0
-	touchingCount := 0
-	for i, e := range g.Edges {
-		if g.Edges[i] == sEdge {
-			continue
-		}
-
-		for i := 0; i < len(e.Route)-1; i++ {
-			otherS := geo.NewSegment(e.Route[i], e.Route[i+1])
-			otherIsHorizontal := math.Ceil(otherS.Start.Y) == math.Ceil(otherS.End.Y)
-			if isHorizontal == otherIsHorizontal {
-				if s.Overlaps(*otherS, !isHorizontal, 0.) {
-					if isHorizontal {
-						if math.Abs(s.Start.Y-otherS.Start.Y) < float64(edge_node_spacing)/2. {
-							overlapsCount++
-							if math.Abs(s.Start.Y-otherS.Start.Y) < float64(edge_node_spacing)/4. {
-								closeOverlapsCount++
-								if math.Abs(s.Start.Y-otherS.Start.Y) < 1. {
-									touchingCount++
-								}
-							}
-						}
-					} else {
-						if math.Abs(s.Start.X-otherS.Start.X) < float64(edge_node_spacing)/2. {
-							overlapsCount++
-							if math.Abs(s.Start.X-otherS.Start.X) < float64(edge_node_spacing)/4. {
-								closeOverlapsCount++
-								if math.Abs(s.Start.Y-otherS.Start.Y) < 1. {
-									touchingCount++
-								}
-							}
-						}
-					}
-				}
-			} else {
-				if s.Intersects(*otherS) {
-					crossingsCount++
-				}
-			}
-		}
-
-	}
-	return crossingsCount, overlapsCount, closeOverlapsCount, touchingCount
-}
-
-func childrenMaxSelfLoop(parent *d2graph.Object, isWidth bool) int {
-	max := 0
-	for _, ch := range parent.Children {
-		for _, e := range parent.Graph.Edges {
-			if e.Src == e.Dst && e.Src == ch && e.Label.Value != "" {
-				if isWidth {
-					max = go2.Max(max, e.LabelDimensions.Width)
-				} else {
-					max = go2.Max(max, e.LabelDimensions.Height)
-				}
-			}
-		}
-	}
-
-	return max
 }
 
 type shapePadding struct {

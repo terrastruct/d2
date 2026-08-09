@@ -133,6 +133,7 @@ func runASCIITxtarTest(t *testing.T, tc testCase) {
 		Ruler:          ruler,
 		Layout:         go2.Pointer("elk"),
 		LayoutResolver: layoutResolver,
+		LayoutReuse:    true,
 	}
 	renderOpts := &d2svg.RenderOpts{
 		Pad:     go2.Pointer(int64(0)),
@@ -341,6 +342,7 @@ func run(t *testing.T, tc testCase) {
 			MeasuredTexts:  tc.mtexts,
 			Layout:         go2.Pointer(layoutName),
 			LayoutResolver: layoutResolver,
+			LayoutReuse:    true,
 		}
 		renderOpts := &d2svg.RenderOpts{
 			Pad:     go2.Pointer(int64(0)),
