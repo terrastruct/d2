@@ -11,9 +11,9 @@ require (
 	github.com/coder/websocket v1.8.12
 	github.com/d2lang/dagro v0.1.0
 	github.com/d2lang/elk-go v0.1.0
+	github.com/d2lang/mathjax-go v0.1.0
 	github.com/d2lang/rough-go v0.1.0
 	github.com/d2lang/util-go v0.2.0
-	github.com/dop251/goja v0.0.0-20240927123429-241b342198c2
 	github.com/dsoprea/go-exif/v3 v3.0.1
 	github.com/dsoprea/go-png-image-structure/v2 v2.0.0-20210512210324-29b889a6093d
 	github.com/ericpauley/go-quantize v0.0.0-20200331213906-ae555eb2afa4
@@ -45,10 +45,8 @@ require (
 	github.com/dsoprea/go-utility/v2 v2.0.0-20221003172846-a3e1774ef349 // indirect
 	github.com/go-errors/errors v1.5.1 // indirect
 	github.com/go-jose/go-jose/v3 v3.0.5 // indirect
-	github.com/go-sourcemap/sourcemap v2.1.4+incompatible // indirect
 	github.com/go-stack/stack v1.8.1 // indirect
 	github.com/golang/geo v0.0.0-20230421003525-6adc56603217 // indirect
-	github.com/google/pprof v0.0.0-20240927180334-d43a67379298 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
