@@ -11,7 +11,7 @@ require (
 	github.com/coder/websocket v1.8.12
 	github.com/d2lang/dagro v0.1.0
 	github.com/d2lang/elk-go v0.1.0
-	github.com/d2lang/mathjax-go v0.0.0-20260809100800-bd3e7d76c755
+	github.com/d2lang/mathjax-go v0.1.0
 	github.com/d2lang/rough-go v0.1.0
 	github.com/d2lang/util-go v0.2.0
 	github.com/dsoprea/go-exif/v3 v3.0.1
