@@ -52,8 +52,18 @@ if ($LASTEXITCODE -ne 0 -or $archiveEntries.Count -eq 0) {
     throw 'unable to list release archive'
 }
 $archiveRoot = "d2-$Version/"
+$metadataRoot = "._d2-$Version"
 foreach ($entry in $archiveEntries) {
-    if (-not $entry.StartsWith($archiveRoot, [System.StringComparison]::Ordinal)) {
+    $normalizedEntry = $entry.Replace('\', '/')
+    if ($normalizedEntry.StartsWith('/', [System.StringComparison]::Ordinal) -or
+        $normalizedEntry -match '^[A-Za-z]:' -or
+        $normalizedEntry -match '(^|/)\.\.(/|$)') {
+        throw "release archive contains an unsafe path: $entry"
+    }
+    $isReleasePath = $normalizedEntry.StartsWith($archiveRoot, [System.StringComparison]::Ordinal)
+    $isMetadataPath = $normalizedEntry -eq $metadataRoot -or
+        $normalizedEntry.StartsWith("$metadataRoot/", [System.StringComparison]::Ordinal)
+    if (-not $isReleasePath -and -not $isMetadataPath) {
         throw "release archive contains a path outside ${archiveRoot}: $entry"
     }
 }
