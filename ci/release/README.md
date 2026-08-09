@@ -49,6 +49,30 @@ it depends on from ../sub/lib.
 - ./release.sh is the top level script to generate a new release.
   Run with --help for usage.
 
+The first release-script run must leave the GitHub release as a draft. Pushing its tag
+starts the `Windows MSI` workflow, which waits for all six release archives and pins the
+exact Windows amd64 archive, builds the installer on GitHub's `windows-2022` runner,
+verifies its metadata and installed contents, and uploads
+`d2-<version>-windows-amd64.msi` to that same draft.
+
+Do not publish the release until the workflow is green and the MSI is present. Review and
+merge the release PR, then publish the draft on GitHub. The D2 wrapper rejects
+`release.sh --publish`, and it refuses any release-builder rerun after the MSI is attached.
+This prevents the shared helper from publishing while the asynchronous build is running or
+moving the tag after an MSI was built from it.
+It also rejects a legacy local MSI in the version's build directory so the shared asset
+uploader cannot attach an unverified installer.
+
+The workflow can also be dispatched manually with release upload disabled. `v0.7.1` is
+the continuity fixture; because that release predates notices in the archives, only this
+non-uploading fixture build packages the current notices file. Every production MSI
+requires `THIRD_PARTY_NOTICES.txt` from its pinned release archive. Re-run only a failed
+job: the workflow's Actions artifact is immutable within a run, and a full rerun fails
+closed instead of replacing it.
+
+The MSI remains unsigned. Authenticode signing is tracked separately in
+[issue #1078](https://github.com/d2lang/d2/issues/1078).
+
 ## build.sh
 
 - ./build.sh builds the release archives for each platform into ./build/<VERSION>/*.tar.gz
@@ -65,8 +89,8 @@ calls it or publishes Docker tags from a legacy AWS SSH builder.
 ### Production Docker publishing
 
 The manually dispatched `Publish Docker release` GitHub workflow is the production path
-for Docker Hub. It replaces only the Docker portion of the legacy AWS release path; the
-other release asset builders are unchanged.
+for Docker Hub. It replaces the Docker portion of the legacy AWS release path; the Windows
+MSI is built separately by the `Windows MSI` workflow described above.
 
 Run it from the protected `master` branch after the GitHub release is published. Enter the
 exact v-prefixed release version and leave `publish_latest` off unless this stable release
