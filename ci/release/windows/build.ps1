@@ -97,9 +97,10 @@ Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'd2.ico') -Destination $wixDirec
 Copy-Item -LiteralPath $binaryPath -Destination (Join-Path $wixDirectory 'd2.exe')
 Copy-Item -LiteralPath $noticesPath -Destination (Join-Path $wixDirectory 'THIRD_PARTY_NOTICES.txt')
 
+$msiVersion = $Version.Substring(1).Split('-')[0]
 Push-Location $wixDirectory
 try {
-    & wix build -arch x64 -d "D2Version=$Version" ./d2.wxs
+    & wix build -arch x64 -d "D2Version=$msiVersion" ./d2.wxs
     if ($LASTEXITCODE -ne 0) {
         throw "wix exited with status $LASTEXITCODE"
     }
@@ -135,10 +136,8 @@ foreach ($property in $expectedProperties.Keys) {
 }
 
 $productVersion = Get-MsiProperty -Database $database -Name ProductVersion
-$versionWithoutPrefix = $Version.Substring(1)
-$versionCore = $versionWithoutPrefix.Split('-')[0]
-if ($productVersion -notin @($Version, $versionWithoutPrefix, $versionCore)) {
-    throw "MSI ProductVersion is '$productVersion', expected $Version"
+if ($productVersion -cne $msiVersion) {
+    throw "MSI ProductVersion is '$productVersion', expected $msiVersion"
 }
 
 $installArguments = "/a `"$msiPath`" /qn TARGETDIR=`"$extractDirectory`""
