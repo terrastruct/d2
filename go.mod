@@ -11,7 +11,7 @@ require (
 	github.com/andybalholm/brotli v1.2.2
 	github.com/coder/websocket v1.8.15
 	github.com/d2lang/dagro v0.1.1
-	github.com/d2lang/elk-go v0.1.0
+	github.com/d2lang/elk-go v0.1.1
 	github.com/d2lang/mathjax-go v0.1.0
 	github.com/d2lang/rough-go v0.1.0
 	github.com/d2lang/util-go v0.2.0
