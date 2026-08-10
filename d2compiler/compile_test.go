@@ -18,6 +18,34 @@ import (
 	"github.com/d2lang/d2/d2target"
 )
 
+func TestOpacityValidation(t *testing.T) {
+	t.Parallel()
+
+	const wantErr = `opacity.d2:1:18: expected "opacity" to be a number between 0.0 and 1.0`
+	for _, value := range []string{
+		"NaN", "nan", "NAN",
+		"Inf", "+Inf", "-Inf",
+		"Infinity", "+Infinity", "-Infinity",
+	} {
+		value := value
+		t.Run("reject_"+value, func(t *testing.T) {
+			t.Parallel()
+			_, _, err := d2compiler.Compile("opacity.d2", strings.NewReader("x.style.opacity: "+value), nil)
+			assert.ErrorString(t, err, wantErr)
+		})
+	}
+
+	for _, value := range []string{"0", "0.5", "1"} {
+		value := value
+		t.Run("accept_"+value, func(t *testing.T) {
+			t.Parallel()
+			g, _, err := d2compiler.Compile("opacity.d2", strings.NewReader("x.style.opacity: "+value), nil)
+			assert.Success(t, err)
+			assert.String(t, value, g.Objects[0].Style.Opacity.Value)
+		})
+	}
+}
+
 func TestCompile(t *testing.T) {
 	t.Parallel()
 
