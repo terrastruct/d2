@@ -240,8 +240,12 @@ func applyConfigs(config *d2target.Config, compileOpts *CompileOptions, renderOp
 	if renderOpts.Center == nil {
 		renderOpts.Center = config.Center
 	}
-	renderOpts.ThemeOverrides = config.ThemeOverrides
-	renderOpts.DarkThemeOverrides = config.DarkThemeOverrides
+	if renderOpts.ThemeOverrides == nil {
+		renderOpts.ThemeOverrides = config.ThemeOverrides
+	}
+	if renderOpts.DarkThemeOverrides == nil {
+		renderOpts.DarkThemeOverrides = config.DarkThemeOverrides
+	}
 }
 
 func applyDefaults(compileOpts *CompileOptions, renderOpts *d2svg.RenderOpts) {
