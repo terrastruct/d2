@@ -422,10 +422,6 @@ func (r *endpointResolver) resolve(edge *d2graph.Edge) (*d2graph.Object, *d2grap
 	return src, dst
 }
 
-func getEdgeEndpoints(g *d2graph.Graph, edge *d2graph.Edge) (*d2graph.Object, *d2graph.Object) {
-	return newEndpointResolver(g).resolve(edge)
-}
-
 type containerTopology struct {
 	container   *d2graph.Object
 	hasIncoming map[*d2graph.Object]bool
@@ -520,21 +516,6 @@ func (t *containerTopology) longestChainEndpoints() (*d2graph.Object, *d2graph.O
 
 func getLongestEdgeChainEndpoints(g *d2graph.Graph, container *d2graph.Object) (*d2graph.Object, *d2graph.Object) {
 	return newContainerTopology(g, container).longestChainEndpoints()
-}
-
-// getLongestEdgeChainHead finds the longest chain in a container and gets its head
-// If there are multiple chains of the same length, get the head closest to the center
-func getLongestEdgeChainHead(g *d2graph.Graph, container *d2graph.Object) *d2graph.Object {
-	head, _ := getLongestEdgeChainEndpoints(g, container)
-	return head
-}
-
-// getLongestEdgeChainTail gets the node at the end of the longest edge chain, because that will be the end of the container
-// and is what external connections should connect with.
-// If there are multiple of same length, get the one closest to the middle
-func getLongestEdgeChainTail(g *d2graph.Graph, container *d2graph.Object) *d2graph.Object {
-	_, tail := getLongestEdgeChainEndpoints(g, container)
-	return tail
 }
 
 func inContainer(obj, container *d2graph.Object) *d2graph.Object {
@@ -764,13 +745,6 @@ func shiftUp(g *d2graph.Graph, start, distance float64, isHorizontal bool) {
 			obj.TopLeft.Y -= distance
 		}
 	}
-}
-
-// shift down everything that is below start
-// shift all nodes that are reachable via an edge or being directly below a shifting node or expanding container
-// expand containers to wrap shifted nodes
-func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance float64, isHorizontal, isMargin bool) map[*d2graph.Object]struct{} {
-	return shiftReachableDownIndexed(g, newCrossRankIndex(g), obj, start, distance, isHorizontal, isMargin)
 }
 
 type crossRankIndex struct {

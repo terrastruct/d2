@@ -127,11 +127,11 @@ local.code -> aws.ec2: {
 			},
 		},
 		{
-			name: "flags-panic",
+			name: "layout-extra-args",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `x -> y`)
 				err := runTestMain(t, ctx, dir, env, "layout", "dagre", "--dagre-nodesep", "50", "hello-world.d2")
-				assert.ErrorString(t, err, `failed to wait xmain test: e2etests-cli/d2: failed to unmarshal input to graph: `)
+				assert.ErrorString(t, err, `failed to wait xmain test: e2etests-cli/d2: bad usage: layout subcommand accepts at most one argument`)
 			},
 		},
 		{

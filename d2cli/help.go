@@ -55,7 +55,7 @@ func layoutCmd(ctx context.Context, ms *xmain.State, ps []d2plugin.Plugin) error
 	} else if len(ms.Opts.Flags.Args()) == 2 {
 		return longLayoutHelp(ctx, ms, ps)
 	} else {
-		return pluginSubcommand(ctx, ms, ps)
+		return xmain.UsageErrorf("layout subcommand accepts at most one argument")
 	}
 }
 
@@ -141,20 +141,6 @@ The available options are: %s. For details on each option, run "d2 layout".
 
 For more information on setup, please visit https://github.com/d2lang/d2.`,
 		layout, strings.Join(names, ", "))
-}
-
-func pluginSubcommand(ctx context.Context, ms *xmain.State, ps []d2plugin.Plugin) error {
-	layout := ms.Opts.Flags.Arg(1)
-	plugin, err := d2plugin.FindPlugin(ctx, ps, layout)
-	if err != nil {
-		if errors.Is(err, exec.ErrNotFound) {
-			return layoutNotFound(ctx, ps, layout)
-		}
-		return err
-	}
-
-	ms.Opts.Args = ms.Opts.Flags.Args()[2:]
-	return d2plugin.Serve(plugin)(ctx, ms)
 }
 
 func humanPath(fp string) string {
