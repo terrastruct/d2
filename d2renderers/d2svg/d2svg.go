@@ -1157,6 +1157,10 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 	}
 
 	if connection.Label != "" {
+		richLabelLink := connection.Link != "" && connection.Language != ""
+		if richLabelLink {
+			fmt.Fprintf(writer, `<a href="%s" xlink:href="%[1]s">`, svg.EscapeText(connection.Link))
+		}
 		if connection.Language == "latex" {
 			render, err := d2latex.Render(connection.Label)
 			if err != nil {
@@ -1292,6 +1296,9 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 			if connection.Link != "" {
 				fmt.Fprintf(writer, "</a>")
 			}
+		}
+		if richLabelLink {
+			fmt.Fprint(writer, "</a>")
 		}
 	}
 
