@@ -43,6 +43,7 @@
 - compiler: reject non-finite opacity values with a source diagnostic
 - d2svg: preserve connection links on LaTeX, Markdown, and code labels
 - d2lib: preserve caller-supplied light and dark theme overrides over source configuration
+- compiler: index equivalent connections consistently when endpoint notation is reversed
 - exports: pptx follows standards more closely, addressing warnings from some Powerpoint software [#2645](https://github.com/d2lang/d2/pull/2645)
 - d2sequence: fix edge case of invalid sequence diagrams [#2660](https://github.com/d2lang/d2/pull/2660)
 - d2svg: Text may overflow legend bounds when monospace font is used [#2674](https://github.com/d2lang/d2/pull/2674)
