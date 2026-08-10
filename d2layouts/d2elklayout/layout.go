@@ -195,6 +195,48 @@ type elkOpts struct {
 	ConfigurableOpts
 }
 
+func newRootLayoutOptions(opts *ConfigurableOpts) *elkOpts {
+	return &elkOpts{
+		Thoroughness:                 8,
+		EdgeEdgeBetweenLayersSpacing: 50,
+		EdgeNode:                     edge_node_spacing,
+		HierarchyHandling:            "INCLUDE_CHILDREN",
+		FixedAlignment:               "BALANCED",
+		ConsiderModelOrder:           "NODES_AND_EDGES",
+		CycleBreakingStrategy:        "GREEDY_MODEL_ORDER",
+		NodeSizeConstraints:          "MINIMUM_SIZE",
+		ContentAlignment:             "H_CENTER V_CENTER",
+		ConfigurableOpts: ConfigurableOpts{
+			Algorithm:       opts.Algorithm,
+			NodeSpacing:     opts.NodeSpacing,
+			EdgeNodeSpacing: opts.EdgeNodeSpacing,
+			SelfLoopSpacing: opts.SelfLoopSpacing,
+		},
+	}
+}
+
+func newContainerLayoutOptions(opts *ConfigurableOpts) *elkOpts {
+	return &elkOpts{
+		Thoroughness:                 8,
+		EdgeEdgeBetweenLayersSpacing: 50,
+		HierarchyHandling:            "INCLUDE_CHILDREN",
+		FixedAlignment:               "BALANCED",
+		EdgeNode:                     edge_node_spacing,
+		// ELK 0.12 crashes on compound subgraphs when model-order
+		// processing is enabled below the root. Keep it disabled there.
+		ConsiderModelOrder:    "NONE",
+		CycleBreakingStrategy: "GREEDY",
+		NodeSizeConstraints:   "MINIMUM_SIZE",
+		ContentAlignment:      "H_CENTER V_CENTER",
+		ConfigurableOpts: ConfigurableOpts{
+			NodeSpacing:     opts.NodeSpacing,
+			EdgeNodeSpacing: opts.EdgeNodeSpacing,
+			SelfLoopSpacing: opts.SelfLoopSpacing,
+			Padding:         opts.Padding,
+		},
+	}
+}
+
 func DefaultLayout(ctx context.Context, g *d2graph.Graph) (err error) {
 	return Layout(ctx, g, nil)
 }
@@ -210,24 +252,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	graphStats := collectELKGraphStats(g)
 
 	elkGraph := &ELKGraph{
-		ID: "",
-		LayoutOptions: &elkOpts{
-			Thoroughness:                 8,
-			EdgeEdgeBetweenLayersSpacing: 50,
-			EdgeNode:                     edge_node_spacing,
-			HierarchyHandling:            "INCLUDE_CHILDREN",
-			FixedAlignment:               "BALANCED",
-			ConsiderModelOrder:           "NODES_AND_EDGES",
-			CycleBreakingStrategy:        "GREEDY_MODEL_ORDER",
-			NodeSizeConstraints:          "MINIMUM_SIZE",
-			ContentAlignment:             "H_CENTER V_CENTER",
-			ConfigurableOpts: ConfigurableOpts{
-				Algorithm:       opts.Algorithm,
-				NodeSpacing:     opts.NodeSpacing,
-				EdgeNodeSpacing: opts.EdgeNodeSpacing,
-				SelfLoopSpacing: opts.SelfLoopSpacing,
-			},
-		},
+		ID:            "",
+		LayoutOptions: newRootLayoutOptions(opts),
 	}
 	if elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing == DefaultOpts.SelfLoopSpacing {
 		// +5 for a tiny bit of padding
@@ -300,24 +326,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 
 		if len(obj.ChildrenArray) > 0 {
-			n.LayoutOptions = &elkOpts{
-				ForceNodeModelOrder:          true,
-				Thoroughness:                 8,
-				EdgeEdgeBetweenLayersSpacing: 50,
-				HierarchyHandling:            "INCLUDE_CHILDREN",
-				FixedAlignment:               "BALANCED",
-				EdgeNode:                     edge_node_spacing,
-				ConsiderModelOrder:           "NODES_AND_EDGES",
-				CycleBreakingStrategy:        "GREEDY_MODEL_ORDER",
-				NodeSizeConstraints:          "MINIMUM_SIZE",
-				ContentAlignment:             "H_CENTER V_CENTER",
-				ConfigurableOpts: ConfigurableOpts{
-					NodeSpacing:     opts.NodeSpacing,
-					EdgeNodeSpacing: opts.EdgeNodeSpacing,
-					SelfLoopSpacing: opts.SelfLoopSpacing,
-					Padding:         opts.Padding,
-				},
-			}
+			n.LayoutOptions = newContainerLayoutOptions(opts)
 			if n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing == DefaultOpts.SelfLoopSpacing {
 				n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, graphStats.maxSelfLoopLabel(obj, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+5)
 			}
