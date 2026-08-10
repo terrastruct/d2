@@ -643,6 +643,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 
 	deleteBends(g)
+	deconflictSelfLoopLabels(g)
 
 	return nil
 }
@@ -653,6 +654,82 @@ func srcPortID(obj *d2graph.Object, column string) string {
 
 func dstPortID(obj *d2graph.Object, column string) string {
 	return fmt.Sprintf("%s.%s.dst", obj.AbsID(), column)
+}
+
+// deconflictSelfLoopLabels keeps the usual centered label position unless two
+// labels on self loops around the same object materially overlap. Newer ELK
+// versions can place multiple fixed-port loops on the same side of an object,
+// making both route midpoints coincide. Moving only the later label preserves
+// the routed geometry and existing output for non-overlapping loops.
+func deconflictSelfLoopLabels(g *d2graph.Graph) {
+	const materialOverlap = float64(label.PADDING)
+	candidatePercentages := [...]float64{0.4, 0.6, 0.3, 0.7, 0.2, 0.8, 0.1, 0.9}
+
+	placedByObject := make(map[*d2graph.Object][]*geo.Box)
+	for _, edge := range g.Edges {
+		if edge.Src != edge.Dst || edge.Label.Value == "" || edge.LabelPosition == nil || len(edge.Route) < 2 {
+			continue
+		}
+
+		position := label.FromString(*edge.LabelPosition)
+		percentage := 0.0
+		if edge.LabelPercentage != nil {
+			percentage = *edge.LabelPercentage
+		}
+		box := edgeLabelBox(edge, position, percentage)
+		if box == nil {
+			continue
+		}
+
+		placed := placedByObject[edge.Src]
+		if materiallyOverlapsAny(box, placed, materialOverlap) {
+			for _, candidate := range candidatePercentages {
+				candidateBox := edgeLabelBox(edge, label.UnlockedMiddle, candidate)
+				if candidateBox == nil || overlapsAny(candidateBox, placed) {
+					continue
+				}
+				edge.LabelPosition = go2.Pointer(label.UnlockedMiddle.String())
+				edge.LabelPercentage = go2.Pointer(candidate)
+				box = candidateBox
+				break
+			}
+		}
+		placedByObject[edge.Src] = append(placed, box)
+	}
+}
+
+func edgeLabelBox(edge *d2graph.Edge, position label.Position, percentage float64) *geo.Box {
+	topLeft, _ := position.GetPointOnRoute(
+		geo.Route(edge.Route),
+		0,
+		percentage,
+		float64(edge.LabelDimensions.Width),
+		float64(edge.LabelDimensions.Height),
+	)
+	if topLeft == nil {
+		return nil
+	}
+	return geo.NewBox(topLeft, float64(edge.LabelDimensions.Width), float64(edge.LabelDimensions.Height))
+}
+
+func materiallyOverlapsAny(box *geo.Box, others []*geo.Box, minimum float64) bool {
+	for _, other := range others {
+		overlapWidth := math.Min(box.TopLeft.X+box.Width, other.TopLeft.X+other.Width) - math.Max(box.TopLeft.X, other.TopLeft.X)
+		overlapHeight := math.Min(box.TopLeft.Y+box.Height, other.TopLeft.Y+other.Height) - math.Max(box.TopLeft.Y, other.TopLeft.Y)
+		if overlapWidth > minimum && overlapHeight > minimum {
+			return true
+		}
+	}
+	return false
+}
+
+func overlapsAny(box *geo.Box, others []*geo.Box) bool {
+	for _, other := range others {
+		if box.Overlaps(*other) {
+			return true
+		}
+	}
+	return false
 }
 
 // deleteBends is a shim for ELK to delete unnecessary bends
