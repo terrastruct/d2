@@ -2596,16 +2596,20 @@ func ReconnectEdgeIDDeltas(g *d2graph.Graph, boardPath []string, edgeKey string,
 	firstRef := edge.References[0]
 	line := firstRef.MapKey.Range.Start.Line
 	newIndex := 0
+	sameEquivalentEdge := edge.IsEquivalent(newSrc, edge.SrcArrow, newDst, edge.DstArrow)
+	if sameEquivalentEdge {
+		newIndex = edge.Index
+	}
 
 	// For the edge's own delta, it just needs to know how many edges came before it with the same src and dst
 	for _, otherEdge := range boardG.Edges {
-		if otherEdge.Src == newSrc && otherEdge.Dst == newDst {
+		if !sameEquivalentEdge && otherEdge.IsEquivalent(newSrc, edge.SrcArrow, newDst, edge.DstArrow) {
 			firstRef := otherEdge.References[0]
 			if firstRef.MapKey.Range.Start.Line <= line {
 				newIndex++
 			}
 		}
-		if otherEdge.Src == edge.Src && otherEdge.Dst == edge.Dst && otherEdge.Index > edge.Index {
+		if !sameEquivalentEdge && otherEdge.IsEquivalent(edge.Src, edge.SrcArrow, edge.Dst, edge.DstArrow) && otherEdge.Index > edge.Index {
 			before := otherEdge.AbsID()
 			otherEdge.Index--
 			after := otherEdge.AbsID()
@@ -2615,7 +2619,7 @@ func ReconnectEdgeIDDeltas(g *d2graph.Graph, boardPath []string, edgeKey string,
 	}
 
 	for _, otherEdge := range g.Edges {
-		if otherEdge.Src == newSrc && otherEdge.Dst == newDst {
+		if !sameEquivalentEdge && otherEdge.IsEquivalent(newSrc, edge.SrcArrow, newDst, edge.DstArrow) {
 			if otherEdge.Index >= newIndex {
 				before := otherEdge.AbsID()
 				otherEdge.Index++

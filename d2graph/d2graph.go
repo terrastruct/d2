@@ -845,11 +845,18 @@ func (obj *Object) FindEdges(mk *d2ast.Key) ([]*Edge, bool) {
 	}
 
 	var ea []*Edge
+	srcArrow := ae.SrcArrow == "<"
+	dstArrow := ae.DstArrow == ">"
 	for _, e := range obj.Graph.Edges {
-		if strings.EqualFold(src, e.Src.AbsID()) &&
-			((ae.SrcArrow == "<" && e.SrcArrow) || (ae.SrcArrow == "" && !e.SrcArrow)) &&
+		direct := strings.EqualFold(src, e.Src.AbsID()) &&
+			srcArrow == e.SrcArrow &&
 			strings.EqualFold(dst, e.Dst.AbsID()) &&
-			((ae.DstArrow == ">" && e.DstArrow) || (ae.DstArrow == "" && !e.DstArrow)) {
+			dstArrow == e.DstArrow
+		flipped := strings.EqualFold(src, e.Dst.AbsID()) &&
+			srcArrow == e.DstArrow &&
+			strings.EqualFold(dst, e.Src.AbsID()) &&
+			dstArrow == e.SrcArrow
+		if direct || flipped {
 			ea = append(ea, e)
 		}
 	}
@@ -1379,17 +1386,29 @@ func addSQLTableColumnIndices(e *Edge, srcID, dstID []d2ast.String, obj, src, ds
 	}
 }
 
-// TODO: Treat undirectional/bidirectional edge here and in HasEdge flipped. Same with
-// SrcArrow.
 func (e *Edge) initIndex() {
 	for _, e2 := range e.Src.Graph.Edges {
-		if e.Src == e2.Src &&
-			e.SrcArrow == e2.SrcArrow &&
-			e.Dst == e2.Dst &&
-			e.DstArrow == e2.DstArrow {
+		if e2.IsEquivalent(e.Src, e.SrcArrow, e.Dst, e.DstArrow) {
 			e.Index++
 		}
 	}
+}
+
+// IsEquivalent reports whether the given endpoints describe the same edge. Arrowheads
+// are attached to endpoints, so reversing the endpoint order also reverses the arrow
+// fields.
+func (e *Edge) IsEquivalent(src *Object, srcArrow bool, dst *Object, dstArrow bool) bool {
+	direct := e.Src == src &&
+		e.SrcArrow == srcArrow &&
+		e.Dst == dst &&
+		e.DstArrow == dstArrow
+	if direct {
+		return true
+	}
+	return e.Src == dst &&
+		e.SrcArrow == dstArrow &&
+		e.Dst == src &&
+		e.DstArrow == srcArrow
 }
 
 func findMeasured(mtexts []*d2target.MText, t1 *d2target.MText) *d2target.TextDimensions {

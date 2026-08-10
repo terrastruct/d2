@@ -279,19 +279,31 @@ func appendEdgePathKey(b *strings.Builder, path []d2ast.String) {
 }
 
 func makeEdgeIndexKey(eid *EdgeID) string {
-	var b strings.Builder
-	appendEdgePathKey(&b, eid.SrcPath)
+	var src, dst strings.Builder
+	appendEdgePathKey(&src, eid.SrcPath)
 	if eid.SrcArrow {
-		b.WriteByte('<')
+		src.WriteByte('*')
 	} else {
-		b.WriteByte('-')
+		src.WriteByte('-')
 	}
-	appendEdgePathKey(&b, eid.DstPath)
+	appendEdgePathKey(&dst, eid.DstPath)
 	if eid.DstArrow {
-		b.WriteByte('>')
+		dst.WriteByte('*')
 	} else {
-		b.WriteByte('-')
+		dst.WriteByte('-')
 	}
+
+	first, second := src.String(), dst.String()
+	if first > second {
+		first, second = second, first
+	}
+	var b strings.Builder
+	b.WriteString(strconv.Itoa(len(first)))
+	b.WriteByte(':')
+	b.WriteString(first)
+	b.WriteString(strconv.Itoa(len(second)))
+	b.WriteByte(':')
+	b.WriteString(second)
 	return b.String()
 }
 
@@ -685,30 +697,29 @@ func (eid *EdgeID) Match(eid2 *EdgeID) bool {
 		}
 	}
 
-	if len(eid.SrcPath) != len(eid2.SrcPath) {
+	direct := edgePathEqual(eid.SrcPath, eid2.SrcPath) &&
+		eid.SrcArrow == eid2.SrcArrow &&
+		edgePathEqual(eid.DstPath, eid2.DstPath) &&
+		eid.DstArrow == eid2.DstArrow
+	if direct {
+		return true
+	}
+
+	return edgePathEqual(eid.SrcPath, eid2.DstPath) &&
+		eid.SrcArrow == eid2.DstArrow &&
+		edgePathEqual(eid.DstPath, eid2.SrcPath) &&
+		eid.DstArrow == eid2.SrcArrow
+}
+
+func edgePathEqual(p1, p2 []d2ast.String) bool {
+	if len(p1) != len(p2) {
 		return false
 	}
-	if eid.SrcArrow != eid2.SrcArrow {
-		return false
-	}
-	for i, s := range eid.SrcPath {
-		if !strings.EqualFold(s.ScalarString(), eid2.SrcPath[i].ScalarString()) {
+	for i, s := range p1 {
+		if !strings.EqualFold(s.ScalarString(), p2[i].ScalarString()) {
 			return false
 		}
 	}
-
-	if len(eid.DstPath) != len(eid2.DstPath) {
-		return false
-	}
-	if eid.DstArrow != eid2.DstArrow {
-		return false
-	}
-	for i, s := range eid.DstPath {
-		if !strings.EqualFold(s.ScalarString(), eid2.DstPath[i].ScalarString()) {
-			return false
-		}
-	}
-
 	return true
 }
 
