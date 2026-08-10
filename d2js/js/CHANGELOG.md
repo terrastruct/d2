@@ -6,6 +6,7 @@ include changes to the main d2 project.**
 ## Next
 
 - Fix concurrent calls sharing a D2 instance
+- Fix completions after Unicode characters
 - Fix TypeScript signatures
 - Fix theme-overrides not applying
 - Fix grids in ELK layouts

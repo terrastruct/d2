@@ -585,7 +585,7 @@ func GetCompletions(args []js.Value) (interface{}, error) {
 	line := args[1].Int()
 	column := args[2].Int()
 
-	completions, err := d2lsp.GetCompletionItems(text, line, column)
+	completions, err := d2lsp.GetCompletionItemsUTF16(text, line, column)
 	if err != nil {
 		return nil, &WASMError{Message: err.Error(), Code: 500}
 	}
