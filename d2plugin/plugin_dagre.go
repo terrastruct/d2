@@ -94,7 +94,3 @@ func (p *dagrePlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
 	p.mu.Unlock()
 	return d2dagrelayout.Layout(ctx, g, &optsCopy)
 }
-
-func (p *dagrePlugin) PostProcess(ctx context.Context, in []byte) ([]byte, error) {
-	return in, nil
-}

@@ -685,7 +685,7 @@ func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, fs
 				if err != nil {
 					return nil, false, err
 				}
-				out, err = plugin.PostProcess(ctx, out)
+				out, err = postProcess(ctx, plugin, out)
 				if err != nil {
 					return nil, false, err
 				}
@@ -809,6 +809,14 @@ func relink(currDiagramPath string, d *d2target.Diagram, linkToOutput map[string
 		}
 	}
 	return nil
+}
+
+func postProcess(ctx context.Context, plugin d2plugin.Plugin, in []byte) ([]byte, error) {
+	postProcessor, ok := plugin.(d2plugin.PostProcessor)
+	if !ok {
+		return in, nil
+	}
+	return postProcessor.PostProcess(ctx, in)
 }
 
 func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, browser playwright.Browser, ruler *textmeasure.Ruler, diagram *d2target.Diagram, ext exportExtension, asciiMode string) ([][]byte, error) {
@@ -960,7 +968,7 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 	}
 
 	if opts.MasterID == "" {
-		svg, err = plugin.PostProcess(ctx, svg)
+		svg, err = postProcess(ctx, plugin, svg)
 		if err != nil {
 			return svg, err
 		}
@@ -1055,7 +1063,7 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 			return nil, err
 		}
 
-		svg, err = plugin.PostProcess(ctx, svg)
+		svg, err = postProcess(ctx, plugin, svg)
 		if err != nil {
 			return svg, err
 		}
@@ -1163,7 +1171,7 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 			return nil, err
 		}
 
-		svg, err = plugin.PostProcess(ctx, svg)
+		svg, err = postProcess(ctx, plugin, svg)
 		if err != nil {
 			return nil, err
 		}
@@ -1458,7 +1466,7 @@ func renderPNGsForGIF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plug
 			return nil, nil, err
 		}
 
-		svg, err = plugin.PostProcess(ctx, svg)
+		svg, err = postProcess(ctx, plugin, svg)
 		if err != nil {
 			return nil, nil, err
 		}

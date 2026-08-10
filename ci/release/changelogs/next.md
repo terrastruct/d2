@@ -4,6 +4,8 @@
 
 #### Improvements 🧹
 
+- plugins: make render post-processing optional and deprecate it for removal after one protocol compatibility cycle; legacy external `postprocess` commands remain supported during the transition
+- api: deprecate legacy layout-feature constants, raw-WASM ELK/object-order bridges, unused public wrappers, and test-only comparison, validation, and logging helpers; compatibility entry points remain callable for one release while in-repository callers use supported or internal replacements
 - maintenance: update the Go toolchain to 1.26.5 and refresh Go, d2.js, CI, and release dependencies
 - renders: update syntax highlighting and migrate archived font and PDF dependencies to maintained replacements
 - d2dagre: replace the embedded JavaScript runtime with the native Go Dagro port without changing layout output

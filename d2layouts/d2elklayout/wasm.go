@@ -16,6 +16,10 @@ import (
 
 // ConvertGraph builds the pre-layout ELK graph exposed by the legacy WASM API.
 // Normal WASM compilation calls Layout and runs Elk-go directly.
+//
+// Deprecated: use Layout to run ELK inside D2. ConvertGraph exists only for
+// the deprecated raw WASM getELKGraph export and will be removed with it after
+// one compatibility release.
 func ConvertGraph(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (_ *ELKGraph, err error) {
 	if opts == nil {
 		opts = &DefaultOpts

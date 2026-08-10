@@ -16,6 +16,7 @@ import (
 	"github.com/d2lang/d2/d2compiler"
 	"github.com/d2lang/d2/d2exporter"
 	"github.com/d2lang/d2/d2layouts/d2dagrelayout"
+	"github.com/d2lang/d2/internal/testlog"
 	"github.com/d2lang/d2/lib/log"
 	"github.com/d2lang/d2/lib/textmeasure"
 )
@@ -114,7 +115,7 @@ func test(t *testing.T, textPath, text string) {
 			}
 		}()
 
-		ctx := log.WithTB(context.Background(), t)
+		ctx := log.With(context.Background(), testlog.New(t))
 
 		ruler, err := textmeasure.NewRuler()
 		assert.Nil(t, err)

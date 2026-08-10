@@ -107,7 +107,3 @@ Flags:
 func (p elkPlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
 	return d2elklayout.Layout(ctx, g, p.opts)
 }
-
-func (p elkPlugin) PostProcess(ctx context.Context, in []byte) ([]byte, error) {
-	return in, nil
-}

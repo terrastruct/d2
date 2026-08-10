@@ -14,6 +14,7 @@ import (
 
 	tassert "github.com/stretchr/testify/assert"
 
+	"github.com/d2lang/d2/internal/testlog"
 	"github.com/d2lang/d2/lib/log"
 	"github.com/d2lang/d2/lib/simplelog"
 	"github.com/d2lang/util-go/go2"
@@ -51,7 +52,7 @@ func TestRegex(t *testing.T) {
 
 func TestInlineRemote(t *testing.T) {
 	imgCache = sync.Map{}
-	ctx := log.WithTB(context.Background(), t)
+	ctx := log.With(context.Background(), testlog.New(t))
 	svgURL := "https://icons.terrastruct.com/essentials/004-picture.svg"
 	pngURL := "https://cdn4.iconfinder.com/data/icons/smart-phones-technologies/512/android-phone.png"
 
@@ -156,7 +157,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 
 func TestInlineLocal(t *testing.T) {
 	imgCache = sync.Map{}
-	ctx := log.WithTB(context.Background(), t)
+	ctx := log.With(context.Background(), testlog.New(t))
 	svgURL, err := filepath.Abs("./test_svg.svg")
 	if err != nil {
 		t.Fatal(err)
@@ -255,7 +256,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 // TestDuplicateURL ensures that we don't fetch the same image twice
 func TestDuplicateURL(t *testing.T) {
 	imgCache = sync.Map{}
-	ctx := log.WithTB(context.Background(), t)
+	ctx := log.With(context.Background(), testlog.New(t))
 	url1 := "https://icons.terrastruct.com/essentials/004-picture.svg"
 	url2 := "https://icons.terrastruct.com/essentials/004-picture.svg"
 
@@ -310,7 +311,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 
 func TestImgCache(t *testing.T) {
 	imgCache = sync.Map{}
-	ctx := log.WithTB(context.Background(), t)
+	ctx := log.With(context.Background(), testlog.New(t))
 	url1 := "https://icons.terrastruct.com/essentials/004-picture.svg"
 	url2 := "https://icons.terrastruct.com/essentials/004-picture.svg"
 

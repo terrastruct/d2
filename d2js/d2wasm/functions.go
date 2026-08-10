@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"sync"
 	"syscall/js"
 
 	"github.com/d2lang/d2/d2ast"
@@ -36,6 +37,16 @@ import (
 
 const DEFAULT_INPUT_PATH = "index"
 
+const (
+	getObjOrderDeprecation = "d2.getObjOrder is deprecated and will be removed after one compatibility release; use d2oracle.GetObjOrder in Go integrations."
+	getELKGraphDeprecation = `d2.getELKGraph is deprecated and will be removed after one compatibility release; use d2.compile with options.layout set to "elk".`
+)
+
+var (
+	getObjOrderDeprecationOnce sync.Once
+	getELKGraphDeprecationOnce sync.Once
+)
+
 func GetParentID(args []js.Value) (interface{}, error) {
 	if len(args) < 1 {
 		return nil, &WASMError{Message: "missing id argument", Code: 400}
@@ -62,7 +73,14 @@ func GetParentID(args []js.Value) (interface{}, error) {
 	return "", nil
 }
 
+// GetObjOrder returns the breadth-first object order for D2 source passed by a
+// raw WASM caller.
+//
+// Deprecated: use d2oracle.GetObjOrder in Go integrations. The raw WASM export
+// will be removed after one compatibility release.
 func GetObjOrder(args []js.Value) (interface{}, error) {
+	warnDeprecatedWASMCall(&getObjOrderDeprecationOnce, getObjOrderDeprecation)
+
 	if len(args) < 1 {
 		return nil, &WASMError{Message: "missing dsl argument", Code: 400}
 	}
@@ -114,7 +132,15 @@ func GetRefRanges(args []js.Value) (interface{}, error) {
 	}, nil
 }
 
+// GetELKGraph converts D2 source into the pre-layout ELK graph used by the
+// legacy JavaScript ELK integration.
+//
+// Deprecated: use the raw WASM compile API with options.layout set to "elk".
+// ELK layout now runs inside D2, and this export will be removed after one
+// compatibility release.
 func GetELKGraph(args []js.Value) (interface{}, error) {
+	warnDeprecatedWASMCall(&getELKGraphDeprecationOnce, getELKGraphDeprecation)
+
 	if len(args) < 1 {
 		return nil, &WASMError{Message: "missing JSON argument", Code: 400}
 	}

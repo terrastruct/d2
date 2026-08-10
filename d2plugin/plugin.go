@@ -76,8 +76,16 @@ type Plugin interface {
 	// Layout runs the plugin's autolayout algorithm on the input graph
 	// and returns a new graph with the computed placements.
 	Layout(context.Context, *d2graph.Graph) error
+}
 
-	// PostProcess makes changes to the default render
+// PostProcessor is the optional legacy extension for changing D2's rendered output.
+//
+// Deprecated: Post-processing is retained for one plugin-protocol compatibility
+// cycle and will then be removed. New plugins should not implement PostProcessor.
+// Instead, transform rendered output in the caller after D2 rendering; existing
+// plugins should migrate to that model before the next protocol revision.
+type PostProcessor interface {
+	// PostProcess changes D2's rendered output.
 	PostProcess(context.Context, []byte) ([]byte, error)
 }
 

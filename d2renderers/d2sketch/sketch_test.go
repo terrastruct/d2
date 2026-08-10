@@ -22,6 +22,7 @@ import (
 	"github.com/d2lang/d2/d2renderers/d2fonts"
 	"github.com/d2lang/d2/d2renderers/d2svg"
 	"github.com/d2lang/d2/d2themes/d2themescatalog"
+	"github.com/d2lang/d2/internal/testlog"
 	"github.com/d2lang/d2/lib/log"
 	"github.com/d2lang/d2/lib/textmeasure"
 )
@@ -1424,7 +1425,7 @@ func runa(t *testing.T, tcs []testCase) {
 
 func run(t *testing.T, tc testCase) {
 	ctx := context.Background()
-	ctx = log.WithTB(ctx, t)
+	ctx = log.With(ctx, testlog.New(t))
 	ctx = log.Leveled(ctx, slog.LevelDebug)
 
 	ruler, err := textmeasure.NewRuler()

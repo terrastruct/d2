@@ -1,7 +1,9 @@
 package xgif
 
 import (
+	"bytes"
 	_ "embed"
+	"image/gif"
 	"os"
 	"testing"
 
@@ -32,4 +34,12 @@ func TestPngToGif(t *testing.T) {
 	}
 
 	assert.Equal(t, test_output, gifBytes)
+}
+
+func TestValidateCompatibility(t *testing.T) {
+	t.Parallel()
+
+	anim, err := gif.DecodeAll(bytes.NewReader(test_output))
+	assert.NoError(t, err)
+	assert.NoError(t, Validate(test_output, len(anim.Image), anim.Delay[0]*10))
 }
