@@ -168,15 +168,24 @@ func matchPattern(s string, pattern []string) bool {
 
 	for i := 0; i < len(pattern); i++ {
 		if pattern[i] == "*" {
-			// * so match next.
-			if i != len(pattern)-1 {
-				j := strings.Index(strings.ToLower(s), strings.ToLower(pattern[i+1]))
-				if j == -1 {
-					return false
-				}
-				s = s[j+len(pattern[i+1]):]
-				i++
+			if i == len(pattern)-1 {
+				return true
 			}
+
+			next := strings.ToLower(pattern[i+1])
+			lowerS := strings.ToLower(s)
+			if i+1 == len(pattern)-1 {
+				return strings.HasSuffix(lowerS, next)
+			}
+
+			// Match the earliest occurrence so the remaining wildcards have the
+			// largest possible suffix to search.
+			j := strings.Index(lowerS, next)
+			if j == -1 {
+				return false
+			}
+			s = s[j+len(pattern[i+1]):]
+			i++
 		} else {
 			if !strings.HasPrefix(strings.ToLower(s), strings.ToLower(pattern[i])) {
 				return false
@@ -184,5 +193,5 @@ func matchPattern(s string, pattern []string) bool {
 			s = s[len(pattern[i]):]
 		}
 	}
-	return true
+	return s == ""
 }
