@@ -40,6 +40,7 @@
 - d2elk: route ancestor-to-descendant connections around intermediate containers
 - d2svg: render one-stop gradients with finite SVG offsets
 - compiler: make suffix globs match only names with the requested suffix
+- compiler: reject non-finite opacity values with a source diagnostic
 - d2svg: preserve connection links on LaTeX, Markdown, and code labels
 - d2lib: preserve caller-supplied light and dark theme overrides over source configuration
 - exports: pptx follows standards more closely, addressing warnings from some Powerpoint software [#2645](https://github.com/d2lang/d2/pull/2645)

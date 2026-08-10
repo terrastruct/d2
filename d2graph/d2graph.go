@@ -319,7 +319,7 @@ func (s *Style) Apply(key, value string) error {
 			break
 		}
 		f, err := strconv.ParseFloat(value, 64)
-		if err != nil || (f < 0 || f > 1) {
+		if err != nil || math.IsNaN(f) || math.IsInf(f, 0) || f < 0 || f > 1 {
 			return errors.New(`expected "opacity" to be a number between 0.0 and 1.0`)
 		}
 		s.Opacity.Value = value
