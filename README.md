@@ -325,3 +325,5 @@ this selected list of featured projects using D2.
   - Cloud service emulator (46k stars)
 - [Queue Library](https://github.com/golang-queue/queue/tree/master/images)
   - Queue is a Golang library for spawning and managing a Goroutine pool
+- [asyncmachine-go](https://github.com/pancsta/asyncmachine-go/tree/main/tools/cmd/am-vis)
+  - Distributed workflow engine.
