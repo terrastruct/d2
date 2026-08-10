@@ -11,6 +11,7 @@ import (
 
 	"github.com/d2lang/d2/d2compiler"
 	"github.com/d2lang/d2/d2layouts/d2elklayout"
+	"github.com/d2lang/d2/internal/testlog"
 	"github.com/d2lang/d2/lib/geo"
 	"github.com/d2lang/d2/lib/log"
 )
@@ -95,7 +96,7 @@ func TestPublicAlgorithmsMatchFrozenELKJS082(t *testing.T) {
 
 			opts := d2elklayout.DefaultOpts
 			opts.Algorithm = tc.algorithm
-			ctx := log.WithTB(context.Background(), t)
+			ctx := log.With(context.Background(), testlog.New(t))
 			if err := d2elklayout.Layout(ctx, g, &opts); err != nil {
 				t.Fatalf("layout with %q: %v", tc.algorithm, err)
 			}

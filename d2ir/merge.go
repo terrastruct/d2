@@ -104,6 +104,11 @@ func expandSubstitution(m, resolved *Map, placeholder *Field, indexed bool) {
 	}
 }
 
+// OverlayField applies one field overlay directly to another field.
+//
+// Deprecated: construct overlays as maps and apply them with OverlayMap.
+// OverlayField is an internal IR mutation detail and will be removed after one
+// compatibility release.
 func OverlayField(bf, of *Field) {
 	overlayField(bf, of, false)
 }
@@ -130,6 +135,11 @@ func overlayField(bf, of *Field, indexed bool) {
 	bf.References = append(bf.References, of.References...)
 }
 
+// OverlayEdge applies one edge overlay directly to another edge.
+//
+// Deprecated: construct overlays as maps and apply them with OverlayMap.
+// OverlayEdge is an internal IR mutation detail and will be removed after one
+// compatibility release.
 func OverlayEdge(be, oe *Edge) {
 	overlayEdge(be, oe, false)
 }

@@ -6,7 +6,8 @@ import (
 	"log/slog"
 	"os"
 	"runtime/debug"
-	"testing"
+
+	"github.com/d2lang/d2/internal/testlog"
 )
 
 var _default = slog.New(NewPrettyHandler(NewLevelHandler(slog.LevelInfo, slog.NewTextHandler(os.Stderr, nil)))).With(slog.String("logger", "default"))
@@ -42,11 +43,16 @@ func Leveled(ctx context.Context, level slog.Level) context.Context {
 	return With(ctx, slog.New(prettyHandler))
 }
 
-func WithTB(ctx context.Context, tb testing.TB) context.Context {
-	writer := &tbWriter{tb: tb}
-	handler := slog.NewTextHandler(writer, nil)
-	logger := slog.New(handler)
-	return With(ctx, logger)
+// WithTB returns a context whose logger writes to tb.
+//
+// Deprecated: WithTB is a test-only convenience helper and will be removed
+// after one compatibility release. Downstream tests should create an slog
+// logger backed by their test logger and pass it to With.
+func WithTB(ctx context.Context, tb interface {
+	Helper()
+	Log(args ...any)
+}) context.Context {
+	return With(ctx, testlog.New(tb))
 }
 
 func Debug(ctx context.Context, msg string, attrs ...slog.Attr) {

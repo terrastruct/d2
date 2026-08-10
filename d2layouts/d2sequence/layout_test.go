@@ -13,6 +13,7 @@ import (
 	"github.com/d2lang/d2/d2layouts"
 	"github.com/d2lang/d2/d2layouts/d2sequence"
 	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/internal/testlog"
 	"github.com/d2lang/d2/lib/geo"
 	"github.com/d2lang/d2/lib/label"
 	"github.com/d2lang/d2/lib/log"
@@ -52,7 +53,7 @@ n2 -> n1
 
 	nEdges := len(g.Edges)
 
-	ctx := log.WithTB(context.Background(), t)
+	ctx := log.With(context.Background(), testlog.New(t))
 	d2sequence.Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
 		// just set some position as if it had been properly placed
 		for _, obj := range g.Objects {
@@ -178,7 +179,7 @@ b.t1 -> a.t1
 a.t2 -> b
 b -> a.t2`
 
-	ctx := log.WithTB(context.Background(), t)
+	ctx := log.With(context.Background(), testlog.New(t))
 	g, _, err := d2compiler.Compile("", strings.NewReader(input), nil)
 	assert.Nil(t, err)
 
@@ -299,7 +300,7 @@ func TestNestedSequenceDiagrams(t *testing.T) {
 c
 container -> c: edge 1
 `
-	ctx := log.WithTB(context.Background(), t)
+	ctx := log.With(context.Background(), testlog.New(t))
 	g, _, err := d2compiler.Compile("", strings.NewReader(input), nil)
 	assert.Nil(t, err)
 
@@ -395,7 +396,7 @@ func TestSelfEdges(t *testing.T) {
 		},
 	}
 
-	ctx := log.WithTB(context.Background(), t)
+	ctx := log.With(context.Background(), testlog.New(t))
 	d2sequence.Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
 		return nil
 	})
@@ -437,7 +438,7 @@ func TestSequenceToDescendant(t *testing.T) {
 		},
 	}
 
-	ctx := log.WithTB(context.Background(), t)
+	ctx := log.With(context.Background(), testlog.New(t))
 	d2sequence.Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
 		return nil
 	})

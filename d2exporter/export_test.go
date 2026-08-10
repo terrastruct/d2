@@ -20,6 +20,7 @@ import (
 	"github.com/d2lang/d2/d2layouts/d2dagrelayout"
 	"github.com/d2lang/d2/d2lib"
 	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/internal/testlog"
 	"github.com/d2lang/d2/lib/geo"
 	"github.com/d2lang/d2/lib/log"
 	"github.com/d2lang/d2/lib/textmeasure"
@@ -242,7 +243,7 @@ func runa(t *testing.T, tcs []testCase) {
 
 func run(t *testing.T, tc testCase) {
 	ctx := context.Background()
-	ctx = log.WithTB(ctx, t)
+	ctx = log.With(ctx, testlog.New(t))
 	ctx = log.Leveled(ctx, slog.LevelDebug)
 
 	g, config, err := d2compiler.Compile("", strings.NewReader(tc.dsl), &d2compiler.CompileOptions{
@@ -301,7 +302,7 @@ func run(t *testing.T, tc testCase) {
 // TestHashID tests that 2 diagrams with different theme configs do not equal each other
 func TestHashID(t *testing.T) {
 	ctx := context.Background()
-	ctx = log.WithTB(ctx, t)
+	ctx = log.With(ctx, testlog.New(t))
 	ctx = log.Leveled(ctx, slog.LevelDebug)
 
 	aString := `

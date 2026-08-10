@@ -43,6 +43,10 @@ type Point = asciiroute.Point
 
 type Boundary = asciiroute.Boundary
 
+// NewBoundary constructs an ASCII routing boundary.
+//
+// Deprecated: use asciiroute.NewBoundary. This forwarding function will be
+// removed after one compatibility release.
 func NewBoundary(tl, br Point) *Boundary {
 	return asciiroute.NewBoundary(tl, br)
 }

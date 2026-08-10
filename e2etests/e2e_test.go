@@ -29,6 +29,7 @@ import (
 	"github.com/d2lang/d2/d2renderers/d2ascii/charset"
 	"github.com/d2lang/d2/d2renderers/d2svg"
 	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/internal/testlog"
 	"github.com/d2lang/d2/lib/log"
 	"github.com/d2lang/d2/lib/textmeasure"
 )
@@ -116,7 +117,7 @@ func testASCIITxtar(t *testing.T) {
 
 func runASCIITxtarTest(t *testing.T, tc testCase) {
 	ctx := context.Background()
-	ctx = log.WithTB(ctx, t)
+	ctx = log.With(ctx, testlog.New(t))
 	ctx = log.Leveled(ctx, slog.LevelDebug)
 
 	ruler, err := textmeasure.NewRuler()
@@ -274,12 +275,14 @@ func serde(t *testing.T, tc testCase, ruler *textmeasure.Ruler) {
 	var newG d2graph.Graph
 	err = d2graph.DeserializeGraph(b, &newG)
 	trequire.Nil(t, err)
-	trequire.Nil(t, d2graph.CompareSerializedGraph(g, &newG))
+	roundTripBytes, err := d2graph.SerializeGraph(&newG)
+	trequire.Nil(t, err)
+	trequire.JSONEq(t, string(b), string(roundTripBytes))
 }
 
 func run(t *testing.T, tc testCase) {
 	ctx := context.Background()
-	ctx = log.WithTB(ctx, t)
+	ctx = log.With(ctx, testlog.New(t))
 	ctx = log.Leveled(ctx, slog.LevelDebug)
 
 	var ruler *textmeasure.Ruler

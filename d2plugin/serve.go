@@ -143,9 +143,12 @@ func postProcess(ctx context.Context, p Plugin, ms *xmain.State) error {
 		return err
 	}
 
-	out, err := p.PostProcess(ctx, in)
-	if err != nil {
-		return err
+	out := in
+	if postProcessor, ok := p.(PostProcessor); ok {
+		out, err = postProcessor.PostProcess(ctx, in)
+		if err != nil {
+			return err
+		}
 	}
 
 	_, err = ms.Stdout.Write(out)

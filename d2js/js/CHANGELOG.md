@@ -7,6 +7,7 @@ include changes to the main d2 project.**
 
 - Fix concurrent calls sharing a D2 instance
 - Fix completions after Unicode characters
+- Deprecate the raw `d2.getELKGraph` and `d2.getObjOrder` compatibility exports. They remain callable for one release and emit one migration warning per export.
 - Fix TypeScript signatures
 - Fix theme-overrides not applying
 - Fix grids in ELK layouts
