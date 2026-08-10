@@ -22,11 +22,6 @@ const (
 	defaultScale      = 1.0
 )
 
-const (
-	maxRouteAttempts = asciiroute.MaxRouteAttempts
-	labelOffsetX     = asciiroute.LabelOffsetX
-)
-
 type ASCIIartist struct {
 	canvas  *asciicanvas.Canvas
 	FW      float64
@@ -412,10 +407,6 @@ func (a *ASCIIartist) calibrateXY(x, y float64) (float64, float64) {
 	xC := float64(math.Round((x / a.FW) * a.SCALE))
 	yC := float64(math.Round((y / a.FH) * a.SCALE))
 	return xC, yC
-}
-
-func absInt(a int) int {
-	return int(math.Abs(float64(a)))
 }
 
 func hasConnectionsAtRightEdge(shape d2target.Shape, connections []d2target.Connection, fontWidth float64) bool {

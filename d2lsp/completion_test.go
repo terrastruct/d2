@@ -358,22 +358,6 @@ layers: {
 	}
 }
 
-// Helper function to compare CompletionItem slices
-func equalCompletions(a, b []CompletionItem) bool {
-	if len(a) != len(b) {
-		return false
-	}
-	for i := range a {
-		if a[i].Label != b[i].Label ||
-			a[i].Kind != b[i].Kind ||
-			a[i].Detail != b[i].Detail ||
-			a[i].InsertText != b[i].InsertText {
-			return false
-		}
-	}
-	return true
-}
-
 func TestGetArrowheadShapeCompletions(t *testing.T) {
 	got := getArrowheadShapeCompletions()
 

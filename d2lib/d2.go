@@ -3,8 +3,8 @@ package d2lib
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io/fs"
-	"os"
 	"strings"
 
 	"github.com/d2lang/d2/d2ast"
@@ -12,7 +12,6 @@ import (
 	"github.com/d2lang/d2/d2exporter"
 	"github.com/d2lang/d2/d2graph"
 	"github.com/d2lang/d2/d2layouts"
-	"github.com/d2lang/d2/d2layouts/d2dagrelayout"
 	"github.com/d2lang/d2/d2parser"
 	"github.com/d2lang/d2/d2renderers/d2fonts"
 	"github.com/d2lang/d2/d2renderers/d2svg"
@@ -193,16 +192,13 @@ func compileBoard(ctx context.Context, g *d2graph.Graph, compileOpts *CompileOpt
 }
 
 func getLayout(opts *CompileOptions) (d2graph.LayoutGraph, error) {
-	if opts.Layout != nil {
-		return opts.LayoutResolver(*opts.Layout)
-	} else if os.Getenv("D2_LAYOUT") == "dagre" {
-		defaultLayout := func(ctx context.Context, g *d2graph.Graph) error {
-			return d2dagrelayout.Layout(ctx, g, nil)
-		}
-		return defaultLayout, nil
-	} else {
+	if opts.Layout == nil {
 		return nil, errors.New("no available layout")
 	}
+	if opts.LayoutResolver == nil {
+		return nil, fmt.Errorf("no layout resolver configured for layout engine %q", *opts.Layout)
+	}
+	return opts.LayoutResolver(*opts.Layout)
 }
 
 func getEdgeRouter(opts *CompileOptions) (d2graph.RouteEdges, error) {

@@ -37,10 +37,10 @@ export class D2 {
   async init() {
     this.worker = await createWorker();
 
-    const wasmExecContent = await loadFile("./wasm_exec.js");
+    const isNode = typeof window === "undefined";
+    const wasmExecContent = isNode ? await loadFile("./wasm_exec.js") : null;
     const wasmBinary = await loadFile("./d2.wasm");
 
-    const isNode = typeof window === "undefined";
     const messageHandler = this.setupMessageHandler();
 
     if (isNode) {
@@ -58,11 +58,6 @@ export class D2 {
       data: {
         wasm: wasmBinary,
         wasmExecContent: isNode ? wasmExecContent.toString() : null,
-        wasmExecUrl: isNode
-          ? null
-          : URL.createObjectURL(
-              new Blob([wasmExecContent], { type: "application/javascript" })
-            ),
       },
     });
 

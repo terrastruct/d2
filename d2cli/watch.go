@@ -52,7 +52,6 @@ type watcherOpts struct {
 	inputPath       string
 	outputPath      string
 	boardPath       string
-	pwd             string
 	bundle          bool
 	forceAppendix   bool
 	pw              png.Playwright

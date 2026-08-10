@@ -118,8 +118,6 @@ func InitPlaywrightWithPrompt() (Playwright, error) {
 	return InitPlaywright()
 }
 
-const pngPrefix = "data:image/png;base64,"
-
 func MountSVG(page playwright.Page, svgMarkup string) error {
 	decompressed := compression.UnzipEmbeddedSVGImages([]byte(svgMarkup))
 	html := `<!doctype html><meta charset="utf-8">

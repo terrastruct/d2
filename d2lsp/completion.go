@@ -375,15 +375,6 @@ func getTextTransformCompletions() []CompletionItem {
 	return items
 }
 
-func isOnEmptyLine(text string, line int) bool {
-	lines := strings.Split(text, "\n")
-	if line >= len(lines) {
-		return true
-	}
-
-	return strings.TrimSpace(lines[line]) == ""
-}
-
 func getLabelCompletions() []CompletionItem {
 	return []CompletionItem{{
 		Label:      "near",
