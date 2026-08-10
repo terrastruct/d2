@@ -6,7 +6,7 @@
     <Application>D2</Application>
     <PresentationFormat>On-screen Show (16:9)</PresentationFormat>
     <Paragraphs>0</Paragraphs>
-    <Slides>{{.SlideCount}}</Slides>
+    <Slides>{{xmlText .SlideCount}}</Slides>
     <Notes>0</Notes>
     <HiddenSlides>0</HiddenSlides>
     <MMClips>0</MMClips>
@@ -29,17 +29,17 @@
                 <vt:lpstr>Slide Titles</vt:lpstr>
             </vt:variant>
             <vt:variant>
-                <vt:i4>{{.SlideCount}}</vt:i4>
+                <vt:i4>{{xmlText .SlideCount}}</vt:i4>
             </vt:variant>
         </vt:vector>
     </HeadingPairs>
     <TitlesOfParts>
-        <vt:vector size="{{.TitlesOfPartsCount}}" baseType="lpstr">
+        <vt:vector size="{{xmlAttr .TitlesOfPartsCount}}" baseType="lpstr">
             <vt:lpstr>Arial</vt:lpstr>
             <vt:lpstr>Calibri</vt:lpstr>
             <vt:lpstr>Office Theme</vt:lpstr>
             {{range .Titles}}
-            <vt:lpstr>{{.}}</vt:lpstr>
+            <vt:lpstr>{{xmlText .}}</vt:lpstr>
             {{end}}
         </vt:vector>
     </TitlesOfParts>
@@ -47,5 +47,5 @@
     <SharedDoc>false</SharedDoc>
     <HyperlinkBase></HyperlinkBase>
     <HyperlinksChanged>false</HyperlinksChanged>
-    <AppVersion>{{.D2Version}}</AppVersion>
+    <AppVersion>{{xmlText .D2Version}}</AppVersion>
 </Properties>

@@ -13,9 +13,11 @@ import (
 	"archive/zip"
 	"bytes"
 	_ "embed"
+	"encoding/xml"
 	"fmt"
 	"image/png"
 	"os"
+	"strings"
 	"text/template"
 )
 
@@ -511,9 +513,18 @@ func addFileFromTemplate(zipFile *zip.Writer, filePath, templateContent string, 
 		return err
 	}
 
-	tmpl, err := template.New(filePath).Parse(templateContent)
+	tmpl, err := template.New(filePath).Funcs(template.FuncMap{
+		"xmlAttr": escapeXML,
+		"xmlText": escapeXML,
+	}).Parse(templateContent)
 	if err != nil {
 		return err
 	}
 	return tmpl.Execute(w, templateData)
+}
+
+func escapeXML(value any) (string, error) {
+	var escaped strings.Builder
+	err := xml.EscapeText(&escaped, []byte(fmt.Sprint(value)))
+	return escaped.String(), err
 }

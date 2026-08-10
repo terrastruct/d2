@@ -8,10 +8,10 @@
     </p:sldMasterIdLst>
     <p:sldIdLst>
         {{range .Slides}}
-        <p:sldId id="{{.ID}}" r:id="{{.RelationshipID}}" />
+        <p:sldId id="{{xmlAttr .ID}}" r:id="{{xmlAttr .RelationshipID}}" />
         {{end}}
     </p:sldIdLst>
-    <p:sldSz cx="{{.SlideWidth}}" cy="{{.SlideHeight}}" type="screen16x9" />
+    <p:sldSz cx="{{xmlAttr .SlideWidth}}" cy="{{xmlAttr .SlideHeight}}" type="screen16x9" />
     <p:notesSz cx="6858000" cy="9144000" />
     <p:defaultTextStyle>
         <a:defPPr>
