@@ -37,6 +37,7 @@
 
 #### Bugfixes ⛑️
 
+- d2svg: reject padding that would produce invalid negative SVG dimensions
 - d2elk: route ancestor-to-descendant connections around intermediate containers
 - d2svg: render one-stop gradients with finite SVG offsets
 - compiler: make suffix globs match only names with the requested suffix
