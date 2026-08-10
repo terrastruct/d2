@@ -2,34 +2,70 @@ import { createWorker, loadFile } from "./platform.js";
 
 export class D2 {
   constructor() {
+    this.nextRequestId = 0;
+    this.pendingRequests = new Map();
     this.ready = this.init();
   }
 
-  setupMessageHandler() {
-    const isNode = typeof window === "undefined";
+  setupMessageHandler(isNode = typeof window === "undefined") {
     return new Promise((resolve, reject) => {
+      let isReady = false;
+
+      const rejectPendingRequests = (error) => {
+        for (const request of this.pendingRequests.values()) {
+          request.reject(error);
+        }
+        this.pendingRequests.clear();
+      };
+
+      const handleWorkerError = (error) => {
+        const workerError =
+          error instanceof Error
+            ? error
+            : new Error(error?.message || "D2 worker encountered an error");
+        if (!isReady) reject(workerError);
+        rejectPendingRequests(workerError);
+        console.error(
+          `Worker${isNode ? " (node)" : ""} encountered an error:`,
+          workerError.message
+        );
+      };
+
+      const handleMessage = (data) => {
+        if (data.type === "ready") {
+          isReady = true;
+          resolve();
+          return;
+        }
+
+        if (data.type !== "result" && data.type !== "error") return;
+
+        if (data.id === undefined) {
+          if (data.type === "error") {
+            const error = new Error(data.error);
+            if (!isReady) reject(error);
+            rejectPendingRequests(error);
+          }
+          return;
+        }
+
+        const request = this.pendingRequests.get(data.id);
+        if (!request) return;
+
+        this.pendingRequests.delete(data.id);
+        if (data.type === "result") {
+          request.resolve(data.data);
+        } else {
+          request.reject(new Error(data.error));
+        }
+      };
+
       if (isNode) {
-        this.worker.on("message", (data) => {
-          if (data.type === "ready") resolve();
-          if (data.type === "error") reject(new Error(data.error));
-          if (data.type === "result" && this.currentResolve) {
-            this.currentResolve(data.data);
-          }
-          if (data.type === "error" && this.currentReject) {
-            this.currentReject(new Error(data.error));
-          }
-        });
+        this.worker.on("message", handleMessage);
+        this.worker.on("error", handleWorkerError);
       } else {
-        this.worker.onmessage = (e) => {
-          if (e.data.type === "ready") resolve();
-          if (e.data.type === "error") reject(new Error(e.data.error));
-          if (e.data.type === "result" && this.currentResolve) {
-            this.currentResolve(e.data.data);
-          }
-          if (e.data.type === "error" && this.currentReject) {
-            this.currentReject(new Error(e.data.error));
-          }
-        };
+        this.worker.onmessage = (e) => handleMessage(e.data);
+        this.worker.onerror = handleWorkerError;
       }
     });
   }
@@ -42,16 +78,6 @@ export class D2 {
     const wasmBinary = await loadFile("./d2.wasm");
 
     const messageHandler = this.setupMessageHandler();
-
-    if (isNode) {
-      this.worker.on("error", (error) => {
-        console.error("Worker (node) encountered an error:", error.message || error);
-      });
-    } else {
-      this.worker.onerror = (error) => {
-        console.error("Worker encountered an error:", error.message || error);
-      };
-    }
 
     this.worker.postMessage({
       type: "init",
@@ -67,9 +93,14 @@ export class D2 {
   async sendMessage(type, data) {
     await this.ready;
     return new Promise((resolve, reject) => {
-      this.currentResolve = resolve;
-      this.currentReject = reject;
-      this.worker.postMessage({ type, data });
+      const id = this.nextRequestId++;
+      this.pendingRequests.set(id, { resolve, reject });
+      try {
+        this.worker.postMessage({ id, type, data });
+      } catch (error) {
+        this.pendingRequests.delete(id);
+        reject(error);
+      }
     });
   }
 
