@@ -37,6 +37,7 @@
 
 #### Bugfixes ⛑️
 
+- d2elk: route ancestor-to-descendant connections around intermediate containers
 - d2svg: render one-stop gradients with finite SVG offsets
 - compiler: make suffix globs match only names with the requested suffix
 - d2svg: preserve connection links on LaTeX, Markdown, and code labels
