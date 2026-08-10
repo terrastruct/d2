@@ -16,6 +16,6 @@
     Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster"
     Target="slideMasters/slideMaster1.xml" />
     {{range .Slides}}
-    <Relationship Id="{{.RelationshipID}}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide" Target="slides/{{.FileName}}.xml" />
+    <Relationship Id="{{xmlAttr .RelationshipID}}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide" Target="slides/{{xmlAttr .FileName}}.xml" />
     {{end}}
 </Relationships>
