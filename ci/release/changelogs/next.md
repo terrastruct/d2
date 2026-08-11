@@ -8,7 +8,7 @@
 - api: deprecate legacy layout-feature constants, raw-WASM ELK/object-order bridges, unused public wrappers, and test-only comparison, validation, and logging helpers; compatibility entry points remain callable for one release while in-repository callers use supported or internal replacements
 - maintenance: update the Go toolchain to 1.26.5 and refresh Go, d2.js, CI, and release dependencies
 - renders: update syntax highlighting and migrate archived font and PDF dependencies to maintained replacements
-- d2dagre: replace the embedded JavaScript runtime with the native Go Dagro port without changing layout output
+- d2dagre: replace the embedded JavaScript runtime with native Go Dagro and update its D2-used layout surface from Dagre 0.8.5 to Dagre 3.1.1 behavior. This intentionally changes node ordering and coordinates, edge routes, self-loops, and compound sizing in some diagrams; regenerate and review stored SVG or board-JSON snapshots
 - d2sketch: replace the embedded Rough.js runtime with the native Go rough-go port without changing sketch output
 - d2elk: replace the embedded ELK.js 0.8.2 runtime with native Go elk-go and update D2's ELK layout profile to ELK.js 0.12.0 behavior. This is a layout-behavior update, not an output-compatible runtime swap:
   - existing ELK diagrams may receive different node coordinates and ordering, edge and label routes, and component packing; regenerate and review stored SVG or board-JSON snapshots
@@ -40,6 +40,7 @@
 
 #### Bugfixes ⛑️
 
+- d2dagre: keep same-direction parallel edges and self-loop routes finite when using Dagre 3.1.1 behavior
 - d2svg: reject padding that would produce invalid negative SVG dimensions
 - d2elk: route ancestor-to-descendant connections around intermediate containers
 - d2elk: prevent labels on multiple self-loops from overlapping in right-directed layouts, including the `ent2d2_right` regression case

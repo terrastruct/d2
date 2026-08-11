@@ -1,4 +1,5 @@
-D2's Dagre layout uses Dagro, a native Go port of Dagre 0.8.5:
+D2's Dagre layout uses Dagro, a native Go port of the Dagre 3.1.1 layout
+surface used by D2:
 https://github.com/d2lang/dagro
 
 The complete Dagro, Dagre, and Graphlib attribution and MIT license text is in

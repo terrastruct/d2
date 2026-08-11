@@ -3,16 +3,17 @@ D2 Third-Party Notices
 Dagro
 https://github.com/d2lang/dagro
 
-Dagro is a Go port of Dagre 0.8.5 and the subset of Graphlib 2.1.8 required by
-Dagre's layout implementation. The port is based on these upstream sources:
+Dagro is a Go port of the Dagre 3.1.1 layout surface used by D2 and the subset
+of Graphlib 4.0.5 required by that layout implementation. The port is based on
+these upstream sources:
 
-  Dagre 0.8.5
+  Dagre 3.1.1
   https://github.com/dagrejs/dagre
-  commit f56edb1abbb8530e532158f7cbd403228f5b0018
+  commit c3ed0802cd98de74c21cff1f754689ebbb0f8dae
 
-  Graphlib 2.1.8
+  Graphlib 4.0.5
   https://github.com/dagrejs/graphlib
-  commit 64375bb8d96bce0d906d238853c2b5afa2f2c231
+  commit d3a0cf36f55ebd75f28b6acf7a436a54e1b990dc
 
 MIT License
 
