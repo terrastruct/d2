@@ -38,8 +38,8 @@ a -> a.b.c
 	}
 	wantObjects := map[string][4]float64{
 		"a":     {12, 12, 320, 305},
-		"a.b":   {102, 107, 180, 160},
-		"a.b.c": {152, 157, 80, 60},
+		"a.b":   {62, 107, 180, 160},
+		"a.b.c": {112, 157, 80, 60},
 	}
 	if len(g.Objects) != len(wantObjects) {
 		t.Fatalf("objects = %d, want %d", len(g.Objects), len(wantObjects))
@@ -58,7 +58,7 @@ a -> a.b.c
 	if len(g.Edges) != 1 {
 		t.Fatalf("edges = %d, want 1", len(g.Edges))
 	}
-	wantRoute := [][2]float64{{62, 317}, {62, 62}, {192, 62}, {192, 157}}
+	wantRoute := [][2]float64{{282, 317}, {282, 62}, {152, 62}, {152, 157}}
 	if len(g.Edges[0].Route) != len(wantRoute) {
 		t.Fatalf("route points = %d, want %d", len(g.Edges[0].Route), len(wantRoute))
 	}

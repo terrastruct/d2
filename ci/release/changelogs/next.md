@@ -10,7 +10,10 @@
 - renders: update syntax highlighting and migrate archived font and PDF dependencies to maintained replacements
 - d2dagre: replace the embedded JavaScript runtime with the native Go Dagro port without changing layout output
 - d2sketch: replace the embedded Rough.js runtime with the native Go rough-go port without changing sketch output
-- d2elk: replace the embedded JavaScript runtime with the native Go elk-go port, preserving layouts apart from sub-pixel floating-point rounding
+- d2elk: replace the embedded ELK.js 0.8.2 runtime with native Go elk-go and update D2's ELK layout profile to ELK.js 0.12.0 behavior. This is a layout-behavior update, not an output-compatible runtime swap:
+  - existing ELK diagrams may receive different node coordinates and ordering, edge and label routes, and component packing; regenerate and review stored SVG or board-JSON snapshots
+  - children of nested compound graphs may be reordered because ELK 0.12 cannot safely apply D2's previous nested model-order profile
+  - non-default `--elk-algorithm` modes may also produce different geometry; the optional DisCo algorithm is removed because upstream no longer bundles it
 - d2latex: replace the embedded MathJax JavaScript runtime with the native Go mathjax-go port without changing rendered formulas
 - performance: native Go engine migrations substantially reduce median end-to-end D2-to-SVG conversion time in Apple M4 benchmarks:
   - Dagre is 7–9× faster
@@ -39,6 +42,7 @@
 
 - d2svg: reject padding that would produce invalid negative SVG dimensions
 - d2elk: route ancestor-to-descendant connections around intermediate containers
+- d2elk: prevent labels on multiple self-loops from overlapping in right-directed layouts, including the `ent2d2_right` regression case
 - d2svg: render one-stop gradients with finite SVG offsets
 - compiler: make suffix globs match only names with the requested suffix
 - compiler: reject non-finite opacity values with a source diagnostic

@@ -1,23 +1,44 @@
 elk-go
 https://github.com/d2lang/elk-go
 
-elk-go is a Go port of behavior and source from these upstream projects:
+elk-go targets behavior and source from these upstream releases:
 
-  Eclipse Layout Kernel 0.8.1
+  Eclipse Layout Kernel 0.12.0
   https://github.com/eclipse-elk/elk
-  commit 5dc0f65c78778beb74a36e0f470c6fe6ecdcef67
+  commit 323312916048544e4e594eab3303cdb0d01e2929
 
-  ELK.js 0.8.2
+  ELK.js 0.12.0
   https://github.com/kieler/elkjs
-  commit cd0dc6b4e4bf1f221db04147f88b4d7c7041b834
+  commit ff5771d7165445c42c408bb8a090c8035272218c
 
-  GWT 2.9.0 Java runtime emulation
+  GWT 2.11.0 Java runtime emulation
   https://github.com/gwtproject/gwt
-  commit 8188fd9f8e1b70396ba02ce01b1d73a467225a64
+  commit 7f76f0f2b5b1b028d2d870782048e44402637fb0
   Copyright 2008 Google Inc.
 
+  V8 IEEE-754 routines as bundled by Node.js 24.19.0
+  https://github.com/nodejs/node
+  Node.js commit cdc1b38d40cb567b7ad0b39c86addf830a0af0ae
+  V8 version 13.6.233.17-node.51
+  Copyright 2016 the V8 project authors
+
+The historical implementation baseline was Eclipse Layout Kernel 0.8.1
+(commit 5dc0f65c78778beb74a36e0f470c6fe6ecdcef67), ELK.js 0.8.2
+(commit cd0dc6b4e4bf1f221db04147f88b4d7c7041b834), and GWT 2.9.0
+(commit 8188fd9f8e1b70396ba02ce01b1d73a467225a64).
+
 The upstream ELK projects and elk-go are made available under the Eclipse
-Public License 2.0. Two GWT runtime adaptations remain available under the
-Apache License 2.0. Source code and complete licensing notices for the port are
-available at https://github.com/d2lang/elk-go and D2's root
-THIRD_PARTY_NOTICES.txt.
+Public License 2.0. GWT runtime adaptations remain available under the Apache
+License 2.0. V8-derived routines retain the BSD 3-Clause License, and their
+fdlibm-derived portions retain the following Sun Microsystems permission
+notice:
+
+Copyright (C) 1993 by Sun Microsystems, Inc. All rights reserved.
+
+Developed at SunSoft, a Sun Microsystems, Inc. business.
+Permission to use, copy, modify, and distribute this
+software is freely granted, provided that this notice
+is preserved.
+
+Source code and complete licensing notices for the port are available at
+https://github.com/d2lang/elk-go and D2's root THIRD_PARTY_NOTICES.txt.

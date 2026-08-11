@@ -1,6 +1,7 @@
 package d2elklayout_test
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -40,8 +41,12 @@ type expectedLayout struct {
 	Edges     []expectedEdge   `json:"edges"`
 }
 
-func TestPublicAlgorithmsMatchFrozenELKJS082(t *testing.T) {
-	expectedData, err := os.ReadFile("testdata/elkjs_0_8_2_algorithms.json")
+// This fixture freezes D2's post-layout geometry after elk-go has passed its
+// separate differential gates against the official ELK.js 0.12.0 asset. It is
+// a D2 regression fixture, not an independently generated ELK.js oracle.
+func TestD2ExposedAlgorithmsMatchFrozenElkGo012Profile(t *testing.T) {
+	const fixturePath = "testdata/elk_go_0_12_d2_algorithms.json"
+	expectedData, err := os.ReadFile(fixturePath)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -55,28 +60,30 @@ func TestPublicAlgorithmsMatchFrozenELKJS082(t *testing.T) {
 	}
 
 	testCases := []struct {
-		algorithm string
-		input     string
+		algorithm     string
+		input         string
+		deterministic bool
 	}{
 		// These algorithms consume existing or coincident positions and do not
 		// require an edge to establish their input model.
-		{algorithm: "fixed", input: "a\nb\nc\n"},
-		{algorithm: "box", input: "a\nb\nc\n"},
+		{algorithm: "fixed", input: "a\nb\nc\n", deterministic: true},
+		{algorithm: "box", input: "a\nb\nc\n", deterministic: true},
 		{algorithm: "random", input: "a\nb\nc\n"},
-		{algorithm: "disco", input: "a\nb\nc\n"},
 		{algorithm: "sporeOverlap", input: "a\nb\nc\n"},
 		{algorithm: "sporeCompaction", input: "a\nb\nc\n"},
-		{algorithm: "rectpacking", input: "a\nb\nc\n"},
+		{algorithm: "rectpacking", input: "a\nb\nc\n", deterministic: true},
 
 		// Exercise routed-edge readback for algorithms that lay out connected
 		// graphs. The directed fixture is also a tree, as required by radial.
-		{algorithm: "layered", input: "a -> b\na -> c\nc -> d\n"},
-		{algorithm: "stress", input: "a -> b\na -> c\nc -> d\n"},
-		{algorithm: "mrtree", input: "a -> b\na -> c\nc -> d\n"},
-		{algorithm: "radial", input: "a -> b\na -> c\nc -> d\n"},
-		{algorithm: "force", input: "a -> b\na -> c\nc -> d\n"},
+		{algorithm: "layered", input: "a -> b\na -> c\nc -> d\n", deterministic: true},
+		{algorithm: "stress", input: "a -> b\na -> c\nc -> d\n", deterministic: true},
+		{algorithm: "mrtree", input: "a -> b\na -> c\nc -> d\n", deterministic: true},
+		{algorithm: "radial", input: "a -> b\na -> c\nc -> d\n", deterministic: true},
+		{algorithm: "force", input: "a -> b\na -> c\nc -> d\n", deterministic: true},
 	}
 
+	accept := os.Getenv("TESTDATA_ACCEPT") == "1"
+	actualLayouts := make([]expectedLayout, 0, len(expectedLayouts))
 	for _, tc := range testCases {
 		t.Run(tc.algorithm, func(t *testing.T) {
 			g, _, err := d2compiler.Compile("", strings.NewReader(tc.input), nil)
@@ -127,13 +134,39 @@ func TestPublicAlgorithmsMatchFrozenELKJS082(t *testing.T) {
 				}
 			}
 
-			expected, deterministic := expectedByAlgorithm[tc.algorithm]
-			if !deterministic {
+			if !tc.deterministic {
 				// Random and both SPOrE providers deliberately perturb coincident
 				// input with Math.random in elkjs. Their exact coordinates were
 				// never stable, so the finite-geometry checks above are the useful
 				// compatibility contract for those three algorithms.
 				return
+			}
+
+			actual := expectedLayout{Algorithm: tc.algorithm}
+			for _, obj := range g.Objects {
+				actual.Objects = append(actual.Objects, expectedObject{
+					ID:     obj.AbsID(),
+					X:      obj.TopLeft.X,
+					Y:      obj.TopLeft.Y,
+					Width:  obj.Width,
+					Height: obj.Height,
+				})
+			}
+			for _, edge := range g.Edges {
+				actualEdge := expectedEdge{ID: edge.AbsID()}
+				for _, point := range edge.Route {
+					actualEdge.Route = append(actualEdge.Route, expectedPoint{X: point.X, Y: point.Y})
+				}
+				actual.Edges = append(actual.Edges, actualEdge)
+			}
+			actualLayouts = append(actualLayouts, actual)
+			if accept {
+				return
+			}
+
+			expected, ok := expectedByAlgorithm[tc.algorithm]
+			if !ok {
+				t.Fatalf("no frozen D2/elk-go 0.12 profile fixture for %q", tc.algorithm)
 			}
 			if len(g.Objects) != len(expected.Objects) {
 				t.Fatalf("objects = %d, want %d", len(g.Objects), len(expected.Objects))
@@ -151,12 +184,6 @@ func TestPublicAlgorithmsMatchFrozenELKJS082(t *testing.T) {
 			if len(g.Edges) != len(expected.Edges) {
 				t.Fatalf("edges = %d, want %d", len(g.Edges), len(expected.Edges))
 			}
-			routeTolerance := 1e-7
-			if tc.algorithm == "radial" {
-				// One frozen-JS radial endpoint differs from the native route by
-				// at most 0.291 px; all node positions and other routes match.
-				routeTolerance = 0.3
-			}
 			for i, edge := range g.Edges {
 				want := expected.Edges[i]
 				if edge.AbsID() != want.ID {
@@ -166,11 +193,42 @@ func TestPublicAlgorithmsMatchFrozenELKJS082(t *testing.T) {
 					t.Fatalf("edge %q route length = %d, want %d", want.ID, len(edge.Route), len(want.Route))
 				}
 				for pointIndex, point := range edge.Route {
-					assertNear(t, fmt.Sprintf("edge %q point %d x", want.ID, pointIndex), point.X, want.Route[pointIndex].X, routeTolerance)
-					assertNear(t, fmt.Sprintf("edge %q point %d y", want.ID, pointIndex), point.Y, want.Route[pointIndex].Y, routeTolerance)
+					assertNear(t, fmt.Sprintf("edge %q point %d x", want.ID, pointIndex), point.X, want.Route[pointIndex].X, 1e-7)
+					assertNear(t, fmt.Sprintf("edge %q point %d y", want.ID, pointIndex), point.Y, want.Route[pointIndex].Y, 1e-7)
 				}
 			}
 		})
+	}
+	if accept {
+		var actualData bytes.Buffer
+		encoder := json.NewEncoder(&actualData)
+		encoder.SetEscapeHTML(false)
+		encoder.SetIndent("", "  ")
+		if err := encoder.Encode(actualLayouts); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(fixturePath, actualData.Bytes(), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+}
+
+func TestDisCoIsUnsupportedInELKJS0120(t *testing.T) {
+	g, _, err := d2compiler.Compile("", strings.NewReader("a\nb\nc\n"), nil)
+	if err != nil {
+		t.Fatalf("compile fixture: %v", err)
+	}
+	for i, obj := range g.Objects {
+		obj.Box = geo.NewBox(geo.NewPoint(float64(17+i*113), float64(29+(i%2)*71)), 60, 40)
+	}
+	opts := d2elklayout.DefaultOpts
+	opts.Algorithm = "disco"
+	err = d2elklayout.Layout(log.WithTB(context.Background(), t), g, &opts)
+	if err == nil {
+		t.Fatal("DisCo layout unexpectedly succeeded")
+	}
+	if !strings.Contains(err.Error(), `layout algorithm "disco" not found`) {
+		t.Fatalf("DisCo error = %q, want an unsupported-algorithm error", err)
 	}
 }
 

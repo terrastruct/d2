@@ -125,28 +125,41 @@ SOFTWARE.
 elk-go
 https://github.com/d2lang/elk-go
 
-elk-go is a Go port of behavior and source from these upstream projects:
+elk-go targets behavior and source from these upstream releases:
 
-  Eclipse Layout Kernel 0.8.1
+  Eclipse Layout Kernel 0.12.0
   https://github.com/eclipse-elk/elk
-  commit 5dc0f65c78778beb74a36e0f470c6fe6ecdcef67
+  commit 323312916048544e4e594eab3303cdb0d01e2929
 
-  ELK.js 0.8.2
+  ELK.js 0.12.0
   https://github.com/kieler/elkjs
-  commit cd0dc6b4e4bf1f221db04147f88b4d7c7041b834
+  commit ff5771d7165445c42c408bb8a090c8035272218c
 
-  GWT 2.9.0 Java runtime emulation
+  GWT 2.11.0 Java runtime emulation
   https://github.com/gwtproject/gwt
-  commit 8188fd9f8e1b70396ba02ce01b1d73a467225a64
+  commit 7f76f0f2b5b1b028d2d870782048e44402637fb0
   Copyright 2008 Google Inc.
+
+  V8 IEEE-754 routines as bundled by Node.js 24.19.0
+  https://github.com/nodejs/node
+  Node.js commit cdc1b38d40cb567b7ad0b39c86addf830a0af0ae
+  V8 version 13.6.233.17-node.51
+  Copyright 2016 the V8 project authors
+
+The historical implementation baseline was Eclipse Layout Kernel 0.8.1
+(commit 5dc0f65c78778beb74a36e0f470c6fe6ecdcef67), ELK.js 0.8.2
+(commit cd0dc6b4e4bf1f221db04147f88b4d7c7041b834), and GWT 2.9.0
+(commit 8188fd9f8e1b70396ba02ce01b1d73a467225a64).
 
 The upstream ELK projects and elk-go are made available under the Eclipse
 Public License 2.0. Elk-go's adaptations of GWT's java.util.PriorityQueue and
 legacy java.util.Arrays merge sort remain available under the Apache License
-2.0. Source code and complete licensing notices for the port are available at
-https://github.com/d2lang/elk-go.
+2.0. V8-derived routines retain the BSD 3-Clause License, and their
+fdlibm-derived portions retain the Sun Microsystems permission notice included
+below. Source code and complete licensing notices for the port are available
+at https://github.com/d2lang/elk-go.
 
-The Eclipse Layout Kernel 0.8.1 project notice follows.
+The Eclipse Layout Kernel 0.12.0 project notice follows.
 
 # Notices for Eclipse Layout Kernel
 
@@ -170,42 +183,31 @@ This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
 http://www.eclipse.org/legal/epl-2.0.
 
-SPDX-License-Identifier: EPL-2.0
+This Source Code may also be made available under the following Secondary
+Licenses when the conditions for such availability set forth in the Eclipse
+Public License v. 2.0 are satisfied: GPL-3.0 which is available at
+https://www.gnu.org/licenses/gpl-3.0-standalone.html.
+
+SPDX-License-Identifier: EPL-2.0 OR GPL-3.0-or-later
 
 ## Source Code
 
 The project maintains the following source code repositories:
 
-* https://github.com/eclipse/elk
-* https://github.com/eclipse/elk-models
+* https://github.com/eclipse-elk/elk
+* https://github.com/eclipse-elk/elk-models
 
 ## Third-party Content
 
 This project leverages the following third party content.
 
-ANTLR Runtime only: (3.2)
+Dependencies automatically captured by the license-check-plugin: [DEPENDENCIES](DEPENDENCIES)
 
-* License: New BSD license
+The following third-party content and licences are either not automatically captured or are used in the [elk-models](https://github.com/eclipse-elk/elk-models) repository.
 
-Apache Commons Logging Jar (1.1.1)
+libavoid (0.3.1)
 
-* License: Apache License, 2.0
-
-Apache Log4J (1.2.8)
-
-* License: Apache License, 2.0
-
-ASM (5.0.1)
-
-* License: New BSD license
-
-Google Guava (15.0.0)
-
-* License: Apache License 2.0
-
-Google Guice / Inject Core API (3.0.0)
-
-* License: Apache License, 2.0
+* License:  GNU Lesser General Public License, 2.1
 
 Ptolemy demo models (n/a)
 
@@ -489,7 +491,7 @@ version(s), and exceptions or additional permissions here}.”
 > You may add additional accurate notices of copyright ownership.
 
 
-GWT 2.9.0 Runtime Adaptations
+GWT 2.11.0 Runtime Adaptations (2.9.0 Historical Baseline)
 
 Copyright 2008 Google Inc.
 
@@ -697,3 +699,41 @@ The full Apache License 2.0 text follows.
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+
+V8 IEEE-754 Runtime Adaptations
+
+Copyright 2014, the V8 project authors. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of Google Inc. nor the names of its contributors may be
+      used to endorse or promote products derived from this software without
+      specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+fdlibm Sun Microsystems Permission Notice
+
+Copyright (C) 1993 by Sun Microsystems, Inc. All rights reserved.
+
+Developed at SunSoft, a Sun Microsystems, Inc. business.
+Permission to use, copy, modify, and distribute this
+software is freely granted, provided that this notice
+is preserved.
