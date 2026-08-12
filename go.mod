@@ -11,7 +11,7 @@ require (
 	github.com/d2lang/dagro v0.2.0
 	github.com/d2lang/elk-go v0.2.0
 	github.com/d2lang/mathjax-go v0.1.0
-	github.com/d2lang/rough-go v0.1.1-0.20260812030707-1ecc107f7e5c
+	github.com/d2lang/rough-go v0.2.0
 	github.com/d2lang/util-go v0.2.0
 	github.com/dsoprea/go-exif/v3 v3.0.1
 	github.com/dsoprea/go-png-image-structure/v2 v2.0.0-20210512210324-29b889a6093d
