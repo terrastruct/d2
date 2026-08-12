@@ -1,4 +1,5 @@
-The native sketch renderer uses rough-go, a Go port of Rough.js 4.0.4.
+The native sketch renderer uses rough-go, a Go compatibility port of the
+Rough.js 4.6.6 rendering surface used by D2.
 
 Source and license details are included in the repository-root
 THIRD_PARTY_NOTICES.txt and in https://github.com/d2lang/rough-go.

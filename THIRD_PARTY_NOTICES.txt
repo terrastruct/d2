@@ -41,15 +41,26 @@ SOFTWARE.
 Rough-go
 https://github.com/d2lang/rough-go
 
-Rough-go is a native Go port of Rough.js 4.0.4. The port is based on:
+Rough-go is a native Go compatibility port of the Rough.js 4.6.6 rendering
+surface used by D2. The port is based on:
 
-  Rough.js 4.0.4
+  Rough.js 4.6.6
   https://github.com/rough-stuff/rough
-  commit 35302b8f1119ad004b4550f9a4d4162d3d845b0a
+  commit 56a2762171b1294d643501e8d14f120db6b27bd7
+
+It also derives implementation details from:
+
+  hachure-fill 0.5.2, Copyright (c) 2023 Preet Shihn
+  path-data-parser 0.1.0, Copyright (c) 2020 Preet Shihn
+
+All three upstream projects are licensed under the MIT License reproduced
+below.
 
 MIT License
 
 Copyright (c) 2019 Preet Shihn
+Copyright (c) 2020 Preet Shihn
+Copyright (c) 2023 Preet Shihn
 Copyright (c) 2026 rough-go contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
