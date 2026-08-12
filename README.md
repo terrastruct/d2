@@ -208,7 +208,7 @@ single-purpose layout types like sequence diagrams. You can choose whichever lay
 you like and works best for the diagram you're making.
 
 Sketch-mode rendering uses [rough-go](https://github.com/d2lang/rough-go), a native Go
-port of Rough.js 4.0.4.
+compatibility port of the Rough.js 4.6.6 rendering surface used by D2.
 
 LaTeX labels use [mathjax-go](https://github.com/d2lang/mathjax-go), a native Go port of
 the MathJax 3.2.2 TeX-to-SVG pipeline.

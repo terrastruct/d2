@@ -9,7 +9,7 @@
 - maintenance: update the Go toolchain to 1.26.5 and refresh Go, d2.js, CI, and release dependencies
 - renders: update syntax highlighting and migrate archived font and PDF dependencies to maintained replacements
 - d2dagre: replace the embedded JavaScript runtime with native Go Dagro and update its D2-used layout surface from Dagre 0.8.5 to Dagre 3.1.1 behavior. This intentionally changes node ordering and coordinates, edge routes, self-loops, and compound sizing in some diagrams; regenerate and review stored SVG or board-JSON snapshots
-- d2sketch: replace the embedded Rough.js runtime with the native Go rough-go port without changing sketch output
+- d2sketch: update the native rough-go renderer from Rough.js 4.0.4 to 4.6.6 behavior. Seeded sketch strokes, fills, arrowheads, and SVG paths may change; regenerate and review stored sketch SVG snapshots
 - d2elk: replace the embedded ELK.js 0.8.2 runtime with native Go elk-go and update D2's ELK layout profile to ELK.js 0.12.0 behavior. This is a layout-behavior update, not an output-compatible runtime swap:
   - existing ELK diagrams may receive different node coordinates and ordering, edge and label routes, and component packing; regenerate and review stored SVG or board-JSON snapshots
   - children of nested compound graphs may be reordered because ELK 0.12 cannot safely apply D2's previous nested model-order profile
