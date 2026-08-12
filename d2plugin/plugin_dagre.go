@@ -78,7 +78,7 @@ func (p *dagrePlugin) Info(ctx context.Context) (*PluginInfo, error) {
 		LongHelp: fmt.Sprintf(`dagre is a directed graph layout algorithm implemented natively in Go by Dagro.
 See https://d2lang.com/tour/dagre for more.
 
-Dagro is a behavior-compatible port of Dagre 0.8.5: https://github.com/d2lang/dagro.
+Dagro implements the Dagre 3.1.1 layout surface used by D2: https://github.com/d2lang/dagro.
 
 Flags correspond to ones found at https://github.com/dagrejs/dagre/wiki.
 

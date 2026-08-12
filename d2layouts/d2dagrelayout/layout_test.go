@@ -1,14 +1,134 @@
 package d2dagrelayout
 
 import (
+	"context"
 	"math"
 	"strings"
 	"testing"
 
 	"github.com/d2lang/d2/d2compiler"
 	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2themes/d2themescatalog"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/textmeasure"
 	"github.com/d2lang/util-go/go2"
 )
+
+func TestDeduplicateRoutePoints(t *testing.T) {
+	t.Parallel()
+	points := []*geo.Point{
+		geo.NewPoint(1, 2),
+		geo.NewPoint(1, 2),
+		geo.NewPoint(3, 4),
+		geo.NewPoint(3, 4),
+		geo.NewPoint(1, 2),
+	}
+	got := deduplicateRoutePoints(points)
+	want := []*geo.Point{geo.NewPoint(1, 2), geo.NewPoint(3, 4), geo.NewPoint(1, 2)}
+	if len(got) != len(want) {
+		t.Fatalf("deduplicated route length = %d, want %d", len(got), len(want))
+	}
+	for i := range want {
+		if !got[i].Equals(want[i]) {
+			t.Fatalf("deduplicated route[%d] = %v, want %v", i, got[i], want[i])
+		}
+	}
+}
+
+func TestModernSelfLoopRoutesRemainFiniteAndConnected(t *testing.T) {
+	t.Parallel()
+	g, _, err := d2compiler.Compile("index.d2", strings.NewReader("x -> x\nx -> x"), nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := g.ApplyTheme(d2themescatalog.NeutralDefault.ID); err != nil {
+		t.Fatal(err)
+	}
+	ruler, err := textmeasure.NewRuler()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := g.SetDimensions(nil, ruler, nil, nil); err != nil {
+		t.Fatal(err)
+	}
+	if err := DefaultLayout(context.Background(), g); err != nil {
+		t.Fatal(err)
+	}
+	for _, edge := range g.Edges {
+		if len(edge.Route) < 2 {
+			t.Fatalf("%s route has %d points", edge.AbsID(), len(edge.Route))
+		}
+		for i, point := range edge.Route {
+			if math.IsNaN(point.X) || math.IsNaN(point.Y) || math.IsInf(point.X, 0) || math.IsInf(point.Y, 0) {
+				t.Fatalf("%s route[%d] is not finite: %v", edge.AbsID(), i, point)
+			}
+		}
+		if !pointOnBoxBorder(edge.Route[0], edge.Src.Box) {
+			t.Fatalf("%s route does not start on its source: %v, box %v", edge.AbsID(), edge.Route[0], edge.Src.Box)
+		}
+		if !pointOnBoxBorder(edge.Route[len(edge.Route)-1], edge.Dst.Box) {
+			t.Fatalf("%s route does not end on its destination: %v, box %v", edge.AbsID(), edge.Route[len(edge.Route)-1], edge.Dst.Box)
+		}
+	}
+}
+
+func TestCompoundParallelCycleRemainsFinite(t *testing.T) {
+	t.Parallel()
+	g, _, err := d2compiler.Compile("index.d2", strings.NewReader("a.b -> c -> a.b <- c"), nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := g.ApplyTheme(d2themescatalog.NeutralDefault.ID); err != nil {
+		t.Fatal(err)
+	}
+	ruler, err := textmeasure.NewRuler()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := g.SetDimensions(nil, ruler, nil, nil); err != nil {
+		t.Fatal(err)
+	}
+	if err := DefaultLayout(context.Background(), g); err != nil {
+		t.Fatal(err)
+	}
+	if got, want := len(g.Edges), 3; got != want {
+		t.Fatalf("edges = %d, want %d", got, want)
+	}
+	for _, obj := range g.Objects {
+		for name, value := range map[string]float64{
+			"x": obj.TopLeft.X, "y": obj.TopLeft.Y, "width": obj.Width, "height": obj.Height,
+		} {
+			if math.IsNaN(value) || math.IsInf(value, 0) {
+				t.Fatalf("%s %s is not finite: %v", obj.AbsID(), name, value)
+			}
+		}
+	}
+	for _, edge := range g.Edges {
+		if len(edge.Route) < 2 {
+			t.Fatalf("%s route has %d points", edge.AbsID(), len(edge.Route))
+		}
+		for i, point := range edge.Route {
+			if math.IsNaN(point.X) || math.IsNaN(point.Y) || math.IsInf(point.X, 0) || math.IsInf(point.Y, 0) {
+				t.Fatalf("%s route[%d] is not finite: %v", edge.AbsID(), i, point)
+			}
+		}
+		if !pointOnBoxBorder(edge.Route[0], edge.Src.Box) {
+			t.Fatalf("%s route does not start on its source: %v, box %v", edge.AbsID(), edge.Route[0], edge.Src.Box)
+		}
+		if !pointOnBoxBorder(edge.Route[len(edge.Route)-1], edge.Dst.Box) {
+			t.Fatalf("%s route does not end on its destination: %v, box %v", edge.AbsID(), edge.Route[len(edge.Route)-1], edge.Dst.Box)
+		}
+	}
+}
+
+func pointOnBoxBorder(point *geo.Point, box *geo.Box) bool {
+	const epsilon = 1
+	left, right := box.TopLeft.X, box.TopLeft.X+box.Width
+	top, bottom := box.TopLeft.Y, box.TopLeft.Y+box.Height
+	near := func(a, b float64) bool { return math.Abs(a-b) <= epsilon }
+	return ((near(point.X, left) || near(point.X, right)) && point.Y >= top-epsilon && point.Y <= bottom+epsilon) ||
+		((near(point.Y, top) || near(point.Y, bottom)) && point.X >= left-epsilon && point.X <= right+epsilon)
+}
 
 func TestContainerTopologyMatchesLegacyTraversal(t *testing.T) {
 	t.Parallel()

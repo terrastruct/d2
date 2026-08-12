@@ -227,6 +227,21 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				points[i] = p
 			}
 		}
+		// Dagre 3.1 self-loop routes contain repeated control points. Remove only
+		// consecutive duplicates so downstream tangent calculations never see a
+		// zero-length segment.
+		points = deduplicateRoutePoints(points)
+		if edge.Src == edge.Dst {
+			// The self-loop controls describe the loop outside the node, but do not
+			// include usable node-facing endpoints. Center sentinels give
+			// TraceToShape a direction from which to chop the route to each border.
+			center := edge.Src.Center()
+			points = append([]*geo.Point{center.Copy()}, points...)
+			points = append(points, center.Copy())
+		}
+		if len(points) < 2 {
+			return fmt.Errorf("dagro returned edge %q without a usable route", dagreEdges[i].Name)
+		}
 
 		startIndex, endIndex := 0, len(points)-1
 		start, end := points[startIndex], points[endIndex]
@@ -368,6 +383,19 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 
 	return nil
+}
+
+func deduplicateRoutePoints(points []*geo.Point) []*geo.Point {
+	if len(points) < 2 {
+		return points
+	}
+	deduplicated := points[:1]
+	for _, point := range points[1:] {
+		if !point.Equals(deduplicated[len(deduplicated)-1]) {
+			deduplicated = append(deduplicated, point)
+		}
+	}
+	return deduplicated
 }
 
 type containerEndpoints struct {
