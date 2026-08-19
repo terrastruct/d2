@@ -83,6 +83,23 @@ func TestOutputFormat(t *testing.T) {
 			requiresAnimationInterval: true,
 			requiresPngRender:         true,
 		},
+		{
+			stdoutFormatFlag:          "json",
+			outputPath:                "-",
+			extension:                 JSON,
+			supportsDarkTheme:         false,
+			supportsAnimation:         false,
+			requiresAnimationInterval: false,
+			requiresPngRender:         false,
+		},
+		{
+			outputPath:                "/out.json",
+			extension:                 JSON,
+			supportsDarkTheme:         false,
+			supportsAnimation:         false,
+			requiresAnimationInterval: false,
+			requiresPngRender:         false,
+		},
 	}
 
 	for _, tc := range testCases {
