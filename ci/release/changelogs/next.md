@@ -6,7 +6,7 @@
 
 - plugins: make render post-processing optional and deprecate it for removal after one protocol compatibility cycle; legacy external `postprocess` commands remain supported during the transition
 - api: deprecate legacy layout-feature constants, raw-WASM ELK/object-order bridges, unused public wrappers, and test-only comparison, validation, and logging helpers; compatibility entry points remain callable for one release while in-repository callers use supported or internal replacements
-- maintenance: update the Go toolchain to 1.26.5 and refresh Go, d2.js, CI, and release dependencies
+- maintenance: update the Go toolchain to 1.27.0 and refresh Go, d2.js, CI, release dependencies, and compression-sensitive snapshots
 - renders: update syntax highlighting and migrate archived font and PDF dependencies to maintained replacements
 - d2dagre: replace the embedded JavaScript runtime with native Go Dagro and update its D2-used layout surface from Dagre 0.8.5 to Dagre 3.1.1 behavior. This intentionally changes node ordering and coordinates, edge routes, self-loops, and compound sizing in some diagrams; regenerate and review stored SVG or board-JSON snapshots
 - d2sketch: update the native rough-go renderer from Rough.js 4.0.4 to 4.6.6 behavior. Seeded sketch strokes, fills, arrowheads, and SVG paths may change; regenerate and review stored sketch SVG snapshots
