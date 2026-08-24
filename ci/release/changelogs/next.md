@@ -4,6 +4,7 @@
 
 #### Improvements 🧹
 
+- releases: strip native binaries, build and smoke-test all six archives in CI, produce reproducible archives with checksums, signed provenance, and SBOM attestations, and verify standalone downloads before extraction
 - plugins: make render post-processing optional and deprecate it for removal after one protocol compatibility cycle; legacy external `postprocess` commands remain supported during the transition
 - api: deprecate legacy layout-feature constants, raw-WASM ELK/object-order bridges, unused public wrappers, and test-only comparison, validation, and logging helpers; compatibility entry points remain callable for one release while in-repository callers use supported or internal replacements
 - maintenance: update the Go toolchain to 1.27.0 and refresh Go, d2.js, CI, release dependencies, and compression-sensitive snapshots

@@ -7,6 +7,10 @@ cd -- "$(dirname "$0")/../sub/lib"
 . ./release.sh
 cd - >/dev/null
 
+if [ -z "${D2_RELEASE_CHECKSUM-}" ]; then
+  . "$(dirname "$0")/checksum.sh"
+fi
+
 help() {
   arg0="$0"
   if [ "$0" = sh ]; then
@@ -312,7 +316,8 @@ install_d2_standalone() {
 
   ensure_version
   asset_url="https://github.com/$REPO/releases/download/$VERSION/$ARCHIVE"
-  fetch_gh "$asset_url" "$CACHE_DIR/$ARCHIVE" 'application/octet-stream'
+  fetch_verified_release_asset \
+    "$REPO" "$VERSION" "$ARCHIVE" "$asset_url" "$CACHE_DIR/$ARCHIVE"
 
   ensure_prefix_sh_c
   "$sh_c" mkdir -p "'$INSTALL_DIR'"

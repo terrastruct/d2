@@ -50,25 +50,41 @@ it depends on from ../sub/lib.
   Run with --help for usage.
 
 The first release-script run must leave the GitHub release as a draft. Pushing its tag
-starts the `Windows MSI` workflow, which waits for all six release archives and pins the
-exact Windows amd64 archive, builds the installer on GitHub's `windows-2022` runner,
-verifies its metadata and installed contents, and uploads
-`d2-<version>-windows-amd64.msi` to that same draft.
+starts two workflows:
+
+- `Release archives` builds all six archives twice from the exact tag commit with the
+  pinned Go toolchain and compares their SHA-256 digests. It strips and verifies each
+  binary, normalizes every archive, enforces size budgets, runs each archive on a native
+  GitHub-hosted runner, and generates signed build-provenance and SBOM attestations. The
+  release script waits for that exact successful workflow run, downloads its immutable
+  archive artifact, verifies `SHA256SUMS`, and uploads those same bytes to the draft.
+- `Windows MSI` waits for the six uploaded archives and pins the exact Windows amd64
+  archive, builds the installer on GitHub's `windows-2022` runner, verifies its metadata
+  and installed contents, and uploads `d2-<version>-windows-amd64.msi` to that same draft.
 
 Do not publish the release until the workflow is green and the MSI is present. Review and
 merge the release PR, then publish the draft on GitHub. The D2 wrapper rejects
 `release.sh --publish`, and it refuses any release-builder rerun after the MSI is attached.
 This prevents the shared helper from publishing while the asynchronous build is running or
-moving the tag after an MSI was built from it.
+moving the tag after an MSI was built from it. `release.sh --rebuild` is intentionally
+unsupported for CI-built archives. Re-run only failed jobs in the existing workflow run;
+a full rerun fails closed instead of replacing its immutable Actions artifacts.
 It also rejects a legacy local MSI in the version's build directory so the shared asset
 uploader cannot attach an unverified installer.
 
-The workflow can also be dispatched manually with release upload disabled. `v0.7.1` is
+The MSI workflow can also be dispatched manually with release upload disabled. `v0.7.1` is
 the continuity fixture; because that release predates notices in the archives, only this
 non-uploading fixture build packages the current notices file. Every production MSI
 requires `THIRD_PARTY_NOTICES.txt` from its pinned release archive. Re-run only a failed
 job: the workflow's Actions artifact is immutable within a run, and a full rerun fails
 closed instead of replacing it.
+
+Every release includes `SHA256SUMS`. To verify archive provenance and its checksum:
+
+```sh
+gh attestation verify d2-v0.0.0-linux-amd64.tar.gz --repo d2lang/d2
+sha256sum --check --ignore-missing SHA256SUMS
+```
 
 The MSI remains unsigned. Authenticode signing is tracked separately in
 [issue #1078](https://github.com/d2lang/d2/issues/1078).
@@ -86,7 +102,9 @@ manually dispatched builds fail closed when the variable is absent.
 - ./build.sh builds the release archives for each platform into ./build/<VERSION>/*.tar.gz
   Run with --help for usage.
 
-Use `--host-only` to build only the release for the host's `$OS-$ARCH` pair.
+Use `--host-only` to build only the release for the host's `$OS-$ARCH` pair. Local
+development invocations still build locally. The production release path instead downloads
+the exact archives produced by the tag-triggered `Release archives` workflow.
 
 ### Docker image helper
 
