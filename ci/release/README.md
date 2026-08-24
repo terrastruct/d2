@@ -79,7 +79,8 @@ requires `THIRD_PARTY_NOTICES.txt` from its pinned release archive. Re-run only 
 job: the workflow's Actions artifact is immutable within a run, and a full rerun fails
 closed instead of replacing it.
 
-Every release includes `SHA256SUMS`. To verify archive provenance and its checksum:
+Every release produced by this workflow includes `SHA256SUMS`. To verify archive
+provenance and its checksum:
 
 ```sh
 gh attestation verify d2-v0.0.0-linux-amd64.tar.gz --repo d2lang/d2

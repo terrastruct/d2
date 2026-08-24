@@ -316,7 +316,7 @@ install_d2_standalone() {
 
   ensure_version
   asset_url="https://github.com/$REPO/releases/download/$VERSION/$ARCHIVE"
-  fetch_verified_release_asset \
+  fetch_release_asset \
     "$REPO" "$VERSION" "$ARCHIVE" "$asset_url" "$CACHE_DIR/$ARCHIVE"
 
   ensure_prefix_sh_c

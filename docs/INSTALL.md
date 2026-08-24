@@ -68,9 +68,11 @@ detailed docs on its various options and features.
 If you're still concerned, remember you can run with `--dry-run` to avoid writing anything.
 
 For standalone installations, the script obtains the selected archive's SHA-256 digest
-from the GitHub Releases API and verifies both cached and newly downloaded archives before
-extracting them. Each new release also includes `SHA256SUMS` and GitHub artifact
-attestations. You can verify build provenance separately with:
+from the GitHub Releases API and, when GitHub provides one, verifies both cached and newly
+downloaded archives before extracting them. Historical releases for which GitHub reports
+no digest remain installable with a warning. Releases produced by the current release
+workflow also include `SHA256SUMS` and GitHub artifact attestations. You can verify build
+provenance separately with:
 
 ```sh
 gh attestation verify d2-v0.0.0-linux-amd64.tar.gz --repo d2lang/d2

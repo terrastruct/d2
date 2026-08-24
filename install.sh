@@ -628,6 +628,10 @@ release_asset_digest_from_json() {
     }
     found && /^[[:space:]]*"digest":[[:space:]]*/ {
       value = $0
+      if (value ~ /^[^:]*:[[:space:]]*null[,[:space:]]*$/) {
+        print "unavailable"
+        exit
+      }
       original = value
       sub(/^[^:]*:[[:space:]]*"sha256:/, "", value)
       if (value == original) {
@@ -648,6 +652,9 @@ release_asset_sha256() {
   RELEASE_INFO_URL="https://api.github.com/repos/$REPOSITORY/releases/tags/$RELEASE_VERSION"
   DRY_RUN= fetch_gh "$RELEASE_INFO_URL" "$RELEASE_INFO" 'application/vnd.github+json'
   EXPECTED_SHA256=$(release_asset_digest_from_json "$ASSET_NAME" <"$RELEASE_INFO")
+  if [ "$EXPECTED_SHA256" = unavailable ]; then
+    return 0
+  fi
   EXPECTED_SHA256=$(printf '%s' "$EXPECTED_SHA256" | tr '[:upper:]' '[:lower:]')
   if ! printf '%s\n' "$EXPECTED_SHA256" | grep -Eq '^[0-9a-f]{64}$'; then
     echo >&2 "$ASSET_NAME does not have a valid GitHub SHA-256 digest"
@@ -667,7 +674,7 @@ verify_sha256() {
   fi
 }
 
-fetch_verified_release_asset() {
+fetch_release_asset() {
   REPOSITORY=$1
   RELEASE_VERSION=$2
   ASSET_NAME=$3
@@ -675,11 +682,16 @@ fetch_verified_release_asset() {
   DESTINATION=$5
 
   if [ -n "${DRY_RUN-}" ]; then
-    sh_c "download $ASSET_NAME and verify its GitHub SHA-256 digest"
+    sh_c "download $ASSET_NAME and verify its GitHub SHA-256 digest when available"
     return
   fi
 
   EXPECTED_SHA256=$(release_asset_sha256 "$REPOSITORY" "$RELEASE_VERSION" "$ASSET_NAME")
+  if [ -z "$EXPECTED_SHA256" ]; then
+    warn "GitHub does not provide a SHA-256 digest for $ASSET_NAME; continuing without checksum verification for compatibility with legacy releases"
+    fetch_gh "$ASSET_URL" "$DESTINATION" 'application/octet-stream'
+    return
+  fi
   if [ -e "$DESTINATION" ]; then
     if verify_sha256 "$DESTINATION" "$EXPECTED_SHA256"; then
       log "reusing verified $DESTINATION"
@@ -1005,7 +1017,7 @@ install_d2_standalone() {
 
   ensure_version
   asset_url="https://github.com/$REPO/releases/download/$VERSION/$ARCHIVE"
-  fetch_verified_release_asset \
+  fetch_release_asset \
     "$REPO" "$VERSION" "$ARCHIVE" "$asset_url" "$CACHE_DIR/$ARCHIVE"
 
   ensure_prefix_sh_c

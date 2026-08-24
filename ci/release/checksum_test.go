@@ -33,7 +33,7 @@ func TestReleaseAssetDigestParser(t *testing.T) {
 	}
 }
 
-func TestReleaseAssetDigestParserRejectsMissingDigest(t *testing.T) {
+func TestReleaseAssetDigestParserReportsUnavailableDigest(t *testing.T) {
 	t.Parallel()
 	metadata := `{
   "assets": [
@@ -43,8 +43,60 @@ func TestReleaseAssetDigestParserRejectsMissingDigest(t *testing.T) {
     }
   ]
 }`
-	if got := runChecksumFunction(t, metadata, "release_asset_digest_from_json", "d2-v1.2.3-linux-amd64.tar.gz"); got != "" {
-		t.Fatalf("digest = %q, want empty", got)
+	if got := runChecksumFunction(t, metadata, "release_asset_digest_from_json", "d2-v1.2.3-linux-amd64.tar.gz"); got != "unavailable" {
+		t.Fatalf("digest = %q, want unavailable", got)
+	}
+}
+
+func TestFetchReleaseAssetAllowsLegacyReleaseWithoutDigest(t *testing.T) {
+	t.Parallel()
+	directory := t.TempDir()
+	metadataPath := filepath.Join(directory, "metadata.json")
+	metadata := `{
+  "assets": [
+    {
+      "name": "d2-v0.7.0-linux-amd64.tar.gz",
+      "digest": null
+    }
+  ]
+}`
+	if err := os.WriteFile(metadataPath, []byte(metadata), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	destination := filepath.Join(directory, "archive.tar.gz")
+	const payload = "legacy archive"
+	command := `
+. "$1"
+metadata=$2
+payload=$3
+destination=$4
+fixture_dir=$(dirname "$metadata")
+mktempd() { printf '%s\n' "$fixture_dir"; }
+fetch_gh() {
+  case "$1" in
+    https://api.github.com/*) cp "$metadata" "$2" ;;
+    *) printf '%s' "$payload" >"$2" ;;
+  esac
+}
+warn() { printf 'warning: %s\n' "$*" >&2; }
+log() { :; }
+fetch_release_asset d2lang/d2 v0.7.0 d2-v0.7.0-linux-amd64.tar.gz https://example.invalid/archive "$destination"
+`
+	cmd := exec.Command("sh", "-c", command, "sh", "./checksum.sh", metadataPath, payload, destination)
+	cmd.Dir = "."
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("fetch_release_asset failed: %v\n%s", err, output)
+	}
+	if !strings.Contains(string(output), "continuing without checksum verification") {
+		t.Fatalf("fetch_release_asset did not warn:\n%s", output)
+	}
+	got, err := os.ReadFile(destination)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(got) != payload {
+		t.Fatalf("archive = %q, want %q", got, payload)
 	}
 }
 
