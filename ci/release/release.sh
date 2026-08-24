@@ -65,34 +65,39 @@ case "$VERSION_ARG" in
       echo >&2 "cannot safely distinguish a missing release from a hidden draft release"
       exit 1
     fi
-    if RELEASE_RESPONSE=$(gh api --include \
-      "repos/$REPOSITORY/releases/tags/$VERSION_ARG" 2>&1); then
-      STATUS_CODE=$(printf '%s\n' "$RELEASE_RESPONSE" \
-        | sed -n '1s/^HTTP\/[^ ]* \([0-9][0-9][0-9]\).*/\1/p')
-      if [ "$STATUS_CODE" != 200 ]; then
-        echo >&2 "unexpected GitHub release lookup status: $STATUS_CODE"
-        exit 1
-      fi
-      RELEASE_JSON=$(printf '%s\n' "$RELEASE_RESPONSE" \
-        | awk 'body { print } /^\r?$/ { body = 1 }')
-      if ! printf '%s' "$RELEASE_JSON" | jq -e --arg version "$VERSION_ARG" \
-        'type == "object" and (.id | type == "number") and
-          .tag_name == $version and (.assets | type == "array")' >/dev/null; then
-        echo >&2 "GitHub returned malformed release metadata for $VERSION_ARG"
-        exit 1
-      fi
-      MSI_COUNT=$(printf '%s' "$RELEASE_JSON" | jq -r --arg asset "$MSI_ASSET" \
-        '[.assets[] | select(.name == $asset)] | length')
-    else
-      STATUS_CODE=$(printf '%s\n' "$RELEASE_RESPONSE" \
-        | sed -n '1s/^HTTP\/[^ ]* \([0-9][0-9][0-9]\).*/\1/p')
-      if [ "$STATUS_CODE" != 404 ]; then
-        printf '%s\n' "$RELEASE_RESPONSE" >&2
-        echo >&2 "unable to verify whether $VERSION_ARG already has an MSI"
-        exit 1
-      fi
-      MSI_COUNT=0
+    # GitHub's tag endpoint returns only published releases. Enumerate releases
+    # after confirming push access so an existing draft cannot bypass this guard.
+    RELEASE_PAGES=$(gh api --paginate --slurp \
+      "repos/$REPOSITORY/releases?per_page=100")
+    if ! printf '%s' "$RELEASE_PAGES" | jq -e \
+      'type == "array" and all(.[]; type == "array")' >/dev/null; then
+      echo >&2 "GitHub returned malformed release listings"
+      exit 1
     fi
+    RELEASE_MATCHES=$(printf '%s' "$RELEASE_PAGES" | jq -c \
+      --arg version "$VERSION_ARG" \
+      '[.[][] | select(.tag_name == $version)]')
+    RELEASE_COUNT=$(printf '%s' "$RELEASE_MATCHES" | jq -r length)
+    case "$RELEASE_COUNT" in
+      0)
+        MSI_COUNT=0
+        ;;
+      1)
+        RELEASE_JSON=$(printf '%s' "$RELEASE_MATCHES" | jq -c '.[0]')
+        if ! printf '%s' "$RELEASE_JSON" | jq -e --arg version "$VERSION_ARG" \
+          'type == "object" and (.id | type == "number") and
+            .tag_name == $version and (.assets | type == "array")' >/dev/null; then
+          echo >&2 "GitHub returned malformed release metadata for $VERSION_ARG"
+          exit 1
+        fi
+        MSI_COUNT=$(printf '%s' "$RELEASE_JSON" | jq -r --arg asset "$MSI_ASSET" \
+          '[.assets[] | select(.name == $asset)] | length')
+        ;;
+      *)
+        echo >&2 "GitHub returned multiple releases for $VERSION_ARG"
+        exit 1
+        ;;
+    esac
     if [ -n "$MSI_COUNT" ] && [ "$MSI_COUNT" -gt 0 ]; then
       echo >&2 "$MSI_ASSET is already attached to the release"
       echo >&2 "do not rerun the release builder or move its tag; merge the release PR and publish the reviewed draft on GitHub"

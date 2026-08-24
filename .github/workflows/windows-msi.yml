@@ -35,6 +35,8 @@ jobs:
   validate:
     runs-on: ubuntu-24.04
     timeout-minutes: 70
+    permissions:
+      contents: write
     outputs:
       archive_asset_id: ${{ steps.release.outputs.archive_asset_id }}
       archive_digest: ${{ steps.release.outputs.archive_digest }}
@@ -90,6 +92,29 @@ jobs:
 
           release_json=
           archive_json=
+          find_release() {
+            local release_pages release_matches release_count
+            # GitHub's tag endpoint returns only published releases. The list
+            # endpoint includes drafts for this write-scoped release job.
+            release_pages=$(gh api --paginate --slurp \
+              "repos/$GITHUB_REPOSITORY/releases?per_page=100")
+            if ! printf '%s' "$release_pages" | jq -e \
+              'type == "array" and all(.[]; type == "array")' >/dev/null; then
+              echo "GitHub returned malformed release listings" >&2
+              return 1
+            fi
+            release_matches=$(printf '%s' "$release_pages" | jq -c --arg version "$version" \
+              '[.[][] | select(.tag_name == $version)]')
+            release_count=$(printf '%s' "$release_matches" | jq -r length)
+            case "$release_count" in
+              0) return 0 ;;
+              1) printf '%s' "$release_matches" | jq -c '.[0]' ;;
+              *)
+                echo "GitHub returned multiple releases for $version" >&2
+                return 1
+                ;;
+            esac
+          }
           expected_assets=$(jq -cn --arg version "$version" '[
             "d2-\($version)-linux-amd64.tar.gz",
             "d2-\($version)-linux-arm64.tar.gz",
@@ -99,7 +124,7 @@ jobs:
             "d2-\($version)-windows-arm64.tar.gz"
           ]')
           for attempt in $(seq 1 "$attempts"); do
-            release_json=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$version" 2>/dev/null || true)
+            release_json=$(find_release)
             if [[ -n "$release_json" ]]; then
               if printf '%s' "$release_json" | jq -e --argjson expected "$expected_assets" '
                 [.assets[] | select(.name as $name | $expected | index($name))] as $matches |
