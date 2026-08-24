@@ -207,13 +207,41 @@ jobs:
             echo "version=$version"
           } >>"$GITHUB_OUTPUT"
 
+      - name: Download and verify pinned Windows archive
+        env:
+          ARCHIVE_ASSET_ID: ${{ steps.release.outputs.archive_asset_id }}
+          ARCHIVE_DIGEST: ${{ steps.release.outputs.archive_digest }}
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          set -euo pipefail
+          archive="$RUNNER_TEMP/d2-$VERSION-windows-amd64.tar.gz"
+          gh api \
+            -H 'Accept: application/octet-stream' \
+            "repos/$GITHUB_REPOSITORY/releases/assets/$ARCHIVE_ASSET_ID" >"$archive"
+
+          expected=${ARCHIVE_DIGEST#sha256:}
+          actual=$(sha256sum "$archive" | awk '{print $1}')
+          if [[ "$actual" != "$expected" ]]; then
+            echo "archive SHA-256 is $actual, expected $expected" >&2
+            exit 1
+          fi
+
+      - name: Upload pinned Windows archive
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: windows-release-archive
+          path: ${{ runner.temp }}/d2-${{ steps.release.outputs.version }}-windows-amd64.tar.gz
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 1
+
   build:
     needs: validate
     if: ${{ github.event_name != 'pull_request' || vars.WIX7_EULA_ACCEPTED == 'true' }}
     runs-on: windows-2022
     timeout-minutes: 30
     env:
-      ARCHIVE_ASSET_ID: ${{ needs.validate.outputs.archive_asset_id }}
       ARCHIVE_DIGEST: ${{ needs.validate.outputs.archive_digest }}
       VERSION: ${{ needs.validate.outputs.version }}
     steps:
@@ -221,6 +249,11 @@ jobs:
         with:
           ref: ${{ needs.validate.outputs.checkout_commit }}
           persist-credentials: false
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: windows-release-archive
+          path: ${{ runner.temp }}
 
       - name: Confirm WiX 7 EULA acceptance
         shell: pwsh
@@ -238,24 +271,10 @@ jobs:
           dotnet tool install --tool-path "$env:RUNNER_TEMP\wix" wix --version 7.0.0
           "$env:RUNNER_TEMP\wix" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
-      - name: Download and verify release archive
+      - name: Verify release archive
         shell: pwsh
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           $archive = "$env:RUNNER_TEMP\d2-$env:VERSION-windows-amd64.tar.gz"
-          $headers = @{
-            Accept = 'application/octet-stream'
-            Authorization = "Bearer $env:GH_TOKEN"
-            'X-GitHub-Api-Version' = '2022-11-28'
-          }
-          $downloadParameters = @{
-            Headers = $headers
-            Uri = "https://api.github.com/repos/$env:GITHUB_REPOSITORY/releases/assets/$env:ARCHIVE_ASSET_ID"
-            OutFile = $archive
-          }
-          Invoke-WebRequest @downloadParameters
-
           $expected = $env:ARCHIVE_DIGEST.Substring('sha256:'.Length)
           $actual = (Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash.ToLowerInvariant()
           if ($actual -cne $expected) {
