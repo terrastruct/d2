@@ -2153,6 +2153,9 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			// land and not SVG attributes
 			var styles []string
 			var classes []string = []string{"md"}
+			if targetShape.Underline {
+				styles = append(styles, "text-decoration:underline")
+			}
 			if targetShape.FontSize != textmeasure.MarkdownFontSize {
 				styles = append(styles, fmt.Sprintf("font-size:%vpx", targetShape.FontSize))
 			}

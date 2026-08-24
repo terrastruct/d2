@@ -2052,6 +2052,16 @@ i am bottom right: { shape: text; near: bottom-right }
 `,
 		},
 		{
+			name:      "md_underline",
+			justDagre: true,
+			script: `underlined: |md
+  x
+| {
+  style.underline: true
+}
+`,
+		},
+		{
 			name: "constant_near_title",
 			script: `title: |md
   # A winning strategy
