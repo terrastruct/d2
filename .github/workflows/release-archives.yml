@@ -1,0 +1,226 @@
+name: Release archives
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/release-archives.yml
+      - .github/workflows/ci.yml
+      - ci/release/**
+      - ci/sub
+      - install.sh
+      - go.mod
+      - go.sum
+  push:
+    tags:
+      - v*
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-archives-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      RELEASE_BUILD_SERIAL: "1"
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          submodules: true
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: ./go.mod
+          cache: true
+
+      - name: Select release version
+        id: version
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_EVENT_NAME" == push ]]; then
+            version=$GITHUB_REF_NAME
+            if ! printf '%s\n' "$version" | grep -Eq '^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z]+([.-][0-9A-Za-z]+)*)?$'; then
+              echo "release tag must be a v-prefixed semantic version" >&2
+              exit 1
+            fi
+          else
+            version="v0.0.0-pr.$PR_NUMBER"
+          fi
+          echo "version=$version" >>"$GITHUB_OUTPUT"
+
+      - name: Verify modules
+        env:
+          GOEXPERIMENT: ""
+          GOFLAGS: ""
+          GOTOOLCHAIN: local
+          GOWORK: "off"
+        run: go mod verify
+
+      - name: Build and verify all release archives
+        env:
+          RELEASE: "1"
+          RELEASE_BUILD_IN_CI: "1"
+          VERSION: ${{ steps.version.outputs.version }}
+        run: ./ci/release/build.sh --rebuild --version="$VERSION"
+
+      - name: Prove archive reproducibility
+        env:
+          RELEASE: "1"
+          RELEASE_BUILD_IN_CI: "1"
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          cp "ci/release/build/$VERSION/SHA256SUMS" "$RUNNER_TEMP/first-SHA256SUMS"
+          ./ci/release/build.sh --rebuild --version="$VERSION"
+          diff -u "$RUNNER_TEMP/first-SHA256SUMS" "ci/release/build/$VERSION/SHA256SUMS"
+          git diff --exit-code
+
+      - name: Generate release SBOM
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          GOTOOLCHAIN=local GOWORK=off GOFLAGS= GOEXPERIMENT= \
+            go run -mod=readonly ./ci/release/releasetool sbom \
+              --binary "ci/release/build/$VERSION/linux-amd64/d2-$VERSION/bin/d2" \
+              --output "$RUNNER_TEMP/d2.spdx.json" \
+              --name "d2-$VERSION" \
+              --version "$VERSION" \
+              --epoch "$(git show -s --format=%ct HEAD)"
+
+      - name: Upload immutable release archives
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-archives
+          path: |
+            ci/release/build/${{ steps.version.outputs.version }}/*.tar.gz
+            ci/release/build/${{ steps.version.outputs.version }}/SHA256SUMS
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
+
+      - name: Upload release SBOM
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-sbom
+          path: ${{ runner.temp }}/d2.spdx.json
+          if-no-files-found: error
+          retention-days: 30
+
+  smoke:
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            os: linux
+            arch: amd64
+            extension: ""
+          - runner: ubuntu-24.04-arm
+            os: linux
+            arch: arm64
+            extension: ""
+          - runner: macos-15-intel
+            os: macos
+            arch: amd64
+            extension: ""
+          - runner: macos-15
+            os: macos
+            arch: arm64
+            extension: ""
+          - runner: windows-2025
+            os: windows
+            arch: amd64
+            extension: .exe
+          - runner: windows-11-arm
+            os: windows
+            arch: arm64
+            extension: .exe
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: release-archives
+          path: ${{ runner.temp }}/release-archives
+
+      - name: Run native archive smoke test
+        shell: pwsh
+        env:
+          ARCH: ${{ matrix.arch }}
+          BINARY_EXTENSION: ${{ matrix.extension }}
+          OS: ${{ matrix.os }}
+          VERSION: ${{ needs.build.outputs.version }}
+        run: |
+          $archive = Join-Path $env:RUNNER_TEMP "release-archives/d2-$env:VERSION-$env:OS-$env:ARCH.tar.gz"
+          if (-not (Test-Path -LiteralPath $archive -PathType Leaf)) {
+            throw "missing $archive"
+          }
+          $destination = Join-Path $env:RUNNER_TEMP "d2-release-smoke"
+          New-Item -ItemType Directory -Force -Path $destination | Out-Null
+          tar -C $destination -xzf $archive
+          if ($LASTEXITCODE -ne 0) {
+            throw "unable to extract $archive"
+          }
+          $binary = Join-Path $destination "d2-$env:VERSION/bin/d2$env:BINARY_EXTENSION"
+          $actualVersion = (& $binary --version).Trim()
+          if ($LASTEXITCODE -ne 0 -or $actualVersion -cne $env:VERSION) {
+            throw "d2 --version returned '$actualVersion', expected '$env:VERSION'"
+          }
+          $inputFile = Join-Path $destination "smoke.d2"
+          $outputFile = Join-Path $destination "smoke.svg"
+          "x -> y" | Set-Content -LiteralPath $inputFile
+          & $binary $inputFile $outputFile
+          if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $outputFile -PathType Leaf)) {
+            throw "d2 SVG smoke render failed"
+          }
+          if (-not (Select-String -LiteralPath $outputFile -Pattern '<svg' -Quiet)) {
+            throw "d2 SVG smoke render did not produce SVG"
+          }
+
+  attest:
+    if: github.event_name == 'push'
+    needs:
+      - build
+      - smoke
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      artifact-metadata: write
+      attestations: write
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: release-archives
+          path: ${{ runner.temp }}/release-archives
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: release-sbom
+          path: ${{ runner.temp }}/release-sbom
+
+      - name: Attest archive build provenance
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: ${{ runner.temp }}/release-archives/*.tar.gz
+
+      - name: Attest archive SBOM
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: ${{ runner.temp }}/release-archives/*.tar.gz
+          sbom-path: ${{ runner.temp }}/release-sbom/d2.spdx.json
+
+      - name: Attest checksum manifest
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: ${{ runner.temp }}/release-archives/SHA256SUMS
