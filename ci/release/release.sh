@@ -11,11 +11,16 @@ fi
 unset PUBLISH
 
 VERSION_ARG=${VERSION-}
+SKIP_BUILD_ARG=
 scan_arguments() {
   while flag_parse "$@"; do
     case "$FLAG" in
-      h|help|rebuild|prerelease|dry-run|skip-build)
+      h|help|rebuild|prerelease|dry-run)
         flag_noarg || return 1
+        ;;
+      skip-build)
+        flag_noarg || return 1
+        SKIP_BUILD_ARG=1
         ;;
       publish)
         flag_noarg || return 1
@@ -41,6 +46,12 @@ scan_arguments() {
   fi
 }
 scan_arguments "$@"
+
+if [ -n "$SKIP_BUILD_ARG" ]; then
+  echo >&2 "release.sh no longer supports --skip-build"
+  echo >&2 "production releases must upload the exact verified Release archives workflow artifact"
+  exit 1
+fi
 
 if [ -z "$VERSION_ARG" ]; then
   VERSION_ARG=$(git describe 2>/dev/null || true)

@@ -70,7 +70,9 @@ moving the tag after an MSI was built from it. `release.sh --rebuild` is intenti
 unsupported for CI-built archives. Re-run only failed jobs in the existing workflow run;
 a full rerun fails closed instead of replacing its immutable Actions artifacts.
 It also rejects a legacy local MSI in the version's build directory so the shared asset
-uploader cannot attach an unverified installer.
+uploader cannot attach an unverified installer. The wrapper rejects `--skip-build`, and the
+production build accepts only the six named archives plus `SHA256SUMS`; unexpected files
+and symlinks fail closed before upload.
 
 The MSI workflow can also be dispatched manually with release upload disabled. `v0.7.1` is
 the continuity fixture; because that release predates notices in the archives, only this

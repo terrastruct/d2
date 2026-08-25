@@ -7,6 +7,7 @@ if [ ! -e "$(dirname "$0")/../../ci/sub/.git" ]; then
 fi
 . "$(dirname "$0")/../../ci/sub/lib.sh"
 cd -- "$(dirname "$0")/../.."
+. ./ci/release/assets.sh
 
 help() {
   cat <<EOF
@@ -244,23 +245,18 @@ download_ci_build() {
     --manifest "$DOWNLOAD_DIR/SHA256SUMS" \
     --directory "$DOWNLOAD_DIR" \
     --expected-count 6
+  verify_ci_release_asset_directory "$DOWNLOAD_DIR" "$VERSION"
+  verify_ci_release_asset_directory "$BUILD_DIR" "$VERSION" 0
   for TARGET in \
     linux-amd64 linux-arm64 \
     macos-amd64 macos-arm64 \
     windows-amd64 windows-arm64; do
-    if [ ! -f "$DOWNLOAD_DIR/d2-$VERSION-$TARGET.tar.gz" ]; then
-      echo >&2 "release workflow artifact is missing d2-$VERSION-$TARGET.tar.gz"
-      return 1
-    fi
+    sh_c rm -f "$BUILD_DIR/d2-$VERSION-$TARGET.tar.gz"
+    sh_c cp "$DOWNLOAD_DIR/d2-$VERSION-$TARGET.tar.gz" "$BUILD_DIR/"
   done
-  FILE_COUNT=$(find "$DOWNLOAD_DIR" -maxdepth 1 -type f | wc -l | tr -d ' ')
-  if [ "$FILE_COUNT" -ne 7 ]; then
-    echo >&2 "release workflow artifact has $FILE_COUNT files, expected seven"
-    return 1
-  fi
-
-  sh_c rm -f "$BUILD_DIR"/d2-"$VERSION"-*.tar.gz "$BUILD_DIR/SHA256SUMS"
-  sh_c cp "$DOWNLOAD_DIR"/d2-"$VERSION"-*.tar.gz "$DOWNLOAD_DIR/SHA256SUMS" "$BUILD_DIR/"
+  sh_c rm -f "$BUILD_DIR/SHA256SUMS"
+  sh_c cp "$DOWNLOAD_DIR/SHA256SUMS" "$BUILD_DIR/"
+  verify_ci_release_asset_directory "$BUILD_DIR" "$VERSION"
   log "downloaded verified release archives from $RUN_URL"
 }
 
