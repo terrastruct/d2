@@ -4,11 +4,18 @@ FROM ubuntu:24.04@sha256:561618e2c15bf2397621dd04f96926663a3b5616c189cf7e38db7e8
 ARG TARGETARCH
 ARG FIXUID_VERSION=0.6.0
 
-RUN apt-get update && apt-get install -y ca-certificates curl dumb-init sudo
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends ca-certificates curl dumb-init sudo \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash -s - && \
-  apt-get install -y nodejs
-RUN npx playwright@1.61.1 install --with-deps chromium
+  apt-get install -y --no-install-recommends nodejs && \
+  rm -rf /var/lib/apt/lists/*
+
+# Install Chromium's system libraries without downloading a browser. The
+# non-root d2 init-playwright step below installs the single runtime copy.
+RUN npx --yes playwright@1.61.1 install-deps chromium \
+  && rm -rf /root/.npm /var/lib/apt/lists/*
 
 RUN adduser --gecos '' --disabled-password debian \
   && echo "debian ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/nopasswd
