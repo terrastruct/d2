@@ -256,7 +256,8 @@ func _findFieldAST(ast *d2ast.Map, path []string) *d2ast.Map {
 }
 
 type compiler struct {
-	err *d2parser.ParseError
+	err             *d2parser.ParseError
+	activeClassMaps map[*d2ir.Map]struct{}
 }
 
 func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
@@ -291,7 +292,10 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 		for _, className := range classNames {
 			classMap := m.GetClassMap(className)
 			if classMap != nil {
-				c.compileMap(obj, classMap)
+				if c.beginClass(class, className, classMap) {
+					c.compileMap(obj, classMap)
+					c.endClass(classMap)
+				}
 			} else {
 				if strings.Contains(className, ",") {
 					split := strings.Split(className, ",")
@@ -340,6 +344,22 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 			c.compileEdge(obj, e)
 		}
 	}
+}
+
+func (c *compiler) beginClass(class *d2ir.Field, className string, classMap *d2ir.Map) bool {
+	if c.activeClassMaps == nil {
+		c.activeClassMaps = make(map[*d2ir.Map]struct{})
+	}
+	if _, ok := c.activeClassMaps[classMap]; ok {
+		c.errorf(class.LastRef().AST(), `class %q forms a reference cycle`, className)
+		return false
+	}
+	c.activeClassMaps[classMap] = struct{}{}
+	return true
+}
+
+func (c *compiler) endClass(classMap *d2ir.Map) {
+	delete(c.activeClassMaps, classMap)
 }
 
 func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
@@ -905,7 +925,10 @@ func (c *compiler) compileEdgeMap(edge *d2graph.Edge, m *d2ir.Map) {
 		for _, className := range classNames {
 			classMap := m.GetClassMap(className)
 			if classMap != nil {
-				c.compileEdgeMap(edge, classMap)
+				if c.beginClass(class, className, classMap) {
+					c.compileEdgeMap(edge, classMap)
+					c.endClass(classMap)
+				}
 			}
 		}
 	}

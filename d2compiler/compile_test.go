@@ -46,6 +46,18 @@ func TestOpacityValidation(t *testing.T) {
 	}
 }
 
+func TestClassReferenceCycle(t *testing.T) {
+	t.Parallel()
+
+	_, _, err := d2compiler.Compile(
+		"class-cycle.d2",
+		strings.NewReader("classes: { x: { class: x } }\na.class: x"),
+		nil,
+	)
+	assert.ErrorString(t, err, `class-cycle.d2:1:17: "class" cannot appear within "classes"
+class-cycle.d2:1:17: class "x" forms a reference cycle`)
+}
+
 func TestCompile(t *testing.T) {
 	t.Parallel()
 
@@ -3328,6 +3340,31 @@ nostar -> 1star: { class: path }
 
 				tassert.Equal(t, "4", g.Edges[0].Style.StrokeWidth.Value)
 				tassert.Equal(t, "then", g.Edges[0].Label.Value)
+			},
+		},
+		{
+			name: "recursive-glob-skips-definitions",
+			text: `classes: {
+  container: {
+    style.fill: red
+  }
+}
+vars: {
+  cont_variable: {
+    label: cont variable
+  }
+}
+**: {
+  &label: cont*
+  class: container
+}
+cont_target
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 1, len(g.Objects))
+				tassert.Equal(t, "cont_target", g.Objects[0].AbsID())
+				tassert.Equal(t, []string{"container"}, g.Objects[0].Classes)
+				tassert.Equal(t, "red", g.Objects[0].Style.Fill.Value)
 			},
 		},
 		{
