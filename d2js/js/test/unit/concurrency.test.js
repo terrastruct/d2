@@ -6,6 +6,7 @@ class FakeNodeWorker {
   constructor() {
     this.handlers = new Map();
     this.messages = [];
+    this.terminateCalls = 0;
   }
 
   on(type, handler) {
@@ -19,11 +20,17 @@ class FakeNodeWorker {
   emitMessage(message) {
     this.handlers.get("message")(message);
   }
+
+  terminate() {
+    this.terminateCalls++;
+    return Promise.resolve(0);
+  }
 }
 
 class FakeBrowserWorker {
   constructor() {
     this.messages = [];
+    this.terminateCalls = 0;
   }
 
   postMessage(message) {
@@ -32,6 +39,10 @@ class FakeBrowserWorker {
 
   emitMessage(message) {
     this.onmessage({ data: message });
+  }
+
+  terminate() {
+    this.terminateCalls++;
   }
 }
 
@@ -124,6 +135,31 @@ for (const [name, isNode] of [
       await expect(d2.version()).rejects.toThrow("post failed");
       expect(d2.pendingRequests.size).toBe(0);
     });
+
+    test("disposes the worker exactly once", async () => {
+      const { d2, worker } = createD2(isNode);
+
+      await Promise.all([d2.dispose(), d2.dispose()]);
+
+      expect(worker.terminateCalls).toBe(1);
+      expect(d2.worker).toBeUndefined();
+      await expect(d2.version()).rejects.toThrow("D2 instance has been disposed");
+    });
+
+    test("rejects pending requests when disposed", async () => {
+      const { d2, worker } = createD2(isNode);
+      const result = d2.compile("pending").then(
+        () => ({ resolved: true }),
+        (error) => ({ error })
+      );
+      await waitForRequests(worker, 1);
+
+      await d2.dispose();
+
+      expect((await result).error.message).toBe("D2 instance has been disposed");
+      expect(d2.pendingRequests.size).toBe(0);
+      expect(worker.terminateCalls).toBe(1);
+    });
   });
 }
 
@@ -147,5 +183,5 @@ test("correlates every operation through the real worker", async () => {
   expect(decoded).toBe("decoded result");
   expect(version).toMatch(/^v?\d+\.\d+\.\d+/);
   expect(jsVersion).toBe(packageJson.version);
-  await d2.worker.terminate();
+  await d2.dispose();
 }, 20000);
