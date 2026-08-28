@@ -189,6 +189,7 @@ func runASCIITxtarTest(t *testing.T, tc testCase) {
 	var xmlParsed interface{}
 	err = xml.Unmarshal(svgBytes, &xmlParsed)
 	assert.Success(t, err)
+	assert.False(t, strings.Contains(string(svgBytes), "<foreignObject"))
 
 	// Output files to asciitxtar subdirectory for each test
 	testName := strings.TrimPrefix(t.Name(), "TestE2E/asciitxtar/")
@@ -417,6 +418,7 @@ func run(t *testing.T, tc testCase) {
 		var xmlParsed interface{}
 		err = xml.Unmarshal(svgBytes, &xmlParsed)
 		assert.Success(t, err)
+		assert.False(t, strings.Contains(string(svgBytes), "<foreignObject"))
 
 		var err2 error
 		err = diff.TestdataJSON(filepath.Join(dataPath, "board"), diagram)

@@ -17,10 +17,10 @@
       "type": "text",
       "pos": {
         "x": 12,
-        "y": 12
+        "y": 22
       },
-      "width": 66,
-      "height": 24,
+      "width": 78,
+      "height": 32,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -48,8 +48,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 66,
-      "labelHeight": 24,
+      "labelWidth": 78,
+      "labelHeight": 32,
       "zIndex": 0,
       "level": 1
     },
@@ -57,11 +57,11 @@
       "id": "□",
       "type": "text",
       "pos": {
-        "x": 98,
+        "x": 110,
         "y": 12
       },
-      "width": 62,
-      "height": 24,
+      "width": 120,
+      "height": 52,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -89,8 +89,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 62,
-      "labelHeight": 24,
+      "labelWidth": 120,
+      "labelHeight": 52,
       "zIndex": 0,
       "level": 1
     },
@@ -98,11 +98,11 @@
       "id": "●",
       "type": "text",
       "pos": {
-        "x": 180,
+        "x": 250,
         "y": 12
       },
-      "width": 62,
-      "height": 24,
+      "width": 120,
+      "height": 52,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -130,8 +130,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 62,
-      "labelHeight": 24,
+      "labelWidth": 120,
+      "labelHeight": 52,
       "zIndex": 0,
       "level": 1
     },
@@ -139,11 +139,11 @@
       "id": "○",
       "type": "text",
       "pos": {
-        "x": 262,
+        "x": 390,
         "y": 12
       },
-      "width": 62,
-      "height": 24,
+      "width": 120,
+      "height": 52,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -171,8 +171,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 62,
-      "labelHeight": 24,
+      "labelWidth": 120,
+      "labelHeight": 52,
       "zIndex": 0,
       "level": 1
     },
@@ -180,11 +180,11 @@
       "id": "◆",
       "type": "text",
       "pos": {
-        "x": 344,
-        "y": 12
+        "x": 530,
+        "y": 22
       },
-      "width": 66,
-      "height": 24,
+      "width": 78,
+      "height": 32,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -212,8 +212,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 66,
-      "labelHeight": 24,
+      "labelWidth": 78,
+      "labelHeight": 32,
       "zIndex": 0,
       "level": 1
     },
@@ -221,11 +221,11 @@
       "id": "◇",
       "type": "text",
       "pos": {
-        "x": 430,
+        "x": 628,
         "y": 12
       },
-      "width": 62,
-      "height": 24,
+      "width": 120,
+      "height": 52,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -253,8 +253,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 62,
-      "labelHeight": 24,
+      "labelWidth": 120,
+      "labelHeight": 52,
       "zIndex": 0,
       "level": 1
     },
@@ -262,11 +262,11 @@
       "id": "▲",
       "type": "text",
       "pos": {
-        "x": 512,
-        "y": 12
+        "x": 768,
+        "y": 22
       },
-      "width": 66,
-      "height": 24,
+      "width": 78,
+      "height": 32,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -294,8 +294,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 66,
-      "labelHeight": 24,
+      "labelWidth": 78,
+      "labelHeight": 32,
       "zIndex": 0,
       "level": 1
     },
@@ -303,11 +303,11 @@
       "id": "△",
       "type": "text",
       "pos": {
-        "x": 598,
-        "y": 12
+        "x": 866,
+        "y": 22
       },
-      "width": 66,
-      "height": 24,
+      "width": 78,
+      "height": 32,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -335,8 +335,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 66,
-      "labelHeight": 24,
+      "labelWidth": 78,
+      "labelHeight": 32,
       "zIndex": 0,
       "level": 1
     },
@@ -344,11 +344,11 @@
       "id": "▼",
       "type": "text",
       "pos": {
-        "x": 684,
-        "y": 12
+        "x": 964,
+        "y": 22
       },
-      "width": 66,
-      "height": 24,
+      "width": 78,
+      "height": 32,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -376,8 +376,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 66,
-      "labelHeight": 24,
+      "labelWidth": 78,
+      "labelHeight": 32,
       "zIndex": 0,
       "level": 1
     },
@@ -385,11 +385,11 @@
       "id": "▽",
       "type": "text",
       "pos": {
-        "x": 770,
-        "y": 12
+        "x": 1062,
+        "y": 22
       },
-      "width": 66,
-      "height": 24,
+      "width": 78,
+      "height": 32,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -417,8 +417,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 66,
-      "labelHeight": 24,
+      "labelWidth": 78,
+      "labelHeight": 32,
       "zIndex": 0,
       "level": 1
     },
@@ -426,11 +426,11 @@
       "id": "※",
       "type": "text",
       "pos": {
-        "x": 856,
+        "x": 1160,
         "y": 12
       },
-      "width": 62,
-      "height": 24,
+      "width": 120,
+      "height": 52,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -458,8 +458,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 62,
-      "labelHeight": 24,
+      "labelWidth": 120,
+      "labelHeight": 52,
       "zIndex": 0,
       "level": 1
     },
@@ -467,11 +467,11 @@
       "id": "◎",
       "type": "text",
       "pos": {
-        "x": 938,
+        "x": 1300,
         "y": 12
       },
-      "width": 62,
-      "height": 24,
+      "width": 120,
+      "height": 52,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -499,8 +499,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 62,
-      "labelHeight": 24,
+      "labelWidth": 120,
+      "labelHeight": 52,
       "zIndex": 0,
       "level": 1
     }

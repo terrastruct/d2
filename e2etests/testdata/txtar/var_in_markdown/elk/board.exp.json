@@ -58,11 +58,11 @@
       "id": "description",
       "type": "text",
       "pos": {
-        "x": 58,
+        "x": 52,
         "y": 148
       },
-      "width": 163,
-      "height": 96,
+      "width": 175,
+      "height": 104,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -90,8 +90,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 163,
-      "labelHeight": 96,
+      "labelWidth": 175,
+      "labelHeight": 104,
       "zIndex": 0,
       "level": 1
     },
@@ -142,7 +142,7 @@
       "type": "rectangle",
       "pos": {
         "x": 113,
-        "y": 314
+        "y": 322
       },
       "width": 53,
       "height": 66,
@@ -247,11 +247,11 @@
       "route": [
         {
           "x": 139.5,
-          "y": 244
+          "y": 252
         },
         {
           "x": 139.5,
-          "y": 314
+          "y": 322
         }
       ],
       "animated": false,

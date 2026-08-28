@@ -462,7 +462,7 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 
 		if targetShape.Tooltip != "" || targetShape.Link != "" {
 			if targetShape.TooltipPosition != "" {
-				tooltipMinX, tooltipMinY, tooltipMaxX, tooltipMaxY := calculateTooltipBounds(targetShape)
+				tooltipMinX, tooltipMinY, tooltipMaxX, tooltipMaxY := calculateTooltipBounds(targetShape, diagram.FontFamily, diagram.MonoFontFamily)
 				x1 = go2.Min(x1, tooltipMinX)
 				y1 = go2.Min(y1, tooltipMinY)
 				x2 = go2.Max(x2, tooltipMaxX)
@@ -608,7 +608,7 @@ func CalculateTooltipPosition(shapeX, shapeY, shapeWidth, shapeHeight float64, t
 	return x, y
 }
 
-func calculateTooltipBounds(targetShape Shape) (minX, minY, maxX, maxY int) {
+func calculateTooltipBounds(targetShape Shape, diagramFontFamily, diagramMonoFontFamily *d2fonts.FontFamily) (minX, minY, maxX, maxY int) {
 	if targetShape.Tooltip == "" || targetShape.TooltipPosition == "" {
 		return 0, 0, 0, 0
 	}
@@ -621,12 +621,25 @@ func calculateTooltipBounds(targetShape Shape) (minX, minY, maxX, maxY int) {
 		tooltipWidth = go2.Min(textLength*8+20, 200)
 		tooltipHeight = 30
 	} else {
-		var fontFamily *d2fonts.FontFamily
-		if ff, exists := d2fonts.D2_FONT_TO_FAMILY[targetShape.FontFamily]; exists {
-			fontFamily = &ff
+		fontFamily := diagramFontFamily
+		if fontFamily == nil {
+			family := d2fonts.SourceSansPro
+			fontFamily = &family
+		}
+		monoFontFamily := diagramMonoFontFamily
+		if monoFontFamily == nil {
+			family := d2fonts.SourceCodePro
+			monoFontFamily = &family
+		}
+		if strings.EqualFold(targetShape.FontFamily, "mono") {
+			fontFamily = monoFontFamily
+		} else if targetShape.FontFamily != "" && !strings.EqualFold(targetShape.FontFamily, "default") {
+			if family, ok := d2fonts.D2_FONT_TO_FAMILY[strings.ToLower(targetShape.FontFamily)]; ok {
+				fontFamily = &family
+			}
 		}
 
-		width, height, err := textmeasure.MeasureMarkdown(targetShape.Tooltip, ruler, fontFamily, nil, targetShape.FontSize)
+		width, height, err := textmeasure.MeasureMarkdown(targetShape.Tooltip, ruler, fontFamily, monoFontFamily, d2fonts.FONT_SIZE_M)
 		if err != nil {
 			textLength := len(targetShape.Tooltip)
 			tooltipWidth = go2.Min(textLength*8+20, 200)

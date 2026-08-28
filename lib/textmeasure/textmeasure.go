@@ -6,9 +6,13 @@ package textmeasure
 import (
 	"math"
 	"strings"
+	"unicode"
 	"unicode/utf8"
 
 	"github.com/rivo/uniseg"
+	"golang.org/x/image/font"
+	"golang.org/x/image/font/sfnt"
+	"golang.org/x/image/math/fixed"
 
 	"github.com/d2lang/d2/d2renderers/d2fonts"
 	"github.com/d2lang/d2/lib/geo"
@@ -177,6 +181,48 @@ func (r *Ruler) addFontSize(font d2fonts.Font) {
 	r.tabWidths[font] = atlas.glyph(' ').advance * TAB_SIZE
 }
 
+func (t *Ruler) measureFontWidth(fontSpec d2fonts.Font, s string) (float64, bool) {
+	sizelessFont := fontSpec
+	sizelessFont.Size = SIZELESS_FONT_SIZE
+	ttf, ok := t.ttfs[sizelessFont]
+	if !ok {
+		return 0, false
+	}
+
+	var buffer sfnt.Buffer
+	for _, r := range s {
+		index, err := ttf.font.GlyphIndex(&buffer, r)
+		if err != nil || (index == 0 && r != 0) {
+			return 0, false
+		}
+	}
+
+	face := ttf.newFace(float64(fontSpec.Size))
+	bounds, advance := font.BoundString(face, s)
+	left := min(bounds.Min.X, 0)
+	right := max(bounds.Max.X, advance)
+	return float64(right-left) / 64, true
+}
+
+// cssFontBoxMetrics returns the integer CSS-pixel font box that browsers use
+// to place an SVG text baseline. These are the original OpenType metrics, not
+// the deliberately legacy-compatible em metrics used by D2's text measurer.
+func (t *Ruler) cssFontBoxMetrics(fontSpec d2fonts.Font, size float64) (ascent, descent float64, ok bool) {
+	sizelessFont := fontSpec
+	sizelessFont.Size = SIZELESS_FONT_SIZE
+	ttf, ok := t.ttfs[sizelessFont]
+	if !ok {
+		return 0, 0, false
+	}
+
+	scale := fixed.Int26_6(math.Round(size * 64))
+	metrics, err := ttf.font.Metrics(nil, scale, font.HintingNone)
+	if err != nil {
+		return 0, 0, false
+	}
+	return math.Round(float64(metrics.Ascent) / 64), math.Round(float64(metrics.Descent) / 64), true
+}
+
 func (t *Ruler) scaleUnicode(w float64, font d2fonts.Font, s string) float64 {
 	// Weird unicode stuff is going on when this is true
 	// See https://github.com/rivo/uniseg#grapheme-clusters
@@ -184,40 +230,53 @@ func (t *Ruler) scaleUnicode(w float64, font d2fonts.Font, s string) float64 {
 	// I suspect we need to import a font with the right glyphs to get the precise measurements
 	// but Hans fonts are heavy.
 	if uniseg.GraphemeClusterCount(s) != len(s) {
+		w = 0
 		for _, line := range strings.Split(s, "\n") {
 			lineW, _ := t.MeasurePrecise(font, line)
+			// Font subsets omit layout tables such as GPOS. Use the original
+			// glyph advances so supported Unicode runes are not measured as the
+			// replacement glyph used by the fixed-size atlas.
+			if originalWidth, ok := t.measureFontWidth(font, line); ok {
+				w = math.Max(w, originalWidth)
+				continue
+			}
 			gr := uniseg.NewGraphemes(line)
-
 			mono := d2fonts.SourceCodePro.Font(font.Size, font.Style)
+			lineW = 0
 			for gr.Next() {
-				if gr.Width() == 1 {
+				grapheme := gr.Str()
+				originalWidth, supported := t.measureFontWidth(font, grapheme)
+				if supported {
+					lineW += originalWidth
 					continue
 				}
-				// For each grapheme which doesn't have width=1, the ruler measured wrongly.
-				// So, replace the measured width with a scaled measurement of a monospace version
-				var prevRune rune
-				dot := t.Orig.Copy()
-				b := newRect()
-				for _, r := range gr.Runes() {
-					var control bool
-					dot, control = t.controlRune(r, dot, font)
-					if control {
-						continue
-					}
-
-					var bounds *rect
-					_, _, bounds, dot = t.atlases[font].DrawRune(prevRune, r, dot)
-					b = b.union(bounds)
-
-					prevRune = r
+				if isZeroWidthGrapheme(grapheme) {
+					continue
 				}
-				lineW -= b.w()
-				lineW += t.spaceWidth(mono) * float64(gr.Width())
+				// The eventual SVG viewer supplies its own fallback font. Emoji and
+				// other missing glyphs can advance beyond two monospace cells, so
+				// reserve two and a half cells per visible unsupported grapheme.
+				lineW += 2.5 * t.spaceWidth(mono)
 			}
 			w = math.Max(w, lineW)
 		}
 	}
 	return w
+}
+
+func isZeroWidthGrapheme(s string) bool {
+	for _, r := range s {
+		if unicode.Is(unicode.Mn, r) || unicode.Is(unicode.Me, r) || isDefaultIgnorableRune(r) {
+			continue
+		}
+		return false
+	}
+	return true
+}
+
+func isDefaultIgnorableRune(r rune) bool {
+	return r == '\u200b' || r == '\u200c' || r == '\u200d' || r == '\u2060' || r == '\ufeff' ||
+		(r >= '\ufe00' && r <= '\ufe0f') || (r >= '\U000e0100' && r <= '\U000e01ef')
 }
 
 func (t *Ruler) MeasureMono(font d2fonts.Font, s string) (width, height int) {

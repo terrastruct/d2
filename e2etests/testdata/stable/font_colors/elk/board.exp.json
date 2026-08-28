@@ -101,10 +101,10 @@
       "type": "text",
       "pos": {
         "x": 117,
-        "y": 33
+        "y": 29
       },
-      "width": 52,
-      "height": 24,
+      "width": 64,
+      "height": 32,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -132,8 +132,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 52,
-      "labelHeight": 24,
+      "labelWidth": 64,
+      "labelHeight": 32,
       "zIndex": 0,
       "level": 1
     }

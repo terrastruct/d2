@@ -19,7 +19,7 @@
         "x": 12,
         "y": 12
       },
-      "width": 1382,
+      "width": 1632,
       "height": 98,
       "opacity": 1,
       "strokeDash": 0,
@@ -48,7 +48,7 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 1337,
+      "labelWidth": 1587,
       "labelHeight": 53,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -58,10 +58,10 @@
       "id": "b",
       "type": "rectangle",
       "pos": {
-        "x": 19,
+        "x": 21,
         "y": 271
       },
-      "width": 1367,
+      "width": 1613,
       "height": 115,
       "opacity": 1,
       "strokeDash": 0,
@@ -90,7 +90,7 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 1322,
+      "labelWidth": 1568,
       "labelHeight": 70,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -117,18 +117,18 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 289,
+      "labelWidth": 360,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
       "link": "",
       "route": [
         {
-          "x": 703,
+          "x": 828,
           "y": 110
         },
         {
-          "x": 703,
+          "x": 828,
           "y": 271
         }
       ],

@@ -2,6 +2,8 @@
 
 #### Improvements 🧹
 
+- renders: render Markdown labels as native SVG instead of HTML `foreignObject` content
+
 #### Bugfixes ⛑️
 
 - exports: honor `D2_TIMEOUT` during PNG and GIF rendering in Playwright

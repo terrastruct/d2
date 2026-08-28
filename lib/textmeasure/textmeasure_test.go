@@ -82,25 +82,26 @@ type dimensions struct {
 var mdTexts = map[string]dimensions{
 	`
 - [Overview](#overview) ok _this is all measured_
-`: {245, 24},
+`: {257, 32},
 	`
 _italics are all measured correctly_
-`: {214, 24},
+`: {226, 32},
 	`
 **bold is measured correctly**
-`: {188, 24},
+`: {200, 32},
 	`
 **Note:** This document
-`: {143, 24},
+`: {155, 32},
 	`
 **Note:**
-`: {39, 24},
-	`a`:             {9, 24},
-	`w`:             {12, 24},
-	`ww`:            {24, 24},
-	"`inline code`": {103, 24},
-	"`code`":        {46, 24},
-	"`a`":           {21, 24},
+`: {51, 32},
+	`a`:             {21, 32},
+	`w`:             {24, 32},
+	`ww`:            {36, 32},
+	"`inline code`": {115, 32},
+	"`code`":        {58, 32},
+	"`a`":           {33, 32},
+	`# Cloud Run Egress Architecture — Backend / Exporter / Autolayout / Fetcher`: {1034, 59},
 }
 
 func TestTextMeasureMarkdown(t *testing.T) {
@@ -118,4 +119,36 @@ func TestTextMeasureMarkdown(t *testing.T) {
 		assert.Equal(t, dims.height, height, text)
 	}
 
+}
+
+func TestMarkdownUnsupportedEmojiReservesFallbackWidth(t *testing.T) {
+	ruler, err := textmeasure.NewRuler()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	width, _, err := textmeasure.MeasureMarkdown("🛡 Some long enough text goes here", ruler, nil, nil, textmeasure.MarkdownFontSize)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// Chrome's fallback emoji glyph reaches just beyond 241px with the
+	// embedded Source Sans Pro face. The native SVG viewport must enclose it.
+	assert.True(t, width >= 242, width)
+}
+
+func TestMarkdownZeroWidthCharactersDoNotAddWidth(t *testing.T) {
+	ruler, err := textmeasure.NewRuler()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	plainWidth, _, err := textmeasure.MeasureMarkdown("x", ruler, nil, nil, textmeasure.MarkdownFontSize)
+	if err != nil {
+		t.Fatal(err)
+	}
+	zeroWidth, _, err := textmeasure.MeasureMarkdown("\u200b\u200b\u200b\u200b\u200bx\u200b\u200b\u200b\u200b\u200b", ruler, nil, nil, textmeasure.MarkdownFontSize)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assert.Equal(t, plainWidth, zeroWidth)
 }

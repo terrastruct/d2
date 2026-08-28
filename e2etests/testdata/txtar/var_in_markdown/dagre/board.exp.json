@@ -58,11 +58,11 @@
       "id": "description",
       "type": "text",
       "pos": {
-        "x": 86,
+        "x": 80,
         "y": 166
       },
-      "width": 163,
-      "height": 96,
+      "width": 175,
+      "height": 104,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -90,8 +90,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 163,
-      "labelHeight": 96,
+      "labelWidth": 175,
+      "labelHeight": 104,
       "zIndex": 0,
       "level": 1
     },
@@ -142,7 +142,7 @@
       "type": "rectangle",
       "pos": {
         "x": 141,
-        "y": 362
+        "y": 370
       },
       "width": 53,
       "height": 66,
@@ -256,19 +256,19 @@
       "route": [
         {
           "x": 167.5,
-          "y": 262
+          "y": 270
         },
         {
           "x": 167.5,
-          "y": 302
+          "y": 310
         },
         {
           "x": 167.5,
-          "y": 322
+          "y": 330
         },
         {
           "x": 167.5,
-          "y": 362
+          "y": 370
         }
       ],
       "isCurve": true,

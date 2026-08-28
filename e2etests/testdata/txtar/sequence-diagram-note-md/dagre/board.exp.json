@@ -58,7 +58,7 @@
       "id": "y",
       "type": "rectangle",
       "pos": {
-        "x": 265,
+        "x": 271,
         "y": 52
       },
       "width": 100,
@@ -100,11 +100,11 @@
       "id": "x.x",
       "type": "page",
       "pos": {
-        "x": -150,
+        "x": -156,
         "y": 279
       },
-      "width": 425,
-      "height": 164,
+      "width": 437,
+      "height": 172,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -132,8 +132,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 380,
-      "labelHeight": 119,
+      "labelWidth": 392,
+      "labelHeight": 127,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 5,
       "level": 2
@@ -142,8 +142,8 @@
       "id": "y.z",
       "type": "page",
       "pos": {
-        "x": 155,
-        "y": 513
+        "x": 161,
+        "y": 521
       },
       "width": 320,
       "height": 64,
@@ -184,11 +184,11 @@
       "id": "x.z",
       "type": "page",
       "pos": {
-        "x": 13,
-        "y": 647
+        "x": 7,
+        "y": 655
       },
-      "width": 98,
-      "height": 69,
+      "width": 110,
+      "height": 77,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -216,8 +216,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 53,
-      "labelHeight": 24,
+      "labelWidth": 65,
+      "labelHeight": 32,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 5,
       "level": 2
@@ -254,7 +254,7 @@
           "y": 198
         },
         {
-          "x": 315,
+          "x": 321,
           "y": 198
         }
       ],
@@ -294,7 +294,7 @@
         },
         {
           "x": 62,
-          "y": 786
+          "y": 802
         }
       ],
       "animated": false,
@@ -328,12 +328,12 @@
       "link": "",
       "route": [
         {
-          "x": 315,
+          "x": 321,
           "y": 118
         },
         {
-          "x": 315,
-          "y": 786
+          "x": 321,
+          "y": 802
         }
       ],
       "animated": false,
