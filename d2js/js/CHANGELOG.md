@@ -5,6 +5,7 @@ include changes to the main d2 project.**
 
 ## Next
 
+- Add `D2.dispose()` for terminating the backing worker
 - Fix concurrent calls sharing a D2 instance
 - Fix completions after Unicode characters
 - Deprecate the raw `d2.getELKGraph` and `d2.getObjOrder` compatibility exports. They remain callable for one release and emit one migration warning per export.

@@ -4,6 +4,7 @@
 
 #### Bugfixes ⛑️
 
+- exports: honor `D2_TIMEOUT` during PNG and GIF rendering in Playwright
 - renders: decode gzip, Brotli, and deflate remote images before embedding them
 
 ---

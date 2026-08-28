@@ -60,6 +60,7 @@ const d2 = new D2();
 
 const result = await d2.compile('x -> y');
 const svg = await d2.render(result.diagram, result.renderOptions);
+await d2.dispose();
 ```
 
 Configuring render options (see [CompileOptions](#compileoptions) for all available options):
@@ -112,6 +113,12 @@ Compiles D2 markup into an intermediate representation. It compile options are p
 ### `render(diagram: Diagram, options?: RenderOptions): Promise<string>`
 
 Renders a compiled diagram to SVG.
+
+### `dispose(): Promise<void>`
+
+Terminates the worker backing this D2 instance and rejects any pending operations. Call
+this when the instance is no longer needed so Node processes can exit and browser worker
+resources are released. Calling `dispose()` more than once is safe.
 
 ### `CompileOptions`
 

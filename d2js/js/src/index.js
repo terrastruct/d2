@@ -4,19 +4,21 @@ export class D2 {
   constructor() {
     this.nextRequestId = 0;
     this.pendingRequests = new Map();
+    this.disposed = false;
+    this.disposePromise = null;
     this.ready = this.init();
+  }
+
+  rejectPendingRequests(error) {
+    for (const request of this.pendingRequests.values()) {
+      request.reject(error);
+    }
+    this.pendingRequests.clear();
   }
 
   setupMessageHandler(isNode = typeof window === "undefined") {
     return new Promise((resolve, reject) => {
       let isReady = false;
-
-      const rejectPendingRequests = (error) => {
-        for (const request of this.pendingRequests.values()) {
-          request.reject(error);
-        }
-        this.pendingRequests.clear();
-      };
 
       const handleWorkerError = (error) => {
         const workerError =
@@ -24,7 +26,7 @@ export class D2 {
             ? error
             : new Error(error?.message || "D2 worker encountered an error");
         if (!isReady) reject(workerError);
-        rejectPendingRequests(workerError);
+        this.rejectPendingRequests(workerError);
         console.error(
           `Worker${isNode ? " (node)" : ""} encountered an error:`,
           workerError.message
@@ -44,7 +46,7 @@ export class D2 {
           if (data.type === "error") {
             const error = new Error(data.error);
             if (!isReady) reject(error);
-            rejectPendingRequests(error);
+            this.rejectPendingRequests(error);
           }
           return;
         }
@@ -91,7 +93,13 @@ export class D2 {
   }
 
   async sendMessage(type, data) {
+    if (this.disposed) {
+      throw new Error("D2 instance has been disposed");
+    }
     await this.ready;
+    if (this.disposed) {
+      throw new Error("D2 instance has been disposed");
+    }
     return new Promise((resolve, reject) => {
       const id = this.nextRequestId++;
       this.pendingRequests.set(id, { resolve, reject });
@@ -130,5 +138,24 @@ export class D2 {
 
   async jsVersion() {
     return this.sendMessage("jsVersion");
+  }
+
+  async dispose() {
+    if (this.disposePromise) return this.disposePromise;
+
+    this.disposed = true;
+    this.rejectPendingRequests(new Error("D2 instance has been disposed"));
+    this.disposePromise = (async () => {
+      try {
+        await this.ready;
+      } catch {
+        // Initialization errors are already exposed through ready. The worker,
+        // if one was created, still needs to be terminated.
+      }
+      const worker = this.worker;
+      this.worker = undefined;
+      if (worker) await worker.terminate();
+    })();
+    return this.disposePromise;
   }
 }
