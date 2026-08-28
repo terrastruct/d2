@@ -24,6 +24,18 @@ case "$version" in
     playwright_version=1.47.2
     playwright_sha256=4f14eac4a244fada8e072d9932a1f9a4752a161b6726f227223ef33fd5dddbf4
     ;;
+  v0.8.2)
+    # v0.8.2 prompts before installing Chromium outside CI. Tagged release
+    # sources are immutable, so make only that installation step
+    # non-interactive when rebuilding its production Docker image.
+    if [[ $(grep -Fxc 'RUN d2 init-playwright' "$source_dockerfile") -ne 1 ]]; then
+      echo "expected exactly one interactive d2 init-playwright instruction in $source_dockerfile" >&2
+      exit 1
+    fi
+    sed 's/^RUN d2 init-playwright$/RUN CI=1 d2 init-playwright/' \
+      "$source_dockerfile" >"$output_dockerfile"
+    exit 0
+    ;;
   *)
     install -m 0644 "$source_dockerfile" "$output_dockerfile"
     exit 0

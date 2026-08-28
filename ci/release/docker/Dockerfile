@@ -35,7 +35,7 @@ RUN mkdir -p /usr/local/lib/d2 \
       && rm -Rf /tmp/d2-*-linux-"$TARGETARCH".tar.gz
 
 USER debian:debian
-RUN d2 init-playwright
+RUN CI=1 d2 init-playwright
 
 WORKDIR /home/debian/src
 EXPOSE 8080

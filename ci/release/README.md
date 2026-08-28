@@ -141,7 +141,9 @@ Before publishing a production tag, the workflow:
 1. verifies the protected-master dispatch, published non-draft semver GitHub release, exact
    Linux amd64 and arm64 asset IDs, and their GitHub SHA-256 digests;
 2. explicitly peels the Git tag to a commit, requires that commit to be an ancestor of the
-   dispatched `master` commit, and uses that release commit's Dockerfile;
+   dispatched `master` commit, and uses that release commit's Dockerfile; current release
+   tooling may apply only an allowlisted, version-specific compatibility transform to an
+   immutable tagged Dockerfile (`v0.8.2` sets `CI=1` only for `d2 init-playwright`);
 3. builds on native GitHub-hosted amd64 and arm64 runners and pushes only untagged digests
    with provenance;
 4. runs native version, SVG, and PNG smoke tests for both digests; and

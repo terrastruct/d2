@@ -259,6 +259,12 @@ jobs:
           ref: ${{ needs.validate.outputs.release_commit }}
           persist-credentials: false
 
+      - name: Check out release tooling
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: .release-source
+          persist-credentials: false
+
       - name: Download and verify exact release archive
         env:
           GH_TOKEN: ${{ github.token }}
@@ -274,6 +280,10 @@ jobs:
           printf '%s  %s\n' "${ASSET_DIGEST#sha256:}" "$archive" | sha256sum -c -
           tar -tzf "$archive" >/dev/null
           cp ci/release/docker/entrypoint.sh "$RUNNER_TEMP/docker-context/entrypoint.sh"
+          bash .release-source/ci/release/docker/prepare-continuity-dockerfile.sh \
+            "$VERSION" \
+            ci/release/docker/Dockerfile \
+            "$RUNNER_TEMP/Dockerfile"
 
       - name: Log in to Docker Hub
         env:
@@ -300,7 +310,7 @@ jobs:
             --provenance=mode=max \
             --output "type=image,\"name=$images\",push-by-digest=true,name-canonical=true,push=true" \
             --metadata-file "$metadata" \
-            --file ci/release/docker/Dockerfile \
+            --file "$RUNNER_TEMP/Dockerfile" \
             "$RUNNER_TEMP/docker-context"
 
           digest=$(jq -er '."containerimage.digest"' "$metadata")
@@ -381,6 +391,12 @@ jobs:
           ref: ${{ needs.validate.outputs.release_commit }}
           persist-credentials: false
 
+      - name: Check out release tooling
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: .release-source
+          persist-credentials: false
+
       - name: Download and verify exact release archive
         env:
           GH_TOKEN: ${{ github.token }}
@@ -396,6 +412,10 @@ jobs:
           printf '%s  %s\n' "${ASSET_DIGEST#sha256:}" "$archive" | sha256sum -c -
           tar -tzf "$archive" >/dev/null
           cp ci/release/docker/entrypoint.sh "$RUNNER_TEMP/docker-context/entrypoint.sh"
+          bash .release-source/ci/release/docker/prepare-continuity-dockerfile.sh \
+            "$VERSION" \
+            ci/release/docker/Dockerfile \
+            "$RUNNER_TEMP/Dockerfile"
 
       - name: Log in to Docker Hub
         env:
@@ -422,7 +442,7 @@ jobs:
             --provenance=mode=max \
             --output "type=image,\"name=$images\",push-by-digest=true,name-canonical=true,push=true" \
             --metadata-file "$metadata" \
-            --file ci/release/docker/Dockerfile \
+            --file "$RUNNER_TEMP/Dockerfile" \
             "$RUNNER_TEMP/docker-context"
 
           digest=$(jq -er '."containerimage.digest"' "$metadata")
