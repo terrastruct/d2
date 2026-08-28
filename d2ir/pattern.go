@@ -76,7 +76,7 @@ func _doubleGlobField(f *Field, matches *[]*Field) {
 	}
 	name := f.Name.ScalarString()
 	if _, reserved := d2ast.ReservedKeywords[name]; reserved && f.Name.IsUnquoted() {
-		if _, board := d2ast.BoardKeywords[name]; board {
+		if skipDoubleGlobSubtree(name) {
 			return
 		}
 		if f.Map() != nil {
@@ -90,6 +90,15 @@ func _doubleGlobField(f *Field, matches *[]*Field) {
 	if f.Map() != nil {
 		f.Map()._doubleGlob(matches)
 	}
+}
+
+func skipDoubleGlobSubtree(name string) bool {
+	if _, board := d2ast.BoardKeywords[name]; board {
+		return true
+	}
+	// Classes and variables are definitions, not diagram objects. Applying
+	// recursive globs inside either map can mutate definitions before use.
+	return name == "classes" || name == "vars"
 }
 
 func _tripleGlobField(f *Field, matches *[]*Field) {
@@ -119,8 +128,9 @@ func (m *Map) _doubleGlob(fa *[]*Field) {
 		if f.Name == nil {
 			continue
 		}
-		if _, ok := d2ast.ReservedKeywords[f.Name.ScalarString()]; ok && f.Name.IsUnquoted() {
-			if _, ok := d2ast.BoardKeywords[f.Name.ScalarString()]; ok {
+		name := f.Name.ScalarString()
+		if _, ok := d2ast.ReservedKeywords[name]; ok && f.Name.IsUnquoted() {
+			if skipDoubleGlobSubtree(name) {
 				continue
 			}
 			if f.Map() != nil {
