@@ -2,6 +2,9 @@ package imgbundler
 
 import (
 	"bytes"
+	"compress/flate"
+	"compress/gzip"
+	"compress/zlib"
 	"context"
 	"encoding/base64"
 	"fmt"
@@ -17,6 +20,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/andybalholm/brotli"
 
 	"github.com/d2lang/d2/lib/simplelog"
 	"github.com/d2lang/util-go/xdefer"
@@ -233,9 +238,72 @@ func httpGet(ctx context.Context, l simplelog.Logger, href string) ([]byte, stri
 		return nil, "", err
 	}
 	contentType := resp.Header.Get("Content-Type")
+	contentEncoding := resp.Header.Get("Content-Encoding")
+	if contentEncoding != "" {
+		buf, err = decodeContentEncoding(buf, contentEncoding)
+		if err != nil {
+			return nil, "", fmt.Errorf("failed to decode %q response for %s: %w", contentEncoding, href, err)
+		}
+	}
 	l.Debug(fmt.Sprintf("fetched content type: %s, Content length: %d bytes", contentType, len(buf)))
 
 	return buf, contentType, nil
+}
+
+func decodeContentEncoding(buf []byte, contentEncoding string) ([]byte, error) {
+	encodings := strings.Split(contentEncoding, ",")
+	for i := len(encodings) - 1; i >= 0; i-- {
+		encoding := strings.TrimSpace(strings.ToLower(encodings[i]))
+		if encoding == "" || encoding == "identity" {
+			continue
+		}
+
+		var err error
+		switch encoding {
+		case "gzip", "x-gzip":
+			buf, err = gunzip(buf)
+		case "br":
+			buf, err = readDecoded(brotli.NewReader(bytes.NewReader(buf)))
+		case "deflate":
+			buf, err = inflate(buf)
+		default:
+			return nil, fmt.Errorf("unsupported content encoding %q", encoding)
+		}
+		if err != nil {
+			return nil, err
+		}
+	}
+	return buf, nil
+}
+
+func gunzip(buf []byte) ([]byte, error) {
+	r, err := gzip.NewReader(bytes.NewReader(buf))
+	if err != nil {
+		return nil, err
+	}
+	defer r.Close()
+	return readDecoded(r)
+}
+
+func inflate(buf []byte) ([]byte, error) {
+	if zr, err := zlib.NewReader(bytes.NewReader(buf)); err == nil {
+		defer zr.Close()
+		return readDecoded(zr)
+	}
+	fr := flate.NewReader(bytes.NewReader(buf))
+	defer fr.Close()
+	return readDecoded(fr)
+}
+
+func readDecoded(r io.Reader) ([]byte, error) {
+	buf, err := io.ReadAll(io.LimitReader(r, maxImageSize+1))
+	if err != nil {
+		return nil, err
+	}
+	if int64(len(buf)) > maxImageSize {
+		return nil, fmt.Errorf("decoded image exceeds maximum size of %d bytes", maxImageSize)
+	}
+	return buf, nil
 }
 
 // sniffMimeType sniffs the mime type of href based on its file extension and contents.
