@@ -22,6 +22,7 @@ import (
 	"time"
 
 	"github.com/andybalholm/brotli"
+
 	"github.com/d2lang/d2/lib/simplelog"
 	"github.com/d2lang/util-go/xdefer"
 )
