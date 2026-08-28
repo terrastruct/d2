@@ -16,6 +16,7 @@ import (
 	"github.com/mxschmitt/playwright-go"
 
 	"github.com/d2lang/d2/lib/compression"
+	"github.com/d2lang/d2/lib/env"
 	"github.com/d2lang/d2/lib/version"
 )
 
@@ -118,7 +119,26 @@ func InitPlaywrightWithPrompt() (Playwright, error) {
 	return InitPlaywright()
 }
 
+type timeoutSetter interface {
+	SetDefaultTimeout(float64)
+	SetDefaultNavigationTimeout(float64)
+}
+
+func configureTimeout(target timeoutSetter) {
+	seconds, ok := env.Timeout()
+	if !ok {
+		return
+	}
+	if seconds < 0 {
+		seconds = 0
+	}
+	timeout := float64(seconds) * 1000
+	target.SetDefaultTimeout(timeout)
+	target.SetDefaultNavigationTimeout(timeout)
+}
+
 func MountSVG(page playwright.Page, svgMarkup string) error {
+	configureTimeout(page)
 	decompressed := compression.UnzipEmbeddedSVGImages([]byte(svgMarkup))
 	html := `<!doctype html><meta charset="utf-8">
 <style>
