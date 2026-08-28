@@ -20,6 +20,25 @@ func TestPrepareV082DockerfileMakesPlaywrightNonInteractive(t *testing.T) {
 	}
 }
 
+func TestReleaseDockerfileInstallsOnePlaywrightBrowser(t *testing.T) {
+	t.Parallel()
+
+	dockerfile, err := os.ReadFile("Dockerfile")
+	if err != nil {
+		t.Fatal(err)
+	}
+	source := string(dockerfile)
+	if strings.Contains(source, "install --with-deps chromium") {
+		t.Fatal("release Dockerfile downloads a root-owned Playwright browser")
+	}
+	if got := strings.Count(source, "install-deps chromium"); got != 1 {
+		t.Fatalf("release Dockerfile has %d Playwright dependency installs, want 1", got)
+	}
+	if got := strings.Count(source, "RUN CI=1 d2 init-playwright"); got != 1 {
+		t.Fatalf("release Dockerfile has %d runtime Playwright installs, want 1", got)
+	}
+}
+
 func TestPrepareV082DockerfileRejectsUnexpectedSource(t *testing.T) {
 	t.Parallel()
 
