@@ -6,14 +6,14 @@ describe("D2 Unit Tests", () => {
     const d2 = new D2();
     const result = await d2.compile("x -> y");
     expect(result.diagram).toBeDefined();
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("elk layout works", async () => {
     const d2 = new D2();
     const result = await d2.compile("x -> y", { layout: "elk" });
     expect(result.diagram).toBeDefined();
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("import works", async () => {
@@ -24,7 +24,7 @@ describe("D2 Unit Tests", () => {
     };
     const result = await d2.compile({ fs });
     expect(result.diagram).toBeDefined();
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("relative import works", async () => {
@@ -36,7 +36,7 @@ describe("D2 Unit Tests", () => {
     const inputPath = "folder/index.d2";
     const result = await d2.compile({ fs, inputPath });
     expect(result.diagram).toBeDefined();
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("render works", async () => {
@@ -45,7 +45,7 @@ describe("D2 Unit Tests", () => {
     const svg = await d2.render(result.diagram);
     expect(svg).toContain("<svg");
     expect(svg).toContain("</svg>");
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("d2-config read correctly", async () => {
@@ -70,7 +70,7 @@ describe("D2 Unit Tests", () => {
     expect(result.renderOptions.darkThemeID).toBe(200);
     expect(result.renderOptions.center).toBe(true);
     expect(result.renderOptions.pad).toBe(10);
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("render options take priority", async () => {
@@ -103,7 +103,7 @@ describe("D2 Unit Tests", () => {
     expect(result.renderOptions.darkThemeID).toBe(300);
     expect(result.renderOptions.center).toBe(false);
     expect(result.renderOptions.pad).toBe(0);
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("sketch render works", async () => {
@@ -113,7 +113,7 @@ describe("D2 Unit Tests", () => {
     expect(svg).toContain("<svg");
     expect(svg).toContain("</svg>");
     expect(svg).toContain("sketch-overlay");
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("center render works", async () => {
@@ -123,7 +123,7 @@ describe("D2 Unit Tests", () => {
     expect(svg).toContain("<svg");
     expect(svg).toContain("</svg>");
     expect(svg).toContain("xMidYMid meet");
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("no XML tag works", async () => {
@@ -131,7 +131,7 @@ describe("D2 Unit Tests", () => {
     const result = await d2.compile("x -> y");
     const svg = await d2.render(result.diagram, { noXMLTag: true });
     expect(svg).not.toContain('<?xml version="1.0"');
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("force appendix works", async () => {
@@ -141,7 +141,7 @@ describe("D2 Unit Tests", () => {
     expect(svg).toContain("<svg");
     expect(svg).toContain("</svg>");
     expect(svg).toContain('class="appendix"');
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("animated multi-board works", async () => {
@@ -159,7 +159,7 @@ describe("D2 Unit Tests", () => {
     const svg = await d2.render(result.diagram, result.renderOptions);
     expect(svg).toContain("<svg");
     expect(svg).toContain("</svg>");
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("latex works", async () => {
@@ -168,7 +168,7 @@ describe("D2 Unit Tests", () => {
     const svg = await d2.render(result.diagram);
     expect(svg).toContain("<svg");
     expect(svg).toContain("</svg>");
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("unicode characters work", async () => {
@@ -179,7 +179,7 @@ describe("D2 Unit Tests", () => {
     expect(svg).toContain("</svg>");
     expect(svg).toContain("こんにちは");
     expect(svg).toContain("♒️");
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("handles syntax errors correctly", async () => {
@@ -191,7 +191,7 @@ describe("D2 Unit Tests", () => {
       expect(err).toBeDefined();
       expect(err.message).not.toContain("Should have thrown syntax error");
     }
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("handles unanimated multi-board error correctly", async () => {
@@ -212,7 +212,7 @@ describe("D2 Unit Tests", () => {
       expect(err).toBeDefined();
       expect(err.message).not.toContain("Should have thrown compile error");
     }
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("handles invalid imports correctly", async () => {
@@ -229,7 +229,7 @@ describe("D2 Unit Tests", () => {
       expect(err).toBeDefined();
       expect(err.message).not.toContain("Should have thrown compile error");
     }
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("theme overrides work correctly", async () => {
@@ -257,7 +257,7 @@ describe("D2 Unit Tests", () => {
     );
 
     expect(svgOverridden).toContain("fill:#000000");
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("grid layout with elk engine matches go rendering", async () => {
@@ -303,7 +303,7 @@ describe("D2 Unit Tests", () => {
     expect(svg).toContain(">1</text>"); // Should contain the "1" element
     expect(svg).toContain(">2</text>"); // Should contain the "2" element
     expect(svg).toContain(">3</text>"); // Should contain the "3" element
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("layout engine switching works (dagre -> elk)", async () => {
@@ -348,7 +348,7 @@ describe("D2 Unit Tests", () => {
     expect(elkSvg).toContain("<svg");
     expect(elkSvg).toContain("</svg>");
 
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 30000);
 
   test("layout engine switching works (elk -> dagre -> elk)", async () => {
@@ -409,7 +409,7 @@ describe("D2 Unit Tests", () => {
     expect(elkSvg2).toContain("<svg");
     expect(elkSvg2).toContain("</svg>");
 
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 30000);
 
   test("version returns a string", async () => {
@@ -418,7 +418,7 @@ describe("D2 Unit Tests", () => {
     expect(version).toBeDefined();
     expect(typeof version).toBe("string");
     expect(version).toContain("v");
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("jsVersion returns d2js version string", async () => {
@@ -427,7 +427,7 @@ describe("D2 Unit Tests", () => {
     expect(jsVersion).toBeDefined();
     expect(typeof jsVersion).toBe("string");
     expect(jsVersion.length).toBeGreaterThan(0);
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("ASCII render works", async () => {
@@ -442,7 +442,7 @@ describe("D2 Unit Tests", () => {
     expect(ascii).toContain("┌") ||
       expect(ascii).toContain("└") ||
       expect(ascii).toContain("│");
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("ASCII render with multiple shapes works", async () => {
@@ -460,7 +460,7 @@ describe("D2 Unit Tests", () => {
     expect(ascii).toContain("a");
     expect(ascii).toContain("b");
     expect(ascii).toContain("c");
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("ASCII mode options work correctly", async () => {
@@ -489,6 +489,6 @@ describe("D2 Unit Tests", () => {
     // Modes should produce different outputs
     expect(asciiExtended).not.toBe(asciiStandard);
 
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 });
