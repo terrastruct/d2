@@ -215,7 +215,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 
 	var inputPath string
-	var outputPath string
+	var outputPaths []string
 
 	if len(ms.Opts.Flags.Args()) == 0 {
 		if versionFlag != nil && *versionFlag {
@@ -224,22 +224,24 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		}
 		help(ms)
 		return nil
-	} else if len(ms.Opts.Flags.Args()) >= 3 {
-		return xmain.UsageErrorf("too many arguments passed")
 	}
 
 	if len(ms.Opts.Flags.Args()) >= 1 {
 		inputPath = ms.Opts.Flags.Arg(0)
 	}
+
 	if len(ms.Opts.Flags.Args()) >= 2 {
-		outputPath = ms.Opts.Flags.Arg(1)
+		for i := 1; i < len(ms.Opts.Flags.Args()); i++ {
+			outputPaths = append(outputPaths, ms.Opts.Flags.Arg(i))
+		}
 	} else {
 		if inputPath == "-" {
-			outputPath = "-"
+			outputPaths = []string{"-"}
 		} else {
-			outputPath = renameExt(inputPath, ".svg")
+			outputPaths = []string{renameExt(inputPath, ".svg")}
 		}
 	}
+
 	if inputPath != "-" {
 		inputPath = ms.AbsPath(inputPath)
 		d, err := os.Stat(inputPath)
@@ -247,21 +249,29 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 			inputPath = filepath.Join(inputPath, "index.d2")
 		}
 	}
-	if filepath.Ext(outputPath) == ".ppt" {
-		return xmain.UsageErrorf("D2 does not support ppt exports, did you mean \"pptx\"?")
-	}
 
-	outputFormat, err := getOutputFormat(stdoutFormatFlag, outputPath)
-	if err != nil {
-		return xmain.UsageErrorf("%v", err)
-	}
+	outputFormats := make([]exportExtension, len(outputPaths))
+	for i, outputPath := range outputPaths {
+		if filepath.Ext(outputPath) == ".ppt" {
+			return xmain.UsageErrorf("D2 does not support ppt exports, did you mean \"pptx\"?")
+		}
 
-	if outputPath != "-" {
-		outputPath = ms.AbsPath(outputPath)
-		if *animateIntervalFlag > 0 && !outputFormat.supportsAnimation() {
-			return xmain.UsageErrorf("--animate-interval can only be used when exporting to SVG or GIF.\nYou provided: %s", filepath.Ext(outputPath))
+		format, err := getOutputFormat(stdoutFormatFlag, outputPath)
+		if err != nil {
+			return xmain.UsageErrorf("%v", err)
+		}
+		outputFormats[i] = format
+
+		if outputPath != "-" {
+			outputPaths[i] = ms.AbsPath(outputPath)
+			if *animateIntervalFlag > 0 && !format.supportsAnimation() {
+				return xmain.UsageErrorf("--animate-interval can only be used when exporting to SVG or GIF.\nYou provided: %s", filepath.Ext(outputPath))
+			}
 		}
 	}
+
+	outputPath := outputPaths[0]
+	outputFormat := outputFormats[0]
 
 	match := d2themescatalog.Find(*themeFlag)
 	if match == (d2themes.Theme{}) {
@@ -322,8 +332,17 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 			darkThemeFlag = nil
 		}
 	}
+
+	var requiresPNG bool
+	for _, format := range outputFormats {
+		if format.requiresPNGRenderer() {
+			requiresPNG = true
+			break
+		}
+	}
+
 	var pw png.Playwright
-	if outputFormat.requiresPNGRenderer() {
+	if requiresPNG {
 		pw, err = png.InitPlaywrightWithPrompt()
 		if err != nil {
 			return err
@@ -412,12 +431,31 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		ms.Log.Debug.Printf("GIF export: animate-interval not specified, defaulting to 1000ms")
 	}
 
-	_, written, err := compile(ctx, ms, plugins, nil, layoutFlag, renderOpts, fontFamily, monoFontFamily, animateInterval, inputPath, outputPath, boardPath, noChildren, *bundleFlag, *forceAppendixFlag, pw.Browser, outputFormat, *asciiModeFlag)
-	if err != nil {
-		if written {
-			return fmt.Errorf("failed to fully compile (partial render written) %s: %w", ms.HumanPath(inputPath), err)
+	// Compile to all requested output formats
+	var firstErr error
+	var anyWritten bool
+	for i, outPath := range outputPaths {
+		outFormat := outputFormats[i]
+
+		_, written, err := compile(ctx, ms, plugins, nil, layoutFlag, renderOpts, fontFamily, monoFontFamily, animateInterval, inputPath, outPath, boardPath, noChildren, *bundleFlag, *forceAppendixFlag, pw.Browser, outFormat, *asciiModeFlag)
+		if err != nil {
+			if firstErr == nil {
+				firstErr = err
+			}
+			if written {
+				anyWritten = true
+			}
+			if len(outputPaths) > 1 {
+				ms.Log.Warn.Printf("failed to compile %s to %s: %v", ms.HumanPath(inputPath), ms.HumanPath(outPath), err)
+			}
 		}
-		return fmt.Errorf("failed to compile %s: %w", ms.HumanPath(inputPath), err)
+	}
+
+	if firstErr != nil {
+		if anyWritten {
+			return fmt.Errorf("failed to fully compile (partial render written) %s: %w", ms.HumanPath(inputPath), firstErr)
+		}
+		return fmt.Errorf("failed to compile %s: %w", ms.HumanPath(inputPath), firstErr)
 	}
 	return nil
 }

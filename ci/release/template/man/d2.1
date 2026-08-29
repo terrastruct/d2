@@ -10,7 +10,7 @@
 .Op Fl -theme Em 0
 .Op Fl -salt Ar string
 .Ar file.d2
-.Op Ar file.svg | file.png | file.pdf | file.pptx | file.gif | file.txt
+.Op Ar file.svg | file.png | file.pdf | file.pptx | file.gif | file.txt ...
 .Nm d2
 .Ar layout Op Ar name
 .Nm d2
@@ -43,7 +43,9 @@ if no output path is passed.
 .Pp
 Pass - to have
 .Nm
-read from stdin or write to stdout.
+read from stdin or write to stdout. Multiple output paths can be specified in multiple formats after the input path.
+.Pp
+Example: d2 in.d2 out.svg out.png out.pdf
 .Pp
 Never use the presence of the output file to check for success.
 Always use the exit status of
