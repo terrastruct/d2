@@ -4,6 +4,7 @@ import (
 	"math"
 
 	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/svg"
 	"github.com/d2lang/util-go/go2"
 )
 
@@ -59,6 +60,32 @@ type Shape interface {
 	Perimeter() []geo.Intersectable
 
 	GetSVGPathData() []string
+}
+
+// PathCommandProvider is implemented by shapes with custom path geometry.
+// Implementations return a defensive copy of each path's absolute commands.
+// It is separate from Shape so adding typed path access does not break external
+// implementations of Shape.
+type PathCommandProvider interface {
+	GetPathCommands() [][]svg.PathCommand
+}
+
+// GetPathCommands returns a shape's absolute custom path commands, or nil when
+// the shape is represented by another primitive such as a rectangle or oval.
+func GetPathCommands(s Shape) [][]svg.PathCommand {
+	provider, ok := s.(PathCommandProvider)
+	if !ok {
+		return nil
+	}
+	return provider.GetPathCommands()
+}
+
+func pathCommands(paths ...*svg.SvgPathContext) [][]svg.PathCommand {
+	commands := make([][]svg.PathCommand, len(paths))
+	for i, path := range paths {
+		commands[i] = path.PathCommands()
+	}
+	return commands
 }
 
 type baseShape struct {

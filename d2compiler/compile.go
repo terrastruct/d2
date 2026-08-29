@@ -885,6 +885,9 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 	if e.Map() != nil {
 		c.compileEdgeMap(edge, e.Map())
 	}
+	if edge.Link != nil && edge.Label.Value == "" && edge.Label.MapKey == nil {
+		edge.Label.Value = edge.Link.Value
+	}
 
 	edge.Label.MapKey = e.LastPrimaryKey()
 	for _, er := range e.References {

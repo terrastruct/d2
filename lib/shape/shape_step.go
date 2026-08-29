@@ -59,6 +59,10 @@ func (s shapeStep) GetSVGPathData() []string {
 	}
 }
 
+func (s shapeStep) GetPathCommands() [][]svg.PathCommand {
+	return pathCommands(stepPath(s.Box))
+}
+
 func (s shapeStep) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	totalWidth := width + paddingX + 2*STEP_WEDGE_WIDTH
 	return math.Ceil(totalWidth), math.Ceil(height + paddingY)

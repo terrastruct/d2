@@ -15,9 +15,8 @@ import (
 
 var reDataSVG = regexp.MustCompile(`(?i)(?:(?:xlink:)?href)\s*=\s*"(data:image/svg\+xml;base64,([^"]+))"`)
 
-// imgbundler gets remote images which may be compressed by either gzip or brotli
-// When we load the SVG into headless chromium for PNG screenshots, these compressed images are not detected as proper images that need to be waited on before we screenshot.
-// So prior to loading the SVG into chromium page, we replace these images with their decompressed versions
+// UnzipEmbeddedSVGImages normalizes compressed SVG data URLs emitted by the
+// image bundler so visual tests can decode and compare the embedded images.
 func UnzipEmbeddedSVGImages(svg []byte) []byte {
 	matches := reDataSVG.FindAllSubmatchIndex(svg, -1)
 	out := make([]byte, 0, len(svg))

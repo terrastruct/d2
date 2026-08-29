@@ -75,6 +75,10 @@ func (s shapePackage) GetSVGPathData() []string {
 	}
 }
 
+func (s shapePackage) GetPathCommands() [][]svg.PathCommand {
+	return pathCommands(packagePath(s.Box))
+}
+
 func (s shapePackage) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	innerHeight := height + paddingY
 	// We want to compute what the topHeight will be to add to inner height;

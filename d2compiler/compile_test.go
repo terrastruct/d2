@@ -58,6 +58,52 @@ func TestClassReferenceCycle(t *testing.T) {
 class-cycle.d2:1:17: class "x" forms a reference cycle`)
 }
 
+func TestEdgeLinkBecomesLabel(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		name      string
+		script    string
+		link      string
+		wantLabel string
+	}{
+		{name: "direct", script: `x -> y: {link: https://google.com}`, link: "https://google.com", wantLabel: "https://google.com"},
+		{
+			name:      "class",
+			script:    `classes: {linked: {link: https://class.example}}; x -> y: {class: linked}`,
+			link:      "https://class.example",
+			wantLabel: "https://class.example",
+		},
+		{
+			name:      "local_override",
+			script:    `classes: {linked: {link: https://class.example}}; x -> y: {class: linked; link: https://local.example}`,
+			link:      "https://local.example",
+			wantLabel: "https://local.example",
+		},
+		{
+			name:      "explicit_empty_label",
+			script:    `x -> y: {label: ""; link: https://empty.example}`,
+			link:      "https://empty.example",
+			wantLabel: "",
+		},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			g, _, err := d2compiler.Compile("edge-link.d2", strings.NewReader(tc.script), nil)
+			assert.Success(t, err)
+			if len(g.Edges) != 1 {
+				t.Fatalf("edges = %d, want 1", len(g.Edges))
+			}
+			if g.Edges[0].Link == nil {
+				t.Fatal("edge link is nil")
+			}
+			if g.Edges[0].Label.Value != tc.wantLabel || g.Edges[0].Link.Value != tc.link {
+				t.Fatalf("edge label/link = %q/%q, want %q/%q", g.Edges[0].Label.Value, g.Edges[0].Link.Value, tc.wantLabel, tc.link)
+			}
+		})
+	}
+}
+
 func TestCompile(t *testing.T) {
 	t.Parallel()
 

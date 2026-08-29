@@ -57,6 +57,10 @@ func (s shapeHexagon) GetSVGPathData() []string {
 	}
 }
 
+func (s shapeHexagon) GetPathCommands() [][]svg.PathCommand {
+	return pathCommands(hexagonPath(s.Box))
+}
+
 func (s shapeHexagon) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	totalWidth := 1.5 * (width + paddingX)
 	totalHeight := 1.5 * (height + paddingY)

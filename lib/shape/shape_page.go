@@ -89,6 +89,10 @@ func (s shapePage) GetSVGPathData() []string {
 	}
 }
 
+func (s shapePage) GetPathCommands() [][]svg.PathCommand {
+	return pathCommands(pageOuterPath(s.Box), pageInnerPath(s.Box))
+}
+
 func (s shapePage) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	totalWidth := width + paddingX
 	totalHeight := height + paddingY

@@ -20,7 +20,7 @@ func TestPrepareV082DockerfileMakesPlaywrightNonInteractive(t *testing.T) {
 	}
 }
 
-func TestReleaseDockerfileInstallsOnePlaywrightBrowser(t *testing.T) {
+func TestReleaseDockerfileKeepsRuntimeDependenciesMinimal(t *testing.T) {
 	t.Parallel()
 
 	dockerfile, err := os.ReadFile("Dockerfile")
@@ -28,14 +28,13 @@ func TestReleaseDockerfileInstallsOnePlaywrightBrowser(t *testing.T) {
 		t.Fatal(err)
 	}
 	source := string(dockerfile)
-	if strings.Contains(source, "install --with-deps chromium") {
-		t.Fatal("release Dockerfile downloads a root-owned Playwright browser")
+	if !strings.Contains(source, "install -y --no-install-recommends adduser ") {
+		t.Fatal("release Dockerfile does not install adduser explicitly")
 	}
-	if got := strings.Count(source, "install-deps chromium"); got != 1 {
-		t.Fatalf("release Dockerfile has %d Playwright dependency installs, want 1", got)
-	}
-	if got := strings.Count(source, "RUN CI=1 d2 init-playwright"); got != 1 {
-		t.Fatalf("release Dockerfile has %d runtime Playwright installs, want 1", got)
+	for _, forbidden := range []string{"nodesource.com", "nodejs", "playwright", "init-playwright"} {
+		if strings.Contains(strings.ToLower(source), forbidden) {
+			t.Fatalf("release Dockerfile contains unexpected browser dependency %q", forbidden)
+		}
 	}
 }
 

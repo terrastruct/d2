@@ -4,6 +4,7 @@ import (
 	"archive/zip"
 	"bytes"
 	"encoding/xml"
+	"errors"
 	"fmt"
 	"image"
 	"image/color"
@@ -14,6 +15,156 @@ import (
 	"strings"
 	"testing"
 )
+
+func TestPresentationExportToWritesCompleteArchive(t *testing.T) {
+	p := testPresentation(t)
+	var output bytes.Buffer
+	err := p.ExportTo(&output)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if output.Len() == 0 {
+		t.Fatal("ExportTo produced empty output")
+	}
+	if err := Validate(output.Bytes(), 1); err != nil {
+		t.Fatalf("ExportTo produced invalid PPTX: %v", err)
+	}
+}
+
+func TestPresentationExportToPropagatesZIPCloseError(t *testing.T) {
+	wantErr := errors.New("ZIP close failed")
+	output := &zipCloseErrorWriter{err: wantErr}
+	err := testPresentation(t).ExportTo(output)
+	if err != wantErr {
+		t.Fatalf("ExportTo error = %v, want %v", err, wantErr)
+	}
+}
+
+func TestPresentationExportToPropagatesWriteError(t *testing.T) {
+	wantErr := errors.New("write failed")
+	err := testPresentation(t).ExportTo(errorWriter{err: wantErr})
+	if !errors.Is(err, wantErr) {
+		t.Fatalf("ExportTo error = %v, want %v", err, wantErr)
+	}
+	err = testPresentation(t).ExportTo(partialErrorWriter{err: wantErr})
+	if !errors.Is(err, wantErr) {
+		t.Fatalf("ExportTo partial-write error = %v, want %v", err, wantErr)
+	}
+}
+
+func TestPresentationSaveToPropagatesFileCloseError(t *testing.T) {
+	wantErr := errors.New("file close failed")
+	output := &closeErrorWriter{closeErr: wantErr}
+	err := testPresentation(t).writeToAndClose(output)
+	if err != wantErr {
+		t.Fatalf("saveTo error = %v, want %v", err, wantErr)
+	}
+	if output.Len() == 0 {
+		t.Fatal("writeToAndClose wrote no PPTX bytes")
+	}
+	if err := Validate(output.Bytes(), 1); err != nil {
+		t.Fatalf("saveTo did not finish the archive before closing the file: %v", err)
+	}
+}
+
+func TestPresentationSaveToPropagatesWriteAndFileCloseErrors(t *testing.T) {
+	writeErr := errors.New("write failed")
+	closeErr := errors.New("file close failed")
+	err := testPresentation(t).writeToAndClose(writeCloseErrorWriter{writeErr: writeErr, closeErr: closeErr})
+	if !errors.Is(err, writeErr) || !errors.Is(err, closeErr) {
+		t.Fatalf("saveTo error = %v, want both %v and %v", err, writeErr, closeErr)
+	}
+}
+
+func TestPresentationSaveToWithStatusReportsTouchedTarget(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "presentation.pptx")
+	touched, err := testPresentation(t).SaveToWithStatus(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !touched {
+		t.Fatal("SaveToWithStatus reported an untouched target after creating it")
+	}
+
+	missingParentPath := filepath.Join(t.TempDir(), "missing", "presentation.pptx")
+	touched, err = testPresentation(t).SaveToWithStatus(missingParentPath)
+	if err == nil {
+		t.Fatal("SaveToWithStatus unexpectedly created a target in a missing directory")
+	}
+	if touched {
+		t.Fatal("SaveToWithStatus reported a touched target when os.Create failed")
+	}
+}
+
+type zipCloseErrorWriter struct {
+	bytes.Buffer
+	err error
+}
+
+func (w *zipCloseErrorWriter) Write(p []byte) (int, error) {
+	if bytes.Contains(p, []byte("PK\x05\x06")) {
+		return 0, w.err
+	}
+	return w.Buffer.Write(p)
+}
+
+type closeErrorWriter struct {
+	bytes.Buffer
+	closeErr error
+}
+
+type errorWriter struct {
+	err error
+}
+
+func (w errorWriter) Write([]byte) (int, error) {
+	return 0, w.err
+}
+
+type partialErrorWriter struct {
+	err error
+}
+
+func (w partialErrorWriter) Write(data []byte) (int, error) {
+	return min(7, len(data)), w.err
+}
+
+type writeCloseErrorWriter struct {
+	writeErr error
+	closeErr error
+}
+
+func (w writeCloseErrorWriter) Write([]byte) (int, error) {
+	return 0, w.writeErr
+}
+
+func (w writeCloseErrorWriter) Close() error {
+	return w.closeErr
+}
+
+func (w *closeErrorWriter) Close() error {
+	return w.closeErr
+}
+
+func testPresentation(t *testing.T) *Presentation {
+	t.Helper()
+
+	var pngContent bytes.Buffer
+	img := image.NewRGBA(image.Rect(0, 0, 1, 1))
+	img.Set(0, 0, color.Black)
+	if err := png.Encode(&pngContent, img); err != nil {
+		t.Fatal(err)
+	}
+	p := NewPresentation("test", "", "", "", "1", true)
+	if _, err := p.AddSlide(pngContent.Bytes(), []BoardTitle{{
+		Name:        "root",
+		BoardID:     "root",
+		LinkToSlide: 1,
+	}}); err != nil {
+		t.Fatal(err)
+	}
+	return p
+}
 
 func TestPresentationEscapesXML(t *testing.T) {
 	t.Parallel()

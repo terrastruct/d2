@@ -76,6 +76,10 @@ func (s shapeCallout) GetSVGPathData() []string {
 	}
 }
 
+func (s shapeCallout) GetPathCommands() [][]svg.PathCommand {
+	return pathCommands(calloutPath(s.Box))
+}
+
 func (s shapeCallout) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	// return the minimum shape dimensions needed to fit content (width x height)
 	// in the shape's innerBox with padding

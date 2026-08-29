@@ -5,17 +5,8 @@ ARG TARGETARCH
 ARG FIXUID_VERSION=0.6.0
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends ca-certificates curl dumb-init sudo \
+  && apt-get install -y --no-install-recommends adduser ca-certificates curl dumb-init sudo \
   && rm -rf /var/lib/apt/lists/*
-
-RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash -s - && \
-  apt-get install -y --no-install-recommends nodejs && \
-  rm -rf /var/lib/apt/lists/*
-
-# Install Chromium's system libraries without downloading a browser. The
-# non-root d2 init-playwright step below installs the single runtime copy.
-RUN npx --yes playwright@1.61.1 install-deps chromium \
-  && rm -rf /root/.npm /var/lib/apt/lists/*
 
 RUN adduser --gecos '' --disabled-password debian \
   && echo "debian ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/nopasswd
@@ -42,7 +33,6 @@ RUN mkdir -p /usr/local/lib/d2 \
       && rm -Rf /tmp/d2-*-linux-"$TARGETARCH".tar.gz
 
 USER debian:debian
-RUN CI=1 d2 init-playwright
 
 WORKDIR /home/debian/src
 EXPOSE 8080

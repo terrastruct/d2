@@ -82,6 +82,10 @@ func (s shapeCylinder) GetSVGPathData() []string {
 	}
 }
 
+func (s shapeCylinder) GetPathCommands() [][]svg.PathCommand {
+	return pathCommands(cylinderOuterPath(s.Box), cylinderInnerPath(s.Box))
+}
+
 func (s shapeCylinder) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	// 2 arcs top, height + padding, 1 arc bottom
 	totalHeight := height + paddingY + 3*defaultArcDepth

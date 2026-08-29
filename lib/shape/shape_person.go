@@ -73,6 +73,10 @@ func (s shapePerson) GetSVGPathData() []string {
 	}
 }
 
+func (s shapePerson) GetPathCommands() [][]svg.PathCommand {
+	return pathCommands(personPath(s.Box))
+}
+
 func (s shapePerson) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	totalWidth := width + paddingX
 	// see shapePackage
