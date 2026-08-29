@@ -4,6 +4,7 @@
 
 #### Bugfixes ⛑️
 
+- sequence diagrams: keep synthetic lifeline endpoint IDs stable across architectures
 - exports: honor `D2_TIMEOUT` during PNG and GIF rendering in Playwright
 - compiler: keep recursive globs out of class and variable definitions and report class reference cycles instead of overflowing the stack
 - renders: decode gzip, Brotli, and deflate remote images before embedding them
