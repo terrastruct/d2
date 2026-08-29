@@ -1456,15 +1456,15 @@ func (p *markdownPainter) paintTable(n *html.Node, x, y float64, attrs blockAttr
 		stripeY += row.height
 	}
 	grid := []MarkdownPrimitive{
-		MarkdownPrimitive{
+		{
 			Kind: MarkdownRectPrimitive, X: leftBorderX, Y: topBorderY, Width: gridWidth, Height: 1,
 			FillRole: MarkdownColorBorder,
 		},
-		MarkdownPrimitive{
+		{
 			Kind: MarkdownRectPrimitive, X: leftBorderX, Y: topBorderY, Width: 1, Height: gridHeight,
 			FillRole: MarkdownColorBorder,
 		},
-		MarkdownPrimitive{
+		{
 			Kind: MarkdownRectPrimitive, X: rightBorderX, Y: topBorderY, Width: 1, Height: gridHeight,
 			FillRole: MarkdownColorBorder,
 		},
