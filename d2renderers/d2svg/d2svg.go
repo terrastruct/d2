@@ -21,23 +21,22 @@ import (
 	"github.com/alecthomas/chroma/v2/lexers"
 	"github.com/alecthomas/chroma/v2/styles"
 
-	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2renderers/d2fonts"
-	"oss.terrastruct.com/d2/d2renderers/d2latex"
-	"oss.terrastruct.com/d2/d2renderers/d2sketch"
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/d2themes"
-	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
-	"oss.terrastruct.com/d2/lib/color"
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/jsrunner"
-	"oss.terrastruct.com/d2/lib/label"
-	"oss.terrastruct.com/d2/lib/shape"
-	"oss.terrastruct.com/d2/lib/svg"
-	"oss.terrastruct.com/d2/lib/textmeasure"
-	"oss.terrastruct.com/d2/lib/version"
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/d2/d2ast"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2renderers/d2fonts"
+	"github.com/d2lang/d2/d2renderers/d2latex"
+	"github.com/d2lang/d2/d2renderers/d2sketch"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/d2themes"
+	"github.com/d2lang/d2/d2themes/d2themescatalog"
+	"github.com/d2lang/d2/lib/color"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/label"
+	"github.com/d2lang/d2/lib/shape"
+	"github.com/d2lang/d2/lib/svg"
+	"github.com/d2lang/d2/lib/textmeasure"
+	"github.com/d2lang/d2/lib/version"
+	"github.com/d2lang/util-go/go2"
 )
 
 const (
@@ -96,8 +95,81 @@ type RenderOpts struct {
 	OmitVersion *bool
 }
 
-func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height int) {
-	tl, br := diagram.BoundingBox()
+func invalidPaddingError(pad int64) error {
+	return fmt.Errorf("padding %d produces invalid SVG dimensions", pad)
+}
+
+func checkedIntAdd(a, b, minInt, maxInt int64) (int64, bool) {
+	if b > 0 && a > maxInt-b || b < 0 && a < minInt-b {
+		return 0, false
+	}
+	return a + b, true
+}
+
+func checkedIntSub(a, b, minInt, maxInt int64) (int64, bool) {
+	if b > 0 && a < minInt+b || b < 0 && a > maxInt+b {
+		return 0, false
+	}
+	return a - b, true
+}
+
+func validatePadding(tl, br d2target.Point, pad int64) (int, error) {
+	maxInt := int64(^uint(0) >> 1)
+	minInt := -maxInt - 1
+	if pad < minInt || pad > maxInt {
+		return 0, invalidPaddingError(pad)
+	}
+
+	doublePad, ok := checkedIntAdd(pad, pad, minInt, maxInt)
+	if !ok {
+		return 0, invalidPaddingError(pad)
+	}
+	for _, bounds := range [][2]int64{
+		{int64(tl.X), int64(br.X)},
+		{int64(tl.Y), int64(br.Y)},
+	} {
+		if _, ok := checkedIntSub(bounds[0], pad, minInt, maxInt); !ok {
+			return 0, invalidPaddingError(pad)
+		}
+		size, ok := checkedIntSub(bounds[1], bounds[0], minInt, maxInt)
+		if !ok {
+			return 0, invalidPaddingError(pad)
+		}
+		if _, ok := checkedIntAdd(size, doublePad, minInt, maxInt); !ok {
+			return 0, invalidPaddingError(pad)
+		}
+	}
+	return int(pad), nil
+}
+
+func expandDimensions(left, top, width, height, amount int) (int, int, int, int, bool) {
+	maxInt := int64(^uint(0) >> 1)
+	minInt := -maxInt - 1
+	amount64 := int64(amount)
+	doubleAmount, ok := checkedIntAdd(amount64, amount64, minInt, maxInt)
+	if !ok {
+		return 0, 0, 0, 0, false
+	}
+	left64, ok := checkedIntSub(int64(left), amount64, minInt, maxInt)
+	if !ok {
+		return 0, 0, 0, 0, false
+	}
+	top64, ok := checkedIntSub(int64(top), amount64, minInt, maxInt)
+	if !ok {
+		return 0, 0, 0, 0, false
+	}
+	width64, ok := checkedIntAdd(int64(width), doubleAmount, minInt, maxInt)
+	if !ok {
+		return 0, 0, 0, 0, false
+	}
+	height64, ok := checkedIntAdd(int64(height), doubleAmount, minInt, maxInt)
+	if !ok {
+		return 0, 0, 0, 0, false
+	}
+	return int(left64), int(top64), int(width64), int(height64), true
+}
+
+func dimensions(diagram *d2target.Diagram, pad int, tl, br d2target.Point) (left, top, width, height int) {
 	left = tl.X - pad
 	top = tl.Y - pad
 	width = br.X - tl.X + pad*2
@@ -377,7 +449,7 @@ func renderLegendShapeIcon(s d2target.Shape, x, y int, diagramHash string, theme
 	finalBuf := &bytes.Buffer{}
 	fmt.Fprintf(finalBuf, `<g transform="translate(%d, %d) scale(%f)">`,
 		x, y, 1.0/sizeFactor)
-	_, err := drawShape(buf, appendixBuf, diagramHash, iconShape, nil, theme)
+	_, err := drawShape(buf, appendixBuf, diagramHash, iconShape, false, theme)
 	if err != nil {
 		return "", err
 	}
@@ -426,7 +498,7 @@ func renderLegendConnectionIcon(c d2target.Connection, x, y int, theme *d2themes
 	fmt.Fprintf(finalBuf, `<g transform="translate(%d, %d) scale(%f)">`,
 		x, y, 1.0/sizeFactor)
 
-	_, err := drawConnection(buf, legendHash, legendConn, markers, idToShape, nil, theme)
+	_, err := drawConnection(buf, legendHash, legendConn, markers, idToShape, false, theme)
 	if err != nil {
 		return "", err
 	}
@@ -1003,7 +1075,7 @@ func makeBorderLabelMask(labelPosition label.Position, labelTL *geo.Point, label
 	)
 }
 
-func drawConnection(writer io.Writer, diagramHash string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, jsRunner jsrunner.JSRunner, inlineTheme *d2themes.Theme) (labelMask string, _ error) {
+func drawConnection(writer io.Writer, diagramHash string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, sketch bool, inlineTheme *d2themes.Theme) (labelMask string, _ error) {
 	opacityStyle := ""
 	if connection.Opacity != 1.0 {
 		opacityStyle = fmt.Sprintf(" style='opacity:%f'", connection.Opacity)
@@ -1099,15 +1171,15 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 	path := pathData(connection, srcAdj, dstAdj)
 	mask := fmt.Sprintf(`mask="url(#%s)"`, diagramHash)
 
-	if jsRunner != nil {
-		out, err := d2sketch.Connection(jsRunner, connection, path, mask)
+	if sketch {
+		out, err := d2sketch.Connection(connection, path, mask)
 		if err != nil {
 			return "", err
 		}
 		fmt.Fprint(writer, out)
 
 		// render sketch arrowheads separately
-		arrowPaths, err := d2sketch.Arrowheads(jsRunner, connection, srcAdj, dstAdj)
+		arrowPaths, err := d2sketch.Arrowheads(connection, srcAdj, dstAdj)
 		if err != nil {
 			return "", err
 		}
@@ -1158,6 +1230,10 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 	}
 
 	if connection.Label != "" {
+		richLabelLink := connection.Link != "" && connection.Language != ""
+		if richLabelLink {
+			fmt.Fprintf(writer, `<a href="%s" xlink:href="%[1]s">`, svg.EscapeText(connection.Link))
+		}
 		if connection.Language == "latex" {
 			render, err := d2latex.Render(connection.Label)
 			if err != nil {
@@ -1293,6 +1369,9 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 			if connection.Link != "" {
 				fmt.Fprintf(writer, "</a>")
 			}
+		}
+		if richLabelLink {
+			fmt.Fprint(writer, "</a>")
 		}
 	}
 
@@ -1599,7 +1678,7 @@ func render3DHexagon(diagramHash string, targetShape d2target.Shape, inlineTheme
 	return borderMask + mainShapeRendered + renderedSides + renderedBorder
 }
 
-func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape d2target.Shape, jsRunner jsrunner.JSRunner, inlineTheme *d2themes.Theme) (labelMask string, err error) {
+func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape d2target.Shape, sketch bool, inlineTheme *d2themes.Theme) (labelMask string, err error) {
 	closingTag := "</g>"
 	if targetShape.Link != "" {
 
@@ -1669,8 +1748,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 
 	switch targetShape.Type {
 	case d2target.ShapeClass:
-		if jsRunner != nil {
-			out, err := d2sketch.Class(jsRunner, targetShape)
+		if sketch {
+			out, err := d2sketch.Class(targetShape)
 			if err != nil {
 				return "", err
 			}
@@ -1686,8 +1765,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
 	case d2target.ShapeSQLTable:
-		if jsRunner != nil {
-			out, err := d2sketch.Table(jsRunner, targetShape)
+		if sketch {
+			out, err := d2sketch.Table(targetShape)
 			if err != nil {
 				return "", err
 			}
@@ -1707,8 +1786,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			if targetShape.Multiple {
 				fmt.Fprint(writer, renderDoubleOval(multipleTL, width, height, fill, "", stroke, style, inlineTheme))
 			}
-			if jsRunner != nil {
-				out, err := d2sketch.DoubleOval(jsRunner, targetShape, diagramHash)
+			if sketch {
+				out, err := d2sketch.DoubleOval(targetShape, diagramHash)
 				if err != nil {
 					return "", err
 				}
@@ -1720,8 +1799,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			if targetShape.Multiple {
 				fmt.Fprint(writer, renderOval(multipleTL, width, height, fill, "", stroke, style, inlineTheme))
 			}
-			if jsRunner != nil {
-				out, err := d2sketch.Oval(jsRunner, targetShape, diagramHash)
+			if sketch {
+				out, err := d2sketch.Oval(targetShape, diagramHash)
 				if err != nil {
 					return "", err
 				}
@@ -1768,8 +1847,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					el.Rx = borderRadius
 					fmt.Fprint(writer, el.Render())
 				}
-				if jsRunner != nil {
-					out, err := d2sketch.Rect(jsRunner, targetShape, diagramHash)
+				if sketch {
+					out, err := d2sketch.Rect(targetShape, diagramHash)
 					if err != nil {
 						return "", err
 					}
@@ -1817,8 +1896,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					el.Rx = borderRadius
 					fmt.Fprint(writer, el.Render())
 				}
-				if jsRunner != nil {
-					out, err := d2sketch.DoubleRect(jsRunner, targetShape, diagramHash)
+				if sketch {
+					out, err := d2sketch.DoubleRect(targetShape, diagramHash)
 					if err != nil {
 						return "", err
 					}
@@ -1865,8 +1944,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				}
 			}
 
-			if jsRunner != nil {
-				out, err := d2sketch.Paths(jsRunner, targetShape, diagramHash, s.GetSVGPathData())
+			if sketch {
+				out, err := d2sketch.Paths(targetShape, diagramHash, s.GetSVGPathData())
 				if err != nil {
 					return "", err
 				}
@@ -1897,8 +1976,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			}
 		}
 
-		if jsRunner != nil {
-			out, err := d2sketch.Paths(jsRunner, targetShape, diagramHash, s.GetSVGPathData())
+		if sketch {
+			out, err := d2sketch.Paths(targetShape, diagramHash, s.GetSVGPathData())
 			if err != nil {
 				return "", err
 			}
@@ -1988,7 +2067,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		)
 
 		if labelPosition.IsBorder() {
-			if jsRunner != nil {
+			if sketch {
 				labelMask = makeBorderLabelMask(labelPosition, labelTL, targetShape.LabelWidth, targetShape.LabelHeight, box, targetShape.StrokeWidth, 1.0, tl)
 			} else {
 				labelMask = makeBorderLabelMask(labelPosition, labelTL, targetShape.LabelWidth, targetShape.LabelHeight, box, targetShape.StrokeWidth, 1.0, nil)
@@ -2737,21 +2816,22 @@ func appendOnTrigger(buf *bytes.Buffer, source string, triggers []string, newCon
 var DEFAULT_DARK_THEME *int64 = nil // no theme selected
 
 func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
-	var jsRunner jsrunner.JSRunner
+	sketch := false
 	pad := DEFAULT_PADDING
+	tl, br := diagram.BoundingBox()
 	themeID := d2themescatalog.NeutralDefault.ID
 	darkThemeID := DEFAULT_DARK_THEME
 	var scale *float64
 	if opts != nil {
 		if opts.Pad != nil {
-			pad = int(*opts.Pad)
-		}
-		if opts.Sketch != nil && *opts.Sketch {
-			jsRunner = jsrunner.NewJSRunner()
-			err := d2sketch.LoadJS(jsRunner)
+			var err error
+			pad, err = validatePadding(tl, br, *opts.Pad)
 			if err != nil {
 				return nil, err
 			}
+		}
+		if opts.Sketch != nil && *opts.Sketch {
+			sketch = true
 		}
 		if opts.ThemeID != nil {
 			themeID = *opts.ThemeID
@@ -2835,7 +2915,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	}
 	for _, obj := range allObjects {
 		if c, is := obj.(d2target.Connection); is {
-			labelMask, err := drawConnection(buf, isolatedDiagramHash, c, markers, idToShape, jsRunner, inlineTheme)
+			labelMask, err := drawConnection(buf, isolatedDiagramHash, c, markers, idToShape, sketch, inlineTheme)
 			if err != nil {
 				return nil, err
 			}
@@ -2843,7 +2923,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 				labelMasks = append(labelMasks, labelMask)
 			}
 		} else if s, is := obj.(d2target.Shape); is {
-			labelMask, err := drawShape(buf, appendixItemBuf, diagramHash, s, jsRunner, inlineTheme)
+			labelMask, err := drawShape(buf, appendixItemBuf, diagramHash, s, sketch, inlineTheme)
 			if err != nil {
 				return nil, err
 			} else if labelMask != "" {
@@ -2866,10 +2946,9 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	}
 
 	// Note: we always want this since we reference it on connections even if there end up being no masked labels
-	left, top, w, h := dimensions(diagram, pad)
+	left, top, w, h := dimensions(diagram, pad, tl, br)
 
 	if diagram.Legend != nil && (len(diagram.Legend.Shapes) > 0 || len(diagram.Legend.Connections) > 0) {
-		tl, br := diagram.BoundingBox()
 		totalHeight := LEGEND_PADDING + LEGEND_FONT_SIZE + LEGEND_ITEM_SPACING
 		maxLabelWidth := 0
 		itemCount := 0
@@ -2935,6 +3014,9 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 			}
 		}
 	}
+	if w < 0 || h < 0 {
+		return nil, invalidPaddingError(int64(pad))
+	}
 	fmt.Fprint(buf, strings.Join([]string{
 		fmt.Sprintf(`<mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
 			isolatedDiagramHash, left, top, w, h,
@@ -2982,16 +3064,17 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 			fmt.Fprintf(upperBuf, `<style type="text/css">%s</style>`, css)
 		}
 
-		if jsRunner != nil {
+		if sketch {
 			d2sketch.DefineFillPatterns(upperBuf, diagramHash)
 		}
 	}
 
 	// This shift is for background el to envelop the diagram
-	left -= int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
-	top -= int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
-	w += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
-	h += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
+	strokePadding := int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
+	left, top, w, h, ok := expandDimensions(left, top, w, h, strokePadding)
+	if !ok {
+		return nil, invalidPaddingError(int64(pad))
+	}
 	backgroundEl := d2themes.NewThemableElement("rect", inlineTheme)
 	// We don't want to change the document viewbox, only the background el
 	backgroundEl.X = float64(left)
@@ -3009,19 +3092,19 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	backgroundEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, diagram.Root.StrokeWidth)
 
 	// This shift is for viewbox to envelop the background el
-	left -= int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
-	top -= int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
-	w += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
-	h += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
+	left, top, w, h, ok = expandDimensions(left, top, w, h, strokePadding)
+	if !ok {
+		return nil, invalidPaddingError(int64(pad))
+	}
 
 	doubleBorderElStr := ""
 	if diagram.Root.DoubleBorder {
 		offset := d2target.INNER_BORDER_OFFSET
 
-		left -= int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.)) + offset
-		top -= int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.)) + offset
-		w += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.)*2.) + 2*offset
-		h += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.)*2.) + 2*offset
+		left, top, w, h, ok = expandDimensions(left, top, w, h, strokePadding+offset)
+		if !ok {
+			return nil, invalidPaddingError(int64(pad))
+		}
 
 		backgroundEl2 := backgroundEl.Copy()
 		// No need to double-paint
@@ -3033,10 +3116,10 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		backgroundEl2.Height = float64(h)
 		doubleBorderElStr = backgroundEl2.Render()
 
-		left -= int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
-		top -= int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
-		w += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
-		h += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
+		left, top, w, h, ok = expandDimensions(left, top, w, h, strokePadding)
+		if !ok {
+			return nil, invalidPaddingError(int64(pad))
+		}
 	}
 
 	bufStr := buf.String()

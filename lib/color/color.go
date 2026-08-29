@@ -10,7 +10,7 @@ import (
 	"github.com/lucasb-eyer/go-colorful"
 	"github.com/mazznoer/csscolorparser"
 
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/util-go/go2"
 )
 
 var themeColorRegex = regexp.MustCompile(`^(N[1-7]|B[1-6]|AA[245]|AB[45])$`)

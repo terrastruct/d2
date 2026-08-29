@@ -13,9 +13,9 @@ import (
 	"fmt"
 	"sync"
 
-	"oss.terrastruct.com/d2/lib/font"
-	fontlib "oss.terrastruct.com/d2/lib/font"
-	"oss.terrastruct.com/d2/lib/syncmap"
+	"github.com/d2lang/d2/lib/font"
+	fontlib "github.com/d2lang/d2/lib/font"
+	"github.com/d2lang/d2/lib/syncmap"
 )
 
 type FontFamily string

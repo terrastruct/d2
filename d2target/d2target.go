@@ -1,6 +1,7 @@
 package d2target
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"hash/fnv"
@@ -8,15 +9,15 @@ import (
 	"net/url"
 	"strings"
 
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/util-go/go2"
 
-	"oss.terrastruct.com/d2/d2renderers/d2fonts"
-	"oss.terrastruct.com/d2/lib/color"
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/label"
-	"oss.terrastruct.com/d2/lib/shape"
-	"oss.terrastruct.com/d2/lib/svg"
-	"oss.terrastruct.com/d2/lib/textmeasure"
+	"github.com/d2lang/d2/d2renderers/d2fonts"
+	"github.com/d2lang/d2/lib/color"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/label"
+	"github.com/d2lang/d2/lib/shape"
+	"github.com/d2lang/d2/lib/svg"
+	"github.com/d2lang/d2/lib/textmeasure"
 )
 
 const (
@@ -163,15 +164,15 @@ func (d *Diagram) GetBoard(boardPath []string) *Diagram {
 }
 
 func (diagram Diagram) Bytes() ([]byte, error) {
-	b1, err := json.Marshal(diagram.Shapes)
+	b1, err := marshalHashJSON(diagram.Shapes)
 	if err != nil {
 		return nil, err
 	}
-	b2, err := json.Marshal(diagram.Connections)
+	b2, err := marshalHashJSON(diagram.Connections)
 	if err != nil {
 		return nil, err
 	}
-	b3, err := json.Marshal(diagram.Root)
+	b3, err := marshalHashJSON(diagram.Root)
 	if err != nil {
 		return nil, err
 	}
@@ -208,6 +209,169 @@ func (diagram Diagram) Bytes() ([]byte, error) {
 	}
 
 	return base, nil
+}
+
+// json.Marshal follows the declaration order of struct fields. Go 1.26
+// reorganized net/url.URL, which otherwise changes diagram hashes (and every
+// SVG identifier derived from them) without changing the diagram. Keep URL
+// values in the order used through Go 1.25 for stable hashes across toolchains.
+// This is applied only to Shape, Connection, and Root JSON used by Bytes.
+func marshalHashJSON(v any) ([]byte, error) {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return nil, err
+	}
+	return stabilizeHashURLs(b)
+}
+
+var legacyURLFieldOrder = [...]string{
+	"Scheme",
+	"Opaque",
+	"User",
+	"Host",
+	"Path",
+	"RawPath",
+	"OmitHost",
+	"ForceQuery",
+	"RawQuery",
+	"Fragment",
+	"RawFragment",
+}
+
+func stabilizeHashURLs(b []byte) ([]byte, error) {
+	dec := json.NewDecoder(bytes.NewReader(b))
+	var out bytes.Buffer
+	lastWrite := 0
+
+	var walkValue func() error
+	walkValue = func() error {
+		token, err := dec.Token()
+		if err != nil {
+			return err
+		}
+		delim, ok := token.(json.Delim)
+		if !ok {
+			return nil
+		}
+
+		switch delim {
+		case '{':
+			for dec.More() {
+				keyToken, err := dec.Token()
+				if err != nil {
+					return err
+				}
+				key, ok := keyToken.(string)
+				if !ok {
+					return fmt.Errorf("decode diagram hash JSON: object key has type %T", keyToken)
+				}
+				if key != "icon" {
+					if err := walkValue(); err != nil {
+						return err
+					}
+					continue
+				}
+
+				valueStart, err := hashJSONValueStart(b, int(dec.InputOffset()))
+				if err != nil {
+					return err
+				}
+				var raw json.RawMessage
+				if err := dec.Decode(&raw); err != nil {
+					return fmt.Errorf("decode icon URL for stable diagram hash: %w", err)
+				}
+				if bytes.Equal(raw, []byte("null")) {
+					continue
+				}
+
+				stable, err := stableHashURL(raw)
+				if err != nil {
+					return err
+				}
+				valueEnd := int(dec.InputOffset())
+				if valueEnd < valueStart || valueEnd > len(b) {
+					return fmt.Errorf("decode icon URL for stable diagram hash: invalid offsets %d:%d", valueStart, valueEnd)
+				}
+				out.Write(b[lastWrite:valueStart])
+				out.Write(stable)
+				lastWrite = valueEnd
+			}
+			closeToken, err := dec.Token()
+			if err != nil {
+				return err
+			}
+			if closeToken != json.Delim('}') {
+				return fmt.Errorf("decode diagram hash JSON: got closing token %v, want }", closeToken)
+			}
+		case '[':
+			for dec.More() {
+				if err := walkValue(); err != nil {
+					return err
+				}
+			}
+			closeToken, err := dec.Token()
+			if err != nil {
+				return err
+			}
+			if closeToken != json.Delim(']') {
+				return fmt.Errorf("decode diagram hash JSON: got closing token %v, want ]", closeToken)
+			}
+		default:
+			return fmt.Errorf("decode diagram hash JSON: unexpected delimiter %q", delim)
+		}
+		return nil
+	}
+
+	if err := walkValue(); err != nil {
+		return nil, err
+	}
+	out.Write(b[lastWrite:])
+	return out.Bytes(), nil
+}
+
+func hashJSONValueStart(b []byte, keyEnd int) (int, error) {
+	i := keyEnd
+	for i < len(b) && (b[i] == ' ' || b[i] == '\t' || b[i] == '\r' || b[i] == '\n') {
+		i++
+	}
+	if i < len(b) && b[i] == ':' {
+		i++
+	}
+	for i < len(b) && (b[i] == ' ' || b[i] == '\t' || b[i] == '\r' || b[i] == '\n') {
+		i++
+	}
+	if i >= len(b) {
+		return 0, fmt.Errorf("decode icon URL for stable diagram hash: missing value")
+	}
+	return i, nil
+}
+
+func stableHashURL(raw json.RawMessage) ([]byte, error) {
+	fields := make(map[string]json.RawMessage, len(legacyURLFieldOrder))
+	if err := json.Unmarshal(raw, &fields); err != nil {
+		return nil, fmt.Errorf("decode icon URL for stable diagram hash: %w", err)
+	}
+	if len(fields) != len(legacyURLFieldOrder) {
+		return nil, fmt.Errorf("decode icon URL for stable diagram hash: got %d fields, want %d", len(fields), len(legacyURLFieldOrder))
+	}
+
+	var out bytes.Buffer
+	out.WriteByte('{')
+	for i, name := range legacyURLFieldOrder {
+		value, ok := fields[name]
+		if !ok {
+			return nil, fmt.Errorf("decode icon URL for stable diagram hash: missing field %q", name)
+		}
+		if i > 0 {
+			out.WriteByte(',')
+		}
+		out.WriteByte('"')
+		out.WriteString(name)
+		out.WriteString(`":`)
+		out.Write(value)
+	}
+	out.WriteByte('}')
+	return out.Bytes(), nil
 }
 
 func (diagram Diagram) HasShape(condition func(Shape) bool) bool {

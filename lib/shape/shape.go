@@ -3,9 +3,8 @@ package shape
 import (
 	"math"
 
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/svg"
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/util-go/go2"
 )
 
 const (
@@ -235,16 +234,6 @@ func TraceToShapeBorder(shape Shape, rectBorderPoint, prevPoint *geo.Point) *geo
 
 	closestPoint.TruncateFloat32()
 	return geo.NewPoint(math.Round(closestPoint.X), math.Round(closestPoint.Y))
-}
-
-func boxPath(box *geo.Box) *svg.SvgPathContext {
-	pc := svg.NewSVGPathContext(box.TopLeft, 1, 1)
-	pc.StartAt(pc.Absolute(0, 0))
-	pc.L(false, box.Width, 0)
-	pc.L(false, box.Width, box.Height)
-	pc.L(false, 0, box.Height)
-	pc.Z()
-	return pc
 }
 
 func LimitAR(width, height, aspectRatio float64) (float64, float64) {

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"unicode"
 
-	"oss.terrastruct.com/d2/d2renderers/d2ascii/charset"
+	"github.com/d2lang/d2/d2renderers/d2ascii/charset"
 )
 
 type Canvas struct {

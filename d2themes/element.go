@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"oss.terrastruct.com/d2/lib/color"
+	"github.com/d2lang/d2/lib/color"
 )
 
 // ThemableElement is a helper class for creating new XML elements.

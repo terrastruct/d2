@@ -6,14 +6,13 @@
 
 [Docs](https://d2lang.com) | [Cheat sheet](./docs/assets/cheat_sheet.pdf) | [Comparisons](https://text-to-diagram.com) | [Playground](https://play.d2lang.com)
 
-[![ci](https://github.com/terrastruct/d2/actions/workflows/ci.yml/badge.svg)](https://github.com/terrastruct/d2/actions/workflows/ci.yml)
-[![daily](https://github.com/terrastruct/d2/actions/workflows/daily.yml/badge.svg)](https://github.com/terrastruct/d2/actions/workflows/daily.yml)
-[![release](https://img.shields.io/github/v/release/terrastruct/d2)](https://github.com/terrastruct/d2/releases)
+[![ci](https://github.com/d2lang/d2/actions/workflows/ci.yml/badge.svg)](https://github.com/d2lang/d2/actions/workflows/ci.yml)
+[![daily](https://github.com/d2lang/d2/actions/workflows/daily.yml/badge.svg)](https://github.com/d2lang/d2/actions/workflows/daily.yml)
+[![release](https://img.shields.io/github/v/release/d2lang/d2)](https://github.com/d2lang/d2/releases)
 [![changelog](https://img.shields.io/badge/changelog-read-blue)](./CHANGELOG.md)
-[![npm version](https://img.shields.io/npm/v/@terrastruct/d2)](https://www.npmjs.com/package/@terrastruct/d2)
+[![npm version](https://img.shields.io/npm/v/@d2lang/d2)](https://www.npmjs.com/package/@d2lang/d2)
 [![discord](https://img.shields.io/discord/1039184639652265985?label=discord)](https://discord.gg/NF6X8K4eDq)
-[![twitter](https://img.shields.io/twitter/follow/terrastruct?style=social)](https://twitter.com/terrastruct)
-[![license](https://img.shields.io/github/license/terrastruct/d2?color=9cf)](./LICENSE.txt)
+[![license](https://img.shields.io/github/license/d2lang/d2?color=9cf)](./LICENSE.txt)
 
 <a href="https://play.d2lang.com">
 <img src="./docs/assets/playground_button.png" alt="D2 Playground button" width="200" />
@@ -137,7 +136,7 @@ to install without executing them.
 Or if you have Go installed you can install from source though you won't get the manpage:
 
 ```sh
-go install oss.terrastruct.com/d2@latest
+go install github.com/d2lang/d2@latest
 ```
 
 You can also install a release from source which will include manpages.
@@ -161,9 +160,7 @@ improved security but the install script is by no means insecure.
 In addition to being a runnable CLI tool, D2 can also be used to produce diagrams from
 Go programs.
 
-For examples, see [./docs/examples/lib](./docs/examples/lib). This [blog
-post](https://terrastruct.com/blog/post/generate-diagrams-programmatically/) also demos a
-complete, runnable example of using D2 as a library for a real-world use case.
+For examples, see [./docs/examples/lib](./docs/examples/lib).
 
 ## Themes
 
@@ -196,11 +193,12 @@ bundled with the build or separately installed as a standalone binary.
 
 **Layout engines**:
 
-- [dagre](https://github.com/dagrejs/dagre) (default, bundled): A fast, directed graph
-  layout engine that produces layered/hierarchical layouts. Based on Graphviz's DOT
-  algorithm.
-- [ELK](https://github.com/kieler/elkjs) (bundled): A directed graph layout engine
-  particularly suited for node-link diagrams with an inherent direction and ports.
+- [Dagro](https://github.com/d2lang/dagro) (default, bundled): A native Go port of the
+  Dagre directed graph layout engine that produces layered/hierarchical layouts. Based
+  on Graphviz's DOT algorithm.
+- [elk-go](https://github.com/d2lang/elk-go) (bundled): A native Go port of the ELK
+  directed graph layout engine, particularly suited for node-link diagrams with an
+  inherent direction and ports.
 - [TALA](https://github.com/terrastruct/TALA) (binary): Novel layout engine designed
   specifically for software architecture diagrams. Requires separate install, visit the
   Github page for more.
@@ -208,6 +206,12 @@ bundled with the build or separately installed as a standalone binary.
 D2 intends to integrate with a variety of layout engines, e.g. `dot`, as well as
 single-purpose layout types like sequence diagrams. You can choose whichever layout engine
 you like and works best for the diagram you're making.
+
+Sketch-mode rendering uses [rough-go](https://github.com/d2lang/rough-go), a native Go
+compatibility port of the Rough.js 4.6.6 rendering surface used by D2.
+
+LaTeX labels use [mathjax-go](https://github.com/d2lang/mathjax-go), a native Go port of
+the MathJax 3.2.2 TeX-to-SVG pipeline.
 
 ## Comparison
 
@@ -232,11 +236,9 @@ let us know and we'll be happy to include it here!
 
 ### Official plugins
 
-- **VSCode extension**: [https://github.com/terrastruct/d2-vscode](https://github.com/terrastruct/d2-vscode)
-- **Vim extension**: [https://github.com/terrastruct/d2-vim](https://github.com/terrastruct/d2-vim)
-- **Obsidian plugin**: [https://github.com/terrastruct/d2-obsidian](https://github.com/terrastruct/d2-obsidian)
-- **Slack app**: [https://d2lang.com/tour/slack](https://d2lang.com/tour/slack)
-- **Discord plugin**: [https://d2lang.com/tour/discord](https://d2lang.com/tour/discord)
+- **VSCode extension**: [https://github.com/d2lang/d2-vscode](https://github.com/d2lang/d2-vscode)
+- **Vim extension**: [https://github.com/d2lang/d2-vim](https://github.com/d2lang/d2-vim)
+- **Obsidian plugin**: [https://github.com/d2lang/d2-obsidian](https://github.com/d2lang/d2-obsidian)
 
 ### Community plugins
 
@@ -273,10 +275,10 @@ let us know and we'll be happy to include it here!
 
 ### Misc
 
-- **Comparison site**: [https://github.com/terrastruct/text-to-diagram-site](https://github.com/terrastruct/text-to-diagram-site)
-- **Playground**: [https://github.com/terrastruct/d2-playground](https://github.com/terrastruct/d2-playground)
-- **Language docs**: [https://github.com/terrastruct/d2-docs](https://github.com/terrastruct/d2-docs)
-- **Hosted icons**: [https://icons.terrastruct.com](https://icons.terrastruct.com)
+- **Comparison site**: [https://github.com/d2lang/text-to-diagram-site](https://github.com/d2lang/text-to-diagram-site)
+- **Playground**: [https://github.com/d2lang/d2-playground](https://github.com/d2lang/d2-playground)
+- **Language docs**: [https://github.com/d2lang/d2-docs](https://github.com/d2lang/d2-docs)
+- **Hosted icons**: [https://icons.d2lang.com](https://icons.d2lang.com)
 
 ## FAQ
 

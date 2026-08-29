@@ -1,0 +1,128 @@
+name: Docker image smoke
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/docker-image-smoke.yml
+      - ci/release/docker/Dockerfile
+      - ci/release/docker/entrypoint.sh
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: amd64
+            platform: linux/amd64
+          - runner: ubuntu-24.04-arm
+            arch: arm64
+            platform: linux/arm64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 45
+    env:
+      ARCH: ${{ matrix.arch }}
+      IMAGE: d2:docker-smoke-${{ matrix.arch }}
+      PLATFORM: ${{ matrix.platform }}
+      VERSION: v0.0.0-docker-smoke
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: true
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: ./go.mod
+          cache: true
+
+      - name: Build representative release archive
+        run: ./ci/release/build.sh --rebuild --run="linux/$ARCH" --version="$VERSION"
+
+      - name: Prepare Docker context
+        run: |
+          set -euo pipefail
+          context="$RUNNER_TEMP/docker-context"
+          mkdir -p "$context"
+          cp "ci/release/build/$VERSION/d2-$VERSION-linux-$ARCH.tar.gz" "$context/"
+          cp ci/release/docker/entrypoint.sh "$context/entrypoint.sh"
+
+      - name: Build and measure image
+        id: image
+        run: |
+          set -euo pipefail
+          builder="d2-docker-smoke-$ARCH"
+          oci_archive="$RUNNER_TEMP/d2-$ARCH.oci.tar"
+          context="$RUNNER_TEMP/docker-context"
+
+          docker buildx create --name "$builder" --driver docker-container --use
+          docker buildx inspect --bootstrap
+          docker buildx build \
+            --platform "$PLATFORM" \
+            --provenance=false \
+            --output "type=oci,dest=$oci_archive,compression=gzip,compression-level=6,force-compression=true" \
+            --file ci/release/docker/Dockerfile \
+            "$context"
+
+          manifest_digest=$(tar -xOf "$oci_archive" index.json | jq -er '.manifests[0].digest')
+          manifest_path="blobs/sha256/${manifest_digest#sha256:}"
+          compressed_bytes=$(tar -xOf "$oci_archive" "$manifest_path" | \
+            jq -er '[.layers[].size] | add')
+          rm "$oci_archive"
+
+          docker buildx build \
+            --platform "$PLATFORM" \
+            --provenance=false \
+            --load \
+            --tag "$IMAGE" \
+            --file ci/release/docker/Dockerfile \
+            "$context"
+          uncompressed_bytes=$(docker image inspect --format '{{.Size}}' "$IMAGE")
+
+          printf 'Compressed OCI layers: %s bytes\n' "$compressed_bytes"
+          printf 'Uncompressed image: %s bytes\n' "$uncompressed_bytes"
+          echo "compressed_bytes=$compressed_bytes" >>"$GITHUB_OUTPUT"
+          echo "uncompressed_bytes=$uncompressed_bytes" >>"$GITHUB_OUTPUT"
+          {
+            echo "### $PLATFORM"
+            echo
+            echo "- Compressed OCI layers: $compressed_bytes bytes"
+            echo "- Uncompressed image: $uncompressed_bytes bytes"
+          } >>"$GITHUB_STEP_SUMMARY"
+
+      - name: Smoke-test CLI, SVG, and PNG
+        run: |
+          set -euo pipefail
+          smoke="$RUNNER_TEMP/smoke"
+          mkdir -p "$smoke"
+          printf 'x -> y\n' >"$smoke/input.d2"
+
+          version_output=$(docker run --rm --platform "$PLATFORM" "$IMAGE" --version)
+          version_output=${version_output%$'\r'}
+          test "$version_output" = "$VERSION"
+
+          docker run --rm --platform "$PLATFORM" \
+            -u "$(id -u):$(id -g)" \
+            -v "$smoke:/home/debian/src" \
+            "$IMAGE" input.d2 output.svg
+          test -s "$smoke/output.svg"
+          grep -q '<svg' "$smoke/output.svg"
+
+          docker run --rm --platform "$PLATFORM" \
+            -u "$(id -u):$(id -g)" \
+            -v "$smoke:/home/debian/src" \
+            "$IMAGE" input.d2 output.png
+          test -s "$smoke/output.png"
+          test "$(od -An -tx1 -N8 "$smoke/output.png" | tr -d ' \n')" = 89504e470d0a1a0a
+
+      - name: Clean up Docker image and builder
+        if: always()
+        run: |
+          docker image rm --force "$IMAGE" >/dev/null 2>&1 || true
+          docker buildx rm "d2-docker-smoke-$ARCH" >/dev/null 2>&1 || true

@@ -9,8 +9,8 @@ import (
 
 	"github.com/spf13/pflag"
 
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/util-go/xmain"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/util-go/xmain"
 )
 
 // Serve returns a xmain.RunFunc that will invoke the plugin p as necessary to service the
@@ -143,9 +143,12 @@ func postProcess(ctx context.Context, p Plugin, ms *xmain.State) error {
 		return err
 	}
 
-	out, err := p.PostProcess(ctx, in)
-	if err != nil {
-		return err
+	out := in
+	if postProcessor, ok := p.(PostProcessor); ok {
+		out, err = postProcessor.PostProcess(ctx, in)
+		if err != nil {
+			return err
+		}
 	}
 
 	_, err = ms.Stdout.Write(out)

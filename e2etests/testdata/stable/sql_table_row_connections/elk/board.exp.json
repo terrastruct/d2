@@ -19,7 +19,7 @@
         "x": 12,
         "y": 42
       },
-      "width": 131,
+      "width": 129,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -50,7 +50,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -62,7 +62,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -91,10 +91,10 @@
       "id": "b",
       "type": "sql_table",
       "pos": {
-        "x": 223,
+        "x": 221,
         "y": 12
       },
-      "width": 146,
+      "width": 145,
       "height": 144,
       "opacity": 1,
       "strokeDash": 0,
@@ -125,7 +125,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -137,7 +137,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -167,7 +167,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -197,7 +197,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -250,11 +250,11 @@
       "link": "",
       "route": [
         {
-          "x": 223,
+          "x": 221,
           "y": 102
         },
         {
-          "x": 143,
+          "x": 141,
           "y": 102
         }
       ],
@@ -289,19 +289,19 @@
       "link": "",
       "route": [
         {
-          "x": 223,
+          "x": 221,
           "y": 138
         },
         {
-          "x": 183,
+          "x": 181,
           "y": 138
         },
         {
-          "x": 183,
+          "x": 181,
           "y": 102
         },
         {
-          "x": 143,
+          "x": 141,
           "y": 102
         }
       ],

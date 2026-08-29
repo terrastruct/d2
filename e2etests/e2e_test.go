@@ -14,23 +14,24 @@ import (
 
 	trequire "github.com/stretchr/testify/require"
 
-	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/util-go/assert"
+	"github.com/d2lang/util-go/diff"
+	"github.com/d2lang/util-go/go2"
 
-	"oss.terrastruct.com/d2/d2compiler"
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
-	"oss.terrastruct.com/d2/d2layouts/d2elklayout"
-	"oss.terrastruct.com/d2/d2lib"
-	"oss.terrastruct.com/d2/d2plugin"
-	"oss.terrastruct.com/d2/d2renderers/d2animate"
-	"oss.terrastruct.com/d2/d2renderers/d2ascii"
-	"oss.terrastruct.com/d2/d2renderers/d2ascii/charset"
-	"oss.terrastruct.com/d2/d2renderers/d2svg"
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/lib/log"
-	"oss.terrastruct.com/d2/lib/textmeasure"
+	"github.com/d2lang/d2/d2compiler"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2layouts/d2dagrelayout"
+	"github.com/d2lang/d2/d2layouts/d2elklayout"
+	"github.com/d2lang/d2/d2lib"
+	"github.com/d2lang/d2/d2plugin"
+	"github.com/d2lang/d2/d2renderers/d2animate"
+	"github.com/d2lang/d2/d2renderers/d2ascii"
+	"github.com/d2lang/d2/d2renderers/d2ascii/charset"
+	"github.com/d2lang/d2/d2renderers/d2svg"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/internal/testlog"
+	"github.com/d2lang/d2/lib/log"
+	"github.com/d2lang/d2/lib/textmeasure"
 )
 
 func TestE2E(t *testing.T) {
@@ -116,7 +117,7 @@ func testASCIITxtar(t *testing.T) {
 
 func runASCIITxtarTest(t *testing.T, tc testCase) {
 	ctx := context.Background()
-	ctx = log.WithTB(ctx, t)
+	ctx = log.With(ctx, testlog.New(t))
 	ctx = log.Leveled(ctx, slog.LevelDebug)
 
 	ruler, err := textmeasure.NewRuler()
@@ -133,6 +134,7 @@ func runASCIITxtarTest(t *testing.T, tc testCase) {
 		Ruler:          ruler,
 		Layout:         go2.Pointer("elk"),
 		LayoutResolver: layoutResolver,
+		LayoutReuse:    true,
 	}
 	renderOpts := &d2svg.RenderOpts{
 		Pad:     go2.Pointer(int64(0)),
@@ -273,12 +275,14 @@ func serde(t *testing.T, tc testCase, ruler *textmeasure.Ruler) {
 	var newG d2graph.Graph
 	err = d2graph.DeserializeGraph(b, &newG)
 	trequire.Nil(t, err)
-	trequire.Nil(t, d2graph.CompareSerializedGraph(g, &newG))
+	roundTripBytes, err := d2graph.SerializeGraph(&newG)
+	trequire.Nil(t, err)
+	trequire.JSONEq(t, string(b), string(roundTripBytes))
 }
 
 func run(t *testing.T, tc testCase) {
 	ctx := context.Background()
-	ctx = log.WithTB(ctx, t)
+	ctx = log.With(ctx, testlog.New(t))
 	ctx = log.Leveled(ctx, slog.LevelDebug)
 
 	var ruler *textmeasure.Ruler
@@ -341,6 +345,7 @@ func run(t *testing.T, tc testCase) {
 			MeasuredTexts:  tc.mtexts,
 			Layout:         go2.Pointer(layoutName),
 			LayoutResolver: layoutResolver,
+			LayoutReuse:    true,
 		}
 		renderOpts := &d2svg.RenderOpts{
 			Pad:     go2.Pointer(int64(0)),

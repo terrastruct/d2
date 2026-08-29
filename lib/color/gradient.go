@@ -136,11 +136,7 @@ func LinearGradientToSVG(gradient Gradient) string {
 
 	totalStops := len(gradient.ColorStops)
 	for i, cs := range gradient.ColorStops {
-		offset := cs.Position
-		if offset == "" {
-			offsetValue := float64(i) / float64(totalStops-1) * 100
-			offset = fmt.Sprintf("%.2f%%", offsetValue)
-		}
+		offset := gradientStopOffset(cs.Position, i, totalStops)
 		sb.WriteString(fmt.Sprintf(`<stop offset="%s" stop-color="%s" />`, offset, cs.Color))
 		sb.WriteString("\n")
 	}
@@ -222,16 +218,22 @@ func RadialGradientToSVG(gradient Gradient) string {
 	sb.WriteString("\n")
 	totalStops := len(gradient.ColorStops)
 	for i, cs := range gradient.ColorStops {
-		offset := cs.Position
-		if offset == "" {
-			offsetValue := float64(i) / float64(totalStops-1) * 100
-			offset = fmt.Sprintf("%.2f%%", offsetValue)
-		}
+		offset := gradientStopOffset(cs.Position, i, totalStops)
 		sb.WriteString(fmt.Sprintf(`<stop offset="%s" stop-color="%s" />`, offset, cs.Color))
 		sb.WriteString("\n")
 	}
 	sb.WriteString(`</radialGradient>`)
 	return sb.String()
+}
+
+func gradientStopOffset(position string, index, totalStops int) string {
+	if position != "" {
+		return position
+	}
+	if totalStops == 1 {
+		return "0.00%"
+	}
+	return fmt.Sprintf("%.2f%%", float64(index)/float64(totalStops-1)*100)
 }
 
 func UniqueGradientID(cssGradient string) string {

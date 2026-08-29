@@ -1,17 +1,16 @@
 {
-  "name": "@terrastruct/d2",
-  "author": "Terrastruct, Inc.",
+  "name": "@d2lang/d2",
   "description": "D2.js is a wrapper around the WASM build of D2, the modern text-to-diagram language.",
   "version": "0.1.33",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/terrastruct/d2.git",
+    "url": "git+https://github.com/d2lang/d2.git",
     "directory": "d2js/js"
   },
   "bugs": {
-    "url": "https://github.com/terrastruct/d2/issues"
+    "url": "https://github.com/d2lang/d2/issues"
   },
-  "homepage": "https://github.com/terrastruct/d2/tree/master/d2js/js#readme",
+  "homepage": "https://github.com/d2lang/d2/tree/master/d2js/js#readme",
   "publishConfig": {
     "access": "public"
   },
@@ -36,7 +35,9 @@
   },
   "files": [
     "dist",
-    "index.d.ts"
+    "index.d.ts",
+    "LICENSE.txt",
+    "THIRD_PARTY_NOTICES.txt"
   ],
   "types": "./index.d.ts",
   "scripts": {
@@ -56,7 +57,7 @@
   ],
   "license": "MPL-2.0",
   "devDependencies": {
-    "bun": "latest"
+    "bun": "1.3.14"
   },
   "dependencies": {}
 }

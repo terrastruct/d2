@@ -6,7 +6,7 @@ import (
 	_ "embed"
 	"fmt"
 
-	"oss.terrastruct.com/d2/lib/compression"
+	"github.com/d2lang/d2/lib/compression"
 )
 
 //go:embed paper.txt.br

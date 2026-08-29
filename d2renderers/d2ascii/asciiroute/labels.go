@@ -4,7 +4,7 @@ import (
 	"math"
 	"strings"
 
-	"oss.terrastruct.com/d2/lib/geo"
+	"github.com/d2lang/d2/lib/geo"
 )
 
 // RouteLabelPosition holds calculated position for route label

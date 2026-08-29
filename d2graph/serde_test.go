@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"oss.terrastruct.com/d2/d2compiler"
-	"oss.terrastruct.com/d2/d2graph"
+	"github.com/d2lang/d2/d2compiler"
+	"github.com/d2lang/d2/d2graph"
 )
 
 func TestSerialization(t *testing.T) {
@@ -68,4 +68,21 @@ func TestCasingRegression(t *testing.T) {
 
 	_, ok = newG.Root.HasChild([]string{"UserCreatedTypeField"})
 	assert.True(t, ok)
+}
+
+func TestCompareSerializedCompatibility(t *testing.T) {
+	t.Parallel()
+
+	g, _, err := d2compiler.Compile("", strings.NewReader("a -> b"), nil)
+	assert.NoError(t, err)
+
+	b, err := d2graph.SerializeGraph(g)
+	assert.NoError(t, err)
+
+	var roundTrip d2graph.Graph
+	assert.NoError(t, d2graph.DeserializeGraph(b, &roundTrip))
+
+	assert.NoError(t, d2graph.CompareSerializedGraph(g, &roundTrip))
+	assert.NoError(t, d2graph.CompareSerializedObject(g.Root, roundTrip.Root))
+	assert.NoError(t, d2graph.CompareSerializedEdge(g.Edges[0], roundTrip.Edges[0]))
 }

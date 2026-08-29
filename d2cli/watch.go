@@ -21,16 +21,16 @@ import (
 	"github.com/coder/websocket/wsjson"
 	"github.com/fsnotify/fsnotify"
 
-	"oss.terrastruct.com/util-go/xbrowser"
+	"github.com/d2lang/util-go/xbrowser"
 
-	"oss.terrastruct.com/util-go/xhttp"
+	"github.com/d2lang/util-go/xhttp"
 
-	"oss.terrastruct.com/util-go/xmain"
+	"github.com/d2lang/util-go/xmain"
 
-	"oss.terrastruct.com/d2/d2plugin"
-	"oss.terrastruct.com/d2/d2renderers/d2fonts"
-	"oss.terrastruct.com/d2/d2renderers/d2svg"
-	"oss.terrastruct.com/d2/lib/png"
+	"github.com/d2lang/d2/d2plugin"
+	"github.com/d2lang/d2/d2renderers/d2fonts"
+	"github.com/d2lang/d2/d2renderers/d2svg"
+	"github.com/d2lang/d2/lib/png"
 )
 
 // Enabled with the build tag "dev".
@@ -52,7 +52,6 @@ type watcherOpts struct {
 	inputPath       string
 	outputPath      string
 	boardPath       string
-	pwd             string
 	bundle          bool
 	forceAppendix   bool
 	pw              png.Playwright

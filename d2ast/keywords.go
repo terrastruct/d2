@@ -1,6 +1,6 @@
 package d2ast
 
-import "oss.terrastruct.com/d2/lib/label"
+import "github.com/d2lang/d2/lib/label"
 
 // All reserved keywords. See init below.
 var ReservedKeywords map[string]struct{}

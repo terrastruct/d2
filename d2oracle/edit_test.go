@@ -7,17 +7,17 @@ import (
 	"strings"
 	"testing"
 
-	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
-	"oss.terrastruct.com/util-go/go2"
-	"oss.terrastruct.com/util-go/mapfs"
-	"oss.terrastruct.com/util-go/xjson"
+	"github.com/d2lang/util-go/assert"
+	"github.com/d2lang/util-go/diff"
+	"github.com/d2lang/util-go/go2"
+	"github.com/d2lang/util-go/mapfs"
+	"github.com/d2lang/util-go/xjson"
 
-	"oss.terrastruct.com/d2/d2compiler"
-	"oss.terrastruct.com/d2/d2format"
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2oracle"
-	"oss.terrastruct.com/d2/d2target"
+	"github.com/d2lang/d2/d2compiler"
+	"github.com/d2lang/d2/d2format"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2oracle"
+	"github.com/d2lang/d2/d2target"
 )
 
 // TODO: make assertions less specific
@@ -3257,6 +3257,33 @@ scenarios: {
 				assertions: tc.assertions,
 			}
 			et.run(t)
+		})
+	}
+}
+
+func TestReconnectEquivalentEdgePreservesIndex(t *testing.T) {
+	t.Parallel()
+
+	for _, arrow := range []string{"--", "<->"} {
+		arrow := arrow
+		t.Run(arrow, func(t *testing.T) {
+			t.Parallel()
+
+			text := fmt.Sprintf("a %s b: first\nb %s a: second\n(a %s b)[1].style.stroke: red\n", arrow, arrow, arrow)
+			g, _, err := d2compiler.Compile("test.d2", strings.NewReader(text), nil)
+			assert.Success(t, err)
+
+			newSrc := "a"
+			newDst := "b"
+			g, err = d2oracle.ReconnectEdge(g, nil, fmt.Sprintf("(b %s a)[1]", arrow), &newSrc, &newDst)
+			assert.Success(t, err)
+
+			expected := fmt.Sprintf("a %s b: first\na %s b: second\n(a %s b)[1].style.stroke: red\n", arrow, arrow, arrow)
+			assert.Equal(t, expected, d2format.Format(g.AST))
+			assert.Equal(t, 2, len(g.Edges))
+			assert.Equal(t, 1, g.Edges[1].Index)
+			assert.Equal(t, "second", g.Edges[1].Label.Value)
+			assert.Equal(t, "red", g.Edges[1].Style.Stroke.Value)
 		})
 	}
 }
@@ -8405,6 +8432,21 @@ c
 }`,
 		},
 		{
+			name: "reversed_equivalent_old_sibling_decrement",
+
+			text: `a -- b
+b -- a
+c
+`,
+			edge:   "(a -- b)[0]",
+			newDst: "c",
+
+			exp: `{
+  "(a -- b)[0]": "(a -- c)[0]",
+  "(b -- a)[1]": "(b -- a)[0]"
+}`,
+		},
+		{
 			name: "new_sibling_increment",
 
 			text: `a -> b
@@ -8417,6 +8459,52 @@ a -> b
 			exp: `{
   "(a -> b)[1]": "(a -> b)[2]",
   "(c -> b)[0]": "(a -> b)[1]"
+}`,
+		},
+		{
+			name: "reversed_equivalent_new_sibling_increment",
+
+			text: `a -- b
+c -- d
+b -- a
+`,
+			edge:   "(c -- d)[0]",
+			newSrc: "b",
+			newDst: "a",
+
+			exp: `{
+  "(b -- a)[1]": "(b -- a)[2]",
+  "(c -- d)[0]": "(b -- a)[1]"
+}`,
+		},
+		{
+			name: "reversed_equivalent_undirected_same_class",
+
+			text: `a -- b
+b -- a
+a -- b
+`,
+			edge:   "(b -- a)[1]",
+			newSrc: "a",
+			newDst: "b",
+
+			exp: `{
+  "(b -- a)[1]": "(a -- b)[1]"
+}`,
+		},
+		{
+			name: "reversed_equivalent_bidirectional_same_class",
+
+			text: `a <-> b
+b <-> a
+a <-> b
+`,
+			edge:   "(a <-> b)[0]",
+			newSrc: "b",
+			newDst: "a",
+
+			exp: `{
+  "(a <-> b)[0]": "(b <-> a)[0]"
 }`,
 		},
 		{

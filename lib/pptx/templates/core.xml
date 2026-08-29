@@ -4,12 +4,12 @@
     xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/"
     xmlns:dcmitype="http://purl.org/dc/dcmitype/"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <dc:title>{{.Title}}</dc:title>
-    <dc:subject>{{.Subject}}</dc:subject>
-    <dc:creator>{{.Creator}}</dc:creator>
+    <dc:title>{{xmlText .Title}}</dc:title>
+    <dc:subject>{{xmlText .Subject}}</dc:subject>
+    <dc:creator>{{xmlText .Creator}}</dc:creator>
     <cp:keywords />
-    <dc:description>{{.Description}}</dc:description>
-    <cp:lastModifiedBy>{{.LastModifiedBy}}</cp:lastModifiedBy>
+    <dc:description>{{xmlText .Description}}</dc:description>
+    <cp:lastModifiedBy>{{xmlText .LastModifiedBy}}</cp:lastModifiedBy>
     <cp:revision>1</cp:revision>
     <cp:category />
 </cp:coreProperties>

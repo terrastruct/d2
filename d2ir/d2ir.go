@@ -5,14 +5,16 @@ package d2ir
 import (
 	"errors"
 	"fmt"
+	"strconv"
 	"strings"
+	"unicode"
 
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/util-go/go2"
 
-	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2format"
-	"oss.terrastruct.com/d2/d2parser"
-	"oss.terrastruct.com/d2/d2target"
+	"github.com/d2lang/d2/d2ast"
+	"github.com/d2lang/d2/d2format"
+	"github.com/d2lang/d2/d2parser"
+	"github.com/d2lang/d2/d2target"
 )
 
 // Most errors returned by a node should be created with d2parser.Errorf
@@ -152,6 +154,7 @@ func (s *Scalar) Copy(newParent Node) Node {
 	s = &tmp
 
 	s.parent = newParent
+	s.Value = cloneASTScalar(s.Value)
 	return s
 }
 
@@ -172,6 +175,225 @@ type Map struct {
 	Edges     []*Edge  `json:"edges"`
 
 	globs []*globContext
+
+	// Fields and Edges retain source order. These indexes are derived lookup
+	// accelerators only; they never determine iteration order.
+	fieldIndex     map[fieldIndexKey]*Field
+	fieldIndexSize int
+	edgeIndex      map[string][]*Edge
+	edgeIndexSize  int
+
+	// structureVersion changes whenever a field or edge is added or removed in
+	// this map or any descendant. Lazy globs use it instead of recursively
+	// recounting the whole IR around every compiled key.
+	structureVersion uint64
+}
+
+type fieldIndexKey struct {
+	folded           string
+	unquotedReserved bool
+}
+
+func foldString(s string) string {
+	ascii := true
+	lower := false
+	for i := 0; i < len(s); i++ {
+		if s[i] >= 0x80 {
+			ascii = false
+			break
+		}
+		if s[i] >= 'a' && s[i] <= 'z' {
+			lower = true
+		}
+	}
+	if ascii {
+		if !lower {
+			return s
+		}
+		folded := []byte(s)
+		for i := range folded {
+			if folded[i] >= 'a' && folded[i] <= 'z' {
+				folded[i] -= 'a' - 'A'
+			}
+		}
+		return string(folded)
+	}
+
+	var b strings.Builder
+	b.Grow(len(s))
+	for _, r := range s {
+		min := r
+		for next := unicode.SimpleFold(r); next != r; next = unicode.SimpleFold(next) {
+			if next < min {
+				min = next
+			}
+		}
+		b.WriteRune(min)
+	}
+	return b.String()
+}
+
+func makeFieldIndexKey(s d2ast.String) fieldIndexKey {
+	name := s.ScalarString()
+	_, reserved := d2ast.ReservedKeywords[strings.ToLower(name)]
+	return fieldIndexKey{
+		folded:           foldString(name),
+		unquotedReserved: reserved && s.IsUnquoted(),
+	}
+}
+
+func (m *Map) ensureFieldIndex() {
+	if m.fieldIndex != nil && m.fieldIndexSize == len(m.Fields) {
+		return
+	}
+	m.fieldIndex = make(map[fieldIndexKey]*Field, len(m.Fields))
+	for _, f := range m.Fields {
+		if f == nil || f.Name == nil {
+			continue
+		}
+		key := makeFieldIndexKey(f.Name)
+		if _, exists := m.fieldIndex[key]; !exists {
+			m.fieldIndex[key] = f
+		}
+	}
+	m.fieldIndexSize = len(m.Fields)
+}
+
+func (m *Map) lookupField(name d2ast.String) *Field {
+	if m == nil || name == nil {
+		return nil
+	}
+	m.ensureFieldIndex()
+	return m.fieldIndex[makeFieldIndexKey(name)]
+}
+
+func appendEdgePathKey(b *strings.Builder, path []d2ast.String) {
+	b.WriteString(strconv.Itoa(len(path)))
+	b.WriteByte(':')
+	for _, part := range path {
+		folded := foldString(part.ScalarString())
+		b.WriteString(strconv.Itoa(len(folded)))
+		b.WriteByte(':')
+		b.WriteString(folded)
+	}
+}
+
+func makeEdgeIndexKey(eid *EdgeID) string {
+	var src, dst strings.Builder
+	appendEdgePathKey(&src, eid.SrcPath)
+	if eid.SrcArrow {
+		src.WriteByte('*')
+	} else {
+		src.WriteByte('-')
+	}
+	appendEdgePathKey(&dst, eid.DstPath)
+	if eid.DstArrow {
+		dst.WriteByte('*')
+	} else {
+		dst.WriteByte('-')
+	}
+
+	first, second := src.String(), dst.String()
+	if first > second {
+		first, second = second, first
+	}
+	var b strings.Builder
+	b.WriteString(strconv.Itoa(len(first)))
+	b.WriteByte(':')
+	b.WriteString(first)
+	b.WriteString(strconv.Itoa(len(second)))
+	b.WriteByte(':')
+	b.WriteString(second)
+	return b.String()
+}
+
+func (m *Map) ensureEdgeIndex() {
+	if m.edgeIndex != nil && m.edgeIndexSize == len(m.Edges) {
+		return
+	}
+	m.edgeIndex = make(map[string][]*Edge, len(m.Edges))
+	for _, e := range m.Edges {
+		if e == nil || e.ID == nil {
+			continue
+		}
+		key := makeEdgeIndexKey(e.ID)
+		m.edgeIndex[key] = append(m.edgeIndex[key], e)
+	}
+	m.edgeIndexSize = len(m.Edges)
+}
+
+func (m *Map) markStructureChanged() {
+	for current := m; current != nil; current = ParentMap(current) {
+		current.structureVersion++
+	}
+}
+
+func (m *Map) appendField(f *Field) {
+	oldLen := len(m.Fields)
+	m.Fields = append(m.Fields, f)
+	if m.fieldIndex != nil && m.fieldIndexSize == oldLen && f != nil && f.Name != nil {
+		key := makeFieldIndexKey(f.Name)
+		if _, exists := m.fieldIndex[key]; !exists {
+			m.fieldIndex[key] = f
+		}
+		m.fieldIndexSize++
+	} else {
+		m.fieldIndex = nil
+		m.fieldIndexSize = 0
+	}
+	m.markStructureChanged()
+}
+
+func (m *Map) insertField(index int, f *Field) {
+	oldLen := len(m.Fields)
+	m.Fields = append(m.Fields, nil)
+	copy(m.Fields[index+1:], m.Fields[index:])
+	m.Fields[index] = f
+	if m.fieldIndex != nil && m.fieldIndexSize == oldLen && f != nil && f.Name != nil {
+		key := makeFieldIndexKey(f.Name)
+		if _, exists := m.fieldIndex[key]; !exists {
+			m.fieldIndex[key] = f
+		}
+		m.fieldIndexSize++
+	} else {
+		m.fieldIndex = nil
+		m.fieldIndexSize = 0
+	}
+	m.markStructureChanged()
+}
+
+func (m *Map) removeField(index int) *Field {
+	f := m.Fields[index]
+	copy(m.Fields[index:], m.Fields[index+1:])
+	m.Fields = m.Fields[:len(m.Fields)-1]
+	m.fieldIndex = nil
+	m.fieldIndexSize = 0
+	m.markStructureChanged()
+	return f
+}
+
+func (m *Map) appendEdge(e *Edge) {
+	oldLen := len(m.Edges)
+	m.Edges = append(m.Edges, e)
+	if m.edgeIndex != nil && m.edgeIndexSize == oldLen && e != nil && e.ID != nil {
+		key := makeEdgeIndexKey(e.ID)
+		m.edgeIndex[key] = append(m.edgeIndex[key], e)
+		m.edgeIndexSize++
+	} else {
+		m.edgeIndex = nil
+		m.edgeIndexSize = 0
+	}
+	m.markStructureChanged()
+}
+
+func (m *Map) removeEdge(index int) *Edge {
+	e := m.Edges[index]
+	copy(m.Edges[index:], m.Edges[index+1:])
+	m.Edges = m.Edges[:len(m.Edges)-1]
+	m.edgeIndex = nil
+	m.edgeIndexSize = 0
+	m.markStructureChanged()
+	return e
 }
 
 func (m *Map) initRoot() {
@@ -202,6 +424,11 @@ func (m *Map) SetImportAST(node d2ast.Node) {
 func (m *Map) Copy(newParent Node) Node {
 	tmp := *m
 	m = &tmp
+	m.fieldIndex = nil
+	m.fieldIndexSize = 0
+	m.edgeIndex = nil
+	m.edgeIndexSize = 0
+	m.structureVersion = 0
 
 	m.parent = newParent
 	pfields := m.Fields
@@ -225,21 +452,65 @@ func (m *Map) CopyBase(newParent Node) *Map {
 		return (&Map{}).Copy(newParent).(*Map)
 	}
 
-	layers := m.DeleteField("layers")
-	scenarios := m.DeleteField("scenarios")
-	steps := m.DeleteField("steps")
+	// The historical delete-and-restore implementation also canonicalized board
+	// fields to layers, scenarios, steps at the end of the source map. Preserve
+	// that observable ordering without reporting a structural mutation: the
+	// field set is unchanged, and compile generations are for glob membership.
+	baseFields := make([]*Field, 0, len(m.Fields))
+	var layers, scenarios, steps *Field
+	for _, field := range m.Fields {
+		if field.Name != nil {
+			switch {
+			case layers == nil && strings.EqualFold(field.Name.ScalarString(), "layers"):
+				layers = field
+				continue
+			case scenarios == nil && strings.EqualFold(field.Name.ScalarString(), "scenarios"):
+				scenarios = field
+				continue
+			case steps == nil && strings.EqualFold(field.Name.ScalarString(), "steps"):
+				steps = field
+				continue
+			}
+		}
+		baseFields = append(baseFields, field)
+	}
+	for _, board := range []*Field{layers, scenarios, steps} {
+		if board != nil {
+			m.deleteEdgesForFieldReferences(board)
+		}
+	}
+	base := *m
+	base.Fields = baseFields
+	copy := base.Copy(newParent).(*Map)
+	m.Fields = append(m.Fields[:0], baseFields...)
+	for _, board := range []*Field{layers, scenarios, steps} {
+		if board != nil {
+			m.Fields = append(m.Fields, board)
+		}
+	}
+	m.fieldIndex = nil
+	m.fieldIndexSize = 0
+	return copy
+}
 
-	m2 := m.Copy(newParent).(*Map)
-	if layers != nil {
-		m.Fields = append(m.Fields, layers)
+func (m *Map) deleteEdgesForFieldReferences(f *Field) {
+	for _, fr := range f.References {
+		currM := m
+		for currM != nil {
+			for _, edge := range currM.Edges {
+				for _, er := range edge.References {
+					if er.Context_ == fr.Context_ {
+						currM.DeleteEdge(edge.ID)
+						break
+					}
+				}
+			}
+			if NodeBoardKind(currM) != "" {
+				break
+			}
+			currM = ParentMap(currM)
+		}
 	}
-	if scenarios != nil {
-		m.Fields = append(m.Fields, scenarios)
-	}
-	if steps != nil {
-		m.Fields = append(m.Fields, steps)
-	}
-	return m2
 }
 
 // Root reports whether the Map is the root of the D2 tree.
@@ -412,6 +683,10 @@ func (eid *EdgeID) Copy() *EdgeID {
 
 	eid.SrcPath = append([]d2ast.String(nil), eid.SrcPath...)
 	eid.DstPath = append([]d2ast.String(nil), eid.DstPath...)
+	if eid.Index != nil {
+		index := *eid.Index
+		eid.Index = &index
+	}
 	return eid
 }
 
@@ -422,30 +697,29 @@ func (eid *EdgeID) Match(eid2 *EdgeID) bool {
 		}
 	}
 
-	if len(eid.SrcPath) != len(eid2.SrcPath) {
+	direct := edgePathEqual(eid.SrcPath, eid2.SrcPath) &&
+		eid.SrcArrow == eid2.SrcArrow &&
+		edgePathEqual(eid.DstPath, eid2.DstPath) &&
+		eid.DstArrow == eid2.DstArrow
+	if direct {
+		return true
+	}
+
+	return edgePathEqual(eid.SrcPath, eid2.DstPath) &&
+		eid.SrcArrow == eid2.DstArrow &&
+		edgePathEqual(eid.DstPath, eid2.SrcPath) &&
+		eid.DstArrow == eid2.SrcArrow
+}
+
+func edgePathEqual(p1, p2 []d2ast.String) bool {
+	if len(p1) != len(p2) {
 		return false
 	}
-	if eid.SrcArrow != eid2.SrcArrow {
-		return false
-	}
-	for i, s := range eid.SrcPath {
-		if !strings.EqualFold(s.ScalarString(), eid2.SrcPath[i].ScalarString()) {
+	for i, s := range p1 {
+		if !strings.EqualFold(s.ScalarString(), p2[i].ScalarString()) {
 			return false
 		}
 	}
-
-	if len(eid.DstPath) != len(eid2.DstPath) {
-		return false
-	}
-	if eid.DstArrow != eid2.DstArrow {
-		return false
-	}
-	for i, s := range eid.DstPath {
-		if !strings.EqualFold(s.ScalarString(), eid2.DstPath[i].ScalarString()) {
-			return false
-		}
-	}
-
 	return true
 }
 
@@ -515,6 +789,9 @@ func (e *Edge) Copy(newParent Node) Node {
 	e = &tmp
 
 	e.parent = newParent
+	if e.ID != nil {
+		e.ID = e.ID.Copy()
+	}
 	e.References = append([]*EdgeReference(nil), e.References...)
 	if e.Primary_ != nil {
 		e.Primary_ = e.Primary_.Copy(e).(*Scalar)
@@ -573,6 +850,26 @@ type FieldReference struct {
 	DueToLazyGlob_ bool        `json:"due_to_lazy_glob"`
 }
 
+// appendReference records a source reference once. Lazy glob rules are
+// reevaluated as the IR grows, but replaying the same rule against the same
+// field does not create a new source location. Keeping one reference per
+// (context, key-path element) prevents glob evaluation order from inflating
+// reference lists quadratically while preserving every distinct source.
+func (f *Field) appendReference(ref *FieldReference) {
+	if ref.DueToLazyGlob_ {
+		for _, existing := range f.References {
+			if sameReferenceContext(existing.Context_, ref.Context_) &&
+				existing.KeyPath == ref.KeyPath &&
+				existing.String == ref.String &&
+				existing.DueToGlob_ == ref.DueToGlob_ &&
+				existing.DueToLazyGlob_ == ref.DueToLazyGlob_ {
+				return
+			}
+		}
+	}
+	f.References = append(f.References, ref)
+}
+
 // Primary returns true if the Value in Context.Key.Value corresponds to the Field
 // represented by String.
 func (fr *FieldReference) Primary() bool {
@@ -613,6 +910,25 @@ type EdgeReference struct {
 	Context_       *RefContext `json:"context"`
 	DueToGlob_     bool        `json:"due_to_glob"`
 	DueToLazyGlob_ bool        `json:"due_to_lazy_glob"`
+}
+
+func (e *Edge) appendReference(ref *EdgeReference) {
+	if ref.DueToLazyGlob_ {
+		for _, existing := range e.References {
+			if sameReferenceContext(existing.Context_, ref.Context_) &&
+				existing.DueToGlob_ == ref.DueToGlob_ &&
+				existing.DueToLazyGlob_ == ref.DueToLazyGlob_ {
+				return
+			}
+		}
+	}
+	e.References = append(e.References, ref)
+}
+
+func sameReferenceContext(a, b *RefContext) bool {
+	return a == b || a != nil && b != nil &&
+		a.Key == b.Key && a.Edge == b.Edge &&
+		a.Scope == b.Scope && a.ScopeMap == b.ScopeMap && a.ScopeAST == b.ScopeAST
 }
 
 func (er *EdgeReference) AST() d2ast.Node {
@@ -786,10 +1102,13 @@ func (m *Map) GetField(ida ...d2ast.String) *Field {
 			return nil
 		}
 	}
-	return m.getField(ida)
+	return m.getFieldLinear(ida)
 }
 
-func (m *Map) getField(ida []d2ast.String) *Field {
+// getFieldLinear keeps the exported lookup safe for maps assembled or mutated
+// directly through the public Fields slice. Compiler-owned lookups use the
+// derived index below while the IR is being built single-threadedly.
+func (m *Map) getFieldLinear(ida []d2ast.String) *Field {
 	if len(ida) == 0 {
 		return nil
 	}
@@ -802,29 +1121,54 @@ func (m *Map) getField(ida []d2ast.String) *Field {
 	}
 
 	for _, f := range m.Fields {
-		if f.Name == nil {
+		if f == nil || f.Name == nil || !strings.EqualFold(f.Name.ScalarString(), s.ScalarString()) {
 			continue
 		}
-		if !strings.EqualFold(f.Name.ScalarString(), s.ScalarString()) {
+		if _, reserved := d2ast.ReservedKeywords[strings.ToLower(s.ScalarString())]; reserved &&
+			f.Name.IsUnquoted() != s.IsUnquoted() {
 			continue
-		}
-		if _, isReserved := d2ast.ReservedKeywords[strings.ToLower(s.ScalarString())]; isReserved {
-			if f.Name.IsUnquoted() != s.IsUnquoted() {
-				continue
-			}
 		}
 		if len(rest) == 0 {
 			return f
 		}
 		if f.Map() != nil {
-			return f.Map().getField(rest)
+			return f.Map().getFieldLinear(rest)
 		}
+		continue
 	}
 	return nil
 }
 
+func (m *Map) getFieldIndexed(ida ...d2ast.String) *Field {
+	for len(ida) > 0 && ida[0].ScalarString() == "_" && ida[0].IsUnquoted() {
+		m = ParentMap(m)
+		if m == nil {
+			return nil
+		}
+	}
+	if len(ida) == 0 {
+		return nil
+	}
+	f := m.lookupField(ida[0])
+	if f == nil || len(ida) == 1 {
+		return f
+	}
+	if f.Map() == nil {
+		return nil
+	}
+	return f.Map().getFieldIndexed(ida[1:]...)
+}
+
 // EnsureField is a bit of a misnomer. It's more of a Query/Ensure combination function at this point.
 func (m *Map) EnsureField(kp *d2ast.KeyPath, refctx *RefContext, create bool, c *compiler) ([]*Field, error) {
+	return m.ensureFieldMode(kp, refctx, create, c, false)
+}
+
+func (m *Map) ensureFieldIndexed(kp *d2ast.KeyPath, refctx *RefContext, create bool, c *compiler) ([]*Field, error) {
+	return m.ensureFieldMode(kp, refctx, create, c, true)
+}
+
+func (m *Map) ensureFieldMode(kp *d2ast.KeyPath, refctx *RefContext, create bool, c *compiler, indexed bool) ([]*Field, error) {
 	i := 0
 	for kp.Path[i].Unbox().ScalarString() == "_" && kp.Path[i].Unbox().IsUnquoted() {
 		m = ParentMap(m)
@@ -843,19 +1187,25 @@ func (m *Map) EnsureField(kp *d2ast.KeyPath, refctx *RefContext, create bool, c 
 	}
 
 	var fa []*Field
-	err := m.ensureField(i, kp, refctx, create, gctx, c, &fa)
+	var created []*Field
+	err := m.ensureField(i, kp, refctx, create, gctx, c, indexed, &fa, &created)
+	if c != nil && c.applyingLazyWorklist && len(c.globRefContextStack) > 0 {
+		if len(created) > 0 {
+			c.enqueueLazyGlobFields(fa...)
+		}
+	}
 	if len(fa) > 0 && c != nil && len(c.globRefContextStack) == 0 {
-		for _, gctx2 := range c.globContexts() {
-			old := c.lazyGlobBeingApplied
-			c.lazyGlobBeingApplied = true
-			c.compileKey(gctx2.refctx)
-			c.lazyGlobBeingApplied = old
+		if len(created) > 0 {
+			c.enqueueLazyPostTargets(fa...)
+			c.applyLazyGlobs(fa)
+		} else {
+			c.applyLazyGlobs(nil)
 		}
 	}
 	return fa, err
 }
 
-func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create bool, gctx *globContext, c *compiler, fa *[]*Field) error {
+func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create bool, gctx *globContext, c *compiler, indexed bool, fa, created *[]*Field) error {
 	filter := func(f *Field, passthrough bool) bool {
 		if gctx != nil {
 			var ks string
@@ -893,8 +1243,16 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 
 	us, ok := kp.Path[i].Unbox().(*d2ast.UnquotedString)
 	if ok && us.Pattern != nil {
-		fa2, ok := m.multiGlob(us.Pattern)
-		if ok {
+		var fa2 []*Field
+		var multi bool
+		if c != nil && c.lazyGlobTarget != nil && gctx != nil &&
+			(d2ast.IsDoubleGlob(us.Pattern) || d2ast.IsTripleGlob(us.Pattern)) {
+			fa2 = m.multiGlobMatchesToward(c.lazyGlobTarget, us.Pattern)
+			multi = true
+		} else {
+			fa2, multi = m.multiGlob(us.Pattern)
+		}
+		if multi {
 			if i == len(kp.Path)-1 {
 				faAppend(fa2...)
 			} else {
@@ -907,7 +1265,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 							parent: f,
 						}
 					}
-					err := f.Map().ensureField(i+1, kp, refctx, create, gctx, c, fa)
+					err := f.Map().ensureField(i+1, kp, refctx, create, gctx, c, indexed, fa, created)
 					if err != nil {
 						return err
 					}
@@ -915,7 +1273,15 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 			}
 			return nil
 		}
-		for _, f := range m.Fields {
+		fields := m.Fields
+		if c != nil && c.lazyGlobTarget != nil && gctx != nil {
+			if candidate := m.directChildToward(c.lazyGlobTarget); candidate != nil {
+				fields = []*Field{candidate}
+			} else {
+				fields = nil
+			}
+		}
+		for _, f := range fields {
 			if f.Name == nil {
 				continue
 			}
@@ -931,7 +1297,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 							parent: f,
 						}
 					}
-					err := f.Map().ensureField(i+1, kp, refctx, create, gctx, c, fa)
+					err := f.Map().ensureField(i+1, kp, refctx, create, gctx, c, indexed, fa, created)
 					if err != nil {
 						return err
 					}
@@ -963,19 +1329,16 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 		return d2parser.Errorf(kp.Path[i].Unbox(), "%s must be declared at a board root scope", headString)
 	}
 
-	for _, f := range m.Fields {
-		if !(f.Name != nil && strings.EqualFold(f.Name.ScalarString(), head.ScalarString())) {
-			continue
-		}
-		if _, isReserved := d2ast.ReservedKeywords[strings.ToLower(f.Name.ScalarString())]; isReserved {
-			if f.Name.IsUnquoted() != head.IsUnquoted() {
-				continue
-			}
-		}
-
+	var existing *Field
+	if indexed {
+		existing = m.lookupField(head)
+	} else {
+		existing = m.getFieldLinear([]d2ast.String{head})
+	}
+	if f := existing; f != nil {
 		// Don't add references for fake common KeyPath from trimCommon in CreateEdge.
 		if refctx != nil {
-			f.References = append(f.References, &FieldReference{
+			f.appendReference(&FieldReference{
 				String:         kp.Path[i].Unbox(),
 				KeyPath:        kp,
 				Context_:       refctx,
@@ -999,7 +1362,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 				parent: f,
 			}
 		}
-		return f.Map().ensureField(i+1, kp, refctx, create, gctx, c, fa)
+		return f.Map().ensureField(i+1, kp, refctx, create, gctx, c, indexed, fa, created)
 	}
 
 	if !create {
@@ -1032,7 +1395,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 	}()
 	// Don't add references for fake common KeyPath from trimCommon in CreateEdge.
 	if refctx != nil {
-		f.References = append(f.References, &FieldReference{
+		f.appendReference(&FieldReference{
 			String:         kp.Path[i].Unbox(),
 			KeyPath:        kp,
 			Context_:       refctx,
@@ -1043,7 +1406,8 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 	if !filter(f, true) {
 		return nil
 	}
-	m.Fields = append(m.Fields, f)
+	m.appendField(f)
+	*created = append(*created, f)
 	if i+1 == len(kp.Path) {
 		faAppend(f)
 		return nil
@@ -1053,7 +1417,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 			parent: f,
 		}
 	}
-	return f.Map().ensureField(i+1, kp, refctx, create, gctx, c, fa)
+	return f.Map().ensureField(i+1, kp, refctx, create, gctx, c, indexed, fa, created)
 }
 
 func (m *Map) DeleteEdge(eid *EdgeID) *Edge {
@@ -1079,8 +1443,7 @@ func (m *Map) DeleteEdge(eid *EdgeID) *Edge {
 
 	for i, e := range resolvedM.Edges {
 		if e.ID.Match(resolvedEID) {
-			resolvedM.Edges = append(resolvedM.Edges[:i], resolvedM.Edges[i+1:]...)
-			return e
+			return resolvedM.removeEdge(i)
 		}
 	}
 	return nil
@@ -1099,24 +1462,8 @@ func (m *Map) DeleteField(ida ...string) *Field {
 			continue
 		}
 		if len(rest) == 0 {
-			for _, fr := range f.References {
-				currM := m
-				for currM != nil {
-					for _, e := range currM.Edges {
-						for _, er := range e.References {
-							if er.Context_ == fr.Context_ {
-								currM.DeleteEdge(e.ID)
-								break
-							}
-						}
-					}
-					if NodeBoardKind(currM) != "" {
-						break
-					}
-					currM = ParentMap(currM)
-				}
-			}
-			m.Fields = append(m.Fields[:i], m.Fields[i+1:]...)
+			m.deleteEdgesForFieldReferences(f)
+			m.removeField(i)
 
 			// If a field was deleted from a keyword-holder keyword and that holder is empty,
 			// then that holder becomes meaningless and should be deleted too
@@ -1126,7 +1473,7 @@ func (m *Map) DeleteField(ida ...string) *Field {
 					keywordHolderParentMap := ParentMap(parent)
 					for i, f := range keywordHolderParentMap.Fields {
 						if f.Name.ScalarString() == keywordHolder && f.Name.IsUnquoted() {
-							keywordHolderParentMap.Fields = append(keywordHolderParentMap.Fields[:i], keywordHolderParentMap.Fields[i+1:]...)
+							keywordHolderParentMap.removeField(i)
 							break
 						}
 					}
@@ -1143,13 +1490,7 @@ func (m *Map) DeleteField(ida ...string) *Field {
 
 func (m *Map) GetEdges(eid *EdgeID, refctx *RefContext, c *compiler) []*Edge {
 	if refctx != nil {
-		var gctx *globContext
-		if refctx.Key.HasGlob() && c != nil {
-			gctx = c.ensureGlobContext(refctx)
-		}
-		var ea []*Edge
-		m.getEdges(eid, refctx, gctx, &ea)
-		return ea
+		return m.getEdgesMode(eid, refctx, c, false)
 	}
 
 	eid, m, common, err := eid.resolve(m)
@@ -1176,7 +1517,44 @@ func (m *Map) GetEdges(eid *EdgeID, refctx *RefContext, c *compiler) []*Edge {
 	return ea
 }
 
-func (m *Map) getEdges(eid *EdgeID, refctx *RefContext, gctx *globContext, ea *[]*Edge) error {
+func (m *Map) getEdgesForCompile(eid *EdgeID, refctx *RefContext, c *compiler) []*Edge {
+	return m.getEdgesMode(eid, refctx, c, true)
+}
+
+func (m *Map) getEdgesMode(eid *EdgeID, refctx *RefContext, c *compiler, indexed bool) []*Edge {
+	var gctx *globContext
+	if refctx.Key.HasGlob() && c != nil {
+		gctx = c.ensureGlobContext(refctx)
+	}
+	var ea []*Edge
+	m.getEdges(eid, refctx, gctx, indexed, &ea)
+	return ea
+}
+
+func (m *Map) getEdgesIndexed(eid *EdgeID) []*Edge {
+	eid, m, common, err := eid.resolve(m)
+	if err != nil {
+		return nil
+	}
+	if len(common) > 0 {
+		f := m.getFieldIndexed(common...)
+		if f == nil || f.Map() == nil {
+			return nil
+		}
+		return f.Map().getEdgesIndexed(eid)
+	}
+
+	m.ensureEdgeIndex()
+	var edges []*Edge
+	for _, edge := range m.edgeIndex[makeEdgeIndexKey(eid)] {
+		if edge.ID.Match(eid) {
+			edges = append(edges, edge)
+		}
+	}
+	return edges
+}
+
+func (m *Map) getEdges(eid *EdgeID, refctx *RefContext, gctx *globContext, indexed bool, ea *[]*Edge) error {
 	eid, m, common, err := eid.resolve(m)
 	if err != nil {
 		return err
@@ -1194,7 +1572,7 @@ func (m *Map) getEdges(eid *EdgeID, refctx *RefContext, gctx *globContext, ea *[
 				}
 			}
 		}
-		fa, err := m.EnsureField(commonKP, nil, false, nil)
+		fa, err := m.ensureFieldMode(commonKP, nil, false, nil, indexed)
 		if err != nil {
 			return nil
 		}
@@ -1207,7 +1585,7 @@ func (m *Map) getEdges(eid *EdgeID, refctx *RefContext, gctx *globContext, ea *[
 					parent: f,
 				}
 			}
-			err = f.Map().getEdges(eid, refctx, gctx, ea)
+			err = f.Map().getEdges(eid, refctx, gctx, indexed, ea)
 			if err != nil {
 				return err
 			}
@@ -1215,11 +1593,11 @@ func (m *Map) getEdges(eid *EdgeID, refctx *RefContext, gctx *globContext, ea *[
 		return nil
 	}
 
-	srcFA, err := refctx.ScopeMap.EnsureField(refctx.Edge.Src, nil, false, nil)
+	srcFA, err := refctx.ScopeMap.ensureFieldMode(refctx.Edge.Src, nil, false, nil, indexed)
 	if err != nil {
 		return err
 	}
-	dstFA, err := refctx.ScopeMap.EnsureField(refctx.Edge.Dst, nil, false, nil)
+	dstFA, err := refctx.ScopeMap.ensureFieldMode(refctx.Edge.Dst, nil, false, nil, indexed)
 	if err != nil {
 		return err
 	}
@@ -1230,7 +1608,12 @@ func (m *Map) getEdges(eid *EdgeID, refctx *RefContext, gctx *globContext, ea *[
 			eid2.SrcPath = RelIDA(m, src)
 			eid2.DstPath = RelIDA(m, dst)
 
-			ea2 := m.GetEdges(eid2, nil, nil)
+			var ea2 []*Edge
+			if indexed {
+				ea2 = m.getEdgesIndexed(eid2)
+			} else {
+				ea2 = m.GetEdges(eid2, nil, nil)
+			}
 			for _, e := range ea2 {
 				if gctx != nil {
 					var ks string
@@ -1252,12 +1635,20 @@ func (m *Map) getEdges(eid *EdgeID, refctx *RefContext, gctx *globContext, ea *[
 }
 
 func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext, c *compiler) ([]*Edge, error) {
+	return m.createEdgeMode(eid, refctx, c, false)
+}
+
+func (m *Map) createEdgeForCompile(eid *EdgeID, refctx *RefContext, c *compiler) ([]*Edge, error) {
+	return m.createEdgeMode(eid, refctx, c, true)
+}
+
+func (m *Map) createEdgeMode(eid *EdgeID, refctx *RefContext, c *compiler, indexed bool) ([]*Edge, error) {
 	var ea []*Edge
 	var gctx *globContext
 	if refctx != nil && refctx.Key.HasGlob() && c != nil {
 		gctx = c.ensureGlobContext(refctx)
 	}
-	err := m.createEdge(eid, refctx, gctx, c, &ea)
+	err := m.createEdge(eid, refctx, gctx, c, indexed, &ea)
 	if len(ea) > 0 && c != nil && len(c.globRefContextStack) == 0 {
 		for _, gctx2 := range c.globContexts() {
 			old := c.lazyGlobBeingApplied
@@ -1269,7 +1660,7 @@ func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext, c *compiler) ([]*Edge,
 	return ea, err
 }
 
-func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, gctx *globContext, c *compiler, ea *[]*Edge) error {
+func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, gctx *globContext, c *compiler, indexed bool, ea *[]*Edge) error {
 	if ParentEdge(m) != nil {
 		return d2parser.Errorf(refctx.Edge, "cannot create edge inside edge")
 	}
@@ -1290,7 +1681,7 @@ func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, gctx *globContext, c *
 				}
 			}
 		}
-		fa, err := m.EnsureField(commonKP, nil, true, c)
+		fa, err := m.ensureFieldMode(commonKP, nil, true, c, indexed)
 		if err != nil {
 			return err
 		}
@@ -1303,7 +1694,7 @@ func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, gctx *globContext, c *
 					parent: f,
 				}
 			}
-			err = f.Map().createEdge(eid, refctx, gctx, c, ea)
+			err = f.Map().createEdge(eid, refctx, gctx, c, indexed, ea)
 			if err != nil {
 				return err
 			}
@@ -1329,11 +1720,11 @@ func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, gctx *globContext, c *
 		return d2parser.Errorf(refctx.Edge.Dst.Path[ij].Unbox(), "edge with board keyword alone doesn't make sense")
 	}
 
-	srcFA, err := refctx.ScopeMap.EnsureField(refctx.Edge.Src, refctx, true, c)
+	srcFA, err := refctx.ScopeMap.ensureFieldMode(refctx.Edge.Src, refctx, true, c, indexed)
 	if err != nil {
 		return err
 	}
-	dstFA, err := refctx.ScopeMap.EnsureField(refctx.Edge.Dst, refctx, true, c)
+	dstFA, err := refctx.ScopeMap.ensureFieldMode(refctx.Edge.Dst, refctx, true, c, indexed)
 	if err != nil {
 		return err
 	}
@@ -1368,7 +1759,7 @@ func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, gctx *globContext, c *
 			eid2.SrcPath = RelIDA(m, src)
 			eid2.DstPath = RelIDA(m, dst)
 
-			es, err := m.createEdge2(eid2, refctx, gctx, c, src, dst)
+			es, err := m.createEdge2(eid2, refctx, gctx, c, indexed, src, dst)
 			if err != nil {
 				return err
 			}
@@ -1380,7 +1771,7 @@ func (m *Map) createEdge(eid *EdgeID, refctx *RefContext, gctx *globContext, c *
 	return nil
 }
 
-func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, c *compiler, src, dst *Field) ([]*Edge, error) {
+func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, c *compiler, indexed bool, src, dst *Field) ([]*Edge, error) {
 	if NodeBoardKind(src) != "" {
 		return nil, d2parser.Errorf(refctx.Edge.Src, "cannot create edges between boards")
 	}
@@ -1407,7 +1798,7 @@ func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, c 
 				}
 			}
 		}
-		fa, err := m.EnsureField(commonKP, nil, true, c)
+		fa, err := m.ensureFieldMode(commonKP, nil, true, c, indexed)
 		if err != nil {
 			return nil, err
 		}
@@ -1421,7 +1812,7 @@ func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, c 
 					parent: f,
 				}
 			}
-			edges2, err := f.Map().createEdge2(eid, refctx, gctx, c, src, dst)
+			edges2, err := f.Map().createEdge2(eid, refctx, gctx, c, indexed, src, dst)
 			if err != nil {
 				return nil, err
 			}
@@ -1432,7 +1823,12 @@ func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, c 
 
 	eid.Index = nil
 	eid.Glob = true
-	ea := m.GetEdges(eid, nil, nil)
+	var ea []*Edge
+	if indexed {
+		ea = m.getEdgesIndexed(eid)
+	} else {
+		ea = m.GetEdges(eid, nil, nil)
+	}
 	index := len(ea)
 	eid.Index = &index
 	eid.Glob = false
@@ -1463,7 +1859,7 @@ func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, c 
 		gctx.appliedEdges[ks] = struct{}{}
 	}
 
-	m.Edges = append(m.Edges, e)
+	m.appendEdge(e)
 
 	return []*Edge{e}, nil
 }
@@ -1577,7 +1973,7 @@ func (m *Map) appendFieldReferences(i int, kp *d2ast.KeyPath, refctx *RefContext
 		return
 	}
 
-	f.References = append(f.References, &FieldReference{
+	f.appendReference(&FieldReference{
 		String:         sb.Unbox(),
 		KeyPath:        kp,
 		Context_:       refctx,

@@ -6,6 +6,6 @@ describe("D2 CJS Integration", () => {
     const d2 = new D2();
     const result = await d2.compile("x -> y");
     expect(result.diagram).toBeDefined();
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 });

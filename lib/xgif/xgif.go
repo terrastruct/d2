@@ -19,12 +19,13 @@ import (
 
 	"golang.org/x/sync/errgroup"
 
-	d2png "oss.terrastruct.com/d2/lib/png"
+	"github.com/d2lang/d2/internal/testutil"
+	d2png "github.com/d2lang/d2/lib/png"
 
 	"github.com/ericpauley/go-quantize/quantize"
-	"github.com/playwright-community/playwright-go"
+	"github.com/mxschmitt/playwright-go"
 
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/util-go/go2"
 )
 
 const INFINITE_LOOP = 0
@@ -204,37 +205,12 @@ func findWhiteIndex(palette color.Palette) int {
 	return nearestIndex
 }
 
+// Validate checks the frame count, loop behavior, dimensions, and interval of
+// gifBytes.
+//
+// Deprecated: Validate is a test-only helper specific to D2's output and will
+// be removed after one compatibility release. Downstream tests should decode
+// the GIF and validate the properties they rely on directly.
 func Validate(gifBytes []byte, nFrames int, intervalMS int) error {
-	anim, err := gif.DecodeAll(bytes.NewBuffer(gifBytes))
-	if err != nil {
-		return err
-	}
-
-	if nFrames > 1 && anim.LoopCount != INFINITE_LOOP {
-		return fmt.Errorf("expected infinite loop, got=%d", anim.LoopCount)
-	} else if nFrames == 1 && anim.LoopCount != -1 {
-		return fmt.Errorf("wrong loop count for single frame gif, got=%d", anim.LoopCount)
-	}
-
-	if len(anim.Image) != nFrames {
-		return fmt.Errorf("expected %d frames, got=%d", nFrames, len(anim.Image))
-	}
-
-	interval := intervalMS / 10
-	width, height := anim.Config.Width, anim.Config.Height
-	for i, frame := range anim.Image {
-		w := frame.Bounds().Dx()
-		if w != width {
-			return fmt.Errorf("expected all frames to have the same width=%d, got=%d at frame=%d", width, w, i)
-		}
-		h := frame.Bounds().Dy()
-		if h != height {
-			return fmt.Errorf("expected all frames to have the same height=%d, got=%d at frame=%d", height, h, i)
-		}
-		if anim.Delay[i] != interval {
-			return fmt.Errorf("expected interval between frames to be %d, got=%d at frame=%d", interval, anim.Delay[i], i)
-		}
-	}
-
-	return nil
+	return testutil.ValidateGIF(gifBytes, nFrames, intervalMS)
 }

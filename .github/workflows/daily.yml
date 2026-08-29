@@ -1,71 +1,28 @@
 name: daily
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '42 0 * * *' # daily at 00:42
+  # Keep daily CI available for manual verification while scheduled runs are paused.
+permissions:
+  actions: read
+  contents: read
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
 
 jobs:
-  npm-nightly:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Needed for git history and version tags
-
-      - name: Check for changes
-        id: check_changes
-        run: |
-          if [ $(git rev-list --count --since="24 hours ago" HEAD) -gt 0 ]; then
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-            echo "Found changes in the last 24 hours, proceeding to publish d2js nightly"
-          else
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-            echo "No changes in the last 24 hours, skipping d2js nightly publish"
-          fi
-
-      - uses: actions/setup-go@v4
-        if: steps.check_changes.outputs.has_changes == 'true'
-        with:
-          go-version-file: ./go.mod
-          cache: true
-
-      - name: Install binaryen for wasm-opt
-        if: steps.check_changes.outputs.has_changes == 'true'
-        run: |
-          # Install newer version of binaryen from GitHub releases
-          BINARYEN_VERSION="version_123"
-          curl -L "https://github.com/WebAssembly/binaryen/releases/download/${BINARYEN_VERSION}/binaryen-${BINARYEN_VERSION}-x86_64-linux.tar.gz" | tar -xz
-          sudo cp binaryen-${BINARYEN_VERSION}/bin/* /usr/local/bin/
-          sudo cp -r binaryen-${BINARYEN_VERSION}/lib/* /usr/local/lib/ || true
-          sudo cp -r binaryen-${BINARYEN_VERSION}/include/* /usr/local/include/ || true
-          wasm-opt --version
-
-      - name: Publish nightly version to NPM
-        if: steps.check_changes.outputs.has_changes == 'true'
-        run: |
-          export NPM_VERSION=nightly
-          COLOR=1 ./make.sh js
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
   ci:
-    needs: [npm-nightly]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: ./go.mod
           cache: true
       - run: COLOR=1 CI_FORCE=1 ./make.sh all race
         env:
-          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: always()
         with:
           name: d2chaos

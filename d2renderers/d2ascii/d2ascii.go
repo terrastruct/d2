@@ -7,24 +7,19 @@ import (
 	"math"
 	"os"
 
-	"oss.terrastruct.com/d2/d2renderers/d2ascii/asciicanvas"
-	"oss.terrastruct.com/d2/d2renderers/d2ascii/asciiroute"
-	"oss.terrastruct.com/d2/d2renderers/d2ascii/asciishapes"
-	"oss.terrastruct.com/d2/d2renderers/d2ascii/charset"
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/log"
+	"github.com/d2lang/d2/d2renderers/d2ascii/asciicanvas"
+	"github.com/d2lang/d2/d2renderers/d2ascii/asciiroute"
+	"github.com/d2lang/d2/d2renderers/d2ascii/asciishapes"
+	"github.com/d2lang/d2/d2renderers/d2ascii/charset"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/log"
 )
 
 const (
 	defaultFontWidth  = 9.75
 	defaultFontHeight = 18.0
 	defaultScale      = 1.0
-)
-
-const (
-	maxRouteAttempts = asciiroute.MaxRouteAttempts
-	labelOffsetX     = asciiroute.LabelOffsetX
 )
 
 type ASCIIartist struct {
@@ -48,6 +43,10 @@ type Point = asciiroute.Point
 
 type Boundary = asciiroute.Boundary
 
+// NewBoundary constructs an ASCII routing boundary.
+//
+// Deprecated: use asciiroute.NewBoundary. This forwarding function will be
+// removed after one compatibility release.
 func NewBoundary(tl, br Point) *Boundary {
 	return asciiroute.NewBoundary(tl, br)
 }
@@ -412,10 +411,6 @@ func (a *ASCIIartist) calibrateXY(x, y float64) (float64, float64) {
 	xC := float64(math.Round((x / a.FW) * a.SCALE))
 	yC := float64(math.Round((y / a.FH) * a.SCALE))
 	return xC, yC
-}
-
-func absInt(a int) int {
-	return int(math.Abs(float64(a)))
 }
 
 func hasConnectionsAtRightEdge(shape d2target.Shape, connections []d2target.Connection, fontWidth float64) bool {

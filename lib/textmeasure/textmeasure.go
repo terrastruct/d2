@@ -8,11 +8,10 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/golang/freetype/truetype"
 	"github.com/rivo/uniseg"
 
-	"oss.terrastruct.com/d2/d2renderers/d2fonts"
-	"oss.terrastruct.com/d2/lib/geo"
+	"github.com/d2lang/d2/d2renderers/d2fonts"
+	"github.com/d2lang/d2/lib/geo"
 )
 
 const TAB_SIZE = 4
@@ -93,7 +92,7 @@ type Ruler struct {
 
 	atlases map[d2fonts.Font]*atlas
 
-	ttfs map[d2fonts.Font]*truetype.Font
+	ttfs map[d2fonts.Font]*parsedFont
 
 	buf    []byte
 	prevR  rune
@@ -108,13 +107,11 @@ type Ruler struct {
 //
 // Here we create a Ruler capable of drawing ASCII characters using the Go Regular font.
 //
-//	ttf, err := truetype.Parse(goregular.TTF)
+//	ttf, err := parseFont(goregular.TTF)
 //	if err != nil {
 //	    panic(err)
 //	}
-//	face := truetype.NewFace(ttf, &truetype.Options{
-//	    Size: 14,
-//	})
+//	face := ttf.newFace(14)
 //	txt := text.New(orig, text.NewAtlas(face, text.ASCII))
 func NewRuler() (*Ruler, error) {
 	origin := geo.NewPoint(0, 0)
@@ -125,7 +122,7 @@ func NewRuler() (*Ruler, error) {
 		lineHeights:      make(map[d2fonts.Font]float64),
 		tabWidths:        make(map[d2fonts.Font]float64),
 		atlases:          make(map[d2fonts.Font]*atlas),
-		ttfs:             make(map[d2fonts.Font]*truetype.Font),
+		ttfs:             make(map[d2fonts.Font]*parsedFont),
 	}
 
 	for _, fontFamily := range d2fonts.FontFamilies {
@@ -140,7 +137,7 @@ func NewRuler() (*Ruler, error) {
 				continue
 			}
 			if _, loaded := r.ttfs[font]; !loaded {
-				ttf, err := truetype.Parse(face)
+				ttf, err := parseFont(face)
 				if err != nil {
 					return nil, err
 				}
@@ -173,9 +170,7 @@ func (r *Ruler) HasFontFamilyLoaded(fontFamily *d2fonts.FontFamily) bool {
 func (r *Ruler) addFontSize(font d2fonts.Font) {
 	sizeless := font
 	sizeless.Size = SIZELESS_FONT_SIZE
-	face := truetype.NewFace(r.ttfs[sizeless], &truetype.Options{
-		Size: float64(font.Size),
-	})
+	face := r.ttfs[sizeless].newFace(float64(font.Size))
 	atlas := NewAtlas(face, Runes)
 	r.atlases[font] = atlas
 	r.lineHeights[font] = atlas.lineHeight

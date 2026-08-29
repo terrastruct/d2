@@ -19,7 +19,7 @@
         "x": 0,
         "y": 0
       },
-      "width": 266,
+      "width": 265,
       "height": 72,
       "opacity": 1,
       "strokeDash": 0,
@@ -62,7 +62,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -93,7 +93,7 @@
       "id": "custom-disclaimer",
       "type": "rectangle",
       "pos": {
-        "x": 20,
+        "x": 19,
         "y": -146
       },
       "width": 226,
@@ -135,7 +135,7 @@
       "id": "custom-disclaimer.I am not a lawyer",
       "type": "rectangle",
       "pos": {
-        "x": 50,
+        "x": 49,
         "y": -116
       },
       "width": 166,

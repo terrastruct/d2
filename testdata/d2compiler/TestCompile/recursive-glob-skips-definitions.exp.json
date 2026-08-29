@@ -1,0 +1,413 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,0:0:0-15:0:165",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,0:0:0-4:1:51",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,0:0:0-0:7:7",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,0:0:0-0:7:7",
+                    "value": [
+                      {
+                        "string": "classes",
+                        "raw_string": "classes"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,0:9:9-4:1:51",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,1:2:13-3:3:49",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,1:2:13-1:11:22",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,1:2:13-1:11:22",
+                              "value": [
+                                {
+                                  "string": "container",
+                                  "raw_string": "container"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,1:13:24-3:3:49",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,2:4:30-2:19:45",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,2:4:30-2:14:40",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,2:4:30-2:9:35",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,2:10:36-2:14:40",
+                                        "value": [
+                                          {
+                                            "string": "fill",
+                                            "raw_string": "fill"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,2:16:42-2:19:45",
+                                    "value": [
+                                      {
+                                        "string": "red",
+                                        "raw_string": "red"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,5:0:52-9:1:109",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,5:0:52-5:4:56",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,5:0:52-5:4:56",
+                    "value": [
+                      {
+                        "string": "vars",
+                        "raw_string": "vars"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,5:6:58-9:1:109",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,6:2:62-8:3:107",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,6:2:62-6:15:75",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,6:2:62-6:15:75",
+                              "value": [
+                                {
+                                  "string": "cont_variable",
+                                  "raw_string": "cont_variable"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,6:17:77-8:3:107",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,7:4:83-7:24:103",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,7:4:83-7:9:88",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,7:4:83-7:9:88",
+                                        "value": [
+                                          {
+                                            "string": "label",
+                                            "raw_string": "label"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,7:11:90-7:24:103",
+                                    "value": [
+                                      {
+                                        "string": "cont variable",
+                                        "raw_string": "cont variable"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,10:0:110-13:1:152",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,10:0:110-10:2:112",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,10:0:110-10:2:112",
+                    "value": [
+                      {
+                        "string": "**",
+                        "raw_string": "**"
+                      }
+                    ],
+                    "pattern": [
+                      "*",
+                      "",
+                      "*"
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,10:4:114-13:1:152",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,11:2:118-11:15:131",
+                      "ampersand": true,
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,11:3:119-11:8:124",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,11:3:119-11:8:124",
+                              "value": [
+                                {
+                                  "string": "label",
+                                  "raw_string": "label"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,11:10:126-11:15:131",
+                          "value": [
+                            {
+                              "string": "cont*",
+                              "raw_string": "cont*"
+                            }
+                          ],
+                          "pattern": [
+                            "cont",
+                            "*"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,12:2:134-12:18:150",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,12:2:134-12:7:139",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,12:2:134-12:7:139",
+                              "value": [
+                                {
+                                  "string": "class",
+                                  "raw_string": "class"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,12:9:141-12:18:150",
+                          "value": [
+                            {
+                              "string": "container",
+                              "raw_string": "container"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,14:0:153-14:11:164",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,14:0:153-14:11:164",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,14:0:153-14:11:164",
+                    "value": [
+                      {
+                        "string": "cont_target",
+                        "raw_string": "cont_target"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "iconStyle": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "cont_target",
+        "id_val": "cont_target",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,14:0:153-14:11:164",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/recursive-glob-skips-definitions.d2,14:0:153-14:11:164",
+                    "value": [
+                      {
+                        "string": "cont_target",
+                        "raw_string": "cont_target"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "cont_target"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "fill": {
+              "value": "red"
+            }
+          },
+          "iconStyle": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null,
+          "classes": [
+            "container"
+          ]
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

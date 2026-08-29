@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"sync"
 
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
-	"oss.terrastruct.com/util-go/xmain"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2layouts/d2dagrelayout"
+	"github.com/d2lang/util-go/xmain"
 )
 
 var DagrePlugin = dagrePlugin{}
@@ -75,8 +75,10 @@ func (p *dagrePlugin) Info(ctx context.Context) (*PluginInfo, error) {
 		Type:      "bundled",
 		Features:  []PluginFeature{},
 		ShortHelp: "The directed graph layout library Dagre",
-		LongHelp: fmt.Sprintf(`dagre is a directed graph layout library for JavaScript.
+		LongHelp: fmt.Sprintf(`dagre is a directed graph layout algorithm implemented natively in Go by Dagro.
 See https://d2lang.com/tour/dagre for more.
+
+Dagro implements the Dagre 3.1.1 layout surface used by D2: https://github.com/d2lang/dagro.
 
 Flags correspond to ones found at https://github.com/dagrejs/dagre/wiki.
 
@@ -91,8 +93,4 @@ func (p *dagrePlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
 	optsCopy := *p.opts
 	p.mu.Unlock()
 	return d2dagrelayout.Layout(ctx, g, &optsCopy)
-}
-
-func (p *dagrePlugin) PostProcess(ctx context.Context, in []byte) ([]byte, error) {
-	return in, nil
 }

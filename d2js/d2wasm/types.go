@@ -3,9 +3,9 @@
 package d2wasm
 
 import (
-	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2target"
+	"github.com/d2lang/d2/d2ast"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2target"
 )
 
 type WASMResponse struct {

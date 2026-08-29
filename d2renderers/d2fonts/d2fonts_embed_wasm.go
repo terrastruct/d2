@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"strings"
 
-	"oss.terrastruct.com/d2/lib/compression"
-	"oss.terrastruct.com/d2/lib/syncmap"
+	"github.com/d2lang/d2/lib/compression"
+	"github.com/d2lang/d2/lib/syncmap"
 )
 
 // Compressed font data for WASM builds

@@ -37,7 +37,6 @@ main() {
   REMOTE_HOST=$CI_D2_LINUX_ARM64 && runjob linux-arm64 ssh "$REMOTE_HOST" "$@"
   REMOTE_HOST=$CI_D2_MACOS_AMD64 && runjob macos-amd64 ssh "$REMOTE_HOST" "$@"
   REMOTE_HOST=$CI_D2_MACOS_ARM64 && runjob macos-arm64 ssh "$REMOTE_HOST" "$@"
-  REMOTE_HOST=$CI_D2_WINDOWS_AMD64 && runjob windows-amd64 ssh "$REMOTE_HOST" "$@"
 }
 
 main "$@"

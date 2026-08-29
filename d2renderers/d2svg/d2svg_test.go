@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"oss.terrastruct.com/d2/d2renderers/d2fonts"
-	"oss.terrastruct.com/d2/d2target"
+	"github.com/d2lang/d2/d2renderers/d2fonts"
+	"github.com/d2lang/d2/d2target"
 )
 
 func TestEmbedFontsReducedMotion(t *testing.T) {

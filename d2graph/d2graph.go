@@ -15,21 +15,21 @@ import (
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/util-go/go2"
 
-	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2format"
-	"oss.terrastruct.com/d2/d2parser"
-	"oss.terrastruct.com/d2/d2renderers/d2fonts"
-	"oss.terrastruct.com/d2/d2renderers/d2latex"
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/d2themes"
-	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
-	"oss.terrastruct.com/d2/lib/color"
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/label"
-	"oss.terrastruct.com/d2/lib/shape"
-	"oss.terrastruct.com/d2/lib/textmeasure"
+	"github.com/d2lang/d2/d2ast"
+	"github.com/d2lang/d2/d2format"
+	"github.com/d2lang/d2/d2parser"
+	"github.com/d2lang/d2/d2renderers/d2fonts"
+	"github.com/d2lang/d2/d2renderers/d2latex"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/d2themes"
+	"github.com/d2lang/d2/d2themes/d2themescatalog"
+	"github.com/d2lang/d2/lib/color"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/label"
+	"github.com/d2lang/d2/lib/shape"
+	"github.com/d2lang/d2/lib/textmeasure"
 )
 
 const INNER_LABEL_PADDING int = 5
@@ -319,7 +319,7 @@ func (s *Style) Apply(key, value string) error {
 			break
 		}
 		f, err := strconv.ParseFloat(value, 64)
-		if err != nil || (f < 0 || f > 1) {
+		if err != nil || math.IsNaN(f) || math.IsInf(f, 0) || f < 0 || f > 1 {
 			return errors.New(`expected "opacity" to be a number between 0.0 and 1.0`)
 		}
 		s.Opacity.Value = value
@@ -845,11 +845,18 @@ func (obj *Object) FindEdges(mk *d2ast.Key) ([]*Edge, bool) {
 	}
 
 	var ea []*Edge
+	srcArrow := ae.SrcArrow == "<"
+	dstArrow := ae.DstArrow == ">"
 	for _, e := range obj.Graph.Edges {
-		if strings.EqualFold(src, e.Src.AbsID()) &&
-			((ae.SrcArrow == "<" && e.SrcArrow) || (ae.SrcArrow == "" && !e.SrcArrow)) &&
+		direct := strings.EqualFold(src, e.Src.AbsID()) &&
+			srcArrow == e.SrcArrow &&
 			strings.EqualFold(dst, e.Dst.AbsID()) &&
-			((ae.DstArrow == ">" && e.DstArrow) || (ae.DstArrow == "" && !e.DstArrow)) {
+			dstArrow == e.DstArrow
+		flipped := strings.EqualFold(src, e.Dst.AbsID()) &&
+			srcArrow == e.DstArrow &&
+			strings.EqualFold(dst, e.Src.AbsID()) &&
+			dstArrow == e.SrcArrow
+		if direct || flipped {
 			ea = append(ea, e)
 		}
 	}
@@ -1379,17 +1386,29 @@ func addSQLTableColumnIndices(e *Edge, srcID, dstID []d2ast.String, obj, src, ds
 	}
 }
 
-// TODO: Treat undirectional/bidirectional edge here and in HasEdge flipped. Same with
-// SrcArrow.
 func (e *Edge) initIndex() {
 	for _, e2 := range e.Src.Graph.Edges {
-		if e.Src == e2.Src &&
-			e.SrcArrow == e2.SrcArrow &&
-			e.Dst == e2.Dst &&
-			e.DstArrow == e2.DstArrow {
+		if e2.IsEquivalent(e.Src, e.SrcArrow, e.Dst, e.DstArrow) {
 			e.Index++
 		}
 	}
+}
+
+// IsEquivalent reports whether the given endpoints describe the same edge. Arrowheads
+// are attached to endpoints, so reversing the endpoint order also reverses the arrow
+// fields.
+func (e *Edge) IsEquivalent(src *Object, srcArrow bool, dst *Object, dstArrow bool) bool {
+	direct := e.Src == src &&
+		e.SrcArrow == srcArrow &&
+		e.Dst == dst &&
+		e.DstArrow == dstArrow
+	if direct {
+		return true
+	}
+	return e.Src == dst &&
+		e.SrcArrow == dstArrow &&
+		e.Dst == src &&
+		e.DstArrow == srcArrow
 }
 
 func findMeasured(mtexts []*d2target.MText, t1 *d2target.MText) *d2target.TextDimensions {

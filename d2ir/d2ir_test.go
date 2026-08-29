@@ -3,11 +3,65 @@ package d2ir_test
 import (
 	"testing"
 
-	"oss.terrastruct.com/util-go/assert"
+	"github.com/d2lang/util-go/assert"
 
-	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2ir"
+	"github.com/d2lang/d2/d2ast"
+	"github.com/d2lang/d2/d2ir"
 )
+
+func TestEdgeIDMatchReversed(t *testing.T) {
+	t.Parallel()
+
+	path := func(s string) []d2ast.String {
+		return []d2ast.String{d2ast.FlatUnquotedString(s)}
+	}
+	testCases := []struct {
+		name string
+		a    *d2ir.EdgeID
+		b    *d2ir.EdgeID
+		want bool
+	}{
+		{
+			name: "undirected",
+			a:    &d2ir.EdgeID{SrcPath: path("a"), DstPath: path("b")},
+			b:    &d2ir.EdgeID{SrcPath: path("b"), DstPath: path("a")},
+			want: true,
+		},
+		{
+			name: "bidirectional",
+			a:    &d2ir.EdgeID{SrcPath: path("a"), SrcArrow: true, DstPath: path("b"), DstArrow: true},
+			b:    &d2ir.EdgeID{SrcPath: path("b"), SrcArrow: true, DstPath: path("a"), DstArrow: true},
+			want: true,
+		},
+		{
+			name: "directed reversed notation",
+			a:    &d2ir.EdgeID{SrcPath: path("a"), DstPath: path("b"), DstArrow: true},
+			b:    &d2ir.EdgeID{SrcPath: path("b"), SrcArrow: true, DstPath: path("a")},
+			want: true,
+		},
+		{
+			name: "opposite direction",
+			a:    &d2ir.EdgeID{SrcPath: path("a"), DstPath: path("b"), DstArrow: true},
+			b:    &d2ir.EdgeID{SrcPath: path("b"), DstPath: path("a"), DstArrow: true},
+			want: false,
+		},
+		{
+			name: "different arrowheads",
+			a:    &d2ir.EdgeID{SrcPath: path("a"), DstPath: path("b")},
+			b:    &d2ir.EdgeID{SrcPath: path("b"), SrcArrow: true, DstPath: path("a"), DstArrow: true},
+			want: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			assert.Equal(t, tc.want, tc.a.Match(tc.b))
+			assert.Equal(t, tc.want, tc.b.Match(tc.a))
+		})
+	}
+}
 
 func TestCopy(t *testing.T) {
 	t.Parallel()

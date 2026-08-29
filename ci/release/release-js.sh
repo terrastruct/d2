@@ -9,10 +9,10 @@ help() {
   cat <<EOF
 usage: $0 --version=<version>
 
-Publishes the d2.js to NPM.
+Dispatches the protected npm staging workflow for both d2.js package identities.
 
 Flags:
-  --version     Version to publish (e.g., "0.1.2" or "nightly"). Note this is the js version, not related to the d2 version. A non-nightly version will publish to latest.
+  --version     Version to stage (e.g., "0.1.2" or "nightly"). Note this is the js version, not related to the d2 version. A non-nightly version will use the latest tag after approval.
 EOF
 }
 
@@ -32,8 +32,20 @@ if [ -z "$VERSION" ]; then
   flag_errusage "--version is required"
 fi
 
-FGCOLOR=6 header "Publishing JavaScript package to NPM (version: $VERSION)"
+if ! command -v gh >/dev/null 2>&1; then
+  echoerr 'gh is required to dispatch the npm staging workflow'
+  exit 1
+fi
+if ! gh auth status >/dev/null 2>&1; then
+  echoerr 'gh must be authenticated before dispatching the npm staging workflow'
+  exit 1
+fi
 
-sh_c "NPM_VERSION=$VERSION ./make.sh js"
+FGCOLOR=6 header "Staging JavaScript packages for npm review (version: $VERSION)"
 
-FGCOLOR=2 header 'NPM publish completed'
+gh workflow run npm-stage.yml \
+  --repo d2lang/d2 \
+  --ref master \
+  --field "version=$VERSION"
+
+FGCOLOR=2 header 'npm staging workflow dispatched; approve both package stages after every job succeeds'

@@ -7,9 +7,9 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2layouts/d2elklayout"
-	"oss.terrastruct.com/util-go/xmain"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2layouts/d2elklayout"
+	"github.com/d2lang/util-go/xmain"
 )
 
 var ELKPlugin = elkPlugin{}
@@ -93,7 +93,7 @@ func (p elkPlugin) Info(ctx context.Context) (*PluginInfo, error) {
 		},
 		ShortHelp: "Eclipse Layout Kernel (ELK) with the Layered algorithm.",
 		LongHelp: fmt.Sprintf(`ELK is a layout engine offered by Eclipse.
-Originally written in Java, it has been ported to Javascript and cross-compiled into D2.
+Originally written in Java, D2's ELK.js 0.12.0 layout profile is bundled through the native Go elk-go port. Layered remains the default.
 See https://d2lang.com/tour/elk for more.
 
 Flags correspond to ones found at https://www.eclipse.org/elk/reference.html.
@@ -106,8 +106,4 @@ Flags:
 
 func (p elkPlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
 	return d2elklayout.Layout(ctx, g, p.opts)
-}
-
-func (p elkPlugin) PostProcess(ctx context.Context, in []byte) ([]byte, error) {
-	return in, nil
 }

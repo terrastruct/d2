@@ -9,7 +9,7 @@ describe("D2 Encoding Tests", () => {
     expect(encoded).toBeDefined();
     expect(typeof encoded).toBe("string");
     expect(encoded.length).toBeGreaterThan(0);
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("decode encoded script works", async () => {
@@ -18,7 +18,7 @@ describe("D2 Encoding Tests", () => {
     const encoded = await d2.encode(script);
     const decoded = await d2.decode(encoded);
     expect(decoded).toBe(script);
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("encode and decode complex script works", async () => {
@@ -45,7 +45,7 @@ user -> network.cell tower: make call`;
 
     const decoded = await d2.decode(encoded);
     expect(decoded).toBe(script);
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("encode and decode unicode characters works", async () => {
@@ -57,7 +57,7 @@ user -> network.cell tower: make call`;
 
     const decoded = await d2.decode(encoded);
     expect(decoded).toBe(script);
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("decode handles invalid input correctly", async () => {
@@ -69,7 +69,7 @@ user -> network.cell tower: make call`;
       expect(err).toBeDefined();
       expect(err.message).not.toContain("Should have thrown decode error");
     }
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 
   test("encode empty string works", async () => {
@@ -81,6 +81,6 @@ user -> network.cell tower: make call`;
 
     const decoded = await d2.decode(encoded);
     expect(decoded).toBe(script);
-    await d2.worker.terminate();
+    await d2.dispose();
   }, 20000);
 });

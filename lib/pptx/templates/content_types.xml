@@ -55,7 +55,7 @@
         PartName="/ppt/slideMasters/slideMaster1.xml"
         ContentType="application/vnd.openxmlformats-officedocument.presentationml.slideMaster+xml" />
         {{range .FileNames}}
-        <Override PartName="/ppt/slides/{{.}}.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slide+xml" />
+        <Override PartName="/ppt/slides/{{xmlAttr .}}.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slide+xml" />
         {{end}} 
         <Override PartName="/ppt/tableStyles.xml"
         ContentType="application/vnd.openxmlformats-officedocument.presentationml.tableStyles+xml" />

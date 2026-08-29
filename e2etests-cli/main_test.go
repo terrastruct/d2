@@ -15,14 +15,15 @@ import (
 
 	"github.com/coder/websocket"
 
-	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
-	"oss.terrastruct.com/util-go/xmain"
-	"oss.terrastruct.com/util-go/xos"
+	"github.com/d2lang/util-go/assert"
+	"github.com/d2lang/util-go/diff"
+	"github.com/d2lang/util-go/xmain"
+	"github.com/d2lang/util-go/xos"
 
-	"oss.terrastruct.com/d2/d2cli"
-	"oss.terrastruct.com/d2/lib/pptx"
-	"oss.terrastruct.com/d2/lib/xgif"
+	"github.com/d2lang/d2/d2cli"
+	"github.com/d2lang/d2/internal/testutil"
+	"github.com/d2lang/d2/lib/compression"
+	"github.com/d2lang/d2/lib/pptx"
 )
 
 func TestCLI_E2E(t *testing.T) {
@@ -126,11 +127,11 @@ local.code -> aws.ec2: {
 			},
 		},
 		{
-			name: "flags-panic",
+			name: "layout-extra-args",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `x -> y`)
 				err := runTestMain(t, ctx, dir, env, "layout", "dagre", "--dagre-nodesep", "50", "hello-world.d2")
-				assert.ErrorString(t, err, `failed to wait xmain test: e2etests-cli/d2: failed to unmarshal input to graph: `)
+				assert.ErrorString(t, err, `failed to wait xmain test: e2etests-cli/d2: bad usage: layout subcommand accepts at most one argument`)
 			},
 		},
 		{
@@ -707,7 +708,7 @@ steps: {
 				assert.Success(t, err)
 
 				file := readFile(t, dir, "how_to_solve_problems.pptx")
-				err = pptx.Validate(file, 4)
+				err = testutil.ValidatePPTX(file, pptx.PPTX_TEMPLATE, 4)
 				assert.Success(t, err)
 			},
 		},
@@ -739,7 +740,7 @@ steps: {
 				assert.Success(t, err)
 
 				gifBytes := readFile(t, dir, "how_to_solve_problems.gif")
-				err = xgif.Validate(gifBytes, 4, 10)
+				err = testutil.ValidateGIF(gifBytes, 4, 10)
 				assert.Success(t, err)
 			},
 		},
@@ -789,7 +790,7 @@ a.b.c.d
 				assert.Success(t, err)
 
 				gifBytes := readFile(t, dir, "out.gif")
-				err = xgif.Validate(gifBytes, 1, 10)
+				err = testutil.ValidateGIF(gifBytes, 1, 10)
 				assert.Success(t, err)
 			},
 		},
@@ -1085,6 +1086,7 @@ vars: {
 				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
 				assert.Success(t, err)
 				svg := readFile(t, dir, "hello-world.svg")
+				svg = compression.UnzipEmbeddedSVGImages(svg)
 				assert.Testdata(t, ".svg", svg)
 			},
 		},
@@ -1217,7 +1219,7 @@ layers: {
 				assert.Success(t, err)
 
 				file := readFile(t, dir, "out.pptx")
-				// err = pptx.Validate(file, 2)
+				// err = testutil.ValidatePPTX(file, pptx.PPTX_TEMPLATE, 2)
 				assert.Success(t, err)
 				testdataIgnoreDiff(t, ".pptx", file)
 			},

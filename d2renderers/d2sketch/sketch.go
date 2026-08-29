@@ -2,37 +2,24 @@ package d2sketch
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"regexp"
 	"strings"
 
 	_ "embed"
 
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/d2themes"
-	"oss.terrastruct.com/d2/lib/color"
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/jsrunner"
-	"oss.terrastruct.com/d2/lib/label"
-	"oss.terrastruct.com/d2/lib/svg"
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/d2themes"
+	"github.com/d2lang/d2/lib/color"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/label"
+	"github.com/d2lang/d2/lib/svg"
+	rough "github.com/d2lang/rough-go"
+	"github.com/d2lang/util-go/go2"
 )
-
-//go:embed rough.js
-var roughJS string
-
-//go:embed setup.js
-var setupJS string
 
 //go:embed streaks.txt
 var streaks string
-
-var baseRoughProps = `fillWeight: 2.0,
-hachureGap: 16,
-fillStyle: "solid",
-bowing: 2,
-seed: 1,`
 
 var floatRE = regexp.MustCompile(`(\d+)\.(\d+)`)
 
@@ -41,14 +28,21 @@ const (
 	FG_COLOR = color.N1
 )
 
-func LoadJS(runner jsrunner.JSRunner) error {
-	if _, err := runner.RunString(roughJS); err != nil {
-		return err
+func newGenerator() *rough.Generator {
+	return rough.NewGenerator(&rough.Config{Options: &rough.Options{Seed: rough.Float64(1)}})
+}
+
+func baseOptions(strokeWidth float64) *rough.Options {
+	return &rough.Options{
+		Fill:        rough.String("#000"),
+		Stroke:      rough.String("#000"),
+		StrokeWidth: rough.Float64(strokeWidth),
+		FillWeight:  rough.Float64(2),
+		HachureGap:  rough.Float64(16),
+		FillStyle:   rough.String("solid"),
+		Bowing:      rough.Float64(2),
+		Seed:        rough.Float64(1),
 	}
-	if _, err := runner.RunString(setupJS); err != nil {
-		return err
-	}
-	return nil
 }
 
 // DefineFillPatterns adds reusable patterns that are overlayed on shapes with
@@ -73,14 +67,9 @@ func defineFillPattern(buf *bytes.Buffer, source, diagramHash string, luminanceC
 	}
 }
 
-func Rect(r jsrunner.JSRunner, shape d2target.Shape, diagramHash string) (string, error) {
-	js := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
-		fill: "#000",
-		stroke: "#000",
-		strokeWidth: %d,
-		%s
-	});`, shape.Width, shape.Height, shape.StrokeWidth, baseRoughProps)
-	paths, err := computeRoughPathData(r, js)
+func Rect(shape d2target.Shape, diagramHash string) (string, error) {
+	g := newGenerator()
+	paths, err := computeRoughPathData(g, g.Rectangle(0, 0, float64(shape.Width), float64(shape.Height), baseOptions(float64(shape.StrokeWidth))))
 	if err != nil {
 		return "", err
 	}
@@ -119,24 +108,16 @@ func Rect(r jsrunner.JSRunner, shape d2target.Shape, diagramHash string) (string
 	return output, nil
 }
 
-func DoubleRect(r jsrunner.JSRunner, shape d2target.Shape, diagramHash string) (string, error) {
-	jsBigRect := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
-		fill: "#000",
-		stroke: "#000",
-		strokeWidth: %d,
-		%s
-	});`, shape.Width, shape.Height, shape.StrokeWidth, baseRoughProps)
-	pathsBigRect, err := computeRoughPathData(r, jsBigRect)
+func DoubleRect(shape d2target.Shape, diagramHash string) (string, error) {
+	g := newGenerator()
+	pathsBigRect, err := computeRoughPathData(g, g.Rectangle(0, 0, float64(shape.Width), float64(shape.Height), baseOptions(float64(shape.StrokeWidth))))
 	if err != nil {
 		return "", err
 	}
-	jsSmallRect := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
-		fill: "#000",
-		stroke: "#000",
-		strokeWidth: %d,
-		%s
-	});`, shape.Width-d2target.INNER_BORDER_OFFSET*2, shape.Height-d2target.INNER_BORDER_OFFSET*2, shape.StrokeWidth, baseRoughProps)
-	pathsSmallRect, err := computeRoughPathData(r, jsSmallRect)
+	pathsSmallRect, err := computeRoughPathData(g, g.Rectangle(0, 0,
+		float64(shape.Width-d2target.INNER_BORDER_OFFSET*2),
+		float64(shape.Height-d2target.INNER_BORDER_OFFSET*2),
+		baseOptions(float64(shape.StrokeWidth))))
 	if err != nil {
 		return "", err
 	}
@@ -194,14 +175,11 @@ func DoubleRect(r jsrunner.JSRunner, shape d2target.Shape, diagramHash string) (
 	return output, nil
 }
 
-func Oval(r jsrunner.JSRunner, shape d2target.Shape, diagramHash string) (string, error) {
-	js := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
-		fill: "#000",
-		stroke: "#000",
-		strokeWidth: %d,
-		%s
-	});`, shape.Width/2, shape.Height/2, shape.Width, shape.Height, shape.StrokeWidth, baseRoughProps)
-	paths, err := computeRoughPathData(r, js)
+func Oval(shape d2target.Shape, diagramHash string) (string, error) {
+	g := newGenerator()
+	paths, err := computeRoughPathData(g, g.Ellipse(
+		float64(shape.Width/2), float64(shape.Height/2),
+		float64(shape.Width), float64(shape.Height), baseOptions(float64(shape.StrokeWidth))))
 	if err != nil {
 		return "", err
 	}
@@ -243,24 +221,19 @@ func Oval(r jsrunner.JSRunner, shape d2target.Shape, diagramHash string) (string
 	return output, nil
 }
 
-func DoubleOval(r jsrunner.JSRunner, shape d2target.Shape, diagramHash string) (string, error) {
-	jsBigCircle := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
-		fill: "#000",
-		stroke: "#000",
-		strokeWidth: %d,
-		%s
-	});`, shape.Width/2, shape.Height/2, shape.Width, shape.Height, shape.StrokeWidth, baseRoughProps)
-	jsSmallCircle := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
-		fill: "#000",
-		stroke: "#000",
-		strokeWidth: %d,
-		%s
-	});`, shape.Width/2, shape.Height/2, shape.Width-d2target.INNER_BORDER_OFFSET*2, shape.Height-d2target.INNER_BORDER_OFFSET*2, shape.StrokeWidth, baseRoughProps)
-	pathsBigCircle, err := computeRoughPathData(r, jsBigCircle)
+func DoubleOval(shape d2target.Shape, diagramHash string) (string, error) {
+	g := newGenerator()
+	pathsBigCircle, err := computeRoughPathData(g, g.Ellipse(
+		float64(shape.Width/2), float64(shape.Height/2),
+		float64(shape.Width), float64(shape.Height), baseOptions(float64(shape.StrokeWidth))))
 	if err != nil {
 		return "", err
 	}
-	pathsSmallCircle, err := computeRoughPathData(r, jsSmallCircle)
+	pathsSmallCircle, err := computeRoughPathData(g, g.Ellipse(
+		float64(shape.Width/2), float64(shape.Height/2),
+		float64(shape.Width-d2target.INNER_BORDER_OFFSET*2),
+		float64(shape.Height-d2target.INNER_BORDER_OFFSET*2),
+		baseOptions(float64(shape.StrokeWidth))))
 	if err != nil {
 		return "", err
 	}
@@ -321,16 +294,11 @@ func DoubleOval(r jsrunner.JSRunner, shape d2target.Shape, diagramHash string) (
 }
 
 // TODO need to personalize this per shape like we do in Terrastruct app
-func Paths(r jsrunner.JSRunner, shape d2target.Shape, diagramHash string, paths []string) (string, error) {
+func Paths(shape d2target.Shape, diagramHash string, paths []string) (string, error) {
 	output := ""
 	for _, path := range paths {
-		js := fmt.Sprintf(`node = rc.path("%s", {
-		fill: "#000",
-		stroke: "#000",
-		strokeWidth: %d,
-		%s
-	});`, path, shape.StrokeWidth, baseRoughProps)
-		sketchPaths, err := computeRoughPathData(r, js)
+		g := newGenerator()
+		sketchPaths, err := computeRoughPathData(g, g.Path(path, baseOptions(float64(shape.StrokeWidth))))
 		if err != nil {
 			return "", err
 		}
@@ -370,7 +338,7 @@ func Paths(r jsrunner.JSRunner, shape d2target.Shape, diagramHash string, paths 
 	return output, nil
 }
 
-func Connection(r jsrunner.JSRunner, connection d2target.Connection, path, attrs string) (string, error) {
+func Connection(connection d2target.Connection, path, attrs string) (string, error) {
 	animatedClass := ""
 	if connection.Animated {
 		animatedClass = " animated-connection"
@@ -415,8 +383,11 @@ func Connection(r jsrunner.JSRunner, connection d2target.Connection, path, attrs
 		}
 	} else {
 		roughness := 0.5
-		js := fmt.Sprintf(`node = rc.path("%s", {roughness: %f, seed: 1});`, path, roughness)
-		paths, err := computeRoughPathData(r, js)
+		g := newGenerator()
+		paths, err := computeRoughPathData(g, g.Path(path, &rough.Options{
+			Roughness: rough.Float64(roughness),
+			Seed:      rough.Float64(1),
+		}))
 		if err != nil {
 			return "", err
 		}
@@ -438,15 +409,10 @@ func Connection(r jsrunner.JSRunner, connection d2target.Connection, path, attrs
 }
 
 // TODO cleanup
-func Table(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
+func Table(shape d2target.Shape) (string, error) {
 	output := ""
-	js := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
-		fill: "#000",
-		stroke: "#000",
-		strokeWidth: %d,
-		%s
-	});`, shape.Width, shape.Height, shape.StrokeWidth, baseRoughProps)
-	paths, err := computeRoughPathData(r, js)
+	g := newGenerator()
+	paths, err := computeRoughPathData(g, g.Rectangle(0, 0, float64(shape.Width), float64(shape.Height), baseOptions(float64(shape.StrokeWidth))))
 	if err != nil {
 		return "", err
 	}
@@ -469,11 +435,7 @@ func Table(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	rowHeight := box.Height / float64(1+len(shape.SQLTable.Columns))
 	headerBox := geo.NewBox(box.TopLeft, box.Width, rowHeight)
 
-	js = fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %f, {
-		fill: "#000",
-		%s
-	});`, shape.Width, rowHeight, baseRoughProps)
-	paths, err = computeRoughPathData(r, js)
+	paths, err = computeRoughPathData(g, g.Rectangle(0, 0, float64(shape.Width), rowHeight, baseOptions(1)))
 	if err != nil {
 		return "", err
 	}
@@ -551,10 +513,10 @@ func Table(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 
 		rowBox.TopLeft.Y += rowHeight
 
-		js = fmt.Sprintf(`node = rc.line(%f, %f, %f, %f, {
-		%s
-	});`, rowBox.TopLeft.X, rowBox.TopLeft.Y, rowBox.TopLeft.X+rowBox.Width, rowBox.TopLeft.Y, baseRoughProps)
-		paths, err = computeRoughPathData(r, js)
+		paths, err = computeRoughPathData(g, g.Line(
+			rowBox.TopLeft.X, rowBox.TopLeft.Y,
+			rowBox.TopLeft.X+rowBox.Width, rowBox.TopLeft.Y,
+			baseOptions(1)))
 		if err != nil {
 			return "", err
 		}
@@ -580,15 +542,10 @@ func Table(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	return output, nil
 }
 
-func Class(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
+func Class(shape d2target.Shape) (string, error) {
 	output := ""
-	js := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
-		fill: "#000",
-		stroke: "#000",
-		strokeWidth: %d,
-		%s
-	});`, shape.Width, shape.Height, shape.StrokeWidth, baseRoughProps)
-	paths, err := computeRoughPathData(r, js)
+	g := newGenerator()
+	paths, err := computeRoughPathData(g, g.Rectangle(0, 0, float64(shape.Width), float64(shape.Height), baseOptions(float64(shape.StrokeWidth))))
 	if err != nil {
 		return "", err
 	}
@@ -612,11 +569,7 @@ func Class(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 	rowHeight := box.Height / float64(2+len(shape.Class.Fields)+len(shape.Class.Methods))
 	headerBox := geo.NewBox(box.TopLeft, box.Width, 2*rowHeight)
 
-	js = fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %f, {
-		fill: "#000",
-		%s
-	});`, shape.Width, headerBox.Height, baseRoughProps)
-	paths, err = computeRoughPathData(r, js)
+	paths, err = computeRoughPathData(g, g.Rectangle(0, 0, float64(shape.Width), headerBox.Height, baseOptions(1)))
 	if err != nil {
 		return "", err
 	}
@@ -668,10 +621,10 @@ func Class(r jsrunner.JSRunner, shape d2target.Shape) (string, error) {
 		rowBox.TopLeft.Y += rowHeight
 	}
 
-	js = fmt.Sprintf(`node = rc.line(%f, %f, %f, %f, {
-%s
-	});`, rowBox.TopLeft.X, rowBox.TopLeft.Y, rowBox.TopLeft.X+rowBox.Width, rowBox.TopLeft.Y, baseRoughProps)
-	paths, err = computeRoughPathData(r, js)
+	paths, err = computeRoughPathData(g, g.Line(
+		rowBox.TopLeft.X, rowBox.TopLeft.Y,
+		rowBox.TopLeft.X+rowBox.Width, rowBox.TopLeft.Y,
+		baseOptions(1)))
 	if err != nil {
 		return "", err
 	}
@@ -731,22 +684,24 @@ func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText str
 	return output
 }
 
-func computeRoughPathData(r jsrunner.JSRunner, js string) ([]string, error) {
-	if _, err := r.RunString(js); err != nil {
-		return nil, err
-	}
-	roughPaths, err := extractRoughPaths(r)
-	if err != nil {
-		return nil, err
-	}
-	return extractPathData(roughPaths)
+func computeRoughPathData(g *rough.Generator, drawable rough.Drawable) ([]string, error) {
+	return extractPathData(computeRoughPaths(g, drawable))
 }
 
-func computeRoughPaths(r jsrunner.JSRunner, js string) ([]roughPath, error) {
-	if _, err := r.RunString(js); err != nil {
-		return nil, err
+func computeRoughPaths(g *rough.Generator, drawable rough.Drawable) []roughPath {
+	pathInfos := g.ToPaths(drawable)
+	paths := make([]roughPath, 0, len(pathInfos))
+	for _, path := range pathInfos {
+		paths = append(paths, roughPath{
+			Attrs: attrs{D: truncatePathData(path.D)},
+			Style: style{
+				Stroke:      path.Stroke,
+				StrokeWidth: rough.NumberString(path.StrokeWidth),
+				Fill:        path.Fill,
+			},
+		})
 	}
-	return extractRoughPaths(r)
+	return paths
 }
 
 type attrs struct {
@@ -772,30 +727,14 @@ func (rp roughPath) StyleCSS() string {
 	return style
 }
 
-func extractRoughPaths(r jsrunner.JSRunner) ([]roughPath, error) {
-	val, err := r.RunString("JSON.stringify(node.children, null, '  ')")
-	if err != nil {
-		return nil, err
-	}
-
-	var roughPaths []roughPath
-	err = json.Unmarshal([]byte(val.String()), &roughPaths)
-	if err != nil {
-		return nil, err
-	}
-
+func truncatePathData(pathData string) string {
 	// we want to have a fixed precision to the decimals in the path data
-	for i := range roughPaths {
-		// truncate all floats in path to only use up to 6 decimal places
-		roughPaths[i].Attrs.D = floatRE.ReplaceAllStringFunc(roughPaths[i].Attrs.D, func(floatStr string) string {
-			i := strings.Index(floatStr, ".")
-			decimalLen := len(floatStr) - i - 1
-			end := i + go2.Min(decimalLen, 6)
-			return floatStr[:end+1]
-		})
-	}
-
-	return roughPaths, nil
+	return floatRE.ReplaceAllStringFunc(pathData, func(floatStr string) string {
+		i := strings.Index(floatStr, ".")
+		decimalLen := len(floatStr) - i - 1
+		end := i + go2.Min(decimalLen, 6)
+		return floatStr[:end+1]
+	})
 }
 
 func extractPathData(roughPaths []roughPath) ([]string, error) {
@@ -806,133 +745,72 @@ func extractPathData(roughPaths []roughPath) ([]string, error) {
 	return paths, nil
 }
 
-func ArrowheadJS(r jsrunner.JSRunner, arrowhead d2target.Arrowhead, stroke string, strokeWidth int) (arrowJS, extraJS string) {
+func arrowOptions(stroke string, strokeWidth int, seed float64) *rough.Options {
+	return &rough.Options{
+		StrokeWidth: rough.Float64(float64(strokeWidth)),
+		Stroke:      rough.String(stroke),
+		Seed:        rough.Float64(seed),
+	}
+}
+
+func solidArrowOptions(stroke, fill string, strokeWidth int, fillWeight, seed float64) *rough.Options {
+	o := arrowOptions(stroke, strokeWidth, seed)
+	o.Fill = rough.String(fill)
+	o.FillStyle = rough.String("solid")
+	if fillWeight >= 0 {
+		o.FillWeight = rough.Float64(fillWeight)
+	}
+	return o
+}
+
+func arrowheadDrawable(g *rough.Generator, arrowhead d2target.Arrowhead, stroke string, strokeWidth int) (arrow rough.Drawable, extra *rough.Drawable, ok bool) {
 	// Note: selected each seed that looks the good for consistent renders
 	switch arrowhead {
 	case d2target.ArrowArrowhead:
-		arrowJS = fmt.Sprintf(
-			`node = rc.linearPath(%s, { strokeWidth: %d, stroke: "%s", seed: 3 })`,
-			`[[-10, -4], [0, 0], [-10, 4]]`,
-			strokeWidth,
-			stroke,
-		)
+		arrow = g.LinearPath([]rough.Point{{-10, -4}, {0, 0}, {-10, 4}}, arrowOptions(stroke, strokeWidth, 3))
 	case d2target.TriangleArrowhead:
-		arrowJS = fmt.Sprintf(
-			`node = rc.polygon(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", seed: 2 })`,
-			`[[-10, -4], [0, 0], [-10, 4]]`,
-			strokeWidth,
-			stroke,
-			stroke,
-		)
+		arrow = g.Polygon([]rough.Point{{-10, -4}, {0, 0}, {-10, 4}}, solidArrowOptions(stroke, stroke, strokeWidth, -1, 2))
 	case d2target.UnfilledTriangleArrowhead:
-		arrowJS = fmt.Sprintf(
-			`node = rc.polygon(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", seed: 2 })`,
-			`[[-10, -4], [0, 0], [-10, 4]]`,
-			strokeWidth,
-			stroke,
-			BG_COLOR,
-		)
+		arrow = g.Polygon([]rough.Point{{-10, -4}, {0, 0}, {-10, 4}}, solidArrowOptions(stroke, BG_COLOR, strokeWidth, -1, 2))
 	case d2target.DiamondArrowhead:
-		arrowJS = fmt.Sprintf(
-			`node = rc.polygon(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", seed: 1 })`,
-			`[[-20, 0], [-10, 5], [0, 0], [-10, -5], [-20, 0]]`,
-			strokeWidth,
-			stroke,
-			BG_COLOR,
-		)
+		arrow = g.Polygon([]rough.Point{{-20, 0}, {-10, 5}, {0, 0}, {-10, -5}, {-20, 0}}, solidArrowOptions(stroke, BG_COLOR, strokeWidth, -1, 1))
 	case d2target.FilledDiamondArrowhead:
-		arrowJS = fmt.Sprintf(
-			`node = rc.polygon(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "zigzag", fillWeight: 4, seed: 1 })`,
-			`[[-20, 0], [-10, 5], [0, 0], [-10, -5], [-20, 0]]`,
-			strokeWidth,
-			stroke,
-			stroke,
-		)
+		o := solidArrowOptions(stroke, stroke, strokeWidth, 4, 1)
+		o.FillStyle = rough.String("zigzag")
+		arrow = g.Polygon([]rough.Point{{-20, 0}, {-10, 5}, {0, 0}, {-10, -5}, {-20, 0}}, o)
 	case d2target.CrossArrowhead:
-		arrowJS = fmt.Sprintf(
-			`node = rc.linearPath(%s, { strokeWidth: %d, stroke: "%s", seed: 3 })`,
-			`[[-6, -6], [6, 6], [0, 0], [-6, 6], [0, 0], [6, -6]]`,
-			strokeWidth,
-			stroke,
-		)
+		arrow = g.LinearPath([]rough.Point{{-6, -6}, {6, 6}, {0, 0}, {-6, 6}, {0, 0}, {6, -6}}, arrowOptions(stroke, strokeWidth, 3))
 	case d2target.CfManyRequired:
-		arrowJS = fmt.Sprintf(
-			// TODO why does fillStyle: "zigzag" error with path
-			`node = rc.path(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", fillWeight: 4, seed: 2 })`,
-			`"M-15,-10 -15,10 M0,10 -15,0 M0,-10 -15,0"`,
-			strokeWidth,
-			stroke,
-			stroke,
-		)
+		arrow = g.Path("M-15,-10 -15,10 M0,10 -15,0 M0,-10 -15,0", solidArrowOptions(stroke, stroke, strokeWidth, 4, 2))
 	case d2target.CfMany:
-		arrowJS = fmt.Sprintf(
-			`node = rc.path(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", fillWeight: 4, seed: 8 })`,
-			`"M0,10 -15,0 M0,-10 -15,0"`,
-			strokeWidth,
-			stroke,
-			stroke,
-		)
-		extraJS = fmt.Sprintf(
-			`node = rc.circle(-20, 0, 8, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", fillWeight: 1, seed: 4 })`,
-			strokeWidth,
-			stroke,
-			BG_COLOR,
-		)
+		arrow = g.Path("M0,10 -15,0 M0,-10 -15,0", solidArrowOptions(stroke, stroke, strokeWidth, 4, 8))
+		d := g.Circle(-20, 0, 8, solidArrowOptions(stroke, BG_COLOR, strokeWidth, 1, 4))
+		extra = &d
 	case d2target.CfOneRequired:
-		arrowJS = fmt.Sprintf(
-			`node = rc.path(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", fillWeight: 4, seed: 2 })`,
-			`"M-15,-10 -15,10 M-10,-10 -10,10"`,
-			strokeWidth,
-			stroke,
-			stroke,
-		)
+		arrow = g.Path("M-15,-10 -15,10 M-10,-10 -10,10", solidArrowOptions(stroke, stroke, strokeWidth, 4, 2))
 	case d2target.CfOne:
-		arrowJS = fmt.Sprintf(
-			`node = rc.path(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", fillWeight: 4, seed: 3 })`,
-			`"M-10,-10 -10,10"`,
-			strokeWidth,
-			stroke,
-			stroke,
-		)
-		extraJS = fmt.Sprintf(
-			`node = rc.circle(-20, 0, 8, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", fillWeight: 1, seed: 5 })`,
-			strokeWidth,
-			stroke,
-			BG_COLOR,
-		)
+		arrow = g.Path("M-10,-10 -10,10", solidArrowOptions(stroke, stroke, strokeWidth, 4, 3))
+		d := g.Circle(-20, 0, 8, solidArrowOptions(stroke, BG_COLOR, strokeWidth, 1, 5))
+		extra = &d
 	case d2target.CircleArrowhead:
-		arrowJS = fmt.Sprintf(
-			`node = rc.circle(-2, -1, 8, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", fillWeight: 1, seed: 5 })`,
-			strokeWidth,
-			stroke,
-			BG_COLOR,
-		)
+		arrow = g.Circle(-2, -1, 8, solidArrowOptions(stroke, BG_COLOR, strokeWidth, 1, 5))
 	case d2target.BoxArrowhead:
-		arrowJS = fmt.Sprintf(
-			`node = rc.polygon(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", seed: 1})`,
-			`[[0, -10], [0, 10], [-20, 10], [-20, -10]]`,
-			strokeWidth,
-			stroke,
-			BG_COLOR,
-		)
+		arrow = g.Polygon([]rough.Point{{0, -10}, {0, 10}, {-20, 10}, {-20, -10}}, solidArrowOptions(stroke, BG_COLOR, strokeWidth, -1, 1))
 	case d2target.FilledBoxArrowhead:
-		arrowJS = fmt.Sprintf(
-			`node = rc.polygon(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", seed: 1})`,
-			`[[0, -10], [0, 10], [-20, 10], [-20, -10]]`,
-			strokeWidth,
-			stroke,
-			stroke,
-		)
+		arrow = g.Polygon([]rough.Point{{0, -10}, {0, 10}, {-20, 10}, {-20, -10}}, solidArrowOptions(stroke, stroke, strokeWidth, -1, 1))
+	default:
+		return rough.Drawable{}, nil, false
 	}
-	return
+	return arrow, extra, true
 }
 
-func Arrowheads(r jsrunner.JSRunner, connection d2target.Connection, srcAdj, dstAdj *geo.Point) (string, error) {
+func Arrowheads(connection d2target.Connection, srcAdj, dstAdj *geo.Point) (string, error) {
 	arrowPaths := []string{}
 
 	if connection.SrcArrow != d2target.NoArrowhead {
-		arrowJS, extraJS := ArrowheadJS(r, connection.SrcArrow, connection.Stroke, connection.StrokeWidth)
-		if arrowJS == "" {
+		g := newGenerator()
+		arrow, extra, ok := arrowheadDrawable(g, connection.SrcArrow, connection.Stroke, connection.StrokeWidth)
+		if !ok {
 			return "", nil
 		}
 
@@ -944,16 +822,9 @@ func Arrowheads(r jsrunner.JSRunner, connection d2target.Connection, srcAdj, dst
 			startingSegment.Start.X+srcAdj.X, startingSegment.Start.Y+srcAdj.Y, angle,
 		)
 
-		roughPaths, err := computeRoughPaths(r, arrowJS)
-		if err != nil {
-			return "", err
-		}
-		if extraJS != "" {
-			extraPaths, err := computeRoughPaths(r, extraJS)
-			if err != nil {
-				return "", err
-			}
-			roughPaths = append(roughPaths, extraPaths...)
+		roughPaths := computeRoughPaths(g, arrow)
+		if extra != nil {
+			roughPaths = append(roughPaths, computeRoughPaths(g, *extra)...)
 		}
 
 		pathEl := d2themes.NewThemableElement("path", nil)
@@ -969,8 +840,9 @@ func Arrowheads(r jsrunner.JSRunner, connection d2target.Connection, srcAdj, dst
 	}
 
 	if connection.DstArrow != d2target.NoArrowhead {
-		arrowJS, extraJS := ArrowheadJS(r, connection.DstArrow, connection.Stroke, connection.StrokeWidth)
-		if arrowJS == "" {
+		g := newGenerator()
+		arrow, extra, ok := arrowheadDrawable(g, connection.DstArrow, connection.Stroke, connection.StrokeWidth)
+		if !ok {
 			return "", nil
 		}
 
@@ -983,16 +855,9 @@ func Arrowheads(r jsrunner.JSRunner, connection d2target.Connection, srcAdj, dst
 			endingSegment.End.X+dstAdj.X, endingSegment.End.Y+dstAdj.Y, angle,
 		)
 
-		roughPaths, err := computeRoughPaths(r, arrowJS)
-		if err != nil {
-			return "", err
-		}
-		if extraJS != "" {
-			extraPaths, err := computeRoughPaths(r, extraJS)
-			if err != nil {
-				return "", err
-			}
-			roughPaths = append(roughPaths, extraPaths...)
+		roughPaths := computeRoughPaths(g, arrow)
+		if extra != nil {
+			roughPaths = append(roughPaths, computeRoughPaths(g, *extra)...)
 		}
 
 		pathEl := d2themes.NewThemableElement("path", nil)

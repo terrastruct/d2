@@ -8,15 +8,55 @@ import (
 
 	tassert "github.com/stretchr/testify/assert"
 
-	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
-	"oss.terrastruct.com/util-go/mapfs"
+	"github.com/d2lang/util-go/assert"
+	"github.com/d2lang/util-go/diff"
+	"github.com/d2lang/util-go/mapfs"
 
-	"oss.terrastruct.com/d2/d2compiler"
-	"oss.terrastruct.com/d2/d2format"
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2target"
+	"github.com/d2lang/d2/d2compiler"
+	"github.com/d2lang/d2/d2format"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2target"
 )
+
+func TestOpacityValidation(t *testing.T) {
+	t.Parallel()
+
+	const wantErr = `opacity.d2:1:18: expected "opacity" to be a number between 0.0 and 1.0`
+	for _, value := range []string{
+		"NaN", "nan", "NAN",
+		"Inf", "+Inf", "-Inf",
+		"Infinity", "+Infinity", "-Infinity",
+	} {
+		value := value
+		t.Run("reject_"+value, func(t *testing.T) {
+			t.Parallel()
+			_, _, err := d2compiler.Compile("opacity.d2", strings.NewReader("x.style.opacity: "+value), nil)
+			assert.ErrorString(t, err, wantErr)
+		})
+	}
+
+	for _, value := range []string{"0", "0.5", "1"} {
+		value := value
+		t.Run("accept_"+value, func(t *testing.T) {
+			t.Parallel()
+			g, _, err := d2compiler.Compile("opacity.d2", strings.NewReader("x.style.opacity: "+value), nil)
+			assert.Success(t, err)
+			assert.String(t, value, g.Objects[0].Style.Opacity.Value)
+		})
+	}
+}
+
+func TestClassReferenceCycle(t *testing.T) {
+	t.Parallel()
+
+	_, _, err := d2compiler.Compile(
+		"class-cycle.d2",
+		strings.NewReader("classes: { x: { class: x } }\na.class: x"),
+		nil,
+	)
+	assert.ErrorString(t, err, `class-cycle.d2:1:17: "class" cannot appear within "classes"
+class-cycle.d2:1:17: class "x" forms a reference cycle`)
+}
 
 func TestCompile(t *testing.T) {
 	t.Parallel()
@@ -3300,6 +3340,31 @@ nostar -> 1star: { class: path }
 
 				tassert.Equal(t, "4", g.Edges[0].Style.StrokeWidth.Value)
 				tassert.Equal(t, "then", g.Edges[0].Label.Value)
+			},
+		},
+		{
+			name: "recursive-glob-skips-definitions",
+			text: `classes: {
+  container: {
+    style.fill: red
+  }
+}
+vars: {
+  cont_variable: {
+    label: cont variable
+  }
+}
+**: {
+  &label: cont*
+  class: container
+}
+cont_target
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 1, len(g.Objects))
+				tassert.Equal(t, "cont_target", g.Objects[0].AbsID())
+				tassert.Equal(t, []string{"container"}, g.Objects[0].Classes)
+				tassert.Equal(t, "red", g.Objects[0].Style.Fill.Value)
 			},
 		},
 		{

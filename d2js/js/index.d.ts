@@ -3,6 +3,9 @@ export class D2 {
   compile(input: CompileRequest): Promise<CompileResponse>;
 
   render(diagram: Diagram, options?: RenderOptions): Promise<string>;
+
+  /** Terminates the backing worker and rejects any pending operations. */
+  dispose(): Promise<void>;
 }
 
 export interface RenderOptions {
