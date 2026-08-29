@@ -6,9 +6,13 @@ package textmeasure
 import (
 	"math"
 	"strings"
+	"unicode"
 	"unicode/utf8"
 
 	"github.com/rivo/uniseg"
+	"golang.org/x/image/font"
+	"golang.org/x/image/font/sfnt"
+	"golang.org/x/image/math/fixed"
 
 	"github.com/d2lang/d2/d2renderers/d2fonts"
 	"github.com/d2lang/d2/lib/geo"
@@ -177,47 +181,372 @@ func (r *Ruler) addFontSize(font d2fonts.Font) {
 	r.tabWidths[font] = atlas.glyph(' ').advance * TAB_SIZE
 }
 
+func (t *Ruler) measureFontWidth(fontSpec d2fonts.Font, s string) (float64, bool) {
+	sizelessFont := fontSpec
+	sizelessFont.Size = SIZELESS_FONT_SIZE
+	ttf, ok := t.ttfs[sizelessFont]
+	if !ok {
+		return 0, false
+	}
+
+	var buffer sfnt.Buffer
+	for _, r := range s {
+		index, err := ttf.font.GlyphIndex(&buffer, r)
+		if err != nil || (index == 0 && r != 0) {
+			return 0, false
+		}
+	}
+
+	face := ttf.newFace(float64(fontSpec.Size))
+	bounds, advance := font.BoundString(face, s)
+	left := min(bounds.Min.X, 0)
+	right := max(bounds.Max.X, advance)
+	return float64(right-left) / 64, true
+}
+
+// measureFontAdvance returns the cursor advance used by CSS/SVG text layout.
+// MeasurePrecise intentionally includes ink bearings for legacy D2 box
+// measurement; using that ink box to position adjacent styled Markdown runs
+// adds visible gaps after bold and italic spans.
+func (t *Ruler) measureFontAdvance(fontSpec d2fonts.Font, s string) (float64, bool) {
+	sizelessFont := fontSpec
+	sizelessFont.Size = SIZELESS_FONT_SIZE
+	ttf, ok := t.ttfs[sizelessFont]
+	if !ok {
+		return 0, false
+	}
+
+	var buffer sfnt.Buffer
+	for _, r := range s {
+		index, err := ttf.font.GlyphIndex(&buffer, r)
+		if err != nil || (index == 0 && r != 0) {
+			return 0, false
+		}
+	}
+	face := ttf.newFace(float64(fontSpec.Size))
+	return float64(font.MeasureString(face, s)) / 64, true
+}
+
+// cssFontBoxMetrics returns the integer CSS-pixel font box that browsers use
+// to place an SVG text baseline. These are the original OpenType metrics, not
+// the deliberately legacy-compatible em metrics used by D2's text measurer.
+func (t *Ruler) cssFontBoxMetrics(fontSpec d2fonts.Font, size float64) (ascent, descent float64, ok bool) {
+	sizelessFont := fontSpec
+	sizelessFont.Size = SIZELESS_FONT_SIZE
+	ttf, ok := t.ttfs[sizelessFont]
+	if !ok {
+		return 0, 0, false
+	}
+
+	scale := fixed.Int26_6(math.Round(size * 64))
+	metrics, err := ttf.font.Metrics(nil, scale, font.HintingNone)
+	if err != nil {
+		return 0, 0, false
+	}
+	return math.Round(float64(metrics.Ascent) / 64), math.Round(float64(metrics.Descent) / 64), true
+}
+
+func (t *Ruler) cssNormalLineHeight(fontSpec d2fonts.Font, size float64) (float64, bool) {
+	sizelessFont := fontSpec
+	sizelessFont.Size = SIZELESS_FONT_SIZE
+	ttf, ok := t.ttfs[sizelessFont]
+	if !ok {
+		return 0, false
+	}
+	scale := fixed.Int26_6(math.Round(size * 64))
+	metrics, err := ttf.font.Metrics(nil, scale, font.HintingNone)
+	if err != nil {
+		return 0, false
+	}
+	return math.Round(float64(metrics.Height) / 64), true
+}
+
 func (t *Ruler) scaleUnicode(w float64, font d2fonts.Font, s string) float64 {
-	// Weird unicode stuff is going on when this is true
-	// See https://github.com/rivo/uniseg#grapheme-clusters
-	// This method is a good-enough approximation. It overshoots, but not by much.
-	// I suspect we need to import a font with the right glyphs to get the precise measurements
-	// but Hans fonts are heavy.
+	// Keep D2's established approximation for ordinary labels. Native
+	// Markdown has a separate CSS fallback path below; changing this function
+	// would resize unrelated diagrams that happen to contain Unicode text.
 	if uniseg.GraphemeClusterCount(s) != len(s) {
 		for _, line := range strings.Split(s, "\n") {
 			lineW, _ := t.MeasurePrecise(font, line)
-			gr := uniseg.NewGraphemes(line)
+			graphemes := uniseg.NewGraphemes(line)
 
 			mono := d2fonts.SourceCodePro.Font(font.Size, font.Style)
-			for gr.Next() {
-				if gr.Width() == 1 {
+			for graphemes.Next() {
+				if graphemes.Width() == 1 {
 					continue
 				}
-				// For each grapheme which doesn't have width=1, the ruler measured wrongly.
-				// So, replace the measured width with a scaled measurement of a monospace version
-				var prevRune rune
+				var previous rune
 				dot := t.Orig.Copy()
-				b := newRect()
-				for _, r := range gr.Runes() {
+				bounds := newRect()
+				for _, r := range graphemes.Runes() {
 					var control bool
 					dot, control = t.controlRune(r, dot, font)
 					if control {
 						continue
 					}
 
-					var bounds *rect
-					_, _, bounds, dot = t.atlases[font].DrawRune(prevRune, r, dot)
-					b = b.union(bounds)
-
-					prevRune = r
+					var glyphBounds *rect
+					_, _, glyphBounds, dot = t.atlases[font].DrawRune(previous, r, dot)
+					bounds = bounds.union(glyphBounds)
+					previous = r
 				}
-				lineW -= b.w()
-				lineW += t.spaceWidth(mono) * float64(gr.Width())
+				lineW -= bounds.w()
+				lineW += t.spaceWidth(mono) * float64(graphemes.Width())
 			}
 			w = math.Max(w, lineW)
 		}
 	}
 	return w
+}
+
+// scaleUnicodeCSS approximates the host-font fallback advances used by
+// Chromium and SVG viewers when native Markdown contains glyphs absent from
+// D2's embedded fonts.
+func (t *Ruler) scaleUnicodeCSS(w float64, font d2fonts.Font, s string) float64 {
+	return t.scaleUnicodeFallback(w, font, s, true)
+}
+
+func (t *Ruler) scaleUnicodeFallback(w float64, font d2fonts.Font, s string, cssEmoji bool) float64 {
+	// Weird unicode stuff is going on when this is true
+	// See https://github.com/rivo/uniseg#grapheme-clusters
+	// This method is a good-enough approximation. It overshoots, but not by much.
+	// I suspect we need to import a font with the right glyphs to get the precise measurements
+	// but Hans fonts are heavy.
+	if uniseg.GraphemeClusterCount(s) != len(s) {
+		w = 0
+		for _, line := range strings.Split(s, "\n") {
+			lineW, _ := t.MeasurePrecise(font, line)
+			// Font subsets omit layout tables such as GPOS. Use the original
+			// glyph advances so supported Unicode runes are not measured as the
+			// replacement glyph used by the fixed-size atlas.
+			if originalWidth, ok := t.measureFontWidth(font, line); ok {
+				w = math.Max(w, originalWidth)
+				continue
+			}
+			gr := uniseg.NewGraphemes(line)
+			lineW = 0
+			for gr.Next() {
+				grapheme := gr.Str()
+				originalWidth, supported := t.measureFontWidth(font, grapheme)
+				if supported {
+					lineW += originalWidth
+					continue
+				}
+				colorEmoji := cssEmoji && isColorEmojiGrapheme(grapheme)
+				if cssEmoji && !colorEmoji {
+					filtered := stripDefaultIgnorableRunes(grapheme)
+					if filtered != grapheme {
+						if filtered == "" {
+							continue
+						}
+						if filteredWidth, ok := t.measureFontWidth(font, filtered); ok {
+							lineW += filteredWidth
+							continue
+						}
+						grapheme = filtered
+					}
+				}
+				if isZeroWidthGrapheme(grapheme) {
+					continue
+				}
+				// The eventual SVG viewer supplies its own fallback font. CSS emoji
+				// and East Asian clusters normally occupy one em (two terminal
+				// cells); narrow missing glyphs occupy half an em. Reserving 2.5
+				// monospace cells made mixed-script Markdown boxes far wider than
+				// Chromium's actual layout.
+				cells := gr.Width()
+				if cells < 1 {
+					cells = 1
+				}
+				advance := float64(font.Size) * float64(cells) / 2
+				if cssEmoji {
+					if colorEmoji {
+						advance = math.Max(advance, float64(font.Size)*1.25)
+					} else if hasUnicodeSymbol(grapheme) {
+						// Text-presentation emoji-capable symbols such as bare ⚠
+						// occupy one em in Chromium's fallback font.
+						advance = math.Max(advance, float64(font.Size))
+					}
+				}
+				lineW += advance
+			}
+			w = math.Max(w, lineW)
+		}
+	}
+	return w
+}
+
+func stripDefaultIgnorableRunes(s string) string {
+	var out strings.Builder
+	for _, r := range s {
+		if !isDefaultIgnorableRune(r) {
+			out.WriteRune(r)
+		}
+	}
+	return out.String()
+}
+
+func isColorEmojiGrapheme(s string) bool {
+	hasEmojiVariation := false
+	hasEmojiBase := false
+	hasKeycap := false
+	for _, r := range s {
+		if r == '\ufe0f' {
+			hasEmojiVariation = true
+			continue
+		}
+		if r == '\u20e3' {
+			hasKeycap = true
+			continue
+		}
+		if unicode.IsSymbol(r) {
+			hasEmojiBase = true
+		}
+		// Uniseg's width table incorporates Unicode Emoji_Presentation.
+		// Restricting the two-cell result to Other_Symbol distinguishes default
+		// emoji from wide East Asian letters. Checking each base rune also keeps
+		// default emoji wide when an explicit text variation selector is present,
+		// matching Chromium's host fallback behavior.
+		if unicode.Is(unicode.So, r) && uniseg.StringWidth(string(r)) == 2 {
+			return true
+		}
+	}
+	if hasKeycap {
+		for _, r := range s {
+			if r == '#' || r == '*' || (r >= '0' && r <= '9') {
+				hasEmojiBase = true
+				break
+			}
+		}
+	}
+	return hasEmojiVariation && hasEmojiBase
+}
+
+func hasUnicodeSymbol(s string) bool {
+	for _, r := range s {
+		if unicode.IsSymbol(r) {
+			return true
+		}
+	}
+	return false
+}
+
+// scaleUnicodeLegacy preserves the approximation historically used by D2's
+// Markdown box measurement while filtering controls that browsers do not
+// advance. Native painting uses scaleUnicodeCSS above.
+func (t *Ruler) scaleUnicodeLegacy(w float64, fontSpec d2fonts.Font, s string) float64 {
+	if uniseg.GraphemeClusterCount(s) == len(s) {
+		return w
+	}
+	// Preserve the old fallback algorithm (including its original ink width)
+	// after removing controls that Blink gives no advance. Uniseg can attach
+	// such a control to a visible narrow base (for example x + ZWJ), so filtering
+	// only wholly invisible clusters still leaves an atlas replacement glyph.
+	// Keep wide emoji/CJK clusters intact: their variation selectors, tags, and
+	// joiners can determine the browser's glyph and terminal-cell width.
+	measurementText, filteredIgnorables := legacyMeasurementText(s)
+	if filteredIgnorables {
+		w = 0
+	}
+	for _, line := range strings.Split(measurementText, "\n") {
+		lineW, _ := t.MeasurePrecise(fontSpec, line)
+		lineFloor := lineW
+		graphemes := uniseg.NewGraphemes(line)
+		mono := d2fonts.SourceCodePro.Font(fontSpec.Size, fontSpec.Style)
+		for graphemes.Next() {
+			if graphemes.Width() == 1 {
+				continue
+			}
+			var previous rune
+			dot := t.Orig.Copy()
+			bounds := newRect()
+			for _, r := range graphemes.Runes() {
+				var control bool
+				dot, control = t.controlRune(r, dot, fontSpec)
+				if control {
+					continue
+				}
+				var glyphBounds *rect
+				_, _, glyphBounds, dot = t.atlases[fontSpec].DrawRune(previous, r, dot)
+				bounds = bounds.union(glyphBounds)
+				previous = r
+			}
+			lineW -= bounds.w()
+			lineW += t.spaceWidth(mono) * float64(graphemes.Width())
+		}
+		if filteredIgnorables {
+			lineW = math.Max(lineW, lineFloor)
+		}
+		w = math.Max(w, lineW)
+	}
+	return w
+}
+
+func legacyMeasurementText(s string) (string, bool) {
+	var out strings.Builder
+	filtered := false
+	graphemes := uniseg.NewGraphemes(s)
+	for graphemes.Next() {
+		cluster := graphemes.Str()
+		if isDefaultIgnorableGrapheme(cluster) {
+			filtered = true
+			continue
+		}
+		if graphemes.Width() != 1 {
+			out.WriteString(cluster)
+			continue
+		}
+		for _, r := range cluster {
+			if isDefaultIgnorableRune(r) {
+				filtered = true
+				continue
+			}
+			out.WriteRune(r)
+		}
+	}
+	if !filtered {
+		return s, false
+	}
+	return out.String(), true
+}
+
+func isZeroWidthGrapheme(s string) bool {
+	for _, r := range s {
+		if unicode.Is(unicode.Mn, r) || unicode.Is(unicode.Me, r) || isDefaultIgnorableRune(r) {
+			continue
+		}
+		return false
+	}
+	return true
+}
+
+func isDefaultIgnorableGrapheme(s string) bool {
+	for _, r := range s {
+		if !isDefaultIgnorableRune(r) {
+			return false
+		}
+	}
+	return s != ""
+}
+
+func isDefaultIgnorableRune(r rune) bool {
+	// Blink gives most format controls and variation selectors no advance, but
+	// renders several controls and Unicode "default ignorables" through fallback
+	// fonts. Follow that observed behavior instead of erasing the whole derived
+	// Unicode property.
+	if r == '\u00ad' || // conditional; handled by line wrapping
+		r == '\u180f' || // Mongolian free variation selector four has fallback ink in Blink
+		r == '\u3164' || r == '\uffa0' || // visibly advancing Hangul fillers
+		(r >= '\ufff9' && r <= '\ufffb') || // interlinear annotations
+		(r >= '\U00013430' && r <= '\U0001343f') || // Egyptian hieroglyph format controls
+		(r >= '\U0001bca0' && r <= '\U0001bca3') || // visibly advancing shorthand controls
+		unicode.Is(unicode.Prepended_Concatenation_Mark, r) ||
+		unicode.IsSpace(r) {
+		return false
+	}
+	return unicode.Is(unicode.Cf, r) ||
+		unicode.Is(unicode.Other_Default_Ignorable_Code_Point, r) ||
+		unicode.Is(unicode.Variation_Selector, r)
 }
 
 func (t *Ruler) MeasureMono(font d2fonts.Font, s string) (width, height int) {

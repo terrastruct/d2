@@ -285,6 +285,41 @@ steps: {
 			},
 		},
 		{
+			name: "markdown-animation",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "animation.d2", `intro: |md
+# Native **Markdown**
+
+[documentation](https://d2lang.com)
+|
+
+steps: {
+  1: {
+    list: |md
+      - first
+      - second
+    |
+  }
+  2: {
+    table: ||md
+      | Status | Count |
+      | ------ | ----- |
+      | Done   | 42    |
+    ||
+  }
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "--animate-interval=1400", "animation.d2")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "animation.svg")
+				assert.Testdata(t, ".svg", svg)
+				assert.Equal(t, 3, getNumBoards(string(svg)))
+				assert.Equal(t, 6, strings.Count(string(svg), `class="md md-native"`))
+				assert.Equal(t, 6, strings.Count(string(svg), `href="https://d2lang.com"`))
+				assert.False(t, strings.Contains(string(svg), "<foreignObject"))
+			},
+		},
+		{
 			name: "linked-path",
 			// TODO tempdir is random, resulting in different test results each time with the links
 			skip: true,

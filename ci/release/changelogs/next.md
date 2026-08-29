@@ -2,6 +2,8 @@
 
 #### Improvements 🧹
 
+- renders: render Markdown labels as native SVG instead of HTML `foreignObject` content
+
 #### Bugfixes ⛑️
 
 - sequence diagrams: keep synthetic lifeline endpoint IDs stable across architectures

@@ -4,7 +4,40 @@ import (
 	"bytes"
 	"net/url"
 	"testing"
+
+	"github.com/d2lang/d2/d2renderers/d2fonts"
+	"github.com/d2lang/d2/lib/textmeasure"
 )
+
+func TestCalculateTooltipBoundsUsesDiagramFonts(t *testing.T) {
+	fontFamily := d2fonts.HandDrawn
+	monoFontFamily := d2fonts.SourceCodePro
+	shape := Shape{
+		Pos:             Point{X: 100, Y: 200},
+		Width:           120,
+		Height:          60,
+		Tooltip:         "**wide handwritten tooltip**",
+		TooltipPosition: "top-left",
+		Text:            Text{FontFamily: "DEFAULT"},
+	}
+
+	minX, minY, maxX, maxY := calculateTooltipBounds(shape, &fontFamily, &monoFontFamily)
+	ruler, err := textmeasure.NewRuler()
+	if err != nil {
+		t.Fatal(err)
+	}
+	width, height, err := textmeasure.MeasureMarkdown(shape.Tooltip, ruler, &fontFamily, &monoFontFamily, d2fonts.FONT_SIZE_M)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if minX != shape.Pos.X || maxX-minX != width+20 {
+		t.Fatalf("tooltip horizontal bounds = (%d,%d), want x=%d width=%d", minX, maxX, shape.Pos.X, width+20)
+	}
+	wantY := shape.Pos.Y - (height + 20) - 10
+	if minY != wantY || maxY-minY != height+20 {
+		t.Fatalf("tooltip vertical bounds = (%d,%d), want y=%d height=%d", minY, maxY, wantY, height+20)
+	}
+}
 
 func TestHashIDStableAcrossURLFieldOrder(t *testing.T) {
 	icon := &url.URL{
