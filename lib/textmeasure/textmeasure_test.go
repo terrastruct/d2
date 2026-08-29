@@ -57,6 +57,26 @@ func TestTextMeasure(t *testing.T) {
 	}
 }
 
+func TestMeasurePreservesOrdinaryUnicodeDimensions(t *testing.T) {
+	t.Parallel()
+	ruler, err := textmeasure.NewRuler()
+	if err != nil {
+		t.Fatal(err)
+	}
+	font := d2fonts.SourceSansPro.Font(16, d2fonts.FONT_STYLE_BOLD)
+
+	for text, wantWidth := range map[string]int{
+		"🐵🐵🐵🐵🐵🐵🐵🐵": 160,
+		"✊✊✊✊":     79,
+		"☁️☁️☁️☁️": 87,
+		"中文測試":     79,
+	} {
+		width, height := ruler.Measure(font, text)
+		assert.Equal(t, wantWidth, width, text)
+		assert.Equal(t, 21, height, text)
+	}
+}
+
 func TestFontMeasure(t *testing.T) {
 	ruler, err := textmeasure.NewRuler()
 	if err != nil {
@@ -82,26 +102,40 @@ type dimensions struct {
 var mdTexts = map[string]dimensions{
 	`
 - [Overview](#overview) ok _this is all measured_
-`: {257, 32},
+`: {245, 24},
 	`
 _italics are all measured correctly_
-`: {226, 32},
+`: {214, 24},
 	`
 **bold is measured correctly**
-`: {200, 32},
+`: {188, 24},
 	`
 **Note:** This document
-`: {155, 32},
+`: {143, 24},
 	`
 **Note:**
-`: {51, 32},
-	`a`:             {21, 32},
-	`w`:             {24, 32},
-	`ww`:            {36, 32},
-	"`inline code`": {115, 32},
-	"`code`":        {58, 32},
-	"`a`":           {33, 32},
-	`# Cloud Run Egress Architecture — Backend / Exporter / Autolayout / Fetcher`: {1034, 59},
+`: {39, 24},
+	`a`:                  {9, 24},
+	`w`:                  {12, 24},
+	`ww`:                 {24, 24},
+	"`inline code`":      {103, 24},
+	"`code`":             {46, 24},
+	"`a`":                {21, 24},
+	"`日本語日本語`":           {62, 24},
+	"```\n日本語日本語\n```":   {81, 56},
+	"# `日本語日本語`":         {124, 58},
+	"```\n👩🏼‍❤️‍👨🏼\n```": {98, 56},
+	"👩🏼‍❤️‍👨🏼":           {84, 24},
+	"\u0301x":            {18, 24},
+	"# *italic*":         {65, 51},
+	"**_reverse_**":      {48, 24},
+	"_**forward**_":      {58, 24},
+	"**`bold code`**":    {87, 24},
+	"*`italic code`*":    {103, 24},
+	"*":                  {32, 0},
+	"-":                  {32, 0},
+	"1.":                 {32, 0},
+	`# Cloud Run Egress Architecture — Backend / Exporter / Autolayout / Fetcher`: {1018, 51},
 }
 
 func TestTextMeasureMarkdown(t *testing.T) {
@@ -121,7 +155,7 @@ func TestTextMeasureMarkdown(t *testing.T) {
 
 }
 
-func TestMarkdownUnsupportedEmojiReservesFallbackWidth(t *testing.T) {
+func TestMarkdownUnsupportedEmojiMatchesLegacyViewport(t *testing.T) {
 	ruler, err := textmeasure.NewRuler()
 	if err != nil {
 		t.Fatal(err)
@@ -131,9 +165,10 @@ func TestMarkdownUnsupportedEmojiReservesFallbackWidth(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	// Chrome's fallback emoji glyph reaches just beyond 241px with the
-	// embedded Source Sans Pro face. The native SVG viewport must enclose it.
-	assert.True(t, width >= 242, width)
+	// Keep the graph-layout dimension used by the former browser renderer.
+	// Native painting reserves a browser-like fallback advance inside it rather
+	// than expanding every Markdown box with global safety padding.
+	assert.Equal(t, 236, width)
 }
 
 func TestMarkdownZeroWidthCharactersDoNotAddWidth(t *testing.T) {
@@ -151,4 +186,62 @@ func TestMarkdownZeroWidthCharactersDoNotAddWidth(t *testing.T) {
 		t.Fatal(err)
 	}
 	assert.Equal(t, plainWidth, zeroWidth)
+	for _, control := range []string{
+		"\u061c",     // Arabic letter mark
+		"\u200e",     // left-to-right mark
+		"\u2066",     // left-to-right isolate
+		"\u115f",     // zero-advance Hangul choseong filler
+		"\u1160",     // zero-advance Hangul jungseong filler
+		"\U000e0001", // language tag
+	} {
+		width, _, err := textmeasure.MeasureMarkdown(control+"x"+control, ruler, nil, nil, textmeasure.MarkdownFontSize)
+		if err != nil {
+			t.Fatal(err)
+		}
+		assert.Equal(t, plainWidth, width, fmt.Sprintf("default-ignorable %U", []rune(control)[0]))
+	}
+	for _, text := range []string{
+		"x\ufe0f",     // variation selector attached to the base cluster
+		"x\u200d",     // zero-width joiner attached to the base cluster
+		"x\u034f",     // combining grapheme joiner attached to the base cluster
+		"x\U000e007f", // cancel tag attached to the base cluster
+		"\U000e0001x\U000e007f",
+	} {
+		width, _, err := textmeasure.MeasureMarkdown(text, ruler, nil, nil, textmeasure.MarkdownFontSize)
+		if err != nil {
+			t.Fatal(err)
+		}
+		assert.Equal(t, plainWidth, width, fmt.Sprintf("attached default-ignorable %q", text))
+	}
+
+	// These controls and fillers are nominally format/default-ignorable code
+	// points, but Chromium paints them through fallback fonts. Do not collapse
+	// their established viewport to the width of x.
+	visibleFallbacks := map[string]int{
+		"\ufff9x\ufffb":         29,
+		"\U00013430x\U0001343f": 29,
+		"\u0600":                11,
+		"\u180fx\u180f":         29,
+		"\u3164x\u3164":         47,
+		"\uffa0x\uffa0":         29,
+		"\U0001bca0x\U0001bca0": 29,
+	}
+	for text, want := range visibleFallbacks {
+		width, _, err := textmeasure.MeasureMarkdown(text, ruler, nil, nil, textmeasure.MarkdownFontSize)
+		if err != nil {
+			t.Fatal(err)
+		}
+		assert.Equal(t, want, width, fmt.Sprintf("visible fallback %U", []rune(text)[0]))
+	}
+
+	visible := "x\n👩🏼‍❤️‍👨🏼"
+	visibleWidth, _, err := textmeasure.MeasureMarkdown(visible, ruler, nil, nil, textmeasure.MarkdownFontSize)
+	if err != nil {
+		t.Fatal(err)
+	}
+	mixedWidth, _, err := textmeasure.MeasureMarkdown("\u200b"+visible+"\u200b", ruler, nil, nil, textmeasure.MarkdownFontSize)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assert.Equal(t, visibleWidth, mixedWidth)
 }

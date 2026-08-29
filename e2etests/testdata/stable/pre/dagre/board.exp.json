@@ -19,8 +19,8 @@
         "x": 0,
         "y": 166
       },
-      "width": 614,
-      "height": 180,
+      "width": 602,
+      "height": 170,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -48,8 +48,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 614,
-      "labelHeight": 180,
+      "labelWidth": 602,
+      "labelHeight": 170,
       "zIndex": 0,
       "level": 1
     },
@@ -57,7 +57,7 @@
       "id": "a",
       "type": "rectangle",
       "pos": {
-        "x": 281,
+        "x": 275,
         "y": 0
       },
       "width": 53,
@@ -99,8 +99,8 @@
       "id": "b",
       "type": "rectangle",
       "pos": {
-        "x": 281,
-        "y": 446
+        "x": 275,
+        "y": 436
       },
       "width": 53,
       "height": 66,
@@ -165,19 +165,19 @@
       "link": "",
       "route": [
         {
-          "x": 307,
+          "x": 301,
           "y": 66
         },
         {
-          "x": 307,
+          "x": 301,
           "y": 106
         },
         {
-          "x": 307,
+          "x": 301,
           "y": 126
         },
         {
-          "x": 307,
+          "x": 301,
           "y": 166
         }
       ],
@@ -213,20 +213,20 @@
       "link": "",
       "route": [
         {
-          "x": 307,
-          "y": 346
+          "x": 301,
+          "y": 336
         },
         {
-          "x": 307,
-          "y": 386
+          "x": 301,
+          "y": 376
         },
         {
-          "x": 307,
-          "y": 406
+          "x": 301,
+          "y": 396
         },
         {
-          "x": 307,
-          "y": 446
+          "x": 301,
+          "y": 436
         }
       ],
       "isCurve": true,

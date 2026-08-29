@@ -16,10 +16,10 @@
       "id": "network",
       "type": "rectangle",
       "pos": {
-        "x": 10,
+        "x": 5,
         "y": 227
       },
-      "width": 397,
+      "width": 395,
       "height": 1198,
       "opacity": 1,
       "strokeDash": 0,
@@ -49,7 +49,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 126,
+      "labelWidth": 104,
       "labelHeight": 36,
       "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
@@ -59,10 +59,10 @@
       "id": "network.cell tower",
       "type": "rectangle",
       "pos": {
-        "x": 124,
+        "x": 118,
         "y": 268
       },
-      "width": 253,
+      "width": 252,
       "height": 323,
       "opacity": 1,
       "strokeDash": 0,
@@ -102,10 +102,10 @@
       "id": "network.cell tower.satellites",
       "type": "stored_data",
       "pos": {
-        "x": 189,
+        "x": 187,
         "y": 308
       },
-      "width": 113,
+      "width": 104,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -135,7 +135,7 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 48,
+      "labelWidth": 39,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -148,7 +148,7 @@
         "x": 187,
         "y": 495
       },
-      "width": 117,
+      "width": 104,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -178,7 +178,7 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 72,
+      "labelWidth": 59,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -188,7 +188,7 @@
       "id": "network.online portal",
       "type": "rectangle",
       "pos": {
-        "x": 40,
+        "x": 35,
         "y": 1266
       },
       "width": 119,
@@ -221,7 +221,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 325,
+      "labelWidth": 271,
       "labelHeight": 31,
       "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
@@ -231,7 +231,7 @@
       "id": "network.online portal.ui",
       "type": "hexagon",
       "pos": {
-        "x": 70,
+        "x": 65,
         "y": 1296
       },
       "width": 59,
@@ -277,7 +277,7 @@
         "x": 157,
         "y": 742
       },
-      "width": 187,
+      "width": 174,
       "height": 188,
       "opacity": 1,
       "strokeDash": 0,
@@ -307,7 +307,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 289,
+      "labelWidth": 241,
       "labelHeight": 31,
       "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
@@ -320,7 +320,7 @@
         "x": 187,
         "y": 782
       },
-      "width": 117,
+      "width": 104,
       "height": 118,
       "opacity": 1,
       "strokeDash": 0,
@@ -350,7 +350,7 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 72,
+      "labelWidth": 59,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -360,7 +360,7 @@
       "id": "user",
       "type": "person",
       "pos": {
-        "x": 84,
+        "x": 81,
         "y": 0
       },
       "width": 130,
@@ -393,7 +393,7 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 96,
+      "labelWidth": 79,
       "labelHeight": 21,
       "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
@@ -403,7 +403,7 @@
       "id": "other-user",
       "type": "person",
       "pos": {
-        "x": 274,
+        "x": 271,
         "y": 8
       },
       "width": 108,
@@ -446,10 +446,10 @@
       "id": "api server",
       "type": "rectangle",
       "pos": {
-        "x": 472,
+        "x": 463,
         "y": 1050
       },
-      "width": 167,
+      "width": 151,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -479,7 +479,7 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 122,
+      "labelWidth": 106,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -489,10 +489,10 @@
       "id": "logs",
       "type": "page",
       "pos": {
-        "x": 509,
+        "x": 497,
         "y": 1287
       },
-      "width": 93,
+      "width": 84,
       "height": 87,
       "opacity": 1,
       "strokeDash": 0,
@@ -522,7 +522,7 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 48,
+      "labelWidth": 39,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -555,19 +555,19 @@
       "link": "",
       "route": [
         {
-          "x": 272,
+          "x": 265,
           "y": 374
         },
         {
-          "x": 318.6000061035156,
+          "x": 312.20001220703125,
           "y": 422.3999938964844
         },
         {
-          "x": 318.45001220703125,
+          "x": 312.20001220703125,
           "y": 446.70001220703125
         },
         {
-          "x": 271.25,
+          "x": 265,
           "y": 495.5
         }
       ],
@@ -602,19 +602,19 @@
       "link": "",
       "route": [
         {
-          "x": 245,
+          "x": 239,
           "y": 374
         },
         {
-          "x": 245.1999969482422,
+          "x": 239,
           "y": 422.3999938964844
         },
         {
-          "x": 245.25,
+          "x": 239,
           "y": 446.70001220703125
         },
         {
-          "x": 245.25,
+          "x": 239,
           "y": 495.5
         }
       ],
@@ -649,19 +649,19 @@
       "link": "",
       "route": [
         {
-          "x": 219,
+          "x": 213,
           "y": 374
         },
         {
-          "x": 180,
+          "x": 173.8000030517578,
           "y": 422.3999938964844
         },
         {
-          "x": 180.0500030517578,
+          "x": 173.8000030517578,
           "y": 446.70001220703125
         },
         {
-          "x": 219.25,
+          "x": 213,
           "y": 495.5
         }
       ],
@@ -689,38 +689,38 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 96,
+      "labelWidth": 77,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
       "link": "",
       "route": [
         {
-          "x": 245.25,
+          "x": 239,
           "y": 561
         },
         {
-          "x": 245.25,
+          "x": 239,
           "y": 601
         },
         {
-          "x": 245.25,
+          "x": 239,
           "y": 623.0999755859375
         },
         {
-          "x": 245.25,
+          "x": 239,
           "y": 641.25
         },
         {
-          "x": 245.25,
+          "x": 239,
           "y": 659.4000244140625
         },
         {
-          "x": 245.1999969482422,
+          "x": 239,
           "y": 740
         },
         {
-          "x": 245,
+          "x": 239,
           "y": 772
         }
       ],
@@ -748,26 +748,26 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 144,
+      "labelWidth": 116,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
       "link": "",
       "route": [
         {
-          "x": 202.25,
-          "y": 101.5
+          "x": 190,
+          "y": 93.5
         },
         {
-          "x": 236.64999389648438,
-          "y": 138.3000030517578
+          "x": 229.1999969482422,
+          "y": 136.6999969482422
         },
         {
-          "x": 245.25,
+          "x": 239,
           "y": 212.8000030517578
         },
         {
-          "x": 245.25,
+          "x": 239,
           "y": 232
         }
       ],
@@ -795,7 +795,7 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 96,
+      "labelWidth": 77,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
@@ -803,174 +803,174 @@
       "route": [
         {
           "x": 101.75,
-          "y": 112.5
+          "y": 108.5
         },
         {
-          "x": 83.3499984741211,
-          "y": 140.5
+          "x": 80.1500015258789,
+          "y": 139.6999969482422
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 159.60000610351562
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 177.75
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 195.89999389648438
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 218
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 233
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 248
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 274.6000061035156
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 299.5
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 324.3999938964844
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 359.70001220703125
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 387.75
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 415.79998779296875
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 453.20001220703125
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 481.25
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 509.29998779296875
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 544.5999755859375
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 569.5
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 594.4000244140625
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 623.0999755859375
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 641.25
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 659.4000244140625
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 683.5999755859375
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 701.75
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 719.9000244140625
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 753.7999877929688
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 786.5
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 819.2000122070312
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 862.7999877929688
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 895.5
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 928.2000122070312
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 960
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 975
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 990
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 1016.5999755859375
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 1041.5
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 1066.4000244140625
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 1101.699951171875
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 1129.75
         },
         {
-          "x": 78.75,
+          "x": 74.75,
           "y": 1157.800048828125
         },
         {
-          "x": 81.4000015258789,
+          "x": 77.19999694824219,
           "y": 1248.800048828125
         },
         {
-          "x": 92,
+          "x": 87,
           "y": 1296
         }
       ],
@@ -998,26 +998,26 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 48,
+      "labelWidth": 39,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
       "link": "",
       "route": [
         {
-          "x": 471.75,
-          "y": 1102.052978515625
+          "x": 463.25,
+          "y": 1100.5
         },
         {
-          "x": 194.75,
-          "y": 1161.6099853515625
+          "x": 188.0500030517578,
+          "y": 1161.300048828125
         },
         {
-          "x": 122.4000015258789,
+          "x": 116,
           "y": 1248.800048828125
         },
         {
-          "x": 110,
+          "x": 103,
           "y": 1296
         }
       ],
@@ -1045,26 +1045,26 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 96,
+      "labelWidth": 77,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
       "link": "",
       "route": [
         {
-          "x": 555.25,
+          "x": 538.75,
           "y": 1115.5
         },
         {
-          "x": 555.25,
+          "x": 538.75,
           "y": 1164.300048828125
         },
         {
-          "x": 555.2000122070312,
+          "x": 538.7999877929688,
           "y": 1245
         },
         {
-          "x": 555,
+          "x": 539,
           "y": 1277
         }
       ],
@@ -1099,20 +1099,20 @@
       "link": "",
       "route": [
         {
-          "x": 245.25,
+          "x": 239,
           "y": 930
         },
         {
-          "x": 245.25,
+          "x": 239,
           "y": 986
         },
         {
-          "x": 290.54998779296875,
-          "y": 1011.8200073242188
+          "x": 283.79998779296875,
+          "y": 1012.2000122070312
         },
         {
-          "x": 471.75,
-          "y": 1059.1009521484375
+          "x": 463,
+          "y": 1061
         }
       ],
       "isCurve": true,

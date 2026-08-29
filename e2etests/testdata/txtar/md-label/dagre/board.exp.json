@@ -17,10 +17,10 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 72
+        "y": 68
       },
-      "width": 128,
-      "height": 184,
+      "width": 116,
+      "height": 176,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -48,8 +48,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 83,
-      "labelHeight": 139,
+      "labelWidth": 71,
+      "labelHeight": 131,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -58,11 +58,11 @@
       "id": "square",
       "type": "rectangle",
       "pos": {
-        "x": 188,
-        "y": 72
+        "x": 176,
+        "y": 68
       },
-      "width": 184,
-      "height": 184,
+      "width": 176,
+      "height": 176,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -90,8 +90,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 83,
-      "labelHeight": 139,
+      "labelWidth": 71,
+      "labelHeight": 131,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -100,11 +100,11 @@
       "id": "page",
       "type": "page",
       "pos": {
-        "x": 432,
-        "y": 62
+        "x": 412,
+        "y": 58
       },
-      "width": 128,
-      "height": 205,
+      "width": 116,
+      "height": 197,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -132,8 +132,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 83,
-      "labelHeight": 139,
+      "labelWidth": 71,
+      "labelHeight": 131,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -142,11 +142,11 @@
       "id": "parallelogram",
       "type": "parallelogram",
       "pos": {
-        "x": 620,
-        "y": 72
+        "x": 588,
+        "y": 68
       },
-      "width": 180,
-      "height": 184,
+      "width": 168,
+      "height": 176,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -174,8 +174,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 83,
-      "labelHeight": 139,
+      "labelWidth": 71,
+      "labelHeight": 131,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -184,11 +184,11 @@
       "id": "document",
       "type": "document",
       "pos": {
-        "x": 860,
-        "y": 47
+        "x": 816,
+        "y": 44
       },
-      "width": 128,
-      "height": 235,
+      "width": 116,
+      "height": 224,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -216,8 +216,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 83,
-      "labelHeight": 139,
+      "labelWidth": 71,
+      "labelHeight": 131,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -226,11 +226,11 @@
       "id": "cylinder",
       "type": "cylinder",
       "pos": {
-        "x": 1048,
-        "y": 46
+        "x": 992,
+        "y": 42
       },
-      "width": 128,
-      "height": 236,
+      "width": 116,
+      "height": 228,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -258,8 +258,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 83,
-      "labelHeight": 139,
+      "labelWidth": 71,
+      "labelHeight": 131,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -268,11 +268,11 @@
       "id": "queue",
       "type": "queue",
       "pos": {
-        "x": 1236,
-        "y": 72
+        "x": 1168,
+        "y": 68
       },
-      "width": 180,
-      "height": 184,
+      "width": 168,
+      "height": 176,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -300,8 +300,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 83,
-      "labelHeight": 139,
+      "labelWidth": 71,
+      "labelHeight": 131,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -310,11 +310,11 @@
       "id": "package",
       "type": "package",
       "pos": {
-        "x": 1476,
-        "y": 54
+        "x": 1396,
+        "y": 51
       },
-      "width": 128,
-      "height": 220,
+      "width": 116,
+      "height": 210,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -342,8 +342,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 83,
-      "labelHeight": 139,
+      "labelWidth": 71,
+      "labelHeight": 131,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -352,11 +352,11 @@
       "id": "step",
       "type": "step",
       "pos": {
-        "x": 1664,
-        "y": 55
+        "x": 1572,
+        "y": 51
       },
-      "width": 168,
-      "height": 219,
+      "width": 156,
+      "height": 211,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -384,8 +384,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 83,
-      "labelHeight": 139,
+      "labelWidth": 71,
+      "labelHeight": 131,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -394,11 +394,11 @@
       "id": "callout",
       "type": "callout",
       "pos": {
-        "x": 1892,
-        "y": 60
+        "x": 1788,
+        "y": 56
       },
-      "width": 128,
-      "height": 209,
+      "width": 116,
+      "height": 201,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -426,8 +426,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 83,
-      "labelHeight": 139,
+      "labelWidth": 71,
+      "labelHeight": 131,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -436,11 +436,11 @@
       "id": "stored_data",
       "type": "stored_data",
       "pos": {
-        "x": 2080,
-        "y": 72
+        "x": 1964,
+        "y": 68
       },
-      "width": 148,
-      "height": 184,
+      "width": 136,
+      "height": 176,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -468,8 +468,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 83,
-      "labelHeight": 139,
+      "labelWidth": 71,
+      "labelHeight": 131,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -478,11 +478,11 @@
       "id": "person",
       "type": "person",
       "pos": {
-        "x": 2288,
-        "y": 72
+        "x": 2160,
+        "y": 68
       },
-      "width": 123,
-      "height": 184,
+      "width": 117,
+      "height": 176,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -510,8 +510,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 83,
-      "labelHeight": 139,
+      "labelWidth": 71,
+      "labelHeight": 131,
       "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
@@ -520,11 +520,11 @@
       "id": "diamond",
       "type": "diamond",
       "pos": {
-        "x": 2471,
+        "x": 2337,
         "y": 0
       },
-      "width": 196,
-      "height": 328,
+      "width": 172,
+      "height": 312,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -552,8 +552,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 83,
-      "labelHeight": 139,
+      "labelWidth": 71,
+      "labelHeight": 131,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -562,11 +562,11 @@
       "id": "oval",
       "type": "oval",
       "pos": {
-        "x": 2727,
-        "y": 38
+        "x": 2569,
+        "y": 35
       },
-      "width": 154,
-      "height": 252,
+      "width": 136,
+      "height": 242,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -594,8 +594,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 83,
-      "labelHeight": 139,
+      "labelWidth": 71,
+      "labelHeight": 131,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -604,11 +604,11 @@
       "id": "circle",
       "type": "oval",
       "pos": {
-        "x": 2941,
-        "y": 42
+        "x": 2765,
+        "y": 40
       },
-      "width": 244,
-      "height": 244,
+      "width": 233,
+      "height": 233,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -636,8 +636,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 83,
-      "labelHeight": 139,
+      "labelWidth": 71,
+      "labelHeight": 131,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -646,11 +646,11 @@
       "id": "hexagon",
       "type": "hexagon",
       "pos": {
-        "x": 3245,
-        "y": 41
+        "x": 3058,
+        "y": 39
       },
-      "width": 162,
-      "height": 246,
+      "width": 144,
+      "height": 234,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -678,8 +678,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 83,
-      "labelHeight": 139,
+      "labelWidth": 71,
+      "labelHeight": 131,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -688,11 +688,11 @@
       "id": "cloud",
       "type": "cloud",
       "pos": {
-        "x": 3467,
-        "y": 64
+        "x": 3262,
+        "y": 61
       },
-      "width": 234,
-      "height": 200,
+      "width": 212,
+      "height": 191,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -712,7 +712,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "contentAspectRatio": 0.40914634146341466,
+      "contentAspectRatio": 0.3741391678622669,
       "label": "# hello\n\n- world\n\nblah blah",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -721,8 +721,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 83,
-      "labelHeight": 139,
+      "labelWidth": 71,
+      "labelHeight": 131,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1

@@ -12,6 +12,7 @@ import (
 	"github.com/d2lang/d2/d2lib"
 	"github.com/d2lang/d2/d2renderers/d2fonts"
 	"github.com/d2lang/d2/d2renderers/d2svg"
+	"github.com/d2lang/d2/d2target"
 	"github.com/d2lang/d2/lib/log"
 	"github.com/d2lang/d2/lib/textmeasure"
 	"github.com/d2lang/util-go/assert"
@@ -49,6 +50,11 @@ underlined: |md
 | {
   style.underline: true
 }
+wide: |md
+  # Centered
+|
+wide.width: 400
+wide.height: 200
 a -> b: |md
   **edge label**
 |
@@ -95,6 +101,9 @@ a -> b: |md
 	if !strings.Contains(svg, `font-style="italic"`) {
 		t.Fatal("Markdown output did not compose bold and italic styles")
 	}
+	if !strings.Contains(svg, `font-weight="bold"`) {
+		t.Fatal("Markdown output did not preserve bold emphasis inside inline code")
+	}
 	if !strings.Contains(svg, `class="positioned-tooltip"`) {
 		t.Fatal("positioned tooltip was not rendered")
 	}
@@ -103,6 +112,26 @@ a -> b: |md
 	}
 	if !strings.Contains(svg, `text-decoration="underline"`) {
 		t.Fatal("Markdown label did not preserve style.underline")
+	}
+	var wide *d2target.Shape
+	for i := range diagram.Shapes {
+		if diagram.Shapes[i].ID == "wide" {
+			wide = &diagram.Shapes[i]
+			break
+		}
+	}
+	if wide == nil {
+		t.Fatal("wide Markdown shape was not compiled")
+	}
+	wantCenteredViewport := fmt.Sprintf(
+		`<svg x="%f" y="%f" width="%d" height="%d"`,
+		float64(wide.Pos.X)+(float64(wide.Width)-float64(wide.LabelWidth))/2,
+		float64(wide.Pos.Y)+(float64(wide.Height)-float64(wide.LabelHeight))/2,
+		wide.LabelWidth,
+		wide.LabelHeight,
+	)
+	if !strings.Contains(svg, wantCenteredViewport) {
+		t.Fatalf("unset Markdown label position was not centered: want %s", wantCenteredViewport)
 	}
 	tooltipLayout, err := textmeasure.LayoutMarkdown("**tooltip**", ruler, &fontFamily, &monoFontFamily, d2fonts.FONT_SIZE_M)
 	assert.Success(t, err)
@@ -116,7 +145,7 @@ a -> b: |md
 	if strings.Contains(tooltipPrefix, `fill="white" stroke="#DEE1EB"`) || !strings.Contains(tooltipPrefix, "fill-N7") {
 		t.Fatal("positioned tooltip did not use theme-aware background colors")
 	}
-	for _, fontClass := range []string{"text-semibold", "text-bold", "text-italic", "text-mono", "text-mono-semibold", "text-mono-bold"} {
+	for _, fontClass := range []string{"text-semibold", "text-bold", "text-italic", "text-mono", "text-mono-semibold"} {
 		if !strings.Contains(svg, "."+fontClass+" {") {
 			t.Fatalf("native Markdown did not embed the %s font face", fontClass)
 		}

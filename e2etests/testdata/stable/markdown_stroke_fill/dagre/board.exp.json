@@ -19,8 +19,8 @@
         "x": 10,
         "y": 20
       },
-      "width": 284,
-      "height": 326,
+      "width": 272,
+      "height": 318,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -61,8 +61,8 @@
         "x": 40,
         "y": 50
       },
-      "width": 224,
-      "height": 266,
+      "width": 212,
+      "height": 258,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -90,8 +90,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 224,
-      "labelHeight": 266,
+      "labelWidth": 212,
+      "labelHeight": 258,
       "zIndex": 0,
       "level": 2
     },
@@ -100,10 +100,10 @@
       "type": "text",
       "pos": {
         "x": 87,
-        "y": 466
+        "y": 458
       },
-      "width": 130,
-      "height": 32,
+      "width": 118,
+      "height": 24,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -131,8 +131,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 130,
-      "labelHeight": 32,
+      "labelWidth": 118,
+      "labelHeight": 24,
       "zIndex": 0,
       "level": 1
     }
@@ -164,20 +164,20 @@
       "link": "",
       "route": [
         {
-          "x": 152,
-          "y": 346
+          "x": 146,
+          "y": 338
         },
         {
-          "x": 152,
-          "y": 402
+          "x": 146,
+          "y": 394
         },
         {
-          "x": 152,
-          "y": 426
+          "x": 146,
+          "y": 418
         },
         {
-          "x": 152,
-          "y": 466
+          "x": 146,
+          "y": 458
         }
       ],
       "isCurve": true,

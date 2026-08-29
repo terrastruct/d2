@@ -19,8 +19,8 @@
         "x": 12,
         "y": 148
       },
-      "width": 344,
-      "height": 169,
+      "width": 332,
+      "height": 161,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -48,8 +48,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 344,
-      "labelHeight": 169,
+      "labelWidth": 332,
+      "labelHeight": 161,
       "zIndex": 0,
       "level": 1
     },
@@ -57,7 +57,7 @@
       "id": "x",
       "type": "rectangle",
       "pos": {
-        "x": 157,
+        "x": 151,
         "y": 12
       },
       "width": 53,
@@ -99,8 +99,8 @@
       "id": "y",
       "type": "rectangle",
       "pos": {
-        "x": 157,
-        "y": 387
+        "x": 151,
+        "y": 379
       },
       "width": 54,
       "height": 66,
@@ -165,11 +165,11 @@
       "link": "",
       "route": [
         {
-          "x": 184,
+          "x": 178,
           "y": 78
         },
         {
-          "x": 184,
+          "x": 178,
           "y": 148
         }
       ],
@@ -204,12 +204,12 @@
       "link": "",
       "route": [
         {
-          "x": 184,
-          "y": 317
+          "x": 178,
+          "y": 309
         },
         {
-          "x": 184,
-          "y": 387
+          "x": 178,
+          "y": 379
         }
       ],
       "animated": false,

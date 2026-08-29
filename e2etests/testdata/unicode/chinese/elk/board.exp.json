@@ -16,11 +16,11 @@
       "id": "poem",
       "type": "text",
       "pos": {
-        "x": 48,
+        "x": 66,
         "y": 12
       },
-      "width": 188,
-      "height": 172,
+      "width": 118,
+      "height": 144,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -48,8 +48,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 188,
-      "labelHeight": 172,
+      "labelWidth": 118,
+      "labelHeight": 144,
       "zIndex": 0,
       "level": 1
     },
@@ -58,9 +58,9 @@
       "type": "rectangle",
       "pos": {
         "x": 12,
-        "y": 254
+        "y": 226
       },
-      "width": 261,
+      "width": 226,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -89,7 +89,7 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 216,
+      "labelWidth": 181,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -123,12 +123,12 @@
       "link": "",
       "route": [
         {
-          "x": 142.5,
-          "y": 184
+          "x": 125,
+          "y": 156
         },
         {
-          "x": 142.5,
-          "y": 254
+          "x": 125,
+          "y": 226
         }
       ],
       "animated": false,

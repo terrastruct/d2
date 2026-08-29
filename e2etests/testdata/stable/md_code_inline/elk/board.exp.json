@@ -16,11 +16,11 @@
       "id": "md",
       "type": "text",
       "pos": {
-        "x": 12,
+        "x": 15,
         "y": 148
       },
-      "width": 58,
-      "height": 32,
+      "width": 46,
+      "height": 24,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -48,8 +48,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 58,
-      "labelHeight": 32,
+      "labelWidth": 46,
+      "labelHeight": 24,
       "zIndex": 0,
       "level": 1
     },
@@ -57,7 +57,7 @@
       "id": "a",
       "type": "rectangle",
       "pos": {
-        "x": 14,
+        "x": 12,
         "y": 12
       },
       "width": 53,
@@ -99,8 +99,8 @@
       "id": "b",
       "type": "rectangle",
       "pos": {
-        "x": 14,
-        "y": 250
+        "x": 12,
+        "y": 242
       },
       "width": 53,
       "height": 66,
@@ -165,11 +165,11 @@
       "link": "",
       "route": [
         {
-          "x": 41,
+          "x": 38.5,
           "y": 78
         },
         {
-          "x": 41,
+          "x": 38.5,
           "y": 148
         }
       ],
@@ -204,12 +204,12 @@
       "link": "",
       "route": [
         {
-          "x": 41,
-          "y": 180
+          "x": 38.5,
+          "y": 172
         },
         {
-          "x": 41,
-          "y": 250
+          "x": 38.5,
+          "y": 242
         }
       ],
       "animated": false,

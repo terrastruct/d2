@@ -100,7 +100,7 @@
       "id": "Charlie",
       "type": "rectangle",
       "pos": {
-        "x": 469,
+        "x": 457,
         "y": 52
       },
       "width": 100,
@@ -198,19 +198,19 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 187,
-      "labelHeight": 72,
+      "labelWidth": 175,
+      "labelHeight": 64,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
       "link": "",
       "route": [
         {
           "x": 272,
-          "y": 314
+          "y": 310
         },
         {
-          "x": 519,
-          "y": 314
+          "x": 507,
+          "y": 310
         }
       ],
       "animated": false,
@@ -244,12 +244,12 @@
       "link": "",
       "route": [
         {
-          "x": 519,
-          "y": 451
+          "x": 507,
+          "y": 443
         },
         {
           "x": 62,
-          "y": 451
+          "y": 443
         }
       ],
       "animated": false,
@@ -288,7 +288,7 @@
         },
         {
           "x": 62,
-          "y": 521
+          "y": 513
         }
       ],
       "animated": false,
@@ -327,7 +327,7 @@
         },
         {
           "x": 272,
-          "y": 521
+          "y": 513
         }
       ],
       "animated": false,
@@ -361,12 +361,12 @@
       "link": "",
       "route": [
         {
-          "x": 519,
+          "x": 507,
           "y": 118
         },
         {
-          "x": 519,
-          "y": 521
+          "x": 507,
+          "y": 513
         }
       ],
       "animated": false,

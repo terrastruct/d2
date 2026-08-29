@@ -17,10 +17,10 @@
       "type": "text",
       "pos": {
         "x": 12,
-        "y": 394
+        "y": 386
       },
-      "width": 355,
-      "height": 158,
+      "width": 343,
+      "height": 150,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -48,8 +48,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 355,
-      "labelHeight": 158,
+      "labelWidth": 343,
+      "labelHeight": 150,
       "zIndex": 0,
       "level": 1
     },
@@ -58,10 +58,10 @@
       "type": "text",
       "pos": {
         "x": 112,
-        "y": 951
+        "y": 921
       },
-      "width": 154,
-      "height": 121,
+      "width": 142,
+      "height": 113,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -89,8 +89,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 154,
-      "labelHeight": 121,
+      "labelWidth": 142,
+      "labelHeight": 113,
       "zIndex": 0,
       "level": 1
     },
@@ -99,10 +99,10 @@
       "type": "text",
       "pos": {
         "x": 97,
-        "y": 1471
+        "y": 1419
       },
-      "width": 185,
-      "height": 343,
+      "width": 173,
+      "height": 335,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -130,8 +130,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 185,
-      "labelHeight": 343,
+      "labelWidth": 173,
+      "labelHeight": 335,
       "zIndex": 0,
       "level": 1
     },
@@ -139,11 +139,11 @@
       "id": "financial",
       "type": "rectangle",
       "pos": {
-        "x": 616,
+        "x": 579,
         "y": 12
       },
-      "width": 441,
-      "height": 540,
+      "width": 429,
+      "height": 524,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -181,11 +181,11 @@
       "id": "financial.monthly",
       "type": "text",
       "pos": {
-        "x": 666,
+        "x": 629,
         "y": 62
       },
-      "width": 341,
-      "height": 158,
+      "width": 329,
+      "height": 150,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -213,8 +213,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 341,
-      "labelHeight": 158,
+      "labelWidth": 329,
+      "labelHeight": 150,
       "zIndex": 0,
       "level": 2
     },
@@ -222,11 +222,11 @@
       "id": "financial.quarterly",
       "type": "text",
       "pos": {
-        "x": 673,
-        "y": 381
+        "x": 636,
+        "y": 373
       },
-      "width": 327,
-      "height": 121,
+      "width": 315,
+      "height": 113,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -254,8 +254,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 327,
-      "labelHeight": 121,
+      "labelWidth": 315,
+      "labelHeight": 113,
       "zIndex": 0,
       "level": 2
     },
@@ -263,11 +263,11 @@
       "id": "monitoring",
       "type": "rectangle",
       "pos": {
-        "x": 586,
-        "y": 728
+        "x": 565,
+        "y": 712
       },
-      "width": 486,
-      "height": 582,
+      "width": 442,
+      "height": 546,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -305,11 +305,11 @@
       "id": "monitoring.availability",
       "type": "text",
       "pos": {
-        "x": 628,
-        "y": 770
+        "x": 608,
+        "y": 754
       },
-      "width": 401,
-      "height": 178,
+      "width": 357,
+      "height": 150,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -337,8 +337,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 401,
-      "labelHeight": 178,
+      "labelWidth": 357,
+      "labelHeight": 150,
       "zIndex": 0,
       "level": 2
     },
@@ -346,11 +346,11 @@
       "id": "monitoring.performance",
       "type": "text",
       "pos": {
-        "x": 651,
-        "y": 1109
+        "x": 614,
+        "y": 1065
       },
-      "width": 356,
-      "height": 158,
+      "width": 344,
+      "height": 150,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -378,8 +378,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 356,
-      "labelHeight": 158,
+      "labelWidth": 344,
+      "labelHeight": 150,
       "zIndex": 0,
       "level": 2
     },
@@ -387,11 +387,11 @@
       "id": "projects",
       "type": "rectangle",
       "pos": {
-        "x": 302,
-        "y": 1503
+        "x": 290,
+        "y": 1461
       },
-      "width": 1069,
-      "height": 278,
+      "width": 1008,
+      "height": 250,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -429,11 +429,11 @@
       "id": "projects.status",
       "type": "text",
       "pos": {
-        "x": 352,
-        "y": 1563
+        "x": 340,
+        "y": 1511
       },
-      "width": 437,
-      "height": 158,
+      "width": 425,
+      "height": 150,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -461,8 +461,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 437,
-      "labelHeight": 158,
+      "labelWidth": 425,
+      "labelHeight": 150,
       "zIndex": 0,
       "level": 2
     },
@@ -470,11 +470,11 @@
       "id": "projects.risks",
       "type": "text",
       "pos": {
-        "x": 809,
-        "y": 1553
+        "x": 785,
+        "y": 1511
       },
-      "width": 512,
-      "height": 178,
+      "width": 463,
+      "height": 150,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -502,8 +502,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 512,
-      "labelHeight": 178,
+      "labelWidth": 463,
+      "labelHeight": 150,
       "zIndex": 0,
       "level": 2
     },
@@ -511,11 +511,11 @@
       "id": "team",
       "type": "rectangle",
       "pos": {
-        "x": 605,
-        "y": 1975
+        "x": 568,
+        "y": 1915
       },
-      "width": 463,
-      "height": 295,
+      "width": 451,
+      "height": 287,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -553,11 +553,11 @@
       "id": "team.velocity",
       "type": "text",
       "pos": {
-        "x": 655,
-        "y": 2025
+        "x": 618,
+        "y": 1965
       },
-      "width": 363,
-      "height": 195,
+      "width": 351,
+      "height": 187,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -585,8 +585,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 363,
-      "labelHeight": 195,
+      "labelWidth": 351,
+      "labelHeight": 187,
       "zIndex": 0,
       "level": 2
     }
@@ -618,12 +618,12 @@
       "link": "",
       "route": [
         {
-          "x": 189.5,
-          "y": 552
+          "x": 183.5,
+          "y": 536
         },
         {
-          "x": 189.5,
-          "y": 951
+          "x": 183.5,
+          "y": 921
         }
       ],
       "animated": false,
@@ -657,12 +657,12 @@
       "link": "",
       "route": [
         {
-          "x": 189.5,
-          "y": 1072
+          "x": 183.5,
+          "y": 1034
         },
         {
-          "x": 189.5,
-          "y": 1471
+          "x": 183.5,
+          "y": 1419
         }
       ],
       "animated": false,
@@ -696,12 +696,12 @@
       "link": "",
       "route": [
         {
-          "x": 836.5,
-          "y": 220
+          "x": 794,
+          "y": 212
         },
         {
-          "x": 836.5,
-          "y": 381
+          "x": 794,
+          "y": 373
         }
       ],
       "animated": false,
@@ -735,12 +735,12 @@
       "link": "",
       "route": [
         {
-          "x": 829,
-          "y": 948.5
+          "x": 786.5,
+          "y": 904.5
         },
         {
-          "x": 829,
-          "y": 1109.5
+          "x": 786.5,
+          "y": 1065.5
         }
       ],
       "animated": false,
@@ -774,12 +774,12 @@
       "link": "",
       "route": [
         {
-          "x": 836.5,
-          "y": 552
+          "x": 794,
+          "y": 536
         },
         {
-          "x": 836.5,
-          "y": 713
+          "x": 794,
+          "y": 697
         }
       ],
       "animated": false,
@@ -813,12 +813,12 @@
       "link": "",
       "route": [
         {
-          "x": 836.5,
-          "y": 1309.5
+          "x": 794,
+          "y": 1257.5
         },
         {
-          "x": 836.5,
-          "y": 1503.5
+          "x": 794,
+          "y": 1461.5
         }
       ],
       "animated": false,
@@ -852,12 +852,12 @@
       "link": "",
       "route": [
         {
-          "x": 836.5,
-          "y": 1781
+          "x": 794,
+          "y": 1711
         },
         {
-          "x": 836.5,
-          "y": 1975
+          "x": 794,
+          "y": 1915
         }
       ],
       "animated": true,

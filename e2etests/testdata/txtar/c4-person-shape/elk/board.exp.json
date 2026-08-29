@@ -19,8 +19,8 @@
         "x": 12,
         "y": 938
       },
-      "width": 349,
-      "height": 356,
+      "width": 336,
+      "height": 342,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 1,
@@ -48,8 +48,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 299,
-      "labelHeight": 151,
+      "labelWidth": 287,
+      "labelHeight": 143,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -58,7 +58,7 @@
       "id": "c4person",
       "type": "c4-person",
       "pos": {
-        "x": 217,
+        "x": 210,
         "y": 12
       },
       "width": 139,
@@ -100,7 +100,7 @@
       "id": "regular_person",
       "type": "person",
       "pos": {
-        "x": 119,
+        "x": 113,
         "y": 753
       },
       "width": 134,
@@ -142,7 +142,7 @@
       "id": "styling",
       "type": "rectangle",
       "pos": {
-        "x": 262,
+        "x": 255,
         "y": 229
       },
       "width": 250,
@@ -184,7 +184,7 @@
       "id": "styling.c4styled",
       "type": "c4-person",
       "pos": {
-        "x": 345,
+        "x": 338,
         "y": 279
       },
       "width": 84,
@@ -226,7 +226,7 @@
       "id": "styling.c4sized",
       "type": "c4-person",
       "pos": {
-        "x": 312,
+        "x": 305,
         "y": 453
       },
       "width": 150,
@@ -292,11 +292,11 @@
       "link": "",
       "route": [
         {
-          "x": 186.5,
+          "x": 180,
           "y": 868
         },
         {
-          "x": 187,
+          "x": 180,
           "y": 938
         }
       ],
@@ -331,19 +331,19 @@
       "link": "",
       "route": [
         {
-          "x": 264,
+          "x": 257,
           "y": 143
         },
         {
-          "x": 263.5830078125,
+          "x": 257.0830078125,
           "y": 184
         },
         {
-          "x": 186.5,
+          "x": 180,
           "y": 184
         },
         {
-          "x": 187,
+          "x": 180,
           "y": 753
         }
       ],
@@ -378,19 +378,19 @@
       "link": "",
       "route": [
         {
-          "x": 310,
+          "x": 303,
           "y": 143
         },
         {
-          "x": 309.9159851074219,
+          "x": 303.4159851074219,
           "y": 184
         },
         {
-          "x": 387,
+          "x": 380.5,
           "y": 184
         },
         {
-          "x": 387,
+          "x": 381,
           "y": 279
         }
       ],
@@ -425,11 +425,11 @@
       "link": "",
       "route": [
         {
-          "x": 387,
+          "x": 380,
           "y": 383
         },
         {
-          "x": 387,
+          "x": 381,
           "y": 453
         }
       ],

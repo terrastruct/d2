@@ -58,7 +58,7 @@
       "id": "y",
       "type": "rectangle",
       "pos": {
-        "x": 271,
+        "x": 265,
         "y": 52
       },
       "width": 100,
@@ -100,11 +100,11 @@
       "id": "x.x",
       "type": "page",
       "pos": {
-        "x": -156,
+        "x": -150,
         "y": 279
       },
-      "width": 437,
-      "height": 172,
+      "width": 425,
+      "height": 164,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -132,8 +132,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 392,
-      "labelHeight": 127,
+      "labelWidth": 380,
+      "labelHeight": 119,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 5,
       "level": 2
@@ -142,8 +142,8 @@
       "id": "y.z",
       "type": "page",
       "pos": {
-        "x": 161,
-        "y": 521
+        "x": 155,
+        "y": 513
       },
       "width": 320,
       "height": 64,
@@ -184,11 +184,11 @@
       "id": "x.z",
       "type": "page",
       "pos": {
-        "x": 7,
-        "y": 655
+        "x": 13,
+        "y": 647
       },
-      "width": 110,
-      "height": 77,
+      "width": 98,
+      "height": 69,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -216,8 +216,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 65,
-      "labelHeight": 32,
+      "labelWidth": 53,
+      "labelHeight": 24,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 5,
       "level": 2
@@ -254,7 +254,7 @@
           "y": 198
         },
         {
-          "x": 321,
+          "x": 315,
           "y": 198
         }
       ],
@@ -294,7 +294,7 @@
         },
         {
           "x": 62,
-          "y": 802
+          "y": 786
         }
       ],
       "animated": false,
@@ -328,12 +328,12 @@
       "link": "",
       "route": [
         {
-          "x": 321,
+          "x": 315,
           "y": 118
         },
         {
-          "x": 321,
-          "y": 802
+          "x": 315,
+          "y": 786
         }
       ],
       "animated": false,

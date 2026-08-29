@@ -64,6 +64,14 @@ var LinkIcon string
 //go:embed style.css
 var BaseStylesheet string
 
+// MarkdownCSS is retained for compatibility with callers that used the
+// browser-era Markdown stylesheet directly.
+//
+// Deprecated: native Markdown SVG does not use or inject this HTML stylesheet.
+//
+//go:embed github-markdown.css
+var MarkdownCSS string
+
 //go:embed dots.txt
 var dots string
 
@@ -2024,6 +2032,12 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 
 	if targetShape.Label != "" && targetShape.Opacity != 0 {
 		labelPosition := label.FromString(targetShape.LabelPosition)
+		// The foreignObject Markdown renderer historically defaulted an unset
+		// label position to the middle of the shape. Keep that behavior when the
+		// native label viewport is smaller than an explicitly sized shape.
+		if targetShape.Language == "markdown" && labelPosition == label.Unset {
+			labelPosition = label.InsideMiddleCenter
+		}
 		var box *geo.Box
 		if labelPosition.IsOutside() || labelPosition.IsBorder() {
 			box = s.GetBox().Copy()

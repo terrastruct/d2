@@ -7,7 +7,6 @@ import (
 	"strconv"
 	"strings"
 	"unicode"
-	"unicode/utf8"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/rivo/uniseg"
@@ -34,15 +33,17 @@ const (
 type MarkdownColorRole string
 
 const (
-	MarkdownColorNone         MarkdownColorRole = ""
-	MarkdownColorForeground   MarkdownColorRole = "foreground"
-	MarkdownColorMuted        MarkdownColorRole = "muted"
-	MarkdownColorAccent       MarkdownColorRole = "accent"
-	MarkdownColorBorder       MarkdownColorRole = "border"
-	MarkdownColorBorderMuted  MarkdownColorRole = "border-muted"
-	MarkdownColorCanvas       MarkdownColorRole = "canvas"
-	MarkdownColorCanvasSubtle MarkdownColorRole = "canvas-subtle"
-	MarkdownColorNeutralMuted MarkdownColorRole = "neutral-muted"
+	MarkdownColorNone             MarkdownColorRole = ""
+	MarkdownColorForeground       MarkdownColorRole = "foreground"
+	MarkdownColorForegroundStroke MarkdownColorRole = "foreground-stroke"
+	MarkdownColorMuted            MarkdownColorRole = "muted"
+	MarkdownColorMutedStroke      MarkdownColorRole = "muted-stroke"
+	MarkdownColorAccent           MarkdownColorRole = "accent"
+	MarkdownColorBorder           MarkdownColorRole = "border"
+	MarkdownColorBorderMuted      MarkdownColorRole = "border-muted"
+	MarkdownColorCanvas           MarkdownColorRole = "canvas"
+	MarkdownColorCanvasSubtle     MarkdownColorRole = "canvas-subtle"
+	MarkdownColorNeutralMuted     MarkdownColorRole = "neutral-muted"
 )
 
 // MarkdownFontRole lets an SVG renderer select the correct embedded D2 font.
@@ -87,10 +88,15 @@ type MarkdownPrimitive struct {
 	Link       string
 	LinkTitle  string
 	Decoration MarkdownTextDecoration
-	// SyntheticItalic is used when CSS asks for both italic and a weighted
-	// face. D2 embeds bold and italic faces, but not a separate bold-italic
-	// face, so the SVG renderer slants the measured weighted face.
+	// SyntheticBold/SyntheticItalic preserve inherited CSS axes when the
+	// innermost Markdown element selects a different concrete D2 font family.
+	// For example, em > strong uses the bold face with a synthetic slant, while
+	// strong > em uses the italic face with synthetic weight.
+	SyntheticBold   bool
 	SyntheticItalic bool
+	// TextLength fits the glyphs to Width. CSS paints a discretionary soft
+	// hyphen at one third of an em even inside D2's monospace code face.
+	TextLength bool
 }
 
 // MarkdownLayout contains the exact dimensions used by D2 layout and the
@@ -99,8 +105,8 @@ type MarkdownPrimitive struct {
 type MarkdownLayout struct {
 	Width, Height int
 	Primitives    []MarkdownPrimitive
-	// Corpus includes generated text (notably list marker glyphs) as well as
-	// source text. Renderers embedding subset fonts should include it.
+	// Corpus contains the visible source text used by the primitives. Renderers
+	// embedding subset fonts should include it.
 	Corpus string
 }
 
@@ -126,22 +132,6 @@ type MarkdownSVGOptions struct {
 	Underline bool
 }
 
-const (
-	// SVG viewers are allowed to ignore embedded web fonts. Historical D2
-	// cylinder fixtures need up to 4.632px of horizontal reserve when that
-	// happens. Sketch fonts can extend 2.343px above their nominal font box.
-	// Keep additional whole-pixel headroom for renderer and platform rounding.
-	markdownInkSafetyX = 6.0
-	markdownInkSafetyY = 4.0
-	// Unsupported glyphs are painted by the SVG viewer's host fallback font.
-	// Those glyphs can have substantially different bearings than D2's fonts.
-	// These conservative em paddings cover the system fonts exercised by the
-	// Unicode regression corpus while keeping ordinary Markdown unchanged apart
-	// from the generic ink safety above.
-	markdownFallbackPaddingX = 1.0
-	markdownFallbackPaddingY = 0.625
-)
-
 // LayoutMarkdown parses Markdown once, measures it with D2's existing box
 // model, and paints that same box model into native SVG primitives.
 func LayoutMarkdown(mdText string, ruler *Ruler, fontFamily *d2fonts.FontFamily, monoFontFamily *d2fonts.FontFamily, fontSize int) (*MarkdownLayout, error) {
@@ -155,6 +145,18 @@ func LayoutMarkdown(mdText string, ruler *Ruler, fontFamily *d2fonts.FontFamily,
 	}
 	body := doc.Find("body").First()
 	if len(body.Nodes) == 0 {
+		return &MarkdownLayout{}, nil
+	}
+	// Keep an untouched parse tree for D2's established graph-layout
+	// measurement. Native painting normalizes whitespace to CSS semantics, but
+	// measuring that normalized tree would subtly resize old diagrams (notably
+	// a newline immediately after <br> in mixed-Unicode content).
+	legacyDoc, err := goquery.NewDocumentFromReader(strings.NewReader(render))
+	if err != nil {
+		return nil, err
+	}
+	legacyBody := legacyDoc.Find("body").First()
+	if len(legacyBody.Nodes) == 0 {
 		return &MarkdownLayout{}, nil
 	}
 	if err := validateMarkdownSVGNodes(body.Nodes[0]); err != nil {
@@ -184,27 +186,22 @@ func LayoutMarkdown(mdText string, ruler *Ruler, fontFamily *d2fonts.FontFamily,
 		fontFamily:       fontFamily,
 		monoFontFamily:   monoFontFamily,
 		fontSize:         fontSize,
-		fontWeight:       d2fonts.FONT_STYLE_REGULAR,
+		fontScale:        1,
+		fontStyle:        d2fonts.FONT_STYLE_REGULAR,
 		lineHeightFactor: MarkdownLineHeight,
 		mono:             *fontFamily == *monoFontFamily,
 		role:             MarkdownColorForeground,
 	}
 	p := markdownPainter{ruler: ruler, layout: &MarkdownLayout{}}
-	rootAttrs := p.measure(body.Nodes[0], ctx)
+	// D2's historical Markdown measurements are graph-layout API: changing them
+	// moves shapes and routes. Paint with browser-style CSS line boxes below,
+	// but retain those established outer dimensions.
+	rootAttrs := ruler.measureNode(0, legacyBody.Nodes[0], fontFamily, monoFontFamily, fontSize, d2fonts.FONT_STYLE_REGULAR, false, false)
 	contentWidth := int(math.Ceil(rootAttrs.width))
 	contentHeight := int(math.Ceil(rootAttrs.height))
+	p.layout.Width = contentWidth
+	p.layout.Height = contentHeight
 	p.paintBlock(body.Nodes[0], 0, 0, ctx, float64(contentWidth))
-	if len(p.layout.Primitives) > 0 {
-		paddingX := markdownInkSafetyX
-		paddingY := markdownInkSafetyY
-		if fallbackSize := p.maxFallbackFontSize(fontFamily, monoFontFamily); fallbackSize > 0 {
-			paddingX += markdownFallbackPaddingX * fallbackSize
-			paddingY += markdownFallbackPaddingY * fallbackSize
-		}
-		p.translate(paddingX, paddingY)
-		p.layout.Width = contentWidth + int(math.Ceil(2*paddingX))
-		p.layout.Height = contentHeight + int(math.Ceil(2*paddingY))
-	}
 	var corpus strings.Builder
 	for _, primitive := range p.layout.Primitives {
 		if primitive.Kind == MarkdownTextPrimitive {
@@ -213,69 +210,6 @@ func LayoutMarkdown(mdText string, ruler *Ruler, fontFamily *d2fonts.FontFamily,
 	}
 	p.layout.Corpus = corpus.String()
 	return p.layout, nil
-}
-
-func (p *markdownPainter) translate(dx, dy float64) {
-	for i := range p.layout.Primitives {
-		primitive := &p.layout.Primitives[i]
-		primitive.X += dx
-		primitive.Y += dy
-		if primitive.Kind == MarkdownLinePrimitive {
-			primitive.X2 += dx
-			primitive.Y2 += dy
-		}
-	}
-}
-
-func (p *markdownPainter) maxFallbackFontSize(fontFamily, monoFontFamily *d2fonts.FontFamily) float64 {
-	maxSize := 0.0
-	for _, primitive := range p.layout.Primitives {
-		if primitive.Kind != MarkdownTextPrimitive || primitive.Text == "" {
-			continue
-		}
-		family := fontFamily
-		style := d2fonts.FONT_STYLE_REGULAR
-		switch primitive.Font {
-		case MarkdownFontSemibold:
-			style = d2fonts.FONT_STYLE_SEMIBOLD
-		case MarkdownFontBold:
-			style = d2fonts.FONT_STYLE_BOLD
-		case MarkdownFontItalic:
-			style = d2fonts.FONT_STYLE_ITALIC
-		case MarkdownFontMono:
-			family = monoFontFamily
-		case MarkdownFontMonoSemibold:
-			family = monoFontFamily
-			style = d2fonts.FONT_STYLE_SEMIBOLD
-		case MarkdownFontMonoBold:
-			family = monoFontFamily
-			style = d2fonts.FONT_STYLE_BOLD
-		case MarkdownFontMonoItalic:
-			family = monoFontFamily
-			style = d2fonts.FONT_STYLE_ITALIC
-		}
-		fontSize := int(math.Ceil(primitive.FontSize))
-		if fontSize < 1 {
-			fontSize = 1
-		}
-		font := family.Font(fontSize, style)
-		graphemes := uniseg.NewGraphemes(primitive.Text)
-		for graphemes.Next() {
-			grapheme := graphemes.Str()
-			if isZeroWidthGrapheme(grapheme) {
-				continue
-			}
-			_, supported := p.ruler.measureFontWidth(font, grapheme)
-			// Multi-rune clusters need host shaping even when each component is
-			// present in D2's font (for example combining marks and variation
-			// selectors), so give them the same safety margin as missing glyphs.
-			if !supported || utf8.RuneCountInString(grapheme) > 1 {
-				maxSize = goMax(maxSize, primitive.FontSize)
-				break
-			}
-		}
-	}
-	return maxSize
 }
 
 // SVG serializes a MarkdownLayout as native SVG elements. It deliberately
@@ -316,6 +250,13 @@ func (l *MarkdownLayout) SVG(opts MarkdownSVGOptions) string {
 		}
 		fill := rolePaint[primitive.FillRole].Color
 		stroke := rolePaint[primitive.StrokeRole].Color
+		link := safeMarkdownLink(primitive.Link)
+		if link != "" && !opts.DisableLinks {
+			fmt.Fprintf(&out, `<a href="%s" xlink:href="%[1]s">`, svg.EscapeText(link))
+			if primitive.LinkTitle != "" {
+				fmt.Fprintf(&out, `<title>%s</title>`, svg.EscapeText(primitive.LinkTitle))
+			}
+		}
 
 		switch primitive.Kind {
 		case MarkdownRectPrimitive:
@@ -340,13 +281,6 @@ func (l *MarkdownLayout) SVG(opts MarkdownSVGOptions) string {
 			if fill == "" {
 				fill = "currentColor"
 			}
-			link := safeMarkdownLink(primitive.Link)
-			if link != "" && !opts.DisableLinks {
-				fmt.Fprintf(&out, `<a href="%s" xlink:href="%[1]s">`, svg.EscapeText(link))
-				if primitive.LinkTitle != "" {
-					fmt.Fprintf(&out, `<title>%s</title>`, svg.EscapeText(primitive.LinkTitle))
-				}
-			}
 			fmt.Fprintf(&out, `<text x="%s" y="%s"%s fill="%s" font-size="%s" xml:space="preserve"`,
 				mdFloat(primitive.X), mdFloat(primitive.Y), classAttr, svg.EscapeText(fill), mdFloat(primitive.FontSize))
 			decoration := string(primitive.Decoration)
@@ -360,13 +294,19 @@ func (l *MarkdownLayout) SVG(opts MarkdownSVGOptions) string {
 			if decoration != "" {
 				fmt.Fprintf(&out, ` text-decoration="%s"`, svg.EscapeText(decoration))
 			}
+			if primitive.SyntheticBold {
+				out.WriteString(` font-weight="bold"`)
+			}
 			if primitive.SyntheticItalic {
 				out.WriteString(` font-style="italic"`)
 			}
-			fmt.Fprintf(&out, `>%s</text>`, svg.EscapeText(primitive.Text))
-			if link != "" && !opts.DisableLinks {
-				out.WriteString(`</a>`)
+			if primitive.TextLength {
+				fmt.Fprintf(&out, ` textLength="%s" lengthAdjust="spacingAndGlyphs"`, mdFloat(primitive.Width))
 			}
+			fmt.Fprintf(&out, `>%s</text>`, svg.EscapeText(primitive.Text))
+		}
+		if link != "" && !opts.DisableLinks {
+			out.WriteString(`</a>`)
 		}
 	}
 	out.WriteString(`</g>`)
@@ -395,14 +335,16 @@ func safeMarkdownLink(link string) string {
 
 func defaultMarkdownSVGRolePaint() map[MarkdownColorRole]MarkdownSVGPaint {
 	return map[MarkdownColorRole]MarkdownSVGPaint{
-		MarkdownColorForeground:   {Class: "md-color-fg", Color: "currentColor"},
-		MarkdownColorMuted:        {Class: "md-color-muted", Color: "var(--color-fg-muted, currentColor)"},
-		MarkdownColorAccent:       {Class: "md-color-accent", Color: "var(--color-accent-fg, currentColor)"},
-		MarkdownColorBorder:       {Class: "md-color-border", Color: "var(--color-border-default, currentColor)"},
-		MarkdownColorBorderMuted:  {Class: "md-color-border-muted", Color: "var(--color-border-muted, currentColor)"},
-		MarkdownColorCanvas:       {Class: "md-color-canvas", Color: "var(--color-canvas-default, none)"},
-		MarkdownColorCanvasSubtle: {Class: "md-color-canvas-subtle", Color: "var(--color-canvas-subtle, none)"},
-		MarkdownColorNeutralMuted: {Class: "md-color-neutral-muted", Color: "var(--color-neutral-muted, none)"},
+		MarkdownColorForeground:       {Class: "md-color-fg", Color: "currentColor"},
+		MarkdownColorForegroundStroke: {Class: "md-stroke-fg", Color: "currentColor"},
+		MarkdownColorMuted:            {Class: "md-color-muted", Color: "var(--color-fg-muted, currentColor)"},
+		MarkdownColorMutedStroke:      {Class: "md-stroke-muted", Color: "var(--color-fg-muted, currentColor)"},
+		MarkdownColorAccent:           {Class: "md-color-accent", Color: "var(--color-accent-fg, currentColor)"},
+		MarkdownColorBorder:           {Class: "md-color-border", Color: "var(--color-border-default, currentColor)"},
+		MarkdownColorBorderMuted:      {Class: "md-color-border-muted", Color: "var(--color-border-muted, currentColor)"},
+		MarkdownColorCanvas:           {Class: "md-color-canvas", Color: "var(--color-canvas-default, none)"},
+		MarkdownColorCanvasSubtle:     {Class: "md-color-canvas-subtle", Color: "var(--color-canvas-subtle, none)"},
+		MarkdownColorNeutralMuted:     {Class: "md-color-neutral-muted", Color: "var(--color-neutral-muted, none)"},
 	}
 }
 
@@ -426,28 +368,47 @@ func mdFloat(v float64) string {
 	return strconv.FormatFloat(v, 'f', 3, 64)
 }
 
+func markdownSnap(v float64) float64 {
+	return math.Floor(v + 0.5)
+}
+
 type markdownPaintContext struct {
 	fontFamily       *d2fonts.FontFamily
 	monoFontFamily   *d2fonts.FontFamily
 	fontSize         int
-	fontWeight       d2fonts.FontStyle
+	fontScale        float64
+	fontStyle        d2fonts.FontStyle
+	bold             bool
 	italic           bool
 	lineHeightFactor float64
 	mono             bool
 	inlineCode       bool
 	headingCode      bool
+	heading          string
 	role             MarkdownColorRole
 	link             string
 	linkTitle        string
 	decoration       MarkdownTextDecoration
+	decorationGroup  int
+	decorationRole   MarkdownColorRole
+	tableCell        bool
+	textAlign        string
+}
+
+func (ctx markdownPaintContext) cssFontSize() float64 {
+	return float64(ctx.fontSize) * ctx.fontScale
 }
 
 func (ctx markdownPaintContext) effectiveFontStyle() d2fonts.FontStyle {
-	return markdownEffectiveFontStyle(ctx.fontWeight, ctx.italic)
+	return ctx.fontStyle
+}
+
+func (ctx markdownPaintContext) syntheticBold() bool {
+	return ctx.bold && ctx.fontStyle != d2fonts.FONT_STYLE_BOLD && ctx.fontStyle != d2fonts.FONT_STYLE_SEMIBOLD
 }
 
 func (ctx markdownPaintContext) syntheticItalic() bool {
-	return ctx.italic && ctx.fontWeight != d2fonts.FONT_STYLE_REGULAR
+	return ctx.italic && ctx.fontStyle != d2fonts.FONT_STYLE_ITALIC
 }
 
 func (ctx markdownPaintContext) fontRole() MarkdownFontRole {
@@ -484,7 +445,7 @@ type markdownPainter struct {
 func (p *markdownPainter) measure(n *html.Node, ctx markdownPaintContext) blockAttrs {
 	original := p.ruler.LineHeightFactor
 	p.ruler.LineHeightFactor = ctx.lineHeightFactor
-	attrs := p.ruler.measureNode(0, n, ctx.fontFamily, ctx.monoFontFamily, ctx.fontSize, ctx.fontWeight, ctx.italic)
+	attrs := p.ruler.measureCSSNode(0, n, ctx.fontFamily, ctx.monoFontFamily, ctx.fontSize, ctx.fontScale, ctx.fontStyle, ctx.bold, ctx.italic)
 	p.ruler.LineHeightFactor = original
 	return attrs
 }
@@ -495,21 +456,26 @@ func (p *markdownPainter) childContext(n *html.Node, ctx markdownPaintContext) m
 	}
 	switch n.Data {
 	case "h1", "h2", "h3", "h4", "h5", "h6":
-		ctx.fontSize = HeaderToFontSize(ctx.fontSize, n.Data)
-		ctx.fontWeight = d2fonts.FONT_STYLE_SEMIBOLD
+		ctx.heading = n.Data
+		ctx.fontScale *= HeaderToFontScale(n.Data)
+		ctx.fontStyle = d2fonts.FONT_STYLE_SEMIBOLD
+		ctx.bold = false
 		ctx.lineHeightFactor = LineHeight_h
 		if n.Data == "h6" {
 			ctx.role = MarkdownColorMuted
 		}
 	case "em":
+		ctx.fontStyle = d2fonts.FONT_STYLE_ITALIC
 		ctx.italic = true
 	case "b", "strong":
-		ctx.fontWeight = d2fonts.FONT_STYLE_BOLD
+		ctx.fontStyle = d2fonts.FONT_STYLE_BOLD
+		ctx.bold = true
 	case "pre", "code":
 		ctx.fontFamily = ctx.monoFontFamily
 		ctx.mono = true
+		ctx.fontStyle = d2fonts.FONT_STYLE_REGULAR
 		ctx.inlineCode = n.Data == "code" && (n.Parent == nil || n.Parent.Data != "pre")
-		ctx.headingCode = ctx.inlineCode && n.Parent != nil && isMarkdownHeading(n.Parent.Data)
+		ctx.headingCode = ctx.inlineCode && hasMarkdownHeadingAncestor(n)
 	case "a":
 		ctx.link = nodeAttr(n, "href")
 		ctx.linkTitle = nodeAttr(n, "title")
@@ -522,12 +488,11 @@ func (p *markdownPainter) childContext(n *html.Node, ctx markdownPaintContext) m
 	return ctx
 }
 
-func (p *markdownPainter) paintBlock(n *html.Node, x, y float64, parentCtx markdownPaintContext, availableWidth float64) {
+func (p *markdownPainter) paintBlock(n *html.Node, x, y float64, parentCtx markdownPaintContext, availableWidth float64) float64 {
 	attrs := p.measure(n, parentCtx)
 	ctx := p.childContext(n, parentCtx)
 	if n.Type != html.ElementNode {
-		p.paintInlineNodes([]*html.Node{n}, x, y, parentCtx, attrs.height)
-		return
+		return p.paintInlineNodes([]*html.Node{n}, x, y, parentCtx, availableWidth)
 	}
 
 	switch n.Data {
@@ -536,30 +501,27 @@ func (p *markdownPainter) paintBlock(n *html.Node, x, y float64, parentCtx markd
 		if width <= 0 {
 			width = attrs.width
 		}
+		x1, x2 := markdownSnap(x), markdownSnap(x+width)
+		y1, y2 := markdownSnap(y), markdownSnap(y+Height_hr_em*ctx.cssFontSize())
 		p.layout.Primitives = append(p.layout.Primitives, MarkdownPrimitive{
-			Kind: MarkdownLinePrimitive, X: x, Y: y + attrs.height/2, X2: x + width, Y2: y + attrs.height/2,
-			StrokeWidth: goMax(1, Height_hr_em*float64(ctx.fontSize)), StrokeRole: MarkdownColorBorder,
+			Kind: MarkdownRectPrimitive, X: x1, Y: y1, Width: x2 - x1,
+			Height: y2 - y1, FillRole: MarkdownColorBorder,
 		})
-		return
+		return attrs.height
 	case "pre":
-		p.paintPre(n, x, y, attrs, ctx, availableWidth)
-		return
+		return p.paintPre(n, x, y, attrs, ctx, availableWidth)
 	case "table":
-		p.paintTable(n, x, y, attrs, ctx)
-		return
+		return p.paintTable(n, x, y, attrs, ctx, availableWidth)
 	}
 
 	contentX, contentY := x, y
+	blockquoteBorderWidth := 0.0
 	switch n.Data {
 	case "blockquote":
-		borderWidth := BorderLeft_blockquote_em * float64(ctx.fontSize)
-		p.layout.Primitives = append(p.layout.Primitives, MarkdownPrimitive{
-			Kind: MarkdownRectPrimitive, X: x, Y: y, Width: borderWidth, Height: attrs.height,
-			FillRole: MarkdownColorBorder,
-		})
-		inset := borderWidth + PaddingLR_blockquote_em*float64(ctx.fontSize)
+		blockquoteBorderWidth = goMax(1, math.Floor(BorderLeft_blockquote_em*ctx.cssFontSize()))
+		inset := blockquoteBorderWidth + PaddingLR_blockquote_em*ctx.cssFontSize()
 		contentX += inset
-		availableWidth = goMax(0, availableWidth-inset-PaddingLR_blockquote_em*float64(ctx.fontSize))
+		availableWidth = goMax(0, availableWidth-inset-PaddingLR_blockquote_em*ctx.cssFontSize())
 	case "li":
 		inset := p.listIndent(n, ctx)
 		contentX += inset
@@ -567,19 +529,37 @@ func (p *markdownPainter) paintBlock(n *html.Node, x, y float64, parentCtx markd
 		p.paintListMarker(n, x, y, ctx, inset)
 	}
 
-	p.paintFlow(n, contentX, contentY, ctx, availableWidth)
+	contentHeight := p.paintFlow(n, contentX, contentY, ctx, availableWidth)
+	paintedHeight := goMax(attrs.height, contentHeight)
+	if n.Data == "h1" || n.Data == "h2" {
+		lineHeight := ctx.cssFontSize() * ctx.lineHeightFactor
+		if contentHeight > lineHeight {
+			paintedHeight = attrs.height + contentHeight - lineHeight
+		}
+	}
+
+	if n.Data == "blockquote" {
+		barY1, barY2 := markdownSnap(y), markdownSnap(y+paintedHeight)
+		p.layout.Primitives = append(p.layout.Primitives, MarkdownPrimitive{
+			Kind: MarkdownRectPrimitive, X: markdownSnap(x), Y: barY1, Width: blockquoteBorderWidth, Height: barY2 - barY1,
+			FillRole: MarkdownColorBorder,
+		})
+	}
 
 	if n.Data == "h1" || n.Data == "h2" {
 		width := availableWidth
 		if width <= 0 {
 			width = attrs.width
 		}
+		x1, x2 := markdownSnap(x), markdownSnap(x+width)
+		rawTop := y + paintedHeight - BorderBottom_h1_h2
+		y1, y2 := markdownSnap(rawTop), markdownSnap(rawTop+BorderBottom_h1_h2)
 		p.layout.Primitives = append(p.layout.Primitives, MarkdownPrimitive{
-			Kind: MarkdownLinePrimitive, X: x, Y: y + attrs.height - BorderBottom_h1_h2/2,
-			X2: x + width, Y2: y + attrs.height - BorderBottom_h1_h2/2,
-			StrokeWidth: BorderBottom_h1_h2, StrokeRole: MarkdownColorBorderMuted,
+			Kind: MarkdownRectPrimitive, X: x1, Y: y1,
+			Width: x2 - x1, Height: y2 - y1, FillRole: MarkdownColorBorderMuted,
 		})
 	}
+	return paintedHeight
 }
 
 type markdownFlowUnit struct {
@@ -588,29 +568,37 @@ type markdownFlowUnit struct {
 	attrs  blockAttrs
 }
 
-func (p *markdownPainter) paintFlow(n *html.Node, x, y float64, ctx markdownPaintContext, availableWidth float64) {
+func (p *markdownPainter) paintFlow(n *html.Node, x, y float64, ctx markdownPaintContext, availableWidth float64) float64 {
 	units := p.flowUnits(n, ctx)
 	currentY := y
 	previousMarginBottom := 0.0
 	for i, unit := range units {
-		if i > 0 {
+		if i == 0 && n.Data == "body" && unit.block != nil && (unit.block.Data == "ul" || unit.block.Data == "ol") {
+			// The root has no parent flow to consume a collapsed first-child
+			// margin. Chromium still paints that margin inside the foreignObject
+			// viewport when a top-level loose list's first li starts with p,
+			// while D2's legacy outer height intentionally excludes it.
+			currentY += unit.attrs.marginTop
+		} else if i > 0 {
 			currentY += goMax(previousMarginBottom, unit.attrs.marginTop)
 		}
+		paintedHeight := unit.attrs.height
 		if unit.block != nil {
-			p.paintBlock(unit.block, x, currentY, ctx, availableWidth)
+			paintedHeight = p.paintBlock(unit.block, x, currentY, ctx, availableWidth)
 		} else {
-			p.paintInlineNodes(unit.inline, x, currentY, ctx, unit.attrs.height)
+			paintedHeight = goMax(paintedHeight, p.paintInlineNodes(unit.inline, x, currentY, ctx, availableWidth))
 		}
-		currentY += unit.attrs.height
+		currentY += paintedHeight
 		previousMarginBottom = unit.attrs.marginBottom
 	}
+	return currentY - y
 }
 
 func (p *markdownPainter) flowUnits(n *html.Node, ctx markdownPaintContext) []markdownFlowUnit {
 	var units []markdownFlowUnit
 	var inlineNodes []*html.Node
 	inlineAttrs := blockAttrs{}
-	lineHeight := float64(ctx.fontSize) * ctx.lineHeightFactor
+	lineHeight := ctx.cssFontSize() * ctx.lineHeightFactor
 
 	flushInline := func() {
 		if len(inlineNodes) == 0 || !inlineAttrs.isNotEmpty() {
@@ -618,9 +606,7 @@ func (p *markdownPainter) flowUnits(n *html.Node, ctx markdownPaintContext) []ma
 			inlineAttrs = blockAttrs{}
 			return
 		}
-		if inlineAttrs.height < lineHeight {
-			inlineAttrs.height = lineHeight
-		}
+		inlineAttrs.height = lineHeight
 		units = append(units, markdownFlowUnit{inline: inlineNodes, attrs: inlineAttrs})
 		inlineNodes = nil
 		inlineAttrs = blockAttrs{}
@@ -664,51 +650,80 @@ func (p *markdownPainter) flowUnits(n *html.Node, ctx markdownPaintContext) []ma
 }
 
 type markdownInlineToken struct {
-	breakLine  bool
-	padding    bool
-	text       string
-	width      float64
-	height     float64
-	ctx        markdownPaintContext
-	codeGroup  int
-	codeHeight float64
+	breakLine            bool
+	breakBefore          bool
+	breakAfterSoftHyphen bool
+	emergencyBreakBefore bool
+	softHyphenEnd        bool
+	discretionaryHyphen  bool
+	padding              bool
+	leadingPadding       bool
+	text                 string
+	width                float64
+	height               float64
+	ctx                  markdownPaintContext
+	codeGroup            int
+	codeHeight           float64
+	decorationGroup      int
 }
 
-func (p *markdownPainter) paintInlineNodes(nodes []*html.Node, x, y float64, ctx markdownPaintContext, measuredHeight float64) {
+func (p *markdownPainter) paintInlineNodes(nodes []*html.Node, x, y float64, ctx markdownPaintContext, availableWidth float64) float64 {
 	var tokens []markdownInlineToken
 	nextCodeGroup := 0
+	nextDecorationGroup := 0
 	for _, n := range nodes {
-		p.collectInlineTokens(n, ctx, &tokens, &nextCodeGroup, 0, 0)
+		p.collectInlineTokens(n, ctx, &tokens, &nextCodeGroup, &nextDecorationGroup, 0, 0)
 	}
 	if len(tokens) == 0 {
-		return
+		return 0
 	}
 
-	lines := [][]markdownInlineToken{{}}
-	for _, token := range tokens {
-		if token.breakLine {
-			lines = append(lines, nil)
-			continue
+	lines := p.wrapInlineTokens(tokens, availableWidth)
+	paintedHeight := 0.0
+	for _, line := range lines {
+		lineHeight := p.markdownInlineLineHeight(line, ctx)
+		lineY := y + paintedHeight
+		lineX := x
+		if ctx.textAlign != "" && availableWidth > 0 {
+			lineWidth := 0.0
+			for _, token := range line {
+				lineWidth += token.width
+			}
+			extra := goMax(0, availableWidth-lineWidth)
+			if ctx.textAlign == "center" {
+				lineX += extra / 2
+			} else if ctx.textAlign == "right" {
+				lineX += extra
+			}
 		}
-		lines[len(lines)-1] = append(lines[len(lines)-1], token)
-	}
-	lineHeight := float64(ctx.fontSize) * ctx.lineHeightFactor
-	if len(lines) > 0 && measuredHeight > 0 && float64(len(lines))*lineHeight > measuredHeight+0.5 {
-		lineHeight = measuredHeight / float64(len(lines))
-	}
-	for lineIndex, line := range lines {
-		lineY := y + float64(lineIndex)*lineHeight
-		cursorX := x
+		cursorX := lineX
 		codeSpans := make(map[int][3]float64)
+		codeShifts := make(map[int]float64)
+		codeLinks := make(map[int][2]string)
+		decorationSpans := make(map[int]MarkdownPrimitive)
 		for _, token := range line {
 			if token.codeGroup > 0 {
 				span, ok := codeSpans[token.codeGroup]
 				if !ok {
 					span = [3]float64{cursorX, cursorX, token.codeHeight}
+					codeShifts[token.codeGroup] = p.inlineCodeVerticalShift(ctx, token.ctx, lineHeight, token.codeHeight)
+					codeLinks[token.codeGroup] = [2]string{token.ctx.link, token.ctx.linkTitle}
 				}
 				span[1] = cursorX + token.width
 				span[2] = goMax(span[2], token.codeHeight)
 				codeSpans[token.codeGroup] = span
+			}
+			if token.decorationGroup > 0 {
+				span, ok := decorationSpans[token.decorationGroup]
+				if !ok {
+					span = MarkdownPrimitive{
+						Kind: MarkdownRectPrimitive, X: cursorX,
+						Y: markdownSnap(lineY + lineHeight/2), Height: 1,
+						FillRole: token.ctx.decorationRole,
+					}
+				}
+				span.Width = cursorX + token.width - span.X
+				decorationSpans[token.decorationGroup] = span
 			}
 			cursorX += token.width
 		}
@@ -721,55 +736,510 @@ func (p *markdownPainter) paintInlineNodes(nodes []*html.Node, x, y float64, ctx
 			span := codeSpans[groupID]
 			height := span[2]
 			p.layout.Primitives = append(p.layout.Primitives, MarkdownPrimitive{
-				Kind: MarkdownRectPrimitive, X: span[0], Y: lineY + (lineHeight-height)/2,
+				Kind: MarkdownRectPrimitive, X: span[0], Y: lineY + (lineHeight-height)/2 + codeShifts[groupID],
 				Width: span[1] - span[0], Height: height, Radius: 6, FillRole: MarkdownColorNeutralMuted,
+				Link: codeLinks[groupID][0], LinkTitle: codeLinks[groupID][1],
 			})
 		}
 
-		cursorX = x
+		cursorX = lineX
 		for _, token := range line {
 			if token.padding {
 				cursorX += token.width
 				continue
 			}
-			fontSize := float64(token.ctx.fontSize)
-			fontScale := 1.0
+			fontSize := token.ctx.cssFontSize()
+			fontScale := token.ctx.fontScale
 			if token.ctx.inlineCode && !token.ctx.headingCode {
-				fontScale = FontSize_pre_code_em
-				fontSize *= fontScale
+				fontScale *= FontSize_pre_code_em
+				fontSize *= FontSize_pre_code_em
 			}
 			baselineY := p.textBaseline(token.ctx, lineY, lineHeight, fontScale)
 			if token.ctx.inlineCode && token.codeHeight > 0 {
 				codeTop := lineY + (lineHeight-token.codeHeight)/2
 				verticalPadding := 0.0
 				if !token.ctx.headingCode {
-					verticalPadding = PaddingTopBottom_code_em * float64(token.ctx.fontSize)
+					verticalPadding = PaddingTopBottom_code_em * fontSize
 				}
 				contentTop := codeTop + verticalPadding
 				contentHeight := goMax(0, token.codeHeight-2*verticalPadding)
 				baselineY = p.textBaseline(token.ctx, contentTop, contentHeight, fontScale)
+				baselineY += codeShifts[token.codeGroup]
 			}
+			baselineY -= markdownHeadingInkCorrection(token.ctx)
 			p.layout.Primitives = append(p.layout.Primitives, MarkdownPrimitive{
 				Kind: MarkdownTextPrimitive, X: cursorX, Y: baselineY, Width: token.width, Height: token.height,
 				Text: token.text, Font: token.ctx.fontRole(), FontSize: fontSize,
 				FillRole: token.ctx.role, Link: token.ctx.link, LinkTitle: token.ctx.linkTitle,
-				Decoration: token.ctx.decoration, SyntheticItalic: token.ctx.syntheticItalic(),
+				SyntheticBold: token.ctx.syntheticBold(), SyntheticItalic: token.ctx.syntheticItalic(),
+				TextLength: token.discretionaryHyphen,
 			})
 			cursorX += token.width
 		}
+		decorationGroupIDs := make([]int, 0, len(decorationSpans))
+		for groupID := range decorationSpans {
+			decorationGroupIDs = append(decorationGroupIDs, groupID)
+		}
+		sort.Ints(decorationGroupIDs)
+		for _, groupID := range decorationGroupIDs {
+			p.layout.Primitives = append(p.layout.Primitives, decorationSpans[groupID])
+		}
+		paintedHeight += lineHeight
+	}
+	return paintedHeight
+}
+
+func (p *markdownPainter) markdownInlineLineHeight(line []markdownInlineToken, ctx markdownPaintContext) float64 {
+	lineHeight := ctx.cssFontSize() * ctx.lineHeightFactor
+	if !ctx.tableCell {
+		return lineHeight
+	}
+	lineCtx := ctx
+	hasContent := false
+	allCode := true
+	hasFallback := false
+	hasSymbolFallback := false
+	hasColorEmojiFallback := false
+	for _, token := range line {
+		if token.padding || token.text == "" {
+			continue
+		}
+		hasContent = true
+		if !token.ctx.inlineCode {
+			fontFamily := token.ctx.fontFamily
+			if token.ctx.mono {
+				fontFamily = token.ctx.monoFontFamily
+			}
+			font := fontFamily.Font(token.ctx.fontSize, token.ctx.effectiveFontStyle())
+			measurementText := strings.ReplaceAll(token.text, "\u00ad", "")
+			if _, ok := p.ruler.measureFontAdvance(font, measurementText); !ok {
+				graphemes := uniseg.NewGraphemes(measurementText)
+				for graphemes.Next() {
+					grapheme := graphemes.Str()
+					if _, supported := p.ruler.measureFontAdvance(font, grapheme); supported {
+						continue
+					}
+					colorEmoji := isColorEmojiGrapheme(grapheme)
+					if !colorEmoji {
+						filtered := stripDefaultIgnorableRunes(grapheme)
+						if filtered != grapheme {
+							if filtered == "" {
+								continue
+							}
+							if _, supported := p.ruler.measureFontAdvance(font, filtered); supported {
+								continue
+							}
+							grapheme = filtered
+						}
+					}
+					hasFallback = true
+					if colorEmoji {
+						hasColorEmojiFallback = true
+					} else if hasUnicodeSymbol(grapheme) {
+						hasSymbolFallback = true
+					}
+				}
+			}
+			allCode = false
+			continue
+		}
+		if lineCtx.inlineCode == false {
+			lineCtx = token.ctx
+		}
+	}
+	allCode = hasContent && allCode
+	if !allCode {
+		lineCtx = ctx
+	}
+	fontFamily := lineCtx.fontFamily
+	if lineCtx.mono {
+		fontFamily = lineCtx.monoFontFamily
+	}
+	fontSize := lineCtx.cssFontSize()
+	if allCode {
+		fontSize *= FontSize_pre_code_em
+	}
+	font := fontFamily.Font(lineCtx.fontSize, lineCtx.effectiveFontStyle())
+	if normal, ok := p.ruler.cssNormalLineHeight(font, fontSize); ok {
+		lineHeight = normal
+	}
+	if allCode {
+		// Chromium's normal inline-formatting strut leaves two pixels of line
+		// gap around Source Code Pro at the 85% code size.
+		lineHeight = goMax(lineHeight, math.Round(fontSize*1.4))
+	}
+	if hasColorEmojiFallback && !allCode {
+		// Chromium's color-emoji fallback uses a 26px normal line box at 16px.
+		lineHeight = goMax(lineHeight, math.Round(ctx.cssFontSize()*1.625))
+	} else if hasSymbolFallback && !allCode {
+		// Text-presentation emoji-capable symbols use a 24px fallback line box.
+		lineHeight = goMax(lineHeight, math.Round(ctx.cssFontSize()*1.5))
+	} else if hasFallback && !allCode {
+		// Host fallback fonts use a slightly taller normal line box for missing
+		// proportional glyphs (22px versus Source Sans Pro's 20px at 16px).
+		lineHeight = goMax(lineHeight, math.Round(ctx.cssFontSize()*1.375))
+	}
+	return lineHeight
+}
+
+// HTML line boxes at h2's 24px and h5's 14px font sizes expose ink one pixel
+// above the baseline produced by rounded OpenType font-box metrics. This is a
+// paint-only correction: list markers still align to the shared CSS baseline.
+func markdownHeadingInkCorrection(ctx markdownPaintContext) float64 {
+	if ctx.heading == "h5" || (ctx.heading == "h2" && *ctx.fontFamily == d2fonts.SourceSansPro) {
+		return 1
+	}
+	return 0
+}
+
+// wrapInlineTokens implements CSS white-space wrapping at Unicode line-break
+// opportunities, with overflow-wrap fallbacks at inline element boundaries.
+// The outer viewport remains D2's legacy measured box: extra lines are painted
+// at the browser line height and intentionally clip when historical measurement
+// underestimated styled content.
+func (p *markdownPainter) wrapInlineTokens(tokens []markdownInlineToken, availableWidth float64) [][]markdownInlineToken {
+	lines := [][]markdownInlineToken{{}}
+	lineWidth := 0.0
+	needsWrap := false
+	for _, token := range tokens {
+		if token.breakLine {
+			lines = append(lines, nil)
+			lineWidth = 0
+			continue
+		}
+		lines[len(lines)-1] = append(lines[len(lines)-1], token)
+		lineWidth += token.width
+		needsWrap = needsWrap || availableWidth > 0 && lineWidth > availableWidth+0.001
+	}
+	if !needsWrap {
+		return lines
+	}
+
+	atoms := p.atomizeInlineTokens(tokens)
+
+	lines = [][]markdownInlineToken{{}}
+	lineWidth = 0
+	var pendingSpace *markdownInlineToken
+	var pendingPadding []markdownInlineToken
+	pendingPaddingWidth := 0.0
+	lineHasContent := false
+	for atomIndex := 0; atomIndex < len(atoms); atomIndex++ {
+		atom := atoms[atomIndex]
+		if atom.breakLine {
+			pendingSpace = nil
+			pendingPadding = nil
+			pendingPaddingWidth = 0
+			lines = append(lines, nil)
+			lineWidth = 0
+			lineHasContent = false
+			continue
+		}
+		if atom.text == " " && !atom.padding {
+			copy := atom
+			pendingSpace = &copy
+			continue
+		}
+		if atom.padding && atom.leadingPadding {
+			pendingPadding = append(pendingPadding, atom)
+			pendingPaddingWidth += atom.width
+			continue
+		}
+
+	retryAtom:
+		trailingPaddingWidth := inlineTrailingPaddingWidth(atoms, atomIndex)
+		needed := inlineUnbrokenWidth(atoms, atomIndex) + pendingPaddingWidth
+		if pendingSpace != nil {
+			needed += pendingSpace.width
+		}
+		canWrap := atom.breakBefore || pendingSpace != nil
+		if availableWidth > 0 && lineHasContent && !atom.padding && canWrap && lineWidth+needed > availableWidth+0.001 {
+			if atom.breakAfterSoftHyphen {
+				line := lines[len(lines)-1]
+				for i := len(line) - 1; i >= 0; i-- {
+					if !line[i].softHyphenEnd {
+						continue
+					}
+					line[i].softHyphenEnd = false
+					hyphen := line[i]
+					hyphen.text = "-"
+					hyphen.width = hyphen.ctx.cssFontSize() / 3
+					hyphen.softHyphenEnd = false
+					hyphen.discretionaryHyphen = true
+					hyphen.breakBefore = false
+					hyphen.breakAfterSoftHyphen = false
+					hyphen.emergencyBreakBefore = false
+					line = append(line, markdownInlineToken{})
+					copy(line[i+2:], line[i+1:])
+					line[i+1] = hyphen
+					lineWidth += hyphen.width
+					lines[len(lines)-1] = line
+					break
+				}
+			}
+			lines = append(lines, nil)
+			lineWidth = 0
+			lineHasContent = false
+			pendingSpace = nil
+		}
+
+		occupiedWidth := lineWidth + pendingPaddingWidth
+		if pendingSpace != nil && lineHasContent {
+			occupiedWidth += pendingSpace.width
+		}
+		if availableWidth > 0 && !atom.padding && occupiedWidth+atom.width+trailingPaddingWidth > availableWidth+0.001 {
+			maxTextWidth := goMax(0, availableWidth-occupiedWidth)
+			head, tail, ok := p.splitInlineTokenAtWidth(atom, maxTextWidth, trailingPaddingWidth > 0)
+			if !ok && lineHasContent {
+				// overflow-wrap: break-word falls back to the preceding grapheme
+				// boundary when no normal Unicode opportunity is available.
+				lines = append(lines, nil)
+				lineWidth = 0
+				lineHasContent = false
+				pendingSpace = nil
+				goto retryAtom
+			}
+			if ok {
+				atom = head
+				atoms = append(atoms, markdownInlineToken{})
+				copy(atoms[atomIndex+2:], atoms[atomIndex+1:])
+				atoms[atomIndex+1] = tail
+			}
+		}
+
+		if pendingSpace != nil && lineHasContent {
+			lines[len(lines)-1] = append(lines[len(lines)-1], *pendingSpace)
+			lineWidth += pendingSpace.width
+			pendingSpace = nil
+		} else if pendingSpace != nil {
+			// CSS discards leading collapsible whitespace, but inline-box
+			// padding still belongs to the first painted fragment.
+			pendingSpace = nil
+		}
+		lines[len(lines)-1] = append(lines[len(lines)-1], pendingPadding...)
+		lineWidth += pendingPaddingWidth
+		pendingPadding = nil
+		pendingPaddingWidth = 0
+
+		lines[len(lines)-1] = append(lines[len(lines)-1], atom)
+		lineWidth += atom.width
+		if !atom.padding {
+			lineHasContent = true
+		}
+	}
+	return lines
+}
+
+func inlineTrailingPaddingWidth(atoms []markdownInlineToken, atomIndex int) float64 {
+	width := 0.0
+	for i := atomIndex + 1; i < len(atoms) && atoms[i].padding && !atoms[i].leadingPadding; i++ {
+		width += atoms[i].width
+	}
+	return width
+}
+
+// inlineUnbrokenWidth looks through style/link token boundaries until the next
+// real Unicode break. CSS decides whether to move the whole word before laying
+// out its individual styled runs; considering only the first run can leave half
+// a word on the preceding line.
+func inlineUnbrokenWidth(atoms []markdownInlineToken, atomIndex int) float64 {
+	width := 0.0
+	for i := atomIndex; i < len(atoms); i++ {
+		atom := atoms[i]
+		if atom.breakLine || (i > atomIndex && !atom.padding && (atom.breakBefore || atom.text == " ")) {
+			break
+		}
+		if i == atomIndex && atom.text == " " && !atom.padding {
+			break
+		}
+		width += atom.width
+	}
+	return width
+}
+
+func (p *markdownPainter) splitInlineTokenAtWidth(token markdownInlineToken, maxWidth float64, forceSplit bool) (head, tail markdownInlineToken, ok bool) {
+	graphemes := uniseg.NewGraphemes(token.text)
+	var boundaries []int
+	for graphemes.Next() {
+		_, end := graphemes.Positions()
+		boundaries = append(boundaries, end)
+	}
+	if len(boundaries) < 2 {
+		return markdownInlineToken{}, markdownInlineToken{}, false
+	}
+
+	best := -1
+	for i, boundary := range boundaries {
+		width := p.inlineTextAdvance(token.text[:boundary], token.ctx, token.width)
+		if width > maxWidth+0.001 {
+			break
+		}
+		best = i
+	}
+	if best < 0 {
+		return markdownInlineToken{}, markdownInlineToken{}, false
+	}
+	if best == len(boundaries)-1 {
+		if !forceSplit {
+			return markdownInlineToken{}, markdownInlineToken{}, false
+		}
+		best--
+		if best < 0 {
+			return markdownInlineToken{}, markdownInlineToken{}, false
+		}
+	}
+
+	boundary := boundaries[best]
+	head = token
+	head.text = token.text[:boundary]
+	head.width = p.inlineTextAdvance(head.text, head.ctx, token.width)
+	head.softHyphenEnd = false
+
+	tail = token
+	tail.text = token.text[boundary:]
+	tail.width = p.inlineTextAdvance(tail.text, tail.ctx, token.width)
+	tail.breakBefore = false
+	tail.breakAfterSoftHyphen = false
+	tail.emergencyBreakBefore = true
+	return head, tail, true
+}
+
+// atomizeInlineTokens splits text only at Unicode line-break opportunities.
+// Computing boundaries across adjacent styled runs is important: an element
+// boundary alone is not a valid place to wrap a Latin word. The split tokens
+// retain their original paint context, code group, and decoration group.
+func (p *markdownPainter) atomizeInlineTokens(tokens []markdownInlineToken) []markdownInlineToken {
+	var atoms []markdownInlineToken
+	for start := 0; start < len(tokens); {
+		if tokens[start].breakLine {
+			atoms = append(atoms, tokens[start])
+			start++
+			continue
+		}
+
+		end := start
+		var combined strings.Builder
+		for end < len(tokens) && !tokens[end].breakLine {
+			if !tokens[end].padding {
+				combined.WriteString(tokens[end].text)
+			}
+			end++
+		}
+
+		breakOffsets := make(map[int]bool)
+		combinedText := combined.String()
+		// Unicode line-breaking and grapheme segmentation are related but
+		// distinct algorithms. Never accept a line-break offset that falls
+		// inside an extended grapheme cluster (notably emoji ZWJ sequences),
+		// because SVG text would otherwise paint the pieces as separate glyphs.
+		graphemeBoundaries := map[int]bool{0: true}
+		graphemes := uniseg.NewGraphemes(combinedText)
+		graphemeOffset := 0
+		for graphemes.Next() {
+			graphemeOffset += len(graphemes.Str())
+			graphemeBoundaries[graphemeOffset] = true
+		}
+		remaining := combinedText
+		state := -1
+		consumed := 0
+		for remaining != "" {
+			segment, rest, _, nextState := uniseg.FirstLineSegmentInString(remaining, state)
+			if segment == "" {
+				break
+			}
+			consumed += len(segment)
+			if rest != "" && graphemeBoundaries[consumed] {
+				breakOffsets[consumed] = true
+			}
+			remaining = rest
+			state = nextState
+		}
+
+		textOffset := 0
+		for _, token := range tokens[start:end] {
+			if token.padding || token.text == "" {
+				atoms = append(atoms, token)
+				continue
+			}
+
+			tokenStart := textOffset
+			tokenEnd := tokenStart + len(token.text)
+			pieceStart := tokenStart
+			for offset := tokenStart + 1; offset <= tokenEnd; offset++ {
+				if offset != tokenEnd && !breakOffsets[offset] {
+					continue
+				}
+				piece := token.text[pieceStart-tokenStart : offset-tokenStart]
+				atom := token
+				atom.breakBefore = breakOffsets[pieceStart]
+				atom.breakAfterSoftHyphen = atom.breakBefore && strings.HasSuffix(combinedText[:pieceStart], "\u00ad")
+				atom.emergencyBreakBefore = pieceStart == tokenStart && tokenStart > 0
+				if strings.HasSuffix(piece, "\u00ad") {
+					piece = strings.TrimSuffix(piece, "\u00ad")
+					atom.softHyphenEnd = true
+				}
+				p.appendInlineTextAtoms(&atoms, atom, piece)
+				pieceStart = offset
+			}
+			textOffset = tokenEnd
+		}
+		start = end
+	}
+	return atoms
+}
+
+func (p *markdownPainter) appendInlineTextAtoms(atoms *[]markdownInlineToken, token markdownInlineToken, text string) {
+	if text == "" && token.softHyphenEnd {
+		token.width = 0
+		*atoms = append(*atoms, token)
+		return
+	}
+	content := strings.TrimRight(text, " ")
+	if content != "" {
+		atom := token
+		atom.text = content
+		atom.width = p.inlineTextAdvance(content, token.ctx, token.width)
+		*atoms = append(*atoms, atom)
+		token.breakBefore = false
+	}
+	for range len(text) - len(content) {
+		atom := token
+		atom.text = " "
+		atom.width = p.inlineTextAdvance(" ", token.ctx, token.width)
+		*atoms = append(*atoms, atom)
+		token.breakBefore = false
 	}
 }
 
-func (p *markdownPainter) collectInlineTokens(n *html.Node, ctx markdownPaintContext, tokens *[]markdownInlineToken, nextCodeGroup *int, codeGroup int, codeHeight float64) {
+func (p *markdownPainter) inlineCodeVerticalShift(parentCtx, codeCtx markdownPaintContext, lineHeight, codeHeight float64) float64 {
+	if parentCtx.tableCell {
+		return 0
+	}
+	codeScale := codeCtx.fontScale
+	codeFontSize := codeCtx.cssFontSize()
+	verticalPadding := 0.0
+	if !codeCtx.headingCode {
+		codeScale *= FontSize_pre_code_em
+		codeFontSize *= FontSize_pre_code_em
+		verticalPadding = PaddingTopBottom_code_em * codeFontSize
+	}
+	codeTop := (lineHeight-codeHeight)/2 + verticalPadding
+	codeContentHeight := goMax(0, codeHeight-2*verticalPadding)
+	codeBaseline := p.textBaseline(codeCtx, codeTop, codeContentHeight, codeScale)
+	parentBaseline := p.textBaseline(parentCtx, 0, lineHeight, parentCtx.fontScale)
+	return parentBaseline - codeBaseline
+}
+
+func (p *markdownPainter) collectInlineTokens(n *html.Node, ctx markdownPaintContext, tokens *[]markdownInlineToken, nextCodeGroup, nextDecorationGroup *int, codeGroup int, codeHeight float64) {
 	if n.Type == html.TextNode {
 		text := renderableMarkdownText(n)
 		attrs := p.measure(n, ctx)
 		if text == "" && attrs.width == 0 {
 			return
 		}
+		width := p.inlineTextAdvance(text, ctx, attrs.width)
 		*tokens = append(*tokens, markdownInlineToken{
-			text: text, width: attrs.width, height: attrs.height, ctx: ctx,
-			codeGroup: codeGroup, codeHeight: codeHeight,
+			text: text, width: width, height: attrs.height, ctx: ctx,
+			codeGroup: codeGroup, codeHeight: codeHeight, decorationGroup: ctx.decorationGroup,
 		})
 		return
 	}
@@ -783,18 +1253,15 @@ func (p *markdownPainter) collectInlineTokens(n *html.Node, ctx markdownPaintCon
 		return
 	}
 	if n.Data == "img" {
-		alt := nodeAttr(n, "alt")
-		attrs := p.measure(n, ctx)
-		if alt != "" {
-			*tokens = append(*tokens, markdownInlineToken{
-				text: alt, width: attrs.width, height: attrs.height, ctx: ctx,
-				codeGroup: codeGroup, codeHeight: codeHeight,
-			})
-		}
 		return
 	}
 
 	childCtx := p.childContext(n, ctx)
+	if childCtx.decoration != MarkdownTextDecorationNone && ctx.decoration == MarkdownTextDecorationNone {
+		*nextDecorationGroup++
+		childCtx.decorationGroup = *nextDecorationGroup
+		childCtx.decorationRole = childCtx.role
+	}
 	if n.Data == "code" && (n.Parent == nil || n.Parent.Data != "pre") {
 		*nextCodeGroup++
 		codeGroup = *nextCodeGroup
@@ -802,32 +1269,54 @@ func (p *markdownPainter) collectInlineTokens(n *html.Node, ctx markdownPaintCon
 		codeHeight = attrs.height
 		padding := inlineCodeHorizontalPadding(childCtx)
 		*tokens = append(*tokens, markdownInlineToken{
-			padding: true, width: padding, ctx: childCtx, codeGroup: codeGroup, codeHeight: codeHeight,
+			padding: true, leadingPadding: true, width: padding, ctx: childCtx, codeGroup: codeGroup, codeHeight: codeHeight, decorationGroup: childCtx.decorationGroup,
 		})
 	}
 	for child := n.FirstChild; child != nil; child = child.NextSibling {
-		p.collectInlineTokens(child, childCtx, tokens, nextCodeGroup, codeGroup, codeHeight)
+		p.collectInlineTokens(child, childCtx, tokens, nextCodeGroup, nextDecorationGroup, codeGroup, codeHeight)
 	}
 	if n.Data == "code" && (n.Parent == nil || n.Parent.Data != "pre") {
 		padding := inlineCodeHorizontalPadding(childCtx)
 		*tokens = append(*tokens, markdownInlineToken{
-			padding: true, width: padding, ctx: childCtx, codeGroup: codeGroup, codeHeight: codeHeight,
+			padding: true, width: padding, ctx: childCtx, codeGroup: codeGroup, codeHeight: codeHeight, decorationGroup: childCtx.decorationGroup,
 		})
 	}
 }
 
 func inlineCodeHorizontalPadding(ctx markdownPaintContext) float64 {
 	if ctx.headingCode {
-		return PaddingLeftRight_heading_code_em * float64(ctx.fontSize)
+		return PaddingLeftRight_heading_code_em * ctx.cssFontSize()
 	}
-	return PaddingLeftRight_code_em * float64(ctx.fontSize)
+	return PaddingLeftRight_code_em * FontSize_pre_code_em * ctx.cssFontSize()
+}
+
+func (p *markdownPainter) inlineTextAdvance(text string, ctx markdownPaintContext, fallback float64) float64 {
+	fontFamily := ctx.fontFamily
+	if ctx.mono {
+		fontFamily = ctx.monoFontFamily
+	}
+	font := fontFamily.Font(ctx.fontSize, ctx.effectiveFontStyle())
+	measurementText := strings.ReplaceAll(text, "\u00ad", "")
+	advance, ok := p.ruler.measureFontAdvance(font, measurementText)
+	if !ok {
+		advance, _ = p.ruler.MeasurePrecise(font, measurementText)
+		advance = p.ruler.scaleUnicodeCSS(advance, font, measurementText)
+		if advance == 0 && measurementText != "" && !isZeroWidthGrapheme(measurementText) {
+			return fallback
+		}
+	}
+	advance *= ctx.fontScale
+	if ctx.inlineCode && !ctx.headingCode {
+		advance *= FontSize_pre_code_em
+	}
+	return advance
 }
 
 func renderableMarkdownText(n *html.Node) string {
 	return n.Data
 }
 
-func (p *markdownPainter) paintPre(n *html.Node, x, y float64, attrs blockAttrs, ctx markdownPaintContext, availableWidth float64) {
+func (p *markdownPainter) paintPre(n *html.Node, x, y float64, attrs blockAttrs, ctx markdownPaintContext, availableWidth float64) float64 {
 	backgroundWidth := goMax(attrs.width, availableWidth)
 	p.layout.Primitives = append(p.layout.Primitives, MarkdownPrimitive{
 		Kind: MarkdownRectPrimitive, X: x, Y: y, Width: backgroundWidth, Height: attrs.height,
@@ -841,7 +1330,7 @@ func (p *markdownPainter) paintPre(n *html.Node, x, y float64, attrs blockAttrs,
 	if len(lines) > 0 && lines[len(lines)-1] == "" && strings.HasSuffix(text, "\n") {
 		lines = lines[:len(lines)-1]
 	}
-	fontSize := FontSize_pre_code_em * float64(ctx.fontSize)
+	fontSize := FontSize_pre_code_em * ctx.cssFontSize()
 	lineHeight := LineHeight_pre * fontSize
 	backgroundHeight := float64(len(lines))*lineHeight + 2*Padding_pre
 	if len(lines) == 0 {
@@ -855,11 +1344,12 @@ func (p *markdownPainter) paintPre(n *html.Node, x, y float64, attrs blockAttrs,
 		line = expandMarkdownTabs(line)
 		p.layout.Primitives = append(p.layout.Primitives, MarkdownPrimitive{
 			Kind: MarkdownTextPrimitive, X: x + Padding_pre,
-			Y:    p.textBaseline(ctx, y+Padding_pre+float64(i)*lineHeight, lineHeight, FontSize_pre_code_em),
+			Y:    p.textBaseline(ctx, y+Padding_pre+float64(i)*lineHeight, lineHeight, FontSize_pre_code_em*ctx.fontScale),
 			Text: line, Font: ctx.fontRole(), FontSize: fontSize, FillRole: ctx.role,
-			SyntheticItalic: ctx.syntheticItalic(),
+			SyntheticBold: ctx.syntheticBold(), SyntheticItalic: ctx.syntheticItalic(),
 		})
 	}
+	return backgroundHeight
 }
 
 func expandMarkdownTabs(line string) string {
@@ -888,77 +1378,282 @@ func expandMarkdownTabs(line string) string {
 }
 
 type markdownTableRow struct {
-	node   *html.Node
-	cells  []*html.Node
-	header bool
-	height float64
-	widths []float64
-	stripe bool
+	node    *html.Node
+	cells   []*html.Node
+	header  bool
+	height  float64
+	widths  []float64
+	heights []float64
+	stripe  bool
 }
 
-func (p *markdownPainter) paintTable(n *html.Node, x, y float64, attrs blockAttrs, ctx markdownPaintContext) {
+func (p *markdownPainter) paintTable(n *html.Node, x, y float64, attrs blockAttrs, ctx markdownPaintContext, availableWidth float64) float64 {
 	rows := collectMarkdownTableRows(n)
 	columnWidths := make([]float64, 0)
+	columnMinWidths := make([]float64, 0)
 	for i := range rows {
-		rowCtx := ctx
-		if rows[i].header {
-			rowCtx.fontWeight = d2fonts.FONT_STYLE_SEMIBOLD
-		}
-		maxCellHeight := 0.0
+		rowMinWidths := make([]float64, 0, len(rows[i].cells))
 		for _, cell := range rows[i].cells {
-			cellCtx := rowCtx
-			if cell.Data == "th" {
-				cellCtx.fontWeight = d2fonts.FONT_STYLE_SEMIBOLD
-			}
+			cellCtx := markdownTableCellContext(ctx, rows[i], cell)
 			cellAttrs := p.measure(cell, cellCtx)
 			rows[i].widths = append(rows[i].widths, cellAttrs.width+26)
-			maxCellHeight = goMax(maxCellHeight, cellAttrs.height+12)
+			rowMinWidths = append(rowMinWidths, p.markdownMinContentWidth(cell, cellCtx)+26)
 		}
-		rows[i].height = goMax(maxCellHeight+1, float64(ctx.fontSize)*ctx.lineHeightFactor)
 		columnWidths = mergeColumnWidths(columnWidths, [][]float64{rows[i].widths})
+		columnMinWidths = mergeColumnWidths(columnMinWidths, [][]float64{rowMinWidths})
 	}
+	tableWidth := attrs.width
+	if availableWidth > 0 {
+		tableWidth = math.Min(tableWidth, availableWidth)
+	}
+	tableWidth = goMax(1, tableWidth)
+	columnWidths = fitMarkdownTableColumns(columnWidths, columnMinWidths, tableWidth)
+	paintedTableWidth := float64(len(columnWidths) + 1)
+	for _, width := range columnWidths {
+		paintedTableWidth += width
+	}
+	paintedTableWidth = goMax(tableWidth, paintedTableWidth)
+
+	for i := range rows {
+		maxCellHeight := 0.0
+		for cellIndex, cell := range rows[i].cells {
+			cellCtx := markdownTableCellContext(ctx, rows[i], cell)
+			contentWidth := goMax(0, columnWidths[cellIndex]-26)
+			probe := markdownPainter{ruler: p.ruler, layout: &MarkdownLayout{}}
+			contentHeight := probe.paintFlow(cell, 0, 0, cellCtx, contentWidth)
+			rows[i].heights = append(rows[i].heights, contentHeight)
+			maxCellHeight = goMax(maxCellHeight, contentHeight+12)
+		}
+		// Empty cells have only their 6px vertical padding and the collapsed
+		// one-pixel row border. Chromium therefore paints an empty row at 13px.
+		rows[i].height = maxCellHeight + 1
+	}
+	finalBoundaryY := y
+	for _, row := range rows {
+		finalBoundaryY += row.height
+	}
+	leftBorderX := markdownSnap(x)
+	topBorderY := markdownSnap(y)
+	rightBorderX := markdownSnap(x + paintedTableWidth - 1)
+	bottomBorderY := markdownSnap(finalBoundaryY)
+	gridWidth := rightBorderX - leftBorderX + 1
+	gridHeight := bottomBorderY - topBorderY + 1
 
 	p.layout.Primitives = append(p.layout.Primitives, MarkdownPrimitive{
-		Kind: MarkdownRectPrimitive, X: x, Y: y, Width: attrs.width, Height: attrs.height,
-		FillRole: MarkdownColorCanvas, StrokeRole: MarkdownColorBorder, StrokeWidth: 1,
+		Kind: MarkdownRectPrimitive, X: leftBorderX, Y: topBorderY, Width: gridWidth, Height: gridHeight,
+		FillRole: MarkdownColorCanvas,
 	})
-	rowY := y + 1
+	stripeY := y
 	for _, row := range rows {
 		if row.stripe {
+			stripeTop := markdownSnap(stripeY)
+			stripeBottom := markdownSnap(stripeY + row.height)
 			p.layout.Primitives = append(p.layout.Primitives, MarkdownPrimitive{
-				Kind: MarkdownRectPrimitive, X: x + 1, Y: rowY, Width: goMax(0, attrs.width-2), Height: row.height,
+				Kind: MarkdownRectPrimitive, X: leftBorderX + 1, Y: stripeTop, Width: goMax(0, rightBorderX-leftBorderX-1), Height: stripeBottom - stripeTop,
 				FillRole: MarkdownColorCanvasSubtle,
 			})
 		}
+		stripeY += row.height
+	}
+	grid := []MarkdownPrimitive{
+		MarkdownPrimitive{
+			Kind: MarkdownRectPrimitive, X: leftBorderX, Y: topBorderY, Width: gridWidth, Height: 1,
+			FillRole: MarkdownColorBorder,
+		},
+		MarkdownPrimitive{
+			Kind: MarkdownRectPrimitive, X: leftBorderX, Y: topBorderY, Width: 1, Height: gridHeight,
+			FillRole: MarkdownColorBorder,
+		},
+		MarkdownPrimitive{
+			Kind: MarkdownRectPrimitive, X: rightBorderX, Y: topBorderY, Width: 1, Height: gridHeight,
+			FillRole: MarkdownColorBorder,
+		},
+	}
+	rowY := y
+	for _, row := range rows {
 		cursorX := x + 1
 		for cellIndex, cell := range row.cells {
-			cellCtx := ctx
-			if row.header || cell.Data == "th" {
-				cellCtx.fontWeight = d2fonts.FONT_STYLE_SEMIBOLD
-			}
-			contentAttrs := p.measure(cell, cellCtx)
+			cellCtx := markdownTableCellContext(ctx, row, cell)
 			contentX := cursorX + 13
 			available := columnWidths[cellIndex] - 26
-			switch nodeAttr(cell, "align") {
-			case "right":
-				contentX += goMax(0, available-contentAttrs.width)
-			case "center":
-				contentX += goMax(0, available-contentAttrs.width) / 2
+			contentHeight := 0.0
+			if cellIndex < len(row.heights) {
+				contentHeight = row.heights[cellIndex]
 			}
-			p.paintFlow(cell, contentX, rowY+6, cellCtx, available)
+			contentY := rowY + 7 + goMax(0, row.height-13-contentHeight)/2
+			// The collapsed top border occupies the first CSS pixel of each row;
+			// cell padding starts after it. Table cells vertically center content
+			// when another cell makes the shared row taller.
+			p.paintFlow(cell, contentX, contentY, cellCtx, available)
 			cursorX += columnWidths[cellIndex]
-			p.layout.Primitives = append(p.layout.Primitives, MarkdownPrimitive{
-				Kind: MarkdownLinePrimitive, X: cursorX, Y: rowY, X2: cursorX, Y2: rowY + row.height,
-				StrokeRole: MarkdownColorBorder, StrokeWidth: 1,
-			})
+			if cellIndex < len(row.cells)-1 {
+				segmentTop := markdownSnap(rowY)
+				segmentBottom := markdownSnap(rowY + row.height)
+				grid = append(grid, MarkdownPrimitive{
+					Kind: MarkdownRectPrimitive, X: markdownSnap(cursorX), Y: segmentTop, Width: 1, Height: segmentBottom - segmentTop,
+					FillRole: MarkdownColorBorder,
+				})
+			}
 			cursorX++
 		}
 		rowY += row.height
-		p.layout.Primitives = append(p.layout.Primitives, MarkdownPrimitive{
-			Kind: MarkdownLinePrimitive, X: x, Y: rowY, X2: x + attrs.width, Y2: rowY,
-			StrokeRole: MarkdownColorBorder, StrokeWidth: 1,
+		grid = append(grid, MarkdownPrimitive{
+			Kind: MarkdownRectPrimitive, X: leftBorderX, Y: markdownSnap(rowY), Width: gridWidth, Height: 1,
+			FillRole: MarkdownColorBorder,
 		})
 	}
+	p.layout.Primitives = append(p.layout.Primitives, grid...)
+	return gridHeight
+}
+
+// markdownMinContentWidth returns the narrowest width allowed by ordinary CSS
+// line-break opportunities. In particular, overflow-wrap: break-word does not
+// reduce an element's min-content contribution, while spaces and CJK boundaries
+// do. Inline padding stays attached to the first or last fragment it surrounds.
+func (p *markdownPainter) markdownMinContentWidth(n *html.Node, ctx markdownPaintContext) float64 {
+	minWidth := 0.0
+	for _, unit := range p.flowUnits(n, ctx) {
+		if unit.block != nil {
+			minWidth = goMax(minWidth, p.measure(unit.block, ctx).width)
+			continue
+		}
+		var tokens []markdownInlineToken
+		nextCodeGroup := 0
+		nextDecorationGroup := 0
+		for _, inline := range unit.inline {
+			p.collectInlineTokens(inline, ctx, &tokens, &nextCodeGroup, &nextDecorationGroup, 0, 0)
+		}
+		atoms := p.atomizeInlineTokens(tokens)
+		segmentWidth := 0.0
+		pendingLeadingPadding := 0.0
+		var previousContentCtx *markdownPaintContext
+		commit := func(extra float64) {
+			minWidth = goMax(minWidth, segmentWidth+extra)
+			segmentWidth = 0
+			previousContentCtx = nil
+		}
+		for _, atom := range atoms {
+			if atom.breakLine {
+				segmentWidth += pendingLeadingPadding
+				pendingLeadingPadding = 0
+				commit(0)
+				continue
+			}
+			if atom.text == " " && !atom.padding {
+				segmentWidth += pendingLeadingPadding
+				pendingLeadingPadding = 0
+				commit(0)
+				continue
+			}
+			if atom.padding && atom.leadingPadding {
+				pendingLeadingPadding += atom.width
+				continue
+			}
+			if !atom.padding && atom.breakBefore {
+				extra := 0.0
+				if atom.breakAfterSoftHyphen && previousContentCtx != nil {
+					extra = previousContentCtx.cssFontSize() / 3
+				}
+				commit(extra)
+			}
+			segmentWidth += pendingLeadingPadding
+			pendingLeadingPadding = 0
+			segmentWidth += atom.width
+			if !atom.padding {
+				copy := atom.ctx
+				previousContentCtx = &copy
+			}
+		}
+		segmentWidth += pendingLeadingPadding
+		commit(0)
+	}
+	return minWidth
+}
+
+func markdownTableCellContext(ctx markdownPaintContext, row markdownTableRow, cell *html.Node) markdownPaintContext {
+	ctx.tableCell = true
+	// The browser UA stylesheet resets tables to line-height: normal. Source
+	// Sans Pro's normal 16px line box is 20px rather than Markdown's 24px.
+	ctx.lineHeightFactor = 1.25
+	if row.header || cell.Data == "th" {
+		ctx.fontStyle = d2fonts.FONT_STYLE_SEMIBOLD
+		ctx.bold = true
+	}
+	ctx.textAlign = nodeAttr(cell, "align")
+	if ctx.textAlign == "" && (row.header || cell.Data == "th") {
+		ctx.textAlign = "center"
+	}
+	return ctx
+}
+
+func fitMarkdownTableColumns(widths, minWidths []float64, tableWidth float64) []float64 {
+	if len(widths) == 0 {
+		return widths
+	}
+	fitted := append([]float64(nil), widths...)
+	columnBudget := goMax(0, tableWidth-float64(len(widths)+1))
+	naturalWidth := 0.0
+	for _, width := range widths {
+		naturalWidth += width
+	}
+	if naturalWidth <= columnBudget+0.001 {
+		return fitted
+	}
+	minWidth := 0.0
+	shrinkCapacity := 0.0
+	for i, width := range widths {
+		minimum := 0.0
+		if i < len(minWidths) {
+			minimum = math.Min(width, minWidths[i])
+		}
+		minWidth += minimum
+		shrinkCapacity += width - minimum
+	}
+	if minWidth <= columnBudget+0.001 && shrinkCapacity > 0 {
+		shrink := naturalWidth - columnBudget
+		for i, width := range widths {
+			minimum := 0.0
+			if i < len(minWidths) {
+				minimum = math.Min(width, minWidths[i])
+			}
+			capacity := width - minimum
+			fitted[i] = width - shrink*capacity/shrinkCapacity
+		}
+		return fitted
+	}
+	if minWidth > columnBudget+0.001 {
+		// CSS automatic table layout does not compress columns below their
+		// min-content widths. The row can overflow a max-width-constrained table.
+		for i, width := range widths {
+			if i < len(minWidths) {
+				fitted[i] = math.Min(width, minWidths[i])
+			}
+		}
+		return fitted
+	}
+	paddingWidth := 26.0 * float64(len(widths))
+	if columnBudget <= paddingWidth {
+		for i := range fitted {
+			fitted[i] = columnBudget / float64(len(fitted))
+		}
+		return fitted
+	}
+	contentBudget := columnBudget - paddingWidth
+	naturalContentWidth := 0.0
+	for _, width := range widths {
+		naturalContentWidth += goMax(0, width-26)
+	}
+	if naturalContentWidth == 0 {
+		for i := range fitted {
+			fitted[i] = 26 + contentBudget/float64(len(fitted))
+		}
+		return fitted
+	}
+	for i, width := range widths {
+		share := goMax(0, width-26) / naturalContentWidth
+		fitted[i] = 26 + contentBudget*share
+	}
+	return fitted
 }
 
 func collectMarkdownTableRows(table *html.Node) []markdownTableRow {
@@ -1007,21 +1702,12 @@ func markdownListMarker(n *html.Node) string {
 	if n.Parent == nil || n.Parent.Type != html.ElementNode {
 		return ""
 	}
-	marker := "•"
 	if n.Parent.Data == "ul" {
-		depth := 0
-		for ancestor := n.Parent.Parent; ancestor != nil; ancestor = ancestor.Parent {
-			if ancestor.Type == html.ElementNode && (ancestor.Data == "ol" || ancestor.Data == "ul") {
-				depth++
-			}
-		}
-		switch depth % 3 {
-		case 1:
-			marker = "◦"
-		case 2:
-			marker = "▪"
-		}
+		// Browser list markers are geometric shapes, not font glyphs. They are
+		// painted by paintListMarker and deliberately excluded from font corpus.
+		return ""
 	}
+	marker := ""
 	if n.Parent.Data == "ol" {
 		index := 1
 		if start, err := strconv.Atoi(nodeAttr(n.Parent, "start")); err == nil {
@@ -1054,24 +1740,46 @@ func markdownListMarker(n *html.Node) string {
 	return marker
 }
 
-func markdownListIndent(markerWidth float64, fontSize int) float64 {
-	return goMax(PaddingLeft_ul_ol_em*float64(fontSize), markerWidth+float64(fontSize)/4)
-}
-
 func (p *markdownPainter) listIndent(n *html.Node, ctx markdownPaintContext) float64 {
-	marker := markdownListMarker(n)
-	if marker == "" {
-		return PaddingLeft_ul_ol_em * float64(ctx.fontSize)
-	}
-	fontFamily := ctx.fontFamily
-	if ctx.mono {
-		fontFamily = ctx.monoFontFamily
-	}
-	markerWidth, _ := p.ruler.MeasurePrecise(fontFamily.Font(ctx.fontSize, ctx.effectiveFontStyle()), marker)
-	return markdownListIndent(markerWidth, ctx.fontSize)
+	return PaddingLeft_ul_ol_em * ctx.cssFontSize()
 }
 
 func (p *markdownPainter) paintListMarker(n *html.Node, x, y float64, ctx markdownPaintContext, inset float64) {
+	baselineY := p.listMarkerBaseline(n, y, ctx)
+	if n.Parent != nil && n.Parent.Type == html.ElementNode && n.Parent.Data == "ul" {
+		fontSize := ctx.cssFontSize()
+		// Blink paints list markers as pixel-snapped geometry. Its disc/square
+		// box is about .3em, with a three-pixel minimum at small font sizes.
+		side := goMax(3, markdownSnap(0.3*fontSize))
+		// CSS places outside markers in a marker box whose center sits about
+		// one em before the list content. The 1.5px correction comes from the
+		// browser marker box; another 5px aligns the geometric marker with that
+		// box instead of the text-glyph origin used by the first native version.
+		centerX := x + inset - fontSize/2 - 6.5
+		primitive := MarkdownPrimitive{
+			Kind: MarkdownRectPrimitive,
+			X:    markdownSnap(centerX - side/2), Y: baselineY - math.Floor(1.5*side),
+			Width: side, Height: side,
+		}
+		depth := markdownListDepth(n)
+		switch depth {
+		case 0:
+			primitive.Radius = side / 2
+			primitive.FillRole = ctx.role
+		case 1:
+			primitive.Radius = side / 2
+			primitive.StrokeWidth = 1
+			if ctx.role == MarkdownColorMuted {
+				primitive.StrokeRole = MarkdownColorMutedStroke
+			} else {
+				primitive.StrokeRole = MarkdownColorForegroundStroke
+			}
+		default:
+			primitive.FillRole = ctx.role
+		}
+		p.layout.Primitives = append(p.layout.Primitives, primitive)
+		return
+	}
 	marker := markdownListMarker(n)
 	if marker == "" {
 		return
@@ -1080,14 +1788,49 @@ func (p *markdownPainter) paintListMarker(n *html.Node, x, y float64, ctx markdo
 	if ctx.mono {
 		fontFamily = ctx.monoFontFamily
 	}
-	markerWidth, markerHeight := p.ruler.MeasurePrecise(fontFamily.Font(ctx.fontSize, ctx.effectiveFontStyle()), marker)
+	font := fontFamily.Font(ctx.fontSize, ctx.effectiveFontStyle())
+	markerWidth, markerHeight := p.ruler.MeasurePrecise(font, marker)
+	markerWidth *= ctx.fontScale
+	markerHeight *= ctx.fontScale
 	p.layout.Primitives = append(p.layout.Primitives, MarkdownPrimitive{
 		Kind: MarkdownTextPrimitive,
-		X:    x + inset - markerWidth - float64(ctx.fontSize)/4,
-		Y:    p.textBaseline(ctx, y, float64(ctx.fontSize)*ctx.lineHeightFactor, 1), Width: markerWidth, Height: markerHeight,
-		Text: marker, Font: ctx.fontRole(), FontSize: float64(ctx.fontSize),
-		FillRole: ctx.role, SyntheticItalic: ctx.syntheticItalic(),
+		X:    x + inset - markerWidth - p.ruler.spaceWidth(font)*ctx.fontScale,
+		Y:    baselineY, Width: markerWidth, Height: markerHeight,
+		Text: marker, Font: ctx.fontRole(), FontSize: ctx.cssFontSize(),
+		FillRole: ctx.role, SyntheticBold: ctx.syntheticBold(), SyntheticItalic: ctx.syntheticItalic(),
 	})
+}
+
+// A list marker participates in the list item's first line box. When that line
+// is introduced by a heading, its larger baseline pulls the marker down, but
+// the marker itself still inherits the list item's (body) font size.
+func (p *markdownPainter) listMarkerBaseline(n *html.Node, y float64, ctx markdownPaintContext) float64 {
+	baseline := p.textBaseline(ctx, y, ctx.cssFontSize()*ctx.lineHeightFactor, ctx.fontScale)
+	first := getNext(n.FirstChild)
+	if first == nil || first.Type != html.ElementNode || !isMarkdownHeading(first.Data) {
+		return baseline
+	}
+	headingCtx := p.childContext(first, ctx)
+	headingBaseline := p.textBaseline(
+		headingCtx,
+		y,
+		headingCtx.cssFontSize()*headingCtx.lineHeightFactor,
+		headingCtx.fontScale,
+	)
+	return goMax(baseline, headingBaseline)
+}
+
+func markdownListDepth(n *html.Node) int {
+	depth := 0
+	if n == nil || n.Parent == nil {
+		return depth
+	}
+	for ancestor := n.Parent.Parent; ancestor != nil; ancestor = ancestor.Parent {
+		if ancestor.Type == html.ElementNode && (ancestor.Data == "ol" || ancestor.Data == "ul") {
+			depth++
+		}
+	}
+	return depth
 }
 
 func orderedListMarker(index int, style string) string {

@@ -89,14 +89,16 @@ func (r *markdownRenderer) render(
 	}
 
 	rolePaint := map[textmeasure.MarkdownColorRole]textmeasure.MarkdownSVGPaint{
-		textmeasure.MarkdownColorForeground:   r.fillPaint(foreground),
-		textmeasure.MarkdownColorMuted:        r.fillPaint(color.N2),
-		textmeasure.MarkdownColorAccent:       r.fillPaint(color.B2),
-		textmeasure.MarkdownColorBorder:       r.strokePaint(color.B1),
-		textmeasure.MarkdownColorBorderMuted:  r.strokePaint(color.B2),
-		textmeasure.MarkdownColorCanvas:       r.fillPaint(color.N7),
-		textmeasure.MarkdownColorCanvasSubtle: r.fillPaint(color.N6),
-		textmeasure.MarkdownColorNeutralMuted: r.fillPaint(color.N6),
+		textmeasure.MarkdownColorForeground:       r.fillPaint(foreground),
+		textmeasure.MarkdownColorForegroundStroke: r.strokePaint(foreground),
+		textmeasure.MarkdownColorMuted:            r.fillPaint(color.N2),
+		textmeasure.MarkdownColorMutedStroke:      r.strokePaint(color.N2),
+		textmeasure.MarkdownColorAccent:           r.fillPaint(color.B2),
+		textmeasure.MarkdownColorBorder:           r.fillPaint(color.B1),
+		textmeasure.MarkdownColorBorderMuted:      r.fillPaint(color.B2),
+		textmeasure.MarkdownColorCanvas:           r.fillPaint(color.N7),
+		textmeasure.MarkdownColorCanvasSubtle:     r.fillPaint(color.N6),
+		textmeasure.MarkdownColorNeutralMuted:     r.fillPaint(color.N6),
 	}
 	out.WriteString(layout.SVG(textmeasure.MarkdownSVGOptions{
 		Class:        "md md-native",
