@@ -126,6 +126,12 @@ n2 -> n1
 	lastSequenceEdge := g.Edges[nEdges-1]
 	for i := nEdges; i < nExpectedEdges; i++ {
 		edge := g.Edges[i]
+		if got, want := edge.Dst.ID, d2sequence.LifelineEndID(edge.Src.ID); got != want {
+			t.Fatalf("expected lifeline edge[%d] destination ID %q, got %q", i, want, got)
+		}
+		if !d2sequence.IsLifelineEnd(edge.Dst) {
+			t.Fatalf("expected lifeline edge[%d] destination to be recognized as a lifeline end", i)
+		}
 		if len(edge.Route) != 2 {
 			t.Fatalf("expected lifeline edge[%d] to have only 2 points", i)
 		}
