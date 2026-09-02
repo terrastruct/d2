@@ -34,6 +34,9 @@ type retainedVectorSummary struct {
 }
 
 func (p *preflight) validateRetainedVectorAssets(ids []string) error {
+	if len(p.vectors) == 0 {
+		return nil
+	}
 	validator := &retainedVectorValidator{
 		preflight:           p,
 		validated:           make(map[d2scene.AssetID]retainedVectorSummary, len(p.vectors)),
@@ -451,7 +454,7 @@ func (v *retainedVectorValidator) textObjectBounds(text d2scene.TextRun, ppem fi
 		if glyph.empty {
 			continue
 		}
-		glyphBounds, _, err := glyph.font.parsedFace().GlyphRenderBounds(uint32(glyph.id), ppem)
+		glyphBounds, _, err := glyph.font.glyphRenderBounds(uint32(glyph.id), ppem)
 		if err != nil {
 			return d2scene.Box{}, fmt.Errorf("load glyph %d (ID %d) render bounds from font asset %q: %w", index, glyph.id, glyph.asset, err)
 		}

@@ -6,8 +6,10 @@ import (
 	"errors"
 	"image"
 	"image/color"
+	"image/draw"
 	"image/png"
 	"math"
+	"slices"
 	"strings"
 	"testing"
 
@@ -351,6 +353,65 @@ func TestStrokeJoinAnalyticGeometry(t *testing.T) {
 	}
 }
 
+func TestCleanPointsAliasesCleanInputAndPreservesDuplicateInput(t *testing.T) {
+	t.Parallel()
+
+	clean := []d2scene.Point{{X: 1, Y: 2}, {X: 3, Y: 4}, {X: 5, Y: 6}}
+	got := cleanPoints(clean, false)
+	if len(got) != len(clean) || &got[0] != &clean[0] {
+		t.Fatal("clean point input was copied")
+	}
+	closed := append(append([]d2scene.Point(nil), clean...), clean[0])
+	got = cleanPoints(closed, true)
+	if len(got) != len(clean) || &got[0] != &closed[0] {
+		t.Fatal("sole closing duplicate did not reuse the input slice")
+	}
+
+	duplicate := []d2scene.Point{{X: 1, Y: 2}, {X: 1, Y: 2}, {X: 3, Y: 4}, {X: 3, Y: 4}, {X: 1, Y: 2}}
+	before := append([]d2scene.Point(nil), duplicate...)
+	got = cleanPoints(duplicate, true)
+	want := []d2scene.Point{{X: 1, Y: 2}, {X: 3, Y: 4}}
+	if !slices.Equal(got, want) {
+		t.Fatalf("cleaned points = %#v, want %#v", got, want)
+	}
+	if !slices.Equal(duplicate, before) {
+		t.Fatal("cleanPoints mutated duplicate input")
+	}
+	if len(got) != 0 && &got[0] == &duplicate[0] {
+		t.Fatal("interior-duplicate cleanup aliased scratch over the input")
+	}
+}
+
+func TestStrokeRunPixelBoundsMatchesSubpathBounds(t *testing.T) {
+	t.Parallel()
+
+	runs := []strokeRun{
+		{points: []d2scene.Point{{X: -3.25, Y: 7.5}, {X: 19.75, Y: -2.125}}},
+		{points: []d2scene.Point{{X: 4.5, Y: 6.75}, {X: 12.25, Y: 18.5}, {X: -1.5, Y: 13.25}}, closed: true},
+	}
+	paths := make([]subpath, len(runs))
+	for index, run := range runs {
+		paths[index] = subpath{points: run.points, closed: run.closed}
+	}
+	canvas := image.Rect(-20, -30, 80, 90)
+	for _, test := range []struct {
+		transform d2scene.Matrix
+		expansion float64
+	}{
+		{transform: d2scene.Identity()},
+		{transform: d2scene.Translate(11.5, -7.25).Mul(d2scene.Rotate(math.Pi / 7)).Mul(d2scene.Scale(2.5, .75)), expansion: 9.125},
+	} {
+		got := strokeRunPixelBounds(runs, test.transform, test.expansion, canvas)
+		want := subpathPixelBounds(paths, test.transform, test.expansion, canvas)
+		if got != want {
+			t.Fatalf("stroke bounds = %v, want %v", got, want)
+		}
+	}
+	if got := strokeRunPixelBounds(nil, d2scene.Identity(), 1, canvas); !got.Empty() {
+		t.Fatalf("empty stroke bounds = %v", got)
+	}
+}
+
 func TestRenderMiterBevelAndMiterLimit(t *testing.T) {
 	renderRightJoin := func(join d2scene.LineJoin, miterLimit float64) *image.NRGBA {
 		t.Helper()
@@ -624,11 +685,19 @@ func TestPureGoTextShapingAndFallback(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	primaryFace, err := primary.faceForShaping()
+	if err != nil {
+		t.Fatal(err)
+	}
+	fallbackFace, err := fallback.faceForShaping()
+	if err != nil {
+		t.Fatal(err)
+	}
 	const fallbackRune = '\u0416'
-	if _, ok := primary.shaping.NominalGlyph(fallbackRune); ok {
+	if _, ok := primaryFace.Shaping.NominalGlyph(fallbackRune); ok {
 		t.Fatalf("hand-drawn primary unexpectedly covers fallback test rune %U", fallbackRune)
 	}
-	if _, ok := fallback.shaping.NominalGlyph(fallbackRune); !ok {
+	if _, ok := fallbackFace.Shaping.NominalGlyph(fallbackRune); !ok {
 		t.Fatalf("Source Sans fallback does not cover test rune %U", fallbackRune)
 	}
 
@@ -892,18 +961,414 @@ func TestLimitsAndCancellation(t *testing.T) {
 	}
 }
 
-func TestFinalFrameStoragePlatformBoundary(t *testing.T) {
+func TestFinalFrameStorageSingleBackingStorePlatformBoundary(t *testing.T) {
 	t.Parallel()
 
-	maxPixels := platformMaxInt() / 8
+	maxPixels := platformMaxInt() / 4
 	bytes, err := finalFrameStorageBytes(int(maxPixels), 1)
-	if err != nil || bytes != maxPixels*8 {
-		t.Fatalf("exact platform boundary = %d, %v; want %d", bytes, err, maxPixels*8)
+	if err != nil || bytes != maxPixels*4 {
+		t.Fatalf("exact platform boundary = %d, %v; want %d", bytes, err, maxPixels*4)
 	}
 	if _, err := finalFrameStorageBytes(int(maxPixels)+1, 1); err == nil || !strings.Contains(err.Error(), "platform integer domain") {
 		t.Fatalf("boundary+1 error = %v, want platform-domain rejection", err)
 	}
 }
+
+func TestRGBAtoNRGBAInPlacePreservesPixelsAndBackingStore(t *testing.T) {
+	t.Parallel()
+
+	bounds := image.Rect(7, 11, 12, 12)
+	source := image.NewRGBA(bounds)
+	tests := []struct {
+		name  string
+		input color.RGBA
+		want  color.NRGBA
+	}{
+		{name: "opaque", input: color.RGBA{R: 17, G: 34, B: 51, A: 255}, want: color.NRGBA{R: 17, G: 34, B: 51, A: 255}},
+		{name: "transparent", input: color.RGBA{}, want: color.NRGBA{}},
+		{name: "alpha zero preserves hidden channels", input: color.RGBA{R: 17, G: 34, B: 51}, want: color.NRGBA{R: 17, G: 34, B: 51}},
+		{name: "partially transparent", input: color.RGBA{R: 64, G: 32, B: 16, A: 128}, want: color.NRGBA{R: 127, G: 63, B: 31, A: 128}},
+		{name: "minimum nonzero alpha", input: color.RGBA{R: 1, G: 1, B: 1, A: 1}, want: color.NRGBA{R: 255, G: 255, B: 255, A: 1}},
+	}
+	for index, test := range tests {
+		source.SetRGBA(bounds.Min.X+index, bounds.Min.Y, test.input)
+	}
+
+	// Use image/draw as the byte-exact compatibility oracle.
+	want := image.NewNRGBA(bounds)
+	draw.Draw(want, bounds, source, bounds.Min, draw.Src)
+	backing := &source.Pix[0]
+	got, err := rgbaToNRGBAInPlace(context.Background(), source, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if got.Bounds() != bounds || got.Stride != source.Stride {
+		t.Fatalf("NRGBA geometry = bounds %v stride %d, want bounds %v stride %d", got.Bounds(), got.Stride, bounds, source.Stride)
+	}
+	if &got.Pix[0] != backing {
+		t.Fatal("RGBA to NRGBA conversion allocated a second pixel backing store")
+	}
+	if !bytes.Equal(got.Pix, want.Pix) {
+		t.Fatalf("in-place NRGBA pixels = %v, want reference draw conversion %v", got.Pix, want.Pix)
+	}
+
+	for index, test := range tests {
+		if actual := got.NRGBAAt(bounds.Min.X+index, bounds.Min.Y); actual != test.want {
+			t.Errorf("%s pixel = %#v, want %#v", test.name, actual, test.want)
+		}
+	}
+}
+
+func TestRGBAtoNRGBAInPlaceMatchesDrawForEveryChannelAndAlpha(t *testing.T) {
+	t.Parallel()
+
+	bounds := image.Rect(0, 0, 256, 256)
+	source := image.NewRGBA(bounds)
+	for alpha := 0; alpha <= 0xff; alpha++ {
+		for channel := 0; channel <= 0xff; channel++ {
+			offset := source.PixOffset(channel, alpha)
+			source.Pix[offset], source.Pix[offset+1], source.Pix[offset+2], source.Pix[offset+3] = uint8(channel), uint8(channel), uint8(channel), uint8(alpha)
+		}
+	}
+	want := image.NewNRGBA(bounds)
+	draw.Draw(want, bounds, source, image.Point{}, draw.Src)
+	got, err := rgbaToNRGBAInPlace(context.Background(), source, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(got.Pix, want.Pix) {
+		t.Fatal("in-place conversion differs from image/draw for at least one channel/alpha combination")
+	}
+}
+
+func TestRGBAtoNRGBAInPlaceBoundsLeavesKnownZeroRegionUntouched(t *testing.T) {
+	t.Parallel()
+
+	source := image.NewRGBA(image.Rect(3, 5, 11, 13))
+	inside := image.Rect(5, 7, 9, 11)
+	for y := inside.Min.Y; y < inside.Max.Y; y++ {
+		for x := inside.Min.X; x < inside.Max.X; x++ {
+			offset := source.PixOffset(x, y)
+			source.Pix[offset], source.Pix[offset+1], source.Pix[offset+2], source.Pix[offset+3] = 64, 32, 16, 128
+		}
+	}
+
+	wantInside := image.NewNRGBA(source.Bounds())
+	draw.Draw(wantInside, source.Bounds(), source, source.Bounds().Min, draw.Src)
+	got, err := rgbaToNRGBAInPlaceBounds(context.Background(), source, inside, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for y := source.Rect.Min.Y; y < source.Rect.Max.Y; y++ {
+		for x := source.Rect.Min.X; x < source.Rect.Max.X; x++ {
+			want := color.NRGBA{}
+			if image.Pt(x, y).In(inside) {
+				want = wantInside.NRGBAAt(x, y)
+			}
+			if pixel := got.NRGBAAt(x, y); pixel != want {
+				t.Fatalf("pixel (%d,%d) = %#v, want %#v", x, y, pixel, want)
+			}
+		}
+	}
+}
+
+func TestRGBAtoNRGBAInPlaceUniformBlocksMatchScalarReference(t *testing.T) {
+	t.Parallel()
+
+	bounds := image.Rect(-7, 11, 250, 84)
+	stride := bounds.Dx()*4 + 19
+	source := &image.RGBA{Pix: make([]byte, stride*bounds.Dy()), Stride: stride, Rect: bounds}
+	state := uint32(0x9e3779b9)
+	for index := range source.Pix {
+		state = state*1664525 + 1013904223
+		source.Pix[index] = uint8(state >> 24)
+	}
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+		for x := bounds.Min.X; x < bounds.Max.X; x++ {
+			offset := source.PixOffset(x, y)
+			column := x - bounds.Min.X
+			alpha := uint8(0xff)
+			switch {
+			case column%64 == 62:
+				alpha = 173
+			case column >= 128 && column < 192:
+				alpha = 0
+			case y&1 != 0 && column&1 != 0:
+				alpha = uint8(column)
+			}
+			source.Pix[offset], source.Pix[offset+1], source.Pix[offset+2], source.Pix[offset+3] = alpha/2, alpha/3, alpha/4, alpha
+		}
+	}
+	reference := &image.RGBA{Pix: append([]byte(nil), source.Pix...), Stride: source.Stride, Rect: source.Rect}
+	got, err := rgbaToNRGBAInPlace(context.Background(), source, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	want, err := rgbaToNRGBAScalarReference(context.Background(), reference)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(got.Pix, want.Pix) {
+		t.Fatal("uniform-block conversion differs from scalar reference, including row padding")
+	}
+}
+
+func TestRGBAtoNRGBAInPlaceUniformProbeMatchesEveryPrefixLength(t *testing.T) {
+	t.Parallel()
+
+	for _, uniformAlpha := range []uint8{0, 0xff} {
+		for partialAt := 0; partialAt < 64; partialAt++ {
+			bounds := image.Rect(-3, 5, 61, 6)
+			stride := bounds.Dx()*4 + 11
+			source := &image.RGBA{Pix: make([]byte, stride), Stride: stride, Rect: bounds}
+			for index := range source.Pix {
+				source.Pix[index] = uint8(index*37 + 11)
+			}
+			for x := bounds.Min.X; x < bounds.Max.X; x++ {
+				offset := source.PixOffset(x, bounds.Min.Y)
+				alpha := uniformAlpha
+				if x-bounds.Min.X == partialAt {
+					alpha = 173
+				}
+				source.Pix[offset], source.Pix[offset+1], source.Pix[offset+2], source.Pix[offset+3] = alpha/2, alpha/3, alpha/4, alpha
+			}
+			reference := &image.RGBA{Pix: append([]byte(nil), source.Pix...), Stride: stride, Rect: bounds}
+			got, err := rgbaToNRGBAInPlace(context.Background(), source, false)
+			if err != nil {
+				t.Fatal(err)
+			}
+			want, err := rgbaToNRGBAScalarReference(context.Background(), reference)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !bytes.Equal(got.Pix, want.Pix) {
+				t.Fatalf("uniform alpha %d partial position %d differs from scalar reference", uniformAlpha, partialAt)
+			}
+		}
+	}
+}
+
+func TestRGBAtoNRGBAInPlaceOpaqueFastPathAndCancellation(t *testing.T) {
+	t.Parallel()
+
+	source := image.NewRGBA(image.Rect(0, 0, 2, 1))
+	source.SetRGBA(0, 0, color.RGBA{R: 17, G: 34, B: 51, A: 255})
+	source.SetRGBA(1, 0, color.RGBA{R: 68, G: 85, B: 102, A: 255})
+	want := append([]byte(nil), source.Pix...)
+	backing := &source.Pix[0]
+	got, err := rgbaToNRGBAInPlace(context.Background(), source, true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if &got.Pix[0] != backing || !bytes.Equal(got.Pix, want) {
+		t.Fatalf("opaque fast path changed or replaced backing pixels: got %v, want %v", got.Pix, want)
+	}
+
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	if got, err := rgbaToNRGBAInPlace(ctx, image.NewRGBA(image.Rect(0, 0, 1, 1)), false); !errors.Is(err, context.Canceled) || got != nil {
+		t.Fatalf("canceled transparent conversion = %v, %v; want nil, context.Canceled", got, err)
+	}
+
+	wide := image.NewRGBA(image.Rect(0, 0, 8_192, 1))
+	fillOpaquePixels(wide.Pix, color.NRGBA{R: 17, G: 34, B: 51, A: 255})
+	if got, err := rgbaToNRGBAInPlace(&cancelAfterErrChecks{remaining: 1}, wide, false); !errors.Is(err, context.Canceled) || got != nil {
+		t.Fatalf("mid-span canceled conversion = %v, %v; want nil, context.Canceled", got, err)
+	}
+}
+
+func TestRenderTransparentBackgroundReturnsStraightAlpha(t *testing.T) {
+	t.Parallel()
+
+	document := testDocument(d2scene.Rect{
+		Box:  d2scene.Box{Width: 10, Height: 10},
+		Fill: d2scene.SolidPaint{Color: color.NRGBA{R: 200, G: 100, B: 50, A: 128}},
+	})
+	got, err := Render(context.Background(), document, testOptions())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if pixel := got.NRGBAAt(5, 5); pixel != (color.NRGBA{R: 199, G: 99, B: 49, A: 128}) {
+		t.Fatalf("transparent-background pixel = %#v, want straight-alpha fill", pixel)
+	}
+	if pixel := got.NRGBAAt(9, 9); pixel.A == 255 {
+		t.Fatalf("transparent-background edge unexpectedly became opaque: %#v", pixel)
+	}
+}
+
+func TestRenderOpaqueBackgroundRemainsOpaqueThroughEffects(t *testing.T) {
+	t.Parallel()
+
+	node := d2scene.NewNode(d2scene.Rect{
+		Box:  d2scene.Box{X: 1, Y: 1, Width: 8, Height: 8},
+		Fill: d2scene.SolidPaint{Color: color.NRGBA{R: 200, G: 100, B: 50, A: 128}},
+	})
+	node.Opacity = 0.5
+	node.Blend = d2scene.BlendMultiply
+	node.Filters = []d2scene.Filter{d2scene.GaussianBlur{SigmaX: 0.5, SigmaY: 0.5}}
+	document := d2scene.NewDocument(d2scene.Box{Width: 10, Height: 10}, node)
+	options := testOptions()
+	options.Background = color.NRGBA{R: 240, G: 230, B: 220, A: 255}
+
+	got, err := Render(context.Background(), document, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !got.Opaque() {
+		t.Fatal("source-over effects reduced an opaque background's alpha")
+	}
+}
+
+func TestFillOpaquePixelsMatchesImageDraw(t *testing.T) {
+	t.Parallel()
+
+	paint := color.NRGBA{R: 17, G: 91, B: 203, A: 255}
+	for _, size := range []int{1, 2, 3, 7, 64, 4097} {
+		got := image.NewRGBA(image.Rect(0, 0, size, 1))
+		want := image.NewRGBA(got.Bounds())
+		fillOpaquePixels(got.Pix, paint)
+		draw.Draw(want, want.Bounds(), image.NewUniform(paint), image.Point{}, draw.Src)
+		if !bytes.Equal(got.Pix, want.Pix) {
+			t.Fatalf("%d-pixel fill differs from image/draw", size)
+		}
+	}
+}
+
+func BenchmarkFillOpaquePixels(b *testing.B) {
+	const width, height = 2048, 1024
+	paint := color.NRGBA{R: 17, G: 91, B: 203, A: 255}
+	for _, test := range []struct {
+		name string
+		fill func(*image.RGBA)
+	}{
+		{name: "PackedCopy", fill: func(destination *image.RGBA) { fillOpaquePixels(destination.Pix, paint) }},
+		{name: "ImageDraw", fill: func(destination *image.RGBA) {
+			draw.Draw(destination, destination.Bounds(), image.NewUniform(paint), image.Point{}, draw.Src)
+		}},
+	} {
+		b.Run(test.name, func(b *testing.B) {
+			destination := image.NewRGBA(image.Rect(0, 0, width, height))
+			b.SetBytes(int64(len(destination.Pix)))
+			b.ReportAllocs()
+			b.ResetTimer()
+			for range b.N {
+				test.fill(destination)
+			}
+			benchmarkRasterFrame = destination
+		})
+	}
+}
+
+var benchmarkRasterFrame *image.RGBA
+
+func BenchmarkRGBAtoNRGBAUniformAlphaBlocks(b *testing.B) {
+	const width, height = 1024, 1024
+	patterns := []struct {
+		name  string
+		alpha func(x, y int) uint8
+	}{
+		{name: "OpaqueInterior", alpha: func(x, _ int) uint8 {
+			if x == 0 || x == width-1 {
+				return 173
+			}
+			return 255
+		}},
+		{name: "TransparentAndOpaqueRuns", alpha: func(x, _ int) uint8 {
+			if x == width/4 || x == width*3/4 {
+				return 173
+			}
+			if x > width/4 && x < width*3/4 {
+				return 255
+			}
+			return 0
+		}},
+		{name: "LatePartialEveryBlock", alpha: func(x, _ int) uint8 {
+			if x%64 == 62 {
+				return 173
+			}
+			return 255
+		}},
+		{name: "Alternating", alpha: func(x, _ int) uint8 {
+			if x&1 == 0 {
+				return 255
+			}
+			return 173
+		}},
+		{name: "AlphaRamp", alpha: func(x, _ int) uint8 { return uint8(x) }},
+	}
+	for _, pattern := range patterns {
+		pattern := pattern
+		b.Run(pattern.name, func(b *testing.B) {
+			makeSource := func() *image.RGBA {
+				source := image.NewRGBA(image.Rect(0, 0, width, height))
+				for y := 0; y < height; y++ {
+					for x := 0; x < width; x++ {
+						offset := source.PixOffset(x, y)
+						alpha := pattern.alpha(x, y)
+						source.Pix[offset], source.Pix[offset+1], source.Pix[offset+2], source.Pix[offset+3] = alpha/2, alpha/3, alpha/4, alpha
+					}
+				}
+				return source
+			}
+			for _, implementation := range []struct {
+				name    string
+				convert func(context.Context, *image.RGBA) (*image.NRGBA, error)
+			}{
+				{name: "Scalar", convert: rgbaToNRGBAScalarReference},
+				{name: "UniformBlocks", convert: func(ctx context.Context, source *image.RGBA) (*image.NRGBA, error) {
+					return rgbaToNRGBAInPlace(ctx, source, false)
+				}},
+			} {
+				b.Run(implementation.name, func(b *testing.B) {
+					source := makeSource()
+					b.SetBytes(int64(len(source.Pix)))
+					b.ReportAllocs()
+					b.ResetTimer()
+					for range b.N {
+						frame, err := implementation.convert(context.Background(), source)
+						if err != nil {
+							b.Fatal(err)
+						}
+						benchmarkNRGBAFrame = frame
+					}
+				})
+			}
+		})
+	}
+}
+
+func rgbaToNRGBAScalarReference(ctx context.Context, source *image.RGBA) (*image.NRGBA, error) {
+	result := &image.NRGBA{Pix: source.Pix, Stride: source.Stride, Rect: source.Rect}
+	bounds := source.Bounds()
+	width := bounds.Dx()
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+		if (y-bounds.Min.Y)&31 == 0 {
+			if err := ctx.Err(); err != nil {
+				return nil, err
+			}
+		}
+		rowOffset := source.PixOffset(bounds.Min.X, y)
+		row := source.Pix[rowOffset : rowOffset+width*4]
+		for pixel := 0; pixel < width; pixel++ {
+			if pixel != 0 && pixel&4095 == 0 {
+				if err := ctx.Err(); err != nil {
+					return nil, err
+				}
+			}
+			x := pixel * 4
+			alpha := uint32(row[x+3])
+			if alpha != 0 && alpha != 0xff {
+				row[x] = uint8((uint32(row[x]) * 0xffff / alpha) >> 8)
+				row[x+1] = uint8((uint32(row[x+1]) * 0xffff / alpha) >> 8)
+				row[x+2] = uint8((uint32(row[x+2]) * 0xffff / alpha) >> 8)
+			}
+		}
+	}
+	return result, ctx.Err()
+}
+
+var benchmarkNRGBAFrame *image.NRGBA
 
 func TestPNGEncodingIsDeterministic(t *testing.T) {
 	document := testDocument(d2scene.Rect{

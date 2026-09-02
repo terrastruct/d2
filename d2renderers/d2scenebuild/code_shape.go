@@ -14,7 +14,6 @@ import (
 	"github.com/alecthomas/chroma/v2/lexers"
 	"github.com/alecthomas/chroma/v2/styles"
 	"golang.org/x/image/font"
-	"golang.org/x/image/font/opentype"
 	"golang.org/x/image/font/sfnt"
 	"golang.org/x/image/math/fixed"
 
@@ -351,19 +350,11 @@ type codeFontMetrics struct {
 }
 
 func (b *builder) newCodeFontMetrics(assetID d2scene.AssetID) (*codeFontMetrics, error) {
-	asset, ok := b.assets[assetID].(d2scene.FontAsset)
-	if !ok {
-		return nil, fmt.Errorf("font asset %q is missing or not a font", assetID)
-	}
-	collection, err := opentype.ParseCollection(asset.Data)
+	parsed, err := b.fontFace(assetID)
 	if err != nil {
-		return nil, fmt.Errorf("parse font asset %q: %w", assetID, err)
+		return nil, err
 	}
-	parsed, err := collection.Font(0)
-	if err != nil {
-		return nil, fmt.Errorf("load first font in asset %q: %w", assetID, err)
-	}
-	return &codeFontMetrics{font: parsed}, nil
+	return &codeFontMetrics{font: parsed.Outline}, nil
 }
 
 func (m *codeFontMetrics) advance(ctx context.Context, value string, size float64) (float64, error) {

@@ -98,6 +98,7 @@ type assetCacheKey struct {
 
 type cachedAssetValue struct {
 	fontFace     *fontface.ParsedFace
+	fontSource   *fontface.BundledFaceSource
 	raster       *preparedRasterAsset
 	decodedBytes int64
 }
@@ -195,6 +196,10 @@ func digestAssetBytes(ctx context.Context, data []byte) ([sha256.Size]byte, erro
 }
 
 func (s *RenderSession) memoizedCacheKey(ctx context.Context, document *d2scene.Document, id d2scene.AssetID, kind cachedAssetKind, mimeType string, data []byte, fontFaceIndex uint16, pixelWidth, pixelHeight int, decodedBytes int64) (assetCacheKey, error) {
+	return s.memoizedCacheKeyWithDigest(ctx, document, id, kind, mimeType, data, fontFaceIndex, pixelWidth, pixelHeight, decodedBytes, nil)
+}
+
+func (s *RenderSession) memoizedCacheKeyWithDigest(ctx context.Context, document *d2scene.Document, id d2scene.AssetID, kind cachedAssetKind, mimeType string, data []byte, fontFaceIndex uint16, pixelWidth, pixelHeight int, decodedBytes int64, knownDigest *[sha256.Size]byte) (assetCacheKey, error) {
 	identity := assetMemoIdentity{
 		document: weak.Make(document), assetID: id, kind: kind, mimeType: mimeType,
 		fontFaceIndex: fontFaceIndex, pixelWidth: pixelWidth, pixelHeight: pixelHeight, decodedBytes: decodedBytes,
@@ -256,7 +261,14 @@ func (s *RenderSession) memoizedCacheKey(ctx context.Context, document *d2scene.
 		s.stats.MemoMisses++
 		s.mu.Unlock()
 
-		digest, err := digestAssetBytes(ctx, data)
+		var digest [sha256.Size]byte
+		var err error
+		if knownDigest == nil {
+			digest, err = digestAssetBytes(ctx, data)
+		} else {
+			digest = *knownDigest
+			err = ctx.Err()
+		}
 		key := assetCacheKey{
 			kind: kind, digest: digest, mimeType: mimeType, fontFaceIndex: fontFaceIndex,
 			pixelWidth: pixelWidth, pixelHeight: pixelHeight, decodedBytes: decodedBytes,
@@ -269,7 +281,9 @@ func (s *RenderSession) memoizedCacheKey(ctx context.Context, document *d2scene.
 		flight.key = key
 		flight.err = err
 		if err == nil {
-			s.stats.Hashes++
+			if knownDigest == nil {
+				s.stats.Hashes++
+			}
 			s.insertMemoLocked(identity, key, memoEntryCharge(data, id, mimeType))
 		}
 		close(flight.done)
@@ -530,11 +544,38 @@ func copyAssetBytes(ctx context.Context, data []byte) ([]byte, error) {
 }
 
 func (s *RenderSession) font(ctx context.Context, document *d2scene.Document, id d2scene.AssetID, asset d2scene.FontAsset) (*preparedFont, error) {
-	key, err := s.memoizedCacheKey(ctx, document, id, cachedFontAsset, asset.MIMEType, asset.Data, asset.FaceIndex, 0, 0, 0)
+	var key assetCacheKey
+	bundledDigest, bundledBacking := fontface.RegisteredBundledFaceBackingDigest(asset.Data)
+	if !bundledBacking {
+		bundledDigest, bundledBacking = fontface.RegisteredBundledNotoColorEmojiBackingDigest(asset.Data)
+	}
+	var err error
+	if bundledBacking {
+		key, err = s.memoizedCacheKeyWithDigest(ctx, document, id, cachedFontAsset, asset.MIMEType, asset.Data, asset.FaceIndex, 0, 0, 0, &bundledDigest)
+	} else {
+		key, err = s.memoizedCacheKey(ctx, document, id, cachedFontAsset, asset.MIMEType, asset.Data, asset.FaceIndex, 0, 0, 0)
+	}
 	if err != nil {
 		return nil, err
 	}
 	value, err := s.getOrLoad(ctx, key, cacheEntryCharge(int64(len(asset.Data)), asset.MIMEType), func(ctx context.Context) (cachedAssetValue, error) {
+		if err := ctx.Err(); err != nil {
+			return cachedAssetValue{}, err
+		}
+		bundled, matched, err := fontface.RegisteredBundledFaceDigest(asset.Data, asset.FaceIndex, key.digest)
+		if err != nil {
+			return cachedAssetValue{}, err
+		}
+		if matched {
+			return cachedAssetValue{fontSource: bundled}, nil
+		}
+		source, matched, err := fontface.RegisteredBundledNotoColorEmoji(asset.Data, asset.FaceIndex)
+		if err != nil {
+			return cachedAssetValue{}, err
+		}
+		if matched {
+			return cachedAssetValue{fontSource: source}, nil
+		}
 		owned, err := copyAssetBytes(ctx, asset.Data)
 		if err != nil {
 			return cachedAssetValue{}, err
@@ -548,11 +589,18 @@ func (s *RenderSession) font(ctx context.Context, document *d2scene.Document, id
 	if err != nil {
 		return nil, err
 	}
-	face, err := value.fontFace.Clone()
+	if value.fontSource != nil {
+		return newPreparedBundledFont(value.fontSource)
+	}
+	prepared := new(preparedFont)
+	err = value.fontFace.CloneInto(&prepared.lazyFace)
 	if err != nil {
 		return nil, err
 	}
-	return newPreparedFont(face), nil
+	prepared.face = &prepared.lazyFace
+	prepared.outline = prepared.lazyFace.Outline
+	prepared.shaping = prepared.lazyFace.Shaping
+	return prepared, nil
 }
 
 func (s *RenderSession) raster(ctx context.Context, document *d2scene.Document, id d2scene.AssetID, asset d2scene.RasterAsset, availableBytes int64) (*preparedRasterAsset, int64, error) {

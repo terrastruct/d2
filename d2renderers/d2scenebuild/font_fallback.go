@@ -24,27 +24,42 @@ type sceneTextReference struct {
 	missing map[rune]struct{}
 }
 
+type previousShapedText struct {
+	ids            [8]d2scene.AssetID
+	text           string
+	glyphs         []d2scene.Glyph
+	size           fixed.Int26_6
+	coverage       int64
+	runs, idCount  int
+	hasShapedValue bool
+}
+
 func (r *sceneTextReference) setFallbacks(ids []d2scene.AssetID) {
+	r.value.Fallbacks = ids
 	if r.pointer != nil {
-		r.pointer.Fallbacks = append([]d2scene.AssetID(nil), ids...)
-		return
+		r.pointer.Fallbacks = ids
 	}
-	r.value.Fallbacks = append([]d2scene.AssetID(nil), ids...)
-	r.node.Primitive = r.value
 }
 
 func (r *sceneTextReference) setGlyphs(glyphs []d2scene.Glyph) {
+	r.value.Glyphs = glyphs
 	if r.pointer != nil {
-		r.pointer.Glyphs = append([]d2scene.Glyph(nil), glyphs...)
+		r.pointer.Glyphs = glyphs
 		return
 	}
-	r.value.Glyphs = append([]d2scene.Glyph(nil), glyphs...)
 	r.node.Primitive = r.value
 }
 
 type sceneFontCoverage struct {
-	font *fontface.ParsedFace
+	font   *fontface.ParsedFace
+	source *fontface.BundledFaceSource
+	runes  map[rune]uint8
 }
+
+const (
+	sceneRuneUnsupported uint8 = 1
+	sceneRuneSupported   uint8 = 2
+)
 
 type sceneFontFallbackKey struct {
 	family string
@@ -65,6 +80,7 @@ const (
 	defaultFontShapingMaxFacesPerText    = 64
 	defaultFontShapingMaxRuns            = 100_000
 	defaultFontShapingMaxGlyphs          = 10_000_000
+	maxSceneFontCoverageEntries          = 4_096
 )
 
 // Keep this order aligned with d2fonts' shaping placeholders. U+2610 provides
@@ -85,18 +101,34 @@ func (c sceneFontCoverage) supports(ctx context.Context, value rune) (bool, erro
 	if err := ctx.Err(); err != nil {
 		return false, err
 	}
-	return c.font.SupportsRenderableRune(value)
+	if supported := c.runes[value]; supported != 0 {
+		return supported == sceneRuneSupported, nil
+	}
+	var supported bool
+	var err error
+	if c.source != nil {
+		supported, err = c.source.SupportsRenderableRune(value)
+	} else {
+		supported, err = c.font.SupportsRenderableRune(value)
+	}
+	if err != nil {
+		return false, err
+	}
+	if len(c.runes) < maxSceneFontCoverageEntries {
+		if supported {
+			c.runes[value] = sceneRuneSupported
+		} else {
+			c.runes[value] = sceneRuneUnsupported
+		}
+	}
+	return supported, nil
 }
 
 // resolveFontFallbacks is deliberately a post-build stage: structured rows,
 // highlighted code, Markdown spans, legends, and tooltips may render text that
 // is not present in their source object's top-level Label field. Walking the
 // completed typed scene guarantees every emitted TextRun gets the same policy.
-func (b *builder) resolveFontFallbacks(root *d2scene.Node) error {
-	references, err := b.sceneTextReferences(root)
-	if err != nil {
-		return err
-	}
+func (b *builder) resolveFontFallbacks(references []*sceneTextReference) error {
 	workLimits, err := normalizedFontFallbackWorkLimits(b.options.Fonts)
 	if err != nil {
 		return err
@@ -106,6 +138,8 @@ func (b *builder) resolveFontFallbacks(root *d2scene.Node) error {
 	bucketsByKey := make(map[sceneFontFallbackKey]*sceneFontFallbackBucket)
 	var buckets []*sceneFontFallbackBucket
 	var reusableBundledFallbacks []d2scene.AssetID
+	reuseResolutionScratch := len(references) > 1
+	var runeScratch []rune
 	supports := func(id d2scene.AssetID, value rune) (bool, error) {
 		if b.fontCoverageChecks >= workLimits.maxCoverageChecks {
 			return false, fmt.Errorf("scene: font coverage checks exceed limit %d", workLimits.maxCoverageChecks)
@@ -134,7 +168,11 @@ func (b *builder) resolveFontFallbacks(root *d2scene.Node) error {
 			family: reference.value.Font.Family, style: reference.value.Font.Style, weight: reference.value.Font.Weight,
 		}
 		var bucket *sceneFontFallbackBucket
-		runes := make([]rune, 0, min(len(reference.value.Text), workLimits.maxRunesPerText))
+		runeCapacity := min(len(reference.value.Text), workLimits.maxRunesPerText)
+		runes := runeScratch[:0]
+		if !reuseResolutionScratch || cap(runes) < runeCapacity {
+			runes = make([]rune, 0, runeCapacity)
+		}
 		for _, value := range reference.value.Text {
 			if len(runes) >= workLimits.maxRunesPerText {
 				return fmt.Errorf("scene: text node %q rune count exceeds per-text limit %d", reference.node.ID, workLimits.maxRunesPerText)
@@ -149,6 +187,11 @@ func (b *builder) resolveFontFallbacks(root *d2scene.Node) error {
 				}
 			}
 			runes = append(runes, value)
+		}
+		if reuseResolutionScratch && cap(runes) <= maxSceneFontCoverageEntries {
+			runeScratch = runes
+		} else {
+			runeScratch = nil
 		}
 		var graphemes segmenter.Segmenter
 		graphemes.Init(runes)
@@ -386,11 +429,7 @@ func (b *builder) resolveFontFallbacks(root *d2scene.Node) error {
 // shapeTextRuns materializes ordinary text after fallback resolution. Raster
 // frames consume only these immutable glyph IDs and placements, so animation
 // does not repeat bidi segmentation or HarfBuzz work for every frame.
-func (b *builder) shapeTextRuns(root *d2scene.Node) error {
-	references, err := b.sceneTextReferences(root)
-	if err != nil {
-		return err
-	}
+func (b *builder) shapeTextRuns(references []*sceneTextReference) error {
 	workLimits, err := normalizedFontFallbackWorkLimits(b.options.Fonts)
 	if err != nil {
 		return err
@@ -398,7 +437,17 @@ func (b *builder) shapeTextRuns(root *d2scene.Node) error {
 	loadFace := func(id d2scene.AssetID) (*fontface.ParsedFace, error) {
 		return b.fontFace(id)
 	}
-
+	var shapingWorkspace fontface.ShapingWorkspace
+	var idScratch [8]d2scene.AssetID
+	var faceScratch []fontface.ShapeFace
+	reuseFaceScratch := len(references) > 1
+	if reuseFaceScratch {
+		faceScratch = make([]fontface.ShapeFace, 0, 8)
+	}
+	var previous *previousShapedText
+	if len(references) > 1 {
+		previous = new(previousShapedText)
+	}
 	for _, reference := range references {
 		text := reference.value
 		if len(text.Glyphs) != 0 || text.Text == "" {
@@ -410,19 +459,62 @@ func (b *builder) shapeTextRuns(root *d2scene.Node) error {
 		if len(text.Fallbacks) >= workLimits.maxFacesPerText {
 			return fmt.Errorf("scene: text node %q fallback font reference count %d exceeds per-text face limit %d", reference.node.ID, len(text.Fallbacks), workLimits.maxFacesPerText)
 		}
-		ids := make([]d2scene.AssetID, 0, 1+len(text.Fallbacks))
-		seen := make(map[d2scene.AssetID]bool, 1+len(text.Fallbacks))
-		for _, id := range append([]d2scene.AssetID{text.Font.Asset}, text.Fallbacks...) {
-			if seen[id] {
-				continue
+		faceCapacity := 1 + len(text.Fallbacks)
+		var ids []d2scene.AssetID
+		if !reuseFaceScratch {
+			ids = make([]d2scene.AssetID, 0, faceCapacity)
+			seen := make(map[d2scene.AssetID]bool, faceCapacity)
+			for _, id := range append([]d2scene.AssetID{text.Font.Asset}, text.Fallbacks...) {
+				if seen[id] {
+					continue
+				}
+				seen[id] = true
+				ids = append(ids, id)
 			}
-			seen[id] = true
-			ids = append(ids, id)
+		} else if faceCapacity <= len(idScratch) {
+			ids = idScratch[:1]
+		} else {
+			ids = make([]d2scene.AssetID, 1, faceCapacity)
+		}
+		if reuseFaceScratch {
+			ids[0] = text.Font.Asset
+			var seen map[d2scene.AssetID]struct{}
+			for _, id := range text.Fallbacks {
+				duplicate := false
+				if seen == nil {
+					for _, existing := range ids {
+						if existing == id {
+							duplicate = true
+							break
+						}
+					}
+					if !duplicate && len(ids) == len(idScratch) {
+						seen = make(map[d2scene.AssetID]struct{}, faceCapacity)
+						for _, existing := range ids {
+							seen[existing] = struct{}{}
+						}
+					}
+				} else {
+					_, duplicate = seen[id]
+				}
+				if duplicate {
+					continue
+				}
+				if seen != nil {
+					seen[id] = struct{}{}
+				}
+				ids = append(ids, id)
+			}
 		}
 		if len(ids) > workLimits.maxFacesPerText {
 			return fmt.Errorf("scene: text node %q font face count %d exceeds per-text limit %d", reference.node.ID, len(ids), workLimits.maxFacesPerText)
 		}
-		shapeFaces := make([]fontface.ShapeFace, 0, len(ids))
+		var shapeFaces []fontface.ShapeFace
+		if faceScratch != nil && len(ids) <= cap(faceScratch) {
+			shapeFaces = faceScratch[:0]
+		} else {
+			shapeFaces = make([]fontface.ShapeFace, 0, len(ids))
+		}
 		for _, id := range ids {
 			face, err := loadFace(id)
 			if err != nil {
@@ -447,7 +539,31 @@ func (b *builder) shapeTextRuns(root *d2scene.Node) error {
 			return fmt.Errorf("scene: text node %q has an invalid font size for shaping", reference.node.ID)
 		}
 		ppem := fixed.Int26_6(math.Round(text.Font.Size * 64))
-		shaped, err := fontface.ShapeText(b.ctx, text.Text, ppem, shapeFaces, fontface.ShapeLimits{
+		matchesPrevious := previous != nil && previous.hasShapedValue && text.Text == previous.text && ppem == previous.size && len(ids) == previous.idCount
+		if matchesPrevious {
+			for index, id := range ids {
+				if previous.ids[index] != id {
+					matchesPrevious = false
+					break
+				}
+			}
+		}
+		if matchesPrevious && previous.coverage <= remainingCoverage && previous.runs <= remainingRuns && len(previous.glyphs) <= remainingGlyphs {
+			glyphs := make([]d2scene.Glyph, len(previous.glyphs))
+			for offset := 0; offset < len(glyphs); offset += 1_024 {
+				if err := b.ctx.Err(); err != nil {
+					return err
+				}
+				end := min(offset+1_024, len(glyphs))
+				copy(glyphs[offset:end], previous.glyphs[offset:end])
+			}
+			b.fontCoverageChecks += previous.coverage
+			b.fontShapeRuns += previous.runs
+			b.fontGlyphs += len(glyphs)
+			reference.setGlyphs(glyphs)
+			continue
+		}
+		shaped, err := shapingWorkspace.ShapeTextTransient(b.ctx, text.Text, ppem, shapeFaces, fontface.ShapeLimits{
 			Runes:          workLimits.maxRunesPerText,
 			Faces:          workLimits.maxFacesPerText,
 			CoverageChecks: remainingCoverage,
@@ -482,6 +598,19 @@ func (b *builder) shapeTextRuns(root *d2scene.Node) error {
 		b.fontShapeRuns += shaped.Runs
 		b.fontGlyphs += len(glyphs)
 		reference.setGlyphs(glyphs)
+		if previous != nil && len(ids) <= len(previous.ids) {
+			clear(previous.ids[:])
+			copy(previous.ids[:], ids)
+			previous.text = text.Text
+			previous.glyphs = glyphs
+			previous.size = ppem
+			previous.coverage = shaped.CoverageChecks
+			previous.runs = shaped.Runs
+			previous.idCount = len(ids)
+			previous.hasShapedValue = true
+		} else if previous != nil {
+			previous.hasShapedValue = false
+		}
 	}
 	return b.ctx.Err()
 }
@@ -560,7 +689,18 @@ func (b *builder) fontCoverage(id d2scene.AssetID, cache map[d2scene.AssetID]sce
 	if err != nil {
 		return sceneFontCoverage{}, err
 	}
-	result := sceneFontCoverage{font: face}
+	var source *fontface.BundledFaceSource
+	if asset, ok := b.assets[id].(d2scene.FontAsset); ok {
+		var matched bool
+		source, matched, err = fontface.RegisteredBundledFace(asset.Data, asset.FaceIndex)
+		if err == nil && !matched {
+			source, _, err = fontface.RegisteredBundledNotoColorEmoji(asset.Data, asset.FaceIndex)
+		}
+		if err != nil {
+			return sceneFontCoverage{}, err
+		}
+	}
+	result := sceneFontCoverage{font: face, source: source, runes: make(map[rune]uint8)}
 	cache[id] = result
 	return result, nil
 }
@@ -579,7 +719,18 @@ func (b *builder) fontFace(id d2scene.AssetID) (*fontface.ParsedFace, error) {
 	if !ok {
 		return nil, fmt.Errorf("font asset %q is missing or invalid", id)
 	}
-	face, err := fontface.ParseFace(asset.Data, asset.FaceIndex)
+	var (
+		face *fontface.ParsedFace
+		err  error
+	)
+	source, matched, lookupErr := fontface.RegisteredBundledFace(asset.Data, asset.FaceIndex)
+	if lookupErr != nil {
+		return nil, fmt.Errorf("parse face %d from font asset %q: %w", asset.FaceIndex, id, lookupErr)
+	} else if matched {
+		face, err = source.CloneReadOnly()
+	} else {
+		face, err = fontface.ParseFace(asset.Data, asset.FaceIndex)
+	}
 	if err != nil {
 		return nil, fmt.Errorf("parse face %d from font asset %q: %w", asset.FaceIndex, id, err)
 	}
@@ -603,7 +754,8 @@ func (b *builder) ensureMissingGlyphFont(retainedAssets int, retainedBytes int64
 		}
 		return id, 0, nil
 	}
-	data, ok := d2fonts.FontFaces.Lookup(d2fonts.Font{Family: d2fonts.SourceSansPro, Style: d2fonts.FONT_STYLE_REGULAR})
+	fontSpec := d2fonts.Font{Family: d2fonts.SourceSansPro, Style: d2fonts.FONT_STYLE_REGULAR}
+	data, ok := d2fonts.FontFaces.Lookup(fontSpec)
 	if !ok || len(data) == 0 {
 		return "", 0, fmt.Errorf("bundled missing-glyph font is not loaded")
 	}
@@ -615,7 +767,7 @@ func (b *builder) ensureMissingGlyphFont(retainedAssets int, retainedBytes int64
 			return "", 0, fmt.Errorf("retained font bytes exceed limit %d while adding missing-glyph font", b.options.Fonts.MaxBytes)
 		}
 	}
-	b.assets[id] = d2scene.FontAsset{MIMEType: "font/ttf", Data: append([]byte(nil), data...)}
+	b.assets[id] = d2scene.FontAsset{MIMEType: "font/ttf", Data: retainedFontBytes(data)}
 	face, err := b.fontFace(id)
 	if err != nil {
 		delete(b.assets, id)

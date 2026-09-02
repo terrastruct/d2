@@ -13,8 +13,6 @@ require (
 	github.com/d2lang/mathjax-go v0.1.0
 	github.com/d2lang/rough-go v0.2.0
 	github.com/d2lang/util-go v0.2.0
-	github.com/dsoprea/go-exif/v3 v3.0.1
-	github.com/dsoprea/go-png-image-structure/v2 v2.0.0-20210512210324-29b889a6093d
 	github.com/ericpauley/go-quantize v0.0.0-20200331213906-ae555eb2afa4
 	github.com/fsnotify/fsnotify v1.10.1
 	github.com/go-text/typesetting v0.3.4
@@ -36,10 +34,6 @@ require (
 	github.com/andybalholm/cascadia v1.3.4 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dlclark/regexp2/v2 v2.6.0 // indirect
-	github.com/dsoprea/go-logging v0.0.0-20200710184922-b02d349568dd // indirect
-	github.com/dsoprea/go-utility/v2 v2.0.0-20221003172846-a3e1774ef349 // indirect
-	github.com/go-errors/errors v1.5.1 // indirect
-	github.com/golang/geo v0.0.0-20260713102120-857a528af641 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
@@ -49,6 +43,5 @@ require (
 	golang.org/x/term v0.45.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

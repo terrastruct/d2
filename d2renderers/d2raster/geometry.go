@@ -195,7 +195,7 @@ func roundedRectSubpaths(ctx context.Context, rect d2scene.Rect, tolerance float
 		return []subpath{{points: points, closed: true}}, nil
 	}
 
-	var points []d2scene.Point
+	points := make([]d2scene.Point, 0, 8)
 	appendPoint := func(point d2scene.Point) error {
 		if err := count(); err != nil {
 			return err
@@ -429,6 +429,19 @@ func interpolate(a, b d2scene.Point, t float64) d2scene.Point {
 	return d2scene.Point{X: a.X + (b.X-a.X)*t, Y: a.Y + (b.Y-a.Y)*t}
 }
 
+func appendDashPoint(points []d2scene.Point, point d2scene.Point) []d2scene.Point {
+	if len(points) == 3 && cap(points) == 3 {
+		// Growing a three-point seed normally jumps to capacity six. An exact
+		// four-point step keeps cumulative storage equal to the ordinary
+		// 1,2,4 growth sequence while retaining the seed's saved allocation.
+		grown := make([]d2scene.Point, 4)
+		copy(grown, points)
+		grown[3] = point
+		return grown
+	}
+	return append(points, point)
+}
+
 func drawStroke(ctx context.Context, dst *image.RGBA, runs []strokeRun, transform d2scene.Matrix, stroke *preparedStroke, scratch *rasterScratch) error {
 	if stroke.paint.kind == preparedSolidPaint {
 		rasterizer := scratch.reset(dst.Bounds())
@@ -448,8 +461,7 @@ func drawStroke(ctx context.Context, dst *image.RGBA, runs []strokeRun, transfor
 	}
 
 	bounds := paintedStrokePixelBounds(runs, transform, stroke, dst.Bounds())
-	return drawGradientMask(ctx, dst, bounds, stroke.paint, scratch, func(mask *image.Alpha) error {
-		rasterizer := scratch.reset(mask.Bounds())
+	return drawRasterizedPaint(ctx, dst, bounds, stroke.paint, scratch, "gradient stroke", func(rasterizer *scanline.Rasterizer) error {
 		shifted := d2scene.Translate(-float64(bounds.Min.X), -float64(bounds.Min.Y)).Mul(transform)
 		for _, run := range runs {
 			if err := ctx.Err(); err != nil {
@@ -458,9 +470,6 @@ func drawStroke(ctx context.Context, dst *image.RGBA, runs []strokeRun, transfor
 			if err := addStrokeRun(ctx, rasterizer, run, shifted, stroke); err != nil {
 				return err
 			}
-		}
-		if err := rasterizer.WriteAlpha(ctx, scratch.workBudget(), mask); err != nil {
-			return fmt.Errorf("d2raster: gradient stroke: %w", err)
 		}
 		return ctx.Err()
 	})
@@ -479,11 +488,32 @@ func paintedStrokePixelBounds(runs []strokeRun, transform d2scene.Matrix, stroke
 }
 
 func strokeRunPixelBounds(runs []strokeRun, transform d2scene.Matrix, expansion float64, canvas image.Rectangle) image.Rectangle {
-	paths := make([]subpath, len(runs))
-	for index, run := range runs {
-		paths[index] = subpath{points: run.points, closed: run.closed}
+	minX, minY := math.Inf(1), math.Inf(1)
+	maxX, maxY := math.Inf(-1), math.Inf(-1)
+	for _, run := range runs {
+		for _, local := range run.points {
+			point := transform.Point(local)
+			minX = math.Min(minX, point.X)
+			minY = math.Min(minY, point.Y)
+			maxX = math.Max(maxX, point.X)
+			maxY = math.Max(maxY, point.Y)
+		}
 	}
-	return subpathPixelBounds(paths, transform, expansion, canvas)
+	if math.IsInf(minX, 1) {
+		return image.Rectangle{}
+	}
+	// One extra pixel covers vector antialiasing and flattening tolerance.
+	expansion++
+	minX, minY = minX-expansion, minY-expansion
+	maxX, maxY = maxX+expansion, maxY+expansion
+	if maxX < float64(canvas.Min.X) || maxY < float64(canvas.Min.Y) || minX > float64(canvas.Max.X) || minY > float64(canvas.Max.Y) {
+		return image.Rectangle{}
+	}
+	minX = math.Max(minX, float64(canvas.Min.X))
+	minY = math.Max(minY, float64(canvas.Min.Y))
+	maxX = math.Min(maxX, float64(canvas.Max.X))
+	maxY = math.Min(maxY, float64(canvas.Max.Y))
+	return image.Rect(int(math.Floor(minX)), int(math.Floor(minY)), int(math.Ceil(maxX)), int(math.Ceil(maxY))).Intersect(canvas)
 }
 
 func makeStrokeRuns(ctx context.Context, path subpath, dashes []float64, offset float64, count func() error) ([]strokeRun, error) {
@@ -495,9 +525,11 @@ func makeStrokeRuns(ctx context.Context, path subpath, dashes []float64, offset 
 		return []strokeRun{{points: points, closed: path.closed}}, nil
 	}
 
-	pattern := append([]float64(nil), dashes...)
+	pattern := dashes
 	if len(pattern)%2 != 0 {
-		pattern = append(pattern, pattern...)
+		pattern = make([]float64, len(dashes)*2)
+		copy(pattern, dashes)
+		copy(pattern[len(dashes):], dashes)
 	}
 	total := 0.0
 	for _, length := range pattern {
@@ -531,7 +563,11 @@ func makeStrokeRuns(ctx context.Context, path subpath, dashes []float64, offset 
 			return nil, err
 		}
 		start := points[edge]
-		end := points[(edge+1)%len(points)]
+		nextIndex := edge + 1
+		if nextIndex == len(points) {
+			nextIndex = 0
+		}
+		end := points[nextIndex]
 		dx, dy := end.X-start.X, end.Y-start.Y
 		length := math.Hypot(dx, dy)
 		if length == 0 {
@@ -559,18 +595,31 @@ func makeStrokeRuns(ctx context.Context, path subpath, dashes []float64, offset 
 					if err := count(); err != nil {
 						return nil, err
 					}
-					current = append(current, a)
-				} else if !samePoint(current[len(current)-1], a) {
-					if err := count(); err != nil {
-						return nil, err
+					if samePoint(a, b) {
+						current = append(current, a)
+					} else {
+						if err := count(); err != nil {
+							return nil, err
+						}
+						// Nearly every dash run begins with two distinct points.
+						// Materialize the pair in one allocation, with room for the
+						// common case where the run crosses one path vertex.
+						current = make([]d2scene.Point, 2, 3)
+						current[0], current[1] = a, b
 					}
-					current = append(current, a)
-				}
-				if !samePoint(current[len(current)-1], b) {
-					if err := count(); err != nil {
-						return nil, err
+				} else {
+					if !samePoint(current[len(current)-1], a) {
+						if err := count(); err != nil {
+							return nil, err
+						}
+						current = appendDashPoint(current, a)
 					}
-					current = append(current, b)
+					if !samePoint(current[len(current)-1], b) {
+						if err := count(); err != nil {
+							return nil, err
+						}
+						current = appendDashPoint(current, b)
+					}
 				}
 			}
 			position = nextPosition
@@ -632,7 +681,11 @@ func addStrokeRun(ctx context.Context, rasterizer *scanline.Rasterizer, run stro
 			return err
 		}
 		start := points[edge]
-		end := points[(edge+1)%len(points)]
+		nextIndex := edge + 1
+		if nextIndex == len(points) {
+			nextIndex = 0
+		}
+		end := points[nextIndex]
 		dx, dy := end.X-start.X, end.Y-start.Y
 		length := math.Hypot(dx, dy)
 		if length == 0 {
@@ -658,48 +711,46 @@ func addStrokeRun(ctx context.Context, rasterizer *scanline.Rasterizer, run stro
 		})
 	}
 
-	if err := forEachStrokeJoin(ctx, points, run.closed, func(previous, vertex, next d2scene.Point) error {
-		switch stroke.join {
-		case d2scene.JoinRound:
+	joinStart, joinEnd := 1, len(points)-1
+	if run.closed {
+		joinStart, joinEnd = 0, len(points)
+	}
+	switch stroke.join {
+	case d2scene.JoinRound:
+		for index := joinStart; index < joinEnd; index++ {
+			if err := ctx.Err(); err != nil {
+				return err
+			}
 			// The union of segment rectangles and a disk at each vertex is
 			// the exact round-join outline (the centerline's Minkowski sum).
-			addCircle(rasterizer, transform, vertex, halfWidth)
-		case d2scene.JoinMiter, d2scene.JoinBevel:
-			if polygon, ok := strokeJoinPolygon(previous, vertex, next, halfWidth, stroke.join, stroke.miterLimit); ok {
-				addPolygon(rasterizer, transform, polygon)
-			}
+			addCircle(rasterizer, transform, points[index], halfWidth)
 		}
-		return nil
-	}); err != nil {
-		return err
+	case d2scene.JoinMiter, d2scene.JoinBevel:
+		previousIndex := joinStart - 1
+		if previousIndex < 0 {
+			previousIndex = len(points) - 1
+		}
+		incoming, incomingOK := unitVector(points[previousIndex], points[joinStart])
+		for index := joinStart; index < joinEnd; index++ {
+			if err := ctx.Err(); err != nil {
+				return err
+			}
+			nextIndex := index + 1
+			if nextIndex == len(points) {
+				nextIndex = 0
+			}
+			vertex := points[index]
+			outgoing, outgoingOK := unitVector(vertex, points[nextIndex])
+			var polygon [4]d2scene.Point
+			if count := strokeJoinPolygonFromUnits(&polygon, vertex, incoming, outgoing, incomingOK && outgoingOK, halfWidth, stroke.join, stroke.miterLimit); count != 0 {
+				addPolygon(rasterizer, transform, polygon[:count])
+			}
+			incoming, incomingOK = outgoing, outgoingOK
+		}
 	}
 	if !run.closed && stroke.cap == d2scene.CapRound {
 		addCircle(rasterizer, transform, points[0], halfWidth)
 		addCircle(rasterizer, transform, points[len(points)-1], halfWidth)
-	}
-	return nil
-}
-
-func forEachStrokeJoin(ctx context.Context, points []d2scene.Point, closed bool, visit func(previous, vertex, next d2scene.Point) error) error {
-	start, end := 1, len(points)-1
-	if closed {
-		if len(points) < 2 {
-			return nil
-		}
-		start, end = 0, len(points)
-	} else if len(points) < 3 {
-		return nil
-	}
-	for index := start; index < end; index++ {
-		if err := ctx.Err(); err != nil {
-			return err
-		}
-		previous := points[(index-1+len(points))%len(points)]
-		vertex := points[index]
-		next := points[(index+1)%len(points)]
-		if err := visit(previous, vertex, next); err != nil {
-			return err
-		}
 	}
 	return nil
 }
@@ -709,17 +760,30 @@ func forEachStrokeJoin(ctx context.Context, points []d2scene.Point, closed bool,
 // three-point bevel wedge. Geometry is built in local coordinates so an affine
 // transform, including a nonuniform one, affects the complete stroke outline.
 func strokeJoinPolygon(previous, vertex, next d2scene.Point, halfWidth float64, join d2scene.LineJoin, miterLimit float64) ([]d2scene.Point, bool) {
+	var storage [4]d2scene.Point
+	count := strokeJoinPolygonInto(&storage, previous, vertex, next, halfWidth, join, miterLimit)
+	if count == 0 {
+		return nil, false
+	}
+	return storage[:count], true
+}
+
+func strokeJoinPolygonInto(destination *[4]d2scene.Point, previous, vertex, next d2scene.Point, halfWidth float64, join d2scene.LineJoin, miterLimit float64) int {
 	incoming, incomingOK := unitVector(previous, vertex)
 	outgoing, outgoingOK := unitVector(vertex, next)
-	if !incomingOK || !outgoingOK {
-		return nil, false
+	return strokeJoinPolygonFromUnits(destination, vertex, incoming, outgoing, incomingOK && outgoingOK, halfWidth, join, miterLimit)
+}
+
+func strokeJoinPolygonFromUnits(destination *[4]d2scene.Point, vertex, incoming, outgoing d2scene.Point, unitsOK bool, halfWidth float64, join d2scene.LineJoin, miterLimit float64) int {
+	if !unitsOK {
+		return 0
 	}
 	turn := crossProduct(incoming, outgoing)
 	if math.Abs(turn) <= geometryEpsilon {
 		// A straight continuation needs no join. A reversal has no stable
 		// outer side; the two butt-ended segment rectangles are the safe
 		// finite bevel result.
-		return nil, false
+		return 0
 	}
 	side := 1.0
 	if turn > 0 {
@@ -729,9 +793,9 @@ func strokeJoinPolygon(previous, vertex, next d2scene.Point, halfWidth float64, 
 	outgoingNormal := d2scene.Point{X: -outgoing.Y * halfWidth * side, Y: outgoing.X * halfWidth * side}
 	outerIncoming := d2scene.Point{X: vertex.X + incomingNormal.X, Y: vertex.Y + incomingNormal.Y}
 	outerOutgoing := d2scene.Point{X: vertex.X + outgoingNormal.X, Y: vertex.Y + outgoingNormal.Y}
-	bevel := []d2scene.Point{outerIncoming, vertex, outerOutgoing}
+	destination[0], destination[1], destination[2] = outerIncoming, vertex, outerOutgoing
 	if join != d2scene.JoinMiter {
-		return bevel, true
+		return 3
 	}
 
 	denominator := crossProduct(incoming, outgoing)
@@ -744,9 +808,10 @@ func strokeJoinPolygon(previous, vertex, next d2scene.Point, halfWidth float64, 
 	miterDistance := math.Hypot(miter.X-vertex.X, miter.Y-vertex.Y)
 	ratio := miterDistance / halfWidth
 	if !finitePoint(miter) || !finite(ratio) || ratio > miterLimit {
-		return bevel, true
+		return 3
 	}
-	return []d2scene.Point{outerIncoming, miter, outerOutgoing, vertex}, true
+	destination[0], destination[1], destination[2], destination[3] = outerIncoming, miter, outerOutgoing, vertex
+	return 4
 }
 
 func unitVector(start, end d2scene.Point) (d2scene.Point, bool) {
@@ -817,36 +882,43 @@ func addCircle(rasterizer *scanline.Rasterizer, transform d2scene.Matrix, center
 	k := 0.5522847498307936 * radius
 	start := transform.Point(d2scene.Point{X: center.X + radius, Y: center.Y})
 	rasterizer.MoveTo(float32(start.X), float32(start.Y))
-	curveTo := func(c1, c2, end d2scene.Point) {
-		c1, c2, end = transform.Point(c1), transform.Point(c2), transform.Point(end)
-		rasterizer.CubeTo(float32(c1.X), float32(c1.Y), float32(c2.X), float32(c2.Y), float32(end.X), float32(end.Y))
-	}
-	curveTo(
-		d2scene.Point{X: center.X + radius, Y: center.Y - k},
-		d2scene.Point{X: center.X + k, Y: center.Y - radius},
-		d2scene.Point{X: center.X, Y: center.Y - radius},
-	)
-	curveTo(
-		d2scene.Point{X: center.X - k, Y: center.Y - radius},
-		d2scene.Point{X: center.X - radius, Y: center.Y - k},
-		d2scene.Point{X: center.X - radius, Y: center.Y},
-	)
-	curveTo(
-		d2scene.Point{X: center.X - radius, Y: center.Y + k},
-		d2scene.Point{X: center.X - k, Y: center.Y + radius},
-		d2scene.Point{X: center.X, Y: center.Y + radius},
-	)
-	curveTo(
-		d2scene.Point{X: center.X + k, Y: center.Y + radius},
-		d2scene.Point{X: center.X + radius, Y: center.Y + k},
-		d2scene.Point{X: center.X + radius, Y: center.Y},
-	)
+	c1 := transform.Point(d2scene.Point{X: center.X + radius, Y: center.Y - k})
+	c2 := transform.Point(d2scene.Point{X: center.X + k, Y: center.Y - radius})
+	end := transform.Point(d2scene.Point{X: center.X, Y: center.Y - radius})
+	rasterizer.CubeTo(float32(c1.X), float32(c1.Y), float32(c2.X), float32(c2.Y), float32(end.X), float32(end.Y))
+	c1 = transform.Point(d2scene.Point{X: center.X - k, Y: center.Y - radius})
+	c2 = transform.Point(d2scene.Point{X: center.X - radius, Y: center.Y - k})
+	end = transform.Point(d2scene.Point{X: center.X - radius, Y: center.Y})
+	rasterizer.CubeTo(float32(c1.X), float32(c1.Y), float32(c2.X), float32(c2.Y), float32(end.X), float32(end.Y))
+	c1 = transform.Point(d2scene.Point{X: center.X - radius, Y: center.Y + k})
+	c2 = transform.Point(d2scene.Point{X: center.X - k, Y: center.Y + radius})
+	end = transform.Point(d2scene.Point{X: center.X, Y: center.Y + radius})
+	rasterizer.CubeTo(float32(c1.X), float32(c1.Y), float32(c2.X), float32(c2.Y), float32(end.X), float32(end.Y))
+	c1 = transform.Point(d2scene.Point{X: center.X + k, Y: center.Y + radius})
+	c2 = transform.Point(d2scene.Point{X: center.X + radius, Y: center.Y + k})
+	end = transform.Point(d2scene.Point{X: center.X + radius, Y: center.Y})
+	rasterizer.CubeTo(float32(c1.X), float32(c1.Y), float32(c2.X), float32(c2.Y), float32(end.X), float32(end.Y))
 	rasterizer.ClosePath()
 }
 
 func cleanPoints(points []d2scene.Point, closed bool) []d2scene.Point {
+	firstDuplicate := -1
+	for index := 1; index < len(points); index++ {
+		if samePoint(points[index-1], points[index]) {
+			firstDuplicate = index
+			break
+		}
+	}
+	if firstDuplicate < 0 {
+		if closed && len(points) > 1 && samePoint(points[0], points[len(points)-1]) {
+			return points[:len(points)-1]
+		}
+		return points
+	}
+
 	cleaned := make([]d2scene.Point, 0, len(points))
-	for _, point := range points {
+	cleaned = append(cleaned, points[:firstDuplicate]...)
+	for _, point := range points[firstDuplicate:] {
 		if len(cleaned) == 0 || !samePoint(cleaned[len(cleaned)-1], point) {
 			cleaned = append(cleaned, point)
 		}

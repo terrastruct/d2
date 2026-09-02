@@ -140,6 +140,29 @@ func TestBundledFallbackResolverPrefiltersPinnedCmapBeforeLoadingFont(t *testing
 	}
 }
 
+func TestBundledFallbackResolverRejectsMutatedRegisteredCandidate(t *testing.T) {
+	data, err := bundledNotoColorEmoji()
+	if err != nil {
+		t.Fatal(err)
+	}
+	mutated := append([]byte(nil), data...)
+	mutated[len(mutated)-1] ^= 0xff
+	resolver, err := NewBundledFallbackResolver(nil, BundledFallbackLimits{
+		MaxRequestedRunes: 1, MaxBundledBytes: bundledNotoColorEmojiSize,
+		MaxResolvedBytes: bundledNotoColorEmojiSize,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	resolver.loadBundled = func() ([]byte, error) { return mutated, nil }
+	if fonts, err := resolver.ResolveFallbacks(context.Background(), FallbackRequest{Runes: []rune{'😀'}}); fonts != nil || err == nil || !strings.Contains(err.Error(), "not authenticated") {
+		t.Fatalf("mutated bundled result/error = %#v/%v", fonts, err)
+	}
+	if resolver.bundledSource != nil || resolver.work.bundledBytes != 0 || resolver.work.resolvedBytes != 0 {
+		t.Fatalf("mutated bundled candidate published state: source=%p work=%+v", resolver.bundledSource, resolver.work)
+	}
+}
+
 func TestDecodeBundledBrotliFontAuthenticatesAndBounds(t *testing.T) {
 	decoded := bytes.Repeat([]byte("authenticated font fixture"), 8)
 	var stream bytes.Buffer
@@ -184,6 +207,43 @@ func TestDecodeBundledBrotliFontAuthenticatesAndBounds(t *testing.T) {
 				t.Fatalf("error = %v, want %q", err, test.wantError)
 			}
 		})
+	}
+}
+
+func BenchmarkDecodeBundledNotoColorEmoji(b *testing.B) {
+	b.ReportAllocs()
+	b.SetBytes(bundledNotoColorEmojiSize)
+	for b.Loop() {
+		data, err := decodeBundledBrotliFont(
+			bundledNotoColorEmojiBrotli,
+			bundledNotoColorEmojiBrotliSize,
+			bundledNotoColorEmojiBrotliSHA256,
+			bundledNotoColorEmojiSize,
+			bundledNotoColorEmojiSHA256,
+		)
+		if err != nil || len(data) != bundledNotoColorEmojiSize {
+			b.Fatalf("decodeBundledBrotliFont() = %d bytes, %v", len(data), err)
+		}
+	}
+}
+
+// Run with -benchtime=1x so the process-wide lazy resource is measured cold.
+func BenchmarkBundledNotoColorEmojiFirstResolve(b *testing.B) {
+	if b.N != 1 {
+		b.Skip("requires -benchtime=1x")
+	}
+	resolver, err := NewBundledFallbackResolver(nil, BundledFallbackLimits{
+		MaxRequestedRunes: 1,
+		MaxBundledBytes:   bundledNotoColorEmojiSize,
+		MaxResolvedBytes:  bundledNotoColorEmojiSize,
+	})
+	if err != nil {
+		b.Fatal(err)
+	}
+	b.ReportAllocs()
+	fonts, err := resolver.ResolveFallbacks(context.Background(), FallbackRequest{Runes: []rune{'😀'}})
+	if err != nil || len(fonts) != 1 {
+		b.Fatalf("ResolveFallbacks() = %d fonts, %v", len(fonts), err)
 	}
 }
 
@@ -267,7 +327,7 @@ func TestBundledFallbackResolverLimitsCancellationAndAtomicFailure(t *testing.T)
 	}
 }
 
-func TestBundledFallbackResolverSerializesCachedCoverageFace(t *testing.T) {
+func TestBundledFallbackResolverSerializesAuthenticatedSource(t *testing.T) {
 	const workers = 8
 	resolver, err := NewBundledFallbackResolver(nil, BundledFallbackLimits{
 		MaxRequestedRunes: 16, MaxBundledBytes: workers * bundledNotoColorEmojiSize,
@@ -297,8 +357,8 @@ func TestBundledFallbackResolverSerializesCachedCoverageFace(t *testing.T) {
 	for err := range results {
 		t.Error(err)
 	}
-	if resolver.bundledFace == nil {
-		t.Fatal("concurrent bundled resolutions did not retain their serialized coverage face")
+	if resolver.bundledSource == nil {
+		t.Fatal("concurrent bundled resolutions did not retain their authenticated source")
 	}
 	if want := int64(workers * bundledNotoColorEmojiSize); resolver.work.bundledBytes != want || resolver.work.resolvedBytes != want {
 		t.Fatalf("concurrent bundled/total bytes = %d/%d, want %d independently owned bytes", resolver.work.bundledBytes, resolver.work.resolvedBytes, want)
@@ -318,8 +378,8 @@ func TestBundledFallbackResolverSkipsGuaranteedMissingScalar(t *testing.T) {
 	if err != nil || len(fonts) != 0 {
 		t.Fatalf("noncharacter result/error = %#v/%v", fonts, err)
 	}
-	if downstream.calls != 0 || resolver.bundledFace != nil || resolver.work.bundledBytes != 0 || resolver.work.resolvedBytes != 0 {
-		t.Fatalf("noncharacter triggered bundled/downstream work: downstream=%d face=%p work=%+v", downstream.calls, resolver.bundledFace, resolver.work)
+	if downstream.calls != 0 || resolver.bundledSource != nil || resolver.work.bundledBytes != 0 || resolver.work.resolvedBytes != 0 {
+		t.Fatalf("noncharacter triggered bundled/downstream work: downstream=%d source=%p work=%+v", downstream.calls, resolver.bundledSource, resolver.work)
 	}
 }
 
@@ -336,7 +396,7 @@ func TestBundledFallbackResolverDoesNotLoadEmojiFontForOtherScripts(t *testing.T
 	if err != nil || len(fonts) != 0 {
 		t.Fatalf("non-emoji result/error = %#v/%v", fonts, err)
 	}
-	if downstream.calls != 1 || resolver.bundledFace != nil || resolver.work.bundledBytes != 0 {
-		t.Fatalf("non-emoji triggered bundled work: downstream=%d face=%p work=%+v", downstream.calls, resolver.bundledFace, resolver.work)
+	if downstream.calls != 1 || resolver.bundledSource != nil || resolver.work.bundledBytes != 0 {
+		t.Fatalf("non-emoji triggered bundled work: downstream=%d source=%p work=%+v", downstream.calls, resolver.bundledSource, resolver.work)
 	}
 }

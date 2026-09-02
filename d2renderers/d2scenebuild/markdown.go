@@ -8,7 +8,6 @@ import (
 	"unicode/utf8"
 
 	"golang.org/x/image/font"
-	"golang.org/x/image/font/opentype"
 	"golang.org/x/image/font/sfnt"
 	"golang.org/x/image/math/fixed"
 
@@ -278,7 +277,7 @@ func (b *builder) buildMarkdownPrimitive(
 		).Expand(primitive.StrokeWidth/2, primitive.StrokeWidth/2)
 		return node, bounds, nil
 	case textmeasure.MarkdownTextPrimitive:
-		fontValue, fontBytes, err := b.markdownFont(primitive.Font, primary, mono, primitive.FontSize)
+		fontValue, err := b.markdownFont(primitive.Font, primary, mono, primitive.FontSize)
 		if err != nil {
 			return nil, d2scene.Bounds{}, err
 		}
@@ -311,7 +310,11 @@ func (b *builder) buildMarkdownPrimitive(
 		node.ID = nodeID
 		transform := d2scene.Identity()
 		if primitive.TextLength && primitive.Width > 0 {
-			advance, err := markdownFontAdvance(b.ctx, fontBytes, primitive.Text, primitive.FontSize)
+			face, err := b.fontFace(fontValue.Asset)
+			if err != nil {
+				return nil, d2scene.Bounds{}, fmt.Errorf("measure textLength: %w", err)
+			}
+			advance, err := markdownFontAdvance(b.ctx, face.Outline, primitive.Text, primitive.FontSize)
 			if err != nil {
 				return nil, d2scene.Bounds{}, fmt.Errorf("measure textLength: %w", err)
 			}
@@ -339,7 +342,7 @@ func (b *builder) buildMarkdownPrimitive(
 	}
 }
 
-func (b *builder) markdownFont(role textmeasure.MarkdownFontRole, primary, mono d2fonts.FontFamily, size float64) (d2scene.Font, []byte, error) {
+func (b *builder) markdownFont(role textmeasure.MarkdownFontRole, primary, mono d2fonts.FontFamily, size float64) (d2scene.Font, error) {
 	family := primary
 	style := d2fonts.FONT_STYLE_REGULAR
 	switch role {
@@ -359,16 +362,16 @@ func (b *builder) markdownFont(role textmeasure.MarkdownFontRole, primary, mono 
 	case textmeasure.MarkdownFontMonoItalic:
 		family, style = mono, d2fonts.FONT_STYLE_ITALIC
 	default:
-		return d2scene.Font{}, nil, fmt.Errorf("unknown font role %q", role)
+		return d2scene.Font{}, fmt.Errorf("unknown font role %q", role)
 	}
 	fontSpec := d2fonts.Font{Family: family, Style: style}
 	fontBytes, ok := d2fonts.FontFaces.Lookup(fontSpec)
 	if !ok || len(fontBytes) == 0 {
-		return d2scene.Font{}, nil, fmt.Errorf("font %s/%s is not loaded", family, style)
+		return d2scene.Font{}, fmt.Errorf("font %s/%s is not loaded", family, style)
 	}
 	assetID := d2scene.AssetID("font:" + string(family) + ":" + string(style))
 	if _, exists := b.assets[assetID]; !exists {
-		b.assets[assetID] = d2scene.FontAsset{MIMEType: "font/ttf", Data: append([]byte(nil), fontBytes...)}
+		b.assets[assetID] = d2scene.FontAsset{MIMEType: "font/ttf", Data: retainedFontBytes(fontBytes)}
 	}
 	weight := 400
 	if style == d2fonts.FONT_STYLE_BOLD {
@@ -379,17 +382,12 @@ func (b *builder) markdownFont(role textmeasure.MarkdownFontRole, primary, mono 
 	return d2scene.Font{
 		Family: string(family), Style: string(style), Weight: weight,
 		Size: size, Asset: assetID,
-	}, fontBytes, nil
+	}, nil
 }
 
-func markdownFontAdvance(ctx interface{ Err() error }, fontBytes []byte, text string, size float64) (float64, error) {
-	collection, err := opentype.ParseCollection(fontBytes)
-	if err != nil {
-		return 0, fmt.Errorf("parse font: %w", err)
-	}
-	parsed, err := collection.Font(0)
-	if err != nil {
-		return 0, fmt.Errorf("load font: %w", err)
+func markdownFontAdvance(ctx interface{ Err() error }, parsed *sfnt.Font, text string, size float64) (float64, error) {
+	if parsed == nil {
+		return 0, fmt.Errorf("nil font")
 	}
 	ppem := fixed.Int26_6(math.Round(size * 64))
 	var buffer sfnt.Buffer

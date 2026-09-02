@@ -35,6 +35,7 @@ func TestPagedContainersEmbedEquivalentPixels(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	t.Cleanup(expectedRenderer.close)
 	expected, err := expectedRenderer.render(root, false)
 	if err != nil {
 		t.Fatal(err)
@@ -108,6 +109,7 @@ func TestPagedRendererPreservesPreorderScaleAndPreview(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	t.Cleanup(renderer.close)
 	if renderer.totalBoards != 2 {
 		t.Fatalf("preflighted boards = %d, want 2", renderer.totalBoards)
 	}
@@ -115,9 +117,16 @@ func TestPagedRendererPreservesPreorderScaleAndPreview(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	firstEncoderBuffer := renderer.pngEncoder.generic.buffer
+	if firstEncoderBuffer == nil || renderer.pngEncoder.genericImage.Pix != nil {
+		t.Fatal("first paged board did not retain only reusable PNG encoder scratch")
+	}
 	second, err := renderer.render(layer, false)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if renderer.pngEncoder.generic.buffer != firstEncoderBuffer || renderer.pngEncoder.genericImage.Pix != nil {
+		t.Fatal("second paged board did not reuse PNG scratch or retained its source frame")
 	}
 	for index, board := range []*pagedBoard{first, second} {
 		decoded, err := png.Decode(bytes.NewReader(board.png))
@@ -156,6 +165,7 @@ func TestPagedRendererBoundsAggregatePixelsAndEncoding(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
+		t.Cleanup(renderer.close)
 		return renderer
 	}
 

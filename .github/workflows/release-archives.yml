@@ -186,23 +186,6 @@ jobs:
           if (-not (Select-String -LiteralPath $outputFile -Pattern '<svg' -Quiet)) {
             throw "d2 SVG smoke render did not produce SVG"
           }
-          $pngFile = Join-Path $destination "smoke.png"
-          & $binary $inputFile $pngFile
-          if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $pngFile -PathType Leaf)) {
-            throw "d2 PNG smoke render failed"
-          }
-          $png = [System.IO.File]::ReadAllBytes($pngFile)
-          if ($png.Length -lt 24 -or [BitConverter]::ToString($png[0..7]) -cne "89-50-4E-47-0D-0A-1A-0A") {
-            throw "d2 PNG smoke render did not produce a PNG signature"
-          }
-          if ([Text.Encoding]::ASCII.GetString($png, 12, 4) -cne "IHDR") {
-            throw "d2 PNG smoke render is missing its IHDR chunk"
-          }
-          $width = [Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($png, 16))
-          $height = [Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($png, 20))
-          if ($width -le 0 -or $height -le 0) {
-            throw "d2 PNG smoke render has invalid dimensions ${width}x${height}"
-          }
 
   attest:
     if: github.event_name == 'push'

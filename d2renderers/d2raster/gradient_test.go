@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/d2lang/d2/d2renderers/d2fonts"
+	"github.com/d2lang/d2/d2renderers/d2raster/internal/scanline"
 	"github.com/d2lang/d2/d2renderers/d2scene"
 )
 
@@ -21,6 +22,20 @@ var gradientStops = []d2scene.GradientStop{
 }
 
 func TestNormalizeGradientStopsUsesSVGSourceOrderRules(t *testing.T) {
+	alreadyNormalized := []d2scene.GradientStop{
+		{Offset: 0, Color: color.NRGBA{R: 1, A: 255}},
+		{Offset: .75, Color: color.NRGBA{R: 2, A: 255}},
+		{Offset: .75, Color: color.NRGBA{R: 3, A: 255}},
+		{Offset: 1, Color: color.NRGBA{R: 4, A: 255}},
+	}
+	borrowed, err := normalizeGradientStops(alreadyNormalized)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if &borrowed[0] != &alreadyNormalized[0] {
+		t.Fatal("already-normalized immutable stops were copied")
+	}
+
 	input := []d2scene.GradientStop{
 		{Offset: -2, Color: color.NRGBA{R: 1, A: 255}},
 		{Offset: .75, Color: color.NRGBA{R: 2, A: 255}},
@@ -60,6 +75,25 @@ func TestNormalizeGradientStopsUsesSVGSourceOrderRules(t *testing.T) {
 	}
 }
 
+func BenchmarkNormalizeGradientStops(b *testing.B) {
+	for _, test := range []struct {
+		name  string
+		stops []d2scene.GradientStop
+	}{
+		{name: "AlreadyNormalized", stops: []d2scene.GradientStop{{Offset: 0}, {Offset: .25}, {Offset: .75}, {Offset: 1}}},
+		{name: "NeedsNormalization", stops: []d2scene.GradientStop{{Offset: -1}, {Offset: .75}, {Offset: .25}, {Offset: 2}}},
+	} {
+		b.Run(test.name, func(b *testing.B) {
+			b.ReportAllocs()
+			for b.Loop() {
+				if _, err := normalizeGradientStops(test.stops); err != nil {
+					b.Fatal(err)
+				}
+			}
+		})
+	}
+}
+
 func TestCOLRv1GradientUsesPremultipliedLinearLight(t *testing.T) {
 	t.Parallel()
 
@@ -86,6 +120,51 @@ func TestCOLRv1GradientUsesPremultipliedLinearLight(t *testing.T) {
 	}
 }
 
+func TestLinearSRGBByteTableMatchesScalarConversion(t *testing.T) {
+	t.Parallel()
+
+	for value := range 256 {
+		want := srgbToLinear(float64(value) / 255)
+		if math.Float64bits(linearSRGBByte[value]) != math.Float64bits(want) {
+			t.Fatalf("linearSRGBByte[%d] = %.17g, want bit-identical %.17g", value, linearSRGBByte[value], want)
+		}
+	}
+}
+
+func TestPremultipliedSRGBByteToLinearMatchesScalarConversion(t *testing.T) {
+	t.Parallel()
+
+	for alpha := range 256 {
+		for channel := range 256 {
+			want := 0.0
+			if alpha != 0 {
+				want = srgbToLinear(float64(channel) / float64(alpha))
+			}
+			got := premultipliedSRGBByteToLinear(uint8(channel), uint8(alpha))
+			if math.Float64bits(got) != math.Float64bits(want) {
+				t.Fatalf("premultipliedSRGBByteToLinear(%d, %d) = %.17g, want bit-identical %.17g", channel, alpha, got, want)
+			}
+		}
+	}
+}
+
+func BenchmarkCOLRv1GradientInterpolation(b *testing.B) {
+	stops := []d2scene.GradientStop{
+		{Offset: 0, Color: color.NRGBA{R: 12, G: 34, B: 56, A: 255}},
+		{Offset: .35, Color: color.NRGBA{R: 231, G: 19, B: 101, A: 173}},
+		{Offset: 1, Color: color.NRGBA{R: 7, G: 211, B: 249, A: 61}},
+	}
+	b.ReportAllocs()
+	b.ResetTimer()
+	var result color.NRGBA
+	for index := range b.N {
+		result = interpolateCOLRv1GradientStops(stops, float64(index%10_000)/9_999)
+	}
+	benchmarkGradientColor = result
+}
+
+var benchmarkGradientColor color.NRGBA
+
 func TestSpreadMethodsCoverPositiveAndNegativePeriods(t *testing.T) {
 	tests := []struct {
 		spread d2scene.SpreadMethod
@@ -106,6 +185,100 @@ func TestSpreadMethodsCoverPositiveAndNegativePeriods(t *testing.T) {
 		if got := spreadParameter(test.value, test.spread); math.Abs(got-test.want) > 1e-12 {
 			t.Errorf("spreadParameter(%g, %d) = %g, want %g", test.value, test.spread, got, test.want)
 		}
+	}
+}
+
+func TestSpreadParameterFastPathMatchesScalarFormula(t *testing.T) {
+	t.Parallel()
+
+	values := []float64{
+		math.Copysign(0, -1), 0, math.SmallestNonzeroFloat64,
+		math.Nextafter(1, 0), 1, math.Nextafter(1, 2),
+		-2.25, -.5, 2.25, math.MaxFloat64, -math.MaxFloat64,
+	}
+	for index := -10_000; index <= 10_000; index++ {
+		values = append(values, float64(index)/97)
+	}
+	for _, spread := range []d2scene.SpreadMethod{d2scene.SpreadReflect, d2scene.SpreadRepeat} {
+		for _, value := range values {
+			got := spreadParameter(value, spread)
+			want := referenceSpreadParameter(value, spread)
+			if math.Float64bits(got) != math.Float64bits(want) {
+				t.Fatalf("spreadParameter(%g, %d) = %g (%x), want %g (%x)", value, spread, got, math.Float64bits(got), want, math.Float64bits(want))
+			}
+		}
+	}
+}
+
+func TestConcentricRadialFastPathMatchesReferenceParameter(t *testing.T) {
+	paint, err := prepareRadialGradient(d2scene.RadialGradient{
+		Center: d2scene.Point{X: 17.25, Y: -8.5}, Focal: d2scene.Point{X: 17.25, Y: -8.5}, Radius: 31.75,
+		Stops: gradientStops, Units: d2scene.UserSpaceOnUse, Transform: d2scene.Identity(),
+	}, d2scene.Box{Width: 100, Height: 100}, d2scene.Identity())
+	if err != nil {
+		t.Fatal(err)
+	}
+	gradient := &paint.gradient
+	if !gradient.radialConcentric {
+		t.Fatal("concentric radial gradient did not select fast path")
+	}
+	state := uint64(1)
+	points := []d2scene.Point{gradient.radialFocal, {X: math.SmallestNonzeroFloat64}, {X: math.MaxFloat64 / 4, Y: math.MaxFloat64 / 4}}
+	for range 100_000 {
+		state = state*6364136223846793005 + 1442695040888963407
+		x := float64(int32(state>>32)) / 65536
+		state = state*6364136223846793005 + 1442695040888963407
+		y := float64(int32(state>>32)) / 65536
+		points = append(points, d2scene.Point{X: x, Y: y})
+	}
+	for _, point := range points {
+		got, gotOK := gradient.radialParameter(point)
+		want, wantOK := referenceRadialParameter(gradient, point)
+		if gotOK != wantOK || math.Float64bits(got) != math.Float64bits(want) {
+			t.Fatalf("point %#v: fast = %g/%v (%x), reference = %g/%v (%x)", point, got, gotOK, math.Float64bits(got), want, wantOK, math.Float64bits(want))
+		}
+	}
+}
+
+func referenceRadialParameter(gradient *preparedGradient, point d2scene.Point) (float64, bool) {
+	qx := point.X - gradient.radialFocal.X
+	qy := point.Y - gradient.radialFocal.Y
+	b := qx*gradient.radialDelta.X + qy*gradient.radialDelta.Y + gradient.radialFocalRadius*gradient.radialDeltaRadius
+	c := qx*qx + qy*qy - gradient.radialFocalRadius*gradient.radialFocalRadius
+	a := gradient.radialA
+	discriminant := b*b - a*c
+	if discriminant < 0 {
+		discriminantScale := math.Abs(b*b) + math.Abs(a*c) + 1
+		if discriminant >= -1e-14*discriminantScale {
+			discriminant = 0
+		} else {
+			return 0, false
+		}
+	}
+	root := math.Sqrt(discriminant)
+	for _, parameter := range [...]float64{(b + root) / a, (b - root) / a} {
+		if gradient.radialSolutionValid(parameter) {
+			return parameter, true
+		}
+	}
+	return 0, false
+}
+
+func referenceSpreadParameter(value float64, spread d2scene.SpreadMethod) float64 {
+	switch spread {
+	case d2scene.SpreadReflect:
+		value = math.Mod(value, 2)
+		if value < 0 {
+			value += 2
+		}
+		if value > 1 {
+			value = 2 - value
+		}
+		return value
+	case d2scene.SpreadRepeat:
+		return value - math.Floor(value)
+	default:
+		return spreadParameter(value, spread)
 	}
 }
 
@@ -132,6 +305,222 @@ func TestLinearGradientObjectBoundingBoxFillAndStroke(t *testing.T) {
 	assertColorNear(t, got.NRGBAAt(20, 25), color.NRGBA{R: 222, B: 33, A: 255}, 3)
 	assertColorNear(t, got.NRGBAAt(80, 25), color.NRGBA{R: 30, B: 225, A: 255}, 3)
 	assertPixel(t, got.NRGBAAt(50, 20), color.NRGBA{})
+}
+
+func TestAxisLinearGradientFastPathsMatchGeneralSampling(t *testing.T) {
+	for _, test := range []struct {
+		name      string
+		start     d2scene.Point
+		end       d2scene.Point
+		transform d2scene.Matrix
+		wantKind  preparedPaintKind
+	}{
+		{name: "horizontal transformed", start: d2scene.Point{X: -3, Y: 7}, end: d2scene.Point{X: 11, Y: 7}, transform: d2scene.Rotate(.17).Mul(d2scene.Translate(4, -9)), wantKind: preparedLinearXGradient},
+		{name: "vertical transformed", start: d2scene.Point{X: -3, Y: 7}, end: d2scene.Point{X: -3, Y: 19}, transform: d2scene.Rotate(.17).Mul(d2scene.Translate(4, -9)), wantKind: preparedLinearYGradient},
+		{name: "horizontal axis aligned", start: d2scene.Point{X: -3, Y: 7}, end: d2scene.Point{X: 11, Y: 7}, transform: d2scene.Identity(), wantKind: preparedLinearXOnlyGradient},
+		{name: "vertical axis aligned", start: d2scene.Point{X: -3, Y: 7}, end: d2scene.Point{X: -3, Y: 19}, transform: d2scene.Identity(), wantKind: preparedLinearYOnlyGradient},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			paint, err := prepareLinearGradient(d2scene.LinearGradient{
+				Start: test.start, End: test.end, Stops: gradientStops,
+				Units: d2scene.UserSpaceOnUse, Transform: test.transform,
+			}, d2scene.Box{Width: 100, Height: 100}, d2scene.Scale(1.3, .7))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if paint.kind != test.wantKind {
+				t.Fatalf("prepared kind = %d, want %d", paint.kind, test.wantKind)
+			}
+			general := *paint
+			general.kind = preparedLinearGradient
+			assertSample := func(x, y float64) {
+				t.Helper()
+				got, gotOK := paint.colorAt(x, y)
+				want, wantOK := general.colorAt(x, y)
+				if gotOK != wantOK || got != want {
+					t.Fatalf("point (%g,%g): fast = %#v/%v, general = %#v/%v", x, y, got, gotOK, want, wantOK)
+				}
+			}
+			maximumCoordinate := float64(^uint(0) >> 1)
+			for _, point := range []d2scene.Point{
+				{X: maximumCoordinate, Y: maximumCoordinate},
+				{X: -maximumCoordinate, Y: -maximumCoordinate},
+				{X: maximumCoordinate, Y: -maximumCoordinate},
+			} {
+				assertSample(point.X, point.Y)
+			}
+			state := uint64(1)
+			for range 100_000 {
+				state = state*6364136223846793005 + 1442695040888963407
+				x := float64(int32(state>>32)) / 65536
+				state = state*6364136223846793005 + 1442695040888963407
+				y := float64(int32(state>>32)) / 65536
+				assertSample(x, y)
+			}
+
+			bounds := image.Rect(-17, -11, 19, 23)
+			mask := image.NewAlpha(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
+			gotFrame := image.NewRGBA(bounds)
+			for index := range mask.Pix {
+				state = state*6364136223846793005 + 1442695040888963407
+				mask.Pix[index] = uint8(state >> 56)
+			}
+			for index := range gotFrame.Pix {
+				state = state*6364136223846793005 + 1442695040888963407
+				gotFrame.Pix[index] = uint8(state >> 56)
+			}
+			wantFrame := image.NewRGBA(bounds)
+			copy(wantFrame.Pix, gotFrame.Pix)
+			if err := drawAxisLinearGradientMaskPixels(context.Background(), gotFrame, bounds, mask, &paint.gradient, paint.kind); err != nil {
+				t.Fatal(err)
+			}
+			if err := drawPaintMaskPixels(context.Background(), wantFrame, bounds, mask, paint); err != nil {
+				t.Fatal(err)
+			}
+			if !bytes.Equal(gotFrame.Pix, wantFrame.Pix) {
+				t.Fatal("axis mask fast path differs from per-pixel paint sampling")
+			}
+		})
+	}
+}
+
+func TestAxisLinearGradientFastPathsRejectPotentialCoordinateOverflow(t *testing.T) {
+	for _, test := range []struct {
+		name      string
+		start     d2scene.Point
+		end       d2scene.Point
+		transform d2scene.Matrix
+		point     d2scene.Point
+		fastKind  preparedPaintKind
+	}{
+		{
+			name: "horizontal transformed", start: d2scene.Point{}, end: d2scene.Point{X: 1},
+			transform: d2scene.Matrix{A: 1, C: -1e-308, D: 1e-308}, point: d2scene.Point{X: -1.5, Y: 2},
+			fastKind: preparedLinearXGradient,
+		},
+		{
+			name: "vertical transformed", start: d2scene.Point{}, end: d2scene.Point{Y: 1},
+			transform: d2scene.Matrix{A: 1e-308, B: -1e-308, D: 1}, point: d2scene.Point{X: 2, Y: -1.5},
+			fastKind: preparedLinearYGradient,
+		},
+		{
+			name: "horizontal axis aligned", start: d2scene.Point{}, end: d2scene.Point{X: 1},
+			transform: d2scene.Scale(1, 1e-308), point: d2scene.Point{X: .5, Y: 2},
+			fastKind: preparedLinearXOnlyGradient,
+		},
+		{
+			name: "vertical axis aligned", start: d2scene.Point{}, end: d2scene.Point{Y: 1},
+			transform: d2scene.Scale(1e-308, 1), point: d2scene.Point{X: 2, Y: .5},
+			fastKind: preparedLinearYOnlyGradient,
+		},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			paint, err := prepareLinearGradient(d2scene.LinearGradient{
+				Start: test.start, End: test.end, Stops: gradientStops,
+				Units: d2scene.UserSpaceOnUse, Transform: test.transform,
+			}, d2scene.Box{Width: 1, Height: 1}, d2scene.Identity())
+			if err != nil {
+				t.Fatal(err)
+			}
+			if paint.kind != preparedLinearGradient {
+				t.Fatalf("prepared kind = %d, want overflow-safe general kind %d", paint.kind, preparedLinearGradient)
+			}
+			got, gotOK := paint.colorAt(test.point.X, test.point.Y)
+			if gotOK || got != (color.NRGBA{}) {
+				t.Fatalf("overflowing unused coordinate = %#v/%v, want transparent/unpainted", got, gotOK)
+			}
+
+			// This forced kind models the optimization without its preparation
+			// guard and proves that the pathological sample exercises the exact
+			// behavior the guard protects.
+			unsafeFast := *paint
+			unsafeFast.kind = test.fastKind
+			if _, ok := unsafeFast.colorAt(test.point.X, test.point.Y); !ok {
+				t.Fatal("forced unsafe fast path unexpectedly remained unpainted")
+			}
+		})
+	}
+}
+
+func TestLinearGradientMaskFastPathMatchesPaintSampling(t *testing.T) {
+	paint, err := prepareLinearGradient(d2scene.LinearGradient{
+		Start: d2scene.Point{X: -.25, Y: .1}, End: d2scene.Point{X: 1.1, Y: .9}, Stops: gradientStops,
+		Units: d2scene.ObjectBoundingBox, Transform: d2scene.Rotate(.17), Spread: d2scene.SpreadRepeat,
+	}, d2scene.Box{X: -17, Y: -11, Width: 36, Height: 34}, d2scene.Identity())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if paint.kind != preparedLinearGradient {
+		t.Fatalf("prepared kind = %d, want general linear kind", paint.kind)
+	}
+	bounds := image.Rect(-17, -11, 19, 23)
+	mask := image.NewAlpha(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
+	gotFrame := image.NewRGBA(bounds)
+	state := uint64(1)
+	for index := range mask.Pix {
+		state = state*6364136223846793005 + 1442695040888963407
+		mask.Pix[index] = uint8(state >> 56)
+	}
+	for index := range gotFrame.Pix {
+		state = state*6364136223846793005 + 1442695040888963407
+		gotFrame.Pix[index] = uint8(state >> 56)
+	}
+	wantFrame := image.NewRGBA(bounds)
+	copy(wantFrame.Pix, gotFrame.Pix)
+	if err := drawLinearGradientMaskPixels(context.Background(), gotFrame, bounds, mask, &paint.gradient); err != nil {
+		t.Fatal(err)
+	}
+	if err := drawPaintMaskPixels(context.Background(), wantFrame, bounds, mask, paint); err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(gotFrame.Pix, wantFrame.Pix) {
+		t.Fatal("linear mask fast path differs from per-pixel paint sampling")
+	}
+}
+
+func TestRadialGradientMaskFastPathMatchesPaintSampling(t *testing.T) {
+	for name, source := range map[string]d2scene.RadialGradient{
+		"transformed": {
+			Center: d2scene.Point{X: .5, Y: .5}, Radius: .5,
+			Focal: d2scene.Point{X: .4, Y: .45}, FocalRadius: .05,
+			Stops: gradientStops, Units: d2scene.ObjectBoundingBox, Transform: d2scene.Rotate(.1), Spread: d2scene.SpreadReflect,
+		},
+		"tangent repeat": {
+			Center: d2scene.Point{X: 1}, Radius: 1,
+			Focal: d2scene.Point{}, Stops: gradientStops,
+			Units: d2scene.UserSpaceOnUse, Transform: d2scene.Identity(), Spread: d2scene.SpreadRepeat,
+		},
+	} {
+		t.Run(name, func(t *testing.T) {
+			paint, err := prepareRadialGradient(source, d2scene.Box{X: -17, Y: -11, Width: 36, Height: 34}, d2scene.Identity())
+			if err != nil {
+				t.Fatal(err)
+			}
+			bounds := image.Rect(-17, -11, 19, 23)
+			mask := image.NewAlpha(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
+			gotFrame := image.NewRGBA(bounds)
+			state := uint64(1)
+			for index := range mask.Pix {
+				state = state*6364136223846793005 + 1442695040888963407
+				mask.Pix[index] = uint8(state >> 56)
+			}
+			for index := range gotFrame.Pix {
+				state = state*6364136223846793005 + 1442695040888963407
+				gotFrame.Pix[index] = uint8(state >> 56)
+			}
+			wantFrame := image.NewRGBA(bounds)
+			copy(wantFrame.Pix, gotFrame.Pix)
+			if err := drawRadialGradientMaskPixels(context.Background(), gotFrame, bounds, mask, &paint.gradient); err != nil {
+				t.Fatal(err)
+			}
+			if err := drawPaintMaskPixels(context.Background(), wantFrame, bounds, mask, paint); err != nil {
+				t.Fatal(err)
+			}
+			if !bytes.Equal(gotFrame.Pix, wantFrame.Pix) {
+				t.Fatal("radial mask fast path differs from per-pixel paint sampling")
+			}
+		})
+	}
 }
 
 func TestGradientPaintsTextFillAndStroke(t *testing.T) {
@@ -492,6 +881,146 @@ func TestGradientLoopObservesCancellation(t *testing.T) {
 	}
 }
 
+func TestStreamedGradientCoverageMatchesAlphaMaskRandomized(t *testing.T) {
+	t.Parallel()
+
+	const width, height = 67, 53
+	bounds := image.Rect(11, 17, 11+width, 17+height)
+	objectBounds := d2scene.Box{X: 11, Y: 17, Width: width, Height: height}
+	linearAxis, err := prepareLinearGradient(d2scene.LinearGradient{
+		Start: d2scene.Point{}, End: d2scene.Point{X: 1}, Stops: gradientStops,
+		Units: d2scene.ObjectBoundingBox, Transform: d2scene.Identity(), Spread: d2scene.SpreadReflect,
+	}, objectBounds, d2scene.Identity())
+	if err != nil {
+		t.Fatal(err)
+	}
+	linearGeneral, err := prepareLinearGradient(d2scene.LinearGradient{
+		Start: d2scene.Point{}, End: d2scene.Point{X: 1, Y: .3}, Stops: gradientStops,
+		Units: d2scene.ObjectBoundingBox, Transform: d2scene.Rotate(.17), Spread: d2scene.SpreadRepeat,
+	}, objectBounds, d2scene.Identity())
+	if err != nil {
+		t.Fatal(err)
+	}
+	radial, err := prepareRadialGradient(d2scene.RadialGradient{
+		Center: d2scene.Point{X: .5, Y: .5}, Radius: .55,
+		Focal: d2scene.Point{X: .37, Y: .41}, FocalRadius: .03,
+		Stops: []d2scene.GradientStop{
+			{Offset: 0, Color: color.NRGBA{R: 255, G: 200, A: 180}},
+			{Offset: .55, Color: color.NRGBA{G: 180, B: 220, A: 240}},
+			{Offset: 1, Color: color.NRGBA{R: 30, B: 120, A: 255}},
+		},
+		Units: d2scene.ObjectBoundingBox, Transform: d2scene.Rotate(-.11), Spread: d2scene.SpreadReflect,
+	}, objectBounds, d2scene.Identity())
+	if err != nil {
+		t.Fatal(err)
+	}
+	paints := []*preparedPaint{linearAxis, linearGeneral, radial}
+
+	state := uint64(0xd1b54a32d192ed03)
+	next := func() uint64 {
+		state ^= state >> 12
+		state ^= state << 25
+		state ^= state >> 27
+		return state * 0x2545f4914f6cdd1d
+	}
+	coordinate := func(limit int) float32 {
+		return float32(float64(int64(next()%uint64(limit*8+32))-16) / 8)
+	}
+	type polygon [][2]float32
+
+	for iteration := range 80 {
+		var polygons []polygon
+		for range int(next()%8) + 1 {
+			points := make(polygon, int(next()%7)+2)
+			for index := range points {
+				points[index] = [2]float32{coordinate(width), coordinate(height)}
+			}
+			polygons = append(polygons, points)
+		}
+		populate := func(rasterizer *scanline.Rasterizer) error {
+			for _, points := range polygons {
+				rasterizer.MoveTo(points[0][0], points[0][1])
+				for _, point := range points[1:] {
+					rasterizer.LineTo(point[0], point[1])
+				}
+				rasterizer.ClosePath()
+			}
+			return nil
+		}
+
+		seed := image.NewRGBA(bounds)
+		for offset := 0; offset < len(seed.Pix); offset += 4 {
+			alpha := uint8(next())
+			seed.Pix[offset+3] = alpha
+			seed.Pix[offset+0] = uint8(next() % (uint64(alpha) + 1))
+			seed.Pix[offset+1] = uint8(next() % (uint64(alpha) + 1))
+			seed.Pix[offset+2] = uint8(next() % (uint64(alpha) + 1))
+		}
+
+		for paintIndex, paint := range paints {
+			want := image.NewRGBA(bounds)
+			copy(want.Pix, seed.Pix)
+			wantScratch := &rasterScratch{offscreen: offscreenBudget{limit: math.MaxInt64}}
+			err := drawPaintMask(context.Background(), want, bounds, paint, wantScratch, "oracle gradient Alpha mask", func(mask *image.Alpha) error {
+				rasterizer := wantScratch.reset(mask.Bounds())
+				if err := populate(rasterizer); err != nil {
+					return err
+				}
+				return rasterizer.WriteAlpha(context.Background(), wantScratch.workBudget(), mask)
+			})
+			if err != nil {
+				t.Fatalf("iteration %d paint %d Alpha-mask oracle: %v", iteration, paintIndex, err)
+			}
+
+			got := image.NewRGBA(bounds)
+			copy(got.Pix, seed.Pix)
+			gotScratch := &rasterScratch{offscreen: offscreenBudget{limit: math.MaxInt64}}
+			if err := drawRasterizedPaint(context.Background(), got, bounds, paint, gotScratch, "gradient fill", populate); err != nil {
+				t.Fatalf("iteration %d paint %d streamed coverage: %v", iteration, paintIndex, err)
+			}
+			if !bytes.Equal(got.Pix, want.Pix) {
+				for index := range got.Pix {
+					if got.Pix[index] != want.Pix[index] {
+						t.Fatalf("iteration %d paint %d first differing byte %d: streamed=%d Alpha-mask=%d", iteration, paintIndex, index, got.Pix[index], want.Pix[index])
+					}
+				}
+				t.Fatalf("iteration %d paint %d output lengths differ", iteration, paintIndex)
+			}
+		}
+	}
+}
+
+func TestStreamedGradientCoverageObservesCancellation(t *testing.T) {
+	const width = 8_192
+	bounds := image.Rect(0, 0, width, 2)
+	paint, err := prepareLinearGradient(d2scene.LinearGradient{
+		Start: d2scene.Point{}, End: d2scene.Point{X: width}, Stops: gradientStops,
+		Units: d2scene.UserSpaceOnUse, Transform: d2scene.Identity(),
+	}, d2scene.Box{Width: width, Height: 2}, d2scene.Identity())
+	if err != nil {
+		t.Fatal(err)
+	}
+	scratch := &rasterScratch{offscreen: offscreenBudget{limit: math.MaxInt64}}
+	ctx := &cancelAfterErrCallsContext{Context: context.Background(), cancelAt: 4}
+	err = drawRasterizedPaint(ctx, image.NewRGBA(bounds), bounds, paint, scratch, "gradient fill", func(rasterizer *scanline.Rasterizer) error {
+		rasterizer.MoveTo(0, 0)
+		rasterizer.LineTo(width, 0)
+		rasterizer.LineTo(width, 2)
+		rasterizer.LineTo(0, 2)
+		rasterizer.ClosePath()
+		return nil
+	})
+	if !errors.Is(err, context.Canceled) {
+		t.Fatalf("drawRasterizedPaint() error = %v, want context.Canceled", err)
+	}
+	if ctx.calls < 4 {
+		t.Fatalf("context checks = %d, want cancellation during streamed row", ctx.calls)
+	}
+	if scratch.offscreen.live != 0 {
+		t.Fatalf("offscreen bytes after cancellation = %d, want 0", scratch.offscreen.live)
+	}
+}
+
 func BenchmarkRenderGradient(b *testing.B) {
 	gradient := d2scene.RadialGradient{
 		Center: d2scene.Point{X: .5, Y: .5}, Radius: .5,
@@ -521,6 +1050,353 @@ func BenchmarkRenderGradient(b *testing.B) {
 		benchmarkFrame = frame
 	}
 }
+
+func BenchmarkRenderConcentricGradient(b *testing.B) {
+	gradient := d2scene.RadialGradient{
+		Center: d2scene.Point{X: .5, Y: .5}, Radius: .5,
+		Focal: d2scene.Point{X: .5, Y: .5},
+		Stops: []d2scene.GradientStop{
+			{Offset: 0, Color: color.NRGBA{R: 255, G: 240, B: 128, A: 230}},
+			{Offset: .6, Color: color.NRGBA{R: 80, G: 120, B: 255, A: 180}},
+			{Offset: 1, Color: color.NRGBA{R: 20, G: 10, B: 80, A: 255}},
+		},
+		Units: d2scene.ObjectBoundingBox, Transform: d2scene.Rotate(.1), Spread: d2scene.SpreadReflect,
+	}
+	document := d2scene.NewDocument(d2scene.Box{Width: 488, Height: 272}, d2scene.NewNode(d2scene.Rect{
+		Box: d2scene.Box{X: 20, Y: 20, Width: 448, Height: 232}, RadiusX: 18, RadiusY: 18,
+		Fill: gradient, Stroke: &d2scene.Stroke{Paint: gradient, Width: 4, Join: d2scene.JoinRound},
+	}))
+	options := testOptions()
+	options.Scale = 2
+	options.MaxWidth, options.MaxHeight, options.MaxPixels = 2_000, 2_000, 4_000_000
+	ctx := context.Background()
+	b.ReportAllocs()
+	b.ResetTimer()
+	for range b.N {
+		frame, err := Render(ctx, document, options)
+		if err != nil {
+			b.Fatal(err)
+		}
+		benchmarkFrame = frame
+	}
+}
+
+func BenchmarkRenderLinearGradient(b *testing.B) {
+	gradient := d2scene.LinearGradient{
+		Start: d2scene.Point{X: 0, Y: .5}, End: d2scene.Point{X: 1, Y: .5},
+		Stops: []d2scene.GradientStop{
+			{Offset: 0, Color: color.NRGBA{R: 255, G: 240, B: 128, A: 230}},
+			{Offset: .6, Color: color.NRGBA{R: 80, G: 120, B: 255, A: 180}},
+			{Offset: 1, Color: color.NRGBA{R: 20, G: 10, B: 80, A: 255}},
+		},
+		Units: d2scene.ObjectBoundingBox, Transform: d2scene.Rotate(.1), Spread: d2scene.SpreadReflect,
+	}
+	document := d2scene.NewDocument(d2scene.Box{Width: 488, Height: 272}, d2scene.NewNode(d2scene.Rect{
+		Box: d2scene.Box{X: 20, Y: 20, Width: 448, Height: 232}, RadiusX: 18, RadiusY: 18,
+		Fill: gradient, Stroke: &d2scene.Stroke{Paint: gradient, Width: 4, Join: d2scene.JoinRound},
+	}))
+	options := testOptions()
+	options.Scale = 2
+	options.MaxWidth, options.MaxHeight, options.MaxPixels = 2_000, 2_000, 4_000_000
+	ctx := context.Background()
+	b.ReportAllocs()
+	b.ResetTimer()
+	for range b.N {
+		frame, err := Render(ctx, document, options)
+		if err != nil {
+			b.Fatal(err)
+		}
+		benchmarkFrame = frame
+	}
+}
+
+func BenchmarkLinearGradientAxisSampling(b *testing.B) {
+	gradient := d2scene.LinearGradient{
+		Start: d2scene.Point{Y: .5}, End: d2scene.Point{X: 1, Y: .5}, Stops: gradientStops,
+		Units: d2scene.ObjectBoundingBox, Transform: d2scene.Rotate(.1), Spread: d2scene.SpreadReflect,
+	}
+	paint, err := prepareLinearGradient(gradient, d2scene.Box{X: 20, Y: 20, Width: 448, Height: 232}, d2scene.Scale(2, 2))
+	if err != nil {
+		b.Fatal(err)
+	}
+	general := *paint
+	general.kind = preparedLinearGradient
+	gradient.Transform = d2scene.Identity()
+	axisAligned, err := prepareLinearGradient(gradient, d2scene.Box{X: 20, Y: 20, Width: 448, Height: 232}, d2scene.Scale(2, 2))
+	if err != nil {
+		b.Fatal(err)
+	}
+	for _, test := range []struct {
+		name  string
+		paint *preparedPaint
+	}{
+		{name: "Axis", paint: paint},
+		{name: "AxisAligned", paint: axisAligned},
+		{name: "General", paint: &general},
+	} {
+		b.Run(test.name, func(b *testing.B) {
+			var sample color.NRGBA
+			for index := range b.N {
+				sample, _ = test.paint.colorAt(float64(index%976)+.5, float64(index%544)+.5)
+			}
+			benchmarkGradientColor = sample
+		})
+	}
+}
+
+func BenchmarkDrawPaintMaskRepeated(b *testing.B) {
+	const repetitions = 16
+	bounds := image.Rect(0, 0, 64, 64)
+	dst := image.NewRGBA(bounds)
+	paint := &preparedPaint{kind: preparedSolidPaint, solid: color.NRGBA{R: 255, A: 255}}
+	ctx := context.Background()
+	b.ReportAllocs()
+	b.ResetTimer()
+	for range b.N {
+		scratch := &rasterScratch{offscreen: offscreenBudget{limit: repetitions * int64(bounds.Dx()*bounds.Dy())}}
+		for range repetitions {
+			if err := drawPaintMask(ctx, dst, bounds, paint, scratch, "benchmark Alpha mask", func(mask *image.Alpha) error {
+				return nil
+			}); err != nil {
+				b.Fatal(err)
+			}
+		}
+	}
+}
+
+func BenchmarkDrawLinearGradientMask(b *testing.B) {
+	bounds := image.Rect(0, 0, 488, 272)
+	paint, err := prepareLinearGradient(d2scene.LinearGradient{
+		Start: d2scene.Point{Y: .5}, End: d2scene.Point{X: 1, Y: .5}, Stops: gradientStops,
+		Units: d2scene.ObjectBoundingBox, Transform: d2scene.Rotate(.1), Spread: d2scene.SpreadReflect,
+	}, d2scene.Box{Width: 488, Height: 272}, d2scene.Identity())
+	if err != nil {
+		b.Fatal(err)
+	}
+	mask := image.NewAlpha(bounds)
+	for index := range mask.Pix {
+		mask.Pix[index] = 0xff
+	}
+	ctx := context.Background()
+	for _, test := range []struct {
+		name string
+		draw func(context.Context, *image.RGBA, image.Rectangle, *image.Alpha) error
+	}{
+		{name: "Specialized", draw: func(ctx context.Context, dst *image.RGBA, bounds image.Rectangle, mask *image.Alpha) error {
+			return drawAxisLinearGradientMaskPixels(ctx, dst, bounds, mask, &paint.gradient, paint.kind)
+		}},
+		{name: "KindDispatch", draw: func(ctx context.Context, dst *image.RGBA, bounds image.Rectangle, mask *image.Alpha) error {
+			return drawPaintMaskPixels(ctx, dst, bounds, mask, paint)
+		}},
+	} {
+		b.Run(test.name, func(b *testing.B) {
+			dst := image.NewRGBA(bounds)
+			b.ReportAllocs()
+			b.ResetTimer()
+			for range b.N {
+				if err := test.draw(ctx, dst, bounds, mask); err != nil {
+					b.Fatal(err)
+				}
+			}
+		})
+	}
+}
+
+func BenchmarkDrawGeneralLinearGradientMaskPixels(b *testing.B) {
+	bounds := image.Rect(0, 0, 488, 272)
+	paint, err := prepareLinearGradient(d2scene.LinearGradient{
+		Start: d2scene.Point{}, End: d2scene.Point{X: 1, Y: 1}, Stops: gradientStops,
+		Units: d2scene.ObjectBoundingBox, Transform: d2scene.Rotate(.1), Spread: d2scene.SpreadReflect,
+	}, d2scene.Box{Width: 488, Height: 272}, d2scene.Identity())
+	if err != nil {
+		b.Fatal(err)
+	}
+	mask := image.NewAlpha(bounds)
+	for index := range mask.Pix {
+		mask.Pix[index] = 0xff
+	}
+	ctx := context.Background()
+	for _, test := range []struct {
+		name string
+		draw func(context.Context, *image.RGBA, image.Rectangle, *image.Alpha) error
+	}{
+		{name: "Specialized", draw: func(ctx context.Context, dst *image.RGBA, bounds image.Rectangle, mask *image.Alpha) error {
+			return drawLinearGradientMaskPixels(ctx, dst, bounds, mask, &paint.gradient)
+		}},
+		{name: "KindDispatch", draw: func(ctx context.Context, dst *image.RGBA, bounds image.Rectangle, mask *image.Alpha) error {
+			return drawPaintMaskPixels(ctx, dst, bounds, mask, paint)
+		}},
+	} {
+		b.Run(test.name, func(b *testing.B) {
+			dst := image.NewRGBA(bounds)
+			b.ReportAllocs()
+			b.ResetTimer()
+			for range b.N {
+				if err := test.draw(ctx, dst, bounds, mask); err != nil {
+					b.Fatal(err)
+				}
+			}
+		})
+	}
+}
+
+func BenchmarkDrawVerticalLinearGradientMask(b *testing.B) {
+	bounds := image.Rect(0, 0, 488, 272)
+	paint, err := prepareLinearGradient(d2scene.LinearGradient{
+		Start: d2scene.Point{X: .5}, End: d2scene.Point{X: .5, Y: 1}, Stops: gradientStops,
+		Units: d2scene.ObjectBoundingBox, Transform: d2scene.Identity(), Spread: d2scene.SpreadReflect,
+	}, d2scene.Box{Width: 488, Height: 272}, d2scene.Identity())
+	if err != nil {
+		b.Fatal(err)
+	}
+	mask := image.NewAlpha(bounds)
+	for index := range mask.Pix {
+		mask.Pix[index] = 0xff
+	}
+	ctx := context.Background()
+	for _, test := range []struct {
+		name string
+		draw func(context.Context, *image.RGBA, image.Rectangle, *image.Alpha) error
+	}{
+		{name: "Specialized", draw: func(ctx context.Context, dst *image.RGBA, bounds image.Rectangle, mask *image.Alpha) error {
+			return drawAxisLinearGradientMaskPixels(ctx, dst, bounds, mask, &paint.gradient, paint.kind)
+		}},
+		{name: "KindDispatch", draw: func(ctx context.Context, dst *image.RGBA, bounds image.Rectangle, mask *image.Alpha) error {
+			return drawPaintMaskPixels(ctx, dst, bounds, mask, paint)
+		}},
+	} {
+		b.Run(test.name, func(b *testing.B) {
+			dst := image.NewRGBA(bounds)
+			b.ReportAllocs()
+			b.ResetTimer()
+			for range b.N {
+				if err := test.draw(ctx, dst, bounds, mask); err != nil {
+					b.Fatal(err)
+				}
+			}
+		})
+	}
+}
+
+func BenchmarkDrawRadialGradientMaskPixels(b *testing.B) {
+	bounds := image.Rect(0, 0, 488, 272)
+	paint, err := prepareRadialGradient(d2scene.RadialGradient{
+		Center: d2scene.Point{X: .5, Y: .5}, Radius: .5,
+		Focal: d2scene.Point{X: .4, Y: .45}, FocalRadius: .05,
+		Stops: gradientStops, Units: d2scene.ObjectBoundingBox, Transform: d2scene.Rotate(.1), Spread: d2scene.SpreadReflect,
+	}, d2scene.Box{Width: 488, Height: 272}, d2scene.Identity())
+	if err != nil {
+		b.Fatal(err)
+	}
+	mask := image.NewAlpha(bounds)
+	for index := range mask.Pix {
+		mask.Pix[index] = 0xff
+	}
+	ctx := context.Background()
+	for _, test := range []struct {
+		name string
+		draw func(context.Context, *image.RGBA, image.Rectangle, *image.Alpha) error
+	}{
+		{name: "Specialized", draw: func(ctx context.Context, dst *image.RGBA, bounds image.Rectangle, mask *image.Alpha) error {
+			return drawRadialGradientMaskPixels(ctx, dst, bounds, mask, &paint.gradient)
+		}},
+		{name: "KindDispatch", draw: func(ctx context.Context, dst *image.RGBA, bounds image.Rectangle, mask *image.Alpha) error {
+			return drawPaintMaskPixels(ctx, dst, bounds, mask, paint)
+		}},
+	} {
+		b.Run(test.name, func(b *testing.B) {
+			dst := image.NewRGBA(bounds)
+			b.ReportAllocs()
+			b.ResetTimer()
+			for range b.N {
+				if err := test.draw(ctx, dst, bounds, mask); err != nil {
+					b.Fatal(err)
+				}
+			}
+		})
+	}
+}
+
+func TestCompositeNRGBAOpaqueFullCoverageMatchesReferenceArithmeticExhaustively(t *testing.T) {
+	t.Parallel()
+
+	for source := 0; source <= 0xff; source++ {
+		for destination := 0; destination <= 0xff; destination++ {
+			got := []byte{uint8(destination), uint8(destination), uint8(destination), uint8(destination)}
+			want := append([]byte(nil), got...)
+			paint := color.NRGBA{R: uint8(source), G: uint8(source), B: uint8(source), A: 0xff}
+			compositeNRGBAOverRGBA(got, paint, 0xff)
+			referenceCompositeNRGBAOverRGBA(want, paint, 0xff)
+			if !bytes.Equal(got, want) {
+				t.Fatalf("opaque full-coverage source=%d destination=%d: got %v, want reference %v", source, destination, got, want)
+			}
+		}
+	}
+}
+
+func TestCompositeNRGBAOverTransparentPixelMatchesReferenceArithmetic(t *testing.T) {
+	t.Parallel()
+
+	state := uint32(1)
+	for range 1_000_000 {
+		state = state*1664525 + 1013904223
+		paint := color.NRGBA{R: uint8(state), G: uint8(state >> 8), B: uint8(state >> 16), A: uint8(state >> 24)}
+		state = state*1664525 + 1013904223
+		coverage := uint8(state >> 24)
+		got := []byte{0, 0, 0, 0}
+		want := []byte{0, 0, 0, 0}
+		compositeNRGBAOverRGBA(got, paint, coverage)
+		referenceCompositeNRGBAOverRGBA(want, paint, coverage)
+		if !bytes.Equal(got, want) {
+			t.Fatalf("source=%#v coverage=%d: got %v, want reference %v", paint, coverage, got, want)
+		}
+	}
+}
+
+func BenchmarkCompositeNRGBAOverRGBA(b *testing.B) {
+	tests := []struct {
+		name     string
+		paint    color.NRGBA
+		coverage uint8
+	}{
+		{name: "OpaqueFullCoverage", paint: color.NRGBA{R: 229, G: 71, B: 19, A: 255}, coverage: 255},
+		{name: "OpaquePartialCoverage", paint: color.NRGBA{R: 229, G: 71, B: 19, A: 255}, coverage: 173},
+		{name: "TranslucentFullCoverage", paint: color.NRGBA{R: 229, G: 71, B: 19, A: 173}, coverage: 255},
+	}
+	for _, test := range tests {
+		b.Run(test.name, func(b *testing.B) {
+			pixel := []byte{17, 91, 203, 239}
+			b.SetBytes(4)
+			b.ReportAllocs()
+			b.ResetTimer()
+			for range b.N {
+				compositeNRGBAOverRGBA(pixel, test.paint, test.coverage)
+			}
+			copy(benchmarkCompositeNRGBAPixel[:], pixel)
+		})
+	}
+}
+
+func referenceCompositeNRGBAOverRGBA(destination []byte, source color.NRGBA, coverage uint8) {
+	mul255 := func(a, b uint32) uint32 { return (a*b + 127) / 255 }
+	sourceAlpha := mul255(uint32(source.A), uint32(coverage))
+	inverseAlpha := 255 - sourceAlpha
+	for channel, value := range [...]uint8{source.R, source.G, source.B} {
+		premultiplied := mul255(uint32(value), sourceAlpha)
+		result := premultiplied + mul255(uint32(destination[channel]), inverseAlpha)
+		if result > 255 {
+			result = 255
+		}
+		destination[channel] = uint8(result)
+	}
+	alpha := sourceAlpha + mul255(uint32(destination[3]), inverseAlpha)
+	if alpha > 255 {
+		alpha = 255
+	}
+	destination[3] = uint8(alpha)
+}
+
+var benchmarkCompositeNRGBAPixel [4]byte
 
 func assertSampleNear(t *testing.T, paint *preparedPaint, x, y float64, want color.NRGBA, tolerance uint8) {
 	t.Helper()

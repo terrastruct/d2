@@ -185,6 +185,115 @@ func TestBundledNotoColorEmojiShapesEmojiSequences(t *testing.T) {
 	}
 }
 
+func TestRegisteredBundledNotoColorEmojiClonesAndMatchesExactly(t *testing.T) {
+	data := bundledNotoColorEmojiForTest(t)
+	if _, err := RegisterBundledNotoColorEmoji(data); err != nil {
+		t.Fatal(err)
+	}
+	source, matched, err := RegisteredBundledNotoColorEmoji(data, 0)
+	if err != nil || !matched || source == nil {
+		t.Fatalf("registered source = %p, matched %v, %v", source, matched, err)
+	}
+	first, err := source.CloneReadOnly()
+	if err != nil || !first.IsBundledNotoColorEmoji() {
+		t.Fatalf("first clone = %p, %v", first, err)
+	}
+	second, err := source.CloneReadOnly()
+	if err != nil || !second.IsBundledNotoColorEmoji() {
+		t.Fatalf("second clone = %p, %v", second, err)
+	}
+	if first == second || first.Shaping == second.Shaping {
+		t.Fatal("registered source reused mutable shaping state between clones")
+	}
+	if first.Shaping.Font != second.Shaping.Font {
+		t.Fatal("registered source did not reuse the immutable shaping font")
+	}
+	outline, err := source.Outline()
+	if err != nil || outline != first.Outline {
+		t.Fatalf("source outline = %p, %v; want %p", outline, err, first.Outline)
+	}
+	var sourceBuffer sfnt.Buffer
+	emojiGlyph, err := outline.GlyphIndex(&sourceBuffer, '😀')
+	if err != nil || emojiGlyph == 0 {
+		t.Fatalf("source emoji glyph = %d, %v", emojiGlyph, err)
+	}
+	if kind, err := source.GlyphDataKind(uint32(emojiGlyph)); err != nil || kind != "color" {
+		t.Fatalf("source emoji glyph kind = %q, %v", kind, err)
+	}
+	plan, found, err := source.CompileBundledNotoColorEmojiCOLRv1Plan(uint32(emojiGlyph))
+	if err != nil || !found || plan == nil {
+		t.Fatalf("source emoji plan = %#v/%v, %v", plan, found, err)
+	}
+	bounds, hasInk, err := source.GlyphRenderBounds(uint32(emojiGlyph), fixed.I(64))
+	if err != nil || !hasInk || bounds.Empty() {
+		t.Fatalf("source emoji bounds = %v/%v, %v", bounds, hasInk, err)
+	}
+	for _, value := range []rune{'😀', '✅', '1', '©', '✈', '\u2b24', 'A', '\ufffd'} {
+		got, err := source.SupportsRenderableRune(value)
+		if err != nil {
+			t.Fatalf("source coverage for %U: %v", value, err)
+		}
+		want, err := second.SupportsRenderableRune(value)
+		if err != nil {
+			t.Fatalf("cloned coverage for %U: %v", value, err)
+		}
+		if got != want {
+			t.Fatalf("source coverage for %U = %v, cloned face = %v", value, got, want)
+		}
+	}
+	isolated, err := ParseFace(data, 0)
+	if err != nil || isolated.Shaping.Font == first.Shaping.Font {
+		t.Fatalf("generic parsed face is not isolated from registered source: %p, %v", isolated, err)
+	}
+	isolated.Shaping.Font.COLR = nil
+	isolated.Shaping.Font.CPAL = nil
+	var third ParsedFace
+	err = source.CloneReadOnlyInto(&third)
+	if err != nil || third.Shaping.COLR == nil || len(third.Shaping.CPAL) == 0 || !third.IsBundledNotoColorEmoji() {
+		t.Fatalf("clone source was changed through a prior clone: %#v, %v", &third, err)
+	}
+	third.Outline = nil
+	third.Shaping = nil
+	if got, err := source.Outline(); err != nil || got != outline {
+		t.Fatalf("source was poisoned through clone fields: %p, %v", got, err)
+	}
+	if boundsAfter, hasInk, err := source.GlyphRenderBounds(uint32(emojiGlyph), fixed.I(64)); err != nil || !hasInk || boundsAfter != bounds {
+		t.Fatalf("source bounds after clone mutation = %v/%v, %v; want %v", boundsAfter, hasInk, err, bounds)
+	}
+
+	if source, matched, err := RegisteredBundledNotoColorEmoji(data, 1); source != nil || !matched || err == nil || !strings.Contains(err.Error(), "collection has 1 faces") {
+		t.Fatalf("face 1 source/match/error = %p/%v/%v", source, matched, err)
+	}
+	mutated := append([]byte(nil), data...)
+	mutated[len(mutated)-1] ^= 0xff
+	if source, matched, err := RegisteredBundledNotoColorEmoji(mutated, 0); source != nil || matched || err != nil {
+		t.Fatalf("mutated source/match/error = %p/%v/%v", source, matched, err)
+	}
+	mutatedFace, err := ParseFace(mutated, 0)
+	if err != nil || mutatedFace.IsBundledNotoColorEmoji() {
+		t.Fatalf("mutated ordinary ParseFace() = %p, %v", mutatedFace, err)
+	}
+
+	ordinaryData := testFontData(t, "SourceSansPro-Regular.ttf")
+	paddedOrdinary := make([]byte, len(data))
+	copy(paddedOrdinary, ordinaryData)
+	if source, matched, err := RegisteredBundledNotoColorEmoji(paddedOrdinary, 0); source != nil || matched || err != nil {
+		t.Fatalf("same-sized ordinary source/match/error = %p/%v/%v", source, matched, err)
+	}
+	ordinary, err := ParseFace(paddedOrdinary, 0)
+	if err != nil || ordinary.IsBundledNotoColorEmoji() {
+		t.Fatalf("same-sized ordinary ParseFace() = %p, %v", ordinary, err)
+	}
+
+	malformed := make([]byte, len(data))
+	if source, matched, err := RegisteredBundledNotoColorEmoji(malformed, 0); source != nil || matched || err != nil {
+		t.Fatalf("same-sized malformed source/match/error = %p/%v/%v", source, matched, err)
+	}
+	if face, err := ParseFace(malformed, 0); face != nil || err == nil {
+		t.Fatalf("same-sized malformed ParseFace() = %p, %v", face, err)
+	}
+}
+
 func TestCOLR0LayerValidation(t *testing.T) {
 	layers := []tables.Layer{
 		{GlyphID: 1, PaletteIndex: 0},
@@ -262,6 +371,28 @@ func TestBundledNotoColorEmojiLicenseAndNotice(t *testing.T) {
 	for _, required := range []string{"Copyright 2013 Google LLC", "https://scripts.sil.org/OFL", "SIL OPEN FONT LICENSE Version 1.1", "any document created using the fonts or their derivatives"} {
 		if !bytes.Contains(license, []byte(required)) {
 			t.Fatalf("NotoColorEmoji-OFL.txt does not contain %q", required)
+		}
+	}
+}
+
+func BenchmarkCloneReadOnlyBundledNotoColorEmojiRegistered(b *testing.B) {
+	data := bundledNotoColorEmojiForTest(b)
+	if _, err := RegisterBundledNotoColorEmoji(data); err != nil {
+		b.Fatal(err)
+	}
+	if _, matched, err := RegisteredBundledNotoColorEmoji(data, 0); err != nil || !matched {
+		b.Fatalf("prime clone = matched %v, %v", matched, err)
+	}
+	b.ReportAllocs()
+	b.SetBytes(int64(len(data)))
+	for b.Loop() {
+		source, matched, err := RegisteredBundledNotoColorEmoji(data, 0)
+		var face *ParsedFace
+		if err == nil && matched {
+			face, err = source.CloneReadOnly()
+		}
+		if err != nil || face == nil || !face.IsBundledNotoColorEmoji() {
+			b.Fatalf("RegisteredBundledNotoColorEmoji() matched %v, %v", matched, err)
 		}
 	}
 }

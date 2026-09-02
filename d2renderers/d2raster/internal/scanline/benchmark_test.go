@@ -2,6 +2,7 @@ package scanline
 
 import (
 	"context"
+	"fmt"
 	"image"
 	"image/color"
 	"math"
@@ -15,6 +16,177 @@ var benchmarkRGBASource = color.NRGBA{
 	G: 0x80,
 	B: 0xc0,
 	A: 0xff,
+}
+
+// BenchmarkDrawRGBAOpacity isolates uniform-paint compositing over a large
+// full-coverage interior while retaining an antialiased fractional boundary.
+// The translucent case guards the general source-over path from regressions.
+func BenchmarkDrawRGBAOpacity(b *testing.B) {
+	const width, height = 512, 512
+	tests := []struct {
+		name  string
+		paint color.NRGBA
+	}{
+		{name: "Opaque", paint: color.NRGBA{R: 0x40, G: 0x80, B: 0xc0, A: 0xff}},
+		{name: "Translucent", paint: color.NRGBA{R: 0x40, G: 0x80, B: 0xc0, A: 0xad}},
+	}
+	for _, test := range tests {
+		b.Run(test.name, func(b *testing.B) {
+			bounds := image.Rect(0, 0, width, height)
+			rasterizer := NewRasterizer(width, height)
+			destination := image.NewRGBA(bounds)
+			rasterizer.MoveTo(.25, .25)
+			rasterizer.LineTo(width-.25, .25)
+			rasterizer.LineTo(width-.25, height-.25)
+			rasterizer.LineTo(.25, height-.25)
+			rasterizer.ClosePath()
+			budget := NewWorkBudget(math.MaxInt64)
+			if err := rasterizer.DrawRGBA(context.Background(), &budget, destination, test.paint); err != nil {
+				b.Fatal(err)
+			}
+
+			b.SetBytes(width * height * 4)
+			b.ReportAllocs()
+			b.ResetTimer()
+			for range b.N {
+				rasterizer.Reset(width, height)
+				rasterizer.MoveTo(.25, .25)
+				rasterizer.LineTo(width-.25, .25)
+				rasterizer.LineTo(width-.25, height-.25)
+				rasterizer.LineTo(.25, height-.25)
+				rasterizer.ClosePath()
+				budget = NewWorkBudget(math.MaxInt64)
+				if err := rasterizer.DrawRGBA(context.Background(), &budget, destination, test.paint); err != nil {
+					b.Fatal(err)
+				}
+			}
+			benchmarkVectorDestination = destination
+		})
+	}
+}
+
+func BenchmarkDrawRGBAOpaqueSpanWidths(b *testing.B) {
+	for _, width := range []int{8, 16, 32, 64, 128, 256, 512, 4096} {
+		b.Run(fmt.Sprintf("Width%d", width), func(b *testing.B) {
+			const height = 16
+			rasterizer := NewRasterizer(width, height)
+			destination := image.NewRGBA(image.Rect(0, 0, width, height))
+			drawPath := func() {
+				rasterizer.MoveTo(.25, .25)
+				rasterizer.LineTo(float32(width)-.25, .25)
+				rasterizer.LineTo(float32(width)-.25, height-.25)
+				rasterizer.LineTo(.25, height-.25)
+				rasterizer.ClosePath()
+			}
+			drawPath()
+			budget := NewWorkBudget(math.MaxInt64)
+			if err := rasterizer.DrawRGBA(context.Background(), &budget, destination, benchmarkRGBASource); err != nil {
+				b.Fatal(err)
+			}
+			b.ReportAllocs()
+			b.ResetTimer()
+			for range b.N {
+				rasterizer.Reset(width, height)
+				drawPath()
+				budget = NewWorkBudget(math.MaxInt64)
+				if err := rasterizer.DrawRGBA(context.Background(), &budget, destination, benchmarkRGBASource); err != nil {
+					b.Fatal(err)
+				}
+			}
+			benchmarkVectorDestination = destination
+		})
+	}
+}
+
+// BenchmarkDrawRGBAOpaqueHollow exercises a sparse compound path whose
+// transparent interior is much wider than its painted border.
+func BenchmarkDrawRGBAOpaqueHollow(b *testing.B) {
+	benchmarkDrawRGBAHollow(b, benchmarkRGBASource)
+}
+
+func BenchmarkDrawRGBATranslucentHollow(b *testing.B) {
+	paint := benchmarkRGBASource
+	paint.A = 0xad
+	benchmarkDrawRGBAHollow(b, paint)
+}
+
+func benchmarkDrawRGBAHollow(b *testing.B, paint color.NRGBA) {
+	b.Helper()
+	const width, height = 512, 512
+	bounds := image.Rect(0, 0, width, height)
+	rasterizer := NewRasterizer(width, height)
+	destination := image.NewRGBA(bounds)
+	drawPath := func() {
+		rasterizer.MoveTo(.25, .25)
+		rasterizer.LineTo(width-.25, .25)
+		rasterizer.LineTo(width-.25, height-.25)
+		rasterizer.LineTo(.25, height-.25)
+		rasterizer.ClosePath()
+		rasterizer.MoveTo(64.25, 64.25)
+		rasterizer.LineTo(64.25, height-64.25)
+		rasterizer.LineTo(width-64.25, height-64.25)
+		rasterizer.LineTo(width-64.25, 64.25)
+		rasterizer.ClosePath()
+	}
+	drawPath()
+	budget := NewWorkBudget(math.MaxInt64)
+	if err := rasterizer.DrawRGBA(context.Background(), &budget, destination, paint); err != nil {
+		b.Fatal(err)
+	}
+
+	b.SetBytes(width * height * 4)
+	b.ReportAllocs()
+	b.ResetTimer()
+	for range b.N {
+		rasterizer.Reset(width, height)
+		drawPath()
+		budget = NewWorkBudget(math.MaxInt64)
+		if err := rasterizer.DrawRGBA(context.Background(), &budget, destination, paint); err != nil {
+			b.Fatal(err)
+		}
+	}
+	benchmarkVectorDestination = destination
+}
+
+// BenchmarkDrawRGBATranslucentPartial keeps every covered pixel fractional,
+// guarding the partial-coverage compositing fallback from fast-path regressions.
+func BenchmarkDrawRGBATranslucentPartial(b *testing.B) {
+	const width, height = 512, 512
+	bounds := image.Rect(0, 0, width, height)
+	rasterizer := NewRasterizer(width, height)
+	destination := image.NewRGBA(bounds)
+	for band := range height / 2 {
+		y := band * 2
+		top, bottom := float32(y)+.25, float32(y)+.75
+		rasterizer.MoveTo(.25, top)
+		rasterizer.LineTo(width-.25, top)
+		rasterizer.LineTo(width-.25, bottom)
+		rasterizer.LineTo(.25, bottom)
+		rasterizer.ClosePath()
+	}
+	// Keep this just over the sparse-path threshold without changing visible
+	// coverage, so it measures the dense scalar fallback rather than span reuse.
+	addTestRectangle(rasterizer, -2.75, .25, -1.25, height-.25)
+	if rasterizer.EdgeCount() <= max(height, 8) {
+		b.Fatalf("geometry has %d edges, want more than dense fallback threshold %d", rasterizer.EdgeCount(), max(height, 8))
+	}
+	paint := benchmarkRGBASource
+	paint.A = 0xad
+	budget := NewWorkBudget(math.MaxInt64)
+	if err := rasterizer.DrawRGBA(context.Background(), &budget, destination, paint); err != nil {
+		b.Fatal(err)
+	}
+
+	b.SetBytes(width * height * 4)
+	b.ReportAllocs()
+	b.ResetTimer()
+	for range b.N {
+		budget = NewWorkBudget(math.MaxInt64)
+		if err := rasterizer.DrawRGBA(context.Background(), &budget, destination, paint); err != nil {
+			b.Fatal(err)
+		}
+	}
+	benchmarkVectorDestination = destination
 }
 
 type benchmarkVectorCommand struct {
@@ -93,8 +265,10 @@ func benchmarkReusedRasterizer(b *testing.B, workload benchmarkVectorWorkload, d
 	// accumulation buffer before measuring Reset-backed reuse.
 	replayBenchmarkVectorCommands(rasterizer, workload.commands)
 	drawBenchmarkDestination(rasterizer, dst, destination)
+	edgeCount := rasterizer.EdgeCount()
 
 	b.ResetTimer()
+	b.ReportMetric(float64(edgeCount), "edges/op")
 	b.ReportMetric(float64(workload.width*workload.height), "pixels/op")
 	for range b.N {
 		rasterizer.Reset(workload.width, workload.height)
@@ -177,6 +351,30 @@ func benchmarkVectorWorkloads() []benchmarkVectorWorkload {
 				{kind: benchmarkLineTo, x1: 21, y1: 37},
 				{kind: benchmarkLineTo, x1: 4, y1: 24},
 				{kind: benchmarkLineTo, x1: 25, y1: 23},
+				{kind: benchmarkClosePath},
+			},
+		},
+		{
+			name:   "SmallRectangleWideTarget",
+			width:  16_384,
+			height: 16,
+			commands: []benchmarkVectorCommand{
+				{kind: benchmarkMoveTo, x1: 8.25, y1: 2.5},
+				{kind: benchmarkLineTo, x1: 55.75, y1: 2.5},
+				{kind: benchmarkLineTo, x1: 55.75, y1: 13.25},
+				{kind: benchmarkLineTo, x1: 8.25, y1: 13.25},
+				{kind: benchmarkClosePath},
+			},
+		},
+		{
+			name:   "SmallRectangleTallTarget",
+			width:  16,
+			height: 16_384,
+			commands: []benchmarkVectorCommand{
+				{kind: benchmarkMoveTo, x1: 2.5, y1: 8.25},
+				{kind: benchmarkLineTo, x1: 13.25, y1: 8.25},
+				{kind: benchmarkLineTo, x1: 13.25, y1: 55.75},
+				{kind: benchmarkLineTo, x1: 2.5, y1: 55.75},
 				{kind: benchmarkClosePath},
 			},
 		},

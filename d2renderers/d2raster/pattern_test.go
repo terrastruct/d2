@@ -1,6 +1,7 @@
 package d2raster
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -15,6 +16,103 @@ import (
 	"github.com/d2lang/d2/d2renderers/d2raster/internal/scanline"
 	"github.com/d2lang/d2/d2renderers/d2scene"
 )
+
+func TestDirectPatternPixelOffsets(t *testing.T) {
+	tests := []struct {
+		name         string
+		tile         d2scene.Box
+		transform    d2scene.Matrix
+		width        int
+		height       int
+		wantX        int
+		wantY        int
+		wantEligible bool
+	}{
+		{name: "identity", tile: d2scene.Box{Width: 7, Height: 5}, transform: d2scene.Identity(), width: 7, height: 5, wantEligible: true},
+		{name: "integer phase", tile: d2scene.Box{X: -9, Y: 12, Width: 7, Height: 5}, transform: d2scene.Translate(4, -6), width: 7, height: 5, wantX: 6, wantY: 2, wantEligible: true},
+		{name: "multiple periods", tile: d2scene.Box{X: 14, Y: -10, Width: 7, Height: 5}, transform: d2scene.Translate(-21, 15), width: 7, height: 5, wantEligible: true},
+		{name: "fractional origin", tile: d2scene.Box{X: .5, Width: 7, Height: 5}, transform: d2scene.Identity(), width: 7, height: 5},
+		{name: "fractional translation", tile: d2scene.Box{Width: 7, Height: 5}, transform: d2scene.Translate(.5, 0), width: 7, height: 5},
+		{name: "scale", tile: d2scene.Box{Width: 7, Height: 5}, transform: d2scene.Scale(2, 1), width: 7, height: 5},
+		{name: "pixel dimensions", tile: d2scene.Box{Width: 7, Height: 5}, transform: d2scene.Identity(), width: 8, height: 5},
+		{name: "non-finite", tile: d2scene.Box{Width: 7, Height: 5}, transform: d2scene.Matrix{A: 1, D: 1, E: math.Inf(1)}, width: 7, height: 5},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			gotX, gotY, gotEligible := directPatternPixelOffsets(test.tile, test.transform, test.width, test.height)
+			if gotX != test.wantX || gotY != test.wantY || gotEligible != test.wantEligible {
+				t.Fatalf("directPatternPixelOffsets() = (%d, %d, %v), want (%d, %d, %v)", gotX, gotY, gotEligible, test.wantX, test.wantY, test.wantEligible)
+			}
+		})
+	}
+}
+
+func TestDrawDirectPatternMaskPixelsMatchesGeneralPath(t *testing.T) {
+	const tileWidth, tileHeight = 7, 5
+	tileImage := image.NewRGBA(image.Rect(0, 0, tileWidth, tileHeight))
+	for y := 0; y < tileHeight; y++ {
+		for x := 0; x < tileWidth; x++ {
+			alpha := byte((x*43 + y*71) & 0xff)
+			if (x+y)%5 == 0 {
+				alpha = 0
+			} else if (x+y)%4 == 0 {
+				alpha = 0xff
+			}
+			offset := tileImage.PixOffset(x, y)
+			tileImage.Pix[offset] = byte(uint16(byte(x*31+17)) * uint16(alpha) / 255)
+			tileImage.Pix[offset+1] = byte(uint16(byte(y*47+29)) * uint16(alpha) / 255)
+			tileImage.Pix[offset+2] = byte(uint16(byte(x*19+y*23+11)) * uint16(alpha) / 255)
+			tileImage.Pix[offset+3] = alpha
+		}
+	}
+	tile := &preparedPatternTile{width: tileWidth, height: tileHeight, image: tileImage}
+	for caseIndex, phase := range []image.Point{{}, {X: 4, Y: -6}, {X: -17, Y: 13}} {
+		const width, height = 9000, 4
+		bounds := image.Rect(-11, -7, -11+width, -7+height)
+		stride := width*4 + 13
+		initial := make([]byte, stride*height+9)
+		for index := range initial {
+			initial[index] = byte(index*37 + caseIndex*19 + 5)
+		}
+		maskStride := width + 7
+		mask := &image.Alpha{Pix: make([]byte, maskStride*height+3), Stride: maskStride, Rect: image.Rect(0, 0, width, height)}
+		for y := 0; y < height; y++ {
+			for x := 0; x < width; x++ {
+				mask.Pix[y*maskStride+x] = [...]byte{0, 0xff, 97, 213}[(x/23+y)%4]
+			}
+		}
+		pattern := &preparedPattern{
+			tile:       d2scene.Box{X: -9, Y: 12, Width: tileWidth, Height: tileHeight},
+			originModX: math.Mod(-9, tileWidth), originModY: math.Mod(12, tileHeight),
+			deviceToPattern: d2scene.Translate(float64(phase.X), float64(phase.Y)),
+			tileResource:    tile,
+			directPixels:    true,
+		}
+		pattern.pixelOffsetX, pattern.pixelOffsetY, _ = directPatternPixelOffsets(pattern.tile, pattern.deviceToPattern, tileWidth, tileHeight)
+		for _, cancelAt := range []int{0, 1, 2, 3, 7, 13} {
+			got := &image.RGBA{Pix: bytes.Clone(initial), Stride: stride, Rect: bounds}
+			want := &image.RGBA{Pix: bytes.Clone(initial), Stride: stride, Rect: bounds}
+			var gotContext, wantContext context.Context = context.Background(), context.Background()
+			var gotCounter, wantCounter *cancelAfterErrCallsContext
+			if cancelAt != 0 {
+				gotCounter = &cancelAfterErrCallsContext{Context: context.Background(), cancelAt: cancelAt}
+				wantCounter = &cancelAfterErrCallsContext{Context: context.Background(), cancelAt: cancelAt}
+				gotContext, wantContext = gotCounter, wantCounter
+			}
+			gotErr := drawDirectPatternMaskPixels(gotContext, got, bounds, mask, pattern)
+			wantErr := drawPaintMaskPixels(wantContext, want, bounds, mask, &preparedPaint{kind: preparedPatternPaint, pattern: pattern})
+			if errors.Is(gotErr, context.Canceled) != errors.Is(wantErr, context.Canceled) {
+				t.Fatalf("case %d cancel %d errors differ: direct %v, general %v", caseIndex, cancelAt, gotErr, wantErr)
+			}
+			if gotCounter != nil && gotCounter.calls != wantCounter.calls {
+				t.Fatalf("case %d cancel %d Err calls = %d, want %d", caseIndex, cancelAt, gotCounter.calls, wantCounter.calls)
+			}
+			if !bytes.Equal(got.Pix, want.Pix) {
+				t.Fatalf("case %d cancel %d output differs", caseIndex, cancelAt)
+			}
+		}
+	}
+}
 
 func TestPatternUserSpaceRepeatPhaseTransformAndOpacity(t *testing.T) {
 	t.Run("repeat and tile phase have no transparent seams", func(t *testing.T) {
@@ -74,6 +172,90 @@ func TestPatternUserSpaceRepeatPhaseTransformAndOpacity(t *testing.T) {
 			}
 		}
 	})
+}
+
+func TestPatternSampleMatchesNRGBAModel(t *testing.T) {
+	t.Parallel()
+
+	bounds := image.Rect(0, 0, 256, 256)
+	tileImage := image.NewRGBA(bounds)
+	for alpha := range 256 {
+		for value := range 256 {
+			offset := tileImage.PixOffset(value, alpha)
+			tileImage.Pix[offset] = uint8(value)
+			tileImage.Pix[offset+1] = uint8(255 - value)
+			tileImage.Pix[offset+2] = uint8(value ^ alpha)
+			tileImage.Pix[offset+3] = uint8(alpha)
+		}
+	}
+	pattern := &preparedPattern{
+		tile:            d2scene.Box{Width: 256, Height: 256},
+		deviceToPattern: d2scene.Identity(),
+		tileResource: &preparedPatternTile{
+			width: 256, height: 256, bounds: bounds, image: tileImage,
+		},
+	}
+	for alpha := range 256 {
+		for value := range 256 {
+			got, ok := pattern.colorAt(float64(value)+.5, float64(alpha)+.5)
+			want := color.NRGBAModel.Convert(tileImage.RGBAAt(value, alpha)).(color.NRGBA)
+			if got != want || ok != (want.A != 0) {
+				t.Fatalf("sample value=%d alpha=%d = (%#v,%v), want (%#v,%v)", value, alpha, got, ok, want, want.A != 0)
+			}
+		}
+	}
+}
+
+func TestWrappedPatternCoordinateMatchesDoubleModReference(t *testing.T) {
+	t.Parallel()
+
+	for _, test := range []struct {
+		value, origin, period float64
+	}{
+		{value: -5, origin: 5, period: 10}, // Exact negative-period difference produces -0.
+		{value: 5, origin: -5, period: 10},
+		{value: -15, origin: 5, period: 10},
+		{value: 15, origin: -5, period: 10},
+	} {
+		got, gotOK := wrappedPatternCoordinate(test.value, test.origin, test.period)
+		want, wantOK := doubleModWrappedPatternCoordinate(test.value, test.origin, test.period)
+		if gotOK != wantOK || gotOK && math.Float64bits(got) != math.Float64bits(want) {
+			t.Fatalf("wrapped(%g,%g,%g) = (%g,%v), want bit-exact (%g,%v)", test.value, test.origin, test.period, got, gotOK, want, wantOK)
+		}
+	}
+
+	state := uint64(0x9e3779b97f4a7c15)
+	next := func() uint64 {
+		state ^= state << 13
+		state ^= state >> 7
+		state ^= state << 17
+		return state
+	}
+	for range 100_000 {
+		value := math.Float64frombits(next())
+		origin := math.Float64frombits(next())
+		period := math.Float64frombits(next() &^ (uint64(1) << 63))
+		got, gotOK := wrappedPatternCoordinate(value, origin, period)
+		want, wantOK := doubleModWrappedPatternCoordinate(value, origin, period)
+		if gotOK != wantOK || gotOK && math.Float64bits(got) != math.Float64bits(want) {
+			t.Fatalf("wrapped(%g,%g,%g) = (%g,%v), want bit-exact (%g,%v)", value, origin, period, got, gotOK, want, wantOK)
+		}
+	}
+}
+
+func doubleModWrappedPatternCoordinate(value, origin, period float64) (float64, bool) {
+	if !finite(value) || !finite(origin) || !finite(period) || period <= 0 {
+		return 0, false
+	}
+	wrapped := math.Mod(value, period) - math.Mod(origin, period)
+	wrapped = math.Mod(wrapped, period)
+	if wrapped < 0 {
+		wrapped += period
+	}
+	if !finite(wrapped) {
+		return 0, false
+	}
+	return wrapped, true
 }
 
 func TestPatternObjectBoundingBoxAndObjectTransform(t *testing.T) {
@@ -349,14 +531,14 @@ func TestPatternResourceLimitsAreExactAndInclusive(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		// Two 64-byte tiles persist. While rendering the outer tile (and the
-		// final scene), a single 16-byte paint mask joins them. The shared
-		// scanline rasterizer retains its rows and two vertical edges as well.
+		// Two 64-byte tiles persist. Coverage for the outer tile and final scene
+		// is streamed, while the shared scanline rasterizer retains its rows and
+		// two vertical edges.
 		scanlineScratch, ok := scanline.RetainedBytes(4, 4, 2)
 		if !ok {
 			t.Fatal("scanline retained-byte calculation overflowed")
 		}
-		want := int64(144) + scanlineScratch
+		want := int64(128) + scanlineScratch
 		if len(prepared.patterns) != 2 || prepared.resources.peakOffscreenBytes != want {
 			t.Fatalf("nested pattern plan: tiles=%d peak=%d, want tiles=2 peak=%d", len(prepared.patterns), prepared.resources.peakOffscreenBytes, want)
 		}
@@ -650,4 +832,23 @@ func patternDocument(width, height float64, paint d2scene.Paint) *d2scene.Docume
 		d2scene.Box{Width: width, Height: height},
 		d2scene.NewNode(d2scene.Rect{Box: d2scene.Box{Width: width, Height: height}, Fill: paint}),
 	)
+}
+
+func BenchmarkRenderPatternPaint(b *testing.B) {
+	document := patternDocument(512, 512, stripedPattern(
+		d2scene.UserSpaceOnUse,
+		d2scene.Box{Width: 16, Height: 16},
+		d2scene.Identity(),
+	))
+	options := testOptions()
+	ctx := context.Background()
+	b.ReportAllocs()
+	b.ResetTimer()
+	for range b.N {
+		frame, err := Render(ctx, document, options)
+		if err != nil {
+			b.Fatal(err)
+		}
+		benchmarkFrame = frame
+	}
 }

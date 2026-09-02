@@ -11,6 +11,7 @@ import (
 	"image/gif"
 	"image/jpeg"
 	"image/png"
+	"math"
 	"strings"
 	"sync"
 	"testing"
@@ -423,9 +424,7 @@ func TestRasterImageAssetCountAndEncodedByteLimits(t *testing.T) {
 }
 
 func TestRasterImageCancellationDuringSampling(t *testing.T) {
-	asset := &preparedRasterAsset{
-		image: image.NewNRGBA(image.Rect(0, 0, 32, 32)), bounds: image.Rect(0, 0, 32, 32), width: 32, height: 32,
-	}
+	asset := newPreparedRasterAsset(image.NewNRGBA(image.Rect(0, 0, 32, 32)))
 	prepared := &preparedImage{
 		asset: asset, box: d2scene.Box{Width: 32, Height: 32}, placement: d2scene.Box{Width: 32, Height: 32},
 		inverse: inverseAffine{a: 1, d: 1}, bounds: image.Rect(0, 0, 32, 32),
@@ -476,6 +475,641 @@ func TestRasterImageConcurrentRepeatability(t *testing.T) {
 			t.Fatalf("worker %d produced non-deterministic PNG bytes", worker)
 		}
 	}
+}
+
+func TestBilinearPremultipliedBoundSamplerEquivalence(t *testing.T) {
+	for _, test := range rasterSamplerTestImages() {
+		t.Run(test.name, func(t *testing.T) {
+			asset := newPreparedRasterAsset(test.image)
+			bounds := test.image.Bounds()
+			if asset.sampleQuad != nil {
+				for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+					for x := bounds.Min.X; x < bounds.Max.X; x++ {
+						samples := asset.sampleQuad(asset.image, x, x, y, y)
+						want := rgba64(test.image.At(x, y))
+						if samples.c00 != want || samples.c10 != want || samples.c01 != want || samples.c11 != want {
+							t.Fatalf("sampleQuad(%d, %d) = %+v, want four copies of %v", x, y, samples, want)
+						}
+					}
+				}
+			}
+
+			coordinates := [][2]float64{
+				{0, 0}, {.125, .875}, {.5, .5}, {.75, 1.25},
+				{float64(asset.width) - .5, float64(asset.bounds.Dy()) - .5},
+				{math.Nextafter(float64(asset.width), 0), math.Nextafter(float64(asset.bounds.Dy()), 0)},
+			}
+			for index := 0; index < 512; index++ {
+				coordinates = append(coordinates, [2]float64{
+					math.Mod(float64(index*97)/64, float64(asset.width)),
+					math.Mod(float64(index*193)/128, float64(asset.bounds.Dy())),
+				})
+			}
+			for _, coordinate := range coordinates {
+				got := bilinearPremultiplied(asset, coordinate[0], coordinate[1])
+				want := bilinearPremultipliedGeneric(test.image, asset, coordinate[0], coordinate[1])
+				if got != want {
+					t.Fatalf("bilinearPremultiplied(%g, %g) = %v, want %v", coordinate[0], coordinate[1], got, want)
+				}
+			}
+		})
+	}
+}
+
+func TestBilinearPremultipliedBoundSamplerAllocations(t *testing.T) {
+	for _, test := range rasterSamplerTestImages() {
+		if strings.HasPrefix(test.name, "generic") || strings.HasPrefix(test.name, "custom") {
+			continue
+		}
+		asset := newPreparedRasterAsset(test.image)
+		var sample [4]uint32
+		if allocations := testing.AllocsPerRun(1000, func() {
+			sample = bilinearPremultiplied(asset, 2.375, 3.625)
+		}); allocations != 0 {
+			t.Errorf("%s sampler allocations = %g, want 0", test.name, allocations)
+		}
+		if sample == ([4]uint32{}) {
+			t.Errorf("%s sampler unexpectedly returned transparent black", test.name)
+		}
+	}
+}
+
+func TestDrawNativeSizePreparedImageMatchesSampledPath(t *testing.T) {
+	checkerBounds := image.Rect(-4, 7, 5, 14)
+	checkerNRGBA := image.NewNRGBA(checkerBounds)
+	checkerRGBA := image.NewRGBA(checkerBounds)
+	for y := checkerBounds.Min.Y; y < checkerBounds.Max.Y; y++ {
+		for x := checkerBounds.Min.X; x < checkerBounds.Max.X; x++ {
+			var value color.NRGBA
+			if (x+y)&1 == 0 {
+				value = color.NRGBA{R: 251, G: 3, B: 193, A: 37}
+			} else {
+				value = color.NRGBA{R: 7, G: 239, B: 29, A: 251}
+			}
+			checkerNRGBA.SetNRGBA(x, y, value)
+			checkerRGBA.Set(x, y, value)
+		}
+	}
+	testImages := append(rasterSamplerTestImages(),
+		rasterSamplerTestImage{name: "NRGBA/checkerboard", image: checkerNRGBA},
+		rasterSamplerTestImage{name: "RGBA/checkerboard", image: checkerRGBA},
+	)
+	for _, test := range testImages {
+		t.Run(test.name, func(t *testing.T) {
+			asset := newPreparedRasterAsset(test.image)
+			for _, mapping := range []struct {
+				name       string
+				a, d, x, y float64
+			}{
+				{name: "identity", a: 1, d: 1, x: 2, y: 3},
+				{name: "forward scale 2", a: .5, d: .5, x: 1, y: 1.5},
+				{name: "forward scale 0.5", a: 2, d: 2, x: 4, y: 6},
+			} {
+				t.Run(mapping.name, func(t *testing.T) {
+					box := d2scene.Box{
+						X: mapping.x, Y: mapping.y,
+						Width: mapping.a * float64(asset.width), Height: mapping.d * float64(asset.bounds.Dy()),
+					}
+					prepared := &preparedImage{
+						asset: asset, box: box, placement: box,
+						inverse: inverseAffine{a: mapping.a, d: mapping.d, e: 5, f: -2},
+						bounds:  image.Rect(7, 1, 7+asset.width, 1+asset.bounds.Dy()),
+					}
+					fast := image.NewRGBA(image.Rect(-2, -2, 20, 15))
+					for y := fast.Rect.Min.Y; y < fast.Rect.Max.Y; y++ {
+						for x := fast.Rect.Min.X; x < fast.Rect.Max.X; x++ {
+							fast.SetRGBA(x, y, color.RGBA{
+								R: uint8((x-fast.Rect.Min.X)*7 + 11),
+								G: uint8((y-fast.Rect.Min.Y)*9 + 13),
+								B: uint8((x+y-fast.Rect.Min.X-fast.Rect.Min.Y)*5 + 17),
+								A: 255,
+							})
+						}
+					}
+					sampled := image.NewRGBA(fast.Rect)
+					copy(sampled.Pix, fast.Pix)
+					if err := drawPreparedImage(context.Background(), fast, prepared); err != nil {
+						t.Fatal(err)
+					}
+					if err := drawSampledPreparedImage(context.Background(), sampled, prepared, prepared.bounds.Intersect(sampled.Bounds())); err != nil {
+						t.Fatal(err)
+					}
+					if !bytes.Equal(fast.Pix, sampled.Pix) {
+						t.Fatal("native-size image path differs from supersampled path")
+					}
+				})
+			}
+		})
+	}
+
+	asset := newPreparedRasterAsset(image.NewNRGBA(image.Rect(0, 0, 2, 2)))
+	base := &preparedImage{
+		asset:     asset,
+		box:       d2scene.Box{X: 1, Y: 2, Width: 2, Height: 2},
+		placement: d2scene.Box{X: 1, Y: 2, Width: 2, Height: 2},
+		inverse:   inverseAffine{a: 1, d: 1},
+	}
+	for name, mutate := range map[string]func(*preparedImage){
+		"scale":             func(p *preparedImage) { p.inverse.a = .5 },
+		"rotation or shear": func(p *preparedImage) { p.inverse.b = .25 },
+		"fractional origin": func(p *preparedImage) { p.box.X = 1.25; p.placement.X = 1.25 },
+		"scaled placement":  func(p *preparedImage) { p.placement.Width = 3 },
+		"scaled box":        func(p *preparedImage) { p.box.Width = 3; p.placement.Width = 3 },
+		"large cancellation": func(p *preparedImage) {
+			p.box.X = 1 << 50
+			p.placement.X = 1 << 50
+			p.inverse.e = -(1 << 50)
+		},
+	} {
+		t.Run("reject "+name, func(t *testing.T) {
+			candidate := *base
+			mutate(&candidate)
+			if _, ok := nativeRasterImageOrigin(&candidate); ok {
+				t.Fatal("nativeRasterImageOrigin accepted non-native mapping")
+			}
+		})
+	}
+}
+
+func TestDrawNativeSizePreparedImageConcretePathsMatchGeneric(t *testing.T) {
+	sourceBounds := image.Rect(-17, 9, 520, 15)
+	origin := image.Pt(101, -23)
+	drawBounds := image.Rect(103, -21, 624, -17)
+	destinationBounds := image.Rect(80, -30, 650, 0)
+
+	for _, pattern := range []struct {
+		name  string
+		alpha func(x, y int) byte
+	}{
+		{name: "opaque", alpha: func(_, _ int) byte { return 0xff }},
+		{name: "transparent", alpha: func(_, _ int) byte { return 0 }},
+		{name: "alternating", alpha: func(x, y int) byte {
+			if (x+y)&1 == 0 {
+				return 0xff
+			}
+			return 0
+		}},
+		{name: "mixed", alpha: func(x, y int) byte {
+			index := (x*17 + y*31) % 9
+			if index < 0 {
+				index += 9
+			}
+			return [...]byte{0, 1, 2, 63, 127, 128, 191, 254, 255}[index]
+		}},
+	} {
+		for _, kind := range []string{"RGBA", "NRGBA"} {
+			t.Run(kind+"/"+pattern.name, func(t *testing.T) {
+				stride := sourceBounds.Dx()*4 + 23
+				pixels := make([]byte, stride*sourceBounds.Dy())
+				for index := range pixels {
+					pixels[index] = byte(index*47 + 19)
+				}
+				for y := sourceBounds.Min.Y; y < sourceBounds.Max.Y; y++ {
+					for x := sourceBounds.Min.X; x < sourceBounds.Max.X; x++ {
+						offset := (y-sourceBounds.Min.Y)*stride + (x-sourceBounds.Min.X)*4
+						pixels[offset] = byte(x*29 + y*11)
+						pixels[offset+1] = byte(x*7 + y*43)
+						pixels[offset+2] = byte(x*53 + y*3)
+						pixels[offset+3] = pattern.alpha(x, y)
+					}
+				}
+				var source image.Image
+				if kind == "RGBA" {
+					source = &image.RGBA{Pix: pixels, Stride: stride, Rect: sourceBounds}
+				} else {
+					source = &image.NRGBA{Pix: pixels, Stride: stride, Rect: sourceBounds}
+				}
+				assertNativeImagePathMatchesGeneric(t, source, drawBounds, destinationBounds, origin)
+			})
+		}
+	}
+	palette := color.Palette{
+		color.NRGBA{R: 251, G: 17, B: 91, A: 0},
+		color.RGBA{R: 3, G: 7, B: 11, A: 1},
+		color.NRGBA{R: 197, G: 151, B: 103, A: 127},
+		color.RGBA{R: 89, G: 61, B: 37, A: 128},
+		color.NRGBA{R: 223, G: 227, B: 229, A: 254},
+		color.RGBA{R: 239, G: 241, B: 251, A: 255},
+		color.Gray{Y: 83},
+		color.Alpha{A: 191},
+	}
+	palettedStride := sourceBounds.Dx() + 13
+	palettedPixels := make([]byte, palettedStride*sourceBounds.Dy())
+	for index := range palettedPixels {
+		palettedPixels[index] = byte(index % len(palette))
+	}
+	paletted := &image.Paletted{Pix: palettedPixels, Stride: palettedStride, Rect: sourceBounds, Palette: palette}
+	t.Run("Paletted", func(t *testing.T) {
+		assertNativeImagePathMatchesGeneric(t, paletted, drawBounds, destinationBounds, origin)
+	})
+
+	for _, ratio := range []image.YCbCrSubsampleRatio{
+		image.YCbCrSubsampleRatio444,
+		image.YCbCrSubsampleRatio422,
+		image.YCbCrSubsampleRatio420,
+		image.YCbCrSubsampleRatio440,
+		image.YCbCrSubsampleRatio411,
+		image.YCbCrSubsampleRatio410,
+	} {
+		t.Run("YCbCr/"+ratio.String(), func(t *testing.T) {
+			source := image.NewYCbCr(sourceBounds, ratio)
+			for index := range source.Y {
+				source.Y[index] = byte(index*17 + 13)
+			}
+			for index := range source.Cb {
+				source.Cb[index] = byte(index*31 + 29)
+				source.Cr[index] = byte(index*43 + 37)
+			}
+			assertNativeImagePathMatchesGeneric(t, source, drawBounds, destinationBounds, origin)
+		})
+	}
+	for _, test := range rasterSamplerTestImages() {
+		switch test.name {
+		case "RGBA64", "NRGBA64", "Alpha", "Alpha16", "Gray", "Gray16", "CMYK", "NYCbCrA":
+		default:
+			continue
+		}
+		t.Run(test.name, func(t *testing.T) {
+			origin := image.Pt(37, -41)
+			bounds := image.Rect(origin.X, origin.Y, origin.X+test.image.Bounds().Dx(), origin.Y+test.image.Bounds().Dy())
+			assertNativeImagePathMatchesGeneric(t, test.image, bounds, bounds.Inset(-5), origin)
+		})
+	}
+}
+
+func TestDrawNativeSizePreparedImageEightBitDomainEquivalence(t *testing.T) {
+	sourceBounds := image.Rect(-5, 7, 251, 263)
+	for _, kind := range []string{"RGBA", "NRGBA"} {
+		t.Run(kind, func(t *testing.T) {
+			stride := sourceBounds.Dx()*4 + 11
+			pixels := make([]byte, stride*sourceBounds.Dy())
+			for y := sourceBounds.Min.Y; y < sourceBounds.Max.Y; y++ {
+				alpha := byte(y - sourceBounds.Min.Y)
+				for x := sourceBounds.Min.X; x < sourceBounds.Max.X; x++ {
+					channel := byte(x - sourceBounds.Min.X)
+					offset := (y-sourceBounds.Min.Y)*stride + (x-sourceBounds.Min.X)*4
+					pixels[offset] = channel
+					pixels[offset+1] = 255 - channel
+					pixels[offset+2] = byte(uint16(channel)*197 + uint16(alpha)*61)
+					pixels[offset+3] = alpha
+				}
+			}
+			var source image.Image
+			if kind == "RGBA" {
+				source = &image.RGBA{Pix: pixels, Stride: stride, Rect: sourceBounds}
+			} else {
+				source = &image.NRGBA{Pix: pixels, Stride: stride, Rect: sourceBounds}
+			}
+			origin := image.Pt(19, -31)
+			drawBounds := image.Rect(origin.X, origin.Y, origin.X+sourceBounds.Dx(), origin.Y+sourceBounds.Dy())
+			assertNativeImagePathMatchesGeneric(t, source, drawBounds, drawBounds.Inset(-3), origin)
+		})
+	}
+}
+
+func TestDrawNativeSizePreparedImageSixteenBitDomainEquivalence(t *testing.T) {
+	sourceBounds := image.Rect(-7, 11, 249, 267)
+	origin := image.Pt(23, -37)
+	drawBounds := image.Rect(origin.X, origin.Y, origin.X+sourceBounds.Dx(), origin.Y+sourceBounds.Dy())
+	for _, kind := range []string{"RGBA64", "NRGBA64"} {
+		t.Run(kind, func(t *testing.T) {
+			stride := sourceBounds.Dx()*8 + 13
+			pixels := make([]byte, stride*sourceBounds.Dy())
+			for y := 0; y < sourceBounds.Dy(); y++ {
+				for x := 0; x < sourceBounds.Dx(); x++ {
+					index := uint16(y*sourceBounds.Dx() + x)
+					offset := y*stride + x*8
+					binary.BigEndian.PutUint16(pixels[offset:], index*40503)
+					binary.BigEndian.PutUint16(pixels[offset+2:], index*32771+1)
+					binary.BigEndian.PutUint16(pixels[offset+4:], index*8193+127)
+					binary.BigEndian.PutUint16(pixels[offset+6:], index)
+				}
+			}
+			var source image.Image
+			if kind == "RGBA64" {
+				source = &image.RGBA64{Pix: pixels, Stride: stride, Rect: sourceBounds}
+			} else {
+				source = &image.NRGBA64{Pix: pixels, Stride: stride, Rect: sourceBounds}
+			}
+			assertNativeImagePathMatchesGeneric(t, source, drawBounds, drawBounds.Inset(-3), origin)
+		})
+	}
+	for _, kind := range []string{"Gray16", "Alpha16"} {
+		t.Run(kind, func(t *testing.T) {
+			stride := sourceBounds.Dx()*2 + 13
+			pixels := make([]byte, stride*sourceBounds.Dy())
+			for y := 0; y < sourceBounds.Dy(); y++ {
+				for x := 0; x < sourceBounds.Dx(); x++ {
+					index := uint16(y*sourceBounds.Dx() + x)
+					binary.BigEndian.PutUint16(pixels[y*stride+x*2:], index)
+				}
+			}
+			var source image.Image
+			if kind == "Gray16" {
+				source = &image.Gray16{Pix: pixels, Stride: stride, Rect: sourceBounds}
+			} else {
+				source = &image.Alpha16{Pix: pixels, Stride: stride, Rect: sourceBounds}
+			}
+			assertNativeImagePathMatchesGeneric(t, source, drawBounds, drawBounds.Inset(-3), origin)
+		})
+	}
+}
+
+func assertNativeImagePathMatchesGeneric(t *testing.T, source image.Image, drawBounds, destinationBounds image.Rectangle, origin image.Point) {
+	t.Helper()
+	asset := newPreparedRasterAsset(source)
+	stride := destinationBounds.Dx()*4 + 17
+	pixels := make([]byte, stride*destinationBounds.Dy())
+	for index := range pixels {
+		pixels[index] = byte(index*71 + 23)
+	}
+	sourceBefore := snapshotRasterSource(source)
+
+	for _, checks := range []int{0, 1, 2, 3, 4, 5, 7, 11, 1 << 20} {
+		fast := &image.RGBA{Pix: append([]byte(nil), pixels...), Stride: stride, Rect: destinationBounds}
+		generic := &image.RGBA{Pix: append([]byte(nil), pixels...), Stride: stride, Rect: destinationBounds}
+		fastContext := &nativeImageOracleContext{remaining: checks}
+		genericContext := &nativeImageOracleContext{remaining: checks}
+		fastError := drawNativeSizePreparedImage(fastContext, fast, asset, drawBounds, origin)
+		genericError := drawNativeSizeGeneric(genericContext, generic, asset, drawBounds, origin)
+		if fastError != genericError {
+			t.Fatalf("after %d successful context checks: error = %v, want %v", checks, fastError, genericError)
+		}
+		if fastContext.calls != genericContext.calls {
+			t.Fatalf("after %d successful context checks: Err calls = %d, want %d", checks, fastContext.calls, genericContext.calls)
+		}
+		if !bytes.Equal(fast.Pix, generic.Pix) {
+			t.Fatalf("after %d successful context checks: concrete path differs from generic path", checks)
+		}
+	}
+	if after := snapshotRasterSource(source); !bytes.Equal(after, sourceBefore) {
+		t.Fatal("native image drawing mutated its source")
+	}
+}
+
+func snapshotRasterSource(source image.Image) []byte {
+	switch source := source.(type) {
+	case *image.RGBA:
+		return append([]byte(nil), source.Pix...)
+	case *image.NRGBA:
+		return append([]byte(nil), source.Pix...)
+	case *image.Paletted:
+		return append([]byte(nil), source.Pix...)
+	case *image.RGBA64:
+		return append([]byte(nil), source.Pix...)
+	case *image.NRGBA64:
+		return append([]byte(nil), source.Pix...)
+	case *image.Gray:
+		return append([]byte(nil), source.Pix...)
+	case *image.Gray16:
+		return append([]byte(nil), source.Pix...)
+	case *image.Alpha:
+		return append([]byte(nil), source.Pix...)
+	case *image.Alpha16:
+		return append([]byte(nil), source.Pix...)
+	case *image.CMYK:
+		return append([]byte(nil), source.Pix...)
+	case *image.YCbCr:
+		result := append([]byte(nil), source.Y...)
+		result = append(result, source.Cb...)
+		return append(result, source.Cr...)
+	case *image.NYCbCrA:
+		result := append([]byte(nil), source.Y...)
+		result = append(result, source.Cb...)
+		result = append(result, source.Cr...)
+		return append(result, source.A...)
+	default:
+		return nil
+	}
+}
+
+type nativeImageOracleContext struct {
+	remaining int
+	calls     int
+}
+
+func (*nativeImageOracleContext) Deadline() (time.Time, bool) { return time.Time{}, false }
+func (*nativeImageOracleContext) Done() <-chan struct{}       { return nil }
+func (*nativeImageOracleContext) Value(any) any               { return nil }
+func (ctx *nativeImageOracleContext) Err() error {
+	ctx.calls++
+	if ctx.remaining == 0 {
+		return context.Canceled
+	}
+	ctx.remaining--
+	return nil
+}
+
+func TestCompositePremultipliedRGBA64FastPathsEquivalence(t *testing.T) {
+	values := []uint32{0, 1, 127, 128, 255, 256, 32767, 32768, 65407, 65535}
+	destinations := [][4]byte{
+		{0, 0, 0, 0}, {1, 2, 3, 4}, {127, 128, 129, 130}, {252, 253, 254, 255},
+	}
+	for _, red := range values {
+		for _, green := range values {
+			for _, blue := range values {
+				for _, alpha := range values {
+					source := [4]uint32{red, green, blue, alpha}
+					for _, initial := range destinations {
+						got := append([]byte(nil), initial[:]...)
+						want := append([]byte(nil), initial[:]...)
+						compositePremultipliedRGBA64(got, source)
+						compositePremultipliedRGBA64Reference(want, source)
+						if !bytes.Equal(got, want) {
+							t.Fatalf("source=%v destination=%v: got %v, want %v", source, initial, got, want)
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+func bilinearPremultipliedGeneric(source image.Image, asset *preparedRasterAsset, x, y float64) [4]uint32 {
+	centerX := x - .5
+	centerY := y - .5
+	x0 := int(math.Floor(centerX))
+	y0 := int(math.Floor(centerY))
+	weightX := centerX - float64(x0)
+	weightY := centerY - float64(y0)
+	x1, y1 := x0+1, y0+1
+	x0 = clampInt(x0, 0, asset.width-1)
+	x1 = clampInt(x1, 0, asset.width-1)
+	y0 = clampInt(y0, 0, asset.bounds.Dy()-1)
+	y1 = clampInt(y1, 0, asset.bounds.Dy()-1)
+	c00 := rgba64(source.At(asset.bounds.Min.X+x0, asset.bounds.Min.Y+y0))
+	c10 := rgba64(source.At(asset.bounds.Min.X+x1, asset.bounds.Min.Y+y0))
+	c01 := rgba64(source.At(asset.bounds.Min.X+x0, asset.bounds.Min.Y+y1))
+	c11 := rgba64(source.At(asset.bounds.Min.X+x1, asset.bounds.Min.Y+y1))
+	var result [4]uint32
+	for channel := range result {
+		top := float64(c00[channel]) + (float64(c10[channel])-float64(c00[channel]))*weightX
+		bottom := float64(c01[channel]) + (float64(c11[channel])-float64(c01[channel]))*weightX
+		value := top + (bottom-top)*weightY
+		result[channel] = uint32(math.Round(math.Max(0, math.Min(65535, value))))
+	}
+	return result
+}
+
+func compositePremultipliedRGBA64Reference(destination []byte, source [4]uint32) {
+	toByte := func(value uint32) uint32 { return (value + 128) / 257 }
+	sourceAlpha := toByte(source[3])
+	if sourceAlpha == 0 {
+		return
+	}
+	inverseAlpha := 255 - sourceAlpha
+	mul255 := func(left, right uint32) uint32 { return (left*right + 127) / 255 }
+	for channel := 0; channel < 3; channel++ {
+		sourceChannel := toByte(source[channel])
+		if sourceChannel > sourceAlpha {
+			sourceChannel = sourceAlpha
+		}
+		result := sourceChannel + mul255(uint32(destination[channel]), inverseAlpha)
+		if result > 255 {
+			result = 255
+		}
+		destination[channel] = uint8(result)
+	}
+	alpha := sourceAlpha + mul255(uint32(destination[3]), inverseAlpha)
+	if alpha > 255 {
+		alpha = 255
+	}
+	destination[3] = uint8(alpha)
+}
+
+type rasterSamplerTestImage struct {
+	name  string
+	image image.Image
+}
+
+func rasterSamplerTestImages() []rasterSamplerTestImage {
+	bounds := image.Rect(-3, 5, 4, 11)
+	rgba := image.NewRGBA(bounds)
+	rgba64Image := image.NewRGBA64(bounds)
+	nrgba := image.NewNRGBA(bounds)
+	nrgba64 := image.NewNRGBA64(bounds)
+	alpha := image.NewAlpha(bounds)
+	alpha16 := image.NewAlpha16(bounds)
+	gray := image.NewGray(bounds)
+	gray16 := image.NewGray16(bounds)
+	cmyk := image.NewCMYK(bounds)
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+		for x := bounds.Min.X; x < bounds.Max.X; x++ {
+			value := color.NRGBA64{
+				R: uint16((x-bounds.Min.X)*7311 + (y-bounds.Min.Y)*977),
+				G: uint16((x-bounds.Min.X)*1777 + (y-bounds.Min.Y)*5119),
+				B: uint16((x-bounds.Min.X)*3251 + (y-bounds.Min.Y)*2377),
+				A: uint16(1 + ((x-bounds.Min.X)*7919+(y-bounds.Min.Y)*4441)%65535),
+			}
+			rgba.Set(x, y, value)
+			rgba64Image.Set(x, y, value)
+			nrgba.Set(x, y, value)
+			nrgba64.Set(x, y, value)
+			alpha.Set(x, y, value)
+			alpha16.Set(x, y, value)
+			gray.Set(x, y, value)
+			gray16.Set(x, y, value)
+			cmyk.Set(x, y, value)
+		}
+	}
+
+	palette := color.Palette{
+		color.RGBA{R: 13, G: 29, B: 47, A: 61},
+		color.NRGBA{R: 251, G: 199, B: 149, A: 101},
+		color.Gray{Y: 83},
+		color.Gray16{Y: 0x1234},
+		color.CMYK{C: 17, M: 71, Y: 113, K: 31},
+	}
+	paletted := image.NewPaletted(bounds, palette)
+	for index := range paletted.Pix {
+		paletted.Pix[index] = uint8((index * 3) % len(palette))
+	}
+
+	result := []rasterSamplerTestImage{
+		{name: "RGBA", image: rgba},
+		{name: "RGBA64", image: rgba64Image},
+		{name: "NRGBA", image: nrgba},
+		{name: "NRGBA64", image: nrgba64},
+		{name: "Alpha", image: alpha},
+		{name: "Alpha16", image: alpha16},
+		{name: "Gray", image: gray},
+		{name: "Gray16", image: gray16},
+		{name: "CMYK", image: cmyk},
+		{name: "Paletted", image: paletted},
+		{name: "generic image.Image", image: samplerFallbackImage{bounds: bounds}},
+		{name: "custom RGBA64Image", image: samplerCustomRGBA64Image{bounds: bounds}},
+	}
+	for _, ratio := range []image.YCbCrSubsampleRatio{
+		image.YCbCrSubsampleRatio444,
+		image.YCbCrSubsampleRatio422,
+		image.YCbCrSubsampleRatio420,
+		image.YCbCrSubsampleRatio440,
+		image.YCbCrSubsampleRatio411,
+		image.YCbCrSubsampleRatio410,
+	} {
+		ycbcr := image.NewYCbCr(bounds, ratio)
+		for index := range ycbcr.Y {
+			ycbcr.Y[index] = uint8(index*17 + int(ratio)*7)
+		}
+		for index := range ycbcr.Cb {
+			ycbcr.Cb[index] = uint8(index*29 + int(ratio)*11)
+			ycbcr.Cr[index] = uint8(index*43 + int(ratio)*13)
+		}
+		result = append(result, rasterSamplerTestImage{name: "YCbCr/" + ratio.String(), image: ycbcr})
+	}
+	ycbcr := image.NewYCbCr(bounds, image.YCbCrSubsampleRatio420)
+	for index := range ycbcr.Y {
+		ycbcr.Y[index] = uint8(index*23 + 7)
+	}
+	for index := range ycbcr.Cb {
+		ycbcr.Cb[index] = uint8(index*31 + 17)
+		ycbcr.Cr[index] = uint8(index*37 + 29)
+	}
+	nycbcra := &image.NYCbCrA{
+		YCbCr: *ycbcr, A: make([]uint8, bounds.Dx()*bounds.Dy()), AStride: bounds.Dx(),
+	}
+	for index := range nycbcra.A {
+		nycbcra.A[index] = uint8(index*41 + 3)
+	}
+	return append(result, rasterSamplerTestImage{name: "NYCbCrA", image: nycbcra})
+}
+
+type samplerFallbackImage struct {
+	bounds image.Rectangle
+}
+
+func (img samplerFallbackImage) ColorModel() color.Model { return color.RGBAModel }
+func (img samplerFallbackImage) Bounds() image.Rectangle { return img.bounds }
+func (img samplerFallbackImage) At(x, y int) color.Color {
+	return samplerFallbackColor{uint32((x-img.bounds.Min.X)*3001 + (y-img.bounds.Min.Y)*607)}
+}
+
+type samplerFallbackColor struct {
+	seed uint32
+}
+
+type samplerCustomRGBA64Image struct {
+	bounds image.Rectangle
+}
+
+func (img samplerCustomRGBA64Image) ColorModel() color.Model { return color.RGBA64Model }
+func (img samplerCustomRGBA64Image) Bounds() image.Rectangle { return img.bounds }
+func (img samplerCustomRGBA64Image) At(x, y int) color.Color {
+	return samplerFallbackColor{uint32((x-img.bounds.Min.X)*4111 + (y-img.bounds.Min.Y)*953)}
+}
+func (img samplerCustomRGBA64Image) RGBA64At(_, _ int) color.RGBA64 {
+	// A third-party implementation is not required to derive RGBA64At from At.
+	// The optimized path is intentionally limited to standard-library concrete
+	// images so the renderer continues to honor Image.At for custom images.
+	return color.RGBA64{R: 0xffff, A: 0xffff}
+}
+
+func (value samplerFallbackColor) RGBA() (r, g, b, a uint32) {
+	a = 10000 + value.seed%55536
+	r = value.seed % (a + 1)
+	g = (value.seed * 7) % (a + 1)
+	b = (value.seed * 31) % (a + 1)
+	return r, g, b, a
 }
 
 func FuzzRasterAssetPreflightBounded(f *testing.F) {

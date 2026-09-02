@@ -61,6 +61,105 @@ func TestTransformedAndEvenOddClips(t *testing.T) {
 	})
 }
 
+func TestStreamedNonZeroClipMatchesAlphaMaskRandomized(t *testing.T) {
+	t.Parallel()
+
+	parentBounds := image.Rect(0, 0, 103, 89)
+	bounds := image.Rect(11, 9, 92, 78)
+	state := uint64(0xa0761d6478bd642f)
+	next := func() uint64 {
+		state ^= state >> 12
+		state ^= state << 25
+		state ^= state >> 27
+		return state * 0x2545f4914f6cdd1d
+	}
+	coordinate := func(minimum, size int) float64 {
+		return float64(minimum-2) + float64(next()%uint64((size+4)*8))/8
+	}
+
+	for iteration := range 160 {
+		var paths []subpath
+		for range int(next()%9) + 1 {
+			points := make([]d2scene.Point, int(next()%8)+2)
+			for index := range points {
+				points[index] = d2scene.Point{
+					X: coordinate(bounds.Min.X, bounds.Dx()),
+					Y: coordinate(bounds.Min.Y, bounds.Dy()),
+				}
+			}
+			paths = append(paths, subpath{points: points})
+		}
+		clip := &preparedClip{subpaths: paths, fillRule: d2scene.NonZero, bounds: bounds}
+
+		seed := image.NewRGBA(parentBounds)
+		for offset := 0; offset < len(seed.Pix); offset += 4 {
+			alpha := uint8(next())
+			seed.Pix[offset+3] = alpha
+			seed.Pix[offset+0] = uint8(next() % (uint64(alpha) + 1))
+			seed.Pix[offset+1] = uint8(next() % (uint64(alpha) + 1))
+			seed.Pix[offset+2] = uint8(next() % (uint64(alpha) + 1))
+		}
+
+		wantParent := image.NewRGBA(parentBounds)
+		copy(wantParent.Pix, seed.Pix)
+		want := wantParent.SubImage(bounds).(*image.RGBA)
+		wantScratch := &rasterScratch{offscreen: offscreenBudget{limit: math.MaxInt64}}
+		mask := image.NewAlpha(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
+		rasterizer := wantScratch.reset(mask.Bounds())
+		shifted := d2scene.Translate(-float64(bounds.Min.X), -float64(bounds.Min.Y))
+		for _, path := range paths {
+			addFillSubpath(rasterizer, path, shifted)
+		}
+		if err := rasterizer.WriteAlpha(context.Background(), wantScratch.workBudget(), mask); err != nil {
+			t.Fatalf("iteration %d Alpha-mask rasterization: %v", iteration, err)
+		}
+		if err := multiplyLayerByAlpha(context.Background(), want, mask); err != nil {
+			t.Fatalf("iteration %d Alpha-mask application: %v", iteration, err)
+		}
+
+		gotParent := image.NewRGBA(parentBounds)
+		copy(gotParent.Pix, seed.Pix)
+		got := gotParent.SubImage(bounds).(*image.RGBA)
+		gotScratch := &rasterScratch{offscreen: offscreenBudget{limit: math.MaxInt64}}
+		if err := applyNonZeroClip(context.Background(), got, clip, gotScratch); err != nil {
+			t.Fatalf("iteration %d streamed clip: %v", iteration, err)
+		}
+		if !bytes.Equal(gotParent.Pix, wantParent.Pix) {
+			for index := range gotParent.Pix {
+				if gotParent.Pix[index] != wantParent.Pix[index] {
+					t.Fatalf("iteration %d first differing parent byte %d: streamed=%d Alpha-mask=%d", iteration, index, gotParent.Pix[index], wantParent.Pix[index])
+				}
+			}
+			t.Fatalf("iteration %d output lengths differ", iteration)
+		}
+	}
+
+	for _, test := range []struct {
+		name string
+		clip *preparedClip
+	}{
+		{name: "disjoint bounds", clip: &preparedClip{fillRule: d2scene.NonZero, bounds: image.Rect(-20, -20, -10, -10)}},
+		{name: "no edges", clip: &preparedClip{fillRule: d2scene.NonZero, bounds: bounds}},
+	} {
+		parent := image.NewRGBA(parentBounds)
+		for index := range parent.Pix {
+			parent.Pix[index] = 0xff
+		}
+		if err := applyNonZeroClip(context.Background(), parent.SubImage(bounds).(*image.RGBA), test.clip, &rasterScratch{}); err != nil {
+			t.Fatal(err)
+		}
+		for y := parentBounds.Min.Y; y < parentBounds.Max.Y; y++ {
+			for x := parentBounds.Min.X; x < parentBounds.Max.X; x++ {
+				pixel := parent.RGBAAt(x, y)
+				inside := image.Pt(x, y).In(bounds)
+				if inside && pixel != (color.RGBA{}) || !inside && pixel != (color.RGBA{R: 255, G: 255, B: 255, A: 255}) {
+					t.Fatalf("%s clip pixel (%d,%d) = %#v, inside=%v", test.name, x, y, pixel, inside)
+				}
+			}
+		}
+	}
+}
+
 func TestAlphaAndLuminanceMasks(t *testing.T) {
 	t.Run("alpha", func(t *testing.T) {
 		maskRoot := d2scene.NewNode(d2scene.Rect{
@@ -344,6 +443,32 @@ func TestEffectLoopsHonorCancellation(t *testing.T) {
 	if err := multiplyLayerByAlpha(ctx, layer, mask); !errors.Is(err, context.Canceled) {
 		t.Fatalf("multiplyLayerByAlpha() error = %v, want context.Canceled", err)
 	}
+	clip := &preparedClip{
+		fillRule: d2scene.NonZero,
+		bounds:   layer.Bounds(),
+		subpaths: []subpath{{points: []d2scene.Point{
+			{X: 20, Y: 30}, {X: 532, Y: 30}, {X: 532, Y: 542}, {X: 20, Y: 542},
+		}}},
+	}
+	if err := applyNonZeroClip(ctx, layer, clip, &rasterScratch{}); !errors.Is(err, context.Canceled) {
+		t.Fatalf("applyNonZeroClip() error = %v, want context.Canceled", err)
+	}
+
+	wideBounds := image.Rect(0, 0, 8_192, 2)
+	wideClip := &preparedClip{
+		fillRule: d2scene.NonZero,
+		bounds:   wideBounds,
+		subpaths: []subpath{{points: []d2scene.Point{
+			{}, {X: 8_192}, {X: 8_192, Y: 2}, {Y: 2},
+		}}},
+	}
+	cancelDuringRow := &cancelAfterErrCallsContext{Context: context.Background(), cancelAt: 5}
+	if err := applyNonZeroClip(cancelDuringRow, image.NewRGBA(wideBounds), wideClip, &rasterScratch{}); !errors.Is(err, context.Canceled) {
+		t.Fatalf("wide applyNonZeroClip() error = %v, want context.Canceled", err)
+	}
+	if cancelDuringRow.calls < 5 {
+		t.Fatalf("wide clip context checks = %d, want mid-row cancellation", cancelDuringRow.calls)
+	}
 }
 
 func TestOffscreenResourcePlanIsByteExactAndInclusive(t *testing.T) {
@@ -357,6 +482,8 @@ func TestOffscreenResourcePlanIsByteExactAndInclusive(t *testing.T) {
 
 	clipped := fullRect(red)
 	clipped.Clip = &d2scene.Clip{Path: clipRect(0, 0, 10, 10, d2scene.NonZero), Transform: d2scene.Identity()}
+	evenOddClipped := fullRect(red)
+	evenOddClipped.Clip = &d2scene.Clip{Path: clipRect(0, 0, 10, 10, d2scene.EvenOdd), Transform: d2scene.Identity()}
 
 	masked := fullRect(red)
 	masked.Mask = &d2scene.Mask{Type: d2scene.MaskAlpha, Root: fullRect(white), Transform: d2scene.Identity()}
@@ -389,11 +516,12 @@ func TestOffscreenResourcePlanIsByteExactAndInclusive(t *testing.T) {
 	}{
 		{name: "direct solid scanline scratch", node: solid, want: scanlineScratch},
 		{name: "RGBA opacity layer plus scanline scratch", node: opacity, want: 400 + scanlineScratch},
-		{name: "RGBA layer plus Alpha clip and scanline scratch", node: clipped, want: 500 + scanlineScratch},
+		{name: "RGBA layer plus streamed clip coverage and scanline scratch", node: clipped, want: 400 + scanlineScratch},
+		{name: "RGBA layer plus even-odd Alpha clip and scanline scratch", node: evenOddClipped, want: 500 + scanlineScratch},
 		{name: "RGBA layer plus RGBA mask and scanline scratch", node: masked, want: 800 + scanlineScratch},
 		{name: "nested RGBA opacity layers plus scanline scratch", node: nested, want: 800 + scanlineScratch},
 		{name: "mask with nested RGBA layer plus scanline scratch", node: nestedMask, want: 1200 + scanlineScratch},
-		{name: "direct gradient Alpha mask plus scanline scratch", node: gradientNode, want: 100 + scanlineScratch},
+		{name: "direct gradient streamed coverage plus scanline scratch", node: gradientNode, want: scanlineScratch},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
@@ -470,6 +598,8 @@ func TestOffscreenReservationExhaustionRollsBackNestedState(t *testing.T) {
 
 	clipped := fullRect(red)
 	clipped.Clip = &d2scene.Clip{Path: clipRect(0, 0, 10, 10, d2scene.NonZero), Transform: d2scene.Identity()}
+	evenOddClipped := fullRect(red)
+	evenOddClipped.Clip = &d2scene.Clip{Path: clipRect(0, 0, 10, 10, d2scene.EvenOdd), Transform: d2scene.Identity()}
 
 	masked := fullRect(red)
 	masked.Mask = &d2scene.Mask{Type: d2scene.MaskAlpha, Root: fullRect(white), Transform: d2scene.Identity()}
@@ -484,10 +614,6 @@ func TestOffscreenReservationExhaustionRollsBackNestedState(t *testing.T) {
 	nestedMaskRoot := fullRect(white)
 	nestedMaskRoot.Opacity = .5
 	nestedMask.Mask = &d2scene.Mask{Type: d2scene.MaskAlpha, Root: nestedMaskRoot, Transform: d2scene.Identity()}
-	gradientNode := fullRect(d2scene.LinearGradient{
-		Start: d2scene.Point{}, End: d2scene.Point{X: 10}, Units: d2scene.UserSpaceOnUse,
-		Transform: d2scene.Identity(), Stops: gradientStops,
-	})
 	scanlineScratch, ok := scanline.RetainedBytes(10, 10, 2)
 	if !ok {
 		t.Fatal("scanline retained-byte calculation overflowed")
@@ -498,11 +624,11 @@ func TestOffscreenReservationExhaustionRollsBackNestedState(t *testing.T) {
 		node *d2scene.Node
 		peak int64
 	}{
-		{name: "clip Alpha allocation", node: clipped, peak: 500 + scanlineScratch},
+		{name: "clip effect layer allocation", node: clipped, peak: 400 + scanlineScratch},
+		{name: "even-odd clip Alpha allocation", node: evenOddClipped, peak: 500 + scanlineScratch},
 		{name: "mask RGBA allocation", node: masked, peak: 800 + scanlineScratch},
 		{name: "nested opacity allocation", node: nestedOpacity, peak: 800 + scanlineScratch},
 		{name: "nested mask-root allocation", node: nestedMask, peak: 1200 + scanlineScratch},
-		{name: "gradient Alpha allocation", node: gradientNode, peak: 100 + scanlineScratch},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			document := d2scene.NewDocument(d2scene.Box{Width: 10, Height: 10}, test.node)
@@ -564,9 +690,9 @@ func TestScanlineResourcePlanRetainsIndependentDimensions(t *testing.T) {
 	if !ok {
 		t.Fatal("scanline retained-byte calculation overflowed")
 	}
-	// Each gradient uses a clipped 1000x2 or 2x1000 Alpha mask. They are
-	// sequential, while the rasterizer retains both dimension maxima.
-	wantPeak := wantScratch + 2000
+	// Streamed gradient coverage retains only the rasterizer's independent
+	// width and height maxima.
+	wantPeak := wantScratch
 	options := testOptions()
 	prepared, err := prepare(context.Background(), document, options)
 	if err != nil {
@@ -701,7 +827,7 @@ func TestScanlineWorkPlanUsesGeometryMetricsForSmallPrimitives(t *testing.T) {
 	}
 	worstPerShape, ok := scanline.WorkBound(canvasSize, canvasSize, 2)
 	if !ok || int64(shapes)*worstPerShape <= 4_000_000_000 {
-		t.Fatalf("whole-target aggregate = %d, %v; fixture must exercise the former false rejection", int64(shapes)*worstPerShape, ok)
+		t.Fatalf("whole-target aggregate = %d, %v; fixture must exceed the aggregate bound", int64(shapes)*worstPerShape, ok)
 	}
 }
 
@@ -735,22 +861,265 @@ func TestEvenOddClipWorkLimitAndEdgeCancellation(t *testing.T) {
 		}
 	})
 
-	t.Run("cancellation inside one large edge scan", func(t *testing.T) {
-		points := make([]d2scene.Point, 1024)
+	t.Run("shared samples retain logical work and cancellation cadence", func(t *testing.T) {
+		paths := []subpath{
+			{points: make([]d2scene.Point, 3)},
+			{points: make([]d2scene.Point, 5)},
+			{points: make([]d2scene.Point, 1)},
+		}
+		var successfulEvaluations uint64
+		_, err := countEvenOddPathSamples(
+			context.Background(), paths,
+			.125, .375, .625, .875,
+			.125, .375, .625, .875,
+			&successfulEvaluations,
+		)
+		if err != nil {
+			t.Fatal(err)
+		}
+		const wantSuccessfulEvaluations = uint64((3 + 5) * 4 * 4)
+		if successfulEvaluations != wantSuccessfulEvaluations {
+			t.Fatalf("successful logical edge evaluations = %d, want %d", successfulEvaluations, wantSuccessfulEvaluations)
+		}
+
+		points := make([]d2scene.Point, 64)
 		for index := range points {
 			points[index] = d2scene.Point{X: float64(index), Y: float64(index & 1)}
 		}
 		ctx, cancel := context.WithCancel(context.Background())
 		cancel()
 		var evaluations uint64
-		_, err := pointInEvenOddPath(ctx, []subpath{{points: points}}, 0, 0, &evaluations)
+		_, err = countEvenOddPathSamples(
+			ctx, []subpath{{points: points}},
+			.125, .375, .625, .875,
+			.5, .5, .5, .5,
+			&evaluations,
+		)
 		if !errors.Is(err, context.Canceled) {
-			t.Fatalf("pointInEvenOddPath() error = %v, want context.Canceled", err)
+			t.Fatalf("countEvenOddPathSamples() error = %v, want context.Canceled", err)
 		}
 		if evaluations != 256 {
-			t.Fatalf("edge evaluations before cancellation = %d, want 256", evaluations)
+			t.Fatalf("logical edge evaluations before cancellation = %d, want 256", evaluations)
 		}
 	})
+}
+
+func TestRasterizeEvenOddMaskMatchesIndependentSamples(t *testing.T) {
+	state := uint64(0x9e3779b97f4a7c15)
+	next := func() uint64 {
+		state ^= state << 13
+		state ^= state >> 7
+		state ^= state << 17
+		return state
+	}
+	for testIndex := range 256 {
+		width := 1 + int(next()%17)
+		height := 1 + int(next()%15)
+		minimum := image.Pt(int(next()%31)-15, int(next()%29)-14)
+		bounds := image.Rectangle{Min: minimum, Max: minimum.Add(image.Pt(width, height))}
+		stride := width + int(next()%8)
+		pixelBytes := stride*height + int(next()%8)
+		got := &image.Alpha{Pix: make([]uint8, pixelBytes), Stride: stride, Rect: bounds}
+		want := &image.Alpha{Pix: make([]uint8, pixelBytes), Stride: stride, Rect: bounds}
+		for index := range got.Pix {
+			value := uint8(next())
+			got.Pix[index] = value
+			want.Pix[index] = value
+		}
+
+		origin := image.Pt(int(next()%65)-32, int(next()%61)-30)
+		paths := make([]subpath, int(next()%7))
+		for pathIndex := range paths {
+			points := make([]d2scene.Point, int(next()%25))
+			for pointIndex := range points {
+				// Eighth-pixel coordinates deliberately put some crossings exactly
+				// on the four horizontal and vertical sample positions.
+				points[pointIndex] = d2scene.Point{
+					X: float64(origin.X) + float64(int(next()%257)-128)/8,
+					Y: float64(origin.Y) + float64(int(next()%241)-120)/8,
+				}
+			}
+			paths[pathIndex] = subpath{points: points, closed: next()&1 != 0}
+		}
+
+		if err := rasterizeEvenOddMask(context.Background(), got, origin, paths); err != nil {
+			t.Fatalf("case %d optimized rasterizer: %v", testIndex, err)
+		}
+		if err := rasterizeEvenOddMaskIndependentSamples(context.Background(), want, origin, paths); err != nil {
+			t.Fatalf("case %d independent-sample rasterizer: %v", testIndex, err)
+		}
+		if !bytes.Equal(got.Pix, want.Pix) {
+			for index := range got.Pix {
+				if got.Pix[index] != want.Pix[index] {
+					t.Fatalf("case %d byte %d = %d, want %d (bounds %v, stride %d, origin %v)", testIndex, index, got.Pix[index], want.Pix[index], bounds, stride, origin)
+				}
+			}
+		}
+	}
+}
+
+func TestRasterizeEvenOddMaskCancellationCadenceMatchesIndependentSamples(t *testing.T) {
+	points := make([]d2scene.Point, 128)
+	for index := range points {
+		points[index] = d2scene.Point{X: float64(index & 7), Y: float64(index) / 16}
+	}
+	paths := []subpath{{points: points}}
+	const (
+		width  = 3
+		height = 3
+		stride = 5
+	)
+	for _, cancelAt := range []int{1, 2, 3, 4, 7, 15, 31, 77, 78} {
+		got := &image.Alpha{Pix: make([]uint8, stride*height+3), Stride: stride, Rect: image.Rect(-2, 4, -2+width, 4+height)}
+		want := &image.Alpha{Pix: make([]uint8, len(got.Pix)), Stride: stride, Rect: got.Rect}
+		for index := range got.Pix {
+			got.Pix[index] = 0xa5
+			want.Pix[index] = 0xa5
+		}
+		gotContext := &cancelAfterErrCallsContext{Context: context.Background(), cancelAt: cancelAt}
+		wantContext := &cancelAfterErrCallsContext{Context: context.Background(), cancelAt: cancelAt}
+		gotErr := rasterizeEvenOddMask(gotContext, got, image.Pt(-3, 5), paths)
+		wantErr := rasterizeEvenOddMaskIndependentSamples(wantContext, want, image.Pt(-3, 5), paths)
+		if errors.Is(gotErr, context.Canceled) != errors.Is(wantErr, context.Canceled) {
+			t.Fatalf("cancel call %d errors differ: optimized %v, independent %v", cancelAt, gotErr, wantErr)
+		}
+		if gotContext.calls != wantContext.calls {
+			t.Fatalf("cancel call %d Err calls = %d, want %d", cancelAt, gotContext.calls, wantContext.calls)
+		}
+		if !bytes.Equal(got.Pix, want.Pix) {
+			t.Fatalf("cancel call %d left a different output prefix", cancelAt)
+		}
+	}
+}
+
+type cancelAfterErrCallsContext struct {
+	context.Context
+	cancelAt int
+	calls    int
+}
+
+func (ctx *cancelAfterErrCallsContext) Err() error {
+	ctx.calls++
+	if ctx.calls >= ctx.cancelAt {
+		return context.Canceled
+	}
+	return nil
+}
+
+func rasterizeEvenOddMaskIndependentSamples(ctx context.Context, mask *image.Alpha, origin image.Point, paths []subpath) error {
+	const sampleCount = evenOddSamplesPerAxis * evenOddSamplesPerAxis
+	var edgeEvaluations uint64
+	for y := 0; y < mask.Bounds().Dy(); y++ {
+		if y&31 == 0 {
+			if err := ctx.Err(); err != nil {
+				return err
+			}
+		}
+		row := y * mask.Stride
+		for x := 0; x < mask.Bounds().Dx(); x++ {
+			if x&255 == 0 {
+				if err := ctx.Err(); err != nil {
+					return err
+				}
+			}
+			inside := 0
+			for sampleY := 0; sampleY < evenOddSamplesPerAxis; sampleY++ {
+				py := float64(origin.Y+y) + (float64(sampleY)+0.5)/evenOddSamplesPerAxis
+				for sampleX := 0; sampleX < evenOddSamplesPerAxis; sampleX++ {
+					px := float64(origin.X+x) + (float64(sampleX)+0.5)/evenOddSamplesPerAxis
+					isInside, err := pointInEvenOddPathIndependent(ctx, paths, px, py, &edgeEvaluations)
+					if err != nil {
+						return err
+					}
+					if isInside {
+						inside++
+					}
+				}
+			}
+			mask.Pix[row+x] = uint8((inside*255 + sampleCount/2) / sampleCount)
+		}
+	}
+	return ctx.Err()
+}
+
+func pointInEvenOddPathIndependent(ctx context.Context, paths []subpath, x, y float64, edgeEvaluations *uint64) (bool, error) {
+	inside := false
+	for _, path := range paths {
+		if len(path.points) < 2 {
+			continue
+		}
+		previous := path.points[len(path.points)-1]
+		for _, current := range path.points {
+			*edgeEvaluations = *edgeEvaluations + 1
+			if *edgeEvaluations&255 == 0 {
+				if err := ctx.Err(); err != nil {
+					return false, err
+				}
+			}
+			if (current.Y > y) != (previous.Y > y) &&
+				x < (previous.X-current.X)*(y-current.Y)/(previous.Y-current.Y)+current.X {
+				inside = !inside
+			}
+			previous = current
+		}
+	}
+	return inside, nil
+}
+
+func BenchmarkRasterizeEvenOddMask(b *testing.B) {
+	rectangle := []subpath{{points: []d2scene.Point{
+		{X: 4.25, Y: 3.75},
+		{X: 244.5, Y: 8.25},
+		{X: 249.75, Y: 246.5},
+		{X: 7.5, Y: 251.25},
+	}}}
+	star := make([]d2scene.Point, 128)
+	for index := range star {
+		radius := 30.0
+		if index&1 != 0 {
+			radius = 12
+		}
+		angle := 2 * math.Pi * float64(index) / float64(len(star))
+		star[index] = d2scene.Point{
+			X: 32 + radius*math.Cos(angle),
+			Y: 32 + radius*math.Sin(angle),
+		}
+	}
+	manyPaths := make([]subpath, 64)
+	for index := range manyPaths {
+		x := float64((index%16)*16) + 0.125
+		y := float64((index/16)*16) + 0.375
+		manyPaths[index].points = []d2scene.Point{
+			{X: x, Y: y},
+			{X: x + 11.5, Y: y + 0.25},
+			{X: x + 11.75, Y: y + 11.5},
+			{X: x + 0.25, Y: y + 11.75},
+		}
+	}
+	tests := []struct {
+		name   string
+		bounds image.Rectangle
+		paths  []subpath
+	}{
+		{name: "8x8_rectangle", bounds: image.Rect(0, 0, 8, 8), paths: rectangle},
+		{name: "256x256_rectangle", bounds: image.Rect(0, 0, 256, 256), paths: rectangle},
+		{name: "64x64_128_edge_star", bounds: image.Rect(0, 0, 64, 64), paths: []subpath{{points: star}}},
+		{name: "256x64_64_paths", bounds: image.Rect(0, 0, 256, 64), paths: manyPaths},
+	}
+	for _, test := range tests {
+		b.Run(test.name, func(b *testing.B) {
+			mask := image.NewAlpha(test.bounds)
+			ctx := context.Background()
+			b.ReportAllocs()
+			b.SetBytes(int64(test.bounds.Dx() * test.bounds.Dy()))
+			b.ResetTimer()
+			for range b.N {
+				if err := rasterizeEvenOddMask(ctx, mask, image.Point{}, test.paths); err != nil {
+					b.Fatal(err)
+				}
+			}
+		})
+	}
 }
 
 func BenchmarkRenderBoundsSizedEffects(b *testing.B) {

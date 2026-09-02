@@ -245,6 +245,10 @@ func newAssetHTTPTransport() *http.Transport {
 }
 
 func renderPNG(ctx context.Context, inputPath string, cacheImages bool, diagram *d2target.Diagram, opts d2svg.RenderOpts) ([]byte, error) {
+	return renderPNGWithEncoder(ctx, inputPath, cacheImages, diagram, opts, nil)
+}
+
+func renderPNGWithEncoder(ctx context.Context, inputPath string, cacheImages bool, diagram *d2target.Diagram, opts d2svg.RenderOpts, encoder *rasterPNGEncoder) ([]byte, error) {
 	document, err := buildScene(ctx, inputPath, cacheImages, diagram, opts)
 	if err != nil {
 		return nil, err
@@ -253,7 +257,12 @@ func renderPNG(ctx context.Context, inputPath string, cacheImages bool, diagram 
 	if err != nil {
 		return nil, err
 	}
-	return d2raster.EncodePNG(ctx, frame)
+	var localEncoder rasterPNGEncoder
+	if encoder == nil {
+		encoder = &localEncoder
+		defer localEncoder.close()
+	}
+	return encoder.encode(ctx, frame)
 }
 
 func buildScene(ctx context.Context, inputPath string, cacheImages bool, diagram *d2target.Diagram, opts d2svg.RenderOpts) (*d2scene.Document, error) {
@@ -415,9 +424,11 @@ func gifFrameOptions(timestamp time.Duration, totalFrames int) d2raster.FrameOpt
 	return options
 }
 
-type gifFrameRenderer func(context.Context, int, time.Duration, d2raster.FrameOptions) (image.Image, error)
+type gifFrameRenderer func(context.Context, int, time.Duration, d2raster.FrameOptions, func(image.Image) error) error
 
 type gifFrameConsumer func(frameIndex int, frame image.Image) error
+
+type gifBoardPlanConsumer func(totalBoards, totalFrames int, bounds image.Rectangle) error
 
 // renderGIFBoardFrames paints and consumes one frame at a time. The consumer
 // can quantize and release each full-color image before the next render begins.
@@ -448,15 +459,29 @@ func renderGIFBoardFrames(
 		if err != nil {
 			return err
 		}
-		frame, err := render(ctx, frameIndex, timestamp, gifFrameOptions(timestamp, totalFrames))
+		emitted := false
+		var emitErr error
+		err = render(ctx, frameIndex, timestamp, gifFrameOptions(timestamp, totalFrames), func(frame image.Image) error {
+			if emitted {
+				emitErr = fmt.Errorf("GIF frame %d was rendered more than once", frameIndex)
+				return emitErr
+			}
+			emitted = true
+			if frame == nil {
+				emitErr = fmt.Errorf("GIF frame %d was not rendered", frameIndex)
+				return emitErr
+			}
+			emitErr = consume(frameIndex, frame)
+			return emitErr
+		})
+		if emitErr != nil {
+			return emitErr
+		}
 		if err != nil {
 			return fmt.Errorf("GIF frame %d: %w", frameIndex, err)
 		}
-		if frame == nil {
+		if !emitted {
 			return fmt.Errorf("GIF frame %d was not rendered", frameIndex)
-		}
-		if err := consume(frameIndex, frame); err != nil {
-			return err
 		}
 	}
 	return nil
@@ -467,10 +492,51 @@ func renderGIF(ctx context.Context, plugin d2plugin.Plugin, inputPath string, ca
 	if err != nil {
 		return nil, nil, err
 	}
+	var workspace d2raster.RenderWorkspace
+	defer workspace.Reset()
+	var quantizationWorkspace xgif.OpaqueQuantizationWorkspace
 	palettedFrames := make([]*image.Paletted, 0)
+	var incrementalEncoder *xgif.OpaquePalettedAnimationEncoder
+	var incrementalBounds image.Rectangle
 	summary, err := renderGIFWithSession(
-		ctx, plugin, inputPath, cacheImages, diagram, opts, intervalMs, session, wantPreview,
+		ctx, plugin, inputPath, cacheImages, diagram, opts, intervalMs, session, &workspace, wantPreview,
+		func(totalBoards, totalFrames int, bounds image.Rectangle) error {
+			if totalBoards != 1 {
+				return nil
+			}
+			encoder, encoderErr := xgif.NewOpaquePalettedAnimationEncoder(
+				ctx, bounds.Dx(), bounds.Dy(), totalFrames, intervalMs, gifMaxEncodedBytes,
+			)
+			if encoderErr != nil {
+				return encoderErr
+			}
+			incrementalEncoder = encoder
+			incrementalBounds = bounds
+			return nil
+		},
 		func(frameIndex int, frame image.Image) error {
+			if incrementalEncoder != nil {
+				var consumeErr error
+				quantizeErr := quantizationWorkspace.Quantize(ctx, frame, func(paletted *image.Paletted) error {
+					normalized, normalizeErr := xgif.NormalizePalettedImage(ctx, paletted, incrementalBounds.Dx(), incrementalBounds.Dy())
+					if normalizeErr != nil {
+						consumeErr = fmt.Errorf("GIF frame %d normalization: %w", frameIndex, normalizeErr)
+						return consumeErr
+					}
+					if encodeErr := incrementalEncoder.WriteFrame(normalized); encodeErr != nil {
+						consumeErr = fmt.Errorf("GIF frame %d encoding: %w", frameIndex, encodeErr)
+						return consumeErr
+					}
+					return nil
+				})
+				if consumeErr != nil {
+					return consumeErr
+				}
+				if quantizeErr != nil {
+					return fmt.Errorf("GIF frame %d quantization: %w", frameIndex, quantizeErr)
+				}
+				return nil
+			}
 			paletted, quantizeErr := xgif.QuantizeImage(ctx, frame)
 			if quantizeErr != nil {
 				return fmt.Errorf("GIF frame %d quantization: %w", frameIndex, quantizeErr)
@@ -482,17 +548,19 @@ func renderGIF(ctx context.Context, plugin d2plugin.Plugin, inputPath string, ca
 	if err != nil {
 		return nil, nil, err
 	}
+	if incrementalEncoder != nil {
+		encoded, err = incrementalEncoder.Finish()
+		if err != nil {
+			return nil, nil, err
+		}
+		return encoded, summary.previewSVG, nil
+	}
 	if len(palettedFrames) != summary.totalFrames {
 		return nil, nil, fmt.Errorf("GIF encoded frame count %d differs from render schedule %d", len(palettedFrames), summary.totalFrames)
 	}
-	for frameIndex, frame := range palettedFrames {
-		normalized, normalizeErr := xgif.NormalizePalettedImage(ctx, frame, summary.maxWidth, summary.maxHeight)
-		if normalizeErr != nil {
-			return nil, nil, fmt.Errorf("GIF frame %d normalization: %w", frameIndex, normalizeErr)
-		}
-		palettedFrames[frameIndex] = normalized
-	}
-	encoded, err = xgif.AnimatePalettedImagesWithLimit(ctx, palettedFrames, intervalMs, gifMaxEncodedBytes)
+	encoded, err = xgif.AnimateCenteredOpaquePalettedImagesWithLimit(
+		ctx, palettedFrames, summary.maxWidth, summary.maxHeight, intervalMs, gifMaxEncodedBytes,
+	)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -526,7 +594,9 @@ func renderGIFWithSession(
 	opts d2svg.RenderOpts,
 	intervalMs int,
 	session *d2raster.RenderSession,
+	workspace *d2raster.RenderWorkspace,
 	wantPreview bool,
+	plan gifBoardPlanConsumer,
 	consume gifFrameConsumer,
 ) (gifRenderSummary, error) {
 	var summary gifRenderSummary
@@ -595,10 +665,24 @@ func renderGIFWithSession(
 		if err := validateGIFNormalizedFootprint(summary.maxWidth, summary.maxHeight, totalFrames); err != nil {
 			return summary, fmt.Errorf("GIF board %d: %w", boardIndex, err)
 		}
+		if plan != nil {
+			if err := plan(len(boards), totalFrames, plannedBounds); err != nil {
+				return summary, fmt.Errorf("GIF board %d: %w", boardIndex, err)
+			}
+		}
 		err = renderGIFBoardFrames(
 			ctx, 0, framesPerBoard, totalFrames,
-			func(renderCtx context.Context, _ int, _ time.Duration, frameOptions d2raster.FrameOptions) (image.Image, error) {
-				return session.Render(renderCtx, document, frameOptions)
+			func(renderCtx context.Context, _ int, _ time.Duration, frameOptions d2raster.FrameOptions, emit func(image.Image) error) error {
+				if workspace == nil {
+					frame, renderErr := session.Render(renderCtx, document, frameOptions)
+					if renderErr != nil {
+						return renderErr
+					}
+					return emit(frame)
+				}
+				return workspace.Render(renderCtx, session, document, frameOptions, func(frame *image.NRGBA) error {
+					return emit(frame)
+				})
 			},
 			func(frameIndex int, frame image.Image) error {
 				if frame.Bounds() != plannedBounds {

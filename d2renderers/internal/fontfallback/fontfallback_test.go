@@ -3,6 +3,7 @@ package fontfallback
 import (
 	"context"
 	"errors"
+	"sync"
 	"testing"
 	"time"
 )
@@ -67,6 +68,50 @@ func TestPrepareTrustedCopiesAndReusesStableAsset(t *testing.T) {
 		t.Fatalf("second preparation = %+v, added=%v; want reused stable resource", second, added)
 	}
 	if stats := cache.stats; stats.Assets != 1 || stats.Hashes != 1 || stats.Copies != 1 || stats.CopiedBytes != 4 {
+		t.Fatalf("trusted cache accounting = %+v, want one asset/hash/copy", stats)
+	}
+}
+
+func TestPrepareTrustedConcurrentCallsCopyOnce(t *testing.T) {
+	cache := NewSceneCache(nil)
+	source := Font{Name: "bundled.ttf", MIMEType: "font/ttf", Data: make([]byte, 96*1024)}
+	for index := range source.Data {
+		source.Data[index] = byte(index)
+	}
+
+	const workers = 16
+	results := make([]SceneFont, workers)
+	added := make([]bool, workers)
+	errs := make([]error, workers)
+	var group sync.WaitGroup
+	for index := range workers {
+		group.Add(1)
+		go func() {
+			defer group.Done()
+			results[index], added[index], errs[index] = cache.PrepareTrusted(context.Background(), source)
+		}()
+	}
+	group.Wait()
+
+	addedCount := 0
+	for index := range workers {
+		if errs[index] != nil {
+			t.Fatalf("worker %d: %v", index, errs[index])
+		}
+		if added[index] {
+			addedCount++
+		}
+		if !results[index].Shared || results[index].ID != results[0].ID || &results[index].Data[0] != &results[0].Data[0] {
+			t.Fatalf("worker %d result = %+v, want one stable shared cache resource", index, results[index])
+		}
+	}
+	if addedCount != 1 {
+		t.Fatalf("added results = %d, want 1", addedCount)
+	}
+	if &results[0].Data[0] == &source.Data[0] {
+		t.Fatal("trusted cache aliases source backing")
+	}
+	if stats := cache.stats; stats.Assets != 1 || stats.Hashes != 1 || stats.Copies != 1 || stats.CopiedBytes != int64(len(source.Data)) {
 		t.Fatalf("trusted cache accounting = %+v, want one asset/hash/copy", stats)
 	}
 }

@@ -231,4 +231,8 @@ func init() {
 		Family: HandDrawn,
 		Style:  FONT_STYLE_SEMIBOLD,
 	}, b)
+
+	if err := registerBundledFontFaces(); err != nil {
+		panic(err)
+	}
 }

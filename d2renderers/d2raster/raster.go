@@ -6,6 +6,7 @@ package d2raster
 import (
 	"bytes"
 	"context"
+	"encoding/binary"
 	"fmt"
 	"image"
 	"image/color"
@@ -14,10 +15,12 @@ import (
 	"io"
 	"math"
 	"sort"
+	"sync"
 	"time"
 
 	"github.com/d2lang/d2/d2renderers/d2raster/internal/scanline"
 	"github.com/d2lang/d2/d2renderers/d2scene"
+	"github.com/d2lang/d2/d2renderers/internal/fontface"
 )
 
 // FrameOptions defines the pixel mapping and hard resource ceilings for one
@@ -76,7 +79,7 @@ type FrameOptions struct {
 	// supersampled even-odd fills and clips.
 	MaxEvenOddClipWork int64
 	// MaxScanlineWork bounds aggregate operation units used by non-zero fills,
-	// strokes, gradient masks, and clips. Zero selects a bounded default;
+	// strokes, streamed paint coverage, and clips. Zero selects a bounded default;
 	// negative values are invalid.
 	MaxScanlineWork int64
 }
@@ -170,6 +173,7 @@ type preflight struct {
 	assetBytes         int64
 	decodedBytes       int64
 	session            *RenderSession
+	shapingWorkspace   fontface.ShapingWorkspace
 }
 
 type rasterScratch struct {
@@ -207,7 +211,7 @@ func (s *rasterScratch) workBudget() *scanline.WorkBudget {
 // viewbox is mapped to LogicalWidth x LogicalHeight and then multiplied by
 // FrameOptions.Scale.
 func Render(ctx context.Context, document *d2scene.Document, options FrameOptions) (*image.NRGBA, error) {
-	return render(ctx, document, options, nil)
+	return render(ctx, document, options, nil, nil)
 }
 
 // Render preflights and renders one frame while reusing this session's bounded
@@ -216,10 +220,122 @@ func (s *RenderSession) Render(ctx context.Context, document *d2scene.Document, 
 	if s == nil {
 		return nil, fmt.Errorf("d2raster: nil render session")
 	}
-	return render(ctx, document, options, s)
+	return render(ctx, document, options, s, nil)
 }
 
-func render(ctx context.Context, document *d2scene.Document, options FrameOptions, session *RenderSession) (*image.NRGBA, error) {
+// RenderWorkspace retains at most one final-frame backing store and one
+// exact-plan scanline rasterizer for a sequence of renders. Before each call it
+// drops rasterizer capacity that exceeds the new MaxOffscreenBytes limit. Its
+// zero value is ready for use. Render serializes concurrent calls, while the
+// separate RenderSession remains safe to share with other workspaces.
+// Canvas capacity can retain the largest frame reached by a call, including a
+// call canceled after painting begins, for the workspace's lifetime. Reset
+// releases all retained storage when an operation ends. A RenderWorkspace must
+// not be copied after first use.
+//
+// The frame passed to consume is borrowed and is valid only until consume
+// returns; callers that retain frames must continue to use RenderSession.Render,
+// which returns independently owned pixels. Every call still performs complete
+// preflight and applies all limits from its FrameOptions.
+type RenderWorkspace struct {
+	mu             sync.Mutex
+	canvas         image.RGBA
+	rasterizer     *scanline.Rasterizer
+	rasterizerPlan renderWorkspaceRasterizerPlan
+}
+
+type renderWorkspaceRasterizerPlan struct {
+	width, height int
+	edges         int
+	bytes         int64
+}
+
+// Render paints one frame into reusable workspace storage and calls consume
+// before that storage can be reused. The workspace remains exclusively held
+// while consume runs, so consume must not re-enter the same RenderWorkspace.
+func (w *RenderWorkspace) Render(ctx context.Context, session *RenderSession, document *d2scene.Document, options FrameOptions, consume func(*image.NRGBA) error) error {
+	if w == nil {
+		return fmt.Errorf("d2raster: nil render workspace")
+	}
+	if session == nil {
+		return fmt.Errorf("d2raster: nil render session")
+	}
+	if consume == nil {
+		return fmt.Errorf("d2raster: nil render workspace consumer")
+	}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	w.trimScratch(options.MaxOffscreenBytes)
+	frame, err := render(ctx, document, options, session, w)
+	if err != nil {
+		return err
+	}
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	if err := consume(frame); err != nil {
+		return err
+	}
+	return ctx.Err()
+}
+
+// Reset releases all final-frame and scanline storage retained by w. It waits
+// for an active Render and is safe to call on a nil workspace.
+func (w *RenderWorkspace) Reset() {
+	if w == nil {
+		return
+	}
+	w.mu.Lock()
+	w.canvas = image.RGBA{}
+	w.rasterizer = nil
+	w.rasterizerPlan = renderWorkspaceRasterizerPlan{}
+	w.mu.Unlock()
+}
+
+func (w *RenderWorkspace) trimScratch(limit int64) {
+	if limit <= 0 {
+		w.rasterizer = nil
+		return
+	}
+	if w.rasterizer != nil && w.rasterizerPlan.bytes > limit {
+		w.rasterizer = nil
+	}
+}
+
+func (w *RenderWorkspace) canvasFor(bounds image.Rectangle) *image.RGBA {
+	required := bounds.Dx() * bounds.Dy() * 4
+	if cap(w.canvas.Pix) < required {
+		w.canvas = *image.NewRGBA(bounds)
+	} else {
+		w.canvas.Pix = w.canvas.Pix[:required]
+		w.canvas.Stride = bounds.Dx() * 4
+		w.canvas.Rect = bounds
+	}
+	return &w.canvas
+}
+
+func (w *RenderWorkspace) takeRasterizer(resources renderResources) *scanline.Rasterizer {
+	plan := renderWorkspaceRasterizerPlan{
+		width: resources.rasterizerWidth, height: resources.rasterizerHeight,
+		edges: resources.rasterizerEdges, bytes: resources.rasterizerBytes,
+	}
+	if w.rasterizerPlan != plan {
+		w.rasterizer = nil
+	}
+	rasterizer := w.rasterizer
+	w.rasterizer = nil
+	w.rasterizerPlan = plan
+	return rasterizer
+}
+
+func (w *RenderWorkspace) putRasterizer(rasterizer *scanline.Rasterizer) {
+	w.rasterizer = rasterizer
+}
+
+func render(ctx context.Context, document *d2scene.Document, options FrameOptions, session *RenderSession, workspace *RenderWorkspace) (*image.NRGBA, error) {
 	if ctx == nil {
 		ctx = context.Background()
 	}
@@ -238,6 +354,12 @@ func render(ctx context.Context, document *d2scene.Document, options FrameOption
 		scanlineWork:      scanline.NewWorkBudget(prepared.resources.scanlineWork),
 		scanlineWorkSet:   true,
 	}
+	if workspace != nil {
+		scratch.rasterizer = workspace.takeRasterizer(prepared.resources)
+		defer func() {
+			workspace.putRasterizer(scratch.rasterizer)
+		}()
+	}
 	defer scratch.releasePatternTiles()
 	rasterizerReservation, err := scratch.offscreen.reserveBytes(prepared.resources.rasterizerBytes, "scanline rasterizer working storage")
 	if err != nil {
@@ -253,9 +375,19 @@ func render(ctx context.Context, document *d2scene.Document, options FrameOption
 			return nil, err
 		}
 	}
-	canvas := image.NewRGBA(image.Rect(0, 0, prepared.width, prepared.height))
-	if prepared.background != nil {
+	canvasBounds := image.Rect(0, 0, prepared.width, prepared.height)
+	var canvas *image.RGBA
+	if workspace == nil {
+		canvas = image.NewRGBA(canvasBounds)
+	} else {
+		canvas = workspace.canvasFor(canvasBounds)
+	}
+	if prepared.background != nil && prepared.background.A == 0xff {
+		fillOpaquePixels(canvas.Pix, *prepared.background)
+	} else if prepared.background != nil && prepared.background.A != 0 {
 		draw.Draw(canvas, canvas.Bounds(), image.NewUniform(*prepared.background), image.Point{}, draw.Src)
+	} else if workspace != nil {
+		clear(canvas.Pix)
 	}
 	if err := renderNode(ctx, canvas, prepared.root, scratch); err != nil {
 		return nil, err
@@ -274,18 +406,163 @@ func render(ctx context.Context, document *d2scene.Document, options FrameOption
 		)
 	}
 	scratch.releasePatternTiles()
-	scratch.rasterizer = nil
+	if workspace == nil {
+		scratch.rasterizer = nil
+	}
 	scratch.offscreen.release(rasterizerReservation)
 	rasterizerReservation = 0
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
-	result := image.NewNRGBA(canvas.Bounds())
-	draw.Draw(result, result.Bounds(), canvas, image.Point{}, draw.Src)
-	if err := ctx.Err(); err != nil {
+	// An opaque full-canvas background remains opaque because every supported
+	// final-canvas operation is source-over: As = 1 or Ab = 1 implies
+	// Ao = As + Ab*(1-As) = 1. Clips, masks, and filters operate on temporary
+	// layers before those layers are composited. At alpha 255, premultiplied RGBA
+	// channels are already the straight-alpha NRGBA channels, so avoid even the
+	// in-place conversion scan used for transparent output.
+	conversionBounds := canvas.Bounds()
+	if prepared.background == nil || prepared.background.A == 0 {
+		// A zeroed canvas stays zero outside the conservative prepared root
+		// bounds. Hidden RGB on a fully transparent NRGBA background is also
+		// discarded when draw converts it to premultiplied RGBA, so those pixels
+		// need no straight-alpha conversion either.
+		conversionBounds = image.Rectangle{}
+		if prepared.root != nil {
+			conversionBounds = prepared.root.bounds.Intersect(canvas.Bounds())
+		}
+	}
+	result, err := rgbaToNRGBAInPlaceBounds(ctx, canvas, conversionBounds, prepared.background != nil && prepared.background.A == 0xff)
+	if err != nil {
 		return nil, err
 	}
 	return result, nil
+}
+
+func fillOpaquePixels(pixels []byte, paint color.NRGBA) {
+	if len(pixels) < 4 {
+		return
+	}
+	pixels[0], pixels[1], pixels[2], pixels[3] = paint.R, paint.G, paint.B, 0xff
+	for filled := 4; filled < len(pixels); {
+		filled += copy(pixels[filled:], pixels[:filled])
+	}
+}
+
+// rgbaToNRGBAInPlace returns an NRGBA view over source's backing store. When
+// opaque is false, it first converts the premultiplied channels to straight
+// alpha in place. Render no longer needs a second four-byte-per-pixel allocation
+// merely to change color models. Callers may set opaque only when every source
+// pixel is known to have alpha 255.
+//
+// The arithmetic matches image.NRGBA.SetRGBA64 and preserves hidden color
+// channels on zero-alpha pixels.
+func rgbaToNRGBAInPlace(ctx context.Context, source *image.RGBA, opaque bool) (*image.NRGBA, error) {
+	return rgbaToNRGBAInPlaceBounds(ctx, source, source.Bounds(), opaque)
+}
+
+func rgbaToNRGBAInPlaceBounds(ctx context.Context, source *image.RGBA, conversionBounds image.Rectangle, opaque bool) (*image.NRGBA, error) {
+	result := &image.NRGBA{Pix: source.Pix, Stride: source.Stride, Rect: source.Rect}
+	if opaque {
+		return result, ctx.Err()
+	}
+	bounds := conversionBounds.Intersect(source.Bounds())
+	width := bounds.Dx()
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+		if (y-bounds.Min.Y)&31 == 0 {
+			if err := ctx.Err(); err != nil {
+				return nil, err
+			}
+		}
+		rowOffset := source.PixOffset(bounds.Min.X, y)
+		row := source.Pix[rowOffset : rowOffset+width*4]
+		if width >= 64 {
+			partialSamples := 0
+			for pixel := range 8 {
+				alpha := row[pixel*4+3]
+				if alpha != 0 && alpha != 0xff {
+					partialSamples++
+				}
+			}
+			if partialSamples >= 7 {
+				// Rows dominated by partial alpha cannot use uniform-block skips.
+				// Keep their inner loop as compact as the scalar conversion.
+				for pixel := 0; pixel < width; pixel++ {
+					if pixel != 0 && pixel&4095 == 0 {
+						if err := ctx.Err(); err != nil {
+							return nil, err
+						}
+					}
+					x := pixel * 4
+					alpha := uint32(row[x+3])
+					if alpha != 0 && alpha != 0xff {
+						row[x] = uint8((uint32(row[x]) * 0xffff / alpha) >> 8)
+						row[x+1] = uint8((uint32(row[x+1]) * 0xffff / alpha) >> 8)
+						row[x+2] = uint8((uint32(row[x+2]) * 0xffff / alpha) >> 8)
+					}
+				}
+				continue
+			}
+		}
+		for blockStart := 0; blockStart < width; blockStart += 64 {
+			if blockStart != 0 && blockStart&4095 == 0 {
+				if err := ctx.Err(); err != nil {
+					return nil, err
+				}
+			}
+			blockEnd := min(blockStart+64, width)
+			pixel := blockStart
+			if blockEnd-blockStart == 64 {
+				blockAlpha := row[blockStart*4+3]
+				if (blockAlpha == 0 || blockAlpha == 0xff) && row[(blockEnd-1)*4+3] == blockAlpha {
+					const alphaPairMask = uint64(0xff000000ff000000)
+					expectedPair := uint64(0)
+					if blockAlpha == 0xff {
+						expectedPair = alphaPairMask
+					}
+					uniform := 0
+					for uniform+8 <= 63 {
+						offset := (blockStart + uniform) * 4
+						mismatchedAlpha := (binary.LittleEndian.Uint64(row[offset:offset+8]) ^ expectedPair) |
+							(binary.LittleEndian.Uint64(row[offset+8:offset+16]) ^ expectedPair) |
+							(binary.LittleEndian.Uint64(row[offset+16:offset+24]) ^ expectedPair) |
+							(binary.LittleEndian.Uint64(row[offset+24:offset+32]) ^ expectedPair)
+						if mismatchedAlpha&alphaPairMask != 0 {
+							break
+						}
+						uniform += 8
+					}
+					for uniform+2 <= 63 {
+						offset := (blockStart + uniform) * 4
+						if binary.LittleEndian.Uint64(row[offset:offset+8])&alphaPairMask != expectedPair {
+							if row[offset+3] == blockAlpha {
+								uniform++
+							}
+							break
+						}
+						uniform += 2
+					}
+					if uniform < 63 && row[(blockStart+uniform)*4+3] == blockAlpha {
+						uniform++
+					}
+					if uniform == 63 {
+						continue
+					}
+					// The probe proved that the prefix needs no conversion.
+					pixel += uniform
+				}
+			}
+			for ; pixel < blockEnd; pixel++ {
+				x := pixel * 4
+				alpha := uint32(row[x+3])
+				if alpha != 0 && alpha != 0xff {
+					row[x] = uint8((uint32(row[x]) * 0xffff / alpha) >> 8)
+					row[x+1] = uint8((uint32(row[x+1]) * 0xffff / alpha) >> 8)
+					row[x+2] = uint8((uint32(row[x+2]) * 0xffff / alpha) >> 8)
+				}
+			}
+		}
+	}
+	return result, ctx.Err()
 }
 
 // EncodePNG deterministically encodes img as PNG.
@@ -420,18 +697,13 @@ func prepareWithSession(ctx context.Context, document *d2scene.Document, options
 		return nil, fmt.Errorf("d2raster: viewbox mapping is non-finite")
 	}
 	p := &preflight{
-		ctx:          ctx,
-		document:     document,
-		options:      options,
-		viewToPixel:  viewToPixel,
-		frameBounds:  image.Rect(0, 0, width, height),
-		active:       make(map[*d2scene.Node]bool),
-		activeAssets: make(map[d2scene.AssetID]bool),
-		fonts:        make(map[d2scene.AssetID]*preparedFont),
-		rasters:      make(map[d2scene.AssetID]*preparedRasterAsset),
-		vectors:      make(map[d2scene.AssetID]d2scene.VectorAsset),
-		patternTiles: make(map[preparedPatternTileKey]*preparedPatternTile),
-		session:      session,
+		ctx:         ctx,
+		document:    document,
+		options:     options,
+		viewToPixel: viewToPixel,
+		frameBounds: image.Rect(0, 0, width, height),
+		active:      make(map[*d2scene.Node]bool),
+		session:     session,
 	}
 	if err := p.assets(); err != nil {
 		return nil, err
@@ -491,9 +763,9 @@ func finalFrameStorageBytes(width, height int) (int64, error) {
 	if !ok {
 		return 0, fmt.Errorf("d2raster: final frame storage exceeds the int64 domain")
 	}
-	// Render retains the premultiplied RGBA canvas while allocating the
-	// returned NRGBA image, so both four-byte backing stores must fit together.
-	bytes, ok := checkedMultiply(pixels, 8)
+	// Render converts its premultiplied RGBA canvas to NRGBA in place, so the
+	// returned image retains the same four-byte-per-pixel backing store.
+	bytes, ok := checkedMultiply(pixels, 4)
 	if !ok || bytes > platformMaxInt() {
 		return 0, fmt.Errorf("d2raster: final frame storage exceeds the platform integer domain")
 	}
@@ -546,6 +818,9 @@ func validateOptions(options FrameOptions) error {
 func (p *preflight) assets() error {
 	if len(p.document.Assets) > p.options.MaxAssets {
 		return fmt.Errorf("d2raster: asset count %d exceeds limit %d", len(p.document.Assets), p.options.MaxAssets)
+	}
+	if len(p.document.Assets) == 0 {
+		return nil
 	}
 	ids := make([]string, 0, len(p.document.Assets))
 	for id := range p.document.Assets {
@@ -620,6 +895,9 @@ func (p *preflight) addFontAsset(id d2scene.AssetID, asset d2scene.FontAsset) er
 	if err != nil {
 		return fmt.Errorf("d2raster: font asset %q: %w", id, err)
 	}
+	if p.fonts == nil {
+		p.fonts = make(map[d2scene.AssetID]*preparedFont)
+	}
 	p.fonts[id] = font
 	return nil
 }
@@ -643,6 +921,9 @@ func (p *preflight) addRasterAsset(id d2scene.AssetID, asset d2scene.RasterAsset
 		return err
 	}
 	p.decodedBytes += decodedBytes
+	if p.rasters == nil {
+		p.rasters = make(map[d2scene.AssetID]*preparedRasterAsset)
+	}
 	p.rasters[id] = prepared
 	return nil
 }
@@ -658,6 +939,9 @@ func (p *preflight) addVectorAsset(id d2scene.AssetID, asset d2scene.VectorAsset
 	// placement-independent pass validates each definition exactly once after
 	// forward references are available. Visible Image occurrences are still
 	// instantiated independently.
+	if p.vectors == nil {
+		p.vectors = make(map[d2scene.AssetID]d2scene.VectorAsset)
+	}
 	p.vectors[id] = asset
 	return nil
 }
@@ -1066,22 +1350,38 @@ func (p *preflight) finishPrimitive(nodeID string, paths []subpath, transform d2
 				}
 			}
 		}
-		points := cleanPoints(run.points, run.closed)
 		if stroke.join != d2scene.JoinRound {
-			err := forEachStrokeJoin(p.ctx, points, run.closed, func(previous, vertex, next d2scene.Point) error {
-				polygon, ok := strokeJoinPolygon(previous, vertex, next, halfWidth, stroke.join, stroke.miterLimit)
-				if !ok {
-					return nil
+			joinStart, joinEnd := 1, len(run.points)-1
+			if run.closed {
+				joinStart, joinEnd = 0, len(run.points)
+			}
+			previousIndex := joinStart - 1
+			if previousIndex < 0 {
+				previousIndex = len(run.points) - 1
+			}
+			incoming, incomingOK := unitVector(run.points[previousIndex], run.points[joinStart])
+			for index := joinStart; index < joinEnd; index++ {
+				if err := p.ctx.Err(); err != nil {
+					return nil, fmt.Errorf("d2raster: node %q stroke join geometry: %w", nodeID, err)
 				}
-				for _, point := range polygon {
+				nextIndex := index + 1
+				if nextIndex == len(run.points) {
+					nextIndex = 0
+				}
+				vertex := run.points[index]
+				outgoing, outgoingOK := unitVector(vertex, run.points[nextIndex])
+				var polygon [4]d2scene.Point
+				count := strokeJoinPolygonFromUnits(&polygon, vertex, incoming, outgoing, incomingOK && outgoingOK, halfWidth, stroke.join, stroke.miterLimit)
+				if count == 0 {
+					incoming, incomingOK = outgoing, outgoingOK
+					continue
+				}
+				for _, point := range polygon[:count] {
 					if err := validateRasterPoint(transform.Point(point)); err != nil {
-						return err
+						return nil, fmt.Errorf("d2raster: node %q stroke join geometry: %w", nodeID, err)
 					}
 				}
-				return nil
-			})
-			if err != nil {
-				return nil, fmt.Errorf("d2raster: node %q stroke join geometry: %w", nodeID, err)
+				incoming, incomingOK = outgoing, outgoingOK
 			}
 		}
 	}
@@ -1209,7 +1509,7 @@ func prepareAnimatedStrokeWithPaint(stroke *d2scene.Stroke, animatedColor *color
 		cap:        stroke.Cap,
 		join:       stroke.Join,
 		miterLimit: miterLimit,
-		dashes:     append([]float64(nil), stroke.Dashes...),
+		dashes:     stroke.Dashes,
 		dashOffset: dashOffset,
 	}, nil
 }
@@ -1267,14 +1567,10 @@ func drawPrimitive(ctx context.Context, dst *image.RGBA, primitive *preparedPrim
 			}
 		} else {
 			bounds := subpathPixelBounds(primitive.subpaths, primitive.transform, 0, dst.Bounds())
-			err := drawGradientMask(ctx, dst, bounds, primitive.fill, scratch, func(mask *image.Alpha) error {
-				rasterizer := scratch.reset(mask.Bounds())
+			err := drawRasterizedPaint(ctx, dst, bounds, primitive.fill, scratch, "gradient fill", func(rasterizer *scanline.Rasterizer) error {
 				shifted := d2scene.Translate(-float64(bounds.Min.X), -float64(bounds.Min.Y)).Mul(primitive.transform)
 				for _, path := range primitive.subpaths {
 					addFillSubpath(rasterizer, path, shifted)
-				}
-				if err := rasterizer.WriteAlpha(ctx, scratch.workBudget(), mask); err != nil {
-					return fmt.Errorf("d2raster: gradient fill: %w", err)
 				}
 				return ctx.Err()
 			})

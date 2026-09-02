@@ -174,11 +174,15 @@ func TestBuildReusesBundledNotoAcrossConcurrentBuilds(t *testing.T) {
 		}
 	}
 	if ids[0] != ids[1] || &assets[0].Data[0] != &assets[1].Data[0] {
-		t.Fatalf("cross-build bundled assets do not share one stable immutable resource: ids=%q/%q", ids[0], ids[1])
+		t.Fatalf("cross-build bundled assets do not share one resolver-owned resource: ids=%q/%q", ids[0], ids[1])
+	}
+	const notoColorEmojiBytes = 4_991_984
+	if len(assets[0].Data) != notoColorEmojiBytes {
+		t.Fatalf("bundled Noto bytes = %d, want %d", len(assets[0].Data), notoColorEmojiBytes)
 	}
 	stats, ok := fontfallback.CacheStatsFor(resolver)
-	if !ok || stats.Assets != 1 || stats.Hashes != 1 || stats.Copies != 1 || stats.CopiedBytes != int64(len(assets[0].Data)) {
-		t.Fatalf("bundled scene cache stats = %+v/%v, want one asset/hash/copy of %d bytes", stats, ok, len(assets[0].Data))
+	if !ok || stats.Assets != 1 || stats.Hashes != 1 || stats.Copies != 1 || stats.CopiedBytes != notoColorEmojiBytes {
+		t.Fatalf("bundled scene cache stats = %+v/%v, want one resolver-owned copy", stats, ok)
 	}
 
 	callerOwned, err := resolver.ResolveFallbacks(context.Background(), d2fonts.FallbackRequest{Runes: []rune{'✅'}})

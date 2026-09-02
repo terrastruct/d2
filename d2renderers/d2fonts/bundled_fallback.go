@@ -48,14 +48,11 @@ type BundledFallbackResolver struct {
 	next   FallbackResolver
 	limits BundledFallbackLimits
 
-	resolveOnce sync.Once
-	resolveGate chan struct{}
-	work        bundledFallbackWork
-	// go-text faces own mutable lookup caches. resolveGate serializes every use
-	// of this resolver-local coverage face while returned font bytes remain
-	// independently cloned and cumulatively charged below.
-	bundledFace *fontface.ParsedFace
-	loadBundled func() ([]byte, error)
+	resolveOnce   sync.Once
+	resolveGate   chan struct{}
+	work          bundledFallbackWork
+	bundledSource *fontface.BundledNotoColorEmojiSource
+	loadBundled   func() ([]byte, error)
 }
 
 type bundledFallbackWork struct {
@@ -140,16 +137,19 @@ func (r *BundledFallbackResolver) resolve(ctx context.Context, request FallbackR
 		if err != nil {
 			return nil, err
 		}
-		if len(data) != 0 && r.bundledFace == nil {
-			face, err := fontface.ParseFace(data, 0)
+		if len(data) != 0 && r.bundledSource == nil {
+			source, matched, err := fontface.RegisteredBundledNotoColorEmoji(data, 0)
 			if err != nil {
 				return nil, fmt.Errorf("d2fonts: parse bundled Noto Color Emoji face: %w", err)
 			}
-			r.bundledFace = face
+			if !matched {
+				return nil, fmt.Errorf("d2fonts: bundled Noto Color Emoji face is not authenticated")
+			}
+			r.bundledSource = source
 		}
 		var covered []rune
-		if r.bundledFace != nil {
-			covered, err = coveredBundledRunes(ctx, r.bundledFace, remaining)
+		if r.bundledSource != nil {
+			covered, err = coveredBundledRunes(ctx, r.bundledSource, remaining)
 			if err != nil {
 				return nil, err
 			}
@@ -160,7 +160,7 @@ func (r *BundledFallbackResolver) resolve(ctx context.Context, request FallbackR
 				if r.sceneCache == nil {
 					return nil, fmt.Errorf("d2fonts: bundled fallback scene cache is unavailable")
 				}
-				sceneFace, err := r.bundledFace.Clone()
+				sceneFace, err := r.bundledSource.CloneReadOnly()
 				if err != nil {
 					return nil, fmt.Errorf("d2fonts: clone bundled Noto Color Emoji face: %w", err)
 				}
@@ -255,7 +255,7 @@ func shouldTryBundledEmoji(values map[rune]struct{}) bool {
 	return false
 }
 
-func coveredBundledRunes(ctx context.Context, face *fontface.ParsedFace, values map[rune]struct{}) ([]rune, error) {
+func coveredBundledRunes(ctx context.Context, source *fontface.BundledNotoColorEmojiSource, values map[rune]struct{}) ([]rune, error) {
 	covered := make([]rune, 0)
 	index := 0
 	for value := range values {
@@ -264,7 +264,7 @@ func coveredBundledRunes(ctx context.Context, face *fontface.ParsedFace, values 
 				return nil, err
 			}
 		}
-		supported, err := face.SupportsRenderableRune(value)
+		supported, err := source.SupportsRenderableRune(value)
 		if err != nil {
 			return nil, err
 		}

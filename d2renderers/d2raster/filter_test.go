@@ -78,6 +78,153 @@ func TestGaussianBlurPixelsAndDegenerateIdentity(t *testing.T) {
 	}
 }
 
+func TestBoxBlurMatchesDirectConvolution(t *testing.T) {
+	t.Parallel()
+
+	sourceBounds := image.Rect(-3, 2, 8, 9)
+	rgbaParent := image.NewRGBA(image.Rect(-7, -2, 13, 13))
+	rgbaSource := rgbaParent.SubImage(sourceBounds).(*image.RGBA)
+	alphaParent := image.NewAlpha(image.Rect(-7, -2, 13, 13))
+	alphaSource := alphaParent.SubImage(sourceBounds).(*image.Alpha)
+	for y := sourceBounds.Min.Y; y < sourceBounds.Max.Y; y++ {
+		for x := sourceBounds.Min.X; x < sourceBounds.Max.X; x++ {
+			alpha := uint8(64 + (x-sourceBounds.Min.X)*7 + (y-sourceBounds.Min.Y)*5)
+			offset := rgbaSource.PixOffset(x, y)
+			rgbaSource.Pix[offset] = alpha / 2
+			rgbaSource.Pix[offset+1] = alpha / 3
+			rgbaSource.Pix[offset+2] = alpha / 4
+			rgbaSource.Pix[offset+3] = alpha
+			alphaSource.Pix[alphaSource.PixOffset(x, y)] = alpha
+		}
+	}
+
+	for _, test := range []struct {
+		name   string
+		axis   blurAxis
+		bounds image.Rectangle
+	}{
+		{name: "horizontal padded rows", axis: blurHorizontal, bounds: image.Rect(-6, 0, 11, 11)},
+		{name: "vertical padded columns", axis: blurVertical, bounds: image.Rect(-6, -1, 11, 12)},
+	} {
+		for _, radius := range []int{1, 2, 5} {
+			t.Run(fmt.Sprintf("%s/radius=%d", test.name, radius), func(t *testing.T) {
+				pass := blurPass{axis: test.axis, radius: radius, bounds: test.bounds}
+
+				rgbaDestination := paddedRGBA(test.bounds)
+				if err := boxBlurRGBA(context.Background(), rgbaDestination, rgbaSource, pass); err != nil {
+					t.Fatal(err)
+				}
+				rgbaReference := directBlurRGBA(test.bounds, rgbaSource, pass)
+				assertRawRGBAEqual(t, rgbaDestination, rgbaReference)
+
+				fromRGBADestination := paddedAlpha(test.bounds)
+				if err := boxBlurAlphaFromRGBA(context.Background(), fromRGBADestination, rgbaSource, pass); err != nil {
+					t.Fatal(err)
+				}
+				fromRGBAReference := directBlurAlpha(test.bounds, rgbaSource.Bounds(), func(x, y int) uint8 {
+					return rgbaSource.Pix[rgbaSource.PixOffset(x, y)+3]
+				}, pass)
+				assertRawAlphaEqual(t, fromRGBADestination, fromRGBAReference)
+
+				alphaDestination := paddedAlpha(test.bounds)
+				if err := boxBlurAlpha(context.Background(), alphaDestination, alphaSource, pass); err != nil {
+					t.Fatal(err)
+				}
+				alphaReference := directBlurAlpha(test.bounds, alphaSource.Bounds(), func(x, y int) uint8 {
+					return alphaSource.Pix[alphaSource.PixOffset(x, y)]
+				}, pass)
+				assertRawAlphaEqual(t, alphaDestination, alphaReference)
+			})
+		}
+	}
+}
+
+func paddedRGBA(bounds image.Rectangle) *image.RGBA {
+	parent := image.NewRGBA(image.Rect(bounds.Min.X-2, bounds.Min.Y-2, bounds.Max.X+3, bounds.Max.Y+3))
+	return parent.SubImage(bounds).(*image.RGBA)
+}
+
+func paddedAlpha(bounds image.Rectangle) *image.Alpha {
+	parent := image.NewAlpha(image.Rect(bounds.Min.X-2, bounds.Min.Y-2, bounds.Max.X+3, bounds.Max.Y+3))
+	return parent.SubImage(bounds).(*image.Alpha)
+}
+
+func directBlurRGBA(bounds image.Rectangle, source *image.RGBA, pass blurPass) *image.RGBA {
+	destination := image.NewRGBA(bounds)
+	window := int64(pass.radius)*2 + 1
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+		for x := bounds.Min.X; x < bounds.Max.X; x++ {
+			var sums [4]int64
+			for delta := -pass.radius; delta <= pass.radius; delta++ {
+				sampleX, sampleY := x, y
+				if pass.axis == blurHorizontal {
+					sampleX += delta
+				} else {
+					sampleY += delta
+				}
+				if !image.Pt(sampleX, sampleY).In(source.Bounds()) {
+					continue
+				}
+				offset := source.PixOffset(sampleX, sampleY)
+				for channel := range 4 {
+					sums[channel] += int64(source.Pix[offset+channel])
+				}
+			}
+			offset := destination.PixOffset(x, y)
+			for channel := range 4 {
+				destination.Pix[offset+channel] = uint8((sums[channel] + window/2) / window)
+			}
+		}
+	}
+	return destination
+}
+
+func directBlurAlpha(bounds, sourceBounds image.Rectangle, sample func(int, int) uint8, pass blurPass) *image.Alpha {
+	destination := image.NewAlpha(bounds)
+	window := int64(pass.radius)*2 + 1
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+		for x := bounds.Min.X; x < bounds.Max.X; x++ {
+			sum := int64(0)
+			for delta := -pass.radius; delta <= pass.radius; delta++ {
+				sampleX, sampleY := x, y
+				if pass.axis == blurHorizontal {
+					sampleX += delta
+				} else {
+					sampleY += delta
+				}
+				if image.Pt(sampleX, sampleY).In(sourceBounds) {
+					sum += int64(sample(sampleX, sampleY))
+				}
+			}
+			destination.Pix[destination.PixOffset(x, y)] = uint8((sum + window/2) / window)
+		}
+	}
+	return destination
+}
+
+func assertRawRGBAEqual(t *testing.T, got, want *image.RGBA) {
+	t.Helper()
+	for y := want.Bounds().Min.Y; y < want.Bounds().Max.Y; y++ {
+		for x := want.Bounds().Min.X; x < want.Bounds().Max.X; x++ {
+			gotOffset, wantOffset := got.PixOffset(x, y), want.PixOffset(x, y)
+			if !bytes.Equal(got.Pix[gotOffset:gotOffset+4], want.Pix[wantOffset:wantOffset+4]) {
+				t.Fatalf("pixel (%d,%d) = %v, want %v", x, y, got.Pix[gotOffset:gotOffset+4], want.Pix[wantOffset:wantOffset+4])
+			}
+		}
+	}
+}
+
+func assertRawAlphaEqual(t *testing.T, got, want *image.Alpha) {
+	t.Helper()
+	for y := want.Bounds().Min.Y; y < want.Bounds().Max.Y; y++ {
+		for x := want.Bounds().Min.X; x < want.Bounds().Max.X; x++ {
+			if got.AlphaAt(x, y) != want.AlphaAt(x, y) {
+				t.Fatalf("pixel (%d,%d) = %d, want %d", x, y, got.AlphaAt(x, y).A, want.AlphaAt(x, y).A)
+			}
+		}
+	}
+}
+
 func TestDropShadowPixelsAndTransparentIdentity(t *testing.T) {
 	t.Parallel()
 
@@ -147,6 +294,377 @@ func TestDropShadowPixelsAndTransparentIdentity(t *testing.T) {
 		t.Fatal(err)
 	}
 	assertPixel(t, patternShadow.NRGBAAt(5, 5), color.NRGBA{A: 255})
+}
+
+func BenchmarkPaintDropShadow(b *testing.B) {
+	bounds := image.Rect(-257, 113, 255, 625)
+	sourceParent := image.NewRGBA(image.Rect(bounds.Min.X-3, bounds.Min.Y-2, bounds.Max.X+5, bounds.Max.Y+4))
+	source := sourceParent.SubImage(bounds).(*image.RGBA)
+	alphaParent := image.NewAlpha(image.Rect(bounds.Min.X-5, bounds.Min.Y-4, bounds.Max.X+7, bounds.Max.Y+6))
+	alpha := alphaParent.SubImage(bounds).(*image.Alpha)
+	destinationParent := image.NewRGBA(image.Rect(bounds.Min.X-2, bounds.Min.Y-3, bounds.Max.X+4, bounds.Max.Y+5))
+	destination := destinationParent.SubImage(bounds).(*image.RGBA)
+	state := uint32(42)
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+		for x := bounds.Min.X; x < bounds.Max.X; x++ {
+			state = state*1664525 + 1013904223
+			value := uint8(state>>24 | 1)
+			source.Pix[source.PixOffset(x, y)+3] = value
+			alpha.Pix[alpha.PixOffset(x, y)] = value
+		}
+	}
+	shadow := color.NRGBA{R: 29, G: 97, B: 211, A: 173}
+	for _, test := range []struct {
+		name    string
+		blurred *image.Alpha
+	}{
+		{name: "RGBA", blurred: nil},
+		{name: "Alpha", blurred: alpha},
+	} {
+		for _, offset := range []struct {
+			name string
+			x, y float64
+		}{
+			{name: "Fractional", x: .375, y: -.625},
+			{name: "Integer", x: 3, y: -5},
+		} {
+			b.Run(test.name+"/"+offset.name+"/DirectPixels", func(b *testing.B) {
+				b.ReportAllocs()
+				for range b.N {
+					if err := paintDropShadow(context.Background(), destination, source, test.blurred, offset.x, offset.y, shadow); err != nil {
+						b.Fatal(err)
+					}
+				}
+			})
+			b.Run(test.name+"/"+offset.name+"/ClosureOracle", func(b *testing.B) {
+				b.ReportAllocs()
+				for range b.N {
+					if err := referencePaintDropShadow(context.Background(), destination, source, test.blurred, offset.x, offset.y, shadow); err != nil {
+						b.Fatal(err)
+					}
+				}
+			})
+		}
+	}
+}
+
+func BenchmarkPaintDropShadowSmall(b *testing.B) {
+	for _, size := range []int{1, 4, 16} {
+		bounds := image.Rect(0, 0, size, size)
+		source := image.NewRGBA(bounds)
+		destination := image.NewRGBA(bounds)
+		for pixel := 3; pixel < len(source.Pix); pixel += 4 {
+			source.Pix[pixel] = uint8(pixel*37 | 1)
+		}
+		shadow := color.NRGBA{R: 29, G: 97, B: 211, A: 173}
+		b.Run(fmt.Sprintf("%dx%d", size, size), func(b *testing.B) {
+			b.Run("DirectPixels", func(b *testing.B) {
+				b.ReportAllocs()
+				for range b.N {
+					if err := paintDropShadow(context.Background(), destination, source, nil, 0, 0, shadow); err != nil {
+						b.Fatal(err)
+					}
+				}
+			})
+			b.Run("ClosureOracle", func(b *testing.B) {
+				b.ReportAllocs()
+				for range b.N {
+					if err := referencePaintDropShadow(context.Background(), destination, source, nil, 0, 0, shadow); err != nil {
+						b.Fatal(err)
+					}
+				}
+			})
+		})
+	}
+}
+
+func TestShadowAlphaDirectPixelsMatchClosureOracle(t *testing.T) {
+	t.Parallel()
+	for _, bounds := range []image.Rectangle{
+		image.Rect(-13, -9, 11, 17),
+		image.Rect(5, 7, 29, 33),
+	} {
+		rgbaParent := image.NewRGBA(image.Rect(bounds.Min.X-3, bounds.Min.Y-2, bounds.Max.X+5, bounds.Max.Y+4))
+		rgba := rgbaParent.SubImage(bounds).(*image.RGBA)
+		alphaParent := image.NewAlpha(image.Rect(bounds.Min.X-5, bounds.Min.Y-4, bounds.Max.X+7, bounds.Max.Y+6))
+		alpha := alphaParent.SubImage(bounds).(*image.Alpha)
+		state := uint32(42)
+		for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+			for x := bounds.Min.X; x < bounds.Max.X; x++ {
+				state = state*1664525 + 1013904223
+				value := uint8(state >> 24)
+				rgba.Pix[rgba.PixOffset(x, y)+3] = value
+				alpha.Pix[alpha.PixOffset(x, y)] = value
+			}
+		}
+
+		coordinates := []float64{
+			math.Inf(-1), -math.MaxFloat64,
+			float64(bounds.Min.X) - 1.25, float64(bounds.Min.X) - 1,
+			float64(bounds.Min.X) - .999, float64(bounds.Min.X) - .5,
+			float64(bounds.Min.X), float64(bounds.Min.X) + .125,
+			float64(bounds.Min.X+bounds.Dx()/2) + .375,
+			float64(bounds.Max.X) - 1, float64(bounds.Max.X) - .25,
+			float64(bounds.Max.X), float64(bounds.Max.X) + .25,
+			math.MaxFloat64, math.Inf(1), math.NaN(),
+		}
+		for _, test := range []struct {
+			name    string
+			blurred *image.Alpha
+			sample  func(float64, float64) uint8
+		}{
+			{name: "RGBA", sample: func(x, y float64) uint8 { return sampleShadowAlphaRGBA(rgba, x, y) }},
+			{name: "Alpha", blurred: alpha, sample: func(x, y float64) uint8 { return sampleShadowAlphaImage(alpha, x, y) }},
+		} {
+			t.Run(fmt.Sprintf("%v/%s", bounds, test.name), func(t *testing.T) {
+				for _, y := range coordinates {
+					for _, x := range coordinates {
+						got := test.sample(x, y)
+						want := referenceSampleShadowAlpha(rgba, test.blurred, x, y)
+						if got != want {
+							t.Fatalf("sample (%v,%v) = %d, want %d", x, y, got, want)
+						}
+					}
+				}
+				state := uint32(19)
+				for sample := 0; sample < 20_000; sample++ {
+					state = state*1664525 + 1013904223
+					x := float64(bounds.Min.X-2) + float64(state)/float64(^uint32(0))*float64(bounds.Dx()+4)
+					state = state*1664525 + 1013904223
+					y := float64(bounds.Min.Y-2) + float64(state)/float64(^uint32(0))*float64(bounds.Dy()+4)
+					got := test.sample(x, y)
+					want := referenceSampleShadowAlpha(rgba, test.blurred, x, y)
+					if got != want {
+						t.Fatalf("random sample %d at (%v,%v) = %d, want %d", sample, x, y, got, want)
+					}
+				}
+			})
+		}
+	}
+}
+
+func TestPaintDropShadowDirectPixelsMatchClosureOracle(t *testing.T) {
+	t.Parallel()
+	for _, bounds := range []image.Rectangle{
+		image.Rect(-19, -11, 17, 23),
+		image.Rect(5, 7, 41, 41),
+	} {
+		sourceParent := image.NewRGBA(image.Rect(bounds.Min.X-4, bounds.Min.Y-3, bounds.Max.X+6, bounds.Max.Y+5))
+		source := sourceParent.SubImage(bounds).(*image.RGBA)
+		alphaParent := image.NewAlpha(image.Rect(bounds.Min.X-2, bounds.Min.Y-5, bounds.Max.X+4, bounds.Max.Y+7))
+		alpha := alphaParent.SubImage(bounds).(*image.Alpha)
+		state := uint32(42)
+		for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+			for x := bounds.Min.X; x < bounds.Max.X; x++ {
+				state = state*1664525 + 1013904223
+				value := uint8(state >> 24)
+				source.Pix[source.PixOffset(x, y)+3] = value
+				alpha.Pix[alpha.PixOffset(x, y)] = value
+			}
+		}
+		for _, offset := range []struct{ x, y float64 }{
+			{x: 0, y: 0},
+			{x: 3, y: -5},
+			{x: -17, y: 19},
+			{x: float64(bounds.Dx()), y: -float64(bounds.Dy())},
+			{x: .375, y: -.625},
+			{x: -3.25, y: 2.75},
+			{x: float64(bounds.Dx()) + .5, y: -float64(bounds.Dy()) - .5},
+			{x: math.MaxFloat64, y: -math.MaxFloat64},
+			{x: math.Inf(1), y: math.NaN()},
+		} {
+			for _, test := range []struct {
+				name    string
+				blurred *image.Alpha
+			}{
+				{name: "RGBA"},
+				{name: "Alpha", blurred: alpha},
+			} {
+				t.Run(fmt.Sprintf("%v/%s/%g,%g", bounds, test.name, offset.x, offset.y), func(t *testing.T) {
+					parentBounds := image.Rect(bounds.Min.X-3, bounds.Min.Y-2, bounds.Max.X+5, bounds.Max.Y+4)
+					gotParent := image.NewRGBA(parentBounds)
+					wantParent := image.NewRGBA(parentBounds)
+					for index := range gotParent.Pix {
+						gotParent.Pix[index] = uint8(index*37 + 11)
+					}
+					copy(wantParent.Pix, gotParent.Pix)
+					got := gotParent.SubImage(bounds).(*image.RGBA)
+					want := wantParent.SubImage(bounds).(*image.RGBA)
+					shadow := color.NRGBA{R: 29, G: 97, B: 211, A: 173}
+					if err := paintDropShadow(context.Background(), got, source, test.blurred, offset.x, offset.y, shadow); err != nil {
+						t.Fatal(err)
+					}
+					if err := referencePaintDropShadow(context.Background(), want, source, test.blurred, offset.x, offset.y, shadow); err != nil {
+						t.Fatal(err)
+					}
+					if !bytes.Equal(gotParent.Pix, wantParent.Pix) {
+						t.Fatal("direct-pixel painting differs from closure oracle or changed stride padding")
+					}
+				})
+			}
+		}
+	}
+}
+
+func TestPaintDropShadowDirectPixelsCancellation(t *testing.T) {
+	t.Parallel()
+	bounds := image.Rect(-9, -7, 23, 25)
+	source := image.NewRGBA(bounds)
+	alpha := image.NewAlpha(bounds)
+	for index := 3; index < len(source.Pix); index += 4 {
+		source.Pix[index] = 255
+	}
+	for index := range alpha.Pix {
+		alpha.Pix[index] = 255
+	}
+	for _, offset := range []struct{ x, y float64 }{{x: .375, y: -.625}, {x: 3, y: -5}} {
+		for _, blurred := range []*image.Alpha{nil, alpha} {
+			got := image.NewRGBA(bounds)
+			want := image.NewRGBA(bounds)
+			gotContext := &cancelAfterContext{after: 2}
+			wantContext := &cancelAfterContext{after: 2}
+			gotErr := paintDropShadow(gotContext, got, source, blurred, offset.x, offset.y, color.NRGBA{A: 255})
+			wantErr := referencePaintDropShadow(wantContext, want, source, blurred, offset.x, offset.y, color.NRGBA{A: 255})
+			if !errors.Is(gotErr, context.Canceled) || !errors.Is(wantErr, context.Canceled) {
+				t.Fatalf("offset (%g,%g) cancellation errors = (%v, %v), want context.Canceled", offset.x, offset.y, gotErr, wantErr)
+			}
+			if gotContext.calls != wantContext.calls || !bytes.Equal(got.Pix, want.Pix) {
+				t.Fatalf("offset (%g,%g) cancellation checkpoint/output differs: calls %d/%d", offset.x, offset.y, gotContext.calls, wantContext.calls)
+			}
+		}
+	}
+}
+
+func TestPaintDropShadowIntegerFallsBackOutsideExactFloatDomain(t *testing.T) {
+	t.Parallel()
+	if int64(platformMaxInt()) <= int64(1)<<53 {
+		t.Skip("requires 64-bit image coordinates outside float64's exact integer domain")
+	}
+
+	far := -(int64(1) << 53) - 1024
+	bounds := image.Rect(int(far), 0, int(far+2), 1)
+	offsetX := float64(-far)
+	if translated, ok := exactIntegerTranslatedBounds(bounds, offsetX, 0); ok {
+		t.Fatalf("translated bounds = %v, want float-aliasing fallback", translated)
+	}
+
+	source := image.NewRGBA(bounds)
+	source.Pix[3], source.Pix[7] = 31, 223
+	alpha := image.NewAlpha(bounds)
+	alpha.Pix[0], alpha.Pix[1] = 47, 211
+	for _, test := range []struct {
+		name    string
+		blurred *image.Alpha
+	}{
+		{name: "RGBA"},
+		{name: "Alpha", blurred: alpha},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			got := image.NewRGBA(image.Rect(0, 0, 2, 1))
+			want := image.NewRGBA(got.Bounds())
+			shadow := color.NRGBA{R: 29, G: 97, B: 211, A: 173}
+			if err := paintDropShadow(context.Background(), got, source, test.blurred, offsetX, 0, shadow); err != nil {
+				t.Fatal(err)
+			}
+			if err := referencePaintDropShadow(context.Background(), want, source, test.blurred, offsetX, 0, shadow); err != nil {
+				t.Fatal(err)
+			}
+			if !bytes.Equal(got.Pix, want.Pix) {
+				t.Fatalf("direct-pixel painting differs from float-sampling oracle: got %v, want %v", got.Pix, want.Pix)
+			}
+		})
+	}
+}
+
+func TestPaintDropShadowIntegerFallsBackForInexactDestinationCoordinates(t *testing.T) {
+	t.Parallel()
+	if int64(platformMaxInt()) <= int64(1)<<53 {
+		t.Skip("requires 64-bit image coordinates outside float64's exact integer domain")
+	}
+
+	exactMin := -(int64(1) << 53)
+	source := image.NewRGBA(image.Rect(int(exactMin), 0, int(exactMin+2), 1))
+	source.Pix[3], source.Pix[7] = 31, 223
+	destinationBounds := image.Rect(int(exactMin-1), 0, int(exactMin+2), 1)
+	got := image.NewRGBA(destinationBounds)
+	want := image.NewRGBA(destinationBounds)
+	shadow := color.NRGBA{R: 29, G: 97, B: 211, A: 173}
+	if err := paintDropShadow(context.Background(), got, source, nil, 0, 0, shadow); err != nil {
+		t.Fatal(err)
+	}
+	if err := referencePaintDropShadow(context.Background(), want, source, nil, 0, 0, shadow); err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(got.Pix, want.Pix) {
+		t.Fatalf("direct-pixel painting differs from float-sampling oracle: got %v, want %v", got.Pix, want.Pix)
+	}
+}
+
+func referencePaintDropShadow(ctx context.Context, destination, source *image.RGBA, blurred *image.Alpha, offsetX, offsetY float64, shadow color.NRGBA) error {
+	for y := destination.Bounds().Min.Y; y < destination.Bounds().Max.Y; y++ {
+		if (y-destination.Bounds().Min.Y)&31 == 0 {
+			if err := ctx.Err(); err != nil {
+				return err
+			}
+		}
+		for x := destination.Bounds().Min.X; x < destination.Bounds().Max.X; x++ {
+			if (x-destination.Bounds().Min.X)&1023 == 0 {
+				if err := ctx.Err(); err != nil {
+					return err
+				}
+			}
+			alpha := referenceSampleShadowAlpha(source, blurred, float64(x)-offsetX, float64(y)-offsetY)
+			if alpha == 0 {
+				continue
+			}
+			shadowAlpha := uint8((uint32(alpha)*uint32(shadow.A) + 127) / 255)
+			offset := destination.PixOffset(x, y)
+			destination.Pix[offset] = uint8((uint32(shadow.R)*uint32(shadowAlpha) + 127) / 255)
+			destination.Pix[offset+1] = uint8((uint32(shadow.G)*uint32(shadowAlpha) + 127) / 255)
+			destination.Pix[offset+2] = uint8((uint32(shadow.B)*uint32(shadowAlpha) + 127) / 255)
+			destination.Pix[offset+3] = shadowAlpha
+		}
+	}
+	return ctx.Err()
+}
+
+func referenceSampleShadowAlpha(source *image.RGBA, blurred *image.Alpha, x, y float64) uint8 {
+	var bounds image.Rectangle
+	var sample func(int, int) uint8
+	if blurred == nil {
+		bounds = source.Bounds()
+		sample = func(px, py int) uint8 {
+			if px < bounds.Min.X || px >= bounds.Max.X || py < bounds.Min.Y || py >= bounds.Max.Y {
+				return 0
+			}
+			return source.Pix[source.PixOffset(px, py)+3]
+		}
+	} else {
+		bounds = blurred.Bounds()
+		sample = func(px, py int) uint8 {
+			if px < bounds.Min.X || px >= bounds.Max.X || py < bounds.Min.Y || py >= bounds.Max.Y {
+				return 0
+			}
+			return blurred.Pix[blurred.PixOffset(px, py)]
+		}
+	}
+	if !finite(x) || !finite(y) ||
+		x < float64(bounds.Min.X)-1 || x >= float64(bounds.Max.X) ||
+		y < float64(bounds.Min.Y)-1 || y >= float64(bounds.Max.Y) {
+		return 0
+	}
+	x0, y0 := int(math.Floor(x)), int(math.Floor(y))
+	fx, fy := x-float64(x0), y-float64(y0)
+	if fx == 0 && fy == 0 {
+		return sample(x0, y0)
+	}
+	a00 := float64(sample(x0, y0))
+	a10 := float64(sample(x0+1, y0))
+	a01 := float64(sample(x0, y0+1))
+	a11 := float64(sample(x0+1, y0+1))
+	top := a00 + (a10-a00)*fx
+	bottom := a01 + (a11-a01)*fx
+	return roundedByte(top + (bottom-top)*fy)
 }
 
 func TestFiltersRespectDeclaredOrder(t *testing.T) {
@@ -540,7 +1058,7 @@ func TestGaussianBlurCancellationReleasesLayers(t *testing.T) {
 	for offset := 3; offset < len(input.image.Pix); offset += 4 {
 		input.image.Pix[offset] = 255
 	}
-	_, err = applyPreparedFilter(&cancelAfterContext{after: 2}, input, prepared.root.filters[0], scratch)
+	err = applyPreparedFilter(&cancelAfterContext{after: 2}, &input, prepared.root.filters[0], scratch)
 	if !errors.Is(err, context.Canceled) {
 		t.Fatalf("canceled Gaussian error = %v, want context.Canceled", err)
 	}
@@ -552,14 +1070,13 @@ func TestGaussianBlurCancellationReleasesLayers(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	output, err := applyPreparedFilter(context.Background(), input, prepared.root.filters[0], scratch)
-	if err != nil {
+	if err := applyPreparedFilter(context.Background(), &input, prepared.root.filters[0], scratch); err != nil {
 		t.Fatalf("retry Gaussian filter: %v", err)
 	}
-	if scratch.offscreen.live != output.reservation {
-		t.Fatalf("retry live bytes = %d, want output reservation %d", scratch.offscreen.live, output.reservation)
+	if scratch.offscreen.live != input.reservation {
+		t.Fatalf("retry live bytes = %d, want output reservation %d", scratch.offscreen.live, input.reservation)
 	}
-	output.release()
+	input.release()
 	if scratch.offscreen.live != 0 {
 		t.Fatalf("released retry retained %d bytes", scratch.offscreen.live)
 	}

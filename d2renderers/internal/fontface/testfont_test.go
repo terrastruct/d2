@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func testFontData(t *testing.T, name string) []byte {
+func testFontData(t testing.TB, name string) []byte {
 	t.Helper()
 	data, err := os.ReadFile(filepath.Join("..", "..", "d2fonts", "ttf", name))
 	if err != nil {

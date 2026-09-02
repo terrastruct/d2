@@ -1,15 +1,16 @@
 // Package scanline rasterizes D2's closed vector paths with non-zero winding.
 //
 // The implementation is deliberately specialized for D2's renderer: paths are
-// consumed in device coordinates and painted either as a uniform color into an
-// RGBA image or as coverage into an Alpha image. Each directed edge contributes
-// its exact signed area to the pixels it crosses; a row-sized difference buffer
-// carries winding across interior spans. This avoids both supersampling and a
-// canvas-sized accumulation image.
+// consumed in device coordinates and painted as a uniform color, written to an
+// Alpha image, or exposed row-wise for direct paint compositing. Each directed
+// edge contributes its exact signed area to the pixels it crosses; a row-sized
+// difference buffer carries winding across interior spans. This avoids both
+// supersampling and a canvas-sized accumulation image.
 package scanline
 
 import (
 	"context"
+	"encoding/binary"
 	"errors"
 	"image"
 	"image/color"
@@ -101,7 +102,7 @@ type Rasterizer struct {
 
 	edges      []edge
 	scanEdges  []scanEdge
-	active     []scanEdge
+	active     []int
 	rowHeads   []int
 	partial    []float32
 	difference []float32
@@ -147,6 +148,12 @@ func NewCounter(width, height, edgeLimit int) *Rasterizer {
 
 // Reset clears the current paths while retaining bounded scratch capacity.
 func (r *Rasterizer) Reset(width, height int) {
+	// Successful scanlines clear their touched range immediately. If drawing was
+	// interrupted, clear that same range while the old dimensions still describe
+	// the retained buffers; untouched storage is already zero.
+	if !r.countOnly {
+		r.clearTouched()
+	}
 	if width < 0 {
 		width = 0
 	}
@@ -192,7 +199,7 @@ func (r *Rasterizer) ReserveEdges(limit int) {
 		r.scanEdges = make([]scanEdge, 0, limit)
 	}
 	if cap(r.active) < limit {
-		r.active = make([]scanEdge, 0, limit)
+		r.active = make([]int, 0, limit)
 	}
 }
 
@@ -212,13 +219,11 @@ func (r *Rasterizer) resizeRows(width int) {
 		r.partial = make([]float32, width)
 	} else {
 		r.partial = r.partial[:width]
-		clear(r.partial)
 	}
 	if cap(r.difference) < width+1 {
 		r.difference = make([]float32, width+1)
 	} else {
 		r.difference = r.difference[:width+1]
-		clear(r.difference)
 	}
 }
 
@@ -451,7 +456,184 @@ func (r *Rasterizer) DrawRGBA(ctx context.Context, budget *WorkBudget, dst *imag
 	if dst == nil || r.width == 0 || r.height == 0 || len(r.edges) == 0 || paint.A == 0 {
 		return nil
 	}
+	// Sparse paths spend most of their painted rows in event-free interiors,
+	// where filling an opaque span is cheaper than per-pixel compositing. Dense
+	// compound paths have short spans and favor the general loop.
+	if paint.A == 0xff && len(r.edges) <= max(r.height, 8) {
+		sr, sg, sb, _ := paint.RGBA()
+		packedPaint := uint32(paint.R) | uint32(paint.G)<<8 | uint32(paint.B)<<16 | uint32(0xff)<<24
+		return r.rasterize(ctx, budget, func(y, minX, maxX int) error {
+			row := dst.PixOffset(dst.Rect.Min.X+minX, dst.Rect.Min.Y+y)
+			var winding float32
+			for x := minX; x < maxX; {
+				end := min(x+contextCheckInterval, maxX)
+				if x != minX {
+					if err := ctx.Err(); err != nil {
+						return err
+					}
+				}
+				for x < end {
+					winding += r.difference[x]
+					pixelCoverage := coverage(r.partial[x] + winding)
+					if pixelCoverage != 0 {
+						pixel := dst.Pix[row : row+4 : row+4]
+						if pixelCoverage == 0xff {
+							binary.LittleEndian.PutUint32(pixel, packedPaint)
+						} else {
+							maskAlpha := uint32(pixelCoverage)
+							maskAlpha |= maskAlpha << 8
+							inverse := (uint32(0xffff) - maskAlpha) * 0x101
+							pixel[0] = uint8((uint32(pixel[0])*inverse + sr*maskAlpha) / 0xffff >> 8)
+							pixel[1] = uint8((uint32(pixel[1])*inverse + sg*maskAlpha) / 0xffff >> 8)
+							pixel[2] = uint8((uint32(pixel[2])*inverse + sb*maskAlpha) / 0xffff >> 8)
+							pixel[3] = uint8((uint32(pixel[3])*inverse + uint32(0xffff)*maskAlpha) / 0xffff >> 8)
+						}
+					}
+					x++
+					row += 4
+
+					// Interior spans have no partial area or winding event. Consume
+					// each fully opaque or transparent span once instead of repeating
+					// coverage work for every pixel.
+					if x < end && zeroCoverageValues(r.partial[x], r.difference[x]) {
+						spanCoverage := coverage(winding)
+						if spanCoverage == 0 || spanCoverage == 0xff {
+							runEnd := x + 1
+							if end-runEnd >= 8 {
+								runEnd = zeroCoverageRunEnd(r.partial, r.difference, runEnd, end)
+							} else {
+								for runEnd < end && zeroCoverageValues(r.partial[runEnd], r.difference[runEnd]) {
+									runEnd++
+								}
+							}
+							byteEnd := row + (runEnd-x)*4
+							if spanCoverage == 0xff {
+								if runEnd-x >= 8 {
+									fillPackedRGBA(dst.Pix[row:byteEnd], packedPaint)
+								} else {
+									for fill := row; fill < byteEnd; fill += 4 {
+										binary.LittleEndian.PutUint32(dst.Pix[fill:fill+4], packedPaint)
+									}
+								}
+							}
+							row = byteEnd
+							x = runEnd
+						}
+					}
+				}
+			}
+			return nil
+		})
+	}
+	// Dense opaque paths do not benefit from searching for interior spans, but
+	// they still avoid the general source-alpha multiply and replace fully
+	// covered pixels directly.
+	if paint.A == 0xff {
+		sr, sg, sb, _ := paint.RGBA()
+		packedPaint := uint32(paint.R) | uint32(paint.G)<<8 | uint32(paint.B)<<16 | uint32(0xff)<<24
+		return r.rasterize(ctx, budget, func(y, minX, maxX int) error {
+			row := dst.PixOffset(dst.Rect.Min.X+minX, dst.Rect.Min.Y+y)
+			var winding float32
+			for x := minX; x < maxX; {
+				end := min(x+contextCheckInterval, maxX)
+				if x != minX {
+					if err := ctx.Err(); err != nil {
+						return err
+					}
+				}
+				for ; x < end; x++ {
+					winding += r.difference[x]
+					pixelCoverage := coverage(r.partial[x] + winding)
+					if pixelCoverage == 0 {
+						row += 4
+						continue
+					}
+					pixel := dst.Pix[row : row+4 : row+4]
+					if pixelCoverage == 0xff {
+						binary.LittleEndian.PutUint32(pixel, packedPaint)
+					} else {
+						maskAlpha := uint32(pixelCoverage)
+						maskAlpha |= maskAlpha << 8
+						inverse := (uint32(0xffff) - maskAlpha) * 0x101
+						pixel[0] = uint8((uint32(pixel[0])*inverse + sr*maskAlpha) / 0xffff >> 8)
+						pixel[1] = uint8((uint32(pixel[1])*inverse + sg*maskAlpha) / 0xffff >> 8)
+						pixel[2] = uint8((uint32(pixel[2])*inverse + sb*maskAlpha) / 0xffff >> 8)
+						pixel[3] = uint8((uint32(pixel[3])*inverse + uint32(0xffff)*maskAlpha) / 0xffff >> 8)
+					}
+					row += 4
+				}
+			}
+			return nil
+		})
+	}
 	sr, sg, sb, sa := paint.RGBA()
+	if len(r.edges) <= max(r.height, 8) {
+		return r.rasterize(ctx, budget, func(y, minX, maxX int) error {
+			row := dst.PixOffset(dst.Rect.Min.X+minX, dst.Rect.Min.Y+y)
+			var winding float32
+			for x := minX; x < maxX; {
+				end := min(x+contextCheckInterval, maxX)
+				if x != minX {
+					if err := ctx.Err(); err != nil {
+						return err
+					}
+				}
+				for x < end {
+					winding += r.difference[x]
+					pixelCoverage := coverage(r.partial[x] + winding)
+					if pixelCoverage != 0 {
+						maskAlpha := uint32(pixelCoverage)
+						maskAlpha |= maskAlpha << 8
+						inverse := (uint32(0xffff) - sa*maskAlpha/0xffff) * 0x101
+						pixel := dst.Pix[row : row+4 : row+4]
+						pixel[0] = uint8((uint32(pixel[0])*inverse + sr*maskAlpha) / 0xffff >> 8)
+						pixel[1] = uint8((uint32(pixel[1])*inverse + sg*maskAlpha) / 0xffff >> 8)
+						pixel[2] = uint8((uint32(pixel[2])*inverse + sb*maskAlpha) / 0xffff >> 8)
+						pixel[3] = uint8((uint32(pixel[3])*inverse + sa*maskAlpha) / 0xffff >> 8)
+					}
+					x++
+					row += 4
+
+					// Between winding events, coverage is constant. Skip transparent
+					// interiors in chunks; for painted spans, reuse the exact source-over
+					// coefficients while checking for the next event.
+					if x < end && zeroCoverageValues(r.partial[x], r.difference[x]) {
+						spanCoverage := coverage(winding)
+						if spanCoverage == 0 {
+							runEnd := x + 1
+							if end-runEnd >= 8 {
+								runEnd = zeroCoverageRunEnd(r.partial, r.difference, runEnd, end)
+							} else {
+								for runEnd < end && zeroCoverageValues(r.partial[runEnd], r.difference[runEnd]) {
+									runEnd++
+								}
+							}
+							row += (runEnd - x) * 4
+							x = runEnd
+							continue
+						}
+						maskAlpha := uint32(spanCoverage)
+						maskAlpha |= maskAlpha << 8
+						inverse := (uint32(0xffff) - sa*maskAlpha/0xffff) * 0x101
+						red := sr * maskAlpha
+						green := sg * maskAlpha
+						blue := sb * maskAlpha
+						alpha := sa * maskAlpha
+						for x < end && zeroCoverageValues(r.partial[x], r.difference[x]) {
+							pixel := dst.Pix[row : row+4 : row+4]
+							pixel[0] = uint8((uint32(pixel[0])*inverse + red) / 0xffff >> 8)
+							pixel[1] = uint8((uint32(pixel[1])*inverse + green) / 0xffff >> 8)
+							pixel[2] = uint8((uint32(pixel[2])*inverse + blue) / 0xffff >> 8)
+							pixel[3] = uint8((uint32(pixel[3])*inverse + alpha) / 0xffff >> 8)
+							x++
+							row += 4
+						}
+					}
+				}
+			}
+			return nil
+		})
+	}
 	return r.rasterize(ctx, budget, func(y, minX, maxX int) error {
 		row := dst.PixOffset(dst.Rect.Min.X+minX, dst.Rect.Min.Y+y)
 		var winding float32
@@ -484,6 +666,16 @@ func (r *Rasterizer) DrawRGBA(ctx context.Context, budget *WorkBudget, dst *imag
 	})
 }
 
+func fillPackedRGBA(pixels []byte, packed uint32) {
+	if len(pixels) == 0 {
+		return
+	}
+	binary.LittleEndian.PutUint32(pixels[:4], packed)
+	for filled := 4; filled < len(pixels); {
+		filled += copy(pixels[filled:], pixels[:filled])
+	}
+}
+
 // WriteAlpha writes opaque path coverage into a freshly zeroed dst. Rasterizer
 // coordinates start at dst.Bounds().Min. Work is charged to budget and
 // cancellation is checked within long scan loops.
@@ -496,6 +688,53 @@ func (r *Rasterizer) WriteAlpha(ctx context.Context, budget *WorkBudget, dst *im
 	}
 	if dst == nil || r.width == 0 || r.height == 0 || len(r.edges) == 0 {
 		return nil
+	}
+	// Wide, sparse masks contain enough event-free interior to amortize span
+	// discovery. Short rows and dense compound paths favor the scalar loop.
+	if r.width >= 256 && len(r.edges) <= max(r.height, 8) {
+		return r.rasterize(ctx, budget, func(y, minX, maxX int) error {
+			row := dst.PixOffset(dst.Rect.Min.X+minX, dst.Rect.Min.Y+y)
+			var winding float32
+			for x := minX; x < maxX; {
+				end := min(x+contextCheckInterval, maxX)
+				if x != minX {
+					if err := ctx.Err(); err != nil {
+						return err
+					}
+				}
+				for x < end {
+					winding += r.difference[x]
+					dst.Pix[row] = coverage(r.partial[x] + winding)
+					x++
+					row++
+					if x < end && zeroCoverageValues(r.partial[x], r.difference[x]) {
+						spanCoverage := coverage(winding)
+						if spanCoverage == 0 || spanCoverage == 0xff {
+							runEnd := x + 1
+							if end-runEnd >= 8 {
+								runEnd = zeroCoverageRunEnd(r.partial, r.difference, runEnd, end)
+							} else {
+								for runEnd < end && zeroCoverageValues(r.partial[runEnd], r.difference[runEnd]) {
+									runEnd++
+								}
+							}
+							if spanCoverage == 0xff {
+								if runEnd-x >= 8 {
+									fillBytes(dst.Pix[row:row+runEnd-x], 0xff)
+								} else {
+									for offset := row; offset < row+runEnd-x; offset++ {
+										dst.Pix[offset] = 0xff
+									}
+								}
+							}
+							row += runEnd - x
+							x = runEnd
+						}
+					}
+				}
+			}
+			return nil
+		})
 	}
 	return r.rasterize(ctx, budget, func(y, minX, maxX int) error {
 		row := dst.PixOffset(dst.Rect.Min.X+minX, dst.Rect.Min.Y+y)
@@ -517,7 +756,52 @@ func (r *Rasterizer) WriteAlpha(ctx context.Context, budget *WorkBudget, dst *im
 	})
 }
 
-var retainedBytesPerEdge = uint64(unsafe.Sizeof(edge{})) + 2*uint64(unsafe.Sizeof(scanEdge{}))
+// WalkCoverage rasterizes the current paths and visits each row segment that
+// can contain non-zero coverage. partial and difference are transient views
+// into the Rasterizer's reusable accumulation storage, aligned so index zero
+// corresponds to minX. The callback must consume them before returning and
+// must not retain either slice.
+//
+// Callers reconstruct each pixel's coverage in increasing index order with:
+//
+//	winding += difference[index]
+//	alpha := QuantizeCoverage(partial[index] + winding)
+//
+// Rasterizer coordinates start at the caller's target origin. Work is charged
+// to budget and cancellation is checked during scan conversion; callbacks that
+// perform substantial per-pixel work should also check their context.
+func (r *Rasterizer) WalkCoverage(ctx context.Context, budget *WorkBudget, writeRow func(y, minX int, partial, difference []float32) error) error {
+	if err := r.Err(); err != nil {
+		return err
+	}
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	if r.width == 0 || r.height == 0 || len(r.edges) == 0 {
+		return nil
+	}
+	return r.rasterize(ctx, budget, func(y, minX, maxX int) error {
+		return writeRow(y, minX, r.partial[minX:maxX], r.difference[minX:maxX])
+	})
+}
+
+// QuantizeCoverage converts a signed analytic pixel area into the same 8-bit
+// absolute coverage used by DrawRGBA and WriteAlpha.
+func QuantizeCoverage(area float32) uint8 {
+	return coverage(area)
+}
+
+func fillBytes(pixels []byte, value byte) {
+	if len(pixels) == 0 {
+		return
+	}
+	pixels[0] = value
+	for filled := 1; filled < len(pixels); {
+		filled += copy(pixels[filled:], pixels[:filled])
+	}
+}
+
+var retainedBytesPerEdge = uint64(unsafe.Sizeof(edge{})) + uint64(unsafe.Sizeof(scanEdge{})) + uint64(unsafe.Sizeof(int(0)))
 
 // RetainedBytes returns the backing-storage bytes retained after visiting
 // targets up to maxWidth and maxHeight and paths up to maxEdges. Width and
@@ -712,6 +996,13 @@ func (r *Rasterizer) rasterize(ctx context.Context, budget *WorkBudget, writeRow
 	if firstRow >= lastRow {
 		return ctx.Err()
 	}
+	// Consume row heads as the scan advances. This preserves an all-zero idle
+	// buffer without clearing the full target height for every small path.
+	// Clear any unvisited suffix on cancellation or a destination error.
+	nextHeadRow := firstRow
+	defer func() {
+		r.clearRowHeads(nextHeadRow, lastRow)
+	}()
 
 	r.active = r.active[:0]
 	for y := firstRow; y < lastRow; y++ {
@@ -722,14 +1013,19 @@ func (r *Rasterizer) rasterize(ctx context.Context, budget *WorkBudget, writeRow
 		}
 		r.removeExpired(y)
 		added := 0
-		for index := r.rowHeads[y]; index >= 0; index = r.scanEdges[index].next {
+		head := r.rowHeads[y]
+		r.rowHeads[y] = 0
+		nextHeadRow = y + 1
+		for head != 0 {
+			index := head - 1
 			if added != 0 && added&(contextCheckInterval-1) == 0 {
 				if err := ctx.Err(); err != nil {
 					return err
 				}
 			}
-			r.active = append(r.active, r.scanEdges[index])
+			r.active = append(r.active, index)
 			added++
+			head = r.scanEdges[index].next
 		}
 		for first := 0; first < len(r.active); first += contextCheckInterval {
 			if first != 0 {
@@ -739,7 +1035,7 @@ func (r *Rasterizer) rasterize(ctx context.Context, budget *WorkBudget, writeRow
 			}
 			end := min(first+contextCheckInterval, len(r.active))
 			for index := first; index < end; index++ {
-				if err := r.accumulateEdgeRow(ctx, &r.active[index], y); err != nil {
+				if err := r.accumulateEdgeRow(ctx, &r.scanEdges[r.active[index]], y); err != nil {
 					return err
 				}
 			}
@@ -761,14 +1057,12 @@ func (r *Rasterizer) prepareScanEdges(ctx context.Context) (int, int, error) {
 	} else {
 		r.rowHeads = r.rowHeads[:r.height]
 	}
-	for index := range r.rowHeads {
-		r.rowHeads[index] = -1
-	}
 	firstRow := r.height
 	lastRow := 0
 	for rawIndex, raw := range r.edges {
 		if rawIndex != 0 && rawIndex&(contextCheckInterval-1) == 0 {
 			if err := ctx.Err(); err != nil {
+				r.clearRowHeads(firstRow, lastRow)
 				return 0, 0, err
 			}
 		}
@@ -799,7 +1093,8 @@ func (r *Rasterizer) prepareScanEdges(ctx context.Context) (int, int, error) {
 			x: x, y: top, bottom: to.y, slope: slope,
 			inverseSlope: inverseSlope, winding: winding,
 		})
-		r.rowHeads[start] = index
+		// Zero is the empty-head sentinel; stored indices are one-based.
+		r.rowHeads[start] = index + 1
 		if start < firstRow {
 			firstRow = start
 		}
@@ -810,9 +1105,16 @@ func (r *Rasterizer) prepareScanEdges(ctx context.Context) (int, int, error) {
 	return firstRow, lastRow, nil
 }
 
+func (r *Rasterizer) clearRowHeads(firstRow, lastRow int) {
+	if firstRow >= lastRow {
+		return
+	}
+	clear(r.rowHeads[firstRow:lastRow])
+}
+
 func (r *Rasterizer) removeExpired(row int) {
 	for index := 0; index < len(r.active); {
-		if r.active[index].end > row {
+		if r.scanEdges[r.active[index]].end > row {
 			index++
 			continue
 		}
@@ -964,7 +1266,9 @@ func (r *Rasterizer) addDifferenceEvent(x int, amount float64) {
 }
 
 func coverage(area float32) uint8 {
-	area = float32(math.Abs(float64(area)))
+	if area < 0 {
+		area = -area
+	}
 	if area <= 0 {
 		return 0
 	}
@@ -972,6 +1276,31 @@ func coverage(area float32) uint8 {
 		return 255
 	}
 	return uint8(area*255 + 0.5)
+}
+
+func zeroCoverageValues(partial, difference float32) bool {
+	// Ignore the sign bit so negative zero retains ordinary floating-point == 0
+	// semantics. Combining the bits avoids two floating-point comparisons in
+	// the sparse-span discovery loop.
+	return (math.Float32bits(partial)|math.Float32bits(difference))<<1 == 0
+}
+
+func zeroCoverageRunEnd(partial, difference []float32, start, end int) int {
+	index := start
+	for index+4 <= end {
+		bits := math.Float32bits(partial[index]) | math.Float32bits(difference[index]) |
+			math.Float32bits(partial[index+1]) | math.Float32bits(difference[index+1]) |
+			math.Float32bits(partial[index+2]) | math.Float32bits(difference[index+2]) |
+			math.Float32bits(partial[index+3]) | math.Float32bits(difference[index+3])
+		if bits<<1 != 0 {
+			break
+		}
+		index += 4
+	}
+	for index < end && zeroCoverageValues(partial[index], difference[index]) {
+		index++
+	}
+	return index
 }
 
 func (r *Rasterizer) resetTouched() {

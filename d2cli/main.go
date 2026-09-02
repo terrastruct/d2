@@ -849,6 +849,15 @@ func postProcess(ctx context.Context, plugin d2plugin.Plugin, in []byte) ([]byte
 }
 
 func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, ruler *textmeasure.Ruler, diagram *d2target.Diagram, ext exportExtension, asciiMode string, wantPreview bool) (_ [][]byte, written bool, _ error) {
+	if ext == PNG {
+		var encoder rasterPNGEncoder
+		defer encoder.close()
+		return renderWithPNGEncoder(ctx, ms, compileDur, plugin, opts, inputPath, outputPath, bundle, forceAppendix, ruler, diagram, ext, asciiMode, wantPreview, &encoder)
+	}
+	return renderWithPNGEncoder(ctx, ms, compileDur, plugin, opts, inputPath, outputPath, bundle, forceAppendix, ruler, diagram, ext, asciiMode, wantPreview, nil)
+}
+
+func renderWithPNGEncoder(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, ruler *textmeasure.Ruler, diagram *d2target.Diagram, ext exportExtension, asciiMode string, wantPreview bool, pngEncoder *rasterPNGEncoder) (_ [][]byte, written bool, _ error) {
 	if diagram.Name != "" {
 		ext := filepath.Ext(outputPath)
 		outputPath = strings.TrimSuffix(outputPath, ext)
@@ -895,7 +904,7 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 	var boards [][]byte
 	for _, dl := range diagram.Layers {
 		childPreview := wantPreview && diagram.IsFolderOnly && len(boards) == 0
-		childrenBoards, childWritten, err := render(ctx, ms, compileDur, plugin, opts, inputPath, layersOutputPath, bundle, forceAppendix, ruler, dl, ext, asciiMode, childPreview)
+		childrenBoards, childWritten, err := renderWithPNGEncoder(ctx, ms, compileDur, plugin, opts, inputPath, layersOutputPath, bundle, forceAppendix, ruler, dl, ext, asciiMode, childPreview, pngEncoder)
 		written = written || childWritten
 		if err != nil {
 			return boards, written, err
@@ -904,7 +913,7 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 	}
 	for _, dl := range diagram.Scenarios {
 		childPreview := wantPreview && diagram.IsFolderOnly && len(boards) == 0
-		childrenBoards, childWritten, err := render(ctx, ms, compileDur, plugin, opts, inputPath, scenariosOutputPath, bundle, forceAppendix, ruler, dl, ext, asciiMode, childPreview)
+		childrenBoards, childWritten, err := renderWithPNGEncoder(ctx, ms, compileDur, plugin, opts, inputPath, scenariosOutputPath, bundle, forceAppendix, ruler, dl, ext, asciiMode, childPreview, pngEncoder)
 		written = written || childWritten
 		if err != nil {
 			return boards, written, err
@@ -913,7 +922,7 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 	}
 	for _, dl := range diagram.Steps {
 		childPreview := wantPreview && diagram.IsFolderOnly && len(boards) == 0
-		childrenBoards, childWritten, err := render(ctx, ms, compileDur, plugin, opts, inputPath, stepsOutputPath, bundle, forceAppendix, ruler, dl, ext, asciiMode, childPreview)
+		childrenBoards, childWritten, err := renderWithPNGEncoder(ctx, ms, compileDur, plugin, opts, inputPath, stepsOutputPath, bundle, forceAppendix, ruler, dl, ext, asciiMode, childPreview, pngEncoder)
 		written = written || childWritten
 		if err != nil {
 			return boards, written, err
@@ -923,7 +932,7 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 
 	if !diagram.IsFolderOnly {
 		start := time.Now()
-		out, boardWritten, err := _render(ctx, ms, plugin, opts, inputPath, boardOutputPath, bundle, forceAppendix, ruler, diagram, ext, asciiMode, wantPreview)
+		out, boardWritten, err := _renderWithPNGEncoder(ctx, ms, plugin, opts, inputPath, boardOutputPath, bundle, forceAppendix, ruler, diagram, ext, asciiMode, wantPreview, pngEncoder)
 		written = written || boardWritten
 		if err != nil {
 			return boards, written, err
@@ -940,7 +949,7 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 
 func renderSingle(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, ruler *textmeasure.Ruler, diagram *d2target.Diagram, outputFormat exportExtension, asciiMode string, wantPreview bool) ([][]byte, bool, error) {
 	start := time.Now()
-	out, written, err := _render(ctx, ms, plugin, opts, inputPath, outputPath, bundle, forceAppendix, ruler, diagram, outputFormat, asciiMode, wantPreview)
+	out, written, err := _renderWithPNGEncoder(ctx, ms, plugin, opts, inputPath, outputPath, bundle, forceAppendix, ruler, diagram, outputFormat, asciiMode, wantPreview, nil)
 	if err != nil {
 		return [][]byte{}, written, err
 	}
@@ -952,6 +961,10 @@ func renderSingle(ctx context.Context, ms *xmain.State, compileDur time.Duration
 }
 
 func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, ruler *textmeasure.Ruler, diagram *d2target.Diagram, outputFormat exportExtension, asciiMode string, wantPreview bool) ([]byte, bool, error) {
+	return _renderWithPNGEncoder(ctx, ms, plugin, opts, inputPath, outputPath, bundle, forceAppendix, ruler, diagram, outputFormat, asciiMode, wantPreview, nil)
+}
+
+func _renderWithPNGEncoder(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, ruler *textmeasure.Ruler, diagram *d2target.Diagram, outputFormat exportExtension, asciiMode string, wantPreview bool, pngEncoder *rasterPNGEncoder) ([]byte, bool, error) {
 	if outputFormat == TXT {
 		var charsetType charset.Type
 		switch asciiMode {
@@ -1005,14 +1018,14 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 			return svg, false, err
 		}
 		cacheImages := ms.Env.Getenv("IMG_CACHE") == "1"
-		out, err := renderPNG(ctx, inputPath, cacheImages, diagram, *renderOpts)
+		out, err := renderPNGWithEncoder(ctx, inputPath, cacheImages, diagram, *renderOpts, pngEncoder)
 		if err != nil {
 			return svg, false, err
 		}
 		var withExif []byte
 		err = runFinalizer(ctx, func() error {
 			var finalizeErr error
-			withExif, finalizeErr = png.AddExif(out)
+			withExif, finalizeErr = png.AddExifToEncoderOutputInPlace(out)
 			return finalizeErr
 		})
 		if err != nil {

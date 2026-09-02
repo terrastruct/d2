@@ -12,8 +12,13 @@ import (
 
 type preparedPattern struct {
 	tile            d2scene.Box
+	originModX      float64
+	originModY      float64
 	deviceToPattern d2scene.Matrix
 	tileResource    *preparedPatternTile
+	directPixels    bool
+	pixelOffsetX    int
+	pixelOffsetY    int
 }
 
 type preparedPatternTile struct {
@@ -112,13 +117,50 @@ func (p *preflight) preparePatternPaint(pattern d2scene.PatternPaint, objectBoun
 		}
 		p.patternTiles[key] = tileResource
 	}
+	pixelOffsetX, pixelOffsetY, directPixels := directPatternPixelOffsets(pattern.Tile, deviceToPattern, width, height)
 	return &preparedPaint{
 		kind: preparedPatternPaint,
 		pattern: &preparedPattern{
-			tile: pattern.Tile, deviceToPattern: deviceToPattern,
-			tileResource: tileResource,
+			tile:            pattern.Tile,
+			originModX:      math.Mod(pattern.Tile.X, pattern.Tile.Width),
+			originModY:      math.Mod(pattern.Tile.Y, pattern.Tile.Height),
+			deviceToPattern: deviceToPattern,
+			tileResource:    tileResource,
+			directPixels:    directPixels,
+			pixelOffsetX:    pixelOffsetX,
+			pixelOffsetY:    pixelOffsetY,
 		},
 	}, nil
+}
+
+// directPatternPixelOffsets recognizes the common one-device-pixel to
+// one-pattern-pixel mapping. Integer translation and tile origins make every
+// pixel-center sample land at n+0.5, so wrapping can be performed exactly in
+// integer pixel space without a floating-point remainder per channel.
+func directPatternPixelOffsets(tile d2scene.Box, deviceToPattern d2scene.Matrix, width, height int) (int, int, bool) {
+	if width <= 0 || height <= 0 ||
+		tile.Width != float64(width) || tile.Height != float64(height) ||
+		deviceToPattern.A != 1 || deviceToPattern.B != 0 ||
+		deviceToPattern.C != 0 || deviceToPattern.D != 1 {
+		return 0, 0, false
+	}
+	const exactIntegerLimit = float64(uint64(1) << 52)
+	values := [...]float64{tile.X, tile.Y, deviceToPattern.E, deviceToPattern.F}
+	for _, value := range values {
+		if !finite(value) || math.Trunc(value) != value || value < -exactIntegerLimit || value > exactIntegerLimit {
+			return 0, 0, false
+		}
+	}
+	offset := func(translation, origin float64, period int) int {
+		period64 := int64(period)
+		value := int64(translation)%period64 - int64(origin)%period64
+		value %= period64
+		if value < 0 {
+			value += period64
+		}
+		return int(value)
+	}
+	return offset(deviceToPattern.E, tile.X, width), offset(deviceToPattern.F, tile.Y, height), true
 }
 
 func preparePatternTransform(units d2scene.PaintUnits, patternTransform d2scene.Matrix, objectBounds d2scene.Box, objectToDevice d2scene.Matrix) (d2scene.Matrix, d2scene.Matrix, error) {
@@ -212,11 +254,11 @@ func (pattern *preparedPattern) colorAt(x, y float64) (color.NRGBA, bool) {
 	}
 	tile := pattern.tileResource
 	point := pattern.deviceToPattern.Point(d2scene.Point{X: x, Y: y})
-	localX, ok := wrappedPatternCoordinate(point.X, pattern.tile.X, pattern.tile.Width)
+	localX, ok := wrappedPatternCoordinateFromOriginMod(point.X, pattern.originModX, pattern.tile.Width)
 	if !ok {
 		return color.NRGBA{}, false
 	}
-	localY, ok := wrappedPatternCoordinate(point.Y, pattern.tile.Y, pattern.tile.Height)
+	localY, ok := wrappedPatternCoordinateFromOriginMod(point.Y, pattern.originModY, pattern.tile.Height)
 	if !ok {
 		return color.NRGBA{}, false
 	}
@@ -224,21 +266,55 @@ func (pattern *preparedPattern) colorAt(x, y float64) (color.NRGBA, bool) {
 	pixelY := int(math.Floor(localY / pattern.tile.Height * float64(tile.height)))
 	pixelX = max(0, min(tile.width-1, pixelX))
 	pixelY = max(0, min(tile.height-1, pixelY))
-	sample := color.NRGBAModel.Convert(tile.image.RGBAAt(pixelX, pixelY)).(color.NRGBA)
-	return sample, sample.A != 0
+	return patternTileColor(tile, pixelX, pixelY)
+}
+
+func patternTileColor(tile *preparedPatternTile, pixelX, pixelY int) (color.NRGBA, bool) {
+	offset := tile.image.PixOffset(pixelX, pixelY)
+	pixel := tile.image.Pix[offset : offset+4]
+	alpha := pixel[3]
+	if alpha == 0 {
+		return color.NRGBA{}, false
+	}
+	if alpha == 0xff {
+		return color.NRGBA{R: pixel[0], G: pixel[1], B: pixel[2], A: alpha}, true
+	}
+	// RGBA stores premultiplied bytes. This is the same 16-bit conversion used
+	// by color.NRGBAModel, written directly to avoid two interface allocations
+	// for every sampled pattern pixel.
+	return color.NRGBA{
+		R: uint8((uint32(pixel[0]) * 0xffff / uint32(alpha)) >> 8),
+		G: uint8((uint32(pixel[1]) * 0xffff / uint32(alpha)) >> 8),
+		B: uint8((uint32(pixel[2]) * 0xffff / uint32(alpha)) >> 8),
+		A: alpha,
+	}, true
 }
 
 func wrappedPatternCoordinate(value, origin, period float64) (float64, bool) {
 	if !finite(value) || !finite(origin) || !finite(period) || period <= 0 {
 		return 0, false
 	}
-	wrapped := math.Mod(value, period) - math.Mod(origin, period)
-	wrapped = math.Mod(wrapped, period)
-	if wrapped < 0 {
-		wrapped += period
+	return wrappedPatternCoordinateFromOriginMod(value, math.Mod(origin, period), period)
+}
+
+func wrappedPatternCoordinateFromOriginMod(value, originMod, period float64) (float64, bool) {
+	if !finite(value) || !finite(originMod) || !finite(period) || period <= 0 {
+		return 0, false
 	}
+	wrapped := math.Mod(value, period) - originMod
 	if !finite(wrapped) {
 		return 0, false
+	}
+	if wrapped >= period {
+		wrapped -= period
+	} else if wrapped < 0 {
+		if wrapped == -period {
+			return math.Copysign(0, -1), true
+		}
+		wrapped += period
+		if wrapped < 0 {
+			wrapped += period
+		}
 	}
 	return wrapped, true
 }

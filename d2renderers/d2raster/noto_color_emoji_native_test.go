@@ -215,7 +215,9 @@ func BenchmarkPreparedFontBundledCOLRv1Plan(b *testing.B) {
 	if err != nil || glyphID == 0 {
 		b.Fatalf("emoji glyph = %d, %v", glyphID, err)
 	}
-	parsed := prepared.parsedFace()
+	if prepared.source == nil {
+		b.Fatal("bundled emoji font has no authenticated source")
+	}
 
 	b.Run("compile", func(b *testing.B) {
 		b.ReportAllocs()
@@ -223,7 +225,7 @@ func BenchmarkPreparedFontBundledCOLRv1Plan(b *testing.B) {
 		var found bool
 		var compileErr error
 		for b.Loop() {
-			plan, found, compileErr = parsed.CompileBundledNotoColorEmojiCOLRv1Plan(uint32(glyphID))
+			plan, found, compileErr = prepared.source.CompileBundledNotoColorEmojiCOLRv1Plan(uint32(glyphID))
 		}
 		if compileErr != nil || !found || plan == nil {
 			b.Fatalf("compiled emoji plan = %#v/%v, %v", plan, found, compileErr)

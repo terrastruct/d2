@@ -315,19 +315,19 @@ type ownedRGBA struct {
 	scratch     *rasterScratch
 }
 
-func reserveRGBA(scratch *rasterScratch, bounds image.Rectangle, purpose string) (*ownedRGBA, error) {
-	reservation, err := scratch.offscreen.reserve(bounds, 4, purpose)
+func reserveRGBA(scratch *rasterScratch, bounds image.Rectangle, purpose string) (ownedRGBA, error) {
+	buffer, reservation, err := scratch.offscreen.newRGBA(bounds, purpose)
 	if err != nil {
-		return nil, err
+		return ownedRGBA{}, err
 	}
-	return &ownedRGBA{image: image.NewRGBA(bounds), reservation: reservation, scratch: scratch}, nil
+	return ownedRGBA{image: buffer, reservation: reservation, scratch: scratch}, nil
 }
 
 func (layer *ownedRGBA) release() {
 	if layer == nil || layer.reservation == 0 {
 		return
 	}
-	layer.scratch.offscreen.release(layer.reservation)
+	layer.scratch.offscreen.recycleRGBA(layer.image, layer.reservation)
 	layer.reservation = 0
 	layer.image = nil
 }
@@ -338,24 +338,24 @@ type ownedAlpha struct {
 	scratch     *rasterScratch
 }
 
-func reserveAlpha(scratch *rasterScratch, bounds image.Rectangle, purpose string) (*ownedAlpha, error) {
-	reservation, err := scratch.offscreen.reserve(bounds, 1, purpose)
+func reserveAlpha(scratch *rasterScratch, bounds image.Rectangle, purpose string) (ownedAlpha, error) {
+	buffer, reservation, err := scratch.offscreen.newAlpha(bounds, purpose)
 	if err != nil {
-		return nil, err
+		return ownedAlpha{}, err
 	}
-	return &ownedAlpha{image: image.NewAlpha(bounds), reservation: reservation, scratch: scratch}, nil
+	return ownedAlpha{image: buffer, reservation: reservation, scratch: scratch}, nil
 }
 
 func (layer *ownedAlpha) release() {
 	if layer == nil || layer.reservation == 0 {
 		return
 	}
-	layer.scratch.offscreen.release(layer.reservation)
+	layer.scratch.offscreen.recycleAlpha(layer.image, layer.reservation)
 	layer.reservation = 0
 	layer.image = nil
 }
 
-func applyPreparedFilter(ctx context.Context, input *ownedRGBA, filter preparedFilter, scratch *rasterScratch) (*ownedRGBA, error) {
+func applyPreparedFilter(ctx context.Context, input *ownedRGBA, filter preparedFilter, scratch *rasterScratch) error {
 	switch filter.kind {
 	case preparedGaussianBlur:
 		return applyGaussianFilter(ctx, input, filter, scratch)
@@ -363,39 +363,38 @@ func applyPreparedFilter(ctx context.Context, input *ownedRGBA, filter preparedF
 		return applyDropShadowFilter(ctx, input, filter, scratch)
 	default:
 		input.release()
-		return nil, fmt.Errorf("d2raster: internal unknown prepared filter %d", filter.kind)
+		return fmt.Errorf("d2raster: internal unknown prepared filter %d", filter.kind)
 	}
 }
 
-func applyGaussianFilter(ctx context.Context, input *ownedRGBA, filter preparedFilter, scratch *rasterScratch) (*ownedRGBA, error) {
-	current := input
+func applyGaussianFilter(ctx context.Context, current *ownedRGBA, filter preparedFilter, scratch *rasterScratch) error {
 	for index, pass := range filter.passes {
 		output, err := reserveRGBA(scratch, pass.bounds, "Gaussian blur pass")
 		if err != nil {
 			current.release()
-			return nil, err
+			return err
 		}
 		if err := boxBlurRGBA(ctx, output.image, current.image, pass); err != nil {
 			output.release()
 			current.release()
-			return nil, fmt.Errorf("d2raster: Gaussian blur pass %d: %w", index, err)
+			return fmt.Errorf("d2raster: Gaussian blur pass %d: %w", index, err)
 		}
 		current.release()
-		current = output
+		*current = output
 	}
-	return current, nil
+	return nil
 }
 
-func applyDropShadowFilter(ctx context.Context, input *ownedRGBA, filter preparedFilter, scratch *rasterScratch) (*ownedRGBA, error) {
-	var alpha *ownedAlpha
+func applyDropShadowFilter(ctx context.Context, input *ownedRGBA, filter preparedFilter, scratch *rasterScratch) error {
+	var alpha ownedAlpha
 	for index, pass := range filter.passes {
 		next, err := reserveAlpha(scratch, pass.bounds, "drop-shadow blur pass")
 		if err != nil {
 			alpha.release()
 			input.release()
-			return nil, err
+			return err
 		}
-		if alpha == nil {
+		if alpha.image == nil {
 			err = boxBlurAlphaFromRGBA(ctx, next.image, input.image, pass)
 		} else {
 			err = boxBlurAlpha(ctx, next.image, alpha.image, pass)
@@ -404,7 +403,7 @@ func applyDropShadowFilter(ctx context.Context, input *ownedRGBA, filter prepare
 			next.release()
 			alpha.release()
 			input.release()
-			return nil, fmt.Errorf("d2raster: drop-shadow blur pass %d: %w", index, err)
+			return fmt.Errorf("d2raster: drop-shadow blur pass %d: %w", index, err)
 		}
 		alpha.release()
 		alpha = next
@@ -414,23 +413,24 @@ func applyDropShadowFilter(ctx context.Context, input *ownedRGBA, filter prepare
 	if err != nil {
 		alpha.release()
 		input.release()
-		return nil, err
+		return err
 	}
-	if err := paintDropShadow(ctx, output.image, input.image, alphaImage(alpha), filter.offsetX, filter.offsetY, filter.shadowColor); err != nil {
+	if err := paintDropShadow(ctx, output.image, input.image, alphaImage(&alpha), filter.offsetX, filter.offsetY, filter.shadowColor); err != nil {
 		output.release()
 		alpha.release()
 		input.release()
-		return nil, err
+		return err
 	}
 	if err := compositeLayerOver(ctx, output.image, input.image, 1); err != nil {
 		output.release()
 		alpha.release()
 		input.release()
-		return nil, err
+		return err
 	}
 	alpha.release()
 	input.release()
-	return output, nil
+	*input = output
+	return nil
 }
 
 func alphaImage(alpha *ownedAlpha) *image.Alpha {
@@ -441,6 +441,131 @@ func alphaImage(alpha *ownedAlpha) *image.Alpha {
 }
 
 func boxBlurRGBA(ctx context.Context, destination, source *image.RGBA, pass blurPass) error {
+	if expandedBlurPass(destination.Bounds(), source.Bounds(), pass) {
+		return boxBlurRGBAExpanded(ctx, destination, source, pass)
+	}
+	return boxBlurRGBAGeneral(ctx, destination, source, pass)
+}
+
+// expandedBlurPass recognizes the layout produced by prepareBlurPasses. In
+// that layout every row (horizontal pass) or column (vertical pass) has source
+// pixels, and the moving window enters and leaves the source at fixed relative
+// offsets. Keeping those facts out of the per-pixel loop materially reduces
+// the cost of the six blur passes used by filters while the general kernel
+// remains available for independently constructed images and tests.
+func expandedBlurPass(destination, source image.Rectangle, pass blurPass) bool {
+	if pass.radius <= 0 || destination.Empty() || source.Empty() {
+		return false
+	}
+	radius := int64(pass.radius)
+	switch pass.axis {
+	case blurHorizontal:
+		return destination.Min.Y == source.Min.Y && destination.Max.Y == source.Max.Y &&
+			int64(destination.Min.X) == int64(source.Min.X)-radius &&
+			int64(destination.Max.X) == int64(source.Max.X)+radius
+	case blurVertical:
+		return destination.Min.X == source.Min.X && destination.Max.X == source.Max.X &&
+			int64(destination.Min.Y) == int64(source.Min.Y)-radius &&
+			int64(destination.Max.Y) == int64(source.Max.Y)+radius
+	default:
+		return false
+	}
+}
+
+func boxBlurRGBAExpanded(ctx context.Context, destination, source *image.RGBA, pass blurPass) error {
+	window := int64(pass.radius)*2 + 1
+	halfWindow := window / 2
+	sourceBounds := source.Bounds()
+	destinationBounds := destination.Bounds()
+	twoRadius := pass.radius * 2
+	if pass.axis == blurHorizontal {
+		sourceWidth := sourceBounds.Dx()
+		destinationWidth := destinationBounds.Dx()
+		for row := 0; row < destinationBounds.Dy(); row++ {
+			sourceOffset := source.PixOffset(sourceBounds.Min.X, sourceBounds.Min.Y+row)
+			destinationOffset := destination.PixOffset(destinationBounds.Min.X, destinationBounds.Min.Y+row)
+			var sums [4]int64
+			sums[0] = int64(source.Pix[sourceOffset])
+			sums[1] = int64(source.Pix[sourceOffset+1])
+			sums[2] = int64(source.Pix[sourceOffset+2])
+			sums[3] = int64(source.Pix[sourceOffset+3])
+			for x := 0; x < destinationWidth; x++ {
+				if x&255 == 0 {
+					if err := ctx.Err(); err != nil {
+						return err
+					}
+				}
+				destination.Pix[destinationOffset] = uint8((sums[0] + halfWindow) / window)
+				destination.Pix[destinationOffset+1] = uint8((sums[1] + halfWindow) / window)
+				destination.Pix[destinationOffset+2] = uint8((sums[2] + halfWindow) / window)
+				destination.Pix[destinationOffset+3] = uint8((sums[3] + halfWindow) / window)
+				destinationOffset += 4
+
+				if x >= twoRadius {
+					remove := x - twoRadius
+					offset := sourceOffset + remove*4
+					sums[0] -= int64(source.Pix[offset])
+					sums[1] -= int64(source.Pix[offset+1])
+					sums[2] -= int64(source.Pix[offset+2])
+					sums[3] -= int64(source.Pix[offset+3])
+				}
+				add := x + 1
+				if add < sourceWidth {
+					offset := sourceOffset + add*4
+					sums[0] += int64(source.Pix[offset])
+					sums[1] += int64(source.Pix[offset+1])
+					sums[2] += int64(source.Pix[offset+2])
+					sums[3] += int64(source.Pix[offset+3])
+				}
+			}
+		}
+		return ctx.Err()
+	}
+
+	sourceHeight := sourceBounds.Dy()
+	destinationHeight := destinationBounds.Dy()
+	for column := 0; column < destinationBounds.Dx(); column++ {
+		sourceOffset := source.PixOffset(sourceBounds.Min.X+column, sourceBounds.Min.Y)
+		destinationOffset := destination.PixOffset(destinationBounds.Min.X+column, destinationBounds.Min.Y)
+		var sums [4]int64
+		sums[0] = int64(source.Pix[sourceOffset])
+		sums[1] = int64(source.Pix[sourceOffset+1])
+		sums[2] = int64(source.Pix[sourceOffset+2])
+		sums[3] = int64(source.Pix[sourceOffset+3])
+		for y := 0; y < destinationHeight; y++ {
+			if y&255 == 0 {
+				if err := ctx.Err(); err != nil {
+					return err
+				}
+			}
+			destination.Pix[destinationOffset] = uint8((sums[0] + halfWindow) / window)
+			destination.Pix[destinationOffset+1] = uint8((sums[1] + halfWindow) / window)
+			destination.Pix[destinationOffset+2] = uint8((sums[2] + halfWindow) / window)
+			destination.Pix[destinationOffset+3] = uint8((sums[3] + halfWindow) / window)
+			destinationOffset += destination.Stride
+
+			if y >= twoRadius {
+				remove := y - twoRadius
+				offset := sourceOffset + remove*source.Stride
+				sums[0] -= int64(source.Pix[offset])
+				sums[1] -= int64(source.Pix[offset+1])
+				sums[2] -= int64(source.Pix[offset+2])
+				sums[3] -= int64(source.Pix[offset+3])
+			}
+			add := y + 1
+			if add < sourceHeight {
+				offset := sourceOffset + add*source.Stride
+				sums[0] += int64(source.Pix[offset])
+				sums[1] += int64(source.Pix[offset+1])
+				sums[2] += int64(source.Pix[offset+2])
+				sums[3] += int64(source.Pix[offset+3])
+			}
+		}
+	}
+	return ctx.Err()
+}
+
+func boxBlurRGBAGeneral(ctx context.Context, destination, source *image.RGBA, pass blurPass) error {
 	window := int64(pass.radius)*2 + 1
 	destinationBounds, sourceBounds := destination.Bounds(), source.Bounds()
 	if pass.axis == blurHorizontal {
@@ -454,36 +579,43 @@ func boxBlurRGBA(ctx context.Context, destination, source *image.RGBA, pass blur
 			x0 := destinationBounds.Min.X
 			sampleMin := max(int64(x0)-int64(pass.radius), int64(sourceBounds.Min.X))
 			sampleMax := min(int64(x0)+int64(pass.radius), int64(sourceBounds.Max.X)-1)
-			for sampleX := sampleMin; sampleX <= sampleMax; sampleX++ {
-				if y >= sourceBounds.Min.Y && y < sourceBounds.Max.Y {
-					offset := source.PixOffset(int(sampleX), y)
-					for channel := range 4 {
-						sums[channel] += int64(source.Pix[offset+channel])
-					}
+			sourceRow := -1
+			if y >= sourceBounds.Min.Y && y < sourceBounds.Max.Y {
+				sourceRow = (y - sourceBounds.Min.Y) * source.Stride
+				for sampleX := sampleMin; sampleX <= sampleMax; sampleX++ {
+					offset := sourceRow + (int(sampleX)-sourceBounds.Min.X)*4
+					sums[0] += int64(source.Pix[offset])
+					sums[1] += int64(source.Pix[offset+1])
+					sums[2] += int64(source.Pix[offset+2])
+					sums[3] += int64(source.Pix[offset+3])
 				}
 			}
+			destinationOffset := (y - destinationBounds.Min.Y) * destination.Stride
 			for x := destinationBounds.Min.X; x < destinationBounds.Max.X; x++ {
 				if (x-destinationBounds.Min.X)&255 == 0 {
 					if err := ctx.Err(); err != nil {
 						return err
 					}
 				}
-				offset := destination.PixOffset(x, y)
-				for channel := range 4 {
-					destination.Pix[offset+channel] = uint8((sums[channel] + window/2) / window)
-				}
+				offset := destinationOffset + (x-destinationBounds.Min.X)*4
+				destination.Pix[offset] = uint8((sums[0] + window/2) / window)
+				destination.Pix[offset+1] = uint8((sums[1] + window/2) / window)
+				destination.Pix[offset+2] = uint8((sums[2] + window/2) / window)
+				destination.Pix[offset+3] = uint8((sums[3] + window/2) / window)
 				removeX, addX := int64(x)-int64(pass.radius), int64(x)+int64(pass.radius)+1
-				if y >= sourceBounds.Min.Y && y < sourceBounds.Max.Y && removeX >= int64(sourceBounds.Min.X) && removeX < int64(sourceBounds.Max.X) {
-					sourceOffset := source.PixOffset(int(removeX), y)
-					for channel := range 4 {
-						sums[channel] -= int64(source.Pix[sourceOffset+channel])
-					}
+				if sourceRow >= 0 && removeX >= int64(sourceBounds.Min.X) && removeX < int64(sourceBounds.Max.X) {
+					sourceOffset := sourceRow + (int(removeX)-sourceBounds.Min.X)*4
+					sums[0] -= int64(source.Pix[sourceOffset])
+					sums[1] -= int64(source.Pix[sourceOffset+1])
+					sums[2] -= int64(source.Pix[sourceOffset+2])
+					sums[3] -= int64(source.Pix[sourceOffset+3])
 				}
-				if y >= sourceBounds.Min.Y && y < sourceBounds.Max.Y && addX >= int64(sourceBounds.Min.X) && addX < int64(sourceBounds.Max.X) {
-					sourceOffset := source.PixOffset(int(addX), y)
-					for channel := range 4 {
-						sums[channel] += int64(source.Pix[sourceOffset+channel])
-					}
+				if sourceRow >= 0 && addX >= int64(sourceBounds.Min.X) && addX < int64(sourceBounds.Max.X) {
+					sourceOffset := sourceRow + (int(addX)-sourceBounds.Min.X)*4
+					sums[0] += int64(source.Pix[sourceOffset])
+					sums[1] += int64(source.Pix[sourceOffset+1])
+					sums[2] += int64(source.Pix[sourceOffset+2])
+					sums[3] += int64(source.Pix[sourceOffset+3])
 				}
 			}
 		}
@@ -500,36 +632,43 @@ func boxBlurRGBA(ctx context.Context, destination, source *image.RGBA, pass blur
 		y0 := destinationBounds.Min.Y
 		sampleMin := max(int64(y0)-int64(pass.radius), int64(sourceBounds.Min.Y))
 		sampleMax := min(int64(y0)+int64(pass.radius), int64(sourceBounds.Max.Y)-1)
-		for sampleY := sampleMin; sampleY <= sampleMax; sampleY++ {
-			if x >= sourceBounds.Min.X && x < sourceBounds.Max.X {
-				offset := source.PixOffset(x, int(sampleY))
-				for channel := range 4 {
-					sums[channel] += int64(source.Pix[offset+channel])
-				}
+		sourceColumn := -1
+		if x >= sourceBounds.Min.X && x < sourceBounds.Max.X {
+			sourceColumn = (x - sourceBounds.Min.X) * 4
+			for sampleY := sampleMin; sampleY <= sampleMax; sampleY++ {
+				offset := (int(sampleY)-sourceBounds.Min.Y)*source.Stride + sourceColumn
+				sums[0] += int64(source.Pix[offset])
+				sums[1] += int64(source.Pix[offset+1])
+				sums[2] += int64(source.Pix[offset+2])
+				sums[3] += int64(source.Pix[offset+3])
 			}
 		}
+		destinationColumn := (x - destinationBounds.Min.X) * 4
 		for y := destinationBounds.Min.Y; y < destinationBounds.Max.Y; y++ {
 			if (y-destinationBounds.Min.Y)&255 == 0 {
 				if err := ctx.Err(); err != nil {
 					return err
 				}
 			}
-			offset := destination.PixOffset(x, y)
-			for channel := range 4 {
-				destination.Pix[offset+channel] = uint8((sums[channel] + window/2) / window)
-			}
+			offset := (y-destinationBounds.Min.Y)*destination.Stride + destinationColumn
+			destination.Pix[offset] = uint8((sums[0] + window/2) / window)
+			destination.Pix[offset+1] = uint8((sums[1] + window/2) / window)
+			destination.Pix[offset+2] = uint8((sums[2] + window/2) / window)
+			destination.Pix[offset+3] = uint8((sums[3] + window/2) / window)
 			removeY, addY := int64(y)-int64(pass.radius), int64(y)+int64(pass.radius)+1
-			if x >= sourceBounds.Min.X && x < sourceBounds.Max.X && removeY >= int64(sourceBounds.Min.Y) && removeY < int64(sourceBounds.Max.Y) {
-				sourceOffset := source.PixOffset(x, int(removeY))
-				for channel := range 4 {
-					sums[channel] -= int64(source.Pix[sourceOffset+channel])
-				}
+			if sourceColumn >= 0 && removeY >= int64(sourceBounds.Min.Y) && removeY < int64(sourceBounds.Max.Y) {
+				sourceOffset := (int(removeY)-sourceBounds.Min.Y)*source.Stride + sourceColumn
+				sums[0] -= int64(source.Pix[sourceOffset])
+				sums[1] -= int64(source.Pix[sourceOffset+1])
+				sums[2] -= int64(source.Pix[sourceOffset+2])
+				sums[3] -= int64(source.Pix[sourceOffset+3])
 			}
-			if x >= sourceBounds.Min.X && x < sourceBounds.Max.X && addY >= int64(sourceBounds.Min.Y) && addY < int64(sourceBounds.Max.Y) {
-				sourceOffset := source.PixOffset(x, int(addY))
-				for channel := range 4 {
-					sums[channel] += int64(source.Pix[sourceOffset+channel])
-				}
+			if sourceColumn >= 0 && addY >= int64(sourceBounds.Min.Y) && addY < int64(sourceBounds.Max.Y) {
+				sourceOffset := (int(addY)-sourceBounds.Min.Y)*source.Stride + sourceColumn
+				sums[0] += int64(source.Pix[sourceOffset])
+				sums[1] += int64(source.Pix[sourceOffset+1])
+				sums[2] += int64(source.Pix[sourceOffset+2])
+				sums[3] += int64(source.Pix[sourceOffset+3])
 			}
 		}
 	}
@@ -537,18 +676,81 @@ func boxBlurRGBA(ctx context.Context, destination, source *image.RGBA, pass blur
 }
 
 func boxBlurAlphaFromRGBA(ctx context.Context, destination *image.Alpha, source *image.RGBA, pass blurPass) error {
-	return boxBlurAlphaValues(ctx, destination, source.Bounds(), func(x, y int) uint8 {
-		return source.Pix[source.PixOffset(x, y)+3]
-	}, pass)
+	return boxBlurAlphaPixels(ctx, destination, source.Pix, source.Stride, source.Bounds(), 4, 3, pass)
 }
 
 func boxBlurAlpha(ctx context.Context, destination, source *image.Alpha, pass blurPass) error {
-	return boxBlurAlphaValues(ctx, destination, source.Bounds(), func(x, y int) uint8 {
-		return source.Pix[source.PixOffset(x, y)]
-	}, pass)
+	return boxBlurAlphaPixels(ctx, destination, source.Pix, source.Stride, source.Bounds(), 1, 0, pass)
 }
 
-func boxBlurAlphaValues(ctx context.Context, destination *image.Alpha, sourceBounds image.Rectangle, sample func(int, int) uint8, pass blurPass) error {
+func boxBlurAlphaPixels(ctx context.Context, destination *image.Alpha, sourcePixels []uint8, sourceStride int, sourceBounds image.Rectangle, sourceStep, sourceChannel int, pass blurPass) error {
+	if expandedBlurPass(destination.Bounds(), sourceBounds, pass) {
+		return boxBlurAlphaPixelsExpanded(ctx, destination, sourcePixels, sourceStride, sourceBounds, sourceStep, sourceChannel, pass)
+	}
+	return boxBlurAlphaPixelsGeneral(ctx, destination, sourcePixels, sourceStride, sourceBounds, sourceStep, sourceChannel, pass)
+}
+
+func boxBlurAlphaPixelsExpanded(ctx context.Context, destination *image.Alpha, sourcePixels []uint8, sourceStride int, sourceBounds image.Rectangle, sourceStep, sourceChannel int, pass blurPass) error {
+	window := int64(pass.radius)*2 + 1
+	halfWindow := window / 2
+	destinationBounds := destination.Bounds()
+	twoRadius := pass.radius * 2
+	if pass.axis == blurHorizontal {
+		sourceWidth := sourceBounds.Dx()
+		destinationWidth := destinationBounds.Dx()
+		for row := 0; row < destinationBounds.Dy(); row++ {
+			sourceOffset := row*sourceStride + sourceChannel
+			destinationOffset := row * destination.Stride
+			sum := int64(sourcePixels[sourceOffset])
+			for x := 0; x < destinationWidth; x++ {
+				if x&255 == 0 {
+					if err := ctx.Err(); err != nil {
+						return err
+					}
+				}
+				destination.Pix[destinationOffset] = uint8((sum + halfWindow) / window)
+				destinationOffset++
+				if x >= twoRadius {
+					remove := x - twoRadius
+					sum -= int64(sourcePixels[sourceOffset+remove*sourceStep])
+				}
+				add := x + 1
+				if add < sourceWidth {
+					sum += int64(sourcePixels[sourceOffset+add*sourceStep])
+				}
+			}
+		}
+		return ctx.Err()
+	}
+
+	sourceHeight := sourceBounds.Dy()
+	destinationHeight := destinationBounds.Dy()
+	for column := 0; column < destinationBounds.Dx(); column++ {
+		sourceOffset := column*sourceStep + sourceChannel
+		destinationOffset := column
+		sum := int64(sourcePixels[sourceOffset])
+		for y := 0; y < destinationHeight; y++ {
+			if y&255 == 0 {
+				if err := ctx.Err(); err != nil {
+					return err
+				}
+			}
+			destination.Pix[destinationOffset] = uint8((sum + halfWindow) / window)
+			destinationOffset += destination.Stride
+			if y >= twoRadius {
+				remove := y - twoRadius
+				sum -= int64(sourcePixels[sourceOffset+remove*sourceStride])
+			}
+			add := y + 1
+			if add < sourceHeight {
+				sum += int64(sourcePixels[sourceOffset+add*sourceStride])
+			}
+		}
+	}
+	return ctx.Err()
+}
+
+func boxBlurAlphaPixelsGeneral(ctx context.Context, destination *image.Alpha, sourcePixels []uint8, sourceStride int, sourceBounds image.Rectangle, sourceStep, sourceChannel int, pass blurPass) error {
 	window := int64(pass.radius)*2 + 1
 	destinationBounds := destination.Bounds()
 	if pass.axis == blurHorizontal {
@@ -563,23 +765,27 @@ func boxBlurAlphaValues(ctx context.Context, destination *image.Alpha, sourceBou
 			if y >= sourceBounds.Min.Y && y < sourceBounds.Max.Y {
 				sampleMin := max(int64(x0)-int64(pass.radius), int64(sourceBounds.Min.X))
 				sampleMax := min(int64(x0)+int64(pass.radius), int64(sourceBounds.Max.X)-1)
+				sourceRow := (y-sourceBounds.Min.Y)*sourceStride + sourceChannel
 				for sampleX := sampleMin; sampleX <= sampleMax; sampleX++ {
-					sum += int64(sample(int(sampleX), y))
+					sum += int64(sourcePixels[sourceRow+(int(sampleX)-sourceBounds.Min.X)*sourceStep])
 				}
 			}
+			destinationOffset := (y - destinationBounds.Min.Y) * destination.Stride
 			for x := destinationBounds.Min.X; x < destinationBounds.Max.X; x++ {
 				if (x-destinationBounds.Min.X)&255 == 0 {
 					if err := ctx.Err(); err != nil {
 						return err
 					}
 				}
-				destination.Pix[destination.PixOffset(x, y)] = uint8((sum + window/2) / window)
+				destination.Pix[destinationOffset+x-destinationBounds.Min.X] = uint8((sum + window/2) / window)
 				removeX, addX := int64(x)-int64(pass.radius), int64(x)+int64(pass.radius)+1
 				if y >= sourceBounds.Min.Y && y < sourceBounds.Max.Y && removeX >= int64(sourceBounds.Min.X) && removeX < int64(sourceBounds.Max.X) {
-					sum -= int64(sample(int(removeX), y))
+					offset := (y-sourceBounds.Min.Y)*sourceStride + (int(removeX)-sourceBounds.Min.X)*sourceStep + sourceChannel
+					sum -= int64(sourcePixels[offset])
 				}
 				if y >= sourceBounds.Min.Y && y < sourceBounds.Max.Y && addX >= int64(sourceBounds.Min.X) && addX < int64(sourceBounds.Max.X) {
-					sum += int64(sample(int(addX), y))
+					offset := (y-sourceBounds.Min.Y)*sourceStride + (int(addX)-sourceBounds.Min.X)*sourceStep + sourceChannel
+					sum += int64(sourcePixels[offset])
 				}
 			}
 		}
@@ -597,23 +803,27 @@ func boxBlurAlphaValues(ctx context.Context, destination *image.Alpha, sourceBou
 		if x >= sourceBounds.Min.X && x < sourceBounds.Max.X {
 			sampleMin := max(int64(y0)-int64(pass.radius), int64(sourceBounds.Min.Y))
 			sampleMax := min(int64(y0)+int64(pass.radius), int64(sourceBounds.Max.Y)-1)
+			sourceColumn := (x-sourceBounds.Min.X)*sourceStep + sourceChannel
 			for sampleY := sampleMin; sampleY <= sampleMax; sampleY++ {
-				sum += int64(sample(x, int(sampleY)))
+				sum += int64(sourcePixels[(int(sampleY)-sourceBounds.Min.Y)*sourceStride+sourceColumn])
 			}
 		}
+		destinationColumn := x - destinationBounds.Min.X
 		for y := destinationBounds.Min.Y; y < destinationBounds.Max.Y; y++ {
 			if (y-destinationBounds.Min.Y)&255 == 0 {
 				if err := ctx.Err(); err != nil {
 					return err
 				}
 			}
-			destination.Pix[destination.PixOffset(x, y)] = uint8((sum + window/2) / window)
+			destination.Pix[(y-destinationBounds.Min.Y)*destination.Stride+destinationColumn] = uint8((sum + window/2) / window)
 			removeY, addY := int64(y)-int64(pass.radius), int64(y)+int64(pass.radius)+1
 			if x >= sourceBounds.Min.X && x < sourceBounds.Max.X && removeY >= int64(sourceBounds.Min.Y) && removeY < int64(sourceBounds.Max.Y) {
-				sum -= int64(sample(x, int(removeY)))
+				offset := (int(removeY)-sourceBounds.Min.Y)*sourceStride + (x-sourceBounds.Min.X)*sourceStep + sourceChannel
+				sum -= int64(sourcePixels[offset])
 			}
 			if x >= sourceBounds.Min.X && x < sourceBounds.Max.X && addY >= int64(sourceBounds.Min.Y) && addY < int64(sourceBounds.Max.Y) {
-				sum += int64(sample(x, int(addY)))
+				offset := (int(addY)-sourceBounds.Min.Y)*sourceStride + (x-sourceBounds.Min.X)*sourceStep + sourceChannel
+				sum += int64(sourcePixels[offset])
 			}
 		}
 	}
@@ -621,11 +831,178 @@ func boxBlurAlphaValues(ctx context.Context, destination *image.Alpha, sourceBou
 }
 
 func paintDropShadow(ctx context.Context, destination, source *image.RGBA, blurred *image.Alpha, offsetX, offsetY float64, shadow color.NRGBA) error {
+	if finite(offsetX) && finite(offsetY) && offsetX == math.Trunc(offsetX) && offsetY == math.Trunc(offsetY) {
+		return paintDropShadowInteger(ctx, destination, source, blurred, offsetX, offsetY, shadow)
+	}
 	for y := destination.Bounds().Min.Y; y < destination.Bounds().Max.Y; y++ {
 		if (y-destination.Bounds().Min.Y)&31 == 0 {
 			if err := ctx.Err(); err != nil {
 				return err
 			}
+		}
+		sampleY := float64(y) - offsetY
+		for x := destination.Bounds().Min.X; x < destination.Bounds().Max.X; x++ {
+			if (x-destination.Bounds().Min.X)&1023 == 0 {
+				if err := ctx.Err(); err != nil {
+					return err
+				}
+			}
+			var alpha uint8
+			if blurred == nil {
+				alpha = sampleShadowAlphaRGBA(source, float64(x)-offsetX, sampleY)
+			} else {
+				alpha = sampleShadowAlphaImage(blurred, float64(x)-offsetX, sampleY)
+			}
+			if alpha == 0 {
+				continue
+			}
+			pixel := premultipliedShadowPixel(shadow, alpha)
+			offset := destination.PixOffset(x, y)
+			destination.Pix[offset] = pixel[0]
+			destination.Pix[offset+1] = pixel[1]
+			destination.Pix[offset+2] = pixel[2]
+			destination.Pix[offset+3] = pixel[3]
+		}
+	}
+	return ctx.Err()
+}
+
+func paintDropShadowInteger(ctx context.Context, destination, source *image.RGBA, blurred *image.Alpha, offsetX, offsetY float64, shadow color.NRGBA) error {
+	sourcePixels := source.Pix
+	sourceStride := source.Stride
+	sourceBounds := source.Bounds()
+	sourceStep, sourceChannel := 4, 3
+	if blurred != nil {
+		sourcePixels = blurred.Pix
+		sourceStride = blurred.Stride
+		sourceBounds = blurred.Bounds()
+		sourceStep, sourceChannel = 1, 0
+	}
+	// Computing translated integer bounds costs more than it saves for a single
+	// destination pixel. Keep that degenerate case scalar while preserving the
+	// same three cancellation checkpoints as the row kernel.
+	destinationBounds := destination.Bounds()
+	if destinationBounds.Dx() == 1 && destinationBounds.Dy() == 1 {
+		if err := ctx.Err(); err != nil {
+			return err
+		}
+		if err := ctx.Err(); err != nil {
+			return err
+		}
+		x, y := destinationBounds.Min.X, destinationBounds.Min.Y
+		sampleXFloat, sampleYFloat := float64(x)-offsetX, float64(y)-offsetY
+		if sampleXFloat >= float64(sourceBounds.Min.X) && sampleXFloat < float64(sourceBounds.Max.X) &&
+			sampleYFloat >= float64(sourceBounds.Min.Y) && sampleYFloat < float64(sourceBounds.Max.Y) {
+			sampleX, sampleY := int(sampleXFloat), int(sampleYFloat)
+			alpha := sourcePixels[(sampleY-sourceBounds.Min.Y)*sourceStride+(sampleX-sourceBounds.Min.X)*sourceStep+sourceChannel]
+			if alpha != 0 {
+				pixel := premultipliedShadowPixel(shadow, alpha)
+				offset := destination.PixOffset(x, y)
+				destination.Pix[offset] = pixel[0]
+				destination.Pix[offset+1] = pixel[1]
+				destination.Pix[offset+2] = pixel[2]
+				destination.Pix[offset+3] = pixel[3]
+			}
+		}
+		return ctx.Err()
+	}
+	shiftedSourceBounds, ok := exactIntegerTranslatedBounds(sourceBounds, offsetX, offsetY)
+	if !ok || !rectangleWithinExactFloatIntegerDomain(destinationBounds) {
+		return paintDropShadowIntegerGeneral(ctx, destination, sourcePixels, sourceStride, sourceBounds, sourceStep, sourceChannel, offsetX, offsetY, shadow)
+	}
+	for y := destinationBounds.Min.Y; y < destinationBounds.Max.Y; y++ {
+		if (y-destinationBounds.Min.Y)&31 == 0 {
+			if err := ctx.Err(); err != nil {
+				return err
+			}
+		}
+		sampleYInBounds := y >= shiftedSourceBounds.Min.Y && y < shiftedSourceBounds.Max.Y
+		sourceRow := 0
+		if sampleYInBounds {
+			sourceY := sourceBounds.Min.Y + y - shiftedSourceBounds.Min.Y
+			sourceRow = (sourceY-sourceBounds.Min.Y)*sourceStride + sourceChannel
+		}
+		destinationOffset := destination.PixOffset(destinationBounds.Min.X, y)
+		for x := destinationBounds.Min.X; x < destinationBounds.Max.X; x++ {
+			if (x-destinationBounds.Min.X)&1023 == 0 {
+				if err := ctx.Err(); err != nil {
+					return err
+				}
+			}
+			if !sampleYInBounds || x < shiftedSourceBounds.Min.X || x >= shiftedSourceBounds.Max.X {
+				destinationOffset += 4
+				continue
+			}
+			sourceX := sourceBounds.Min.X + x - shiftedSourceBounds.Min.X
+			alpha := sourcePixels[sourceRow+(sourceX-sourceBounds.Min.X)*sourceStep]
+			if alpha != 0 {
+				pixel := premultipliedShadowPixel(shadow, alpha)
+				destination.Pix[destinationOffset] = pixel[0]
+				destination.Pix[destinationOffset+1] = pixel[1]
+				destination.Pix[destinationOffset+2] = pixel[2]
+				destination.Pix[destinationOffset+3] = pixel[3]
+			}
+			destinationOffset += 4
+		}
+	}
+	return ctx.Err()
+}
+
+func rectangleWithinExactFloatIntegerDomain(bounds image.Rectangle) bool {
+	const maxExactInteger = int64(1) << 53
+	return int64(bounds.Min.X) >= -maxExactInteger && int64(bounds.Min.X) <= maxExactInteger &&
+		int64(bounds.Min.Y) >= -maxExactInteger && int64(bounds.Min.Y) <= maxExactInteger &&
+		int64(bounds.Max.X) >= -maxExactInteger && int64(bounds.Max.X) <= maxExactInteger &&
+		int64(bounds.Max.Y) >= -maxExactInteger && int64(bounds.Max.Y) <= maxExactInteger
+}
+
+func exactIntegerTranslatedBounds(bounds image.Rectangle, offsetX, offsetY float64) (image.Rectangle, bool) {
+	// The general sampler converts each destination coordinate to float64 before
+	// subtracting the offset. Outside float64's exact integer domain, adjacent
+	// coordinates can alias even when translating the rectangle endpoints happens
+	// to preserve its width. Only use the direct-index kernel when every operand
+	// and translated endpoint is exactly representable, so it remains byte-for-byte
+	// equivalent to that sampler.
+	const maxExactInteger = int64(1) << 53
+	if !rectangleWithinExactFloatIntegerDomain(bounds) ||
+		offsetX < -float64(maxExactInteger) || offsetX > float64(maxExactInteger) ||
+		offsetY < -float64(maxExactInteger) || offsetY > float64(maxExactInteger) {
+		return image.Rectangle{}, false
+	}
+	maxPlatform := float64(platformMaxInt())
+	if platformMaxInt() > 1<<53 {
+		maxPlatform = math.Nextafter(maxPlatform, 0)
+	}
+	minPlatform := -maxPlatform - 1
+	minX := float64(bounds.Min.X) + offsetX
+	minY := float64(bounds.Min.Y) + offsetY
+	maxX := float64(bounds.Max.X) + offsetX
+	maxY := float64(bounds.Max.Y) + offsetY
+	if minX < -float64(maxExactInteger) || minY < -float64(maxExactInteger) ||
+		maxX > float64(maxExactInteger) || maxY > float64(maxExactInteger) ||
+		minX < minPlatform || minY < minPlatform || maxX > maxPlatform || maxY > maxPlatform ||
+		minX != math.Trunc(minX) || minY != math.Trunc(minY) || maxX != math.Trunc(maxX) || maxY != math.Trunc(maxY) {
+		return image.Rectangle{}, false
+	}
+	translated := image.Rect(int(minX), int(minY), int(maxX), int(maxY))
+	if translated.Dx() != bounds.Dx() || translated.Dy() != bounds.Dy() {
+		return image.Rectangle{}, false
+	}
+	return translated, true
+}
+
+func paintDropShadowIntegerGeneral(ctx context.Context, destination *image.RGBA, sourcePixels []byte, sourceStride int, sourceBounds image.Rectangle, sourceStep, sourceChannel int, offsetX, offsetY float64, shadow color.NRGBA) error {
+	for y := destination.Bounds().Min.Y; y < destination.Bounds().Max.Y; y++ {
+		if (y-destination.Bounds().Min.Y)&31 == 0 {
+			if err := ctx.Err(); err != nil {
+				return err
+			}
+		}
+		sampleYFloat := float64(y) - offsetY
+		sampleYInBounds := sampleYFloat >= float64(sourceBounds.Min.Y) && sampleYFloat < float64(sourceBounds.Max.Y)
+		sampleY := 0
+		if sampleYInBounds {
+			sampleY = int(sampleYFloat)
 		}
 		for x := destination.Bounds().Min.X; x < destination.Bounds().Max.X; x++ {
 			if (x-destination.Bounds().Min.X)&1023 == 0 {
@@ -633,41 +1010,41 @@ func paintDropShadow(ctx context.Context, destination, source *image.RGBA, blurr
 					return err
 				}
 			}
-			alpha := sampleShadowAlpha(source, blurred, float64(x)-offsetX, float64(y)-offsetY)
+			if !sampleYInBounds {
+				continue
+			}
+			sampleXFloat := float64(x) - offsetX
+			if sampleXFloat < float64(sourceBounds.Min.X) || sampleXFloat >= float64(sourceBounds.Max.X) {
+				continue
+			}
+			sampleX := int(sampleXFloat)
+			alpha := sourcePixels[(sampleY-sourceBounds.Min.Y)*sourceStride+(sampleX-sourceBounds.Min.X)*sourceStep+sourceChannel]
 			if alpha == 0 {
 				continue
 			}
-			shadowAlpha := uint8((uint32(alpha)*uint32(shadow.A) + 127) / 255)
+			pixel := premultipliedShadowPixel(shadow, alpha)
 			offset := destination.PixOffset(x, y)
-			destination.Pix[offset] = uint8((uint32(shadow.R)*uint32(shadowAlpha) + 127) / 255)
-			destination.Pix[offset+1] = uint8((uint32(shadow.G)*uint32(shadowAlpha) + 127) / 255)
-			destination.Pix[offset+2] = uint8((uint32(shadow.B)*uint32(shadowAlpha) + 127) / 255)
-			destination.Pix[offset+3] = shadowAlpha
+			destination.Pix[offset] = pixel[0]
+			destination.Pix[offset+1] = pixel[1]
+			destination.Pix[offset+2] = pixel[2]
+			destination.Pix[offset+3] = pixel[3]
 		}
 	}
 	return ctx.Err()
 }
 
-func sampleShadowAlpha(source *image.RGBA, blurred *image.Alpha, x, y float64) uint8 {
-	var bounds image.Rectangle
-	var sample func(int, int) uint8
-	if blurred == nil {
-		bounds = source.Bounds()
-		sample = func(px, py int) uint8 {
-			if px < bounds.Min.X || px >= bounds.Max.X || py < bounds.Min.Y || py >= bounds.Max.Y {
-				return 0
-			}
-			return source.Pix[source.PixOffset(px, py)+3]
-		}
-	} else {
-		bounds = blurred.Bounds()
-		sample = func(px, py int) uint8 {
-			if px < bounds.Min.X || px >= bounds.Max.X || py < bounds.Min.Y || py >= bounds.Max.Y {
-				return 0
-			}
-			return blurred.Pix[blurred.PixOffset(px, py)]
-		}
+func premultipliedShadowPixel(shadow color.NRGBA, alpha uint8) [4]uint8 {
+	shadowAlpha := uint8((uint32(alpha)*uint32(shadow.A) + 127) / 255)
+	return [4]uint8{
+		uint8((uint32(shadow.R)*uint32(shadowAlpha) + 127) / 255),
+		uint8((uint32(shadow.G)*uint32(shadowAlpha) + 127) / 255),
+		uint8((uint32(shadow.B)*uint32(shadowAlpha) + 127) / 255),
+		shadowAlpha,
 	}
+}
+
+func sampleShadowAlphaRGBA(source *image.RGBA, x, y float64) uint8 {
+	bounds := source.Bounds()
 	// Reject non-contributing coordinates before float-to-int conversion. This
 	// also makes finite but enormous offsets deterministic across architectures.
 	if !finite(x) || !finite(y) ||
@@ -678,15 +1055,75 @@ func sampleShadowAlpha(source *image.RGBA, blurred *image.Alpha, x, y float64) u
 	x0, y0 := int(math.Floor(x)), int(math.Floor(y))
 	fx, fy := x-float64(x0), y-float64(y0)
 	if fx == 0 && fy == 0 {
-		return sample(x0, y0)
+		if x0 < bounds.Min.X || x0 >= bounds.Max.X || y0 < bounds.Min.Y || y0 >= bounds.Max.Y {
+			return 0
+		}
+		return source.Pix[source.PixOffset(x0, y0)+3]
 	}
-	a00 := float64(sample(x0, y0))
-	a10 := float64(sample(x0+1, y0))
-	a01 := float64(sample(x0, y0+1))
-	a11 := float64(sample(x0+1, y0+1))
-	top := a00 + (a10-a00)*fx
-	bottom := a01 + (a11-a01)*fx
+	if x0 >= bounds.Min.X && x0+1 < bounds.Max.X && y0 >= bounds.Min.Y && y0+1 < bounds.Max.Y {
+		offset := source.PixOffset(x0, y0) + 3
+		return interpolateShadowAlpha(
+			source.Pix[offset], source.Pix[offset+4],
+			source.Pix[offset+source.Stride], source.Pix[offset+source.Stride+4],
+			fx, fy,
+		)
+	}
+	return interpolateShadowAlpha(
+		rgbaAlphaAt(source, x0, y0), rgbaAlphaAt(source, x0+1, y0),
+		rgbaAlphaAt(source, x0, y0+1), rgbaAlphaAt(source, x0+1, y0+1),
+		fx, fy,
+	)
+}
+
+func sampleShadowAlphaImage(source *image.Alpha, x, y float64) uint8 {
+	bounds := source.Bounds()
+	// Keep the same pre-conversion guard as the RGBA path.
+	if !finite(x) || !finite(y) ||
+		x < float64(bounds.Min.X)-1 || x >= float64(bounds.Max.X) ||
+		y < float64(bounds.Min.Y)-1 || y >= float64(bounds.Max.Y) {
+		return 0
+	}
+	x0, y0 := int(math.Floor(x)), int(math.Floor(y))
+	fx, fy := x-float64(x0), y-float64(y0)
+	if fx == 0 && fy == 0 {
+		if x0 < bounds.Min.X || x0 >= bounds.Max.X || y0 < bounds.Min.Y || y0 >= bounds.Max.Y {
+			return 0
+		}
+		return source.Pix[source.PixOffset(x0, y0)]
+	}
+	if x0 >= bounds.Min.X && x0+1 < bounds.Max.X && y0 >= bounds.Min.Y && y0+1 < bounds.Max.Y {
+		offset := source.PixOffset(x0, y0)
+		return interpolateShadowAlpha(
+			source.Pix[offset], source.Pix[offset+1],
+			source.Pix[offset+source.Stride], source.Pix[offset+source.Stride+1],
+			fx, fy,
+		)
+	}
+	return interpolateShadowAlpha(
+		alphaAt(source, x0, y0), alphaAt(source, x0+1, y0),
+		alphaAt(source, x0, y0+1), alphaAt(source, x0+1, y0+1),
+		fx, fy,
+	)
+}
+
+func interpolateShadowAlpha(a00, a10, a01, a11 uint8, fx, fy float64) uint8 {
+	top := float64(a00) + (float64(a10)-float64(a00))*fx
+	bottom := float64(a01) + (float64(a11)-float64(a01))*fx
 	return roundedByte(top + (bottom-top)*fy)
+}
+
+func rgbaAlphaAt(source *image.RGBA, x, y int) uint8 {
+	if !image.Pt(x, y).In(source.Bounds()) {
+		return 0
+	}
+	return source.Pix[source.PixOffset(x, y)+3]
+}
+
+func alphaAt(source *image.Alpha, x, y int) uint8 {
+	if !image.Pt(x, y).In(source.Bounds()) {
+		return 0
+	}
+	return source.Pix[source.PixOffset(x, y)]
 }
 
 func planFilterResources(filters []preparedFilter, input image.Rectangle) (peak, finalBytes int64, err error) {

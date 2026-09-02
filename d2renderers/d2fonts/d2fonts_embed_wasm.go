@@ -124,6 +124,9 @@ func init() {
 	if err := initializeFontFaces(fontFacesFS); err != nil {
 		panic(fmt.Sprintf("Failed to initialize font faces: %v", err))
 	}
+	if err := registerBundledFontFaces(); err != nil {
+		panic(fmt.Sprintf("Failed to register bundled font faces: %v", err))
+	}
 }
 
 // trimEncodings removes trailing newlines from all font encodings

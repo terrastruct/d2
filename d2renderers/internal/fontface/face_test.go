@@ -1,6 +1,7 @@
 package fontface
 
 import (
+	"crypto/sha256"
 	"encoding/binary"
 	"errors"
 	"strings"
@@ -20,6 +21,53 @@ func TestParsedFaceAcceptsEmptyOutlineSpacingGlyph(t *testing.T) {
 	supported, err := face.SupportsRenderableRune(' ')
 	if err != nil || !supported {
 		t.Fatalf("space coverage = %v, %v; empty outline spacing glyph must be valid", supported, err)
+	}
+}
+
+func TestOrdinaryFaceParsingDoesNotHashSource(t *testing.T) {
+	var zeroDigest [sha256.Size]byte
+	data := testFontData(t, "SourceSansPro-Regular.ttf")
+	face, err := ParseFace(data, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if face.source.shapingFont == nil || face.source.digest != zeroDigest {
+		t.Fatalf("ordinary parser provenance = %#v, want unhashed parser-issued source", face.source)
+	}
+	if face.hasParsedSource(zeroDigest) {
+		t.Fatal("unhashed ordinary face authenticated a zero digest")
+	}
+	clone, err := face.Clone()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if clone.source.shapingFont == nil || clone.source.digest != zeroDigest {
+		t.Fatalf("ordinary clone provenance = %#v, want unhashed parser-issued source", clone.source)
+	}
+	if clone.hasParsedSource(zeroDigest) {
+		t.Fatal("unhashed ordinary clone authenticated a zero digest")
+	}
+	if err := face.CloneInto(nil); err == nil || !strings.Contains(err.Error(), "clone destination") {
+		t.Fatalf("nil CloneInto destination error = %v", err)
+	}
+	previousShaping := face.Shaping
+	if err := face.CloneInto(face); err != nil {
+		t.Fatal(err)
+	}
+	if face.Shaping == previousShaping || !face.hasParsedSourceComponents() {
+		t.Fatal("in-place CloneInto did not replace mutable caches and preserve provenance")
+	}
+}
+
+func BenchmarkParseFaceOrdinary(b *testing.B) {
+	data := testFontData(b, "SourceSansPro-Regular.ttf")
+	b.ReportAllocs()
+	b.SetBytes(int64(len(data)))
+	for b.Loop() {
+		face, err := ParseFace(data, 0)
+		if err != nil || face == nil {
+			b.Fatalf("ParseFace() = %p, %v", face, err)
+		}
 	}
 }
 

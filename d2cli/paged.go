@@ -37,12 +37,22 @@ type pagedRenderer struct {
 	assets           *d2scenebuild.AssetOptions
 	fonts            *d2scenebuild.FontFallbackOptions
 	session          *d2raster.RenderSession
+	workspace        d2raster.RenderWorkspace
+	pngEncoder       rasterPNGEncoder
 	totalBoards      int
 	boardIDToPage    map[string]int
 	linkBudget       d2scenebuild.LinkBudget
 	renderedBoards   int
 	remainingPixels  int64
 	remainingEncoded int64
+}
+
+func (r *pagedRenderer) close() {
+	if r == nil {
+		return
+	}
+	r.pngEncoder.close()
+	r.workspace.Reset()
 }
 
 type pagedBoard struct {
@@ -132,30 +142,48 @@ func (r *pagedRenderer) render(diagram *d2target.Diagram, wantsPreview bool) (*p
 	if err != nil {
 		return nil, fmt.Errorf("paged board %d scene: %w", r.renderedBoards, err)
 	}
-	frame, err := r.session.Render(r.ctx, document, frameOptions)
-	if err != nil {
-		return nil, fmt.Errorf("paged board %d frame: %w", r.renderedBoards, err)
+	var (
+		links      []d2scene.LinkRegion
+		pixels     int64
+		encoded    []byte
+		consumeErr error
+	)
+	renderErr := r.workspace.Render(r.ctx, r.session, document, frameOptions, func(frame *image.NRGBA) error {
+		if err := validateRenderSession("paged export", r.session); err != nil {
+			consumeErr = err
+			return err
+		}
+		var err error
+		links, err = mapPagedLinks(r.ctx, document, frame, frameOptions.Scale)
+		if err != nil {
+			consumeErr = fmt.Errorf("paged board %d links: %w", r.renderedBoards, err)
+			return consumeErr
+		}
+		pixels, err = imagePixelCount(frame)
+		if err != nil {
+			consumeErr = fmt.Errorf("paged board %d frame: %w", r.renderedBoards, err)
+			return consumeErr
+		}
+		if pixels > r.remainingPixels {
+			consumeErr = fmt.Errorf("paged pixel work exceeds the %d-pixel operation limit", pagedMaxTotalPixels)
+			return consumeErr
+		}
+		encoded, err = r.pngEncoder.encodeGeneric(r.ctx, frame)
+		if err != nil {
+			consumeErr = fmt.Errorf("paged board %d PNG: %w", r.renderedBoards, err)
+			return consumeErr
+		}
+		if int64(len(encoded)) > r.remainingEncoded {
+			consumeErr = fmt.Errorf("paged encoded PNG bytes exceed the %d-byte operation limit", pagedMaxEncodedBytes)
+			return consumeErr
+		}
+		return nil
+	})
+	if consumeErr != nil {
+		return nil, consumeErr
 	}
-	if err := validateRenderSession("paged export", r.session); err != nil {
-		return nil, err
-	}
-	links, err := mapPagedLinks(r.ctx, document, frame, frameOptions.Scale)
-	if err != nil {
-		return nil, fmt.Errorf("paged board %d links: %w", r.renderedBoards, err)
-	}
-	pixels, err := imagePixelCount(frame)
-	if err != nil {
-		return nil, fmt.Errorf("paged board %d frame: %w", r.renderedBoards, err)
-	}
-	if pixels > r.remainingPixels {
-		return nil, fmt.Errorf("paged pixel work exceeds the %d-pixel operation limit", pagedMaxTotalPixels)
-	}
-	encoded, err := d2raster.EncodePNG(r.ctx, frame)
-	if err != nil {
-		return nil, fmt.Errorf("paged board %d PNG: %w", r.renderedBoards, err)
-	}
-	if int64(len(encoded)) > r.remainingEncoded {
-		return nil, fmt.Errorf("paged encoded PNG bytes exceed the %d-byte operation limit", pagedMaxEncodedBytes)
+	if renderErr != nil {
+		return nil, fmt.Errorf("paged board %d frame: %w", r.renderedBoards, renderErr)
 	}
 	if len(preview) != 0 {
 		preview, err = bundleRasterPreview(r.ctx, r.assets.Resolver, preview)
@@ -382,6 +410,7 @@ func renderPDFWithExporter(ctx context.Context, plugin d2plugin.Plugin, opts d2s
 	if err != nil {
 		return nil, false, err
 	}
+	defer renderer.close()
 	ctx = renderer.ctx
 	rootPath, err = pdfRootPath(rootPath, diagram.IsFolderOnly)
 	if err != nil {
@@ -455,6 +484,7 @@ func renderPPTX(ctx context.Context, presentation *pptx.Presentation, plugin d2p
 	if err != nil {
 		return nil, err
 	}
+	defer renderer.close()
 	ctx = renderer.ctx
 	rootPath, err = pptxRootPath(rootPath, diagram.IsFolderOnly, renderer.boardIDToPage)
 	if err != nil {

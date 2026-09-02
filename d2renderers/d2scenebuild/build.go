@@ -777,10 +777,14 @@ func (b *builder) buildDocument() (*d2scene.Document, error) {
 		// Paint the appendix separator and rows above both badges and the legend.
 		root.Children = append(root.Children, appendixNode)
 	}
-	if err := b.resolveFontFallbacks(root); err != nil {
+	textReferences, err := b.sceneTextReferences(root)
+	if err != nil {
 		return nil, err
 	}
-	if err := b.shapeTextRuns(root); err != nil {
+	if err := b.resolveFontFallbacks(textReferences); err != nil {
+		return nil, err
+	}
+	if err := b.shapeTextRuns(textReferences); err != nil {
 		return nil, err
 	}
 
@@ -1091,7 +1095,7 @@ func (b *builder) font(text d2target.Text) (d2scene.Font, error) {
 	}
 	assetID := d2scene.AssetID("font:" + string(family) + ":" + string(style))
 	if _, exists := b.assets[assetID]; !exists {
-		b.assets[assetID] = d2scene.FontAsset{MIMEType: "font/ttf", Data: append([]byte(nil), fontBytes...)}
+		b.assets[assetID] = d2scene.FontAsset{MIMEType: "font/ttf", Data: retainedFontBytes(fontBytes)}
 	}
 	weight := 400
 	if style == d2fonts.FONT_STYLE_BOLD {
@@ -1100,6 +1104,10 @@ func (b *builder) font(text d2target.Text) (d2scene.Font, error) {
 		weight = 600
 	}
 	return d2scene.Font{Family: string(family), Style: string(style), Weight: weight, Size: float64(text.FontSize), Asset: assetID}, nil
+}
+
+func retainedFontBytes(data []byte) []byte {
+	return append([]byte(nil), data...)
 }
 
 func unsupported(object, feature string) error {

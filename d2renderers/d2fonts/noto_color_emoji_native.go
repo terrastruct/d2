@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"crypto/sha256"
 	_ "embed"
+	"errors"
 	"fmt"
 	"io"
 	"sync"
@@ -56,7 +57,7 @@ func bundledNotoColorEmoji() ([]byte, error) {
 			bundledNotoColorEmojiCache.err = fmt.Errorf("d2fonts: decode bundled Noto Color Emoji: %w", err)
 			return
 		}
-		canonical, err := fontface.RegisterBundledNotoColorEmoji(data)
+		canonical, err := fontface.RegisterOwnedBundledNotoColorEmoji(data)
 		if err != nil {
 			bundledNotoColorEmojiCache.err = err
 			return
@@ -77,12 +78,25 @@ func decodeBundledBrotliFont(compressed []byte, expectedCompressedSize int, expe
 	if compressedDigest != expectedCompressedSHA256 {
 		return nil, fmt.Errorf("Brotli font SHA-256 is %x, want %x", compressedDigest, expectedCompressedSHA256)
 	}
-	data, err := io.ReadAll(io.LimitReader(brotli.NewReader(bytes.NewReader(compressed)), int64(expectedSize)+1))
+	// The decoded size is authenticated metadata. Allocate its final backing
+	// store once instead of letting io.ReadAll repeatedly grow a multi-megabyte
+	// slice, then probe one extra byte to retain the hard expansion bound.
+	data := make([]byte, expectedSize)
+	reader := brotli.NewReader(bytes.NewReader(compressed))
+	decodedBytes, err := io.ReadFull(reader, data)
 	if err != nil {
+		if errors.Is(err, io.EOF) || errors.Is(err, io.ErrUnexpectedEOF) {
+			return nil, fmt.Errorf("decoded font size is %d, want %d", decodedBytes, expectedSize)
+		}
 		return nil, fmt.Errorf("read Brotli stream: %w", err)
 	}
-	if len(data) > expectedSize {
+	var extra [1]byte
+	extraBytes, err := io.ReadFull(reader, extra[:])
+	if extraBytes != 0 {
 		return nil, fmt.Errorf("decoded font exceeds limit %d", expectedSize)
+	}
+	if err != nil && !errors.Is(err, io.EOF) {
+		return nil, fmt.Errorf("read Brotli stream: %w", err)
 	}
 	if len(data) != expectedSize {
 		return nil, fmt.Errorf("decoded font size is %d, want %d", len(data), expectedSize)

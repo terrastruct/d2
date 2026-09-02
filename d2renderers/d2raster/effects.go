@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"image"
 	"math"
+	"math/bits"
 
 	"github.com/d2lang/d2/d2renderers/d2raster/internal/scanline"
 	"github.com/d2lang/d2/d2renderers/d2scene"
@@ -27,10 +28,41 @@ type rasterizerResourcePlanner struct {
 	counter *scanline.Rasterizer
 }
 
+type offscreenPixelKind uint8
+
+const (
+	offscreenRGBA offscreenPixelKind = iota
+	offscreenAlpha
+)
+
+type cachedOffscreenImage struct {
+	rgba  *image.RGBA
+	alpha *image.Alpha
+}
+
+func (entry cachedOffscreenImage) byteLen() int {
+	if entry.rgba != nil {
+		return len(entry.rgba.Pix)
+	}
+	if entry.alpha != nil {
+		return len(entry.alpha.Pix)
+	}
+	return 0
+}
+
+func (entry cachedOffscreenImage) isKind(kind offscreenPixelKind) bool {
+	if kind == offscreenRGBA {
+		return entry.rgba != nil
+	}
+	return entry.alpha != nil
+}
+
 type offscreenBudget struct {
-	limit int64
-	live  int64
-	peak  int64
+	limit       int64
+	live        int64
+	peak        int64
+	cachedBytes int64
+	cache       cachedOffscreenImage
 }
 
 func (b *offscreenBudget) reserve(bounds image.Rectangle, bytesPerPixel int64, purpose string) (int64, error) {
@@ -48,15 +80,126 @@ func (b *offscreenBudget) reserveBytes(bytes int64, purpose string) (int64, erro
 			purpose, bytes, b.live, b.limit,
 		)
 	}
+	// Cached pixel buffers remain part of the exact offscreen working-set peak,
+	// not merely under the caller's (potentially much larger) configured limit.
+	// This ensures reuse never retains more pixel storage than the unpooled
+	// traversal already needed simultaneously. Logical live/peak retain their
+	// existing meaning and remain exactly comparable with the preflight plan.
+	newLive := b.live + bytes
+	retainedLimit := maxInt64(b.peak, newLive)
+	b.trimCache(retainedLimit - newLive)
+	b.addLive(bytes)
+	return bytes, nil
+}
+
+func (b *offscreenBudget) addLive(bytes int64) {
 	b.live += bytes
 	if b.live > b.peak {
 		b.peak = b.live
 	}
-	return bytes, nil
 }
 
 func (b *offscreenBudget) release(bytes int64) {
 	b.live -= bytes
+}
+
+func (b *offscreenBudget) newRGBA(bounds image.Rectangle, purpose string) (*image.RGBA, int64, error) {
+	bytes, err := pixelStorageBytes(bounds, 4)
+	if err != nil {
+		return nil, 0, fmt.Errorf("d2raster: %s: %w", purpose, err)
+	}
+	entry, reservation, err := b.reserveImage(bytes, offscreenRGBA, purpose)
+	if err != nil {
+		return nil, 0, err
+	}
+	if entry.rgba == nil {
+		return image.NewRGBA(bounds), reservation, nil
+	}
+	clear(entry.rgba.Pix)
+	entry.rgba.Stride = 4 * bounds.Dx()
+	entry.rgba.Rect = bounds
+	return entry.rgba, reservation, nil
+}
+
+func (b *offscreenBudget) newAlpha(bounds image.Rectangle, purpose string) (*image.Alpha, int64, error) {
+	bytes, err := pixelStorageBytes(bounds, 1)
+	if err != nil {
+		return nil, 0, fmt.Errorf("d2raster: %s: %w", purpose, err)
+	}
+	entry, reservation, err := b.reserveImage(bytes, offscreenAlpha, purpose)
+	if err != nil {
+		return nil, 0, err
+	}
+	if entry.alpha == nil {
+		return image.NewAlpha(bounds), reservation, nil
+	}
+	clear(entry.alpha.Pix)
+	entry.alpha.Stride = bounds.Dx()
+	entry.alpha.Rect = bounds
+	return entry.alpha, reservation, nil
+}
+
+func (b *offscreenBudget) reserveImage(bytes int64, kind offscreenPixelKind, purpose string) (cachedOffscreenImage, int64, error) {
+	if bytes > b.limit-b.live {
+		return cachedOffscreenImage{}, 0, fmt.Errorf(
+			"d2raster: offscreen %s requires %d bytes with %d bytes already live, exceeding limit %d",
+			purpose, bytes, b.live, b.limit,
+		)
+	}
+	if bytes != 0 && b.cache.isKind(kind) && int64(b.cache.byteLen()) == bytes {
+		entry := b.cache
+		b.dropCached()
+		b.addLive(bytes)
+		return entry, bytes, nil
+	}
+	// Only the most recently released exact-sized image is a strong reuse
+	// candidate. Drop a mismatched candidate before allocating so a run of
+	// one-use sizes has the same retained pixel storage as the unpooled path.
+	// Repeated effect/filter sizes still reuse immediately without allocation.
+	if b.cachedBytes != 0 {
+		b.dropCached()
+	}
+	reservation, err := b.reserveBytes(bytes, purpose)
+	return cachedOffscreenImage{}, reservation, err
+}
+
+func (b *offscreenBudget) recycleRGBA(buffer *image.RGBA, reservation int64) {
+	if buffer == nil {
+		b.release(reservation)
+		return
+	}
+	b.recycleImage(cachedOffscreenImage{rgba: buffer}, reservation)
+}
+
+func (b *offscreenBudget) recycleAlpha(buffer *image.Alpha, reservation int64) {
+	if buffer == nil {
+		b.release(reservation)
+		return
+	}
+	b.recycleImage(cachedOffscreenImage{alpha: buffer}, reservation)
+}
+
+func (b *offscreenBudget) recycleImage(entry cachedOffscreenImage, reservation int64) {
+	b.release(reservation)
+	if reservation == 0 || int64(entry.byteLen()) != reservation {
+		return
+	}
+	if b.cachedBytes != 0 {
+		b.dropCached()
+	}
+	b.cache = entry
+	b.cachedBytes += reservation
+}
+
+func (b *offscreenBudget) trimCache(maxBytes int64) {
+	if b.cachedBytes > maxBytes {
+		b.dropCached()
+	}
+}
+
+func (b *offscreenBudget) dropCached() {
+	b.cache = cachedOffscreenImage{}
+	b.cachedBytes = 0
 }
 
 func pixelStorageBytes(bounds image.Rectangle, bytesPerPixel int64) (int64, error) {
@@ -262,28 +405,27 @@ func planNodeResources(ctx context.Context, node *preparedNode, dst image.Rectan
 	}
 
 	if node.clip != nil {
-		clipBytes, err := pixelStorageBytes(visibleBounds, 1)
-		if err != nil {
-			return resources, fmt.Errorf("d2raster: clip mask: %w", err)
-		}
-		withClip, ok := checkedAdd(finalLayerBytes, clipBytes)
-		if !ok {
-			return resources, fmt.Errorf("d2raster: peak offscreen pixel storage exceeds the int64 domain")
-		}
-		resources.peakOffscreenBytes = maxInt64(resources.peakOffscreenBytes, withClip)
-		if node.clip.fillRule != d2scene.EvenOdd && !node.clip.bounds.Intersect(visibleBounds).Empty() {
-			target := image.Rect(0, 0, visibleBounds.Dx(), visibleBounds.Dy())
-			shifted := d2scene.Translate(-float64(visibleBounds.Min.X), -float64(visibleBounds.Min.Y))
-			if err := planner.recordFill(ctx, &resources, target, node.clip.subpaths, shifted, "clip"); err != nil {
-				return resources, err
-			}
-		}
 		if node.clip.fillRule == d2scene.EvenOdd {
+			clipBytes, err := pixelStorageBytes(visibleBounds, 1)
+			if err != nil {
+				return resources, fmt.Errorf("d2raster: clip mask: %w", err)
+			}
+			withClip, ok := checkedAdd(finalLayerBytes, clipBytes)
+			if !ok {
+				return resources, fmt.Errorf("d2raster: peak offscreen pixel storage exceeds the int64 domain")
+			}
+			resources.peakOffscreenBytes = maxInt64(resources.peakOffscreenBytes, withClip)
 			work, err := evenOddMaskWork(visibleBounds, node.clip.edges)
 			if err != nil {
 				return resources, err
 			}
 			if err := addResourceWork(&resources, work); err != nil {
+				return resources, err
+			}
+		} else if !node.clip.bounds.Intersect(visibleBounds).Empty() {
+			target := image.Rect(0, 0, visibleBounds.Dx(), visibleBounds.Dy())
+			shifted := d2scene.Translate(-float64(visibleBounds.Min.X), -float64(visibleBounds.Min.Y))
+			if err := planner.recordFill(ctx, &resources, target, node.clip.subpaths, shifted, "clip"); err != nil {
 				return resources, err
 			}
 		}
@@ -370,11 +512,6 @@ func planPrimitiveResources(ctx context.Context, primitive *preparedPrimitive, d
 				return resources, err
 			}
 		} else {
-			bytes, err := pixelStorageBytes(bounds, 1)
-			if err != nil {
-				return resources, fmt.Errorf("d2raster: gradient fill mask: %w", err)
-			}
-			resources.peakOffscreenBytes = bytes
 			if !bounds.Empty() {
 				target := image.Rect(0, 0, bounds.Dx(), bounds.Dy())
 				shifted := d2scene.Translate(-float64(bounds.Min.X), -float64(bounds.Min.Y)).Mul(primitive.transform)
@@ -392,11 +529,6 @@ func planPrimitiveResources(ctx context.Context, primitive *preparedPrimitive, d
 			}
 		} else {
 			bounds := paintedStrokePixelBounds(primitive.strokeRuns, primitive.transform, primitive.stroke, dst)
-			bytes, err := pixelStorageBytes(bounds, 1)
-			if err != nil {
-				return resources, fmt.Errorf("d2raster: gradient stroke mask: %w", err)
-			}
-			resources.peakOffscreenBytes = maxInt64(resources.peakOffscreenBytes, bytes)
 			if !bounds.Empty() {
 				target := image.Rect(0, 0, bounds.Dx(), bounds.Dy())
 				shifted := d2scene.Translate(-float64(bounds.Min.X), -float64(bounds.Min.Y)).Mul(primitive.transform)
@@ -510,12 +642,11 @@ func renderEffectNode(ctx context.Context, dst *image.RGBA, node *preparedNode, 
 	if bounds.Empty() {
 		return nil
 	}
-	layerBytes, err := scratch.offscreen.reserve(bounds, 4, "effect layer")
+	layer, layerBytes, err := scratch.offscreen.newRGBA(bounds, "effect layer")
 	if err != nil {
 		return err
 	}
-	defer scratch.offscreen.release(layerBytes)
-	layer := image.NewRGBA(bounds)
+	defer scratch.offscreen.recycleRGBA(layer, layerBytes)
 	if node.primitive != nil && !node.primitive.bounds.Intersect(bounds).Empty() {
 		if err := drawPrimitive(ctx, layer, node.primitive, scratch); err != nil {
 			return err
@@ -560,11 +691,9 @@ func renderFilteredEffectNode(ctx context.Context, dst *image.RGBA, node *prepar
 		}
 	}
 	for _, filter := range node.filters {
-		next, err := applyPreparedFilter(ctx, current, filter, scratch)
-		if err != nil {
+		if err := applyPreparedFilter(ctx, &current, filter, scratch); err != nil {
 			return err
 		}
-		current = next
 	}
 	layer := current.image
 	if layer.Bounds() != visibleBounds {
@@ -584,36 +713,166 @@ func renderFilteredEffectNode(ctx context.Context, dst *image.RGBA, node *prepar
 }
 
 func applyClip(ctx context.Context, layer *image.RGBA, clip *preparedClip, scratch *rasterScratch) error {
+	if clip.fillRule != d2scene.EvenOdd {
+		return applyNonZeroClip(ctx, layer, clip, scratch)
+	}
 	bounds := layer.Bounds()
 	maskBounds := image.Rect(0, 0, bounds.Dx(), bounds.Dy())
-	maskBytes, err := scratch.offscreen.reserve(maskBounds, 1, "clip Alpha mask")
+	mask, maskBytes, err := scratch.offscreen.newAlpha(maskBounds, "clip Alpha mask")
 	if err != nil {
 		return err
 	}
-	defer scratch.offscreen.release(maskBytes)
-	mask := image.NewAlpha(maskBounds)
+	defer scratch.offscreen.recycleAlpha(mask, maskBytes)
 	if !clip.bounds.Intersect(bounds).Empty() {
-		if clip.fillRule == d2scene.EvenOdd {
-			if err := rasterizeEvenOddMask(ctx, mask, bounds.Min, clip.subpaths); err != nil {
-				return err
-			}
-		} else {
-			rasterizer := scratch.reset(mask.Bounds())
-			shifted := d2scene.Translate(-float64(bounds.Min.X), -float64(bounds.Min.Y))
-			for index, path := range clip.subpaths {
-				if index&255 == 0 {
-					if err := ctx.Err(); err != nil {
-						return err
-					}
-				}
-				addFillSubpath(rasterizer, path, shifted)
-			}
-			if err := rasterizer.WriteAlpha(ctx, scratch.workBudget(), mask); err != nil {
-				return fmt.Errorf("d2raster: clip: %w", err)
-			}
+		if err := rasterizeEvenOddMask(ctx, mask, bounds.Min, clip.subpaths); err != nil {
+			return err
 		}
 	}
 	return multiplyLayerByAlpha(ctx, layer, mask)
+}
+
+// applyNonZeroClip consumes analytic coverage one row at a time. Clip coverage
+// is not reused after scaling the effect layer, so retaining a canvas-sized
+// Alpha image would add storage and a second memory pass without preserving
+// useful state.
+func applyNonZeroClip(ctx context.Context, layer *image.RGBA, clip *preparedClip, scratch *rasterScratch) error {
+	bounds := layer.Bounds()
+	width, height := bounds.Dx(), bounds.Dy()
+	if width == 0 || height == 0 {
+		return ctx.Err()
+	}
+	if clip.bounds.Intersect(bounds).Empty() {
+		return clearLayerRows(ctx, layer, 0, height)
+	}
+
+	rasterizer := scratch.reset(image.Rect(0, 0, width, height))
+	shifted := d2scene.Translate(-float64(bounds.Min.X), -float64(bounds.Min.Y))
+	for index, path := range clip.subpaths {
+		if index&255 == 0 {
+			if err := ctx.Err(); err != nil {
+				return err
+			}
+		}
+		addFillSubpath(rasterizer, path, shifted)
+	}
+
+	nextRow := 0
+	var callbackErr error
+	err := rasterizer.WalkCoverage(ctx, scratch.workBudget(), func(y, minX int, partial, difference []float32) error {
+		if err := ctx.Err(); err != nil {
+			callbackErr = err
+			return err
+		}
+		if err := clearLayerRows(ctx, layer, nextRow, y); err != nil {
+			callbackErr = err
+			return err
+		}
+		rowOffset := layer.PixOffset(bounds.Min.X, bounds.Min.Y+y)
+		row := layer.Pix[rowOffset : rowOffset+width*4]
+		if err := clearLayerPixelRange(ctx, row, 0, minX); err != nil {
+			callbackErr = err
+			return err
+		}
+
+		var winding float32
+		for index := 0; index < len(partial); {
+			if index != 0 && index&4095 == 0 {
+				if err := ctx.Err(); err != nil {
+					callbackErr = err
+					return err
+				}
+			}
+			if partial[index] == 0 && difference[index] == 0 {
+				runEnd := index + 1
+				for runEnd < len(partial) && partial[runEnd] == 0 && difference[runEnd] == 0 {
+					runEnd++
+				}
+				if err := scaleLayerCoverageSpan(ctx, row, minX+index, minX+runEnd, scanline.QuantizeCoverage(winding)); err != nil {
+					callbackErr = err
+					return err
+				}
+				index = runEnd
+				continue
+			}
+			winding += difference[index]
+			coverage := scanline.QuantizeCoverage(partial[index] + winding)
+			if err := scaleLayerCoverageSpan(ctx, row, minX+index, minX+index+1, coverage); err != nil {
+				callbackErr = err
+				return err
+			}
+			index++
+		}
+		maxX := minX + len(partial)
+		if err := clearLayerPixelRange(ctx, row, maxX, width); err != nil {
+			callbackErr = err
+			return err
+		}
+		nextRow = y + 1
+		return nil
+	})
+	if err != nil {
+		// Rasterizer and work-budget errors retain the established clip context.
+		// Errors from scaling the already-rasterized row correspond to the old
+		// mask-application phase and remain unwrapped.
+		if callbackErr != nil && err == callbackErr {
+			return err
+		}
+		return fmt.Errorf("d2raster: clip: %w", err)
+	}
+	return clearLayerRows(ctx, layer, nextRow, height)
+}
+
+func clearLayerRows(ctx context.Context, layer *image.RGBA, first, last int) error {
+	if first >= last {
+		return nil
+	}
+	width := layer.Bounds().Dx()
+	for y := first; y < last; y++ {
+		if y == first || (y-first)&31 == 0 {
+			if err := ctx.Err(); err != nil {
+				return err
+			}
+		}
+		rowOffset := layer.PixOffset(layer.Bounds().Min.X, layer.Bounds().Min.Y+y)
+		row := layer.Pix[rowOffset : rowOffset+width*4]
+		if err := clearLayerPixelRange(ctx, row, 0, width); err != nil {
+			return err
+		}
+	}
+	return ctx.Err()
+}
+
+func clearLayerPixelRange(ctx context.Context, row []byte, first, last int) error {
+	for start := first; start < last; {
+		if start != first && (start-first)&4095 == 0 {
+			if err := ctx.Err(); err != nil {
+				return err
+			}
+		}
+		end := min(start+4096, last)
+		clear(row[start*4 : end*4])
+		start = end
+	}
+	return nil
+}
+
+func scaleLayerCoverageSpan(ctx context.Context, row []byte, first, last int, coverage uint8) error {
+	switch coverage {
+	case 0:
+		return clearLayerPixelRange(ctx, row, first, last)
+	case 0xff:
+		return nil
+	}
+	for x := first; x < last; x++ {
+		if x != first && (x-first)&4095 == 0 {
+			if err := ctx.Err(); err != nil {
+				return err
+			}
+		}
+		offset := x * 4
+		scalePremultiplied(row[offset:offset+4], coverage)
+	}
+	return nil
 }
 
 // Even-odd fills and clips use bounded 4x4 supersampling over already-flattened
@@ -628,25 +887,30 @@ func rasterizeEvenOddMask(ctx context.Context, mask *image.Alpha, origin image.P
 			}
 		}
 		row := y * mask.Stride
+		pixelY := float64(origin.Y + y)
+		sampleY0 := pixelY + 0.5/evenOddSamplesPerAxis
+		sampleY1 := pixelY + 1.5/evenOddSamplesPerAxis
+		sampleY2 := pixelY + 2.5/evenOddSamplesPerAxis
+		sampleY3 := pixelY + 3.5/evenOddSamplesPerAxis
 		for x := 0; x < mask.Bounds().Dx(); x++ {
 			if x&255 == 0 {
 				if err := ctx.Err(); err != nil {
 					return err
 				}
 			}
-			inside := 0
-			for sampleY := 0; sampleY < evenOddSamplesPerAxis; sampleY++ {
-				py := float64(origin.Y+y) + (float64(sampleY)+0.5)/evenOddSamplesPerAxis
-				for sampleX := 0; sampleX < evenOddSamplesPerAxis; sampleX++ {
-					px := float64(origin.X+x) + (float64(sampleX)+0.5)/evenOddSamplesPerAxis
-					isInside, err := pointInEvenOddPath(ctx, paths, px, py, &edgeEvaluations)
-					if err != nil {
-						return err
-					}
-					if isInside {
-						inside++
-					}
-				}
+			pixelX := float64(origin.X + x)
+			sampleX0 := pixelX + 0.5/evenOddSamplesPerAxis
+			sampleX1 := pixelX + 1.5/evenOddSamplesPerAxis
+			sampleX2 := pixelX + 2.5/evenOddSamplesPerAxis
+			sampleX3 := pixelX + 3.5/evenOddSamplesPerAxis
+			inside, err := countEvenOddPathSamples(
+				ctx, paths,
+				sampleX0, sampleX1, sampleX2, sampleX3,
+				sampleY0, sampleY1, sampleY2, sampleY3,
+				&edgeEvaluations,
+			)
+			if err != nil {
+				return err
 			}
 			mask.Pix[row+x] = uint8((inside*255 + sampleCount/2) / sampleCount)
 		}
@@ -654,26 +918,50 @@ func rasterizeEvenOddMask(ctx context.Context, mask *image.Alpha, origin image.P
 	return ctx.Err()
 }
 
-func pointInEvenOddPath(ctx context.Context, paths []subpath, x, y float64, edgeEvaluations *uint64) (bool, error) {
-	inside := false
-	for _, path := range paths {
-		if len(path.points) < 2 {
-			continue
-		}
-		previous := path.points[len(path.points)-1]
-		for _, current := range path.points {
-			*edgeEvaluations = *edgeEvaluations + 1
-			if *edgeEvaluations&255 == 0 {
-				if err := ctx.Err(); err != nil {
-					return false, err
+// countEvenOddPathSamples shares each edge intersection across the four
+// horizontal samples at each sample Y. It retains the independent point test's
+// crossing expression and strict threshold semantics, while edgeEvaluations
+// continues to count that logical work and checks cancellation every 256
+// evaluations.
+func countEvenOddPathSamples(
+	ctx context.Context,
+	paths []subpath,
+	x0, x1, x2, x3 float64,
+	y0, y1, y2, y3 float64,
+	edgeEvaluations *uint64,
+) (int, error) {
+	inside := 0
+	for _, y := range [...]float64{y0, y1, y2, y3} {
+		var parity uint8
+		for _, path := range paths {
+			if len(path.points) < 2 {
+				continue
+			}
+			previous := path.points[len(path.points)-1]
+			for _, current := range path.points {
+				*edgeEvaluations += evenOddSamplesPerAxis
+				if *edgeEvaluations&255 == 0 {
+					if err := ctx.Err(); err != nil {
+						return 0, err
+					}
 				}
+				if (current.Y > y) != (previous.Y > y) {
+					crossingX := (previous.X-current.X)*(y-current.Y)/(previous.Y-current.Y) + current.X
+					switch {
+					case x3 < crossingX:
+						parity ^= 0b1111
+					case x2 < crossingX:
+						parity ^= 0b0111
+					case x1 < crossingX:
+						parity ^= 0b0011
+					case x0 < crossingX:
+						parity ^= 0b0001
+					}
+				}
+				previous = current
 			}
-			if (current.Y > y) != (previous.Y > y) &&
-				x < (previous.X-current.X)*(y-current.Y)/(previous.Y-current.Y)+current.X {
-				inside = !inside
-			}
-			previous = current
 		}
+		inside += bits.OnesCount8(parity)
 	}
 	return inside, nil
 }
@@ -688,28 +976,81 @@ func multiplyLayerByAlpha(ctx context.Context, layer *image.RGBA, mask *image.Al
 		}
 		layerOffset := layer.PixOffset(layer.Bounds().Min.X, layer.Bounds().Min.Y+y)
 		maskOffset := mask.PixOffset(mask.Bounds().Min.X, mask.Bounds().Min.Y+y)
-		for x := 0; x < width; x++ {
+		if width == 0 {
+			continue
+		}
+		layerRow := layer.Pix[layerOffset : layerOffset+width*4]
+		maskRow := mask.Pix[maskOffset : maskOffset+width]
+		for x := 0; x < width; {
 			if x&4095 == 0 {
 				if err := ctx.Err(); err != nil {
 					return err
 				}
 			}
-			scalePremultiplied(layer.Pix[layerOffset+x*4:layerOffset+x*4+4], mask.Pix[maskOffset+x])
+			// Do not let a run cross the existing cancellation boundary. This
+			// retains the exact Err-call cadence while allowing the common fully
+			// transparent and fully opaque mask spans to be handled in bulk.
+			chunkEnd := min((x|4095)+1, width)
+			// Widely spaced probes keep mixed or continuously varying masks on
+			// the tight scalar loop. Binary clip masks have long interior spans,
+			// and all probes ordinarily land on 0 or 255.
+			useRuns := chunkEnd-x >= 64
+			if useRuns {
+				for probe := range 16 {
+					alpha := maskRow[x+(chunkEnd-x)*probe/16]
+					if alpha != 0 && alpha != 0xff {
+						useRuns = false
+						break
+					}
+				}
+			}
+			if !useRuns {
+				for ; x < chunkEnd; x++ {
+					pixelOffset := x * 4
+					scalePremultiplied(layerRow[pixelOffset:pixelOffset+4], maskRow[x])
+				}
+				continue
+			}
+			alpha := maskRow[x]
+			switch alpha {
+			case 0:
+				runStart := x
+				x++
+				for x < chunkEnd && maskRow[x] == 0 {
+					x++
+				}
+				clear(layerRow[runStart*4 : x*4])
+			case 0xff:
+				x++
+				for x < chunkEnd && maskRow[x] == 0xff {
+					x++
+				}
+			default:
+				pixelOffset := x * 4
+				scalePremultiplied(layerRow[pixelOffset:pixelOffset+4], alpha)
+				x++
+			}
 		}
 	}
 	return ctx.Err()
 }
 
 func applyMask(ctx context.Context, layer *image.RGBA, mask *preparedMask, scratch *rasterScratch) error {
-	maskBytes, err := scratch.offscreen.reserve(layer.Bounds(), 4, "scene mask RGBA layer")
+	maskLayer, maskBytes, err := scratch.offscreen.newRGBA(layer.Bounds(), "scene mask RGBA layer")
 	if err != nil {
 		return err
 	}
-	defer scratch.offscreen.release(maskBytes)
-	maskLayer := image.NewRGBA(layer.Bounds())
+	defer scratch.offscreen.recycleRGBA(maskLayer, maskBytes)
 	if err := renderNode(ctx, maskLayer, mask.root, scratch); err != nil {
 		return err
 	}
+	if mask.kind == d2scene.MaskAlpha {
+		return multiplyLayerByRGBAAlpha(ctx, layer, maskLayer)
+	}
+	return multiplyLayerByRGBALuminance(ctx, layer, maskLayer)
+}
+
+func multiplyLayerByRGBALuminance(ctx context.Context, layer, mask *image.RGBA) error {
 	width, height := layer.Bounds().Dx(), layer.Bounds().Dy()
 	for y := 0; y < height; y++ {
 		if y&31 == 0 {
@@ -718,25 +1059,188 @@ func applyMask(ctx context.Context, layer *image.RGBA, mask *preparedMask, scrat
 			}
 		}
 		layerOffset := layer.PixOffset(layer.Bounds().Min.X, layer.Bounds().Min.Y+y)
-		maskOffset := maskLayer.PixOffset(maskLayer.Bounds().Min.X, maskLayer.Bounds().Min.Y+y)
-		for x := 0; x < width; x++ {
+		maskOffset := mask.PixOffset(mask.Bounds().Min.X, mask.Bounds().Min.Y+y)
+		layerRow := layer.Pix[layerOffset : layerOffset+width*4]
+		maskRow := mask.Pix[maskOffset : maskOffset+width*4]
+		if width < 64 || !binaryLuminancePixel(maskRow, 0) {
+			for x := 0; x < width; x++ {
+				if x&4095 == 0 {
+					if err := ctx.Err(); err != nil {
+						return err
+					}
+				}
+				i := maskOffset + x*4
+				coverage := uint8((2126*uint32(mask.Pix[i]) +
+					7152*uint32(mask.Pix[i+1]) +
+					722*uint32(mask.Pix[i+2]) + 5000) / 10000)
+				j := layerOffset + x*4
+				scalePremultiplied(layer.Pix[j:j+4], coverage)
+			}
+			continue
+		}
+		for x := 0; x < width; {
 			if x&4095 == 0 {
 				if err := ctx.Err(); err != nil {
 					return err
 				}
 			}
-			i := maskOffset + x*4
-			coverage := maskLayer.Pix[i+3]
-			if mask.kind == d2scene.MaskLuminance {
-				// RGBA stores premultiplied channels, so Rec.709 luminance of
-				// these channels is already luminance multiplied by alpha, as
-				// required by SVG luminance masks.
-				coverage = uint8((2126*uint32(maskLayer.Pix[i]) +
-					7152*uint32(maskLayer.Pix[i+1]) +
-					722*uint32(maskLayer.Pix[i+2]) + 5000) / 10000)
+			chunkEnd := min((x|4095)+1, width)
+			if chunkEnd-x < 64 || x != 0 && !binaryLuminancePixel(maskRow, x) {
+				for ; x < chunkEnd; x++ {
+					pixelOffset := x * 4
+					scalePremultiplied(layerRow[pixelOffset:pixelOffset+4], rgbaLuminance(maskRow, pixelOffset))
+				}
+				continue
 			}
-			j := layerOffset + x*4
-			scalePremultiplied(layer.Pix[j:j+4], coverage)
+
+			// Sample the rest of the cancellation-bounded chunk before
+			// selecting the binary-mask path. Continuously varying masks keep
+			// the branch-free scalar loop, while solid black and white SVG masks
+			// can clear or preserve whole spans.
+			binarySamples := 1
+			span := chunkEnd - x
+			for probe := 1; probe < 16; probe++ {
+				if binaryLuminancePixel(maskRow, x+(span-1)*probe/15) {
+					binarySamples++
+				}
+			}
+			if binarySamples < 7 {
+				for ; x < chunkEnd; x++ {
+					pixelOffset := x * 4
+					scalePremultiplied(layerRow[pixelOffset:pixelOffset+4], rgbaLuminance(maskRow, pixelOffset))
+				}
+				continue
+			}
+
+			// Consume a uniform prefix in bulk. Solid mask rows normally cover
+			// the entire chunk; checkerboards only pay for one failed comparison
+			// before continuing through the direct binary loop below.
+			runStart := x
+			if blackLuminancePixel(maskRow, x*4) {
+				x++
+				for x < chunkEnd && blackLuminancePixel(maskRow, x*4) {
+					x++
+				}
+				clear(layerRow[runStart*4 : x*4])
+			} else {
+				x++
+				for x < chunkEnd && whiteLuminancePixel(maskRow, x*4) {
+					x++
+				}
+			}
+			for x < chunkEnd {
+				pixelOffset := x * 4
+				switch rgbaRGB(maskRow, pixelOffset) {
+				case 0:
+					layerRow[pixelOffset], layerRow[pixelOffset+1], layerRow[pixelOffset+2], layerRow[pixelOffset+3] = 0, 0, 0, 0
+				case 0xffffff:
+				default:
+					scalePremultiplied(layerRow[pixelOffset:pixelOffset+4], rgbaLuminance(maskRow, pixelOffset))
+				}
+				x++
+			}
+		}
+	}
+	return ctx.Err()
+}
+
+func rgbaLuminance(pixels []byte, offset int) uint8 {
+	// RGBA stores premultiplied channels, so Rec.709 luminance of these
+	// channels is already luminance multiplied by alpha, as required by SVG
+	// luminance masks.
+	return uint8((2126*uint32(pixels[offset]) +
+		7152*uint32(pixels[offset+1]) +
+		722*uint32(pixels[offset+2]) + 5000) / 10000)
+}
+
+func binaryLuminancePixel(pixels []byte, pixel int) bool {
+	rgb := rgbaRGB(pixels, pixel*4)
+	return rgb == 0 || rgb == 0xffffff
+}
+
+func blackLuminancePixel(pixels []byte, offset int) bool {
+	return rgbaRGB(pixels, offset) == 0
+}
+
+func whiteLuminancePixel(pixels []byte, offset int) bool {
+	return rgbaRGB(pixels, offset) == 0xffffff
+}
+
+func rgbaRGB(pixels []byte, offset int) uint32 {
+	return uint32(pixels[offset]) | uint32(pixels[offset+1])<<8 | uint32(pixels[offset+2])<<16
+}
+
+func multiplyLayerByRGBAAlpha(ctx context.Context, layer, mask *image.RGBA) error {
+	width, height := layer.Bounds().Dx(), layer.Bounds().Dy()
+	for y := 0; y < height; y++ {
+		if y&31 == 0 {
+			if err := ctx.Err(); err != nil {
+				return err
+			}
+		}
+		layerOffset := layer.PixOffset(layer.Bounds().Min.X, layer.Bounds().Min.Y+y)
+		maskOffset := mask.PixOffset(mask.Bounds().Min.X, mask.Bounds().Min.Y+y)
+		if width == 0 {
+			continue
+		}
+		layerRow := layer.Pix[layerOffset : layerOffset+width*4]
+		maskRow := mask.Pix[maskOffset : maskOffset+width*4]
+		if width < 64 || maskRow[3] != 0 && maskRow[3] != 0xff {
+			for x := 0; x < width; x++ {
+				if x&4095 == 0 {
+					if err := ctx.Err(); err != nil {
+						return err
+					}
+				}
+				pixelOffset := layerOffset + x*4
+				scalePremultiplied(layer.Pix[pixelOffset:pixelOffset+4], mask.Pix[maskOffset+x*4+3])
+			}
+			continue
+		}
+		for x := 0; x < width; {
+			if x&4095 == 0 {
+				if err := ctx.Err(); err != nil {
+					return err
+				}
+			}
+			chunkEnd := min((x|4095)+1, width)
+			firstAlpha := mask.Pix[maskOffset+x*4+3]
+			useRuns := chunkEnd-x >= 64 && (firstAlpha == 0 || firstAlpha == 0xff)
+			if useRuns {
+				for probe := range 16 {
+					alpha := mask.Pix[maskOffset+(x+probe)*4+3]
+					if alpha != 0 && alpha != 0xff {
+						useRuns = false
+						break
+					}
+				}
+			}
+			if !useRuns {
+				for ; x < chunkEnd; x++ {
+					pixelOffset := layerOffset + x*4
+					scalePremultiplied(layer.Pix[pixelOffset:pixelOffset+4], mask.Pix[maskOffset+x*4+3])
+				}
+				continue
+			}
+			alpha := maskRow[x*4+3]
+			switch alpha {
+			case 0:
+				runStart := x
+				x++
+				for x < chunkEnd && maskRow[x*4+3] == 0 {
+					x++
+				}
+				clear(layerRow[runStart*4 : x*4])
+			case 0xff:
+				x++
+				for x < chunkEnd && maskRow[x*4+3] == 0xff {
+					x++
+				}
+			default:
+				pixelOffset := x * 4
+				scalePremultiplied(layerRow[pixelOffset:pixelOffset+4], alpha)
+				x++
+			}
 		}
 	}
 	return ctx.Err()
@@ -772,6 +1276,9 @@ func supportedPreparedBlendMode(mode d2scene.BlendMode) bool {
 func compositeLayer(ctx context.Context, dst, layer *image.RGBA, opacity float64, mode d2scene.BlendMode) error {
 	if mode == d2scene.BlendNormal {
 		// Use deterministic integer source-over arithmetic for normal blending.
+		if opaquePartialOverPrefixEligible(dst, layer, opacity) {
+			return compositeLayerOverOpaquePartialPrefix(ctx, dst, layer, uint32(math.Round(opacity*255)))
+		}
 		return compositeLayerOver(ctx, dst, layer, opacity)
 	}
 	if !supportedPreparedBlendMode(mode) {
@@ -780,7 +1287,37 @@ func compositeLayer(ctx context.Context, dst, layer *image.RGBA, opacity float64
 	if mode == preparedCOLRv1SoftLight {
 		return compositeCOLRv1SoftLightLayer(ctx, dst, layer, opacity)
 	}
+	if opaqueBlendPrefixEligible(dst, layer, opacity) {
+		return compositeBlendLayerOpaquePrefix(ctx, dst, layer, mode)
+	}
 	return compositeBlendLayer(ctx, dst, layer, opacity, mode)
+}
+
+func opaquePartialOverPrefixEligible(dst, layer *image.RGBA, opacity float64) bool {
+	opacityByte := math.Round(opacity * 255)
+	if !(opacityByte > 0 && opacityByte < 255) {
+		return false
+	}
+	bounds := layer.Bounds().Intersect(dst.Bounds())
+	if bounds.Empty() {
+		return false
+	}
+	firstSource := layer.PixOffset(bounds.Min.X, bounds.Min.Y)
+	firstDestination := dst.PixOffset(bounds.Min.X, bounds.Min.Y)
+	return layer.Pix[firstSource+3] == 255 && dst.Pix[firstDestination+3] == 255
+}
+
+func opaqueBlendPrefixEligible(dst, layer *image.RGBA, opacity float64) bool {
+	if opacity == 0 || math.Round(opacity*255) != 255 {
+		return false
+	}
+	bounds := layer.Bounds().Intersect(dst.Bounds())
+	if bounds.Empty() {
+		return false
+	}
+	firstSource := layer.PixOffset(bounds.Min.X, bounds.Min.Y)
+	firstDestination := dst.PixOffset(bounds.Min.X, bounds.Min.Y)
+	return layer.Pix[firstSource+3] == 255 && dst.Pix[firstDestination+3] == 255
 }
 
 // compositeCOLRv1SoftLightLayer performs the W3C soft-light operation in the
@@ -801,7 +1338,20 @@ func compositeCOLRv1SoftLightLayer(ctx context.Context, dst, layer *image.RGBA, 
 		}
 		destinationOffset := dst.PixOffset(bounds.Min.X, y)
 		sourceOffset := layer.PixOffset(bounds.Min.X, y)
-		for x := 0; x < bounds.Dx(); x++ {
+		x := 0
+		if layer.Pix[sourceOffset+3] == 0 {
+			for ; x < bounds.Dx(); x++ {
+				if layer.Pix[sourceOffset+x*4+3] != 0 {
+					break
+				}
+				if x&4095 == 0 {
+					if err := ctx.Err(); err != nil {
+						return err
+					}
+				}
+			}
+		}
+		for ; x < bounds.Dx(); x++ {
 			if x&4095 == 0 {
 				if err := ctx.Err(); err != nil {
 					return err
@@ -818,13 +1368,8 @@ func compositeCOLRv1SoftLightLayer(ctx context.Context, dst, layer *image.RGBA, 
 			outputAlpha := sourceAlpha + backdropAlpha*(1-sourceAlpha)
 			outputAlphaByte := roundedByte(outputAlpha * 255)
 			for channel := range 3 {
-				sourceEncoded := float64(layer.Pix[si+channel]) / float64(layer.Pix[si+3])
-				backdropEncoded := 0.0
-				if dst.Pix[di+3] != 0 {
-					backdropEncoded = float64(dst.Pix[di+channel]) / float64(dst.Pix[di+3])
-				}
-				sourceLinear := srgbToLinear(sourceEncoded)
-				backdropLinear := srgbToLinear(backdropEncoded)
+				sourceLinear := premultipliedSRGBByteToLinear(layer.Pix[si+channel], layer.Pix[si+3])
+				backdropLinear := premultipliedSRGBByteToLinear(dst.Pix[di+channel], dst.Pix[di+3])
 				mixedLinear := softLight(backdropLinear, sourceLinear)
 				outputPremultipliedLinear := sourceAlpha*(1-backdropAlpha)*sourceLinear +
 					sourceAlpha*backdropAlpha*mixedLinear +
@@ -904,6 +1449,130 @@ func compositeBlendLayer(ctx context.Context, dst, layer *image.RGBA, opacity fl
 	return ctx.Err()
 }
 
+func compositeBlendLayerOpaquePrefix(ctx context.Context, dst, layer *image.RGBA, mode d2scene.BlendMode) error {
+	bounds := layer.Bounds().Intersect(dst.Bounds())
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+		if (y-bounds.Min.Y)&31 == 0 {
+			if err := ctx.Err(); err != nil {
+				return err
+			}
+		}
+		destinationOffset := dst.PixOffset(bounds.Min.X, y)
+		sourceOffset := layer.PixOffset(bounds.Min.X, y)
+		x := 0
+		if layer.Pix[sourceOffset+3] == 0 {
+			for ; x < bounds.Dx(); x++ {
+				if layer.Pix[sourceOffset+x*4+3] != 0 {
+					break
+				}
+				if x&4095 == 0 {
+					if err := ctx.Err(); err != nil {
+						return err
+					}
+				}
+			}
+		} else if layer.Pix[sourceOffset+3] == 255 && dst.Pix[destinationOffset+3] == 255 {
+			// Consume an opaque prefix with byte-exact blend arithmetic. Stop at
+			// the first partial-alpha pixel so mixed rows retain the original
+			// branch-light floating-point loop for their entire remainder.
+			for ; x < bounds.Dx(); x++ {
+				si := sourceOffset + x*4
+				di := destinationOffset + x*4
+				if layer.Pix[si+3] != 255 || dst.Pix[di+3] != 255 {
+					break
+				}
+				if x&4095 == 0 {
+					if err := ctx.Err(); err != nil {
+						return err
+					}
+				}
+				destination := dst.Pix[di : di+4]
+				source := layer.Pix[si : si+4]
+				switch mode {
+				case d2scene.BlendMultiply:
+					destination[0] = multiplyOpaqueByte(destination[0], source[0])
+					destination[1] = multiplyOpaqueByte(destination[1], source[1])
+					destination[2] = multiplyOpaqueByte(destination[2], source[2])
+				case d2scene.BlendDarken:
+					destination[0] = min(destination[0], source[0])
+					destination[1] = min(destination[1], source[1])
+					destination[2] = min(destination[2], source[2])
+				case d2scene.BlendColorBurn:
+					for channel := range 3 {
+						backdropColor := float64(destination[channel]) / 255
+						sourceColor := float64(source[channel]) / 255
+						switch {
+						case backdropColor >= 1:
+							destination[channel] = 255
+						case sourceColor <= 0:
+							destination[channel] = 0
+						default:
+							destination[channel] = roundedByte((1 - math.Min(1, (1-backdropColor)/sourceColor)) * 255)
+						}
+					}
+				case d2scene.BlendOverlay:
+					destination[0] = overlayOpaqueByte(destination[0], source[0])
+					destination[1] = overlayOpaqueByte(destination[1], source[1])
+					destination[2] = overlayOpaqueByte(destination[2], source[2])
+				case d2scene.BlendLighten:
+					destination[0] = max(destination[0], source[0])
+					destination[1] = max(destination[1], source[1])
+					destination[2] = max(destination[2], source[2])
+				}
+				destination[3] = 255
+			}
+		}
+		for ; x < bounds.Dx(); x++ {
+			if x&4095 == 0 {
+				if err := ctx.Err(); err != nil {
+					return err
+				}
+			}
+			si := sourceOffset + x*4
+			di := destinationOffset + x*4
+			sourceAlphaStored := float64(layer.Pix[si+3]) / 255
+			if sourceAlphaStored == 0 {
+				continue
+			}
+			backdropAlpha := float64(dst.Pix[di+3]) / 255
+			outputAlpha := sourceAlphaStored + backdropAlpha*(1-sourceAlphaStored)
+			outputAlphaByte := roundedByte(outputAlpha * 255)
+			for channel := 0; channel < 3; channel++ {
+				sourcePremultiplied := float64(layer.Pix[si+channel]) / 255
+				backdropPremultiplied := float64(dst.Pix[di+channel]) / 255
+				sourceColor := float64(layer.Pix[si+channel]) / float64(layer.Pix[si+3])
+				backdropColor := 0.0
+				if dst.Pix[di+3] != 0 {
+					backdropColor = float64(dst.Pix[di+channel]) / float64(dst.Pix[di+3])
+				}
+				mixed := blendComponent(mode, backdropColor, sourceColor)
+				outputPremultiplied := sourcePremultiplied*(1-backdropAlpha) +
+					sourceAlphaStored*backdropAlpha*mixed +
+					backdropPremultiplied*(1-sourceAlphaStored)
+				value := roundedByte(outputPremultiplied * 255)
+				if value > outputAlphaByte {
+					value = outputAlphaByte
+				}
+				dst.Pix[di+channel] = value
+			}
+			dst.Pix[di+3] = outputAlphaByte
+		}
+	}
+	return ctx.Err()
+}
+
+func multiplyOpaqueByte(backdrop, source byte) byte {
+	return byte((uint32(backdrop)*uint32(source) + 127) / 255)
+}
+
+func overlayOpaqueByte(backdrop, source byte) byte {
+	b, s := uint32(backdrop), uint32(source)
+	if b <= 127 {
+		return byte((2*b*s + 127) / 255)
+	}
+	return byte(255 - (2*(255-b)*(255-s)+127)/255)
+}
+
 func blendComponent(mode d2scene.BlendMode, backdrop, source float64) float64 {
 	switch mode {
 	case d2scene.BlendMultiply:
@@ -953,6 +1622,77 @@ func roundedByte(value float64) uint8 {
 	return uint8(math.Round(value))
 }
 
+func compositeLayerOverOpaquePartialPrefix(ctx context.Context, dst, layer *image.RGBA, opacityByte uint32) error {
+	bounds := layer.Bounds().Intersect(dst.Bounds())
+	mul255 := func(left, right uint32) uint32 { return (left*right + 127) / 255 }
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+		if (y-bounds.Min.Y)&31 == 0 {
+			if err := ctx.Err(); err != nil {
+				return err
+			}
+		}
+		destinationOffset := dst.PixOffset(bounds.Min.X, y)
+		sourceOffset := layer.PixOffset(bounds.Min.X, y)
+		x := 0
+		if layer.Pix[sourceOffset+3] == 255 && dst.Pix[destinationOffset+3] == 255 {
+			for ; x < bounds.Dx(); x++ {
+				si := sourceOffset + x*4
+				di := destinationOffset + x*4
+				if layer.Pix[si+3] != 255 || dst.Pix[di+3] != 255 {
+					break
+				}
+				if x&4095 == 0 {
+					if err := ctx.Err(); err != nil {
+						return err
+					}
+				}
+				dst.Pix[di] = compositeOpaquePartialOverByte(layer.Pix[si], dst.Pix[di], opacityByte)
+				dst.Pix[di+1] = compositeOpaquePartialOverByte(layer.Pix[si+1], dst.Pix[di+1], opacityByte)
+				dst.Pix[di+2] = compositeOpaquePartialOverByte(layer.Pix[si+2], dst.Pix[di+2], opacityByte)
+				dst.Pix[di+3] = 255
+			}
+		}
+		for ; x < bounds.Dx(); x++ {
+			if x&4095 == 0 {
+				if err := ctx.Err(); err != nil {
+					return err
+				}
+			}
+			si := sourceOffset + x*4
+			di := destinationOffset + x*4
+			sourceAlpha := mul255(uint32(layer.Pix[si+3]), opacityByte)
+			if sourceAlpha == 0 {
+				continue
+			}
+			inverseAlpha := 255 - sourceAlpha
+			for channel := range 3 {
+				source := mul255(uint32(layer.Pix[si+channel]), opacityByte)
+				value := source + mul255(uint32(dst.Pix[di+channel]), inverseAlpha)
+				if value > 255 {
+					value = 255
+				}
+				dst.Pix[di+channel] = uint8(value)
+			}
+			alpha := sourceAlpha + mul255(uint32(dst.Pix[di+3]), inverseAlpha)
+			if alpha > 255 {
+				alpha = 255
+			}
+			dst.Pix[di+3] = uint8(alpha)
+		}
+	}
+	return ctx.Err()
+}
+
+func compositeOpaquePartialOverByte(source, destination byte, opacity uint32) byte {
+	scaledSource := (uint32(source)*opacity + 127) / 255
+	inverseAlpha := 255 - opacity
+	value := scaledSource + (uint32(destination)*inverseAlpha+127)/255
+	if value > 255 {
+		value = 255
+	}
+	return byte(value)
+}
+
 func compositeLayerOver(ctx context.Context, dst, layer *image.RGBA, opacity float64) error {
 	bounds := layer.Bounds().Intersect(dst.Bounds())
 	if bounds.Empty() || opacity == 0 {
@@ -960,6 +1700,89 @@ func compositeLayerOver(ctx context.Context, dst, layer *image.RGBA, opacity flo
 	}
 	opacityByte := uint32(math.Round(opacity * 255))
 	mul255 := func(left, right uint32) uint32 { return (left*right + 127) / 255 }
+	if opacityByte == 0xff {
+		// At full group opacity, transparent source blocks are no-ops and
+		// opaque source blocks replace the destination byte-for-byte. Probe
+		// small blocks only on rows that begin with one of those common alpha
+		// values; partial-alpha rows retain a branch-light general loop.
+		for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+			if (y-bounds.Min.Y)&31 == 0 {
+				if err := ctx.Err(); err != nil {
+					return err
+				}
+			}
+			destinationOffset := dst.PixOffset(bounds.Min.X, y)
+			sourceOffset := layer.PixOffset(bounds.Min.X, y)
+			blockPixels := 4096
+			detectUniformBlocks := layer.Pix[sourceOffset+3] == 0 || layer.Pix[sourceOffset+3] == 0xff
+			if detectUniformBlocks {
+				blockPixels = 64
+			}
+			for x := 0; x < bounds.Dx(); {
+				if x&4095 == 0 {
+					if err := ctx.Err(); err != nil {
+						return err
+					}
+				}
+				end := min(x+blockPixels, bounds.Dx())
+				blockSource := sourceOffset + x*4
+				blockDestination := destinationOffset + x*4
+				blockAlpha := layer.Pix[blockSource+3]
+				if detectUniformBlocks && end-x == blockPixels && (blockAlpha == 0 || blockAlpha == 0xff) && layer.Pix[blockSource+(blockPixels-1)*4+3] == blockAlpha {
+					uniformPixels := blockPixels
+					for blockX := 1; blockX < blockPixels-1; blockX++ {
+						if layer.Pix[blockSource+blockX*4+3] != blockAlpha {
+							uniformPixels = blockX
+							break
+						}
+					}
+					if uniformPixels == blockPixels {
+						if blockAlpha == 0xff {
+							copy(dst.Pix[blockDestination:blockDestination+blockPixels*4], layer.Pix[blockSource:blockSource+blockPixels*4])
+						}
+						x = end
+						continue
+					}
+					// The alpha probe already proved this prefix is uniform. Consume
+					// it rather than visiting the same pixels again in the general
+					// loop. Keep very short opaque prefixes in the scalar loop since
+					// a variable-sized memmove costs more than a few assignments.
+					if blockAlpha == 0 || uniformPixels >= 8 {
+						if blockAlpha == 0xff {
+							copy(dst.Pix[blockDestination:blockDestination+uniformPixels*4], layer.Pix[blockSource:blockSource+uniformPixels*4])
+						}
+						x += uniformPixels
+					}
+				}
+				for ; x < end; x++ {
+					si := sourceOffset + x*4
+					di := destinationOffset + x*4
+					sourceAlpha := uint32(layer.Pix[si+3])
+					if sourceAlpha == 0 {
+						continue
+					}
+					if sourceAlpha == 0xff {
+						dst.Pix[di], dst.Pix[di+1], dst.Pix[di+2], dst.Pix[di+3] = layer.Pix[si], layer.Pix[si+1], layer.Pix[si+2], 0xff
+						continue
+					}
+					inverseAlpha := 255 - sourceAlpha
+					for channel := 0; channel < 3; channel++ {
+						value := uint32(layer.Pix[si+channel]) + mul255(uint32(dst.Pix[di+channel]), inverseAlpha)
+						if value > 255 {
+							value = 255
+						}
+						dst.Pix[di+channel] = uint8(value)
+					}
+					alpha := sourceAlpha + mul255(uint32(dst.Pix[di+3]), inverseAlpha)
+					if alpha > 255 {
+						alpha = 255
+					}
+					dst.Pix[di+3] = uint8(alpha)
+				}
+			}
+		}
+		return ctx.Err()
+	}
 	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
 		if (y-bounds.Min.Y)&31 == 0 {
 			if err := ctx.Err(); err != nil {

@@ -25,12 +25,14 @@ type positionedGlyph struct {
 	sourceAt int
 }
 
-// preparedFont pairs the outline reader used by the raster kernel with a
-// render-local shaping face. go-text Face values maintain mutable lookup
-// caches, so a RenderSession shares only the immutable underlying Font and
-// creates a fresh Face for each preflight.
+// preparedFont keeps the immutable outline reader needed by explicit scene
+// glyphs separate from go-text's large mutable shaping caches. Bundled fonts
+// retain an authenticated source and construct a render-local Face only if a
+// raw TextRun actually needs shaping. Custom fonts remain eagerly parsed.
 type preparedFont struct {
 	face        *fontface.ParsedFace
+	source      *fontface.BundledFaceSource
+	lazyFace    fontface.ParsedFace
 	outline     *sfnt.Font
 	shaping     *gotextfont.Face
 	colrv1Plans map[uint32]preparedCOLRv1Plan
@@ -42,11 +44,66 @@ type preparedCOLRv1Plan struct {
 	err   error
 }
 
-func (f *preparedFont) parsedFace() *fontface.ParsedFace {
+func (f *preparedFont) faceForShaping() (*fontface.ParsedFace, error) {
 	if f == nil {
-		return nil
+		return nil, fmt.Errorf("d2raster: nil prepared font")
 	}
-	return f.face
+	if f.face != nil {
+		return f.face, nil
+	}
+	if f.source == nil {
+		return nil, fmt.Errorf("d2raster: prepared font has no face source")
+	}
+	if err := f.source.CloneReadOnlyInto(&f.lazyFace); err != nil {
+		return nil, err
+	}
+	f.face = &f.lazyFace
+	f.shaping = f.lazyFace.Shaping
+	return f.face, nil
+}
+
+func (f *preparedFont) colr0GlyphLayers(glyphID uint32) ([]fontface.ColorGlyphLayer, bool, error) {
+	if f == nil {
+		return nil, false, fmt.Errorf("d2raster: nil prepared font")
+	}
+	if f.source != nil {
+		return f.source.COLR0GlyphLayers(glyphID)
+	}
+	if f.face == nil {
+		return nil, false, fmt.Errorf("d2raster: prepared font has no parsed face")
+	}
+	return f.face.COLR0GlyphLayers(glyphID)
+}
+
+func (f *preparedFont) glyphRenderBounds(glyphID uint32, size fixed.Int26_6) (fixed.Rectangle26_6, bool, error) {
+	if f == nil {
+		return fixed.Rectangle26_6{}, false, fmt.Errorf("d2raster: nil prepared font")
+	}
+	if f.source != nil {
+		return f.source.GlyphRenderBounds(glyphID, size)
+	}
+	if f.face == nil {
+		return fixed.Rectangle26_6{}, false, fmt.Errorf("d2raster: prepared font has no parsed face")
+	}
+	return f.face.GlyphRenderBounds(glyphID, size)
+
+}
+
+func (f *preparedFont) glyphDataKind(glyphID uint32) string {
+	if f == nil {
+		return "non-outline"
+	}
+	if f.source != nil {
+		kind, err := f.source.GlyphDataKind(glyphID)
+		if err == nil {
+			return kind
+		}
+		return "non-outline"
+	}
+	if f.shaping == nil {
+		return "non-outline"
+	}
+	return glyphDataKind(f.shaping.GlyphData(gotextfont.GID(glyphID)))
 }
 
 // bundledCOLRv1Plan caches immutable paint plans on the preflight-local font
@@ -56,13 +113,22 @@ func (f *preparedFont) bundledCOLRv1Plan(glyphID uint32) (*fontface.COLRv1Plan, 
 	if f == nil {
 		return nil, false, fmt.Errorf("d2raster: nil prepared font")
 	}
-	if f.face == nil || !f.face.IsBundledNotoColorEmoji() {
-		return nil, false, nil
+	var compile func(uint32) (*fontface.COLRv1Plan, bool, error)
+	if f.source != nil {
+		if !f.source.IsBundledNotoColorEmoji() {
+			return nil, false, nil
+		}
+		compile = f.source.CompileBundledNotoColorEmojiCOLRv1Plan
+	} else {
+		if f.face == nil || !f.face.IsBundledNotoColorEmoji() {
+			return nil, false, nil
+		}
+		compile = f.face.CompileBundledNotoColorEmojiCOLRv1Plan
 	}
 	if cached, ok := f.colrv1Plans[glyphID]; ok {
 		return cached.plan, cached.found, cached.err
 	}
-	plan, found, err := f.face.CompileBundledNotoColorEmojiCOLRv1Plan(glyphID)
+	plan, found, err := compile(glyphID)
 	if f.colrv1Plans == nil {
 		f.colrv1Plans = make(map[uint32]preparedCOLRv1Plan)
 	}
@@ -79,11 +145,32 @@ type preparedTextPart struct {
 }
 
 func parsePreparedFont(data []byte, faceIndex uint16) (*preparedFont, error) {
+	source, matched, lookupErr := fontface.RegisteredBundledFace(data, faceIndex)
+	if lookupErr != nil {
+		return nil, lookupErr
+	} else if matched {
+		return newPreparedBundledFont(source)
+	} else {
+		source, matched, lookupErr = fontface.RegisteredBundledNotoColorEmoji(data, faceIndex)
+		if lookupErr != nil {
+			return nil, lookupErr
+		} else if matched {
+			return newPreparedBundledFont(source)
+		}
+	}
 	parsed, err := fontface.ParseFace(data, faceIndex)
 	if err != nil {
 		return nil, err
 	}
 	return newPreparedFont(parsed), nil
+}
+
+func newPreparedBundledFont(source *fontface.BundledFaceSource) (*preparedFont, error) {
+	outline, err := source.Outline()
+	if err != nil {
+		return nil, err
+	}
+	return &preparedFont{source: source, outline: outline}, nil
 }
 
 func newPreparedFont(parsed *fontface.ParsedFace) *preparedFont {
@@ -176,6 +263,7 @@ func (p *preflight) text(nodeID string, text d2scene.TextRun, transform d2scene.
 				if err := p.addPreparedNodes(1); err != nil {
 					return nil, fmt.Errorf("d2raster: node %q color text root: %w", nodeID, err)
 				}
+				allPaths = paths
 				hasColorGlyph = true
 			}
 			if err := flushUserPaths(); err != nil {
@@ -191,7 +279,7 @@ func (p *preflight) text(nodeID string, text d2scene.TextRun, transform d2scene.
 			colorLocalBounds = colorLocalBounds.Union(localBounds)
 			continue
 		}
-		layers, colorGlyph, err := glyph.font.parsedFace().COLR0GlyphLayers(uint32(glyph.id))
+		layers, colorGlyph, err := glyph.font.colr0GlyphLayers(uint32(glyph.id))
 		if err != nil {
 			return nil, unsupportedPositionedGlyphDataError(glyph, err)
 		}
@@ -205,7 +293,9 @@ func (p *preflight) text(nodeID string, text d2scene.TextRun, transform d2scene.
 				return nil, fmt.Errorf("flatten glyph %d (ID %d): %w", index, glyph.id, err)
 			}
 			paths = append(paths, glyphPaths...)
-			allPaths = append(allPaths, glyphPaths...)
+			if hasColorGlyph {
+				allPaths = append(allPaths, glyphPaths...)
+			}
 			continue
 		}
 
@@ -213,6 +303,7 @@ func (p *preflight) text(nodeID string, text d2scene.TextRun, transform d2scene.
 			if err := p.addPreparedNodes(1); err != nil {
 				return nil, fmt.Errorf("d2raster: node %q color text root: %w", nodeID, err)
 			}
+			allPaths = paths
 			hasColorGlyph = true
 		}
 		if err := flushUserPaths(); err != nil {
@@ -270,8 +361,12 @@ func (p *preflight) text(nodeID string, text d2scene.TextRun, transform d2scene.
 			if err != nil {
 				return nil, fmt.Errorf("d2raster: node %q underline: %w", nodeID, err)
 			}
-			decorations = append(decorations, decoration)
-			allPaths = append(allPaths, decoration)
+			if hasColorGlyph {
+				decorations = append(decorations, decoration)
+				allPaths = append(allPaths, decoration)
+			} else {
+				paths = append(paths, decoration)
+			}
 		}
 		if text.Strike {
 			xHeight := fixedToFloat(metrics.XHeight)
@@ -283,8 +378,12 @@ func (p *preflight) text(nodeID string, text d2scene.TextRun, transform d2scene.
 			if err != nil {
 				return nil, fmt.Errorf("d2raster: node %q strike: %w", nodeID, err)
 			}
-			decorations = append(decorations, decoration)
-			allPaths = append(allPaths, decoration)
+			if hasColorGlyph {
+				decorations = append(decorations, decoration)
+				allPaths = append(allPaths, decoration)
+			} else {
+				paths = append(paths, decoration)
+			}
 		}
 	}
 	if hasColorGlyph && len(decorations) != 0 {
@@ -292,19 +391,24 @@ func (p *preflight) text(nodeID string, text d2scene.TextRun, transform d2scene.
 			return nil, err
 		}
 	}
-	objectBounds := localObjectBounds(allPaths)
-	if colorLocalBounds.Valid {
-		if len(allPaths) == 0 {
-			objectBounds = colorLocalBounds.Box()
-		} else {
-			objectBounds = objectBounds.Bounds().Union(colorLocalBounds).Box()
-		}
+	if !hasColorGlyph {
+		allPaths = paths
 	}
+	var objectBounds d2scene.Box
 	if text.Ink.Valid {
 		// TextRun.Ink is the scene builder's exact measured node-local ink
 		// contract. Prefer it to the flattened glyph approximation for
 		// objectBoundingBox paint coordinates.
 		objectBounds = text.Ink.Box()
+	} else {
+		objectBounds = localObjectBounds(allPaths)
+		if colorLocalBounds.Valid {
+			if len(allPaths) == 0 {
+				objectBounds = colorLocalBounds.Box()
+			} else {
+				objectBounds = objectBounds.Bounds().Union(colorLocalBounds).Box()
+			}
+		}
 	}
 	fill, err := p.prepareAnimatedPaint(text.Fill, animation.fillColor, objectBounds, transform, importDepth)
 	if err != nil {
@@ -410,23 +514,48 @@ func (p *preflight) positionGlyphs(text d2scene.TextRun, ppem fixed.Int26_6) ([]
 		return nil, 0, fmt.Errorf("fallback font reference count %d exceeds asset limit %d", len(text.Fallbacks), p.options.MaxAssets)
 	}
 
-	fontIDs := make([]d2scene.AssetID, 0, 1+len(text.Fallbacks))
-	fontIDs = append(fontIDs, text.Font.Asset)
-	fontIDs = append(fontIDs, text.Fallbacks...)
-	shapeFaces := make([]fontface.ShapeFace, 0, len(fontIDs))
-	preparedFaces := make([]*preparedFont, 0, len(fontIDs))
-	seen := make(map[d2scene.AssetID]bool, len(fontIDs))
-	for _, id := range fontIDs {
-		if seen[id] {
+	faceCapacity := 1 + len(text.Fallbacks)
+	shapeFaces := make([]fontface.ShapeFace, 0, faceCapacity)
+	preparedFaces := make([]*preparedFont, 0, faceCapacity)
+	var seen map[d2scene.AssetID]struct{}
+	for index := range faceCapacity {
+		id := text.Font.Asset
+		if index != 0 {
+			id = text.Fallbacks[index-1]
+		}
+		duplicate := false
+		if seen == nil {
+			for _, existing := range shapeFaces {
+				if d2scene.AssetID(existing.ID) == id {
+					duplicate = true
+					break
+				}
+			}
+			if !duplicate && len(shapeFaces) == 8 {
+				seen = make(map[d2scene.AssetID]struct{}, faceCapacity)
+				for _, existing := range shapeFaces {
+					seen[d2scene.AssetID(existing.ID)] = struct{}{}
+				}
+			}
+		} else {
+			_, duplicate = seen[id]
+		}
+		if duplicate {
 			continue
 		}
-		seen[id] = true
+		if seen != nil {
+			seen[id] = struct{}{}
+		}
 		parsed, ok := p.fonts[id]
 		if !ok {
 			return nil, 0, fmt.Errorf("text references unusable font asset %q", id)
 		}
+		face, err := parsed.faceForShaping()
+		if err != nil {
+			return nil, 0, fmt.Errorf("prepare shaping font asset %q: %w", id, err)
+		}
 		shapeFaces = append(shapeFaces, fontface.ShapeFace{
-			ID: string(id), Face: parsed.parsedFace(),
+			ID: string(id), Face: face,
 		})
 		preparedFaces = append(preparedFaces, parsed)
 	}
@@ -442,7 +571,7 @@ func (p *preflight) positionGlyphs(text d2scene.TextRun, ppem fixed.Int26_6) ([]
 	if remainingGlyphs <= 0 {
 		return nil, 0, fmt.Errorf("shaped glyph count exceeds limit %d", p.options.MaxPathCommands)
 	}
-	shaped, err := fontface.ShapeText(p.ctx, text.Text, ppem, shapeFaces, fontface.ShapeLimits{
+	shaped, err := p.shapingWorkspace.ShapeTextTransient(p.ctx, text.Text, ppem, shapeFaces, fontface.ShapeLimits{
 		Runes:          min(p.options.MaxTextRunesPerRun, remainingRunes),
 		Faces:          p.options.MaxFontFacesPerText,
 		CoverageChecks: remainingCoverage,
@@ -487,7 +616,7 @@ func glyphDataKind(data gotextfont.GlyphData) string {
 }
 
 func unsupportedPositionedGlyphDataError(glyph positionedGlyph, cause error) error {
-	kind := glyphDataKind(glyph.font.shaping.GlyphData(gotextfont.GID(glyph.id)))
+	kind := glyph.font.glyphDataKind(uint32(glyph.id))
 	if glyph.source != 0 {
 		return fmt.Errorf("%s glyph U+%04X at rune %d in font asset %q cannot be rasterized: %w", kind, glyph.source, glyph.sourceAt, glyph.asset, cause)
 	}
@@ -495,16 +624,39 @@ func unsupportedPositionedGlyphDataError(glyph positionedGlyph, cause error) err
 }
 
 func flattenGlyph(ctx context.Context, segments sfnt.Segments, origin d2scene.Point, tolerance float64, count func() error) ([]subpath, error) {
+	contours := 0
+	curves := 0
+	for _, segment := range segments {
+		if segment.Op == sfnt.SegmentOpMoveTo {
+			contours++
+		}
+		if segment.Op == sfnt.SegmentOpQuadTo || segment.Op == sfnt.SegmentOpCubeTo {
+			curves++
+		}
+	}
 	var paths []subpath
-	var current subpath
+	pointCapacity := len(segments)
+	// Multiple curves almost always add several subdivision points each. A
+	// small reserve avoids the first growths without over-allocating the common
+	// one-curve case when that curve is already flat at the requested scale.
+	if curves > 1 && curves <= (math.MaxInt-pointCapacity)/2 {
+		pointCapacity += curves * 2
+	}
+	var points []d2scene.Point
+	currentStart := 0
 	var cursor d2scene.Point
 	haveCursor := false
 	flush := func() {
-		if len(current.points) != 0 {
-			current.closed = true
-			paths = append(paths, current)
+		if len(points) != currentStart {
+			if paths == nil {
+				paths = make([]subpath, 0, contours)
+			}
+			paths = append(paths, subpath{
+				points: points[currentStart:len(points):len(points)],
+				closed: true,
+			})
 		}
-		current = subpath{}
+		currentStart = len(points)
 	}
 	appendPoint := func(point d2scene.Point) error {
 		if !finitePoint(point) {
@@ -513,8 +665,11 @@ func flattenGlyph(ctx context.Context, segments sfnt.Segments, origin d2scene.Po
 		if err := count(); err != nil {
 			return err
 		}
-		if len(current.points) == 0 || !samePoint(current.points[len(current.points)-1], point) {
-			current.points = append(current.points, point)
+		if len(points) == currentStart || !samePoint(points[len(points)-1], point) {
+			if points == nil {
+				points = make([]d2scene.Point, 0, pointCapacity)
+			}
+			points = append(points, point)
 		}
 		return nil
 	}
@@ -565,6 +720,19 @@ func flattenGlyph(ctx context.Context, segments sfnt.Segments, origin d2scene.Po
 		}
 	}
 	flush()
+	// Rebind multiple contours after all point appends. If points grew beyond
+	// its initial capacity, earlier slices still reference the old backing
+	// array. Limiting capacity to length also prevents one contour from
+	// appending over the next contour's points. A lone contour is flushed only
+	// after the final append and already has both properties.
+	if len(paths) > 1 {
+		pointIndex := 0
+		for index := range paths {
+			pointCount := len(paths[index].points)
+			paths[index].points = points[pointIndex : pointIndex+pointCount : pointIndex+pointCount]
+			pointIndex += pointCount
+		}
+	}
 	return paths, nil
 }
 

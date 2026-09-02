@@ -14,6 +14,7 @@ import (
 
 	"github.com/d2lang/d2/d2renderers/d2fonts"
 	"github.com/d2lang/d2/d2renderers/d2scene"
+	"github.com/d2lang/d2/d2renderers/internal/fontface"
 )
 
 func TestRenderSessionExactHitsMissesAndCharges(t *testing.T) {
@@ -48,6 +49,51 @@ func TestRenderSessionExactHitsMissesAndCharges(t *testing.T) {
 		Hits: 2, Misses: 2, Entries: 2, Bytes: fontCharge + rasterCharge,
 		MemoHits: 2, MemoMisses: 2, Hashes: 2, MemoEntries: 2, MemoBytes: fontMemoCharge + rasterMemoCharge, RetainedBytes: totalCharge,
 	})
+}
+
+func TestRenderSessionSkipsHashOnlyForPrivateBundledBacking(t *testing.T) {
+	canonical := sessionFontData(t)
+	resolver, err := d2fonts.NewBundledFallbackResolver(nil, d2fonts.BundledFallbackLimits{
+		MaxRequestedRunes: 1, MaxBundledBytes: 8 << 20, MaxResolvedBytes: 8 << 20,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	emojiFonts, err := resolver.ResolveFallbacks(context.Background(), d2fonts.FallbackRequest{Runes: []rune("😀")})
+	if err != nil || len(emojiFonts) != 1 {
+		t.Fatalf("bundled fallback = %#v, %v", emojiFonts, err)
+	}
+	emojiCanonical, err := fontface.RegisterBundledNotoColorEmoji(emojiFonts[0].Data)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, test := range []struct {
+		name       string
+		data       []byte
+		wantHashes uint64
+	}{
+		{name: "ordinary public registry backing", data: canonical, wantHashes: 1},
+		{name: "ordinary byte-identical copy", data: append([]byte(nil), canonical...), wantHashes: 1},
+		{name: "emoji process-owned backing", data: emojiCanonical, wantHashes: 0},
+		{name: "emoji byte-identical copy", data: append([]byte(nil), emojiCanonical...), wantHashes: 1},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			document := sessionAssetDocument(map[d2scene.AssetID]d2scene.Asset{
+				"font": d2scene.FontAsset{MIMEType: "font/ttf", Data: test.data},
+			})
+			asset := document.Assets["font"].(d2scene.FontAsset)
+			session := newTestRenderSession(t, RenderSessionOptions{
+				MaxCacheEntries: 1, MaxCacheBytes: 16 << 20, MaxConcurrentLoads: 1,
+			})
+			if _, err := session.font(context.Background(), document, "font", asset); err != nil {
+				t.Fatal(err)
+			}
+			stats := session.Stats()
+			if stats.MemoMisses != 1 || stats.Hashes != test.wantHashes {
+				t.Fatalf("stats = %+v, want one memo miss and %d hashes", stats, test.wantHashes)
+			}
+		})
+	}
 }
 
 func TestRenderSessionPerDocumentLimitsStillApplyOnHits(t *testing.T) {
@@ -208,10 +254,110 @@ func TestRenderSessionConcurrentUseCoalescesLoads(t *testing.T) {
 			t.Fatalf("worker %d produced nondeterministic shaped pixels", worker)
 		}
 	}
+	reference, err := Render(context.Background(), document, testOptions())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(frames[0].Pix, reference.Pix) {
+		t.Fatal("render-session pixels differ from the direct parser path")
+	}
 	stats := session.Stats()
 	if stats.Misses != 1 || stats.Hits+stats.Waits != workers-1 || stats.Entries != 1 || stats.ActiveLoads != 0 ||
 		stats.MemoMisses != 1 || stats.MemoHits+stats.MemoWaits != workers-1 || stats.Hashes != 1 {
 		t.Fatalf("concurrent stats = %+v", stats)
+	}
+}
+
+func TestRenderSessionBundledEmojiCoalescesAndEvicts(t *testing.T) {
+	resolver, err := d2fonts.NewBundledFallbackResolver(nil, d2fonts.BundledFallbackLimits{
+		MaxRequestedRunes: 1, MaxBundledBytes: 8 << 20, MaxResolvedBytes: 8 << 20,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	fonts, err := resolver.ResolveFallbacks(context.Background(), d2fonts.FallbackRequest{Runes: []rune("😀")})
+	if err != nil || len(fonts) != 1 {
+		t.Fatalf("bundled fallback = %#v, %v", fonts, err)
+	}
+	const assetID = d2scene.AssetID("emoji")
+	document := d2scene.NewDocument(d2scene.Box{Width: 80, Height: 80}, d2scene.NewNode(d2scene.TextRun{
+		Text: "😀", Origin: d2scene.Point{X: 8, Y: 60}, Font: d2scene.Font{Asset: assetID, Size: 48},
+		Fill: d2scene.SolidPaint{Color: color.NRGBA{A: 255}},
+	}))
+	document.Assets[assetID] = d2scene.FontAsset{MIMEType: "font/ttf", Data: fonts[0].Data}
+	charge := cacheEntryCharge(int64(len(fonts[0].Data)), "font/ttf")
+	memoCharge := memoEntryCharge(fonts[0].Data, assetID, "font/ttf")
+	session := newTestRenderSession(t, RenderSessionOptions{
+		MaxCacheEntries: 1, MaxCacheBytes: charge + memoCharge, MaxConcurrentLoads: 4,
+	})
+
+	const workers = 12
+	start := make(chan struct{})
+	frames := make([]*image.NRGBA, workers)
+	errorsByWorker := make([]error, workers)
+	var group sync.WaitGroup
+	for worker := range workers {
+		group.Add(1)
+		go func() {
+			defer group.Done()
+			<-start
+			frames[worker], errorsByWorker[worker] = session.Render(context.Background(), document, testOptions())
+		}()
+	}
+	close(start)
+	group.Wait()
+	for worker, err := range errorsByWorker {
+		if err != nil {
+			t.Fatalf("worker %d: %v", worker, err)
+		}
+		if worker != 0 && !bytes.Equal(frames[0].Pix, frames[worker].Pix) {
+			t.Fatalf("worker %d produced different emoji pixels", worker)
+		}
+	}
+	reference, err := Render(context.Background(), document, testOptions())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(frames[0].Pix, reference.Pix) {
+		t.Fatal("render-session emoji pixels differ from the direct parser path")
+	}
+	stats := session.Stats()
+	if stats.Misses != 1 || stats.Hits+stats.Waits != workers-1 || stats.Entries != 1 ||
+		stats.Bytes != charge || stats.MemoMisses != 1 || stats.MemoHits+stats.MemoWaits != workers-1 ||
+		stats.MemoBytes != memoCharge || stats.Hashes != 1 || stats.RetainedBytes != charge+memoCharge {
+		t.Fatalf("concurrent emoji stats = %+v", stats)
+	}
+	canceled, cancel := context.WithCancel(context.Background())
+	cancel()
+	asset := document.Assets[assetID].(d2scene.FontAsset)
+	if _, err := session.font(canceled, document, assetID, asset); !errors.Is(err, context.Canceled) {
+		t.Fatalf("canceled cached emoji font error = %v", err)
+	}
+	if after := session.Stats(); after != stats {
+		t.Fatalf("canceled cached emoji font changed stats: before=%+v after=%+v", stats, after)
+	}
+
+	ordinaryData := sessionFontData(t)
+	ordinaryDocument := sessionAssetDocument(map[d2scene.AssetID]d2scene.Asset{
+		"ordinary": d2scene.FontAsset{MIMEType: "font/ttf", Data: ordinaryData},
+	})
+	if _, err := session.font(context.Background(), ordinaryDocument, "ordinary", ordinaryDocument.Assets["ordinary"].(d2scene.FontAsset)); err != nil {
+		t.Fatal(err)
+	}
+	stats = session.Stats()
+	if stats.Evictions == 0 || stats.Entries != 1 || stats.ActiveLoads != 0 {
+		t.Fatalf("emoji cache eviction stats = %+v", stats)
+	}
+	reloaded, err := session.Render(context.Background(), document, testOptions())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(reloaded.Pix, reference.Pix) {
+		t.Fatal("reloaded emoji pixels differ after session eviction")
+	}
+	afterReload := session.Stats()
+	if afterReload.Misses != stats.Misses+1 || afterReload.Evictions != stats.Evictions+1 || afterReload.Entries != 1 || afterReload.ActiveLoads != 0 {
+		t.Fatalf("reloaded emoji cache stats = %+v, before reload %+v", afterReload, stats)
 	}
 }
 
@@ -346,6 +492,27 @@ func TestRenderSessionValidationAndHashCancellation(t *testing.T) {
 	}
 
 	data := make([]byte, 2*assetDigestChunkBytes)
+	owned, err := copyAssetBytes(context.Background(), data[1:assetDigestChunkBytes+1])
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(owned) != assetDigestChunkBytes || cap(owned) != len(owned) || &owned[0] == &data[1] {
+		t.Fatalf("owned asset bytes len/cap/backing = %d/%d/%t", len(owned), cap(owned), &owned[0] == &data[1])
+	}
+	data[1] = 1
+	if owned[0] != 0 {
+		t.Fatal("owned asset bytes changed with their caller-owned source")
+	}
+	canceled, cancel := context.WithCancel(context.Background())
+	cancel()
+	if copied, err := copyAssetBytes(canceled, data); copied != nil || !errors.Is(err, context.Canceled) {
+		t.Fatalf("copyAssetBytes(canceled) = %p, %v", copied, err)
+	}
+	copyCancel := &cancelAfterErrChecks{remaining: 2}
+	if copied, err := copyAssetBytes(copyCancel, data); copied != nil || !errors.Is(err, context.Canceled) {
+		t.Fatalf("copyAssetBytes(mid-copy cancel) = %p, %v", copied, err)
+	}
+
 	ctx := &cancelAfterErrChecks{remaining: 1}
 	if _, err := digestAssetBytes(ctx, data); !errors.Is(err, context.Canceled) {
 		t.Fatalf("digestAssetBytes() error = %v, want context.Canceled", err)
@@ -366,7 +533,142 @@ func TestRenderSessionValidationAndHashCancellation(t *testing.T) {
 	}
 }
 
-func newTestRenderSession(t *testing.T, options RenderSessionOptions) *RenderSession {
+func BenchmarkRenderSessionFontCold(b *testing.B) {
+	resolver, err := d2fonts.NewBundledFallbackResolver(nil, d2fonts.BundledFallbackLimits{
+		MaxRequestedRunes: 1, MaxBundledBytes: 8 << 20, MaxResolvedBytes: 8 << 20,
+	})
+	if err != nil {
+		b.Fatal(err)
+	}
+	emojiFonts, err := resolver.ResolveFallbacks(context.Background(), d2fonts.FallbackRequest{Runes: []rune("😀")})
+	if err != nil || len(emojiFonts) != 1 {
+		b.Fatalf("bundled fallback = %#v, %v", emojiFonts, err)
+	}
+	emojiData, err := fontface.RegisterBundledNotoColorEmoji(emojiFonts[0].Data)
+	if err != nil {
+		b.Fatal(err)
+	}
+	tests := []struct {
+		name string
+		data []byte
+	}{
+		{name: "ordinary", data: sessionFontData(b)},
+		{name: "emoji", data: emojiData},
+	}
+	for _, test := range tests {
+		b.Run(test.name, func(b *testing.B) {
+			document := sessionAssetDocument(map[d2scene.AssetID]d2scene.Asset{
+				"font": d2scene.FontAsset{MIMEType: "font/ttf", Data: test.data},
+			})
+			asset := document.Assets["font"].(d2scene.FontAsset)
+			options := RenderSessionOptions{MaxCacheEntries: 2, MaxCacheBytes: 16 << 20, MaxConcurrentLoads: 1}
+			b.ReportAllocs()
+			b.SetBytes(int64(len(test.data)))
+			for b.Loop() {
+				session, err := NewRenderSession(options)
+				if err != nil {
+					b.Fatal(err)
+				}
+				font, err := session.font(context.Background(), document, "font", asset)
+				if err != nil || font == nil {
+					b.Fatalf("font() = %p, %v", font, err)
+				}
+			}
+		})
+	}
+}
+
+func BenchmarkRenderSessionFontWarm(b *testing.B) {
+	resolver, err := d2fonts.NewBundledFallbackResolver(nil, d2fonts.BundledFallbackLimits{
+		MaxRequestedRunes: 1, MaxBundledBytes: 8 << 20, MaxResolvedBytes: 8 << 20,
+	})
+	if err != nil {
+		b.Fatal(err)
+	}
+	emojiFonts, err := resolver.ResolveFallbacks(context.Background(), d2fonts.FallbackRequest{Runes: []rune("😀")})
+	if err != nil || len(emojiFonts) != 1 {
+		b.Fatalf("bundled fallback = %#v, %v", emojiFonts, err)
+	}
+	emojiData, err := fontface.RegisterBundledNotoColorEmoji(emojiFonts[0].Data)
+	if err != nil {
+		b.Fatal(err)
+	}
+	tests := []struct {
+		name string
+		data []byte
+	}{
+		{name: "ordinary", data: sessionFontData(b)},
+		{name: "emoji", data: emojiData},
+	}
+	for _, test := range tests {
+		b.Run(test.name, func(b *testing.B) {
+			document := sessionAssetDocument(map[d2scene.AssetID]d2scene.Asset{
+				"font": d2scene.FontAsset{MIMEType: "font/ttf", Data: test.data},
+			})
+			asset := document.Assets["font"].(d2scene.FontAsset)
+			charge := cacheEntryCharge(int64(len(test.data)), "font/ttf")
+			memoCharge := memoEntryCharge(test.data, "font", "font/ttf")
+			session := newTestRenderSession(b, RenderSessionOptions{
+				MaxCacheEntries: 1, MaxCacheBytes: charge + memoCharge, MaxConcurrentLoads: 1,
+			})
+			if _, err := session.font(context.Background(), document, "font", asset); err != nil {
+				b.Fatal(err)
+			}
+			b.ReportAllocs()
+			for b.Loop() {
+				font, err := session.font(context.Background(), document, "font", asset)
+				if err != nil || font == nil {
+					b.Fatalf("font() = %p, %v", font, err)
+				}
+			}
+		})
+	}
+}
+
+func BenchmarkRendererFontPreparation(b *testing.B) {
+	resolver, err := d2fonts.NewBundledFallbackResolver(nil, d2fonts.BundledFallbackLimits{
+		MaxRequestedRunes: 1, MaxBundledBytes: 8 << 20, MaxResolvedBytes: 8 << 20,
+	})
+	if err != nil {
+		b.Fatal(err)
+	}
+	emojiFonts, err := resolver.ResolveFallbacks(context.Background(), d2fonts.FallbackRequest{Runes: []rune("😀")})
+	if err != nil || len(emojiFonts) != 1 {
+		b.Fatalf("bundled fallback = %#v, %v", emojiFonts, err)
+	}
+	emojiData, err := fontface.RegisterBundledNotoColorEmoji(emojiFonts[0].Data)
+	if err != nil {
+		b.Fatal(err)
+	}
+	for _, test := range []struct {
+		name string
+		data []byte
+	}{
+		{name: "ordinary", data: sessionFontData(b)},
+		{name: "emoji", data: emojiData},
+	} {
+		b.Run(test.name+"/isolated-parse", func(b *testing.B) {
+			b.ReportAllocs()
+			for b.Loop() {
+				face, err := fontface.ParseFace(test.data, 0)
+				if err != nil || face == nil {
+					b.Fatalf("ParseFace() = %p, %v", face, err)
+				}
+			}
+		})
+		b.Run(test.name+"/renderer-clone", func(b *testing.B) {
+			b.ReportAllocs()
+			for b.Loop() {
+				font, err := parsePreparedFont(test.data, 0)
+				if err != nil || font == nil {
+					b.Fatalf("parsePreparedFont() = %p, %v", font, err)
+				}
+			}
+		})
+	}
+}
+
+func newTestRenderSession(t testing.TB, options RenderSessionOptions) *RenderSession {
 	t.Helper()
 	session, err := NewRenderSession(options)
 	if err != nil {
@@ -375,7 +677,7 @@ func newTestRenderSession(t *testing.T, options RenderSessionOptions) *RenderSes
 	return session
 }
 
-func sessionFontData(t *testing.T) []byte {
+func sessionFontData(t testing.TB) []byte {
 	t.Helper()
 	data, ok := d2fonts.FontFaces.Lookup(d2fonts.Font{Family: d2fonts.SourceSansPro, Style: d2fonts.FONT_STYLE_REGULAR})
 	if !ok {

@@ -7,7 +7,10 @@ import (
 	"errors"
 	"image"
 	"image/color"
+	"image/draw"
 	"image/gif"
+	"math/rand"
+	"reflect"
 	"testing"
 	"time"
 
@@ -365,6 +368,346 @@ func TestAnimatePalettedImagesOutputLimit(t *testing.T) {
 	cancel()
 	if _, err := AnimatePalettedImagesWithLimit(ctx, []*image.Paletted{frame}, 1000, int64(len(want))); !errors.Is(err, context.Canceled) {
 		t.Fatalf("bounded paletted encoder cancellation = %v, want context.Canceled", err)
+	}
+}
+
+func TestGIFEncoderMatchesStandardLibraryWithoutGlobalColorTable(t *testing.T) {
+	random := rand.New(rand.NewSource(0x5eedc0de))
+	for caseIndex := range 96 {
+		frameCount := caseIndex%7 + 1
+		width := caseIndex%19 + 1
+		height := caseIndex%11 + 1
+		paletteLength := []int{1, 2, 3, 4, 7, 16, 31, 255, 256}[caseIndex%9]
+		basePalette := make(color.Palette, paletteLength)
+		for index := range basePalette {
+			basePalette[index] = color.RGBA{
+				R: uint8(random.Intn(256)),
+				G: uint8(random.Intn(256)),
+				B: uint8(random.Intn(256)),
+				A: 255,
+			}
+		}
+		if caseIndex%4 == 0 {
+			basePalette[caseIndex%paletteLength] = color.NRGBA{R: 19, G: 37, B: 73, A: 0}
+		}
+		frames := make([]*image.Paletted, frameCount)
+		for frameIndex := range frames {
+			framePalette := basePalette
+			if caseIndex%3 != 0 && frameIndex != 0 {
+				framePalette = append(color.Palette(nil), basePalette...)
+				if frameIndex%2 != 0 && len(framePalette) > 1 {
+					entry := frameIndex % len(framePalette)
+					framePalette[entry] = color.RGBA{R: uint8(caseIndex), G: uint8(frameIndex * 29), B: 211, A: 255}
+				}
+			}
+			stride := width + frameIndex%3
+			pixels := make([]byte, (height-1)*stride+width)
+			for y := range height {
+				for x := range width {
+					pixels[y*stride+x] = uint8(random.Intn(paletteLength))
+				}
+			}
+			frames[frameIndex] = &image.Paletted{
+				Pix: pixels, Stride: stride, Rect: image.Rect(0, 0, width, height), Palette: framePalette,
+			}
+		}
+		delays := make([]int, frameCount)
+		for index := range delays {
+			delays[index] = random.Intn(101)
+		}
+
+		got, err := encodePalettedImages(context.Background(), frames, delays, 1<<30)
+		if err != nil {
+			t.Fatalf("case %d native encoder: %v", caseIndex, err)
+		}
+		var standard bytes.Buffer
+		err = gif.EncodeAll(&standard, &gif.GIF{
+			Image: frames, Delay: delays, LoopCount: INFINITE_LOOP,
+			Config: image.Config{Width: width, Height: height},
+		})
+		if err != nil {
+			t.Fatalf("case %d standard encoder: %v", caseIndex, err)
+		}
+		if !bytes.Equal(got, standard.Bytes()) {
+			t.Fatalf("case %d differs from standard GIF encoder: %d versus %d bytes", caseIndex, len(got), standard.Len())
+		}
+		if got[10]&0x80 != 0 {
+			t.Fatalf("case %d unexpectedly emitted a global color table", caseIndex)
+		}
+	}
+}
+
+func TestGIFEncoderMatchesStandardLibraryAcrossDictionaryResets(t *testing.T) {
+	palette := make(color.Palette, 256)
+	for index := range palette {
+		palette[index] = color.RGBA{R: uint8(index * 37), G: uint8(index * 73), B: uint8(index * 109), A: 255}
+	}
+	frames := make([]*image.Paletted, 3)
+	state := uint32(42)
+	for frameIndex := range frames {
+		frame := image.NewPaletted(image.Rect(0, 0, 256, 256), append(color.Palette(nil), palette...))
+		for index := range frame.Pix {
+			state = state*1664525 + 1013904223
+			frame.Pix[index] = uint8(state >> 24)
+		}
+		frames[frameIndex] = frame
+	}
+	delays := []int{3, 4, 3}
+	got, err := encodePalettedImages(context.Background(), frames, delays, 1<<30)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var standard bytes.Buffer
+	if err := gif.EncodeAll(&standard, &gif.GIF{
+		Image: frames, Delay: delays, LoopCount: INFINITE_LOOP,
+		Config: image.Config{Width: 256, Height: 256},
+	}); err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(got, standard.Bytes()) {
+		t.Fatalf("native encoder differs after dictionary reset: %d versus %d bytes", len(got), standard.Len())
+	}
+}
+
+func TestOpaqueGlobalPaletteEncodingMatchesStandardLibraryAndIsSmaller(t *testing.T) {
+	palette := color.Palette{
+		color.RGBA{R: 255, A: 255},
+		color.RGBA{R: 19, G: 37, B: 73, A: 255},
+		color.RGBA{G: 255, A: 255},
+		color.RGBA{B: 255, A: 255},
+	}
+	frames := make([]*image.Paletted, 8)
+	for frameIndex := range frames {
+		framePalette := append(color.Palette(nil), palette...)
+		frame := image.NewPaletted(image.Rect(0, 0, 17, 13), framePalette)
+		for index := range frame.Pix {
+			frame.Pix[index] = uint8((index + frameIndex) % len(framePalette))
+		}
+		frames[frameIndex] = frame
+	}
+	delays, err := gifFrameDelays(len(frames), 1000)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := encodeOpaquePalettedFramesForTest(t, frames, 1000, 1<<20)
+	var global bytes.Buffer
+	if err := gif.EncodeAll(&global, &gif.GIF{
+		Image: frames, Delay: delays, LoopCount: INFINITE_LOOP,
+		Config: image.Config{ColorModel: frames[0].Palette, Width: 17, Height: 13},
+	}); err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(got, global.Bytes()) {
+		t.Fatalf("opaque global-table encoder differs from standard GIF encoder: %d versus %d bytes", len(got), global.Len())
+	}
+	var local bytes.Buffer
+	if err := gif.EncodeAll(&local, &gif.GIF{
+		Image: frames, Delay: delays, LoopCount: INFINITE_LOOP,
+		Config: image.Config{Width: 17, Height: 13},
+	}); err != nil {
+		t.Fatal(err)
+	}
+	if len(got) >= local.Len() {
+		t.Fatalf("global palette GIF length = %d, want less than local-table length %d", len(got), local.Len())
+	}
+	if got[10]&0x80 == 0 {
+		t.Fatal("opaque encoder did not emit a global color table")
+	}
+	gotAnimation, err := gif.DecodeAll(bytes.NewReader(got))
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantAnimation, err := gif.DecodeAll(bytes.NewReader(local.Bytes()))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(gotAnimation.Image) != len(wantAnimation.Image) ||
+		!reflect.DeepEqual(gotAnimation.Delay, wantAnimation.Delay) ||
+		!reflect.DeepEqual(gotAnimation.Disposal, wantAnimation.Disposal) ||
+		gotAnimation.LoopCount != wantAnimation.LoopCount {
+		t.Fatal("global palette changed animation timing, disposal, or loop behavior")
+	}
+	for frameIndex := range gotAnimation.Image {
+		gotFrame := gotAnimation.Image[frameIndex]
+		wantFrame := wantAnimation.Image[frameIndex]
+		if gotFrame.Bounds() != wantFrame.Bounds() || !bytes.Equal(gotFrame.Pix, wantFrame.Pix) {
+			t.Fatalf("frame %d indexed pixels differ", frameIndex)
+		}
+		for paletteIndex := range gotFrame.Palette {
+			if gotFrame.Palette[paletteIndex] != wantFrame.Palette[paletteIndex] {
+				t.Fatalf("frame %d palette index %d differs", frameIndex, paletteIndex)
+			}
+		}
+	}
+}
+
+func TestLocalColorTablesPreserveTransparentConfigAndCompositing(t *testing.T) {
+	frames := []*image.Paletted{
+		{Pix: []byte{0, 1}, Stride: 2, Rect: image.Rect(0, 0, 2, 1), Palette: color.Palette{
+			color.NRGBA{R: 19, G: 37, B: 73, A: 0},
+			color.RGBA{R: 255, A: 255},
+		}},
+		{Pix: []byte{0, 1}, Stride: 2, Rect: image.Rect(0, 0, 2, 1), Palette: color.Palette{
+			color.RGBA{G: 255, A: 255},
+			color.NRGBA{R: 91, G: 53, B: 17, A: 0},
+		}},
+	}
+	delays := []int{3, 4}
+	encoded, err := encodePalettedImages(context.Background(), frames, delays, 1<<20)
+	if err != nil {
+		t.Fatal(err)
+	}
+	decoded, err := gif.DecodeAll(bytes.NewReader(encoded))
+	if err != nil {
+		t.Fatal(err)
+	}
+	globalPalette, ok := decoded.Config.ColorModel.(color.Palette)
+	if !ok || len(globalPalette) != 0 {
+		t.Fatalf("decoded local-table GIF global color model = %#v, want empty palette", decoded.Config.ColorModel)
+	}
+	if encoded[10]&0x80 != 0 {
+		t.Fatal("transparent animation unexpectedly emitted a global color table")
+	}
+
+	canvas := image.NewNRGBA(image.Rect(0, 0, 2, 1))
+	draw.Draw(canvas, canvas.Bounds(), image.NewUniform(color.RGBA{B: 255, A: 255}), image.Point{}, draw.Src)
+	for _, frame := range decoded.Image {
+		draw.Draw(canvas, frame.Bounds(), frame, frame.Bounds().Min, draw.Over)
+	}
+	if got := canvas.NRGBAAt(0, 0); got != (color.NRGBA{G: 255, A: 255}) {
+		t.Fatalf("opaque second-frame pixel = %#v, want green", got)
+	}
+	if got := canvas.NRGBAAt(1, 0); got != (color.NRGBA{R: 255, A: 255}) {
+		t.Fatalf("transparent second-frame pixel = %#v, want preserved red", got)
+	}
+}
+
+func encodeOpaquePalettedFramesForTest(t testing.TB, frames []*image.Paletted, intervalMs int, maxBytes int64) []byte {
+	t.Helper()
+	bounds := frames[0].Bounds()
+	encoder, err := NewOpaquePalettedAnimationEncoder(context.Background(), bounds.Dx(), bounds.Dy(), len(frames), intervalMs, maxBytes)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for index, frame := range frames {
+		if err := encoder.WriteFrame(frame); err != nil {
+			t.Fatalf("frame %d: %v", index, err)
+		}
+	}
+	encoded, err := encoder.Finish()
+	if err != nil {
+		t.Fatal(err)
+	}
+	return encoded
+}
+
+func TestGIFEncoderObservesCancellationDuringCompression(t *testing.T) {
+	frames := benchmarkPalettedFrames(3, 128, 96, 256, true)
+	success := &normalizationCheckContext{}
+	if _, err := AnimatePalettedImagesWithLimit(success, frames, 1000, 1<<20); err != nil {
+		t.Fatal(err)
+	}
+	if success.checks < 8 {
+		t.Fatalf("GIF encoding made only %d context checks", success.checks)
+	}
+	ctx := &normalizationCheckContext{failAt: success.checks / 2}
+	encoded, err := AnimatePalettedImagesWithLimit(ctx, frames, 1000, 1<<20)
+	if encoded != nil || !errors.Is(err, context.Canceled) {
+		t.Fatalf("mid-compression cancellation = (%d bytes, %v), want (nil, context.Canceled)", len(encoded), err)
+	}
+}
+
+func TestOpaquePalettedAnimationEncoderMatchesBatchAndDoesNotRetainFrames(t *testing.T) {
+	frames := benchmarkPalettedFrames(7, 43, 29, 16, false)
+	want := encodeOpaquePalettedFramesForTest(t, frames, 1000, 1<<20)
+	encoder, err := NewOpaquePalettedAnimationEncoder(context.Background(), 43, 29, len(frames), 1000, 1<<20)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for index, frame := range frames {
+		if err := encoder.WriteFrame(frame); err != nil {
+			t.Fatalf("frame %d: %v", index, err)
+		}
+		if index == 0 {
+			// Header palette values have already been copied. A caller can release
+			// or reuse its first frame immediately after WriteFrame returns.
+			frame.Palette[0] = color.RGBA{R: 1, G: 2, B: 3, A: 255}
+		}
+	}
+	got, err := encoder.Finish()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(got, want) {
+		t.Fatal("incremental encoder differs from batch encoder")
+	}
+}
+
+func TestOpaquePalettedAnimationEncoderStateValidation(t *testing.T) {
+	frame := image.NewPaletted(image.Rect(0, 0, 2, 2), color.Palette{color.Black, color.White})
+	if _, err := NewOpaquePalettedAnimationEncoder(context.Background(), 2, 2, 1, 1000, 0); err == nil {
+		t.Fatal("incremental encoder accepted zero output limit")
+	}
+	encoder, err := NewOpaquePalettedAnimationEncoder(context.Background(), 2, 2, 1, 1000, 1<<20)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := encoder.Finish(); err == nil {
+		t.Fatal("incremental encoder finished without its frame")
+	}
+	if err := encoder.WriteFrame(frame); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := encoder.Finish(); err != nil {
+		t.Fatal(err)
+	}
+	if err := encoder.WriteFrame(frame); err == nil {
+		t.Fatal("incremental encoder accepted a frame after finishing")
+	}
+	if _, err := encoder.Finish(); err == nil {
+		t.Fatal("incremental encoder finished twice")
+	}
+
+	wrongSize, err := NewOpaquePalettedAnimationEncoder(context.Background(), 2, 2, 1, 1000, 1<<20)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := wrongSize.WriteFrame(image.NewPaletted(image.Rect(0, 0, 1, 2), frame.Palette)); err == nil {
+		t.Fatal("incremental encoder accepted wrong-size frame")
+	}
+	if err := wrongSize.WriteFrame(frame); err == nil {
+		t.Fatal("incremental encoder did not retain its first error")
+	}
+
+	for _, palette := range []color.Palette{
+		{color.NRGBA{R: 17, G: 31, B: 47, A: 0}, color.White},
+		{color.NRGBA{R: 17, G: 31, B: 47, A: 127}, color.White},
+	} {
+		opacity, err := NewOpaquePalettedAnimationEncoder(context.Background(), 2, 2, 1, 1000, 1<<20)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := opacity.WriteFrame(image.NewPaletted(image.Rect(0, 0, 2, 2), palette)); err == nil {
+			t.Fatalf("opaque encoder accepted palette alpha %#v", palette[0])
+		}
+		if _, err := opacity.Finish(); err == nil {
+			t.Fatal("opaque encoder did not retain its palette-opacity error")
+		}
+	}
+
+	laterFrame, err := NewOpaquePalettedAnimationEncoder(context.Background(), 2, 2, 2, 1000, 1<<20)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := laterFrame.WriteFrame(frame); err != nil {
+		t.Fatal(err)
+	}
+	transparent := image.NewPaletted(image.Rect(0, 0, 2, 2), color.Palette{color.Transparent, color.White})
+	if err := laterFrame.WriteFrame(transparent); err == nil {
+		t.Fatal("opaque encoder accepted transparency after writing its global table")
+	}
+	if _, err := laterFrame.Finish(); err == nil {
+		t.Fatal("opaque encoder returned partial output after a later transparency error")
 	}
 }
 

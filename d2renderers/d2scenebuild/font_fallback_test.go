@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"reflect"
 	"strings"
 	"testing"
 	"unicode/utf8"
@@ -145,6 +146,40 @@ func TestBuiltTextRendersRepeatedFramesFromExplicitGlyphs(t *testing.T) {
 	}
 }
 
+func TestBuildRepeatedTextReusesShapingWithoutAliasingOrEvadingLimits(t *testing.T) {
+	diagram := mixedFontDiagram("office")
+	second := diagram.Shapes[0]
+	second.ID = "mixed-2"
+	second.Pos.Y = 80
+	diagram.Shapes = append(diagram.Shapes, second)
+
+	document, err := Build(context.Background(), diagram, Options{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	firstRun := findSceneNode(t, document.Root, "mixed:label:0").Primitive.(d2scene.TextRun)
+	secondRun := findSceneNode(t, document.Root, "mixed-2:label:0").Primitive.(d2scene.TextRun)
+	if !reflect.DeepEqual(firstRun.Glyphs, secondRun.Glyphs) || len(firstRun.Glyphs) == 0 {
+		t.Fatalf("repeated text glyphs differ: %#v / %#v", firstRun.Glyphs, secondRun.Glyphs)
+	}
+	if &firstRun.Glyphs[0] == &secondRun.Glyphs[0] {
+		t.Fatal("repeated text nodes share mutable glyph storage")
+	}
+	secondID := secondRun.Glyphs[0].ID
+	firstRun.Glyphs[0].ID++
+	if secondRun.Glyphs[0].ID != secondID {
+		t.Fatal("mutating one repeated text run changed another")
+	}
+
+	primaryBytes := handDrawnFontBytes(t)
+	limited, err := Build(context.Background(), diagram, Options{Fonts: &FontFallbackOptions{
+		MaxAssets: 1, MaxBytes: int64(len(primaryBytes)), MaxShapingRuns: 1,
+	}})
+	if err == nil || limited != nil || !strings.Contains(err.Error(), "text shaping run count exceeds limit 1") {
+		t.Fatalf("repeated shaping limit result/error = %#v/%v", limited, err)
+	}
+}
+
 func TestBuildFontFallbackFailuresAreExplicitAndAtomic(t *testing.T) {
 	diagram := mixedFontDiagram("\u0416")
 	primaryBytes := handDrawnFontBytes(t)
@@ -237,6 +272,33 @@ func TestBuilderSharesParsedFaceAcrossCoverageAndShaping(t *testing.T) {
 	}
 	if coverage.font != shaping || len(b.fontFaces) != 1 {
 		t.Fatalf("coverage/shaping faces = %p/%p, cache=%#v; want one shared parse", coverage.font, shaping, b.fontFaces)
+	}
+	if coverage.source == nil {
+		t.Fatal("bundled font coverage did not retain its authenticated read-only source")
+	}
+	for _, test := range []struct {
+		value rune
+		want  uint8
+	}{
+		{value: 'A', want: sceneRuneSupported},
+		{value: utf8.MaxRune, want: sceneRuneUnsupported},
+	} {
+		first, err := coverage.supports(context.Background(), test.value)
+		if err != nil {
+			t.Fatalf("first coverage lookup for U+%04X: %v", test.value, err)
+		}
+		if got := coverage.runes[test.value]; got != test.want {
+			t.Fatalf("cached coverage for U+%04X = %d, want %d", test.value, got, test.want)
+		}
+		second, err := coverage.supports(context.Background(), test.value)
+		if err != nil || second != first {
+			t.Fatalf("repeated coverage lookup for U+%04X = %v, %v; want %v, nil", test.value, second, err, first)
+		}
+	}
+	canceled, cancel := context.WithCancel(context.Background())
+	cancel()
+	if _, err := coverage.supports(canceled, 'A'); !errors.Is(err, context.Canceled) {
+		t.Fatalf("cached coverage lookup with canceled context error = %v, want context.Canceled", err)
 	}
 }
 

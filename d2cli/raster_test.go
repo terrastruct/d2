@@ -35,6 +35,7 @@ import (
 	"github.com/d2lang/d2/d2target"
 	"github.com/d2lang/d2/lib/geo"
 	"github.com/d2lang/d2/lib/pptx"
+	"github.com/d2lang/d2/lib/xgif"
 )
 
 func TestPagedCLIProducesOutput(t *testing.T) {
@@ -183,7 +184,8 @@ func renderGIFFramesForTest(ctx context.Context, plugin d2plugin.Plugin, inputPa
 func renderGIFFramesWithSessionForTest(ctx context.Context, plugin d2plugin.Plugin, inputPath string, cacheImages bool, diagram *d2target.Diagram, opts d2svg.RenderOpts, intervalMs int, session *d2raster.RenderSession, wantPreview bool) ([]image.Image, []byte, error) {
 	frames := make([]image.Image, 0)
 	summary, err := renderGIFWithSession(
-		ctx, plugin, inputPath, cacheImages, diagram, opts, intervalMs, session, wantPreview,
+		ctx, plugin, inputPath, cacheImages, diagram, opts, intervalMs, session, nil, wantPreview,
+		nil,
 		func(_ int, frame image.Image) error {
 			frames = append(frames, frame)
 			return nil
@@ -219,26 +221,142 @@ func TestRenderGIFFramesUsesSharedSamplingAndLogicalScale(t *testing.T) {
 	}
 }
 
+func TestRenderGIFWorkspaceFramesMatchOwnedFrames(t *testing.T) {
+	diagram := animatedConnectionRasterDiagram()
+	opts := d2svg.RenderOpts{Pad: go2.Pointer(int64(0))}
+	owned, _, err := renderGIFFramesForTest(context.Background(), nil, "-", false, diagram, opts, 101, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	session, err := newGIFRenderSession()
+	if err != nil {
+		t.Fatal(err)
+	}
+	var workspace d2raster.RenderWorkspace
+	var firstBacking *byte
+	borrowedPixels := make([][]byte, 0, len(owned))
+	borrowedBounds := make([]image.Rectangle, 0, len(owned))
+	_, err = renderGIFWithSession(
+		context.Background(), nil, "-", false, diagram, opts, 101, session, &workspace, false, nil,
+		func(frameIndex int, candidate image.Image) error {
+			frame, ok := candidate.(*image.NRGBA)
+			if !ok {
+				return fmt.Errorf("GIF frame %d type = %T, want *image.NRGBA", frameIndex, candidate)
+			}
+			if len(frame.Pix) == 0 {
+				return fmt.Errorf("GIF frame %d has empty backing", frameIndex)
+			}
+			if firstBacking == nil {
+				firstBacking = &frame.Pix[0]
+			} else if &frame.Pix[0] != firstBacking {
+				return fmt.Errorf("GIF frame %d replaced same-size workspace backing", frameIndex)
+			}
+			borrowedBounds = append(borrowedBounds, frame.Bounds())
+			borrowedPixels = append(borrowedPixels, bytes.Clone(frame.Pix))
+			return nil
+		},
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(borrowedPixels) != len(owned) {
+		t.Fatalf("workspace frames = %d, want %d", len(borrowedPixels), len(owned))
+	}
+	for index, want := range owned {
+		gotBounds := borrowedBounds[index]
+		if gotBounds != want.Bounds() {
+			t.Fatalf("frame %d bounds = %v, want %v", index, gotBounds, want.Bounds())
+		}
+		wantNRGBA, ok := want.(*image.NRGBA)
+		if !ok {
+			t.Fatalf("owned frame %d type = %T, want *image.NRGBA", index, want)
+		}
+		if !bytes.Equal(borrowedPixels[index], wantNRGBA.Pix) {
+			t.Fatalf("workspace frame %d pixels differ from owned render", index)
+		}
+	}
+}
+
+func TestRenderGIFSingleBoardWorkspaceMatchesOwnedEncoding(t *testing.T) {
+	diagram := animatedConnectionRasterDiagram()
+	opts := d2svg.RenderOpts{Pad: go2.Pointer(int64(0))}
+	const intervalMs = 101
+
+	frames, _, err := renderGIFFramesForTest(context.Background(), nil, "-", false, diagram, opts, intervalMs, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	paletted := make([]*image.Paletted, len(frames))
+	for index, frame := range frames {
+		paletted[index], err = xgif.QuantizeImage(context.Background(), frame)
+		if err != nil {
+			t.Fatalf("owned frame %d quantization: %v", index, err)
+		}
+	}
+	want, err := xgif.AnimateCenteredOpaquePalettedImagesWithLimit(
+		context.Background(), paletted, frames[0].Bounds().Dx(), frames[0].Bounds().Dy(), intervalMs, gifMaxEncodedBytes,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, _, err := renderGIF(context.Background(), nil, "-", false, diagram, opts, intervalMs, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(got, want) {
+		t.Fatal("single-board workspace GIF differs from independently owned frame pipeline")
+	}
+}
+
+func TestRenderGIFMultiBoardRetainsIndependentQuantizedFrames(t *testing.T) {
+	root := simpleRasterDiagram()
+	child := simpleRasterDiagram()
+	root.Shapes[0].Fill = "#ff0000"
+	child.Shapes[0].Fill = "#0000ff"
+	root.Layers = []*d2target.Diagram{child}
+
+	encoded, _, err := renderGIF(
+		context.Background(), nil, "-", false, root,
+		d2svg.RenderOpts{Pad: go2.Pointer(int64(0)), Scale: go2.Pointer(1.0)}, 1, false,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	animation, err := gif.DecodeAll(bytes.NewReader(encoded))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(animation.Image) != 2 {
+		t.Fatalf("multi-board GIF frames = %d, want 2", len(animation.Image))
+	}
+	wants := []color.NRGBA{{R: 255, A: 255}, {B: 255, A: 255}}
+	for index, want := range wants {
+		if got := color.NRGBAModel.Convert(animation.Image[index].At(5, 5)).(color.NRGBA); got != want {
+			t.Fatalf("multi-board frame %d color = %#v, want %#v", index, got, want)
+		}
+	}
+}
+
 func TestRenderGIFBoardFramesConsumesInOrderAndStopsOnError(t *testing.T) {
 	const frameCount = 8
 	frameLive := false
 	consumed := make([]int, 0, frameCount)
 	err := renderGIFBoardFrames(
 		context.Background(), 0, frameCount, frameCount,
-		func(_ context.Context, frameIndex int, timestamp time.Duration, options d2raster.FrameOptions) (image.Image, error) {
+		func(_ context.Context, frameIndex int, timestamp time.Duration, options d2raster.FrameOptions, emit func(image.Image) error) error {
 			if frameLive {
-				return nil, fmt.Errorf("frame %d rendered before its predecessor was consumed", frameIndex)
+				return fmt.Errorf("frame %d rendered before its predecessor was consumed", frameIndex)
 			}
 			if want := time.Duration(frameIndex) * time.Second / 30; timestamp != want {
-				return nil, fmt.Errorf("frame %d timestamp = %s, want %s", frameIndex, timestamp, want)
+				return fmt.Errorf("frame %d timestamp = %s, want %s", frameIndex, timestamp, want)
 			}
 			if options.MaxOffscreenBytes != gifMaxFrameOffscreenBytes {
-				return nil, fmt.Errorf("frame %d offscreen bytes = %d, want %d", frameIndex, options.MaxOffscreenBytes, gifMaxFrameOffscreenBytes)
+				return fmt.Errorf("frame %d offscreen bytes = %d, want %d", frameIndex, options.MaxOffscreenBytes, gifMaxFrameOffscreenBytes)
 			}
 			frameLive = true
 			frame := image.NewNRGBA(image.Rect(0, 0, 1, 1))
 			frame.SetNRGBA(0, 0, color.NRGBA{R: uint8(frameIndex), A: 0xff})
-			return frame, nil
+			return emit(frame)
 		},
 		func(frameIndex int, candidate image.Image) error {
 			frame, ok := candidate.(*image.NRGBA)
@@ -261,11 +379,11 @@ func TestRenderGIFBoardFramesConsumesInOrderAndStopsOnError(t *testing.T) {
 
 	err = renderGIFBoardFrames(
 		context.Background(), 1, frameCount-1, frameCount,
-		func(_ context.Context, frameIndex int, _ time.Duration, _ d2raster.FrameOptions) (image.Image, error) {
+		func(_ context.Context, frameIndex int, _ time.Duration, _ d2raster.FrameOptions, emit func(image.Image) error) error {
 			if frameIndex == 2 {
-				return nil, fmt.Errorf("indexed failure %d", frameIndex)
+				return fmt.Errorf("indexed failure %d", frameIndex)
 			}
-			return image.NewNRGBA(image.Rect(0, 0, 1, 1)), nil
+			return emit(image.NewNRGBA(image.Rect(0, 0, 1, 1)))
 		},
 		func(_ int, _ image.Image) error { return nil },
 	)
@@ -275,8 +393,8 @@ func TestRenderGIFBoardFramesConsumesInOrderAndStopsOnError(t *testing.T) {
 	if err := renderGIFBoardFrames(context.Background(), 0, 1, 1, nil, func(_ int, _ image.Image) error { return nil }); err == nil {
 		t.Fatal("GIF frame scheduler accepted a nil renderer")
 	}
-	if err := renderGIFBoardFrames(context.Background(), 0, 1, 1, func(context.Context, int, time.Duration, d2raster.FrameOptions) (image.Image, error) {
-		return image.NewNRGBA(image.Rect(0, 0, 1, 1)), nil
+	if err := renderGIFBoardFrames(context.Background(), 0, 1, 1, func(_ context.Context, _ int, _ time.Duration, _ d2raster.FrameOptions, emit func(image.Image) error) error {
+		return emit(image.NewNRGBA(image.Rect(0, 0, 1, 1)))
 	}, nil); err == nil {
 		t.Fatal("GIF frame scheduler accepted a nil consumer")
 	}
@@ -300,8 +418,11 @@ func TestRenderGIFFramesReusesBoundedAssetSession(t *testing.T) {
 		t.Fatalf("GIF frames = %d, want 4", len(frames))
 	}
 	stats := session.Stats()
-	if stats.Misses == 0 || stats.Hits+stats.Waits == 0 || stats.MemoHits+stats.MemoWaits == 0 || stats.Hashes == 0 {
+	if stats.Misses == 0 || stats.Hits+stats.Waits == 0 || stats.MemoHits+stats.MemoWaits == 0 {
 		t.Fatalf("GIF render cache did not reuse assets: %+v", stats)
+	}
+	if stats.Hashes != 1 {
+		t.Fatalf("GIF render cache hashes = %d, want one for the scene-owned font asset: %+v", stats.Hashes, stats)
 	}
 	if stats.SkippedOversize != 0 || stats.MemoSkipped != 0 {
 		t.Fatalf("GIF render cache skipped state: %+v", stats)

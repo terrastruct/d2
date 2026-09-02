@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 	"math"
-	"sort"
 	"unicode/utf8"
 
 	"github.com/go-text/typesetting/di"
 	gotextfont "github.com/go-text/typesetting/font"
+	"github.com/go-text/typesetting/language"
 	"github.com/go-text/typesetting/segmenter"
 	"github.com/go-text/typesetting/shaping"
 	"golang.org/x/image/font"
@@ -61,6 +61,36 @@ type ShapedText struct {
 	Runs           int
 }
 
+// ShapingWorkspace owns mutable scratch state for a sequence of ShapeText
+// calls. Reusing one workspace for an operation lets go-text retain its
+// HarfBuzz font cache and segmentation buffers without sharing mutable state
+// between concurrent document builds or renders.
+//
+// A ShapingWorkspace must not be used concurrently. Returned ShapedText values
+// own their Glyphs and remain valid after the workspace is reused. ParsedFace
+// pointers and their exported Outline and Shaping fields must remain unchanged
+// between calls; the workspace deliberately caches immutable font answers.
+type ShapingWorkspace struct {
+	graphemes segmenter.Segmenter
+	segmenter shaping.Segmenter
+	shaper    shaping.HarfbuzzShaper
+
+	runes              []rune
+	faceAssignments    []int
+	replacementGlyphs  []uint32
+	inputs             []shaping.Input
+	asciiInput         [1]shaping.Input
+	runs               []shapedFontRun
+	faceIndexes        map[*gotextfont.Face]int
+	coverage           map[faceRune]bool
+	outlines           map[glyphKey]glyphOutline
+	glyphs             []ShapedGlyph
+	asciiFace          *ParsedFace
+	asciiValues        [utf8.RuneSelf]uint8
+	asciiSeen          [utf8.RuneSelf]uint32
+	coverageGeneration uint32
+}
+
 // missingGlyphPlaceholderRunes are ordered from the conventional replacement
 // character through outline-box alternatives, with an ASCII last resort.
 // Keeping a box before '?' makes an absent scalar visibly distinct from user
@@ -73,6 +103,31 @@ var missingGlyphPlaceholderRunes = [...]rune{'\ufffd', '\u25a1', '\u2610', '?'}
 // #29 extended grapheme cluster. This prevents a combining mark that happens
 // to exist in the primary font from being detached from a fallback base.
 func ShapeText(ctx context.Context, text string, size fixed.Int26_6, faces []ShapeFace, limits ShapeLimits) (ShapedText, error) {
+	var workspace ShapingWorkspace
+	return workspace.ShapeText(ctx, text, size, faces, limits)
+}
+
+// ShapeText is the reusable-workspace form of the package-level ShapeText.
+func (w *ShapingWorkspace) ShapeText(ctx context.Context, text string, size fixed.Int26_6, faces []ShapeFace, limits ShapeLimits) (ShapedText, error) {
+	return w.shapeText(ctx, text, size, faces, limits, false)
+}
+
+// ShapeTextTransient reuses the workspace's output storage in addition to its
+// internal scratch. The returned Glyphs remain valid only until the next call
+// to ShapeTextTransient on this workspace. It is intended for document
+// pipelines which immediately translate the neutral glyphs into owned scene
+// or raster records.
+func (w *ShapingWorkspace) ShapeTextTransient(ctx context.Context, text string, size fixed.Int26_6, faces []ShapeFace, limits ShapeLimits) (ShapedText, error) {
+	return w.shapeText(ctx, text, size, faces, limits, true)
+}
+
+func (w *ShapingWorkspace) shapeText(ctx context.Context, text string, size fixed.Int26_6, faces []ShapeFace, limits ShapeLimits, transient bool) (ShapedText, error) {
+	clear(w.inputs)
+	w.inputs = w.inputs[:0]
+	clear(w.faceIndexes)
+	clear(w.runs)
+	w.runs = w.runs[:0]
+	w.asciiInput[0] = shaping.Input{}
 	if ctx == nil {
 		ctx = context.Background()
 	}
@@ -91,15 +146,21 @@ func ShapeText(ctx context.Context, text string, size fixed.Int26_6, faces []Sha
 	if len(faces) > limits.Faces {
 		return ShapedText{}, fmt.Errorf("d2fonts: font face count %d exceeds limit %d", len(faces), limits.Faces)
 	}
-	faceIndexes := make(map[*gotextfont.Face]int, len(faces))
+	if len(faces) > 1 {
+		if w.faceIndexes == nil {
+			w.faceIndexes = make(map[*gotextfont.Face]int, len(faces))
+		}
+	}
 	for index, face := range faces {
 		if face.Face == nil || face.Face.Outline == nil || face.Face.Shaping == nil {
 			return ShapedText{}, fmt.Errorf("d2fonts: font face %d (%q) is nil or incomplete", index, face.ID)
 		}
-		if _, exists := faceIndexes[face.Face.Shaping]; exists {
-			return ShapedText{}, fmt.Errorf("d2fonts: font face %d (%q) duplicates an earlier shaping face", index, face.ID)
+		if len(faces) > 1 {
+			if _, exists := w.faceIndexes[face.Face.Shaping]; exists {
+				return ShapedText{}, fmt.Errorf("d2fonts: font face %d (%q) duplicates an earlier shaping face", index, face.ID)
+			}
+			w.faceIndexes[face.Face.Shaping] = index
 		}
-		faceIndexes[face.Face.Shaping] = index
 	}
 
 	runeCount, err := boundedRuneCount(ctx, text, limits.Runes)
@@ -110,26 +171,62 @@ func ShapeText(ctx context.Context, text string, size fixed.Int26_6, faces []Sha
 	if runeCount == 0 {
 		return result, nil
 	}
-	runes := make([]rune, 0, runeCount)
+	w.runes = w.runes[:0]
+	if cap(w.runes) < runeCount {
+		w.runes = make([]rune, 0, runeCount)
+	}
+	ascii := true
+	asciiLatin := false
 	for _, value := range text {
-		if len(runes)&1023 == 0 {
+		if len(w.runes)&1023 == 0 {
 			if err := ctx.Err(); err != nil {
 				return ShapedText{}, err
 			}
 		}
-		runes = append(runes, value)
+		if value >= utf8.RuneSelf {
+			ascii = false
+		} else if value >= 'A' && value <= 'Z' || value >= 'a' && value <= 'z' {
+			asciiLatin = true
+		}
+		w.runes = append(w.runes, value)
 	}
+	runes := w.runes
 
-	fontMap := clusterFaceResolver{
-		faces:    faces,
-		coverage: make(map[faceRune]bool, min(runeCount, 256)),
-		limits:   limits,
+	if w.coverage != nil {
+		clear(w.coverage)
 	}
-	faceAssignments := make([]int, runeCount)
-	replacementGlyphs := make([]uint32, runeCount)
-	var graphemes segmenter.Segmenter
-	graphemes.Init(runes)
-	for iterator := graphemes.GraphemeIterator(); iterator.Next(); {
+	w.coverageGeneration++
+	if w.coverageGeneration == 0 {
+		clear(w.asciiSeen[:])
+		w.coverageGeneration = 1
+	}
+	if w.asciiFace != faces[0].Face {
+		w.asciiFace = faces[0].Face
+		clear(w.asciiValues[:])
+		clear(w.asciiSeen[:])
+	}
+	fontMap := clusterFaceResolver{
+		faces:              faces,
+		coverage:           w.coverage,
+		asciiFace:          w.asciiFace,
+		asciiValues:        &w.asciiValues,
+		asciiSeen:          &w.asciiSeen,
+		coverageGeneration: w.coverageGeneration,
+		coverageCapacity:   min(runeCount, 256),
+		limits:             limits,
+	}
+	var faceAssignments []int
+	if len(faces) > 1 {
+		if cap(w.faceAssignments) < runeCount {
+			w.faceAssignments = make([]int, runeCount)
+		} else {
+			w.faceAssignments = w.faceAssignments[:runeCount]
+		}
+		faceAssignments = w.faceAssignments
+	}
+	w.replacementGlyphs = w.replacementGlyphs[:0]
+	w.graphemes.Init(runes)
+	for iterator := w.graphemes.GraphemeIterator(); iterator.Next(); {
 		if err := ctx.Err(); err != nil {
 			return ShapedText{}, err
 		}
@@ -139,37 +236,56 @@ func ShapeText(ctx context.Context, text string, size fixed.Int26_6, faces []Sha
 			return ShapedText{}, err
 		}
 		for index := range cluster.Text {
-			faceAssignments[cluster.Offset+index] = face
-			replacementGlyphs[cluster.Offset+index] = replacement
+			if faceAssignments != nil {
+				faceAssignments[cluster.Offset+index] = face
+			}
+			if replacement != 0 {
+				if len(w.replacementGlyphs) == 0 {
+					if cap(w.replacementGlyphs) < runeCount {
+						w.replacementGlyphs = make([]uint32, runeCount)
+					} else {
+						w.replacementGlyphs = w.replacementGlyphs[:runeCount]
+						clear(w.replacementGlyphs)
+					}
+				}
+				w.replacementGlyphs[cluster.Offset+index] = replacement
+			}
 		}
 	}
+	w.coverage = fontMap.coverage
 	result.CoverageChecks = fontMap.checks
 
 	input := shaping.Input{
 		Text: runes, RunEnd: len(runes), Direction: di.DirectionLTR, Size: size,
 	}
-	var runSegmenter shaping.Segmenter
-	semanticInputs := runSegmenter.Split(input, oneFaceMap{face: faces[0].Face.Shaping})
+	semanticInputs := w.splitSemanticInputs(input, faces[0].Face.Shaping, ascii, asciiLatin)
 	if err := ctx.Err(); err != nil {
 		return ShapedText{}, err
 	}
-	inputs, err := splitInputsByAssignedFace(semanticInputs, faceAssignments, faces, limits.Runs)
-	if err != nil {
-		return ShapedText{}, err
+	var inputs []shaping.Input
+	if len(faces) == 1 {
+		if len(semanticInputs) > limits.Runs {
+			return ShapedText{}, fmt.Errorf("d2fonts: text shaping run count exceeds limit %d", limits.Runs)
+		}
+		inputs = semanticInputs
+	} else {
+		w.inputs, err = splitInputsByAssignedFace(w.inputs[:0], semanticInputs, faceAssignments, faces, limits.Runs)
+		if err != nil {
+			return ShapedText{}, err
+		}
+		inputs = w.inputs
 	}
 	if len(inputs) > limits.Runs {
 		return ShapedText{}, fmt.Errorf("d2fonts: text shaping run count %d exceeds limit %d", len(inputs), limits.Runs)
 	}
 	result.Runs = len(inputs)
 
-	shaper := shaping.HarfbuzzShaper{}
-	runs := make([]shapedFontRun, 0, len(inputs))
 	totalGlyphs := 0
 	for index, input := range inputs {
 		if err := ctx.Err(); err != nil {
 			return ShapedText{}, err
 		}
-		output := shaper.Shape(input)
+		output := w.shaper.Shape(input)
 		if err := ctx.Err(); err != nil {
 			return ShapedText{}, err
 		}
@@ -177,26 +293,35 @@ func ShapeText(ctx context.Context, text string, size fixed.Int26_6, faces []Sha
 			return ShapedText{}, fmt.Errorf("d2fonts: shaped glyph count exceeds limit %d", limits.Glyphs)
 		}
 		totalGlyphs += len(output.Glyphs)
-		faceIndex, ok := faceIndexes[output.Face]
-		if !ok {
-			return ShapedText{}, fmt.Errorf("d2fonts: shaper run %d returned an unknown font face", index)
+		faceIndex := 0
+		if len(faces) == 1 {
+			if output.Face != faces[0].Face.Shaping {
+				return ShapedText{}, fmt.Errorf("d2fonts: shaper run %d returned an unknown font face", index)
+			}
+		} else {
+			var ok bool
+			faceIndex, ok = w.faceIndexes[output.Face]
+			if !ok {
+				return ShapedText{}, fmt.Errorf("d2fonts: shaper run %d returned an unknown font face", index)
+			}
 		}
-		runs = append(runs, shapedFontRun{output: output, face: faceIndex, visual: index})
+		w.runs = append(w.runs, shapedFontRun{output: output, face: faceIndex})
 	}
-	orderShapedRunsLTR(runs)
-	sort.SliceStable(runs, func(i, j int) bool { return runs[i].visual < runs[j].visual })
+	runs := w.runs
+	if len(runs) > 1 {
+		orderShapedRunsLTR(runs)
+	}
 
-	result.Glyphs = make([]ShapedGlyph, 0, totalGlyphs)
+	if transient && cap(w.glyphs) >= totalGlyphs {
+		result.Glyphs = w.glyphs[:0]
+	} else {
+		result.Glyphs = make([]ShapedGlyph, 0, totalGlyphs)
+	}
 	pen := 0.0
-	type glyphKey struct {
-		face int
-		id   sfnt.GlyphIndex
+	if w.outlines == nil {
+		w.outlines = make(map[glyphKey]glyphOutline, min(totalGlyphs, 256))
 	}
-	type glyphOutline struct {
-		bounds fixed.Rectangle26_6
-		hasInk bool
-	}
-	outlines := make(map[glyphKey]glyphOutline, min(totalGlyphs, 256))
+	var outlineOverflow map[glyphKey]glyphOutline
 	for _, run := range runs {
 		parsed := faces[run.face].Face
 		runPen := pen
@@ -219,10 +344,10 @@ func ShapeText(ctx context.Context, text string, size fixed.Int26_6, faces []Sha
 			}
 			glyphID := uint32(glyph.GlyphID)
 			if glyph.GlyphID == 0 {
-				if sourceAt < 0 || sourceAt >= len(replacementGlyphs) || replacementGlyphs[sourceAt] == 0 {
+				if sourceAt < 0 || sourceAt >= len(w.replacementGlyphs) || w.replacementGlyphs[sourceAt] == 0 {
 					return ShapedText{}, missingShapedGlyphError(runes, glyph.ClusterIndex, faces[run.face].ID)
 				}
-				glyphID = replacementGlyphs[sourceAt]
+				glyphID = w.replacementGlyphs[sourceAt]
 				positionX = runPen
 				positionY = 0
 				replacementAdvance, err := parsed.Outline.GlyphAdvance(
@@ -236,8 +361,11 @@ func ShapeText(ctx context.Context, text string, size fixed.Int26_6, faces []Sha
 			if glyphID > math.MaxUint16 || int(glyphID) >= parsed.Outline.NumGlyphs() {
 				return ShapedText{}, fmt.Errorf("d2fonts: shaped glyph ID %d at index %d is out of range for font %q", glyphID, glyphIndex, faces[run.face].ID)
 			}
-			key := glyphKey{face: run.face, id: sfnt.GlyphIndex(glyphID)}
-			outline, ok := outlines[key]
+			key := glyphKey{face: parsed, id: sfnt.GlyphIndex(glyphID), size: size}
+			outline, ok := w.outlines[key]
+			if !ok && len(w.outlines) >= maxCachedGlyphOutlines {
+				outline, ok = outlineOverflow[key]
+			}
 			if !ok {
 				bounds, hasInk, err := parsed.GlyphRenderBounds(uint32(key.id), size)
 				if err != nil {
@@ -245,7 +373,14 @@ func ShapeText(ctx context.Context, text string, size fixed.Int26_6, faces []Sha
 				}
 				outline.bounds = bounds
 				outline.hasInk = hasInk
-				outlines[key] = outline
+				if len(w.outlines) < maxCachedGlyphOutlines {
+					w.outlines[key] = outline
+				} else {
+					if outlineOverflow == nil {
+						outlineOverflow = make(map[glyphKey]glyphOutline, min(totalGlyphs, 256))
+					}
+					outlineOverflow[key] = outline
+				}
 			}
 			result.Glyphs = append(result.Glyphs, ShapedGlyph{
 				ID: glyphID, Face: run.face, PositionX: positionX, PositionY: positionY, Advance: advance,
@@ -256,7 +391,24 @@ func ShapeText(ctx context.Context, text string, size fixed.Int26_6, faces []Sha
 		pen = runPen
 	}
 	result.Advance = pen
+	if transient {
+		w.glyphs = result.Glyphs
+	}
 	return result, nil
+}
+
+func (w *ShapingWorkspace) splitSemanticInputs(input shaping.Input, face *gotextfont.Face, ascii, asciiLatin bool) []shaping.Input {
+	if !ascii {
+		return w.segmenter.Split(input, oneFaceMap{face: face})
+	}
+	input.Face = face
+	input.Language = "en"
+	input.Script = language.Common
+	if asciiLatin {
+		input.Script = language.Latin
+	}
+	w.asciiInput[0] = input
+	return w.asciiInput[:]
 }
 
 func fixedToFloat(value fixed.Int26_6) float64 {
@@ -293,17 +445,50 @@ type faceRune struct {
 }
 
 type clusterFaceResolver struct {
-	faces    []ShapeFace
-	coverage map[faceRune]bool
-	known    map[faceRune]bool
-	checks   int64
-	limits   ShapeLimits
+	faces              []ShapeFace
+	coverage           map[faceRune]bool
+	coverageOverflow   map[faceRune]bool
+	asciiFace          *ParsedFace
+	asciiValues        *[utf8.RuneSelf]uint8
+	asciiSeen          *[utf8.RuneSelf]uint32
+	coverageGeneration uint32
+	coverageCapacity   int
+	checks             int64
+	limits             ShapeLimits
 }
 
 func (m *clusterFaceResolver) supports(face int, value rune) (bool, error) {
+	if value >= 0 && value < utf8.RuneSelf && m.faces[face].Face == m.asciiFace {
+		index := int(value)
+		if m.asciiSeen[index] == m.coverageGeneration {
+			return m.asciiValues[index] == 2, nil
+		}
+		if m.checks >= m.limits.CoverageChecks {
+			return false, fmt.Errorf("d2fonts: text font coverage checks exceed limit %d", m.limits.CoverageChecks)
+		}
+		m.checks++
+		supported := m.asciiValues[index]
+		if supported == 0 {
+			value, err := m.faces[face].Face.SupportsRenderableRune(value)
+			if err != nil {
+				return false, err
+			}
+			if value {
+				supported = 2
+			} else {
+				supported = 1
+			}
+			m.asciiValues[index] = supported
+		}
+		m.asciiSeen[index] = m.coverageGeneration
+		return supported == 2, nil
+	}
 	key := faceRune{face: face, value: value}
-	if m.known != nil && m.known[key] {
-		return m.coverage[key], nil
+	if supported, known := m.coverage[key]; known {
+		return supported, nil
+	}
+	if supported, known := m.coverageOverflow[key]; known {
+		return supported, nil
 	}
 	if m.checks >= m.limits.CoverageChecks {
 		return false, fmt.Errorf("d2fonts: text font coverage checks exceed limit %d", m.limits.CoverageChecks)
@@ -313,11 +498,17 @@ func (m *clusterFaceResolver) supports(face int, value rune) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	if m.known == nil {
-		m.known = make(map[faceRune]bool, min(m.limits.Runes, 256))
+	if m.coverage == nil {
+		m.coverage = make(map[faceRune]bool, m.coverageCapacity)
 	}
-	m.known[key] = true
-	m.coverage[key] = supported
+	if len(m.coverage) < maxCachedCoverageEntries {
+		m.coverage[key] = supported
+	} else {
+		if m.coverageOverflow == nil {
+			m.coverageOverflow = make(map[faceRune]bool, m.coverageCapacity)
+		}
+		m.coverageOverflow[key] = supported
+	}
 	return supported, nil
 }
 
@@ -375,8 +566,10 @@ func (m oneFaceMap) ResolveFace(rune) *gotextfont.Face { return m.face }
 // by go-text while imposing occurrence-specific grapheme face choices. A
 // rune-keyed Fontmap cannot express that the same combining mark uses primary
 // in one cluster and fallback in another, so this split must happen by index.
-func splitInputsByAssignedFace(inputs []shaping.Input, assignments []int, faces []ShapeFace, maxRuns int) ([]shaping.Input, error) {
-	result := make([]shaping.Input, 0, min(len(inputs), maxRuns))
+func splitInputsByAssignedFace(result, inputs []shaping.Input, assignments []int, faces []ShapeFace, maxRuns int) ([]shaping.Input, error) {
+	if capacity := min(len(inputs), maxRuns); cap(result) < capacity {
+		result = make([]shaping.Input, 0, capacity)
+	}
 	for _, input := range inputs {
 		if input.RunStart < 0 || input.RunStart >= input.RunEnd || input.RunEnd > len(assignments) {
 			return nil, fmt.Errorf("d2fonts: shaper segment has invalid rune range [%d:%d]", input.RunStart, input.RunEnd)
@@ -410,8 +603,22 @@ func splitInputsByAssignedFace(inputs []shaping.Input, assignments []int, faces 
 type shapedFontRun struct {
 	output shaping.Output
 	face   int
-	visual int
 }
+
+type glyphKey struct {
+	face *ParsedFace
+	id   sfnt.GlyphIndex
+	size fixed.Int26_6
+}
+
+type glyphOutline struct {
+	bounds fixed.Rectangle26_6
+	hasInk bool
+}
+
+const maxCachedGlyphOutlines = 4_096
+
+const maxCachedCoverageEntries = 4_096
 
 // orderShapedRunsLTR mirrors go-text's UAX #9 run-order post-processing for
 // D2/SVG's default left-to-right paragraph direction. HarfBuzz already emits
@@ -420,11 +627,10 @@ func orderShapedRunsLTR(runs []shapedFontRun) {
 	bidiStart := -1
 	swap := func(from, to int) {
 		for left, right := from, to-1; left < right; left, right = left+1, right-1 {
-			runs[left].visual, runs[right].visual = runs[right].visual, runs[left].visual
+			runs[left], runs[right] = runs[right], runs[left]
 		}
 	}
 	for index := range runs {
-		runs[index].visual = index
 		if runs[index].output.Direction == di.DirectionLTR {
 			if bidiStart != -1 {
 				swap(bidiStart, index)

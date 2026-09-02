@@ -2,6 +2,8 @@ package fontface
 
 import "crypto/sha256"
 
+const bundledNotoColorEmojiCOLRv1Size = 4_991_984
+
 // bundledNotoColorEmojiCOLRv1SHA256 authenticates the decoded immutable font
 // resource. It is kept outside the native embed file so provenance checks
 // compile on js/wasm as well.
