@@ -20,6 +20,8 @@ func TestBuildClassShapeExactRowsAndPaintOrder(t *testing.T) {
 	shape.Label = "Person"
 	shape.LabelWidth = 60
 	shape.LabelHeight = 20
+	shape.Text.Bold = true
+	shape.Text.Italic = true
 	shape.BorderRadius = 12
 	shape.Fields = []d2target.ClassField{{Name: "name", Type: "string", Visibility: "private", Underline: true}}
 	shape.Methods = []d2target.ClassMethod{{Name: "save()", Return: "error", Visibility: "protected"}}
@@ -50,7 +52,7 @@ func TestBuildClassShapeExactRowsAndPaintOrder(t *testing.T) {
 	}
 
 	headerText := node.Children[2].Primitive.(d2scene.TextRun)
-	if headerText.Origin != (d2scene.Point{X: 110, Y: 56}) || headerText.Anchor != d2scene.AnchorMiddle || headerText.Font.Size != 20 || headerText.Font.Family != "SourceCodePro" {
+	if headerText.Origin != (d2scene.Point{X: 110, Y: 56}) || headerText.Anchor != d2scene.AnchorMiddle || headerText.Font.Size != 20 || headerText.Font.Family != "SourceCodePro" || headerText.Font.Style != "regular" || headerText.Font.Weight != 400 {
 		t.Fatalf("class header text = %+v", headerText)
 	}
 	prefix := node.Children[3].Primitive.(d2scene.TextRun)
@@ -65,6 +67,11 @@ func TestBuildClassShapeExactRowsAndPaintOrder(t *testing.T) {
 	if typeRun.Text != "string" || typeRun.Origin != (d2scene.Point{X: 190, Y: 99}) || typeRun.Anchor != d2scene.AnchorEnd {
 		t.Fatalf("class type = %+v", typeRun)
 	}
+	for _, run := range []d2scene.TextRun{prefix, name, typeRun} {
+		if run.Font.Style != "regular" || run.Font.Weight != 400 {
+			t.Fatalf("class row font = %+v, want regular weight 400", run.Font)
+		}
+	}
 	separator := node.Children[6].Primitive.(d2scene.Path)
 	if !equalCommands(separator.Commands, []d2scene.PathCommand{d2scene.MoveTo(10, 110), d2scene.LineTo(210, 110)}) || separator.Stroke == nil || separator.Stroke.Width != 1 {
 		t.Fatalf("class separator = %+v", separator)
@@ -78,6 +85,8 @@ func TestBuildSQLTableExactColumnsAndSeparators(t *testing.T) {
 	shape.Label = "users"
 	shape.LabelWidth = 50
 	shape.LabelHeight = 20
+	shape.Text.Bold = true
+	shape.Text.Italic = true
 	shape.BorderRadius = 10
 	shape.Columns = []d2target.SQLColumn{
 		{Name: d2target.Text{Label: "id", LabelWidth: 20}, Type: d2target.Text{Label: "uuid", LabelWidth: 35}, Constraint: []string{"primary_key"}},
@@ -91,7 +100,7 @@ func TestBuildSQLTableExactColumnsAndSeparators(t *testing.T) {
 		"table:table-row:1:name", "table:table-row:1:type", "table:table-row:1:constraint", "table:table-row:1:separator",
 	})
 	headerText := node.Children[2].Primitive.(d2scene.TextRun)
-	if headerText.Origin != (d2scene.Point{X: 20, Y: 35}) || headerText.Font.Size != 20 || headerText.Font.Family != "SourceSansPro" {
+	if headerText.Origin != (d2scene.Point{X: 20, Y: 35}) || headerText.Font.Size != 20 || headerText.Font.Family != "SourceSansPro" || headerText.Font.Style != "regular" || headerText.Font.Weight != 400 {
 		t.Fatalf("table header text = %+v", headerText)
 	}
 	name := node.Children[3].Primitive.(d2scene.TextRun)
@@ -106,6 +115,11 @@ func TestBuildSQLTableExactColumnsAndSeparators(t *testing.T) {
 	if constraint.Origin != (d2scene.Point{X: 240, Y: 74}) || constraint.Anchor != d2scene.AnchorEnd || constraint.Text != "PK" {
 		t.Fatalf("first column constraint = %+v", constraint)
 	}
+	for _, run := range []d2scene.TextRun{name, typeRun, constraint} {
+		if run.Font.Style != "regular" || run.Font.Weight != 400 {
+			t.Fatalf("table row font = %+v, want regular weight 400", run.Font)
+		}
+	}
 	firstSeparator := node.Children[6].Primitive.(d2scene.Path)
 	if !equalCommands(firstSeparator.Commands, []d2scene.PathCommand{d2scene.MoveTo(10, 90), d2scene.LineTo(250, 90)}) {
 		t.Fatalf("first separator = %+v", firstSeparator.Commands)
@@ -113,6 +127,35 @@ func TestBuildSQLTableExactColumnsAndSeparators(t *testing.T) {
 	lastSeparator := node.Children[10].Primitive.(d2scene.Path)
 	if !equalCommands(lastSeparator.Commands, []d2scene.PathCommand{d2scene.MoveTo(20, 130), d2scene.LineTo(240, 130)}) || lastSeparator.Stroke == nil || lastSeparator.Stroke.Width != 2 {
 		t.Fatalf("last rounded separator = %+v", lastSeparator)
+	}
+}
+
+func TestBuildClassShapeMultilineHeader(t *testing.T) {
+	t.Parallel()
+
+	shape := structuredTestShape("class", d2target.ShapeClass, 0, 0, 200, 120)
+	shape.Label = "First\nSecond\nThird"
+	shape.LabelWidth = 100
+	shape.LabelHeight = 60
+	shape.Text.Bold = true
+	document := buildStructuredDocument(t, shape)
+	node := findSceneNode(t, document.Root, shape.ID)
+	assertChildIDs(t, node, []string{
+		"class:outline", "class:class-header",
+		"class:class-header-label", "class:class-header-label:1", "class:class-header-label:2",
+		"class:class-separator",
+	})
+
+	wantText := []string{"First", "Second", "Third"}
+	for index, want := range wantText {
+		run := node.Children[2+index].Primitive.(d2scene.TextRun)
+		wantOrigin := d2scene.Point{X: 100, Y: 46 + float64(index*20)}
+		if run.Text != want || run.Origin != wantOrigin || run.Anchor != d2scene.AnchorMiddle {
+			t.Fatalf("class header line %d = %+v, want text %q at %+v", index, run, want, wantOrigin)
+		}
+		if run.Font.Family != "SourceCodePro" || run.Font.Style != "regular" || run.Font.Weight != 400 || run.Font.Size != 20 {
+			t.Fatalf("class header line %d font = %+v, want regular SourceCodePro 20", index, run.Font)
+		}
 	}
 }
 

@@ -83,6 +83,10 @@ func (b *builder) buildClassContents(targetShape d2target.Shape, box d2scene.Box
 		fontText := targetShape.Text
 		fontText.FontFamily = "mono"
 		fontText.FontSize = targetShape.FontSize + d2target.HeaderFontAdd
+		// Structured-shape text uses the SVG renderer's dedicated regular
+		// class faces rather than the bold default carried by BaseShape.
+		fontText.Bold = false
+		fontText.Italic = false
 		font, err := b.font(fontText)
 		if err != nil {
 			return nil, fmt.Errorf("scene: shape %q class header: %w", targetShape.ID, err)
@@ -93,11 +97,22 @@ func (b *builder) buildClassContents(targetShape d2target.Shape, box d2scene.Box
 		}
 		headerGeo := sceneBoxToGeo(headerBox)
 		topLeft := label.InsideMiddleCenter.GetPointOnBox(headerGeo, 0, float64(targetShape.LabelWidth), float64(targetShape.LabelHeight))
-		nodes = append(nodes, structuredTextNode(
-			targetShape.ID+":class-header-label", targetShape.Label,
-			d2scene.Point{X: topLeft.X + float64(targetShape.LabelWidth)/2, Y: topLeft.Y + float64(targetShape.FontSize)},
-			d2scene.AnchorMiddle, font, fill, false, headerBox,
-		))
+		headerID := targetShape.ID + ":class-header-label"
+		headerRuns := centeredTextRuns(
+			headerID, targetShape.Label, topLeft,
+			targetShape.LabelWidth, targetShape.LabelHeight, targetShape.FontSize,
+			font, fill, false,
+		)
+		// Preserve the historical single-line scene ID while assigning stable,
+		// unique suffixes to additional multiline baselines.
+		for index, run := range headerRuns {
+			if index == 0 {
+				run.ID = headerID
+			} else {
+				run.ID = fmt.Sprintf("%s:%d", headerID, index)
+			}
+		}
+		nodes = append(nodes, headerRuns...)
 	}
 
 	primary, err := b.paint(targetShape.PrimaryAccentColor, fmt.Sprintf("shape %q class primary accent", targetShape.ID))
@@ -114,6 +129,8 @@ func (b *builder) buildClassContents(targetShape d2target.Shape, box d2scene.Box
 	}
 	rowFontText := targetShape.Text
 	rowFontText.FontFamily = "mono"
+	rowFontText.Bold = false
+	rowFontText.Italic = false
 	rowFont, err := b.font(rowFontText)
 	if err != nil {
 		return nil, fmt.Errorf("scene: shape %q class row: %w", targetShape.ID, err)
@@ -178,6 +195,8 @@ func (b *builder) buildSQLTableContents(targetShape d2target.Shape, box d2scene.
 	if targetShape.Label != "" {
 		fontText := targetShape.Text
 		fontText.FontSize = targetShape.FontSize + d2target.HeaderFontAdd
+		fontText.Bold = false
+		fontText.Italic = false
 		font, err := b.font(fontText)
 		if err != nil {
 			return nil, fmt.Errorf("scene: shape %q table header: %w", targetShape.ID, err)
@@ -205,7 +224,10 @@ func (b *builder) buildSQLTableContents(targetShape d2target.Shape, box d2scene.
 		}
 	}
 	_ = longestTypeWidth // retained to mirror the measured table layout contract.
-	rowFont, err := b.font(targetShape.Text)
+	rowFontText := targetShape.Text
+	rowFontText.Bold = false
+	rowFontText.Italic = false
+	rowFont, err := b.font(rowFontText)
 	if err != nil {
 		return nil, fmt.Errorf("scene: shape %q table row: %w", targetShape.ID, err)
 	}

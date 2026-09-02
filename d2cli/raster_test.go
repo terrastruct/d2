@@ -875,6 +875,51 @@ func TestRenderPNGPreservesDPRAndLogicalScale(t *testing.T) {
 	}
 }
 
+func TestRasterDimensionAdmissionRemainsPixelBounded(t *testing.T) {
+	const expectedDimensionLimit = 32_768
+	if rasterMaxDimension != expectedDimensionLimit {
+		t.Fatalf("raster dimension limit = %d, want %d", rasterMaxDimension, expectedDimensionLimit)
+	}
+
+	longNarrow := d2scene.NewDocument(
+		d2scene.Box{Width: expectedDimensionLimit, Height: 1},
+		d2scene.NewNode(nil),
+	)
+	longNarrow.LogicalWidth = expectedDimensionLimit
+	longNarrow.LogicalHeight = 1
+	frame, err := d2raster.Render(context.Background(), longNarrow, rasterFrameOptions(1, 0))
+	if err != nil {
+		t.Fatalf("long, narrow frame at the dimension limit rejected: %v", err)
+	}
+	if frame.Bounds() != image.Rect(0, 0, expectedDimensionLimit, 1) {
+		t.Fatalf("long, narrow frame bounds = %v", frame.Bounds())
+	}
+
+	overDimension := d2scene.NewDocument(
+		d2scene.Box{Width: rasterMaxDimension + 1, Height: 1},
+		d2scene.NewNode(nil),
+	)
+	overDimension.LogicalWidth = rasterMaxDimension + 1
+	overDimension.LogicalHeight = 1
+	if _, err := d2raster.Render(context.Background(), overDimension, rasterFrameOptions(1, 0)); err == nil ||
+		!strings.Contains(err.Error(), "frame width") || !strings.Contains(err.Error(), fmt.Sprint(rasterMaxDimension)) {
+		t.Fatalf("over-dimension frame error = %v", err)
+	}
+
+	// Both axes remain below rasterMaxDimension, but the area exceeds the
+	// unchanged 64 Mi-pixel budget by one row.
+	overPixels := d2scene.NewDocument(
+		d2scene.Box{Width: 8_193, Height: 8_192},
+		d2scene.NewNode(nil),
+	)
+	overPixels.LogicalWidth = 8_193
+	overPixels.LogicalHeight = 8_192
+	if _, err := d2raster.Render(context.Background(), overPixels, rasterFrameOptions(1, 0)); err == nil ||
+		!strings.Contains(err.Error(), "frame pixels") || !strings.Contains(err.Error(), fmt.Sprint(rasterMaxPixels)) {
+		t.Fatalf("over-pixel frame error = %v", err)
+	}
+}
+
 func TestRenderPNGPreservesUniformMeetScaleAfterRounding(t *testing.T) {
 	encoded, err := renderPNG(context.Background(), "-", false, simpleRasterDiagramWithSize(10, 20), d2svg.RenderOpts{
 		Pad:   go2.Pointer(int64(0)),
