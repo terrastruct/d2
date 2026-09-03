@@ -250,7 +250,7 @@ func (l *MarkdownLayout) SVG(opts MarkdownSVGOptions) string {
 		}
 		fill := rolePaint[primitive.FillRole].Color
 		stroke := rolePaint[primitive.StrokeRole].Color
-		link := safeMarkdownLink(primitive.Link)
+		link := SafeMarkdownLink(primitive.Link)
 		if link != "" && !opts.DisableLinks {
 			fmt.Fprintf(&out, `<a href="%s" xlink:href="%[1]s">`, svg.EscapeText(link))
 			if primitive.LinkTitle != "" {
@@ -313,7 +313,10 @@ func (l *MarkdownLayout) SVG(opts MarkdownSVGOptions) string {
 	return out.String()
 }
 
-func safeMarkdownLink(link string) string {
+// SafeMarkdownLink returns link when it is safe to expose as interactive
+// metadata and an empty string for unsafe Markdown URL schemes. PDF and PPTX
+// annotations use the same policy.
+func SafeMarkdownLink(link string) string {
 	link = strings.TrimSpace(link)
 	if link == "" {
 		return ""

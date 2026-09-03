@@ -78,6 +78,10 @@ func (s shapeQueue) GetSVGPathData() []string {
 	}
 }
 
+func (s shapeQueue) GetPathCommands() [][]svg.PathCommand {
+	return pathCommands(queueOuterPath(s.Box), queueInnerPath(s.Box))
+}
+
 func (s shapeQueue) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	// 1 arc left, width+ padding, 2 arcs right
 	totalWidth := 3*defaultArcDepth + width + paddingX

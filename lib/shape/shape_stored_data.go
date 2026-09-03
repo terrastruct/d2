@@ -61,6 +61,10 @@ func (s shapeStoredData) GetSVGPathData() []string {
 	}
 }
 
+func (s shapeStoredData) GetPathCommands() [][]svg.PathCommand {
+	return pathCommands(storedDataPath(s.Box))
+}
+
 func (s shapeStoredData) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	totalWidth := width + paddingX + 2*storedDataWedgeWidth
 	return math.Ceil(totalWidth), math.Ceil(height + paddingY)

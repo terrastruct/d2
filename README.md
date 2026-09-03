@@ -175,7 +175,7 @@ one, please see [./d2renderers/d2fonts](./d2renderers/d2fonts).
 
 ## Export file types
 
-D2 currently supports SVG, PNG and PDF exports. More coming soon.
+D2 supports SVG, PNG, GIF, PDF, and PPTX exports.
 
 ## Language tooling
 

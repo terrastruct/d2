@@ -6,8 +6,7 @@ import (
 	"regexp"
 	"strings"
 
-	_ "embed"
-
+	"github.com/d2lang/d2/d2renderers/internal/patternassets"
 	"github.com/d2lang/d2/d2target"
 	"github.com/d2lang/d2/d2themes"
 	"github.com/d2lang/d2/lib/color"
@@ -17,9 +16,6 @@ import (
 	rough "github.com/d2lang/rough-go"
 	"github.com/d2lang/util-go/go2"
 )
-
-//go:embed streaks.txt
-var streaks string
 
 var floatRE = regexp.MustCompile(`(\d+)\.(\d+)`)
 
@@ -63,7 +59,7 @@ func DefineFillPatterns(buf *bytes.Buffer, diagramHash string) {
 func defineFillPattern(buf *bytes.Buffer, source, diagramHash string, luminanceCategory, fill string) {
 	trigger := fmt.Sprintf(`url(#streaks-%s-%s)`, luminanceCategory, diagramHash)
 	if strings.Contains(source, trigger) {
-		fmt.Fprintf(buf, streaks, luminanceCategory, diagramHash, fill)
+		fmt.Fprintf(buf, patternassets.StreaksSVG(), luminanceCategory, diagramHash, fill)
 	}
 }
 

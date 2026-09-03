@@ -30,7 +30,6 @@ import (
 	"github.com/d2lang/d2/d2plugin"
 	"github.com/d2lang/d2/d2renderers/d2fonts"
 	"github.com/d2lang/d2/d2renderers/d2svg"
-	"github.com/d2lang/d2/lib/png"
 )
 
 // Enabled with the build tag "dev".
@@ -54,7 +53,6 @@ type watcherOpts struct {
 	boardPath       string
 	bundle          bool
 	forceAppendix   bool
-	pw              png.Playwright
 	fontFamily      *d2fonts.FontFamily
 	monoFontFamily  *d2fonts.FontFamily
 	outputFormat    exportExtension
@@ -424,26 +422,13 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			recompiledPrefix = "re"
 		}
 
-		if (filepath.Ext(w.outputPath) == ".png" || filepath.Ext(w.outputPath) == ".pdf") && !w.pw.Browser.IsConnected() {
-			newPW, err := w.pw.RestartBrowser()
-			if err != nil {
-				broadcastErr := fmt.Errorf("issue encountered with PNG exporter: %w", err)
-				w.ms.Log.Error.Print(broadcastErr)
-				w.broadcast(&compileResult{
-					Err: broadcastErr.Error(),
-				})
-				continue
-			}
-			w.pw = newPW
-		}
-
 		fs := trackedFS{}
 		w.boardpathMu.Lock()
 		var boardPath []string
 		if w.boardPath != "" {
 			boardPath = strings.Split(w.boardPath, string(os.PathSeparator))
 		}
-		svg, _, err := compile(ctx, w.ms, w.plugins, &fs, w.layout, w.renderOpts, w.fontFamily, w.monoFontFamily, w.animateInterval, w.inputPath, w.outputPath, boardPath, false, w.bundle, w.forceAppendix, w.pw.Browser, w.outputFormat, w.asciiMode)
+		svg, _, err := compile(ctx, w.ms, w.plugins, &fs, w.layout, w.renderOpts, w.fontFamily, w.monoFontFamily, w.animateInterval, w.inputPath, w.outputPath, boardPath, false, w.bundle, w.forceAppendix, w.outputFormat, w.asciiMode, true)
 		w.boardpathMu.Unlock()
 		errs := ""
 		if err != nil {

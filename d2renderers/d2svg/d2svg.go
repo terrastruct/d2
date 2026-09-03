@@ -27,6 +27,7 @@ import (
 	"github.com/d2lang/d2/d2renderers/d2fonts"
 	"github.com/d2lang/d2/d2renderers/d2latex"
 	"github.com/d2lang/d2/d2renderers/d2sketch"
+	"github.com/d2lang/d2/d2renderers/internal/patternassets"
 	"github.com/d2lang/d2/d2target"
 	"github.com/d2lang/d2/d2themes"
 	"github.com/d2lang/d2/d2themes/d2themescatalog"
@@ -77,9 +78,6 @@ var dots string
 
 //go:embed lines.txt
 var lines string
-
-//go:embed grain.txt
-var grain string
 
 type RenderOpts struct {
 	Pad                *int64
@@ -3096,9 +3094,9 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 			case "lines":
 				patternDefs += fmt.Sprintf(lines, diagramHash)
 			case "grain":
-				patternDefs += fmt.Sprintf(grain, diagramHash)
+				patternDefs += fmt.Sprintf(patternassets.GrainSVG(), diagramHash)
 			case "paper":
-				patternDefs += fmt.Sprintf(paper, diagramHash)
+				patternDefs += fmt.Sprintf(patternassets.PaperSVG(), diagramHash)
 			}
 			fmt.Fprintf(upperBuf, `
 .%s-overlay {

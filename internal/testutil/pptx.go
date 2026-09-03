@@ -7,7 +7,10 @@ import (
 	"fmt"
 	"io"
 	"regexp"
+	"strconv"
 	"strings"
+
+	"github.com/d2lang/d2/internal/testutil/imagediff"
 )
 
 // ValidatePPTX checks that pptxContent contains the structure emitted by D2's
@@ -84,6 +87,89 @@ func ValidatePPTX(pptxContent, template []byte, nSlides int) error {
 	}
 
 	return nil
+}
+
+// PagedImageComparison retains the first embedded-image mismatch so callers
+// can write its self-contained HTML diagnostics.
+type PagedImageComparison struct {
+	Page   int
+	Result *imagediff.Result
+}
+
+var pptxImageNameRE = regexp.MustCompile(`^ppt/media/slide([1-9][0-9]*)Image\.png$`)
+
+// ExtractPPTXImages returns D2's embedded slide PNGs in slide order. It rejects
+// gaps and duplicates instead of silently comparing whichever ZIP member was
+// encountered first.
+func ExtractPPTXImages(pptxContent []byte) ([][]byte, error) {
+	reader, err := zip.NewReader(bytes.NewReader(pptxContent), int64(len(pptxContent)))
+	if err != nil {
+		return nil, fmt.Errorf("read PPTX ZIP: %w", err)
+	}
+	images := make(map[int][]byte)
+	maxSlide := 0
+	for _, file := range reader.File {
+		match := pptxImageNameRE.FindStringSubmatch(file.Name)
+		if match == nil {
+			continue
+		}
+		slide, err := strconv.Atoi(match[1])
+		if err != nil {
+			return nil, fmt.Errorf("parse PPTX image member %q: %w", file.Name, err)
+		}
+		if _, exists := images[slide]; exists {
+			return nil, fmt.Errorf("duplicate PPTX image for slide %d", slide)
+		}
+		stream, err := file.Open()
+		if err != nil {
+			return nil, fmt.Errorf("open PPTX image for slide %d: %w", slide, err)
+		}
+		content, readErr := io.ReadAll(stream)
+		closeErr := stream.Close()
+		if readErr != nil {
+			return nil, fmt.Errorf("read PPTX image for slide %d: %w", slide, readErr)
+		}
+		if closeErr != nil {
+			return nil, fmt.Errorf("close PPTX image for slide %d: %w", slide, closeErr)
+		}
+		images[slide] = content
+		maxSlide = max(maxSlide, slide)
+	}
+	if maxSlide == 0 {
+		return nil, fmt.Errorf("PPTX contains no D2 slide images")
+	}
+	ordered := make([][]byte, maxSlide)
+	for slide := 1; slide <= maxSlide; slide++ {
+		content, ok := images[slide]
+		if !ok {
+			return nil, fmt.Errorf("PPTX is missing image for slide %d", slide)
+		}
+		ordered[slide-1] = content
+	}
+	return ordered, nil
+}
+
+// ComparePPTXImages compares each embedded slide PNG with the corresponding
+// standalone format-equivalent PNG. Decoded dimensions and pixels are
+// exact by default; encoded PNG metadata and compression are intentionally not.
+func ComparePPTXImages(pptxContent []byte, expectedPNGs [][]byte, options imagediff.Options) (*PagedImageComparison, error) {
+	actualPNGs, err := ExtractPPTXImages(pptxContent)
+	if err != nil {
+		return nil, err
+	}
+	if len(actualPNGs) != len(expectedPNGs) {
+		return &PagedImageComparison{}, fmt.Errorf("PPTX embedded image count = %d, want %d", len(actualPNGs), len(expectedPNGs))
+	}
+	comparison := &PagedImageComparison{}
+	for page := range expectedPNGs {
+		result, err := imagediff.Compare(expectedPNGs[page], actualPNGs[page], options)
+		if err != nil {
+			comparison.Page = page + 1
+			comparison.Result = result
+			return comparison, fmt.Errorf("PPTX slide %d embedded pixels differ: %w", page+1, err)
+		}
+	}
+	return comparison, nil
 }
 
 func checkFile(reader *zip.Reader, fname string) error {

@@ -12,11 +12,34 @@ import (
 type SvgPathContext struct {
 	Path     []geo.Intersectable
 	Commands []string
+	commands []PathCommand
 	Start    *geo.Point
 	Current  *geo.Point
 	TopLeft  *geo.Point
 	ScaleX   float64
 	ScaleY   float64
+}
+
+// PathCommandKind identifies one of the renderer-neutral path operations
+// produced by SvgPathContext. SvgPathContext normalizes horizontal and vertical
+// SVG commands to PathCommandLine so consumers only need to handle absolute
+// move, line, cubic, and close operations.
+type PathCommandKind uint8
+
+const (
+	PathCommandMove PathCommandKind = iota
+	PathCommandLine
+	PathCommandCubic
+	PathCommandClose
+)
+
+// PathCommand contains absolute path geometry. End is used by move, line, and
+// cubic commands. Control1 and Control2 are additionally used by cubic commands.
+type PathCommand struct {
+	Kind     PathCommandKind
+	Control1 geo.Point
+	Control2 geo.Point
+	End      geo.Point
 }
 
 // TODO probably use math.Big
@@ -44,12 +67,17 @@ func (c *SvgPathContext) Absolute(x, y float64) *geo.Point {
 func (c *SvgPathContext) StartAt(p *geo.Point) {
 	c.Start = p
 	c.Commands = append(c.Commands, fmt.Sprintf("M %v %v", p.X, p.Y))
+	c.commands = append(c.commands, PathCommand{
+		Kind: PathCommandMove,
+		End:  *p,
+	})
 	c.Current = p.Copy()
 }
 
 func (c *SvgPathContext) Z() {
 	c.Path = append(c.Path, &geo.Segment{Start: c.Current.Copy(), End: c.Start.Copy()})
 	c.Commands = append(c.Commands, "Z")
+	c.commands = append(c.commands, PathCommand{Kind: PathCommandClose})
 	c.Current = c.Start.Copy()
 }
 
@@ -62,6 +90,10 @@ func (c *SvgPathContext) L(isLowerCase bool, x, y float64) {
 	}
 	c.Path = append(c.Path, &geo.Segment{Start: c.Current.Copy(), End: endPoint})
 	c.Commands = append(c.Commands, fmt.Sprintf("L %v %v", endPoint.X, endPoint.Y))
+	c.commands = append(c.commands, PathCommand{
+		Kind: PathCommandLine,
+		End:  *endPoint,
+	})
 	c.Current = endPoint.Copy()
 }
 
@@ -80,6 +112,12 @@ func (c *SvgPathContext) C(isLowerCase bool, x1, y1, x2, y2, x3, y3 float64) {
 		points[2].X, points[2].Y,
 		points[3].X, points[3].Y,
 	))
+	c.commands = append(c.commands, PathCommand{
+		Kind:     PathCommandCubic,
+		Control1: *points[1],
+		Control2: *points[2],
+		End:      *points[3],
+	})
 	c.Current = points[3].Copy()
 }
 
@@ -93,6 +131,10 @@ func (c *SvgPathContext) H(isLowerCase bool, x float64) {
 	}
 	c.Path = append(c.Path, &geo.Segment{Start: c.Current.Copy(), End: endPoint.Copy()})
 	c.Commands = append(c.Commands, fmt.Sprintf("H %v", endPoint.X))
+	c.commands = append(c.commands, PathCommand{
+		Kind: PathCommandLine,
+		End:  *endPoint,
+	})
 	c.Current = endPoint.Copy()
 }
 
@@ -106,7 +148,16 @@ func (c *SvgPathContext) V(isLowerCase bool, y float64) {
 	}
 	c.Path = append(c.Path, &geo.Segment{Start: c.Current.Copy(), End: endPoint})
 	c.Commands = append(c.Commands, fmt.Sprintf("V %v", endPoint.Y))
+	c.commands = append(c.commands, PathCommand{
+		Kind: PathCommandLine,
+		End:  *endPoint,
+	})
 	c.Current = endPoint.Copy()
+}
+
+// PathCommands returns a defensive copy of the absolute typed path commands.
+func (c *SvgPathContext) PathCommands() []PathCommand {
+	return append([]PathCommand(nil), c.commands...)
 }
 
 func (c *SvgPathContext) PathData() string {
