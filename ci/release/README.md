@@ -141,9 +141,7 @@ Before publishing a production tag, the workflow:
 1. verifies the protected-master dispatch, published non-draft semver GitHub release, exact
    Linux amd64 and arm64 asset IDs, and their GitHub SHA-256 digests;
 2. explicitly peels the Git tag to a commit, requires that commit to be an ancestor of the
-   dispatched `master` commit, and uses that release commit's Dockerfile; current release
-   tooling may apply only an allowlisted, version-specific compatibility transform to an
-   immutable tagged Dockerfile (`v0.8.2` sets `CI=1` only for `d2 init-playwright`);
+   dispatched `master` commit, and uses that release commit's Dockerfile without modification;
 3. builds on native GitHub-hosted amd64 and arm64 runners and pushes only untagged digests
    with provenance;
 4. runs native version, SVG, and PNG smoke tests for both digests; and
@@ -161,36 +159,6 @@ tag was created, use GitHub's **Re-run failed jobs** action: the same run accept
 existing version tag only when its descriptors exactly match that run's verified candidate,
 and the separate `latest` job can retry without touching the version tags. A new dispatch
 still refuses any existing version tag during preflight.
-
-### Docker continuity test
-
-The manually dispatched `Docker continuity test` GitHub workflow proves that an existing,
-published D2 release can be rebuilt for Docker Hub without the legacy AWS builders. It
-downloads the release's exact Linux archives, builds on native GitHub-hosted amd64 and arm64
-runners, verifies the images, and publishes only
-`d2lang/d2:continuity-test-<workflow-run-id>-<attempt>` and the matching
-`terrastruct/d2` compatibility tag. It never updates a release version tag or `latest`.
-
-Dispatch the workflow from the protected `master` branch. The version input must name a
-published, non-draft GitHub release with both Linux archives; `v0.7.1` is the default
-continuity fixture. The workflow removes both test tags after verification. If Docker Hub
-rejects either cleanup request, the cleanup job fails instead of silently leaving a test
-tag behind. Because collaborators on personal Docker Hub repositories cannot delete tags,
-the `docker-release` environment must also provide two owner-scoped secrets with Read,
-Write, Delete permission: `DOCKERHUB_D2LANG_DELETE_TOKEN` from the `d2lang` Docker ID and
-`DOCKERHUB_TERRASTRUCT_DELETE_TOKEN` from the `terrastruct` Docker ID. Cleanup is restricted
-to the exact `d2lang/d2` and `terrastruct/d2` test tags for the current workflow run and
-verifies that each tag is absent after deletion.
-
-The `v0.7.1` fixture embeds playwright-go v0.4702.0, whose original driver CDN no longer
-serves the required ZIP files. For that fixture only, the workflow reconstructs the same
-Playwright 1.47.2 driver layout from a checksum-pinned official `playwright-core` npm
-tarball and the image's Node runtime. Browser payloads use Playwright's current direct CDN.
-The published D2 archive remains unchanged. Other release versions use their tagged
-Dockerfile without this compatibility step.
-
-This remains a non-production regression test. The separate `Publish Docker release`
-workflow is the production publisher.
 
 ### _build.sh
 
