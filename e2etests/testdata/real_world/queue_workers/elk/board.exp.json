@@ -17,7 +17,7 @@
       "type": "person",
       "pos": {
         "x": 13,
-        "y": 346
+        "y": 164
       },
       "width": 99,
       "height": 81,
@@ -59,7 +59,7 @@
       "type": "person",
       "pos": {
         "x": 13,
-        "y": 554
+        "y": 316
       },
       "width": 99,
       "height": 81,
@@ -101,7 +101,7 @@
       "type": "person",
       "pos": {
         "x": 13,
-        "y": 1080
+        "y": 582
       },
       "width": 99,
       "height": 81,
@@ -143,7 +143,7 @@
       "type": "person",
       "pos": {
         "x": 12,
-        "y": 1288
+        "y": 734
       },
       "width": 100,
       "height": 81,
@@ -184,11 +184,11 @@
       "id": "container_producer_01",
       "type": "rectangle",
       "pos": {
-        "x": 413,
-        "y": 234
+        "x": 423,
+        "y": 140
       },
-      "width": 922,
-      "height": 520,
+      "width": 876,
+      "height": 312,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -202,20 +202,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/dev/go.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/dev%2Fgo.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_TOP_LEFT",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -230,7 +218,7 @@
       "underline": false,
       "labelWidth": 120,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_RIGHT",
+      "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -238,11 +226,11 @@
       "id": "container_producer_01.task01",
       "type": "rectangle",
       "pos": {
-        "x": 463,
-        "y": 318
+        "x": 473,
+        "y": 200
       },
-      "width": 185,
-      "height": 178,
+      "width": 139,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -256,20 +244,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/essentials/092-graph bar.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/essentials%2F092-graph%20bar.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -284,7 +260,7 @@
       "underline": false,
       "labelWidth": 94,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -292,11 +268,11 @@
       "id": "container_producer_01.task02",
       "type": "rectangle",
       "pos": {
-        "x": 463,
-        "y": 526
+        "x": 473,
+        "y": 316
       },
-      "width": 185,
-      "height": 178,
+      "width": 139,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -310,20 +286,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/essentials/095-download.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/essentials%2F095-download.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -338,7 +302,7 @@
       "underline": false,
       "labelWidth": 94,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -346,11 +310,11 @@
       "id": "container_producer_01.queue",
       "type": "rectangle",
       "pos": {
-        "x": 984,
-        "y": 389
+        "x": 948,
+        "y": 203
       },
       "width": 296,
-      "height": 210,
+      "height": 186,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -364,20 +328,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/dev/go.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/dev%2Fgo.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_TOP_LEFT",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -392,7 +344,7 @@
       "underline": false,
       "labelWidth": 175,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_RIGHT",
+      "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -400,8 +352,8 @@
       "id": "container_producer_01.queue.producer",
       "type": "rectangle",
       "pos": {
-        "x": 1034,
-        "y": 463
+        "x": 998,
+        "y": 253
       },
       "width": 196,
       "height": 86,
@@ -443,11 +395,11 @@
       "id": "container_producer_02",
       "type": "rectangle",
       "pos": {
-        "x": 413,
-        "y": 968
+        "x": 423,
+        "y": 572
       },
-      "width": 922,
-      "height": 520,
+      "width": 876,
+      "height": 320,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -461,20 +413,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/dev/go.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/dev%2Fgo.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_TOP_LEFT",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -489,7 +429,7 @@
       "underline": false,
       "labelWidth": 120,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_RIGHT",
+      "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -497,11 +437,11 @@
       "id": "container_producer_02.task01",
       "type": "rectangle",
       "pos": {
-        "x": 463,
-        "y": 1052
+        "x": 473,
+        "y": 636
       },
-      "width": 185,
-      "height": 178,
+      "width": 139,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -515,20 +455,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/essentials/195-attachment.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/essentials%2F195-attachment.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -543,7 +471,7 @@
       "underline": false,
       "labelWidth": 94,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -551,11 +479,11 @@
       "id": "container_producer_02.task02",
       "type": "rectangle",
       "pos": {
-        "x": 463,
-        "y": 1260
+        "x": 473,
+        "y": 752
       },
-      "width": 185,
-      "height": 178,
+      "width": 139,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -569,20 +497,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/essentials/213-alarm.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/essentials%2F213-alarm.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -597,7 +513,7 @@
       "underline": false,
       "labelWidth": 94,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -605,11 +521,11 @@
       "id": "container_producer_02.queue",
       "type": "rectangle",
       "pos": {
-        "x": 984,
-        "y": 1106
+        "x": 948,
+        "y": 622
       },
       "width": 296,
-      "height": 244,
+      "height": 220,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -623,20 +539,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/dev/go.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/dev%2Fgo.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_TOP_LEFT",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -651,7 +555,7 @@
       "underline": false,
       "labelWidth": 175,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_RIGHT",
+      "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -659,8 +563,8 @@
       "id": "container_producer_02.queue.producer",
       "type": "rectangle",
       "pos": {
-        "x": 1034,
-        "y": 1180
+        "x": 998,
+        "y": 672
       },
       "width": 196,
       "height": 120,
@@ -702,8 +606,8 @@
       "id": "database",
       "type": "cylinder",
       "pos": {
-        "x": 1749,
-        "y": 421
+        "x": 1778,
+        "y": 211
       },
       "width": 158,
       "height": 170,
@@ -745,11 +649,11 @@
       "id": "other_store",
       "type": "rectangle",
       "pos": {
-        "x": 1687,
-        "y": 923
+        "x": 1651,
+        "y": 521
       },
-      "width": 252,
-      "height": 662,
+      "width": 349,
+      "height": 450,
       "opacity": 0,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -784,18 +688,18 @@
     },
     {
       "id": "other_store.redis",
-      "type": "image",
+      "type": "cylinder",
       "pos": {
-        "x": 1749,
-        "y": 1167
+        "x": 1756,
+        "y": 677
       },
-      "width": 128,
-      "height": 128,
+      "width": 138,
+      "height": 138,
       "opacity": 0.7,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "N7",
+      "fill": "AA5",
       "stroke": "B1",
       "animated": false,
       "shadow": false,
@@ -804,20 +708,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/dev/redis.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/dev%2Fredis.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -832,24 +724,24 @@
       "underline": false,
       "labelWidth": 93,
       "labelHeight": 41,
-      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "other_store.rabbitmq",
-      "type": "image",
+      "type": "queue",
       "pos": {
-        "x": 1737,
-        "y": 973
+        "x": 1701,
+        "y": 571
       },
-      "width": 128,
-      "height": 128,
+      "width": 249,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "N7",
+      "fill": "N5",
       "stroke": "B1",
       "animated": false,
       "shadow": false,
@@ -858,20 +750,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/golang-queue/queue/2a79b8aac36eaca758ff4f5412fcb485b027dd58/images/rabbitmq.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -886,24 +766,24 @@
       "underline": false,
       "labelWidth": 152,
       "labelHeight": 41,
-      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "other_store.nats",
-      "type": "image",
+      "type": "queue",
       "pos": {
-        "x": 1749,
-        "y": 1361
+        "x": 1740,
+        "y": 835
       },
-      "width": 128,
-      "height": 128,
+      "width": 171,
+      "height": 86,
       "opacity": 0.7,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "N7",
+      "fill": "N5",
       "stroke": "B1",
       "animated": false,
       "shadow": false,
@@ -912,20 +792,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/golang-queue/queue/2a79b8aac36eaca758ff4f5412fcb485b027dd58/images/nats.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -940,7 +808,7 @@
       "underline": false,
       "labelWidth": 74,
       "labelHeight": 41,
-      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -948,11 +816,11 @@
       "id": "container_consumer_01",
       "type": "rectangle",
       "pos": {
-        "x": 2291,
+        "x": 2352,
         "y": 12
       },
-      "width": 903,
-      "height": 520,
+      "width": 857,
+      "height": 312,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -966,20 +834,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/dev/go.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/dev%2Fgo.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_TOP_LEFT",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -994,7 +850,7 @@
       "underline": false,
       "labelWidth": 120,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_RIGHT",
+      "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -1002,11 +858,11 @@
       "id": "container_consumer_01.task01",
       "type": "rectangle",
       "pos": {
-        "x": 2949,
-        "y": 96
+        "x": 3010,
+        "y": 72
       },
-      "width": 185,
-      "height": 178,
+      "width": 139,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1020,20 +876,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/essentials/092-graph bar.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/essentials%2F092-graph%20bar.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1048,7 +892,7 @@
       "underline": false,
       "labelWidth": 94,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -1056,11 +900,11 @@
       "id": "container_consumer_01.task02",
       "type": "rectangle",
       "pos": {
-        "x": 2949,
-        "y": 304
+        "x": 3010,
+        "y": 188
       },
-      "width": 185,
-      "height": 178,
+      "width": 139,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1074,20 +918,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/essentials/095-download.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/essentials%2F095-download.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1102,7 +934,7 @@
       "underline": false,
       "labelWidth": 94,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -1110,11 +942,11 @@
       "id": "container_consumer_01.queue",
       "type": "rectangle",
       "pos": {
-        "x": 2346,
-        "y": 167
+        "x": 2407,
+        "y": 74
       },
       "width": 297,
-      "height": 210,
+      "height": 186,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1128,20 +960,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/dev/go.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/dev%2Fgo.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_TOP_LEFT",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1156,7 +976,7 @@
       "underline": false,
       "labelWidth": 175,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_RIGHT",
+      "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -1164,8 +984,8 @@
       "id": "container_consumer_01.queue.consumer",
       "type": "rectangle",
       "pos": {
-        "x": 2396,
-        "y": 241
+        "x": 2457,
+        "y": 124
       },
       "width": 197,
       "height": 86,
@@ -1207,11 +1027,11 @@
       "id": "container_consumer_02",
       "type": "rectangle",
       "pos": {
-        "x": 2291,
-        "y": 552
+        "x": 2352,
+        "y": 344
       },
-      "width": 904,
-      "height": 937,
+      "width": 858,
+      "height": 548,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1225,20 +1045,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/dev/go.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/dev%2Fgo.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_TOP_LEFT",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1253,7 +1061,7 @@
       "underline": false,
       "labelWidth": 120,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_RIGHT",
+      "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -1261,11 +1069,11 @@
       "id": "container_consumer_02.task01",
       "type": "rectangle",
       "pos": {
-        "x": 2949,
-        "y": 636
+        "x": 3010,
+        "y": 404
       },
-      "width": 185,
-      "height": 178,
+      "width": 139,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1279,20 +1087,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/essentials/095-download.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/essentials%2F095-download.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1307,7 +1103,7 @@
       "underline": false,
       "labelWidth": 94,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -1315,11 +1111,11 @@
       "id": "container_consumer_02.task02",
       "type": "rectangle",
       "pos": {
-        "x": 2949,
-        "y": 844
+        "x": 3010,
+        "y": 520
       },
-      "width": 185,
-      "height": 178,
+      "width": 139,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1333,20 +1129,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/essentials/092-graph bar.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/essentials%2F092-graph%20bar.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1361,7 +1145,7 @@
       "underline": false,
       "labelWidth": 94,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -1369,11 +1153,11 @@
       "id": "container_consumer_02.task03",
       "type": "rectangle",
       "pos": {
-        "x": 2949,
-        "y": 1052
+        "x": 3010,
+        "y": 636
       },
-      "width": 185,
-      "height": 178,
+      "width": 139,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1387,20 +1171,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/essentials/195-attachment.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/essentials%2F195-attachment.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1415,7 +1187,7 @@
       "underline": false,
       "labelWidth": 94,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -1423,11 +1195,11 @@
       "id": "container_consumer_02.task04",
       "type": "rectangle",
       "pos": {
-        "x": 2949,
-        "y": 1260
+        "x": 3010,
+        "y": 752
       },
-      "width": 186,
-      "height": 178,
+      "width": 140,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1441,20 +1213,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/essentials/213-alarm.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/essentials%2F213-alarm.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1469,7 +1229,7 @@
       "underline": false,
       "labelWidth": 95,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -1477,11 +1237,11 @@
       "id": "container_consumer_02.queue01",
       "type": "rectangle",
       "pos": {
-        "x": 2346,
-        "y": 707
+        "x": 2407,
+        "y": 407
       },
       "width": 297,
-      "height": 210,
+      "height": 186,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1495,20 +1255,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/dev/go.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/dev%2Fgo.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_TOP_LEFT",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1523,7 +1271,7 @@
       "underline": false,
       "labelWidth": 175,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_RIGHT",
+      "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -1531,8 +1279,8 @@
       "id": "container_consumer_02.queue01.consumer",
       "type": "rectangle",
       "pos": {
-        "x": 2396,
-        "y": 781
+        "x": 2457,
+        "y": 457
       },
       "width": 197,
       "height": 86,
@@ -1574,11 +1322,11 @@
       "id": "container_consumer_02.queue02",
       "type": "rectangle",
       "pos": {
-        "x": 2346,
-        "y": 1106
+        "x": 2407,
+        "y": 622
       },
       "width": 297,
-      "height": 244,
+      "height": 220,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1592,20 +1340,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/dev/go.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/dev%2Fgo.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_TOP_LEFT",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1620,7 +1356,7 @@
       "underline": false,
       "labelWidth": 175,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_RIGHT",
+      "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -1628,8 +1364,8 @@
       "id": "container_consumer_02.queue02.consumer",
       "type": "rectangle",
       "pos": {
-        "x": 2396,
-        "y": 1180
+        "x": 2457,
+        "y": 672
       },
       "width": 197,
       "height": 120,
@@ -1695,20 +1431,20 @@
       "link": "",
       "route": [
         {
-          "x": 658,
-          "y": 402.1659851074219
+          "x": 622,
+          "y": 238.16600036621094
         },
         {
-          "x": 939,
-          "y": 402.1659851074219
+          "x": 903,
+          "y": 238.16600036621094
         },
         {
-          "x": 939,
-          "y": 491.8330078125
+          "x": 903,
+          "y": 281.8330078125
         },
         {
-          "x": 1034,
-          "y": 491.8330078125
+          "x": 998,
+          "y": 281.8330078125
         }
       ],
       "animated": true,
@@ -1742,20 +1478,20 @@
       "link": "",
       "route": [
         {
-          "x": 658,
-          "y": 610.166015625
+          "x": 622,
+          "y": 354.1659851074219
         },
         {
-          "x": 939,
-          "y": 610.166015625
+          "x": 903,
+          "y": 354.1659851074219
         },
         {
-          "x": 939,
-          "y": 520.5
+          "x": 903,
+          "y": 310.5
         },
         {
-          "x": 1034,
-          "y": 520.5
+          "x": 998,
+          "y": 310.5
         }
       ],
       "animated": true,
@@ -1789,20 +1525,20 @@
       "link": "",
       "route": [
         {
-          "x": 658,
-          "y": 1136
+          "x": 622,
+          "y": 674
         },
         {
-          "x": 939,
-          "y": 1136
+          "x": 903,
+          "y": 674
         },
         {
-          "x": 939,
-          "y": 1220
+          "x": 903,
+          "y": 712
         },
         {
-          "x": 1034,
-          "y": 1220
+          "x": 998,
+          "y": 712
         }
       ],
       "animated": true,
@@ -1836,20 +1572,20 @@
       "link": "",
       "route": [
         {
-          "x": 658,
-          "y": 1344
+          "x": 622,
+          "y": 790
         },
         {
-          "x": 939,
-          "y": 1344
+          "x": 903,
+          "y": 790
         },
         {
-          "x": 939,
-          "y": 1260
+          "x": 903,
+          "y": 752
         },
         {
-          "x": 1034,
-          "y": 1260
+          "x": 998,
+          "y": 752
         }
       ],
       "animated": true,
@@ -1883,20 +1619,20 @@
       "link": "",
       "route": [
         {
-          "x": 2593,
-          "y": 269.6659851074219
+          "x": 2654,
+          "y": 153.66600036621094
         },
         {
-          "x": 2688,
-          "y": 269.6659851074219
+          "x": 2749,
+          "y": 153.66600036621094
         },
         {
-          "x": 2688,
-          "y": 180
+          "x": 2749,
+          "y": 110
         },
         {
-          "x": 2949,
-          "y": 180
+          "x": 3010,
+          "y": 110
         }
       ],
       "animated": true,
@@ -1930,20 +1666,20 @@
       "link": "",
       "route": [
         {
-          "x": 2593,
-          "y": 298.3330078125
+          "x": 2654,
+          "y": 182.33299255371094
         },
         {
-          "x": 2688,
-          "y": 298.3330078125
+          "x": 2749,
+          "y": 182.33299255371094
         },
         {
-          "x": 2688,
-          "y": 388
+          "x": 2749,
+          "y": 226
         },
         {
-          "x": 2949,
-          "y": 388
+          "x": 3010,
+          "y": 226
         }
       ],
       "animated": false,
@@ -1977,20 +1713,20 @@
       "link": "",
       "route": [
         {
-          "x": 2593,
-          "y": 809.666015625
+          "x": 2654,
+          "y": 485.6659851074219
         },
         {
-          "x": 2688,
-          "y": 809.666015625
+          "x": 2749,
+          "y": 485.6659851074219
         },
         {
-          "x": 2688,
-          "y": 720
+          "x": 2749,
+          "y": 442
         },
         {
-          "x": 2949,
-          "y": 720
+          "x": 3010,
+          "y": 442
         }
       ],
       "animated": true,
@@ -2024,20 +1760,20 @@
       "link": "",
       "route": [
         {
-          "x": 2593,
-          "y": 838.3330078125
+          "x": 2654,
+          "y": 514.3330078125
         },
         {
-          "x": 2688,
-          "y": 838.3330078125
+          "x": 2749,
+          "y": 514.3330078125
         },
         {
-          "x": 2688,
-          "y": 928
+          "x": 2749,
+          "y": 558
         },
         {
-          "x": 2949,
-          "y": 928
+          "x": 3010,
+          "y": 558
         }
       ],
       "animated": true,
@@ -2071,20 +1807,20 @@
       "link": "",
       "route": [
         {
-          "x": 2593,
-          "y": 1220
+          "x": 2654,
+          "y": 712
         },
         {
-          "x": 2688,
-          "y": 1220
+          "x": 2749,
+          "y": 712
         },
         {
-          "x": 2688,
-          "y": 1136
+          "x": 2749,
+          "y": 674
         },
         {
-          "x": 2949,
-          "y": 1136
+          "x": 3010,
+          "y": 674
         }
       ],
       "animated": true,
@@ -2118,20 +1854,20 @@
       "link": "",
       "route": [
         {
-          "x": 2593,
-          "y": 1260
+          "x": 2654,
+          "y": 752
         },
         {
-          "x": 2688,
-          "y": 1260
+          "x": 2749,
+          "y": 752
         },
         {
-          "x": 2688,
-          "y": 1344
+          "x": 2749,
+          "y": 790
         },
         {
-          "x": 2949,
-          "y": 1344
+          "x": 3010,
+          "y": 790
         }
       ],
       "animated": true,
@@ -2166,11 +1902,11 @@
       "route": [
         {
           "x": 119,
-          "y": 402
+          "y": 220
         },
         {
-          "x": 463,
-          "y": 402
+          "x": 473,
+          "y": 220.16600036621094
         }
       ],
       "animated": true,
@@ -2205,11 +1941,11 @@
       "route": [
         {
           "x": 119,
-          "y": 610
+          "y": 372
         },
         {
-          "x": 463,
-          "y": 610
+          "x": 473,
+          "y": 372.1659851074219
         }
       ],
       "animated": true,
@@ -2244,11 +1980,11 @@
       "route": [
         {
           "x": 119,
-          "y": 1136
+          "y": 638
         },
         {
-          "x": 463,
-          "y": 1136
+          "x": 473,
+          "y": 638
         }
       ],
       "animated": true,
@@ -2283,11 +2019,11 @@
       "route": [
         {
           "x": 119,
-          "y": 1344
+          "y": 790
         },
         {
-          "x": 463,
-          "y": 1344
+          "x": 473,
+          "y": 790
         }
       ],
       "animated": true,
@@ -2321,12 +2057,12 @@
       "link": "",
       "route": [
         {
-          "x": 1229.666015625,
-          "y": 506.1659851074219
+          "x": 1194.3330078125,
+          "y": 296.1659851074219
         },
         {
-          "x": 1750,
-          "y": 506
+          "x": 1778,
+          "y": 296
         }
       ],
       "animated": true,
@@ -2360,20 +2096,20 @@
       "link": "",
       "route": [
         {
-          "x": 1230,
-          "y": 1210
+          "x": 1194,
+          "y": 702
         },
         {
-          "x": 1380,
-          "y": 1210
+          "x": 1344,
+          "y": 702
         },
         {
-          "x": 1380,
-          "y": 1060.25
+          "x": 1344,
+          "y": 614.25
         },
         {
-          "x": 1737,
-          "y": 1060.25
+          "x": 1701,
+          "y": 614
         }
       ],
       "animated": true,
@@ -2407,12 +2143,20 @@
       "link": "",
       "route": [
         {
-          "x": 1230,
-          "y": 1240
+          "x": 1194,
+          "y": 732
         },
         {
-          "x": 1749,
-          "y": 1240
+          "x": 1394,
+          "y": 732
+        },
+        {
+          "x": 1394,
+          "y": 746.25
+        },
+        {
+          "x": 1757,
+          "y": 746
         }
       ],
       "animated": false,
@@ -2446,20 +2190,20 @@
       "link": "",
       "route": [
         {
-          "x": 1230,
-          "y": 1270
+          "x": 1194,
+          "y": 762
         },
         {
-          "x": 1380,
-          "y": 1270
+          "x": 1606,
+          "y": 762
         },
         {
-          "x": 1380,
-          "y": 1424.5
+          "x": 1606,
+          "y": 878.25
         },
         {
-          "x": 1749,
-          "y": 1424.5
+          "x": 1740,
+          "y": 878
         }
       ],
       "animated": false,
@@ -2493,20 +2237,20 @@
       "link": "",
       "route": [
         {
-          "x": 1908,
-          "y": 478
+          "x": 1936,
+          "y": 268
         },
         {
-          "x": 1984,
-          "y": 477.8330078125
+          "x": 2045,
+          "y": 267.8330078125
         },
         {
-          "x": 1984,
-          "y": 284
+          "x": 2045,
+          "y": 168
         },
         {
-          "x": 2396,
-          "y": 284
+          "x": 2457,
+          "y": 168
         }
       ],
       "animated": true,
@@ -2540,20 +2284,20 @@
       "link": "",
       "route": [
         {
-          "x": 1908,
-          "y": 535
+          "x": 1936,
+          "y": 325
         },
         {
-          "x": 2196,
-          "y": 534.5
+          "x": 2257,
+          "y": 324.5
         },
         {
-          "x": 2196,
-          "y": 824
+          "x": 2257,
+          "y": 500
         },
         {
-          "x": 2396,
-          "y": 824
+          "x": 2457,
+          "y": 500
         }
       ],
       "animated": true,
@@ -2587,20 +2331,20 @@
       "link": "",
       "route": [
         {
-          "x": 1865,
-          "y": 1060.25
+          "x": 1950,
+          "y": 614
         },
         {
-          "x": 1984,
-          "y": 1060.25
+          "x": 2045,
+          "y": 614.25
         },
         {
-          "x": 1984,
-          "y": 1195.75
+          "x": 2045,
+          "y": 687.75
         },
         {
-          "x": 2396,
-          "y": 1195.75
+          "x": 2457,
+          "y": 687.75
         }
       ],
       "animated": true,
@@ -2634,12 +2378,20 @@
       "link": "",
       "route": [
         {
-          "x": 1877,
-          "y": 1240
+          "x": 1895,
+          "y": 746
         },
         {
-          "x": 2396,
-          "y": 1240
+          "x": 2257,
+          "y": 746.25
+        },
+        {
+          "x": 2257,
+          "y": 732
+        },
+        {
+          "x": 2457,
+          "y": 732
         }
       ],
       "animated": false,
@@ -2673,20 +2425,20 @@
       "link": "",
       "route": [
         {
-          "x": 1877,
-          "y": 1448.25
+          "x": 1911,
+          "y": 878
         },
         {
-          "x": 2246,
-          "y": 1448.25
+          "x": 2307,
+          "y": 878.25
         },
         {
-          "x": 2246,
-          "y": 1270
+          "x": 2307,
+          "y": 762
         },
         {
-          "x": 2396,
-          "y": 1270
+          "x": 2457,
+          "y": 762
         }
       ],
       "animated": false,

@@ -1,6 +1,6 @@
 # Source: https://github.com/jupyter-infra/jupyter-k8s/blob/92e2d8e43c94355f999f4d4a46c7a73dfc395f93/diagrams/web-access-oidc.d2
 # License: MIT; see REAL_WORLD.md.
-# Adaptation: Relative icon paths replaced with revision-pinned upstream URLs.
+# Adaptation: Third-party icons replaced with built-in labeled shapes.
 
 # Web Access — OIDC Flow
 
@@ -96,7 +96,6 @@ laptop: "User Laptop" {
 
   kubectl: "kubectl" {
     class: box
-    icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-k8s/92e2d8e43c94355f999f4d4a46c7a73dfc395f93/diagrams/icons/kubernetes.svg
     style: {
       fill: "#c8e6c9"
       stroke: "#388e3c"
@@ -107,7 +106,6 @@ laptop: "User Laptop" {
 
   browser: "Browser" {
     class: box
-    icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-k8s/92e2d8e43c94355f999f4d4a46c7a73dfc395f93/diagrams/icons/firefox.svg
     style: {
       fill: "#c8e6c9"
       stroke: "#388e3c"
@@ -144,7 +142,6 @@ cluster: "Kubernetes Cluster" {
 
       api_server: "API Server" {
         class: box
-        icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-k8s/92e2d8e43c94355f999f4d4a46c7a73dfc395f93/diagrams/icons/api-server.svg
         style: {
           fill: "#bbdefb"
           stroke: "#1565c0"
@@ -155,7 +152,6 @@ cluster: "Kubernetes Cluster" {
 
       etcd: "etcd" {
         class: box
-        icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-k8s/92e2d8e43c94355f999f4d4a46c7a73dfc395f93/diagrams/icons/etcd.svg
         style: {
           fill: "#bbdefb"
           stroke: "#1565c0"
@@ -181,7 +177,6 @@ cluster: "Kubernetes Cluster" {
 
         idp: "OIDC Provider" {
           class: box
-          icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-k8s/92e2d8e43c94355f999f4d4a46c7a73dfc395f93/diagrams/icons/dex.svg
           style: {
             fill: "#ffe0b2"
             stroke: "#f57c00"
@@ -192,7 +187,6 @@ cluster: "Kubernetes Cluster" {
 
         authmiddleware: "Auth Middleware" {
           class: box
-          icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-k8s/92e2d8e43c94355f999f4d4a46c7a73dfc395f93/diagrams/icons/jupyter.svg
           style: {
             fill: "#ffe0b2"
             stroke: "#f57c00"
@@ -219,7 +213,6 @@ cluster: "Kubernetes Cluster" {
 
       router: "Router" {
         class: box
-        icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-k8s/92e2d8e43c94355f999f4d4a46c7a73dfc395f93/diagrams/icons/ing.svg
         style: {
           fill: "#ffe0b2"
           stroke: "#f57c00"
@@ -240,7 +233,6 @@ cluster: "Kubernetes Cluster" {
 
       extensionapi: "Extension API" {
         class: box
-        icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-k8s/92e2d8e43c94355f999f4d4a46c7a73dfc395f93/diagrams/icons/jupyter.svg
         style: {
           fill: "#bbdefb"
           stroke: "#1565c0"
@@ -259,7 +251,6 @@ cluster: "Kubernetes Cluster" {
 
       workspace: "Workspace" {
         class: box
-        icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-k8s/92e2d8e43c94355f999f4d4a46c7a73dfc395f93/diagrams/icons/pod.svg
         style: {
           fill: "#e1bee7"
           stroke: "#8e24aa"

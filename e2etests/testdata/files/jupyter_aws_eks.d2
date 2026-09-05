@@ -1,6 +1,6 @@
 # Source: https://github.com/jupyter-infra/jupyter-deploy/blob/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/aws-eks-oidc-template/infrastructure.d2
 # License: MIT; see REAL_WORLD.md.
-# Adaptation: Relative icon paths replaced with revision-pinned upstream URLs; trailing blank lines removed.
+# Adaptation: Third-party icons replaced with built-in labeled shapes; trailing blank lines removed.
 
 # EKS OIDC Template — Infrastructure
 
@@ -66,7 +66,6 @@ aws: "AWS Account" {
 
         dns_record: "DNS Record" {
           class: box
-          icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/route53.svg
           style: {
             fill: "#ffe0b2"
             stroke: "#f57c00"
@@ -93,7 +92,6 @@ aws: "AWS Account" {
 
       oidc_provider: "OIDC Provider" {
         class: box
-        icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/iam.svg
         style: {
           fill: "#fce4ec"
           stroke: "#c62828"
@@ -124,7 +122,6 @@ aws: "AWS Account" {
 
     nlb: "Network\nLoad Balancer" {
       class: box
-      icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/nlb.svg
       style: {
         fill: "#c8e6c9"
         stroke: "#388e3c"
@@ -151,7 +148,6 @@ aws: "AWS Account" {
         }
 
         node1: "m5.large" {
-          icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/ec2.svg
           style: {
             fill: "#bbdefb"
             stroke-width: 0
@@ -161,7 +157,6 @@ aws: "AWS Account" {
         }
 
         node2: "m5.large" {
-          icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/ec2.svg
           style: {
             fill: "#bbdefb"
             stroke-width: 0
@@ -181,7 +176,6 @@ aws: "AWS Account" {
         }
 
         node1: "c6.large" {
-          icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/ec2.svg
           style: {
             fill: "#c8e6c9"
             stroke-width: 0
@@ -191,7 +185,6 @@ aws: "AWS Account" {
         }
 
         node2: "m6.large" {
-          icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/ec2.svg
           style: {
             fill: "#c8e6c9"
             stroke-width: 0
@@ -211,7 +204,6 @@ aws: "AWS Account" {
         }
 
         node1: "c6i.2xlarge" {
-          icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/ec2.svg
           style: {
             fill: "#e1bee7"
             stroke-width: 0
@@ -221,7 +213,6 @@ aws: "AWS Account" {
         }
 
         node2: "r7i.xlarge" {
-          icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/ec2.svg
           style: {
             fill: "#e1bee7"
             stroke-width: 0
@@ -243,7 +234,6 @@ aws: "AWS Account" {
 
         api_server: "API Server" {
           class: box
-          icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/kubernetes.svg
           style: {
             fill: "#bbdefb"
             stroke: "#1565c0"
@@ -252,7 +242,6 @@ aws: "AWS Account" {
 
         etcd: "etcd" {
           shape: cylinder
-          icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/kubernetes.svg
           style: {
             bold: true
             stroke-width: 3

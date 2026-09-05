@@ -2,9 +2,9 @@
 
 These fixtures document real projects. `TestE2E/real_world` runs each through the existing graph serialization, layout, SVG and board-golden checks for both Dagre and ELK. The corpus preserves the authors’ structure, labels and styling. It does not assert that a documented target design is deployed.
 
-Local icon paths and ROSS diagram links have been replaced with URLs pinned to the collected upstream revision so the SVG report can resolve them outside their original repositories. Existing remote icon URLs remain unchanged. The SVG test harness references these images; it does not download them.
+Third-party icons in the Jupyter and Queue fixtures have been replaced with built-in labeled D2 shapes. The fixtures have no external image dependencies. ROSS diagram links use URLs pinned to the collected upstream revision so they resolve outside the original repository.
 
-Source revisions and repository license files are recorded below. Fixture headers describe adaptations. The MIT/Apache-2.0 labels describe the diagram sources; referenced third-party icons retain their own copyright licenses and trademark terms, as noted in the relevant attribution files.
+Source revisions and repository license files are recorded below. Fixture headers describe adaptations. The diagram sources use MIT or Apache-2.0; the original third-party icon artwork is not included.
 
 ## Jupyter AWS EKS infrastructure
 
@@ -16,9 +16,7 @@ Revision: `7283c07396c3d0126346217089e2527d1ce652f6`
 
 Original source SHA-256: `18fb06d9c18519c9ce12e71de6717e7854f15882e7c2e79c091b5338b940b245`
 
-License: MIT — [LICENSE](real_world_licenses/jupyter_aws_eks_LICENSE); upstream [icon attribution](real_world_licenses/jupyter_aws_eks_ATTRIBUTION.md)
-
-The AWS service icons have separate AWS trademark/architecture-diagram usage terms, rather than the diagram's MIT license. [AWS permits architecture-diagram use](https://aws.amazon.com/architecture/icons/).
+License: MIT — [LICENSE](real_world_licenses/jupyter_aws_eks_LICENSE)
 
 AWS account, region, VPC, EKS control plane, platform nodes, routing nodes and workspace node pools, with DNS and OIDC.
 
@@ -46,9 +44,11 @@ Revision: `2a79b8aac36eaca758ff4f5412fcb485b027dd58`
 
 Original source SHA-256: `f6f604a937a0db36fc78cea511a05e9e9f15b45e3bf0d6b1ed0d56eb27102500`
 
-License: MIT — [LICENSE](real_world_licenses/queue_workers_LICENSE); [icon attribution and limitations](real_world_licenses/queue_workers_ATTRIBUTION.md)
+License: MIT — [LICENSE](real_world_licenses/queue_workers_LICENSE)
 
 Multiple producers and worker services around the queue/ring buffer, with Redis, RabbitMQ and NATS.
+
+Redis uses D2's cylinder shape; RabbitMQ and NATS use its queue shape. Decorative icons are replaced by the existing labeled shapes.
 
 ## Spyre encoder inference target design
 
@@ -104,11 +104,9 @@ Revision: `92e2d8e43c94355f999f4d4a46c7a73dfc395f93`
 
 Original source SHA-256: `301d5d2847078680cb903cf045835cbf62c9be468a36979f78346c2dc0911c63`
 
-License: MIT — [LICENSE](real_world_licenses/jupyter_k8s_oidc_LICENSE); [ATTRIBUTION.md](real_world_licenses/jupyter_k8s_oidc_ATTRIBUTION.md)
+License: MIT — [LICENSE](real_world_licenses/jupyter_k8s_oidc_LICENSE)
 
 Browser login, router, OIDC provider, auth middleware, Extension API and workspace; shows ten numbered handoffs across namespaces.
-
-The upstream icon attribution file is preserved alongside the repository license; icons are referenced by pinned URLs.
 
 ## Ouroboros Leios simulator components
 

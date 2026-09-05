@@ -19,8 +19,8 @@
         "x": 12,
         "y": 12
       },
-      "width": 1515,
-      "height": 1477,
+      "width": 1360,
+      "height": 1301,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -61,8 +61,8 @@
         "x": 72,
         "y": 72
       },
-      "width": 1395,
-      "height": 453,
+      "width": 1240,
+      "height": 391,
       "opacity": 1,
       "strokeDash": 5,
       "strokeWidth": 2,
@@ -102,8 +102,8 @@
         "x": 132,
         "y": 132
       },
-      "width": 379,
-      "height": 333,
+      "width": 348,
+      "height": 271,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -144,8 +144,8 @@
         "x": 182,
         "y": 182
       },
-      "width": 279,
-      "height": 233,
+      "width": 248,
+      "height": 171,
       "opacity": 1,
       "strokeDash": 3,
       "strokeWidth": 2,
@@ -189,8 +189,8 @@
         "x": 232,
         "y": 232
       },
-      "width": 179,
-      "height": 133,
+      "width": 148,
+      "height": 71,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -204,20 +204,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/route53.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -232,7 +220,7 @@
       "underline": false,
       "labelWidth": 103,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 5
     },
@@ -240,11 +228,11 @@
       "id": "aws.global.spacer",
       "type": "rectangle",
       "pos": {
-        "x": 551,
+        "x": 520,
         "y": 132
       },
       "width": 100,
-      "height": 333,
+      "height": 271,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -281,11 +269,11 @@
       "id": "aws.global.iam",
       "type": "rectangle",
       "pos": {
-        "x": 691,
+        "x": 660,
         "y": 132
       },
-      "width": 301,
-      "height": 333,
+      "width": 270,
+      "height": 271,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -326,11 +314,11 @@
         "box"
       ],
       "pos": {
-        "x": 741,
+        "x": 710,
         "y": 182
       },
-      "width": 201,
-      "height": 133,
+      "width": 170,
+      "height": 71,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -344,20 +332,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/iam.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -372,7 +348,7 @@
       "underline": false,
       "labelWidth": 125,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 4
     },
@@ -381,10 +357,10 @@
       "type": "rectangle",
       "pos": {
         "x": 72,
-        "y": 565
+        "y": 503
       },
-      "width": 1395,
-      "height": 864,
+      "width": 1240,
+      "height": 750,
       "opacity": 1,
       "strokeDash": 5,
       "strokeWidth": 2,
@@ -423,10 +399,10 @@
       "type": "rectangle",
       "pos": {
         "x": 122,
-        "y": 615
+        "y": 553
       },
-      "width": 1295,
-      "height": 764,
+      "width": 1140,
+      "height": 650,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -468,10 +444,10 @@
       ],
       "pos": {
         "x": 172,
-        "y": 900
+        "y": 832
       },
-      "width": 221,
-      "height": 193,
+      "width": 170,
+      "height": 91,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -485,20 +461,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/nlb.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -513,7 +477,7 @@
       "underline": false,
       "labelWidth": 125,
       "labelHeight": 46,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 4
     },
@@ -521,11 +485,11 @@
       "id": "aws.region.vpc.eks",
       "type": "rectangle",
       "pos": {
-        "x": 413,
-        "y": 665
+        "x": 362,
+        "y": 603
       },
-      "width": 954,
-      "height": 664,
+      "width": 850,
+      "height": 550,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -563,11 +527,11 @@
       "id": "aws.region.vpc.eks.platform_ng",
       "type": "rectangle",
       "pos": {
-        "x": 473,
-        "y": 725
+        "x": 422,
+        "y": 663
       },
-      "width": 386,
-      "height": 252,
+      "width": 334,
+      "height": 195,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -605,11 +569,11 @@
       "id": "aws.region.vpc.eks.platform_ng.node1",
       "type": "rectangle",
       "pos": {
-        "x": 523,
-        "y": 776
+        "x": 472,
+        "y": 714
       },
-      "width": 133,
-      "height": 118,
+      "width": 107,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -623,20 +587,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/ec2.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -651,7 +603,7 @@
       "underline": false,
       "labelWidth": 62,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 6
     },
@@ -659,11 +611,11 @@
       "id": "aws.region.vpc.eks.platform_ng.node2",
       "type": "rectangle",
       "pos": {
-        "x": 676,
-        "y": 776
+        "x": 599,
+        "y": 714
       },
-      "width": 133,
-      "height": 118,
+      "width": 107,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -677,20 +629,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/ec2.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -705,7 +645,7 @@
       "underline": false,
       "labelWidth": 62,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 6
     },
@@ -713,11 +653,11 @@
       "id": "aws.region.vpc.eks.routing_np",
       "type": "rectangle",
       "pos": {
-        "x": 473,
-        "y": 1017
+        "x": 422,
+        "y": 898
       },
-      "width": 386,
-      "height": 252,
+      "width": 334,
+      "height": 195,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -755,11 +695,11 @@
       "id": "aws.region.vpc.eks.routing_np.node1",
       "type": "rectangle",
       "pos": {
-        "x": 523,
-        "y": 1068
+        "x": 472,
+        "y": 949
       },
-      "width": 128,
-      "height": 118,
+      "width": 102,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -773,20 +713,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/ec2.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -801,7 +729,7 @@
       "underline": false,
       "labelWidth": 57,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 6
     },
@@ -809,11 +737,11 @@
       "id": "aws.region.vpc.eks.routing_np.node2",
       "type": "rectangle",
       "pos": {
-        "x": 671,
-        "y": 1068
+        "x": 594,
+        "y": 949
       },
-      "width": 133,
-      "height": 118,
+      "width": 107,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -827,20 +755,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/ec2.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -855,7 +771,7 @@
       "underline": false,
       "labelWidth": 62,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 6
     },
@@ -863,11 +779,11 @@
       "id": "aws.region.vpc.eks.workspaces_np",
       "type": "rectangle",
       "pos": {
-        "x": 899,
-        "y": 725
+        "x": 796,
+        "y": 663
       },
-      "width": 408,
-      "height": 219,
+      "width": 356,
+      "height": 167,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -905,11 +821,11 @@
       "id": "aws.region.vpc.eks.workspaces_np.node1",
       "type": "rectangle",
       "pos": {
-        "x": 949,
-        "y": 776
+        "x": 846,
+        "y": 714
       },
-      "width": 149,
-      "height": 118,
+      "width": 123,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -923,20 +839,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/ec2.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -951,7 +855,7 @@
       "underline": false,
       "labelWidth": 78,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 6
     },
@@ -959,11 +863,11 @@
       "id": "aws.region.vpc.eks.workspaces_np.node2",
       "type": "rectangle",
       "pos": {
-        "x": 1118,
-        "y": 776
+        "x": 989,
+        "y": 714
       },
-      "width": 139,
-      "height": 118,
+      "width": 113,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -977,20 +881,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/ec2.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1005,7 +897,7 @@
       "underline": false,
       "labelWidth": 68,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 6
     },
@@ -1013,11 +905,11 @@
       "id": "aws.region.vpc.eks.control_plane",
       "type": "rectangle",
       "pos": {
-        "x": 899,
-        "y": 984
+        "x": 796,
+        "y": 870
       },
-      "width": 408,
-      "height": 285,
+      "width": 356,
+      "height": 223,
       "opacity": 1,
       "strokeDash": 3,
       "strokeWidth": 2,
@@ -1058,11 +950,11 @@
         "box"
       ],
       "pos": {
-        "x": 949,
-        "y": 1060
+        "x": 846,
+        "y": 946
       },
-      "width": 169,
-      "height": 133,
+      "width": 138,
+      "height": 71,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -1076,20 +968,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/kubernetes.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1104,7 +984,7 @@
       "underline": false,
       "labelWidth": 93,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 6
     },
@@ -1112,11 +992,11 @@
       "id": "aws.region.vpc.eks.control_plane.etcd",
       "type": "cylinder",
       "pos": {
-        "x": 1138,
-        "y": 1034
+        "x": 1004,
+        "y": 920
       },
-      "width": 115,
-      "height": 185,
+      "width": 84,
+      "height": 123,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -1130,20 +1010,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/kubernetes.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1158,7 +1026,7 @@
       "underline": false,
       "labelWidth": 39,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 6
     }
@@ -1190,12 +1058,12 @@
       "link": "",
       "route": [
         {
-          "x": 317.5,
-          "y": 365
+          "x": 303,
+          "y": 303
         },
         {
-          "x": 287.5,
-          "y": 901
+          "x": 261,
+          "y": 833
         }
       ],
       "animated": false,
@@ -1229,12 +1097,12 @@
       "link": "",
       "route": [
         {
-          "x": 393,
-          "y": 1039
+          "x": 342,
+          "y": 908.5
         },
         {
-          "x": 473,
-          "y": 1069
+          "x": 422,
+          "y": 936.5
         }
       ],
       "animated": false,
@@ -1268,12 +1136,12 @@
       "link": "",
       "route": [
         {
-          "x": 741.5,
-          "y": 258.5
+          "x": 710,
+          "y": 226.5
         },
         {
-          "x": 410.5,
-          "y": 289.5
+          "x": 380,
+          "y": 259.5
         }
       ],
       "animated": false,
@@ -1307,12 +1175,12 @@
       "link": "",
       "route": [
         {
-          "x": 856.5,
-          "y": 314.5
+          "x": 801,
+          "y": 252.5
         },
         {
-          "x": 1019.5,
-          "y": 1060.5
+          "x": 909,
+          "y": 946.5
         }
       ],
       "animated": false,

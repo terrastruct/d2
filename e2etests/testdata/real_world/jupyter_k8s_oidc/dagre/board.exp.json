@@ -22,8 +22,8 @@
         "x": 0,
         "y": 0
       },
-      "width": 269,
-      "height": 1246,
+      "width": 238,
+      "height": 1211,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -67,7 +67,7 @@
         "x": 60,
         "y": 60
       },
-      "width": 149,
+      "width": 118,
       "height": 100,
       "opacity": 0,
       "strokeDash": 0,
@@ -111,8 +111,8 @@
         "x": 60,
         "y": 200
       },
-      "width": 149,
-      "height": 102,
+      "width": 118,
+      "height": 71,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -126,20 +126,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/jupyter-infra/jupyter-k8s/92e2d8e43c94355f999f4d4a46c7a73dfc395f93/diagrams/icons/kubernetes.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -154,7 +142,7 @@
       "underline": false,
       "labelWidth": 67,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -166,9 +154,9 @@
       ],
       "pos": {
         "x": 60,
-        "y": 342
+        "y": 311
       },
-      "width": 149,
+      "width": 118,
       "height": 100,
       "opacity": 0,
       "strokeDash": 0,
@@ -210,10 +198,10 @@
       ],
       "pos": {
         "x": 60,
-        "y": 482
+        "y": 451
       },
-      "width": 149,
-      "height": 102,
+      "width": 118,
+      "height": 71,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -227,20 +215,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/jupyter-infra/jupyter-k8s/92e2d8e43c94355f999f4d4a46c7a73dfc395f93/diagrams/icons/firefox.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -255,7 +231,7 @@
       "underline": false,
       "labelWidth": 73,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -267,9 +243,9 @@
       ],
       "pos": {
         "x": 60,
-        "y": 624
+        "y": 562
       },
-      "width": 149,
+      "width": 118,
       "height": 100,
       "opacity": 0,
       "strokeDash": 0,
@@ -311,9 +287,9 @@
       ],
       "pos": {
         "x": 60,
-        "y": 764
+        "y": 702
       },
-      "width": 149,
+      "width": 118,
       "height": 1,
       "opacity": 1,
       "strokeDash": 0,
@@ -354,11 +330,11 @@
         "icon_labeled_block"
       ],
       "pos": {
-        "x": 309,
+        "x": 278,
         "y": 0
       },
-      "width": 1503,
-      "height": 1246,
+      "width": 1410,
+      "height": 1211,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -399,11 +375,11 @@
         "column_container"
       ],
       "pos": {
-        "x": 369,
+        "x": 338,
         "y": 60
       },
-      "width": 968,
-      "height": 1126,
+      "width": 906,
+      "height": 1091,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -440,11 +416,11 @@
       "id": "cluster.left_column.api_row",
       "type": "rectangle",
       "pos": {
-        "x": 429,
+        "x": 398,
         "y": 120
       },
-      "width": 848,
-      "height": 222,
+      "width": 786,
+      "height": 220,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -484,11 +460,11 @@
         "box"
       ],
       "pos": {
-        "x": 489,
+        "x": 458,
         "y": 180
       },
-      "width": 169,
-      "height": 102,
+      "width": 138,
+      "height": 100,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -502,20 +478,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/jupyter-infra/jupyter-k8s/92e2d8e43c94355f999f4d4a46c7a73dfc395f93/diagrams/icons/api-server.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -530,7 +494,7 @@
       "underline": false,
       "labelWidth": 93,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 4
     },
@@ -541,11 +505,11 @@
         "spacer"
       ],
       "pos": {
-        "x": 698,
+        "x": 636,
         "y": 180
       },
       "width": 100,
-      "height": 102,
+      "height": 100,
       "opacity": 0,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -585,11 +549,11 @@
         "box"
       ],
       "pos": {
-        "x": 838,
+        "x": 776,
         "y": 180
       },
-      "width": 115,
-      "height": 102,
+      "width": 84,
+      "height": 100,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -603,20 +567,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/jupyter-infra/jupyter-k8s/92e2d8e43c94355f999f4d4a46c7a73dfc395f93/diagrams/icons/etcd.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -631,7 +583,7 @@
       "underline": false,
       "labelWidth": 39,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 4
     },
@@ -642,11 +594,11 @@
         "namespace"
       ],
       "pos": {
-        "x": 429,
-        "y": 382
+        "x": 398,
+        "y": 380
       },
-      "width": 848,
-      "height": 744,
+      "width": 786,
+      "height": 711,
       "opacity": 1,
       "strokeDash": 5,
       "strokeWidth": 2,
@@ -684,11 +636,11 @@
       "id": "cluster.left_column.router-namespace.oidc_auth",
       "type": "rectangle",
       "pos": {
-        "x": 489,
-        "y": 442
+        "x": 458,
+        "y": 440
       },
-      "width": 728,
-      "height": 222,
+      "width": 666,
+      "height": 220,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -728,11 +680,11 @@
         "box"
       ],
       "pos": {
-        "x": 549,
-        "y": 502
+        "x": 518,
+        "y": 500
       },
-      "width": 201,
-      "height": 102,
+      "width": 170,
+      "height": 100,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -746,20 +698,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/jupyter-infra/jupyter-k8s/92e2d8e43c94355f999f4d4a46c7a73dfc395f93/diagrams/icons/dex.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -774,7 +714,7 @@
       "underline": false,
       "labelWidth": 125,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 5
     },
@@ -785,11 +725,11 @@
         "spacer"
       ],
       "pos": {
-        "x": 790,
-        "y": 502
+        "x": 728,
+        "y": 500
       },
       "width": 100,
-      "height": 102,
+      "height": 100,
       "opacity": 0,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -829,11 +769,11 @@
         "box"
       ],
       "pos": {
-        "x": 930,
-        "y": 502
+        "x": 868,
+        "y": 500
       },
-      "width": 227,
-      "height": 102,
+      "width": 196,
+      "height": 100,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -847,20 +787,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/jupyter-infra/jupyter-k8s/92e2d8e43c94355f999f4d4a46c7a73dfc395f93/diagrams/icons/jupyter.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -875,7 +803,7 @@
       "underline": false,
       "labelWidth": 151,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 5
     },
@@ -883,10 +811,10 @@
       "id": "cluster.left_column.router-namespace.forward_auth_relays",
       "type": "rectangle",
       "pos": {
-        "x": 489,
-        "y": 704
+        "x": 458,
+        "y": 700
       },
-      "width": 728,
+      "width": 666,
       "height": 220,
       "opacity": 1,
       "strokeDash": 0,
@@ -927,8 +855,8 @@
         "spacer"
       ],
       "pos": {
-        "x": 549,
-        "y": 764
+        "x": 518,
+        "y": 760
       },
       "width": 100,
       "height": 100,
@@ -971,8 +899,8 @@
         "flow_relay"
       ],
       "pos": {
-        "x": 689,
-        "y": 764
+        "x": 658,
+        "y": 760
       },
       "width": 1,
       "height": 100,
@@ -1015,8 +943,8 @@
         "spacer"
       ],
       "pos": {
-        "x": 730,
-        "y": 764
+        "x": 699,
+        "y": 760
       },
       "width": 100,
       "height": 100,
@@ -1059,8 +987,8 @@
         "flow_relay"
       ],
       "pos": {
-        "x": 870,
-        "y": 764
+        "x": 839,
+        "y": 760
       },
       "width": 1,
       "height": 100,
@@ -1103,8 +1031,8 @@
         "flow_relay"
       ],
       "pos": {
-        "x": 911,
-        "y": 764
+        "x": 880,
+        "y": 760
       },
       "width": 1,
       "height": 100,
@@ -1147,8 +1075,8 @@
         "spacer"
       ],
       "pos": {
-        "x": 952,
-        "y": 764
+        "x": 921,
+        "y": 760
       },
       "width": 100,
       "height": 100,
@@ -1191,8 +1119,8 @@
         "flow_relay"
       ],
       "pos": {
-        "x": 1092,
-        "y": 764
+        "x": 1061,
+        "y": 760
       },
       "width": 1,
       "height": 100,
@@ -1235,11 +1163,11 @@
         "box"
       ],
       "pos": {
-        "x": 489,
-        "y": 964
+        "x": 458,
+        "y": 960
       },
-      "width": 728,
-      "height": 102,
+      "width": 666,
+      "height": 71,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -1253,20 +1181,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/jupyter-infra/jupyter-k8s/92e2d8e43c94355f999f4d4a46c7a73dfc395f93/diagrams/icons/ing.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1281,7 +1197,7 @@
       "underline": false,
       "labelWidth": 60,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 4
     },
@@ -1292,11 +1208,11 @@
         "column_container"
       ],
       "pos": {
-        "x": 1377,
+        "x": 1284,
         "y": 60
       },
-      "width": 375,
-      "height": 1126,
+      "width": 344,
+      "height": 1091,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -1336,11 +1252,11 @@
         "namespace"
       ],
       "pos": {
-        "x": 1437,
+        "x": 1344,
         "y": 148
       },
-      "width": 255,
-      "height": 162,
+      "width": 224,
+      "height": 131,
       "opacity": 1,
       "strokeDash": 5,
       "strokeWidth": 2,
@@ -1381,11 +1297,11 @@
         "box"
       ],
       "pos": {
-        "x": 1467,
+        "x": 1374,
         "y": 178
       },
-      "width": 195,
-      "height": 102,
+      "width": 164,
+      "height": 71,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -1399,20 +1315,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/jupyter-infra/jupyter-k8s/92e2d8e43c94355f999f4d4a46c7a73dfc395f93/diagrams/icons/jupyter.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1427,7 +1331,7 @@
       "underline": false,
       "labelWidth": 119,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 4
     },
@@ -1438,10 +1342,10 @@
         "spacer"
       ],
       "pos": {
-        "x": 1437,
-        "y": 350
+        "x": 1344,
+        "y": 319
       },
-      "width": 255,
+      "width": 224,
       "height": 100,
       "opacity": 0,
       "strokeDash": 0,
@@ -1482,11 +1386,11 @@
         "namespace"
       ],
       "pos": {
-        "x": 1437,
-        "y": 518
+        "x": 1344,
+        "y": 487
       },
-      "width": 255,
-      "height": 162,
+      "width": 224,
+      "height": 131,
       "opacity": 1,
       "strokeDash": 5,
       "strokeWidth": 2,
@@ -1527,11 +1431,11 @@
         "box"
       ],
       "pos": {
-        "x": 1467,
-        "y": 548
+        "x": 1374,
+        "y": 517
       },
-      "width": 173,
-      "height": 102,
+      "width": 142,
+      "height": 71,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 3,
@@ -1545,20 +1449,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/jupyter-infra/jupyter-k8s/92e2d8e43c94355f999f4d4a46c7a73dfc395f93/diagrams/icons/pod.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1573,7 +1465,7 @@
       "underline": false,
       "labelWidth": 97,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 4
     }
@@ -1608,12 +1500,12 @@
       "link": "",
       "route": [
         {
-          "x": 208.5,
-          "y": 248
+          "x": 178,
+          "y": 235
         },
         {
-          "x": 489.5,
-          "y": 235
+          "x": 458,
+          "y": 231
         }
       ],
       "animated": false,
@@ -1650,12 +1542,12 @@
       "link": "",
       "route": [
         {
-          "x": 657.5,
-          "y": 231
+          "x": 596,
+          "y": 230
         },
         {
-          "x": 838.5,
-          "y": 231
+          "x": 776,
+          "y": 230
         }
       ],
       "animated": false,
@@ -1692,12 +1584,12 @@
       "link": "",
       "route": [
         {
-          "x": 209,
-          "y": 583
+          "x": 166,
+          "y": 521.5
         },
         {
-          "x": 777,
-          "y": 964
+          "x": 744,
+          "y": 960.5
         }
       ],
       "animated": false,
@@ -1734,12 +1626,12 @@
       "link": "",
       "route": [
         {
-          "x": 811.5,
-          "y": 964
+          "x": 765.5,
+          "y": 960
         },
         {
-          "x": 689.5,
-          "y": 815
+          "x": 658.5,
+          "y": 811
         }
       ],
       "animated": false,
@@ -1776,12 +1668,12 @@
       "link": "",
       "route": [
         {
-          "x": 689.5,
-          "y": 811
+          "x": 658,
+          "y": 808
         },
         {
-          "x": 657.5,
-          "y": 604
+          "x": 614,
+          "y": 600
         }
       ],
       "animated": false,
@@ -1818,12 +1710,12 @@
       "link": "",
       "route": [
         {
-          "x": 549.5,
-          "y": 549
+          "x": 518,
+          "y": 538.5
         },
         {
-          "x": 208.5,
-          "y": 536
+          "x": 178,
+          "y": 494.5
         }
       ],
       "animated": false,
@@ -1860,12 +1752,12 @@
       "link": "",
       "route": [
         {
-          "x": 692.5,
-          "y": 604
+          "x": 648.5,
+          "y": 600
         },
         {
-          "x": 870.5,
-          "y": 813
+          "x": 839.5,
+          "y": 809
         }
       ],
       "animated": false,
@@ -1902,12 +1794,12 @@
       "link": "",
       "route": [
         {
-          "x": 870,
-          "y": 820
+          "x": 839,
+          "y": 811.5
         },
         {
-          "x": 857,
-          "y": 964
+          "x": 800,
+          "y": 960.5
         }
       ],
       "animated": false,
@@ -1944,12 +1836,12 @@
       "link": "",
       "route": [
         {
-          "x": 867.5,
-          "y": 964
+          "x": 808.5,
+          "y": 960
         },
         {
-          "x": 911.5,
-          "y": 816
+          "x": 880.5,
+          "y": 811
         }
       ],
       "animated": false,
@@ -1986,12 +1878,12 @@
       "link": "",
       "route": [
         {
-          "x": 911.5,
-          "y": 813
+          "x": 881,
+          "y": 808
         },
         {
-          "x": 1017.5,
-          "y": 604
+          "x": 950,
+          "y": 600
         }
       ],
       "animated": false,
@@ -2028,12 +1920,12 @@
       "link": "",
       "route": [
         {
-          "x": 930.5,
-          "y": 553
+          "x": 868,
+          "y": 550
         },
         {
-          "x": 749.5,
-          "y": 553
+          "x": 688,
+          "y": 550
         }
       ],
       "animated": false,
@@ -2070,12 +1962,12 @@
       "link": "",
       "route": [
         {
-          "x": 1125.5,
-          "y": 502
+          "x": 1039,
+          "y": 500.5
         },
         {
-          "x": 1482.5,
-          "y": 280
+          "x": 1404,
+          "y": 248.5
         }
       ],
       "animated": false,
@@ -2112,12 +2004,12 @@
       "link": "",
       "route": [
         {
-          "x": 1053.5,
-          "y": 604
+          "x": 984.5,
+          "y": 600
         },
         {
-          "x": 1092.5,
-          "y": 811
+          "x": 1061.5,
+          "y": 809
         }
       ],
       "animated": false,
@@ -2154,12 +2046,12 @@
       "link": "",
       "route": [
         {
-          "x": 1092,
-          "y": 814
+          "x": 1061,
+          "y": 810.5
         },
         {
-          "x": 914,
-          "y": 964
+          "x": 843,
+          "y": 960.5
         }
       ],
       "animated": false,
@@ -2196,12 +2088,12 @@
       "link": "",
       "route": [
         {
-          "x": 938.5,
-          "y": 964
+          "x": 843,
+          "y": 960.5
         },
         {
-          "x": 1467.5,
-          "y": 650
+          "x": 1393,
+          "y": 587.5
         }
       ],
       "animated": false,
@@ -2238,12 +2130,12 @@
       "link": "",
       "route": [
         {
-          "x": 706.5,
-          "y": 964.5
+          "x": 710,
+          "y": 960.5
         },
         {
-          "x": 135.5,
-          "y": 764.5
+          "x": 120,
+          "y": 702.5
         }
       ],
       "animated": false,
@@ -2280,12 +2172,12 @@
       "link": "",
       "route": [
         {
-          "x": 134.5,
-          "y": 764
+          "x": 119,
+          "y": 702.5
         },
         {
-          "x": 134.5,
-          "y": 584
+          "x": 119,
+          "y": 521.5
         }
       ],
       "animated": false,

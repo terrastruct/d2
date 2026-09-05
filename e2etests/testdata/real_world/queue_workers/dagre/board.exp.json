@@ -17,7 +17,7 @@
       "type": "person",
       "pos": {
         "x": 1,
-        "y": 1062
+        "y": 655
       },
       "width": 99,
       "height": 81,
@@ -59,7 +59,7 @@
       "type": "person",
       "pos": {
         "x": 1,
-        "y": 763
+        "y": 453
       },
       "width": 99,
       "height": 81,
@@ -101,7 +101,7 @@
       "type": "person",
       "pos": {
         "x": 1,
-        "y": 2249
+        "y": 1475
       },
       "width": 99,
       "height": 81,
@@ -143,7 +143,7 @@
       "type": "person",
       "pos": {
         "x": 0,
-        "y": 1756
+        "y": 1146
       },
       "width": 100,
       "height": 81,
@@ -185,10 +185,10 @@
       "type": "rectangle",
       "pos": {
         "x": 533,
-        "y": 637
+        "y": 400
       },
-      "width": 958,
-      "height": 552,
+      "width": 912,
+      "height": 358,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -202,20 +202,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/dev/go.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/dev%2Fgo.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "OUTSIDE_TOP_LEFT",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -230,7 +218,7 @@
       "underline": false,
       "labelWidth": 120,
       "labelHeight": 36,
-      "labelPosition": "OUTSIDE_TOP_RIGHT",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -239,10 +227,10 @@
       "type": "rectangle",
       "pos": {
         "x": 563,
-        "y": 976
+        "y": 642
       },
-      "width": 185,
-      "height": 183,
+      "width": 139,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -256,20 +244,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/essentials/092-graph bar.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/essentials%2F092-graph%20bar.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -284,7 +260,7 @@
       "underline": false,
       "labelWidth": 94,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -293,10 +269,10 @@
       "type": "rectangle",
       "pos": {
         "x": 563,
-        "y": 677
+        "y": 440
       },
-      "width": 185,
-      "height": 183,
+      "width": 139,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -310,20 +286,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/essentials/095-download.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/essentials%2F095-download.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -338,7 +302,7 @@
       "underline": false,
       "labelWidth": 94,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -346,8 +310,8 @@
       "id": "container_producer_01.queue",
       "type": "rectangle",
       "pos": {
-        "x": 1205,
-        "y": 924
+        "x": 1159,
+        "y": 539
       },
       "width": 256,
       "height": 146,
@@ -364,20 +328,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/dev/go.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/dev%2Fgo.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "OUTSIDE_TOP_LEFT",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -392,7 +344,7 @@
       "underline": false,
       "labelWidth": 175,
       "labelHeight": 36,
-      "labelPosition": "OUTSIDE_TOP_RIGHT",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -400,8 +352,8 @@
       "id": "container_producer_01.queue.producer",
       "type": "rectangle",
       "pos": {
-        "x": 1235,
-        "y": 954
+        "x": 1189,
+        "y": 569
       },
       "width": 196,
       "height": 86,
@@ -444,10 +396,10 @@
       "type": "rectangle",
       "pos": {
         "x": 533,
-        "y": 1630
+        "y": 1093
       },
-      "width": 958,
-      "height": 746,
+      "width": 912,
+      "height": 486,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -461,20 +413,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/dev/go.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/dev%2Fgo.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "OUTSIDE_TOP_LEFT",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -489,7 +429,7 @@
       "underline": false,
       "labelWidth": 120,
       "labelHeight": 36,
-      "labelPosition": "OUTSIDE_TOP_RIGHT",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -498,10 +438,10 @@
       "type": "rectangle",
       "pos": {
         "x": 563,
-        "y": 2163
+        "y": 1463
       },
-      "width": 185,
-      "height": 183,
+      "width": 139,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -515,20 +455,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/essentials/195-attachment.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/essentials%2F195-attachment.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -543,7 +471,7 @@
       "underline": false,
       "labelWidth": 94,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -552,10 +480,10 @@
       "type": "rectangle",
       "pos": {
         "x": 563,
-        "y": 1670
+        "y": 1133
       },
-      "width": 185,
-      "height": 183,
+      "width": 139,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -569,20 +497,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/essentials/213-alarm.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/essentials%2F213-alarm.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -597,7 +513,7 @@
       "underline": false,
       "labelWidth": 94,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -605,8 +521,8 @@
       "id": "container_producer_02.queue",
       "type": "rectangle",
       "pos": {
-        "x": 1205,
-        "y": 2108
+        "x": 1159,
+        "y": 1305
       },
       "width": 256,
       "height": 146,
@@ -623,20 +539,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/dev/go.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/dev%2Fgo.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "OUTSIDE_TOP_LEFT",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -651,7 +555,7 @@
       "underline": false,
       "labelWidth": 175,
       "labelHeight": 36,
-      "labelPosition": "OUTSIDE_TOP_RIGHT",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -659,8 +563,8 @@
       "id": "container_producer_02.queue.producer",
       "type": "rectangle",
       "pos": {
-        "x": 1235,
-        "y": 2138
+        "x": 1189,
+        "y": 1335
       },
       "width": 196,
       "height": 86,
@@ -702,8 +606,8 @@
       "id": "database",
       "type": "cylinder",
       "pos": {
-        "x": 2091,
-        "y": 986
+        "x": 2090,
+        "y": 563
       },
       "width": 158,
       "height": 170,
@@ -745,11 +649,11 @@
       "id": "other_store",
       "type": "rectangle",
       "pos": {
-        "x": 2076,
-        "y": 1621
+        "x": 2015,
+        "y": 1080
       },
-      "width": 188,
-      "height": 809,
+      "width": 309,
+      "height": 510,
       "opacity": 0,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -784,18 +688,18 @@
     },
     {
       "id": "other_store.redis",
-      "type": "image",
+      "type": "cylinder",
       "pos": {
-        "x": 2106,
-        "y": 1951
+        "x": 2100,
+        "y": 1276
       },
-      "width": 128,
-      "height": 128,
+      "width": 138,
+      "height": 138,
       "opacity": 0.7,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "N7",
+      "fill": "AA5",
       "stroke": "B1",
       "animated": false,
       "shadow": false,
@@ -804,20 +708,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/dev/redis.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/dev%2Fredis.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -832,24 +724,24 @@
       "underline": false,
       "labelWidth": 93,
       "labelHeight": 41,
-      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "other_store.rabbitmq",
-      "type": "image",
+      "type": "queue",
       "pos": {
-        "x": 2106,
-        "y": 2251
+        "x": 2045,
+        "y": 1474
       },
-      "width": 128,
-      "height": 128,
+      "width": 249,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "N7",
+      "fill": "N5",
       "stroke": "B1",
       "animated": false,
       "shadow": false,
@@ -858,20 +750,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/golang-queue/queue/2a79b8aac36eaca758ff4f5412fcb485b027dd58/images/rabbitmq.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -886,24 +766,24 @@
       "underline": false,
       "labelWidth": 152,
       "labelHeight": 41,
-      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "other_store.nats",
-      "type": "image",
+      "type": "queue",
       "pos": {
-        "x": 2106,
-        "y": 1651
+        "x": 2084,
+        "y": 1110
       },
-      "width": 128,
-      "height": 128,
+      "width": 171,
+      "height": 86,
       "opacity": 0.7,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "N7",
+      "fill": "N5",
       "stroke": "B1",
       "animated": false,
       "shadow": false,
@@ -912,20 +792,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "raw.githubusercontent.com",
-        "Path": "/golang-queue/queue/2a79b8aac36eaca758ff4f5412fcb485b027dd58/images/nats.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -940,7 +808,7 @@
       "underline": false,
       "labelWidth": 74,
       "labelHeight": 41,
-      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -948,11 +816,11 @@
       "id": "container_consumer_01",
       "type": "rectangle",
       "pos": {
-        "x": 2848,
-        "y": 158
+        "x": 2893,
+        "y": 112
       },
-      "width": 950,
-      "height": 506,
+      "width": 904,
+      "height": 312,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -966,20 +834,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/dev/go.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/dev%2Fgo.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "OUTSIDE_TOP_LEFT",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -994,7 +850,7 @@
       "underline": false,
       "labelWidth": 120,
       "labelHeight": 36,
-      "labelPosition": "OUTSIDE_TOP_RIGHT",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -1002,11 +858,11 @@
       "id": "container_consumer_01.task01",
       "type": "rectangle",
       "pos": {
-        "x": 3573,
-        "y": 198
+        "x": 3618,
+        "y": 152
       },
-      "width": 185,
-      "height": 183,
+      "width": 139,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1020,20 +876,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/essentials/092-graph bar.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/essentials%2F092-graph%20bar.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1048,7 +892,7 @@
       "underline": false,
       "labelWidth": 94,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -1056,11 +900,11 @@
       "id": "container_consumer_01.task02",
       "type": "rectangle",
       "pos": {
-        "x": 3573,
-        "y": 451
+        "x": 3618,
+        "y": 308
       },
-      "width": 185,
-      "height": 183,
+      "width": 139,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1074,20 +918,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/essentials/095-download.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/essentials%2F095-download.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1102,7 +934,7 @@
       "underline": false,
       "labelWidth": 94,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -1110,8 +942,8 @@
       "id": "container_consumer_01.queue",
       "type": "rectangle",
       "pos": {
-        "x": 2878,
-        "y": 396
+        "x": 2923,
+        "y": 205
       },
       "width": 257,
       "height": 146,
@@ -1128,20 +960,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/dev/go.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/dev%2Fgo.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "OUTSIDE_TOP_LEFT",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1156,7 +976,7 @@
       "underline": false,
       "labelWidth": 175,
       "labelHeight": 36,
-      "labelPosition": "OUTSIDE_TOP_RIGHT",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -1164,8 +984,8 @@
       "id": "container_consumer_01.queue.consumer",
       "type": "rectangle",
       "pos": {
-        "x": 2908,
-        "y": 426
+        "x": 2953,
+        "y": 235
       },
       "width": 197,
       "height": 86,
@@ -1207,11 +1027,11 @@
       "id": "container_consumer_02",
       "type": "rectangle",
       "pos": {
-        "x": 2848,
-        "y": 1033
+        "x": 2893,
+        "y": 678
       },
-      "width": 951,
-      "height": 1327,
+      "width": 905,
+      "height": 909,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1225,20 +1045,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/dev/go.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/dev%2Fgo.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "OUTSIDE_TOP_LEFT",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1253,7 +1061,7 @@
       "underline": false,
       "labelWidth": 120,
       "labelHeight": 36,
-      "labelPosition": "OUTSIDE_TOP_RIGHT",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -1261,11 +1069,11 @@
       "id": "container_consumer_02.task01",
       "type": "rectangle",
       "pos": {
-        "x": 3573,
-        "y": 1073
+        "x": 3618,
+        "y": 718
       },
-      "width": 185,
-      "height": 183,
+      "width": 139,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1279,20 +1087,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/essentials/095-download.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/essentials%2F095-download.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1307,7 +1103,7 @@
       "underline": false,
       "labelWidth": 94,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -1315,11 +1111,11 @@
       "id": "container_consumer_02.task02",
       "type": "rectangle",
       "pos": {
-        "x": 3573,
-        "y": 1326
+        "x": 3618,
+        "y": 874
       },
-      "width": 185,
-      "height": 183,
+      "width": 139,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1333,20 +1129,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/essentials/092-graph bar.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/essentials%2F092-graph%20bar.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1361,7 +1145,7 @@
       "underline": false,
       "labelWidth": 94,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -1369,11 +1153,11 @@
       "id": "container_consumer_02.task03",
       "type": "rectangle",
       "pos": {
-        "x": 3573,
-        "y": 1713
+        "x": 3618,
+        "y": 1163
       },
-      "width": 185,
-      "height": 183,
+      "width": 139,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1387,20 +1171,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/essentials/195-attachment.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/essentials%2F195-attachment.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1415,7 +1187,7 @@
       "underline": false,
       "labelWidth": 94,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -1423,11 +1195,11 @@
       "id": "container_consumer_02.task04",
       "type": "rectangle",
       "pos": {
-        "x": 3573,
-        "y": 2147
+        "x": 3618,
+        "y": 1471
       },
-      "width": 186,
-      "height": 183,
+      "width": 140,
+      "height": 86,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1441,20 +1213,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/essentials/213-alarm.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/essentials%2F213-alarm.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1469,7 +1229,7 @@
       "underline": false,
       "labelWidth": 95,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -1477,8 +1237,8 @@
       "id": "container_consumer_02.queue01",
       "type": "rectangle",
       "pos": {
-        "x": 2878,
-        "y": 1271
+        "x": 2923,
+        "y": 771
       },
       "width": 257,
       "height": 146,
@@ -1495,20 +1255,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/dev/go.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/dev%2Fgo.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "OUTSIDE_TOP_LEFT",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1523,7 +1271,7 @@
       "underline": false,
       "labelWidth": 175,
       "labelHeight": 36,
-      "labelPosition": "OUTSIDE_TOP_RIGHT",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -1531,8 +1279,8 @@
       "id": "container_consumer_02.queue01.consumer",
       "type": "rectangle",
       "pos": {
-        "x": 2908,
-        "y": 1301
+        "x": 2953,
+        "y": 801
       },
       "width": 197,
       "height": 86,
@@ -1574,8 +1322,8 @@
       "id": "container_consumer_02.queue02",
       "type": "rectangle",
       "pos": {
-        "x": 2878,
-        "y": 1940
+        "x": 2923,
+        "y": 1272
       },
       "width": 257,
       "height": 146,
@@ -1592,20 +1340,8 @@
       "double-border": false,
       "tooltip": "",
       "link": "",
-      "icon": {
-        "Scheme": "https",
-        "Opaque": "",
-        "User": null,
-        "Host": "icons.terrastruct.com",
-        "Path": "/dev/go.svg",
-        "Fragment": "",
-        "RawQuery": "",
-        "RawPath": "/dev%2Fgo.svg",
-        "RawFragment": "",
-        "ForceQuery": false,
-        "OmitHost": false
-      },
-      "iconPosition": "OUTSIDE_TOP_LEFT",
+      "icon": null,
+      "iconPosition": "",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -1620,7 +1356,7 @@
       "underline": false,
       "labelWidth": 175,
       "labelHeight": 36,
-      "labelPosition": "OUTSIDE_TOP_RIGHT",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -1628,8 +1364,8 @@
       "id": "container_consumer_02.queue02.consumer",
       "type": "rectangle",
       "pos": {
-        "x": 2908,
-        "y": 1970
+        "x": 2953,
+        "y": 1302
       },
       "width": 197,
       "height": 86,
@@ -1695,20 +1431,20 @@
       "link": "",
       "route": [
         {
-          "x": 757.5,
-          "y": 1092.5
+          "x": 711.5,
+          "y": 685
         },
         {
-          "x": 902.2999877929688,
-          "y": 1092.5
+          "x": 856.2999877929688,
+          "y": 685
         },
         {
-          "x": 1151.5,
-          "y": 1081.9000244140625
+          "x": 1104.699951171875,
+          "y": 677.4000244140625
         },
         {
-          "x": 1239.5,
-          "y": 1039.5
+          "x": 1189.5,
+          "y": 647
         }
       ],
       "isCurve": true,
@@ -1743,20 +1479,20 @@
       "link": "",
       "route": [
         {
-          "x": 757.5,
-          "y": 793.5
+          "x": 711.5,
+          "y": 483
         },
         {
-          "x": 902.2999877929688,
-          "y": 793.5
+          "x": 856.2999877929688,
+          "y": 483
         },
         {
-          "x": 1151.968994140625,
-          "y": 825.5
+          "x": 1104.699951171875,
+          "y": 501.79998779296875
         },
         {
-          "x": 1241.8480224609375,
-          "y": 953.5
+          "x": 1189.5,
+          "y": 577
         }
       ],
       "isCurve": true,
@@ -1791,20 +1527,20 @@
       "link": "",
       "route": [
         {
-          "x": 757.5,
-          "y": 2279.5
+          "x": 711.5,
+          "y": 1505.5
         },
         {
-          "x": 902.2999877929688,
-          "y": 2279.5
+          "x": 856.2999877929688,
+          "y": 1505.5
         },
         {
-          "x": 1152.0999755859375,
-          "y": 2268.300048828125
+          "x": 1109.0999755859375,
+          "y": 1488.5
         },
         {
-          "x": 1242.5,
-          "y": 2223.5
+          "x": 1211.5,
+          "y": 1420.5
         }
       ],
       "isCurve": true,
@@ -1839,20 +1575,20 @@
       "link": "",
       "route": [
         {
-          "x": 748.5,
-          "y": 1847.5
+          "x": 711.5,
+          "y": 1186
         },
         {
-          "x": 900.5,
-          "y": 1847.5
+          "x": 856.2999877929688,
+          "y": 1186
         },
         {
-          "x": 1162.280029296875,
-          "y": 1905.5
+          "x": 1115.0999755859375,
+          "y": 1215.800048828125
         },
         {
-          "x": 1293.404052734375,
-          "y": 2137.5
+          "x": 1241.5,
+          "y": 1335
         }
       ],
       "isCurve": true,
@@ -1887,20 +1623,20 @@
       "link": "",
       "route": [
         {
-          "x": 3101.33203125,
-          "y": 425.5
+          "x": 3149.5,
+          "y": 243
         },
         {
-          "x": 3188.666015625,
-          "y": 337.1000061035156
+          "x": 3234.300048828125,
+          "y": 204.60000610351562
         },
         {
-          "x": 3427.89990234375,
-          "y": 315
+          "x": 3472.89990234375,
+          "y": 195
         },
         {
-          "x": 3573.5,
-          "y": 315
+          "x": 3618.5,
+          "y": 195
         }
       ],
       "isCurve": true,
@@ -1935,20 +1671,20 @@
       "link": "",
       "route": [
         {
-          "x": 3095.659912109375,
-          "y": 512.5
+          "x": 3149.5,
+          "y": 313
         },
         {
-          "x": 3187.531982421875,
-          "y": 556.9000244140625
+          "x": 3234.300048828125,
+          "y": 343.3999938964844
         },
         {
-          "x": 3427.89990234375,
-          "y": 568
+          "x": 3472.89990234375,
+          "y": 351
         },
         {
-          "x": 3573.5,
-          "y": 568
+          "x": 3618.5,
+          "y": 351
         }
       ],
       "isCurve": true,
@@ -1983,20 +1719,20 @@
       "link": "",
       "route": [
         {
-          "x": 3101.33203125,
-          "y": 1300.5
+          "x": 3149.5,
+          "y": 809
         },
         {
-          "x": 3188.666015625,
-          "y": 1212.0999755859375
+          "x": 3234.300048828125,
+          "y": 770.5999755859375
         },
         {
-          "x": 3427.89990234375,
-          "y": 1190
+          "x": 3472.89990234375,
+          "y": 761
         },
         {
-          "x": 3573.5,
-          "y": 1190
+          "x": 3618.5,
+          "y": 761
         }
       ],
       "isCurve": true,
@@ -2031,20 +1767,20 @@
       "link": "",
       "route": [
         {
-          "x": 3095.659912109375,
-          "y": 1387.5
+          "x": 3149.5,
+          "y": 879
         },
         {
-          "x": 3187.531982421875,
-          "y": 1431.9000244140625
+          "x": 3234.300048828125,
+          "y": 909.4000244140625
         },
         {
-          "x": 3427.89990234375,
-          "y": 1443
+          "x": 3472.89990234375,
+          "y": 917
         },
         {
-          "x": 3573.5,
-          "y": 1443
+          "x": 3618.5,
+          "y": 917
         }
       ],
       "isCurve": true,
@@ -2079,20 +1815,20 @@
       "link": "",
       "route": [
         {
-          "x": 3072.9541015625,
-          "y": 1969.5
+          "x": 3114.5,
+          "y": 1302
         },
         {
-          "x": 3182.989990234375,
-          "y": 1898.300048828125
+          "x": 3227.300048828125,
+          "y": 1225.199951171875
         },
         {
-          "x": 3427.89990234375,
-          "y": 1880.5
+          "x": 3472.89990234375,
+          "y": 1206
         },
         {
-          "x": 3573.5,
-          "y": 1880.5
+          "x": 3618.5,
+          "y": 1206
         }
       ],
       "isCurve": true,
@@ -2127,20 +1863,20 @@
       "link": "",
       "route": [
         {
-          "x": 3053.66796875,
-          "y": 2056.5
+          "x": 3106.5,
+          "y": 1388
         },
         {
-          "x": 3179.133056640625,
-          "y": 2222.10009765625
+          "x": 3225.699951171875,
+          "y": 1488.800048828125
         },
         {
-          "x": 3427.699951171875,
-          "y": 2263.5
+          "x": 3472.699951171875,
+          "y": 1514
         },
         {
-          "x": 3572.5,
-          "y": 2263.5
+          "x": 3617.5,
+          "y": 1514
         }
       ],
       "isCurve": true,
@@ -2175,20 +1911,20 @@
       "link": "",
       "route": [
         {
-          "x": 90,
-          "y": 1103
+          "x": 89,
+          "y": 695
         },
         {
-          "x": 240.8000030517578,
-          "y": 1102.5999755859375
+          "x": 240.60000610351562,
+          "y": 695
         },
         {
           "x": 478.1000061035156,
-          "y": 1102.5
+          "y": 695
         },
         {
           "x": 562.5,
-          "y": 1102.5
+          "y": 695
         }
       ],
       "isCurve": true,
@@ -2223,20 +1959,20 @@
       "link": "",
       "route": [
         {
-          "x": 90,
-          "y": 804
+          "x": 89,
+          "y": 493
         },
         {
-          "x": 240.8000030517578,
-          "y": 803.5999755859375
+          "x": 240.60000610351562,
+          "y": 493
         },
         {
           "x": 478.1000061035156,
-          "y": 803.5
+          "y": 493
         },
         {
           "x": 562.5,
-          "y": 803.5
+          "y": 493
         }
       ],
       "isCurve": true,
@@ -2272,19 +2008,19 @@
       "route": [
         {
           "x": 90,
-          "y": 2290
+          "y": 1516
         },
         {
           "x": 240.8000030517578,
-          "y": 2289.60009765625
+          "y": 1515.5999755859375
         },
         {
           "x": 478.1000061035156,
-          "y": 2289.5
+          "y": 1515.5
         },
         {
           "x": 562.5,
-          "y": 2289.5
+          "y": 1515.5
         }
       ],
       "isCurve": true,
@@ -2319,20 +2055,20 @@
       "link": "",
       "route": [
         {
-          "x": 90,
-          "y": 1797
+          "x": 89,
+          "y": 1186
         },
         {
-          "x": 240.8000030517578,
-          "y": 1796.5999755859375
+          "x": 240.60000610351562,
+          "y": 1186
         },
         {
           "x": 478.1000061035156,
-          "y": 1796.5
+          "y": 1186
         },
         {
           "x": 562.5,
-          "y": 1796.5
+          "y": 1186
         }
       ],
       "isCurve": true,
@@ -2367,44 +2103,44 @@
       "link": "",
       "route": [
         {
-          "x": 1430.5,
-          "y": 986.5
+          "x": 1384.5,
+          "y": 602
         },
         {
-          "x": 1515.300048828125,
-          "y": 945.7000122070312
+          "x": 1469.300048828125,
+          "y": 602
         },
         {
-          "x": 1557.5999755859375,
-          "y": 935.5
+          "x": 1511.5999755859375,
+          "y": 602
         },
         {
-          "x": 1589.25,
-          "y": 935.5
+          "x": 1543.25,
+          "y": 602
         },
         {
-          "x": 1620.9000244140625,
-          "y": 935.5
+          "x": 1574.9000244140625,
+          "y": 602
         },
         {
-          "x": 1676.300048828125,
-          "y": 935.5
+          "x": 1630.300048828125,
+          "y": 602
         },
         {
-          "x": 1727.75,
-          "y": 935.5
+          "x": 1681.75,
+          "y": 602
         },
         {
-          "x": 1779.199951171875,
-          "y": 935.5
+          "x": 1733.199951171875,
+          "y": 602
         },
         {
-          "x": 2006.199951171875,
-          "y": 950.4000244140625
+          "x": 1969.199951171875,
+          "y": 602
         },
         {
-          "x": 2091,
-          "y": 1010
+          "x": 2090,
+          "y": 602
         }
       ],
       "isCurve": true,
@@ -2439,44 +2175,44 @@
       "link": "",
       "route": [
         {
-          "x": 1399.302001953125,
-          "y": 2224.5
+          "x": 1349.5,
+          "y": 1421
         },
         {
-          "x": 1509.06005859375,
-          "y": 2296.5
+          "x": 1462.300048828125,
+          "y": 1497.800048828125
         },
         {
-          "x": 1557.5999755859375,
-          "y": 2314.5
+          "x": 1511.5999755859375,
+          "y": 1517
         },
         {
-          "x": 1589.25,
-          "y": 2314.5
+          "x": 1543.25,
+          "y": 1517
         },
         {
-          "x": 1620.9000244140625,
-          "y": 2314.5
+          "x": 1574.9000244140625,
+          "y": 1517
         },
         {
-          "x": 1676.300048828125,
-          "y": 2314.5
+          "x": 1630.300048828125,
+          "y": 1517
         },
         {
-          "x": 1727.75,
-          "y": 2314.5
+          "x": 1681.75,
+          "y": 1517
         },
         {
-          "x": 1779.199951171875,
-          "y": 2314.5
+          "x": 1733.199951171875,
+          "y": 1517
         },
         {
-          "x": 2009.0999755859375,
-          "y": 2314.5
+          "x": 1960.199951171875,
+          "y": 1517
         },
         {
-          "x": 2105.5,
-          "y": 2314.5
+          "x": 2045,
+          "y": 1517
         }
       ],
       "isCurve": true,
@@ -2511,44 +2247,44 @@
       "link": "",
       "route": [
         {
-          "x": 1430.5,
-          "y": 2144.5
+          "x": 1384.5,
+          "y": 1362
         },
         {
-          "x": 1515.300048828125,
-          "y": 2040.5
+          "x": 1469.300048828125,
+          "y": 1348.4000244140625
         },
         {
-          "x": 1557.5999755859375,
-          "y": 2014.5
+          "x": 1511.5999755859375,
+          "y": 1345
         },
         {
-          "x": 1589.25,
-          "y": 2014.5
+          "x": 1543.25,
+          "y": 1345
         },
         {
-          "x": 1620.9000244140625,
-          "y": 2014.5
+          "x": 1574.9000244140625,
+          "y": 1345
         },
         {
-          "x": 1676.300048828125,
-          "y": 2014.5
+          "x": 1630.300048828125,
+          "y": 1345
         },
         {
-          "x": 1727.75,
-          "y": 2014.5
+          "x": 1681.75,
+          "y": 1345
         },
         {
-          "x": 1779.199951171875,
-          "y": 2014.5
+          "x": 1733.199951171875,
+          "y": 1345
         },
         {
-          "x": 2009.0999755859375,
-          "y": 2014.5
+          "x": 1971.199951171875,
+          "y": 1345
         },
         {
-          "x": 2105.5,
-          "y": 2014.5
+          "x": 2100,
+          "y": 1345
         }
       ],
       "isCurve": true,
@@ -2583,44 +2319,44 @@
       "link": "",
       "route": [
         {
-          "x": 1369.1590576171875,
-          "y": 2137.5
+          "x": 1329.5,
+          "y": 1335
         },
         {
-          "x": 1503.031005859375,
-          "y": 1847.9000244140625
+          "x": 1458.300048828125,
+          "y": 1205.4000244140625
         },
         {
-          "x": 1557.5999755859375,
-          "y": 1775.5
+          "x": 1511.5999755859375,
+          "y": 1173
         },
         {
-          "x": 1589.25,
-          "y": 1775.5
+          "x": 1543.25,
+          "y": 1173
         },
         {
-          "x": 1620.9000244140625,
-          "y": 1775.5
+          "x": 1574.9000244140625,
+          "y": 1173
         },
         {
-          "x": 1676.300048828125,
-          "y": 1775.5
+          "x": 1630.300048828125,
+          "y": 1173
         },
         {
-          "x": 1727.75,
-          "y": 1775.5
+          "x": 1681.75,
+          "y": 1173
         },
         {
-          "x": 1779.199951171875,
-          "y": 1775.5
+          "x": 1733.199951171875,
+          "y": 1173
         },
         {
-          "x": 2009.0999755859375,
-          "y": 1775.5
+          "x": 1968.4000244140625,
+          "y": 1173
         },
         {
-          "x": 2105.5,
-          "y": 1775.5
+          "x": 2086,
+          "y": 1173
         }
       ],
       "isCurve": true,
@@ -2655,44 +2391,44 @@
       "link": "",
       "route": [
         {
-          "x": 2241,
-          "y": 998
+          "x": 2248,
+          "y": 588
         },
         {
-          "x": 2331.39990234375,
-          "y": 525.5989990234375
+          "x": 2368.800048828125,
+          "y": 332
         },
         {
-          "x": 2388.300048828125,
-          "y": 407.5
+          "x": 2433.300048828125,
+          "y": 268
         },
         {
-          "x": 2439.75,
-          "y": 407.5
+          "x": 2484.75,
+          "y": 268
         },
         {
-          "x": 2491.199951171875,
-          "y": 407.5
+          "x": 2536.199951171875,
+          "y": 268
         },
         {
-          "x": 2559.800048828125,
-          "y": 407.5
+          "x": 2604.800048828125,
+          "y": 268
         },
         {
-          "x": 2611.25,
-          "y": 407.5
+          "x": 2656.25,
+          "y": 268
         },
         {
-          "x": 2662.699951171875,
-          "y": 407.5
+          "x": 2707.699951171875,
+          "y": 268
         },
         {
-          "x": 2823.699951171875,
-          "y": 417.70001220703125
+          "x": 2868.699951171875,
+          "y": 268
         },
         {
-          "x": 2908.5,
-          "y": 458.5
+          "x": 2953.5,
+          "y": 268
         }
       ],
       "isCurve": true,
@@ -2727,44 +2463,44 @@
       "link": "",
       "route": [
         {
-          "x": 2235,
-          "y": 1147
+          "x": 2246,
+          "y": 716
         },
         {
-          "x": 2330.199951171875,
-          "y": 1255.4000244140625
+          "x": 2368.39990234375,
+          "y": 810.4000244140625
         },
         {
-          "x": 2388.300048828125,
-          "y": 1282.5
+          "x": 2433.300048828125,
+          "y": 834
         },
         {
-          "x": 2439.75,
-          "y": 1282.5
+          "x": 2484.75,
+          "y": 834
         },
         {
-          "x": 2491.199951171875,
-          "y": 1282.5
+          "x": 2536.199951171875,
+          "y": 834
         },
         {
-          "x": 2559.800048828125,
-          "y": 1282.5
+          "x": 2604.800048828125,
+          "y": 834
         },
         {
-          "x": 2611.25,
-          "y": 1282.5
+          "x": 2656.25,
+          "y": 834
         },
         {
-          "x": 2662.699951171875,
-          "y": 1282.5
+          "x": 2707.699951171875,
+          "y": 834
         },
         {
-          "x": 2823.699951171875,
-          "y": 1292.699951171875
+          "x": 2868.699951171875,
+          "y": 834
         },
         {
-          "x": 2908.5,
-          "y": 1333.5
+          "x": 2953.5,
+          "y": 834
         }
       ],
       "isCurve": true,
@@ -2799,44 +2535,44 @@
       "link": "",
       "route": [
         {
-          "x": 2234.5,
-          "y": 2314.5
+          "x": 2294,
+          "y": 1517
         },
         {
-          "x": 2330.10009765625,
-          "y": 2314.5
+          "x": 2378,
+          "y": 1517
         },
         {
-          "x": 2388.300048828125,
-          "y": 2314.5
+          "x": 2433.300048828125,
+          "y": 1517
         },
         {
-          "x": 2439.75,
-          "y": 2314.5
+          "x": 2484.75,
+          "y": 1517
         },
         {
-          "x": 2491.199951171875,
-          "y": 2314.5
+          "x": 2536.199951171875,
+          "y": 1517
         },
         {
-          "x": 2559.800048828125,
-          "y": 2314.5
+          "x": 2604.800048828125,
+          "y": 1517
         },
         {
-          "x": 2611.25,
-          "y": 2314.5
+          "x": 2656.25,
+          "y": 1517
         },
         {
-          "x": 2662.699951171875,
-          "y": 2314.5
+          "x": 2707.699951171875,
+          "y": 1517
         },
         {
-          "x": 2833.89990234375,
-          "y": 2262.699951171875
+          "x": 2878.10009765625,
+          "y": 1491.199951171875
         },
         {
-          "x": 2959.5,
-          "y": 2055.5
+          "x": 3000.5,
+          "y": 1388
         }
       ],
       "isCurve": true,
@@ -2871,44 +2607,44 @@
       "link": "",
       "route": [
         {
-          "x": 2234.5,
-          "y": 2014.5
+          "x": 2238,
+          "y": 1345
         },
         {
-          "x": 2330.10009765625,
-          "y": 2014.5
+          "x": 2366.800048828125,
+          "y": 1345
         },
         {
-          "x": 2388.300048828125,
-          "y": 2014.5
+          "x": 2433.300048828125,
+          "y": 1345
         },
         {
-          "x": 2439.75,
-          "y": 2014.5
+          "x": 2484.75,
+          "y": 1345
         },
         {
-          "x": 2491.199951171875,
-          "y": 2014.5
+          "x": 2536.199951171875,
+          "y": 1345
         },
         {
-          "x": 2559.800048828125,
-          "y": 2014.5
+          "x": 2604.800048828125,
+          "y": 1345
         },
         {
-          "x": 2611.25,
-          "y": 2014.5
+          "x": 2656.25,
+          "y": 1345
         },
         {
-          "x": 2662.699951171875,
-          "y": 2014.5
+          "x": 2707.699951171875,
+          "y": 1345
         },
         {
-          "x": 2823.699951171875,
-          "y": 2014.300048828125
+          "x": 2868.699951171875,
+          "y": 1345
         },
         {
-          "x": 2908.5,
-          "y": 2013.5
+          "x": 2953.5,
+          "y": 1345
         }
       ],
       "isCurve": true,
@@ -2943,44 +2679,44 @@
       "link": "",
       "route": [
         {
-          "x": 2234.5,
-          "y": 1775.5
+          "x": 2253,
+          "y": 1173
         },
         {
-          "x": 2330.10009765625,
-          "y": 1775.5
+          "x": 2369.800048828125,
+          "y": 1173
         },
         {
-          "x": 2388.300048828125,
-          "y": 1775.5
+          "x": 2433.300048828125,
+          "y": 1173
         },
         {
-          "x": 2439.75,
-          "y": 1775.5
+          "x": 2484.75,
+          "y": 1173
         },
         {
-          "x": 2491.199951171875,
-          "y": 1775.5
+          "x": 2536.199951171875,
+          "y": 1173
         },
         {
-          "x": 2559.800048828125,
-          "y": 1775.5
+          "x": 2604.800048828125,
+          "y": 1173
         },
         {
-          "x": 2611.25,
-          "y": 1775.5
+          "x": 2656.25,
+          "y": 1173
         },
         {
-          "x": 2662.699951171875,
-          "y": 1775.5
+          "x": 2707.699951171875,
+          "y": 1173
         },
         {
-          "x": 2833.866943359375,
-          "y": 1814.300048828125
+          "x": 2878.10009765625,
+          "y": 1198.800048828125
         },
         {
-          "x": 2959.337890625,
-          "y": 1969.5
+          "x": 3000.5,
+          "y": 1302
         }
       ],
       "isCurve": true,
