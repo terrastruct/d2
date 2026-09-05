@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-d2-version="v0.8.1-HEAD" preserveAspectRatio="xMinYMin meet" viewBox="0 0 1540 365"><svg class="d2-965089888 d2-svg" width="1540" height="365" viewBox="9 -36 1540 365"><rect x="9.000000" y="-36.000000" width="1540.000000" height="365.000000" rx="0.000000" fill="#FFFFFF" class=" fill-N7" stroke-width="0" /><style type="text/css"><![CDATA[
+<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-d2-version="v0.8.1-HEAD" preserveAspectRatio="xMinYMin meet" viewBox="0 0 1540 365"><svg class="d2-965089888 d2-svg" width="1540" height="365" viewBox="9 -36 1540 365"><rect x="9" y="-36" width="1540" height="365" rx="0" fill="#FFFFFF" class=" fill-N7" stroke-width="0" /><style type="text/css"><![CDATA[
 .d2-965089888 .text-mono {
 	font-family: "d2-965089888-font-mono";
 }
@@ -19,77 +19,12 @@
 }
 
 		.d2-965089888 .fill-N1{fill:#000410;}
-		.d2-965089888 .fill-N2{fill:#0000B8;}
-		.d2-965089888 .fill-N3{fill:#9499AB;}
-		.d2-965089888 .fill-N4{fill:#CFD2DD;}
-		.d2-965089888 .fill-N5{fill:#C3DEF3;}
-		.d2-965089888 .fill-N6{fill:#EEF1F8;}
 		.d2-965089888 .fill-N7{fill:#FFFFFF;}
-		.d2-965089888 .fill-B1{fill:#000410;}
-		.d2-965089888 .fill-B2{fill:#0000E4;}
 		.d2-965089888 .fill-B3{fill:#5AA4DC;}
 		.d2-965089888 .fill-B4{fill:#E7E9EE;}
 		.d2-965089888 .fill-B5{fill:#F5F6F9;}
-		.d2-965089888 .fill-B6{fill:#FFFFFF;}
-		.d2-965089888 .fill-AA2{fill:#008566;}
-		.d2-965089888 .fill-AA4{fill:#45BBA5;}
-		.d2-965089888 .fill-AA5{fill:#7ACCBD;}
-		.d2-965089888 .fill-AB4{fill:#F1C759;}
-		.d2-965089888 .fill-AB5{fill:#F9E088;}
-		.d2-965089888 .stroke-N1{stroke:#000410;}
-		.d2-965089888 .stroke-N2{stroke:#0000B8;}
-		.d2-965089888 .stroke-N3{stroke:#9499AB;}
-		.d2-965089888 .stroke-N4{stroke:#CFD2DD;}
-		.d2-965089888 .stroke-N5{stroke:#C3DEF3;}
-		.d2-965089888 .stroke-N6{stroke:#EEF1F8;}
-		.d2-965089888 .stroke-N7{stroke:#FFFFFF;}
 		.d2-965089888 .stroke-B1{stroke:#000410;}
-		.d2-965089888 .stroke-B2{stroke:#0000E4;}
-		.d2-965089888 .stroke-B3{stroke:#5AA4DC;}
-		.d2-965089888 .stroke-B4{stroke:#E7E9EE;}
-		.d2-965089888 .stroke-B5{stroke:#F5F6F9;}
-		.d2-965089888 .stroke-B6{stroke:#FFFFFF;}
-		.d2-965089888 .stroke-AA2{stroke:#008566;}
-		.d2-965089888 .stroke-AA4{stroke:#45BBA5;}
-		.d2-965089888 .stroke-AA5{stroke:#7ACCBD;}
-		.d2-965089888 .stroke-AB4{stroke:#F1C759;}
-		.d2-965089888 .stroke-AB5{stroke:#F9E088;}
-		.d2-965089888 .background-color-N1{background-color:#000410;}
-		.d2-965089888 .background-color-N2{background-color:#0000B8;}
-		.d2-965089888 .background-color-N3{background-color:#9499AB;}
-		.d2-965089888 .background-color-N4{background-color:#CFD2DD;}
-		.d2-965089888 .background-color-N5{background-color:#C3DEF3;}
-		.d2-965089888 .background-color-N6{background-color:#EEF1F8;}
-		.d2-965089888 .background-color-N7{background-color:#FFFFFF;}
-		.d2-965089888 .background-color-B1{background-color:#000410;}
-		.d2-965089888 .background-color-B2{background-color:#0000E4;}
-		.d2-965089888 .background-color-B3{background-color:#5AA4DC;}
-		.d2-965089888 .background-color-B4{background-color:#E7E9EE;}
-		.d2-965089888 .background-color-B5{background-color:#F5F6F9;}
-		.d2-965089888 .background-color-B6{background-color:#FFFFFF;}
-		.d2-965089888 .background-color-AA2{background-color:#008566;}
-		.d2-965089888 .background-color-AA4{background-color:#45BBA5;}
-		.d2-965089888 .background-color-AA5{background-color:#7ACCBD;}
-		.d2-965089888 .background-color-AB4{background-color:#F1C759;}
-		.d2-965089888 .background-color-AB5{background-color:#F9E088;}
-		.d2-965089888 .color-N1{color:#000410;}
-		.d2-965089888 .color-N2{color:#0000B8;}
-		.d2-965089888 .color-N3{color:#9499AB;}
-		.d2-965089888 .color-N4{color:#CFD2DD;}
-		.d2-965089888 .color-N5{color:#C3DEF3;}
-		.d2-965089888 .color-N6{color:#EEF1F8;}
-		.d2-965089888 .color-N7{color:#FFFFFF;}
-		.d2-965089888 .color-B1{color:#000410;}
-		.d2-965089888 .color-B2{color:#0000E4;}
-		.d2-965089888 .color-B3{color:#5AA4DC;}
-		.d2-965089888 .color-B4{color:#E7E9EE;}
-		.d2-965089888 .color-B5{color:#F5F6F9;}
-		.d2-965089888 .color-B6{color:#FFFFFF;}
-		.d2-965089888 .color-AA2{color:#008566;}
-		.d2-965089888 .color-AA4{color:#45BBA5;}
-		.d2-965089888 .color-AA5{color:#7ACCBD;}
-		.d2-965089888 .color-AB4{color:#F1C759;}
-		.d2-965089888 .color-AB5{color:#F9E088;}.appendix text.text{fill:#000410}.md{--color-fg-default:#000410;--color-fg-muted:#0000B8;--color-fg-subtle:#9499AB;--color-canvas-default:#FFFFFF;--color-canvas-subtle:#EEF1F8;--color-border-default:#000410;--color-border-muted:#0000E4;--color-neutral-muted:#EEF1F8;--color-accent-fg:#0000E4;--color-accent-emphasis:#0000E4;--color-attention-subtle:#0000B8;--color-danger-fg:red;}.sketch-overlay-B1{fill:url(#streaks-darker-d2-965089888);mix-blend-mode:lighten}.sketch-overlay-B2{fill:url(#streaks-darker-d2-965089888);mix-blend-mode:lighten}.sketch-overlay-B3{fill:url(#streaks-normal-d2-965089888);mix-blend-mode:color-burn}.sketch-overlay-B4{fill:url(#streaks-bright-d2-965089888);mix-blend-mode:darken}.sketch-overlay-B5{fill:url(#streaks-bright-d2-965089888);mix-blend-mode:darken}.sketch-overlay-B6{fill:url(#streaks-bright-d2-965089888);mix-blend-mode:darken}.sketch-overlay-AA2{fill:url(#streaks-dark-d2-965089888);mix-blend-mode:overlay}.sketch-overlay-AA4{fill:url(#streaks-normal-d2-965089888);mix-blend-mode:color-burn}.sketch-overlay-AA5{fill:url(#streaks-normal-d2-965089888);mix-blend-mode:color-burn}.sketch-overlay-AB4{fill:url(#streaks-normal-d2-965089888);mix-blend-mode:color-burn}.sketch-overlay-AB5{fill:url(#streaks-normal-d2-965089888);mix-blend-mode:color-burn}.sketch-overlay-N1{fill:url(#streaks-darker-d2-965089888);mix-blend-mode:lighten}.sketch-overlay-N2{fill:url(#streaks-darker-d2-965089888);mix-blend-mode:lighten}.sketch-overlay-N3{fill:url(#streaks-normal-d2-965089888);mix-blend-mode:color-burn}.sketch-overlay-N4{fill:url(#streaks-normal-d2-965089888);mix-blend-mode:color-burn}.sketch-overlay-N5{fill:url(#streaks-normal-d2-965089888);mix-blend-mode:color-burn}.sketch-overlay-N6{fill:url(#streaks-bright-d2-965089888);mix-blend-mode:darken}.sketch-overlay-N7{fill:url(#streaks-bright-d2-965089888);mix-blend-mode:darken}.light-code{display: block}.dark-code{display: none}]]></style><style type="text/css"><![CDATA[
+		.d2-965089888 .stroke-B2{stroke:#0000E4;}.appendix text.text{fill:#000410}.md{--color-fg-default:#000410;--color-fg-muted:#0000B8;--color-fg-subtle:#9499AB;--color-canvas-default:#FFFFFF;--color-canvas-subtle:#EEF1F8;--color-border-default:#000410;--color-border-muted:#0000E4;--color-neutral-muted:#EEF1F8;--color-accent-fg:#0000E4;--color-accent-emphasis:#0000E4;--color-attention-subtle:#0000B8;--color-danger-fg:red;}.light-code{display: block}.dark-code{display: none}]]></style><style type="text/css"><![CDATA[
 .dots-overlay {
 	fill: url(#dots-d2-965089888);
 	mix-blend-mode: multiply;
@@ -124,7 +59,7 @@
 </pattern>
 </defs><g class="YmVhdHM="><g class="shape" ><defs><mask id="border-mask-d2-965089888-beats" maskUnits="userSpaceOnUse" x="10" y="5" width="1537" height="323">
 <rect x="10" y="5" width="1537" height="323" fill="white"></rect>
-<path d="M10,20L25,5L1547,5L1547,313L1532,328L10,328L10,20L1532,20L1532,328M1532,20L1547,5" style="stroke-width:2;;stroke:#000;fill:none;opacity:1;"/></mask></defs><rect x="10.000000" y="20.000000" width="1522.000000" height="308.000000" mask="url(#border-mask-d2-965089888-beats)" stroke="none" fill="#E7E9EE" class=" fill-B4" style="stroke-width:2;" /><rect x="10.000000" y="20.000000" width="1522.000000" height="308.000000" mask="url(#border-mask-d2-965089888-beats)" class="dots-overlay" style="stroke-width:2;" /><polygon mask="url(#border-mask-d2-965089888-beats)" points="10,20 25,5 1547,5 1547,313 1532,328 1532,20" fill="#5AA4DC" class=" fill-B3" style="stroke-width:2;" /><path d="M10,20 L25,5 L1547,5 L1547,313 L1532,328 L10,328 L10,20 L1532,20 L1532,328 M1532,20 L1547,5" stroke="#000410" fill="none" class=" stroke-B1" style="stroke-width:2;" /></g><text x="778.500000" y="-8.000000" fill="#000410" class="text-mono fill-N1" style="text-anchor:middle;font-size:28px">BEATS</text></g><g class="YmVhdHMuRXhwbGFuYXRpb24="><g class="shape" ><rect x="40.000000" y="50.000000" width="1462.000000" height="248.000000" stroke="#000410" fill="#F5F6F9" class=" stroke-B1 fill-B5" style="stroke-width:0;" /><rect x="40.000000" y="50.000000" width="1462.000000" height="248.000000" class="dots-overlay" style="stroke-width:0;" /></g><text x="771.000000" y="79.000000" fill="#000410" class="text-mono fill-N1" style="text-anchor:middle;font-size:24px">BEATS IS A FAMILY OF &#34;DATA SHIPPERS,&#34; DISTINCT SERVICES THAT SEND A SINGLE TYPE OF DATA FROM MACHINES</text></g><g class="YmVhdHMuRXhwbGFuYXRpb24uSW1hZ2U="><g class="shape" ><image href="https://www.pngkey.com/png/full/75-752805_elastic-beats-logo-png-transparent-design.png" x="707.000000" y="110.000000" width="128.000000" height="128.000000" stroke="#000410" fill="#FFFFFF" class=" stroke-B1 fill-N7" style="stroke-width:2;" /></g></g><mask id="d2-965089888" maskUnits="userSpaceOnUse" x="9" y="-36" width="1540" height="365">
+<path d="M10,20L25,5L1547,5L1547,313L1532,328L10,328L10,20L1532,20L1532,328M1532,20L1547,5" style="stroke-width:2;;stroke:#000;fill:none;opacity:1;"/></mask></defs><rect x="10" y="20" width="1522" height="308" mask="url(#border-mask-d2-965089888-beats)" stroke="none" fill="#E7E9EE" class=" fill-B4" style="stroke-width:2;" /><rect x="10" y="20" width="1522" height="308" mask="url(#border-mask-d2-965089888-beats)" class="dots-overlay" style="stroke-width:2;" /><polygon mask="url(#border-mask-d2-965089888-beats)" points="10,20 25,5 1547,5 1547,313 1532,328 1532,20" fill="#5AA4DC" class=" fill-B3" style="stroke-width:2;" /><path d="M10,20 L25,5 L1547,5 L1547,313 L1532,328 L10,328 L10,20 L1532,20 L1532,328 M1532,20 L1547,5" stroke="#000410" fill="none" class=" stroke-B1" style="stroke-width:2;" /></g><text x="778.5" y="-8" fill="#000410" class="text-mono fill-N1" style="text-anchor:middle;font-size:28px">BEATS</text></g><g class="YmVhdHMuRXhwbGFuYXRpb24="><g class="shape" ><rect x="40" y="50" width="1462" height="248" stroke="#000410" fill="#F5F6F9" class=" stroke-B1 fill-B5" style="stroke-width:0;" /><rect x="40" y="50" width="1462" height="248" class="dots-overlay" style="stroke-width:0;" /></g><text x="771" y="79" fill="#000410" class="text-mono fill-N1" style="text-anchor:middle;font-size:24px">BEATS IS A FAMILY OF &#34;DATA SHIPPERS,&#34; DISTINCT SERVICES THAT SEND A SINGLE TYPE OF DATA FROM MACHINES</text></g><g class="YmVhdHMuRXhwbGFuYXRpb24uSW1hZ2U="><g class="shape" ><image href="https://www.pngkey.com/png/full/75-752805_elastic-beats-logo-png-transparent-design.png" x="707" y="110" width="128" height="128" stroke="#000410" fill="#FFFFFF" class=" stroke-B1 fill-N7" style="stroke-width:2;" /></g></g><mask id="d2-965089888" maskUnits="userSpaceOnUse" x="9" y="-36" width="1540" height="365">
 <rect x="9" y="-36" width="1540" height="365" fill="white"></rect>
 
 </mask></svg></svg>

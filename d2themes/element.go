@@ -5,6 +5,7 @@ import (
 	"math"
 
 	"github.com/d2lang/d2/lib/color"
+	"github.com/d2lang/d2/lib/svg"
 )
 
 // ThemableElement is a helper class for creating new XML elements.
@@ -101,7 +102,7 @@ func (el *ThemableElement) Copy() *ThemableElement {
 }
 
 func (el *ThemableElement) SetTranslate(x, y float64) {
-	el.Transform = fmt.Sprintf("translate(%f %f)", x, y)
+	el.Transform = fmt.Sprintf("translate(%s %s)", svg.FormatFloat(x), svg.FormatFloat(y))
 }
 
 func (el *ThemableElement) SetMaskUrl(url string) {
@@ -116,43 +117,43 @@ func (el *ThemableElement) Render() string {
 		out += fmt.Sprintf(` href="%s"`, el.Href)
 	}
 	if el.X != math.MaxFloat64 {
-		out += fmt.Sprintf(` x="%f"`, el.X)
+		out += fmt.Sprintf(` x="%s"`, svg.FormatFloat(el.X))
 	}
 	if el.X1 != math.MaxFloat64 {
-		out += fmt.Sprintf(` x1="%f"`, el.X1)
+		out += fmt.Sprintf(` x1="%s"`, svg.FormatFloat(el.X1))
 	}
 	if el.X2 != math.MaxFloat64 {
-		out += fmt.Sprintf(` x2="%f"`, el.X2)
+		out += fmt.Sprintf(` x2="%s"`, svg.FormatFloat(el.X2))
 	}
 	if el.Y != math.MaxFloat64 {
-		out += fmt.Sprintf(` y="%f"`, el.Y)
+		out += fmt.Sprintf(` y="%s"`, svg.FormatFloat(el.Y))
 	}
 	if el.Y1 != math.MaxFloat64 {
-		out += fmt.Sprintf(` y1="%f"`, el.Y1)
+		out += fmt.Sprintf(` y1="%s"`, svg.FormatFloat(el.Y1))
 	}
 	if el.Y2 != math.MaxFloat64 {
-		out += fmt.Sprintf(` y2="%f"`, el.Y2)
+		out += fmt.Sprintf(` y2="%s"`, svg.FormatFloat(el.Y2))
 	}
 	if el.Width != math.MaxFloat64 {
-		out += fmt.Sprintf(` width="%f"`, el.Width)
+		out += fmt.Sprintf(` width="%s"`, svg.FormatFloat(el.Width))
 	}
 	if el.Height != math.MaxFloat64 {
-		out += fmt.Sprintf(` height="%f"`, el.Height)
+		out += fmt.Sprintf(` height="%s"`, svg.FormatFloat(el.Height))
 	}
 	if el.R != math.MaxFloat64 {
-		out += fmt.Sprintf(` r="%f"`, el.R)
+		out += fmt.Sprintf(` r="%s"`, svg.FormatFloat(el.R))
 	}
 	if el.Rx != math.MaxFloat64 {
-		out += fmt.Sprintf(` rx="%f"`, calculateAxisRadius(el.Rx, el.Width, el.Height))
+		out += fmt.Sprintf(` rx="%s"`, svg.FormatFloat(calculateAxisRadius(el.Rx, el.Width, el.Height)))
 	}
 	if el.Ry != math.MaxFloat64 {
-		out += fmt.Sprintf(` ry="%f"`, calculateAxisRadius(el.Ry, el.Width, el.Height))
+		out += fmt.Sprintf(` ry="%s"`, svg.FormatFloat(calculateAxisRadius(el.Ry, el.Width, el.Height)))
 	}
 	if el.Cx != math.MaxFloat64 {
-		out += fmt.Sprintf(` cx="%f"`, el.Cx)
+		out += fmt.Sprintf(` cx="%s"`, svg.FormatFloat(el.Cx))
 	}
 	if el.Cy != math.MaxFloat64 {
-		out += fmt.Sprintf(` cy="%f"`, el.Cy)
+		out += fmt.Sprintf(` cy="%s"`, svg.FormatFloat(el.Cy))
 	}
 	if el.StrokeDashArray != "" {
 		out += fmt.Sprintf(` stroke-dasharray="%s"`, el.StrokeDashArray)

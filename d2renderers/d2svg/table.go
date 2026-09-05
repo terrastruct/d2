@@ -23,21 +23,21 @@ func clipPathForBorderRadius(diagramHash string, shape d2target.Shape) string {
 	topX, topY := box.TopLeft.X+box.Width, box.TopLeft.Y
 
 	out := fmt.Sprintf(`<clipPath id="%v-%v">`, diagramHash, svg.SVGID(shape.ID))
-	out += fmt.Sprintf(`<path d="M %f %f L %f %f S %f %f %f %f `, box.TopLeft.X, box.TopLeft.Y+float64(shape.BorderRadius), box.TopLeft.X, box.TopLeft.Y+float64(shape.BorderRadius), box.TopLeft.X, box.TopLeft.Y, box.TopLeft.X+float64(shape.BorderRadius), box.TopLeft.Y)
-	out += fmt.Sprintf(`L %f %f L %f %f `, box.TopLeft.X+box.Width-float64(shape.BorderRadius), box.TopLeft.Y, topX-float64(shape.BorderRadius), topY)
+	out += fmt.Sprintf(`<path d="M %s %s L %s %s S %s %s %s %s `, svg.FormatFloat(box.TopLeft.X), svg.FormatFloat(box.TopLeft.Y+float64(shape.BorderRadius)), svg.FormatFloat(box.TopLeft.X), svg.FormatFloat(box.TopLeft.Y+float64(shape.BorderRadius)), svg.FormatFloat(box.TopLeft.X), svg.FormatFloat(box.TopLeft.Y), svg.FormatFloat(box.TopLeft.X+float64(shape.BorderRadius)), svg.FormatFloat(box.TopLeft.Y))
+	out += fmt.Sprintf(`L %s %s L %s %s `, svg.FormatFloat(box.TopLeft.X+box.Width-float64(shape.BorderRadius)), svg.FormatFloat(box.TopLeft.Y), svg.FormatFloat(topX-float64(shape.BorderRadius)), svg.FormatFloat(topY))
 
-	out += fmt.Sprintf(`S %f %f %f %f `, topX, topY, topX, topY+float64(shape.BorderRadius))
-	out += fmt.Sprintf(`L %f %f `, topX, topY+box.Height-float64(shape.BorderRadius))
+	out += fmt.Sprintf(`S %s %s %s %s `, svg.FormatFloat(topX), svg.FormatFloat(topY), svg.FormatFloat(topX), svg.FormatFloat(topY+float64(shape.BorderRadius)))
+	out += fmt.Sprintf(`L %s %s `, svg.FormatFloat(topX), svg.FormatFloat(topY+box.Height-float64(shape.BorderRadius)))
 
 	if len(shape.Columns) != 0 {
-		out += fmt.Sprintf(`L %f %f L %f %f`, topX, topY+box.Height, box.TopLeft.X, box.TopLeft.Y+box.Height)
+		out += fmt.Sprintf(`L %s %s L %s %s`, svg.FormatFloat(topX), svg.FormatFloat(topY+box.Height), svg.FormatFloat(box.TopLeft.X), svg.FormatFloat(box.TopLeft.Y+box.Height))
 	} else {
-		out += fmt.Sprintf(`S %f % f %f %f `, topX, topY+box.Height, topX-float64(shape.BorderRadius), topY+box.Height)
-		out += fmt.Sprintf(`L %f %f `, box.TopLeft.X+float64(shape.BorderRadius), box.TopLeft.Y+box.Height)
-		out += fmt.Sprintf(`S %f %f %f %f`, box.TopLeft.X, box.TopLeft.Y+box.Height, box.TopLeft.X, box.TopLeft.Y+box.Height-float64(shape.BorderRadius))
-		out += fmt.Sprintf(`L %f %f`, box.TopLeft.X, box.TopLeft.Y+float64(shape.BorderRadius))
+		out += fmt.Sprintf(`S %s  %s %s %s `, svg.FormatFloat(topX), svg.FormatFloat(topY+box.Height), svg.FormatFloat(topX-float64(shape.BorderRadius)), svg.FormatFloat(topY+box.Height))
+		out += fmt.Sprintf(`L %s %s `, svg.FormatFloat(box.TopLeft.X+float64(shape.BorderRadius)), svg.FormatFloat(box.TopLeft.Y+box.Height))
+		out += fmt.Sprintf(`S %s %s %s %s`, svg.FormatFloat(box.TopLeft.X), svg.FormatFloat(box.TopLeft.Y+box.Height), svg.FormatFloat(box.TopLeft.X), svg.FormatFloat(box.TopLeft.Y+box.Height-float64(shape.BorderRadius)))
+		out += fmt.Sprintf(`L %s %s`, svg.FormatFloat(box.TopLeft.X), svg.FormatFloat(box.TopLeft.Y+float64(shape.BorderRadius)))
 	}
-	out += fmt.Sprintf(`Z %f %f" `, box.TopLeft.X, box.TopLeft.Y)
+	out += fmt.Sprintf(`Z %s %s" `, svg.FormatFloat(box.TopLeft.X), svg.FormatFloat(box.TopLeft.Y))
 	return out + `fill="none" /> </clipPath>`
 }
 
@@ -171,10 +171,10 @@ func drawTable(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 
 		tl := iconPosition.GetPointOnBox(box, label.PADDING, float64(iconSize), float64(iconSize))
 
-		fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" />`,
+		fmt.Fprintf(writer, `<image href="%s" x="%s" y="%s" width="%d" height="%d" />`,
 			html.EscapeString(targetShape.Icon.String()),
-			tl.X,
-			tl.Y,
+			svg.FormatFloat(tl.X),
+			svg.FormatFloat(tl.Y),
 			iconSize,
 			iconSize,
 		)

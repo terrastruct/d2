@@ -7,6 +7,7 @@ import (
 	"github.com/d2lang/d2/d2renderers/d2fonts"
 	"github.com/d2lang/d2/d2themes"
 	"github.com/d2lang/d2/lib/color"
+	"github.com/d2lang/d2/lib/svg"
 	"github.com/d2lang/d2/lib/textmeasure"
 )
 
@@ -76,8 +77,8 @@ func (r *markdownRenderer) render(
 	underline bool,
 ) string {
 	var out strings.Builder
-	fmt.Fprintf(&out, `<svg x="%f" y="%f" width="%d" height="%d" viewBox="0 0 %d %d" overflow="hidden">`,
-		x, y, width, height, width, height,
+	fmt.Fprintf(&out, `<svg x="%s" y="%s" width="%d" height="%d" viewBox="0 0 %d %d" overflow="hidden">`,
+		svg.FormatFloat(x), svg.FormatFloat(y), width, height, width, height,
 	)
 
 	if background != "" && background != color.None && background != "transparent" {

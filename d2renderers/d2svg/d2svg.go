@@ -445,8 +445,8 @@ func renderLegendShapeIcon(s d2target.Shape, x, y int, diagramHash string, theme
 	buf := &bytes.Buffer{}
 	appendixBuf := &bytes.Buffer{}
 	finalBuf := &bytes.Buffer{}
-	fmt.Fprintf(finalBuf, `<g transform="translate(%d, %d) scale(%f)">`,
-		x, y, 1.0/sizeFactor)
+	fmt.Fprintf(finalBuf, `<g transform="translate(%d, %d) scale(%s)">`,
+		x, y, svg.FormatFloat(1.0/sizeFactor))
 	_, err := drawShape(buf, appendixBuf, diagramHash, iconShape, false, theme, newMarkdownRenderer(nil, nil, theme))
 	if err != nil {
 		return "", err
@@ -493,8 +493,8 @@ func renderLegendConnectionIcon(c d2target.Connection, x, y int, theme *d2themes
 	markers := make(map[string]struct{})
 	idToShape := make(map[string]d2target.Shape)
 
-	fmt.Fprintf(finalBuf, `<g transform="translate(%d, %d) scale(%f)">`,
-		x, y, 1.0/sizeFactor)
+	fmt.Fprintf(finalBuf, `<g transform="translate(%d, %d) scale(%s)">`,
+		x, y, svg.FormatFloat(1.0/sizeFactor))
 
 	_, err := drawConnection(buf, legendHash, legendConn, markers, idToShape, false, theme, newMarkdownRenderer(nil, nil, theme))
 	if err != nil {
@@ -538,18 +538,18 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection, i
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
 		if isTarget {
-			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
-				0., 0.,
-				width, height/2,
-				0., height,
-				width/4, height/2,
+			polygonEl.Points = fmt.Sprintf("%s,%s %s,%s %s,%s %s,%s",
+				svg.FormatFloat(0.), svg.FormatFloat(0.),
+				svg.FormatFloat(width), svg.FormatFloat(height/2),
+				svg.FormatFloat(0.), svg.FormatFloat(height),
+				svg.FormatFloat(width/4), svg.FormatFloat(height/2),
 			)
 		} else {
-			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
-				0., height/2,
-				width, 0.,
-				width*3/4, height/2,
-				width, height,
+			polygonEl.Points = fmt.Sprintf("%s,%s %s,%s %s,%s %s,%s",
+				svg.FormatFloat(0.), svg.FormatFloat(height/2),
+				svg.FormatFloat(width), svg.FormatFloat(0.),
+				svg.FormatFloat(width*3/4), svg.FormatFloat(height/2),
+				svg.FormatFloat(width), svg.FormatFloat(height),
 			)
 		}
 		path = polygonEl.Render()
@@ -562,16 +562,16 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection, i
 
 		inset := strokeWidth / 2
 		if isTarget {
-			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f",
-				inset, inset,
-				width-inset, height/2.0,
-				inset, height-inset,
+			polygonEl.Points = fmt.Sprintf("%s,%s %s,%s %s,%s",
+				svg.FormatFloat(inset), svg.FormatFloat(inset),
+				svg.FormatFloat(width-inset), svg.FormatFloat(height/2.0),
+				svg.FormatFloat(inset), svg.FormatFloat(height-inset),
 			)
 		} else {
-			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f",
-				width-inset, inset,
-				inset, height/2.0,
-				width-inset, height-inset,
+			polygonEl.Points = fmt.Sprintf("%s,%s %s,%s %s,%s",
+				svg.FormatFloat(width-inset), svg.FormatFloat(inset),
+				svg.FormatFloat(inset), svg.FormatFloat(height/2.0),
+				svg.FormatFloat(width-inset), svg.FormatFloat(height-inset),
 			)
 		}
 		path = polygonEl.Render()
@@ -583,16 +583,16 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection, i
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
 		if isTarget {
-			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f",
-				0., 0.,
-				width, height/2.0,
-				0., height,
+			polygonEl.Points = fmt.Sprintf("%s,%s %s,%s %s,%s",
+				svg.FormatFloat(0.), svg.FormatFloat(0.),
+				svg.FormatFloat(width), svg.FormatFloat(height/2.0),
+				svg.FormatFloat(0.), svg.FormatFloat(height),
 			)
 		} else {
-			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f",
-				width, 0.,
-				0., height/2.0,
-				width, height,
+			polygonEl.Points = fmt.Sprintf("%s,%s %s,%s %s,%s",
+				svg.FormatFloat(width), svg.FormatFloat(0.),
+				svg.FormatFloat(0.), svg.FormatFloat(height/2.0),
+				svg.FormatFloat(width), svg.FormatFloat(height),
 			)
 		}
 		path = polygonEl.Render()
@@ -604,16 +604,16 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection, i
 		polylineEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
 		if isTarget {
-			polylineEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f",
-				strokeWidth/2, strokeWidth/2,
-				width-strokeWidth/2, height/2,
-				strokeWidth/2, height-strokeWidth/2,
+			polylineEl.Points = fmt.Sprintf("%s,%s %s,%s %s,%s",
+				svg.FormatFloat(strokeWidth/2), svg.FormatFloat(strokeWidth/2),
+				svg.FormatFloat(width-strokeWidth/2), svg.FormatFloat(height/2),
+				svg.FormatFloat(strokeWidth/2), svg.FormatFloat(height-strokeWidth/2),
 			)
 		} else {
-			polylineEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f",
-				width-strokeWidth/2, strokeWidth/2,
-				strokeWidth/2, height/2,
-				width-strokeWidth/2, height-strokeWidth/2,
+			polylineEl.Points = fmt.Sprintf("%s,%s %s,%s %s,%s",
+				svg.FormatFloat(width-strokeWidth/2), svg.FormatFloat(strokeWidth/2),
+				svg.FormatFloat(strokeWidth/2), svg.FormatFloat(height/2),
+				svg.FormatFloat(width-strokeWidth/2), svg.FormatFloat(height-strokeWidth/2),
 			)
 		}
 		path = polylineEl.Render()
@@ -624,18 +624,18 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection, i
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
 		if isTarget {
-			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
-				0., height/2.0,
-				width/2.0, 0.,
-				width, height/2.0,
-				width/2.0, height,
+			polygonEl.Points = fmt.Sprintf("%s,%s %s,%s %s,%s %s,%s",
+				svg.FormatFloat(0.), svg.FormatFloat(height/2.0),
+				svg.FormatFloat(width/2.0), svg.FormatFloat(0.),
+				svg.FormatFloat(width), svg.FormatFloat(height/2.0),
+				svg.FormatFloat(width/2.0), svg.FormatFloat(height),
 			)
 		} else {
-			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
-				0., height/2.0,
-				width/2.0, 0.,
-				width, height/2.0,
-				width/2.0, height,
+			polygonEl.Points = fmt.Sprintf("%s,%s %s,%s %s,%s %s,%s",
+				svg.FormatFloat(0.), svg.FormatFloat(height/2.0),
+				svg.FormatFloat(width/2.0), svg.FormatFloat(0.),
+				svg.FormatFloat(width), svg.FormatFloat(height/2.0),
+				svg.FormatFloat(width/2.0), svg.FormatFloat(height),
 			)
 		}
 		path = polygonEl.Render()
@@ -647,18 +647,18 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection, i
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
 		if isTarget {
-			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
-				0., height/2.0,
-				width/2, height/8,
-				width, height/2.0,
-				width/2.0, height*0.9,
+			polygonEl.Points = fmt.Sprintf("%s,%s %s,%s %s,%s %s,%s",
+				svg.FormatFloat(0.), svg.FormatFloat(height/2.0),
+				svg.FormatFloat(width/2), svg.FormatFloat(height/8),
+				svg.FormatFloat(width), svg.FormatFloat(height/2.0),
+				svg.FormatFloat(width/2.0), svg.FormatFloat(height*0.9),
 			)
 		} else {
-			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
-				width/8, height/2.0,
-				width*0.6, height/8,
-				width*1.1, height/2.0,
-				width*0.6, height*7/8,
+			polygonEl.Points = fmt.Sprintf("%s,%s %s,%s %s,%s %s,%s",
+				svg.FormatFloat(width/8), svg.FormatFloat(height/2.0),
+				svg.FormatFloat(width*0.6), svg.FormatFloat(height/8),
+				svg.FormatFloat(width*1.1), svg.FormatFloat(height/2.0),
+				svg.FormatFloat(width*0.6), svg.FormatFloat(height*7/8),
 			)
 		}
 		path = polygonEl.Render()
@@ -703,32 +703,32 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection, i
 		newOrigin := geo.NewPoint(math.Cos(rotationAngle)*origin.X-math.Sin(rotationAngle)*origin.Y, math.Sin(rotationAngle)*origin.X+math.Cos(rotationAngle)*origin.Y)
 
 		crossEl := d2themes.NewThemableElement("polygon", inlineTheme)
-		crossEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f, %f,%f %f,%f %f,%f %f,%f %f,%f %f,%f %f,%f %f,%f",
-			0., height/2+inset,
-			width/2-inset, height/2+inset,
-			width/2-inset, height,
-			width/2+inset, height,
-			width/2+inset, height/2+inset,
-			width, height/2+inset,
-			width, height/2-inset,
-			width/2+inset, height/2-inset,
-			width/2+inset, 0.,
-			width/2-inset, 0.,
-			width/2-inset, height/2-inset,
-			0., height/2-inset,
+		crossEl.Points = fmt.Sprintf("%s,%s %s,%s %s,%s %s,%s, %s,%s %s,%s %s,%s %s,%s %s,%s %s,%s %s,%s %s,%s",
+			svg.FormatFloat(0.), svg.FormatFloat(height/2+inset),
+			svg.FormatFloat(width/2-inset), svg.FormatFloat(height/2+inset),
+			svg.FormatFloat(width/2-inset), svg.FormatFloat(height),
+			svg.FormatFloat(width/2+inset), svg.FormatFloat(height),
+			svg.FormatFloat(width/2+inset), svg.FormatFloat(height/2+inset),
+			svg.FormatFloat(width), svg.FormatFloat(height/2+inset),
+			svg.FormatFloat(width), svg.FormatFloat(height/2-inset),
+			svg.FormatFloat(width/2+inset), svg.FormatFloat(height/2-inset),
+			svg.FormatFloat(width/2+inset), svg.FormatFloat(0.),
+			svg.FormatFloat(width/2-inset), svg.FormatFloat(0.),
+			svg.FormatFloat(width/2-inset), svg.FormatFloat(height/2-inset),
+			svg.FormatFloat(0.), svg.FormatFloat(height/2-inset),
 		)
-		crossEl.Transform = fmt.Sprintf("translate(%f, %f) rotate(45)", -newOrigin.X+width/2, -newOrigin.Y+height/2)
+		crossEl.Transform = fmt.Sprintf("translate(%s, %s) rotate(45)", svg.FormatFloat(-newOrigin.X+width/2), svg.FormatFloat(-newOrigin.Y+height/2))
 
 		childPathEl := d2themes.NewThemableElement("path", inlineTheme)
 		if isTarget {
-			childPathEl.D = fmt.Sprintf("M%f,%f %f,%f",
-				width/2, height/2,
-				width, height/2,
+			childPathEl.D = fmt.Sprintf("M%s,%s %s,%s",
+				svg.FormatFloat(width/2), svg.FormatFloat(height/2),
+				svg.FormatFloat(width), svg.FormatFloat(height/2),
 			)
 		} else {
-			childPathEl.D = fmt.Sprintf("M%f,%f %f,%f",
-				width/2, height/2,
-				0., height/2,
+			childPathEl.D = fmt.Sprintf("M%s,%s %s,%s",
+				svg.FormatFloat(width/2), svg.FormatFloat(height/2),
+				svg.FormatFloat(0.), svg.FormatFloat(height/2),
 			)
 		}
 
@@ -748,18 +748,18 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection, i
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
 		if isTarget {
-			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
-				0., 0.,
-				0., height,
-				width, height,
-				width, 0.,
+			polygonEl.Points = fmt.Sprintf("%s,%s %s,%s %s,%s %s,%s",
+				svg.FormatFloat(0.), svg.FormatFloat(0.),
+				svg.FormatFloat(0.), svg.FormatFloat(height),
+				svg.FormatFloat(width), svg.FormatFloat(height),
+				svg.FormatFloat(width), svg.FormatFloat(0.),
 			)
 		} else {
-			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
-				0., 0.,
-				0., height,
-				width, height,
-				width, 0.,
+			polygonEl.Points = fmt.Sprintf("%s,%s %s,%s %s,%s %s,%s",
+				svg.FormatFloat(0.), svg.FormatFloat(0.),
+				svg.FormatFloat(0.), svg.FormatFloat(height),
+				svg.FormatFloat(width), svg.FormatFloat(height),
+				svg.FormatFloat(width), svg.FormatFloat(0.),
 			)
 		}
 
@@ -774,18 +774,18 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection, i
 
 		inset := strokeWidth / 2
 		if isTarget {
-			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
-				inset, inset,
-				inset, height-inset,
-				width-inset, height-inset,
-				width-inset, inset,
+			polygonEl.Points = fmt.Sprintf("%s,%s %s,%s %s,%s %s,%s",
+				svg.FormatFloat(inset), svg.FormatFloat(inset),
+				svg.FormatFloat(inset), svg.FormatFloat(height-inset),
+				svg.FormatFloat(width-inset), svg.FormatFloat(height-inset),
+				svg.FormatFloat(width-inset), svg.FormatFloat(inset),
 			)
 		} else {
-			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
-				inset, inset,
-				inset, height-inset,
-				width-inset, height-inset,
-				width-inset, inset,
+			polygonEl.Points = fmt.Sprintf("%s,%s %s,%s %s,%s %s,%s",
+				svg.FormatFloat(inset), svg.FormatFloat(inset),
+				svg.FormatFloat(inset), svg.FormatFloat(height-inset),
+				svg.FormatFloat(width-inset), svg.FormatFloat(height-inset),
+				svg.FormatFloat(width-inset), svg.FormatFloat(inset),
 			)
 		}
 		path = polygonEl.Render()
@@ -795,9 +795,9 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection, i
 		var modifierEl *d2themes.ThemableElement
 		if arrowhead == d2target.CfOneRequired || arrowhead == d2target.CfManyRequired {
 			modifierEl = d2themes.NewThemableElement("path", inlineTheme)
-			modifierEl.D = fmt.Sprintf("M%f,%f %f,%f",
-				offset, 0.,
-				offset, height,
+			modifierEl.D = fmt.Sprintf("M%s,%s %s,%s",
+				svg.FormatFloat(offset), svg.FormatFloat(0.),
+				svg.FormatFloat(offset), svg.FormatFloat(height),
 			)
 			modifierEl.Fill = d2target.BG_COLOR
 			modifierEl.Stroke = connection.Stroke
@@ -816,26 +816,26 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection, i
 
 		childPathEl := d2themes.NewThemableElement("path", inlineTheme)
 		if arrowhead == d2target.CfMany || arrowhead == d2target.CfManyRequired {
-			childPathEl.D = fmt.Sprintf("M%f,%f %f,%f M%f,%f %f,%f M%f,%f %f,%f",
-				width-3.0, height/2.0,
-				width+offset, height/2.0,
-				offset+3.0, height/2.0,
-				width+offset, 0.,
-				offset+3.0, height/2.0,
-				width+offset, height,
+			childPathEl.D = fmt.Sprintf("M%s,%s %s,%s M%s,%s %s,%s M%s,%s %s,%s",
+				svg.FormatFloat(width-3.0), svg.FormatFloat(height/2.0),
+				svg.FormatFloat(width+offset), svg.FormatFloat(height/2.0),
+				svg.FormatFloat(offset+3.0), svg.FormatFloat(height/2.0),
+				svg.FormatFloat(width+offset), svg.FormatFloat(0.),
+				svg.FormatFloat(offset+3.0), svg.FormatFloat(height/2.0),
+				svg.FormatFloat(width+offset), svg.FormatFloat(height),
 			)
 		} else {
-			childPathEl.D = fmt.Sprintf("M%f,%f %f,%f M%f,%f %f,%f",
-				width-3.0, height/2.0,
-				width+offset, height/2.0,
-				offset*2.0, 0.,
-				offset*2.0, height,
+			childPathEl.D = fmt.Sprintf("M%s,%s %s,%s M%s,%s %s,%s",
+				svg.FormatFloat(width-3.0), svg.FormatFloat(height/2.0),
+				svg.FormatFloat(width+offset), svg.FormatFloat(height/2.0),
+				svg.FormatFloat(offset*2.0), svg.FormatFloat(0.),
+				svg.FormatFloat(offset*2.0), svg.FormatFloat(height),
 			)
 		}
 
 		gEl := d2themes.NewThemableElement("g", inlineTheme)
 		if !isTarget {
-			gEl.Transform = fmt.Sprintf("scale(-1) translate(-%f, -%f)", width, height)
+			gEl.Transform = fmt.Sprintf("scale(-1) translate(-%s, -%s)", svg.FormatFloat(width), svg.FormatFloat(height))
 		}
 		gEl.Fill = d2target.BG_COLOR
 		gEl.Stroke = connection.Stroke
@@ -868,10 +868,10 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection, i
 	}
 
 	return strings.Join([]string{
-		fmt.Sprintf(`<marker id="%s" markerWidth="%f" markerHeight="%f" refX="%f" refY="%f"`,
-			id, width, height, refX, refY,
+		fmt.Sprintf(`<marker id="%s" markerWidth="%s" markerHeight="%s" refX="%s" refY="%s"`,
+			id, svg.FormatFloat(width), svg.FormatFloat(height), svg.FormatFloat(refX), svg.FormatFloat(refY),
 		),
-		fmt.Sprintf(`viewBox="%f %f %f %f"`, 0., 0., width, height),
+		fmt.Sprintf(`viewBox="%s %s %s %s"`, svg.FormatFloat(0.), svg.FormatFloat(0.), svg.FormatFloat(width), svg.FormatFloat(height)),
 		`orient="auto" markerUnits="userSpaceOnUse">`,
 		path,
 		"</marker>",
@@ -905,26 +905,26 @@ func pathData(connection d2target.Connection, srcAdj, dstAdj *geo.Point) string 
 	var path []string
 	route := connection.Route
 
-	path = append(path, fmt.Sprintf("M %f %f",
-		route[0].X+srcAdj.X,
-		route[0].Y+srcAdj.Y,
+	path = append(path, fmt.Sprintf("M %s %s",
+		svg.FormatFloat(route[0].X+srcAdj.X),
+		svg.FormatFloat(route[0].Y+srcAdj.Y),
 	))
 
 	if connection.IsCurve {
 		i := 1
 		for ; i < len(route)-3; i += 3 {
-			path = append(path, fmt.Sprintf("C %f %f %f %f %f %f",
-				route[i].X, route[i].Y,
-				route[i+1].X, route[i+1].Y,
-				route[i+2].X, route[i+2].Y,
+			path = append(path, fmt.Sprintf("C %s %s %s %s %s %s",
+				svg.FormatFloat(route[i].X), svg.FormatFloat(route[i].Y),
+				svg.FormatFloat(route[i+1].X), svg.FormatFloat(route[i+1].Y),
+				svg.FormatFloat(route[i+2].X), svg.FormatFloat(route[i+2].Y),
 			))
 		}
 		// final curve target adjustment
-		path = append(path, fmt.Sprintf("C %f %f %f %f %f %f",
-			route[i].X, route[i].Y,
-			route[i+1].X, route[i+1].Y,
-			route[i+2].X+dstAdj.X,
-			route[i+2].Y+dstAdj.Y,
+		path = append(path, fmt.Sprintf("C %s %s %s %s %s %s",
+			svg.FormatFloat(route[i].X), svg.FormatFloat(route[i].Y),
+			svg.FormatFloat(route[i+1].X), svg.FormatFloat(route[i+1].Y),
+			svg.FormatFloat(route[i+2].X+dstAdj.X),
+			svg.FormatFloat(route[i+2].Y+dstAdj.Y),
 		))
 	} else {
 		for i := 1; i < len(route)-1; i++ {
@@ -942,9 +942,9 @@ func pathData(connection d2target.Connection, srcAdj, dstAdj *geo.Point) string 
 			prevTranslations := prevVector.Unit().Multiply(units).ToPoint()
 			currTranslations := currVector.Unit().Multiply(units).ToPoint()
 
-			path = append(path, fmt.Sprintf("L %f %f",
-				prevTarget.X-prevTranslations.X,
-				prevTarget.Y-prevTranslations.Y,
+			path = append(path, fmt.Sprintf("L %s %s",
+				svg.FormatFloat(prevTarget.X-prevTranslations.X),
+				svg.FormatFloat(prevTarget.Y-prevTranslations.Y),
 			))
 
 			// If the segment length is too small, instead of drawing 2 arcs, just skip this segment and bezier curve to the next one
@@ -956,31 +956,31 @@ func pathData(connection d2target.Connection, srcAdj, dstAdj *geo.Point) string 
 
 				// These 2 bezier control points aren't just at the corner -- they are reflected at the corner, which causes the curve to be ~tangent to the corner,
 				// which matches how the two arcs look
-				path = append(path, fmt.Sprintf("C %f %f %f %f %f %f",
+				path = append(path, fmt.Sprintf("C %s %s %s %s %s %s",
 					// Control point
-					prevTarget.X+prevTranslations.X,
-					prevTarget.Y+prevTranslations.Y,
+					svg.FormatFloat(prevTarget.X+prevTranslations.X),
+					svg.FormatFloat(prevTarget.Y+prevTranslations.Y),
 					// Control point
-					currTarget.X-nextTranslations.X,
-					currTarget.Y-nextTranslations.Y,
+					svg.FormatFloat(currTarget.X-nextTranslations.X),
+					svg.FormatFloat(currTarget.Y-nextTranslations.Y),
 					// Where curve ends
-					currTarget.X+nextTranslations.X,
-					currTarget.Y+nextTranslations.Y,
+					svg.FormatFloat(currTarget.X+nextTranslations.X),
+					svg.FormatFloat(currTarget.Y+nextTranslations.Y),
 				))
 			} else {
-				path = append(path, fmt.Sprintf("S %f %f %f %f",
-					prevTarget.X,
-					prevTarget.Y,
-					prevTarget.X+currTranslations.X,
-					prevTarget.Y+currTranslations.Y,
+				path = append(path, fmt.Sprintf("S %s %s %s %s",
+					svg.FormatFloat(prevTarget.X),
+					svg.FormatFloat(prevTarget.Y),
+					svg.FormatFloat(prevTarget.X+currTranslations.X),
+					svg.FormatFloat(prevTarget.Y+currTranslations.Y),
 				))
 			}
 		}
 
 		lastPoint := route[len(route)-1]
-		path = append(path, fmt.Sprintf("L %f %f",
-			lastPoint.X+dstAdj.X,
-			lastPoint.Y+dstAdj.Y,
+		path = append(path, fmt.Sprintf("L %s %s",
+			svg.FormatFloat(lastPoint.X+dstAdj.X),
+			svg.FormatFloat(lastPoint.Y+dstAdj.Y),
 		))
 	}
 
@@ -1007,8 +1007,8 @@ func makeLabelMaskWithTransform(labelTL *geo.Point, width, height int, opacity f
 		y -= shapePos.Y
 	}
 
-	return fmt.Sprintf(`<rect x="%f" y="%f" width="%d" height="%d" fill="%s"></rect>`,
-		x, y,
+	return fmt.Sprintf(`<rect x="%s" y="%s" width="%d" height="%d" fill="%s"></rect>`,
+		svg.FormatFloat(x), svg.FormatFloat(y),
 		width+4,
 		height,
 		fill,
@@ -1068,15 +1068,15 @@ func makeBorderLabelMask(labelPosition label.Position, labelTL *geo.Point, label
 		maskY -= shapePos.Y
 	}
 
-	return fmt.Sprintf(`<rect x="%f" y="%f" width="%f" height="%f" fill="%s"></rect>`,
-		maskX, maskY, maskWidth, maskHeight, fill,
+	return fmt.Sprintf(`<rect x="%s" y="%s" width="%s" height="%s" fill="%s"></rect>`,
+		svg.FormatFloat(maskX), svg.FormatFloat(maskY), svg.FormatFloat(maskWidth), svg.FormatFloat(maskHeight), fill,
 	)
 }
 
 func drawConnection(writer io.Writer, diagramHash string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, sketch bool, inlineTheme *d2themes.Theme, markdown *markdownRenderer) (labelMask string, _ error) {
 	opacityStyle := ""
 	if connection.Opacity != 1.0 {
-		opacityStyle = fmt.Sprintf(" style='opacity:%f'", connection.Opacity)
+		opacityStyle = fmt.Sprintf(" style='opacity:%s'", svg.FormatFloat(connection.Opacity))
 	}
 
 	classes := []string{base64.URLEncoding.EncodeToString([]byte(svg.EscapeText(connection.ID)))}
@@ -1117,12 +1117,12 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 		if iconPos != nil {
 			connectionIconClipPath := ""
 			if connection.IconBorderRadius != 0 {
-				connectionIconClipPath = fmt.Sprintf(` clip-path="inset(0 round %fpx)"`, connection.IconBorderRadius)
+				connectionIconClipPath = fmt.Sprintf(` clip-path="inset(0 round %spx)"`, svg.FormatFloat(connection.IconBorderRadius))
 			}
-			fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d"%s />`,
+			fmt.Fprintf(writer, `<image href="%s" x="%s" y="%s" width="%d" height="%d"%s />`,
 				html.EscapeString(connection.Icon.String()),
-				iconPos.X,
-				iconPos.Y,
+				svg.FormatFloat(iconPos.X),
+				svg.FormatFloat(iconPos.Y),
 				d2target.DEFAULT_ICON_SIZE,
 				d2target.DEFAULT_ICON_SIZE,
 				connectionIconClipPath,
@@ -1291,13 +1291,13 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 				if connection.FontSize != d2fonts.FONT_SIZE_M {
 					fontSize = fmt.Sprintf(` style="font-size:%v"`, connection.FontSize)
 				}
-				fmt.Fprintf(writer, `<g transform="translate(%f %f)" class="%s"%s>`,
-					labelTL.X, labelTL.Y, class, fontSize,
+				fmt.Fprintf(writer, `<g transform="translate(%s %s)" class="%s"%s>`,
+					svg.FormatFloat(labelTL.X), svg.FormatFloat(labelTL.Y), class, fontSize,
 				)
 
 				lineHeight := textmeasure.CODE_LINE_HEIGHT
 				for index, tokens := range chroma.SplitTokensIntoLines(iterator.Tokens()) {
-					fmt.Fprintf(writer, "<text class=\"text-mono\" x=\"0\" y=\"%fem\">", 1+float64(index)*lineHeight)
+					fmt.Fprintf(writer, "<text class=\"text-mono\" x=\"0\" y=\"%sem\">", svg.FormatFloat(1+float64(index)*lineHeight))
 					for _, token := range tokens {
 						text := svgEscaper.Replace(token.String())
 						attr := styleAttr(svgStyles, token.Type)
@@ -1671,7 +1671,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 	// Opacity is a unique style, it applies to everything for a shape
 	opacityStyle := ""
 	if targetShape.Opacity != 1.0 {
-		opacityStyle = fmt.Sprintf(" style='opacity:%f'", targetShape.Opacity)
+		opacityStyle = fmt.Sprintf(" style='opacity:%s'", svg.FormatFloat(targetShape.Opacity))
 	}
 
 	// this clipPath must be defined outside `g` element
@@ -2012,10 +2012,10 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		if targetShape.IconBorderRadius != 0 {
 			shapeIconClipPath = fmt.Sprintf(` clip-path="inset(0 round %dpx)"`, targetShape.IconBorderRadius)
 		}
-		fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d"%s />`,
+		fmt.Fprintf(writer, `<image href="%s" x="%s" y="%s" width="%d" height="%d"%s />`,
 			html.EscapeString(targetShape.Icon.String()),
-			tl.X,
-			tl.Y,
+			svg.FormatFloat(tl.X),
+			svg.FormatFloat(tl.Y),
 			iconSize,
 			iconSize,
 			shapeIconClipPath,
@@ -2155,8 +2155,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				if targetShape.FontSize != d2fonts.FONT_SIZE_M {
 					fontSize = fmt.Sprintf(` style="font-size:%v"`, targetShape.FontSize)
 				}
-				fmt.Fprintf(writer, `<g transform="translate(%f %f)" class="%s"%s>`,
-					box.TopLeft.X, box.TopLeft.Y, class, fontSize,
+				fmt.Fprintf(writer, `<g transform="translate(%s %s)" class="%s"%s>`,
+					svg.FormatFloat(box.TopLeft.X), svg.FormatFloat(box.TopLeft.Y), class, fontSize,
 				)
 				rectEl := d2themes.NewThemableElement("rect", inlineTheme)
 				rectEl.Width = float64(targetShape.Width)
@@ -2170,11 +2170,11 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				fmt.Fprint(writer, rectEl.Render())
 				// Padding = 0.5em
 				padding := float64(targetShape.FontSize) / 2.
-				fmt.Fprintf(writer, `<g transform="translate(%f %f)">`, padding, padding)
+				fmt.Fprintf(writer, `<g transform="translate(%s %s)">`, svg.FormatFloat(padding), svg.FormatFloat(padding))
 
 				lineHeight := textmeasure.CODE_LINE_HEIGHT
 				for index, tokens := range chroma.SplitTokensIntoLines(iterator.Tokens()) {
-					fmt.Fprintf(writer, "<text class=\"text-mono\" x=\"0\" y=\"%fem\">", 1+float64(index)*lineHeight)
+					fmt.Fprintf(writer, "<text class=\"text-mono\" x=\"0\" y=\"%sem\">", svg.FormatFloat(1+float64(index)*lineHeight))
 					for _, token := range tokens {
 						text := svgEscaper.Replace(token.String())
 						attr := styleAttr(svgStyles, token.Type)
@@ -2231,16 +2231,16 @@ func applyIconBorderRadius(clipPathID string, shape d2target.Shape) string {
 	topX, topY := box.TopLeft.X+box.Width, box.TopLeft.Y
 
 	out := fmt.Sprintf(`<clipPath id="%s">`, clipPathID)
-	out += fmt.Sprintf(`<path d="M %f %f L %f %f S %f %f %f %f `, box.TopLeft.X, box.TopLeft.Y+float64(shape.IconBorderRadius), box.TopLeft.X, box.TopLeft.Y+float64(shape.IconBorderRadius), box.TopLeft.X, box.TopLeft.Y, box.TopLeft.X+float64(shape.IconBorderRadius), box.TopLeft.Y)
-	out += fmt.Sprintf(`L %f %f L %f %f `, box.TopLeft.X+box.Width-float64(shape.IconBorderRadius), box.TopLeft.Y, topX-float64(shape.IconBorderRadius), topY)
+	out += fmt.Sprintf(`<path d="M %s %s L %s %s S %s %s %s %s `, svg.FormatFloat(box.TopLeft.X), svg.FormatFloat(box.TopLeft.Y+float64(shape.IconBorderRadius)), svg.FormatFloat(box.TopLeft.X), svg.FormatFloat(box.TopLeft.Y+float64(shape.IconBorderRadius)), svg.FormatFloat(box.TopLeft.X), svg.FormatFloat(box.TopLeft.Y), svg.FormatFloat(box.TopLeft.X+float64(shape.IconBorderRadius)), svg.FormatFloat(box.TopLeft.Y))
+	out += fmt.Sprintf(`L %s %s L %s %s `, svg.FormatFloat(box.TopLeft.X+box.Width-float64(shape.IconBorderRadius)), svg.FormatFloat(box.TopLeft.Y), svg.FormatFloat(topX-float64(shape.IconBorderRadius)), svg.FormatFloat(topY))
 
-	out += fmt.Sprintf(`S %f %f %f %f `, topX, topY, topX, topY+float64(shape.IconBorderRadius))
-	out += fmt.Sprintf(`L %f %f `, topX, topY+box.Height-float64(shape.IconBorderRadius))
-	out += fmt.Sprintf(`S %f % f %f %f `, topX, topY+box.Height, topX-float64(shape.IconBorderRadius), topY+box.Height)
-	out += fmt.Sprintf(`L %f %f `, box.TopLeft.X+float64(shape.IconBorderRadius), box.TopLeft.Y+box.Height)
-	out += fmt.Sprintf(`S %f %f %f %f`, box.TopLeft.X, box.TopLeft.Y+box.Height, box.TopLeft.X, box.TopLeft.Y+box.Height-float64(shape.IconBorderRadius))
-	out += fmt.Sprintf(`L %f %f`, box.TopLeft.X, box.TopLeft.Y+float64(shape.IconBorderRadius))
-	out += fmt.Sprintf(`Z %f %f" `, box.TopLeft.X, box.TopLeft.Y)
+	out += fmt.Sprintf(`S %s %s %s %s `, svg.FormatFloat(topX), svg.FormatFloat(topY), svg.FormatFloat(topX), svg.FormatFloat(topY+float64(shape.IconBorderRadius)))
+	out += fmt.Sprintf(`L %s %s `, svg.FormatFloat(topX), svg.FormatFloat(topY+box.Height-float64(shape.IconBorderRadius)))
+	out += fmt.Sprintf(`S %s  %s %s %s `, svg.FormatFloat(topX), svg.FormatFloat(topY+box.Height), svg.FormatFloat(topX-float64(shape.IconBorderRadius)), svg.FormatFloat(topY+box.Height))
+	out += fmt.Sprintf(`L %s %s `, svg.FormatFloat(box.TopLeft.X+float64(shape.IconBorderRadius)), svg.FormatFloat(box.TopLeft.Y+box.Height))
+	out += fmt.Sprintf(`S %s %s %s %s`, svg.FormatFloat(box.TopLeft.X), svg.FormatFloat(box.TopLeft.Y+box.Height), svg.FormatFloat(box.TopLeft.X), svg.FormatFloat(box.TopLeft.Y+box.Height-float64(shape.IconBorderRadius)))
+	out += fmt.Sprintf(`L %s %s`, svg.FormatFloat(box.TopLeft.X), svg.FormatFloat(box.TopLeft.Y+float64(shape.IconBorderRadius)))
+	out += fmt.Sprintf(`Z %s %s" `, svg.FormatFloat(box.TopLeft.X), svg.FormatFloat(box.TopLeft.Y))
 	return out + `fill="none" /> </clipPath>`
 }
 
@@ -2372,25 +2372,25 @@ func renderTooltipTail(tailDirection string, tailX, tailY float64, inlineTheme *
 
 	switch tailDirection {
 	case "top":
-		path = fmt.Sprintf(`M %f %f L %f %f L %f %f Z`,
-			tailX-tailSize/2, tailY,
-			tailX+tailSize/2, tailY,
-			tailX, tailY-tailSize)
+		path = fmt.Sprintf(`M %s %s L %s %s L %s %s Z`,
+			svg.FormatFloat(tailX-tailSize/2), svg.FormatFloat(tailY),
+			svg.FormatFloat(tailX+tailSize/2), svg.FormatFloat(tailY),
+			svg.FormatFloat(tailX), svg.FormatFloat(tailY-tailSize))
 	case "bottom":
-		path = fmt.Sprintf(`M %f %f L %f %f L %f %f Z`,
-			tailX-tailSize/2, tailY,
-			tailX+tailSize/2, tailY,
-			tailX, tailY+tailSize)
+		path = fmt.Sprintf(`M %s %s L %s %s L %s %s Z`,
+			svg.FormatFloat(tailX-tailSize/2), svg.FormatFloat(tailY),
+			svg.FormatFloat(tailX+tailSize/2), svg.FormatFloat(tailY),
+			svg.FormatFloat(tailX), svg.FormatFloat(tailY+tailSize))
 	case "left":
-		path = fmt.Sprintf(`M %f %f L %f %f L %f %f Z`,
-			tailX, tailY-tailSize/2,
-			tailX, tailY+tailSize/2,
-			tailX-tailSize, tailY)
+		path = fmt.Sprintf(`M %s %s L %s %s L %s %s Z`,
+			svg.FormatFloat(tailX), svg.FormatFloat(tailY-tailSize/2),
+			svg.FormatFloat(tailX), svg.FormatFloat(tailY+tailSize/2),
+			svg.FormatFloat(tailX-tailSize), svg.FormatFloat(tailY))
 	case "right":
-		path = fmt.Sprintf(`M %f %f L %f %f L %f %f Z`,
-			tailX, tailY-tailSize/2,
-			tailX, tailY+tailSize/2,
-			tailX+tailSize, tailY)
+		path = fmt.Sprintf(`M %s %s L %s %s L %s %s Z`,
+			svg.FormatFloat(tailX), svg.FormatFloat(tailY-tailSize/2),
+			svg.FormatFloat(tailX), svg.FormatFloat(tailY+tailSize/2),
+			svg.FormatFloat(tailX+tailSize), svg.FormatFloat(tailY))
 	default:
 		return ""
 	}
@@ -2459,12 +2459,16 @@ func RenderText(text string, x, height float64) string {
 			// if there are multiple newlines in a row we still need text for the tspan to render
 			escaped = " "
 		}
-		rendered = append(rendered, fmt.Sprintf(`<tspan x="%f" dy="%f">%s</tspan>`, x, dy, escaped))
+		rendered = append(rendered, fmt.Sprintf(`<tspan x="%s" dy="%s">%s</tspan>`, svg.FormatFloat(x), svg.FormatFloat(dy), escaped))
 	}
 	return strings.Join(rendered, "")
 }
 
 func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fonts.FontFamily, monoFontFamily *d2fonts.FontFamily, corpus string) {
+	embedFonts(buf, diagramHash, source, fontFamily, monoFontFamily, corpus, nil)
+}
+
+func embedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fonts.FontFamily, monoFontFamily *d2fonts.FontFamily, corpus string, corpora fontCorpora) {
 	// Markdown generates text that may not exist literally in the D2 source,
 	// such as list markers and decoded entities. Include those rendered runs in
 	// every font subset, including multi-board animations where render-local
@@ -2472,9 +2476,10 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 	for _, match := range nativeMarkdownTextPattern.FindAllStringSubmatch(source, -1) {
 		corpus += html.UnescapeString(match[1])
 	}
+	corpora = restrictFontCorpora(corpora, corpus)
 	fmt.Fprint(buf, `<style type="text/css"><![CDATA[`)
 
-	appendOnTriggerLazy(
+	appendFontOnTrigger(
 		buf,
 		source,
 		[]string{
@@ -2483,7 +2488,8 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			`class="md"`,
 			`class="md `,
 		},
-		func() string {
+		corpora, "text", corpus,
+		func(corpus string) string {
 			return fmt.Sprintf(`
 .%s .text {
 	font-family: "%s-font-regular";
@@ -2500,13 +2506,14 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		},
 	)
 
-	appendOnTriggerLazy(
+	appendFontOnTrigger(
 		buf,
 		source,
 		[]string{
 			`text-semibold`,
 		},
-		func() string {
+		corpora, "text-semibold", corpus,
+		func(corpus string) string {
 			return fmt.Sprintf(`
 .%s .text-semibold {
 	font-family: "%s-font-semibold";
@@ -2595,7 +2602,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 }`,
 	)
 
-	appendOnTriggerLazy(
+	appendFontOnTrigger(
 		buf,
 		source,
 		[]string{
@@ -2603,7 +2610,8 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			`<b>`,
 			`<strong>`,
 		},
-		func() string {
+		corpora, "text-bold", corpus,
+		func(corpus string) string {
 			return fmt.Sprintf(`
 .%s .text-bold {
 	font-family: "%s-font-bold";
@@ -2620,7 +2628,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		},
 	)
 
-	appendOnTriggerLazy(
+	appendFontOnTrigger(
 		buf,
 		source,
 		[]string{
@@ -2628,7 +2636,8 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			`<em>`,
 			`<dfn>`,
 		},
-		func() string {
+		corpora, "text-italic", corpus,
+		func(corpus string) string {
 			return fmt.Sprintf(`
 .%s .text-italic {
 	font-family: "%s-font-italic";
@@ -2645,7 +2654,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		},
 	)
 
-	appendOnTriggerLazy(
+	appendFontOnTrigger(
 		buf,
 		source,
 		[]string{
@@ -2655,7 +2664,8 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			`<kbd>`,
 			`<samp>`,
 		},
-		func() string {
+		corpora, "text-mono", corpus,
+		func(corpus string) string {
 			return fmt.Sprintf(`
 .%s .text-mono {
 	font-family: "%s-font-mono";
@@ -2672,13 +2682,14 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		},
 	)
 
-	appendOnTriggerLazy(
+	appendFontOnTrigger(
 		buf,
 		source,
 		[]string{
 			`text-mono-semibold`,
 		},
-		func() string {
+		corpora, "text-mono-semibold", corpus,
+		func(corpus string) string {
 			return fmt.Sprintf(`
 .%s .text-mono-semibold {
 	font-family: "%s-font-mono-semibold";
@@ -2695,13 +2706,14 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		},
 	)
 
-	appendOnTriggerLazy(
+	appendFontOnTrigger(
 		buf,
 		source,
 		[]string{
 			`text-mono-bold`,
 		},
-		func() string {
+		corpora, "text-mono-bold", corpus,
+		func(corpus string) string {
 			return fmt.Sprintf(`
 .%s .text-mono-bold {
 	font-family: "%s-font-mono-bold";
@@ -2718,13 +2730,14 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		},
 	)
 
-	appendOnTriggerLazy(
+	appendFontOnTrigger(
 		buf,
 		source,
 		[]string{
 			`text-mono-italic`,
 		},
-		func() string {
+		corpora, "text-mono-italic", corpus,
+		func(corpus string) string {
 			return fmt.Sprintf(`
 .%s .text-mono-italic {
 	font-family: "%s-font-mono-italic";
@@ -3034,18 +3047,13 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		`</mask>`,
 	}, "\n"))
 
-	// generate style elements that will be appended to the SVG tag
-	upperBuf := &bytes.Buffer{}
+	// Validate the theme before expanding the background, preserving error order.
+	var themeStylesheet string
 	if opts.MasterID == "" {
-		EmbedFonts(upperBuf, diagramHash, buf.String(), diagram.FontFamily, diagram.MonoFontFamily, diagram.GetCorpus()+markdown.generatedCorpus()) // EmbedFonts *must* run before `d2sketch.DefineFillPatterns`, but after all elements are appended to `buf`
-		themeStylesheet, err := ThemeCSS(diagramHash, &themeID, darkThemeID, opts.ThemeOverrides, opts.DarkThemeOverrides)
+		var err error
+		themeStylesheet, err = ThemeCSS(diagramHash, &themeID, darkThemeID, opts.ThemeOverrides, opts.DarkThemeOverrides)
 		if err != nil {
 			return nil, err
-		}
-		fmt.Fprintf(upperBuf, `<style type="text/css"><![CDATA[%s%s]]></style>`, BaseStylesheet, themeStylesheet)
-
-		if sketch {
-			d2sketch.DefineFillPatterns(upperBuf, diagramHash)
 		}
 	}
 
@@ -3067,7 +3075,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	backgroundEl.Rx = float64(diagram.Root.BorderRadius)
 	if diagram.Root.StrokeDash != 0 {
 		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(diagram.Root.StrokeWidth), diagram.Root.StrokeDash)
-		backgroundEl.StrokeDashArray = fmt.Sprintf("%f, %f", dashSize, gapSize)
+		backgroundEl.StrokeDashArray = fmt.Sprintf("%s, %s", svg.FormatFloat(dashSize), svg.FormatFloat(gapSize))
 	}
 	backgroundEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, diagram.Root.StrokeWidth)
 
@@ -3099,6 +3107,38 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		left, top, w, h, ok = expandDimensions(left, top, w, h, strokePadding)
 		if !ok {
 			return nil, invalidPaddingError(int64(pad))
+		}
+	}
+
+	backgroundStr := backgroundEl.Render()
+
+	// generate style elements that will be appended to the SVG tag
+	upperBuf := &bytes.Buffer{}
+	if opts.MasterID == "" {
+		corpora, classes, ok := collectFontCorporaAndClasses(buf.String())
+		if !ok {
+			corpora = nil
+		}
+		// Appendix postprocessing can add footnotes and numbered icons after
+		// Render. Preserve both the old face selection and its whole corpus
+		// whenever the diagram can receive that additional text.
+		for _, shape := range diagram.Shapes {
+			if shape.Tooltip != "" || shape.Link != "" || shape.PrettyLink != "" {
+				corpora = nil
+				break
+			}
+		}
+		embedFonts(upperBuf, diagramHash, buf.String(), diagram.FontFamily, diagram.MonoFontFamily, diagram.GetCorpus()+markdown.generatedCorpus(), corpora) // Must precede DefineFillPatterns, after all text is rendered.
+
+		if classes == nil {
+			themeStylesheet = pruneThemeCSS(themeStylesheet, buf.String(), backgroundStr, doubleBorderElStr)
+		} else {
+			themeStylesheet = pruneThemeCSSWithClasses(themeStylesheet, classes, backgroundStr, doubleBorderElStr)
+		}
+		fmt.Fprintf(upperBuf, `<style type="text/css"><![CDATA[%s%s]]></style>`, BaseStylesheet, themeStylesheet)
+
+		if sketch {
+			d2sketch.DefineFillPatterns(upperBuf, diagramHash)
 		}
 	}
 
@@ -3170,7 +3210,6 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		tag = "svg"
 	}
 
-	// TODO minify
 	docRendered := fmt.Sprintf(`%s%s<%s class="%s" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s%s</%s>%s`,
 		xmlTag,
 		fitToScreenWrapperOpening,
@@ -3178,7 +3217,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		strings.Join([]string{diagramHash, idAttr}, " "),
 		w, h, left, top, w, h,
 		doubleBorderElStr,
-		backgroundEl.Render(),
+		backgroundStr,
 		upperBuf.String(),
 		buf.String(),
 		tag,
@@ -3187,7 +3226,6 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	return []byte(docRendered), nil
 }
 
-// TODO include only colors that are being used to reduce size
 func ThemeCSS(diagramHash string, themeID *int64, darkThemeID *int64, overrides, darkOverrides *d2target.ThemeOverrides) (stylesheet string, err error) {
 	if themeID == nil {
 		themeID = &d2themescatalog.NeutralDefault.ID
