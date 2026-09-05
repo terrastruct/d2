@@ -58,7 +58,6 @@ type pdfImageObject struct {
 	PDFImage
 	colorSpace string
 	softMask   int
-	channels   int
 }
 
 // InspectD2PDF verifies page/link structure and decodes D2's embedded raster
@@ -411,7 +410,7 @@ func inspectPDFImage(object pdfObject) (*pdfImageObject, error) {
 	}
 	return &pdfImageObject{
 		PDFImage:   PDFImage{ObjectNumber: object.number, Width: width, Height: height, Pixels: imageData},
-		colorSpace: colorSpace, softMask: softMask, channels: channels,
+		colorSpace: colorSpace, softMask: softMask,
 	}, nil
 }
 

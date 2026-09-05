@@ -684,15 +684,11 @@ func (c *compiler) ensureGlobContext(refctx *RefContext) *globContext {
 func (c *compiler) compileKey(refctx *RefContext) {
 	postTargetStart := len(c.lazyPostTargets)
 	if refctx.Key.HasGlob() {
-		// These printlns are for debugging infinite loops.
-		// println("og", refctx.Edge, refctx.Key, refctx.Scope, refctx.ScopeMap, refctx.ScopeAST)
 		for _, refctx2 := range c.globRefContextStack {
-			// println("st", refctx2.Edge, refctx2.Key, refctx2.Scope, refctx2.ScopeMap, refctx2.ScopeAST)
 			if refctx.Equal(refctx2) {
 				// Break the infinite loop.
 				return
 			}
-			// println("keys", d2format.Format(refctx2.Key), d2format.Format(refctx.Key))
 		}
 		c.globRefContextStack = append(c.globRefContextStack, refctx)
 		defer func() {
@@ -715,7 +711,6 @@ func (c *compiler) compileKey(refctx *RefContext) {
 	}
 	if oldVersion != refctx.ScopeMap.structureVersion && !c.applyingLazyWorklist && !settled {
 		for _, gctx2 := range c.globContexts() {
-			// println(d2format.Format(gctx2.refctx.Key), d2format.Format(refctx.Key))
 			old := c.lazyGlobBeingApplied
 			c.lazyGlobBeingApplied = true
 			c.compileKey(gctx2.refctx)

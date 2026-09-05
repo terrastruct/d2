@@ -198,7 +198,11 @@ func BenchmarkOffscreenImageCacheVariedOneUseSizes(b *testing.B) {
 		for range b.N {
 			budget := offscreenBudget{limit: 1 << 30}
 			for _, bounds := range bounds {
-				reservation, err := budget.reserve(bounds, 4, "varied one-use benchmark")
+				bytes, err := pixelStorageBytes(bounds, 4)
+				if err != nil {
+					b.Fatal(err)
+				}
+				reservation, err := budget.reserveBytes(bytes, "varied one-use benchmark")
 				if err != nil {
 					b.Fatal(err)
 				}

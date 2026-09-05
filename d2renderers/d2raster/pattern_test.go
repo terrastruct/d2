@@ -217,7 +217,7 @@ func TestWrappedPatternCoordinateMatchesDoubleModReference(t *testing.T) {
 		{value: -15, origin: 5, period: 10},
 		{value: 15, origin: -5, period: 10},
 	} {
-		got, gotOK := wrappedPatternCoordinate(test.value, test.origin, test.period)
+		got, gotOK := wrappedPatternCoordinateFromOriginMod(test.value, math.Mod(test.origin, test.period), test.period)
 		want, wantOK := doubleModWrappedPatternCoordinate(test.value, test.origin, test.period)
 		if gotOK != wantOK || gotOK && math.Float64bits(got) != math.Float64bits(want) {
 			t.Fatalf("wrapped(%g,%g,%g) = (%g,%v), want bit-exact (%g,%v)", test.value, test.origin, test.period, got, gotOK, want, wantOK)
@@ -235,7 +235,7 @@ func TestWrappedPatternCoordinateMatchesDoubleModReference(t *testing.T) {
 		value := math.Float64frombits(next())
 		origin := math.Float64frombits(next())
 		period := math.Float64frombits(next() &^ (uint64(1) << 63))
-		got, gotOK := wrappedPatternCoordinate(value, origin, period)
+		got, gotOK := wrappedPatternCoordinateFromOriginMod(value, math.Mod(origin, period), period)
 		want, wantOK := doubleModWrappedPatternCoordinate(value, origin, period)
 		if gotOK != wantOK || gotOK && math.Float64bits(got) != math.Float64bits(want) {
 			t.Fatalf("wrapped(%g,%g,%g) = (%g,%v), want bit-exact (%g,%v)", value, origin, period, got, gotOK, want, wantOK)

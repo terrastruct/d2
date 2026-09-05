@@ -65,14 +65,6 @@ type offscreenBudget struct {
 	cache       cachedOffscreenImage
 }
 
-func (b *offscreenBudget) reserve(bounds image.Rectangle, bytesPerPixel int64, purpose string) (int64, error) {
-	bytes, err := pixelStorageBytes(bounds, bytesPerPixel)
-	if err != nil {
-		return 0, fmt.Errorf("d2raster: %s: %w", purpose, err)
-	}
-	return b.reserveBytes(bytes, purpose)
-}
-
 func (b *offscreenBudget) reserveBytes(bytes int64, purpose string) (int64, error) {
 	if bytes > b.limit-b.live {
 		return 0, fmt.Errorf(

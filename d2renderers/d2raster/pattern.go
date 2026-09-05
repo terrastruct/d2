@@ -290,13 +290,6 @@ func patternTileColor(tile *preparedPatternTile, pixelX, pixelY int) (color.NRGB
 	}, true
 }
 
-func wrappedPatternCoordinate(value, origin, period float64) (float64, bool) {
-	if !finite(value) || !finite(origin) || !finite(period) || period <= 0 {
-		return 0, false
-	}
-	return wrappedPatternCoordinateFromOriginMod(value, math.Mod(origin, period), period)
-}
-
 func wrappedPatternCoordinateFromOriginMod(value, originMod, period float64) (float64, bool) {
 	if !finite(value) || !finite(originMod) || !finite(period) || period <= 0 {
 		return 0, false

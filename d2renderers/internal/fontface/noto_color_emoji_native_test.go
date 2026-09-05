@@ -160,7 +160,7 @@ func TestBundledNotoColorEmojiShapesEmojiSequences(t *testing.T) {
 		"variation selector":  "✈️",
 	} {
 		t.Run(name, func(t *testing.T) {
-			shaped, err := ShapeText(context.Background(), text, fixed.I(64), []ShapeFace{{
+			shaped, err := new(ShapingWorkspace).ShapeTextTransient(context.Background(), text, fixed.I(64), []ShapeFace{{
 				ID: "NotoColorEmoji", Face: face,
 			}}, ShapeLimits{Runes: 16, Faces: 1, CoverageChecks: 32, Runs: 16, Glyphs: 16})
 			if err != nil {
@@ -174,9 +174,6 @@ func TestBundledNotoColorEmojiShapesEmojiSequences(t *testing.T) {
 					continue
 				}
 				painted++
-				if !glyph.HasInk {
-					t.Fatalf("glyph %d unexpectedly has no ink", glyph.ID)
-				}
 			}
 			if painted != 1 {
 				t.Fatalf("painted glyph count = %d, want 1; glyphs = %#v", painted, shaped.Glyphs)
@@ -187,7 +184,7 @@ func TestBundledNotoColorEmojiShapesEmojiSequences(t *testing.T) {
 
 func TestRegisteredBundledNotoColorEmojiClonesAndMatchesExactly(t *testing.T) {
 	data := bundledNotoColorEmojiForTest(t)
-	if _, err := RegisterBundledNotoColorEmoji(data); err != nil {
+	if _, err := RegisterOwnedBundledNotoColorEmoji(append([]byte(nil), data...)); err != nil {
 		t.Fatal(err)
 	}
 	source, matched, err := RegisteredBundledNotoColorEmoji(data, 0)
@@ -377,7 +374,7 @@ func TestBundledNotoColorEmojiLicenseAndNotice(t *testing.T) {
 
 func BenchmarkCloneReadOnlyBundledNotoColorEmojiRegistered(b *testing.B) {
 	data := bundledNotoColorEmojiForTest(b)
-	if _, err := RegisterBundledNotoColorEmoji(data); err != nil {
+	if _, err := RegisterOwnedBundledNotoColorEmoji(append([]byte(nil), data...)); err != nil {
 		b.Fatal(err)
 	}
 	if _, matched, err := RegisteredBundledNotoColorEmoji(data, 0); err != nil || !matched {

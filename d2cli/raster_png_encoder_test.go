@@ -380,7 +380,7 @@ func TestRenderPNGWithEncoderMatchesStateless(t *testing.T) {
 	var encoder rasterPNGEncoder
 	defer encoder.close()
 	for index, diagram := range diagrams {
-		want, err := renderPNG(context.Background(), "-", false, diagram, opts)
+		want, err := renderPNGWithEncoder(context.Background(), "-", false, diagram, opts, nil)
 		if err != nil {
 			t.Fatalf("diagram %d stateless render: %v", index, err)
 		}

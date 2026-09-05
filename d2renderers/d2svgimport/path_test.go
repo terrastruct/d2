@@ -161,24 +161,13 @@ func TestParsePathCountsDegenerateSourceArcsAndNormalizesLargeAngles(t *testing.
 	}
 }
 
-func TestParsePathCancellationAndInputOwnership(t *testing.T) {
+func TestParsePathCancellation(t *testing.T) {
 	t.Parallel()
 
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
 	if got, err := ParsePath(ctx, "cancelled.svg", "M0 0", generousPathLimits); got != nil || !errors.Is(err, context.Canceled) {
 		t.Fatalf("cancelled ParsePath() = %#v, %v", got, err)
-	}
-
-	data := "M0 0L1 1"
-	commands, err := ParsePath(context.Background(), "owned.svg", data, generousPathLimits)
-	if err != nil {
-		t.Fatal(err)
-	}
-	copyOfCommands := append([]d2scene.PathCommand(nil), commands...)
-	data = strings.Repeat("x", len(data))
-	if !reflect.DeepEqual(commands, copyOfCommands) {
-		t.Fatal("parsed commands alias input storage")
 	}
 }
 

@@ -9,6 +9,7 @@ import (
 	"image/color"
 	"image/draw"
 	"image/gif"
+	"math"
 	"math/rand"
 	"reflect"
 	"testing"
@@ -183,7 +184,7 @@ func TestIncrementalPalettedPipelineMatchesAnimateImages(t *testing.T) {
 			t.Fatalf("normalize frame %d: %v", index, err)
 		}
 	}
-	got, err := animatePalettedImages(context.Background(), frames, 1000)
+	got, err := AnimatePalettedImagesWithLimit(context.Background(), frames, 1000, math.MaxInt64)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -307,7 +308,7 @@ func TestNormalizePalettedImageValidationAndCancellation(t *testing.T) {
 
 func TestAnimatePalettedImagesValidationAndCancellation(t *testing.T) {
 	valid := image.NewPaletted(image.Rect(0, 0, 1, 1), color.Palette{color.Black, color.White})
-	encoded, err := animatePalettedImages(nil, []*image.Paletted{valid, valid}, 1000)
+	encoded, err := AnimatePalettedImagesWithLimit(nil, []*image.Paletted{valid, valid}, 1000, math.MaxInt64)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -321,31 +322,31 @@ func TestAnimatePalettedImagesValidationAndCancellation(t *testing.T) {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
-	if _, err := animatePalettedImages(ctx, []*image.Paletted{valid}, 1000); !errors.Is(err, context.Canceled) {
+	if _, err := AnimatePalettedImagesWithLimit(ctx, []*image.Paletted{valid}, 1000, math.MaxInt64); !errors.Is(err, context.Canceled) {
 		t.Fatalf("AnimatePalettedImages cancellation = %v, want context.Canceled", err)
 	}
-	if _, err := animatePalettedImages(context.Background(), nil, 1000); err == nil {
+	if _, err := AnimatePalettedImagesWithLimit(context.Background(), nil, 1000, math.MaxInt64); err == nil {
 		t.Fatal("AnimatePalettedImages accepted no frames")
 	}
-	if _, err := animatePalettedImages(context.Background(), []*image.Paletted{valid}, 0); err == nil {
+	if _, err := AnimatePalettedImagesWithLimit(context.Background(), []*image.Paletted{valid}, 0, math.MaxInt64); err == nil {
 		t.Fatal("AnimatePalettedImages accepted a zero interval")
 	}
-	if _, err := animatePalettedImages(context.Background(), []*image.Paletted{nil}, 1000); err == nil {
+	if _, err := AnimatePalettedImagesWithLimit(context.Background(), []*image.Paletted{nil}, 1000, math.MaxInt64); err == nil {
 		t.Fatal("AnimatePalettedImages accepted a nil frame")
 	}
 	nonZeroBounds := &image.Paletted{Pix: []byte{0}, Stride: 1, Rect: image.Rect(1, 1, 2, 2), Palette: color.Palette{color.Black}}
-	if _, err := animatePalettedImages(context.Background(), []*image.Paletted{nonZeroBounds}, 1000); err == nil {
+	if _, err := AnimatePalettedImagesWithLimit(context.Background(), []*image.Paletted{nonZeroBounds}, 1000, math.MaxInt64); err == nil {
 		t.Fatal("AnimatePalettedImages accepted non-zero frame bounds")
 	}
 	larger := image.NewPaletted(image.Rect(0, 0, 2, 1), color.Palette{color.Black})
-	if _, err := animatePalettedImages(context.Background(), []*image.Paletted{valid, larger}, 1000); err == nil {
+	if _, err := AnimatePalettedImagesWithLimit(context.Background(), []*image.Paletted{valid, larger}, 1000, math.MaxInt64); err == nil {
 		t.Fatal("AnimatePalettedImages accepted mismatched frame dimensions")
 	}
 }
 
 func TestAnimatePalettedImagesOutputLimit(t *testing.T) {
 	frame := image.NewPaletted(image.Rect(0, 0, 2, 2), color.Palette{color.Black, color.White})
-	want, err := animatePalettedImages(context.Background(), []*image.Paletted{frame, frame}, 1000)
+	want, err := AnimatePalettedImagesWithLimit(context.Background(), []*image.Paletted{frame, frame}, 1000, math.MaxInt64)
 	if err != nil {
 		t.Fatal(err)
 	}

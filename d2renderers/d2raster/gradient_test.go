@@ -867,14 +867,14 @@ func TestGradientLoopObservesCancellation(t *testing.T) {
 	ctx := &cancelAfterContext{after: 1}
 	dst := image.NewRGBA(image.Rect(0, 0, 512, 512))
 	scratch := &rasterScratch{offscreen: offscreenBudget{limit: 512 * 512}}
-	err = drawGradientMask(ctx, dst, dst.Bounds(), paint, scratch, func(mask *image.Alpha) error {
+	err = drawPaintMask(ctx, dst, dst.Bounds(), paint, scratch, "gradient Alpha mask", func(mask *image.Alpha) error {
 		for index := range mask.Pix {
 			mask.Pix[index] = 255
 		}
 		return nil
 	})
 	if !errors.Is(err, context.Canceled) {
-		t.Fatalf("drawGradientMask() error = %v, want context.Canceled", err)
+		t.Fatalf("drawPaintMask() error = %v, want context.Canceled", err)
 	}
 	if scratch.offscreen.live != 0 {
 		t.Fatalf("gradient mask reservation after cancellation = %d bytes, want 0", scratch.offscreen.live)

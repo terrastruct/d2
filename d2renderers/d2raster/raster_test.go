@@ -314,9 +314,11 @@ func TestStrokeJoinAnalyticGeometry(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			polygon, ok := strokeJoinPolygon(previous, vertex, test.next, 4, d2scene.JoinMiter, 10)
-			if !ok || len(polygon) != 4 {
-				t.Fatalf("miter polygon = %#v, %v; want four points", polygon, ok)
+			incoming, incomingOK := unitVector(previous, vertex)
+			outgoing, outgoingOK := unitVector(vertex, test.next)
+			var polygon [4]d2scene.Point
+			if count := strokeJoinPolygonFromUnits(&polygon, vertex, incoming, outgoing, incomingOK && outgoingOK, 4, d2scene.JoinMiter, 10); count != 4 {
+				t.Fatalf("miter polygon = %#v, %d; want four points", polygon, count)
 			}
 			miter := polygon[1]
 			gotRatio := math.Hypot(miter.X-vertex.X, miter.Y-vertex.Y) / 4
@@ -324,13 +326,11 @@ func TestStrokeJoinAnalyticGeometry(t *testing.T) {
 			if math.Abs(gotRatio-wantRatio) > 1e-12 {
 				t.Fatalf("miter ratio = %.15f, want %.15f", gotRatio, wantRatio)
 			}
-			bevel, ok := strokeJoinPolygon(previous, vertex, test.next, 4, d2scene.JoinBevel, 0)
-			if !ok || len(bevel) != 3 {
-				t.Fatalf("bevel polygon = %#v, %v; want three points", bevel, ok)
+			if count := strokeJoinPolygonFromUnits(&polygon, vertex, incoming, outgoing, incomingOK && outgoingOK, 4, d2scene.JoinBevel, 0); count != 3 {
+				t.Fatalf("bevel polygon = %#v, %d; want three points", polygon, count)
 			}
-			cutoff, ok := strokeJoinPolygon(previous, vertex, test.next, 4, d2scene.JoinMiter, wantRatio-0.01)
-			if !ok || len(cutoff) != 3 {
-				t.Fatalf("cutoff polygon = %#v, %v; want bevel fallback", cutoff, ok)
+			if count := strokeJoinPolygonFromUnits(&polygon, vertex, incoming, outgoing, incomingOK && outgoingOK, 4, d2scene.JoinMiter, wantRatio-0.01); count != 3 {
+				t.Fatalf("cutoff polygon = %#v, %d; want bevel fallback", polygon, count)
 			}
 		})
 	}
@@ -345,11 +345,15 @@ func TestStrokeJoinAnalyticGeometry(t *testing.T) {
 	if _, err := prepareStroke(&d2scene.Stroke{Paint: black, Width: 2, Join: d2scene.JoinMiter, MiterLimit: 0.5}); err == nil {
 		t.Fatal("miter limit below one unexpectedly accepted")
 	}
-	if polygon, ok := strokeJoinPolygon(previous, vertex, d2scene.Point{X: 30, Y: 20}, 4, d2scene.JoinMiter, 4); ok || polygon != nil {
-		t.Fatalf("collinear join = %#v, %v; want no wedge", polygon, ok)
+	var polygon [4]d2scene.Point
+	incoming, incomingOK := unitVector(previous, vertex)
+	outgoing, outgoingOK := unitVector(vertex, d2scene.Point{X: 30, Y: 20})
+	if count := strokeJoinPolygonFromUnits(&polygon, vertex, incoming, outgoing, incomingOK && outgoingOK, 4, d2scene.JoinMiter, 4); count != 0 {
+		t.Fatalf("collinear join = %#v, %d; want no wedge", polygon, count)
 	}
-	if polygon, ok := strokeJoinPolygon(previous, vertex, d2scene.Point{X: 10, Y: 20}, 4, d2scene.JoinMiter, 4); ok || polygon != nil {
-		t.Fatalf("reversal join = %#v, %v; want safe finite bevel", polygon, ok)
+	outgoing, outgoingOK = unitVector(vertex, d2scene.Point{X: 10, Y: 20})
+	if count := strokeJoinPolygonFromUnits(&polygon, vertex, incoming, outgoing, incomingOK && outgoingOK, 4, d2scene.JoinMiter, 4); count != 0 {
+		t.Fatalf("reversal join = %#v, %d; want safe finite bevel", polygon, count)
 	}
 }
 
@@ -440,9 +444,11 @@ func TestRenderMiterBevelAndMiterLimit(t *testing.T) {
 	previous := d2scene.Point{X: 10, Y: 40}
 	vertex := d2scene.Point{X: 30, Y: 40}
 	next := d2scene.Point{X: 4, Y: 28}
-	wideMiter, ok := strokeJoinPolygon(previous, vertex, next, 8, d2scene.JoinMiter, 6)
-	if !ok || len(wideMiter) != 4 {
-		t.Fatalf("acute miter polygon = %#v, %v", wideMiter, ok)
+	incoming, incomingOK := unitVector(previous, vertex)
+	outgoing, outgoingOK := unitVector(vertex, next)
+	var wideMiter [4]d2scene.Point
+	if count := strokeJoinPolygonFromUnits(&wideMiter, vertex, incoming, outgoing, incomingOK && outgoingOK, 8, d2scene.JoinMiter, 6); count != 4 {
+		t.Fatalf("acute miter polygon = %#v, %d", wideMiter, count)
 	}
 	sample := d2scene.Point{
 		X: (wideMiter[0].X + wideMiter[1].X + wideMiter[2].X) / 3,
@@ -998,7 +1004,7 @@ func TestRGBAtoNRGBAInPlacePreservesPixelsAndBackingStore(t *testing.T) {
 	want := image.NewNRGBA(bounds)
 	draw.Draw(want, bounds, source, bounds.Min, draw.Src)
 	backing := &source.Pix[0]
-	got, err := rgbaToNRGBAInPlace(context.Background(), source, false)
+	got, err := rgbaToNRGBAInPlaceBounds(context.Background(), source, source.Bounds(), false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1033,7 +1039,7 @@ func TestRGBAtoNRGBAInPlaceMatchesDrawForEveryChannelAndAlpha(t *testing.T) {
 	}
 	want := image.NewNRGBA(bounds)
 	draw.Draw(want, bounds, source, image.Point{}, draw.Src)
-	got, err := rgbaToNRGBAInPlace(context.Background(), source, false)
+	got, err := rgbaToNRGBAInPlaceBounds(context.Background(), source, source.Bounds(), false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1101,7 +1107,7 @@ func TestRGBAtoNRGBAInPlaceUniformBlocksMatchScalarReference(t *testing.T) {
 		}
 	}
 	reference := &image.RGBA{Pix: append([]byte(nil), source.Pix...), Stride: source.Stride, Rect: source.Rect}
-	got, err := rgbaToNRGBAInPlace(context.Background(), source, false)
+	got, err := rgbaToNRGBAInPlaceBounds(context.Background(), source, source.Bounds(), false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1134,7 +1140,7 @@ func TestRGBAtoNRGBAInPlaceUniformProbeMatchesEveryPrefixLength(t *testing.T) {
 				source.Pix[offset], source.Pix[offset+1], source.Pix[offset+2], source.Pix[offset+3] = alpha/2, alpha/3, alpha/4, alpha
 			}
 			reference := &image.RGBA{Pix: append([]byte(nil), source.Pix...), Stride: stride, Rect: bounds}
-			got, err := rgbaToNRGBAInPlace(context.Background(), source, false)
+			got, err := rgbaToNRGBAInPlaceBounds(context.Background(), source, source.Bounds(), false)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -1157,7 +1163,7 @@ func TestRGBAtoNRGBAInPlaceOpaqueFastPathAndCancellation(t *testing.T) {
 	source.SetRGBA(1, 0, color.RGBA{R: 68, G: 85, B: 102, A: 255})
 	want := append([]byte(nil), source.Pix...)
 	backing := &source.Pix[0]
-	got, err := rgbaToNRGBAInPlace(context.Background(), source, true)
+	got, err := rgbaToNRGBAInPlaceBounds(context.Background(), source, source.Bounds(), true)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1167,13 +1173,13 @@ func TestRGBAtoNRGBAInPlaceOpaqueFastPathAndCancellation(t *testing.T) {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
-	if got, err := rgbaToNRGBAInPlace(ctx, image.NewRGBA(image.Rect(0, 0, 1, 1)), false); !errors.Is(err, context.Canceled) || got != nil {
+	if got, err := rgbaToNRGBAInPlaceBounds(ctx, image.NewRGBA(image.Rect(0, 0, 1, 1)), image.Rect(0, 0, 1, 1), false); !errors.Is(err, context.Canceled) || got != nil {
 		t.Fatalf("canceled transparent conversion = %v, %v; want nil, context.Canceled", got, err)
 	}
 
 	wide := image.NewRGBA(image.Rect(0, 0, 8_192, 1))
 	fillOpaquePixels(wide.Pix, color.NRGBA{R: 17, G: 34, B: 51, A: 255})
-	if got, err := rgbaToNRGBAInPlace(&cancelAfterErrChecks{remaining: 1}, wide, false); !errors.Is(err, context.Canceled) || got != nil {
+	if got, err := rgbaToNRGBAInPlaceBounds(&cancelAfterErrChecks{remaining: 1}, wide, wide.Bounds(), false); !errors.Is(err, context.Canceled) || got != nil {
 		t.Fatalf("mid-span canceled conversion = %v, %v; want nil, context.Canceled", got, err)
 	}
 }
@@ -1317,7 +1323,7 @@ func BenchmarkRGBAtoNRGBAUniformAlphaBlocks(b *testing.B) {
 			}{
 				{name: "Scalar", convert: rgbaToNRGBAScalarReference},
 				{name: "UniformBlocks", convert: func(ctx context.Context, source *image.RGBA) (*image.NRGBA, error) {
-					return rgbaToNRGBAInPlace(ctx, source, false)
+					return rgbaToNRGBAInPlaceBounds(ctx, source, source.Bounds(), false)
 				}},
 			} {
 				b.Run(implementation.name, func(b *testing.B) {

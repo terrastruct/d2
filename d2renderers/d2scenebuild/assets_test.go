@@ -103,11 +103,7 @@ func TestBuildShapeImageAndOrdinaryIconUseResolvedOwnedAssets(t *testing.T) {
 	}
 	var raster d2scene.RasterAsset
 	for _, asset := range document.Assets {
-		var ok bool
-		raster, ok = asset.(d2scene.RasterAsset)
-		if !ok {
-			continue
-		}
+		raster, _ = asset.(d2scene.RasterAsset)
 	}
 	if raster.PixelWidth != 2 || raster.PixelHeight != 1 || raster.DecodedBytes < 8 || len(raster.Data) == 0 {
 		t.Fatalf("raster asset = %+v", raster)

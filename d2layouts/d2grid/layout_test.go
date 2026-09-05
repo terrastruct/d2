@@ -1,7 +1,6 @@
 package d2grid_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -25,7 +24,6 @@ func TestGenLayout(t *testing.T) {
 	var layout [][]*d2graph.Object
 	cutIndices = []int{0}
 	layout = d2grid.GenLayout(objects, cutIndices)
-	fmt.Printf("layout %v\n", len(layout))
 	assert.Equalf(t, len(cutIndices)+1, len(layout), "expected 2 rows from 1 cut")
 	assert.Equalf(t, 1, len(layout[0]), "expected first row to be 1 object")
 	assert.Equalf(t, 7, len(layout[1]), "expected second row to be 7 objects")

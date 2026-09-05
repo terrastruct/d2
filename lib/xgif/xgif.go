@@ -301,15 +301,11 @@ func (bucket fewOpaqueBucket) split() (fewOpaqueBucket, fewOpaqueBucket) {
 	return bucket[:left], bucket[left:]
 }
 
-// quantizeFewOpaqueColors combines the opacity check required by the general
+// quantizeFewOpaqueColorsWithWorkspace combines the opacity check required by the general
 // raster path with a fixed-size color census. When an opaque image has at most
 // 256 colors, it reproduces MedianCutQuantizer's palette ordering and fills the
 // exact palette indexes directly: Floyd-Steinberg error is zero at every pixel.
 // The returned bool reports opacity even when there are too many colors.
-func quantizeFewOpaqueColors(source image.Image) (*image.Paletted, bool) {
-	return quantizeFewOpaqueColorsWithWorkspace(source, nil)
-}
-
 func quantizeFewOpaqueColorsWithWorkspace(source image.Image, workspace *OpaqueQuantizationWorkspace) (*image.Paletted, bool) {
 	bounds := source.Bounds()
 	var colorsStorage [256]fewOpaqueColor
@@ -884,14 +880,10 @@ func rasterPixels(source image.Image) (pixels []uint8, start, stride int, straig
 	}
 }
 
-// ditherOpaqueRaster is an exact Floyd-Steinberg implementation specialized
+// ditherOpaqueRasterWithWorkspace is an exact Floyd-Steinberg implementation specialized
 // for the opaque RGBA/NRGBA frames produced by raster export. Alpha error is
 // identically zero, and an exact spatial palette index replaces the linear
 // scan of up to 256 colors performed for every pixel by image/draw.
-func ditherOpaqueRaster(destination *image.Paletted, source image.Image) {
-	ditherOpaqueRasterWithWorkspace(destination, source, nil)
-}
-
 func ditherOpaqueRasterWithWorkspace(destination *image.Paletted, source image.Image, workspace *OpaqueQuantizationWorkspace) {
 	bounds := source.Bounds()
 	width := bounds.Dx()
@@ -1234,16 +1226,11 @@ func paletteWithBackground(palette color.Palette) (color.Palette, int) {
 	return append(palette, BG_COLOR), backgroundIndex
 }
 
-// animatePalettedImages encodes already-normalized paletted frames without
+// AnimatePalettedImagesWithLimit encodes already-normalized paletted frames without
 // quantizing or copying them. Every frame must have identical zero-based
 // bounds and a valid GIF palette. The animation loops forever, and frame
-// delays use the same schedule as animateImagesWithConcurrency.
-func animatePalettedImages(ctx context.Context, images []*image.Paletted, animIntervalMs int) ([]byte, error) {
-	return AnimatePalettedImagesWithLimit(ctx, images, animIntervalMs, math.MaxInt64)
-}
-
-// AnimatePalettedImagesWithLimit is AnimatePalettedImages with a maximum
-// encoded output length. maxBytes must be positive. Encoding rejects a write
+// delays use the same schedule as animateImagesWithConcurrency. maxBytes must
+// be positive. Encoding rejects a write
 // before the accumulated output length can exceed the limit.
 func AnimatePalettedImagesWithLimit(ctx context.Context, images []*image.Paletted, animIntervalMs int, maxBytes int64) ([]byte, error) {
 	if maxBytes <= 0 {

@@ -202,7 +202,7 @@ func TestBundledNotoColorEmojiCOLRv1FixedLimitsAndTypedRejections(t *testing.T) 
 			limit.update(&limited)
 			foundLimit := false
 			for glyph := 1; glyph < face.Outline.NumGlyphs(); glyph++ {
-				_, found, err := face.compileBundledNotoColorEmojiCOLRv1Plan(uint32(glyph), limited)
+				_, _, err := face.compileBundledNotoColorEmojiCOLRv1Plan(uint32(glyph), limited)
 				var target *COLRv1LimitError
 				if errors.As(err, &target) {
 					foundLimit = true
@@ -210,9 +210,6 @@ func TestBundledNotoColorEmojiCOLRv1FixedLimitsAndTypedRejections(t *testing.T) 
 				}
 				if err != nil {
 					t.Fatalf("unexpected error for glyph %d: %v", glyph, err)
-				}
-				if !found {
-					continue
 				}
 			}
 			if !foundLimit {
