@@ -1,6 +1,6 @@
 .POSIX:
 .PHONY: all
-all: fmt build test cleanup
+all: fmt build test
 
 .PHONY: fmt
 fmt: node_modules
@@ -13,7 +13,6 @@ build: fmt
 
 .PHONY: dev
 dev: build
-	prefix "$@" git checkout -- src/platform.js src/worker.js
 	prefix "$@" bun run dev
 
 .PHONY: test
@@ -23,7 +22,3 @@ test: build
 .PHONY: node_modules
 node_modules:
 	prefix "$@" bun install $${CI:+--frozen-lockfile}
-
-.PHONY: cleanup
-cleanup: test
-	prefix "$@" git checkout -- src/platform.js src/worker.js

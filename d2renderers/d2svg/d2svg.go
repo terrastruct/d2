@@ -431,12 +431,6 @@ func RenderLegend(buf *bytes.Buffer, diagram *d2target.Diagram, diagramHash stri
 		currentY += rowHeight + LEGEND_ITEM_SPACING
 	}
 
-	if shapeCount > 0 && len(diagram.Legend.Connections) > 0 {
-		currentY += LEGEND_PADDING / 2
-	} else {
-		currentY += LEGEND_PADDING / 4
-	}
-
 	return nil
 }
 

@@ -985,10 +985,6 @@ func drawRadialGradientCoverage(ctx context.Context, dst *image.RGBA, bounds ima
 	})
 }
 
-func drawGradientMask(ctx context.Context, dst *image.RGBA, bounds image.Rectangle, paint *preparedPaint, scratch *rasterScratch, populate func(*image.Alpha) error) error {
-	return drawPaintMask(ctx, dst, bounds, paint, scratch, "gradient Alpha mask", populate)
-}
-
 func drawPaintMask(ctx context.Context, dst *image.RGBA, bounds image.Rectangle, paint *preparedPaint, scratch *rasterScratch, purpose string, populate func(*image.Alpha) error) error {
 	if bounds.Empty() {
 		return nil

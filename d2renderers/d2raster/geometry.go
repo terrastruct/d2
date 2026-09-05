@@ -755,25 +755,10 @@ func addStrokeRun(ctx context.Context, rasterizer *scanline.Rasterizer, run stro
 	return nil
 }
 
-// strokeJoinPolygon returns the outer wedge missing from the union of the two
+// strokeJoinPolygonFromUnits returns the outer wedge missing from the union of the two
 // adjacent segment rectangles. A miter over its limit degrades to the same
 // three-point bevel wedge. Geometry is built in local coordinates so an affine
 // transform, including a nonuniform one, affects the complete stroke outline.
-func strokeJoinPolygon(previous, vertex, next d2scene.Point, halfWidth float64, join d2scene.LineJoin, miterLimit float64) ([]d2scene.Point, bool) {
-	var storage [4]d2scene.Point
-	count := strokeJoinPolygonInto(&storage, previous, vertex, next, halfWidth, join, miterLimit)
-	if count == 0 {
-		return nil, false
-	}
-	return storage[:count], true
-}
-
-func strokeJoinPolygonInto(destination *[4]d2scene.Point, previous, vertex, next d2scene.Point, halfWidth float64, join d2scene.LineJoin, miterLimit float64) int {
-	incoming, incomingOK := unitVector(previous, vertex)
-	outgoing, outgoingOK := unitVector(vertex, next)
-	return strokeJoinPolygonFromUnits(destination, vertex, incoming, outgoing, incomingOK && outgoingOK, halfWidth, join, miterLimit)
-}
-
 func strokeJoinPolygonFromUnits(destination *[4]d2scene.Point, vertex, incoming, outgoing d2scene.Point, unitsOK bool, halfWidth float64, join d2scene.LineJoin, miterLimit float64) int {
 	if !unitsOK {
 		return 0

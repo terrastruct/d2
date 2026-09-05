@@ -656,7 +656,6 @@ type markdownInlineToken struct {
 	breakLine            bool
 	breakBefore          bool
 	breakAfterSoftHyphen bool
-	emergencyBreakBefore bool
 	softHyphenEnd        bool
 	discretionaryHyphen  bool
 	padding              bool
@@ -970,7 +969,6 @@ func (p *markdownPainter) wrapInlineTokens(tokens []markdownInlineToken, availab
 					hyphen.discretionaryHyphen = true
 					hyphen.breakBefore = false
 					hyphen.breakAfterSoftHyphen = false
-					hyphen.emergencyBreakBefore = false
 					line = append(line, markdownInlineToken{})
 					copy(line[i+2:], line[i+1:])
 					line[i+1] = hyphen
@@ -1102,7 +1100,6 @@ func (p *markdownPainter) splitInlineTokenAtWidth(token markdownInlineToken, max
 	tail.width = p.inlineTextAdvance(tail.text, tail.ctx, token.width)
 	tail.breakBefore = false
 	tail.breakAfterSoftHyphen = false
-	tail.emergencyBreakBefore = true
 	return head, tail, true
 }
 
@@ -1175,7 +1172,6 @@ func (p *markdownPainter) atomizeInlineTokens(tokens []markdownInlineToken) []ma
 				atom := token
 				atom.breakBefore = breakOffsets[pieceStart]
 				atom.breakAfterSoftHyphen = atom.breakBefore && strings.HasSuffix(combinedText[:pieceStart], "\u00ad")
-				atom.emergencyBreakBefore = pieceStart == tokenStart && tokenStart > 0
 				if strings.HasSuffix(piece, "\u00ad") {
 					piece = strings.TrimSuffix(piece, "\u00ad")
 					atom.softHyphenEnd = true
@@ -1381,7 +1377,6 @@ func expandMarkdownTabs(line string) string {
 }
 
 type markdownTableRow struct {
-	node    *html.Node
 	cells   []*html.Node
 	header  bool
 	height  float64
@@ -1662,7 +1657,7 @@ func fitMarkdownTableColumns(widths, minWidths []float64, tableWidth float64) []
 func collectMarkdownTableRows(table *html.Node) []markdownTableRow {
 	var rows []markdownTableRow
 	appendRow := func(n *html.Node, inHeader, stripe bool) {
-		row := markdownTableRow{node: n, header: inHeader, stripe: stripe}
+		row := markdownTableRow{header: inHeader, stripe: stripe}
 		for child := n.FirstChild; child != nil; child = child.NextSibling {
 			if child.Type == html.ElementNode && (child.Data == "td" || child.Data == "th") {
 				row.cells = append(row.cells, child)

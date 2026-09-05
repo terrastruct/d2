@@ -153,7 +153,6 @@ type preflight struct {
 	ctx                context.Context
 	document           *d2scene.Document
 	options            FrameOptions
-	viewToPixel        d2scene.Matrix
 	frameBounds        image.Rectangle
 	nodes              int
 	pathSegments       int
@@ -448,18 +447,14 @@ func fillOpaquePixels(pixels []byte, paint color.NRGBA) {
 	}
 }
 
-// rgbaToNRGBAInPlace returns an NRGBA view over source's backing store. When
-// opaque is false, it first converts the premultiplied channels to straight
-// alpha in place. Render no longer needs a second four-byte-per-pixel allocation
-// merely to change color models. Callers may set opaque only when every source
+// rgbaToNRGBAInPlaceBounds returns an NRGBA view over source's backing store.
+// When opaque is false, it first converts the premultiplied channels within
+// conversionBounds to straight alpha in place. Render needs no second pixel
+// allocation merely to change color models. Callers may set opaque only when every source
 // pixel is known to have alpha 255.
 //
 // The arithmetic matches image.NRGBA.SetRGBA64 and preserves hidden color
 // channels on zero-alpha pixels.
-func rgbaToNRGBAInPlace(ctx context.Context, source *image.RGBA, opaque bool) (*image.NRGBA, error) {
-	return rgbaToNRGBAInPlaceBounds(ctx, source, source.Bounds(), opaque)
-}
-
 func rgbaToNRGBAInPlaceBounds(ctx context.Context, source *image.RGBA, conversionBounds image.Rectangle, opaque bool) (*image.NRGBA, error) {
 	result := &image.NRGBA{Pix: source.Pix, Stride: source.Stride, Rect: source.Rect}
 	if opaque {
@@ -700,7 +695,6 @@ func prepareWithSession(ctx context.Context, document *d2scene.Document, options
 		ctx:         ctx,
 		document:    document,
 		options:     options,
-		viewToPixel: viewToPixel,
 		frameBounds: image.Rect(0, 0, width, height),
 		active:      make(map[*d2scene.Node]bool),
 		session:     session,

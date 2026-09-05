@@ -6,8 +6,6 @@ import "crypto/sha256"
 
 // The wasm host supplies resolved font data, so this build omits the private
 // bundled Noto Color Emoji validation face.
-func RegisterBundledNotoColorEmoji(data []byte) ([]byte, error) { return data, nil }
-
 func registerAuthenticatedBundledNotoColorEmoji(data []byte, _ [sha256.Size]byte) ([]byte, error) {
 	return data, nil
 }

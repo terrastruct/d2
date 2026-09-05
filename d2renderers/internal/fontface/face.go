@@ -619,7 +619,7 @@ func colrv1ClipBounds(clip *COLRv1ClipBox, unitsPerEm sfnt.Units, size fixed.Int
 	if err != nil {
 		return fixed.Rectangle26_6{}, false, err
 	}
-	// COLR clip coordinates are Y-up, while sfnt.LoadGlyph and ShapeText ink
+	// COLR clip coordinates are Y-up, while sfnt.LoadGlyph and shaped ink
 	// bounds are Y-down. Reflect the extrema around the baseline.
 	yMin, err := convert(-clip.YMax)
 	if err != nil {

@@ -233,26 +233,6 @@ func isCollapsibleMarkdownWhitespace(r rune) bool {
 	}
 }
 
-// collapseMarkdownWhitespace implements CSS white-space: normal for ordinary
-// Markdown text. In particular, it leaves non-breaking spaces alone.
-func collapseMarkdownWhitespace(s string) string {
-	var out strings.Builder
-	out.Grow(len(s))
-	inWhitespace := false
-	for _, r := range s {
-		if isCollapsibleMarkdownWhitespace(r) {
-			if !inWhitespace {
-				out.WriteByte(' ')
-				inWhitespace = true
-			}
-			continue
-		}
-		out.WriteRune(r)
-		inWhitespace = false
-	}
-	return out.String()
-}
-
 // normalizeMarkdownWhitespaceTree applies CSS white-space: normal across
 // inline element boundaries. A per-text-node pass is insufficient: HTML such
 // as a<a> b</a> must preserve one space, while whitespace next to a block or

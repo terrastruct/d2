@@ -770,7 +770,6 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 							return nil
 						}
 					case "style":
-						reservedTargetKey = mk.Key.Path[len(mk.Key.Path)-1].Unbox().ScalarString()
 						if inlined(attrs.Style.Filled) {
 							attrs.Style.Filled.MapKey.SetScalar(mk.Value.ScalarBox())
 							return nil
@@ -1401,7 +1400,6 @@ func deleteReserved(g *d2graph.Graph, boardPath []string, baseAST *d2ast.Map, mk
 				if !deleted && imported {
 					mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
 					appendMapKey(baseAST, mk)
-				} else {
 				}
 			}
 			break

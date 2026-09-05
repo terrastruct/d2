@@ -18,13 +18,13 @@ import (
 
 // ShapeFace couples a caller-owned identifier to one parsed OpenType face.
 // ParsedFace.Shaping contains mutable lookup caches, so callers must not share
-// one ShapeFace concurrently between ShapeText calls.
+// one ShapeFace concurrently between shaping calls.
 type ShapeFace struct {
 	ID   string
 	Face *ParsedFace
 }
 
-// ShapeLimits bounds all work which ShapeText cannot interrupt internally.
+// ShapeLimits bounds all work which shaping cannot interrupt internally.
 // Every field must be positive. Callers enforcing document-wide budgets pass
 // the remaining aggregate allowance for CoverageChecks, Runs, and Glyphs.
 type ShapeLimits struct {
@@ -61,13 +61,13 @@ type ShapedText struct {
 	Runs           int
 }
 
-// ShapingWorkspace owns mutable scratch state for a sequence of ShapeText
+// ShapingWorkspace owns mutable scratch state for a sequence of shaping
 // calls. Reusing one workspace for an operation lets go-text retain its
 // HarfBuzz font cache and segmentation buffers without sharing mutable state
 // between concurrent document builds or renders.
 //
 // A ShapingWorkspace must not be used concurrently. Returned ShapedText values
-// own their Glyphs and remain valid after the workspace is reused. ParsedFace
+// borrow their Glyphs until the workspace is reused. ParsedFace
 // pointers and their exported Outline and Shaping fields must remain unchanged
 // between calls; the workspace deliberately caches immutable font answers.
 type ShapingWorkspace struct {
@@ -97,31 +97,18 @@ type ShapingWorkspace struct {
 // text even when the selected font omits U+FFFD and U+25A1.
 var missingGlyphPlaceholderRunes = [...]rune{'\ufffd', '\u25a1', '\u2610', '?'}
 
-// ShapeText applies pure-Go HarfBuzz-compatible shaping with bidi, script,
+// ShapeTextTransient applies pure-Go HarfBuzz-compatible shaping with bidi, script,
 // ligature, mark, and ordered font-fallback support. Font selection has
 // grapheme-cluster affinity: one face must cover every visible rune in a UAX
 // #29 extended grapheme cluster. This prevents a combining mark that happens
 // to exist in the primary font from being detached from a fallback base.
-func ShapeText(ctx context.Context, text string, size fixed.Int26_6, faces []ShapeFace, limits ShapeLimits) (ShapedText, error) {
-	var workspace ShapingWorkspace
-	return workspace.ShapeText(ctx, text, size, faces, limits)
-}
-
-// ShapeText is the reusable-workspace form of the package-level ShapeText.
-func (w *ShapingWorkspace) ShapeText(ctx context.Context, text string, size fixed.Int26_6, faces []ShapeFace, limits ShapeLimits) (ShapedText, error) {
-	return w.shapeText(ctx, text, size, faces, limits, false)
-}
-
-// ShapeTextTransient reuses the workspace's output storage in addition to its
+//
+// It reuses the workspace's output storage in addition to its
 // internal scratch. The returned Glyphs remain valid only until the next call
 // to ShapeTextTransient on this workspace. It is intended for document
 // pipelines which immediately translate the neutral glyphs into owned scene
 // or raster records.
 func (w *ShapingWorkspace) ShapeTextTransient(ctx context.Context, text string, size fixed.Int26_6, faces []ShapeFace, limits ShapeLimits) (ShapedText, error) {
-	return w.shapeText(ctx, text, size, faces, limits, true)
-}
-
-func (w *ShapingWorkspace) shapeText(ctx context.Context, text string, size fixed.Int26_6, faces []ShapeFace, limits ShapeLimits, transient bool) (ShapedText, error) {
 	clear(w.inputs)
 	w.inputs = w.inputs[:0]
 	clear(w.faceIndexes)
@@ -312,7 +299,7 @@ func (w *ShapingWorkspace) shapeText(ctx context.Context, text string, size fixe
 		orderShapedRunsLTR(runs)
 	}
 
-	if transient && cap(w.glyphs) >= totalGlyphs {
+	if cap(w.glyphs) >= totalGlyphs {
 		result.Glyphs = w.glyphs[:0]
 	} else {
 		result.Glyphs = make([]ShapedGlyph, 0, totalGlyphs)
@@ -391,9 +378,7 @@ func (w *ShapingWorkspace) shapeText(ctx context.Context, text string, size fixe
 		pen = runPen
 	}
 	result.Advance = pen
-	if transient {
-		w.glyphs = result.Glyphs
-	}
+	w.glyphs = result.Glyphs
 	return result, nil
 }
 

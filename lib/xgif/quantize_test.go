@@ -7,6 +7,7 @@ import (
 	"image"
 	"image/color"
 	"image/draw"
+	"math"
 	"reflect"
 	"strconv"
 	"testing"
@@ -72,11 +73,11 @@ func TestQuantizeImageMatchesGIFConversion(t *testing.T) {
 			t.Fatalf("case %d palettes differ:\n got: %#v\nwant: %#v", index, got.Palette, want.Palette)
 		}
 
-		gotGIF, err := animatePalettedImages(context.Background(), []*image.Paletted{got}, 1000)
+		gotGIF, err := AnimatePalettedImagesWithLimit(context.Background(), []*image.Paletted{got}, 1000, math.MaxInt64)
 		if err != nil {
 			t.Fatalf("case %d encode direct conversion: %v", index, err)
 		}
-		wantGIF, err := animatePalettedImages(context.Background(), []*image.Paletted{want}, 1000)
+		wantGIF, err := AnimatePalettedImagesWithLimit(context.Background(), []*image.Paletted{want}, 1000, math.MaxInt64)
 		if err != nil {
 			t.Fatalf("case %d encode GIF conversion: %v", index, err)
 		}
@@ -140,11 +141,11 @@ func TestFewOpaqueColorFastPathMatchesGIFConversion(t *testing.T) {
 			if got.Bounds() != want.Bounds() || got.Stride != want.Stride || !bytes.Equal(got.Pix, want.Pix) || !reflect.DeepEqual(got.Palette, want.Palette) {
 				t.Fatalf("%T with %d colors direct conversion differs", img, colorCount)
 			}
-			gotGIF, err := animatePalettedImages(context.Background(), []*image.Paletted{got}, 1000)
+			gotGIF, err := AnimatePalettedImagesWithLimit(context.Background(), []*image.Paletted{got}, 1000, math.MaxInt64)
 			if err != nil {
 				t.Fatal(err)
 			}
-			wantGIF, err := animatePalettedImages(context.Background(), []*image.Paletted{want}, 1000)
+			wantGIF, err := AnimatePalettedImagesWithLimit(context.Background(), []*image.Paletted{want}, 1000, math.MaxInt64)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -225,7 +226,7 @@ func TestFewOpaqueColorCensusDetectsLateTransparency(t *testing.T) {
 		img.Pix[offset+3] = 255
 	}
 	img.Pix[len(img.Pix)-1] = 127
-	if paletted, opaque := quantizeFewOpaqueColors(img); paletted != nil || opaque {
+	if paletted, opaque := quantizeFewOpaqueColorsWithWorkspace(img, nil); paletted != nil || opaque {
 		t.Fatalf("late-transparency census = (paletted=%v, opaque=%v), want (false, false)", paletted != nil, opaque)
 	}
 	want, err := quantizeImageThroughGIF(context.Background(), img)
@@ -448,7 +449,7 @@ func TestDitherOpaqueRasterMatchesFloydSteinberg(t *testing.T) {
 		want := image.NewPaletted(bounds, palette)
 		draw.FloydSteinberg.Draw(want, bounds, img, bounds.Min)
 		got := image.NewPaletted(bounds, palette)
-		ditherOpaqueRaster(got, img)
+		ditherOpaqueRasterWithWorkspace(got, img, nil)
 		if !bytes.Equal(got.Pix, want.Pix) {
 			t.Fatalf("%T bounds %v indexed pixels differ", img, bounds)
 		}

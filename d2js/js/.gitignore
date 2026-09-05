@@ -2,6 +2,8 @@ node_modules
 .npm
 
 src/wasm-loader.browser.js
+src/platform.js
+src/worker.js
 /d2.wasm
 wasm/d2.wasm
 dist/

@@ -244,10 +244,6 @@ func newAssetHTTPTransport() *http.Transport {
 	}
 }
 
-func renderPNG(ctx context.Context, inputPath string, cacheImages bool, diagram *d2target.Diagram, opts d2svg.RenderOpts) ([]byte, error) {
-	return renderPNGWithEncoder(ctx, inputPath, cacheImages, diagram, opts, nil)
-}
-
 func renderPNGWithEncoder(ctx context.Context, inputPath string, cacheImages bool, diagram *d2target.Diagram, opts d2svg.RenderOpts, encoder *rasterPNGEncoder) ([]byte, error) {
 	document, err := buildScene(ctx, inputPath, cacheImages, diagram, opts)
 	if err != nil {
@@ -277,17 +273,13 @@ func buildScene(ctx context.Context, inputPath string, cacheImages bool, diagram
 }
 
 func buildSceneWithAssets(ctx context.Context, diagram *d2target.Diagram, opts d2svg.RenderOpts, assetOptions *d2scenebuild.AssetOptions) (*d2scene.Document, error) {
-	return buildSceneWithAssetsAndLinks(ctx, diagram, opts, assetOptions, d2scenebuild.LinkBudget{
-		MaxRegions: rasterMaxLinkRegions, MaxStringBytes: rasterMaxLinkStringBytes,
-	})
-}
-
-func buildSceneWithAssetsAndLinks(ctx context.Context, diagram *d2target.Diagram, opts d2svg.RenderOpts, assetOptions *d2scenebuild.AssetOptions, linkBudget d2scenebuild.LinkBudget) (*d2scene.Document, error) {
 	fontOptions, err := newFontFallbackOptions(1)
 	if err != nil {
 		return nil, err
 	}
-	return buildSceneWithResourcesAndLinks(ctx, diagram, opts, assetOptions, fontOptions, linkBudget, sceneAdmissionLimits{
+	return buildSceneWithResourcesAndLinks(ctx, diagram, opts, assetOptions, fontOptions, d2scenebuild.LinkBudget{
+		MaxRegions: rasterMaxLinkRegions, MaxStringBytes: rasterMaxLinkStringBytes,
+	}, sceneAdmissionLimits{
 		maxNodes: rasterMaxNodes, maxPathCommands: rasterMaxPathCommands,
 	})
 }
@@ -1042,9 +1034,9 @@ func newSceneAssetOptions(inputPath string, cacheImages bool, limits assetSessio
 		Cache:          cache,
 		CacheNamespace: cacheNamespace,
 		Limits: imageasset.Limits{
-			MaxFetchedBytes:           minInt64(imageAssetMaxBytes, limits.maxCumulativeEncodedBytes),
-			MaxEncodedBytes:           minInt64(imageAssetMaxBytes, limits.maxCumulativeEncodedBytes),
-			MaxDecompressedBytes:      minInt64(imageAssetMaxBytes, limits.maxCumulativeEncodedBytes),
+			MaxFetchedBytes:           min(imageAssetMaxBytes, limits.maxCumulativeEncodedBytes),
+			MaxEncodedBytes:           min(imageAssetMaxBytes, limits.maxCumulativeEncodedBytes),
+			MaxDecompressedBytes:      min(imageAssetMaxBytes, limits.maxCumulativeEncodedBytes),
 			MaxSVGBytes:               svgMaxBytes,
 			MaxDecodedWidth:           rasterMaxDimension,
 			MaxDecodedHeight:          rasterMaxDimension,
@@ -1110,11 +1102,4 @@ func divideSVGImportBudget(total d2scenebuild.SVGImportBudget, boardCount int) (
 		return d2scenebuild.SVGImportBudget{}, fmt.Errorf("GIF has too many boards for the operation-wide SVG import budget")
 	}
 	return divided, nil
-}
-
-func minInt64(left, right int64) int64 {
-	if left < right {
-		return left
-	}
-	return right
 }

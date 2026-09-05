@@ -938,7 +938,7 @@ func TestRasterRejectsMutatingPostProcessorBeforeDestination(t *testing.T) {
 	directory := t.TempDir()
 	outputPath := filepath.Join(directory, "output.png")
 	plugin := &pluginWithPostProcess{}
-	_, written, err := _render(
+	_, written, err := _renderWithPNGEncoder(
 		context.Background(),
 		&xmain.State{},
 		plugin,
@@ -952,9 +952,10 @@ func TestRasterRejectsMutatingPostProcessorBeforeDestination(t *testing.T) {
 		PNG,
 		"",
 		false,
+		nil,
 	)
 	if err == nil || !strings.Contains(err.Error(), "postprocessor") || !strings.Contains(err.Error(), "disable") {
-		t.Fatalf("_render() error = %v, want actionable postprocessor error", err)
+		t.Fatalf("_renderWithPNGEncoder() error = %v, want actionable postprocessor error", err)
 	}
 	if written {
 		t.Fatal("postprocessor rejection reported a touched destination")
@@ -978,10 +979,10 @@ func TestRenderPNGPreservesDPRAndLogicalScale(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			encoded, err := renderPNG(context.Background(), "-", false, simpleRasterDiagram(), d2svg.RenderOpts{
+			encoded, err := renderPNGWithEncoder(context.Background(), "-", false, simpleRasterDiagram(), d2svg.RenderOpts{
 				Pad:   go2.Pointer(int64(0)),
 				Scale: test.scale,
-			})
+			}, nil)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -1042,10 +1043,10 @@ func TestRasterDimensionAdmissionRemainsPixelBounded(t *testing.T) {
 }
 
 func TestRenderPNGPreservesUniformMeetScaleAfterRounding(t *testing.T) {
-	encoded, err := renderPNG(context.Background(), "-", false, simpleRasterDiagramWithSize(10, 20), d2svg.RenderOpts{
+	encoded, err := renderPNGWithEncoder(context.Background(), "-", false, simpleRasterDiagramWithSize(10, 20), d2svg.RenderOpts{
 		Pad:   go2.Pointer(int64(0)),
 		Scale: go2.Pointer(1.25),
-	})
+	}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1080,9 +1081,9 @@ func TestRenderPNGResolvesLocalImagesRelativeToInput(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	encoded, err := renderPNG(context.Background(), inputPath, false, rasterImageDiagram(assetURL), d2svg.RenderOpts{
+	encoded, err := renderPNGWithEncoder(context.Background(), inputPath, false, rasterImageDiagram(assetURL), d2svg.RenderOpts{
 		Pad: go2.Pointer(int64(0)), Scale: go2.Pointer(1.0),
-	})
+	}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1108,16 +1109,16 @@ func TestRenderPNGUsesPlaceholderForUnavailableImage(t *testing.T) {
 	diagram := rasterImageDiagram(assetURL)
 	diagram.Shapes[0].Width = 64
 	diagram.Shapes[0].Height = 64
-	encoded, err := renderPNG(context.Background(), "-", true, diagram, d2svg.RenderOpts{
+	encoded, err := renderPNGWithEncoder(context.Background(), "-", true, diagram, d2svg.RenderOpts{
 		Pad: go2.Pointer(int64(0)), Scale: go2.Pointer(1.0),
-	})
+	}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	assertPNGPixel(t, encoded, 32, 56, color.NRGBA{R: 0xb8, G: 0xd7, B: 0xf2, A: 0xff})
-	second, err := renderPNG(context.Background(), "-", true, diagram, d2svg.RenderOpts{
+	second, err := renderPNGWithEncoder(context.Background(), "-", true, diagram, d2svg.RenderOpts{
 		Pad: go2.Pointer(int64(0)), Scale: go2.Pointer(1.0),
-	})
+	}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1142,13 +1143,13 @@ func TestRenderPNGPreservesRemoteImageCacheBehavior(t *testing.T) {
 	}
 	diagram := rasterImageDiagram(assetURL)
 	options := d2svg.RenderOpts{Pad: go2.Pointer(int64(0)), Scale: go2.Pointer(1.0)}
-	first, err := renderPNG(context.Background(), "-", true, diagram, options)
+	first, err := renderPNGWithEncoder(context.Background(), "-", true, diagram, options, nil)
 	if err != nil {
 		server.Close()
 		t.Fatal(err)
 	}
 	server.Close()
-	second, err := renderPNG(context.Background(), "-", true, diagram, options)
+	second, err := renderPNGWithEncoder(context.Background(), "-", true, diagram, options, nil)
 	if err != nil {
 		t.Fatalf("cached render after origin shutdown: %v", err)
 	}
@@ -1184,7 +1185,7 @@ func TestRenderPNGReusesRemoteConnectionsWithoutImageCache(t *testing.T) {
 	diagram := rasterImageDiagram(assetURL)
 	options := d2svg.RenderOpts{Pad: go2.Pointer(int64(0)), Scale: go2.Pointer(1.0)}
 	for render := 0; render < 3; render++ {
-		if _, err := renderPNG(context.Background(), "-", false, diagram, options); err != nil {
+		if _, err := renderPNGWithEncoder(context.Background(), "-", false, diagram, options, nil); err != nil {
 			t.Fatalf("uncached render %d: %v", render+1, err)
 		}
 	}

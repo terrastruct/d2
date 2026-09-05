@@ -24,42 +24,15 @@ var trustedNotoColorEmojiCOLRv1 struct {
 // read-only and concurrent-safe.
 var trustedNotoColorEmojiCOLRv1Mu sync.RWMutex
 
-// RegisterBundledNotoColorEmoji retains a package-private copy and parse of
-// D2's exact authenticated Noto Color Emoji resource. Decoding lives in
-// d2fonts so the raster kernel's dependency closure contains no
-// network-capable codec API. The returned bytes are package-owned and must be
-// treated as immutable; d2fonts reuses them as its process cache so only one
-// permanent decoded copy is retained.
-func RegisterBundledNotoColorEmoji(data []byte) ([]byte, error) {
-	if len(data) != bundledNotoColorEmojiCOLRv1Size {
-		return nil, fmt.Errorf("d2fonts: bundled Noto Color Emoji decoded resource is not authenticated")
-	}
-	trustedNotoColorEmojiCOLRv1Mu.RLock()
-	canonical := trustedNotoColorEmojiCOLRv1.data
-	registeredErr := trustedNotoColorEmojiCOLRv1.err
-	trustedNotoColorEmojiCOLRv1Mu.RUnlock()
-	if canonical != nil {
-		if !sameSlice(data, canonical) && !bytes.Equal(data, canonical) {
-			return nil, fmt.Errorf("d2fonts: bundled Noto Color Emoji decoded resource is not authenticated")
-		}
-		return canonical, registeredErr
-	}
-	digest := sha256.Sum256(data)
-	if digest != bundledNotoColorEmojiCOLRv1SHA256 {
-		return nil, fmt.Errorf("d2fonts: bundled Noto Color Emoji decoded resource is not authenticated")
-	}
-	return registerAuthenticatedBundledNotoColorEmoji(data, digest)
-}
-
 func registerAuthenticatedBundledNotoColorEmoji(data []byte, digest [sha256.Size]byte) ([]byte, error) {
 	return registerAuthenticatedBundledNotoColorEmojiOwnership(data, digest, false)
 }
 
 // RegisterOwnedBundledNotoColorEmoji authenticates and takes ownership of a
 // freshly allocated decoded resource. The caller must not retain or mutate
-// data after this call. Unlike RegisterBundledNotoColorEmoji, this path avoids
-// a complete second decoded-font allocation; it is restricted to D2's private
-// loader, which has sole ownership of its decoder output.
+// data after this call. This avoids a complete second decoded-font allocation
+// and is restricted to D2's private loader, which has sole ownership of its
+// decoder output.
 func RegisterOwnedBundledNotoColorEmoji(data []byte) ([]byte, error) {
 	if len(data) != bundledNotoColorEmojiCOLRv1Size {
 		return nil, fmt.Errorf("d2fonts: bundled Noto Color Emoji decoded resource is not authenticated")

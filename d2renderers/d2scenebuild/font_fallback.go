@@ -904,10 +904,6 @@ func sortedRunes(values map[rune]struct{}) []rune {
 	return result
 }
 
-func firstMissingRune(values map[rune]struct{}) rune {
-	return sortedRunes(values)[0]
-}
-
 func safeFallbackName(value string) string {
 	value = strings.ToValidUTF8(value, "?")
 	value = strings.Map(func(r rune) rune {

@@ -11,6 +11,7 @@ import (
 	"strings"
 	"sync"
 	"testing"
+	"unicode"
 
 	"github.com/d2lang/d2/d2renderers/internal/fontface"
 )
@@ -160,7 +161,7 @@ func TestSystemFallbackResolverDoesNotTrustFilenameForEmojiCoverage(t *testing.T
 		if err != nil {
 			t.Fatal(err)
 		}
-		if isLikelyEmojiPresentation(value) && supported {
+		if unicode.Is(unicode.So, value) && supported {
 			symbol = value
 			break
 		}

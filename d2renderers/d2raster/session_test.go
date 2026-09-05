@@ -63,7 +63,7 @@ func TestRenderSessionSkipsHashOnlyForPrivateBundledBacking(t *testing.T) {
 	if err != nil || len(emojiFonts) != 1 {
 		t.Fatalf("bundled fallback = %#v, %v", emojiFonts, err)
 	}
-	emojiCanonical, err := fontface.RegisterBundledNotoColorEmoji(emojiFonts[0].Data)
+	emojiCanonical, err := fontface.RegisterOwnedBundledNotoColorEmoji(append([]byte(nil), emojiFonts[0].Data...))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -544,7 +544,7 @@ func BenchmarkRenderSessionFontCold(b *testing.B) {
 	if err != nil || len(emojiFonts) != 1 {
 		b.Fatalf("bundled fallback = %#v, %v", emojiFonts, err)
 	}
-	emojiData, err := fontface.RegisterBundledNotoColorEmoji(emojiFonts[0].Data)
+	emojiData, err := fontface.RegisterOwnedBundledNotoColorEmoji(append([]byte(nil), emojiFonts[0].Data...))
 	if err != nil {
 		b.Fatal(err)
 	}
@@ -589,7 +589,7 @@ func BenchmarkRenderSessionFontWarm(b *testing.B) {
 	if err != nil || len(emojiFonts) != 1 {
 		b.Fatalf("bundled fallback = %#v, %v", emojiFonts, err)
 	}
-	emojiData, err := fontface.RegisterBundledNotoColorEmoji(emojiFonts[0].Data)
+	emojiData, err := fontface.RegisterOwnedBundledNotoColorEmoji(append([]byte(nil), emojiFonts[0].Data...))
 	if err != nil {
 		b.Fatal(err)
 	}
@@ -636,7 +636,7 @@ func BenchmarkRendererFontPreparation(b *testing.B) {
 	if err != nil || len(emojiFonts) != 1 {
 		b.Fatalf("bundled fallback = %#v, %v", emojiFonts, err)
 	}
-	emojiData, err := fontface.RegisterBundledNotoColorEmoji(emojiFonts[0].Data)
+	emojiData, err := fontface.RegisterOwnedBundledNotoColorEmoji(append([]byte(nil), emojiFonts[0].Data...))
 	if err != nil {
 		b.Fatal(err)
 	}

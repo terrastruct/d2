@@ -960,10 +960,6 @@ func renderSingle(ctx context.Context, ms *xmain.State, compileDur time.Duration
 	return [][]byte{out}, written, nil
 }
 
-func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, ruler *textmeasure.Ruler, diagram *d2target.Diagram, outputFormat exportExtension, asciiMode string, wantPreview bool) ([]byte, bool, error) {
-	return _renderWithPNGEncoder(ctx, ms, plugin, opts, inputPath, outputPath, bundle, forceAppendix, ruler, diagram, outputFormat, asciiMode, wantPreview, nil)
-}
-
 func _renderWithPNGEncoder(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, ruler *textmeasure.Ruler, diagram *d2target.Diagram, outputFormat exportExtension, asciiMode string, wantPreview bool, pngEncoder *rasterPNGEncoder) ([]byte, bool, error) {
 	if outputFormat == TXT {
 		var charsetType charset.Type

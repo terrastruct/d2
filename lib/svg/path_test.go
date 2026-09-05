@@ -51,7 +51,6 @@ func TestSVGPathContextPathCommandsReturnsCopy(t *testing.T) {
 
 	commands := path.PathCommands()
 	commands[0].End.X = 99
-	commands = append(commands, svg.PathCommand{Kind: svg.PathCommandClose})
 
 	want := []svg.PathCommand{
 		{Kind: svg.PathCommandMove, End: geo.Point{X: 1, Y: 2}},

@@ -11,7 +11,6 @@ import (
 	"sort"
 	"strings"
 	"sync"
-	"unicode"
 	"unicode/utf8"
 
 	gotextfont "github.com/go-text/typesetting/font"
@@ -879,11 +878,6 @@ func isHebrew(value rune) bool {
 
 func isEmojiOrSymbol(value rune) bool {
 	return value >= 0x2190 && value <= 0x2bff || value >= 0x1f000 && value <= 0x1faff
-}
-
-func isLikelyEmojiPresentation(value rune) bool {
-	return value >= 0x1f000 && value <= 0x1faff ||
-		value >= 0x2600 && value <= 0x27ff && unicode.Is(unicode.So, value)
 }
 
 func systemFontRoots() []string {

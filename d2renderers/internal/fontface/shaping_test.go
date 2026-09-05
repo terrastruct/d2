@@ -35,7 +35,7 @@ func TestShapeTextKeepsGraphemeOnFallbackFace(t *testing.T) {
 	// The same acute mark belongs to a primary cluster first and a fallback
 	// cluster second. Face selection must therefore be occurrence-specific,
 	// rather than a map keyed only by rune value.
-	shaped, err := ShapeText(context.Background(), "e\u0301 \u0416\u0301", fixed.I(20), []ShapeFace{
+	shaped, err := new(ShapingWorkspace).ShapeTextTransient(context.Background(), "e\u0301 \u0416\u0301", fixed.I(20), []ShapeFace{
 		{ID: "primary", Face: primary},
 		{ID: "fallback", Face: fallback},
 	}, shapingTestLimits())
@@ -70,19 +70,19 @@ func TestShapeTextIsBoundedAndCancellable(t *testing.T) {
 
 	cancelled, cancel := context.WithCancel(context.Background())
 	cancel()
-	if _, err := ShapeText(cancelled, "text", fixed.I(12), faces, limits); !errors.Is(err, context.Canceled) {
+	if _, err := new(ShapingWorkspace).ShapeTextTransient(cancelled, "text", fixed.I(12), faces, limits); !errors.Is(err, context.Canceled) {
 		t.Fatalf("cancelled ShapeText error = %v", err)
 	}
 
 	tooShort := limits
 	tooShort.Runes = 1
-	if _, err := ShapeText(context.Background(), "ab", fixed.I(12), faces, tooShort); err == nil || !strings.Contains(err.Error(), "rune count") {
+	if _, err := new(ShapingWorkspace).ShapeTextTransient(context.Background(), "ab", fixed.I(12), faces, tooShort); err == nil || !strings.Contains(err.Error(), "rune count") {
 		t.Fatalf("rune-limit error = %v", err)
 	}
 
 	tooFewGlyphs := limits
 	tooFewGlyphs.Glyphs = 1
-	if _, err := ShapeText(context.Background(), "ab", fixed.I(12), faces, tooFewGlyphs); err == nil || !strings.Contains(err.Error(), "glyph count") {
+	if _, err := new(ShapingWorkspace).ShapeTextTransient(context.Background(), "ab", fixed.I(12), faces, tooFewGlyphs); err == nil || !strings.Contains(err.Error(), "glyph count") {
 		t.Fatalf("glyph-limit error = %v", err)
 	}
 }
@@ -105,7 +105,7 @@ func TestShapeTextUsesDeterministicPlaceholderForMissingScalar(t *testing.T) {
 	if replacementRune == '?' {
 		t.Fatal("Source Sans Pro placeholder unexpectedly fell back to a question mark")
 	}
-	shaped, err := ShapeText(
+	shaped, err := new(ShapingWorkspace).ShapeTextTransient(
 		context.Background(), "\U0010ffff", fixed.I(18),
 		[]ShapeFace{{ID: "primary", Face: face}}, shapingTestLimits(),
 	)
@@ -158,7 +158,7 @@ func TestASCIISemanticFastPathMatchesSegmenter(t *testing.T) {
 	}
 }
 
-func TestTransientShapingWorkspaceMatchesOwnedResultsAcrossReuse(t *testing.T) {
+func TestShapingWorkspaceMatchesFreshResultsAcrossReuse(t *testing.T) {
 	primary := shapingTestFace(t, "FuzzyBubbles-Regular.ttf")
 	fallback := shapingTestFace(t, "SourceSansPro-Regular.ttf")
 	faces := []ShapeFace{{ID: "primary", Face: primary}, {ID: "fallback", Face: fallback}}
@@ -175,7 +175,7 @@ func TestTransientShapingWorkspaceMatchesOwnedResultsAcrossReuse(t *testing.T) {
 	}
 	var workspace ShapingWorkspace
 	for index, test := range cases {
-		want, wantErr := ShapeText(context.Background(), test.text, test.size, faces, shapingTestLimits())
+		want, wantErr := new(ShapingWorkspace).ShapeTextTransient(context.Background(), test.text, test.size, faces, shapingTestLimits())
 		got, gotErr := workspace.ShapeTextTransient(context.Background(), test.text, test.size, faces, shapingTestLimits())
 		if fmt.Sprint(gotErr) != fmt.Sprint(wantErr) {
 			t.Fatalf("case %d error = %v, want %v", index, gotErr, wantErr)
@@ -234,21 +234,21 @@ func TestOrderShapedRunsLTRMatchesVisualIndexOrdering(t *testing.T) {
 	}
 }
 
-func TestShapingWorkspaceOwnedResultsSurviveReuse(t *testing.T) {
+func TestShapingWorkspacesDoNotShareResults(t *testing.T) {
 	face := shapingTestFace(t, "SourceSansPro-Regular.ttf")
 	faces := []ShapeFace{{ID: "primary", Face: face}}
 	var workspace ShapingWorkspace
-	owned, err := workspace.ShapeText(context.Background(), "owned result", fixed.I(16), faces, shapingTestLimits())
+	result, err := workspace.ShapeTextTransient(context.Background(), "independent result", fixed.I(16), faces, shapingTestLimits())
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := owned
-	want.Glyphs = append([]ShapedGlyph(nil), owned.Glyphs...)
-	if _, err := workspace.ShapeTextTransient(context.Background(), "a longer transient result which reuses scratch", fixed.I(16), faces, shapingTestLimits()); err != nil {
+	want := result
+	want.Glyphs = append([]ShapedGlyph(nil), result.Glyphs...)
+	if _, err := new(ShapingWorkspace).ShapeTextTransient(context.Background(), "a longer result in another workspace", fixed.I(16), faces, shapingTestLimits()); err != nil {
 		t.Fatal(err)
 	}
-	if !reflect.DeepEqual(owned, want) {
-		t.Fatalf("owned result changed after workspace reuse:\n got  %#v\n want %#v", owned, want)
+	if !reflect.DeepEqual(result, want) {
+		t.Fatalf("result changed after another workspace shaped text:\n got  %#v\n want %#v", result, want)
 	}
 }
 
@@ -290,7 +290,7 @@ func TestShapingWorkspacePreservesCancellationCadenceAfterWarmup(t *testing.T) {
 	}
 	for cancelAt := 1; cancelAt <= 80; cancelAt++ {
 		wantContext := &shapeCancelContext{Context: context.Background(), cancelAt: cancelAt}
-		want, wantErr := ShapeText(wantContext, text, fixed.I(16), faces, limits)
+		want, wantErr := new(ShapingWorkspace).ShapeTextTransient(wantContext, text, fixed.I(16), faces, limits)
 		gotContext := &shapeCancelContext{Context: context.Background(), cancelAt: cancelAt}
 		got, gotErr := workspace.ShapeTextTransient(gotContext, text, fixed.I(16), faces, limits)
 		if !errors.Is(gotErr, context.Canceled) != !errors.Is(wantErr, context.Canceled) || fmt.Sprint(gotErr) != fmt.Sprint(wantErr) {
@@ -326,7 +326,7 @@ func BenchmarkShapeTextRepeatedRunes(b *testing.B) {
 	const text = "repeat repeated runes; repeat repeated runes"
 	b.ReportAllocs()
 	for b.Loop() {
-		if _, err := ShapeText(context.Background(), text, fixed.I(16), faces, limits); err != nil {
+		if _, err := new(ShapingWorkspace).ShapeTextTransient(context.Background(), text, fixed.I(16), faces, limits); err != nil {
 			b.Fatal(err)
 		}
 	}
@@ -344,20 +344,7 @@ func BenchmarkShapeTextWorkspace(b *testing.B) {
 			for b.Loop() {
 				for range nodes {
 					var err error
-					shaped, err = ShapeText(context.Background(), text, fixed.I(16), faces, limits)
-					if err != nil {
-						b.Fatal(err)
-					}
-				}
-			}
-		})
-		b.Run(fmt.Sprintf("%dNodes/Workspace", nodes), func(b *testing.B) {
-			b.ReportAllocs()
-			for b.Loop() {
-				var workspace ShapingWorkspace
-				for range nodes {
-					var err error
-					shaped, err = workspace.ShapeText(context.Background(), text, fixed.I(16), faces, limits)
+					shaped, err = new(ShapingWorkspace).ShapeTextTransient(context.Background(), text, fixed.I(16), faces, limits)
 					if err != nil {
 						b.Fatal(err)
 					}

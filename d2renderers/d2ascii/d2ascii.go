@@ -27,9 +27,6 @@ type ASCIIartist struct {
 	FW      float64
 	FH      float64
 	chars   charset.Set
-	entr    string
-	bcurve  string
-	tcurve  string
 	SCALE   float64
 	diagram d2target.Diagram
 	ctx     context.Context
@@ -126,9 +123,6 @@ func NewASCIIartist() *ASCIIartist {
 		FW:      defaultFontWidth,
 		FH:      defaultFontHeight,
 		SCALE:   defaultScale,
-		entr:    "\n",
-		bcurve:  "`-._",
-		tcurve:  ".-`‾",
 		chars:   charset.New(charset.Unicode),
 		diagram: *d2target.NewDiagram(),
 	}
