@@ -1,0 +1,88 @@
+package d2lib
+
+// Private performance overlay helpers; never compiled into repository artifacts.
+type NonlayoutEvent struct {
+	Case        string `json:"case"`
+	Phase       string `json:"phase"`
+	Count       int    `json:"count"`
+	Nanoseconds int64  `json:"nanoseconds"`
+}
+type NonlayoutHash struct {
+	Case   string `json:"case"`
+	Kind   string `json:"kind"`
+	SHA256 string `json:"sha256"`
+	Bytes  int    `json:"bytes"`
+}
+
+var nonlayoutProbeData = struct {
+	sync.Mutex
+	Events map[string]*NonlayoutEvent
+	Hashes []NonlayoutHash
+}{Events: make(map[string]*NonlayoutEvent)}
+
+func NonlayoutCase(ctx context.Context, name string) context.Context {
+	ctx = pprof.WithLabels(ctx, pprof.Labels("case", name))
+	pprof.SetGoroutineLabels(ctx)
+	return ctx
+}
+func nonlayoutCaseName(ctx context.Context) string { name, _ := pprof.Label(ctx, "case"); return name }
+func NonlayoutProbe(ctx context.Context, phase string) func() {
+	name := nonlayoutCaseName(ctx)
+	pprof.SetGoroutineLabels(pprof.WithLabels(ctx, pprof.Labels("phase", phase)))
+	start := time.Now()
+	return func() {
+		elapsed := time.Since(start).Nanoseconds()
+		pprof.SetGoroutineLabels(ctx)
+		nonlayoutProbeData.Lock()
+		defer nonlayoutProbeData.Unlock()
+		key := name + "\x00" + phase
+		e := nonlayoutProbeData.Events[key]
+		if e == nil {
+			e = &NonlayoutEvent{Case: name, Phase: phase}
+			nonlayoutProbeData.Events[key] = e
+		}
+		e.Count++
+		e.Nanoseconds += elapsed
+	}
+}
+func NonlayoutCapture(ctx context.Context, d *d2target.Diagram, o *d2svg.RenderOpts) error {
+	path := os.Getenv("D2_NONLAYOUT_CAPTURE")
+	if path == "" {
+		return nil
+	}
+	name := nonlayoutCaseName(ctx)
+	data, err := json.Marshal(struct {
+		Case    string            `json:"case"`
+		Diagram *d2target.Diagram `json:"diagram"`
+		Options *d2svg.RenderOpts `json:"options"`
+	}{name, d, o})
+	if err != nil {
+		return err
+	}
+	hash := fmt.Sprintf("%x", sha256.Sum256([]byte(name)))
+	if err := os.MkdirAll(path, 0755); err != nil {
+		return err
+	}
+	return os.WriteFile(filepath.Join(path, hash+".json"), data, 0600)
+}
+func NonlayoutFingerprint(ctx context.Context, kind string, data []byte) {
+	nonlayoutProbeData.Lock()
+	defer nonlayoutProbeData.Unlock()
+	nonlayoutProbeData.Hashes = append(nonlayoutProbeData.Hashes, NonlayoutHash{nonlayoutCaseName(ctx), kind, fmt.Sprintf("%x", sha256.Sum256(data)), len(data)})
+}
+func NonlayoutProbeWrite() error {
+	path := os.Getenv("D2_NONLAYOUT_PHASE_OUT")
+	if path == "" {
+		return nil
+	}
+	nonlayoutProbeData.Lock()
+	defer nonlayoutProbeData.Unlock()
+	data, err := json.MarshalIndent(struct {
+		Events map[string]*NonlayoutEvent `json:"events"`
+		Hashes []NonlayoutHash            `json:"hashes"`
+	}{nonlayoutProbeData.Events, nonlayoutProbeData.Hashes}, "", "  ")
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(path, data, 0600)
+}

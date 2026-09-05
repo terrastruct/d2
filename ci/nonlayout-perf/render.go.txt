@@ -1,0 +1,130 @@
+package main
+
+import (
+	"crypto/sha256"
+	"encoding/json"
+	"flag"
+	"fmt"
+	"os"
+	"path/filepath"
+	"runtime"
+	"runtime/pprof"
+	"sort"
+	"time"
+
+	"github.com/d2lang/d2/d2renderers/d2animate"
+	"github.com/d2lang/d2/d2renderers/d2svg"
+	"github.com/d2lang/d2/d2target"
+)
+
+type fixture struct {
+	Case    string            `json:"case"`
+	Diagram *d2target.Diagram `json:"diagram"`
+	Options *d2svg.RenderOpts `json:"options"`
+}
+type result struct {
+	Case         string `json:"case"`
+	Pass         int    `json:"pass"`
+	RenderNS     int64  `json:"render_ns"`
+	AnimationNS  int64  `json:"animation_ns"`
+	SHA256       string `json:"sha256"`
+	Bytes        int    `json:"bytes"`
+	InputMutated bool   `json:"input_mutated"`
+}
+type passResult struct {
+	Pass        int    `json:"pass"`
+	RenderNS    int64  `json:"render_ns"`
+	AnimationNS int64  `json:"animation_ns"`
+	WallNS      int64  `json:"wall_ns"`
+	AllocBytes  uint64 `json:"alloc_bytes"`
+	Allocs      uint64 `json:"allocs"`
+}
+
+func check(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
+func hash(v any) [32]byte { b, e := json.Marshal(v); check(e); return sha256.Sum256(b) }
+func main() {
+	corpus := flag.String("corpus", "", "captured render fixture directory")
+	out := flag.String("out", "", "output JSON path")
+	repeat := flag.Int("repeat", 1, "passes through corpus in one process")
+	profile := flag.String("cpu-profile", "", "optional render-only profile path")
+	flag.Parse()
+	if *corpus == "" || *out == "" || *repeat < 1 {
+		panic("corpus, out, and repeat>=1 required")
+	}
+	paths, e := filepath.Glob(filepath.Join(*corpus, "*.json"))
+	check(e)
+	if len(paths) == 0 {
+		panic("empty corpus")
+	}
+	fixtures := make([]fixture, 0, len(paths))
+	for _, p := range paths {
+		b, e := os.ReadFile(p)
+		check(e)
+		var f fixture
+		check(json.Unmarshal(b, &f))
+		fixtures = append(fixtures, f)
+	}
+	sort.Slice(fixtures, func(i, j int) bool { return fixtures[i].Case < fixtures[j].Case })
+	inputs := make([][32]byte, len(fixtures))
+	for i := range fixtures {
+		inputs[i] = hash(fixtures[i])
+	}
+	if *profile != "" {
+		f, e := os.Create(*profile)
+		check(e)
+		check(pprof.StartCPUProfile(f))
+		defer func() { pprof.StopCPUProfile(); check(f.Close()) }()
+	}
+	results := make([]result, 0, len(fixtures)**repeat)
+	passes := make([]passResult, 0, *repeat)
+	for pass := 0; pass < *repeat; pass++ {
+		runtime.GC()
+		var before, after runtime.MemStats
+		runtime.ReadMemStats(&before)
+		start := time.Now()
+		p := passResult{Pass: pass}
+		for i := range fixtures {
+			f := &fixtures[i]
+			r := result{Case: f.Case, Pass: pass}
+			opts := *f.Options
+			start := time.Now()
+			boards, e := d2svg.RenderMultiboard(f.Diagram, &opts)
+			r.RenderNS = time.Since(start).Nanoseconds()
+			check(e)
+			var svg []byte
+			if len(boards) == 1 {
+				svg = boards[0]
+			} else {
+				start = time.Now()
+				svg, e = d2animate.Wrap(f.Diagram, boards, opts, 1000)
+				r.AnimationNS = time.Since(start).Nanoseconds()
+				check(e)
+			}
+			r.SHA256 = fmt.Sprintf("%x", sha256.Sum256(svg))
+			r.Bytes = len(svg)
+			r.InputMutated = inputs[i] != hash(*f)
+			if r.InputMutated {
+				panic("render mutated input: " + f.Case)
+			}
+			p.RenderNS += r.RenderNS
+			p.AnimationNS += r.AnimationNS
+			results = append(results, r)
+		}
+		p.WallNS = time.Since(start).Nanoseconds()
+		runtime.ReadMemStats(&after)
+		p.AllocBytes = after.TotalAlloc - before.TotalAlloc
+		p.Allocs = after.Mallocs - before.Mallocs
+		passes = append(passes, p)
+	}
+	b, e := json.MarshalIndent(struct {
+		Cases   int          `json:"cases"`
+		Passes  []passResult `json:"passes"`
+		Results []result     `json:"results"`
+	}{len(fixtures), passes, results}, "", "  ")
+	check(e)
+	check(os.WriteFile(*out, b, 0600))
+}

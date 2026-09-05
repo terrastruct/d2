@@ -2474,7 +2474,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 	}
 	fmt.Fprint(buf, `<style type="text/css"><![CDATA[`)
 
-	appendOnTrigger(
+	appendOnTriggerLazy(
 		buf,
 		source,
 		[]string{
@@ -2483,7 +2483,8 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			`class="md"`,
 			`class="md `,
 		},
-		fmt.Sprintf(`
+		func() string {
+			return fmt.Sprintf(`
 .%s .text {
 	font-family: "%s-font-regular";
 }
@@ -2491,20 +2492,22 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 	font-family: %s-font-regular;
 	src: url("%s");
 }`,
-			diagramHash,
-			diagramHash,
-			diagramHash,
-			fontFamily.Font(0, d2fonts.FONT_STYLE_REGULAR).GetEncodedSubset(corpus),
-		),
+				diagramHash,
+				diagramHash,
+				diagramHash,
+				fontFamily.Font(0, d2fonts.FONT_STYLE_REGULAR).GetEncodedSubset(corpus),
+			)
+		},
 	)
 
-	appendOnTrigger(
+	appendOnTriggerLazy(
 		buf,
 		source,
 		[]string{
 			`text-semibold`,
 		},
-		fmt.Sprintf(`
+		func() string {
+			return fmt.Sprintf(`
 .%s .text-semibold {
 	font-family: "%s-font-semibold";
 }
@@ -2512,11 +2515,12 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 	font-family: %s-font-semibold;
 	src: url("%s");
 }`,
-			diagramHash,
-			diagramHash,
-			diagramHash,
-			fontFamily.Font(0, d2fonts.FONT_STYLE_SEMIBOLD).GetEncodedSubset(corpus),
-		),
+				diagramHash,
+				diagramHash,
+				diagramHash,
+				fontFamily.Font(0, d2fonts.FONT_STYLE_SEMIBOLD).GetEncodedSubset(corpus),
+			)
+		},
 	)
 
 	appendOnTrigger(
@@ -2591,7 +2595,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 }`,
 	)
 
-	appendOnTrigger(
+	appendOnTriggerLazy(
 		buf,
 		source,
 		[]string{
@@ -2599,7 +2603,8 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			`<b>`,
 			`<strong>`,
 		},
-		fmt.Sprintf(`
+		func() string {
+			return fmt.Sprintf(`
 .%s .text-bold {
 	font-family: "%s-font-bold";
 }
@@ -2607,14 +2612,15 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 	font-family: %s-font-bold;
 	src: url("%s");
 }`,
-			diagramHash,
-			diagramHash,
-			diagramHash,
-			fontFamily.Font(0, d2fonts.FONT_STYLE_BOLD).GetEncodedSubset(corpus),
-		),
+				diagramHash,
+				diagramHash,
+				diagramHash,
+				fontFamily.Font(0, d2fonts.FONT_STYLE_BOLD).GetEncodedSubset(corpus),
+			)
+		},
 	)
 
-	appendOnTrigger(
+	appendOnTriggerLazy(
 		buf,
 		source,
 		[]string{
@@ -2622,7 +2628,8 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			`<em>`,
 			`<dfn>`,
 		},
-		fmt.Sprintf(`
+		func() string {
+			return fmt.Sprintf(`
 .%s .text-italic {
 	font-family: "%s-font-italic";
 }
@@ -2630,14 +2637,15 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 	font-family: %s-font-italic;
 	src: url("%s");
 }`,
-			diagramHash,
-			diagramHash,
-			diagramHash,
-			fontFamily.Font(0, d2fonts.FONT_STYLE_ITALIC).GetEncodedSubset(corpus),
-		),
+				diagramHash,
+				diagramHash,
+				diagramHash,
+				fontFamily.Font(0, d2fonts.FONT_STYLE_ITALIC).GetEncodedSubset(corpus),
+			)
+		},
 	)
 
-	appendOnTrigger(
+	appendOnTriggerLazy(
 		buf,
 		source,
 		[]string{
@@ -2647,7 +2655,8 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			`<kbd>`,
 			`<samp>`,
 		},
-		fmt.Sprintf(`
+		func() string {
+			return fmt.Sprintf(`
 .%s .text-mono {
 	font-family: "%s-font-mono";
 }
@@ -2655,20 +2664,22 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 	font-family: %s-font-mono;
 	src: url("%s");
 }`,
-			diagramHash,
-			diagramHash,
-			diagramHash,
-			monoFontFamily.Font(0, d2fonts.FONT_STYLE_REGULAR).GetEncodedSubset(corpus),
-		),
+				diagramHash,
+				diagramHash,
+				diagramHash,
+				monoFontFamily.Font(0, d2fonts.FONT_STYLE_REGULAR).GetEncodedSubset(corpus),
+			)
+		},
 	)
 
-	appendOnTrigger(
+	appendOnTriggerLazy(
 		buf,
 		source,
 		[]string{
 			`text-mono-semibold`,
 		},
-		fmt.Sprintf(`
+		func() string {
+			return fmt.Sprintf(`
 .%s .text-mono-semibold {
 	font-family: "%s-font-mono-semibold";
 }
@@ -2676,20 +2687,22 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 	font-family: %s-font-mono-semibold;
 	src: url("%s");
 }`,
-			diagramHash,
-			diagramHash,
-			diagramHash,
-			monoFontFamily.Font(0, d2fonts.FONT_STYLE_SEMIBOLD).GetEncodedSubset(corpus),
-		),
+				diagramHash,
+				diagramHash,
+				diagramHash,
+				monoFontFamily.Font(0, d2fonts.FONT_STYLE_SEMIBOLD).GetEncodedSubset(corpus),
+			)
+		},
 	)
 
-	appendOnTrigger(
+	appendOnTriggerLazy(
 		buf,
 		source,
 		[]string{
 			`text-mono-bold`,
 		},
-		fmt.Sprintf(`
+		func() string {
+			return fmt.Sprintf(`
 .%s .text-mono-bold {
 	font-family: "%s-font-mono-bold";
 }
@@ -2697,20 +2710,22 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 	font-family: %s-font-mono-bold;
 	src: url("%s");
 }`,
-			diagramHash,
-			diagramHash,
-			diagramHash,
-			monoFontFamily.Font(0, d2fonts.FONT_STYLE_BOLD).GetEncodedSubset(corpus),
-		),
+				diagramHash,
+				diagramHash,
+				diagramHash,
+				monoFontFamily.Font(0, d2fonts.FONT_STYLE_BOLD).GetEncodedSubset(corpus),
+			)
+		},
 	)
 
-	appendOnTrigger(
+	appendOnTriggerLazy(
 		buf,
 		source,
 		[]string{
 			`text-mono-italic`,
 		},
-		fmt.Sprintf(`
+		func() string {
+			return fmt.Sprintf(`
 .%s .text-mono-italic {
 	font-family: "%s-font-mono-italic";
 }
@@ -2718,11 +2733,12 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 	font-family: %s-font-mono-italic;
 	src: url("%s");
 }`,
-			diagramHash,
-			diagramHash,
-			diagramHash,
-			monoFontFamily.Font(0, d2fonts.FONT_STYLE_ITALIC).GetEncodedSubset(corpus),
-		),
+				diagramHash,
+				diagramHash,
+				diagramHash,
+				monoFontFamily.Font(0, d2fonts.FONT_STYLE_ITALIC).GetEncodedSubset(corpus),
+			)
+		},
 	)
 
 	appendOnTrigger(
@@ -2786,6 +2802,17 @@ func appendOnTrigger(buf *bytes.Buffer, source string, triggers []string, newCon
 	for _, trigger := range triggers {
 		if strings.Contains(source, trigger) {
 			fmt.Fprint(buf, newContent)
+			break
+		}
+	}
+}
+
+// appendOnTriggerLazy avoids constructing a font subset unless its CSS is used.
+// Match the source and trigger order used by appendOnTrigger exactly.
+func appendOnTriggerLazy(buf *bytes.Buffer, source string, triggers []string, newContent func() string) {
+	for _, trigger := range triggers {
+		if strings.Contains(source, trigger) {
+			fmt.Fprint(buf, newContent())
 			break
 		}
 	}
