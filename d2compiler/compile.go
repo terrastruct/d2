@@ -11,17 +11,17 @@ import (
 	"strconv"
 	"strings"
 
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/util-go/go2"
 
-	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2format"
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2ir"
-	"oss.terrastruct.com/d2/d2parser"
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/lib/color"
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/textmeasure"
+	"github.com/d2lang/d2/d2ast"
+	"github.com/d2lang/d2/d2format"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2ir"
+	"github.com/d2lang/d2/d2parser"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/lib/color"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/textmeasure"
 )
 
 type CompileOptions struct {
@@ -257,7 +257,8 @@ func _findFieldAST(ast *d2ast.Map, path []string) *d2ast.Map {
 }
 
 type compiler struct {
-	err *d2parser.ParseError
+	err             *d2parser.ParseError
+	activeClassMaps map[*d2ir.Map]struct{}
 }
 
 func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
@@ -292,7 +293,10 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 		for _, className := range classNames {
 			classMap := m.GetClassMap(className)
 			if classMap != nil {
-				c.compileMap(obj, classMap)
+				if c.beginClass(class, className, classMap) {
+					c.compileMap(obj, classMap)
+					c.endClass(classMap)
+				}
 			} else {
 				if strings.Contains(className, ",") {
 					split := strings.Split(className, ",")
@@ -341,6 +345,22 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 			c.compileEdge(obj, e)
 		}
 	}
+}
+
+func (c *compiler) beginClass(class *d2ir.Field, className string, classMap *d2ir.Map) bool {
+	if c.activeClassMaps == nil {
+		c.activeClassMaps = make(map[*d2ir.Map]struct{})
+	}
+	if _, ok := c.activeClassMaps[classMap]; ok {
+		c.errorf(class.LastRef().AST(), `class %q forms a reference cycle`, className)
+		return false
+	}
+	c.activeClassMaps[classMap] = struct{}{}
+	return true
+}
+
+func (c *compiler) endClass(classMap *d2ir.Map) {
+	delete(c.activeClassMaps, classMap)
 }
 
 func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
@@ -866,6 +886,9 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 	if e.Map() != nil {
 		c.compileEdgeMap(edge, e.Map())
 	}
+	if edge.Link != nil && edge.Label.Value == "" && edge.Label.MapKey == nil {
+		edge.Label.Value = edge.Link.Value
+	}
 
 	edge.Label.MapKey = e.LastPrimaryKey()
 	for _, er := range e.References {
@@ -906,7 +929,10 @@ func (c *compiler) compileEdgeMap(edge *d2graph.Edge, m *d2ir.Map) {
 		for _, className := range classNames {
 			classMap := m.GetClassMap(className)
 			if classMap != nil {
-				c.compileEdgeMap(edge, classMap)
+				if c.beginClass(class, className, classMap) {
+					c.compileEdgeMap(edge, classMap)
+					c.endClass(classMap)
+				}
 			}
 		}
 	}

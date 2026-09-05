@@ -2,23 +2,25 @@ package pdf
 
 import (
 	"bytes"
+	"errors"
+	"io"
 	"math"
+	"os"
 	"strings"
 
-	"github.com/jung-kurt/gofpdf"
+	"codeberg.org/go-pdf/fpdf"
 
-	"oss.terrastruct.com/d2/d2parser"
-	"oss.terrastruct.com/d2/d2renderers/d2fonts"
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/d2themes"
-	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
-	"oss.terrastruct.com/d2/lib/color"
+	"github.com/d2lang/d2/d2renderers/d2fonts"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/d2themes"
+	"github.com/d2lang/d2/d2themes/d2themescatalog"
+	"github.com/d2lang/d2/lib/color"
 )
 
 const TITLE_SEP = "  /  "
 
 type GoFPDF struct {
-	pdf *gofpdf.Fpdf
+	pdf *fpdf.Fpdf
 }
 
 type BoardTitle struct {
@@ -27,7 +29,7 @@ type BoardTitle struct {
 }
 
 func Init() *GoFPDF {
-	newGofPDF := gofpdf.NewCustom(&gofpdf.InitType{
+	newGofPDF := fpdf.NewCustom(&fpdf.InitType{
 		UnitStr: "pt",
 	})
 
@@ -67,13 +69,21 @@ func (g *GoFPDF) GetFillRGB(themeID int64, fill string) (color.RGB, error) {
 }
 
 func (g *GoFPDF) AddPDFPage(png []byte, titlePath []BoardTitle, themeID int64, fill string, shapes []d2target.Shape, pad int64, viewboxX, viewboxY float64, pageMap map[string]int, includeNav bool) error {
-	var opt gofpdf.ImageOptions
+	if len(titlePath) == 0 {
+		return errors.New("PDF page requires a board title path")
+	}
+	boardID := titlePath[len(titlePath)-1].BoardID
+	if boardID == "" {
+		return errors.New("PDF page requires a board ID")
+	}
+	imageKey := "d2-board:" + boardID
+	var opt fpdf.ImageOptions
 	opt.ImageType = "png"
 	boardPath := make([]string, len(titlePath))
 	for i, t := range titlePath {
 		boardPath[i] = t.Name
 	}
-	imageInfo := g.pdf.RegisterImageOptionsReader(strings.Join(boardPath, "/"), opt, bytes.NewReader(png))
+	imageInfo := g.pdf.RegisterImageOptionsReader(imageKey, opt, bytes.NewReader(png))
 	if g.pdf.Err() {
 		return g.pdf.Error()
 	}
@@ -105,7 +115,7 @@ func (g *GoFPDF) AddPDFPage(png []byte, titlePath []BoardTitle, themeID int64, f
 	}
 
 	// Add page
-	g.pdf.AddPageFormat("", gofpdf.SizeType{Wd: pageWidth, Ht: pageHeight + headerHeight})
+	g.pdf.AddPageFormat("", fpdf.SizeType{Wd: pageWidth, Ht: pageHeight + headerHeight})
 
 	if includeNav {
 		// Draw header
@@ -149,7 +159,7 @@ func (g *GoFPDF) AddPDFPage(png []byte, titlePath []BoardTitle, themeID int64, f
 	// Draw image
 	imageX := (pageWidth - imageWidth) / 2
 	imageY := headerHeight + (pageHeight-imageHeight)/2
-	g.pdf.ImageOptions(strings.Join(boardPath, "/"), imageX, imageY, imageWidth, imageHeight, false, opt, 0, "")
+	g.pdf.ImageOptions(imageKey, imageX, imageY, imageWidth, imageHeight, false, opt, 0, "")
 
 	// Draw links
 	for _, shape := range shapes {
@@ -162,17 +172,12 @@ func (g *GoFPDF) AddPDFPage(png []byte, titlePath []BoardTitle, themeID int64, f
 		linkWidth := float64(shape.Width) + float64(shape.StrokeWidth*2)
 		linkHeight := float64(shape.Height) + float64(shape.StrokeWidth*2)
 
-		key, err := d2parser.ParseKey(shape.Link)
-		if err != nil || key.Path[0].Unbox().ScalarString() != "root" {
-			// External link
-			g.pdf.LinkString(linkX, linkY, linkWidth, linkHeight, shape.Link)
+		if pageNum, ok := pageMap[shape.Link]; ok {
+			linkID := g.pdf.AddLink()
+			g.pdf.SetLink(linkID, 0, pageNum+1)
+			g.pdf.Link(linkX, linkY, linkWidth, linkHeight, linkID)
 		} else {
-			// Internal link
-			if pageNum, ok := pageMap[shape.Link]; ok {
-				linkID := g.pdf.AddLink()
-				g.pdf.SetLink(linkID, 0, pageNum+1)
-				g.pdf.Link(linkX, linkY, linkWidth, linkHeight, linkID)
-			}
+			g.pdf.LinkString(linkX, linkY, linkWidth, linkHeight, shape.Link)
 		}
 	}
 
@@ -190,5 +195,36 @@ func (g *GoFPDF) AddPDFPage(png []byte, titlePath []BoardTitle, themeID int64, f
 }
 
 func (g *GoFPDF) Export(outputPath string) error {
-	return g.pdf.OutputFileAndClose(outputPath)
+	_, err := g.ExportWithStatus(outputPath)
+	return err
+}
+
+// ExportWithStatus writes the PDF document to outputPath and reports whether
+// the target was created or truncated. A true result therefore means callers
+// must treat an accompanying error as a partial output failure, even when the
+// failure happened before the first byte was written.
+func (g *GoFPDF) ExportWithStatus(outputPath string) (touched bool, err error) {
+	// Match fpdf.OutputFileAndClose: a document-generation error must not touch
+	// an existing target.
+	if err := g.pdf.Error(); err != nil {
+		return false, err
+	}
+
+	output, err := os.Create(outputPath)
+	if err != nil {
+		g.pdf.SetError(err)
+		return false, err
+	}
+	err = g.exportToAndClose(output)
+	return true, err
+}
+
+// ExportTo writes the complete PDF document to output. The caller retains
+// ownership of output.
+func (g *GoFPDF) ExportTo(output io.Writer) error {
+	return g.pdf.Output(output)
+}
+
+func (g *GoFPDF) exportToAndClose(output io.WriteCloser) error {
+	return errors.Join(g.ExportTo(output), output.Close())
 }

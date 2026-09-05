@@ -1,8 +1,8 @@
 package main
 
 import (
-	"oss.terrastruct.com/d2/d2cli"
-	"oss.terrastruct.com/util-go/xmain"
+	"github.com/d2lang/d2/d2cli"
+	"github.com/d2lang/util-go/xmain"
 )
 
 func main() {

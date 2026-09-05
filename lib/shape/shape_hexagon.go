@@ -3,9 +3,9 @@ package shape
 import (
 	"math"
 
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/svg"
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/svg"
+	"github.com/d2lang/util-go/go2"
 )
 
 type shapeHexagon struct {
@@ -55,6 +55,10 @@ func (s shapeHexagon) GetSVGPathData() []string {
 	return []string{
 		hexagonPath(s.Box).PathData(),
 	}
+}
+
+func (s shapeHexagon) GetPathCommands() [][]svg.PathCommand {
+	return pathCommands(hexagonPath(s.Box))
 }
 
 func (s shapeHexagon) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {

@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"strings"
 
-	"oss.terrastruct.com/d2/lib/compression"
-	"oss.terrastruct.com/d2/lib/syncmap"
+	"github.com/d2lang/d2/lib/compression"
+	"github.com/d2lang/d2/lib/syncmap"
 )
 
 // Compressed font data for WASM builds
@@ -123,6 +123,9 @@ func init() {
 	// Initialize FontFaces with TTF files
 	if err := initializeFontFaces(fontFacesFS); err != nil {
 		panic(fmt.Sprintf("Failed to initialize font faces: %v", err))
+	}
+	if err := registerBundledFontFaces(); err != nil {
+		panic(fmt.Sprintf("Failed to register bundled font faces: %v", err))
 	}
 }
 

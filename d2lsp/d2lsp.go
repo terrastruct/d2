@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"strings"
 
-	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2ir"
-	"oss.terrastruct.com/d2/d2parser"
-	"oss.terrastruct.com/d2/lib/memfs"
+	"github.com/d2lang/d2/d2ast"
+	"github.com/d2lang/d2/d2ir"
+	"github.com/d2lang/d2/d2parser"
+	"github.com/d2lang/d2/lib/memfs"
 )
 
 func GetRefRanges(path string, fs map[string]string, boardPath []string, key string) (ranges []d2ast.Range, importRanges []d2ast.Range, _ error) {

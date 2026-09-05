@@ -3,9 +3,9 @@ package shape
 import (
 	"math"
 
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/svg"
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/svg"
+	"github.com/d2lang/util-go/go2"
 )
 
 // The percentage values of the cloud's wide inner box
@@ -133,6 +133,10 @@ func (s shapeCloud) GetSVGPathData() []string {
 	return []string{
 		cloudPath(s.Box).PathData(),
 	}
+}
+
+func (s shapeCloud) GetPathCommands() [][]svg.PathCommand {
+	return pathCommands(cloudPath(s.Box))
 }
 
 func (s shapeCloud) GetDefaultPadding() (paddingX, paddingY float64) {

@@ -302,12 +302,12 @@
             "User": null,
             "Host": "google.com",
             "Path": "/cat.jpg",
-            "RawPath": "",
-            "OmitHost": false,
-            "ForceQuery": false,
-            "RawQuery": "",
             "Fragment": "",
-            "RawFragment": ""
+            "RawQuery": "",
+            "RawPath": "",
+            "RawFragment": "",
+            "ForceQuery": false,
+            "OmitHost": false
           },
           "iconStyle": {},
           "near_key": null,

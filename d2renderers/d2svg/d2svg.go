@@ -11,6 +11,7 @@ import (
 	"hash/fnv"
 	"html"
 	"io"
+	"regexp"
 	"sort"
 	"strings"
 
@@ -21,23 +22,23 @@ import (
 	"github.com/alecthomas/chroma/v2/lexers"
 	"github.com/alecthomas/chroma/v2/styles"
 
-	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2renderers/d2fonts"
-	"oss.terrastruct.com/d2/d2renderers/d2latex"
-	"oss.terrastruct.com/d2/d2renderers/d2sketch"
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/d2themes"
-	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
-	"oss.terrastruct.com/d2/lib/color"
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/jsrunner"
-	"oss.terrastruct.com/d2/lib/label"
-	"oss.terrastruct.com/d2/lib/shape"
-	"oss.terrastruct.com/d2/lib/svg"
-	"oss.terrastruct.com/d2/lib/textmeasure"
-	"oss.terrastruct.com/d2/lib/version"
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/d2/d2ast"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2renderers/d2fonts"
+	"github.com/d2lang/d2/d2renderers/d2latex"
+	"github.com/d2lang/d2/d2renderers/d2sketch"
+	"github.com/d2lang/d2/d2renderers/internal/patternassets"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/d2themes"
+	"github.com/d2lang/d2/d2themes/d2themescatalog"
+	"github.com/d2lang/d2/lib/color"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/label"
+	"github.com/d2lang/d2/lib/shape"
+	"github.com/d2lang/d2/lib/svg"
+	"github.com/d2lang/d2/lib/textmeasure"
+	"github.com/d2lang/d2/lib/version"
+	"github.com/d2lang/util-go/go2"
 )
 
 const (
@@ -64,6 +65,11 @@ var LinkIcon string
 //go:embed style.css
 var BaseStylesheet string
 
+// MarkdownCSS is retained for compatibility with callers that used the
+// browser-era Markdown stylesheet directly.
+//
+// Deprecated: native Markdown SVG does not use or inject this HTML stylesheet.
+//
 //go:embed github-markdown.css
 var MarkdownCSS string
 
@@ -72,9 +78,6 @@ var dots string
 
 //go:embed lines.txt
 var lines string
-
-//go:embed grain.txt
-var grain string
 
 type RenderOpts struct {
 	Pad                *int64
@@ -96,8 +99,81 @@ type RenderOpts struct {
 	OmitVersion *bool
 }
 
-func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height int) {
-	tl, br := diagram.BoundingBox()
+func invalidPaddingError(pad int64) error {
+	return fmt.Errorf("padding %d produces invalid SVG dimensions", pad)
+}
+
+func checkedIntAdd(a, b, minInt, maxInt int64) (int64, bool) {
+	if b > 0 && a > maxInt-b || b < 0 && a < minInt-b {
+		return 0, false
+	}
+	return a + b, true
+}
+
+func checkedIntSub(a, b, minInt, maxInt int64) (int64, bool) {
+	if b > 0 && a < minInt+b || b < 0 && a > maxInt+b {
+		return 0, false
+	}
+	return a - b, true
+}
+
+func validatePadding(tl, br d2target.Point, pad int64) (int, error) {
+	maxInt := int64(^uint(0) >> 1)
+	minInt := -maxInt - 1
+	if pad < minInt || pad > maxInt {
+		return 0, invalidPaddingError(pad)
+	}
+
+	doublePad, ok := checkedIntAdd(pad, pad, minInt, maxInt)
+	if !ok {
+		return 0, invalidPaddingError(pad)
+	}
+	for _, bounds := range [][2]int64{
+		{int64(tl.X), int64(br.X)},
+		{int64(tl.Y), int64(br.Y)},
+	} {
+		if _, ok := checkedIntSub(bounds[0], pad, minInt, maxInt); !ok {
+			return 0, invalidPaddingError(pad)
+		}
+		size, ok := checkedIntSub(bounds[1], bounds[0], minInt, maxInt)
+		if !ok {
+			return 0, invalidPaddingError(pad)
+		}
+		if _, ok := checkedIntAdd(size, doublePad, minInt, maxInt); !ok {
+			return 0, invalidPaddingError(pad)
+		}
+	}
+	return int(pad), nil
+}
+
+func expandDimensions(left, top, width, height, amount int) (int, int, int, int, bool) {
+	maxInt := int64(^uint(0) >> 1)
+	minInt := -maxInt - 1
+	amount64 := int64(amount)
+	doubleAmount, ok := checkedIntAdd(amount64, amount64, minInt, maxInt)
+	if !ok {
+		return 0, 0, 0, 0, false
+	}
+	left64, ok := checkedIntSub(int64(left), amount64, minInt, maxInt)
+	if !ok {
+		return 0, 0, 0, 0, false
+	}
+	top64, ok := checkedIntSub(int64(top), amount64, minInt, maxInt)
+	if !ok {
+		return 0, 0, 0, 0, false
+	}
+	width64, ok := checkedIntAdd(int64(width), doubleAmount, minInt, maxInt)
+	if !ok {
+		return 0, 0, 0, 0, false
+	}
+	height64, ok := checkedIntAdd(int64(height), doubleAmount, minInt, maxInt)
+	if !ok {
+		return 0, 0, 0, 0, false
+	}
+	return int(left64), int(top64), int(width64), int(height64), true
+}
+
+func dimensions(diagram *d2target.Diagram, pad int, tl, br d2target.Point) (left, top, width, height int) {
 	left = tl.X - pad
 	top = tl.Y - pad
 	width = br.X - tl.X + pad*2
@@ -119,7 +195,7 @@ func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height in
 					Text:     s.Label,
 					FontSize: LEGEND_FONT_SIZE,
 				}
-				dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
+				dims := d2graph.GetTextDimensions(nil, ruler, mtext, fontToFamily(s.FontFamily))
 				maxLabelWidth = go2.IntMax(maxLabelWidth, dims.Width)
 				totalHeight += go2.IntMax(dims.Height, LEGEND_ICON_SIZE) + LEGEND_ITEM_SPACING
 				itemCount++
@@ -133,7 +209,7 @@ func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height in
 					Text:     c.Label,
 					FontSize: LEGEND_FONT_SIZE,
 				}
-				dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
+				dims := d2graph.GetTextDimensions(nil, ruler, mtext, fontToFamily(c.FontFamily))
 				maxLabelWidth = go2.IntMax(maxLabelWidth, dims.Width)
 				totalHeight += go2.IntMax(dims.Height, LEGEND_ICON_SIZE) + LEGEND_ITEM_SPACING
 				itemCount++
@@ -205,7 +281,7 @@ func RenderLegend(buf *bytes.Buffer, diagram *d2target.Diagram, diagramHash stri
 			FontSize: LEGEND_FONT_SIZE,
 		}
 
-		dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
+		dims := d2graph.GetTextDimensions(nil, ruler, mtext, fontToFamily(s.FontFamily))
 		maxLabelWidth = go2.IntMax(maxLabelWidth, dims.Width)
 		totalHeight += go2.IntMax(dims.Height, LEGEND_ICON_SIZE) + LEGEND_ITEM_SPACING
 		itemCount++
@@ -221,7 +297,7 @@ func RenderLegend(buf *bytes.Buffer, diagram *d2target.Diagram, diagramHash stri
 			FontSize: LEGEND_FONT_SIZE,
 		}
 
-		dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
+		dims := d2graph.GetTextDimensions(nil, ruler, mtext, fontToFamily(c.FontFamily))
 		maxLabelWidth = go2.IntMax(maxLabelWidth, dims.Width)
 		totalHeight += go2.IntMax(dims.Height, LEGEND_ICON_SIZE) + LEGEND_ITEM_SPACING
 		itemCount++
@@ -296,7 +372,7 @@ func RenderLegend(buf *bytes.Buffer, diagram *d2target.Diagram, diagramHash stri
 			FontSize: LEGEND_FONT_SIZE,
 		}
 
-		dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
+		dims := d2graph.GetTextDimensions(nil, ruler, mtext, fontToFamily(s.FontFamily))
 
 		rowHeight := go2.IntMax(dims.Height, LEGEND_ICON_SIZE)
 		textY := currentY + rowHeight/2 + int(float64(dims.Height)*0.3)
@@ -343,7 +419,7 @@ func RenderLegend(buf *bytes.Buffer, diagram *d2target.Diagram, diagramHash stri
 			FontSize: LEGEND_FONT_SIZE,
 		}
 
-		dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
+		dims := d2graph.GetTextDimensions(nil, ruler, mtext, fontToFamily(c.FontFamily))
 
 		rowHeight := go2.IntMax(dims.Height, LEGEND_ICON_SIZE)
 		textY := currentY + rowHeight/2 + int(float64(dims.Height)*0.2)
@@ -377,7 +453,7 @@ func renderLegendShapeIcon(s d2target.Shape, x, y int, diagramHash string, theme
 	finalBuf := &bytes.Buffer{}
 	fmt.Fprintf(finalBuf, `<g transform="translate(%d, %d) scale(%f)">`,
 		x, y, 1.0/sizeFactor)
-	_, err := drawShape(buf, appendixBuf, diagramHash, iconShape, nil, theme)
+	_, err := drawShape(buf, appendixBuf, diagramHash, iconShape, false, theme, newMarkdownRenderer(nil, nil, theme))
 	if err != nil {
 		return "", err
 	}
@@ -426,7 +502,7 @@ func renderLegendConnectionIcon(c d2target.Connection, x, y int, theme *d2themes
 	fmt.Fprintf(finalBuf, `<g transform="translate(%d, %d) scale(%f)">`,
 		x, y, 1.0/sizeFactor)
 
-	_, err := drawConnection(buf, legendHash, legendConn, markers, idToShape, nil, theme)
+	_, err := drawConnection(buf, legendHash, legendConn, markers, idToShape, false, theme, newMarkdownRenderer(nil, nil, theme))
 	if err != nil {
 		return "", err
 	}
@@ -1003,7 +1079,7 @@ func makeBorderLabelMask(labelPosition label.Position, labelTL *geo.Point, label
 	)
 }
 
-func drawConnection(writer io.Writer, diagramHash string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, jsRunner jsrunner.JSRunner, inlineTheme *d2themes.Theme) (labelMask string, _ error) {
+func drawConnection(writer io.Writer, diagramHash string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, sketch bool, inlineTheme *d2themes.Theme, markdown *markdownRenderer) (labelMask string, _ error) {
 	opacityStyle := ""
 	if connection.Opacity != 1.0 {
 		opacityStyle = fmt.Sprintf(" style='opacity:%f'", connection.Opacity)
@@ -1099,15 +1175,15 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 	path := pathData(connection, srcAdj, dstAdj)
 	mask := fmt.Sprintf(`mask="url(#%s)"`, diagramHash)
 
-	if jsRunner != nil {
-		out, err := d2sketch.Connection(jsRunner, connection, path, mask)
+	if sketch {
+		out, err := d2sketch.Connection(connection, path, mask)
 		if err != nil {
 			return "", err
 		}
 		fmt.Fprint(writer, out)
 
 		// render sketch arrowheads separately
-		arrowPaths, err := d2sketch.Arrowheads(jsRunner, connection, srcAdj, dstAdj)
+		arrowPaths, err := d2sketch.Arrowheads(connection, srcAdj, dstAdj)
 		if err != nil {
 			return "", err
 		}
@@ -1158,6 +1234,10 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 	}
 
 	if connection.Label != "" {
+		richLabelLink := connection.Link != "" && connection.Language != ""
+		if richLabelLink {
+			fmt.Fprintf(writer, `<a href="%s" xlink:href="%[1]s">`, svg.EscapeText(connection.Link))
+		}
 		if connection.Language == "latex" {
 			render, err := d2latex.Render(connection.Label)
 			if err != nil {
@@ -1174,36 +1254,21 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 			gEl.Content = render
 			fmt.Fprint(writer, gEl.Render())
 		} else if connection.Language == "markdown" {
-			render, err := textmeasure.RenderMarkdown(connection.Label)
+			layout, err := markdown.layout(connection.Label, connection.FontFamily, connection.FontSize)
 			if err != nil {
 				return labelMask, err
 			}
-
-			fmt.Fprintf(writer, `<g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="%f" y="%f" width="%d" height="%d">`,
-				labelTL.X, labelTL.Y, connection.LabelWidth, connection.LabelHeight,
-			)
-
-			render = strings.ReplaceAll(render, "<hr>", "<hr />")
-
-			mdEl := d2themes.NewThemableElement("div", inlineTheme)
-			mdEl.ClassName = "md"
-			mdEl.Content = render
-
-			var styles []string
-			if connection.FontSize != textmeasure.MarkdownFontSize {
-				styles = append(styles, fmt.Sprintf("font-size:%vpx", connection.FontSize))
-			}
-			if connection.Fill != "" && connection.Fill != "transparent" {
-				styles = append(styles, fmt.Sprintf(`background-color:%s`, connection.Fill))
-			}
-			if !color.IsThemeColor(connection.Color) {
-				styles = append(styles, fmt.Sprintf(`color:%s`, connection.Color))
-			}
-
-			mdEl.Style = strings.Join(styles, ";")
-
-			fmt.Fprint(writer, mdEl.Render())
-			fmt.Fprint(writer, `</foreignObject></g>`)
+			fmt.Fprint(writer, markdown.render(
+				layout,
+				labelTL.X,
+				labelTL.Y,
+				connection.LabelWidth,
+				connection.LabelHeight,
+				connection.GetFontColor(),
+				connection.Fill,
+				connection.Link != "",
+				connection.Underline,
+			))
 		} else if connection.Language != "" {
 			lexer := lexers.Get(connection.Language)
 			if lexer == nil {
@@ -1293,6 +1358,9 @@ func drawConnection(writer io.Writer, diagramHash string, connection d2target.Co
 			if connection.Link != "" {
 				fmt.Fprintf(writer, "</a>")
 			}
+		}
+		if richLabelLink {
+			fmt.Fprint(writer, "</a>")
 		}
 	}
 
@@ -1599,7 +1667,7 @@ func render3DHexagon(diagramHash string, targetShape d2target.Shape, inlineTheme
 	return borderMask + mainShapeRendered + renderedSides + renderedBorder
 }
 
-func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape d2target.Shape, jsRunner jsrunner.JSRunner, inlineTheme *d2themes.Theme) (labelMask string, err error) {
+func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape d2target.Shape, sketch bool, inlineTheme *d2themes.Theme, markdown *markdownRenderer) (labelMask string, err error) {
 	closingTag := "</g>"
 	if targetShape.Link != "" {
 
@@ -1669,8 +1737,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 
 	switch targetShape.Type {
 	case d2target.ShapeClass:
-		if jsRunner != nil {
-			out, err := d2sketch.Class(jsRunner, targetShape)
+		if sketch {
+			out, err := d2sketch.Class(targetShape)
 			if err != nil {
 				return "", err
 			}
@@ -1678,7 +1746,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		} else {
 			drawClass(writer, diagramHash, targetShape, inlineTheme)
 		}
-		err := addAppendixItems(appendixWriter, diagramHash, targetShape, s)
+		err := addAppendixItems(appendixWriter, diagramHash, targetShape, s, markdown)
 		if err != nil {
 			return "", err
 		}
@@ -1686,8 +1754,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
 	case d2target.ShapeSQLTable:
-		if jsRunner != nil {
-			out, err := d2sketch.Table(jsRunner, targetShape)
+		if sketch {
+			out, err := d2sketch.Table(targetShape)
 			if err != nil {
 				return "", err
 			}
@@ -1695,7 +1763,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		} else {
 			drawTable(writer, diagramHash, targetShape, inlineTheme)
 		}
-		err := addAppendixItems(appendixWriter, diagramHash, targetShape, s)
+		err := addAppendixItems(appendixWriter, diagramHash, targetShape, s, markdown)
 		if err != nil {
 			return "", err
 		}
@@ -1707,8 +1775,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			if targetShape.Multiple {
 				fmt.Fprint(writer, renderDoubleOval(multipleTL, width, height, fill, "", stroke, style, inlineTheme))
 			}
-			if jsRunner != nil {
-				out, err := d2sketch.DoubleOval(jsRunner, targetShape, diagramHash)
+			if sketch {
+				out, err := d2sketch.DoubleOval(targetShape, diagramHash)
 				if err != nil {
 					return "", err
 				}
@@ -1720,8 +1788,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			if targetShape.Multiple {
 				fmt.Fprint(writer, renderOval(multipleTL, width, height, fill, "", stroke, style, inlineTheme))
 			}
-			if jsRunner != nil {
-				out, err := d2sketch.Oval(jsRunner, targetShape, diagramHash)
+			if sketch {
+				out, err := d2sketch.Oval(targetShape, diagramHash)
 				if err != nil {
 					return "", err
 				}
@@ -1768,8 +1836,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					el.Rx = borderRadius
 					fmt.Fprint(writer, el.Render())
 				}
-				if jsRunner != nil {
-					out, err := d2sketch.Rect(jsRunner, targetShape, diagramHash)
+				if sketch {
+					out, err := d2sketch.Rect(targetShape, diagramHash)
 					if err != nil {
 						return "", err
 					}
@@ -1817,8 +1885,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 					el.Rx = borderRadius
 					fmt.Fprint(writer, el.Render())
 				}
-				if jsRunner != nil {
-					out, err := d2sketch.DoubleRect(jsRunner, targetShape, diagramHash)
+				if sketch {
+					out, err := d2sketch.DoubleRect(targetShape, diagramHash)
 					if err != nil {
 						return "", err
 					}
@@ -1865,8 +1933,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 				}
 			}
 
-			if jsRunner != nil {
-				out, err := d2sketch.Paths(jsRunner, targetShape, diagramHash, s.GetSVGPathData())
+			if sketch {
+				out, err := d2sketch.Paths(targetShape, diagramHash, s.GetSVGPathData())
 				if err != nil {
 					return "", err
 				}
@@ -1897,8 +1965,8 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			}
 		}
 
-		if jsRunner != nil {
-			out, err := d2sketch.Paths(jsRunner, targetShape, diagramHash, s.GetSVGPathData())
+		if sketch {
+			out, err := d2sketch.Paths(targetShape, diagramHash, s.GetSVGPathData())
 			if err != nil {
 				return "", err
 			}
@@ -1962,6 +2030,12 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 
 	if targetShape.Label != "" && targetShape.Opacity != 0 {
 		labelPosition := label.FromString(targetShape.LabelPosition)
+		// The foreignObject Markdown renderer historically defaulted an unset
+		// label position to the middle of the shape. Keep that behavior when the
+		// native label viewport is smaller than an explicitly sized shape.
+		if targetShape.Language == "markdown" && labelPosition == label.Unset {
+			labelPosition = label.InsideMiddleCenter
+		}
 		var box *geo.Box
 		if labelPosition.IsOutside() || labelPosition.IsBorder() {
 			box = s.GetBox().Copy()
@@ -1988,7 +2062,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 		)
 
 		if labelPosition.IsBorder() {
-			if jsRunner != nil {
+			if sketch {
 				labelMask = makeBorderLabelMask(labelPosition, labelTL, targetShape.LabelWidth, targetShape.LabelHeight, box, targetShape.StrokeWidth, 1.0, tl)
 			} else {
 				labelMask = makeBorderLabelMask(labelPosition, labelTL, targetShape.LabelWidth, targetShape.LabelHeight, box, targetShape.StrokeWidth, 1.0, nil)
@@ -2040,65 +2114,21 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			gEl.Content = render
 			fmt.Fprint(writer, gEl.Render())
 		} else if targetShape.Language == "markdown" {
-			render, err := textmeasure.RenderMarkdown(targetShape.Label)
+			layout, err := markdown.layout(targetShape.Label, targetShape.FontFamily, targetShape.FontSize)
 			if err != nil {
 				return labelMask, err
 			}
-
-			labelPosition := label.FromString(targetShape.LabelPosition)
-			if labelPosition == label.Unset {
-				labelPosition = label.InsideMiddleCenter
-			}
-			var box *geo.Box
-			if labelPosition.IsOutside() {
-				box = s.GetBox()
-			} else {
-				box = s.GetInnerBox()
-			}
-			labelTL := labelPosition.GetPointOnBox(box, label.PADDING,
-				float64(targetShape.LabelWidth),
-				float64(targetShape.LabelHeight),
-			)
-
-			fmt.Fprintf(writer, `<g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="%f" y="%f" width="%d" height="%d">`,
-				labelTL.X, labelTL.Y, targetShape.LabelWidth, targetShape.LabelHeight,
-			)
-
-			// we need the self closing form in this svg/xhtml context
-			render = strings.ReplaceAll(render, "<hr>", "<hr />")
-
-			mdEl := d2themes.NewThemableElement("div", inlineTheme)
-			mdEl.Content = render
-
-			// We have to set with styles since within foreignObject, we're in html
-			// land and not SVG attributes
-			var styles []string
-			var classes []string = []string{"md"}
-			if targetShape.FontSize != textmeasure.MarkdownFontSize {
-				styles = append(styles, fmt.Sprintf("font-size:%vpx", targetShape.FontSize))
-			}
-
-			if targetShape.Fill != "" && targetShape.Fill != "transparent" {
-				if color.IsThemeColor(targetShape.Fill) {
-					classes = append(classes, fmt.Sprintf("fill-%s", targetShape.Fill))
-				} else {
-					styles = append(styles, fmt.Sprintf(`background-color:%s`, targetShape.Fill))
-				}
-			}
-
-			if !color.IsThemeColor(targetShape.Color) {
-				styles = append(styles, fmt.Sprintf(`color:%s`, targetShape.Color))
-			} else {
-				classes = append(classes, fmt.Sprintf("color-%s", targetShape.Color))
-			}
-
-			mdEl.ClassName = strings.Join(classes, " ")
-			// When using dark theme, inlineTheme is nil and we rely on CSS variables
-
-			mdEl.Style = strings.Join(styles, ";")
-
-			fmt.Fprint(writer, mdEl.Render())
-			fmt.Fprint(writer, `</foreignObject></g>`)
+			fmt.Fprint(writer, markdown.render(
+				layout,
+				labelTL.X,
+				labelTL.Y,
+				targetShape.LabelWidth,
+				targetShape.LabelHeight,
+				targetShape.GetFontColor(),
+				targetShape.Fill,
+				targetShape.Link != "",
+				targetShape.Underline,
+			))
 		} else if targetShape.Language != "" {
 			lexer := lexers.Get(targetShape.Language)
 			if lexer == nil {
@@ -2189,7 +2219,7 @@ func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape
 			svg.EscapeText(targetShape.Tooltip),
 		)
 	}
-	err = addAppendixItems(appendixWriter, diagramHash, targetShape, s)
+	err = addAppendixItems(appendixWriter, diagramHash, targetShape, s, markdown)
 	if err != nil {
 		return "", err
 	}
@@ -2220,7 +2250,7 @@ func applyIconBorderRadius(clipPathID string, shape d2target.Shape) string {
 	return out + `fill="none" /> </clipPath>`
 }
 
-func addAppendixItems(writer io.Writer, diagramHash string, targetShape d2target.Shape, s shape.Shape) error {
+func addAppendixItems(writer io.Writer, diagramHash string, targetShape d2target.Shape, s shape.Shape, markdown *markdownRenderer) error {
 	var p1, p2 *geo.Point
 	if targetShape.Tooltip != "" || targetShape.Link != "" {
 		bothIcons := targetShape.Tooltip != "" && targetShape.Link != ""
@@ -2260,7 +2290,7 @@ func addAppendixItems(writer io.Writer, diagramHash string, targetShape d2target
 
 	if targetShape.Tooltip != "" {
 		if targetShape.TooltipPosition != "" {
-			tt, err := renderPositionedTooltip(targetShape, targetShape.TooltipPosition)
+			tt, err := renderPositionedTooltip(targetShape, targetShape.TooltipPosition, markdown)
 			if err != nil {
 				return err
 			}
@@ -2342,76 +2372,81 @@ func calculateTooltipPosition(targetShape d2target.Shape, tooltipPosition string
 	return x, y, tailDirection, tailX, tailY
 }
 
-func renderTooltipTail(tailDirection string, tailX, tailY float64) string {
+func renderTooltipTail(tailDirection string, tailX, tailY float64, inlineTheme *d2themes.Theme) string {
 	tailSize := 8.0
+	var path string
 
 	switch tailDirection {
 	case "top":
-		return fmt.Sprintf(`<path d="M %f %f L %f %f L %f %f Z" fill="white" stroke="#DEE1EB" stroke-width="1"/>`,
+		path = fmt.Sprintf(`M %f %f L %f %f L %f %f Z`,
 			tailX-tailSize/2, tailY,
 			tailX+tailSize/2, tailY,
 			tailX, tailY-tailSize)
 	case "bottom":
-		return fmt.Sprintf(`<path d="M %f %f L %f %f L %f %f Z" fill="white" stroke="#DEE1EB" stroke-width="1"/>`,
+		path = fmt.Sprintf(`M %f %f L %f %f L %f %f Z`,
 			tailX-tailSize/2, tailY,
 			tailX+tailSize/2, tailY,
 			tailX, tailY+tailSize)
 	case "left":
-		return fmt.Sprintf(`<path d="M %f %f L %f %f L %f %f Z" fill="white" stroke="#DEE1EB" stroke-width="1"/>`,
+		path = fmt.Sprintf(`M %f %f L %f %f L %f %f Z`,
 			tailX, tailY-tailSize/2,
 			tailX, tailY+tailSize/2,
 			tailX-tailSize, tailY)
 	case "right":
-		return fmt.Sprintf(`<path d="M %f %f L %f %f L %f %f Z" fill="white" stroke="#DEE1EB" stroke-width="1"/>`,
+		path = fmt.Sprintf(`M %f %f L %f %f L %f %f Z`,
 			tailX, tailY-tailSize/2,
 			tailX, tailY+tailSize/2,
 			tailX+tailSize, tailY)
 	default:
 		return ""
 	}
+	tail := d2themes.NewThemableElement("path", inlineTheme)
+	tail.D = path
+	tail.Fill = color.N7
+	tail.Stroke = color.N5
+	tail.Attributes = `stroke-width="1"`
+	return tail.Render()
 }
 
-func renderPositionedTooltip(targetShape d2target.Shape, tooltipPosition string) (string, error) {
+func renderPositionedTooltip(targetShape d2target.Shape, tooltipPosition string, markdown *markdownRenderer) (string, error) {
 	if targetShape.Tooltip == "" || tooltipPosition == "" {
 		return "", nil
 	}
 
-	var tooltipWidth, tooltipHeight int
-	var tooltipContent string
-
-	ruler, err := textmeasure.NewRuler()
+	layout, err := markdown.layout(targetShape.Tooltip, targetShape.FontFamily, d2fonts.FONT_SIZE_M)
 	if err != nil {
 		return "", err
 	}
-	fontFamily := go2.Pointer(d2fonts.SourceSansPro)
-	fontSize := d2fonts.FONT_SIZE_M
-
-	width, height, err := textmeasure.MeasureMarkdown(targetShape.Tooltip, ruler, fontFamily, nil, fontSize)
-	if err != nil {
-		return "", err
-	}
-	tooltipWidth = width + 20
-	tooltipHeight = height + 20
-
-	render, err := textmeasure.RenderMarkdown(targetShape.Tooltip)
-	if err != nil {
-		return "", err
-	}
+	tooltipWidth := layout.Width + 20
+	tooltipHeight := layout.Height + 20
 	x, y, tailDirection, tailX, tailY := calculateTooltipPosition(targetShape, tooltipPosition, tooltipWidth, tooltipHeight)
 
-	tooltipContent = fmt.Sprintf(
-		`<foreignObject x="%f" y="%f" width="%d" height="%d"><div xmlns="http://www.w3.org/1999/xhtml" class="md color-N1">%s</div></foreignObject>`,
-		x+10, y+10, tooltipWidth-20, tooltipHeight-20, render,
+	tooltipContent := markdown.render(
+		layout,
+		x+10,
+		y+10,
+		layout.Width,
+		layout.Height,
+		color.N1,
+		"",
+		false,
+		false,
 	)
 
-	tooltipBox := fmt.Sprintf(
-		`<rect x="%f" y="%f" width="%d" height="%d" rx="4" ry="4" fill="white" stroke="#DEE1EB" stroke-width="1"/>`,
-		x, y, tooltipWidth, tooltipHeight,
-	)
+	tooltipBox := d2themes.NewThemableElement("rect", markdown.inlineTheme)
+	tooltipBox.X = x
+	tooltipBox.Y = y
+	tooltipBox.Width = float64(tooltipWidth)
+	tooltipBox.Height = float64(tooltipHeight)
+	tooltipBox.Rx = 4
+	tooltipBox.Ry = 4
+	tooltipBox.Fill = color.N7
+	tooltipBox.Stroke = color.N5
+	tooltipBox.Attributes = `stroke-width="1"`
 
-	tail := renderTooltipTail(tailDirection, tailX+x, tailY+y)
+	tail := renderTooltipTail(tailDirection, tailX+x, tailY+y, markdown.inlineTheme)
 
-	return fmt.Sprintf(`<g class="positioned-tooltip">%s%s%s</g>`, tooltipBox, tail, tooltipContent), nil
+	return fmt.Sprintf(`<g class="positioned-tooltip">%s%s%s</g>`, tooltipBox.Render(), tail, tooltipContent), nil
 }
 
 func RenderText(text string, x, height float64) string {
@@ -2436,6 +2471,13 @@ func RenderText(text string, x, height float64) string {
 }
 
 func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fonts.FontFamily, monoFontFamily *d2fonts.FontFamily, corpus string) {
+	// Markdown generates text that may not exist literally in the D2 source,
+	// such as list markers and decoded entities. Include those rendered runs in
+	// every font subset, including multi-board animations where render-local
+	// Markdown layout state is not available here.
+	for _, match := range nativeMarkdownTextPattern.FindAllStringSubmatch(source, -1) {
+		corpus += html.UnescapeString(match[1])
+	}
 	fmt.Fprint(buf, `<style type="text/css"><![CDATA[`)
 
 	appendOnTrigger(
@@ -2466,14 +2508,18 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		buf,
 		source,
 		[]string{
-			`class="md"`,
-			`class="md `,
+			`text-semibold`,
 		},
 		fmt.Sprintf(`
+.%s .text-semibold {
+	font-family: "%s-font-semibold";
+}
 @font-face {
 	font-family: %s-font-semibold;
 	src: url("%s");
 }`,
+			diagramHash,
+			diagramHash,
 			diagramHash,
 			fontFamily.Font(0, d2fonts.FONT_STYLE_SEMIBOLD).GetEncodedSubset(corpus),
 		),
@@ -2555,7 +2601,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		buf,
 		source,
 		[]string{
-			`class="text-bold`,
+			`text-bold`,
 			`<b>`,
 			`<strong>`,
 		},
@@ -2578,7 +2624,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		buf,
 		source,
 		[]string{
-			`class="text-italic`,
+			`text-italic`,
 			`<em>`,
 			`<dfn>`,
 		},
@@ -2601,7 +2647,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		buf,
 		source,
 		[]string{
-			`class="text-mono`,
+			`text-mono`,
 			`<pre>`,
 			`<code>`,
 			`<kbd>`,
@@ -2626,7 +2672,28 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		buf,
 		source,
 		[]string{
-			`class="text-mono-bold`,
+			`text-mono-semibold`,
+		},
+		fmt.Sprintf(`
+.%s .text-mono-semibold {
+	font-family: "%s-font-mono-semibold";
+}
+@font-face {
+	font-family: %s-font-mono-semibold;
+	src: url("%s");
+}`,
+			diagramHash,
+			diagramHash,
+			diagramHash,
+			monoFontFamily.Font(0, d2fonts.FONT_STYLE_SEMIBOLD).GetEncodedSubset(corpus),
+		),
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
+			`text-mono-bold`,
 		},
 		fmt.Sprintf(`
 .%s .text-mono-bold {
@@ -2647,7 +2714,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		buf,
 		source,
 		[]string{
-			`class="text-mono-italic`,
+			`text-mono-italic`,
 		},
 		fmt.Sprintf(`
 .%s .text-mono-italic {
@@ -2719,6 +2786,8 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 	fmt.Fprint(buf, `]]></style>`)
 }
 
+var nativeMarkdownTextPattern = regexp.MustCompile(`<text\b[^>]*\bclass="[^"]*\bmd-text\b[^"]*"[^>]*>([^<]*)</text>`)
+
 func appendOnTrigger(buf *bytes.Buffer, source string, triggers []string, newContent string) {
 	for _, trigger := range triggers {
 		if strings.Contains(source, trigger) {
@@ -2731,21 +2800,22 @@ func appendOnTrigger(buf *bytes.Buffer, source string, triggers []string, newCon
 var DEFAULT_DARK_THEME *int64 = nil // no theme selected
 
 func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
-	var jsRunner jsrunner.JSRunner
+	sketch := false
 	pad := DEFAULT_PADDING
+	tl, br := diagram.BoundingBox()
 	themeID := d2themescatalog.NeutralDefault.ID
 	darkThemeID := DEFAULT_DARK_THEME
 	var scale *float64
 	if opts != nil {
 		if opts.Pad != nil {
-			pad = int(*opts.Pad)
-		}
-		if opts.Sketch != nil && *opts.Sketch {
-			jsRunner = jsrunner.NewJSRunner()
-			err := d2sketch.LoadJS(jsRunner)
+			var err error
+			pad, err = validatePadding(tl, br, *opts.Pad)
 			if err != nil {
 				return nil, err
 			}
+		}
+		if opts.Sketch != nil && *opts.Sketch {
+			sketch = true
 		}
 		if opts.ThemeID != nil {
 			themeID = *opts.ThemeID
@@ -2827,9 +2897,10 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		inlineTheme = go2.Pointer(d2themescatalog.Find(themeID))
 		inlineTheme.ApplyOverrides(opts.ThemeOverrides)
 	}
+	markdown := newMarkdownRenderer(diagram.FontFamily, diagram.MonoFontFamily, inlineTheme)
 	for _, obj := range allObjects {
 		if c, is := obj.(d2target.Connection); is {
-			labelMask, err := drawConnection(buf, isolatedDiagramHash, c, markers, idToShape, jsRunner, inlineTheme)
+			labelMask, err := drawConnection(buf, isolatedDiagramHash, c, markers, idToShape, sketch, inlineTheme, markdown)
 			if err != nil {
 				return nil, err
 			}
@@ -2837,7 +2908,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 				labelMasks = append(labelMasks, labelMask)
 			}
 		} else if s, is := obj.(d2target.Shape); is {
-			labelMask, err := drawShape(buf, appendixItemBuf, diagramHash, s, jsRunner, inlineTheme)
+			labelMask, err := drawShape(buf, appendixItemBuf, diagramHash, s, sketch, inlineTheme, markdown)
 			if err != nil {
 				return nil, err
 			} else if labelMask != "" {
@@ -2860,10 +2931,9 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	}
 
 	// Note: we always want this since we reference it on connections even if there end up being no masked labels
-	left, top, w, h := dimensions(diagram, pad)
+	left, top, w, h := dimensions(diagram, pad, tl, br)
 
 	if diagram.Legend != nil && (len(diagram.Legend.Shapes) > 0 || len(diagram.Legend.Connections) > 0) {
-		tl, br := diagram.BoundingBox()
 		totalHeight := LEGEND_PADDING + LEGEND_FONT_SIZE + LEGEND_ITEM_SPACING
 		maxLabelWidth := 0
 		itemCount := 0
@@ -2877,7 +2947,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 					Text:     s.Label,
 					FontSize: LEGEND_FONT_SIZE,
 				}
-				dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
+				dims := d2graph.GetTextDimensions(nil, ruler, mtext, fontToFamily(s.FontFamily))
 				maxLabelWidth = go2.IntMax(maxLabelWidth, dims.Width)
 				totalHeight += go2.IntMax(dims.Height, LEGEND_ICON_SIZE) + LEGEND_ITEM_SPACING
 				itemCount++
@@ -2891,7 +2961,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 					Text:     c.Label,
 					FontSize: LEGEND_FONT_SIZE,
 				}
-				dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
+				dims := d2graph.GetTextDimensions(nil, ruler, mtext, fontToFamily(c.FontFamily))
 				maxLabelWidth = go2.IntMax(maxLabelWidth, dims.Width)
 				totalHeight += go2.IntMax(dims.Height, LEGEND_ICON_SIZE) + LEGEND_ITEM_SPACING
 				itemCount++
@@ -2929,6 +2999,9 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 			}
 		}
 	}
+	if w < 0 || h < 0 {
+		return nil, invalidPaddingError(int64(pad))
+	}
 	fmt.Fprint(buf, strings.Join([]string{
 		fmt.Sprintf(`<mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
 			isolatedDiagramHash, left, top, w, h,
@@ -2943,49 +3016,24 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	// generate style elements that will be appended to the SVG tag
 	upperBuf := &bytes.Buffer{}
 	if opts.MasterID == "" {
-		EmbedFonts(upperBuf, diagramHash, buf.String(), diagram.FontFamily, diagram.MonoFontFamily, diagram.GetCorpus()) // EmbedFonts *must* run before `d2sketch.DefineFillPatterns`, but after all elements are appended to `buf`
+		EmbedFonts(upperBuf, diagramHash, buf.String(), diagram.FontFamily, diagram.MonoFontFamily, diagram.GetCorpus()+markdown.generatedCorpus()) // EmbedFonts *must* run before `d2sketch.DefineFillPatterns`, but after all elements are appended to `buf`
 		themeStylesheet, err := ThemeCSS(diagramHash, &themeID, darkThemeID, opts.ThemeOverrides, opts.DarkThemeOverrides)
 		if err != nil {
 			return nil, err
 		}
 		fmt.Fprintf(upperBuf, `<style type="text/css"><![CDATA[%s%s]]></style>`, BaseStylesheet, themeStylesheet)
 
-		hasMarkdown := false
-		for _, s := range diagram.Shapes {
-			if s.Language == "markdown" {
-				hasMarkdown = true
-				break
-			}
-		}
-		if !hasMarkdown {
-			for _, c := range diagram.Connections {
-				if c.Language == "markdown" {
-					hasMarkdown = true
-					break
-				}
-			}
-		}
-		if hasMarkdown {
-			css := MarkdownCSS
-			css = strings.ReplaceAll(css, ".md", fmt.Sprintf(".%s .md", diagramHash))
-			css = strings.ReplaceAll(css, "font-italic", fmt.Sprintf("%s-font-italic", diagramHash))
-			css = strings.ReplaceAll(css, "font-bold", fmt.Sprintf("%s-font-bold", diagramHash))
-			css = strings.ReplaceAll(css, "font-mono", fmt.Sprintf("%s-font-mono", diagramHash))
-			css = strings.ReplaceAll(css, "font-regular", fmt.Sprintf("%s-font-regular", diagramHash))
-			css = strings.ReplaceAll(css, "font-semibold", fmt.Sprintf("%s-font-semibold", diagramHash))
-			fmt.Fprintf(upperBuf, `<style type="text/css">%s</style>`, css)
-		}
-
-		if jsRunner != nil {
+		if sketch {
 			d2sketch.DefineFillPatterns(upperBuf, diagramHash)
 		}
 	}
 
 	// This shift is for background el to envelop the diagram
-	left -= int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
-	top -= int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
-	w += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
-	h += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
+	strokePadding := int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
+	left, top, w, h, ok := expandDimensions(left, top, w, h, strokePadding)
+	if !ok {
+		return nil, invalidPaddingError(int64(pad))
+	}
 	backgroundEl := d2themes.NewThemableElement("rect", inlineTheme)
 	// We don't want to change the document viewbox, only the background el
 	backgroundEl.X = float64(left)
@@ -3003,19 +3051,19 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	backgroundEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, diagram.Root.StrokeWidth)
 
 	// This shift is for viewbox to envelop the background el
-	left -= int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
-	top -= int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
-	w += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
-	h += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
+	left, top, w, h, ok = expandDimensions(left, top, w, h, strokePadding)
+	if !ok {
+		return nil, invalidPaddingError(int64(pad))
+	}
 
 	doubleBorderElStr := ""
 	if diagram.Root.DoubleBorder {
 		offset := d2target.INNER_BORDER_OFFSET
 
-		left -= int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.)) + offset
-		top -= int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.)) + offset
-		w += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.)*2.) + 2*offset
-		h += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.)*2.) + 2*offset
+		left, top, w, h, ok = expandDimensions(left, top, w, h, strokePadding+offset)
+		if !ok {
+			return nil, invalidPaddingError(int64(pad))
+		}
 
 		backgroundEl2 := backgroundEl.Copy()
 		// No need to double-paint
@@ -3027,10 +3075,10 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		backgroundEl2.Height = float64(h)
 		doubleBorderElStr = backgroundEl2.Render()
 
-		left -= int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
-		top -= int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
-		w += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
-		h += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
+		left, top, w, h, ok = expandDimensions(left, top, w, h, strokePadding)
+		if !ok {
+			return nil, invalidPaddingError(int64(pad))
+		}
 	}
 
 	bufStr := buf.String()
@@ -3046,9 +3094,9 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 			case "lines":
 				patternDefs += fmt.Sprintf(lines, diagramHash)
 			case "grain":
-				patternDefs += fmt.Sprintf(grain, diagramHash)
+				patternDefs += fmt.Sprintf(patternassets.GrainSVG(), diagramHash)
 			case "paper":
-				patternDefs += fmt.Sprintf(paper, diagramHash)
+				patternDefs += fmt.Sprintf(patternassets.PaperSVG(), diagramHash)
 			}
 			fmt.Fprintf(upperBuf, `
 .%s-overlay {
@@ -3207,14 +3255,16 @@ func singleThemeRulesets(diagramHash string, themeID int64, overrides *d2target.
 	// Appendix
 	out += fmt.Sprintf(".appendix text.text{fill:%s}", theme.Colors.Neutrals.N1)
 
-	// Markdown specific rulesets
+	// Retain the Markdown custom properties for output compatibility and for
+	// consumers that style the native .md group. Native D2 primitives use the
+	// corresponding fill/stroke theme classes directly.
 	out += fmt.Sprintf(".md{--color-fg-default:%s;--color-fg-muted:%s;--color-fg-subtle:%s;--color-canvas-default:%s;--color-canvas-subtle:%s;--color-border-default:%s;--color-border-muted:%s;--color-neutral-muted:%s;--color-accent-fg:%s;--color-accent-emphasis:%s;--color-attention-subtle:%s;--color-danger-fg:%s;}",
 		theme.Colors.Neutrals.N1, theme.Colors.Neutrals.N2, theme.Colors.Neutrals.N3,
 		theme.Colors.Neutrals.N7, theme.Colors.Neutrals.N6,
 		theme.Colors.B1, theme.Colors.B2,
 		theme.Colors.Neutrals.N6,
 		theme.Colors.B2, theme.Colors.B2,
-		theme.Colors.Neutrals.N2, // TODO or N3 --color-attention-subtle
+		theme.Colors.Neutrals.N2,
 		"red",
 	)
 
@@ -3373,6 +3423,14 @@ func sortObjects(allObjects []DiagramObject) {
 		_, jIsConnection := allObjects[j].(d2target.Connection)
 		return iIsShape && jIsConnection
 	})
+}
+
+func fontToFamily(fontFamily string) *d2fonts.FontFamily {
+	ff, ok := d2fonts.D2_FONT_TO_FAMILY[fontFamily]
+	if !ok {
+		return nil
+	}
+	return &ff
 }
 
 func hash(s string) string {

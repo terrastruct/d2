@@ -17,7 +17,7 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 194
+        "y": 85
       },
       "width": 302,
       "height": 520,
@@ -58,7 +58,7 @@
       "type": "rectangle",
       "pos": {
         "x": 573,
-        "y": 149
+        "y": 40
       },
       "width": 236,
       "height": 610,
@@ -99,7 +99,7 @@
       "type": "rectangle",
       "pos": {
         "x": 1080,
-        "y": 303
+        "y": 194
       },
       "width": 473,
       "height": 303,
@@ -141,7 +141,7 @@
       "type": "rectangle",
       "pos": {
         "x": 2055,
-        "y": 0
+        "y": 587
       },
       "width": 820,
       "height": 212,
@@ -183,7 +183,7 @@
       "type": "rectangle",
       "pos": {
         "x": 2174,
-        "y": 272
+        "y": 183
       },
       "width": 582,
       "height": 344,
@@ -225,7 +225,7 @@
       "type": "rectangle",
       "pos": {
         "x": 2365,
-        "y": 676
+        "y": 0
       },
       "width": 201,
       "height": 123,
@@ -248,12 +248,12 @@
         "User": null,
         "Host": "icons.terrastruct.com",
         "Path": "/azure/Identity Service Color/Identity governance.svg",
-        "RawPath": "/azure%2FIdentity%20Service%20Color%2FIdentity%20governance.svg",
-        "OmitHost": false,
-        "ForceQuery": false,
-        "RawQuery": "",
         "Fragment": "",
-        "RawFragment": ""
+        "RawQuery": "",
+        "RawPath": "/azure%2FIdentity%20Service%20Color%2FIdentity%20governance.svg",
+        "RawFragment": "",
+        "ForceQuery": false,
+        "OmitHost": false
       },
       "iconPosition": "INSIDE_MIDDLE_CENTER",
       "blend": false,
@@ -279,7 +279,7 @@
       "type": "oval",
       "pos": {
         "x": 60,
-        "y": 254
+        "y": 145
       },
       "width": 182,
       "height": 182,
@@ -302,12 +302,12 @@
         "User": null,
         "Host": "icons.terrastruct.com",
         "Path": "/essentials/365-user.svg",
-        "RawPath": "/essentials%2F365-user.svg",
-        "OmitHost": false,
-        "ForceQuery": false,
-        "RawQuery": "",
         "Fragment": "",
-        "RawFragment": ""
+        "RawQuery": "",
+        "RawPath": "/essentials%2F365-user.svg",
+        "RawFragment": "",
+        "ForceQuery": false,
+        "OmitHost": false
       },
       "iconPosition": "INSIDE_MIDDLE_CENTER",
       "blend": false,
@@ -333,7 +333,7 @@
       "type": "oval",
       "pos": {
         "x": 60,
-        "y": 476
+        "y": 367
       },
       "width": 182,
       "height": 178,
@@ -356,12 +356,12 @@
         "User": null,
         "Host": "icons.terrastruct.com",
         "Path": "/aws/Compute/Compute.svg",
-        "RawPath": "/aws%2FCompute%2FCompute.svg",
-        "OmitHost": false,
-        "ForceQuery": false,
-        "RawQuery": "",
         "Fragment": "",
-        "RawFragment": ""
+        "RawQuery": "",
+        "RawPath": "/aws%2FCompute%2FCompute.svg",
+        "RawFragment": "",
+        "ForceQuery": false,
+        "OmitHost": false
       },
       "iconPosition": "INSIDE_MIDDLE_CENTER",
       "blend": false,
@@ -387,7 +387,7 @@
       "type": "rectangle",
       "pos": {
         "x": 633,
-        "y": 209
+        "y": 100
       },
       "width": 116,
       "height": 66,
@@ -429,7 +429,7 @@
       "type": "rectangle",
       "pos": {
         "x": 633,
-        "y": 315
+        "y": 206
       },
       "width": 116,
       "height": 66,
@@ -471,7 +471,7 @@
       "type": "rectangle",
       "pos": {
         "x": 633,
-        "y": 421
+        "y": 312
       },
       "width": 116,
       "height": 66,
@@ -513,7 +513,7 @@
       "type": "rectangle",
       "pos": {
         "x": 633,
-        "y": 527
+        "y": 418
       },
       "width": 116,
       "height": 66,
@@ -555,7 +555,7 @@
       "type": "rectangle",
       "pos": {
         "x": 633,
-        "y": 633
+        "y": 524
       },
       "width": 116,
       "height": 66,
@@ -597,7 +597,7 @@
       "type": "text",
       "pos": {
         "x": 1140,
-        "y": 363
+        "y": 254
       },
       "width": 353,
       "height": 51,
@@ -638,7 +638,7 @@
       "type": "rectangle",
       "pos": {
         "x": 1140,
-        "y": 454
+        "y": 345
       },
       "width": 140,
       "height": 92,
@@ -661,12 +661,12 @@
         "User": null,
         "Host": "icons.terrastruct.com",
         "Path": "/tech/laptop.svg",
-        "RawPath": "/tech%2Flaptop.svg",
-        "OmitHost": false,
-        "ForceQuery": false,
-        "RawQuery": "",
         "Fragment": "",
-        "RawFragment": ""
+        "RawQuery": "",
+        "RawPath": "/tech%2Flaptop.svg",
+        "RawFragment": "",
+        "ForceQuery": false,
+        "OmitHost": false
       },
       "iconPosition": "INSIDE_MIDDLE_CENTER",
       "blend": false,
@@ -692,7 +692,7 @@
       "type": "rectangle",
       "pos": {
         "x": 1320,
-        "y": 454
+        "y": 345
       },
       "width": 173,
       "height": 92,
@@ -715,12 +715,12 @@
         "User": null,
         "Host": "icons.terrastruct.com",
         "Path": "/azure/Web Service Color/App Service Certificates.svg",
-        "RawPath": "/azure%2FWeb%20Service%20Color%2FApp%20Service%20Certificates.svg",
-        "OmitHost": false,
-        "ForceQuery": false,
-        "RawQuery": "",
         "Fragment": "",
-        "RawFragment": ""
+        "RawQuery": "",
+        "RawPath": "/azure%2FWeb%20Service%20Color%2FApp%20Service%20Certificates.svg",
+        "RawFragment": "",
+        "ForceQuery": false,
+        "OmitHost": false
       },
       "iconPosition": "INSIDE_MIDDLE_CENTER",
       "blend": false,
@@ -746,7 +746,7 @@
       "type": "rectangle",
       "pos": {
         "x": 2115,
-        "y": 60
+        "y": 647
       },
       "width": 110,
       "height": 92,
@@ -769,12 +769,12 @@
         "User": null,
         "Host": "icons.terrastruct.com",
         "Path": "/dev/slack.svg",
-        "RawPath": "/dev%2Fslack.svg",
-        "OmitHost": false,
-        "ForceQuery": false,
-        "RawQuery": "",
         "Fragment": "",
-        "RawFragment": ""
+        "RawQuery": "",
+        "RawPath": "/dev%2Fslack.svg",
+        "RawFragment": "",
+        "ForceQuery": false,
+        "OmitHost": false
       },
       "iconPosition": "INSIDE_MIDDLE_CENTER",
       "blend": false,
@@ -800,7 +800,7 @@
       "type": "rectangle",
       "pos": {
         "x": 2265,
-        "y": 60
+        "y": 647
       },
       "width": 128,
       "height": 92,
@@ -842,7 +842,7 @@
       "type": "rectangle",
       "pos": {
         "x": 2433,
-        "y": 60
+        "y": 647
       },
       "width": 72,
       "height": 92,
@@ -884,7 +884,7 @@
       "type": "rectangle",
       "pos": {
         "x": 2545,
-        "y": 60
+        "y": 647
       },
       "width": 119,
       "height": 92,
@@ -926,7 +926,7 @@
       "type": "rectangle",
       "pos": {
         "x": 2704,
-        "y": 60
+        "y": 647
       },
       "width": 111,
       "height": 92,
@@ -949,12 +949,12 @@
         "User": null,
         "Host": "icons.terrastruct.com",
         "Path": "/aws/_General/AWS-Email_light-bg.svg",
-        "RawPath": "/aws%2F_General%2FAWS-Email_light-bg.svg",
-        "OmitHost": false,
-        "ForceQuery": false,
-        "RawQuery": "",
         "Fragment": "",
-        "RawFragment": ""
+        "RawQuery": "",
+        "RawPath": "/aws%2F_General%2FAWS-Email_light-bg.svg",
+        "RawFragment": "",
+        "ForceQuery": false,
+        "OmitHost": false
       },
       "iconPosition": "INSIDE_MIDDLE_CENTER",
       "blend": false,
@@ -980,7 +980,7 @@
       "type": "rectangle",
       "pos": {
         "x": 2234,
-        "y": 332
+        "y": 243
       },
       "width": 103,
       "height": 92,
@@ -1003,12 +1003,12 @@
         "User": null,
         "Host": "icons.terrastruct.com",
         "Path": "/essentials/112-server.svg",
-        "RawPath": "/essentials%2F112-server.svg",
-        "OmitHost": false,
-        "ForceQuery": false,
-        "RawQuery": "",
         "Fragment": "",
-        "RawFragment": ""
+        "RawQuery": "",
+        "RawPath": "/essentials%2F112-server.svg",
+        "RawFragment": "",
+        "ForceQuery": false,
+        "OmitHost": false
       },
       "iconPosition": "INSIDE_MIDDLE_CENTER",
       "blend": false,
@@ -1034,7 +1034,7 @@
       "type": "rectangle",
       "pos": {
         "x": 2377,
-        "y": 332
+        "y": 243
       },
       "width": 152,
       "height": 92,
@@ -1057,12 +1057,12 @@
         "User": null,
         "Host": "icons.terrastruct.com",
         "Path": "/azure/_Companies/Kubernetes.svg",
-        "RawPath": "/azure%2F_Companies%2FKubernetes.svg",
-        "OmitHost": false,
-        "ForceQuery": false,
-        "RawQuery": "",
         "Fragment": "",
-        "RawFragment": ""
+        "RawQuery": "",
+        "RawPath": "/azure%2F_Companies%2FKubernetes.svg",
+        "RawFragment": "",
+        "ForceQuery": false,
+        "OmitHost": false
       },
       "iconPosition": "INSIDE_MIDDLE_CENTER",
       "blend": false,
@@ -1088,7 +1088,7 @@
       "type": "rectangle",
       "pos": {
         "x": 2569,
-        "y": 332
+        "y": 243
       },
       "width": 126,
       "height": 92,
@@ -1111,12 +1111,12 @@
         "User": null,
         "Host": "icons.terrastruct.com",
         "Path": "/dev/mysql.svg",
-        "RawPath": "/dev%2Fmysql.svg",
-        "OmitHost": false,
-        "ForceQuery": false,
-        "RawQuery": "",
         "Fragment": "",
-        "RawFragment": ""
+        "RawQuery": "",
+        "RawPath": "/dev%2Fmysql.svg",
+        "RawFragment": "",
+        "ForceQuery": false,
+        "OmitHost": false
       },
       "iconPosition": "INSIDE_MIDDLE_CENTER",
       "blend": false,
@@ -1142,7 +1142,7 @@
       "type": "rectangle",
       "pos": {
         "x": 2234,
-        "y": 464
+        "y": 375
       },
       "width": 138,
       "height": 92,
@@ -1165,12 +1165,12 @@
         "User": null,
         "Host": "icons.terrastruct.com",
         "Path": "/dev/mongodb.svg",
-        "RawPath": "/dev%2Fmongodb.svg",
-        "OmitHost": false,
-        "ForceQuery": false,
-        "RawQuery": "",
         "Fragment": "",
-        "RawFragment": ""
+        "RawQuery": "",
+        "RawPath": "/dev%2Fmongodb.svg",
+        "RawFragment": "",
+        "ForceQuery": false,
+        "OmitHost": false
       },
       "iconPosition": "INSIDE_MIDDLE_CENTER",
       "blend": false,
@@ -1196,7 +1196,7 @@
       "type": "rectangle",
       "pos": {
         "x": 2412,
-        "y": 464
+        "y": 375
       },
       "width": 108,
       "height": 92,
@@ -1219,12 +1219,12 @@
         "User": null,
         "Host": "icons.terrastruct.com",
         "Path": "/dev/postgresql.svg",
-        "RawPath": "/dev%2Fpostgresql.svg",
-        "OmitHost": false,
-        "ForceQuery": false,
-        "RawQuery": "",
         "Fragment": "",
-        "RawFragment": ""
+        "RawQuery": "",
+        "RawPath": "/dev%2Fpostgresql.svg",
+        "RawFragment": "",
+        "ForceQuery": false,
+        "OmitHost": false
       },
       "iconPosition": "INSIDE_MIDDLE_CENTER",
       "blend": false,
@@ -1250,7 +1250,7 @@
       "type": "rectangle",
       "pos": {
         "x": 2560,
-        "y": 464
+        "y": 375
       },
       "width": 136,
       "height": 92,
@@ -1273,12 +1273,12 @@
         "User": null,
         "Host": "icons.terrastruct.com",
         "Path": "/dev/windows.svg",
-        "RawPath": "/dev%2Fwindows.svg",
-        "OmitHost": false,
-        "ForceQuery": false,
-        "RawQuery": "",
         "Fragment": "",
-        "RawFragment": ""
+        "RawQuery": "",
+        "RawPath": "/dev%2Fwindows.svg",
+        "RawFragment": "",
+        "ForceQuery": false,
+        "OmitHost": false
       },
       "iconPosition": "INSIDE_MIDDLE_CENTER",
       "blend": false,
@@ -1328,19 +1328,19 @@
       "route": [
         {
           "x": 301.5,
-          "y": 454
+          "y": 345
         },
         {
           "x": 410.29998779296875,
-          "y": 454
+          "y": 345
         },
         {
           "x": 464.70001220703125,
-          "y": 454
+          "y": 345
         },
         {
           "x": 573.5,
-          "y": 454
+          "y": 345
         }
       ],
       "isCurve": true,
@@ -1376,19 +1376,19 @@
       "route": [
         {
           "x": 808.5,
-          "y": 454
+          "y": 345
         },
         {
           "x": 917.2999877929688,
-          "y": 454
+          "y": 345
         },
         {
           "x": 971.7000122070312,
-          "y": 454
+          "y": 345
         },
         {
           "x": 1080.5,
-          "y": 454
+          "y": 345
         }
       ],
       "isCurve": true,
@@ -1423,20 +1423,20 @@
       "link": "",
       "route": [
         {
-          "x": 1528.72998046875,
-          "y": 302.5
+          "x": 1529.72998046875,
+          "y": 497.5
         },
         {
-          "x": 1748.946044921875,
-          "y": 145.2989959716797
+          "x": 1749.14599609375,
+          "y": 653.9000244140625
         },
         {
           "x": 1854.199951171875,
-          "y": 106
+          "y": 693
         },
         {
           "x": 2055,
-          "y": 106
+          "y": 693
         }
       ],
       "isCurve": true,
@@ -1472,19 +1472,19 @@
       "route": [
         {
           "x": 1553,
-          "y": 449
+          "y": 350
         },
         {
           "x": 1753.800048828125,
-          "y": 445
+          "y": 354
         },
         {
           "x": 1878,
-          "y": 444
+          "y": 355
         },
         {
           "x": 2174,
-          "y": 444
+          "y": 355
         }
       ],
       "isCurve": true,
@@ -1520,19 +1520,19 @@
       "route": [
         {
           "x": 1553,
-          "y": 521
+          "y": 278
         },
         {
           "x": 1753.800048828125,
-          "y": 578.5999755859375
+          "y": 220.39999389648438
         },
         {
           "x": 1916.0999755859375,
-          "y": 621.0770263671875
+          "y": 184.1219940185547
         },
         {
           "x": 2364.5,
-          "y": 733.385986328125
+          "y": 96.61299896240234
         }
       ],
       "isCurve": true,
@@ -1568,19 +1568,19 @@
       "route": [
         {
           "x": 1553,
-          "y": 589
+          "y": 210
         },
         {
           "x": 1753.800048828125,
-          "y": 728.2000122070312
+          "y": 95.5999984741211
         },
         {
           "x": 1916.0999755859375,
-          "y": 761.3040161132812
+          "y": 68.69499969482422
         },
         {
           "x": 2364.5,
-          "y": 754.52001953125
+          "y": 75.47899627685547
         }
       ],
       "isCurve": true,

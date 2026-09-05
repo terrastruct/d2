@@ -3,9 +3,9 @@ package shape
 import (
 	"math"
 
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/svg"
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/svg"
+	"github.com/d2lang/util-go/go2"
 )
 
 const (
@@ -60,6 +60,32 @@ type Shape interface {
 	Perimeter() []geo.Intersectable
 
 	GetSVGPathData() []string
+}
+
+// PathCommandProvider is implemented by shapes with custom path geometry.
+// Implementations return a defensive copy of each path's absolute commands.
+// It is separate from Shape so adding typed path access does not break external
+// implementations of Shape.
+type PathCommandProvider interface {
+	GetPathCommands() [][]svg.PathCommand
+}
+
+// GetPathCommands returns a shape's absolute custom path commands, or nil when
+// the shape is represented by another primitive such as a rectangle or oval.
+func GetPathCommands(s Shape) [][]svg.PathCommand {
+	provider, ok := s.(PathCommandProvider)
+	if !ok {
+		return nil
+	}
+	return provider.GetPathCommands()
+}
+
+func pathCommands(paths ...*svg.SvgPathContext) [][]svg.PathCommand {
+	commands := make([][]svg.PathCommand, len(paths))
+	for i, path := range paths {
+		commands[i] = path.PathCommands()
+	}
+	return commands
 }
 
 type baseShape struct {
@@ -235,16 +261,6 @@ func TraceToShapeBorder(shape Shape, rectBorderPoint, prevPoint *geo.Point) *geo
 
 	closestPoint.TruncateFloat32()
 	return geo.NewPoint(math.Round(closestPoint.X), math.Round(closestPoint.Y))
-}
-
-func boxPath(box *geo.Box) *svg.SvgPathContext {
-	pc := svg.NewSVGPathContext(box.TopLeft, 1, 1)
-	pc.StartAt(pc.Absolute(0, 0))
-	pc.L(false, box.Width, 0)
-	pc.L(false, box.Width, box.Height)
-	pc.L(false, 0, box.Height)
-	pc.Z()
-	return pc
 }
 
 func LimitAR(width, height, aspectRatio float64) (float64, float64) {

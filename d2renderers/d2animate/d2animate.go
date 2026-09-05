@@ -6,10 +6,10 @@ import (
 	"math"
 	"strings"
 
-	"oss.terrastruct.com/d2/d2renderers/d2sketch"
-	"oss.terrastruct.com/d2/d2renderers/d2svg"
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/lib/version"
+	"github.com/d2lang/d2/d2renderers/d2sketch"
+	"github.com/d2lang/d2/d2renderers/d2svg"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/lib/version"
 )
 
 var transitionDurationMS = 1
@@ -89,17 +89,6 @@ func Wrap(rootDiagram *d2target.Diagram, svgs [][]byte, renderOpts d2svg.RenderO
 		return nil, err
 	}
 	fmt.Fprintf(buf, `<style type="text/css"><![CDATA[%s%s]]></style>`, d2svg.BaseStylesheet, themeStylesheet)
-
-	if rootDiagram.HasShape(func(s d2target.Shape) bool {
-		return s.Label != "" && s.Type == d2target.ShapeText
-	}) {
-		css := d2svg.MarkdownCSS
-		css = strings.ReplaceAll(css, "font-italic", fmt.Sprintf("%s-font-italic", diagramHash))
-		css = strings.ReplaceAll(css, "font-bold", fmt.Sprintf("%s-font-bold", diagramHash))
-		css = strings.ReplaceAll(css, "font-mono", fmt.Sprintf("%s-font-mono", diagramHash))
-		css = strings.ReplaceAll(css, "font-regular", fmt.Sprintf("%s-font-regular", diagramHash))
-		fmt.Fprintf(buf, `<style type="text/css">%s</style>`, css)
-	}
 
 	if renderOpts.Sketch != nil && *renderOpts.Sketch {
 		d2sketch.DefineFillPatterns(buf, diagramHash)

@@ -50,7 +50,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -62,7 +62,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -237,7 +237,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -249,7 +249,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -365,7 +365,7 @@
         "x": 343,
         "y": 76
       },
-      "width": 207,
+      "width": 206,
       "height": 144,
       "opacity": 1,
       "strokeDash": 0,
@@ -396,7 +396,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -408,7 +408,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -438,7 +438,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -468,7 +468,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -497,7 +497,7 @@
       "id": "shipments",
       "type": "sql_table",
       "pos": {
-        "x": 620,
+        "x": 619,
         "y": 40
       },
       "width": 287,
@@ -531,7 +531,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -543,7 +543,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -573,7 +573,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -776,11 +776,11 @@
       "link": "",
       "route": [
         {
-          "x": 620,
+          "x": 619,
           "y": 130
         },
         {
-          "x": 550,
+          "x": 549,
           "y": 130
         }
       ],

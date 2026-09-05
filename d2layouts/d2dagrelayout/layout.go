@@ -2,30 +2,22 @@ package d2dagrelayout
 
 import (
 	"context"
-	_ "embed"
-	"encoding/json"
 	"fmt"
 	"math"
 	"sort"
 	"strings"
 
-	"log/slog"
+	"github.com/d2lang/util-go/xdefer"
 
-	"oss.terrastruct.com/util-go/xdefer"
+	"github.com/d2lang/util-go/go2"
 
-	"oss.terrastruct.com/util-go/go2"
-
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/jsrunner"
-	"oss.terrastruct.com/d2/lib/label"
-	"oss.terrastruct.com/d2/lib/log"
-	"oss.terrastruct.com/d2/lib/shape"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/label"
+	"github.com/d2lang/d2/lib/shape"
+	"github.com/d2lang/dagro"
 )
-
-//go:embed setup.js
-var setupJS string
 
 const (
 	MIN_RANK_SEP    = 60
@@ -42,18 +34,6 @@ type ConfigurableOpts struct {
 var DefaultOpts = ConfigurableOpts{
 	NodeSep: 60,
 	EdgeSep: 20,
-}
-
-type DagreNode struct {
-	ID     string  `json:"id"`
-	X      float64 `json:"x"`
-	Y      float64 `json:"y"`
-	Width  float64 `json:"width"`
-	Height float64 `json:"height"`
-}
-
-type DagreEdge struct {
-	Points []*geo.Point `json:"points"`
 }
 
 type dagreOpts struct {
@@ -74,15 +54,6 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		opts = &DefaultOpts
 	}
 	defer xdefer.Errorf(&err, "failed to dagre layout")
-
-	debugJS := false
-	runner := jsrunner.NewJSRunner()
-	if _, err := runner.RunString(dagreJS); err != nil {
-		return err
-	}
-	if _, err := runner.RunString(setupJS); err != nil {
-		return err
-	}
 
 	rootAttrs := dagreOpts{
 		ConfigurableOpts: ConfigurableOpts{
@@ -131,35 +102,53 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		// Note: non-containers have both of these as padding (rootAttrs.NodeSep + rootAttrs.EdgeSep)
 	}
 
-	configJS := setGraphAttrs(rootAttrs)
-	if _, err := runner.RunString(configJS); err != nil {
-		return err
-	}
-
 	mapper := NewObjectMapper()
 	for _, obj := range g.Objects {
 		mapper.Register(obj)
 	}
-	loadScript := ""
+	resolver := newEndpointResolver(g)
+	type endpointPair struct {
+		src, dst *d2graph.Object
+	}
+	resolvedEndpoints := make(map[*d2graph.Edge]endpointPair, len(g.Edges))
+	directedPairCounts := make(map[endpointPair]int, len(g.Edges))
+	for _, edge := range g.Edges {
+		src, dst := resolver.resolve(edge)
+		pair := endpointPair{src: src, dst: dst}
+		resolvedEndpoints[edge] = pair
+		directedPairCounts[pair]++
+	}
+
+	dagreGraph := dagro.NewGraph(dagro.GraphOptions{Compound: true, Multigraph: true}).SetGraph(dagro.Attrs{
+		"ranksep": float64(rootAttrs.ranksep),
+		"edgesep": float64(rootAttrs.EdgeSep),
+		"nodesep": float64(rootAttrs.NodeSep),
+		"rankdir": rootAttrs.rankdir,
+	})
 	for _, obj := range g.Objects {
-		loadScript += mapper.generateAddNodeLine(obj, int(obj.Width), int(obj.Height))
+		id := mapper.ToID(obj)
+		dagreGraph.SetNode(id, dagro.Attrs{
+			"id":     id,
+			"width":  float64(int(obj.Width)),
+			"height": float64(int(obj.Height)),
+		})
 		if obj.Parent != g.Root {
-			loadScript += mapper.generateAddParentLine(obj, obj.Parent)
+			if err := dagreGraph.SetParent(id, mapper.ToID(obj.Parent)); err != nil {
+				return err
+			}
 		}
 	}
 
 	for _, edge := range g.Edges {
-		src, dst := getEdgeEndpoints(g, edge)
+		pair := resolvedEndpoints[edge]
+		src, dst := pair.src, pair.dst
 
 		width := edge.LabelDimensions.Width
 		height := edge.LabelDimensions.Height
 
-		numEdges := 0
-		for _, e := range g.Edges {
-			otherSrc, otherDst := getEdgeEndpoints(g, e)
-			if (otherSrc == src && otherDst == dst) || (otherSrc == dst && otherDst == src) {
-				numEdges++
-			}
+		numEdges := directedPairCounts[pair]
+		if src != dst {
+			numEdges += directedPairCounts[endpointPair{src: dst, dst: src}]
 		}
 
 		// We want to leave some gap between multiple edges
@@ -172,65 +161,86 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 
-		loadScript += mapper.generateAddEdgeLine(src, dst, edge.AbsID(), width, height)
+		dagreGraph.SetEdge(
+			mapper.ToID(src),
+			mapper.ToID(dst),
+			dagro.Attrs{
+				"width":    float64(width),
+				"height":   float64(height),
+				"labelpos": "c",
+			},
+			edge.AbsID(),
+		)
 	}
 
-	if debugJS {
-		log.Debug(ctx, "script", slog.Any("all", setupJS+configJS+loadScript))
-	}
-
-	if _, err := runner.RunString(loadScript); err != nil {
+	if err := dagro.Layout(dagreGraph); err != nil {
 		return err
 	}
 
-	if _, err := runner.RunString(`dagre.layout(g)`); err != nil {
-		if debugJS {
-			log.Warn(ctx, "layout error", slog.Any("err", err))
+	for _, id := range dagreGraph.Nodes() {
+		dn, ok := dagreGraph.Node(id).(dagro.Attrs)
+		if !ok {
+			return fmt.Errorf("dagro returned invalid node label for %q", id)
 		}
-		return err
-	}
-
-	for i := range g.Objects {
-		val, err := runner.RunString(fmt.Sprintf("JSON.stringify(g.node(g.nodes()[%d]))", i))
-		if err != nil {
-			return err
+		dnID, ok := dn["id"].(string)
+		if !ok {
+			return fmt.Errorf("dagro returned node %q without an id", id)
 		}
-		var dn DagreNode
-		if err := json.Unmarshal([]byte(val.String()), &dn); err != nil {
-			return err
+		obj := mapper.ToObj(dnID)
+		if obj == nil {
+			return fmt.Errorf("dagro returned unknown node id %q", dnID)
 		}
-		if debugJS {
-			log.Debug(ctx, "graph", slog.Any("json", dn))
+		x, xOK := dn["x"].(float64)
+		y, yOK := dn["y"].(float64)
+		width, widthOK := dn["width"].(float64)
+		height, heightOK := dn["height"].(float64)
+		if !xOK || !yOK || !widthOK || !heightOK {
+			return fmt.Errorf("dagro returned invalid geometry for node %q", id)
 		}
-
-		obj := mapper.ToObj(dn.ID)
 
 		// dagre gives center of node
-		obj.TopLeft = geo.NewPoint(math.Round(dn.X-dn.Width/2), math.Round(dn.Y-dn.Height/2))
-		obj.Width = math.Ceil(dn.Width)
-		obj.Height = math.Ceil(dn.Height)
+		obj.TopLeft = geo.NewPoint(math.Round(x-width/2), math.Round(y-height/2))
+		obj.Width = math.Ceil(width)
+		obj.Height = math.Ceil(height)
 	}
 
+	dagreEdges := dagreGraph.Edges()
+	if len(dagreEdges) != len(g.Edges) {
+		return fmt.Errorf("dagro returned %d edges, expected %d", len(dagreEdges), len(g.Edges))
+	}
 	for i, edge := range g.Edges {
-		val, err := runner.RunString(fmt.Sprintf("JSON.stringify(g.edge(g.edges()[%d]))", i))
-		if err != nil {
-			return err
+		de, ok := dagreGraph.Edge(dagreEdges[i]).(dagro.Attrs)
+		if !ok {
+			return fmt.Errorf("dagro returned invalid edge label for %q", dagreEdges[i].Name)
 		}
-		var de DagreEdge
-		if err := json.Unmarshal([]byte(val.String()), &de); err != nil {
-			return err
-		}
-		if debugJS {
-			log.Debug(ctx, "graph", slog.Any("json", de))
+		dagrePoints, ok := de["points"].([]dagro.Point)
+		if !ok {
+			return fmt.Errorf("dagro returned edge %q without points", dagreEdges[i].Name)
 		}
 
-		points := make([]*geo.Point, len(de.Points))
-		for i := range de.Points {
+		points := make([]*geo.Point, len(dagrePoints))
+		for i, point := range dagrePoints {
+			p := geo.NewPoint(point.X, point.Y)
 			if edge.SrcArrow && !edge.DstArrow {
-				points[len(de.Points)-i-1] = de.Points[i].Copy()
+				points[len(dagrePoints)-i-1] = p
 			} else {
-				points[i] = de.Points[i].Copy()
+				points[i] = p
 			}
+		}
+		// Dagre 3.1 self-loop routes contain repeated control points. Remove only
+		// consecutive duplicates so downstream tangent calculations never see a
+		// zero-length segment.
+		points = deduplicateRoutePoints(points)
+		if edge.Src == edge.Dst {
+			// The self-loop controls describe the loop outside the node, but do not
+			// include usable node-facing endpoints. Center sentinels give
+			// TraceToShape a direction from which to chop the route to each border.
+			center := edge.Src.Center()
+			points = append([]*geo.Point{center.Copy()}, points...)
+			points = append(points, center.Copy())
+		}
+		if len(points) < 2 {
+			return fmt.Errorf("dagro returned edge %q without a usable route", dagreEdges[i].Name)
 		}
 
 		startIndex, endIndex := 0, len(points)-1
@@ -375,17 +385,63 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	return nil
 }
 
-func getEdgeEndpoints(g *d2graph.Graph, edge *d2graph.Edge) (*d2graph.Object, *d2graph.Object) {
+func deduplicateRoutePoints(points []*geo.Point) []*geo.Point {
+	if len(points) < 2 {
+		return points
+	}
+	deduplicated := points[:1]
+	for _, point := range points[1:] {
+		if !point.Equals(deduplicated[len(deduplicated)-1]) {
+			deduplicated = append(deduplicated, point)
+		}
+	}
+	return deduplicated
+}
+
+type containerEndpoints struct {
+	head, tail *d2graph.Object
+}
+
+type endpointResolver struct {
+	g          *d2graph.Graph
+	containers map[*d2graph.Object]containerEndpoints
+}
+
+func newEndpointResolver(g *d2graph.Graph) *endpointResolver {
+	return &endpointResolver{
+		g:          g,
+		containers: make(map[*d2graph.Object]containerEndpoints),
+	}
+}
+
+func (r *endpointResolver) head(container *d2graph.Object) *d2graph.Object {
+	return r.endpoints(container).head
+}
+
+func (r *endpointResolver) tail(container *d2graph.Object) *d2graph.Object {
+	return r.endpoints(container).tail
+}
+
+func (r *endpointResolver) endpoints(container *d2graph.Object) containerEndpoints {
+	endpoints, ok := r.containers[container]
+	if !ok {
+		endpoints.head, endpoints.tail = getLongestEdgeChainEndpoints(r.g, container)
+		r.containers[container] = endpoints
+	}
+	return endpoints
+}
+
+func (r *endpointResolver) resolve(edge *d2graph.Edge) (*d2graph.Object, *d2graph.Object) {
 	// dagre doesn't work with edges to containers so we connect container edges to their first child instead (going all the way down)
 	// we will chop the edge where it intersects the container border so it only shows the edge from the container
 	src := edge.Src
 	for len(src.Children) > 0 && src.Class == nil && src.SQLTable == nil {
 		// We want to get the bottom node of sources, setting its rank higher than all children
-		src = getLongestEdgeChainTail(g, src)
+		src = r.tail(src)
 	}
 	dst := edge.Dst
 	for len(dst.Children) > 0 && dst.Class == nil && dst.SQLTable == nil {
-		dst = getLongestEdgeChainHead(g, dst)
+		dst = r.head(dst)
 	}
 	if edge.SrcArrow && !edge.DstArrow {
 		// for `b <- a`, edge.Edge is `a -> b` and we expect this routing result
@@ -394,41 +450,55 @@ func getEdgeEndpoints(g *d2graph.Graph, edge *d2graph.Edge) (*d2graph.Object, *d
 	return src, dst
 }
 
-func setGraphAttrs(attrs dagreOpts) string {
-	return fmt.Sprintf(`g.setGraph({
-  ranksep: %d,
-  edgesep: %d,
-  nodesep: %d,
-  rankdir: "%s",
-});
-`,
-		attrs.ranksep,
-		attrs.ConfigurableOpts.EdgeSep,
-		attrs.ConfigurableOpts.NodeSep,
-		attrs.rankdir,
-	)
+type containerTopology struct {
+	container   *d2graph.Object
+	hasIncoming map[*d2graph.Object]bool
+	outgoing    map[*d2graph.Object][]*d2graph.Object
 }
 
-// getLongestEdgeChainHead finds the longest chain in a container and gets its head
-// If there are multiple chains of the same length, get the head closest to the center
-func getLongestEdgeChainHead(g *d2graph.Graph, container *d2graph.Object) *d2graph.Object {
+func newContainerTopology(g *d2graph.Graph, container *d2graph.Object) *containerTopology {
+	topology := &containerTopology{
+		container:   container,
+		hasIncoming: make(map[*d2graph.Object]bool, len(container.ChildrenArray)),
+		outgoing:    make(map[*d2graph.Object][]*d2graph.Object, len(container.ChildrenArray)+1),
+	}
+	for _, edge := range g.Edges {
+		src := inContainer(edge.Src, container)
+		dst := inContainer(edge.Dst, container)
+		if src == nil || dst == nil {
+			continue
+		}
+
+		// The original head test counts every edge from anywhere in the
+		// container to a direct child's subtree, including internal edges.
+		if dst != container {
+			topology.hasIncoming[dst] = true
+		}
+
+		// Preserve edge order and duplicates: the breadth-first walk's rank
+		// updates are order-sensitive even though the graph is usually acyclic.
+		if src != dst {
+			topology.outgoing[src] = append(topology.outgoing[src], dst)
+		}
+		// A container can enter the old traversal when an edge terminates on
+		// it. From there, every edge whose source is inside it is reachable.
+		if src != container && dst != container {
+			topology.outgoing[container] = append(topology.outgoing[container], dst)
+		}
+	}
+	return topology
+}
+
+func (t *containerTopology) longestChainEndpoints() (*d2graph.Object, *d2graph.Object) {
 	rank := make(map[*d2graph.Object]int)
 	chainLength := make(map[*d2graph.Object]int)
 
-	for _, obj := range container.ChildrenArray {
-		isHead := true
-		for _, e := range g.Edges {
-			if inContainer(e.Src, container) != nil && inContainer(e.Dst, obj) != nil {
-				isHead = false
-				break
-			}
-		}
-		if !isHead {
+	for _, obj := range t.container.ChildrenArray {
+		if t.hasIncoming[obj] {
 			continue
 		}
 		rank[obj] = 1
 		chainLength[obj] = 1
-		// BFS
 		queue := []*d2graph.Object{obj}
 		visited := make(map[*d2graph.Object]struct{})
 		for len(queue) > 0 {
@@ -438,96 +508,42 @@ func getLongestEdgeChainHead(g *d2graph.Graph, container *d2graph.Object) *d2gra
 				continue
 			}
 			visited[curr] = struct{}{}
-			for _, e := range g.Edges {
-				child := inContainer(e.Dst, container)
-				if child == curr {
-					continue
+			for _, child := range t.outgoing[curr] {
+				if rank[curr]+1 > rank[child] {
+					rank[child] = rank[curr] + 1
+					chainLength[obj] = go2.Max(chainLength[obj], rank[child])
 				}
-				if child != nil && inContainer(e.Src, curr) != nil {
-					if rank[curr]+1 > rank[child] {
-						rank[child] = rank[curr] + 1
-						chainLength[obj] = go2.Max(chainLength[obj], rank[child])
-					}
-					queue = append(queue, child)
-				}
+				queue = append(queue, child)
 			}
 		}
 	}
-	max := int(math.MinInt32)
-	for _, obj := range container.ChildrenArray {
-		if chainLength[obj] > max {
-			max = chainLength[obj]
+
+	maxChainLength := int(math.MinInt32)
+	maxRank := int(math.MinInt32)
+	for _, obj := range t.container.ChildrenArray {
+		maxChainLength = go2.Max(maxChainLength, chainLength[obj])
+		maxRank = go2.Max(maxRank, rank[obj])
+	}
+
+	var heads, tails []*d2graph.Object
+	for _, obj := range t.container.ChildrenArray {
+		if rank[obj] == 1 && chainLength[obj] == maxChainLength {
+			heads = append(heads, obj)
+		}
+		if rank[obj] == maxRank {
+			tails = append(tails, obj)
 		}
 	}
 
-	var heads []*d2graph.Object
-	for i, obj := range container.ChildrenArray {
-		if rank[obj] == 1 && chainLength[obj] == max {
-			heads = append(heads, container.ChildrenArray[i])
-		}
-	}
-
+	head := t.container.ChildrenArray[0]
 	if len(heads) > 0 {
-		return heads[int(math.Floor(float64(len(heads))/2.0))]
+		head = heads[len(heads)/2]
 	}
-	return container.ChildrenArray[0]
+	return head, tails[len(tails)/2]
 }
 
-// getLongestEdgeChainTail gets the node at the end of the longest edge chain, because that will be the end of the container
-// and is what external connections should connect with.
-// If there are multiple of same length, get the one closest to the middle
-func getLongestEdgeChainTail(g *d2graph.Graph, container *d2graph.Object) *d2graph.Object {
-	rank := make(map[*d2graph.Object]int)
-
-	for _, obj := range container.ChildrenArray {
-		isHead := true
-		for _, e := range g.Edges {
-			if inContainer(e.Src, container) != nil && inContainer(e.Dst, obj) != nil {
-				isHead = false
-				break
-			}
-		}
-		if !isHead {
-			continue
-		}
-		rank[obj] = 1
-		// BFS
-		queue := []*d2graph.Object{obj}
-		visited := make(map[*d2graph.Object]struct{})
-		for len(queue) > 0 {
-			curr := queue[0]
-			queue = queue[1:]
-			if _, ok := visited[curr]; ok {
-				continue
-			}
-			visited[curr] = struct{}{}
-			for _, e := range g.Edges {
-				child := inContainer(e.Dst, container)
-				if child == curr {
-					continue
-				}
-				if child != nil && inContainer(e.Src, curr) != nil {
-					rank[child] = go2.Max(rank[child], rank[curr]+1)
-					queue = append(queue, child)
-				}
-			}
-		}
-	}
-	max := int(math.MinInt32)
-	for _, obj := range container.ChildrenArray {
-		if rank[obj] > max {
-			max = rank[obj]
-		}
-	}
-
-	var tails []*d2graph.Object
-	for i, obj := range container.ChildrenArray {
-		if rank[obj] == max {
-			tails = append(tails, container.ChildrenArray[i])
-		}
-	}
-
-	return tails[int(math.Floor(float64(len(tails))/2.0))]
+func getLongestEdgeChainEndpoints(g *d2graph.Graph, container *d2graph.Object) (*d2graph.Object, *d2graph.Object) {
+	return newContainerTopology(g, container).longestChainEndpoints()
 }
 
 func inContainer(obj, container *d2graph.Object) *d2graph.Object {
@@ -759,10 +775,24 @@ func shiftUp(g *d2graph.Graph, start, distance float64, isHorizontal bool) {
 	}
 }
 
-// shift down everything that is below start
-// shift all nodes that are reachable via an edge or being directly below a shifting node or expanding container
-// expand containers to wrap shifted nodes
-func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance float64, isHorizontal, isMargin bool) map[*d2graph.Object]struct{} {
+type crossRankIndex struct {
+	incident map[*d2graph.Object][]*d2graph.Edge
+}
+
+func newCrossRankIndex(g *d2graph.Graph) *crossRankIndex {
+	index := &crossRankIndex{
+		incident: make(map[*d2graph.Object][]*d2graph.Edge, len(g.Objects)),
+	}
+	for _, edge := range g.Edges {
+		index.incident[edge.Src] = append(index.incident[edge.Src], edge)
+		if edge.Dst != edge.Src {
+			index.incident[edge.Dst] = append(index.incident[edge.Dst], edge)
+		}
+	}
+	return index
+}
+
+func shiftReachableDownIndexed(g *d2graph.Graph, index *crossRankIndex, obj *d2graph.Object, start, distance float64, isHorizontal, isMargin bool) map[*d2graph.Object]struct{} {
 	q := []*d2graph.Object{obj}
 
 	needsMove := make(map[*d2graph.Object]struct{})
@@ -876,7 +906,7 @@ func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance f
 				queue(child)
 			}
 
-			for _, e := range g.Edges {
+			for _, e := range index.incident[curr] {
 				if _, in := shiftedEdges[e]; in {
 					continue
 				}
@@ -1259,6 +1289,7 @@ func adjustRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
 }
 
 func adjustCrossRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
+	index := newCrossRankIndex(g)
 	var prevMarginTop, prevMarginBottom, prevMarginLeft, prevMarginRight map[*d2graph.Object]float64
 	if isHorizontal {
 		prevMarginLeft = make(map[*d2graph.Object]float64)
@@ -1277,26 +1308,26 @@ func adjustCrossRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool
 				margin.Bottom -= prevShift
 			}
 			if margin.Bottom > 0 {
-				increased := shiftReachableDown(g, obj, obj.TopLeft.Y+obj.Height, margin.Bottom, isHorizontal, true)
+				increased := shiftReachableDownIndexed(g, index, obj, obj.TopLeft.Y+obj.Height, margin.Bottom, isHorizontal, true)
 				for o := range increased {
 					prevMarginBottom[o] = math.Max(prevMarginBottom[o], margin.Bottom)
 				}
 			}
 			if padding.Bottom > 0 {
-				shiftReachableDown(g, obj, obj.TopLeft.Y+obj.Height, padding.Bottom, isHorizontal, false)
+				shiftReachableDownIndexed(g, index, obj, obj.TopLeft.Y+obj.Height, padding.Bottom, isHorizontal, false)
 				obj.Height += padding.Bottom
 			}
 			if prevShift, has := prevMarginTop[obj]; has {
 				margin.Top -= prevShift
 			}
 			if margin.Top > 0 {
-				increased := shiftReachableDown(g, obj, obj.TopLeft.Y, margin.Top, isHorizontal, true)
+				increased := shiftReachableDownIndexed(g, index, obj, obj.TopLeft.Y, margin.Top, isHorizontal, true)
 				for o := range increased {
 					prevMarginTop[o] = math.Max(prevMarginTop[o], margin.Top)
 				}
 			}
 			if padding.Top > 0 {
-				shiftReachableDown(g, obj, obj.TopLeft.Y, padding.Top, isHorizontal, false)
+				shiftReachableDownIndexed(g, index, obj, obj.TopLeft.Y, padding.Top, isHorizontal, false)
 				obj.Height += padding.Top
 			}
 		} else {
@@ -1304,26 +1335,26 @@ func adjustCrossRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool
 				margin.Right -= prevShift
 			}
 			if margin.Right > 0 {
-				increased := shiftReachableDown(g, obj, obj.TopLeft.X+obj.Width, margin.Right, isHorizontal, true)
+				increased := shiftReachableDownIndexed(g, index, obj, obj.TopLeft.X+obj.Width, margin.Right, isHorizontal, true)
 				for o := range increased {
 					prevMarginRight[o] = math.Max(prevMarginRight[o], margin.Right)
 				}
 			}
 			if padding.Right > 0 {
-				shiftReachableDown(g, obj, obj.TopLeft.X+obj.Width, padding.Right, isHorizontal, false)
+				shiftReachableDownIndexed(g, index, obj, obj.TopLeft.X+obj.Width, padding.Right, isHorizontal, false)
 				obj.Width += padding.Right
 			}
 			if prevShift, has := prevMarginLeft[obj]; has {
 				margin.Left -= prevShift
 			}
 			if margin.Left > 0 {
-				increased := shiftReachableDown(g, obj, obj.TopLeft.X, margin.Left, isHorizontal, true)
+				increased := shiftReachableDownIndexed(g, index, obj, obj.TopLeft.X, margin.Left, isHorizontal, true)
 				for o := range increased {
 					prevMarginLeft[o] = math.Max(prevMarginLeft[o], margin.Left)
 				}
 			}
 			if padding.Left > 0 {
-				shiftReachableDown(g, obj, obj.TopLeft.X, padding.Left, isHorizontal, false)
+				shiftReachableDownIndexed(g, index, obj, obj.TopLeft.X, padding.Left, isHorizontal, false)
 				obj.Width += padding.Left
 			}
 		}

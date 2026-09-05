@@ -1,10 +1,13 @@
 package e2etests_cli
 
 import (
+	"archive/zip"
 	"bytes"
 	"context"
 	"errors"
 	"fmt"
+	"image/png"
+	"io"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -15,14 +18,14 @@ import (
 
 	"github.com/coder/websocket"
 
-	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
-	"oss.terrastruct.com/util-go/xmain"
-	"oss.terrastruct.com/util-go/xos"
+	"github.com/d2lang/util-go/assert"
+	"github.com/d2lang/util-go/xmain"
+	"github.com/d2lang/util-go/xos"
 
-	"oss.terrastruct.com/d2/d2cli"
-	"oss.terrastruct.com/d2/lib/pptx"
-	"oss.terrastruct.com/d2/lib/xgif"
+	"github.com/d2lang/d2/d2cli"
+	"github.com/d2lang/d2/internal/testutil"
+	"github.com/d2lang/d2/lib/compression"
+	"github.com/d2lang/d2/lib/pptx"
 )
 
 func TestCLI_E2E(t *testing.T) {
@@ -31,30 +34,82 @@ func TestCLI_E2E(t *testing.T) {
 	tca := []struct {
 		name   string
 		serial bool
-		skipCI bool
 		skip   bool
 		run    func(t *testing.T, ctx context.Context, dir string, env *xos.Env)
 	}{
 		{
-			name:   "hello_world_png",
-			skipCI: true,
+			name: "hello_world_png",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `x -> y`)
 				err := runTestMain(t, ctx, dir, env, "hello-world.d2", "hello-world.png")
 				assert.Success(t, err)
-				png := readFile(t, dir, "hello-world.png")
-				testdataIgnoreDiff(t, ".png", png)
+				validatePNG(t, readFile(t, dir, "hello-world.png"), 512, 868)
 			},
 		},
 		{
-			name:   "hello_world_png_pad",
-			skipCI: true,
+			name: "hello_world_png_pad",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `x -> y`)
 				err := runTestMain(t, ctx, dir, env, "--pad=400", "hello-world.d2", "hello-world.png")
 				assert.Success(t, err)
-				png := readFile(t, dir, "hello-world.png")
-				testdataIgnoreDiff(t, ".png", png)
+				validatePNG(t, readFile(t, dir, "hello-world.png"), 1712, 2068)
+			},
+		},
+		{
+			name: "png-with-local-icons",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "icon.svg", string(mustReadRasterFixture(t, "icon.svg")))
+				writeFile(t, dir, "hello-world.d2", `direction: right
+
+title: {
+  label: Normal deployment
+  near: bottom-center
+  shape: text
+  style.font-size: 40
+  style.underline: true
+}
+
+local: {
+  code: {
+    icon: ./icon.svg
+  }
+}
+local.code -> github.dev: commit
+
+github: {
+  icon: ./icon.svg
+  dev
+  master: {
+    workflows
+  }
+
+  dev -> master.workflows: merge trigger
+}
+
+github.master.workflows -> aws.builders: upload and run
+
+aws: {
+  builders -> s3: upload binaries
+  ec2 <- s3: pull binaries
+
+  builders: {
+    icon: ./icon.svg
+  }
+  s3: {
+    icon: ./icon.svg
+  }
+  ec2: {
+    icon: ./icon.svg
+  }
+}
+
+local.code -> aws.ec2: {
+  style.opacity: 0.0
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "hello-world.d2", "hello-world.png")
+				assert.Success(t, err)
+				validatePNG(t, readFile(t, dir, "hello-world.png"), 0, 0)
 			},
 		},
 		{
@@ -68,11 +123,11 @@ func TestCLI_E2E(t *testing.T) {
 			},
 		},
 		{
-			name: "flags-panic",
+			name: "layout-extra-args",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `x -> y`)
 				err := runTestMain(t, ctx, dir, env, "layout", "dagre", "--dagre-nodesep", "50", "hello-world.d2")
-				assert.ErrorString(t, err, `failed to wait xmain test: e2etests-cli/d2: failed to unmarshal input to graph: `)
+				assert.ErrorString(t, err, `failed to wait xmain test: e2etests-cli/d2: bad usage: layout subcommand accepts at most one argument`)
 			},
 		},
 		{
@@ -226,6 +281,41 @@ steps: {
 			},
 		},
 		{
+			name: "markdown-animation",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "animation.d2", `intro: |md
+# Native **Markdown**
+
+[documentation](https://d2lang.com)
+|
+
+steps: {
+  1: {
+    list: |md
+      - first
+      - second
+    |
+  }
+  2: {
+    table: ||md
+      | Status | Count |
+      | ------ | ----- |
+      | Done   | 42    |
+    ||
+  }
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "--animate-interval=1400", "animation.d2")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "animation.svg")
+				assert.Testdata(t, ".svg", svg)
+				assert.Equal(t, 3, getNumBoards(string(svg)))
+				assert.Equal(t, 6, strings.Count(string(svg), `class="md md-native"`))
+				assert.Equal(t, 6, strings.Count(string(svg), `href="https://d2lang.com"`))
+				assert.False(t, strings.Contains(string(svg), "<foreignObject"))
+			},
+		},
+		{
 			name: "linked-path",
 			// TODO tempdir is random, resulting in different test results each time with the links
 			skip: true,
@@ -277,15 +367,12 @@ You provided: .png`)
 			},
 		},
 		{
-			name:   "hello_world_png_sketch",
-			skipCI: true,
+			name: "hello_world_png_sketch",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `x -> y`)
 				err := runTestMain(t, ctx, dir, env, "--sketch", "hello-world.d2", "hello-world.png")
 				assert.Success(t, err)
-				png := readFile(t, dir, "hello-world.png")
-				// https://github.com/terrastruct/d2/pull/963#pullrequestreview-1323089392
-				testdataIgnoreDiff(t, ".png", png)
+				validatePNG(t, readFile(t, dir, "hello-world.png"), 512, 868)
 			},
 		},
 		{
@@ -609,8 +696,7 @@ layers: {
 				err := runTestMain(t, ctx, dir, env, "in.d2", "out.pdf")
 				assert.Success(t, err)
 
-				pdf := readFile(t, dir, "out.pdf")
-				testdataIgnoreDiff(t, ".pdf", pdf)
+				validatePDF(t, readFile(t, dir, "out.pdf"), 2)
 			},
 		},
 		{
@@ -622,8 +708,7 @@ layers: {
 			},
 		},
 		{
-			name:   "how_to_solve_problems_pptx",
-			skipCI: true,
+			name: "how_to_solve_problems_pptx",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "in.d2", `how to solve a hard problem? {
 	link: steps.2
@@ -637,25 +722,24 @@ steps: {
 		t: think really hard about it
 	}
 	3: {
-		t -> w2
-		w2: write down the solution
-		w2: {
-			link: https://d2lang.com
+			t -> w2
+			w2: write down the solution
+			w2: {
+				link: https://d2lang.com
+			}
 		}
-	}
 }
 `)
 				err := runTestMain(t, ctx, dir, env, "in.d2", "how_to_solve_problems.pptx")
 				assert.Success(t, err)
 
 				file := readFile(t, dir, "how_to_solve_problems.pptx")
-				err = pptx.Validate(file, 4)
+				err = testutil.ValidatePPTX(file, pptx.PPTX_TEMPLATE, 4)
 				assert.Success(t, err)
 			},
 		},
 		{
-			name:   "how_to_solve_problems_gif",
-			skipCI: true,
+			name: "how_to_solve_problems_gif",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "in.d2", `how to solve a hard problem? {
 	link: steps.2
@@ -669,25 +753,25 @@ steps: {
 		t: think really hard about it
 	}
 	3: {
-		t -> w2
-		w2: write down the solution
-		w2: {
-			link: https://d2lang.com
+			t -> w2
+			w2: write down the solution
+			w2: {
+				link: https://d2lang.com
+			}
 		}
-	}
 }
 `)
 				err := runTestMain(t, ctx, dir, env, "--animate-interval=10", "in.d2", "how_to_solve_problems.gif")
 				assert.Success(t, err)
 
 				gifBytes := readFile(t, dir, "how_to_solve_problems.gif")
-				err = xgif.Validate(gifBytes, 4, 10)
+				err = testutil.ValidateGIF(gifBytes, 4, 10)
 				assert.Success(t, err)
+				validateGIF(t, gifBytes, 4, 4, true)
 			},
 		},
 		{
-			name:   "pptx-theme-overrides",
-			skipCI: true,
+			name: "pptx-theme-overrides",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "in.d2", `vars:{
   d2-config: {
@@ -718,21 +802,201 @@ a.b.c.d
 `)
 				err := runTestMain(t, ctx, dir, env, "in.d2", "all_red.pptx")
 				assert.Success(t, err)
-				pptx := readFile(t, dir, "all_red.pptx")
-				testdataIgnoreDiff(t, ".pptx", pptx)
+				validatePPTX(t, readFile(t, dir, "all_red.pptx"), 1)
 			},
 		},
 		{
-			name:   "one-layer-gif",
-			skipCI: true,
+			name: "one-layer-gif",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "in.d2", `x`)
 				err := runTestMain(t, ctx, dir, env, "--animate-interval=10", "in.d2", "out.gif")
 				assert.Success(t, err)
 
 				gifBytes := readFile(t, dir, "out.gif")
-				err = xgif.Validate(gifBytes, 1, 10)
+				err = testutil.ValidateGIF(gifBytes, 1, 10)
 				assert.Success(t, err)
+				validateGIF(t, gifBytes, 1, 1, false)
+			},
+		},
+		{
+			name:   "animated-gif",
+			serial: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `bank:   {
+  style.fill: white
+  Corporate:   {
+    style.fill: white
+    app14506: Data Source\ntco:      100,000\nowner: Lakshmi  {
+      style:  {
+        fill: '#fce7c6'
+      }
+    }
+  }
+  Equities:   {
+    app14491: Risk Global\ntco:      600,000\nowner: Wendy  {
+      style:  {
+        fill: '#f6c889'
+      }
+    }
+    app14492: Credit guard\ntco:      100,000\nowner: Lakshmi  {
+      style:  {
+        fill: '#fce7c6'
+      }
+    }
+    app14520: Seven heaven\ntco:      100,000\nowner: Tomos  {
+      style:  {
+        fill: '#fce7c6'
+      }
+    }
+    app14522: Apac Ace\ntco:      400,000\nowner: Wendy  {
+      style:  {
+        fill: '#f9d8a7'
+      }
+    }
+    app14527: Risk Global\ntco:      900,000\nowner: Tomos  {
+      style:  {
+        fill: '#f4b76c'
+      }
+    }
+  }
+  Securities:   {
+    style.fill: white
+    app14517: Zone out\ntco:      500,000\nowner: Wendy  {
+      style:  {
+        fill: '#f6c889'
+      }
+    }
+  }
+  Finance:   {
+    style.fill: white
+    app14488: Credit guard\ntco:      700,000\nowner: India  {
+      style:  {
+        fill: '#f6c889'
+      }
+    }
+    app14502: Ark Crypto\ntco:    1,500,000\nowner: Wendy  {
+      style:  {
+        fill: '#ed800c'
+      }
+    }
+    app14510: Data Solar\ntco:    1,200,000\nowner: Deepak  {
+      style:  {
+        fill: '#f1a64f'
+      }
+    }
+  }
+  Risk:   {
+    style.fill: white
+    app14490: Seven heaven\ntco:            0\nowner: Joesph  {
+      style:  {
+        fill: '#fce7c6'
+      }
+    }
+    app14507: Crypto Bot\ntco:    1,100,000\nowner: Wendy  {
+      style:  {
+        fill: '#f1a64f'
+      }
+    }
+  }
+  Funds:   {
+    style.fill: white
+    app14497: Risk Global\ntco:      500,000\nowner: Joesph  {
+      style:  {
+        fill: '#f6c889'
+      }
+    }
+  }
+  Fixed Income:   {
+    style.fill: white
+    app14523: ARC3\ntco:      600,000\nowner: Wendy  {
+      style:  {
+        fill: '#f6c889'
+      }
+    }
+    app14500: Acmaze\ntco:      100,000\nowner: Tomos  {
+      style:  {
+        fill: '#fce7c6'
+      }
+    }
+  }
+}
+bank.Risk.app14490 -> bank.Equities.app14527: client master
+bank.Equities.app14491 -> bank.Equities.app14527: greeks  {
+  style:  {
+    stroke-dash: 5
+    animated: true
+    stroke: red
+  }
+}
+bank.Funds.app14497 -> bank.Equities.app14520: allocations  {
+  style:  {
+    stroke-dash: 5
+    animated: true
+    stroke: brown
+  }
+}
+bank.Equities.app14527 -> bank.Corporate.app14506: trades  {
+  style:  {
+    stroke-dash: 5
+    animated: false
+    stroke: blue
+  }
+}
+bank.Fixed Income.app14523 -> bank.Equities.app14491: orders  {
+  style:  {
+    stroke-dash: 10
+    animated: false
+    stroke: green
+  }
+}
+bank.Finance.app14488 -> bank.Equities.app14527: greeks  {
+  style:  {
+    stroke-dash: 5
+    animated: true
+    stroke: red
+  }
+}
+bank.Equities.app14527 -> bank.Equities.app14522: orders  {
+  style:  {
+    stroke-dash: 10
+    animated: false
+    stroke: green
+  }
+}
+bank.Equities.app14522 -> bank.Finance.app14510: orders  {
+  style:  {
+    stroke-dash: 10
+    animated: false
+    stroke: green
+  }
+}
+bank.Equities.app14527 -> bank.Finance.app14502: greeks  {
+  style:  {
+    stroke-dash: 5
+    animated: true
+    stroke: red
+  }
+}
+bank.Equities.app14527 -> bank.Risk.app14507: allocations  {
+  style:  {
+    stroke-dash: 5
+    animated: true
+    stroke: brown
+  }
+}
+bank.Securities.app14517 -> bank.Equities.app14492: trades  {
+  style:  {
+    stroke-dash: 5
+    animated: false
+    stroke: blue
+  }
+}
+bank.Equities.app14522 -> bank.Fixed Income.app14500: security reference
+`)
+				err := runTestMain(t, ctx, dir, env, "--timeout=300", "--scale=0.25", "--animate-interval=1000", "in.d2", "out.gif")
+				assert.Success(t, err)
+
+				validateGIF(t, readFile(t, dir, "out.gif"), 30, 100, true)
 			},
 		},
 		{
@@ -749,6 +1013,96 @@ a.b.c.d
 				assert.Success(t, err)
 
 				assert.Testdata(t, ".svg", stdout.Bytes())
+			},
+		},
+		{
+			name: "stdout_pdf",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `x -> y`)
+				stdout := &bytes.Buffer{}
+				tms := testMain(dir, env, "--stdout-format=pdf", "in.d2", "-")
+				tms.Stdout = stdout
+				tms.Start(t, ctx)
+				defer tms.Cleanup(t)
+				err := tms.Wait(ctx)
+				assert.Success(t, err)
+
+				if stdout.Len() == 0 || !bytes.HasPrefix(stdout.Bytes(), []byte("%PDF-")) {
+					t.Fatalf("PDF stdout is empty or missing its signature: %q", stdout.Bytes())
+				}
+				validatePDF(t, stdout.Bytes(), 1)
+				if _, err := os.Stat(filepath.Join(dir, "-")); !errors.Is(err, os.ErrNotExist) {
+					t.Fatalf("PDF stdout created a literal '-' file: %v", err)
+				}
+			},
+		},
+		{
+			name: "stdout_pptx",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `x -> y`)
+				stdout := &bytes.Buffer{}
+				tms := testMain(dir, env, "--stdout-format=pptx", "in.d2", "-")
+				tms.Stdout = stdout
+				tms.Start(t, ctx)
+				defer tms.Cleanup(t)
+				err := tms.Wait(ctx)
+				assert.Success(t, err)
+
+				if stdout.Len() == 0 {
+					t.Fatal("PPTX stdout is empty")
+				}
+				validatePPTX(t, stdout.Bytes(), 1)
+				core := readPPTXMember(t, stdout.Bytes(), "docProps/core.xml")
+				if !bytes.Contains(core, []byte("<dc:title>in</dc:title>")) {
+					t.Fatalf("PPTX stdout title is not derived from the input: %s", core)
+				}
+				if _, err := os.Stat(filepath.Join(dir, "-")); !errors.Is(err, os.ErrNotExist) {
+					t.Fatalf("PPTX stdout created a literal '-' file: %v", err)
+				}
+			},
+		},
+		{
+			name: "stdout_pdf_partial_write_error",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `x -> y`)
+				wantErr := errors.New("PDF stdout partial write failed")
+				stdout := &failingStdout{writeLimit: 7, writeErr: wantErr}
+				tms := testMain(dir, env, "--stdout-format=pdf", "in.d2", "-")
+				tms.Stdout = stdout
+				tms.Start(t, ctx)
+				defer tms.Cleanup(t)
+				err := tms.Wait(ctx)
+				if !errors.Is(err, wantErr) {
+					t.Fatalf("PDF stdout error = %v, want %v", err, wantErr)
+				}
+				if !strings.Contains(err.Error(), "failed to fully compile (partial render written)") {
+					t.Fatalf("PDF stdout error does not report partial output: %v", err)
+				}
+				if stdout.Len() != stdout.writeLimit || stdout.writeCalls != 1 {
+					t.Fatalf("PDF stdout accepted %d bytes in %d calls, want %d bytes in one call", stdout.Len(), stdout.writeCalls, stdout.writeLimit)
+				}
+			},
+		},
+		{
+			name: "stdout_pptx_close_error",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `x -> y`)
+				wantErr := errors.New("PPTX stdout close failed")
+				stdout := &failingStdout{writeLimit: -1, closeErr: wantErr}
+				tms := testMain(dir, env, "--stdout-format=pptx", "in.d2", "-")
+				tms.Stdout = stdout
+				tms.Start(t, ctx)
+				defer tms.Cleanup(t)
+				err := tms.Wait(ctx)
+				if !errors.Is(err, wantErr) {
+					t.Fatalf("PPTX stdout error = %v, want %v", err, wantErr)
+				}
+				if !strings.Contains(err.Error(), "failed to fully compile (partial render written)") {
+					t.Fatalf("PPTX stdout error does not report partial output: %v", err)
+				}
+				if stdout.Len() == 0 || stdout.writeCalls != 1 || stdout.closeCalls == 0 {
+					t.Fatalf("PPTX stdout accepted %d bytes in %d writes and %d closes", stdout.Len(), stdout.writeCalls, stdout.closeCalls)
+				}
 			},
 		},
 		{
@@ -845,6 +1199,7 @@ vars: {
 				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
 				assert.Success(t, err)
 				svg := readFile(t, dir, "hello-world.svg")
+				svg = compression.UnzipEmbeddedSVGImages(svg)
 				assert.Testdata(t, ".svg", svg)
 			},
 		},
@@ -891,20 +1246,17 @@ i used to read
 			},
 		},
 		{
-			name:   "theme-pdf",
-			skipCI: true,
+			name: "theme-pdf",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "in.d2", `x -> y`)
 				err := runTestMain(t, ctx, dir, env, "--theme=5", "in.d2", "out.pdf")
 				assert.Success(t, err)
 
-				pdf := readFile(t, dir, "out.pdf")
-				testdataIgnoreDiff(t, ".pdf", pdf)
+				validatePDF(t, readFile(t, dir, "out.pdf"), 1)
 			},
 		},
 		{
-			name:   "renamed-board",
-			skipCI: true,
+			name: "renamed-board",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "in.d2", `cat: how does the cat go? {
   link: layers.cat
@@ -924,13 +1276,11 @@ layers: {
 				err := runTestMain(t, ctx, dir, env, "in.d2", "out.pdf")
 				assert.Success(t, err)
 
-				pdf := readFile(t, dir, "out.pdf")
-				testdataIgnoreDiff(t, ".pdf", pdf)
+				validatePDF(t, readFile(t, dir, "out.pdf"), 2)
 			},
 		},
 		{
-			name:   "no-nav-pdf",
-			skipCI: true,
+			name: "no-nav-pdf",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "in.d2", `cat: how does the cat go? {
   link: layers.cat
@@ -950,13 +1300,11 @@ layers: {
 				err := runTestMain(t, ctx, dir, env, "in.d2", "out.pdf")
 				assert.Success(t, err)
 
-				pdf := readFile(t, dir, "out.pdf")
-				testdataIgnoreDiff(t, ".pdf", pdf)
+				validatePDF(t, readFile(t, dir, "out.pdf"), 2)
 			},
 		},
 		{
-			name:   "no-nav-pptx",
-			skipCI: true,
+			name: "no-nav-pptx",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "in.d2", `cat: how does the cat go? {
   link: layers.cat
@@ -976,10 +1324,7 @@ layers: {
 				err := runTestMain(t, ctx, dir, env, "in.d2", "out.pptx")
 				assert.Success(t, err)
 
-				file := readFile(t, dir, "out.pptx")
-				// err = pptx.Validate(file, 2)
-				assert.Success(t, err)
-				testdataIgnoreDiff(t, ".pptx", file)
+				validatePPTX(t, readFile(t, dir, "out.pptx"), 2)
 			},
 		},
 		{
@@ -1395,9 +1740,6 @@ c
 				t.Parallel()
 			}
 
-			if tc.skipCI && os.Getenv("CI") != "" {
-				t.SkipNow()
-			}
 			if tc.skip {
 				t.SkipNow()
 			}
@@ -1474,8 +1816,103 @@ func removeD2Files(tb testing.TB, dir string) {
 	}
 }
 
-func testdataIgnoreDiff(tb testing.TB, ext string, got []byte) {
-	_ = diff.Testdata(filepath.Join("testdata", tb.Name()), ext, got)
+func validatePNG(tb testing.TB, content []byte, wantWidth, wantHeight int) {
+	tb.Helper()
+	decoded, err := png.Decode(bytes.NewReader(content))
+	assert.Success(tb, err)
+	bounds := decoded.Bounds()
+	if bounds.Empty() {
+		tb.Fatalf("PNG has empty bounds %v", bounds)
+	}
+	if wantWidth != 0 && (bounds.Dx() != wantWidth || bounds.Dy() != wantHeight) {
+		tb.Fatalf("PNG dimensions = %dx%d, want %dx%d", bounds.Dx(), bounds.Dy(), wantWidth, wantHeight)
+	}
+}
+
+func validateGIF(tb testing.TB, content []byte, wantFrames, wantDurationCentiseconds int, requireChange bool) {
+	tb.Helper()
+	inspection, err := testutil.InspectGIF(content)
+	assert.Success(tb, err)
+	if len(inspection.FrameHashes) != wantFrames || inspection.TotalDurationCentiseconds != wantDurationCentiseconds {
+		tb.Fatalf("GIF frames/duration = %d/%dcs, want %d/%dcs", len(inspection.FrameHashes), inspection.TotalDurationCentiseconds, wantFrames, wantDurationCentiseconds)
+	}
+	if requireChange && inspection.ChangedFramePairs == 0 {
+		tb.Fatal("GIF animation contains no pixel changes")
+	}
+}
+
+func validatePPTX(tb testing.TB, content []byte, wantSlides int) {
+	tb.Helper()
+	assert.Success(tb, testutil.ValidatePPTX(content, pptx.PPTX_TEMPLATE, wantSlides))
+	images, err := testutil.ExtractPPTXImages(content)
+	assert.Success(tb, err)
+	if len(images) != wantSlides {
+		tb.Fatalf("PPTX embedded images = %d, want %d", len(images), wantSlides)
+	}
+	for index, encoded := range images {
+		decoded, err := png.Decode(bytes.NewReader(encoded))
+		assert.Success(tb, err)
+		if decoded.Bounds().Empty() {
+			tb.Fatalf("PPTX slide %d image has empty bounds", index+1)
+		}
+	}
+}
+
+func readPPTXMember(tb testing.TB, content []byte, name string) []byte {
+	tb.Helper()
+	reader, err := zip.NewReader(bytes.NewReader(content), int64(len(content)))
+	assert.Success(tb, err)
+	for _, file := range reader.File {
+		if file.Name != name {
+			continue
+		}
+		member, err := file.Open()
+		assert.Success(tb, err)
+		data, readErr := io.ReadAll(member)
+		closeErr := member.Close()
+		assert.Success(tb, readErr)
+		assert.Success(tb, closeErr)
+		return data
+	}
+	tb.Fatalf("PPTX member %q is missing", name)
+	return nil
+}
+
+type failingStdout struct {
+	bytes.Buffer
+	writeLimit int
+	writeErr   error
+	closeErr   error
+	writeCalls int
+	closeCalls int
+}
+
+func (w *failingStdout) Write(p []byte) (int, error) {
+	w.writeCalls++
+	if w.writeLimit >= 0 && len(p) > w.writeLimit {
+		p = p[:w.writeLimit]
+	}
+	n, _ := w.Buffer.Write(p)
+	return n, w.writeErr
+}
+
+func (w *failingStdout) Close() error {
+	w.closeCalls++
+	return w.closeErr
+}
+
+func validatePDF(tb testing.TB, content []byte, wantPages int) {
+	tb.Helper()
+	inspection, err := testutil.InspectD2PDF(content)
+	assert.Success(tb, err)
+	if len(inspection.Pages) != wantPages {
+		tb.Fatalf("PDF pages = %d, want %d", len(inspection.Pages), wantPages)
+	}
+	for index, page := range inspection.Pages {
+		if page.Width <= 0 || page.Height <= 0 {
+			tb.Fatalf("PDF page %d dimensions = %.2fx%.2f", index+1, page.Width, page.Height)
+		}
+	}
 }
 
 // getNumBoards gets the number of boards in an SVG file through a non-robust pattern search

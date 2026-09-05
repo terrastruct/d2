@@ -1069,6 +1069,21 @@ c4person -> styling.c4styled -> styling.c4sized
   style.stroke-width: 1
 }
 
+-- legend-mono --
+vars: {
+  d2-config: {
+    theme-id: 300
+  }
+
+  d2-legend {
+    a: {
+      label: Microservice
+    }
+  }
+}
+
+a
+
 -- legend --
 vars: {
   d2-legend: "凡例"{

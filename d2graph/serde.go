@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/util-go/go2"
 )
 
 type SerializedGraph struct {
@@ -168,7 +168,17 @@ func Convert[T, Q any](from T, to *Q) error {
 	return nil
 }
 
+// CompareSerializedGraph compares the portions of two graphs preserved by
+// SerializeGraph and DeserializeGraph.
+//
+// Deprecated: CompareSerializedGraph is an incomplete, test-only assertion and
+// will be removed after one compatibility release. Tests should serialize,
+// deserialize, and compare the specific graph invariants they rely on.
 func CompareSerializedGraph(g, other *Graph) error {
+	return compareSerializedGraph(g, other)
+}
+
+func compareSerializedGraph(g, other *Graph) error {
 	if len(g.Objects) != len(other.Objects) {
 		return fmt.Errorf("object count differs: g=%d, other=%d", len(g.Objects), len(other.Objects))
 	}
@@ -177,12 +187,12 @@ func CompareSerializedGraph(g, other *Graph) error {
 		return fmt.Errorf("edge count differs: g=%d, other=%d", len(g.Edges), len(other.Edges))
 	}
 
-	if err := CompareSerializedObject(g.Root, other.Root); err != nil {
+	if err := compareSerializedObject(g.Root, other.Root); err != nil {
 		return fmt.Errorf("root differs: %v", err)
 	}
 
 	for i := 0; i < len(g.Objects); i++ {
-		if err := CompareSerializedObject(g.Objects[i], other.Objects[i]); err != nil {
+		if err := compareSerializedObject(g.Objects[i], other.Objects[i]); err != nil {
 			return fmt.Errorf(
 				"objects differ at %d [g=%s, other=%s]: %v",
 				i,
@@ -194,7 +204,7 @@ func CompareSerializedGraph(g, other *Graph) error {
 	}
 
 	for i := 0; i < len(g.Edges); i++ {
-		if err := CompareSerializedEdge(g.Edges[i], other.Edges[i]); err != nil {
+		if err := compareSerializedEdge(g.Edges[i], other.Edges[i]); err != nil {
 			return fmt.Errorf(
 				"edges differ at %d [g=%s, other=%s]: %v",
 				i,
@@ -208,7 +218,17 @@ func CompareSerializedGraph(g, other *Graph) error {
 	return nil
 }
 
+// CompareSerializedObject compares the portions of two objects preserved by
+// SerializeGraph and DeserializeGraph.
+//
+// Deprecated: CompareSerializedObject is an incomplete, test-only assertion
+// and will be removed after one compatibility release. Tests should compare the
+// specific object invariants they rely on.
 func CompareSerializedObject(obj, other *Object) error {
+	return compareSerializedObject(obj, other)
+}
+
+func compareSerializedObject(obj, other *Object) error {
 	if obj != nil && other == nil {
 		return fmt.Errorf("other is nil")
 	} else if obj == nil && other != nil {
@@ -254,7 +274,7 @@ func CompareSerializedObject(obj, other *Object) error {
 
 	for childID, objChild := range obj.Children {
 		if otherChild, exists := other.Children[childID]; exists {
-			if err := CompareSerializedObject(objChild, otherChild); err != nil {
+			if err := compareSerializedObject(objChild, otherChild); err != nil {
 				return fmt.Errorf("children differ at key %s: %v", childID, err)
 			}
 		} else {
@@ -267,7 +287,7 @@ func CompareSerializedObject(obj, other *Object) error {
 	}
 
 	for i := 0; i < len(obj.ChildrenArray); i++ {
-		if err := CompareSerializedObject(obj.ChildrenArray[i], other.ChildrenArray[i]); err != nil {
+		if err := compareSerializedObject(obj.ChildrenArray[i], other.ChildrenArray[i]); err != nil {
 			return fmt.Errorf("childrenArray differs at %d: %v", i, err)
 		}
 	}
@@ -354,7 +374,17 @@ func CompareSerializedObject(obj, other *Object) error {
 	return nil
 }
 
+// CompareSerializedEdge compares the portions of two edges preserved by
+// SerializeGraph and DeserializeGraph.
+//
+// Deprecated: CompareSerializedEdge is an incomplete, test-only assertion and
+// will be removed after one compatibility release. Tests should compare the
+// specific edge invariants they rely on.
 func CompareSerializedEdge(edge, other *Edge) error {
+	return compareSerializedEdge(edge, other)
+}
+
+func compareSerializedEdge(edge, other *Edge) error {
 	if edge.AbsID() != other.AbsID() {
 		return fmt.Errorf(
 			"absolute ids differ: edge=%s, other=%s",

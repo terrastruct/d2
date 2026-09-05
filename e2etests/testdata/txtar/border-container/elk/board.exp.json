@@ -102,7 +102,7 @@
       "id": "env.app.Workflow",
       "type": "rectangle",
       "pos": {
-        "x": 112,
+        "x": 244,
         "y": 112
       },
       "width": 123,
@@ -144,7 +144,7 @@
       "id": "env.app.SDK",
       "type": "rectangle",
       "pos": {
-        "x": 136,
+        "x": 268,
         "y": 339
       },
       "width": 75,
@@ -186,7 +186,7 @@
       "id": "env.app.Workers",
       "type": "rectangle",
       "pos": {
-        "x": 255,
+        "x": 112,
         "y": 112
       },
       "width": 112,
@@ -251,11 +251,11 @@
       "link": "",
       "route": [
         {
-          "x": 173.5,
+          "x": 305.5,
           "y": 178
         },
         {
-          "x": 173.5,
+          "x": 305.5,
           "y": 339
         }
       ],

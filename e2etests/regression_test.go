@@ -5,6 +5,7 @@ import (
 )
 
 func testRegression(t *testing.T) {
+	terminalThemeID := int64(300)
 	tcs := []testCase{
 		{
 			// https://github.com/terrastruct/d2/issues/919
@@ -535,6 +536,95 @@ no leading: |python
 - they
 	1. they
 `),
+		},
+		{
+			// https://github.com/d2lang/d2/issues/1842
+			name: "markdown_sketch_commas_1842",
+			script: `text: |md
+  # hey
+  there is ok, yes, sure
+
+  - 1
+  - 2
+  - 3
+|
+x -> text -> y
+direction: down
+`,
+		},
+		{
+			// https://github.com/d2lang/d2/issues/1884
+			name:    "markdown_terminal_last_word_1884",
+			themeID: &terminalThemeID,
+			script: `test: {
+  label: |md
+    # Lorem Ipsum
+
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac urna justo. Praesent vehicula sit amet sem quis faucibus. Ut finibus odio vehicula ultricies venenatis.
+  |
+}
+`,
+		},
+		{
+			// https://github.com/d2lang/d2/issues/2546
+			name: "markdown_shape_font_sizes_2546",
+			script: `classes: {
+  hex16: {shape: hexagon; style.font-size: 16}
+  hex17: {shape: hexagon; style.font-size: 17}
+  hex22: {shape: hexagon; style.font-size: 22}
+  cyl16: {shape: cylinder; style.font-size: 16}
+  cyl17: {shape: cylinder; style.font-size: 17}
+  cyl22: {shape: cylinder; style.font-size: 22}
+}
+
+hex16: |md
+  # Reverse Proxy
+
+  [Web Server: Nginx]
+| {class: hex16}
+hex17: |md
+  # Reverse Proxy
+
+  [Web Server: Nginx]
+| {class: hex17}
+hex22: |md
+  # Reverse Proxy
+
+  [Web Server: Nginx]
+| {class: hex22}
+cyl16: |md
+  # Users
+
+  BD: PostgreSQL
+| {class: cyl16}
+cyl17: |md
+  # Users
+
+  BD: PostgreSQL
+| {class: cyl17}
+cyl22: |md
+  # Users
+
+  BD: PostgreSQL
+| {class: cyl22}
+`,
+		},
+		{
+			// https://github.com/d2lang/d2/issues/2647
+			name: "markdown_em_dash_heading_2647",
+			script: `title: {
+  shape: text
+  label: |md
+    # Cloud Run Egress Architecture — Backend / Exporter / Autolayout / Fetcher
+  |
+  near: top-center
+}
+`,
+		},
+		{
+			// https://github.com/d2lang/d2/issues/2680
+			name:   "markdown_emoji_cutoff_2680",
+			script: `text: |md 🛡 Some long enough text goes here|`,
 		},
 		{
 			name: "elk_loop_panic",

@@ -1,7 +1,7 @@
 package d2themes
 
 import (
-	"oss.terrastruct.com/d2/d2target"
+	"github.com/d2lang/d2/d2target"
 )
 
 func ShapeTheme(shape d2target.Shape) (fill, stroke string) {

@@ -14,8 +14,8 @@ import (
 	tunicode "golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
 
-	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/d2/d2ast"
+	"github.com/d2lang/util-go/go2"
 )
 
 type ParseOptions struct {

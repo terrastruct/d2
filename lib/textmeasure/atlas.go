@@ -7,7 +7,7 @@ import (
 	"golang.org/x/image/font"
 	"golang.org/x/image/math/fixed"
 
-	"oss.terrastruct.com/d2/lib/geo"
+	"github.com/d2lang/d2/lib/geo"
 )
 
 // glyph describes one glyph in an atlas.

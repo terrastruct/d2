@@ -9,16 +9,16 @@ import (
 	"strings"
 	"testing"
 
-	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/xrand"
+	"github.com/d2lang/util-go/assert"
+	"github.com/d2lang/util-go/xrand"
 
-	"oss.terrastruct.com/util-go/diff"
+	"github.com/d2lang/util-go/diff"
 
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/util-go/go2"
 
-	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2format"
-	"oss.terrastruct.com/d2/d2parser"
+	"github.com/d2lang/d2/d2ast"
+	"github.com/d2lang/d2/d2format"
+	"github.com/d2lang/d2/d2parser"
 )
 
 func TestRange(t *testing.T) {

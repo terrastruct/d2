@@ -17,7 +17,7 @@
       "type": "sql_table",
       "pos": {
         "x": 0,
-        "y": 0
+        "y": 240
       },
       "width": 251,
       "height": 216,
@@ -50,7 +50,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -62,7 +62,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -204,7 +204,7 @@
       "type": "sql_table",
       "pos": {
         "x": 22,
-        "y": 276
+        "y": 0
       },
       "width": 207,
       "height": 180,
@@ -237,7 +237,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -249,7 +249,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -363,9 +363,9 @@
       "type": "sql_table",
       "pos": {
         "x": 351,
-        "y": 165
+        "y": 147
       },
-      "width": 207,
+      "width": 206,
       "height": 144,
       "opacity": 1,
       "strokeDash": 0,
@@ -396,7 +396,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -408,7 +408,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -438,7 +438,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -468,7 +468,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -497,8 +497,8 @@
       "id": "shipments",
       "type": "sql_table",
       "pos": {
-        "x": 658,
-        "y": 147
+        "x": 657,
+        "y": 129
       },
       "width": 287,
       "height": 180,
@@ -531,7 +531,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 14,
             "labelHeight": 26
           },
           "type": {
@@ -543,7 +543,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -573,7 +573,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": [
@@ -683,19 +683,19 @@
       "route": [
         {
           "x": 369,
-          "y": 165
+          "y": 291
         },
         {
           "x": 314.6000061035156,
-          "y": 119.4000015258789
+          "y": 336.6000061035156
         },
         {
           "x": 291,
-          "y": 108
+          "y": 348
         },
         {
           "x": 251,
-          "y": 108
+          "y": 348
         }
       ],
       "isCurve": true,
@@ -731,19 +731,19 @@
       "route": [
         {
           "x": 369,
-          "y": 309
+          "y": 147
         },
         {
           "x": 314.6000061035156,
-          "y": 354.6000061035156
+          "y": 101.4000015258789
         },
         {
           "x": 286.6000061035156,
-          "y": 366
+          "y": 90
         },
         {
           "x": 229,
-          "y": 366
+          "y": 90
         }
       ],
       "isCurve": true,
@@ -778,20 +778,20 @@
       "link": "",
       "route": [
         {
-          "x": 658,
-          "y": 237
+          "x": 657,
+          "y": 219
         },
         {
-          "x": 618,
-          "y": 237
+          "x": 617,
+          "y": 219
         },
         {
-          "x": 598,
-          "y": 237
+          "x": 597,
+          "y": 219
         },
         {
-          "x": 558,
-          "y": 237
+          "x": 557,
+          "y": 219
         }
       ],
       "isCurve": true,

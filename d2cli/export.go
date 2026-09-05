@@ -55,14 +55,6 @@ func (ex exportExtension) supportsAnimation() bool {
 	return ex == SVG || ex == GIF
 }
 
-func (ex exportExtension) requiresAnimationInterval() bool {
-	return ex == GIF
-}
-
-func (ex exportExtension) requiresPNGRenderer() bool {
-	return ex == PNG || ex == PDF || ex == PPTX || ex == GIF
-}
-
 func (ex exportExtension) supportsDarkTheme() bool {
 	return ex == SVG
 }

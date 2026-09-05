@@ -67,10 +67,20 @@ detailed docs on its various options and features.
 
 If you're still concerned, remember you can run with `--dry-run` to avoid writing anything.
 
-The install script does not yet verify any signature on the downloaded release
-but that is coming soon. [#315](https://github.com/terrastruct/d2/issues/315)
+For standalone installations, the script obtains the selected archive's SHA-256 digest
+from the GitHub Releases API and, when GitHub provides one, verifies both cached and newly
+downloaded archives before extracting them. Historical releases for which GitHub reports
+no digest remain installable with a warning. Releases produced by the current release
+workflow also include `SHA256SUMS` and GitHub artifact attestations. You can verify build
+provenance separately with:
+
+```sh
+gh attestation verify d2-v0.0.0-linux-amd64.tar.gz --repo d2lang/d2
+```
 
 ## macOS (Homebrew)
+
+D2 binaries built with Go 1.27 require macOS 13 Ventura or newer.
 
 If you're on macOS, you can install with `brew`.
 
@@ -109,7 +119,7 @@ Adjust VERSION, OS, and ARCH as needed.
 
 ```sh
 VERSION=v0.0.13 OS=macos ARCH=amd64 curl -fsSLO \
-    "https://github.com/terrastruct/d2/releases/download/$VERSION/d2-$VERSION-$OS-$ARCH.tar.gz" \
+    "https://github.com/d2lang/d2/releases/download/$VERSION/d2-$VERSION-$OS-$ARCH.tar.gz" \
     && tar -xzf "d2-$VERSION-$OS-$ARCH.tar.gz" \
     && make -sC "d2-$VERSION" install
 ```
@@ -156,10 +166,10 @@ know where the release directory is for easy uninstall.
 You can always install from source:
 
 ```sh
-go install oss.terrastruct.com/d2@latest
+go install github.com/d2lang/d2@latest
 ```
 
-You need at least Go v1.20
+You need at least Go v1.27
 
 ### Source Release
 
@@ -176,11 +186,11 @@ fonts and icons. Furthermore, when installing a non versioned commit, installing
 will ensure that `d2 --version` works correctly by embedding the commit hash into the `d2`
 binary.
 
-Remember, you need at least Go v1.20
+Remember, you need at least Go v1.27
 
 ## Windows
 
-We have prebuilt [releases](https://github.com/terrastruct/d2/releases) of d2 available for Windows via `.msi` installers. The installer
+We have prebuilt [releases](https://github.com/d2lang/d2/releases) of d2 available for Windows via `.msi` installers. The installer
 will add the `d2` binary to your `$PATH` so that you can execute `d2` in `cmd.exe` or
 `pwsh.exe`.
 
@@ -222,14 +232,16 @@ scoop install main/d2
 ```
 
 #### Chocolatey
-[![chocolatey/d2_badge](https://img.shields.io/chocolatey/v/d2)]([https://chocolatey.org/](https://community.chocolatey.org/packages/d2/0.6.6))
+[![chocolatey/d2_badge](https://img.shields.io/chocolatey/v/d2)](https://community.chocolatey.org/packages/d2)
 ```sh
 choco install d2
 ```
 
 ## Docker
 
-https://hub.docker.com/repository/docker/terrastruct/d2
+The canonical image is [`d2lang/d2`](https://hub.docker.com/r/d2lang/d2).
+`terrastruct/d2` remains available as a maintained compatibility mirror for existing
+installations, but new usage should use `d2lang/d2`.
 
 We publish `amd64` and `arm64` images based on `debian:latest` for each release.
 
@@ -238,7 +250,7 @@ Example usage:
 ```sh
 echo 'x -> y' >helloworld.d2
 docker run --rm -it -u "$(id -u):$(id -g)" -v "$PWD:/home/debian/src" \
-  -p 127.0.0.1:8080:8080 terrastruct/d2:v0.1.2 --watch helloworld.d2
+  -p 127.0.0.1:8080:8080 d2lang/d2:v0.1.2 --watch helloworld.d2
 # Visit http://127.0.0.1:8080
 ```
 

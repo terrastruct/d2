@@ -3,7 +3,7 @@ package d2ir_test
 import (
 	"testing"
 
-	"oss.terrastruct.com/util-go/assert"
+	"github.com/d2lang/util-go/assert"
 )
 
 func testCompilePatterns(t *testing.T) {
@@ -64,11 +64,13 @@ Donkey Kong
 			run: func(t testing.TB) {
 				m, err := compile(t, `animal: meow
 jingle: loud
+lal: repeated
 *l: globbed`)
 				assert.Success(t, err)
-				assertQuery(t, m, 2, 0, nil, "")
+				assertQuery(t, m, 3, 0, nil, "")
 				assertQuery(t, m, 0, 0, "globbed", "animal")
-				assertQuery(t, m, 0, 0, "globbed", "jingle")
+				assertQuery(t, m, 0, 0, "loud", "jingle")
+				assertQuery(t, m, 0, 0, "globbed", "lal")
 			},
 		},
 		{

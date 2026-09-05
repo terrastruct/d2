@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"runtime/debug"
+	"sync"
 	"syscall/js"
 )
 
@@ -21,6 +22,26 @@ func NewD2API() *D2API {
 
 func (api *D2API) Register(name string, fn func(args []js.Value) (interface{}, error)) {
 	api.exports[name] = wrapWASMCall(fn)
+}
+
+func warnDeprecatedWASMCall(once *sync.Once, message string) {
+	once.Do(func() {
+		// A consumer may replace console.warn with a function that throws. A
+		// deprecation notice must never change the legacy call's response.
+		defer func() {
+			_ = recover()
+		}()
+
+		console := js.Global().Get("console")
+		if console.Type() != js.TypeObject {
+			return
+		}
+		warn := console.Get("warn")
+		if warn.Type() != js.TypeFunction {
+			return
+		}
+		warn.Invoke(message)
+	})
 }
 
 func (api *D2API) ExportTo(target js.Value) {

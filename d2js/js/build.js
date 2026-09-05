@@ -44,6 +44,11 @@ const commonConfig = {
   minify: true,
 };
 
+const nodeEsmBanner = `import { dirname as __d2Dirname } from "node:path";
+import { fileURLToPath as __d2FileURLToPath } from "node:url";
+const __D2_NODE_MODULE_DIR__ = __d2Dirname(__d2FileURLToPath(import.meta.url));`;
+const nodeCjsBanner = `const __D2_NODE_MODULE_DIR__ = __dirname;`;
+
 async function buildDynamicFiles(platform) {
   const platformContent =
     platform === "node"
@@ -56,44 +61,8 @@ async function buildDynamicFiles(platform) {
     const workerContent = await readFile(join(SRC_DIR, "worker.node.js"), "utf8");
     await writeFile(join(SRC_DIR, "worker.js"), workerContent);
   } else {
-    // For browser, prepend the ELK variables to worker.browser.js
-    // since the worker runs in a blob and can't use ES6 imports
-    const elkJs = await readFile(
-      resolve(ROOT_DIR, "../../d2layouts/d2elklayout/elk.js"),
-      "utf8"
-    );
-    const setupJs = await readFile(
-      resolve(ROOT_DIR, "../../d2layouts/d2elklayout/setup.js"),
-      "utf8"
-    );
-
-    // Compress elk.js and setup.js
-    const elkJsCompressed = brotliCompressSync(new TextEncoder().encode(elkJs));
-    const setupJsCompressed = brotliCompressSync(new TextEncoder().encode(setupJs));
-
-    console.log(
-      `ELK compression: ${(elkJs.length / 1024 / 1024).toFixed(2)}MB → ${(
-        elkJsCompressed.length /
-        1024 /
-        1024
-      ).toFixed(2)}MB`
-    );
-
-    const workerBase = await readFile(join(SRC_DIR, "worker.browser.js"), "utf8");
-
-    // Bundle brotli decoder directly into the worker
-    const brotliDecoder = await readFile(
-      resolve(ROOT_DIR, "vendor/decode.min.js"),
-      "utf8"
-    );
-
-    const elkVars = `${brotliDecoder}
-const elkJsCompressed = "${Buffer.from(elkJsCompressed).toString("base64")}";
-const setupJsCompressed = "${Buffer.from(setupJsCompressed).toString("base64")}";
-const elkJs = new TextDecoder().decode(BrotliDecode(Uint8Array.from(atob(elkJsCompressed), c => c.charCodeAt(0))));
-const setupJs = new TextDecoder().decode(BrotliDecode(Uint8Array.from(atob(setupJsCompressed), c => c.charCodeAt(0))));
-`;
-    await writeFile(join(SRC_DIR, "worker.js"), elkVars + workerBase);
+    const workerContent = await readFile(join(SRC_DIR, "worker.browser.js"), "utf8");
+    await writeFile(join(SRC_DIR, "worker.js"), workerContent);
   }
 }
 
@@ -113,6 +82,7 @@ async function buildAndCopy(buildType) {
       format: "esm",
       target: "node",
       platform: "node",
+      banner: nodeEsmBanner,
       entrypoints: [resolve(SRC_DIR, "index.js"), resolve(SRC_DIR, "worker.js")],
     },
     "node-cjs": {
@@ -121,6 +91,7 @@ async function buildAndCopy(buildType) {
       format: "cjs",
       target: "node",
       platform: "node",
+      banner: nodeCjsBanner,
       entrypoints: [resolve(SRC_DIR, "index.js"), resolve(SRC_DIR, "worker.js")],
     },
   };
@@ -145,15 +116,9 @@ async function buildAndCopy(buildType) {
       resolve(ROOT_DIR, "wasm/wasm_exec.js"),
       join(config.outdir, "wasm_exec.js")
     );
-    // Copy ELK library files from d2elklayout
-    await copyFile(
-      resolve(ROOT_DIR, "../../d2layouts/d2elklayout/elk.js"),
-      join(config.outdir, "elk.js")
-    );
-    await copyFile(
-      resolve(ROOT_DIR, "../../d2layouts/d2elklayout/setup.js"),
-      join(config.outdir, "setup.js")
-    );
+    if (buildType === "node-cjs") {
+      await writeFile(join(config.outdir, "package.json"), '{"type":"commonjs"}\n');
+    }
   }
 }
 

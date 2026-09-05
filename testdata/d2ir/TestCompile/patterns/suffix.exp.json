@@ -12,7 +12,7 @@
       },
       "primary": {
         "value": {
-          "range": "TestCompile/patterns/suffix.d2,2:4:30-2:11:37",
+          "range": "TestCompile/patterns/suffix.d2,3:4:44-3:11:51",
           "value": [
             {
               "string": "globbed",
@@ -99,11 +99,11 @@
       },
       "primary": {
         "value": {
-          "range": "TestCompile/patterns/suffix.d2,2:4:30-2:11:37",
+          "range": "TestCompile/patterns/suffix.d2,1:8:21-1:12:25",
           "value": [
             {
-              "string": "globbed",
-              "raw_string": "globbed"
+              "string": "loud",
+              "raw_string": "loud"
             }
           ]
         }
@@ -163,6 +163,93 @@
                     {
                       "string": "loud",
                       "raw_string": "loud"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "due_to_glob": false,
+          "due_to_lazy_glob": false
+        }
+      ]
+    },
+    {
+      "name": {
+        "range": "TestCompile/patterns/suffix.d2,2:0:26-2:3:29",
+        "value": [
+          {
+            "string": "lal",
+            "raw_string": "lal"
+          }
+        ]
+      },
+      "primary": {
+        "value": {
+          "range": "TestCompile/patterns/suffix.d2,3:4:44-3:11:51",
+          "value": [
+            {
+              "string": "globbed",
+              "raw_string": "globbed"
+            }
+          ]
+        }
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/suffix.d2,2:0:26-2:3:29",
+            "value": [
+              {
+                "string": "lal",
+                "raw_string": "lal"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/suffix.d2,2:0:26-2:3:29",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/suffix.d2,2:0:26-2:3:29",
+                  "value": [
+                    {
+                      "string": "lal",
+                      "raw_string": "lal"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/suffix.d2,2:0:26-2:13:39",
+              "key": {
+                "range": "TestCompile/patterns/suffix.d2,2:0:26-2:3:29",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/suffix.d2,2:0:26-2:3:29",
+                      "value": [
+                        {
+                          "string": "lal",
+                          "raw_string": "lal"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/suffix.d2,2:5:31-2:13:39",
+                  "value": [
+                    {
+                      "string": "repeated",
+                      "raw_string": "repeated"
                     }
                   ]
                 }

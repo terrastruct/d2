@@ -11,11 +11,11 @@ import (
 	"strings"
 	"time"
 
-	"oss.terrastruct.com/util-go/xdefer"
-	"oss.terrastruct.com/util-go/xmain"
+	"github.com/d2lang/util-go/xdefer"
+	"github.com/d2lang/util-go/xmain"
 
-	"oss.terrastruct.com/d2/d2graph"
-	timelib "oss.terrastruct.com/d2/lib/time"
+	"github.com/d2lang/d2/d2graph"
+	timelib "github.com/d2lang/d2/lib/time"
 )
 
 // execPlugin uses the binary at pathname with the plugin protocol to implement
@@ -32,7 +32,7 @@ import (
 //     d2graph.Graph on stdin.
 //  2. The stdout of the binary is unmarshalled into a d2graph.Graph
 //
-// PostProcess
+// PostProcess (deprecated; retained for one plugin-protocol compatibility cycle)
 //  1. The binary is invoked with postprocess as the first argument and the
 //     bytes of the SVG render on stdin.
 //  2. The stdout of the binary is bytes of SVG with any post-processing.

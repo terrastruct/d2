@@ -3,10 +3,10 @@ package d2oracle
 import (
 	"fmt"
 
-	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2format"
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2parser"
+	"github.com/d2lang/d2/d2ast"
+	"github.com/d2lang/d2/d2format"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2parser"
 )
 
 func GetBoardGraph(g *d2graph.Graph, boardPath []string) *d2graph.Graph {

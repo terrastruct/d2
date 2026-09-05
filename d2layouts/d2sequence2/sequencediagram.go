@@ -3,7 +3,7 @@ package sequencediagram
 import (
 	"context"
 
-	"oss.terrastruct.com/d2/d2graph"
+	"github.com/d2lang/d2/d2graph"
 )
 
 /*

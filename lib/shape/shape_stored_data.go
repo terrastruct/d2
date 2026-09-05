@@ -3,9 +3,9 @@ package shape
 import (
 	"math"
 
-	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/svg"
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/svg"
+	"github.com/d2lang/util-go/go2"
 )
 
 type shapeStoredData struct {
@@ -59,6 +59,10 @@ func (s shapeStoredData) GetSVGPathData() []string {
 	return []string{
 		storedDataPath(s.Box).PathData(),
 	}
+}
+
+func (s shapeStoredData) GetPathCommands() [][]svg.PathCommand {
+	return pathCommands(storedDataPath(s.Box))
 }
 
 func (s shapeStoredData) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {

@@ -5,7 +5,7 @@ package main
 import (
 	"syscall/js"
 
-	"oss.terrastruct.com/d2/d2js/d2wasm"
+	"github.com/d2lang/d2/d2js/d2wasm"
 )
 
 func main() {
@@ -13,8 +13,10 @@ func main() {
 
 	api.Register("getCompletions", d2wasm.GetCompletions)
 	api.Register("getParentID", d2wasm.GetParentID)
+	// Deprecated: retained for raw WASM callers for one compatibility release.
 	api.Register("getObjOrder", d2wasm.GetObjOrder)
 	api.Register("getRefRanges", d2wasm.GetRefRanges)
+	// Deprecated: retained for raw WASM callers for one compatibility release.
 	api.Register("getELKGraph", d2wasm.GetELKGraph)
 	api.Register("compile", d2wasm.Compile)
 	api.Register("render", d2wasm.Render)

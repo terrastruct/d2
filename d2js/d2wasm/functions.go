@@ -7,34 +7,45 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"sync"
 	"syscall/js"
 
-	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2compiler"
-	"oss.terrastruct.com/d2/d2format"
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
-	"oss.terrastruct.com/d2/d2layouts/d2elklayout"
-	"oss.terrastruct.com/d2/d2lib"
-	"oss.terrastruct.com/d2/d2lsp"
-	"oss.terrastruct.com/d2/d2oracle"
-	"oss.terrastruct.com/d2/d2parser"
-	"oss.terrastruct.com/d2/d2renderers/d2animate"
-	"oss.terrastruct.com/d2/d2renderers/d2ascii"
-	"oss.terrastruct.com/d2/d2renderers/d2ascii/charset"
-	"oss.terrastruct.com/d2/d2renderers/d2fonts"
-	"oss.terrastruct.com/d2/d2renderers/d2svg"
-	"oss.terrastruct.com/d2/d2renderers/d2svg/appendix"
-	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/lib/log"
-	"oss.terrastruct.com/d2/lib/memfs"
-	"oss.terrastruct.com/d2/lib/textmeasure"
-	"oss.terrastruct.com/d2/lib/urlenc"
-	"oss.terrastruct.com/d2/lib/version"
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/d2/d2ast"
+	"github.com/d2lang/d2/d2compiler"
+	"github.com/d2lang/d2/d2format"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2layouts/d2dagrelayout"
+	"github.com/d2lang/d2/d2layouts/d2elklayout"
+	"github.com/d2lang/d2/d2lib"
+	"github.com/d2lang/d2/d2lsp"
+	"github.com/d2lang/d2/d2oracle"
+	"github.com/d2lang/d2/d2parser"
+	"github.com/d2lang/d2/d2renderers/d2animate"
+	"github.com/d2lang/d2/d2renderers/d2ascii"
+	"github.com/d2lang/d2/d2renderers/d2ascii/charset"
+	"github.com/d2lang/d2/d2renderers/d2fonts"
+	"github.com/d2lang/d2/d2renderers/d2svg"
+	"github.com/d2lang/d2/d2renderers/d2svg/appendix"
+	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/lib/log"
+	"github.com/d2lang/d2/lib/memfs"
+	"github.com/d2lang/d2/lib/textmeasure"
+	"github.com/d2lang/d2/lib/urlenc"
+	"github.com/d2lang/d2/lib/version"
+	"github.com/d2lang/util-go/go2"
 )
 
 const DEFAULT_INPUT_PATH = "index"
+
+const (
+	getObjOrderDeprecation = "d2.getObjOrder is deprecated and will be removed after one compatibility release; use d2oracle.GetObjOrder in Go integrations."
+	getELKGraphDeprecation = `d2.getELKGraph is deprecated and will be removed after one compatibility release; use d2.compile with options.layout set to "elk".`
+)
+
+var (
+	getObjOrderDeprecationOnce sync.Once
+	getELKGraphDeprecationOnce sync.Once
+)
 
 func GetParentID(args []js.Value) (interface{}, error) {
 	if len(args) < 1 {
@@ -62,7 +73,14 @@ func GetParentID(args []js.Value) (interface{}, error) {
 	return "", nil
 }
 
+// GetObjOrder returns the breadth-first object order for D2 source passed by a
+// raw WASM caller.
+//
+// Deprecated: use d2oracle.GetObjOrder in Go integrations. The raw WASM export
+// will be removed after one compatibility release.
 func GetObjOrder(args []js.Value) (interface{}, error) {
+	warnDeprecatedWASMCall(&getObjOrderDeprecationOnce, getObjOrderDeprecation)
+
 	if len(args) < 1 {
 		return nil, &WASMError{Message: "missing dsl argument", Code: 400}
 	}
@@ -114,7 +132,15 @@ func GetRefRanges(args []js.Value) (interface{}, error) {
 	}, nil
 }
 
+// GetELKGraph converts D2 source into the pre-layout ELK graph used by the
+// legacy JavaScript ELK integration.
+//
+// Deprecated: use the raw WASM compile API with options.layout set to "elk".
+// ELK layout now runs inside D2, and this export will be removed after one
+// compatibility release.
 func GetELKGraph(args []js.Value) (interface{}, error) {
+	warnDeprecatedWASMCall(&getELKGraphDeprecationOnce, getELKGraphDeprecation)
+
 	if len(args) < 1 {
 		return nil, &WASMError{Message: "missing JSON argument", Code: 400}
 	}
@@ -180,7 +206,8 @@ func Compile(args []js.Value) (interface{}, error) {
 	}
 
 	compileOpts := &d2lib.CompileOptions{
-		UTF16Pos: true,
+		UTF16Pos:    true,
+		LayoutReuse: true,
 	}
 
 	inputPath := DEFAULT_INPUT_PATH
@@ -584,7 +611,7 @@ func GetCompletions(args []js.Value) (interface{}, error) {
 	line := args[1].Int()
 	column := args[2].Int()
 
-	completions, err := d2lsp.GetCompletionItems(text, line, column)
+	completions, err := d2lsp.GetCompletionItemsUTF16(text, line, column)
 	if err != nil {
 		return nil, &WASMError{Message: err.Error(), Code: 500}
 	}

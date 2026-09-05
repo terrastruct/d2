@@ -4,7 +4,7 @@ import (
 	_ "embed"
 	"testing"
 
-	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
+	"github.com/d2lang/d2/d2themes/d2themescatalog"
 )
 
 func testThemes(t *testing.T) {

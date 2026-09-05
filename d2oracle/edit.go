@@ -7,19 +7,19 @@ import (
 	"strings"
 	"unicode"
 
-	"oss.terrastruct.com/util-go/xdefer"
+	"github.com/d2lang/util-go/xdefer"
 
-	"oss.terrastruct.com/util-go/xrand"
+	"github.com/d2lang/util-go/xrand"
 
-	"oss.terrastruct.com/util-go/go2"
+	"github.com/d2lang/util-go/go2"
 
-	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2compiler"
-	"oss.terrastruct.com/d2/d2format"
-	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2ir"
-	"oss.terrastruct.com/d2/d2parser"
-	"oss.terrastruct.com/d2/d2target"
+	"github.com/d2lang/d2/d2ast"
+	"github.com/d2lang/d2/d2compiler"
+	"github.com/d2lang/d2/d2format"
+	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2ir"
+	"github.com/d2lang/d2/d2parser"
+	"github.com/d2lang/d2/d2target"
 )
 
 type OutsideScopeError struct{}
@@ -2596,16 +2596,20 @@ func ReconnectEdgeIDDeltas(g *d2graph.Graph, boardPath []string, edgeKey string,
 	firstRef := edge.References[0]
 	line := firstRef.MapKey.Range.Start.Line
 	newIndex := 0
+	sameEquivalentEdge := edge.IsEquivalent(newSrc, edge.SrcArrow, newDst, edge.DstArrow)
+	if sameEquivalentEdge {
+		newIndex = edge.Index
+	}
 
 	// For the edge's own delta, it just needs to know how many edges came before it with the same src and dst
 	for _, otherEdge := range boardG.Edges {
-		if otherEdge.Src == newSrc && otherEdge.Dst == newDst {
+		if !sameEquivalentEdge && otherEdge.IsEquivalent(newSrc, edge.SrcArrow, newDst, edge.DstArrow) {
 			firstRef := otherEdge.References[0]
 			if firstRef.MapKey.Range.Start.Line <= line {
 				newIndex++
 			}
 		}
-		if otherEdge.Src == edge.Src && otherEdge.Dst == edge.Dst && otherEdge.Index > edge.Index {
+		if !sameEquivalentEdge && otherEdge.IsEquivalent(edge.Src, edge.SrcArrow, edge.Dst, edge.DstArrow) && otherEdge.Index > edge.Index {
 			before := otherEdge.AbsID()
 			otherEdge.Index--
 			after := otherEdge.AbsID()
@@ -2615,7 +2619,7 @@ func ReconnectEdgeIDDeltas(g *d2graph.Graph, boardPath []string, edgeKey string,
 	}
 
 	for _, otherEdge := range g.Edges {
-		if otherEdge.Src == newSrc && otherEdge.Dst == newDst {
+		if !sameEquivalentEdge && otherEdge.IsEquivalent(newSrc, edge.SrcArrow, newDst, edge.DstArrow) {
 			if otherEdge.Index >= newIndex {
 				before := otherEdge.AbsID()
 				otherEdge.Index++

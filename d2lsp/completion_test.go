@@ -358,16 +358,93 @@ layers: {
 	}
 }
 
-// Helper function to compare CompletionItem slices
-func equalCompletions(a, b []CompletionItem) bool {
+func TestGetCompletionItemsUTF16(t *testing.T) {
+	tests := []struct {
+		name   string
+		text   string
+		column int
+		want   []CompletionItem
+	}{
+		{
+			name:   "shape after non-BMP key",
+			text:   "😀.shape:",
+			column: 9,
+			want:   getShapeCompletions(),
+		},
+		{
+			name:   "shape after multibyte BMP key",
+			text:   "é.shape:",
+			column: 8,
+			want:   getShapeCompletions(),
+		},
+		{
+			name:   "style after non-BMP key",
+			text:   "😀.style.",
+			column: 9,
+			want:   getStyleCompletions(),
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := GetCompletionItemsUTF16(tt.text, 0, tt.column)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !equalCompletionSets(got, tt.want) {
+				t.Fatalf("GetCompletionItemsUTF16() got %d completions, want %d", len(got), len(tt.want))
+			}
+		})
+	}
+
+	got, err := GetCompletionItems("😀.shape:", 0, len("😀.shape:"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !equalCompletionSets(got, getShapeCompletions()) {
+		t.Fatalf("byte-based GetCompletionItems() got %d completions, want %d", len(got), len(getShapeCompletions()))
+	}
+}
+
+func TestColumnByteOffset(t *testing.T) {
+	text := "😀.x"
+	tests := []struct {
+		column int
+		want   int
+	}{{
+		column: 0,
+		want:   0,
+	}, {
+		column: 1,
+		want:   0,
+	}, {
+		column: 2,
+		want:   len("😀"),
+	}, {
+		column: 3,
+		want:   len("😀."),
+	}, {
+		column: 99,
+		want:   len(text),
+	}}
+
+	for _, tt := range tests {
+		if got := columnByteOffset(text, tt.column, true); got != tt.want {
+			t.Errorf("columnByteOffset(%q, %d, true) = %d, want %d", text, tt.column, got, tt.want)
+		}
+	}
+}
+
+func equalCompletionSets(a, b []CompletionItem) bool {
 	if len(a) != len(b) {
 		return false
 	}
-	for i := range a {
-		if a[i].Label != b[i].Label ||
-			a[i].Kind != b[i].Kind ||
-			a[i].Detail != b[i].Detail ||
-			a[i].InsertText != b[i].InsertText {
+	bm := make(map[string]CompletionItem, len(b))
+	for _, item := range b {
+		bm[item.Label] = item
+	}
+	for _, item := range a {
+		if item != bm[item.Label] {
 			return false
 		}
 	}

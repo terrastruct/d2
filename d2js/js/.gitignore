@@ -1,8 +1,8 @@
 node_modules
 .npm
-bun.lockb
 
 src/wasm-loader.browser.js
+/d2.wasm
 wasm/d2.wasm
 dist/
 
