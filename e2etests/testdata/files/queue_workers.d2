@@ -1,0 +1,476 @@
+# Source: https://github.com/golang-queue/queue/blob/2a79b8aac36eaca758ff4f5412fcb485b027dd58/images/flow-03.d2
+# License: MIT; see REAL_WORLD.md.
+# Adaptation: Third-party icons replaced with built-in labeled shapes.
+
+direction: right
+
+user01: User01 {
+  shape: person
+  style: {
+    multiple: true
+    bold: true
+    font-size: 28
+  }
+}
+
+user02: User02 {
+  shape: person
+  style: {
+    multiple: true
+    bold: true
+    font-size: 28
+  }
+}
+
+user03: User03 {
+  shape: person
+  style: {
+    multiple: true
+    bold: true
+    font-size: 28
+  }
+}
+
+user04: User04 {
+  shape: person
+  style: {
+    multiple: true
+    bold: true
+    font-size: 28
+  }
+}
+
+container_producer_01: Service01 {
+  direction: right
+  style: {
+    bold: true
+    font-size: 28
+  }
+
+  task01: {
+    style: {
+      multiple: true
+      bold: true
+      font-size: 32
+    }
+  }
+
+  task02: {
+    style: {
+      multiple: true
+      bold: true
+      font-size: 32
+    }
+  }
+
+  queue: Queue Library {
+    style: {
+      bold: true
+      font-size: 28
+      fill: honeydew
+    }
+
+    producer: Producer {
+      style: {
+        bold: true
+        font-size: 32
+        fill: PapayaWhip
+        fill-pattern: grain
+        border-radius: 8
+        font: mono
+      }
+    }
+  }
+
+  task01 -> queue.producer: Enqueue Task {
+    style: {
+      animated: true
+      bold: true
+      font-size: 28
+    }
+  }
+
+  task02 -> queue.producer: Enqueue Task {
+    style: {
+      animated: true
+      bold: true
+      font-size: 28
+    }
+  }
+}
+
+container_producer_02: Service02 {
+  direction: right
+  style: {
+    bold: true
+    font-size: 28
+  }
+
+  task01: {
+    style: {
+      multiple: true
+      bold: true
+      font-size: 32
+    }
+  }
+
+  task02: {
+    style: {
+      multiple: true
+      bold: true
+      font-size: 32
+    }
+  }
+
+  queue: Queue Library {
+    style: {
+      bold: true
+      font-size: 28
+      fill: honeydew
+    }
+
+    producer: Producer {
+      style: {
+        bold: true
+        font-size: 32
+        fill: PapayaWhip
+        fill-pattern: grain
+        border-radius: 8
+        font: mono
+      }
+    }
+  }
+
+  task01 -> queue.producer: Enqueue Task {
+    style: {
+      animated: true
+      bold: true
+      font-size: 28
+    }
+  }
+
+  task02 -> queue.producer: Enqueue Task {
+    style: {
+      animated: true
+      bold: true
+      font-size: 28
+    }
+  }
+}
+
+database: Ring\nBuffer {
+  shape: cylinder
+  style: {
+    bold: true
+    font-size: 32
+    fill-pattern: lines
+    font: mono
+  }
+}
+
+other_store: "" {
+  style: {
+    opacity: 0
+  }
+
+  redis: Redis {
+    shape: cylinder
+    style: {
+      bold: true
+      font-size: 32
+      font: mono
+      opacity: 0.7
+    }
+  }
+
+  rabbitmq: RabbotMQ {
+    shape: queue
+    style: {
+      bold: true
+      font-size: 32
+      font: mono
+    }
+  }
+
+  nats: NATS {
+    shape: queue
+    style: {
+      bold: true
+      font-size: 32
+      font: mono
+      opacity: 0.7
+    }
+  }
+}
+
+container_consumer_01: Worker01 {
+  direction: right
+  style: {
+    bold: true
+    font-size: 28
+  }
+
+  task01: {
+    style: {
+      multiple: true
+      bold: true
+      font-size: 32
+    }
+  }
+
+  task02: {
+    style: {
+      multiple: true
+      bold: true
+      font-size: 32
+    }
+  }
+
+  queue: Queue Library {
+    style: {
+      bold: true
+      font-size: 28
+      fill: honeydew
+    }
+
+    consumer: Consumer {
+      style: {
+        bold: true
+        font-size: 32
+        fill: PapayaWhip
+        fill-pattern: grain
+        border-radius: 8
+        font: mono
+      }
+    }
+  }
+
+  queue.consumer -> task01: Handle Task {
+    style: {
+      animated: true
+      bold: true
+      font-size: 28
+    }
+  }
+
+  queue.consumer -> task02: Handle Task {
+    style: {
+      bold: true
+      font-size: 28
+    }
+  }
+}
+
+container_consumer_02: Worker02 {
+  direction: right
+  style: {
+    bold: true
+    font-size: 28
+  }
+
+  task01: {
+    style: {
+      multiple: true
+      bold: true
+      font-size: 32
+    }
+  }
+
+  task02: {
+    style: {
+      multiple: true
+      bold: true
+      font-size: 32
+    }
+  }
+
+  task03: {
+    style: {
+      multiple: true
+      bold: true
+      font-size: 32
+    }
+  }
+
+  task04: {
+    style: {
+      multiple: true
+      bold: true
+      font-size: 32
+    }
+  }
+
+  queue01: Queue Library {
+    style: {
+      bold: true
+      font-size: 28
+      fill: honeydew
+    }
+
+    consumer: Consumer {
+      style: {
+        bold: true
+        font-size: 32
+        fill: PapayaWhip
+        fill-pattern: grain
+        border-radius: 8
+        font: mono
+      }
+    }
+  }
+
+  queue02: Queue Library {
+    style: {
+      bold: true
+      font-size: 28
+      fill: honeydew
+    }
+
+    consumer: Consumer {
+      style: {
+        bold: true
+        font-size: 32
+        fill: PapayaWhip
+        fill-pattern: grain
+        border-radius: 8
+        font: mono
+      }
+    }
+  }
+
+  queue01.consumer -> task01: Handle Task {
+    style: {
+      animated: true
+      bold: true
+      font-size: 28
+    }
+  }
+
+  queue01.consumer -> task02: Handle Task {
+    style: {
+      animated: true
+      bold: true
+      font-size: 28
+    }
+  }
+
+  queue02.consumer -> task03: Handle Task {
+    style: {
+      animated: true
+      bold: true
+      font-size: 28
+    }
+  }
+
+  queue02.consumer -> task04: Handle Task {
+    style: {
+      animated: true
+      bold: true
+      font-size: 28
+    }
+  }
+}
+
+# connection
+
+user01 -> container_producer_01.task01: Create Task {
+  style: {
+    animated: true
+    bold: true
+    font-size: 28
+  }
+}
+
+user02 -> container_producer_01.task02: Create Task {
+  style: {
+    animated: true
+    bold: true
+    font-size: 28
+  }
+}
+
+user03 -> container_producer_02.task01: Create Task {
+  style: {
+    animated: true
+    bold: true
+    font-size: 28
+  }
+}
+
+user04 -> container_producer_02.task02: Create Task {
+  style: {
+    animated: true
+    bold: true
+    font-size: 28
+  }
+}
+
+container_producer_01.queue.producer -> database: Store Task {
+  style: {
+    animated: true
+    bold: true
+    font-size: 28
+  }
+}
+
+container_producer_02.queue.producer -> other_store.rabbitmq: Store Task {
+  style: {
+    animated: true
+    bold: true
+    font-size: 28
+  }
+}
+
+container_producer_02.queue.producer -> other_store.redis: "" {
+  style: {
+    bold: true
+    opacity: 0.3
+  }
+}
+
+container_producer_02.queue.producer -> other_store.nats: "" {
+  style: {
+    bold: true
+    opacity: 0.3
+  }
+}
+
+database -> container_consumer_01.queue.consumer: Fetch Task {
+  style: {
+    animated: true
+    bold: true
+    font-size: 28
+  }
+}
+
+database -> container_consumer_02.queue01.consumer: Fetch Task {
+  style: {
+    animated: true
+    bold: true
+    font-size: 28
+  }
+}
+
+other_store.rabbitmq -> container_consumer_02.queue02.consumer: Fetch Task {
+  style: {
+    animated: true
+    bold: true
+    font-size: 28
+  }
+}
+
+other_store.redis -> container_consumer_02.queue02.consumer: "" {
+  style: {
+    bold: true
+    font-size: 28
+    opacity: 0.3
+  }
+}
+
+other_store.nats -> container_consumer_02.queue02.consumer: "" {
+  style: {
+    bold: true
+    font-size: 28
+    opacity: 0.3
+  }
+}

@@ -1,0 +1,230 @@
+# Source: https://github.com/fulcrologic/fulcro-rad/blob/db68b2c8df345284e40d1125cd002a7c74be968b/docs/architecture.d2
+# License: MIT; see REAL_WORLD.md.
+
+direction: down
+
+title: |md
+  # Fulcro RAD Architecture
+| {
+  near: top-center
+  style.font-size: 28
+}
+
+# ============================================================
+# ATTRIBUTES
+# ============================================================
+
+attributes: Attributes {
+  style.fill: "#e8f4f8"
+  style.stroke: "#2980b9"
+  style.border-radius: 12
+  style.font-size: 22
+  style.bold: true
+
+  core: Core Facts {
+    style.fill: "#d4edda"
+    style.border-radius: 8
+    label: |md
+      **key, type, target**
+      **cardinality, identities**
+    |
+  }
+
+  form-ctx: "fo/* Context" {
+    style.fill: "#fff3cd"
+    style.border-radius: 8
+  }
+
+  report-ctx: "ro/* Context" {
+    style.fill: "#fff3cd"
+    style.border-radius: 8
+  }
+
+  resolver-ctx: "Resolver Metadata" {
+    style.fill: "#fff3cd"
+    style.border-radius: 8
+  }
+
+  ext: "Any NS Key..." {
+    style.fill: "#f0e6ff"
+    style.border-radius: 8
+    style.stroke-dash: 5
+  }
+}
+
+# ============================================================
+# FORMS
+# ============================================================
+
+forms: Forms {
+  style.fill: "#fef9e7"
+  style.stroke: "#e67e22"
+  style.border-radius: 12
+
+  ui: Pluggable UI {
+    style.fill: "#fdebd0"
+    style.border-radius: 8
+  }
+
+  sm: State Machine {
+    style.fill: "#fadbd8"
+    style.border-radius: 8
+  }
+
+  ui <-> sm: events
+}
+
+# ============================================================
+# REPORTS
+# ============================================================
+
+reports: Reports {
+  style.fill: "#eaf2f8"
+  style.stroke: "#2471a3"
+  style.border-radius: 12
+
+  rui: Pluggable UI {
+    style.fill: "#d6eaf8"
+    style.border-radius: 8
+  }
+
+  rsm: State Machine {
+    style.fill: "#d4e6f1"
+    style.border-radius: 8
+  }
+
+  rui <-> rsm: events
+}
+
+# ============================================================
+# MINIMUM FORM DELTA
+# ============================================================
+
+delta: Minimum Form Delta {
+  style.fill: "#f5eef8"
+  style.stroke: "#8e44ad"
+  style.border-radius: 12
+
+  format: "{ident {attr {:before v :after v}}}" {
+    style.fill: "#ebdef0"
+    style.border-radius: 8
+    style.font-size: 14
+  }
+}
+
+# ============================================================
+# SAVE MIDDLEWARE
+# ============================================================
+
+middleware: Save Middleware {
+  style.fill: "#fdedec"
+  style.stroke: "#c0392b"
+  style.border-radius: 12
+
+  rewrite: Rewrite Values {
+    style.fill: "#fadbd8"
+    style.border-radius: 8
+  }
+  validate: Validate {
+    style.fill: "#fadbd8"
+    style.border-radius: 8
+  }
+  gc: GC Orphans {
+    style.fill: "#fadbd8"
+    style.border-radius: 8
+  }
+  conflict: Conflict Detection {
+    style.fill: "#fadbd8"
+    style.border-radius: 8
+  }
+
+  rewrite -> validate -> gc -> conflict: pipeline
+}
+
+# ============================================================
+# RESOLVERS
+# ============================================================
+
+resolvers: Resolvers {
+  style.fill: "#e8f8f5"
+  style.stroke: "#1abc9c"
+  style.border-radius: 12
+
+  gen: Auto-Generated {
+    style.fill: "#d1f2eb"
+    style.border-radius: 8
+  }
+
+  adapter: DB Adapter Plugins {
+    style.fill: "#a9dfbf"
+    style.border-radius: 8
+  }
+
+  pathom: Pathom EQL Graph {
+    style.fill: "#abebc6"
+    style.border-radius: 8
+  }
+
+  gen -> pathom
+  adapter -> pathom
+}
+
+# ============================================================
+# DB
+# ============================================================
+
+db: Database {
+  style.fill: "#f2f3f4"
+  style.stroke: "#7f8c8d"
+  style.border-radius: 12
+  style.double-border: true
+}
+
+# ============================================================
+# CONNECTIONS
+# ============================================================
+
+attributes -> forms: "fo/ keys" {
+  style.stroke: "#e67e22"
+  style.stroke-width: 2
+}
+attributes -> reports: "ro/ keys" {
+  style.stroke: "#2471a3"
+  style.stroke-width: 2
+}
+attributes -> resolvers: "schema metadata" {
+  style.stroke: "#1abc9c"
+  style.stroke-width: 2
+}
+
+forms -> delta: "dirty-fields" {
+  style.stroke: "#8e44ad"
+  style.stroke-width: 2
+}
+
+delta -> middleware: "delta" {
+  style.stroke: "#c0392b"
+  style.stroke-width: 2
+}
+
+middleware -> db: "save" {
+  style.stroke: "#c0392b"
+  style.stroke-width: 2
+}
+
+resolvers -> db: "read" {
+  style.stroke: "#1abc9c"
+  style.stroke-width: 2
+}
+
+resolvers -> forms: "EQL load" {
+  style.stroke: "#e67e22"
+  style.stroke-width: 2
+  style.stroke-dash: 5
+}
+
+resolvers -> reports: "EQL load" {
+  style.stroke: "#2471a3"
+  style.stroke-width: 2
+  style.stroke-dash: 5
+}

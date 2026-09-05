@@ -1,0 +1,9 @@
+# Licenses and Copyright information for top-level files and directories that
+# couldn't otherwise contain it.
+
+version = 1
+
+[[annotations]]
+path = ["*", "doc/**"]
+SPDX-FileCopyrightText = "lowRISC Contributors (COSMIC project)."
+SPDX-License-Identifier = "Apache-2.0"
