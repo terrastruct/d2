@@ -5,6 +5,7 @@
 #### Improvements 🧹
 
 - performance: SVG rendering is approximately 10× faster across the E2E corpus. Real-world diagrams compile, lay out, and render approximately 3× faster at the median.
+- renders: SVG exports are approximately 24% smaller across the E2E corpus and 18% smaller across real-world fixtures, with unchanged appearance.
 - renders: render Markdown labels as native SVG instead of HTML `foreignObject` content
 
 #### Bugfixes ⛑️

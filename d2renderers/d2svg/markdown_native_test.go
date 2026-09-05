@@ -124,7 +124,7 @@ a -> b: |md
 		t.Fatal("wide Markdown shape was not compiled")
 	}
 	wantCenteredViewport := fmt.Sprintf(
-		`<svg x="%f" y="%f" width="%d" height="%d"`,
+		`<svg x="%g" y="%g" width="%d" height="%d"`,
 		float64(wide.Pos.X)+(float64(wide.Width)-float64(wide.LabelWidth))/2,
 		float64(wide.Pos.Y)+(float64(wide.Height)-float64(wide.LabelHeight))/2,
 		wide.LabelWidth,
@@ -140,7 +140,9 @@ a -> b: |md
 	if !strings.Contains(svg[tooltipStart:], tooltipViewport) {
 		t.Fatalf("tooltip viewport was not measured with the diagram font: want %s", tooltipViewport)
 	}
-	tooltipEnd := min(len(svg), tooltipStart+1000)
+	// Stop at the nested Markdown viewport, so shorter coordinates cannot
+	// bring the following appendix icon into the tooltip paint assertion.
+	tooltipEnd := tooltipStart + strings.Index(svg[tooltipStart:], "<svg ")
 	tooltipPrefix := svg[tooltipStart:tooltipEnd]
 	if strings.Contains(tooltipPrefix, `fill="white" stroke="#DEE1EB"`) || !strings.Contains(tooltipPrefix, "fill-N7") {
 		t.Fatal("positioned tooltip did not use theme-aware background colors")
