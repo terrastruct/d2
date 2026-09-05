@@ -5,7 +5,50 @@ import (
 )
 
 func (obj *Object) IsSequenceDiagram() bool {
-	return obj != nil && obj.Shape.Value == d2target.ShapeSequenceDiagram
+	return obj != nil && (obj.Shape.Value == d2target.ShapeSequenceDiagram || obj.IsSequenceDiagramV2())
+}
+
+func (obj *Object) IsSequenceDiagramV2() bool {
+	return obj != nil && obj.Shape.Value == d2target.ShapeSequenceDiagramV2
+}
+
+// Actors are the direct children of a v2 diagram or an actor group. Descendants
+// of an actor have timeline semantics rather than introducing another lifeline.
+func (obj *Object) IsSequenceDiagramActor() bool {
+	return obj != nil && (obj.Parent.IsSequenceDiagramV2() || obj.Parent.IsSequenceDiagramActorGroup()) &&
+		obj.Shape.Value != d2target.ShapeSequenceDiagramEdgeGroup && obj.Shape.Value != d2target.ShapeSequenceDiagramActorGroup
+}
+
+func (obj *Object) IsSequenceDiagramActorGroup() bool {
+	return obj != nil && obj.OuterSequenceDiagram().IsSequenceDiagramV2() && obj.Shape.Value == d2target.ShapeSequenceDiagramActorGroup
+}
+
+// SequenceDiagramActor returns the lifeline owning this actor or timeline item.
+func (obj *Object) SequenceDiagramActor() *Object {
+	for obj != nil && !obj.IsSequenceDiagram() {
+		if obj.IsSequenceDiagramActor() {
+			return obj
+		}
+		obj = obj.Parent
+	}
+	return nil
+}
+
+func (obj *Object) IsSequenceDiagramSpan() bool {
+	return obj != nil && obj.OuterSequenceDiagram().IsSequenceDiagramV2() && !obj.IsSequenceDiagramActor() &&
+		obj.SequenceDiagramActor() != nil && obj.Shape.Value == ""
+}
+
+func (obj *Object) IsSequenceDiagramActorRepeat() bool {
+	return obj != nil && obj.OuterSequenceDiagram().IsSequenceDiagramV2() && !obj.IsSequenceDiagramActor() &&
+		obj.SequenceDiagramActor() != nil && obj.Shape.Value == d2target.ShapeSequenceDiagramActor
+}
+
+func (obj *Object) IsSequenceDiagramEvent() bool {
+	return obj != nil && obj.OuterSequenceDiagram().IsSequenceDiagramV2() && !obj.IsSequenceDiagramActor() &&
+		obj.SequenceDiagramActor() != nil && obj.Shape.Value != "" && obj.Shape.Value != d2target.ShapePage &&
+		obj.Shape.Value != d2target.ShapeSequenceDiagramActor && obj.Shape.Value != d2target.ShapeSequenceDiagramEdgeGroup &&
+		obj.Shape.Value != d2target.ShapeSequenceDiagramActorGroup
 }
 
 func (obj *Object) OuterSequenceDiagram() *Object {
@@ -21,6 +64,9 @@ func (obj *Object) OuterSequenceDiagram() *Object {
 // groups are objects in sequence diagrams that have no messages connected
 // and does not have a note as a child (a note can appear within a group, but it's a child of an actor)
 func (obj *Object) IsSequenceDiagramGroup() bool {
+	if obj.OuterSequenceDiagram().IsSequenceDiagramV2() {
+		return obj.Shape.Value == d2target.ShapeSequenceDiagramEdgeGroup
+	}
 	if obj.OuterSequenceDiagram() == nil {
 		return false
 	}
@@ -40,6 +86,9 @@ func (obj *Object) IsSequenceDiagramGroup() bool {
 
 // notes are descendant of actors with no edges and no children
 func (obj *Object) IsSequenceDiagramNote() bool {
+	if obj.OuterSequenceDiagram().IsSequenceDiagramV2() {
+		return !obj.IsSequenceDiagramActor() && obj.SequenceDiagramActor() != nil && obj.Shape.Value == d2target.ShapePage
+	}
 	if obj.OuterSequenceDiagram() == nil {
 		return false
 	}

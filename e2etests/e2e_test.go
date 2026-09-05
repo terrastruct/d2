@@ -38,6 +38,7 @@ func TestE2E(t *testing.T) {
 	t.Parallel()
 
 	t.Run("sanity", testSanity)
+	t.Run("sequence_v2", testSequenceV2)
 	t.Run("stable", testStable)
 	t.Run("regression", testRegression)
 	t.Run("patterns", testPatterns)

@@ -1225,31 +1225,35 @@ func NewPoint(x, y int) Point {
 }
 
 const (
-	ShapeRectangle       = "rectangle"
-	ShapeSquare          = "square"
-	ShapePage            = "page"
-	ShapeParallelogram   = "parallelogram"
-	ShapeDocument        = "document"
-	ShapeCylinder        = "cylinder"
-	ShapeQueue           = "queue"
-	ShapePackage         = "package"
-	ShapeStep            = "step"
-	ShapeCallout         = "callout"
-	ShapeStoredData      = "stored_data"
-	ShapePerson          = "person"
-	ShapeC4Person        = "c4-person"
-	ShapeDiamond         = "diamond"
-	ShapeOval            = "oval"
-	ShapeCircle          = "circle"
-	ShapeHexagon         = "hexagon"
-	ShapeCloud           = "cloud"
-	ShapeText            = "text"
-	ShapeCode            = "code"
-	ShapeClass           = "class"
-	ShapeSQLTable        = "sql_table"
-	ShapeImage           = "image"
-	ShapeSequenceDiagram = "sequence_diagram"
-	ShapeHierarchy       = "hierarchy"
+	ShapeRectangle                 = "rectangle"
+	ShapeSquare                    = "square"
+	ShapePage                      = "page"
+	ShapeParallelogram             = "parallelogram"
+	ShapeDocument                  = "document"
+	ShapeCylinder                  = "cylinder"
+	ShapeQueue                     = "queue"
+	ShapePackage                   = "package"
+	ShapeStep                      = "step"
+	ShapeCallout                   = "callout"
+	ShapeStoredData                = "stored_data"
+	ShapePerson                    = "person"
+	ShapeC4Person                  = "c4-person"
+	ShapeDiamond                   = "diamond"
+	ShapeOval                      = "oval"
+	ShapeCircle                    = "circle"
+	ShapeHexagon                   = "hexagon"
+	ShapeCloud                     = "cloud"
+	ShapeText                      = "text"
+	ShapeCode                      = "code"
+	ShapeClass                     = "class"
+	ShapeSQLTable                  = "sql_table"
+	ShapeImage                     = "image"
+	ShapeSequenceDiagram           = "sequence_diagram"
+	ShapeSequenceDiagramV2         = "sequence-diagram"
+	ShapeSequenceDiagramActorGroup = "actor-group"
+	ShapeSequenceDiagramActor      = "actor"
+	ShapeSequenceDiagramEdgeGroup  = "edge-group"
+	ShapeHierarchy                 = "hierarchy"
 )
 
 var Shapes = []string{
@@ -1277,6 +1281,10 @@ var Shapes = []string{
 	ShapeSQLTable,
 	ShapeImage,
 	ShapeSequenceDiagram,
+	ShapeSequenceDiagramV2,
+	ShapeSequenceDiagramEdgeGroup,
+	ShapeSequenceDiagramActorGroup,
+	ShapeSequenceDiagramActor,
 	ShapeHierarchy,
 }
 
@@ -1322,32 +1330,36 @@ func (text MText) GetColor(isItalic bool) string {
 }
 
 var DSL_SHAPE_TO_SHAPE_TYPE = map[string]string{
-	"":                   shape.SQUARE_TYPE,
-	ShapeRectangle:       shape.SQUARE_TYPE,
-	ShapeSquare:          shape.REAL_SQUARE_TYPE,
-	ShapePage:            shape.PAGE_TYPE,
-	ShapeParallelogram:   shape.PARALLELOGRAM_TYPE,
-	ShapeDocument:        shape.DOCUMENT_TYPE,
-	ShapeCylinder:        shape.CYLINDER_TYPE,
-	ShapeQueue:           shape.QUEUE_TYPE,
-	ShapePackage:         shape.PACKAGE_TYPE,
-	ShapeStep:            shape.STEP_TYPE,
-	ShapeCallout:         shape.CALLOUT_TYPE,
-	ShapeStoredData:      shape.STORED_DATA_TYPE,
-	ShapePerson:          shape.PERSON_TYPE,
-	ShapeC4Person:        shape.C4_PERSON_TYPE,
-	ShapeDiamond:         shape.DIAMOND_TYPE,
-	ShapeOval:            shape.OVAL_TYPE,
-	ShapeCircle:          shape.CIRCLE_TYPE,
-	ShapeHexagon:         shape.HEXAGON_TYPE,
-	ShapeCloud:           shape.CLOUD_TYPE,
-	ShapeText:            shape.TEXT_TYPE,
-	ShapeCode:            shape.CODE_TYPE,
-	ShapeClass:           shape.CLASS_TYPE,
-	ShapeSQLTable:        shape.TABLE_TYPE,
-	ShapeImage:           shape.IMAGE_TYPE,
-	ShapeSequenceDiagram: shape.SQUARE_TYPE,
-	ShapeHierarchy:       shape.SQUARE_TYPE,
+	"":                             shape.SQUARE_TYPE,
+	ShapeRectangle:                 shape.SQUARE_TYPE,
+	ShapeSquare:                    shape.REAL_SQUARE_TYPE,
+	ShapePage:                      shape.PAGE_TYPE,
+	ShapeParallelogram:             shape.PARALLELOGRAM_TYPE,
+	ShapeDocument:                  shape.DOCUMENT_TYPE,
+	ShapeCylinder:                  shape.CYLINDER_TYPE,
+	ShapeQueue:                     shape.QUEUE_TYPE,
+	ShapePackage:                   shape.PACKAGE_TYPE,
+	ShapeStep:                      shape.STEP_TYPE,
+	ShapeCallout:                   shape.CALLOUT_TYPE,
+	ShapeStoredData:                shape.STORED_DATA_TYPE,
+	ShapePerson:                    shape.PERSON_TYPE,
+	ShapeC4Person:                  shape.C4_PERSON_TYPE,
+	ShapeDiamond:                   shape.DIAMOND_TYPE,
+	ShapeOval:                      shape.OVAL_TYPE,
+	ShapeCircle:                    shape.CIRCLE_TYPE,
+	ShapeHexagon:                   shape.HEXAGON_TYPE,
+	ShapeCloud:                     shape.CLOUD_TYPE,
+	ShapeText:                      shape.TEXT_TYPE,
+	ShapeCode:                      shape.CODE_TYPE,
+	ShapeClass:                     shape.CLASS_TYPE,
+	ShapeSQLTable:                  shape.TABLE_TYPE,
+	ShapeImage:                     shape.IMAGE_TYPE,
+	ShapeSequenceDiagram:           shape.SQUARE_TYPE,
+	ShapeSequenceDiagramV2:         shape.SQUARE_TYPE,
+	ShapeSequenceDiagramEdgeGroup:  shape.SQUARE_TYPE,
+	ShapeSequenceDiagramActorGroup: shape.SQUARE_TYPE,
+	ShapeSequenceDiagramActor:      shape.SQUARE_TYPE,
+	ShapeHierarchy:                 shape.SQUARE_TYPE,
 }
 
 var SHAPE_TYPE_TO_DSL_SHAPE map[string]string

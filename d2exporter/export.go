@@ -207,8 +207,42 @@ func applyStyles(shape *d2target.Shape, obj *d2graph.Object) {
 }
 
 func toShape(obj *d2graph.Object, g *d2graph.Graph) d2target.Shape {
+	if obj.IsSequenceDiagramActorRepeat() {
+		// Resolve the appearance against the original participant so defaults
+		// derived from its theme, nesting, or structured content stay identical.
+		actor := obj.SequenceDiagramActor()
+		repeated := toShape(actor, g)
+		repeated.ID = obj.AbsID()
+		repeated.Pos = d2target.NewPoint(int(obj.TopLeft.X), int(obj.TopLeft.Y))
+		repeated.Width, repeated.Height = int(obj.Width), int(obj.Height)
+		repeated.ZIndex, repeated.Level = obj.ZIndex, int(obj.Level())
+		return repeated
+	}
+	if obj.IsSequenceDiagramActor() {
+		// Repeated headers are visual copies, not content that turns the actor
+		// into a themed container (for example, a dashed C4 boundary).
+		appearance := *obj
+		appearance.Children = make(map[string]*d2graph.Object, len(obj.Children))
+		appearance.ChildrenArray = nil
+		for key, child := range obj.Children {
+			if !child.IsSequenceDiagramActorRepeat() {
+				appearance.Children[key] = child
+			}
+		}
+		for _, child := range obj.ChildrenArray {
+			if !child.IsSequenceDiagramActorRepeat() {
+				appearance.ChildrenArray = append(appearance.ChildrenArray, child)
+			}
+		}
+		obj = &appearance
+	}
 	shape := d2target.BaseShape()
 	shape.SetType(obj.Shape.Value)
+	// Sequence v2 containers use ordinary rectangle geometry in every renderer.
+	switch obj.Shape.Value {
+	case d2target.ShapeSequenceDiagramV2, d2target.ShapeSequenceDiagramEdgeGroup, d2target.ShapeSequenceDiagramActorGroup:
+		shape.SetType(d2target.ShapeRectangle)
+	}
 	shape.ID = obj.AbsID()
 	shape.Classes = obj.Classes
 	shape.ZIndex = obj.ZIndex
