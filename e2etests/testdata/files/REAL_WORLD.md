@@ -4,7 +4,7 @@ These fixtures document real projects. `TestE2E/real_world` runs each through th
 
 Local icon paths and ROSS diagram links have been replaced with URLs pinned to the collected upstream revision so the SVG report can resolve them outside their original repositories. Existing remote icon URLs remain unchanged. The SVG test harness references these images; it does not download them.
 
-Source revisions and repository license files are recorded below. Fixture headers describe adaptations.
+Source revisions and repository license files are recorded below. Fixture headers describe adaptations. The MIT/Apache-2.0 labels describe the diagram sources; referenced third-party icons retain their own copyright licenses and trademark terms, as noted in the relevant attribution files.
 
 ## Jupyter AWS EKS infrastructure
 
@@ -16,7 +16,9 @@ Revision: `7283c07396c3d0126346217089e2527d1ce652f6`
 
 Original source SHA-256: `18fb06d9c18519c9ce12e71de6717e7854f15882e7c2e79c091b5338b940b245`
 
-License: MIT — [LICENSE](real_world_licenses/jupyter_aws_eks_LICENSE)
+License: MIT — [LICENSE](real_world_licenses/jupyter_aws_eks_LICENSE); upstream [icon attribution](real_world_licenses/jupyter_aws_eks_ATTRIBUTION.md)
+
+The AWS service icons have separate AWS trademark/architecture-diagram usage terms, rather than the diagram's MIT license. [AWS permits architecture-diagram use](https://aws.amazon.com/architecture/icons/).
 
 AWS account, region, VPC, EKS control plane, platform nodes, routing nodes and workspace node pools, with DNS and OIDC.
 
@@ -44,7 +46,7 @@ Revision: `2a79b8aac36eaca758ff4f5412fcb485b027dd58`
 
 Original source SHA-256: `f6f604a937a0db36fc78cea511a05e9e9f15b45e3bf0d6b1ed0d56eb27102500`
 
-License: MIT — [LICENSE](real_world_licenses/queue_workers_LICENSE)
+License: MIT — [LICENSE](real_world_licenses/queue_workers_LICENSE); [icon attribution and limitations](real_world_licenses/queue_workers_ATTRIBUTION.md)
 
 Multiple producers and worker services around the queue/ring buffer, with Redis, RabbitMQ and NATS.
 
