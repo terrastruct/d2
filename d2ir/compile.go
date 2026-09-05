@@ -504,9 +504,9 @@ func (c *compiler) ampersandFilterMap(dst *Map, ast, scopeAST *d2ast.Map) bool {
 				}
 				var ks string
 				if gctx.refctx.Key.HasTripleGlob() {
-					ks = d2format.Format(d2ast.MakeKeyPathString(IDA(dst)))
+					ks = d2format.FormatKeyPath(IDA(dst))
 				} else {
-					ks = d2format.Format(d2ast.MakeKeyPathString(BoardIDA(dst)))
+					ks = d2format.FormatKeyPath(BoardIDA(dst))
 				}
 				delete(gctx.appliedFields, ks)
 				delete(gctx.appliedEdges, ks)
@@ -782,6 +782,15 @@ func (c *compiler) applyLazyGlobs(created []*Field) {
 		return
 	}
 	root := RootMap(ParentMap(created[0]))
+	if len(c.globContexts()) == 0 {
+		// Preserve the settled version and pending post-targets: a later key or
+		// nested value can introduce globs. There is no worklist to run yet.
+		if c.lazySettledVersions == nil {
+			c.lazySettledVersions = make(map[*Map]uint64)
+		}
+		c.lazySettledVersions[root] = root.structureVersion
+		return
+	}
 
 	c.applyingLazyWorklist = true
 	defer func() {
