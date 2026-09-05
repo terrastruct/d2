@@ -2,7 +2,7 @@
 
 `e2etests` test the end-to-end flow of turning D2 scripts into a rendered diagram
 
-Tests fall under 1 of 3 categories:
+Tests fall under 1 of 4 categories:
 
 1. **Stable**. Scripts which produce diagrams that never had issues this major release.
 2. **Regressions**. Scripts which used to have issues but no longer do. Each one should be
@@ -10,6 +10,10 @@ Tests fall under 1 of 3 categories:
 3. **Todos**. Scripts which have an issue. If the issue prevents compile, `skip: true` can
    be set, otherwise the issue is visual. Each one should be linked to a Github Issue
    which describes it.
+4. **Real-world**. Substantial diagrams from other projects, preserved with source
+   revisions, adaptations, and licenses in
+   [`testdata/files/REAL_WORLD.md`](testdata/files/REAL_WORLD.md). Each fixture runs
+   through both Dagre and ELK using the same checks as the other e2e groups.
 
 Upon a major release, Regressions are carried over to Stable.
 

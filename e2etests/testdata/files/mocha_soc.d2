@@ -1,0 +1,224 @@
+# Source: https://github.com/lowRISC/mocha/blob/b5973217f704923917e7761f73df7dfcb8d0c345/doc/img/mocha.d2
+# License: Apache-2.0; see REAL_WORLD.md.
+# SPDX-FileCopyrightText: lowRISC Contributors (COSMIC project).
+
+# Global settings
+vars: {
+  d2-config: {
+    layout-engine: elk
+    theme-id: 7
+  }
+}
+
+dram: |md
+    #### DRAM
+
+    1 GiB of DDR3
+|
+dram.shape: rectangle
+dram.style.stroke-dash: 3
+
+Mocha: {
+    # Processor arriane.sv includes just cva6.sv
+    CVA6-CHERI {
+        # csr_regfile
+        #CSR regfile
+        # perf_counters
+        #Performance counters
+        #Controller
+        #Tracing: {
+        #    # instr_tracer
+        #    Instruction tracer
+        #    # cva6_rvfi_probes
+        #    RVFI probes
+        #}
+        Frontend
+        # id_stage
+        ID stage
+        # issue_stage
+        Issue stage
+        # ex_stage
+        EX stage
+        # commit_stage
+        Commit stage
+        # cache_subsystem
+        Cache subsystem
+
+        # memory
+        Frontend <- Cache subsystem
+        EX stage <-> Cache subsystem
+    }
+
+    axi: |md
+        #### AXI crossbar
+
+        64-bit width
+    |
+    axi.shape: rectangle
+
+    tlul: |md
+        #### TileLink crossbar
+
+        32-bit width
+    |
+    tlul.shape: rectangle
+    # Uncached
+    tlul.style.fill: hotpink
+    # Tag oblivious
+    tlul.style.stroke-dash: 3
+
+
+    CVA6-CHERI.Cache subsystem <-> axi
+    CVA6-CHERI.Cache subsystem <-> tlul
+    axi <-> Tag control
+    axi <-> Debug
+    Debug.style.fill: hotpink
+    axi <-> SRAM
+    SRAM.style.fill: hotpink
+    axi <-> Mailbox
+    Mailbox.style.fill:hotpink
+    Mailbox.style.stroke-dash: 3
+
+    Peripherals {
+        rom: |md
+            #### ROM
+
+            32 KiB
+        |
+        rom.shape: rectangle
+        rom.style.fill: lightpink
+        rom.style.stroke-dash: 3
+        entropy: |md
+            #### Entropy
+
+            Source
+        |
+        entropy.shape: rectangle
+        entropy.style.fill: lightpink
+        entropy.style.stroke-dash: 3
+        kmac: |md
+            #### KMAC
+
+            SHA3
+        |
+        kmac.shape: rectangle
+        kmac.style.fill: lightpink
+        kmac.style.stroke-dash: 3
+        PLIC
+        PLIC.style.fill:lightpink
+        PLIC.style.stroke-dash: 3
+        Timer
+        Timer.style.fill: lightpink
+        Timer.style.stroke-dash: 3
+        GPIO
+        GPIO.style.fill: lightpink
+        GPIO.style.stroke-dash: 3
+        I2C
+        I2C.style.fill: lightpink
+        I2C.style.stroke-dash: 3
+        spi_dev: |md
+            #### SPI
+
+            Device
+        |
+        spi_dev.shape: rectangle
+        spi_dev.style.fill: lightpink
+        spi_dev.style.stroke-dash: 3
+        spi_host: |md
+            #### SPI
+
+            Host
+        |
+        spi_host.shape: rectangle
+        spi_host.style.fill: lightpink
+        spi_host.style.stroke-dash: 3
+        UART
+        UART.style.fill: lightpink
+        UART.style.stroke-dash: 3
+        managers: |md
+            #### Managers
+
+            - Clock
+            - Reset
+            - Power
+        |
+        managers.shape: rectangle
+        managers.style.fill: lightpink
+        managers.style.stroke-dash: 3
+    }
+    # Uncached
+    Peripherals.style.fill: hotpink
+    # Tag oblivious
+    Peripherals.style.stroke-dash: 3
+
+    tlul <-> Peripherals
+}
+
+chip: |md
+    #### Rest of chip
+
+    64-bit bus
+|
+chip.shape: rectangle
+chip.style.fill: hotpink
+chip.style.stroke-dash: 3
+
+Mocha.Peripherals.spi_host <-> Flash
+Flash.style.fill: hotpink
+Flash.style.stroke-dash: 3
+
+# External interfaces
+Mocha.Tag control <-> dram
+Mocha.axi <-> chip
+Mocha.Mailbox <-> chip
+Mocha.Peripherals.I2C <-> I2C
+I2C.style.fill: hotpink
+I2C.style.stroke-dash: 3
+Mocha.Peripherals.spi_dev <-> SPI
+SPI.style.fill: hotpink
+SPI.style.stroke-dash: 3
+Mocha.Peripherals.UART <-> UART
+UART.style.fill: hotpink
+UART.style.stroke-dash: 3
+Mocha.Peripherals.GPIO <-> GPIO
+GPIO.style.fill: hotpink
+GPIO.style.stroke-dash: 3
+
+# Legend
+Legend {
+Cached
+Uncached
+Tag aware
+Tag oblivious
+Uncached.style.fill: hotpink
+Tag aware.style.fill: transparent
+Tag oblivious.style.fill: transparent
+Tag oblivious.style.stroke-dash: 3
+}
+Legend <-> Mocha.CVA6-CHERI {
+    style: {
+        stroke: transparent
+    }
+}
+Legend.style.fill: transparent
+
+# Set global font size
+*.style.font-size: 50
+*.*.style.font-size: 50
+*.*.*.style.font-size: 40
+
+# Set global stroke width
+*.style.stroke-width: 5
+*.*.style.stroke-width: 5
+*.*.*.style.stroke-width: 5
+
+# Set global stroke color
+*.style.stroke: black
+*.*.style.stroke: black
+*.*.*.style.stroke: black
+
+# Global overrides
+Mocha.style.stroke: transparent
+Legend.style.stroke: transparent
+Legend.Cached.style.stroke-width: 0
+Legend.Uncached.style.stroke-width: 0

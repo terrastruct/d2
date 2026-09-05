@@ -1,0 +1,322 @@
+# Source: https://github.com/petrobras/ross/blob/631a249adbae414d5f5f986479b58f1a4c47935e/docs/_static/diagrams/ross-overview.d2
+# License: Apache-2.0; see REAL_WORLD.md.
+# Adaptation: Relative links to other ROSS diagrams replaced with revision-pinned upstream URLs.
+
+direction: down
+
+title: {
+  label: ROSS - Workflow
+  near: top-center
+  shape: text
+  style: {
+    font-size: 28
+    bold: true
+  }
+}
+
+# ============================================================
+# Element Definition
+# ============================================================
+elementos: Element Definition {
+  style: {
+    fill: "#e8f4f8"
+    stroke: "#2980b9"
+    border-radius: 10
+  }
+
+  material: Material {
+    tooltip: "Mechanical properties: E, G, ρ, ν"
+    link: https://raw.githubusercontent.com/petrobras/ross/631a249adbae414d5f5f986479b58f1a4c47935e/docs/_static/diagrams/material.svg
+    style: {
+      fill: "#d5e8d4"
+      stroke: "#82b366"
+    }
+  }
+
+  shaft: ShaftElement {
+    tooltip: "Shaft elements (Timoshenko)\nCylindrical or tapered"
+    link: https://raw.githubusercontent.com/petrobras/ross/631a249adbae414d5f5f986479b58f1a4c47935e/docs/_static/diagrams/shaft-element.svg
+    style: {
+      fill: "#dae8fc"
+      stroke: "#6c8ebf"
+    }
+  }
+
+  disk: DiskElement {
+    tooltip: "Rigid disks\nMass and moments of inertia"
+    link: https://raw.githubusercontent.com/petrobras/ross/631a249adbae414d5f5f986479b58f1a4c47935e/docs/_static/diagrams/disk-element.svg
+    style: {
+      fill: "#dae8fc"
+      stroke: "#6c8ebf"
+    }
+  }
+
+  bearing: BearingElement {
+    tooltip: |
+      Bearings: isotropic, anisotropic
+      Ball, Roller, Magnetic, PlainJournal, TiltingPad
+    |
+    link: https://raw.githubusercontent.com/petrobras/ross/631a249adbae414d5f5f986479b58f1a4c47935e/docs/_static/diagrams/bearing-element.svg
+    style: {
+      fill: "#fff2cc"
+      stroke: "#d6b656"
+    }
+  }
+
+  seal: SealElement {
+    tooltip: |
+      Seals: Labyrinth, HolePattern, Hybrid
+    |
+    link: https://raw.githubusercontent.com/petrobras/ross/631a249adbae414d5f5f986479b58f1a4c47935e/docs/_static/diagrams/seal-element.svg
+    style: {
+      fill: "#fff2cc"
+      stroke: "#d6b656"
+    }
+  }
+
+  pointmass: PointMass {
+    tooltip: "Concentrated masses"
+    link: https://raw.githubusercontent.com/petrobras/ross/631a249adbae414d5f5f986479b58f1a4c47935e/docs/_static/diagrams/point-mass.svg
+    style: {
+      fill: "#dae8fc"
+      stroke: "#6c8ebf"
+    }
+  }
+
+  coupling: CouplingElement {
+    tooltip: "Coupling between shafts"
+    link: https://raw.githubusercontent.com/petrobras/ross/631a249adbae414d5f5f986479b58f1a4c47935e/docs/_static/diagrams/coupling-element.svg
+    style: {
+      fill: "#dae8fc"
+      stroke: "#6c8ebf"
+    }
+  }
+
+  gear: GearElement {
+    tooltip: "Gears with mesh forces"
+    link: https://raw.githubusercontent.com/petrobras/ross/631a249adbae414d5f5f986479b58f1a4c47935e/docs/_static/diagrams/gear-element.svg
+    style: {
+      fill: "#dae8fc"
+      stroke: "#6c8ebf"
+    }
+  }
+
+  material -> shaft
+  material -> disk
+}
+
+# ============================================================
+# Rotor Assembly
+# ============================================================
+rotor: Rotor {
+  tooltip: "Assembly: shaft + disks + bearings + seals"
+  link: https://raw.githubusercontent.com/petrobras/ross/631a249adbae414d5f5f986479b58f1a4c47935e/docs/_static/diagrams/rotor.svg
+  style: {
+    fill: "#f8cecc"
+    stroke: "#b85450"
+    font-size: 18
+    bold: true
+    border-radius: 10
+  }
+}
+
+multirotor: MultiRotor {
+  tooltip: "Multiple rotors coupled\nby gears or couplings"
+  link: https://raw.githubusercontent.com/petrobras/ross/631a249adbae414d5f5f986479b58f1a4c47935e/docs/_static/diagrams/multirotor.svg
+  style: {
+    fill: "#f8cecc"
+    stroke: "#b85450"
+    border-radius: 10
+  }
+}
+
+# ============================================================
+# Element to Rotor Connections
+# ============================================================
+elementos.shaft -> rotor
+elementos.disk -> rotor
+elementos.bearing -> rotor
+elementos.seal -> rotor
+elementos.pointmass -> rotor
+elementos.coupling -> rotor
+elementos.coupling -> multirotor
+elementos.gear -> multirotor
+rotor -> multirotor: coupling {
+  style.stroke-dash: 5
+}
+
+# ============================================================
+# Analyses
+# ============================================================
+analises: Analyses {
+  link: https://raw.githubusercontent.com/petrobras/ross/631a249adbae414d5f5f986479b58f1a4c47935e/docs/_static/diagrams/analises.svg
+  style: {
+    fill: "#e1d5e7"
+    stroke: "#9673a6"
+    border-radius: 10
+  }
+
+  estatica: run_static() {
+    tooltip: |
+      Static analysis
+      Deformation, reactions, internal forces
+    |
+    style: {
+      fill: "#f3e5f5"
+      stroke: "#9673a6"
+    }
+  }
+
+  modal: run_modal() {
+    tooltip: |
+      Modal analysis
+      Natural frequencies, mode shapes
+      Damping, logarithmic decrement
+    |
+    style: {
+      fill: "#f3e5f5"
+      stroke: "#9673a6"
+    }
+  }
+
+  campbell: run_campbell() {
+    tooltip: |
+      Campbell diagram
+      Natural frequencies vs. speed
+      Critical speed identification
+    |
+    style: {
+      fill: "#f3e5f5"
+      stroke: "#9673a6"
+    }
+  }
+
+  critica: run_critical_speed() {
+    tooltip: |
+      Critical speeds
+      Synchronous resonance speeds
+    |
+    style: {
+      fill: "#f3e5f5"
+      stroke: "#9673a6"
+    }
+  }
+
+  ucs: run_ucs() {
+    tooltip: |
+      Undamped critical speed map
+      Critical speeds vs. bearing stiffness
+    |
+    style: {
+      fill: "#f3e5f5"
+      stroke: "#9673a6"
+    }
+  }
+
+  level1: run_level1() {
+    tooltip: |
+      API 617 Level 1 stability analysis
+    |
+    style: {
+      fill: "#f3e5f5"
+      stroke: "#9673a6"
+    }
+  }
+
+  freq: run_freq_response() {
+    tooltip: |
+      Frequency response function (FRF)
+    |
+    style: {
+      fill: "#f3e5f5"
+      stroke: "#9673a6"
+    }
+  }
+
+  unbalance: run_unbalance_response() {
+    tooltip: |
+      Unbalance response
+      Bode, deflected shape, orbits
+    |
+    style: {
+      fill: "#f3e5f5"
+      stroke: "#9673a6"
+    }
+  }
+
+  tempo: run_time_response() {
+    tooltip: |
+      Time response
+      Transient, run-up, coast-down
+      State-space or Newmark
+    |
+    style: {
+      fill: "#f3e5f5"
+      stroke: "#9673a6"
+    }
+  }
+
+  hbm: run_harmonic_balance() {
+    tooltip: |
+      Harmonic balance method
+      Periodic steady-state response
+    |
+    style: {
+      fill: "#f3e5f5"
+      stroke: "#9673a6"
+    }
+  }
+
+  falhas: Fault Analysis {
+    tooltip: |
+      run_rubbing() - Rotor-stator contact
+      run_crack() - Transverse crack
+      run_misalignment() - Misalignment
+    |
+    style: {
+      fill: "#f3e5f5"
+      stroke: "#9673a6"
+    }
+  }
+}
+
+rotor -> analises
+multirotor -> analises
+
+# ============================================================
+# Results
+# ============================================================
+resultados: Results and Visualization {
+  link: https://raw.githubusercontent.com/petrobras/ross/631a249adbae414d5f5f986479b58f1a4c47935e/docs/_static/diagrams/resultados.svg
+  style: {
+    fill: "#d5f5e3"
+    stroke: "#27ae60"
+    border-radius: 10
+  }
+
+  graficos: Interactive Plots (Plotly) {
+    tooltip: |
+      Bode diagrams, Campbell, UCS
+      2D/3D mode shapes, orbits
+      Deflected shape, FFT
+    |
+    style: {
+      fill: "#e8f8f5"
+      stroke: "#27ae60"
+    }
+  }
+
+  dados: Numerical Data {
+    tooltip: |
+      Natural frequencies, damping ratios
+      Displacements, forces, moments
+      NumPy arrays for post-processing
+    |
+    style: {
+      fill: "#e8f8f5"
+      stroke: "#27ae60"
+    }
+  }
+}
+
+analises -> resultados

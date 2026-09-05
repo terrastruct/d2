@@ -1,0 +1,249 @@
+# Source: https://github.com/brendanlong/lion-reader/blob/34a5f1fac3503e0df19e6904da44eeb048b76700/docs/diagrams/frontend-data-flow.d2
+# License: MIT; see REAL_WORLD.md.
+
+# Frontend Data Flow - React Query with Direct Cache Updates
+# Lion Reader uses React Query as the source of truth with helper functions for cache updates
+
+direction: down
+
+title: {
+  label: Frontend Data Flow
+  near: top-center
+  shape: text
+  style.font-size: 24
+  style.bold: true
+}
+
+# ==============================================================================
+# Data Sources
+# ==============================================================================
+
+server: {
+  label: Server
+  style.fill: "#e3f2fd"
+
+  api: {
+    label: tRPC API
+    shape: rectangle
+  }
+
+  sse: {
+    label: SSE Endpoint
+    shape: rectangle
+  }
+}
+
+# ==============================================================================
+# Client State Layer
+# ==============================================================================
+
+client: {
+  label: Client State
+  style.fill: "#fff3e0"
+
+  react_query: {
+    label: React Query Cache
+    shape: cylinder
+    style.fill: "#ffcc80"
+
+    description: |md
+      **Server state cache**
+      - entries.list (infinite)
+      - entries.get
+      - entries.count
+      - subscriptions.list
+      - tags.list
+    |
+  }
+
+  cache_helpers: {
+    label: Cache Helpers
+    shape: rectangle
+    style.fill: "#a5d6a7"
+
+    description: |md
+      **src/lib/cache/**
+      - adjustSubscriptionUnreadCounts
+      - adjustTagUnreadCounts
+      - addSubscriptionToCache
+      - updateEntriesReadStatus
+    |
+  }
+}
+
+# ==============================================================================
+# Hooks Layer
+# ==============================================================================
+
+hooks: {
+  label: Custom Hooks
+  style.fill: "#f3e5f5"
+
+  useRealtimeUpdates: {
+    label: useRealtimeUpdates
+    shape: rectangle
+    tooltip: "Manages SSE connection with polling fallback"
+  }
+
+  useEntryMutations: {
+    label: useEntryMutations
+    shape: rectangle
+    tooltip: "Mutations with direct cache updates"
+  }
+
+  useKeyboardShortcuts: {
+    label: useKeyboardShortcuts
+    shape: rectangle
+    tooltip: "Keyboard navigation and entry selection"
+  }
+}
+
+# ==============================================================================
+# UI Layer
+# ==============================================================================
+
+ui: {
+  label: UI Components
+  style.fill: "#e8f5e9"
+
+  sidebar: {
+    label: Sidebar
+    shape: rectangle
+    tooltip: "Subscription list with unread counts"
+  }
+
+  unified_entries: {
+    label: UnifiedEntriesContent
+    shape: rectangle
+    tooltip: "Unified entry page with navigation and swipe support"
+  }
+
+  suspending_list: {
+    label: EntryListContainer
+    shape: rectangle
+    tooltip: "Entry list container with inline loading and keyboard navigation"
+  }
+
+  entry_list: {
+    label: EntryList
+    shape: rectangle
+    tooltip: "List of entries with read/starred state"
+  }
+
+  entry_content: {
+    label: EntryContent
+    shape: rectangle
+    tooltip: "Full article view"
+  }
+}
+
+# ==============================================================================
+# Connections - Initial Data Fetch
+# ==============================================================================
+
+server.api -> client.react_query: "Initial fetch" {
+  style.stroke: "#1976d2"
+  style.stroke-width: 2
+}
+
+# ==============================================================================
+# Connections - Real-time Updates
+# ==============================================================================
+
+server.sse -> hooks.useRealtimeUpdates: "SSE events\n(new_entry, subscription_*)" {
+  style.stroke: "#388e3c"
+  style.stroke-width: 2
+}
+
+hooks.useRealtimeUpdates -> client.cache_helpers: "subscription_created\nsubscription_deleted" {
+  style.stroke: "#388e3c"
+}
+
+hooks.useRealtimeUpdates -> client.cache_helpers: "insert entry + set counts\n(new_entry)" {
+  style.stroke: "#388e3c"
+}
+
+client.cache_helpers -> client.react_query: "Direct cache updates" {
+  style.stroke: "#00796b"
+  style.stroke-width: 2
+}
+
+# ==============================================================================
+# Connections - Query Data Flow
+# ==============================================================================
+
+client.react_query -> ui.unified_entries: "Paginated entries\n(non-suspending)" {
+  style.stroke: "#7b1fa2"
+}
+
+client.react_query -> ui.suspending_list: "Paginated entries\n(suspending)" {
+  style.stroke: "#7b1fa2"
+}
+
+ui.suspending_list -> ui.entry_list: "Entries with\nread/starred state" {
+  style.stroke: "#7b1fa2"
+  style.stroke-width: 2
+}
+
+client.react_query -> ui.sidebar: "Subscriptions/tags\nwith counts" {
+  style.stroke: "#7b1fa2"
+}
+
+# ==============================================================================
+# Connections - Mutations
+# ==============================================================================
+
+ui.entry_list -> hooks.useEntryMutations: "User action\n(toggle read)" {
+  style.stroke: "#f57c00"
+}
+
+hooks.useEntryMutations -> server.api: "1. Server mutation" {
+  style.stroke: "#f57c00"
+}
+
+server.api -> hooks.useEntryMutations: "2. Response with\nsubscription context" {
+  style.stroke: "#f57c00"
+  style.stroke-dash: 3
+}
+
+hooks.useEntryMutations -> client.cache_helpers: "3. Update counts\n(instant)" {
+  style.stroke: "#f57c00"
+  style.stroke-width: 2
+}
+
+hooks.useEntryMutations -> client.react_query: "4. Invalidate\nentry lists" {
+  style.stroke: "#f57c00"
+  style.stroke-dash: 3
+}
+
+# ==============================================================================
+# Connections - Navigation and Keyboard
+# ==============================================================================
+
+ui.suspending_list -> hooks.useKeyboardShortcuts: "Keyboard navigation" {
+  style.stroke: "#9e9e9e"
+  style.stroke-dash: 3
+}
+
+ui.unified_entries -> ui.entry_content: "Entry view with\nswipe navigation" {
+  style.stroke: "#9e9e9e"
+  style.stroke-dash: 3
+}
+
+# ==============================================================================
+# Legend
+# ==============================================================================
+
+legend: {
+  label: Legend
+  near: bottom-right
+  style.fill: "#fafafa"
+  style.stroke: "#e0e0e0"
+
+  initial: "Blue: Initial data fetch"
+  realtime: "Green: Real-time updates (SSE)"
+  query: "Purple: Query data flow"
+  mutation: "Orange: User mutations"
+  cache: "Teal: Direct cache updates"
+  dashed: "Dashed: Invalidation"
+}

@@ -1,0 +1,300 @@
+# Source: https://github.com/jupyter-infra/jupyter-deploy/blob/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/aws-eks-oidc-template/infrastructure.d2
+# License: MIT; see REAL_WORLD.md.
+# Adaptation: Relative icon paths replaced with revision-pinned upstream URLs; trailing blank lines removed.
+
+# EKS OIDC Template — Infrastructure
+
+vars: {
+  d2-config: {
+    layout-engine: dagre
+  }
+}
+
+classes: {
+  box: {
+    shape: rectangle
+    style: {
+      bold: true
+      stroke-width: 3
+      font-size: 20
+    }
+  }
+}
+
+direction: down
+
+# AWS Account
+aws: "AWS Account" {
+  grid-columns: 1
+  style: {
+    fill: "#fff3e0"
+    stroke: "#e65100"
+    stroke-width: 3
+    bold: true
+    font-size: 20
+  }
+
+  global: "" {
+    grid-columns: 3
+    style: {
+      fill: transparent
+      stroke: "#e65100"
+      stroke-width: 2
+      stroke-dash: 5
+      bold: true
+      font-size: 18
+    }
+
+    route53: "Route 53" {
+      style: {
+        fill: "#ffe0b2"
+        stroke: "#f57c00"
+        stroke-width: 3
+        bold: true
+        font-size: 20
+      }
+
+      hosted_zone: "Hosted Zone" {
+        style: {
+          fill: "#ffe0b2"
+          stroke: "#f57c00"
+          stroke-width: 2
+          stroke-dash: 3
+          bold: true
+          font-size: 18
+        }
+
+        dns_record: "DNS Record" {
+          class: box
+          icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/route53.svg
+          style: {
+            fill: "#ffe0b2"
+            stroke: "#f57c00"
+          }
+        }
+      }
+    }
+
+    spacer: "" {
+      style: {
+        fill: transparent
+        stroke: transparent
+      }
+    }
+
+      iam: "IAM" {
+      style: {
+        fill: "#fce4ec"
+        stroke: "#c62828"
+        stroke-width: 3
+        bold: true
+        font-size: 20
+      }
+
+      oidc_provider: "OIDC Provider" {
+        class: box
+        icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/iam.svg
+        style: {
+          fill: "#fce4ec"
+          stroke: "#c62828"
+        }
+      }
+    }
+  }
+
+  region: "Region (e.g. us-east-1)" {
+    style: {
+      fill: "#fef9e7"
+      stroke: "#e65100"
+      stroke-width: 2
+      stroke-dash: 5
+      bold: true
+      font-size: 18
+    }
+
+    vpc: "VPC" {
+
+      style: {
+        fill: "#e8f5e9"
+        stroke: "#2e7d32"
+        stroke-width: 3
+        bold: true
+        font-size: 20
+      }
+
+    nlb: "Network\nLoad Balancer" {
+      class: box
+      icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/nlb.svg
+      style: {
+        fill: "#c8e6c9"
+        stroke: "#388e3c"
+      }
+    }
+
+    eks: "EKS Cluster" {
+      grid-columns: 2
+      style: {
+        fill: "#e3f2fd"
+        stroke: "#1565c0"
+        stroke-width: 3
+        bold: true
+        font-size: 20
+      }
+
+      platform_ng: "Platform Node Group\n(managed)" {
+        style: {
+          fill: "#bbdefb"
+          stroke: "#1565c0"
+          stroke-width: 3
+          bold: true
+          font-size: 18
+        }
+
+        node1: "m5.large" {
+          icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/ec2.svg
+          style: {
+            fill: "#bbdefb"
+            stroke-width: 0
+            bold: true
+            font-size: 16
+          }
+        }
+
+        node2: "m5.large" {
+          icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/ec2.svg
+          style: {
+            fill: "#bbdefb"
+            stroke-width: 0
+            bold: true
+            font-size: 16
+          }
+        }
+      }
+
+      routing_np: "Routing NodePool\n(Karpenter)" {
+        style: {
+          fill: "#c8e6c9"
+          stroke: "#388e3c"
+          stroke-width: 3
+          bold: true
+          font-size: 18
+        }
+
+        node1: "c6.large" {
+          icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/ec2.svg
+          style: {
+            fill: "#c8e6c9"
+            stroke-width: 0
+            bold: true
+            font-size: 16
+          }
+        }
+
+        node2: "m6.large" {
+          icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/ec2.svg
+          style: {
+            fill: "#c8e6c9"
+            stroke-width: 0
+            bold: true
+            font-size: 16
+          }
+        }
+      }
+
+      workspaces_np: "Workspace NodePool(s)\n(Karpenter, scale-to-zero)" {
+        style: {
+          fill: "#e1bee7"
+          stroke: "#8e24aa"
+          stroke-width: 3
+          bold: true
+          font-size: 18
+        }
+
+        node1: "c6i.2xlarge" {
+          icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/ec2.svg
+          style: {
+            fill: "#e1bee7"
+            stroke-width: 0
+            bold: true
+            font-size: 16
+          }
+        }
+
+        node2: "r7i.xlarge" {
+          icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/ec2.svg
+          style: {
+            fill: "#e1bee7"
+            stroke-width: 0
+            bold: true
+            font-size: 16
+          }
+        }
+      }
+
+      control_plane: "EKS Control Plane" {
+        style: {
+          fill: "#bbdefb"
+          stroke: "#1565c0"
+          stroke-width: 2
+          stroke-dash: 3
+          bold: true
+          font-size: 18
+        }
+
+        api_server: "API Server" {
+          class: box
+          icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/kubernetes.svg
+          style: {
+            fill: "#bbdefb"
+            stroke: "#1565c0"
+          }
+        }
+
+        etcd: "etcd" {
+          shape: cylinder
+          icon: https://raw.githubusercontent.com/jupyter-infra/jupyter-deploy/7283c07396c3d0126346217089e2527d1ce652f6/diagrams/shared/icons/kubernetes.svg
+          style: {
+            bold: true
+            stroke-width: 3
+            font-size: 20
+            fill: "#bbdefb"
+            stroke: "#1565c0"
+          }
+        }
+      }
+    }
+  }
+  }
+}
+
+# Flows
+aws.global.route53.hosted_zone.dns_record -> aws.region.vpc.nlb: "resolves to" {
+  style: {
+    stroke: "#1565c0"
+    stroke-width: 3
+    stroke-dash: 5
+  }
+}
+
+aws.region.vpc.nlb -> aws.region.vpc.eks.routing_np: "routes to" {
+  style: {
+    stroke: "#1565c0"
+    stroke-width: 3
+  }
+}
+
+aws.global.iam.oidc_provider -> aws.global.route53.hosted_zone.dns_record: "references" {
+  style: {
+    stroke: "#c62828"
+    stroke-width: 3
+    stroke-dash: 5
+  }
+}
+
+aws.global.iam.oidc_provider -> aws.region.vpc.eks.control_plane.api_server: "associate" {
+  style: {
+    stroke: "#c62828"
+    stroke-width: 3
+    stroke-dash: 5
+  }
+}
