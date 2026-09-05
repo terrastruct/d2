@@ -178,6 +178,9 @@ type fixedGlyph struct {
 // makeSquareMapping finds an optimal glyph arrangement of the given runes, so that their common
 // bounding box is as square as possible.
 func makeSquareMapping(face font.Face, runes []rune, padding fixed.Int26_6) (map[rune]fixedGlyph, fixed.Rectangle26_6) {
+	if _, ok := face.(*metricPreservingFace); ok {
+		return makeMetricsSquareMapping(face, runes, padding)
+	}
 	width := sort.Search(int(fixed.I(1024*1024)), func(i int) bool {
 		width := fixed.Int26_6(i)
 		_, bounds := makeMapping(face, runes, padding, width)

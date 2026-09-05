@@ -1210,9 +1210,9 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 		if gctx != nil {
 			var ks string
 			if refctx.Key.HasTripleGlob() {
-				ks = d2format.Format(d2ast.MakeKeyPathString(IDA(f)))
+				ks = d2format.FormatKeyPath(IDA(f))
 			} else {
-				ks = d2format.Format(d2ast.MakeKeyPathString(BoardIDA(f)))
+				ks = d2format.FormatKeyPath(BoardIDA(f))
 			}
 			if !kp.HasGlob() {
 				if !passthrough {
@@ -1368,8 +1368,8 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 	if !create {
 		return nil
 	}
-	shape := ParentShape(m)
 	if _, ok := d2ast.ReservedKeywords[strings.ToLower(head.ScalarString())]; !(ok && head.IsUnquoted()) && len(c.globRefContextStack) > 0 {
+		shape := ParentShape(m)
 		if shape == d2target.ShapeClass || shape == d2target.ShapeSQLTable {
 			return nil
 		}
@@ -1385,9 +1385,9 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext, create b
 		for _, grefctx := range c.globRefContextStack {
 			var ks string
 			if grefctx.Key.HasTripleGlob() {
-				ks = d2format.Format(d2ast.MakeKeyPathString(IDA(f)))
+				ks = d2format.FormatKeyPath(IDA(f))
 			} else {
-				ks = d2format.Format(d2ast.MakeKeyPathString(BoardIDA(f)))
+				ks = d2format.FormatKeyPath(BoardIDA(f))
 			}
 			gctx2 := c.getGlobContext(grefctx)
 			gctx2.appliedFields[ks] = struct{}{}
@@ -1618,9 +1618,9 @@ func (m *Map) getEdges(eid *EdgeID, refctx *RefContext, gctx *globContext, index
 				if gctx != nil {
 					var ks string
 					if refctx.Key.HasTripleGlob() {
-						ks = d2format.Format(d2ast.MakeKeyPathString(IDA(e)))
+						ks = d2format.FormatKeyPath(IDA(e))
 					} else {
-						ks = d2format.Format(d2ast.MakeKeyPathString(BoardIDA(e)))
+						ks = d2format.FormatKeyPath(BoardIDA(e))
 					}
 					if _, ok := gctx.appliedEdges[ks]; ok {
 						continue
@@ -1849,9 +1849,9 @@ func (m *Map) createEdge2(eid *EdgeID, refctx *RefContext, gctx *globContext, c 
 		e2.ID = e2.ID.Copy()
 		e2.ID.Index = nil
 		if refctx.Key.HasTripleGlob() {
-			ks = d2format.Format(d2ast.MakeKeyPathString(IDA(e2)))
+			ks = d2format.FormatKeyPath(IDA(e2))
 		} else {
-			ks = d2format.Format(d2ast.MakeKeyPathString(BoardIDA(e2)))
+			ks = d2format.FormatKeyPath(BoardIDA(e2))
 		}
 		if _, ok := gctx.appliedEdges[ks]; ok {
 			return nil, nil

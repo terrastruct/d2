@@ -36,7 +36,7 @@ type utf8FontFile struct {
 	fileReader           *fileReader
 	tableDescriptions    map[string]*tableDescription
 	outTablesData        map[string][]byte
-	symbolPosition       []int
+	symbolOffsets        locaOffsets
 	charSymbolDictionary map[int]int
 }
 
@@ -392,8 +392,8 @@ func (utf *utf8FontFile) GenerateCutFont(usedRunes map[int]int) []byte {
 		hmtxData = append(hmtxData, hm...)
 
 		offsets = append(offsets, pos)
-		symbolPos := utf.symbolPosition[originalSymbolIdx]
-		symbolLen := utf.symbolPosition[originalSymbolIdx+1] - symbolPos
+		symbolPos := utf.symbolOffsets.at(originalSymbolIdx)
+		symbolLen := utf.symbolOffsets.at(originalSymbolIdx+1) - symbolPos
 		data := symbolData[symbolPos : symbolPos+symbolLen]
 		var up int
 		if symbolLen > 0 {
@@ -472,8 +472,8 @@ func (utf *utf8FontFile) GenerateCutFont(usedRunes map[int]int) []byte {
 }
 
 func (utf *utf8FontFile) getSymbols(originalSymbolIdx int, start *int, symbolSet map[int]int, SymbolsCollection map[int]int, SymbolsCollectionKeys []int) (*int, map[int]int, map[int]int, []int) {
-	symbolPos := utf.symbolPosition[originalSymbolIdx]
-	symbolSize := utf.symbolPosition[originalSymbolIdx+1] - symbolPos
+	symbolPos := utf.symbolOffsets.at(originalSymbolIdx)
+	symbolSize := utf.symbolOffsets.at(originalSymbolIdx+1) - symbolPos
 	if symbolSize == 0 {
 		return start, symbolSet, SymbolsCollection, SymbolsCollectionKeys
 	}
@@ -527,25 +527,46 @@ func (utf *utf8FontFile) getMetrics(metricCount, gid int) []byte {
 	return metrics
 }
 
+// locaOffsets keeps the original table snapshot while decoding only the glyphs
+// selected for the subset. A font can have far more glyphs than a diagram uses.
+type locaOffsets struct {
+	data  []byte
+	width int
+}
+
+func (offsets locaOffsets) at(index int) int {
+	count := 0
+	if offsets.width != 0 {
+		count = len(offsets.data) / offsets.width
+	}
+	// Preserve the decoded array's glyph-index bounds check before computing a
+	// byte offset, including invalid glyph IDs in malformed composite glyphs.
+	_ = offsets.data[:count][index]
+	data := offsets.data[index*offsets.width:]
+	if offsets.width == 2 {
+		return int(binary.BigEndian.Uint16(data)) * 2
+	}
+	return int(binary.BigEndian.Uint32(data))
+}
+
 func (utf *utf8FontFile) parseLOCATable(format, numSymbols int) {
 	start := utf.SeekTable("loca")
-	utf.symbolPosition = make([]int, 0)
-	if format == 0 {
-		data := utf.getRange(start, (numSymbols*2)+2)
-		arr := unpackUint16Array(data)
-		for n := 0; n <= numSymbols; n++ {
-			utf.symbolPosition = append(utf.symbolPosition, arr[n+1]*2)
-		}
-	} else if format == 1 {
-		data := utf.getRange(start, (numSymbols*4)+4)
-		arr := unpackUint32Array(data)
-		for n := 0; n <= numSymbols; n++ {
-			utf.symbolPosition = append(utf.symbolPosition, arr[n+1])
-		}
-	} else {
+	utf.symbolOffsets = locaOffsets{}
+	width := 0
+	switch format {
+	case 0:
+		width = 2
+	case 1:
+		width = 4
+	default:
 		fmt.Printf("Unknown loca table format %d\n", format)
 		return
 	}
+	// Read the full table now, retaining the original truncation check and reader
+	// position. Copy the bytes because later metric extraction can mutate the
+	// input; even overlapping custom-font tables must retain the old snapshot.
+	data := utf.getRange(start, (numSymbols+1)*width)
+	utf.symbolOffsets = locaOffsets{data: bytes.Clone(data), width: width}
 }
 
 func (utf *utf8FontFile) generateCharSymbolDictionary(runeCmapPosition int, charSymbolDictionary map[int]int) {
@@ -638,34 +659,6 @@ func (utf *utf8FontFile) assembleTables() []byte {
 	checksum := utf.generateChecksum([]byte(answer))
 	checksum = utf.calcInt32([]int{0xB1B0, 0xAFBA}, checksum)
 	answer = utf.splice(answer, (begin + 8), pack2Uint16(checksum[0], checksum[1]))
-	return answer
-}
-
-func unpackUint16Array(data []byte) []int {
-	answer := make([]int, 1)
-	r := bytes.NewReader(data)
-	bs := make([]byte, 2)
-	var e error
-	var c int
-	c, e = r.Read(bs)
-	for e == nil && c > 0 {
-		answer = append(answer, int(binary.BigEndian.Uint16(bs)))
-		c, e = r.Read(bs)
-	}
-	return answer
-}
-
-func unpackUint32Array(data []byte) []int {
-	answer := make([]int, 1)
-	r := bytes.NewReader(data)
-	bs := make([]byte, 4)
-	var e error
-	var c int
-	c, e = r.Read(bs)
-	for e == nil && c > 0 {
-		answer = append(answer, int(binary.BigEndian.Uint32(bs)))
-		c, e = r.Read(bs)
-	}
 	return answer
 }
 

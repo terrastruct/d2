@@ -85,7 +85,12 @@ func compileIR(ast *d2ast.Map, m *d2ir.Map) (*d2graph.Graph, error) {
 }
 
 func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
-	ir = ir.Copy(nil).(*d2ir.Map)
+	// Graph compilation reads the IR. Nested boards still need an independent
+	// root for class lookup, and boards with children need a copy because the
+	// folder comparison below uses CopyBase, which also modifies its source.
+	if !ir.Root() || hasBoardFields(ir) {
+		ir = ir.Copy(nil).(*d2ir.Map)
+	}
 	c.compileMap(g.Root, ir)
 	c.setDefaultShapes(g)
 	if len(c.err.Errors) == 0 {
@@ -101,8 +106,8 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 	c.compileBoardsField(g, ir, "layers")
 	c.compileBoardsField(g, ir, "scenarios")
 	c.compileBoardsField(g, ir, "steps")
-	if d2ir.ParentMap(ir).CopyBase(nil).Equal(ir.CopyBase(nil)) {
-		if len(g.Layers) > 0 || len(g.Scenarios) > 0 || len(g.Steps) > 0 {
+	if len(g.Layers) > 0 || len(g.Scenarios) > 0 || len(g.Steps) > 0 {
+		if d2ir.ParentMap(ir).CopyBase(nil).Equal(ir.CopyBase(nil)) {
 			g.IsFolderOnly = true
 		}
 	}
@@ -110,6 +115,14 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 		g.IsFolderOnly = true
 	}
 	return g
+}
+
+func hasBoardFields(ir *d2ir.Map) bool {
+	// Use the same lookups as compileBoardsField, including GetField's live
+	// ReservedKeywords rules for distinguishing quoted and unquoted names.
+	return ir.GetField(d2ast.FlatUnquotedString("layers")) != nil ||
+		ir.GetField(d2ast.FlatUnquotedString("scenarios")) != nil ||
+		ir.GetField(d2ast.FlatUnquotedString("steps")) != nil
 }
 
 func (c *compiler) compileLegend(g *d2graph.Graph, m *d2ir.Map) {

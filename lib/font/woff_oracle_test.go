@@ -1,85 +1,17 @@
-// Sfnt2Woff is a native go port of the JS library
-// https://github.com/fontello/ttf2woff
-// that converts sfnt fonts (.ttf and .otf) to .woff fonts
-
 package font
 
+// Frozen conversion from 0515f60e985ad829d652456e07831170583011a0.
+// Keep this independent of the production compressor lifecycle.
 import (
+	"bytes"
+	"compress/zlib"
 	"encoding/binary"
 	"fmt"
 	"math"
 	"sort"
 )
 
-var (
-	// sfnt2Woff offset
-	SFNT_OFFSET_TAG      = 0
-	SFNT_OFFSET_CHECKSUM = 4
-	SFNT_OFFSET_OFFSET   = 8
-	SFNT_OFFSET_LENGTH   = 12
-
-	// sfnt2Woff entry offset
-	SFNT_ENTRY_OFFSET_FLAVOR              = 0
-	SFNT_ENTRY_OFFSET_VERSION_MAJ         = 4
-	SFNT_ENTRY_OFFSET_VERSION_MIN         = 6
-	SFNT_ENTRY_OFFSET_CHECKSUM_ADJUSTMENT = 8
-
-	// woff offset
-	WOFF_OFFSET_MAGIC            = 0
-	WOFF_OFFSET_FLAVOR           = 4
-	WOFF_OFFSET_SIZE             = 8
-	WOFF_OFFSET_NUM_TABLES       = 12
-	WOFF_OFFSET_RESERVED         = 14
-	WOFF_OFFSET_SFNT_SIZE        = 16
-	WOFF_OFFSET_VERSION_MAJ      = 20
-	WOFF_OFFSET_VERSION_MIN      = 22
-	WOFF_OFFSET_META_OFFSET      = 24
-	WOFF_OFFSET_META_LENGTH      = 28
-	WOFF_OFFSET_META_ORIG_LENGTH = 32
-	WOFF_OFFSET_PRIV_OFFSET      = 36
-	WOFF_OFFSET_PRIV_LENGTH      = 40
-
-	// woff entry offset
-	WOFF_ENTRY_OFFSET_TAG          = 0
-	WOFF_ENTRY_OFFSET_OFFSET       = 4
-	WOFF_ENTRY_OFFSET_COMPR_LENGTH = 8
-	WOFF_ENTRY_OFFSET_LENGTH       = 12
-	WOFF_ENTRY_OFFSET_CHECKSUM     = 16
-
-	// magic
-	MAGIC_WOFF                uint32 = 0x774f4646
-	MAGIC_CHECKSUM_ADJUSTMENT uint32 = 0xb1b0afba
-
-	// sizes
-	SIZE_OF_WOFF_HEADER      = 44
-	SIZE_OF_WOFF_ENTRY       = 20
-	SIZE_OF_SFNT_HEADER      = 12
-	SIZE_OF_SFNT_TABLE_ENTRY = 16
-)
-
-type TableEntry struct {
-	Tag      []byte
-	CheckSum uint32
-	Offset   uint32
-	Length   uint32
-}
-
-func longAlign(n uint32) uint32 {
-	return (n + 3) & ^uint32(3)
-}
-
-func calcChecksum(buf []byte) uint32 {
-	var sum uint32 = 0
-	var nlongs = len(buf) / 4
-
-	for i := 0; i < nlongs; i++ {
-		var t = binary.BigEndian.Uint32(buf[i*4:])
-		sum = sum + t
-	}
-	return sum
-}
-
-func Sfnt2Woff(fontBuf []byte) ([]byte, error) {
+func legacySfnt2Woff(fontBuf []byte) ([]byte, error) {
 	numTables := binary.BigEndian.Uint16(fontBuf[4:])
 
 	woffHeader := make([]byte, SIZE_OF_WOFF_HEADER)
@@ -153,12 +85,6 @@ func Sfnt2Woff(fontBuf []byte) ([]byte, error) {
 	flavor := uint32(0)
 	offset := SIZE_OF_WOFF_HEADER + int(numTables)*SIZE_OF_WOFF_ENTRY
 	var tableBytes []byte
-	var compression *woffCompression
-	defer func() {
-		if compression != nil {
-			releaseWoffCompression(compression)
-		}
-	}()
 
 	for i := 0; i < len(entries); i++ {
 		tableEntry := entries[i]
@@ -171,20 +97,21 @@ func Sfnt2Woff(fontBuf []byte) ([]byte, error) {
 			binary.BigEndian.PutUint32(sfntData[SFNT_ENTRY_OFFSET_CHECKSUM_ADJUSTMENT:], uint32(checksumAdjustment))
 		}
 
-		if compression == nil {
-			compression = acquireWoffCompression()
-		}
-		compressed := compression.compressTable(sfntData)
+		var res bytes.Buffer
+		w := zlib.NewWriter(&res)
+		w.Write(sfntData)
+		w.Flush()
+		w.Close()
 
-		compLength := math.Min(float64(len(compressed)), float64(len(sfntData)))
+		compLength := math.Min(float64(len(res.Bytes())), float64(len(sfntData)))
 		length := longAlign(uint32(compLength))
 
 		table := make([]byte, length)
 		// only deflate data if the deflated data is actually smaller
-		if len(compressed) >= len(sfntData) {
+		if len(res.Bytes()) >= len(sfntData) {
 			copy(table, sfntData)
 		} else {
-			copy(table, compressed)
+			copy(table, res.Bytes())
 		}
 
 		binary.BigEndian.PutUint32(tableInfo[i*SIZE_OF_WOFF_ENTRY+WOFF_ENTRY_OFFSET_OFFSET:], uint32(offset))
