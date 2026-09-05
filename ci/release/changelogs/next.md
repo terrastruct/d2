@@ -1,5 +1,6 @@
 #### Features 🚀
 
+- sequence diagrams: add opt-in `shape: sequence-diagram` with explicit message and actor groups, spacing controls, span labels, actor repetition, and message numbering; `shape: sequence_diagram` retains the original behavior. See the [v2 guide](../../../docs/sequence-diagrams.md).
 - exports: render PNG, GIF, PDF, and PPTX with the built-in renderer
 
 #### Improvements 🧹

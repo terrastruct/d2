@@ -193,7 +193,17 @@ type Object struct {
 	ZIndex int `json:"zIndex"`
 }
 
+type SequenceOptions struct {
+	Mirror   bool `json:"mirror,omitempty"`
+	Numbered bool `json:"numbered,omitempty"`
+}
+
 type Attributes struct {
+	Sequence *SequenceOptions `json:"sequence,omitempty"`
+	// Imported timeline items are ordered at the import site, with their source
+	// positions breaking ties within the imported file.
+	SequenceImportPosition *d2ast.Position `json:"sequenceImportPosition,omitempty"`
+
 	Label           Scalar                  `json:"label"`
 	LabelDimensions d2target.TextDimensions `json:"labelDimensions"`
 
@@ -779,7 +789,7 @@ func (obj *Object) HasEdge(mk *d2ast.Key) (*Edge, bool) {
 func ResolveUnderscoreKey(ida []string, obj *Object) (resolvedObj *Object, resolvedIDA []string, _ error) {
 	if len(ida) > 0 && !obj.IsSequenceDiagram() {
 		objSD := obj.OuterSequenceDiagram()
-		if objSD != nil {
+		if objSD != nil && !objSD.IsSequenceDiagramV2() {
 			referencesActor := false
 			for _, c := range objSD.ChildrenArray {
 				if c.ID == ida[0] {
@@ -881,7 +891,7 @@ func (obj *Object) ensureChildEdge(ida []d2ast.String) *Object {
 // intermediate nodes.
 func (obj *Object) EnsureChild(ida []d2ast.String) *Object {
 	seq := obj.OuterSequenceDiagram()
-	if seq != nil {
+	if seq != nil && !seq.IsSequenceDiagramV2() && len(ida) > 0 {
 		for _, c := range seq.ChildrenArray {
 			if c.ID == ida[0].ScalarString() {
 				if obj.ID == ida[0].ScalarString() {

@@ -1,0 +1,22 @@
+shape: sequence-diagram
+horizontal-gap: 90
+vertical-gap: 65
+vars: {mirror: true; numbered: true}
+
+client: Client {shape: person}
+backend: Backend {
+  shape: actor-group
+  api: API
+  db: Database {shape: cylinder}
+}
+request: Handle request {
+  shape: edge-group
+  client -> backend.api.work: GET /items
+  backend.api.work -> backend.db.query: Read
+  backend.db.query -> backend.api.work: Rows
+}
+backend.api.work: Processing {label.near: top-left}
+backend.api.work -> client: 200 OK
+client.note: Response received {shape: page}
+client.again: {shape: actor}
+client -> backend.api: Next request

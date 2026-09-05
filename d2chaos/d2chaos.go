@@ -269,7 +269,13 @@ func (gs *dslGenState) randStr(n int, inKey bool) string {
 func (gs *dslGenState) randShape() string {
 	for {
 		s := shapes[gs.rand.Intn(len(shapes))]
-		if s != d2target.ShapeImage && s != d2target.ShapeText {
+		switch s {
+		case d2target.ShapeImage, d2target.ShapeText:
+			// These shapes require additional attributes.
+		case d2target.ShapeSequenceDiagramV2, d2target.ShapeSequenceDiagramEdgeGroup,
+			d2target.ShapeSequenceDiagramActorGroup, d2target.ShapeSequenceDiagramActor:
+			// The generic graph generator does not construct v2 timeline roles.
+		default:
 			return s
 		}
 	}
