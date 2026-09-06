@@ -1,9 +1,13 @@
 package imgbundler
 
 import (
+	"bytes"
+	"compress/gzip"
+	"compress/zlib"
 	"context"
 	"crypto/rand"
 	_ "embed"
+	"encoding/base64"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -12,8 +16,10 @@ import (
 	"sync"
 	"testing"
 
+	"github.com/andybalholm/brotli"
 	tassert "github.com/stretchr/testify/assert"
 
+	"github.com/d2lang/d2/internal/testlog"
 	"github.com/d2lang/d2/lib/log"
 	"github.com/d2lang/d2/lib/simplelog"
 	"github.com/d2lang/util-go/go2"
@@ -51,7 +57,7 @@ func TestRegex(t *testing.T) {
 
 func TestInlineRemote(t *testing.T) {
 	imgCache = sync.Map{}
-	ctx := log.WithTB(context.Background(), t)
+	ctx := log.With(context.Background(), testlog.New(t))
 	svgURL := "https://icons.terrastruct.com/essentials/004-picture.svg"
 	pngURL := "https://cdn4.iconfinder.com/data/icons/smart-phones-technologies/512/android-phone.png"
 
@@ -156,7 +162,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 
 func TestInlineLocal(t *testing.T) {
 	imgCache = sync.Map{}
-	ctx := log.WithTB(context.Background(), t)
+	ctx := log.With(context.Background(), testlog.New(t))
 	svgURL, err := filepath.Abs("./test_svg.svg")
 	if err != nil {
 		t.Fatal(err)
@@ -255,7 +261,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 // TestDuplicateURL ensures that we don't fetch the same image twice
 func TestDuplicateURL(t *testing.T) {
 	imgCache = sync.Map{}
-	ctx := log.WithTB(context.Background(), t)
+	ctx := log.With(context.Background(), testlog.New(t))
 	url1 := "https://icons.terrastruct.com/essentials/004-picture.svg"
 	url2 := "https://icons.terrastruct.com/essentials/004-picture.svg"
 
@@ -308,9 +314,102 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 	tassert.Equal(t, 2, strings.Count(string(out), "image/svg+xml"))
 }
 
+func TestInlineRemoteCompressedSVG(t *testing.T) {
+	imgCache = sync.Map{}
+	ctx := log.With(context.Background(), testlog.New(t))
+	svgURL := "https://icons.terrastruct.com/essentials/004-picture.svg"
+	rawSVG := []byte(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><rect width="10" height="10"/></svg>`)
+	sampleSVG := []byte(fmt.Sprintf(`<svg xmlns="http://www.w3.org/2000/svg"><image href="%s" /></svg>`, svgURL))
+
+	for _, tc := range []struct {
+		name            string
+		contentEncoding string
+		encode          func(*testing.T, []byte) []byte
+	}{
+		{
+			name:            "gzip",
+			contentEncoding: "gzip",
+			encode: func(t *testing.T, in []byte) []byte {
+				t.Helper()
+				var b bytes.Buffer
+				zw := gzip.NewWriter(&b)
+				if _, err := zw.Write(in); err != nil {
+					t.Fatal(err)
+				}
+				if err := zw.Close(); err != nil {
+					t.Fatal(err)
+				}
+				return b.Bytes()
+			},
+		},
+		{
+			name:            "brotli",
+			contentEncoding: "br",
+			encode: func(t *testing.T, in []byte) []byte {
+				t.Helper()
+				var b bytes.Buffer
+				zw := brotli.NewWriter(&b)
+				if _, err := zw.Write(in); err != nil {
+					t.Fatal(err)
+				}
+				if err := zw.Close(); err != nil {
+					t.Fatal(err)
+				}
+				return b.Bytes()
+			},
+		},
+		{
+			name:            "deflate",
+			contentEncoding: "deflate",
+			encode: func(t *testing.T, in []byte) []byte {
+				t.Helper()
+				var b bytes.Buffer
+				zw := zlib.NewWriter(&b)
+				if _, err := zw.Write(in); err != nil {
+					t.Fatal(err)
+				}
+				if err := zw.Close(); err != nil {
+					t.Fatal(err)
+				}
+				return b.Bytes()
+			},
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			httpClient.Transport = roundTripFunc(func(req *http.Request) *http.Response {
+				respRecorder := httptest.NewRecorder()
+				respRecorder.Header().Set("Content-Type", "image/svg+xml")
+				respRecorder.Header().Set("Content-Encoding", tc.contentEncoding)
+				respRecorder.WriteHeader(http.StatusOK)
+				_, _ = respRecorder.Write(tc.encode(t, rawSVG))
+				return respRecorder.Result()
+			})
+
+			out, err := BundleRemote(ctx, simplelog.FromLibLog(ctx), sampleSVG, false)
+			if err != nil {
+				t.Fatal(err)
+			}
+			match := imageRegex.FindSubmatch(out)
+			if len(match) != 2 {
+				t.Fatalf("expected bundled image href, got %s", out)
+			}
+			const prefix = `data:image/svg+xml;base64,`
+			href := string(match[1])
+			if !strings.HasPrefix(href, prefix) {
+				t.Fatalf("expected normalized SVG data URI, got %s", href)
+			}
+			decoded, err := base64.StdEncoding.DecodeString(strings.TrimPrefix(href, prefix))
+			if err != nil {
+				t.Fatal(err)
+			}
+			tassert.Equal(t, rawSVG, decoded)
+		})
+	}
+}
+
 func TestImgCache(t *testing.T) {
 	imgCache = sync.Map{}
-	ctx := log.WithTB(context.Background(), t)
+	ctx := log.With(context.Background(), testlog.New(t))
 	url1 := "https://icons.terrastruct.com/essentials/004-picture.svg"
 	url2 := "https://icons.terrastruct.com/essentials/004-picture.svg"
 

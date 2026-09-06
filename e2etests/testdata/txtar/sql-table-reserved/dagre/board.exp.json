@@ -40,12 +40,12 @@
         "User": null,
         "Host": "static.wikia.nocookie.net",
         "Path": "/tomandjerry/images/4/46/JerryJumbo3-1-.jpg",
-        "RawPath": "",
-        "OmitHost": false,
-        "ForceQuery": false,
-        "RawQuery": "",
         "Fragment": "",
-        "RawFragment": ""
+        "RawQuery": "",
+        "RawPath": "",
+        "RawFragment": "",
+        "ForceQuery": false,
+        "OmitHost": false
       },
       "iconPosition": "OUTSIDE_TOP_LEFT",
       "blend": false,
@@ -90,7 +90,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 35,
+            "labelWidth": 34,
             "labelHeight": 26
           },
           "type": {
@@ -130,7 +130,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": null,
@@ -158,7 +158,7 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
+            "labelWidth": 22,
             "labelHeight": 26
           },
           "constraint": null,

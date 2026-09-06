@@ -29,6 +29,7 @@ import (
 	"github.com/d2lang/d2/d2renderers/d2ascii/charset"
 	"github.com/d2lang/d2/d2renderers/d2svg"
 	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/internal/testlog"
 	"github.com/d2lang/d2/lib/log"
 	"github.com/d2lang/d2/lib/textmeasure"
 )
@@ -38,6 +39,7 @@ func TestE2E(t *testing.T) {
 
 	t.Run("sanity", testSanity)
 	t.Run("stable", testStable)
+	t.Run("real_world", testRealWorld)
 	t.Run("regression", testRegression)
 	t.Run("patterns", testPatterns)
 	t.Run("todo", testTodo)
@@ -116,7 +118,7 @@ func testASCIITxtar(t *testing.T) {
 
 func runASCIITxtarTest(t *testing.T, tc testCase) {
 	ctx := context.Background()
-	ctx = log.WithTB(ctx, t)
+	ctx = log.With(ctx, testlog.New(t))
 	ctx = log.Leveled(ctx, slog.LevelDebug)
 
 	ruler, err := textmeasure.NewRuler()
@@ -133,6 +135,7 @@ func runASCIITxtarTest(t *testing.T, tc testCase) {
 		Ruler:          ruler,
 		Layout:         go2.Pointer("elk"),
 		LayoutResolver: layoutResolver,
+		LayoutReuse:    true,
 	}
 	renderOpts := &d2svg.RenderOpts{
 		Pad:     go2.Pointer(int64(0)),
@@ -187,6 +190,7 @@ func runASCIITxtarTest(t *testing.T, tc testCase) {
 	var xmlParsed interface{}
 	err = xml.Unmarshal(svgBytes, &xmlParsed)
 	assert.Success(t, err)
+	assert.False(t, strings.Contains(string(svgBytes), "<foreignObject"))
 
 	// Output files to asciitxtar subdirectory for each test
 	testName := strings.TrimPrefix(t.Name(), "TestE2E/asciitxtar/")
@@ -273,12 +277,14 @@ func serde(t *testing.T, tc testCase, ruler *textmeasure.Ruler) {
 	var newG d2graph.Graph
 	err = d2graph.DeserializeGraph(b, &newG)
 	trequire.Nil(t, err)
-	trequire.Nil(t, d2graph.CompareSerializedGraph(g, &newG))
+	roundTripBytes, err := d2graph.SerializeGraph(&newG)
+	trequire.Nil(t, err)
+	trequire.JSONEq(t, string(b), string(roundTripBytes))
 }
 
 func run(t *testing.T, tc testCase) {
 	ctx := context.Background()
-	ctx = log.WithTB(ctx, t)
+	ctx = log.With(ctx, testlog.New(t))
 	ctx = log.Leveled(ctx, slog.LevelDebug)
 
 	var ruler *textmeasure.Ruler
@@ -341,6 +347,7 @@ func run(t *testing.T, tc testCase) {
 			MeasuredTexts:  tc.mtexts,
 			Layout:         go2.Pointer(layoutName),
 			LayoutResolver: layoutResolver,
+			LayoutReuse:    true,
 		}
 		renderOpts := &d2svg.RenderOpts{
 			Pad:     go2.Pointer(int64(0)),
@@ -412,6 +419,7 @@ func run(t *testing.T, tc testCase) {
 		var xmlParsed interface{}
 		err = xml.Unmarshal(svgBytes, &xmlParsed)
 		assert.Success(t, err)
+		assert.False(t, strings.Contains(string(svgBytes), "<foreignObject"))
 
 		var err2 error
 		err = diff.TestdataJSON(filepath.Join(dataPath, "board"), diagram)

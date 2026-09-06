@@ -770,7 +770,6 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 							return nil
 						}
 					case "style":
-						reservedTargetKey = mk.Key.Path[len(mk.Key.Path)-1].Unbox().ScalarString()
 						if inlined(attrs.Style.Filled) {
 							attrs.Style.Filled.MapKey.SetScalar(mk.Value.ScalarBox())
 							return nil
@@ -1401,7 +1400,6 @@ func deleteReserved(g *d2graph.Graph, boardPath []string, baseAST *d2ast.Map, mk
 				if !deleted && imported {
 					mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
 					appendMapKey(baseAST, mk)
-				} else {
 				}
 			}
 			break
@@ -2596,16 +2594,20 @@ func ReconnectEdgeIDDeltas(g *d2graph.Graph, boardPath []string, edgeKey string,
 	firstRef := edge.References[0]
 	line := firstRef.MapKey.Range.Start.Line
 	newIndex := 0
+	sameEquivalentEdge := edge.IsEquivalent(newSrc, edge.SrcArrow, newDst, edge.DstArrow)
+	if sameEquivalentEdge {
+		newIndex = edge.Index
+	}
 
 	// For the edge's own delta, it just needs to know how many edges came before it with the same src and dst
 	for _, otherEdge := range boardG.Edges {
-		if otherEdge.Src == newSrc && otherEdge.Dst == newDst {
+		if !sameEquivalentEdge && otherEdge.IsEquivalent(newSrc, edge.SrcArrow, newDst, edge.DstArrow) {
 			firstRef := otherEdge.References[0]
 			if firstRef.MapKey.Range.Start.Line <= line {
 				newIndex++
 			}
 		}
-		if otherEdge.Src == edge.Src && otherEdge.Dst == edge.Dst && otherEdge.Index > edge.Index {
+		if !sameEquivalentEdge && otherEdge.IsEquivalent(edge.Src, edge.SrcArrow, edge.Dst, edge.DstArrow) && otherEdge.Index > edge.Index {
 			before := otherEdge.AbsID()
 			otherEdge.Index--
 			after := otherEdge.AbsID()
@@ -2615,7 +2617,7 @@ func ReconnectEdgeIDDeltas(g *d2graph.Graph, boardPath []string, edgeKey string,
 	}
 
 	for _, otherEdge := range g.Edges {
-		if otherEdge.Src == newSrc && otherEdge.Dst == newDst {
+		if !sameEquivalentEdge && otherEdge.IsEquivalent(newSrc, edge.SrcArrow, newDst, edge.DstArrow) {
 			if otherEdge.Index >= newIndex {
 				before := otherEdge.AbsID()
 				otherEdge.Index++

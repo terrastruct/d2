@@ -1,6 +1,7 @@
 package d2target
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"hash/fnv"
@@ -163,15 +164,15 @@ func (d *Diagram) GetBoard(boardPath []string) *Diagram {
 }
 
 func (diagram Diagram) Bytes() ([]byte, error) {
-	b1, err := json.Marshal(diagram.Shapes)
+	b1, err := marshalHashJSON(diagram.Shapes)
 	if err != nil {
 		return nil, err
 	}
-	b2, err := json.Marshal(diagram.Connections)
+	b2, err := marshalHashJSON(diagram.Connections)
 	if err != nil {
 		return nil, err
 	}
-	b3, err := json.Marshal(diagram.Root)
+	b3, err := marshalHashJSON(diagram.Root)
 	if err != nil {
 		return nil, err
 	}
@@ -208,6 +209,169 @@ func (diagram Diagram) Bytes() ([]byte, error) {
 	}
 
 	return base, nil
+}
+
+// json.Marshal follows the declaration order of struct fields. Go 1.26
+// reorganized net/url.URL, which otherwise changes diagram hashes (and every
+// SVG identifier derived from them) without changing the diagram. Keep URL
+// values in the order used through Go 1.25 for stable hashes across toolchains.
+// This is applied only to Shape, Connection, and Root JSON used by Bytes.
+func marshalHashJSON(v any) ([]byte, error) {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return nil, err
+	}
+	return stabilizeHashURLs(b)
+}
+
+var legacyURLFieldOrder = [...]string{
+	"Scheme",
+	"Opaque",
+	"User",
+	"Host",
+	"Path",
+	"RawPath",
+	"OmitHost",
+	"ForceQuery",
+	"RawQuery",
+	"Fragment",
+	"RawFragment",
+}
+
+func stabilizeHashURLs(b []byte) ([]byte, error) {
+	dec := json.NewDecoder(bytes.NewReader(b))
+	var out bytes.Buffer
+	lastWrite := 0
+
+	var walkValue func() error
+	walkValue = func() error {
+		token, err := dec.Token()
+		if err != nil {
+			return err
+		}
+		delim, ok := token.(json.Delim)
+		if !ok {
+			return nil
+		}
+
+		switch delim {
+		case '{':
+			for dec.More() {
+				keyToken, err := dec.Token()
+				if err != nil {
+					return err
+				}
+				key, ok := keyToken.(string)
+				if !ok {
+					return fmt.Errorf("decode diagram hash JSON: object key has type %T", keyToken)
+				}
+				if key != "icon" {
+					if err := walkValue(); err != nil {
+						return err
+					}
+					continue
+				}
+
+				valueStart, err := hashJSONValueStart(b, int(dec.InputOffset()))
+				if err != nil {
+					return err
+				}
+				var raw json.RawMessage
+				if err := dec.Decode(&raw); err != nil {
+					return fmt.Errorf("decode icon URL for stable diagram hash: %w", err)
+				}
+				if bytes.Equal(raw, []byte("null")) {
+					continue
+				}
+
+				stable, err := stableHashURL(raw)
+				if err != nil {
+					return err
+				}
+				valueEnd := int(dec.InputOffset())
+				if valueEnd < valueStart || valueEnd > len(b) {
+					return fmt.Errorf("decode icon URL for stable diagram hash: invalid offsets %d:%d", valueStart, valueEnd)
+				}
+				out.Write(b[lastWrite:valueStart])
+				out.Write(stable)
+				lastWrite = valueEnd
+			}
+			closeToken, err := dec.Token()
+			if err != nil {
+				return err
+			}
+			if closeToken != json.Delim('}') {
+				return fmt.Errorf("decode diagram hash JSON: got closing token %v, want }", closeToken)
+			}
+		case '[':
+			for dec.More() {
+				if err := walkValue(); err != nil {
+					return err
+				}
+			}
+			closeToken, err := dec.Token()
+			if err != nil {
+				return err
+			}
+			if closeToken != json.Delim(']') {
+				return fmt.Errorf("decode diagram hash JSON: got closing token %v, want ]", closeToken)
+			}
+		default:
+			return fmt.Errorf("decode diagram hash JSON: unexpected delimiter %q", delim)
+		}
+		return nil
+	}
+
+	if err := walkValue(); err != nil {
+		return nil, err
+	}
+	out.Write(b[lastWrite:])
+	return out.Bytes(), nil
+}
+
+func hashJSONValueStart(b []byte, keyEnd int) (int, error) {
+	i := keyEnd
+	for i < len(b) && (b[i] == ' ' || b[i] == '\t' || b[i] == '\r' || b[i] == '\n') {
+		i++
+	}
+	if i < len(b) && b[i] == ':' {
+		i++
+	}
+	for i < len(b) && (b[i] == ' ' || b[i] == '\t' || b[i] == '\r' || b[i] == '\n') {
+		i++
+	}
+	if i >= len(b) {
+		return 0, fmt.Errorf("decode icon URL for stable diagram hash: missing value")
+	}
+	return i, nil
+}
+
+func stableHashURL(raw json.RawMessage) ([]byte, error) {
+	fields := make(map[string]json.RawMessage, len(legacyURLFieldOrder))
+	if err := json.Unmarshal(raw, &fields); err != nil {
+		return nil, fmt.Errorf("decode icon URL for stable diagram hash: %w", err)
+	}
+	if len(fields) != len(legacyURLFieldOrder) {
+		return nil, fmt.Errorf("decode icon URL for stable diagram hash: got %d fields, want %d", len(fields), len(legacyURLFieldOrder))
+	}
+
+	var out bytes.Buffer
+	out.WriteByte('{')
+	for i, name := range legacyURLFieldOrder {
+		value, ok := fields[name]
+		if !ok {
+			return nil, fmt.Errorf("decode icon URL for stable diagram hash: missing field %q", name)
+		}
+		if i > 0 {
+			out.WriteByte(',')
+		}
+		out.WriteByte('"')
+		out.WriteString(name)
+		out.WriteString(`":`)
+		out.Write(value)
+	}
+	out.WriteByte('}')
+	return out.Bytes(), nil
 }
 
 func (diagram Diagram) HasShape(condition func(Shape) bool) bool {
@@ -298,7 +462,7 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 
 		if targetShape.Tooltip != "" || targetShape.Link != "" {
 			if targetShape.TooltipPosition != "" {
-				tooltipMinX, tooltipMinY, tooltipMaxX, tooltipMaxY := calculateTooltipBounds(targetShape)
+				tooltipMinX, tooltipMinY, tooltipMaxX, tooltipMaxY := calculateTooltipBounds(targetShape, diagram.FontFamily, diagram.MonoFontFamily)
 				x1 = go2.Min(x1, tooltipMinX)
 				y1 = go2.Min(y1, tooltipMinY)
 				x2 = go2.Max(x2, tooltipMaxX)
@@ -444,7 +608,7 @@ func CalculateTooltipPosition(shapeX, shapeY, shapeWidth, shapeHeight float64, t
 	return x, y
 }
 
-func calculateTooltipBounds(targetShape Shape) (minX, minY, maxX, maxY int) {
+func calculateTooltipBounds(targetShape Shape, diagramFontFamily, diagramMonoFontFamily *d2fonts.FontFamily) (minX, minY, maxX, maxY int) {
 	if targetShape.Tooltip == "" || targetShape.TooltipPosition == "" {
 		return 0, 0, 0, 0
 	}
@@ -457,12 +621,25 @@ func calculateTooltipBounds(targetShape Shape) (minX, minY, maxX, maxY int) {
 		tooltipWidth = go2.Min(textLength*8+20, 200)
 		tooltipHeight = 30
 	} else {
-		var fontFamily *d2fonts.FontFamily
-		if ff, exists := d2fonts.D2_FONT_TO_FAMILY[targetShape.FontFamily]; exists {
-			fontFamily = &ff
+		fontFamily := diagramFontFamily
+		if fontFamily == nil {
+			family := d2fonts.SourceSansPro
+			fontFamily = &family
+		}
+		monoFontFamily := diagramMonoFontFamily
+		if monoFontFamily == nil {
+			family := d2fonts.SourceCodePro
+			monoFontFamily = &family
+		}
+		if strings.EqualFold(targetShape.FontFamily, "mono") {
+			fontFamily = monoFontFamily
+		} else if targetShape.FontFamily != "" && !strings.EqualFold(targetShape.FontFamily, "default") {
+			if family, ok := d2fonts.D2_FONT_TO_FAMILY[strings.ToLower(targetShape.FontFamily)]; ok {
+				fontFamily = &family
+			}
 		}
 
-		width, height, err := textmeasure.MeasureMarkdown(targetShape.Tooltip, ruler, fontFamily, nil, targetShape.FontSize)
+		width, height, err := textmeasure.MeasureMarkdown(targetShape.Tooltip, ruler, fontFamily, monoFontFamily, d2fonts.FONT_SIZE_M)
 		if err != nil {
 			textLength := len(targetShape.Tooltip)
 			tooltipWidth = go2.Min(textLength*8+20, 200)

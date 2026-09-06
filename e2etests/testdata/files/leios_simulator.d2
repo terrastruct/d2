@@ -1,0 +1,211 @@
+# Source: https://github.com/input-output-hk/ouroboros-leios/blob/c5c86a28414319eabbda7cf1b27507753cc5a7a1/simulation/docs/component.d2
+# License: Apache-2.0; see REAL_WORLD.md.
+# Adaptation: Removed trailing whitespace from a comment.
+
+title: {
+  label: "ouroboros-leios-sim - Component Diagram"
+  near: top-center
+  shape: text
+  style.font-size: 24
+  style.bold: true
+}
+
+# Styles
+classes: {
+  component: {
+    style: {
+      stroke: "#2a2a2a"
+      fill: "#ffffff"
+      font-color: "#2a2a2a"
+      border-radius: 10
+      shadow: true
+    }
+  }
+  container: {
+    style: {
+      stroke: "#2a2a2a"
+      fill: "#f5f5f5"
+      font-color: "#2a2a2a"
+      border-radius: 10
+      shadow: true
+    }
+  }
+  subcomponent: {
+    style: {
+      stroke: "#666666"
+      fill: "#ffffff"
+      font-color: "#2a2a2a"
+      border-radius: 5
+      shadow: false
+    }
+  }
+  external: {
+    style: {
+      stroke: "#2a2a2a"
+      fill: "#ffffff"
+      font-color: "#2a2a2a"
+      border-radius: 10
+      stroke-dash: 5
+    }
+  }
+}
+
+
+# Protocol Engine Container
+protocol-engine: {
+  near: center-left
+  class: container
+  label: "Protocol Engine"
+
+  praos: {
+    class: component
+    label: "Praos Protocol\n\nImplements consensus"
+  }
+
+  chain-sync: {
+      class: component
+      label: "Chain-Sync Mini-Protocol\n\nReconstrucs blockchain of peers"
+  }
+  block-fetch: {
+      class: component
+      label: "Block-Fetch Mini-Protocol\n\nFetches bodies of selected chain"
+  }
+
+  leios: {
+    class: component
+    label: "Leios Protocol"
+    ib-relay: {
+      class: subcomponent
+      label: "Input Blocks Relay"
+    }
+    eb-relay: {
+      class: subcomponent
+      label: "Endorse Blocks Relay"
+    }
+    vote-relay: {
+      class: subcomponent
+      label: "Vote Messages Relay"
+    }
+  }
+
+  relay: {
+    class: component
+    label: "Relay Mini-Protocol\n\nRelays messages\nwith configurable priority"
+  }
+
+  node-manager: {
+    class: component
+    label: "Node\n\nManages node state and\nprotocol interactions"
+  }
+}
+
+# Channel Layer Container
+channel-layer: {
+  near: bottom-left
+  class: container
+  label: "Channel Layer"
+
+  chan: {
+    class: component
+    label: "Generic Channel\n\nBase channel abstraction"
+  }
+
+  tcp: {
+    class: component
+    label: "TCP Model\n\nSimulates TCP behavior"
+  }
+
+  mux: {
+    class: component
+    label: "Channel Multiplexer\n\nMultiplexes protocols"
+  }
+
+  # driver: {
+  #   class: component
+  #   label: "Channel Driver\n\nManages protocol\nchannels"
+  # }
+}
+
+# Visualization Engine Container
+viz-engine: {
+  near: center-right
+  class: container
+  label: "Visualization Engine"
+
+  layout: {
+    class: component
+    label: "Layout Engine\n\nHandles visualization\nlayout"
+  }
+
+  protocol-viz: {
+    class: component
+    label: "Protocol Renderer\n\nRenders mini-protocol\n messages and node state\n(made for small sims)"
+  }
+
+  p2p-viz: {
+    class: component
+    label: "P2P Renderer\n\nVisualizes P2P\nnetwork state\nand charts\n(made for ~100 nodes sims)"
+  }
+
+  frame-output: {
+    class: component
+    label: "Frame Output\n\nOutputs animation frames\n(on-screen or as PNG files)"
+  }
+  protocol-viz -> layout: "Assembled with"
+  p2p-viz -> layout: "Assembled with"
+  layout -> frame-output: "Emits frames"
+}
+
+# Event Consumer Container
+monitor: {
+  near: bottom-right
+  class: container
+  label: "Event Consumer"
+
+  metrics: {
+    class: component
+    label: "Model\n\nComputes state and metrics from trace"
+  }
+
+  tracer: {
+    class: component
+    label: "Event Tracer\n\nCollects trace of\nnode and network events"
+  }
+
+  io-sim: {
+    class: external
+    label: "IO-Sim library\n\nSimulates threading, clocks, STM, .."
+  }
+
+  file-system: {
+    class: external
+    label: "File-System"
+  }
+
+  tracer -> io-sim: "Uses to run nodes and channels"
+  metrics -> tracer: "Consumes trace"
+  metrics -> file-system: "Outputs metrics"
+}
+
+# Core Layer Relationships
+channel-layer.tcp -> channel-layer.chan: "Implements"
+channel-layer.mux -> channel-layer.chan: "Uses"
+# channel-layer.driver -> channel-layer.chan: "Uses"
+# channel-layer.mux -> channel-layer.tcp: "Multiplexes over"
+# channel-layer.driver -> channel-layer.mux: "Uses for routing"
+
+# Protocol Layer Relationships
+protocol-engine -> channel-layer: "Uses for messaging"
+protocol-engine.praos -> protocol-engine.block-fetch:"Bodies diffusion"
+protocol-engine.praos -> protocol-engine.chain-sync:"Headers diffusion"
+protocol-engine.leios -> protocol-engine.praos: "Extends consensus"
+protocol-engine.leios -> protocol-engine.relay: "Uses for diffusion"
+protocol-engine.node-manager -> protocol-engine.praos: "Manages ranking blocks\nvalidation/generation"
+protocol-engine.node-manager -> protocol-engine.leios: "Manages ledger state\nand validation/generation"
+
+# Visualization Layer Relationships
+viz-engine -> monitor: "Visualizes state and metrics"
+
+# Monitoring Relationships
+monitor -> channel-layer: "Traces network events"
+monitor -> protocol-engine: "Traces node events"

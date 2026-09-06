@@ -5,8 +5,6 @@
 package font
 
 import (
-	"bytes"
-	"compress/zlib"
 	"encoding/binary"
 	"fmt"
 	"math"
@@ -155,6 +153,12 @@ func Sfnt2Woff(fontBuf []byte) ([]byte, error) {
 	flavor := uint32(0)
 	offset := SIZE_OF_WOFF_HEADER + int(numTables)*SIZE_OF_WOFF_ENTRY
 	var tableBytes []byte
+	var compression *woffCompression
+	defer func() {
+		if compression != nil {
+			releaseWoffCompression(compression)
+		}
+	}()
 
 	for i := 0; i < len(entries); i++ {
 		tableEntry := entries[i]
@@ -167,21 +171,20 @@ func Sfnt2Woff(fontBuf []byte) ([]byte, error) {
 			binary.BigEndian.PutUint32(sfntData[SFNT_ENTRY_OFFSET_CHECKSUM_ADJUSTMENT:], uint32(checksumAdjustment))
 		}
 
-		var res bytes.Buffer
-		w := zlib.NewWriter(&res)
-		w.Write(sfntData)
-		w.Flush()
-		w.Close()
+		if compression == nil {
+			compression = acquireWoffCompression()
+		}
+		compressed := compression.compressTable(sfntData)
 
-		compLength := math.Min(float64(len(res.Bytes())), float64(len(sfntData)))
+		compLength := math.Min(float64(len(compressed)), float64(len(sfntData)))
 		length := longAlign(uint32(compLength))
 
 		table := make([]byte, length)
 		// only deflate data if the deflated data is actually smaller
-		if len(res.Bytes()) >= len(sfntData) {
+		if len(compressed) >= len(sfntData) {
 			copy(table, sfntData)
 		} else {
-			copy(table, res.Bytes())
+			copy(table, compressed)
 		}
 
 		binary.BigEndian.PutUint32(tableInfo[i*SIZE_OF_WOFF_ENTRY+WOFF_ENTRY_OFFSET_OFFSET:], uint32(offset))

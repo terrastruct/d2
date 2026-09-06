@@ -135,6 +135,10 @@ func (s shapeCloud) GetSVGPathData() []string {
 	}
 }
 
+func (s shapeCloud) GetPathCommands() [][]svg.PathCommand {
+	return pathCommands(cloudPath(s.Box))
+}
+
 func (s shapeCloud) GetDefaultPadding() (paddingX, paddingY float64) {
 	return defaultPadding, defaultPadding / 2
 }

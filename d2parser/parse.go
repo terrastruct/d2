@@ -147,9 +147,10 @@ type parser struct {
 	reader    io.RuneReader
 	readerPos d2ast.Position
 
-	readahead    []rune
-	lookahead    []rune
-	lookaheadPos d2ast.Position
+	readahead      []rune
+	readaheadIndex int
+	lookahead      []rune
+	lookaheadPos   d2ast.Position
 
 	ioerr bool
 	err   *ParseError
@@ -209,9 +210,13 @@ func (p *parser) errorf(start d2ast.Position, end d2ast.Position, f string, v ..
 
 // _readRune reads the next rune from the underlying reader or from the p.readahead buffer.
 func (p *parser) _readRune() (r rune, eof bool) {
-	if len(p.readahead) > 0 {
-		r = p.readahead[0]
-		p.readahead = append(p.readahead[:0], p.readahead[1:]...)
+	if p.readaheadIndex < len(p.readahead) {
+		r = p.readahead[p.readaheadIndex]
+		p.readaheadIndex++
+		if p.readaheadIndex == len(p.readahead) {
+			p.readahead = p.readahead[:0]
+			p.readaheadIndex = 0
+		}
 		return r, false
 	}
 
@@ -367,16 +372,18 @@ func (p *parser) rewind() {
 
 	// This is more complex than it needs to be to allow reusing the buffer underlying
 	// p.readahead.
-	newcap := len(p.lookahead) + len(p.readahead)
+	unread := p.readahead[p.readaheadIndex:]
+	newcap := len(p.lookahead) + len(unread)
 	if cap(p.readahead) < newcap {
 		readahead2 := make([]rune, newcap)
-		copy(readahead2[len(p.lookahead):], p.readahead)
+		copy(readahead2[len(p.lookahead):], unread)
 		p.readahead = readahead2
 	} else {
 		p.readahead = p.readahead[:newcap]
-		copy(p.readahead[len(p.lookahead):], p.readahead)
+		copy(p.readahead[len(p.lookahead):], unread)
 	}
 	copy(p.readahead, p.lookahead)
+	p.readaheadIndex = 0
 
 	p.lookahead = p.lookahead[:0]
 	p.lookaheadPos = p.pos
@@ -1078,10 +1085,14 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 
 	var sb strings.Builder
 	var rawb strings.Builder
+	hasRaw := false
 	lastPatternIndex := 0
 	defer func() {
 		sv := strings.TrimRightFunc(sb.String(), unicode.IsSpace)
-		rawv := strings.TrimRightFunc(rawb.String(), unicode.IsSpace)
+		rawv := sv
+		if hasRaw {
+			rawv = strings.TrimRightFunc(rawb.String(), unicode.IsSpace)
+		}
 		if s.Pattern != nil {
 			if lastPatternIndex < len(sv) {
 				s.Pattern = append(s.Pattern, sv[lastPatternIndex:])
@@ -1100,12 +1111,22 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 		s.Value = append(s.Value, d2ast.InterpolationBox{String: &sv, StringRaw: &rawv})
 	}()
 
-	_s, eof := p.peekn(4)
-	p.rewind()
-	if !eof {
-		if _s == "...@" {
-			p.errorf(p.pos, p.pos.AdvanceString("...@", p.utf16Pos), "unquoted strings cannot begin with ...@ as that's import spread syntax")
+	// Preserve all four peeks, including their I/O/error behavior, without
+	// allocating a temporary string for this fixed prefix check.
+	importSpread := true
+	for _, want := range "...@" {
+		r, eof := p.peek()
+		if eof {
+			importSpread = false
+			break
 		}
+		if r != want {
+			importSpread = false
+		}
+	}
+	p.rewind()
+	if importSpread {
+		p.errorf(p.pos, p.pos.AdvanceString("...@", p.utf16Pos), "unquoted strings cannot begin with ...@ as that's import spread syntax")
 	}
 
 	for {
@@ -1131,7 +1152,9 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 			p.commit()
 			lastNonSpace = p.pos
 			sb.WriteRune(r)
-			rawb.WriteRune(r)
+			if hasRaw {
+				rawb.WriteRune(r)
+			}
 			continue
 		}
 
@@ -1161,7 +1184,9 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 					p.peek()
 					p.commit()
 					sb.WriteRune(r)
-					rawb.WriteRune(r)
+					if hasRaw {
+						rawb.WriteRune(r)
+					}
 					return s
 				}
 				if r2 == '-' || r2 == '>' || r2 == '*' {
@@ -1169,7 +1194,9 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 					return s
 				}
 				sb.WriteRune(r)
-				rawb.WriteRune(r)
+				if hasRaw {
+					rawb.WriteRune(r)
+				}
 				r = r2
 			}
 		}
@@ -1194,10 +1221,14 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 			if subst != nil {
 				if sb.Len() > 0 {
 					sv := sb.String()
-					rawv := rawb.String()
+					rawv := sv
+					if hasRaw {
+						rawv = rawb.String()
+					}
 					s.Value = append(s.Value, d2ast.InterpolationBox{String: &sv, StringRaw: &rawv})
 					sb.Reset()
 					rawb.Reset()
+					hasRaw = false
 				}
 				s.Value = append(s.Value, d2ast.InterpolationBox{Substitution: subst})
 				continue
@@ -1207,7 +1238,9 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 
 		if r != '\\' {
 			sb.WriteRune(r)
-			rawb.WriteRune(r)
+			if hasRaw {
+				rawb.WriteRune(r)
+			}
 			continue
 		}
 
@@ -1228,6 +1261,12 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 			continue
 		}
 
+		// Raw and decoded text are identical until the first real escape.
+		// Copy that prefix once; ordinary tokens need only the decoded builder.
+		if !hasRaw {
+			rawb.WriteString(sb.String())
+			hasRaw = true
+		}
 		sb.WriteRune(decodeEscape(r2))
 		rawb.WriteByte('\\')
 		rawb.WriteRune(r2)

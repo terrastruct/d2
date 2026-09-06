@@ -4,6 +4,7 @@ import (
 	"cmp"
 	"errors"
 	"fmt"
+	"hash/fnv"
 	"math"
 	"slices"
 	"sort"
@@ -442,7 +443,7 @@ func (sd *sequenceDiagram) addLifelineEdges() {
 			Src:        actor,
 			SrcArrow:   false,
 			Dst: &d2graph.Object{
-				ID: actor.ID + fmt.Sprintf("-lifeline-end-%d", go2.StringToIntHash(actor.ID+"-lifeline-end")),
+				ID: LifelineEndID(actor.ID),
 			},
 			DstArrow: false,
 			Route:    []*geo.Point{actorBottom, actorLifelineEnd},
@@ -451,23 +452,30 @@ func (sd *sequenceDiagram) addLifelineEdges() {
 	}
 }
 
+const lifelineEndSuffix = "-lifeline-end"
+
+// LifelineEndID returns the synthetic endpoint ID for an actor's lifeline.
+// The hash is formatted as an unsigned 32-bit value so the ID is stable across
+// architectures.
+func LifelineEndID(actorID string) string {
+	hash := fnv.New32a()
+	_, _ = hash.Write([]byte(actorID + lifelineEndSuffix))
+	return actorID + lifelineEndSuffix + "-" + strconv.FormatUint(uint64(hash.Sum32()), 10)
+}
+
+// IsLifelineEnd reports whether obj is a synthetic sequence-diagram lifeline
+// endpoint.
 func IsLifelineEnd(obj *d2graph.Object) bool {
 	// lifeline ends only have ID and no graph parent or box set
-	if obj.Graph != nil || obj.Parent != nil || obj.Box != nil {
+	if obj == nil || obj.Graph != nil || obj.Parent != nil || obj.Box != nil {
 		return false
 	}
-	if !strings.Contains(obj.ID, "-lifeline-end-") {
+	marker := lifelineEndSuffix + "-"
+	markerIndex := strings.LastIndex(obj.ID, marker)
+	if markerIndex < 0 {
 		return false
 	}
-	parts := strings.Split(obj.ID, "-lifeline-end-")
-	if len(parts) > 1 {
-		hash := parts[len(parts)-1]
-		actorID := strings.Join(parts[:len(parts)-1], "-lifeline-end-")
-		if strconv.Itoa(go2.StringToIntHash(actorID+"-lifeline-end")) == hash {
-			return true
-		}
-	}
-	return false
+	return obj.ID == LifelineEndID(obj.ID[:markerIndex])
 }
 
 func (sd *sequenceDiagram) placeNotes() {

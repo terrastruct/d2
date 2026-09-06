@@ -10,7 +10,7 @@
 [![daily](https://github.com/d2lang/d2/actions/workflows/daily.yml/badge.svg)](https://github.com/d2lang/d2/actions/workflows/daily.yml)
 [![release](https://img.shields.io/github/v/release/d2lang/d2)](https://github.com/d2lang/d2/releases)
 [![changelog](https://img.shields.io/badge/changelog-read-blue)](./CHANGELOG.md)
-[![npm version](https://img.shields.io/npm/v/@terrastruct/d2)](https://www.npmjs.com/package/@terrastruct/d2)
+[![npm version](https://img.shields.io/npm/v/@d2lang/d2)](https://www.npmjs.com/package/@d2lang/d2)
 [![discord](https://img.shields.io/discord/1039184639652265985?label=discord)](https://discord.gg/NF6X8K4eDq)
 [![license](https://img.shields.io/github/license/d2lang/d2?color=9cf)](./LICENSE.txt)
 
@@ -175,7 +175,7 @@ one, please see [./d2renderers/d2fonts](./d2renderers/d2fonts).
 
 ## Export file types
 
-D2 currently supports SVG, PNG and PDF exports. More coming soon.
+D2 supports SVG, PNG, GIF, PDF, and PPTX exports.
 
 ## Language tooling
 
@@ -193,11 +193,12 @@ bundled with the build or separately installed as a standalone binary.
 
 **Layout engines**:
 
-- [dagre](https://github.com/dagrejs/dagre) (default, bundled): A fast, directed graph
-  layout engine that produces layered/hierarchical layouts. Based on Graphviz's DOT
-  algorithm.
-- [ELK](https://github.com/kieler/elkjs) (bundled): A directed graph layout engine
-  particularly suited for node-link diagrams with an inherent direction and ports.
+- [Dagro](https://github.com/d2lang/dagro) (default, bundled): A native Go port of the
+  Dagre directed graph layout engine that produces layered/hierarchical layouts. Based
+  on Graphviz's DOT algorithm.
+- [elk-go](https://github.com/d2lang/elk-go) (bundled): A native Go port of the ELK
+  directed graph layout engine, particularly suited for node-link diagrams with an
+  inherent direction and ports.
 - [TALA](https://github.com/terrastruct/TALA) (binary): Novel layout engine designed
   specifically for software architecture diagrams. Requires separate install, visit the
   Github page for more.
@@ -205,6 +206,12 @@ bundled with the build or separately installed as a standalone binary.
 D2 intends to integrate with a variety of layout engines, e.g. `dot`, as well as
 single-purpose layout types like sequence diagrams. You can choose whichever layout engine
 you like and works best for the diagram you're making.
+
+Sketch-mode rendering uses [rough-go](https://github.com/d2lang/rough-go), a native Go
+compatibility port of the Rough.js 4.6.6 rendering surface used by D2.
+
+LaTeX labels use [mathjax-go](https://github.com/d2lang/mathjax-go), a native Go port of
+the MathJax 3.2.2 TeX-to-SVG pipeline.
 
 ## Comparison
 
@@ -268,7 +275,7 @@ let us know and we'll be happy to include it here!
 
 ### Misc
 
-- **Comparison site**: [https://github.com/terrastruct/text-to-diagram-site](https://github.com/terrastruct/text-to-diagram-site)
+- **Comparison site**: [https://github.com/d2lang/text-to-diagram-site](https://github.com/d2lang/text-to-diagram-site)
 - **Playground**: [https://github.com/d2lang/d2-playground](https://github.com/d2lang/d2-playground)
 - **Language docs**: [https://github.com/d2lang/d2-docs](https://github.com/d2lang/d2-docs)
 - **Hosted icons**: [https://icons.d2lang.com](https://icons.d2lang.com)

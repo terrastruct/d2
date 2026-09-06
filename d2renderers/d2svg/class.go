@@ -153,10 +153,10 @@ func drawClass(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 
 		tl := iconPosition.GetPointOnBox(box, label.PADDING, float64(iconSize), float64(iconSize))
 
-		fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" />`,
+		fmt.Fprintf(writer, `<image href="%s" x="%s" y="%s" width="%d" height="%d" />`,
 			html.EscapeString(targetShape.Icon.String()),
-			tl.X,
-			tl.Y,
+			svg.FormatFloat(tl.X),
+			svg.FormatFloat(tl.Y),
 			iconSize,
 			iconSize,
 		)

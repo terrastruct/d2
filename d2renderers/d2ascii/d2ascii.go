@@ -22,19 +22,11 @@ const (
 	defaultScale      = 1.0
 )
 
-const (
-	maxRouteAttempts = asciiroute.MaxRouteAttempts
-	labelOffsetX     = asciiroute.LabelOffsetX
-)
-
 type ASCIIartist struct {
 	canvas  *asciicanvas.Canvas
 	FW      float64
 	FH      float64
 	chars   charset.Set
-	entr    string
-	bcurve  string
-	tcurve  string
 	SCALE   float64
 	diagram d2target.Diagram
 	ctx     context.Context
@@ -48,6 +40,10 @@ type Point = asciiroute.Point
 
 type Boundary = asciiroute.Boundary
 
+// NewBoundary constructs an ASCII routing boundary.
+//
+// Deprecated: use asciiroute.NewBoundary. This forwarding function will be
+// removed after one compatibility release.
 func NewBoundary(tl, br Point) *Boundary {
 	return asciiroute.NewBoundary(tl, br)
 }
@@ -127,9 +123,6 @@ func NewASCIIartist() *ASCIIartist {
 		FW:      defaultFontWidth,
 		FH:      defaultFontHeight,
 		SCALE:   defaultScale,
-		entr:    "\n",
-		bcurve:  "`-._",
-		tcurve:  ".-`‾",
 		chars:   charset.New(charset.Unicode),
 		diagram: *d2target.NewDiagram(),
 	}
@@ -412,10 +405,6 @@ func (a *ASCIIartist) calibrateXY(x, y float64) (float64, float64) {
 	xC := float64(math.Round((x / a.FW) * a.SCALE))
 	yC := float64(math.Round((y / a.FH) * a.SCALE))
 	return xC, yC
-}
-
-func absInt(a int) int {
-	return int(math.Abs(float64(a)))
 }
 
 func hasConnectionsAtRightEdge(shape d2target.Shape, connections []d2target.Connection, fontWidth float64) bool {

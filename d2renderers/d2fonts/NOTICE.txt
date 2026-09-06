@@ -1,6 +1,58 @@
-The fonts bundled with D2 are open source fonts licensed under SIL OPEN FONT
-LICENSE.
+The Source Sans Pro, Source Code Pro, and Fuzzy Bubbles fonts bundled with D2
+are licensed under the SIL Open Font License 1.1.
 
-Attribution:
+Attribution and license: http://scripts.sil.org/OFL
 
-http://scripts.sil.org/OFL
+Noto Color Emoji version 2.051
+Upstream license copyright: Copyright 2013 Google LLC
+Font metadata copyright: Copyright 2022 Google Inc.
+Source: https://github.com/googlefonts/noto-emoji/tree/v2.051
+Source commit: 8998f5dd683424a73e2314a8c1f1e359c19e8742
+Original file: fonts/Noto-COLRv1.ttf
+Original SHA-256: 0ae57fe58645638523ba35f388d93739d292539a9acb84df5700c81b1e1a28d2
+Decoded size: 4991984 bytes
+Embedded Brotli: d2renderers/d2fonts/encoded/NotoColorEmoji-COLRv1-v2.051.ttf.br (2354437 bytes)
+Embedded Brotli SHA-256: 342beffe73f7fa450d2486d3ad62ab2308df68192718965baf23f5a85eef8247
+License: SIL Open Font License 1.1; see NotoColorEmoji-OFL.txt in this
+directory. The OFL expressly excludes documents created with the font from its
+font-licensing requirements.
+
+The embedded stream was generated deterministically with
+github.com/andybalholm/brotli v1.2.2 at quality 11 and LGWin 22. The decoded
+and compressed size and SHA-256 checks above authenticate both
+representations. From the repository root, the following program and commands
+fetch the pinned source and reproduce the embedded stream byte for byte:
+
+    tmpdir="$(mktemp -d)"
+    curl -fsSL https://raw.githubusercontent.com/googlefonts/noto-emoji/8998f5dd683424a73e2314a8c1f1e359c19e8742/fonts/Noto-COLRv1.ttf -o "$tmpdir/Noto-COLRv1.ttf"
+    printf '%s  %s\n' 0ae57fe58645638523ba35f388d93739d292539a9acb84df5700c81b1e1a28d2 "$tmpdir/Noto-COLRv1.ttf" | shasum -a 256 -c -
+    cat > "$tmpdir/compress.go" <<'EOF'
+    package main
+
+    import (
+        "bytes"
+        "os"
+
+        "github.com/andybalholm/brotli"
+    )
+
+    func main() {
+        source, err := os.ReadFile(os.Args[1])
+        if err != nil {
+            panic(err)
+        }
+        var encoded bytes.Buffer
+        writer := brotli.NewWriterOptions(&encoded, brotli.WriterOptions{Quality: 11, LGWin: 22})
+        if _, err := writer.Write(source); err != nil {
+            panic(err)
+        }
+        if err := writer.Close(); err != nil {
+            panic(err)
+        }
+        if err := os.WriteFile(os.Args[2], encoded.Bytes(), 0644); err != nil {
+            panic(err)
+        }
+    }
+    EOF
+    go run "$tmpdir/compress.go" "$tmpdir/Noto-COLRv1.ttf" d2renderers/d2fonts/encoded/NotoColorEmoji-COLRv1-v2.051.ttf.br
+    printf '%s  %s\n' 342beffe73f7fa450d2486d3ad62ab2308df68192718965baf23f5a85eef8247 d2renderers/d2fonts/encoded/NotoColorEmoji-COLRv1-v2.051.ttf.br | shasum -a 256 -c -

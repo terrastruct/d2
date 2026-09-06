@@ -57,6 +57,10 @@ func (s shapeDocument) GetSVGPathData() []string {
 	}
 }
 
+func (s shapeDocument) GetPathCommands() [][]svg.PathCommand {
+	return pathCommands(documentPath(s.Box))
+}
+
 func (s shapeDocument) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	baseHeight := (height + paddingY) * docPathHeight / docPathInnerBottom
 	return math.Ceil(width + paddingX), math.Ceil(baseHeight)

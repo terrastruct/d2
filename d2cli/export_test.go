@@ -14,7 +14,6 @@ func TestOutputFormat(t *testing.T) {
 		supportsDarkTheme         bool
 		supportsAnimation         bool
 		requiresAnimationInterval bool
-		requiresPngRender         bool
 	}
 	testCases := []testCase{
 		{
@@ -23,7 +22,6 @@ func TestOutputFormat(t *testing.T) {
 			supportsDarkTheme:         true,
 			supportsAnimation:         true,
 			requiresAnimationInterval: false,
-			requiresPngRender:         false,
 		},
 		{
 			// assumes SVG by default
@@ -32,7 +30,6 @@ func TestOutputFormat(t *testing.T) {
 			supportsDarkTheme:         true,
 			supportsAnimation:         true,
 			requiresAnimationInterval: false,
-			requiresPngRender:         false,
 		},
 		{
 			outputPath:                "-",
@@ -40,7 +37,6 @@ func TestOutputFormat(t *testing.T) {
 			supportsDarkTheme:         true,
 			supportsAnimation:         true,
 			requiresAnimationInterval: false,
-			requiresPngRender:         false,
 		},
 		{
 			stdoutFormatFlag:          "png",
@@ -49,7 +45,6 @@ func TestOutputFormat(t *testing.T) {
 			supportsDarkTheme:         false,
 			supportsAnimation:         false,
 			requiresAnimationInterval: false,
-			requiresPngRender:         true,
 		},
 		{
 			outputPath:                "/out.png",
@@ -57,7 +52,6 @@ func TestOutputFormat(t *testing.T) {
 			supportsDarkTheme:         false,
 			supportsAnimation:         false,
 			requiresAnimationInterval: false,
-			requiresPngRender:         true,
 		},
 		{
 			outputPath:                "/out.pptx",
@@ -65,7 +59,6 @@ func TestOutputFormat(t *testing.T) {
 			supportsDarkTheme:         false,
 			supportsAnimation:         false,
 			requiresAnimationInterval: false,
-			requiresPngRender:         true,
 		},
 		{
 			outputPath:                "/out.pdf",
@@ -73,7 +66,6 @@ func TestOutputFormat(t *testing.T) {
 			supportsDarkTheme:         false,
 			supportsAnimation:         false,
 			requiresAnimationInterval: false,
-			requiresPngRender:         true,
 		},
 		{
 			outputPath:                "/out.gif",
@@ -81,7 +73,6 @@ func TestOutputFormat(t *testing.T) {
 			supportsDarkTheme:         false,
 			supportsAnimation:         true,
 			requiresAnimationInterval: true,
-			requiresPngRender:         true,
 		},
 	}
 
@@ -93,7 +84,6 @@ func TestOutputFormat(t *testing.T) {
 			assert.Equal(t, tc.extension, extension)
 			assert.Equal(t, tc.supportsAnimation, extension.supportsAnimation())
 			assert.Equal(t, tc.supportsDarkTheme, extension.supportsDarkTheme())
-			assert.Equal(t, tc.requiresPngRender, extension.requiresPNGRenderer())
 		})
 	}
 }

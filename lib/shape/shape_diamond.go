@@ -60,6 +60,10 @@ func (s shapeDiamond) GetSVGPathData() []string {
 	}
 }
 
+func (s shapeDiamond) GetPathCommands() [][]svg.PathCommand {
+	return pathCommands(diamondPath(s.Box))
+}
+
 func (s shapeDiamond) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	totalWidth := 2 * (width + paddingX)
 	totalHeight := 2 * (height + paddingY)

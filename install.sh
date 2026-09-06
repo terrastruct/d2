@@ -11,6 +11,7 @@ set -eu
 # - ./ci/sub/lib/log.sh
 # - ./ci/sub/lib/flag.sh
 # - ./ci/sub/lib/release.sh
+# - ./ci/release/checksum.sh
 # - ./ci/release/_install.sh
 #
 # The last of which implements the installation logic.
@@ -597,8 +598,119 @@ ensure_prefix_sh_c() {
   fi
 }
 #!/bin/sh
+if [ -n "${D2_RELEASE_CHECKSUM-}" ]; then
+  return 0
+fi
+D2_RELEASE_CHECKSUM=1
+
+sha256_file() {
+  if command -v sha256sum >/dev/null 2>&1; then
+    sha256sum "$1" | awk '{ print $1 }'
+  elif command -v shasum >/dev/null 2>&1; then
+    shasum -a 256 "$1" | awk '{ print $1 }'
+  elif command -v openssl >/dev/null 2>&1; then
+    openssl dgst -sha256 "$1" | awk '{ print $NF }'
+  else
+    echo >&2 "sha256sum, shasum, or openssl is required to verify release downloads"
+    return 1
+  fi
+}
+
+release_asset_digest_from_json() {
+  ASSET_NAME=$1
+  awk -v asset="$ASSET_NAME" '
+    /^[[:space:]]*"name":[[:space:]]*/ {
+      value = $0
+      sub(/^[^:]*:[[:space:]]*"/, "", value)
+      sub(/"[,[:space:]]*$/, "", value)
+      found = value == asset
+      next
+    }
+    found && /^[[:space:]]*"digest":[[:space:]]*/ {
+      value = $0
+      if (value ~ /^[^:]*:[[:space:]]*null[,[:space:]]*$/) {
+        print "unavailable"
+        exit
+      }
+      original = value
+      sub(/^[^:]*:[[:space:]]*"sha256:/, "", value)
+      if (value == original) {
+        exit
+      }
+      sub(/"[,[:space:]]*$/, "", value)
+      print value
+      exit
+    }
+  '
+}
+
+release_asset_sha256() {
+  REPOSITORY=$1
+  RELEASE_VERSION=$2
+  ASSET_NAME=$3
+  RELEASE_INFO=$(mktempd)/release.json
+  RELEASE_INFO_URL="https://api.github.com/repos/$REPOSITORY/releases/tags/$RELEASE_VERSION"
+  DRY_RUN= fetch_gh "$RELEASE_INFO_URL" "$RELEASE_INFO" 'application/vnd.github+json'
+  EXPECTED_SHA256=$(release_asset_digest_from_json "$ASSET_NAME" <"$RELEASE_INFO")
+  if [ "$EXPECTED_SHA256" = unavailable ]; then
+    return 0
+  fi
+  EXPECTED_SHA256=$(printf '%s' "$EXPECTED_SHA256" | tr '[:upper:]' '[:lower:]')
+  if ! printf '%s\n' "$EXPECTED_SHA256" | grep -Eq '^[0-9a-f]{64}$'; then
+    echo >&2 "$ASSET_NAME does not have a valid GitHub SHA-256 digest"
+    return 1
+  fi
+  printf '%s\n' "$EXPECTED_SHA256"
+}
+
+verify_sha256() {
+  FILE=$1
+  EXPECTED_SHA256=$2
+  ACTUAL_SHA256=$(sha256_file "$FILE")
+  ACTUAL_SHA256=$(printf '%s' "$ACTUAL_SHA256" | tr '[:upper:]' '[:lower:]')
+  if [ "$ACTUAL_SHA256" != "$EXPECTED_SHA256" ]; then
+    echo >&2 "$FILE has SHA-256 $ACTUAL_SHA256, expected $EXPECTED_SHA256"
+    return 1
+  fi
+}
+
+fetch_release_asset() {
+  REPOSITORY=$1
+  RELEASE_VERSION=$2
+  ASSET_NAME=$3
+  ASSET_URL=$4
+  DESTINATION=$5
+
+  if [ -n "${DRY_RUN-}" ]; then
+    sh_c "download $ASSET_NAME and verify its GitHub SHA-256 digest when available"
+    return
+  fi
+
+  EXPECTED_SHA256=$(release_asset_sha256 "$REPOSITORY" "$RELEASE_VERSION" "$ASSET_NAME")
+  if [ -z "$EXPECTED_SHA256" ]; then
+    warn "GitHub does not provide a SHA-256 digest for $ASSET_NAME; continuing without checksum verification for compatibility with legacy releases"
+    fetch_gh "$ASSET_URL" "$DESTINATION" 'application/octet-stream'
+    return
+  fi
+  if [ -e "$DESTINATION" ]; then
+    if verify_sha256 "$DESTINATION" "$EXPECTED_SHA256"; then
+      log "reusing verified $DESTINATION"
+      return
+    fi
+    warn "discarding cached $ASSET_NAME after checksum verification failed"
+    rm -f "$DESTINATION"
+  fi
+  fetch_gh "$ASSET_URL" "$DESTINATION" 'application/octet-stream'
+  verify_sha256 "$DESTINATION" "$EXPECTED_SHA256"
+  log "verified $ASSET_NAME ($EXPECTED_SHA256)"
+}
+#!/bin/sh
 set -eu
 
+
+if [ -z "${D2_RELEASE_CHECKSUM-}" ]; then
+  . "$(dirname "$0")/checksum.sh"
+fi
 
 help() {
   arg0="$0"
@@ -607,15 +719,12 @@ help() {
   fi
 
   cat <<EOF
-usage: $arg0 [-d|--dry-run] [--version vX.X.X] [--edge] [--method detect] [--prefix path]
+usage: $arg0 [-d|--dry-run] [--version vX.X.X] [--method detect] [--prefix path]
   [--tala latest] [--force] [--uninstall] [-x|--trace]
 
 install.sh automates the installation of D2 onto your system. It currently only supports
 the installation of standalone releases from GitHub and via Homebrew on macOS. See the
 docs for --detect below for more information
-
-If you pass --edge, it will clone the source, build a release and install from it.
---edge is incompatible with --tala and currently unimplemented.
 
 \$PREFIX in the docs below refers to the path set by --prefix. See docs on the --prefix
 flag below for the default.
@@ -630,19 +739,6 @@ Flags:
   Pass to have install.sh install the given version instead of the latest version.
   warn: The version may not be obeyed with package manager installations. Use
         --method=standalone to enforce the version.
-
---edge
-  Pass to build and install D2 from source. This will still use --method if set to detect
-  to install the release archive for your OS, whether it's apt, yum, brew or standalone
-  if an unsupported package manager is used.
-
-  To install from source like a dev would, use go install github.com/d2lang/d2@latest. There's
-  also ./ci/release/build.sh --install to build and install a proper standalone release
-  including manpages. The proper release will also ensure d2 --version shows the correct
-  version by embedding the commit hash into the binary.
-
-  note: currently unimplemented.
-  warn: incompatible with --tala as TALA is closed source.
 
 --method [detect | standalone | homebrew ]
   Pass to control the method by which to install. Right now we only support standalone
@@ -720,12 +816,6 @@ main() {
       tala)
         shift "$FLAGSHIFT"
         TALA=${FLAGARG:-latest}
-        ;;
-      edge)
-        flag_noarg && shift "$FLAGSHIFT"
-        EDGE=1
-        echoerr "$FLAGRAW is currently unimplemented"
-        return 1
         ;;
       method)
         flag_nonemptyarg && shift "$FLAGSHIFT"
@@ -927,7 +1017,8 @@ install_d2_standalone() {
 
   ensure_version
   asset_url="https://github.com/$REPO/releases/download/$VERSION/$ARCHIVE"
-  fetch_gh "$asset_url" "$CACHE_DIR/$ARCHIVE" 'application/octet-stream'
+  fetch_release_asset \
+    "$REPO" "$VERSION" "$ARCHIVE" "$asset_url" "$CACHE_DIR/$ARCHIVE"
 
   ensure_prefix_sh_c
   "$sh_c" mkdir -p "'$INSTALL_DIR'"

@@ -21,7 +21,8 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  DOCKER_IMAGE: terrastruct/d2
+  PRIMARY_DOCKER_IMAGE: d2lang/d2
+  LEGACY_DOCKER_IMAGE: terrastruct/d2
 
 jobs:
   validate:
@@ -172,7 +173,7 @@ jobs:
     timeout-minutes: 5
     environment: docker-release
     env:
-      DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
+      DOCKERHUB_LOGIN_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
       VERSION: ${{ needs.validate.outputs.version }}
     steps:
       - name: Log in to Docker Hub
@@ -180,46 +181,59 @@ jobs:
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
           set -euo pipefail
-          test "$DOCKERHUB_USERNAME" = terrastruct
+          test -n "$DOCKERHUB_LOGIN_USERNAME"
           test -n "$DOCKERHUB_TOKEN"
           printf '%s' "$DOCKERHUB_TOKEN" | \
-            docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+            docker login --username "$DOCKERHUB_LOGIN_USERNAME" --password-stdin
 
-      - name: Verify Docker Hub version-tag immutability
+      - name: Verify Docker Hub version-tag immutability for both repositories
         run: |
           set -euo pipefail
           expected_rule='^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z]+([.-][0-9A-Za-z]+)*)?$'
-          curl -fsSL 'https://hub.docker.com/v2/namespaces/terrastruct/repositories/d2' | \
-            jq -e --arg rule "$expected_rule" '
-              .immutable_tags_settings.enabled == true and
-              .immutable_tags_settings.rules == [$rule]
-            ' >/dev/null
+          for image in "$PRIMARY_DOCKER_IMAGE" "$LEGACY_DOCKER_IMAGE"; do
+            namespace=${image%%/*}
+            repository=${image#*/}
+            if [[ -z "$namespace" || -z "$repository" || "$repository" == "$image" ]]; then
+              echo "invalid Docker image name: $image" >&2
+              exit 1
+            fi
+            curl -fsSL "https://hub.docker.com/v2/namespaces/$namespace/repositories/$repository" | \
+              jq -e --arg rule "$expected_rule" '
+                .immutable_tags_settings.enabled == true and
+                .immutable_tags_settings.rules == [$rule]
+              ' >/dev/null
+          done
 
-      - name: Refuse to overwrite an immutable version tag
+      - name: Refuse existing immutable version tags in either repository
         run: |
           set -euo pipefail
-          image="$DOCKER_IMAGE"
-          registry_token=$(curl -fsSL \
-            'https://auth.docker.io/token?service=registry.docker.io&scope=repository:terrastruct/d2:pull' | \
-            jq -er '.token')
-          if ! status=$(curl -sS -o /dev/null -w '%{http_code}' --head \
-            -H "Authorization: Bearer $registry_token" \
-            -H 'Accept: application/vnd.oci.image.index.v1+json, application/vnd.docker.distribution.manifest.list.v2+json' \
-            "https://registry-1.docker.io/v2/terrastruct/d2/manifests/$VERSION"); then
-            echo "Docker Hub version-tag preflight request failed" >&2
-            exit 1
-          fi
-          case "$status" in
-            404) ;;
-            200)
-              echo "$image:$VERSION already exists; version tags are immutable" >&2
+          for image in "$PRIMARY_DOCKER_IMAGE" "$LEGACY_DOCKER_IMAGE"; do
+            registry_token=$(curl -fsSL \
+              --get 'https://auth.docker.io/token' \
+              --data-urlencode 'service=registry.docker.io' \
+              --data-urlencode "scope=repository:$image:pull" | \
+              jq -er '.token')
+            if ! status=$(curl -sS -o /dev/null -w '%{http_code}' --head \
+              -H "Authorization: Bearer $registry_token" \
+              -H 'Accept: application/vnd.oci.image.index.v1+json, application/vnd.docker.distribution.manifest.list.v2+json' \
+              "https://registry-1.docker.io/v2/$image/manifests/$VERSION"); then
+              echo "Docker Hub version-tag preflight request failed for $image" >&2
               exit 1
-              ;;
-            *)
-              echo "Docker Hub version-tag preflight returned HTTP $status" >&2
-              exit 1
-              ;;
-          esac
+            fi
+            case "$status" in
+              404)
+                echo "$image:$VERSION is available for this release"
+                ;;
+              200)
+                echo "$image:$VERSION already exists; version tags are immutable" >&2
+                exit 1
+                ;;
+              *)
+                echo "Docker Hub version-tag preflight for $image returned HTTP $status" >&2
+                exit 1
+                ;;
+            esac
+          done
 
       - name: Clean up Docker credentials
         if: always()
@@ -234,13 +248,13 @@ jobs:
       ARCH: amd64
       ASSET_DIGEST: ${{ needs.validate.outputs.amd64_asset_digest }}
       ASSET_ID: ${{ needs.validate.outputs.amd64_asset_id }}
-      DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
+      DOCKERHUB_LOGIN_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
       PLATFORM: linux/amd64
       VERSION: ${{ needs.validate.outputs.version }}
     outputs:
       digest: ${{ steps.build.outputs.digest }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ needs.validate.outputs.release_commit }}
           persist-credentials: false
@@ -260,23 +274,24 @@ jobs:
           printf '%s  %s\n' "${ASSET_DIGEST#sha256:}" "$archive" | sha256sum -c -
           tar -tzf "$archive" >/dev/null
           cp ci/release/docker/entrypoint.sh "$RUNNER_TEMP/docker-context/entrypoint.sh"
+          cp ci/release/docker/Dockerfile "$RUNNER_TEMP/Dockerfile"
 
       - name: Log in to Docker Hub
         env:
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
           set -euo pipefail
-          test "$DOCKERHUB_USERNAME" = terrastruct
+          test -n "$DOCKERHUB_LOGIN_USERNAME"
           test -n "$DOCKERHUB_TOKEN"
           printf '%s' "$DOCKERHUB_TOKEN" | \
-            docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+            docker login --username "$DOCKERHUB_LOGIN_USERNAME" --password-stdin
 
-      - name: Build and push by digest with provenance
+      - name: Build once and push identical digests with provenance
         id: build
         run: |
           set -euo pipefail
           builder="d2-release-$ARCH"
-          image="$DOCKER_IMAGE"
+          images="$PRIMARY_DOCKER_IMAGE,$LEGACY_DOCKER_IMAGE"
           metadata="$RUNNER_TEMP/build-metadata.json"
 
           docker buildx create --name "$builder" --driver docker-container --use
@@ -284,9 +299,9 @@ jobs:
           docker buildx build \
             --platform "$PLATFORM" \
             --provenance=mode=max \
-            --output "type=image,name=$image,push-by-digest=true,name-canonical=true,push=true" \
+            --output "type=image,\"name=$images\",push-by-digest=true,name-canonical=true,push=true" \
             --metadata-file "$metadata" \
-            --file ci/release/docker/Dockerfile \
+            --file "$RUNNER_TEMP/Dockerfile" \
             "$RUNNER_TEMP/docker-context"
 
           digest=$(jq -er '."containerimage.digest"' "$metadata")
@@ -296,12 +311,28 @@ jobs:
           fi
           echo "digest=$digest" >>"$GITHUB_OUTPUT"
 
-      - name: Verify image natively
+      - name: Verify identical architecture image in both repositories and smoke-test natively
         env:
           DIGEST: ${{ steps.build.outputs.digest }}
         run: |
           set -euo pipefail
-          image="$DOCKER_IMAGE@$DIGEST"
+          primary_manifest="$RUNNER_TEMP/$ARCH-primary-manifest.json"
+          legacy_manifest="$RUNNER_TEMP/$ARCH-legacy-manifest.json"
+          docker buildx imagetools inspect --raw \
+            "$PRIMARY_DOCKER_IMAGE@$DIGEST" >"$primary_manifest"
+          docker buildx imagetools inspect --raw \
+            "$LEGACY_DOCKER_IMAGE@$DIGEST" >"$legacy_manifest"
+          if ! cmp -s "$primary_manifest" "$legacy_manifest"; then
+            jq -S . "$primary_manifest" >"$RUNNER_TEMP/$ARCH-primary-manifest.sorted.json"
+            jq -S . "$legacy_manifest" >"$RUNNER_TEMP/$ARCH-legacy-manifest.sorted.json"
+            diff -u \
+              "$RUNNER_TEMP/$ARCH-primary-manifest.sorted.json" \
+              "$RUNNER_TEMP/$ARCH-legacy-manifest.sorted.json" || true
+            echo "$PRIMARY_DOCKER_IMAGE@$DIGEST and $LEGACY_DOCKER_IMAGE@$DIGEST differ" >&2
+            exit 1
+          fi
+
+          image="$PRIMARY_DOCKER_IMAGE@$DIGEST"
           smoke="$RUNNER_TEMP/smoke"
           mkdir -p "$smoke"
           printf 'x -> y\n' >"$smoke/input.d2"
@@ -340,13 +371,13 @@ jobs:
       ARCH: arm64
       ASSET_DIGEST: ${{ needs.validate.outputs.arm64_asset_digest }}
       ASSET_ID: ${{ needs.validate.outputs.arm64_asset_id }}
-      DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
+      DOCKERHUB_LOGIN_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
       PLATFORM: linux/arm64
       VERSION: ${{ needs.validate.outputs.version }}
     outputs:
       digest: ${{ steps.build.outputs.digest }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ needs.validate.outputs.release_commit }}
           persist-credentials: false
@@ -366,23 +397,24 @@ jobs:
           printf '%s  %s\n' "${ASSET_DIGEST#sha256:}" "$archive" | sha256sum -c -
           tar -tzf "$archive" >/dev/null
           cp ci/release/docker/entrypoint.sh "$RUNNER_TEMP/docker-context/entrypoint.sh"
+          cp ci/release/docker/Dockerfile "$RUNNER_TEMP/Dockerfile"
 
       - name: Log in to Docker Hub
         env:
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
           set -euo pipefail
-          test "$DOCKERHUB_USERNAME" = terrastruct
+          test -n "$DOCKERHUB_LOGIN_USERNAME"
           test -n "$DOCKERHUB_TOKEN"
           printf '%s' "$DOCKERHUB_TOKEN" | \
-            docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+            docker login --username "$DOCKERHUB_LOGIN_USERNAME" --password-stdin
 
-      - name: Build and push by digest with provenance
+      - name: Build once and push identical digests with provenance
         id: build
         run: |
           set -euo pipefail
           builder="d2-release-$ARCH"
-          image="$DOCKER_IMAGE"
+          images="$PRIMARY_DOCKER_IMAGE,$LEGACY_DOCKER_IMAGE"
           metadata="$RUNNER_TEMP/build-metadata.json"
 
           docker buildx create --name "$builder" --driver docker-container --use
@@ -390,9 +422,9 @@ jobs:
           docker buildx build \
             --platform "$PLATFORM" \
             --provenance=mode=max \
-            --output "type=image,name=$image,push-by-digest=true,name-canonical=true,push=true" \
+            --output "type=image,\"name=$images\",push-by-digest=true,name-canonical=true,push=true" \
             --metadata-file "$metadata" \
-            --file ci/release/docker/Dockerfile \
+            --file "$RUNNER_TEMP/Dockerfile" \
             "$RUNNER_TEMP/docker-context"
 
           digest=$(jq -er '."containerimage.digest"' "$metadata")
@@ -402,12 +434,28 @@ jobs:
           fi
           echo "digest=$digest" >>"$GITHUB_OUTPUT"
 
-      - name: Verify image natively
+      - name: Verify identical architecture image in both repositories and smoke-test natively
         env:
           DIGEST: ${{ steps.build.outputs.digest }}
         run: |
           set -euo pipefail
-          image="$DOCKER_IMAGE@$DIGEST"
+          primary_manifest="$RUNNER_TEMP/$ARCH-primary-manifest.json"
+          legacy_manifest="$RUNNER_TEMP/$ARCH-legacy-manifest.json"
+          docker buildx imagetools inspect --raw \
+            "$PRIMARY_DOCKER_IMAGE@$DIGEST" >"$primary_manifest"
+          docker buildx imagetools inspect --raw \
+            "$LEGACY_DOCKER_IMAGE@$DIGEST" >"$legacy_manifest"
+          if ! cmp -s "$primary_manifest" "$legacy_manifest"; then
+            jq -S . "$primary_manifest" >"$RUNNER_TEMP/$ARCH-primary-manifest.sorted.json"
+            jq -S . "$legacy_manifest" >"$RUNNER_TEMP/$ARCH-legacy-manifest.sorted.json"
+            diff -u \
+              "$RUNNER_TEMP/$ARCH-primary-manifest.sorted.json" \
+              "$RUNNER_TEMP/$ARCH-legacy-manifest.sorted.json" || true
+            echo "$PRIMARY_DOCKER_IMAGE@$DIGEST and $LEGACY_DOCKER_IMAGE@$DIGEST differ" >&2
+            exit 1
+          fi
+
+          image="$PRIMARY_DOCKER_IMAGE@$DIGEST"
           smoke="$RUNNER_TEMP/smoke"
           mkdir -p "$smoke"
           printf 'x -> y\n' >"$smoke/input.d2"
@@ -449,7 +497,7 @@ jobs:
       ARM64_ASSET_DIGEST: ${{ needs.validate.outputs.arm64_asset_digest }}
       ARM64_ASSET_ID: ${{ needs.validate.outputs.arm64_asset_id }}
       ARM64_DIGEST: ${{ needs.build-arm64.outputs.digest }}
-      DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
+      DOCKERHUB_LOGIN_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
       EXPECTED_RELEASE_COMMIT: ${{ needs.validate.outputs.release_commit }}
       EXPECTED_RELEASE_ID: ${{ needs.validate.outputs.release_id }}
       EXPECTED_RELEASE_PRERELEASE: ${{ needs.validate.outputs.release_prerelease }}
@@ -462,17 +510,17 @@ jobs:
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
           set -euo pipefail
-          test "$DOCKERHUB_USERNAME" = terrastruct
+          test -n "$DOCKERHUB_LOGIN_USERNAME"
           test -n "$DOCKERHUB_TOKEN"
           printf '%s' "$DOCKERHUB_TOKEN" | \
-            docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+            docker login --username "$DOCKERHUB_LOGIN_USERNAME" --password-stdin
 
-      - name: Validate candidate manifest before publishing a tag
+      - name: Validate matching candidates and existing version tags
         id: candidate
         run: |
           set -euo pipefail
-          image="$DOCKER_IMAGE"
-          candidate="$RUNNER_TEMP/candidate-manifest.json"
+          primary_candidate="$RUNNER_TEMP/primary-candidate-manifest.json"
+          legacy_candidate="$RUNNER_TEMP/legacy-candidate-manifest.json"
 
           for digest in "$AMD64_DIGEST" "$ARM64_DIGEST"; do
             if ! printf '%s\n' "$digest" | grep -Eq '^sha256:[0-9a-f]{64}$'; then
@@ -481,86 +529,125 @@ jobs:
             fi
           done
 
-          docker buildx imagetools create \
-            --dry-run \
-            --progress=none \
-            "$image@$AMD64_DIGEST" \
-            "$image@$ARM64_DIGEST" >"$candidate"
-          if [[ $(tail -c 1 "$candidate" | od -An -tx1 | tr -d ' \n') != 0a ]]; then
-            echo "candidate manifest output does not end in the expected newline" >&2
+          create_candidate() {
+            local image=$1 candidate=$2
+            docker buildx imagetools create \
+              --dry-run \
+              --progress=none \
+              "$image@$AMD64_DIGEST" \
+              "$image@$ARM64_DIGEST" >"$candidate"
+            if [[ $(tail -c 1 "$candidate" | od -An -tx1 | tr -d ' \n') != 0a ]]; then
+              echo "$image candidate manifest output does not end in the expected newline" >&2
+              return 1
+            fi
+            jq -e '
+              def runtime:
+                .platform.os == "linux" and
+                (.platform.architecture == "amd64" or .platform.architecture == "arm64");
+              def attestation:
+                .platform.os == "unknown" and
+                .platform.architecture == "unknown" and
+                .annotations["vnd.docker.reference.type"] == "attestation-manifest";
+              .schemaVersion == 2 and
+              (.manifests | type == "array") and
+              ([.manifests[] | select(runtime)] | length == 2) and
+              ([.manifests[] | select(runtime and .platform.architecture == "amd64")] | length == 1) and
+              ([.manifests[] | select(runtime and .platform.architecture == "arm64")] | length == 1) and
+              ([.manifests[] | select(attestation)] | length == 2) and
+              (.manifests | length == 4) and
+              (([.manifests[] | select(runtime) | .digest] | sort) ==
+               ([.manifests[] | select(attestation) |
+                 .annotations["vnd.docker.reference.digest"]] | sort))
+            ' "$candidate" >/dev/null
+          }
+
+          manifest_digest() {
+            local manifest=$1 manifest_size digest
+            manifest_size=$(wc -c <"$manifest" | tr -d ' ')
+            digest="sha256:$(dd if="$manifest" bs=1 count="$((manifest_size - 1))" 2>/dev/null | \
+              sha256sum | awk '{print $1}')"
+            if ! printf '%s\n' "$digest" | grep -Eq '^sha256:[0-9a-f]{64}$'; then
+              echo "$manifest does not have a valid digest" >&2
+              return 1
+            fi
+            printf '%s\n' "$digest"
+          }
+
+          create_candidate "$PRIMARY_DOCKER_IMAGE" "$primary_candidate"
+          create_candidate "$LEGACY_DOCKER_IMAGE" "$legacy_candidate"
+          primary_candidate_digest=$(manifest_digest "$primary_candidate")
+          legacy_candidate_digest=$(manifest_digest "$legacy_candidate")
+          if [[ "$primary_candidate_digest" != "$legacy_candidate_digest" ]]; then
+            echo "primary and legacy candidate manifest digests differ" >&2
             exit 1
           fi
-          candidate_size=$(wc -c <"$candidate" | tr -d ' ')
-          candidate_digest="sha256:$(dd if="$candidate" bs=1 count="$((candidate_size - 1))" 2>/dev/null | \
-            sha256sum | awk '{print $1}')"
-          if ! printf '%s\n' "$candidate_digest" | grep -Eq '^sha256:[0-9a-f]{64}$'; then
-            echo "candidate manifest does not have a valid digest" >&2
+          jq -S '.manifests | sort_by(.digest)' "$primary_candidate" \
+            >"$RUNNER_TEMP/primary-candidate-descriptors.json"
+          jq -S '.manifests | sort_by(.digest)' "$legacy_candidate" \
+            >"$RUNNER_TEMP/legacy-candidate-descriptors.json"
+          if ! cmp -s \
+            "$RUNNER_TEMP/primary-candidate-descriptors.json" \
+            "$RUNNER_TEMP/legacy-candidate-descriptors.json"; then
+            diff -u \
+              "$RUNNER_TEMP/primary-candidate-descriptors.json" \
+              "$RUNNER_TEMP/legacy-candidate-descriptors.json" || true
+            echo "primary and legacy candidate descriptors differ" >&2
             exit 1
           fi
 
-          jq -e '
-            def runtime:
-              .platform.os == "linux" and
-              (.platform.architecture == "amd64" or .platform.architecture == "arm64");
-            def attestation:
-              .platform.os == "unknown" and
-              .platform.architecture == "unknown" and
-              .annotations["vnd.docker.reference.type"] == "attestation-manifest";
-            .schemaVersion == 2 and
-            (.manifests | type == "array") and
-            ([.manifests[] | select(runtime)] | length == 2) and
-            ([.manifests[] | select(runtime and .platform.architecture == "amd64")] | length == 1) and
-            ([.manifests[] | select(runtime and .platform.architecture == "arm64")] | length == 1) and
-            ([.manifests[] | select(attestation)] | length == 2) and
-            (.manifests | length == 4) and
-            (([.manifests[] | select(runtime) | .digest] | sort) ==
-             ([.manifests[] | select(attestation) |
-               .annotations["vnd.docker.reference.digest"]] | sort))
-          ' "$candidate" >/dev/null
+          check_existing_version() {
+            local label=$1 image=$2 candidate=$3 expected_digest=$4 output_name=$5
+            local headers existing_manifest candidate_descriptors existing_descriptors
+            local registry_token status existing_digest version_exists
+            headers="$RUNNER_TEMP/$label-existing-version-headers"
+            existing_manifest="$RUNNER_TEMP/$label-existing-version-manifest.json"
+            candidate_descriptors="$RUNNER_TEMP/$label-candidate-descriptors.json"
+            existing_descriptors="$RUNNER_TEMP/$label-existing-version-descriptors.json"
+            registry_token=$(curl -fsSL \
+              --get 'https://auth.docker.io/token' \
+              --data-urlencode 'service=registry.docker.io' \
+              --data-urlencode "scope=repository:$image:pull" | \
+              jq -er '.token')
+            if ! status=$(curl -sS -o /dev/null -D "$headers" -w '%{http_code}' --head \
+              -H "Authorization: Bearer $registry_token" \
+              -H 'Accept: application/vnd.oci.image.index.v1+json, application/vnd.docker.distribution.manifest.list.v2+json' \
+              "https://registry-1.docker.io/v2/$image/manifests/$VERSION"); then
+              echo "Docker Hub version-tag revalidation request failed for $image" >&2
+              return 1
+            fi
+            if [[ "$status" == 200 ]]; then
+              existing_digest=$(tr -d '\r' <"$headers" | \
+                awk 'tolower($1) == "docker-content-digest:" {print $2}' | tail -n 1)
+              if [[ "$existing_digest" != "$expected_digest" ]]; then
+                echo "$image:$VERSION exists at a digest different from this run's candidate" >&2
+                return 1
+              fi
+              docker buildx imagetools inspect --raw "$image:$VERSION" >"$existing_manifest"
+              jq -S '.manifests | sort_by(.digest)' "$candidate" >"$candidate_descriptors"
+              jq -S '.manifests | sort_by(.digest)' "$existing_manifest" >"$existing_descriptors"
+              if ! cmp -s "$candidate_descriptors" "$existing_descriptors"; then
+                diff -u "$candidate_descriptors" "$existing_descriptors" || true
+                echo "$image:$VERSION exists but does not match this run's verified candidate" >&2
+                return 1
+              fi
+              version_exists=true
+            elif [[ "$status" == 404 ]]; then
+              version_exists=false
+            else
+              echo "Docker Hub version-tag revalidation for $image returned HTTP $status" >&2
+              return 1
+            fi
+            echo "$output_name=$version_exists" >>"$GITHUB_OUTPUT"
+          }
 
-          registry_token=$(curl -fsSL \
-            'https://auth.docker.io/token?service=registry.docker.io&scope=repository:terrastruct/d2:pull' | \
-            jq -er '.token')
-          if ! status=$(curl -sS -o /dev/null -D "$RUNNER_TEMP/existing-version-headers" \
-            -w '%{http_code}' --head \
-            -H "Authorization: Bearer $registry_token" \
-            -H 'Accept: application/vnd.oci.image.index.v1+json, application/vnd.docker.distribution.manifest.list.v2+json' \
-            "https://registry-1.docker.io/v2/terrastruct/d2/manifests/$VERSION"); then
-            echo "Docker Hub version-tag revalidation request failed" >&2
-            exit 1
-          fi
-          if [[ "$status" == 200 ]]; then
-            existing_digest=$(tr -d '\r' <"$RUNNER_TEMP/existing-version-headers" | \
-              awk 'tolower($1) == "docker-content-digest:" {print $2}' | tail -n 1)
-            if [[ "$existing_digest" != "$candidate_digest" ]]; then
-              echo "$image:$VERSION exists at a digest different from this run's candidate" >&2
-              exit 1
-            fi
-            docker buildx imagetools inspect --raw "$image:$VERSION" \
-              >"$RUNNER_TEMP/existing-version-manifest.json"
-            jq -S '.manifests | sort_by(.digest)' "$candidate" \
-              >"$RUNNER_TEMP/candidate-descriptors.json"
-            jq -S '.manifests | sort_by(.digest)' "$RUNNER_TEMP/existing-version-manifest.json" \
-              >"$RUNNER_TEMP/existing-version-descriptors.json"
-            if ! cmp -s \
-              "$RUNNER_TEMP/candidate-descriptors.json" \
-              "$RUNNER_TEMP/existing-version-descriptors.json"; then
-              diff -u \
-                "$RUNNER_TEMP/candidate-descriptors.json" \
-                "$RUNNER_TEMP/existing-version-descriptors.json" || true
-              echo "$image:$VERSION exists but does not match this run's verified candidate" >&2
-              exit 1
-            fi
-            version_exists=true
-          elif [[ "$status" == 404 ]]; then
-            version_exists=false
-          else
-            echo "Docker Hub version-tag revalidation returned HTTP $status" >&2
-            exit 1
-          fi
+          check_existing_version \
+            primary "$PRIMARY_DOCKER_IMAGE" "$primary_candidate" \
+            "$primary_candidate_digest" primary_version_exists
+          check_existing_version \
+            legacy "$LEGACY_DOCKER_IMAGE" "$legacy_candidate" \
+            "$legacy_candidate_digest" legacy_version_exists
           {
-            echo "candidate_digest=$candidate_digest"
-            echo "version_exists=$version_exists"
+            echo "candidate_digest=$primary_candidate_digest"
           } >>"$GITHUB_OUTPUT"
 
       - name: Revalidate immutable release inputs
@@ -635,69 +722,105 @@ jobs:
             fi
           done
 
-      - name: Publish and verify immutable version manifest
+      - name: Publish and verify immutable version manifests independently
         id: version
         env:
           CANDIDATE_DIGEST: ${{ steps.candidate.outputs.candidate_digest }}
-          VERSION_EXISTS: ${{ steps.candidate.outputs.version_exists }}
+          LEGACY_VERSION_EXISTS: ${{ steps.candidate.outputs.legacy_version_exists }}
+          PRIMARY_VERSION_EXISTS: ${{ steps.candidate.outputs.primary_version_exists }}
         run: |
           set -euo pipefail
-          image="$DOCKER_IMAGE"
-          candidate="$RUNNER_TEMP/candidate-manifest.json"
-          metadata="$RUNNER_TEMP/version-metadata.json"
-          published="$RUNNER_TEMP/version-manifest.json"
+          publish_and_verify_version() {
+            local label=$1 image=$2 candidate=$3 version_exists=$4 result=$5
+            local metadata published candidate_descriptors published_descriptors headers
+            local registry_token status digest created_digest
+            metadata="$RUNNER_TEMP/$label-version-metadata.json"
+            published="$RUNNER_TEMP/$label-version-manifest.json"
+            candidate_descriptors="$RUNNER_TEMP/$label-publish-candidate-descriptors.json"
+            published_descriptors="$RUNNER_TEMP/$label-published-version-descriptors.json"
+            headers="$RUNNER_TEMP/$label-version-headers"
 
-          if [[ "$VERSION_EXISTS" != true ]]; then
-            docker buildx imagetools create \
-              --tag "$image:$VERSION" \
-              --metadata-file "$metadata" \
-              "$image@$AMD64_DIGEST" \
-              "$image@$ARM64_DIGEST"
-          fi
-          docker buildx imagetools inspect --raw "$image:$VERSION" >"$published"
-
-          jq -S '.manifests | sort_by(.digest)' "$candidate" >"$RUNNER_TEMP/candidate-descriptors.json"
-          jq -S '.manifests | sort_by(.digest)' "$published" >"$RUNNER_TEMP/published-descriptors.json"
-          if ! cmp -s "$RUNNER_TEMP/candidate-descriptors.json" "$RUNNER_TEMP/published-descriptors.json"; then
-            diff -u "$RUNNER_TEMP/candidate-descriptors.json" "$RUNNER_TEMP/published-descriptors.json" || true
-            echo "published version manifest does not match the verified candidate" >&2
-            exit 1
-          fi
-
-          registry_token=$(curl -fsSL \
-            'https://auth.docker.io/token?service=registry.docker.io&scope=repository:terrastruct/d2:pull' | \
-            jq -er '.token')
-          if ! status=$(curl -sS -o /dev/null -D "$RUNNER_TEMP/version-headers" \
-            -w '%{http_code}' --head \
-            -H "Authorization: Bearer $registry_token" \
-            -H 'Accept: application/vnd.oci.image.index.v1+json, application/vnd.docker.distribution.manifest.list.v2+json' \
-            "https://registry-1.docker.io/v2/terrastruct/d2/manifests/$VERSION"); then
-            echo "Docker Hub version-manifest verification request failed" >&2
-            exit 1
-          fi
-          if [[ "$status" != 200 ]]; then
-            echo "Docker Hub version-manifest verification returned HTTP $status" >&2
-            exit 1
-          fi
-          digest=$(tr -d '\r' <"$RUNNER_TEMP/version-headers" | \
-            awk 'tolower($1) == "docker-content-digest:" {print $2}' | tail -n 1)
-          if ! printf '%s\n' "$digest" | grep -Eq '^sha256:[0-9a-f]{64}$'; then
-            echo "version publication did not return a valid manifest digest" >&2
-            exit 1
-          fi
-          if [[ "$digest" != "$CANDIDATE_DIGEST" ]]; then
-            echo "registry manifest digest does not match the verified candidate" >&2
-            exit 1
-          fi
-          if [[ "$VERSION_EXISTS" != true ]]; then
-            created_digest=$(jq -er '."containerimage.descriptor".digest' "$metadata")
-            if [[ "$created_digest" != "$digest" ]]; then
-              echo "registry manifest digest does not match the publication result" >&2
-              exit 1
+            if [[ "$version_exists" != true && "$version_exists" != false ]]; then
+              echo "invalid version-tag existence state for $image: $version_exists" >&2
+              return 1
             fi
+            if [[ "$version_exists" == false ]]; then
+              docker buildx imagetools create \
+                --tag "$image:$VERSION" \
+                --metadata-file "$metadata" \
+                "$image@$AMD64_DIGEST" \
+                "$image@$ARM64_DIGEST"
+            fi
+            docker buildx imagetools inspect --raw "$image:$VERSION" >"$published"
+
+            jq -S '.manifests | sort_by(.digest)' "$candidate" >"$candidate_descriptors"
+            jq -S '.manifests | sort_by(.digest)' "$published" >"$published_descriptors"
+            if ! cmp -s "$candidate_descriptors" "$published_descriptors"; then
+              diff -u "$candidate_descriptors" "$published_descriptors" || true
+              echo "$image:$VERSION does not match the verified candidate" >&2
+              return 1
+            fi
+
+            registry_token=$(curl -fsSL \
+              --get 'https://auth.docker.io/token' \
+              --data-urlencode 'service=registry.docker.io' \
+              --data-urlencode "scope=repository:$image:pull" | \
+              jq -er '.token')
+            if ! status=$(curl -sS -o /dev/null -D "$headers" -w '%{http_code}' --head \
+              -H "Authorization: Bearer $registry_token" \
+              -H 'Accept: application/vnd.oci.image.index.v1+json, application/vnd.docker.distribution.manifest.list.v2+json' \
+              "https://registry-1.docker.io/v2/$image/manifests/$VERSION"); then
+              echo "Docker Hub version-manifest verification request failed for $image" >&2
+              return 1
+            fi
+            if [[ "$status" != 200 ]]; then
+              echo "Docker Hub version-manifest verification for $image returned HTTP $status" >&2
+              return 1
+            fi
+            digest=$(tr -d '\r' <"$headers" | \
+              awk 'tolower($1) == "docker-content-digest:" {print $2}' | tail -n 1)
+            if ! printf '%s\n' "$digest" | grep -Eq '^sha256:[0-9a-f]{64}$'; then
+              echo "$image:$VERSION did not return a valid manifest digest" >&2
+              return 1
+            fi
+            if [[ "$digest" != "$CANDIDATE_DIGEST" ]]; then
+              echo "$image:$VERSION digest does not match the verified candidate" >&2
+              return 1
+            fi
+            if [[ "$version_exists" == false ]]; then
+              created_digest=$(jq -er '."containerimage.descriptor".digest' "$metadata")
+              if [[ "$created_digest" != "$digest" ]]; then
+                echo "$image:$VERSION digest does not match the publication result" >&2
+                return 1
+              fi
+            fi
+            docker buildx imagetools inspect "$image:$VERSION"
+            printf '%s\n' "$digest" >"$result"
+          }
+
+          publish_and_verify_version \
+            primary "$PRIMARY_DOCKER_IMAGE" "$RUNNER_TEMP/primary-candidate-manifest.json" \
+            "$PRIMARY_VERSION_EXISTS" "$RUNNER_TEMP/primary-version-digest"
+          publish_and_verify_version \
+            legacy "$LEGACY_DOCKER_IMAGE" "$RUNNER_TEMP/legacy-candidate-manifest.json" \
+            "$LEGACY_VERSION_EXISTS" "$RUNNER_TEMP/legacy-version-digest"
+
+          primary_digest=$(<"$RUNNER_TEMP/primary-version-digest")
+          legacy_digest=$(<"$RUNNER_TEMP/legacy-version-digest")
+          if [[ "$primary_digest" != "$legacy_digest" ]]; then
+            echo "primary and legacy version manifest digests differ" >&2
+            exit 1
           fi
-          docker buildx imagetools inspect "$image:$VERSION"
-          echo "digest=$digest" >>"$GITHUB_OUTPUT"
+          if ! cmp -s \
+            "$RUNNER_TEMP/primary-published-version-descriptors.json" \
+            "$RUNNER_TEMP/legacy-published-version-descriptors.json"; then
+            diff -u \
+              "$RUNNER_TEMP/primary-published-version-descriptors.json" \
+              "$RUNNER_TEMP/legacy-published-version-descriptors.json" || true
+            echo "primary and legacy version manifest descriptors differ" >&2
+            exit 1
+          fi
+          echo "digest=$primary_digest" >>"$GITHUB_OUTPUT"
 
       - name: Record publication
         env:
@@ -705,8 +828,10 @@ jobs:
           VERSION_DIGEST: ${{ steps.version.outputs.digest }}
         run: |
           {
-            echo "Published and verified \`$DOCKER_IMAGE:$VERSION\`."
+            echo "Published and verified both Docker Hub release images."
             echo
+            echo "- Primary version tag: \`$PRIMARY_DOCKER_IMAGE:$VERSION\`"
+            echo "- Legacy version tag: \`$LEGACY_DOCKER_IMAGE:$VERSION\`"
             echo "- Release commit: \`$RELEASE_COMMIT\`"
             echo "- amd64 release asset: ID \`$AMD64_ASSET_ID\`, \`$AMD64_ASSET_DIGEST\`"
             echo "- arm64 release asset: ID \`$ARM64_ASSET_ID\`, \`$ARM64_ASSET_DIGEST\`"
@@ -726,7 +851,7 @@ jobs:
     timeout-minutes: 5
     environment: docker-release
     env:
-      DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
+      DOCKERHUB_LOGIN_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
       EXPECTED_RELEASE_ID: ${{ needs.validate.outputs.release_id }}
       VERSION: ${{ needs.validate.outputs.version }}
       VERSION_DIGEST: ${{ needs.publish-version.outputs.digest }}
@@ -736,10 +861,10 @@ jobs:
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
           set -euo pipefail
-          test "$DOCKERHUB_USERNAME" = terrastruct
+          test -n "$DOCKERHUB_LOGIN_USERNAME"
           test -n "$DOCKERHUB_TOKEN"
           printf '%s' "$DOCKERHUB_TOKEN" | \
-            docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+            docker login --username "$DOCKERHUB_LOGIN_USERNAME" --password-stdin
 
       - name: Confirm release is still stable and published
         env:
@@ -756,63 +881,95 @@ jobs:
             exit 1
           fi
 
-      - name: Publish latest from the immutable version digest
+      - name: Publish and verify latest in both repositories
         run: |
           set -euo pipefail
-          image="$DOCKER_IMAGE"
-          version_manifest="$RUNNER_TEMP/version-manifest.json"
-          latest_manifest="$RUNNER_TEMP/latest-manifest.json"
-
           if ! printf '%s\n' "$VERSION_DIGEST" | grep -Eq '^sha256:[0-9a-f]{64}$'; then
             echo "invalid immutable version manifest digest" >&2
             exit 1
           fi
-          docker buildx imagetools inspect --raw "$image@$VERSION_DIGEST" >"$version_manifest"
-          docker buildx imagetools create \
-            --tag "$image:latest" \
-            "$image@$VERSION_DIGEST"
-          docker buildx imagetools inspect --raw "$image:latest" >"$latest_manifest"
 
-          jq -S '.manifests | sort_by(.digest)' "$version_manifest" \
-            >"$RUNNER_TEMP/version-descriptors.json"
-          jq -S '.manifests | sort_by(.digest)' "$latest_manifest" \
-            >"$RUNNER_TEMP/latest-descriptors.json"
-          if ! cmp -s \
-            "$RUNNER_TEMP/version-descriptors.json" \
-            "$RUNNER_TEMP/latest-descriptors.json"; then
-            diff -u \
-              "$RUNNER_TEMP/version-descriptors.json" \
-              "$RUNNER_TEMP/latest-descriptors.json" || true
-            echo "latest does not match the verified version manifest" >&2
+          promote_and_verify_latest() {
+            local label=$1 image=$2 result=$3
+            local version_manifest latest_manifest version_descriptors latest_descriptors headers
+            local registry_token status latest_digest
+            version_manifest="$RUNNER_TEMP/$label-version-manifest.json"
+            latest_manifest="$RUNNER_TEMP/$label-latest-manifest.json"
+            version_descriptors="$RUNNER_TEMP/$label-version-descriptors.json"
+            latest_descriptors="$RUNNER_TEMP/$label-latest-descriptors.json"
+            headers="$RUNNER_TEMP/$label-latest-headers"
+
+            docker buildx imagetools inspect --raw \
+              "$image@$VERSION_DIGEST" >"$version_manifest"
+            docker buildx imagetools create \
+              --tag "$image:latest" \
+              "$image@$VERSION_DIGEST"
+            docker buildx imagetools inspect --raw "$image:latest" >"$latest_manifest"
+
+            jq -S '.manifests | sort_by(.digest)' "$version_manifest" >"$version_descriptors"
+            jq -S '.manifests | sort_by(.digest)' "$latest_manifest" >"$latest_descriptors"
+            if ! cmp -s "$version_descriptors" "$latest_descriptors"; then
+              diff -u "$version_descriptors" "$latest_descriptors" || true
+              echo "$image:latest does not match the verified version manifest" >&2
+              return 1
+            fi
+            registry_token=$(curl -fsSL \
+              --get 'https://auth.docker.io/token' \
+              --data-urlencode 'service=registry.docker.io' \
+              --data-urlencode "scope=repository:$image:pull" | \
+              jq -er '.token')
+            if ! status=$(curl -sS -o /dev/null -D "$headers" -w '%{http_code}' --head \
+              -H "Authorization: Bearer $registry_token" \
+              -H 'Accept: application/vnd.oci.image.index.v1+json, application/vnd.docker.distribution.manifest.list.v2+json' \
+              "https://registry-1.docker.io/v2/$image/manifests/latest"); then
+              echo "Docker Hub latest-manifest verification request failed for $image" >&2
+              return 1
+            fi
+            if [[ "$status" != 200 ]]; then
+              echo "Docker Hub latest-manifest verification for $image returned HTTP $status" >&2
+              return 1
+            fi
+            latest_digest=$(tr -d '\r' <"$headers" | \
+              awk 'tolower($1) == "docker-content-digest:" {print $2}' | tail -n 1)
+            if [[ "$latest_digest" != "$VERSION_DIGEST" ]]; then
+              echo "$image:latest does not resolve to the immutable version manifest digest" >&2
+              return 1
+            fi
+            docker buildx imagetools inspect "$image:latest"
+            printf '%s\n' "$latest_digest" >"$result"
+          }
+
+          promote_and_verify_latest \
+            primary "$PRIMARY_DOCKER_IMAGE" "$RUNNER_TEMP/primary-latest-digest"
+          promote_and_verify_latest \
+            legacy "$LEGACY_DOCKER_IMAGE" "$RUNNER_TEMP/legacy-latest-digest"
+
+          primary_latest_digest=$(<"$RUNNER_TEMP/primary-latest-digest")
+          legacy_latest_digest=$(<"$RUNNER_TEMP/legacy-latest-digest")
+          if [[ "$primary_latest_digest" != "$legacy_latest_digest" ]]; then
+            echo "primary and legacy latest manifest digests differ" >&2
             exit 1
           fi
-          registry_token=$(curl -fsSL \
-            'https://auth.docker.io/token?service=registry.docker.io&scope=repository:terrastruct/d2:pull' | \
-            jq -er '.token')
-          if ! status=$(curl -sS -o /dev/null -D "$RUNNER_TEMP/latest-headers" \
-            -w '%{http_code}' --head \
-            -H "Authorization: Bearer $registry_token" \
-            -H 'Accept: application/vnd.oci.image.index.v1+json, application/vnd.docker.distribution.manifest.list.v2+json' \
-            'https://registry-1.docker.io/v2/terrastruct/d2/manifests/latest'); then
-            echo "Docker Hub latest-manifest verification request failed" >&2
-            exit 1
-          fi
-          if [[ "$status" != 200 ]]; then
-            echo "Docker Hub latest-manifest verification returned HTTP $status" >&2
-            exit 1
-          fi
-          latest_digest=$(tr -d '\r' <"$RUNNER_TEMP/latest-headers" | \
-            awk 'tolower($1) == "docker-content-digest:" {print $2}' | tail -n 1)
-          if [[ "$latest_digest" != "$VERSION_DIGEST" ]]; then
-            echo "latest does not resolve to the immutable version manifest digest" >&2
-            exit 1
-          fi
-          docker buildx imagetools inspect "$image:latest"
+          for kind in version latest; do
+            if ! cmp -s \
+              "$RUNNER_TEMP/primary-$kind-descriptors.json" \
+              "$RUNNER_TEMP/legacy-$kind-descriptors.json"; then
+              diff -u \
+                "$RUNNER_TEMP/primary-$kind-descriptors.json" \
+                "$RUNNER_TEMP/legacy-$kind-descriptors.json" || true
+              echo "primary and legacy $kind manifest descriptors differ" >&2
+              exit 1
+            fi
+          done
 
       - name: Record latest promotion
         run: |
-          echo "Updated and verified \`$DOCKER_IMAGE:latest\` from \`$DOCKER_IMAGE@$VERSION_DIGEST\`." \
-            >>"$GITHUB_STEP_SUMMARY"
+          {
+            echo "Updated and verified both Docker Hub latest tags from the immutable version digest."
+            echo
+            echo "- Primary: \`$PRIMARY_DOCKER_IMAGE:latest\` from \`$PRIMARY_DOCKER_IMAGE@$VERSION_DIGEST\`"
+            echo "- Legacy: \`$LEGACY_DOCKER_IMAGE:latest\` from \`$LEGACY_DOCKER_IMAGE@$VERSION_DIGEST\`"
+          } >>"$GITHUB_STEP_SUMMARY"
 
       - name: Clean up Docker credentials
         if: always()

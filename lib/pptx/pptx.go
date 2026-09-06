@@ -13,9 +13,13 @@ import (
 	"archive/zip"
 	"bytes"
 	_ "embed"
+	"encoding/xml"
+	"errors"
 	"fmt"
 	"image/png"
+	"io"
 	"os"
+	"strings"
 	"text/template"
 )
 
@@ -100,14 +104,13 @@ func (p *Presentation) aspectRatio() float64 {
 }
 
 func (p *Presentation) AddSlide(pngContent []byte, titlePath []BoardTitle) (*Slide, error) {
-	src, err := png.Decode(bytes.NewReader(pngContent))
+	config, err := png.DecodeConfig(bytes.NewReader(pngContent))
 	if err != nil {
 		return nil, fmt.Errorf("error decoding PNG image: %v", err)
 	}
 
 	var width, height int
-	srcSize := src.Bounds().Size()
-	srcWidth, srcHeight := float64(srcSize.X), float64(srcSize.Y)
+	srcWidth, srcHeight := float64(config.Width), float64(config.Height)
 
 	// compute the size and position to fit the slide
 	// if the image is wider than taller and its aspect ratio is, at least, the same as the available image space aspect ratio
@@ -170,13 +173,38 @@ func (p *Presentation) AddSlide(pngContent []byte, titlePath []BoardTitle) (*Sli
 }
 
 func (p *Presentation) SaveTo(filePath string) error {
+	_, err := p.SaveToWithStatus(filePath)
+	return err
+}
+
+// SaveToWithStatus writes the presentation to filePath and reports whether the
+// target was created or truncated. A true result therefore means callers must
+// treat an accompanying error as a partial output failure, even when the
+// failure happened before the first byte was written.
+func (p *Presentation) SaveToWithStatus(filePath string) (touched bool, err error) {
 	f, err := os.Create(filePath)
 	if err != nil {
-		return err
+		return false, err
 	}
-	defer f.Close()
-	zipWriter := zip.NewWriter(f)
-	defer zipWriter.Close()
+	err = p.writeToAndClose(f)
+	return true, err
+}
+
+func (p *Presentation) writeToAndClose(output io.WriteCloser) error {
+	return combineErrors(p.ExportTo(output), output.Close())
+}
+
+// ExportTo writes a complete PPTX archive to output. The caller retains
+// ownership of output.
+func (p *Presentation) ExportTo(output io.Writer) error {
+	return p.writeTo(output)
+}
+
+func (p *Presentation) writeTo(output io.Writer) (err error) {
+	zipWriter := zip.NewWriter(output)
+	defer func() {
+		err = combineErrors(err, zipWriter.Close())
+	}()
 
 	var slideFileNames []string
 	for i := range p.Slides {
@@ -265,6 +293,16 @@ func (p *Presentation) SaveTo(filePath string) error {
 	}
 
 	return nil
+}
+
+func combineErrors(primary, secondary error) error {
+	if primary == nil {
+		return secondary
+	}
+	if secondary == nil {
+		return primary
+	}
+	return errors.Join(primary, secondary)
 }
 
 // Measurements in OOXML are made in English Metric Units (EMUs) where 1 inch = 914,400 EMUs
@@ -511,9 +549,18 @@ func addFileFromTemplate(zipFile *zip.Writer, filePath, templateContent string, 
 		return err
 	}
 
-	tmpl, err := template.New(filePath).Parse(templateContent)
+	tmpl, err := template.New(filePath).Funcs(template.FuncMap{
+		"xmlAttr": escapeXML,
+		"xmlText": escapeXML,
+	}).Parse(templateContent)
 	if err != nil {
 		return err
 	}
 	return tmpl.Execute(w, templateData)
+}
+
+func escapeXML(value any) (string, error) {
+	var escaped strings.Builder
+	err := xml.EscapeText(&escaped, []byte(fmt.Sprint(value)))
+	return escaped.String(), err
 }

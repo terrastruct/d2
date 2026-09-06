@@ -1,9 +1,7 @@
 package d2grid
 
 import (
-	"bytes"
 	"context"
-	"fmt"
 	"math"
 
 	"github.com/d2lang/d2/d2graph"
@@ -548,7 +546,6 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 // generate the best layout of objects aiming for each row to be the targetSize width
 // if columns is true, each column aims to have the targetSize height
 func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2graph.Object {
-	debug := false
 	var nCuts int
 	if columns {
 		nCuts = gd.columns - 1
@@ -565,9 +562,6 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 	// try fast layout algorithm as a baseline
 	if fastLayout := gd.fastLayout(targetSize, nCuts, columns); fastLayout != nil {
 		dist := getDistToTarget(fastLayout, targetSize, float64(gd.horizontalGap), float64(gd.verticalGap), columns)
-		if debug {
-			fmt.Printf("fast dist %v dist per row %v\n", dist, dist/(float64(nCuts)+1))
-		}
 		if dist == 0 {
 			return fastLayout
 		}
@@ -596,10 +590,6 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 		sizes = append(sizes, size)
 	}
 	sd := stddev(sizes)
-	if debug {
-		fmt.Printf("sizes (%d): %v\n", len(sizes), sizes)
-		fmt.Printf("std dev: %v; targetSize %v\n", sd, targetSize)
-	}
 
 	skipCount := 0
 	count := 0
@@ -680,9 +670,6 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 		skipCount = 0.
 		iterDivisions(gd.objects, nCuts, tryDivision, rowOk)
 		okThreshold += THRESHOLD_STEP_SIZE
-		if debug {
-			fmt.Printf("count %d, skip count %d, bestDist %v increasing ok threshold to %v\n", count, skipCount, bestDist, okThreshold)
-		}
 		startingCache = make(map[int]bool)
 		if skipCount == 0 {
 			// threshold isn't skipping anything so increasing it won't help
@@ -694,9 +681,6 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 		}
 	}
 
-	if debug {
-		fmt.Printf("best layout: %v\n", layoutString(bestLayout, sizes))
-	}
 	return bestLayout
 }
 
@@ -777,19 +761,6 @@ func (gd *gridDiagram) fastLayout(targetSize float64, nCuts int, columns bool) (
 	}
 
 	return layout
-}
-
-func layoutString(layout [][]*d2graph.Object, sizes []float64) string {
-	buf := &bytes.Buffer{}
-	i := 0
-	fmt.Fprintf(buf, "[\n")
-	for _, r := range layout {
-		vals := sizes[i : i+len(r)]
-		fmt.Fprintf(buf, "%v:\t%v\n", sum(vals), vals)
-		i += len(r)
-	}
-	fmt.Fprintf(buf, "]\n")
-	return buf.String()
 }
 
 // process current division, return true to stop iterating

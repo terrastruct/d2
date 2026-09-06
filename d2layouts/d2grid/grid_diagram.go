@@ -8,7 +8,6 @@ import (
 )
 
 type gridDiagram struct {
-	root    *d2graph.Object
 	objects []*d2graph.Object
 	edges   []*d2graph.Edge
 	rows    int
@@ -27,7 +26,6 @@ type gridDiagram struct {
 
 func newGridDiagram(root *d2graph.Object) *gridDiagram {
 	gd := gridDiagram{
-		root:          root,
 		objects:       root.ChildrenArray,
 		verticalGap:   DEFAULT_GAP,
 		horizontalGap: DEFAULT_GAP,

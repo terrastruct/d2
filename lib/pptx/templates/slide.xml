@@ -19,22 +19,22 @@
             </p:grpSpPr>
             <p:pic>
                 <p:nvPicPr>
-                    <p:cNvPr id="2" name="{{.Description}}" descr="{{.Description}}" />
+                    <p:cNvPr id="2" name="{{xmlAttr .Description}}" descr="{{xmlAttr .Description}}" />
                     <p:cNvPicPr>
                         <a:picLocks noChangeAspect="1" />
                     </p:cNvPicPr>
                     <p:nvPr />
                 </p:nvPicPr>
                 <p:blipFill>
-                    <a:blip r:embed="{{.ImageID}}" />
+                    <a:blip r:embed="{{xmlAttr .ImageID}}" />
                     <a:stretch>
                         <a:fillRect />
                     </a:stretch>
                 </p:blipFill>
                 <p:spPr>
                     <a:xfrm>
-                        <a:off x="{{.ImageLeft}}" y="{{.ImageTop}}" />
-                        <a:ext cx="{{.ImageWidth}}" cy="{{.ImageHeight}}" />
+                        <a:off x="{{xmlAttr .ImageLeft}}" y="{{xmlAttr .ImageTop}}" />
+                        <a:ext cx="{{xmlAttr .ImageWidth}}" cy="{{xmlAttr .ImageHeight}}" />
                     </a:xfrm>
                     <a:prstGeom prst="rect">
                         <a:avLst />
@@ -44,14 +44,14 @@
             {{if gt .HeaderHeight 0}}
             <p:sp>
                 <p:nvSpPr>
-                    <p:cNvPr id="95" name="{{.Description}}" />
+                    <p:cNvPr id="95" name="{{xmlAttr .Description}}" />
                     <p:cNvSpPr txBox="1" />
                     <p:nvPr />
                 </p:nvSpPr>
                 <p:spPr>
                     <a:xfrm>
                         <a:off x="4001" y="6239" />
-                        <a:ext cx="9135998" cy="{{.HeaderHeight}}" />
+                        <a:ext cx="9135998" cy="{{xmlAttr .HeaderHeight}}" />
                     </a:xfrm>
                     <a:prstGeom prst="rect">
                         <a:avLst />
@@ -80,17 +80,17 @@
                         {{range .TitlePrefix}}
                         <a:r>
                             <a:rPr>
-                                <a:hlinkClick r:id="{{.RelationshipID}}" invalidUrl=""
+                                <a:hlinkClick r:id="{{xmlAttr .RelationshipID}}" invalidUrl=""
                                     action="ppaction://hlinksldjump" tgtFrame="" tooltip=""
                                     history="1" highlightClick="0" endSnd="0" />
                             </a:rPr>
-                            <a:t>{{.Name}}</a:t>
+                            <a:t>{{xmlText .Name}}</a:t>
                         </a:r>
                         <a:r><a:t>  /  </a:t></a:r>
                         {{end}}
                         <a:r>
                             <a:rPr b="1" />
-                            <a:t>{{.Title}}</a:t>
+                            <a:t>{{xmlText .Title}}</a:t>
                         </a:r>
                     </a:p>
                 </p:txBody>
@@ -99,8 +99,8 @@
             {{range .Links}}
             <p:sp>
                 <p:nvSpPr>
-                    <p:cNvPr id="{{.ID}}" name="{{.Name}}">
-                        <a:hlinkClick r:id="{{.RelationshipID}}" action="{{.Action}}" tooltip="{{.Name}}" history="1" invalidUrl=""
+                    <p:cNvPr id="{{xmlAttr .ID}}" name="{{xmlAttr .Name}}">
+                        <a:hlinkClick r:id="{{xmlAttr .RelationshipID}}" action="{{xmlAttr .Action}}" tooltip="{{xmlAttr .Name}}" history="1" invalidUrl=""
                             tgtFrame="" highlightClick="0" endSnd="0" />
                     </p:cNvPr>
                     <p:cNvSpPr />
@@ -108,8 +108,8 @@
                 </p:nvSpPr>
                 <p:spPr>
                     <a:xfrm>
-                        <a:off x="{{.Left}}" y="{{.Top}}" />
-                        <a:ext cx="{{.Width}}" cy="{{.Height}}" />
+                        <a:off x="{{xmlAttr .Left}}" y="{{xmlAttr .Top}}" />
+                        <a:ext cx="{{xmlAttr .Width}}" cy="{{xmlAttr .Height}}" />
                     </a:xfrm>
                     <a:prstGeom prst="rect">
                         <a:avLst />

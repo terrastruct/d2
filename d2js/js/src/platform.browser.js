@@ -7,9 +7,6 @@ export async function loadFile(path) {
   if (path === "./d2.wasm") {
     return getWasmBinary();
   }
-  if (path === "./wasm_exec.js") {
-    return new TextEncoder().encode(wasmExecJs).buffer;
-  }
   return null;
 }
 

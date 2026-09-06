@@ -1,6 +1,4 @@
 import { parentPort } from "node:worker_threads";
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 
 let currentPort;
 let d2;
@@ -10,26 +8,11 @@ function loadScript(content) {
   func.call(globalThis);
 }
 
-function loadELK() {
-  if (typeof globalThis.ELK === "undefined") {
-    try {
-      const elkJS = readFileSync(join(__D2_NODE_MODULE_DIR__, "elk.js"), "utf8");
-      const setupJS = readFileSync(join(__D2_NODE_MODULE_DIR__, "setup.js"), "utf8");
-
-      loadScript(elkJS);
-      loadScript(setupJS);
-    } catch (err) {
-      console.error("Failed to load ELK library:", err);
-      throw err;
-    }
-  }
-}
-
 export function setupMessageHandler(isNode, port, initWasm) {
   currentPort = port;
 
   const handleMessage = async (e) => {
-    const { type, data } = e;
+    const { id, type, data } = e;
 
     switch (type) {
       case "init":
@@ -37,7 +20,6 @@ export function setupMessageHandler(isNode, port, initWasm) {
           if (isNode) {
             loadScript(data.wasmExecContent);
           }
-          loadELK();
           d2 = await initWasm(data.wasm);
           currentPort.postMessage({ type: "ready" });
         } catch (err) {
@@ -50,9 +32,9 @@ export function setupMessageHandler(isNode, port, initWasm) {
           const result = await d2.compile(JSON.stringify(data));
           const response = JSON.parse(result);
           if (response.error) throw new Error(response.error.message);
-          currentPort.postMessage({ type: "result", data: response.data });
+          currentPort.postMessage({ id, type: "result", data: response.data });
         } catch (err) {
-          currentPort.postMessage({ type: "error", error: err.message });
+          currentPort.postMessage({ id, type: "error", error: err.message });
         }
         break;
 
@@ -64,9 +46,9 @@ export function setupMessageHandler(isNode, port, initWasm) {
           const decoded = new TextDecoder().decode(
             Uint8Array.from(atob(response.data), (c) => c.charCodeAt(0))
           );
-          currentPort.postMessage({ type: "result", data: decoded });
+          currentPort.postMessage({ id, type: "result", data: decoded });
         } catch (err) {
-          currentPort.postMessage({ type: "error", error: err.message });
+          currentPort.postMessage({ id, type: "error", error: err.message });
         }
         break;
 
@@ -75,9 +57,13 @@ export function setupMessageHandler(isNode, port, initWasm) {
           const result = d2.encode(data);
           const response = JSON.parse(result);
           if (response.error) throw new Error(response.error.message);
-          currentPort.postMessage({ type: "result", data: response.data.result });
+          currentPort.postMessage({
+            id,
+            type: "result",
+            data: response.data.result,
+          });
         } catch (err) {
-          currentPort.postMessage({ type: "error", error: err.message });
+          currentPort.postMessage({ id, type: "error", error: err.message });
         }
         break;
 
@@ -86,9 +72,13 @@ export function setupMessageHandler(isNode, port, initWasm) {
           const result = d2.decode(data);
           const response = JSON.parse(result);
           if (response.error) throw new Error(response.error.message);
-          currentPort.postMessage({ type: "result", data: response.data.result });
+          currentPort.postMessage({
+            id,
+            type: "result",
+            data: response.data.result,
+          });
         } catch (err) {
-          currentPort.postMessage({ type: "error", error: err.message });
+          currentPort.postMessage({ id, type: "error", error: err.message });
         }
         break;
 
@@ -97,9 +87,9 @@ export function setupMessageHandler(isNode, port, initWasm) {
           const result = d2.version();
           const response = JSON.parse(result);
           if (response.error) throw new Error(response.error.message);
-          currentPort.postMessage({ type: "result", data: response.data });
+          currentPort.postMessage({ id, type: "result", data: response.data });
         } catch (err) {
-          currentPort.postMessage({ type: "error", error: err.message });
+          currentPort.postMessage({ id, type: "error", error: err.message });
         }
         break;
 
@@ -108,9 +98,9 @@ export function setupMessageHandler(isNode, port, initWasm) {
           const result = d2.jsVersion();
           const response = JSON.parse(result);
           if (response.error) throw new Error(response.error.message);
-          currentPort.postMessage({ type: "result", data: response.data });
+          currentPort.postMessage({ id, type: "result", data: response.data });
         } catch (err) {
-          currentPort.postMessage({ type: "error", error: err.message });
+          currentPort.postMessage({ id, type: "error", error: err.message });
         }
         break;
     }

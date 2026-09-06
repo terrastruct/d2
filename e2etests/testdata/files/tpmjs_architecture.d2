@@ -1,0 +1,505 @@
+# Source: https://github.com/tpmjs/tpmjs/blob/0564b4b9d1248b4a112508869ff7b17b14f04d7f/docs/architecture-v1.d2
+# License: MIT; see REAL_WORLD.md.
+
+# TPMJS Architecture Diagram
+# Canonical reference for the entire TPMJS platform
+# Render with: d2 architecture.d2 architecture.svg --layout=elk
+#
+# HISTORICAL (v1): TPMJS no longer deploys on Vercel (2026-07). It is now
+# self-hosted on podman containers behind Caddy + Cloudflare; see
+# operations/deployment.md. The "Vercel" hosting/template nodes below reflect
+# the retired v1 architecture and are kept for reference only.
+
+# ==============================================================================
+# STYLES
+# ==============================================================================
+
+classes: {
+  api: {
+    style: {
+      fill: "#e3f2fd"
+      stroke: "#1976d2"
+    }
+  }
+  db: {
+    style: {
+      fill: "#e8f5e9"
+      stroke: "#388e3c"
+    }
+  }
+  external: {
+    style: {
+      fill: "#fff3e0"
+      stroke: "#f57c00"
+    }
+  }
+  ai: {
+    style: {
+      fill: "#f3e5f5"
+      stroke: "#7b1fa2"
+    }
+  }
+  executor: {
+    style: {
+      fill: "#fce4ec"
+      stroke: "#c2185b"
+    }
+  }
+  wip: {
+    style: {
+      stroke-dash: 5
+      opacity: 0.7
+    }
+  }
+  client: {
+    style: {
+      fill: "#e0f7fa"
+      stroke: "#00838f"
+    }
+  }
+}
+
+# ==============================================================================
+# 1. EXTERNAL CLIENTS
+# ==============================================================================
+
+clients: External Clients {
+  class: client
+
+  web: "Web App\n(Next.js 16)"
+  cli: "TPMJS CLI\n(@tpmjs/cli)"
+  ai_clients: "AI Clients\n(Claude Desktop, GPT, etc.)"
+  bridge_cli: "Bridge CLI\n(@tpmjs/bridge)" {
+    class: wip
+  }
+}
+
+# ==============================================================================
+# 2. API GATEWAY / AUTHENTICATION
+# ==============================================================================
+
+gateway: API Gateway {
+  class: api
+
+  auth: Authentication {
+    better_auth: "Better Auth\n(email/password, OAuth)"
+    api_keys: "TPMJS API Keys\n(scoped permissions)"
+    sessions: "Session Tokens"
+  }
+
+  rate_limit: Rate Limiting {
+    per_endpoint: "Per-endpoint limits"
+    tier_based: "User tier-based\n(FREE, PRO, ENTERPRISE)"
+  }
+}
+
+# ==============================================================================
+# 3. API ENDPOINTS
+# ==============================================================================
+
+api: API Endpoints {
+  class: api
+
+  discovery: Tool Discovery {
+    list: "GET /api/tools"
+    search: "GET /api/tools/search"
+    detail: "GET /api/tools/[id]"
+  }
+
+  execution: Execution {
+    execute: "POST /api/tools/execute/[slug]"
+    stream: "(SSE streaming)"
+  }
+
+  mcp: MCP Protocol {
+    endpoint: "/api/mcp/[user]/[slug]/[transport]"
+    protocol: "(JSON-RPC 2.0)"
+  }
+
+  agents: Agents & Collections {
+    agents_api: "/api/agents/*"
+    collections_api: "/api/collections/*"
+    chat_api: "/api/chat/*"
+  }
+
+  bridge: Bridge {
+    class: wip
+    register: "POST /api/bridge"
+    poll: "GET /api/bridge"
+    respond: "(polling + results)"
+  }
+
+  testing: Scenarios {
+    scenarios_api: "/api/scenarios/*"
+    use_cases_api: "/api/use-cases/*"
+  }
+
+  sync: Sync (Cron) {
+    changes: "/api/sync/changes"
+    keyword: "/api/sync/keyword"
+    metrics: "/api/sync/metrics"
+  }
+
+  health: Stats & Health {
+    stats: "GET /api/stats"
+    health: "GET /api/health"
+    report: "POST /api/health/report"
+  }
+}
+
+# ==============================================================================
+# 4. EXECUTION FLOWS
+# ==============================================================================
+
+execution_flows: Execution Flows {
+
+  playground_flow: "Path A: Playground Flow\n(Web UI)" {
+    class: executor
+
+    step1: "1. User Prompt"
+    step2: "2. POST /api/tools/execute/[slug]"
+    step3: "3. AI Agent (AI SDK v6)\nGPT-4 / Claude / etc."
+    step4: "4. Tool Schema (Zod)"
+    step5: "5. Executor Resolution\nAgent -> Collection -> Default"
+    step6: "6. EXECUTOR (Railway)\nPOST /execute-tool"
+    step7: "7. SSE Stream Response\n(chunk, tokens, complete)"
+
+    step1 -> step2 -> step3 -> step4 -> step5 -> step6 -> step7
+  }
+
+  mcp_flow: "Path B: MCP Flow\n(External AI Client)" {
+    class: executor
+
+    mcp1: "1. External AI Client"
+    mcp2: "2. JSON-RPC 2.0"
+    mcp3: "3. /api/mcp/[user]/[slug]/[transport]"
+    mcp4: "4. MCP Handler\ntools/list, tools/call"
+    mcp5: "5. Tool Name Resolution\nRegistry + Bridge tools"
+    mcp6: "6. Same Executor"
+    mcp7: "7. JSON-RPC Response"
+
+    mcp1 -> mcp2 -> mcp3 -> mcp4 -> mcp5 -> mcp6 -> mcp7
+  }
+}
+
+# ==============================================================================
+# 5. SCHEMA EXTRACTION PIPELINE
+# ==============================================================================
+
+schema_pipeline: Schema Extraction Pipeline {
+  class: ai
+
+  npm_source: "NPM Registry\npackages with 'tpmjs' keyword" {
+    class: external
+  }
+
+  sync_workers: "Sync Workers (Actions + on-box timers)" {
+    changes_feed: "/api/sync/changes (every 2 min)\nnpm _changes feed"
+    keyword_search: "/api/sync/keyword (every 15 min)\nkeyword search"
+    metrics_sync: "/api/sync/metrics (every hour)\ndownloads, stars"
+  }
+
+  extraction: "Schema Extraction" {
+    step1: "1. Fetch package from npm"
+    step2: "2. Import via esm.sh (dynamic)"
+    step3: "3. listToolExports() - discover exports"
+    step4: "4. extractToolSchema() - analyze signatures"
+    step5: "5. AI extraction (if needed)"
+    step6: "6. validateTpmjsField()"
+    step7: "7. Store in database (inputSchema)"
+  }
+
+  zod_conversion: "Zod / AI SDK Conversion" {
+    params: "TPMJS Parameters"
+    convert: "convertToZodSchema()"
+    zod: "Zod Schema\nz.object({ ... })"
+    ai_sdk: "AI SDK inputSchema"
+    llm_def: "LLM Tool Definition\n(OpenAI/Anthropic format)"
+
+    params -> convert -> zod -> ai_sdk -> llm_def
+  }
+
+  npm_source -> sync_workers -> extraction -> zod_conversion
+}
+
+# ==============================================================================
+# 6. EXECUTOR ARCHITECTURE
+# ==============================================================================
+
+executors: Executor Architecture {
+  class: executor
+
+  contract: "Executor Contract" {
+    execute: "POST /execute-tool\n{ packageName, name, version, params, env }"
+    response: "Response: { success, output, error, executionTimeMs }"
+    health: "GET /health"
+  }
+
+  implementations: "Implementations" {
+    railway: "Railway (Default)\n- Sandboxed Node.js\n- Dynamic imports from esm.sh\n- Runs untrusted npm code safely"
+
+    vercel_template: "Vercel Template\n- Serverless functions\n- One-click deploy"
+
+    future: "Future Options\n- AWS Lambda\n- Docker\n- Custom HTTP service"
+  }
+
+  contract -> implementations
+}
+
+# ==============================================================================
+# 7. DATABASE (Logical Groups)
+# ==============================================================================
+
+database: "Database (Neon PostgreSQL)" {
+  class: db
+
+  packages_group: PACKAGES {
+    Package: "Package"
+    Tool: "Tool"
+    HealthCheck: "HealthCheck"
+  }
+
+  users_group: USERS {
+    User: "User"
+    Session: "Session"
+    Account: "Account"
+    Verification: "Verification"
+    UserApiKey: "UserApiKey"
+    TpmjsApiKey: "TpmjsApiKey"
+  }
+
+  execution_group: EXECUTION {
+    Simulation: "Simulation"
+    TokenUsage: "TokenUsage"
+    ExecutionLog: "ExecutionLog"
+    ApiUsageRecord: "ApiUsageRecord"
+    ApiUsageSummary: "ApiUsageSummary"
+  }
+
+  collections_group: COLLECTIONS {
+    Collection: "Collection"
+    CollectionTool: "CollectionTool"
+    CollectionLike: "CollectionLike"
+    CollectionBridgeTool: "CollectionBridgeTool"
+  }
+
+  agents_group: AGENTS {
+    Agent: "Agent"
+    AgentCollection: "AgentCollection"
+    AgentTool: "AgentTool"
+    AgentLike: "AgentLike"
+    Conversation: "Conversation"
+    Message: "Message"
+  }
+
+  sync_group: SYNC {
+    SyncCheckpoint: "SyncCheckpoint"
+    SyncLog: "SyncLog"
+    StatsSnapshot: "StatsSnapshot"
+    EndpointHealthReport: "EndpointHealthReport"
+  }
+
+  scenarios_group: SCENARIOS {
+    Scenario: "Scenario"
+    ScenarioRun: "ScenarioRun"
+    ScenarioEmbedding: "ScenarioEmbedding"
+    ScenarioQuota: "ScenarioQuota"
+  }
+
+  use_cases_group: USE_CASES {
+    UseCase: "UseCase"
+    Persona: "Persona"
+    Industry: "Industry"
+    Category: "Category"
+    SocialProof: "SocialProof"
+  }
+
+  engagement_group: ENGAGEMENT {
+    ToolLike: "ToolLike"
+    ToolRating: "ToolRating"
+    ToolReview: "ToolReview"
+    UserActivity: "UserActivity"
+  }
+
+  bridge_group: BRIDGE {
+    class: wip
+    BridgeConnection: "BridgeConnection"
+  }
+
+  # Relationships between groups
+  packages_group.Tool -> collections_group.CollectionTool
+  packages_group.Tool -> agents_group.AgentTool
+  packages_group.Tool -> engagement_group.ToolLike
+  packages_group.Tool -> scenarios_group.Scenario: "via Collection"
+
+  users_group.User -> collections_group.Collection
+  users_group.User -> agents_group.Agent
+  users_group.User -> bridge_group.BridgeConnection
+
+  collections_group.Collection -> agents_group.AgentCollection
+  collections_group.Collection -> scenarios_group.Scenario
+
+  scenarios_group.Scenario -> use_cases_group.UseCase
+}
+
+# ==============================================================================
+# 8. BACKGROUND WORKERS
+# ==============================================================================
+
+workers: "Background Workers (Self-hosted schedules)" {
+  class: external
+
+  sync_jobs: "Sync Jobs" {
+    changes: "Every 2 min: /api/sync/changes\n(npm changes feed)"
+    keyword: "Every 15 min: /api/sync/keyword\n(keyword search)"
+    metrics: "Every hour: /api/sync/metrics\n(downloads, stars)"
+  }
+
+  daily_jobs: "Daily Jobs" {
+    stats: "Daily: /api/sync/stats-snapshot"
+    cleanup: "Daily 3am: /api/sync/cleanup-activity"
+    discord: "Daily 9am: /api/cron/discord-summary"
+    use_cases: "Daily: /api/cron/use-cases\n(AI generation)"
+  }
+}
+
+# ==============================================================================
+# 9. EXTERNAL SERVICES
+# ==============================================================================
+
+external: External Services {
+  class: external
+
+  package_sources: "Package Sources" {
+    npm: "npm Registry\nMetadata, changes feed"
+    github: "GitHub API\nStars, repo metadata"
+    bundlephobia: "Bundlephobia\nPackage size analysis"
+  }
+
+  runtime: "Runtime" {
+    esm_sh: "esm.sh\nDynamic ESM imports"
+    vercel: "Vercel\nHosting, Edge, Cron"
+    railway: "Railway\nDefault executor hosting"
+  }
+
+  data: "Data" {
+    neon: "Neon\nPostgreSQL database"
+  }
+
+  ai_providers: "AI Providers" {
+    openai: "OpenAI\nGPT-4, embeddings"
+    anthropic: "Anthropic\nClaude"
+    google: "Google\nGemini"
+    groq: "Groq"
+    mistral: "Mistral"
+  }
+
+  notifications: "Notifications" {
+    discord: "Discord\nDaily summaries"
+  }
+}
+
+# ==============================================================================
+# 10. BRIDGE SYSTEM (WIP)
+# ==============================================================================
+
+bridge_system: "Bridge System (WIP)" {
+  class: wip
+
+  local_mcp: "Local MCP Server\n(Blender, etc.)"
+  bridge_cli: "Bridge CLI\n(@tpmjs/bridge)"
+  api_bridge: "POST /api/bridge\n{ type: 'register', tools: [...] }"
+  db_record: "BridgeConnection record"
+  polling: "Tool calls via polling:\nGET /api/bridge -> pending calls\nPOST /api/bridge -> tool results"
+
+  local_mcp -> bridge_cli -> api_bridge -> db_record -> polling
+}
+
+# ==============================================================================
+# 11. AI INTEGRATION POINTS
+# ==============================================================================
+
+ai_integration: AI Integration Points {
+  class: ai
+
+  user_keys: "User-Provided Keys" {
+    agent_chat: "Agent chats\n(users bring their own API keys)"
+    custom_collections: "Custom collections\nwith API key storage"
+  }
+
+  internal_keys: "Internal Keys (TPMJS)" {
+    schema_extraction: "Schema extraction\n(analyze tool signatures)"
+    use_case_gen: "Use case generation\n(marketing content)"
+    scenario_eval: "Scenario evaluation\n(pass/fail determination)"
+    discord_summaries: "Discord summaries"
+  }
+
+  providers: "Supported Providers" {
+    list: "OpenAI (GPT-4, GPT-4 Turbo)\nAnthropic (Claude)\nGoogle (Gemini)\nGroq\nMistral"
+  }
+}
+
+# ==============================================================================
+# CONNECTIONS
+# ==============================================================================
+
+# Clients -> Gateway
+clients.web -> gateway.auth
+clients.cli -> gateway.auth
+clients.ai_clients -> gateway.auth
+clients.bridge_cli -> gateway.auth: {
+  style.stroke-dash: 5
+}
+
+# Gateway -> API
+gateway -> api
+
+# API -> Execution
+api.discovery -> execution_flows.playground_flow.step2
+api.execution -> execution_flows.playground_flow.step2
+api.mcp -> execution_flows.mcp_flow.mcp3
+
+# Execution -> Executors
+execution_flows.playground_flow.step6 -> executors.contract
+execution_flows.mcp_flow.mcp6 -> executors.contract
+
+# Executors -> External
+executors.implementations.railway -> external.runtime.railway
+
+# Schema Pipeline -> Database
+schema_pipeline.extraction.step7 -> database.packages_group.Tool
+
+# Schema Pipeline -> External
+schema_pipeline.npm_source -> external.package_sources.npm
+schema_pipeline.extraction.step2 -> external.runtime.esm_sh
+schema_pipeline.extraction.step5 -> external.ai_providers
+
+# Workers -> API (cron triggers)
+workers.sync_jobs -> api.sync
+workers.daily_jobs -> api.testing
+
+# API -> Database
+api.discovery -> database.packages_group
+api.agents -> database.agents_group
+api.agents -> database.collections_group
+api.testing -> database.scenarios_group
+api.testing -> database.use_cases_group
+api.health -> database.sync_group
+
+# External Services -> Database
+external.data.neon -> database
+
+# AI Integration -> External Providers
+ai_integration.user_keys -> external.ai_providers
+ai_integration.internal_keys -> external.ai_providers
+
+# Bridge System (WIP - dashed lines)
+clients.bridge_cli -> bridge_system.bridge_cli: {
+  style.stroke-dash: 5
+}
+bridge_system -> api.bridge: {
+  style.stroke-dash: 5
+}
+bridge_system.db_record -> database.bridge_group: {
+  style.stroke-dash: 5
+}

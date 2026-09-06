@@ -85,8 +85,12 @@ func compileIR(ast *d2ast.Map, m *d2ir.Map) (*d2graph.Graph, error) {
 }
 
 func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
-	ir = ir.Copy(nil).(*d2ir.Map)
-	// c.preprocessSeqDiagrams(ir)
+	// Graph compilation reads the IR. Nested boards still need an independent
+	// root for class lookup, and boards with children need a copy because the
+	// folder comparison below uses CopyBase, which also modifies its source.
+	if !ir.Root() || hasBoardFields(ir) {
+		ir = ir.Copy(nil).(*d2ir.Map)
+	}
 	c.compileMap(g.Root, ir)
 	c.setDefaultShapes(g)
 	if len(c.err.Errors) == 0 {
@@ -102,8 +106,8 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 	c.compileBoardsField(g, ir, "layers")
 	c.compileBoardsField(g, ir, "scenarios")
 	c.compileBoardsField(g, ir, "steps")
-	if d2ir.ParentMap(ir).CopyBase(nil).Equal(ir.CopyBase(nil)) {
-		if len(g.Layers) > 0 || len(g.Scenarios) > 0 || len(g.Steps) > 0 {
+	if len(g.Layers) > 0 || len(g.Scenarios) > 0 || len(g.Steps) > 0 {
+		if d2ir.ParentMap(ir).CopyBase(nil).Equal(ir.CopyBase(nil)) {
 			g.IsFolderOnly = true
 		}
 	}
@@ -111,6 +115,14 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 		g.IsFolderOnly = true
 	}
 	return g
+}
+
+func hasBoardFields(ir *d2ir.Map) bool {
+	// Use the same lookups as compileBoardsField, including GetField's live
+	// ReservedKeywords rules for distinguishing quoted and unquoted names.
+	return ir.GetField(d2ast.FlatUnquotedString("layers")) != nil ||
+		ir.GetField(d2ast.FlatUnquotedString("scenarios")) != nil ||
+		ir.GetField(d2ast.FlatUnquotedString("steps")) != nil
 }
 
 func (c *compiler) compileLegend(g *d2graph.Graph, m *d2ir.Map) {
@@ -257,7 +269,8 @@ func _findFieldAST(ast *d2ast.Map, path []string) *d2ast.Map {
 }
 
 type compiler struct {
-	err *d2parser.ParseError
+	err             *d2parser.ParseError
+	activeClassMaps map[*d2ir.Map]struct{}
 }
 
 func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
@@ -292,7 +305,10 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 		for _, className := range classNames {
 			classMap := m.GetClassMap(className)
 			if classMap != nil {
-				c.compileMap(obj, classMap)
+				if c.beginClass(class, className, classMap) {
+					c.compileMap(obj, classMap)
+					c.endClass(classMap)
+				}
 			} else {
 				if strings.Contains(className, ",") {
 					split := strings.Split(className, ",")
@@ -341,6 +357,22 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 			c.compileEdge(obj, e)
 		}
 	}
+}
+
+func (c *compiler) beginClass(class *d2ir.Field, className string, classMap *d2ir.Map) bool {
+	if c.activeClassMaps == nil {
+		c.activeClassMaps = make(map[*d2ir.Map]struct{})
+	}
+	if _, ok := c.activeClassMaps[classMap]; ok {
+		c.errorf(class.LastRef().AST(), `class %q forms a reference cycle`, className)
+		return false
+	}
+	c.activeClassMaps[classMap] = struct{}{}
+	return true
+}
+
+func (c *compiler) endClass(classMap *d2ir.Map) {
+	delete(c.activeClassMaps, classMap)
 }
 
 func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
@@ -866,6 +898,9 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 	if e.Map() != nil {
 		c.compileEdgeMap(edge, e.Map())
 	}
+	if edge.Link != nil && edge.Label.Value == "" && edge.Label.MapKey == nil {
+		edge.Label.Value = edge.Link.Value
+	}
 
 	edge.Label.MapKey = e.LastPrimaryKey()
 	for _, er := range e.References {
@@ -906,7 +941,10 @@ func (c *compiler) compileEdgeMap(edge *d2graph.Edge, m *d2ir.Map) {
 		for _, className := range classNames {
 			classMap := m.GetClassMap(className)
 			if classMap != nil {
-				c.compileEdgeMap(edge, classMap)
+				if c.beginClass(class, className, classMap) {
+					c.compileEdgeMap(edge, classMap)
+					c.endClass(classMap)
+				}
 			}
 		}
 	}
@@ -1375,130 +1413,6 @@ func init() {
 	FullToShortLanguageAliases = make(map[string]string, len(ShortToFullLanguageAliases))
 	for k, v := range ShortToFullLanguageAliases {
 		FullToShortLanguageAliases[v] = k
-	}
-}
-
-// Unused for now until shape: edge_group
-func (c *compiler) preprocessSeqDiagrams(m *d2ir.Map) {
-	for _, f := range m.Fields {
-		if f.Name.ScalarString() == "shape" && f.Name.IsUnquoted() && f.Primary_.Value.ScalarString() == d2target.ShapeSequenceDiagram {
-			c.preprocessEdgeGroup(m, m)
-			return
-		}
-		if f.Map() != nil {
-			c.preprocessSeqDiagrams(f.Map())
-		}
-	}
-}
-
-func (c *compiler) preprocessEdgeGroup(seqDiagram, m *d2ir.Map) {
-	// Any child of a sequence diagram can be either an actor, edge group or a span.
-	// 1. Actors are shapes without edges inside them defined at the top level scope of a
-	//    sequence diagram.
-	// 2. Spans are the children of actors. For our purposes we can ignore them.
-	// 3. Edge groups are defined as having at least one connection within them and also not
-	//    being connected to anything. All direct children of an edge group are either edge
-	//    groups or top level actors.
-
-	// Go through all the fields and hoist actors from edge groups while also processing
-	// the edge groups recursively.
-	for _, f := range m.Fields {
-		if isEdgeGroup(f) {
-			if f.Map() != nil {
-				c.preprocessEdgeGroup(seqDiagram, f.Map())
-			}
-		} else {
-			if m == seqDiagram {
-				// Ignore for root.
-				continue
-			}
-			hoistActor(seqDiagram, f)
-		}
-	}
-
-	// We need to adjust all edges recursively to point to actual actors instead.
-	for _, e := range m.Edges {
-		if isCrossEdgeGroupEdge(m, e) {
-			c.errorf(e.References[0].AST(), "illegal edge between edge groups")
-			continue
-		}
-
-		if m == seqDiagram {
-			// Root edges between actors directly do not require hoisting.
-			continue
-		}
-
-		srcParent := seqDiagram
-		for i, el := range e.ID.SrcPath {
-			f := srcParent.GetField(el)
-			if !isEdgeGroup(f) {
-				for j := 0; j < i+1; j++ {
-					e.ID.SrcPath = append([]d2ast.String{d2ast.FlatUnquotedString("_")}, e.ID.SrcPath...)
-					e.ID.DstPath = append([]d2ast.String{d2ast.FlatUnquotedString("_")}, e.ID.DstPath...)
-				}
-				break
-			}
-			srcParent = f.Map()
-		}
-	}
-}
-
-func hoistActor(seqDiagram *d2ir.Map, f *d2ir.Field) {
-	f2 := seqDiagram.GetField(f.Name)
-	if f2 == nil {
-		seqDiagram.Fields = append(seqDiagram.Fields, f.Copy(seqDiagram).(*d2ir.Field))
-	} else {
-		d2ir.OverlayField(f2, f)
-		d2ir.ParentMap(f).DeleteField(f.Name.ScalarString())
-	}
-}
-
-func isCrossEdgeGroupEdge(m *d2ir.Map, e *d2ir.Edge) bool {
-	srcParent := m
-	for _, el := range e.ID.SrcPath {
-		f := srcParent.GetField(el)
-		if f == nil {
-			// Hoisted already.
-			break
-		}
-		if isEdgeGroup(f) {
-			return true
-		}
-		srcParent = f.Map()
-	}
-
-	dstParent := m
-	for _, el := range e.ID.DstPath {
-		f := dstParent.GetField(el)
-		if f == nil {
-			// Hoisted already.
-			break
-		}
-		if isEdgeGroup(f) {
-			return true
-		}
-		dstParent = f.Map()
-	}
-
-	return false
-}
-
-func isEdgeGroup(n d2ir.Node) bool {
-	return n.Map().EdgeCountRecursive() > 0
-}
-
-func parentSeqDiagram(n d2ir.Node) *d2ir.Map {
-	for {
-		m := d2ir.ParentMap(n)
-		if m == nil {
-			return nil
-		}
-		for _, f := range m.Fields {
-			if f.Name.ScalarString() == "shape" && f.Name.IsUnquoted() && f.Primary_.Value.ScalarString() == d2target.ShapeSequenceDiagram {
-				return m
-			}
-		}
-		n = m
 	}
 }
 

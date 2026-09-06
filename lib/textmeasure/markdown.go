@@ -6,7 +6,6 @@ import (
 	"math"
 	"strings"
 
-	"github.com/PuerkitoBio/goquery"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
 	goldmarkHtml "github.com/yuin/goldmark/renderer/html"
@@ -42,11 +41,13 @@ const (
 
 	Padding_pre          = 16
 	MarginBottom_pre     = 16
+	MarginBottom_table   = 16
 	LineHeight_pre       = 1.45
 	FontSize_pre_code_em = 0.85
 
-	PaddingTopBottom_code_em = 0.2
-	PaddingLeftRight_code_em = 0.4
+	PaddingTopBottom_code_em         = 0.2
+	PaddingLeftRight_code_em         = 0.4
+	PaddingLeftRight_heading_code_em = 0.2
 
 	PaddingLR_blockquote_em  = 1.
 	MarginBottom_blockquote  = 16
@@ -61,21 +62,51 @@ const (
 )
 
 func HeaderToFontSize(baseFontSize int, header string) int {
+	if !isMarkdownHeading(header) {
+		return 0
+	}
+	return int(HeaderToFontScale(header) * float64(baseFontSize))
+}
+
+// HeaderToFontScale returns github-markdown.css's exact heading size. The
+// legacy measurement path keeps HeaderToFontSize's integer truncation so graph
+// dimensions remain stable, while native SVG painting uses this scale and can
+// reproduce fractional CSS sizes such as h6's 13.6px at a 16px base.
+func HeaderToFontScale(header string) float64 {
 	switch header {
 	case "h1":
-		return int(h1_em * float64(baseFontSize))
+		return h1_em
 	case "h2":
-		return int(h2_em * float64(baseFontSize))
+		return h2_em
 	case "h3":
-		return int(h3_em * float64(baseFontSize))
+		return h3_em
 	case "h4":
-		return int(h4_em * float64(baseFontSize))
+		return h4_em
 	case "h5":
-		return int(h5_em * float64(baseFontSize))
+		return h5_em
 	case "h6":
-		return int(h6_em * float64(baseFontSize))
+		return h6_em
+	default:
+		return 1
 	}
-	return 0
+}
+
+func isMarkdownHeading(element string) bool {
+	switch element {
+	case "h1", "h2", "h3", "h4", "h5", "h6":
+		return true
+	default:
+		return false
+	}
+}
+
+func hasMarkdownHeadingAncestor(n *html.Node) bool {
+	for ancestor := n.Parent; ancestor != nil; ancestor = ancestor.Parent {
+		if ancestor.Type == html.ElementNode && isMarkdownHeading(ancestor.Data) {
+			return true
+		}
+	}
+	return false
 }
 
 func RenderMarkdown(m string) (string, error) {
@@ -104,31 +135,11 @@ func init() {
 }
 
 func MeasureMarkdown(mdText string, ruler *Ruler, fontFamily *d2fonts.FontFamily, monoFontFamily *d2fonts.FontFamily, fontSize int) (width, height int, err error) {
-	render, err := RenderMarkdown(mdText)
+	layout, err := LayoutMarkdown(mdText, ruler, fontFamily, monoFontFamily, fontSize)
 	if err != nil {
-		return width, height, err
+		return 0, 0, err
 	}
-
-	doc, err := goquery.NewDocumentFromReader(strings.NewReader(render))
-	if err != nil {
-		return width, height, err
-	}
-
-	{
-		originalLineHeight := ruler.LineHeightFactor
-		ruler.boundsWithDot = true
-		ruler.LineHeightFactor = MarkdownLineHeight
-		defer func() {
-			ruler.LineHeightFactor = originalLineHeight
-			ruler.boundsWithDot = false
-		}()
-	}
-
-	// TODO consider setting a max width + (manual) text wrapping
-	bodyNode := doc.Find("body").First().Nodes[0]
-	bodyAttrs := ruler.measureNode(0, bodyNode, fontFamily, monoFontFamily, fontSize, d2fonts.FONT_STYLE_REGULAR)
-
-	return int(math.Ceil(bodyAttrs.width)), int(math.Ceil(bodyAttrs.height)), nil
+	return layout.Width, layout.Height, nil
 }
 
 func hasPrev(n *html.Node) bool {
@@ -213,8 +224,110 @@ func (b *blockAttrs) isNotEmpty() bool {
 	return b != nil && *b != blockAttrs{}
 }
 
+func isCollapsibleMarkdownWhitespace(r rune) bool {
+	switch r {
+	case ' ', '\t', '\n', '\r', '\f':
+		return true
+	default:
+		return false
+	}
+}
+
+// normalizeMarkdownWhitespaceTree applies CSS white-space: normal across
+// inline element boundaries. A per-text-node pass is insufficient: HTML such
+// as a<a> b</a> must preserve one space, while whitespace next to a block or
+// explicit line break must disappear. Preformatted code is the sole Markdown
+// context that retains source whitespace.
+func normalizeMarkdownWhitespaceTree(root *html.Node) {
+	type whitespaceState struct {
+		atLineStart bool
+		pending     *strings.Builder
+	}
+
+	outputs := make(map[*html.Node]*strings.Builder)
+	outputFor := func(n *html.Node) *strings.Builder {
+		if output := outputs[n]; output != nil {
+			return output
+		}
+		output := &strings.Builder{}
+		output.Grow(len(n.Data))
+		outputs[n] = output
+		return output
+	}
+	flushPending := func(state *whitespaceState) {
+		if state.pending != nil && !state.atLineStart {
+			state.pending.WriteByte(' ')
+		}
+		state.pending = nil
+	}
+
+	var normalizeBlock func(*html.Node)
+	var walkInline func(*html.Node, *whitespaceState)
+	walkInline = func(n *html.Node, state *whitespaceState) {
+		switch n.Type {
+		case html.TextNode:
+			output := outputFor(n)
+			for _, r := range n.Data {
+				if isCollapsibleMarkdownWhitespace(r) {
+					if state.pending == nil {
+						state.pending = output
+					}
+					continue
+				}
+				flushPending(state)
+				output.WriteRune(r)
+				state.atLineStart = false
+			}
+		case html.ElementNode:
+			switch {
+			case n.Data == "br":
+				state.pending = nil
+				state.atLineStart = true
+			case isBlockElement(n.Data):
+				state.pending = nil
+				normalizeBlock(n)
+				state.atLineStart = true
+			case n.Data == "img":
+				// Markdown images are outside native SVG's supported subset.
+				// Ignore the node and let whitespace collapse across it.
+			default:
+				for child := n.FirstChild; child != nil; child = child.NextSibling {
+					walkInline(child, state)
+				}
+			}
+		}
+	}
+	normalizeBlock = func(n *html.Node) {
+		if n.Type == html.ElementNode && n.Data == "pre" {
+			return
+		}
+		state := whitespaceState{atLineStart: true}
+		for child := n.FirstChild; child != nil; child = child.NextSibling {
+			walkInline(child, &state)
+		}
+		// A pending space at the end of a block or line is not painted.
+		state.pending = nil
+	}
+
+	normalizeBlock(root)
+	for node, output := range outputs {
+		node.Data = output.String()
+	}
+}
+
 // measures node dimensions to match rendering with styles in github-markdown.css
-func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.FontFamily, monoFontFamily *d2fonts.FontFamily, fontSize int, fontStyle d2fonts.FontStyle) blockAttrs {
+func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.FontFamily, monoFontFamily *d2fonts.FontFamily, fontSize int, fontStyle d2fonts.FontStyle, bold, italic bool) blockAttrs {
+	return ruler.measureMarkdownNode(depth, n, fontFamily, monoFontFamily, fontSize, 1, fontStyle, bold, italic, false)
+}
+
+// measureCSSNode uses CSS line boxes and fractional heading scales for native
+// SVG painting. measureNode above intentionally retains D2's historical box
+// dimensions, which are part of graph layout compatibility.
+func (ruler *Ruler) measureCSSNode(depth int, n *html.Node, fontFamily *d2fonts.FontFamily, monoFontFamily *d2fonts.FontFamily, fontSize int, fontScale float64, fontStyle d2fonts.FontStyle, bold, italic bool) blockAttrs {
+	return ruler.measureMarkdownNode(depth, n, fontFamily, monoFontFamily, fontSize, fontScale, fontStyle, bold, italic, true)
+}
+
+func (ruler *Ruler) measureMarkdownNode(depth int, n *html.Node, fontFamily *d2fonts.FontFamily, monoFontFamily *d2fonts.FontFamily, fontSize int, fontScale float64, fontStyle d2fonts.FontStyle, bold, italic, cssLineBoxes bool) blockAttrs {
 	if fontFamily == nil {
 		fontFamily = go2.Pointer(d2fonts.SourceSansPro)
 	}
@@ -239,31 +352,53 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 
 	switch n.Type {
 	case html.TextNode:
-		if strings.Trim(n.Data, "\n\t\b") == "" {
+		if !cssLineBoxes && strings.Trim(n.Data, "\n\t\b") == "" {
 			return blockAttrs{}
 		}
 		str := n.Data
 		isCode := parentElementType == "pre" || parentElementType == "code"
+		isHeadingCode := parentElementType == "code" && hasMarkdownHeadingAncestor(n)
 		spaceWidths := 0.
 
 		if !isCode {
-			spaceWidth := ruler.spaceWidth(font)
-			// MeasurePrecise will not include leading or trailing whitespace, so we account for it here
-			str = strings.ReplaceAll(str, "\n", " ")
-			str = strings.ReplaceAll(str, "\t", " ")
-			if strings.HasPrefix(str, " ") {
-				// consecutive leading/trailing spaces end up rendered as a single space
-				str = strings.TrimPrefix(str, " ")
-				if hasPrev(n) {
-					spaceWidths += spaceWidth
+			spaceWidth := ruler.spaceWidth(font) * fontScale
+			if cssLineBoxes {
+				if advance, ok := ruler.measureFontAdvance(font, " "); ok {
+					spaceWidth = advance * fontScale
 				}
 			}
-			if strings.HasSuffix(str, " ") {
-				str = strings.TrimSuffix(str, " ")
-				if hasNext(n) {
+			if cssLineBoxes {
+				str = renderableMarkdownText(n)
+				if str == "" {
+					return blockAttrs{}
+				}
+				// MeasurePrecise omits edge whitespace, so account for it.
+				if strings.HasPrefix(str, " ") {
+					str = strings.TrimPrefix(str, " ")
 					spaceWidths += spaceWidth
 				}
+				if strings.HasSuffix(str, " ") {
+					str = strings.TrimSuffix(str, " ")
+					spaceWidths += spaceWidth
+				}
+			} else {
+				str = strings.ReplaceAll(str, "\n", " ")
+				str = strings.ReplaceAll(str, "\t", " ")
+				if strings.HasPrefix(str, " ") {
+					str = strings.TrimPrefix(str, " ")
+					if hasPrev(n) {
+						spaceWidths += spaceWidth
+					}
+				}
+				if strings.HasSuffix(str, " ") {
+					str = strings.TrimSuffix(str, " ")
+					if hasNext(n) {
+						spaceWidths += spaceWidth
+					}
+				}
 			}
+		} else if str == "" {
+			return blockAttrs{}
 		}
 
 		if parentElementType == "pre" {
@@ -274,11 +409,27 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 			}()
 		}
 		w, h := ruler.MeasurePrecise(font, str)
-		if isCode {
+		if cssLineBoxes {
+			// CSS lays out adjacent inline runs by cursor advance, not glyph ink
+			// bounds. Use the same advance as the SVG painter so table columns,
+			// centered cells, and styled spans share one coordinate system.
+			if advance, ok := ruler.measureFontAdvance(font, str); ok {
+				w = advance
+			} else {
+				w = ruler.scaleUnicodeCSS(w, font, str)
+			}
+		} else if !isCode {
+			// The browser-era Markdown measurer applied its Unicode fallback
+			// correction only to proportional text. Preserve the raw mono
+			// measurement for legacy graph dimensions; native painting still
+			// reserves browser-like fallback advances above.
+			w = ruler.scaleUnicodeLegacy(w, font, str)
+		}
+		w *= fontScale
+		h *= fontScale
+		if isCode && (!isHeadingCode || !cssLineBoxes) {
 			w *= FontSize_pre_code_em
 			h *= FontSize_pre_code_em
-		} else {
-			w = ruler.scaleUnicode(w, font, str)
 		}
 		if debugMeasure {
 			fmt.Printf("%stext(%v,%v)\n", depthStr, w, h)
@@ -288,8 +439,13 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 		isCode := false
 		switch n.Data {
 		case "h1", "h2", "h3", "h4", "h5", "h6":
-			fontSize = HeaderToFontSize(fontSize, n.Data)
+			if cssLineBoxes {
+				fontScale *= HeaderToFontScale(n.Data)
+			} else {
+				fontSize = HeaderToFontSize(fontSize, n.Data)
+			}
 			fontStyle = d2fonts.FONT_STYLE_SEMIBOLD
+			bold = false
 			originalLineHeight := ruler.LineHeightFactor
 			ruler.LineHeightFactor = LineHeight_h
 			defer func() {
@@ -297,20 +453,28 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 			}()
 		case "em":
 			fontStyle = d2fonts.FONT_STYLE_ITALIC
+			italic = true
 		case "b", "strong":
 			fontStyle = d2fonts.FONT_STYLE_BOLD
+			bold = true
+		case "th":
+			fontStyle = d2fonts.FONT_STYLE_SEMIBOLD
+			bold = true
 		case "pre", "code":
 			if monoFontFamily != nil {
 				fontFamily = monoFontFamily
 			} else {
 				fontFamily = go2.Pointer(d2fonts.SourceCodePro)
 			}
+			// .md code selects the regular mono family, while CSS weight/style
+			// continue to inherit from surrounding strong/em elements.
 			fontStyle = d2fonts.FONT_STYLE_REGULAR
 			isCode = true
 		}
 
 		block := blockAttrs{}
-		lineHeightPx := float64(fontSize) * ruler.LineHeightFactor
+		cssFontSize := float64(fontSize) * fontScale
+		lineHeightPx := cssFontSize * ruler.LineHeightFactor
 
 		if n.FirstChild != nil {
 			first := getNext(n.FirstChild)
@@ -321,14 +485,18 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 			// first create blocks from combined inline elements, then combine all blocks
 			// inlineBlock will be non-nil while inline elements are being combined into a block
 			endInlineBlock := func() {
-				if !isCode && inlineBlock.height > 0 && inlineBlock.height < lineHeightPx {
-					inlineBlock.height = lineHeightPx
+				if !isCode && inlineBlock.height > 0 {
+					if cssLineBoxes {
+						inlineBlock.height = lineHeightPx
+					} else if inlineBlock.height < lineHeightPx {
+						inlineBlock.height = lineHeightPx
+					}
 				}
 				blocks = append(blocks, *inlineBlock)
 				inlineBlock = nil
 			}
 			for child := n.FirstChild; child != nil; child = child.NextSibling {
-				childBlock := ruler.measureNode(depth+1, child, fontFamily, monoFontFamily, fontSize, fontStyle)
+				childBlock := ruler.measureMarkdownNode(depth+1, child, fontFamily, monoFontFamily, fontSize, fontScale, fontStyle, bold, italic, cssLineBoxes)
 
 				if child.Type == html.ElementNode && isBlockElement(child.Data) {
 					if inlineBlock != nil {
@@ -396,8 +564,15 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 		}
 
 		switch n.Data {
+		case "img":
+			// Preserve the browser-era measurement contract: image nodes have no
+			// intrinsic dimensions here. Native SVG omits them rather than fetching.
 		case "blockquote":
-			block.width += (2*PaddingLR_blockquote_em + BorderLeft_blockquote_em) * float64(fontSize)
+			borderWidth := BorderLeft_blockquote_em * cssFontSize
+			if cssLineBoxes {
+				borderWidth = go2.Max(1, math.Floor(borderWidth))
+			}
+			block.width += 2*PaddingLR_blockquote_em*cssFontSize + borderWidth
 			block.marginBottom = go2.Max(block.marginBottom, MarginBottom_blockquote)
 		case "p":
 			if parentElementType == "li" {
@@ -409,12 +584,19 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 			block.marginBottom = go2.Max(block.marginBottom, MarginBottom_h)
 			switch n.Data {
 			case "h1", "h2":
-				block.height += PaddingBottom_h1_h2_em*float64(fontSize) + BorderBottom_h1_h2
+				block.height += PaddingBottom_h1_h2_em*cssFontSize + BorderBottom_h1_h2
 			}
 		case "li":
-			block.width += PaddingLeft_ul_ol_em * float64(fontSize)
+			block.width += PaddingLeft_ul_ol_em * cssFontSize
+			// CSS paints an empty list marker in a line box, but D2's historical
+			// graph-layout measurement intentionally gives an empty item no height.
+			// Preserve that legacy viewport while letting the CSS-only paint pass
+			// position the (ultimately clipped) marker like Chromium.
+			if cssLineBoxes && block.height == 0 {
+				block.height = lineHeightPx
+			}
 			if hasPrev(n) {
-				block.marginTop = go2.Max(block.marginTop, MarginTop_li_em*float64(fontSize))
+				block.marginTop = go2.Max(block.marginTop, MarginTop_li_em*cssFontSize)
 			}
 		case "ol", "ul":
 			if hasAncestorElement(n, "ul") || hasAncestorElement(n, "ol") {
@@ -424,16 +606,37 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 				block.marginBottom = go2.Max(block.marginBottom, MarginBottom_ul)
 			}
 		case "pre":
+			// CSS white-space: pre creates one line box per logical line, except
+			// that a final newline does not create an extra empty line box. Glyph
+			// bounds alone undercount leading and blank lines. The compatibility
+			// measurement keeps its historical glyph-bound height; only native
+			// painting uses the exact CSS content height.
+			if lineCount := markdownPreLineCount(markdownNodeText(n)); cssLineBoxes && lineCount > 0 {
+				cssContentHeight := float64(lineCount) * LineHeight_pre * FontSize_pre_code_em * cssFontSize
+				block.height = go2.Max(block.height, cssContentHeight)
+			}
 			block.width += 2 * Padding_pre
 			block.height += 2 * Padding_pre
 			block.marginBottom = go2.Max(block.marginBottom, MarginBottom_pre)
 		case "code":
 			if parentElementType != "pre" {
-				block.width += 2 * PaddingLeftRight_code_em * float64(fontSize)
-				block.height += 2 * PaddingTopBottom_code_em * float64(fontSize)
+				if cssLineBoxes && hasMarkdownHeadingAncestor(n) {
+					block.width += 2 * PaddingLeftRight_heading_code_em * cssFontSize
+					block.height = lineHeightPx
+				} else if cssLineBoxes {
+					codeFontSize := FontSize_pre_code_em * cssFontSize
+					block.width += 2 * PaddingLeftRight_code_em * codeFontSize
+					if ascent, descent, ok := ruler.cssFontBoxMetrics(fontFamily.Font(fontSize, fontStyle), codeFontSize); ok {
+						block.height = ascent + descent
+					}
+					block.height += 2 * PaddingTopBottom_code_em * codeFontSize
+				} else {
+					block.width += 2 * PaddingLeftRight_code_em * cssFontSize
+					block.height += 2 * PaddingTopBottom_code_em * cssFontSize
+				}
 			}
 		case "hr":
-			block.height += Height_hr_em * float64(fontSize)
+			block.height += Height_hr_em * cssFontSize
 			block.marginTop = go2.Max(block.marginTop, MarginTopBottom_hr)
 			block.marginBottom = go2.Max(block.marginBottom, MarginTopBottom_hr)
 		case "table":
@@ -446,14 +649,14 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 			// Iterate over child nodes (tbody, thead, tr)
 			for child := n.FirstChild; child != nil; child = child.NextSibling {
 				if child.Type == html.ElementNode && (child.Data == "tbody" || child.Data == "thead" || child.Data == "tfoot") {
-					childAttrs := ruler.measureNode(depth+1, child, fontFamily, monoFontFamily, fontSize, fontStyle)
+					childAttrs := ruler.measureMarkdownNode(depth+1, child, fontFamily, monoFontFamily, fontSize, fontScale, fontStyle, bold, italic, cssLineBoxes)
 					tableHeight += childAttrs.height
 
 					if childColumnWidths, ok := childAttrs.extraData.([][]float64); ok {
 						columnWidths = mergeColumnWidths(columnWidths, childColumnWidths)
 					}
 				} else if child.Type == html.ElementNode && child.Data == "tr" {
-					rowAttrs := ruler.measureNode(depth+1, child, fontFamily, monoFontFamily, fontSize, fontStyle)
+					rowAttrs := ruler.measureMarkdownNode(depth+1, child, fontFamily, monoFontFamily, fontSize, fontScale, fontStyle, bold, italic, cssLineBoxes)
 					tableHeight += rowAttrs.height
 
 					if rowCellWidths, ok := rowAttrs.extraData.([]float64); ok {
@@ -479,6 +682,9 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 
 			block.width = tableWidth
 			block.height = tableHeight
+			if cssLineBoxes {
+				block.marginBottom = go2.Max(block.marginBottom, MarginBottom_table)
+			}
 
 		case "thead", "tbody", "tfoot":
 			var sectionWidth, sectionHeight float64
@@ -487,7 +693,7 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 			// Iterate over tr elements
 			for child := n.FirstChild; child != nil; child = child.NextSibling {
 				if child.Type == html.ElementNode && child.Data == "tr" {
-					childAttrs := ruler.measureNode(depth+1, child, fontFamily, monoFontFamily, fontSize, fontStyle)
+					childAttrs := ruler.measureMarkdownNode(depth+1, child, fontFamily, monoFontFamily, fontSize, fontScale, fontStyle, bold, italic, cssLineBoxes)
 					sectionHeight += childAttrs.height
 					sectionWidth = go2.Max(sectionWidth, childAttrs.width)
 
@@ -502,24 +708,23 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 			block.extraData = sectionColumnWidths // Pass column widths back to table
 
 		case "td", "th":
-			// Apply semibold style to header cells
-			cellFontStyle := fontStyle
-			if n.Data == "th" {
-				cellFontStyle = d2fonts.FONT_STYLE_SEMIBOLD
+			if !cssLineBoxes {
+				// Preserve D2's historical graph-layout measurement for mixed
+				// inline table-cell children: the widest child determines width,
+				// while child heights accumulate. Browser-style painting uses the
+				// generic inline aggregation calculated above.
+				var cellContentWidth, cellContentHeight float64
+				for child := n.FirstChild; child != nil; child = child.NextSibling {
+					childAttrs := ruler.measureMarkdownNode(
+						depth+1, child, fontFamily, monoFontFamily, fontSize,
+						fontScale, fontStyle, bold, italic, false,
+					)
+					cellContentWidth = go2.Max(cellContentWidth, childAttrs.width)
+					cellContentHeight += childAttrs.height
+				}
+				block.width = cellContentWidth
+				block.height = cellContentHeight
 			}
-
-			// Measure cell content with appropriate font style
-			var cellContentWidth, cellContentHeight float64
-
-			for child := n.FirstChild; child != nil; child = child.NextSibling {
-				// Pass the header-specific font style to child measurements
-				childAttrs := ruler.measureNode(depth+1, child, fontFamily, monoFontFamily, fontSize, cellFontStyle)
-				cellContentWidth = go2.Max(cellContentWidth, childAttrs.width)
-				cellContentHeight += childAttrs.height
-			}
-
-			block.width = cellContentWidth
-			block.height = cellContentHeight
 
 		case "tr":
 			var rowWidth, rowHeight float64
@@ -534,8 +739,10 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 			// Check if this row is in a thead to determine default font style for cells
 			inHeader := hasAncestorElement(n, "thead")
 			rowFontStyle := fontStyle
+			rowBold := bold
 			if inHeader {
 				rowFontStyle = d2fonts.FONT_STYLE_SEMIBOLD
+				rowBold = true
 			}
 
 			for child := n.FirstChild; child != nil; child = child.NextSibling {
@@ -544,11 +751,13 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 
 					// Use semibold for th elements regardless of location
 					childFontStyle := rowFontStyle
+					childBold := rowBold
 					if child.Data == "th" {
 						childFontStyle = d2fonts.FONT_STYLE_SEMIBOLD
+						childBold = true
 					}
 
-					childAttrs := ruler.measureNode(depth+1, child, fontFamily, monoFontFamily, fontSize, childFontStyle)
+					childAttrs := ruler.measureMarkdownNode(depth+1, child, fontFamily, monoFontFamily, fontSize, fontScale, childFontStyle, childBold, italic, cssLineBoxes)
 					cellPaddingH := 13.0 * 2
 					cellPaddingV := 6.0 * 2
 
@@ -573,7 +782,7 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 			block.height = rowHeight
 			block.extraData = cellWidths
 		}
-		if block.height > 0 && block.height < lineHeightPx {
+		if !cssLineBoxes && block.height > 0 && block.height < lineHeightPx {
 			block.height = lineHeightPx
 		}
 		if debugMeasure {
@@ -582,6 +791,17 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 		return block
 	}
 	return blockAttrs{}
+}
+
+func markdownPreLineCount(text string) int {
+	if text == "" {
+		return 0
+	}
+	count := strings.Count(text, "\n") + 1
+	if strings.HasSuffix(text, "\n") {
+		count--
+	}
+	return count
 }
 
 func mergeColumnWidths(existing []float64, new [][]float64) []float64 {

@@ -8,6 +8,7 @@ package d2lsp
 import (
 	"strings"
 	"unicode"
+	"unicode/utf16"
 
 	"github.com/d2lang/d2/d2ast"
 	"github.com/d2lang/d2/d2parser"
@@ -30,12 +31,27 @@ type CompletionItem struct {
 }
 
 func GetCompletionItems(text string, line, column int) ([]CompletionItem, error) {
-	ast, err := d2parser.Parse("", strings.NewReader(text), nil)
-	if err != nil {
-		ast, _ = d2parser.Parse("", strings.NewReader(getTextUntilPosition(text, line, column)), nil)
+	return getCompletionItems(text, line, column, false)
+}
+
+// GetCompletionItemsUTF16 returns completions for a position whose column is
+// measured in UTF-16 code units, as required by browser and LSP clients.
+func GetCompletionItemsUTF16(text string, line, column int) ([]CompletionItem, error) {
+	return getCompletionItems(text, line, column, true)
+}
+
+func getCompletionItems(text string, line, column int, utf16Pos bool) ([]CompletionItem, error) {
+	var parseOpts *d2parser.ParseOptions
+	if utf16Pos {
+		parseOpts = &d2parser.ParseOptions{UTF16Pos: true}
 	}
 
-	keyword := getKeywordContext(text, ast, line, column)
+	ast, err := d2parser.Parse("", strings.NewReader(text), parseOpts)
+	if err != nil {
+		ast, _ = d2parser.Parse("", strings.NewReader(getTextUntilPosition(text, line, column, utf16Pos)), parseOpts)
+	}
+
+	keyword := getKeywordContext(text, ast, line, column, utf16Pos)
 	switch keyword {
 	case "style", "style.":
 		return getStyleCompletions(), nil
@@ -82,7 +98,7 @@ func GetCompletionItems(text string, line, column int) ([]CompletionItem, error)
 	}
 }
 
-func getTextUntilPosition(text string, line, column int) string {
+func getTextUntilPosition(text string, line, column int, utf16Pos bool) string {
 	lines := strings.Split(text, "\n")
 	if line >= len(lines) {
 		return text
@@ -92,6 +108,7 @@ func getTextUntilPosition(text string, line, column int) string {
 	if len(result) > 0 {
 		result += "\n"
 	}
+	column = columnByteOffset(lines[line], column, utf16Pos)
 	if column > len(lines[line]) {
 		result += lines[line]
 	} else {
@@ -100,11 +117,15 @@ func getTextUntilPosition(text string, line, column int) string {
 	return result
 }
 
-func getKeywordContext(text string, m *d2ast.Map, line, column int) string {
+func getKeywordContext(text string, m *d2ast.Map, line, column int, utf16Pos bool) string {
 	if m == nil {
 		return ""
 	}
 	lines := strings.Split(text, "\n")
+	lineColumn := column
+	if line >= 0 && line < len(lines) {
+		lineColumn = columnByteOffset(lines[line], column, utf16Pos)
+	}
 
 	for _, n := range m.Nodes {
 		if n.MapKey == nil {
@@ -136,7 +157,8 @@ func getKeywordContext(text string, m *d2ast.Map, line, column int) string {
 					}
 					keyRange := n.MapKey.Range
 					lineText := lines[keyRange.End.Line]
-					if isHolderLast && isAfterDot(lineText, column) {
+					dotColumn := columnByteOffset(lineText, column, utf16Pos)
+					if isHolderLast && isAfterDot(lineText, dotColumn) {
 						return lastPart + "."
 					}
 				}
@@ -156,7 +178,7 @@ func getKeywordContext(text string, m *d2ast.Map, line, column int) string {
 
 		// Check nested map
 		if n.MapKey.Value.Map != nil && isPositionInMap(line, column, n.MapKey.Value.Map) {
-			if nested := getKeywordContext(text, n.MapKey.Value.Map, line, column); nested != "" {
+			if nested := getKeywordContext(text, n.MapKey.Value.Map, line, column, utf16Pos); nested != "" {
 				if isHolder {
 					// If we got a direct key completion from inside a holder's map,
 					// prefix it with the holder's name
@@ -191,7 +213,7 @@ func getKeywordContext(text string, m *d2ast.Map, line, column int) string {
 
 		lineText := lines[keyRange.End.Line]
 
-		if isAfterColon(lineText, column) {
+		if isAfterColon(lineText, lineColumn) {
 			if key != nil && len(key.Path) > 1 {
 				if isHolder && (firstPart == "source-arrowhead" || firstPart == "target-arrowhead") {
 					return firstPart + "." + lastPart + ":"
@@ -205,12 +227,34 @@ func getKeywordContext(text string, m *d2ast.Map, line, column int) string {
 			return firstPart + ":"
 		}
 
-		if isAfterDot(lineText, column) && isHolder {
+		if isAfterDot(lineText, lineColumn) && isHolder {
 			return firstPart
 		}
 	}
 
 	return ""
+}
+
+func columnByteOffset(text string, column int, utf16Pos bool) int {
+	if column <= 0 {
+		return 0
+	}
+	if !utf16Pos {
+		return column
+	}
+
+	units := 0
+	for byteOffset, r := range text {
+		if units >= column {
+			return byteOffset
+		}
+		runeUnits := utf16.RuneLen(r)
+		if units+runeUnits > column {
+			return byteOffset
+		}
+		units += runeUnits
+	}
+	return len(text)
 }
 
 func isAfterDot(text string, pos int) bool {
@@ -373,15 +417,6 @@ func getTextTransformCompletions() []CompletionItem {
 		items = append(items, item)
 	}
 	return items
-}
-
-func isOnEmptyLine(text string, line int) bool {
-	lines := strings.Split(text, "\n")
-	if line >= len(lines) {
-		return true
-	}
-
-	return strings.TrimSpace(lines[line]) == ""
 }
 
 func getLabelCompletions() []CompletionItem {

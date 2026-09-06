@@ -1,0 +1,347 @@
+# Source: https://github.com/jupyter-infra/jupyter-k8s/blob/92e2d8e43c94355f999f4d4a46c7a73dfc395f93/diagrams/web-access-oidc.d2
+# License: MIT; see REAL_WORLD.md.
+# Adaptation: Third-party icons replaced with built-in labeled shapes.
+
+# Web Access — OIDC Flow
+
+vars: {
+  d2-config: {
+    layout-engine: elk
+  }
+}
+
+classes: {
+  box: {
+    shape: rectangle
+    style: {
+      bold: true
+      stroke-width: 3
+      font-size: 20
+      border-radius: 8
+    }
+  }
+
+  column_container: {
+    style: {
+      stroke-width: 0
+      fill: transparent
+    }
+    grid-columns: 1
+  }
+
+  icon_labeled_block: {
+    shape: rectangle
+    label.near: top-right
+    style: {
+      bold: true
+      stroke-width: 3
+      font-size: 20
+    }
+  }
+
+  namespace: {
+    shape: rectangle
+    style: {
+      bold: true
+      stroke-width: 2
+      stroke-dash: 5
+      font-size: 18
+    }
+  }
+
+  flow_relay: {
+    shape: square
+    width: 1
+    height: 1
+    style: {
+      stroke-width: 0
+      fill: transparent
+    }
+  }
+
+  spacer: {
+    style: {
+      opacity: 0
+      stroke-width: 0
+    }
+  }
+
+  green_flow: {
+    style: {
+      stroke: "#2e7d32"
+      stroke-width: 3
+    }
+  }
+
+  red_flow: {
+    style: {
+      stroke: "#c62828"
+      stroke-width: 3
+    }
+  }
+}
+
+grid-rows: 1
+grid-columns: 2
+
+laptop: "User Laptop" {
+  class: icon_labeled_block
+  style: {
+    fill: "#e8f5e9"
+    stroke: "#2e7d32"
+  }
+  grid-columns: 1
+
+  s1: "" { class: spacer }
+
+  kubectl: "kubectl" {
+    class: box
+    style: {
+      fill: "#c8e6c9"
+      stroke: "#388e3c"
+    }
+  }
+
+  s2: "" { class: spacer }
+
+  browser: "Browser" {
+    class: box
+    style: {
+      fill: "#c8e6c9"
+      stroke: "#388e3c"
+    }
+  }
+
+  s2: "" { class: spacer }
+
+  s3: "" { class: spacer }
+
+  cookie_relay: "" {
+    class: flow_relay
+  }
+}
+
+cluster: "Kubernetes Cluster" {
+  class: icon_labeled_block
+  style: {
+    fill: "#e3f2fd"
+    stroke: "#1565c0"
+  }
+  grid-columns: 2
+
+  left_column: "" {
+    class: column_container
+
+    api_row: "" {
+      style: {
+        stroke-width: 0
+        fill: transparent
+      }
+      grid-columns: 3
+      grid-rows: 1
+
+      api_server: "API Server" {
+        class: box
+        style: {
+          fill: "#bbdefb"
+          stroke: "#1565c0"
+        }
+      }
+
+      s1: "" { class: spacer }
+
+      etcd: "etcd" {
+        class: box
+        style: {
+          fill: "#bbdefb"
+          stroke: "#1565c0"
+        }
+      }
+    }
+
+    router-namespace: "Router Namespace" {
+      class: namespace
+      style: {
+        fill: "#ffe0b2"
+        stroke: "#f57c00"
+      }
+      grid-columns: 1
+
+      oidc_auth: "" {
+        style: {
+          stroke-width: 0
+          fill: transparent
+        }
+        grid-columns: 3
+        grid-rows: 1
+
+        idp: "OIDC Provider" {
+          class: box
+          style: {
+            fill: "#ffe0b2"
+            stroke: "#f57c00"
+          }
+        }
+
+        s1: "" { class: spacer }
+
+        authmiddleware: "Auth Middleware" {
+          class: box
+          style: {
+            fill: "#ffe0b2"
+            stroke: "#f57c00"
+          }
+        }
+      }
+
+      forward_auth_relays: "" {
+        style: {
+          stroke-width: 0
+          fill: transparent
+        }
+        grid-columns: 7
+        grid-rows: 1
+
+        s1: "" { class: spacer }
+        relay_oidc_down: "" { class: flow_relay }
+        s2: "" { class: spacer }
+        relay_oidc_up: "" { class: flow_relay }
+        relay_auth_down: "" { class: flow_relay }
+        s3: "" { class: spacer }
+        relay_auth_up: "" { class: flow_relay }
+      }
+
+      router: "Router" {
+        class: box
+        style: {
+          fill: "#ffe0b2"
+          stroke: "#f57c00"
+        }
+      }
+    }
+  }
+
+  right_column: "" {
+    class: column_container
+
+    operator-namespace: "Operator Namespace" {
+      class: namespace
+      style: {
+        fill: "#bbdefb"
+        stroke: "#1565c0"
+      }
+
+      extensionapi: "Extension API" {
+        class: box
+        style: {
+          fill: "#bbdefb"
+          stroke: "#1565c0"
+        }
+      }
+    }
+
+    s1: "" { class: spacer }
+
+    workspace-namespace: "Workspace Namespace" {
+      class: namespace
+      style: {
+        fill: "#e1bee7"
+        stroke: "#8e24aa"
+      }
+
+      workspace: "Workspace" {
+        class: box
+        style: {
+          fill: "#e1bee7"
+          stroke: "#8e24aa"
+        }
+      }
+    }
+  }
+}
+
+# Green: get workspace URL
+laptop.kubectl -> cluster.left_column.api_row.api_server: "1. Get Workspace" {
+  class: green_flow
+}
+
+cluster.left_column.api_row.api_server -> cluster.left_column.api_row.etcd: "" {
+  class: green_flow
+}
+
+# Red: OIDC authentication
+
+# a. browser > router
+laptop.browser -> cluster.left_column.router-namespace.router: "2. Navigate to\nworkspace URL" {
+  class: red_flow
+}
+
+# b. router > oidc (via relay1)
+cluster.left_column.router-namespace.router -> cluster.left_column.router-namespace.forward_auth_relays.relay_oidc_down: "" {
+  class: red_flow
+  target-arrowhead.shape: none
+}
+
+cluster.left_column.router-namespace.forward_auth_relays.relay_oidc_down -> cluster.left_column.router-namespace.oidc_auth.idp: "3. Redirect to IdP" {
+  class: red_flow
+}
+
+# c. oidc <> browser (OAuth2 redirect flow)
+cluster.left_column.router-namespace.oidc_auth.idp <-> laptop.browser: "4. OAuth2 login" {
+  class: red_flow
+}
+
+# d. oidc > router (token, via relay2)
+cluster.left_column.router-namespace.oidc_auth.idp -> cluster.left_column.router-namespace.forward_auth_relays.relay_oidc_up: "5. Callback\n(auth code)" {
+  class: red_flow
+  target-arrowhead.shape: none
+}
+
+cluster.left_column.router-namespace.forward_auth_relays.relay_oidc_up -> cluster.left_column.router-namespace.router: "" {
+  class: red_flow
+}
+
+# e. router > authmiddleware (/auth, via relay3)
+cluster.left_column.router-namespace.router -> cluster.left_column.router-namespace.forward_auth_relays.relay_auth_down: "/auth" {
+  class: red_flow
+  target-arrowhead.shape: none
+}
+
+cluster.left_column.router-namespace.forward_auth_relays.relay_auth_down -> cluster.left_column.router-namespace.oidc_auth.authmiddleware: "6. Forward auth\n(ID token)" {
+  class: red_flow
+}
+
+# f. authmiddleware > oidc (check token)
+cluster.left_column.router-namespace.oidc_auth.authmiddleware -> cluster.left_column.router-namespace.oidc_auth.idp: "7. Verify token" {
+  class: red_flow
+}
+
+# g. authmiddleware > extension api
+cluster.left_column.router-namespace.oidc_auth.authmiddleware -> cluster.right_column.operator-namespace.extensionapi: "8. ConnectionAccessReview\n(authorize user)" {
+  class: red_flow
+}
+
+# h. authmiddleware > router (200 + jwt, via relay4)
+cluster.left_column.router-namespace.oidc_auth.authmiddleware -> cluster.left_column.router-namespace.forward_auth_relays.relay_auth_up: "200" {
+  class: red_flow
+  target-arrowhead.shape: none
+}
+
+cluster.left_column.router-namespace.forward_auth_relays.relay_auth_up -> cluster.left_column.router-namespace.router: "JWT cookie" {
+  class: red_flow
+}
+
+# i. router > workspace
+cluster.left_column.router-namespace.router -> cluster.right_column.workspace-namespace.workspace: "9. Proxy to\nworkspace" {
+  class: red_flow
+}
+
+# j. router > browser (set jwt cookie)
+cluster.left_column.router-namespace.router -> laptop.cookie_relay: "10. Set JWT cookie" {
+  class: red_flow
+  target-arrowhead.shape: none
+}
+
+laptop.cookie_relay -> laptop.browser: "" {
+  class: red_flow
+}

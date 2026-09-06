@@ -7,6 +7,10 @@ cd -- "$(dirname "$0")/../sub/lib"
 . ./release.sh
 cd - >/dev/null
 
+if [ -z "${D2_RELEASE_CHECKSUM-}" ]; then
+  . "$(dirname "$0")/checksum.sh"
+fi
+
 help() {
   arg0="$0"
   if [ "$0" = sh ]; then
@@ -14,15 +18,12 @@ help() {
   fi
 
   cat <<EOF
-usage: $arg0 [-d|--dry-run] [--version vX.X.X] [--edge] [--method detect] [--prefix path]
+usage: $arg0 [-d|--dry-run] [--version vX.X.X] [--method detect] [--prefix path]
   [--tala latest] [--force] [--uninstall] [-x|--trace]
 
 install.sh automates the installation of D2 onto your system. It currently only supports
 the installation of standalone releases from GitHub and via Homebrew on macOS. See the
 docs for --detect below for more information
-
-If you pass --edge, it will clone the source, build a release and install from it.
---edge is incompatible with --tala and currently unimplemented.
 
 \$PREFIX in the docs below refers to the path set by --prefix. See docs on the --prefix
 flag below for the default.
@@ -37,19 +38,6 @@ Flags:
   Pass to have install.sh install the given version instead of the latest version.
   warn: The version may not be obeyed with package manager installations. Use
         --method=standalone to enforce the version.
-
---edge
-  Pass to build and install D2 from source. This will still use --method if set to detect
-  to install the release archive for your OS, whether it's apt, yum, brew or standalone
-  if an unsupported package manager is used.
-
-  To install from source like a dev would, use go install github.com/d2lang/d2@latest. There's
-  also ./ci/release/build.sh --install to build and install a proper standalone release
-  including manpages. The proper release will also ensure d2 --version shows the correct
-  version by embedding the commit hash into the binary.
-
-  note: currently unimplemented.
-  warn: incompatible with --tala as TALA is closed source.
 
 --method [detect | standalone | homebrew ]
   Pass to control the method by which to install. Right now we only support standalone
@@ -127,12 +115,6 @@ main() {
       tala)
         shift "$FLAGSHIFT"
         TALA=${FLAGARG:-latest}
-        ;;
-      edge)
-        flag_noarg && shift "$FLAGSHIFT"
-        EDGE=1
-        echoerr "$FLAGRAW is currently unimplemented"
-        return 1
         ;;
       method)
         flag_nonemptyarg && shift "$FLAGSHIFT"
@@ -334,7 +316,8 @@ install_d2_standalone() {
 
   ensure_version
   asset_url="https://github.com/$REPO/releases/download/$VERSION/$ARCHIVE"
-  fetch_gh "$asset_url" "$CACHE_DIR/$ARCHIVE" 'application/octet-stream'
+  fetch_release_asset \
+    "$REPO" "$VERSION" "$ARCHIVE" "$asset_url" "$CACHE_DIR/$ARCHIVE"
 
   ensure_prefix_sh_c
   "$sh_c" mkdir -p "'$INSTALL_DIR'"

@@ -59,6 +59,10 @@ func (s shapeParallelogram) GetSVGPathData() []string {
 	}
 }
 
+func (s shapeParallelogram) GetPathCommands() [][]svg.PathCommand {
+	return pathCommands(parallelogramPath(s.Box))
+}
+
 func (s shapeParallelogram) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	totalWidth := width + paddingX + parallelWedgeWidth*2
 	return math.Ceil(totalWidth), math.Ceil(height + paddingY)

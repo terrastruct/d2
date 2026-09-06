@@ -140,6 +140,10 @@ func (s shapeC4Person) GetSVGPathData() []string {
 	}
 }
 
+func (s shapeC4Person) GetPathCommands() [][]svg.PathCommand {
+	return pathCommands(bodyPath(s.Box), headPath(s.Box))
+}
+
 func (s shapeC4Person) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	contentWidth := width + paddingX
 	contentHeight := height + paddingY

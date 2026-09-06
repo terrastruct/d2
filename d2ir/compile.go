@@ -36,7 +36,12 @@ type compiler struct {
 	// importStack is used to detect cyclic imports.
 	importStack []string
 	seenImports map[string]struct{}
-	utf16Pos    bool
+	// parsedImports and importTemplates are immutable per-compilation caches.
+	// Callers always receive deep copies so importer substitutions, references,
+	// and glob state cannot leak between import sites.
+	parsedImports   map[string]*d2ast.Map
+	importTemplates map[string]*Map
+	utf16Pos        bool
 
 	// Stack of globs that must be recomputed at each new object in and below the current scope.
 	globContextStack [][]*globContext
@@ -45,6 +50,17 @@ type compiler struct {
 	// Used to check whether ampersands are allowed in the current map.
 	mapRefContextStack   []*RefContext
 	lazyGlobBeingApplied bool
+
+	// Lazy field globs are evaluated against newly created fields through a
+	// deterministic worklist. This avoids rescanning the entire IR after each
+	// insertion while retaining source-order rule application.
+	lazyGlobTarget       *Field
+	lazyGlobWorklist     []*Field
+	lazyGlobQueued       map[*Field]struct{}
+	applyingLazyWorklist bool
+	lazySettledVersions  map[*Map]uint64
+	lazyPostTargets      []*Field
+	lazyPostQueued       map[*Field]struct{}
 }
 
 type CompileOptions struct {
@@ -65,8 +81,10 @@ func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, []string, error) {
 		err: &d2parser.ParseError{},
 		fs:  opts.FS,
 
-		seenImports: make(map[string]struct{}),
-		utf16Pos:    opts.UTF16Pos,
+		seenImports:     make(map[string]struct{}),
+		parsedImports:   make(map[string]*d2ast.Map),
+		importTemplates: make(map[string]*Map),
+		utf16Pos:        opts.UTF16Pos,
 	}
 	m := &Map{}
 	m.initRoot()
@@ -89,12 +107,12 @@ func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, []string, error) {
 }
 
 func (c *compiler) overlayClasses(m *Map) {
-	classes := m.GetField(d2ast.FlatUnquotedString("classes"))
+	classes := m.getFieldIndexed(d2ast.FlatUnquotedString("classes"))
 	if classes == nil || classes.Map() == nil {
 		return
 	}
 
-	layersField := m.GetField(d2ast.FlatUnquotedString("layers"))
+	layersField := m.getFieldIndexed(d2ast.FlatUnquotedString("layers"))
 	if layersField == nil {
 		return
 	}
@@ -108,16 +126,16 @@ func (c *compiler) overlayClasses(m *Map) {
 			continue
 		}
 		l := lf.Map()
-		lClasses := l.GetField(d2ast.FlatUnquotedString("classes"))
+		lClasses := l.getFieldIndexed(d2ast.FlatUnquotedString("classes"))
 
 		if lClasses == nil {
 			lClasses = classes.Copy(l).(*Field)
-			l.Fields = append(l.Fields, lClasses)
+			l.appendField(lClasses)
 		} else if lClasses.Map() != nil {
 			base := classes.Copy(l).(*Field)
-			OverlayMap(base.Map(), lClasses.Map())
+			overlayMapIndexed(base.Map(), lClasses.Map())
 			l.DeleteField("classes")
-			l.Fields = append(l.Fields, base)
+			l.appendField(base)
 		}
 
 		c.overlayClasses(l)
@@ -153,7 +171,7 @@ func (c *compiler) compileSubstitutions(m *Map, varsStack []*Map) {
 		} else if f.Map() != nil {
 			if f.Name != nil && f.Name.ScalarString() == "vars" && f.Name.IsUnquoted() {
 				c.compileSubstitutions(f.Map(), varsStack)
-				c.validateConfigs(f.Map().GetField(d2ast.FlatUnquotedString("d2-config")))
+				c.validateConfigs(f.Map().getFieldIndexed(d2ast.FlatUnquotedString("d2-config")))
 			} else {
 				c.compileSubstitutions(f.Map(), varsStack)
 			}
@@ -270,12 +288,12 @@ func (c *compiler) resolveSubstitutions(varsStack []*Map, node Node) (removedFie
 					case *Field:
 						m := ParentMap(n)
 						if resolvedField.Map() != nil {
-							ExpandSubstitution(m, resolvedField.Map(), n)
+							expandSubstitutionIndexed(m, resolvedField.Map(), n)
 						}
 						// Remove the placeholder field
 						for i, f2 := range m.Fields {
 							if n == f2 {
-								m.Fields = append(m.Fields[:i], m.Fields[i+1:]...)
+								m.removeField(i)
 								removedField = true
 								break
 							}
@@ -399,7 +417,7 @@ func (c *compiler) resolveSubstitution(vars *Map, node Node, substitution *d2ast
 	parent := ParentField(node)
 
 	for i, p := range substitution.Path {
-		f := vars.GetField(p.Unbox())
+		f := vars.getFieldIndexed(p.Unbox())
 		if f == nil {
 			return nil
 		}
@@ -441,7 +459,7 @@ func (c *compiler) overlay(base *Map, f *Field) {
 	// Certain fields should never carry forward.
 	// If you give your scenario a label, you don't want all steps in a scenario to be labeled the same.
 	base.DeleteField("label")
-	OverlayMap(base, f.Map())
+	overlayMapIndexed(base, f.Map())
 	f.Composite = base
 }
 
@@ -486,9 +504,9 @@ func (c *compiler) ampersandFilterMap(dst *Map, ast, scopeAST *d2ast.Map) bool {
 				}
 				var ks string
 				if gctx.refctx.Key.HasTripleGlob() {
-					ks = d2format.Format(d2ast.MakeKeyPathString(IDA(dst)))
+					ks = d2format.FormatKeyPath(IDA(dst))
 				} else {
-					ks = d2format.Format(d2ast.MakeKeyPathString(BoardIDA(dst)))
+					ks = d2format.FormatKeyPath(BoardIDA(dst))
 				}
 				delete(gctx.appliedFields, ks)
 				delete(gctx.appliedEdges, ks)
@@ -582,10 +600,10 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 					},
 				}},
 			}
-			dst.Fields = append(dst.Fields, f)
+			dst.appendField(f)
 		case n.Import != nil:
 			// Spread import
-			impn, ok := c._import(n.Import)
+			impn, ok := c._import(n.Import, dst)
 			if !ok {
 				continue
 			}
@@ -605,21 +623,21 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 				c.ensureGlobContext(gctx2.refctx)
 			}
 
-			scenariosField := impn.Map().GetField(d2ast.FlatUnquotedString("scenarios"))
+			scenariosField := impn.Map().getFieldIndexed(d2ast.FlatUnquotedString("scenarios"))
 			if scenariosField != nil && scenariosField.Map() != nil {
 				for _, sf := range scenariosField.Map().Fields {
 					c.overlay(dst, sf)
 				}
 			}
 
-			stepsField := impn.Map().GetField(d2ast.FlatUnquotedString("steps"))
+			stepsField := impn.Map().getFieldIndexed(d2ast.FlatUnquotedString("steps"))
 			if stepsField != nil && stepsField.Map() != nil {
 				for _, sf := range stepsField.Map().Fields {
 					c.overlay(dst, sf)
 				}
 			}
 
-			OverlayMap(dst, impn.Map())
+			overlayMapIndexed(dst, impn.Map())
 			impDir := n.Import.Dir()
 			c.extendLinks(dst, ParentField(dst), impDir)
 
@@ -664,16 +682,13 @@ func (c *compiler) ensureGlobContext(refctx *RefContext) *globContext {
 }
 
 func (c *compiler) compileKey(refctx *RefContext) {
+	postTargetStart := len(c.lazyPostTargets)
 	if refctx.Key.HasGlob() {
-		// These printlns are for debugging infinite loops.
-		// println("og", refctx.Edge, refctx.Key, refctx.Scope, refctx.ScopeMap, refctx.ScopeAST)
 		for _, refctx2 := range c.globRefContextStack {
-			// println("st", refctx2.Edge, refctx2.Key, refctx2.Scope, refctx2.ScopeMap, refctx2.ScopeAST)
 			if refctx.Equal(refctx2) {
 				// Break the infinite loop.
 				return
 			}
-			// println("keys", d2format.Format(refctx2.Key), d2format.Format(refctx.Key))
 		}
 		c.globRefContextStack = append(c.globRefContextStack, refctx)
 		defer func() {
@@ -681,20 +696,148 @@ func (c *compiler) compileKey(refctx *RefContext) {
 		}()
 		c.ensureGlobContext(refctx)
 	}
-	oldFields := refctx.ScopeMap.FieldCountRecursive()
-	oldEdges := refctx.ScopeMap.EdgeCountRecursive()
+	oldVersion := refctx.ScopeMap.structureVersion
 	if len(refctx.Key.Edges) == 0 {
 		c.compileField(refctx.ScopeMap, refctx.Key.Key, refctx)
 	} else {
 		c.compileEdges(refctx)
 	}
-	if oldFields != refctx.ScopeMap.FieldCountRecursive() || oldEdges != refctx.ScopeMap.EdgeCountRecursive() {
+	root := RootMap(refctx.ScopeMap)
+	settled := c.lazySettledVersions != nil && c.lazySettledVersions[root] == root.structureVersion
+	if oldVersion != refctx.ScopeMap.structureVersion && !c.applyingLazyWorklist && len(c.lazyPostTargets) > postTargetStart {
+		targets := c.takeLazyPostTargets(postTargetStart)
+		c.applyLazyGlobs(targets)
+		settled = true
+	}
+	if oldVersion != refctx.ScopeMap.structureVersion && !c.applyingLazyWorklist && !settled {
 		for _, gctx2 := range c.globContexts() {
-			// println(d2format.Format(gctx2.refctx.Key), d2format.Format(refctx.Key))
 			old := c.lazyGlobBeingApplied
 			c.lazyGlobBeingApplied = true
 			c.compileKey(gctx2.refctx)
 			c.lazyGlobBeingApplied = old
+		}
+	}
+}
+
+func (c *compiler) takeLazyPostTargets(start int) []*Field {
+	targets := append([]*Field(nil), c.lazyPostTargets[start:]...)
+	c.lazyPostTargets = c.lazyPostTargets[:start]
+	for _, target := range targets {
+		delete(c.lazyPostQueued, target)
+	}
+	if len(c.lazyPostQueued) == 0 {
+		c.lazyPostQueued = nil
+	}
+	return targets
+}
+
+func (c *compiler) enqueueLazyPostTargets(fields ...*Field) {
+	if c.lazyPostQueued == nil {
+		c.lazyPostQueued = make(map[*Field]struct{})
+	}
+	for _, f := range fields {
+		if f == nil {
+			continue
+		}
+		if _, exists := c.lazyPostQueued[f]; exists {
+			continue
+		}
+		c.lazyPostQueued[f] = struct{}{}
+		c.lazyPostTargets = append(c.lazyPostTargets, f)
+	}
+}
+
+func (c *compiler) enqueueLazyGlobFields(fields ...*Field) {
+	if len(fields) == 0 {
+		return
+	}
+	if c.lazyGlobQueued == nil {
+		c.lazyGlobQueued = make(map[*Field]struct{})
+	}
+	for _, f := range fields {
+		if f == nil {
+			continue
+		}
+		if _, queued := c.lazyGlobQueued[f]; queued {
+			continue
+		}
+		c.lazyGlobQueued[f] = struct{}{}
+		c.lazyGlobWorklist = append(c.lazyGlobWorklist, f)
+	}
+}
+
+func (c *compiler) applyLazyGlobs(created []*Field) {
+	if len(created) == 0 {
+		for _, gctx := range c.globContexts() {
+			old := c.lazyGlobBeingApplied
+			c.lazyGlobBeingApplied = true
+			c.compileKey(gctx.refctx)
+			c.lazyGlobBeingApplied = old
+		}
+		return
+	}
+
+	if c.applyingLazyWorklist {
+		c.enqueueLazyGlobFields(created...)
+		return
+	}
+	root := RootMap(ParentMap(created[0]))
+	if len(c.globContexts()) == 0 {
+		// Preserve the settled version and pending post-targets: a later key or
+		// nested value can introduce globs. There is no worklist to run yet.
+		if c.lazySettledVersions == nil {
+			c.lazySettledVersions = make(map[*Map]uint64)
+		}
+		c.lazySettledVersions[root] = root.structureVersion
+		return
+	}
+
+	c.applyingLazyWorklist = true
+	defer func() {
+		if c.lazySettledVersions == nil {
+			c.lazySettledVersions = make(map[*Map]uint64)
+		}
+		c.lazySettledVersions[root] = root.structureVersion
+		c.applyingLazyWorklist = false
+		c.lazyGlobTarget = nil
+		c.lazyGlobWorklist = nil
+		c.lazyGlobQueued = nil
+	}()
+	c.enqueueLazyGlobFields(created...)
+
+	for len(c.lazyGlobWorklist) > 0 {
+		target := c.lazyGlobWorklist[0]
+		c.lazyGlobWorklist = c.lazyGlobWorklist[1:]
+
+		var edgeGlobs []*globContext
+		for _, gctx := range c.globContexts() {
+			if len(gctx.refctx.Key.Edges) > 0 {
+				edgeGlobs = append(edgeGlobs, gctx)
+				continue
+			}
+			c.lazyGlobTarget = target
+			old := c.lazyGlobBeingApplied
+			c.lazyGlobBeingApplied = true
+			c.compileKey(gctx.refctx)
+			c.lazyGlobBeingApplied = old
+		}
+		c.lazyGlobTarget = nil
+
+		// Edge globs can depend on edges emitted by earlier glob rules. Preserve
+		// the old fixed-point behavior, but only for edge rules; field rules have
+		// already been applied to the precise changed fields above.
+		root := RootMap(target.parent.(*Map))
+		for len(edgeGlobs) > 0 {
+			before := root.structureVersion
+			for _, gctx := range edgeGlobs {
+				old := c.lazyGlobBeingApplied
+				c.lazyGlobBeingApplied = true
+				c.compileKey(gctx.refctx)
+				c.lazyGlobBeingApplied = old
+			}
+			if before == root.structureVersion {
+				break
+			}
 		}
 	}
 }
@@ -704,7 +847,7 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 		return
 	}
 
-	fa, err := dst.EnsureField(kp, refctx, true, c)
+	fa, err := dst.ensureFieldIndexed(kp, refctx, true, c)
 	if err != nil {
 		c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 		return
@@ -751,7 +894,7 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 		}
 
 		rootMap := RootMap(refctx.ScopeMap)
-		node := rootMap.GetField(nodePath...)
+		node := rootMap.getFieldIndexed(nodePath...)
 		if node == nil || node.Map() == nil {
 			return false
 		}
@@ -778,7 +921,7 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 			ScopeAST: refctx.ScopeAST,
 		}
 
-		fa, err := node.Map().EnsureField(propKeyPath, propRefCtx, false, c)
+		fa, err := node.Map().ensureFieldIndexed(propKeyPath, propRefCtx, false, c)
 		if err != nil || len(fa) == 0 {
 			return false
 		}
@@ -791,7 +934,7 @@ func (c *compiler) ampersandFilter(refctx *RefContext) bool {
 		return false
 	}
 
-	fa, err := refctx.ScopeMap.EnsureField(refctx.Key.Key, refctx, false, c)
+	fa, err := refctx.ScopeMap.ensureFieldIndexed(refctx.Key.Key, refctx, false, c)
 	if err != nil {
 		c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 		return false
@@ -1145,7 +1288,7 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 		}
 	} else if refctx.Key.Value.Import != nil {
 		// Non-spread import
-		n, ok := c._import(refctx.Key.Value.Import)
+		n, ok := c._import(refctx.Key.Value.Import, f)
 		if !ok {
 			return
 		}
@@ -1161,7 +1304,9 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 				f.Primary_ = n.Primary_.Copy(f).(*Scalar)
 			}
 			if n.Composite != nil {
+				beforeFields, beforeEdges := structureCounts(f.Map())
 				f.Composite = n.Composite.Copy(f).(Composite)
+				markStructureCountDelta(ParentMap(f), beforeFields, beforeEdges, f.Map())
 			}
 		case *Map:
 			f.Composite = &Map{
@@ -1183,7 +1328,7 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 					}
 				}
 			}
-			OverlayMap(f.Map(), n)
+			overlayMapIndexed(f.Map(), n)
 			impDir := refctx.Key.Value.Import.Dir()
 			c.extendLinks(f.Map(), f, impDir)
 			switch NodeBoardKind(f) {
@@ -1191,7 +1336,7 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 				c.overlayClasses(f.Map())
 			}
 		}
-		OverlayField(f, originalF)
+		overlayFieldIndexed(f, originalF)
 		if existingEdges != nil && f.Map() != nil {
 			for _, edge := range existingEdges {
 				exists := false
@@ -1202,7 +1347,7 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 					}
 				}
 				if !exists {
-					f.Map().Edges = append(f.Map().Edges, edge)
+					f.Map().appendEdge(edge)
 				}
 			}
 		}
@@ -1368,7 +1513,7 @@ func (c *compiler) compileEdges(refctx *RefContext) {
 		return
 	}
 
-	fa, err := refctx.ScopeMap.EnsureField(refctx.Key.Key, refctx, true, c)
+	fa, err := refctx.ScopeMap.ensureFieldIndexed(refctx.Key.Key, refctx, true, c)
 	if err != nil {
 		c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 		return
@@ -1402,7 +1547,7 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 
 		var ea []*Edge
 		if eid.Index != nil || eid.Glob {
-			ea = refctx.ScopeMap.GetEdges(eid, refctx, c)
+			ea = refctx.ScopeMap.getEdgesForCompile(eid, refctx, c)
 			if len(ea) == 0 {
 				if !eid.Glob {
 					c.errorf(refctx.Edge, "indexed edge does not exist")
@@ -1481,8 +1626,8 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 							}
 
 							rootMap := RootMap(refctx.ScopeMap)
-							srcObj := rootMap.GetField(srcPath...)
-							dstObj := rootMap.GetField(dstPath...)
+							srcObj := rootMap.getFieldIndexed(srcPath...)
+							dstObj := rootMap.getFieldIndexed(dstPath...)
 
 							// Unsuspend source node and all its ancestors
 							if srcObj != nil {
@@ -1507,7 +1652,7 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 					}
 				}
 
-				e.References = append(e.References, &EdgeReference{
+				e.appendReference(&EdgeReference{
 					Context_:       refctx,
 					DueToGlob_:     len(c.globRefContextStack) > 0,
 					DueToLazyGlob_: c.lazyGlobBeingApplied,
@@ -1517,7 +1662,7 @@ func (c *compiler) _compileEdges(refctx *RefContext) {
 			}
 		} else {
 			var err error
-			ea, err = refctx.ScopeMap.CreateEdge(eid, refctx, c)
+			ea, err = refctx.ScopeMap.createEdgeForCompile(eid, refctx, c)
 			if err != nil {
 				c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 				continue
@@ -1590,7 +1735,7 @@ func (c *compiler) compileArray(dst *Array, a *d2ast.Array, scopeAST *d2ast.Map)
 				Value:  v,
 			}
 		case *d2ast.Import:
-			n, ok := c._import(v)
+			n, ok := c._import(v, dst)
 			if !ok {
 				continue
 			}

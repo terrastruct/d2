@@ -1,24 +1,19 @@
 #### Features 🚀
 
-- exports: gif exports work with `animate: true` keyword [#2663](https://github.com/d2lang/d2/pull/2663)
+- exports: render PNG, GIF, PDF, and PPTX with the built-in renderer
 
 #### Improvements 🧹
 
-- d2ascii:
-  - sql_table and uml class shapes are supported [#2623](https://github.com/d2lang/d2/pull/2623)
-  - newlines are handled [#2626](https://github.com/d2lang/d2/pull/2626)
-  - empty left columns are cropped [#2626](https://github.com/d2lang/d2/pull/2626)
-- exports:
-  - Chromium download through CLI for PNG exports is prompted [#2655](https://github.com/d2lang/d2/pull/2655)
-  - `animate-interval` is no longer required, defaults to 1000ms for gifs [#2663](https://github.com/d2lang/d2/pull/2663)
-- renders:
-  - remote images are fetched more reliably [#2659](https://github.com/d2lang/d2/pull/2659)
+- performance: SVG rendering is approximately 10× faster across the E2E corpus. Real-world diagrams compile, lay out, and render approximately 3× faster at the median.
+- renders: SVG exports are approximately 24% smaller across the E2E corpus and 18% smaller across real-world fixtures, with unchanged appearance.
+- renders: render Markdown labels as native SVG instead of HTML `foreignObject` content
 
 #### Bugfixes ⛑️
 
-- exports: pptx follows standards more closely, addressing warnings from some Powerpoint software [#2645](https://github.com/d2lang/d2/pull/2645)
-- d2sequence: fix edge case of invalid sequence diagrams [#2660](https://github.com/d2lang/d2/pull/2660)
-- d2svg: Text may overflow legend bounds when monospace font is used [#2674](https://github.com/d2lang/d2/pull/2674)
+- sequence diagrams: keep synthetic lifeline endpoint IDs stable across architectures
+- exports: honor `D2_TIMEOUT` during PNG and GIF rendering
+- compiler: keep recursive globs out of class and variable definitions and report class reference cycles instead of overflowing the stack
+- renders: decode gzip, Brotli, and deflate remote images before embedding them
 
 ---
 

@@ -49,7 +49,7 @@ main() {
   if [ -z "${VERSION-}" ]; then
     VERSION=$(readlink ./ci/release/build/latest)
   fi
-  D2_DOCKER_IMAGE=${D2_DOCKER_IMAGE:-terrastruct/d2}
+  D2_DOCKER_IMAGE=${D2_DOCKER_IMAGE:-d2lang/d2}
 
   sh_c mkdir -p "./ci/release/build/$VERSION/docker"
   sh_c cp \
