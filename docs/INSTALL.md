@@ -109,6 +109,14 @@ All supported platforms:
 xbps-install d2
 ```
 
+### Debian
+
+Debian packages, built from source at release tags, are available from the pkg.haus APT archive for stable, testing and unstable on amd64 and arm64. Set up the archive per the instructions on https://pkg.haus, then install with:
+
+```sh
+sudo apt install d2
+```
+
 ## Standalone
 
 We publish standalone release archives for every release on Github.
