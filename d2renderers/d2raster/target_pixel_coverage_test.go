@@ -56,6 +56,7 @@ func TestTargetShapePixels(t *testing.T) {
 		d2target.ShapeSQLTable,
 		d2target.ShapeImage,
 		d2target.ShapeSequenceDiagram,
+		d2target.ShapeCycleDiagram,
 		d2target.ShapeHierarchy,
 	}
 	if !reflect.DeepEqual(shapeValues, d2target.Shapes) {

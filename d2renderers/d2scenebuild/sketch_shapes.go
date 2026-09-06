@@ -127,7 +127,7 @@ func (b *builder) buildSketchOrdinaryShape(targetShape d2target.Shape, idPrefix 
 			object, idPrefix, fillRaw, strokeRaw, strokeWidth, dashes, dashOffset,
 			drawable, d2scene.Translate(float64(targetShape.Pos.X), float64(targetShape.Pos.Y)), targetShape,
 		)
-	case d2target.ShapeRectangle, d2target.ShapeSquare, d2target.ShapeSequenceDiagram, d2target.ShapeHierarchy, "":
+	case d2target.ShapeRectangle, d2target.ShapeSquare, d2target.ShapeSequenceDiagram, d2target.ShapeCycleDiagram, d2target.ShapeHierarchy, "":
 		drawable := newSketchGenerator().Rectangle(0, 0, float64(targetShape.Width), float64(targetShape.Height), options)
 		nodes, err = b.compileSketchShapeDrawable(
 			object, idPrefix, fillRaw, strokeRaw, strokeWidth, dashes, dashOffset,
@@ -156,7 +156,7 @@ func (b *builder) buildSketchOrdinaryShape(targetShape d2target.Shape, idPrefix 
 			RadiusX: float64(targetShape.Width) / 2,
 			RadiusY: float64(targetShape.Height) / 2,
 		})
-	case d2target.ShapeRectangle, d2target.ShapeSquare, d2target.ShapeSequenceDiagram, d2target.ShapeHierarchy, "":
+	case d2target.ShapeRectangle, d2target.ShapeSquare, d2target.ShapeSequenceDiagram, d2target.ShapeCycleDiagram, d2target.ShapeHierarchy, "":
 		overlayPrimitives = append(overlayPrimitives, d2scene.Rect{Box: sketchShapeBox(targetShape)})
 	default:
 		for _, node := range roughNodes {
@@ -578,7 +578,7 @@ func (b *builder) buildSketchOutlineOnly(targetShape d2target.Shape, idPrefix st
 			),
 			d2scene.Translate(float64(targetShape.Pos.X), float64(targetShape.Pos.Y)), targetShape,
 		)
-	case d2target.ShapeRectangle, d2target.ShapeSquare, d2target.ShapeSequenceDiagram, d2target.ShapeHierarchy, "":
+	case d2target.ShapeRectangle, d2target.ShapeSquare, d2target.ShapeSequenceDiagram, d2target.ShapeCycleDiagram, d2target.ShapeHierarchy, "":
 		return b.compileSketchShapeDrawable(
 			object, idPrefix, fillRaw, strokeRaw, strokeWidth, dashes, dashOffset,
 			newSketchGenerator().Rectangle(0, 0, float64(targetShape.Width), float64(targetShape.Height), options),
