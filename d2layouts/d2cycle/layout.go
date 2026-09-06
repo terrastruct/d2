@@ -36,7 +36,55 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) e
 		createCircularArc(edge, radius)
 	}
 
+	normalizeToOrigin(g)
+
 	return nil
+}
+
+// normalizeToOrigin shifts the laid out board so that everything it draws --
+// the shapes and the arcs between them -- lies at or below the origin corner,
+// and records the resulting size on the root. positionObjects centers the ring
+// on (0, 0), which leaves the upper left half of the board in negative
+// coordinates, but d2layouts fits the container to the nested board and then
+// places it at (0, 0), and d2layouts.PositionNested offsets the contents by the
+// container position alone -- both assume the nested board already starts at
+// the origin. Without this the container is drawn offset from the very children
+// it wraps. The arcs are included in the bounds so the container encloses them
+// rather than being clipped to the ring of shapes.
+func normalizeToOrigin(g *d2graph.Graph) {
+	minX, minY := math.Inf(1), math.Inf(1)
+	maxX, maxY := math.Inf(-1), math.Inf(-1)
+	track := func(x, y float64) {
+		minX, minY = math.Min(minX, x), math.Min(minY, y)
+		maxX, maxY = math.Max(maxX, x), math.Max(maxY, y)
+	}
+	for _, obj := range g.Objects {
+		if obj.TopLeft == nil {
+			continue
+		}
+		track(obj.TopLeft.X, obj.TopLeft.Y)
+		track(obj.TopLeft.X+obj.Width, obj.TopLeft.Y+obj.Height)
+	}
+	for _, edge := range g.Edges {
+		for _, p := range edge.Route {
+			track(p.X, p.Y)
+		}
+	}
+	if math.IsInf(minX, 1) || math.IsInf(minY, 1) {
+		return
+	}
+
+	dx, dy := -minX, -minY
+	if dx != 0 || dy != 0 {
+		for _, obj := range g.Root.ChildrenArray {
+			obj.MoveWithDescendants(dx, dy)
+		}
+		for _, edge := range g.Edges {
+			edge.Move(dx, dy)
+		}
+	}
+	g.Root.Width = maxX - minX
+	g.Root.Height = maxY - minY
 }
 
 func calculateRadius(objects []*d2graph.Object) float64 {
