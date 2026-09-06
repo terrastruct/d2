@@ -1,6 +1,7 @@
 #### Features 🚀
 
 - exports: render PNG, GIF, PDF, and PPTX with the built-in renderer
+- shape: `cycle` lays a container's children out on a circle and routes their connections as arcs that start and stop on the shape borders
 
 #### Improvements 🧹
 
