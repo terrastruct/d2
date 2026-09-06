@@ -5438,6 +5438,22 @@ x -> y
 				},
 			},
 			{
+				name: "layout-engine-case-insensitive",
+				run: func(t *testing.T) {
+					_, config, err := d2compiler.Compile("d2/testdata/d2compiler/TestCompile2/vars/config/layout-engine-case-insensitive.d2", strings.NewReader(`
+vars: {
+	d2-config: {
+    layout-engine: ELK
+  }
+}
+
+x -> y
+`), nil)
+					assert.Success(t, err)
+					assert.Equal(t, "elk", *config.LayoutEngine)
+				},
+			},
+			{
 				name: "invalid",
 				run: func(t *testing.T) {
 					assertCompile(t, `
