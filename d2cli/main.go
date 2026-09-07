@@ -73,6 +73,10 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
+	watchCleanupFlag, err := ms.Opts.Bool("D2_WATCH_CLEANUP", "watch-cleanup", "", false, "when used with watch, remove generated output files when exiting")
+	if err != nil {
+		return err
+	}
 	layoutFlag := ms.Opts.String("D2_LAYOUT", "layout", "l", "dagre", `the layout engine used`)
 	themeFlag, err := ms.Opts.Int64("D2_THEME", "theme", "t", 0, "the diagram theme ID")
 	if err != nil {
@@ -350,6 +354,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 			port:            *portFlag,
 			inputPath:       inputPath,
 			outputPath:      outputPath,
+			cleanupOutput:   *watchCleanupFlag,
 			bundle:          *bundleFlag,
 			forceAppendix:   *forceAppendixFlag,
 			fontFamily:      fontFamily,

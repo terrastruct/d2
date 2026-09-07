@@ -121,6 +121,7 @@ d2 --watch in.d2 out.svg
 ```
 
 A browser window will open with `out.svg` and live-reload on changes to `in.d2`.
+If you want the generated output removed on exit, use `d2 --watch --watch-cleanup in.d2 out.svg`.
 
 ## Install
 

@@ -1445,6 +1445,52 @@ layers: {
 			},
 		},
 		{
+			name:   "watch-cleanup",
+			serial: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "index.d2", `a -> b`)
+
+				stderr := &stderrWrapper{}
+				tms := testMain(dir, env, "--watch", "--watch-cleanup", "--browser=0", "index.d2", "out.svg")
+				tms.Stderr = stderr
+
+				tms.Start(t, ctx)
+				interrupted := false
+				defer func() {
+					if interrupted {
+						return
+					}
+					err := tms.Signal(ctx, os.Interrupt)
+					assert.Success(t, err)
+				}()
+
+				doneRE := regexp.MustCompile(`successfully compiled index.d2`)
+				_, err := waitLogs(ctx, stderr, doneRE)
+				assert.Success(t, err)
+
+				outputPath := filepath.Join(dir, "out.svg")
+				_, err = os.Stat(outputPath)
+				assert.Success(t, err)
+
+				err = tms.Signal(ctx, os.Interrupt)
+				assert.Success(t, err)
+				interrupted = true
+
+				deadline := time.Now().Add(2 * time.Second)
+				for {
+					_, err = os.Stat(outputPath)
+					if errors.Is(err, os.ErrNotExist) {
+						break
+					}
+					assert.Success(t, err)
+					if time.Now().After(deadline) {
+						t.Fatalf("expected %s to be removed after watch exit", outputPath)
+					}
+					time.Sleep(10 * time.Millisecond)
+				}
+			},
+		},
+		{
 			name:   "watch-ok-link",
 			serial: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
