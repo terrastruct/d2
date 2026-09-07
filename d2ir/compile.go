@@ -40,7 +40,7 @@ type compiler struct {
 	// Callers always receive deep copies so importer substitutions, references,
 	// and glob state cannot leak between import sites.
 	parsedImports   map[string]*d2ast.Map
-	importTemplates map[string]*Map
+	importTemplates map[string]*importTemplate
 	utf16Pos        bool
 
 	// Stack of globs that must be recomputed at each new object in and below the current scope.
@@ -83,7 +83,7 @@ func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, []string, error) {
 
 		seenImports:     make(map[string]struct{}),
 		parsedImports:   make(map[string]*d2ast.Map),
-		importTemplates: make(map[string]*Map),
+		importTemplates: make(map[string]*importTemplate),
 		utf16Pos:        opts.UTF16Pos,
 	}
 	m := &Map{}

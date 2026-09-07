@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 	"testing"
+	"testing/fstest"
 
 	"github.com/d2lang/util-go/mapfs"
 
@@ -98,5 +99,33 @@ func BenchmarkCompileDistinctEdges(b *testing.B) {
 			}
 			benchmarkCompileSource(b, source.String())
 		})
+	}
+}
+
+func BenchmarkCompileSelectedLibrary(b *testing.B) {
+	for _, size := range []int{100, 1000, 4000} {
+		for _, imports := range []int{10, 100} {
+			b.Run(fmt.Sprintf("library=%d/imports=%d", size, imports), func(b *testing.B) {
+				var library, source strings.Builder
+				for i := 0; i < size; i++ {
+					fmt.Fprintf(&library, "component%d: { a; b; a -> b; style.fill: red }\n", i)
+				}
+				for i := 0; i < imports; i++ {
+					fmt.Fprintf(&source, "use%d: @library.component%d\n", i, i%size)
+				}
+				filesystem := fstest.MapFS{"library.d2": &fstest.MapFile{Data: []byte(library.String())}}
+				b.ReportAllocs()
+				b.ResetTimer()
+				for i := 0; i < b.N; i++ {
+					ast, err := d2parser.Parse("index.d2", strings.NewReader(source.String()), nil)
+					if err != nil {
+						b.Fatal(err)
+					}
+					if _, _, err := d2ir.Compile(ast, &d2ir.CompileOptions{FS: filesystem}); err != nil {
+						b.Fatal(err)
+					}
+				}
+			})
+		}
 	}
 }
