@@ -595,28 +595,27 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 	count := 0
 	// quickly eliminate bad row groupings
 	startingCache := make(map[int]bool)
+	measurements := newGridRowMeasurements(sizes, gap)
 	// Note: we want a low threshold to explore good options within attemptLimit,
 	// but the best option may require a few rows that are far from the target size.
 	okThreshold := STARTING_THRESHOLD
-	rowOk := func(row []*d2graph.Object, starting bool) (ok bool) {
+	rowOk := func(start, end int, starting bool) (ok bool) {
+		n := end - start
 		if starting {
 			// we can cache results from starting positions since they repeat and don't change
-			// with starting=true it will always be the 1st N objects based on len(row)
-			if ok, has := startingCache[len(row)]; has {
+			// with starting=true it will always be the first n objects
+			if ok, has := startingCache[n]; has {
 				return ok
 			}
 			defer func() {
 				// cache result before returning
-				startingCache[len(row)] = ok
+				startingCache[n] = ok
 			}()
 		}
 
-		rowSize := 0.
-		for _, obj := range row {
-			rowSize += getSize(obj)
-		}
-		if len(row) > 1 {
-			rowSize += gap * float64(len(row)-1)
+		rowSize := measurements.get(start, end).size
+		if n > 1 {
+			rowSize += gap * float64(n-1)
 			// if multiple nodes are too big, it isn't ok. but a single node can't shrink so only check here
 			if rowSize > okThreshold*targetSize {
 				skipCount++
@@ -642,15 +641,23 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 	// .       A │ B │ C   D   E                                  └────────────┘
 	// of these divisions, find the layout with rows closest to the targetSize
 	tryDivision := func(division []int) bool {
-		layout := GenLayout(gd.objects, division)
-		dist := getDistToTarget(layout, targetSize, float64(gd.horizontalGap), float64(gd.verticalGap), columns)
+		dist := 0.
+		start := 0
+		for i := 0; i <= len(division); i++ {
+			end := len(gd.objects)
+			if i < len(division) {
+				end = division[i] + 1
+			}
+			dist += math.Abs(measurements.get(start, end).withGap - targetSize)
+			start = end
+		}
 		if dist < bestDist {
-			bestLayout = layout
+			bestLayout = GenLayout(gd.objects, division)
 			bestDist = dist
 			fastIsBest = false
 		} else if fastIsBest && dist == bestDist {
 			// prefer ordered search solution to fast layout solution
-			bestLayout = layout
+			bestLayout = GenLayout(gd.objects, division)
 			fastIsBest = false
 		}
 		count++
@@ -668,7 +675,7 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 	for i := 0; i < thresholdAttempts || bestLayout == nil; i++ {
 		count = 0.
 		skipCount = 0.
-		iterDivisions(gd.objects, nCuts, tryDivision, rowOk)
+		iterDivisions(len(gd.objects), nCuts, tryDivision, rowOk)
 		okThreshold += THRESHOLD_STEP_SIZE
 		startingCache = make(map[int]bool)
 		if skipCount == 0 {
@@ -761,64 +768,6 @@ func (gd *gridDiagram) fastLayout(targetSize float64, nCuts int, columns bool) (
 	}
 
 	return layout
-}
-
-// process current division, return true to stop iterating
-type iterDivision func(division []int) (done bool)
-type checkCut func(objects []*d2graph.Object, starting bool) (ok bool)
-
-// get all possible divisions of objects by the number of cuts
-func iterDivisions(objects []*d2graph.Object, nCuts int, f iterDivision, check checkCut) {
-	if len(objects) < 2 || nCuts == 0 {
-		return
-	}
-	done := false
-	// we go in this order to prefer extra objects in starting rows rather than later ones
-	lastObj := len(objects) - 1
-	// with objects=[A, B, C, D, E]; nCuts=2
-	// d:depth; i:index; n:nCuts;
-	// ┌────┬───┬───┬─────────────────────┬────────────┐
-	// │ d  │ i │ n │ objects             │ cuts       │
-	// ├────┼───┼───┼─────────────────────┼────────────┤
-	// │ 0  │ 4 │ 2 │ [A   B   C   D | E] │            │
-	// ├────┼───┼───┼─────────────────────┼────────────┤
-	// │ └1 │ 3 │ 1 │ [A   B   C | D]     │ + | E]     │
-	// ├────┼───┼───┼─────────────────────┼────────────┤
-	// │ └1 │ 2 │ 1 │ [A   B | C   D]     │ + | E]     │
-	// ├────┼───┼───┼─────────────────────┼────────────┤
-	// │ └1 │ 1 │ 1 │ [A | B   C   D]     │ + | E]     │
-	// ├────┼───┼───┼─────────────────────┼────────────┤
-	// │ 0  │ 3 │ 2 │ [A   B   C | D   E] │            │
-	// ├────┼───┼───┼─────────────────────┼────────────┤
-	// │ └1 │ 2 │ 1 │ [A   B | C]         │ + | D E]   │
-	// ├────┼───┼───┼─────────────────────┼────────────┤
-	// │ └1 │ 1 │ 1 │ [A | B   C]         │ + | D E]   │
-	// ├────┼───┼───┼─────────────────────┼────────────┤
-	// │ 0  │ 2 │ 2 │ [A   B | C   D   E] │            │
-	// ├────┼───┼───┼─────────────────────┼────────────┤
-	// │ └1 │ 1 │ 1 │ [A | B]             │ + | C D E] │
-	// └────┴───┴───┴─────────────────────┴────────────┘
-	for index := lastObj; index >= nCuts; index-- {
-		if !check(objects[index:], false) {
-			// optimization: if current cut gives a bad grouping, don't recurse
-			continue
-		}
-		if nCuts > 1 {
-			iterDivisions(objects[:index], nCuts-1, func(inner []int) bool {
-				done = f(append(inner, index-1))
-				return done
-			}, check)
-		} else {
-			if !check(objects[:index], true) {
-				// e.g. [A   B   C | D] if [A,B,C] is bad, skip it
-				continue
-			}
-			done = f([]int{index - 1})
-		}
-		if done {
-			return
-		}
-	}
 }
 
 // generate a grid of objects from the given cut indices
