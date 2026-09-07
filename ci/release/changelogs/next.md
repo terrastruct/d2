@@ -4,7 +4,7 @@
 
 #### Improvements 🧹
 
-- performance: reduce repeated work in text measurement, SVG preparation, and PNG encoding
+- performance: reduce repeated work in Dagre ranking, text measurement, SVG preparation, and PNG encoding
 - performance: reduce repeated work in selective imports, dynamic grid layout, and PNG connection rendering
 - exports: reduce PNG memory usage and support images above the previous 67-megapixel limit
 - performance: SVG rendering is approximately 10× faster across the E2E corpus. Real-world diagrams compile, lay out, and render approximately 3× faster at the median.
