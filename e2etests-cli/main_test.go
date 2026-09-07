@@ -17,6 +17,7 @@ import (
 	"time"
 
 	"github.com/coder/websocket"
+	"github.com/coder/websocket/wsjson"
 
 	"github.com/d2lang/util-go/assert"
 	"github.com/d2lang/util-go/xmain"
@@ -1414,11 +1415,7 @@ layers: {
 				tms.Stderr = stderr
 
 				tms.Start(t, ctx)
-				defer func() {
-					// Manually close, since watcher is daemon
-					err := tms.Signal(ctx, os.Interrupt)
-					assert.Success(t, err)
-				}()
+				defer stopWatch(t, tms)
 
 				// Wait for watch server to spin up and listen
 				urlRE := regexp.MustCompile(`127.0.0.1:([0-9]+)`)
@@ -1465,11 +1462,7 @@ layers: {
 				tms.Stderr = stderr
 
 				tms.Start(t, ctx)
-				defer func() {
-					// Manually close, since watcher is daemon
-					err := tms.Signal(ctx, os.Interrupt)
-					assert.Success(t, err)
-				}()
+				defer stopWatch(t, tms)
 
 				// Wait for watch server to spin up and listen
 				urlRE := regexp.MustCompile(`127.0.0.1:([0-9]+)`)
@@ -1516,11 +1509,7 @@ layers: {
 				tms.Stderr = stderr
 
 				tms.Start(t, ctx)
-				defer func() {
-					// Manually close, since watcher is daemon
-					err := tms.Signal(ctx, os.Interrupt)
-					assert.Success(t, err)
-				}()
+				defer stopWatch(t, tms)
 
 				// Wait for watch server to spin up and listen
 				urlRE := regexp.MustCompile(`127.0.0.1:([0-9]+)`)
@@ -1582,11 +1571,7 @@ layers: {
 				tms.Stderr = stderr
 
 				tms.Start(t, ctx)
-				defer func() {
-					// Manually close, since watcher is daemon
-					err := tms.Signal(ctx, os.Interrupt)
-					assert.Success(t, err)
-				}()
+				defer stopWatch(t, tms)
 
 				// Wait for watch server to spin up and listen
 				urlRE := regexp.MustCompile(`127.0.0.1:([0-9]+)`)
@@ -1631,27 +1616,51 @@ x
 				tms.Stderr = stderr
 
 				tms.Start(t, ctx)
-				defer func() {
-					err := tms.Signal(ctx, os.Interrupt)
-					assert.Success(t, err)
-				}()
+				defer stopWatch(t, tms)
 
-				// Wait for first compilation to finish
-				doneRE := regexp.MustCompile(`successfully compiled a.d2`)
-				_, err := waitLogs(ctx, stderr, doneRE)
+				urlRE := regexp.MustCompile(`127.0.0.1:([0-9]+)`)
+				watchURL, err := waitLogs(ctx, stderr, urlRE)
 				assert.Success(t, err)
+				c, _, err := websocket.Dial(ctx, fmt.Sprintf("ws://%s/watch", watchURL), nil)
+				assert.Success(t, err)
+				defer c.CloseNow()
+
+				// Results are broadcast after the dependency watch list is updated.
+				// Match each phase's contents so an earlier compile cannot satisfy it.
+				waitForSVG := func(labels ...string) {
+					t.Helper()
+					ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
+					defer cancel()
+					for {
+						var result struct {
+							SVG string `json:"svg"`
+							Err string `json:"err"`
+						}
+						assert.Success(t, wsjson.Read(ctx, c, &result))
+						assert.Equal(t, "", result.Err)
+						matched := true
+						for _, label := range labels {
+							matched = matched && strings.Contains(result.SVG, ">"+label+"</text>")
+						}
+						if matched {
+							return
+						}
+					}
+				}
+				waitForSVG("x")
 				stderr.Reset()
 
 				// Test that writing an imported file will cause recompilation
 				writeFile(t, dir, "b.d2", `
 x -> y
 `)
-				bRE := regexp.MustCompile(`detected change in b.d2`)
+				bRE := regexp.MustCompile(`detected change in [^\n]*\bb\.d2: recompiling`)
 				_, err = waitLogs(ctx, stderr, bRE)
 				assert.Success(t, err)
+				waitForSVG("x", "y")
 				stderr.Reset()
 
-				// Test burst of both files changing
+				// Both changes must be detected, whether the OS delivers one batch or two.
 				writeFile(t, dir, "a.d2", `
 ...@b
 hey
@@ -1660,21 +1669,19 @@ hey
 x
 hi
 `)
-				bothRE := regexp.MustCompile(`detected change in a.d2, b.d2`)
-				_, err = waitLogs(ctx, stderr, bothRE)
+				aRE := regexp.MustCompile(`detected change in [^\n]*\ba\.d2(?:,|:)`)
+				_, err = waitLogs(ctx, stderr, aRE)
 				assert.Success(t, err)
-
-				// Wait for that compilation to fully finish
-				_, err = waitLogs(ctx, stderr, doneRE)
+				_, err = waitLogs(ctx, stderr, bRE)
 				assert.Success(t, err)
+				waitForSVG("hey", "hi")
 				stderr.Reset()
 
 				// Update the main file to no longer have that dependency
 				writeFile(t, dir, "a.d2", `
 a
 `)
-				_, err = waitLogs(ctx, stderr, doneRE)
-				assert.Success(t, err)
+				waitForSVG("a")
 				stderr.Reset()
 
 				// Change b
@@ -1687,8 +1694,10 @@ y
 c
 `)
 
-				_, err = waitLogs(ctx, stderr, doneRE)
+				_, err = waitLogs(ctx, stderr, aRE)
 				assert.Success(t, err)
+				waitForSVG("c")
+				assert.False(t, bRE.MatchString(stderr.Read()))
 			},
 		},
 		{
@@ -1754,6 +1763,19 @@ c
 
 			tc.run(t, ctx, dir, env)
 		})
+	}
+}
+
+// Wait for the watcher and its output pipes to close before removing its files.
+func stopWatch(t *testing.T, tms *xmain.TestState) {
+	t.Helper()
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	assert.Success(t, tms.Signal(ctx, os.Interrupt))
+	err := tms.Wait(ctx)
+	var exitErr xmain.ExitError
+	if !errors.As(err, &exitErr) || exitErr.Code != 1 || exitErr.Message != "" {
+		t.Fatalf("unexpected watcher shutdown result: %v", err)
 	}
 }
 

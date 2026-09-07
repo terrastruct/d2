@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"sync"
 
 	"github.com/d2lang/d2/d2graph"
 	"github.com/d2lang/d2/d2layouts/d2elklayout"
@@ -19,10 +20,11 @@ func init() {
 }
 
 type elkPlugin struct {
+	mu   sync.Mutex
 	opts *d2elklayout.ConfigurableOpts
 }
 
-func (p elkPlugin) Flags(context.Context) ([]PluginSpecificFlag, error) {
+func (p *elkPlugin) Flags(context.Context) ([]PluginSpecificFlag, error) {
 	return []PluginSpecificFlag{
 		{
 			Name:    "elk-algorithm",
@@ -70,12 +72,14 @@ func (p *elkPlugin) HydrateOpts(opts []byte) error {
 			return xmain.UsageErrorf("non-ELK layout options given for ELK")
 		}
 
+		p.mu.Lock()
 		p.opts = &elkOpts
+		p.mu.Unlock()
 	}
 	return nil
 }
 
-func (p elkPlugin) Info(ctx context.Context) (*PluginInfo, error) {
+func (p *elkPlugin) Info(ctx context.Context) (*PluginInfo, error) {
 	opts := xmain.NewOpts(nil, nil)
 	flags, err := p.Flags(ctx)
 	if err != nil {
@@ -104,6 +108,9 @@ Flags:
 	}, nil
 }
 
-func (p elkPlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
-	return d2elklayout.Layout(ctx, g, p.opts)
+func (p *elkPlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
+	p.mu.Lock()
+	opts := p.opts
+	p.mu.Unlock()
+	return d2elklayout.Layout(ctx, g, opts)
 }
