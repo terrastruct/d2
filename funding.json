@@ -13,7 +13,7 @@
   },
   "projects": [
     {
-      "guid": "d2",
+      "guid": "d2lang",
       "name": "D2",
       "description": "D2 is a diagram scripting language that turns plain text into diagrams. It lets people keep architecture diagrams and other technical documentation in version control, review changes alongside code, and regenerate diagrams in automated workflows. The project includes a command-line tool, a Go library, a browser playground, documentation, and an ecosystem of editor and documentation integrations. D2 has more than 25,000 GitHub stars as of September 2026. Its public repository documents adoption by projects including Elasticsearch, Temporal, Tauri, and Dagger. Funding will help sustain this existing ecosystem by supporting contributor work on reliability, security, documentation, and releases, and keeping the project's public services available. Documentation: https://d2lang.com/ . Playground: https://play.d2lang.com/ .",
       "webpageUrl": {
@@ -48,7 +48,7 @@
         "guid": "d2-sustainability-2026",
         "status": "active",
         "name": "One year of D2 maintenance and contributor support",
-        "description": "We seek a one-time grant of USD 25,000 to support D2 over the following 12 months. Priorities are approved contributor work on compiler and rendering reliability, security fixes and regression coverage, release maintenance, documentation, and contributor onboarding; and the operation of public documentation, the Playground, and build and distribution infrastructure. This funding would expand contributor capacity around a project currently maintained part-time. The request includes fiscal-sponsorship costs: at Hack Club's published 7% fee, USD 1,750 would cover sponsorship and payment administration, leaving USD 23,250 for project work and infrastructure. Allocation among priorities will follow project needs and fiscal-sponsor approval. Neither co-founder will receive compensation from the grant. Fund transactions are public at https://hcb.hackclub.com/d2, and development is public in the project's repositories.",
+        "description": "We seek USD 25,000 for 12 months of approved contributor work on compiler/rendering reliability, security, regression tests, releases, documentation and onboarding, plus public services and build/distribution infrastructure. The request includes Hack Club's 7% fee (USD 1,750), leaving USD 23,250 for project work. Allocations follow project needs and fiscal-sponsor approval. Neither co-founder receives compensation. Spending is public at https://hcb.hackclub.com/d2.",
         "amount": 25000,
         "currency": "USD",
         "frequency": "one-time",
