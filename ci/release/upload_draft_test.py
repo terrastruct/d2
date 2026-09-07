@@ -25,17 +25,38 @@ class FakeGitHub:
         self.commit = COMMIT
         self.writes = []
         self.change_after_upload = None
+        self.change_before_release_read = None
+        self.change_before_asset_read = None
+        self.fail_upload_once = False
+        self.next_asset_id = 1000
         for asset in assets:
             self.add_asset(*asset)
 
     def add_asset(self, path, digest, size):
-        self.release["assets"].append({"name": path.name, "state": "uploaded", "digest": digest, "size": size})
+        asset = {"id": self.next_asset_id, "name": path.name, "state": "uploaded", "digest": digest, "size": size}
+        self.next_asset_id += 1
+        self.release["assets"].append(asset)
+        return asset
+
+    def add_starter(self, path):
+        asset = self.add_asset(path, None, 0)
+        asset["state"] = "starter"
+        return asset
 
     def api(self, path):
         if "/git/ref/tags/" in path:
             return {"object": {"type": "commit", "sha": self.commit}}
         if path.endswith("/releases/123"):
+            if self.change_before_release_read:
+                self.change_before_release_read(self)
+                self.change_before_release_read = None
             return copy.deepcopy(self.release)
+        if "/releases/assets/" in path:
+            asset = next(asset for asset in self.release["assets"] if asset["id"] == int(path.rsplit("/", 1)[1]))
+            if self.change_before_asset_read:
+                self.change_before_asset_read(asset)
+                self.change_before_asset_read = None
+            return copy.deepcopy(asset)
         raise AssertionError(path)
 
     def gh(self, *args):
@@ -46,9 +67,19 @@ class FakeGitHub:
             self.release = FakeGitHub().release
         elif args[:2] == ("release", "upload"):
             path = Path(args[3])
+            assert "--clobber" not in args
+            assert not any(asset["name"] == path.name for asset in self.release["assets"])
+            if self.fail_upload_once:
+                self.fail_upload_once = False
+                self.add_starter(path)
+                self.writes.append(args)
+                raise RuntimeError("502 upload failure left an empty starter")
             self.add_asset(path, uploader.digest(path), path.stat().st_size)
             if self.change_after_upload:
                 self.change_after_upload(self)
+        elif args[:3] == ("api", "--method", "DELETE"):
+            asset_id = int(args[3].rsplit("/", 1)[1])
+            self.release["assets"] = [asset for asset in self.release["assets"] if asset["id"] != asset_id]
         else:
             raise AssertionError(args)
         self.writes.append(args)
@@ -122,6 +153,97 @@ class DraftUploadTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "different bytes"):
             self.run_upload(fake)
         self.assertEqual(fake.writes, [])
+
+    def test_starter_cleanup_recovers_repeated_upload_failure(self):
+        fake = FakeGitHub(self.assets[:2])
+        completed = copy.deepcopy(fake.release["assets"])
+        first_id = fake.add_starter(self.assets[2][0])["id"]
+        fake.fail_upload_once = True
+        with self.assertRaisesRegex(RuntimeError, "502"):
+            self.run_upload(fake)
+        second_id = fake.release["assets"][-1]["id"]
+        self.assertNotEqual(first_id, second_id)
+        self.run_upload(fake)
+        writes = copy.deepcopy(fake.writes)
+        self.run_upload(fake)
+        self.assertEqual(fake.writes, writes)
+        self.assertEqual(fake.release["assets"][:2], completed)
+        self.assertEqual(len(fake.release["assets"]), 9)
+        self.assertEqual([call[3] for call in fake.writes if call[:3] == ("api", "--method", "DELETE")],
+                         [f"repos/test/repo/releases/assets/{first_id}", f"repos/test/repo/releases/assets/{second_id}"])
+
+    def test_unsafe_starter_metadata_is_never_deleted(self):
+        for field, value in (("state", "uploading"), ("state", "uploaded"), ("size", 1), ("size", False),
+                             ("digest", "sha256:" + "b" * 64), ("id", "1000"), ("id", -1), ("id", True), ("id", None)):
+            with self.subTest(field=field, value=value):
+                fake = FakeGitHub()
+                fake.add_starter(self.assets[0][0])[field] = value
+                with self.assertRaisesRegex(ValueError, "incomplete metadata"):
+                    self.run_upload(fake)
+                self.assertEqual(fake.writes, [])
+
+    def test_starter_change_before_cleanup_prevents_deletion(self):
+        path, digest, size = self.assets[0]
+        changes = ({"id": 456}, {"state": "uploading"}, {"size": 1}, {"digest": digest},
+                   {"state": "uploaded", "size": size, "digest": digest})
+        for phase in ("release", "asset"):
+            for change in changes:
+                with self.subTest(phase=phase, change=change):
+                    fake = FakeGitHub()
+                    starter = fake.add_starter(path)
+                    if phase == "release":
+                        fake.change_before_release_read = lambda state: starter.update(change)
+                    else:
+                        fake.change_before_asset_read = lambda asset: asset.update(change)
+                    with self.assertRaises(ValueError):
+                        self.run_upload(fake)
+                    self.assertEqual(fake.writes, [])
+
+    def test_starter_name_change_at_exact_asset_read_prevents_deletion(self):
+        fake = FakeGitHub()
+        fake.add_starter(self.assets[0][0])
+        fake.change_before_asset_read = lambda asset: asset.update(name="unrelated.tar.gz")
+        with self.assertRaisesRegex(ValueError, "starter asset changed"):
+            self.run_upload(fake)
+        self.assertEqual(fake.writes, [])
+
+    def test_conflict_elsewhere_prevents_starter_cleanup(self):
+        for phase in ("preflight", "cleanup"):
+            with self.subTest(phase=phase):
+                fake = FakeGitHub([self.assets[-1]])
+                fake.add_starter(self.assets[0][0])
+                def conflict(state):
+                    state.release["assets"][0]["digest"] = "sha256:" + "b" * 64
+                if phase == "preflight":
+                    conflict(fake)
+                else:
+                    fake.change_before_release_read = conflict
+                with self.assertRaisesRegex(ValueError, "different bytes"):
+                    self.run_upload(fake)
+                self.assertEqual(fake.writes, [])
+
+    def test_duplicate_starters_are_never_deleted(self):
+        fake = FakeGitHub()
+        fake.add_starter(self.assets[0][0])
+        fake.add_starter(self.assets[0][0])
+        with self.assertRaisesRegex(ValueError, "incomplete metadata"):
+            self.run_upload(fake)
+        self.assertEqual(fake.writes, [])
+
+    def test_release_or_tag_change_before_cleanup_prevents_deletion(self):
+        for field, value in (("id", 456), ("prerelease", True), ("draft", False), ("tag_name", "v9.9.9"), ("commit", "b" * 40)):
+            with self.subTest(field=field):
+                fake = FakeGitHub()
+                fake.add_starter(self.assets[0][0])
+                def change(state):
+                    if field == "commit":
+                        state.commit = value
+                    else:
+                        state.release[field] = value
+                fake.change_before_release_read = change
+                with self.assertRaises(ValueError):
+                    self.run_upload(fake)
+                self.assertEqual(fake.writes, [])
 
     def test_published_release_is_never_modified(self):
         fake = FakeGitHub(published=True)
