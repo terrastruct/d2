@@ -1,0 +1,69 @@
+{
+  "$schema": "https://fundingjson.org/schema/v1.1.0.json",
+  "version": "2026-09-07",
+  "entity": {
+    "type": "group",
+    "role": "maintainer",
+    "name": "D2",
+    "email": "alex@d2lang.com",
+    "description": "D2 is an independent open-source diagramming project led by co-creator Alexander Wang. It has one part-time maintainer and no full-time maintainers. D2 is fiscally sponsored by The Hack Foundation, the nonprofit behind Hack Club, which administers the restricted D2 fund. Neither Alexander Wang nor co-creator Anmol Sethi receives money from this fund. Funding supports approved contributor work, public services, build and distribution infrastructure, and open-source dependencies. The sponsorship policy is published at https://d2lang.com/sponsor/ and the fund's transactions are public at https://hcb.hackclub.com/d2.",
+    "webpageUrl": {
+      "url": "https://github.com/d2lang/d2"
+    }
+  },
+  "projects": [
+    {
+      "guid": "d2",
+      "name": "D2",
+      "description": "D2 is a diagram scripting language that turns plain text into diagrams. It lets people keep architecture diagrams and other technical documentation in version control, review changes alongside code, and regenerate diagrams in automated workflows. The project includes a command-line tool, a Go library, a browser playground, documentation, and an ecosystem of editor and documentation integrations. D2 has more than 25,000 GitHub stars as of September 2026. Its public repository documents adoption by projects including Elasticsearch, Temporal, Tauri, and Dagger. Funding will help sustain this existing ecosystem by supporting contributor work on reliability, security, documentation, and releases, and keeping the project's public services available. Documentation: https://d2lang.com/ . Playground: https://play.d2lang.com/ .",
+      "webpageUrl": {
+        "url": "https://github.com/d2lang/d2"
+      },
+      "repositoryUrl": {
+        "url": "https://github.com/d2lang/d2"
+      },
+      "licenses": [
+        "spdx:MPL-2.0"
+      ],
+      "tags": [
+        "developer-tools",
+        "diagramming",
+        "documentation",
+        "data-visualisation",
+        "golang"
+      ]
+    }
+  ],
+  "funding": {
+    "channels": [
+      {
+        "guid": "hack-club",
+        "type": "payment-provider",
+        "address": "https://hcb.hackclub.com/donations/start/d2",
+        "description": "Contributions are received by The Hack Foundation for the restricted D2 project fund. For grant-payment arrangements, contact alex@d2lang.com to coordinate with Hack Club. Public fund: https://hcb.hackclub.com/d2. Banking and tax documentation will be coordinated privately with the fiscal sponsor if funding is awarded."
+      }
+    ],
+    "plans": [
+      {
+        "guid": "d2-sustainability-2026",
+        "status": "active",
+        "name": "One year of D2 maintenance and contributor support",
+        "description": "We seek a one-time grant of USD 25,000 to support D2 over the following 12 months. Priorities are approved contributor work on compiler and rendering reliability, security fixes and regression coverage, release maintenance, documentation, and contributor onboarding; and the operation of public documentation, the Playground, and build and distribution infrastructure. This funding would expand contributor capacity around a project currently maintained part-time. The request includes fiscal-sponsorship costs: at Hack Club's published 7% fee, USD 1,750 would cover sponsorship and payment administration, leaving USD 23,250 for project work and infrastructure. Allocation among priorities will follow project needs and fiscal-sponsor approval. Neither co-founder will receive compensation from the grant. Fund transactions are public at https://hcb.hackclub.com/d2, and development is public in the project's repositories.",
+        "amount": 25000,
+        "currency": "USD",
+        "frequency": "one-time",
+        "channels": [
+          "hack-club"
+        ]
+      }
+    ],
+    "history": [
+      {
+        "year": 2026,
+        "income": 10203,
+        "currency": "USD",
+        "description": "Gross donations received by D2's Hack Club fund year-to-date as of September 7, 2026: USD 10,203 across three donations, including USD 10,200 from Terrastruct, Inc. This is before fiscal-sponsorship fees and is not recurring annual revenue or an available-balance figure. Source: https://hcb.hackclub.com/d2/donations."
+      }
+    ]
+  }
+}
