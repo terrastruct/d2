@@ -2,14 +2,27 @@ package docker_test
 
 import (
 	"crypto/sha256"
+	"embed"
 	"encoding/json"
 	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 )
+
+// Include subprocess inputs in the test binary so script edits invalidate Go's test cache.
+//
+//go:embed common.sh release.sh
+var scriptSources embed.FS
+
+func TestMain(m *testing.M) {
+	code := m.Run()
+	runtime.KeepAlive(scriptSources) // Prevent the linker from discarding the cache inputs.
+	os.Exit(code)
+}
 
 func TestDockerReleaseVersion(t *testing.T) {
 	for _, version := range []string{"v1.2.3", "v0.0.0-ci", "v1.2.3-rc.1", "1.2.3", "v01.2.3", "v1.2.3\nother", "v1.2.3+build"} {
