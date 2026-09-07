@@ -53,10 +53,11 @@ func effectRenderBounds(ctx context.Context, node *preparedNode, destination ima
 
 func strokeRegionBounds(ctx context.Context, primitive *preparedPrimitive, destination image.Rectangle) (image.Rectangle, error) {
 	fallback := primitive.bounds.Intersect(destination)
-	if fallback.Empty() || math.Abs(float64(primitive.referenceBounds.Min.X)) > 1<<20 || math.Abs(float64(primitive.referenceBounds.Min.Y)) > 1<<20 {
+	if fallback.Empty() || math.Abs(float64(primitive.referenceBounds.Min.X)) > 1<<20 || math.Abs(float64(primitive.referenceBounds.Min.Y)) > 1<<20 || !boundedRegionPoint(d2scene.Point{X: primitive.transform.E, Y: primitive.transform.F}) {
 		return fallback, nil
 	}
-	expansion := strokeExtent(primitive.stroke, primitive.transform) + 1
+	scale := primitive.transform.MaxScale()
+	expansion := strokeRegionExtent(primitive.stroke, primitive.transform) + 1
 	if !finite(expansion) || expansion > 1<<20 {
 		return fallback, nil
 	}
@@ -77,8 +78,13 @@ func strokeRegionBounds(ctx context.Context, primitive *preparedPrimitive, desti
 				}
 			}
 			segments++
-			from := primitive.transform.Point(run.points[index])
-			to := primitive.transform.Point(run.points[(index+1)%len(run.points)])
+			localFrom := run.points[index]
+			localTo := run.points[(index+1)%len(run.points)]
+			if !boundedStrokeLocalPoint(localFrom, scale) || !boundedStrokeLocalPoint(localTo, scale) {
+				return fallback, nil
+			}
+			from := primitive.transform.Point(localFrom)
+			to := primitive.transform.Point(localTo)
 			if !boundedRegionPoint(from) || !boundedRegionPoint(to) {
 				return fallback, nil
 			}
@@ -112,4 +118,23 @@ func strokeRegionBounds(ctx context.Context, primitive *preparedPrimitive, desti
 
 func boundedRegionPoint(point d2scene.Point) bool {
 	return finitePoint(point) && math.Abs(point.X) <= 1<<20 && math.Abs(point.Y) <= 1<<20
+}
+
+// addCircle uses cubic Beziers, whose control points lie outside the true
+// circle. Their convex hull remains a conservative envelope after any affine
+// transform; the true radius alone can miss rotated large caps and joins.
+func strokeRegionExtent(stroke *preparedStroke, transform d2scene.Matrix) float64 {
+	extent := strokeExtent(stroke, transform)
+	if stroke.cap == d2scene.CapRound || stroke.join == d2scene.JoinRound {
+		const circleControl = 0.5522847498307936 // Keep aligned with addCircle.
+		extent = max(extent, stroke.width/2*transform.MaxScale()*math.Hypot(1, circleControl))
+	}
+	return extent
+}
+
+func boundedStrokeLocalPoint(point d2scene.Point, scale float64) bool {
+	// Stroke outlines add offsets in local coordinates before transformation.
+	// Bound those intermediate magnitudes as well as final device coordinates:
+	// large cancelling products otherwise lose more than the one-pixel inset.
+	return finitePoint(point) && max(math.Abs(point.X), math.Abs(point.Y))*scale <= 1<<40
 }

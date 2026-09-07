@@ -33,7 +33,9 @@ func maskRenderBounds(ctx context.Context, mask *preparedMask, destination image
 	if primitive.fill == nil || primitive.fill.kind != preparedSolidPaint || primitive.fill.solid.R != 255 || primitive.fill.solid.G != 255 || primitive.fill.solid.B != 255 || primitive.fill.solid.A != 255 || primitive.stroke != nil || primitive.image != nil || primitive.vector != nil || len(primitive.subpaths) != 1 {
 		return destination, nil
 	}
-	if math.Abs(float64(primitive.referenceBounds.Min.X)) > 1<<20 || math.Abs(float64(primitive.referenceBounds.Min.Y)) > 1<<20 {
+	// A large translation that cancels local coordinates can round differently
+	// when the renderer subtracts its reference origin before transformation.
+	if math.Abs(float64(primitive.referenceBounds.Min.X)) > 1<<20 || math.Abs(float64(primitive.referenceBounds.Min.Y)) > 1<<20 || !boundedRegionPoint(d2scene.Point{X: primitive.transform.E, Y: primitive.transform.F}) {
 		return destination, nil
 	}
 	points := primitive.subpaths[0].points
