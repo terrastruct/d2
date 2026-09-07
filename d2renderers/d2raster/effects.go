@@ -334,6 +334,16 @@ func planNodeResources(ctx context.Context, node *preparedNode, dst image.Rectan
 
 	usesFilters := len(node.filters) != 0
 	usesEffectLayer := node.isolated || node.opacity < 1 || node.blend != d2scene.BlendNormal || usesFilters || node.clip != nil || node.mask != nil
+	if planner.regionFilters && usesEffectLayer && !usesFilters {
+		var err error
+		visibleBounds, err = effectRenderBounds(ctx, node, dst)
+		if err != nil {
+			return resources, err
+		}
+		if visibleBounds.Empty() {
+			return resources, nil
+		}
+	}
 	baseBytes := int64(0)
 	finalLayerBytes := int64(0)
 	paintBounds := dst
@@ -440,11 +450,15 @@ func planNodeResources(ctx context.Context, node *preparedNode, dst image.Rectan
 	}
 
 	if node.mask != nil {
-		maskBytes, err := pixelStorageBytes(visibleBounds, 4)
+		maskBounds, err := maskRenderBounds(ctx, node.mask, visibleBounds, planner.regionFilters)
+		if err != nil {
+			return resources, err
+		}
+		maskBytes, err := pixelStorageBytes(maskBounds, 4)
 		if err != nil {
 			return resources, fmt.Errorf("d2raster: scene mask: %w", err)
 		}
-		maskResources, err := planNodeResources(ctx, node.mask.root, visibleBounds, planner)
+		maskResources, err := planNodeResources(ctx, node.mask.root, maskBounds, planner)
 		if err != nil {
 			return resources, err
 		}
@@ -663,6 +677,13 @@ func renderEffectNode(ctx context.Context, dst *image.RGBA, node *preparedNode, 
 		return renderFilteredEffectNode(ctx, dst, node, scratch)
 	}
 	bounds := node.bounds.Intersect(dst.Bounds())
+	if scratch.regionFilters {
+		var err error
+		bounds, err = effectRenderBounds(ctx, node, dst.Bounds())
+		if err != nil {
+			return err
+		}
+	}
 	if bounds.Empty() {
 		return nil
 	}
@@ -1069,7 +1090,17 @@ func multiplyLayerByAlpha(ctx context.Context, layer *image.RGBA, mask *image.Al
 }
 
 func applyMask(ctx context.Context, layer *image.RGBA, mask *preparedMask, scratch *rasterScratch) error {
-	maskLayer, maskBytes, err := scratch.offscreen.newRGBA(layer.Bounds(), "scene mask RGBA layer")
+	bounds, err := maskRenderBounds(ctx, mask, layer.Bounds(), scratch.regionFilters)
+	if err != nil {
+		return err
+	}
+	if bounds.Empty() {
+		return ctx.Err()
+	}
+	if bounds != layer.Bounds() {
+		layer = layer.SubImage(bounds).(*image.RGBA)
+	}
+	maskLayer, maskBytes, err := scratch.offscreen.newRGBA(bounds, "scene mask RGBA layer")
 	if err != nil {
 		return err
 	}
