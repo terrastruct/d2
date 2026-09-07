@@ -29,8 +29,6 @@ jobs:
       actions: read
       contents: read
     uses: ./.github/workflows/ci.yml
-    secrets:
-      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
   build:
     runs-on: ubuntu-24.04
