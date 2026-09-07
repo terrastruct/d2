@@ -18,6 +18,12 @@ must separately trust the `d2lang/d2` `npm-stage.yml` workflow for stage-only pu
 Each trusted publisher is restricted to the `npm-release` GitHub environment, whose
 deployment branch policy accepts only protected branches. The workflow itself also
 refuses to pack from any ref other than `refs/heads/master`.
+To package a specific D2 release, dispatch from `master` with `d2_ref` set to its
+exact tag, for example `v0.9.0`. The workflow verifies that the tag is an ancestor
+of the dispatched commit, then builds that tag's source. The npm version must be
+checked into that source before the D2 release is tagged. Without `d2_ref`, the
+workflow builds the dispatched master commit. The WASM reports its exact D2 tag
+or source commit independently of the npm version.
 The canonical package was bootstrapped once from the existing `@terrastruct/d2@0.1.33`
 built artifacts because npm does not allow a brand-new package to use staged publishing.
 

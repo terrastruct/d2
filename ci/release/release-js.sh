@@ -4,15 +4,17 @@ cd -- "$(dirname "$0")/../.."
 . "./ci/sub/lib.sh"
 
 VERSION=""
+D2_REF=""
 
 help() {
   cat <<EOF
-usage: $0 --version=<version>
+usage: $0 --version=<version> [--d2-ref=<tag>]
 
 Dispatches the protected npm staging workflow for both d2.js package identities.
 
 Flags:
-  --version     Version to stage (e.g., "0.1.2" or "nightly"). Note this is the js version, not related to the d2 version. A non-nightly version will use the latest tag after approval.
+  --version     npm version to stage (e.g., "0.1.2" or "nightly"), independent of the D2 version. Stable packages use npm's latest tag after approval.
+  --d2-ref      Exact D2 release tag to build (e.g., "v0.9.0"). It must be an ancestor of master. Omit to build the dispatched master commit.
 EOF
 }
 
@@ -24,6 +26,9 @@ for arg in "$@"; do
       ;;
     --version=*)
       VERSION="${arg#*=}"
+      ;;
+    --d2-ref=*)
+      D2_REF="${arg#*=}"
       ;;
   esac
 done
@@ -46,6 +51,7 @@ FGCOLOR=6 header "Staging JavaScript packages for npm review (version: $VERSION)
 gh workflow run npm-stage.yml \
   --repo d2lang/d2 \
   --ref master \
-  --field "version=$VERSION"
+  --field "version=$VERSION" \
+  --field "d2_ref=$D2_REF"
 
 FGCOLOR=2 header 'npm staging workflow dispatched; approve both package stages after every job succeeds'
