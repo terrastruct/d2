@@ -71,8 +71,8 @@ func renderRasterSVG(ctx context.Context, plugin d2plugin.Plugin, diagram *d2tar
 const (
 	// These production safety ceilings bound raster work independently
 	// of the caller's input source.
-	// Admit long, narrow diagrams while rasterMaxPixels remains the hard bound
-	// on final-frame area and therefore prevents unbounded canvas allocation.
+	// Admit long, narrow diagrams while rasterMaxPixels bounds complete-frame
+	// allocations. Streaming PNG uses these dimensions with a bounded strip.
 	rasterMaxDimension                = 32_768
 	rasterMaxPixels             int64 = 64 * 1024 * 1024
 	rasterMaxNodes                    = 1_000_000

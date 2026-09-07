@@ -40,7 +40,6 @@ import (
 	"github.com/d2lang/d2/lib/imgbundler"
 	"github.com/d2lang/d2/lib/log"
 	"github.com/d2lang/d2/lib/pdf"
-	"github.com/d2lang/d2/lib/png"
 	"github.com/d2lang/d2/lib/pptx"
 	"github.com/d2lang/d2/lib/simplelog"
 	"github.com/d2lang/d2/lib/textmeasure"
@@ -1014,33 +1013,18 @@ func _renderWithPNGEncoder(ctx context.Context, ms *xmain.State, plugin d2plugin
 			return svg, false, err
 		}
 		cacheImages := ms.Env.Getenv("IMG_CACHE") == "1"
-		out, err := renderPNGWithEncoder(ctx, inputPath, cacheImages, diagram, *renderOpts, pngEncoder)
-		if err != nil {
-			return svg, false, err
-		}
-		var withExif []byte
-		err = runFinalizer(ctx, func() error {
-			var finalizeErr error
-			withExif, finalizeErr = png.AddExifToEncoderOutputInPlace(out)
-			return finalizeErr
-		})
-		if err != nil {
-			return svg, false, err
-		}
-		out = withExif
 		if opts.MasterID == "" {
-			if err := os.MkdirAll(filepath.Dir(outputPath), 0755); err != nil {
-				return svg, false, err
-			}
-			written, err := runStatusFinalizer(ctx, func() (bool, error) {
-				return writeWithStatus(ms, outputPath, out)
+			written, err := writePNGWithStatus(ctx, ms, outputPath, func(output io.Writer) error {
+				return renderPNGToWriter(ctx, inputPath, cacheImages, diagram, *renderOpts, pngEncoder, output)
 			})
 			if err != nil {
 				return svg, written, err
 			}
 			return svg, written, nil
 		}
-		return svg, false, nil
+		// Animated SVG composition only needs validation, not retained PNG bytes.
+		err = renderPNGToWriter(ctx, inputPath, cacheImages, diagram, *renderOpts, pngEncoder, io.Discard)
+		return svg, false, err
 	}
 
 	svg, err := d2svg.Render(diagram, renderOpts)

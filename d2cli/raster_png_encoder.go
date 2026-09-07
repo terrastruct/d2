@@ -12,6 +12,9 @@ import (
 	"image"
 	stdpng "image/png"
 	"io"
+	"math"
+
+	d2png "github.com/d2lang/d2/lib/png"
 )
 
 // rasterPNGEncoder retains compression and row workspaces for the lifetime of
@@ -22,6 +25,7 @@ import (
 // pixels, discards the partial attempt, and falls back to the generic encoder.
 type rasterPNGEncoder struct {
 	native        rasterOpaquePNGEncoder
+	bands         rasterPNGBandEncoder
 	generic       rasterPNGEncoderBufferPool
 	genericWriter rasterPNGContextWriter
 	genericImage  image.NRGBA
@@ -145,11 +149,30 @@ type rasterOpaquePNGEncoder struct {
 	zw         *zlib.Writer
 	bw         *bufio.Writer
 	stream     rasterPNGIDATStream
+	channels   int
 }
 
 func (e *rasterOpaquePNGEncoder) encode(output io.Writer, source *image.NRGBA) error {
 	bounds := source.Bounds()
-	rowSize := 1 + 3*bounds.Dx()
+	if err := e.start(output, bounds.Dx(), bounds.Dy(), true); err != nil {
+		return err
+	}
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+		sourceOffset := (y - bounds.Min.Y) * source.Stride
+		sourceRow := source.Pix[sourceOffset : sourceOffset+bounds.Dx()*4]
+		if err := e.writeRow(sourceRow); err != nil {
+			return err
+		}
+	}
+	return e.finish()
+}
+
+func (e *rasterOpaquePNGEncoder) start(output io.Writer, width, height int, opaque bool) error {
+	e.channels = 4
+	if opaque {
+		e.channels = 3
+	}
+	rowSize := 1 + e.channels*width
 	storageSize := 4 * rowSize
 	if cap(e.storage) < storageSize {
 		e.storage = make([]byte, storageSize)
@@ -165,14 +188,19 @@ func (e *rasterOpaquePNGEncoder) encode(output io.Writer, source *image.NRGBA) e
 
 	e.stream.output = output
 	e.stream.err = nil
-	if _, err := io.WriteString(output, "\x89PNG\r\n\x1a\n"); err != nil {
+	if n, err := io.WriteString(output, "\x89PNG\r\n\x1a\n"); err != nil {
 		return err
+	} else if n != 8 {
+		return io.ErrShortWrite
 	}
 	var ihdr [13]byte
-	binary.BigEndian.PutUint32(ihdr[0:4], uint32(bounds.Dx()))
-	binary.BigEndian.PutUint32(ihdr[4:8], uint32(bounds.Dy()))
+	binary.BigEndian.PutUint32(ihdr[0:4], uint32(width))
+	binary.BigEndian.PutUint32(ihdr[4:8], uint32(height))
 	ihdr[8] = 8
 	ihdr[9] = 2
+	if !opaque {
+		ihdr[9] = 6
+	}
 	e.stream.emit(0x49484452, ihdr[:]) // IHDR
 	if e.stream.err != nil {
 		return e.stream.err
@@ -191,11 +219,14 @@ func (e *rasterOpaquePNGEncoder) encode(output io.Writer, source *image.NRGBA) e
 	} else {
 		e.zw.Reset(e.bw)
 	}
+	return nil
+}
 
-	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
-		sourceOffset := (y - bounds.Min.Y) * source.Stride
-		sourceRow := source.Pix[sourceOffset : sourceOffset+bounds.Dx()*4]
-		destination := e.raw[1:]
+func (e *rasterOpaquePNGEncoder) writeRow(sourceRow []byte) error {
+	destination := e.raw[1:]
+	if e.channels == 4 {
+		copy(destination, sourceRow)
+	} else {
 		for len(sourceRow) >= 16 {
 			if sourceRow[3]&sourceRow[7]&sourceRow[11]&sourceRow[15] != 0xff {
 				return errRasterPNGTranslucent
@@ -215,13 +246,17 @@ func (e *rasterOpaquePNGEncoder) encode(output io.Writer, source *image.NRGBA) e
 			sourceRow = sourceRow[4:]
 			destination = destination[3:]
 		}
-		row := rasterPNGFilteredRow(e.raw, e.prior, &e.candidates)
-		if _, err := e.zw.Write(row); err != nil {
-			return err
-		}
-		e.prior, e.raw = e.raw, e.prior
-		e.raw[0] = 0
 	}
+	row := rasterPNGFilteredRow(e.raw, e.prior, &e.candidates, e.channels)
+	if _, err := e.zw.Write(row); err != nil {
+		return err
+	}
+	e.prior, e.raw = e.raw, e.prior
+	e.raw[0] = 0
+	return nil
+}
+
+func (e *rasterOpaquePNGEncoder) finish() error {
 	if err := e.zw.Close(); err != nil {
 		return err
 	}
@@ -237,6 +272,119 @@ func (e *rasterOpaquePNGEncoder) encode(output io.Writer, source *image.NRGBA) e
 // the operation, but the caller's frame and encoded bytes do not.
 func (e *rasterOpaquePNGEncoder) releaseOutput() {
 	e.stream.output = nil
+}
+
+// rasterPNGBandEncoder writes a PNG as consecutive full-width bands arrive.
+// Its retained memory depends on the row width, never the image height. The
+// caller may reuse a band's pixel storage as soon as append returns.
+//
+// Opaque mode must be established before start: the stream cannot fall back
+// to RGBA after an RGB header has been written. Unknown backgrounds use RGBA.
+type rasterPNGBandEncoder struct {
+	native rasterOpaquePNGEncoder
+	writer rasterPNGContextWriter
+	width  int
+	height int
+	nextY  int
+	active bool
+	err    error
+}
+
+func (e *rasterPNGBandEncoder) start(ctx context.Context, output io.Writer, width, height int, opaque bool) error {
+	if e.active {
+		return fmt.Errorf("d2raster: PNG stream already started")
+	}
+	e.close()
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+	if output == nil {
+		return fmt.Errorf("d2raster: cannot write PNG to a nil writer")
+	}
+	// PNG dimensions are limited to 31 bits. Four working RGBA rows also
+	// have to fit in an int before their storage size can be computed.
+	if width <= 0 || height <= 0 || uint64(width) > math.MaxInt32 || uint64(height) > math.MaxInt32 || width > (math.MaxInt/4-1)/4 {
+		return fmt.Errorf("d2raster: invalid PNG dimensions %dx%d", width, height)
+	}
+	e.writer = rasterPNGContextWriter{ctx: ctx, output: output}
+	e.width, e.height, e.active = width, height, true
+	if e.err = e.native.start(&e.writer, width, height, opaque); e.err != nil {
+		return e.err
+	}
+	e.err = d2png.WriteExif(&e.writer)
+	return e.err
+}
+
+func (e *rasterPNGBandEncoder) append(band *image.NRGBA) error {
+	if e.err != nil {
+		return e.err
+	}
+	if !e.active {
+		return fmt.Errorf("d2raster: PNG stream is not started")
+	}
+	if e.err = e.writer.ctx.Err(); e.err != nil {
+		return e.err
+	}
+	if band == nil {
+		e.err = fmt.Errorf("d2raster: cannot encode a nil PNG band")
+		return e.err
+	}
+	bounds := band.Bounds()
+	if bounds.Min.X != 0 || bounds.Max.X != e.width || bounds.Min.Y != e.nextY || bounds.Max.Y <= bounds.Min.Y || bounds.Max.Y > e.height {
+		e.err = fmt.Errorf("d2raster: PNG band %v must have width %d and begin at row %d within height %d", bounds, e.width, e.nextY, e.height)
+		return e.err
+	}
+	rowBytes := 4 * e.width
+	// Divide before multiplying so hostile stride/dimension values cannot
+	// overflow and turn malformed image storage into an indexing panic.
+	if band.Stride < rowBytes || len(band.Pix) < rowBytes || bounds.Dy()-1 > (len(band.Pix)-rowBytes)/band.Stride {
+		e.err = fmt.Errorf("d2raster: PNG band has invalid pixel storage")
+		return e.err
+	}
+	for row := 0; row < bounds.Dy(); row++ {
+		if e.err = e.writer.ctx.Err(); e.err != nil {
+			return e.err
+		}
+		offset := row * band.Stride
+		if e.err = e.native.writeRow(band.Pix[offset : offset+rowBytes]); e.err != nil {
+			return e.err
+		}
+		e.nextY++
+	}
+	e.err = e.writer.ctx.Err()
+	return e.err
+}
+
+func (e *rasterPNGBandEncoder) finish() error {
+	if e.err != nil {
+		return e.err
+	}
+	if !e.active {
+		return fmt.Errorf("d2raster: PNG stream is not started")
+	}
+	if e.nextY != e.height {
+		e.err = fmt.Errorf("d2raster: PNG stream has %d rows, want %d", e.nextY, e.height)
+		return e.err
+	}
+	if e.err = e.writer.ctx.Err(); e.err != nil {
+		return e.err
+	}
+	e.err = e.native.finish()
+	if e.err == nil {
+		e.err = e.writer.ctx.Err()
+	}
+	e.active = false
+	return e.err
+}
+
+// close drops the output writer, context, and band state while retaining row
+// and compression workspaces for the next board in this export operation.
+func (e *rasterPNGBandEncoder) close() {
+	e.native.releaseOutput()
+	*e = rasterPNGBandEncoder{native: e.native}
 }
 
 type rasterPNGIDATStream struct {
@@ -262,13 +410,21 @@ func (w *rasterPNGIDATStream) emit(kind uint32, data []byte) {
 	checksum := crc32.Update(0, crc32.IEEETable, w.frame[4:8])
 	checksum = crc32.Update(checksum, crc32.IEEETable, data)
 	binary.BigEndian.PutUint32(w.frame[8:12], checksum)
-	if _, w.err = w.output.Write(w.frame[:8]); w.err != nil {
+	if w.err = rasterPNGWriteAll(w.output, w.frame[:8]); w.err != nil {
 		return
 	}
-	if _, w.err = w.output.Write(data); w.err != nil {
+	if w.err = rasterPNGWriteAll(w.output, data); w.err != nil {
 		return
 	}
-	_, w.err = w.output.Write(w.frame[8:])
+	w.err = rasterPNGWriteAll(w.output, w.frame[8:])
+}
+
+func rasterPNGWriteAll(output io.Writer, data []byte) error {
+	n, err := output.Write(data)
+	if err == nil && n != len(data) {
+		err = io.ErrShortWrite
+	}
+	return err
 }
 
 func rasterPNGAbs8(value byte) int {
@@ -283,24 +439,24 @@ const rasterPNGIntSize = 32 << (^uint(0) >> 63)
 // alternating candidate rows. Each candidate is scored as it is materialized;
 // the winning row stays untouched while the other buffer is reused. Together
 // with raw and prior rows, this retains four rows instead of six.
-func rasterPNGFilteredRow(rawRow, priorRow []byte, candidates *[2][]byte) []byte {
+func rasterPNGFilteredRow(rawRow, priorRow []byte, candidates *[2][]byte, channels int) []byte {
 	raw := rawRow[1:]
 	prior := priorRow[1:]
 	winner, scratch := candidates[0], candidates[1]
 	best := rasterPNGUpFilter(winner, raw, prior)
 	selected := byte(2) // Up wins ties, followed by Paeth, None, Sub, Average.
-	if cost := rasterPNGPaethFilter(scratch, raw, prior, best); cost < best {
+	if cost := rasterPNGPaethFilter(scratch, raw, prior, best, channels); cost < best {
 		best, selected = cost, 4
 		winner, scratch = scratch, winner
 	}
 	if cost := rasterPNGNoneCost(raw, best); cost < best {
 		best, selected = cost, 0
 	}
-	if cost := rasterPNGSubFilter(scratch, raw, best); cost < best {
+	if cost := rasterPNGSubFilter(scratch, raw, best, channels); cost < best {
 		best, selected = cost, 1
 		winner, scratch = scratch, winner
 	}
-	if cost := rasterPNGAverageFilter(scratch, raw, prior, best); cost < best {
+	if cost := rasterPNGAverageFilter(scratch, raw, prior, best, channels); cost < best {
 		selected = 3
 		winner = scratch
 	}
@@ -333,19 +489,19 @@ func rasterPNGUpFilter(destination, raw, prior []byte) int {
 	return cost
 }
 
-func rasterPNGSubFilter(destination, raw []byte, stopAt int) int {
+func rasterPNGSubFilter(destination, raw []byte, stopAt, channels int) int {
 	destination[0] = 1
 	destination = destination[1:]
 	cost := 0
-	for index := 0; index < 3; index++ {
+	for index := 0; index < channels; index++ {
 		destination[index] = raw[index]
 		cost += rasterPNGAbs8(destination[index])
 		if cost >= stopAt {
 			return cost
 		}
 	}
-	for index := 3; index < len(raw); index++ {
-		destination[index] = raw[index] - raw[index-3]
+	for index := channels; index < len(raw); index++ {
+		destination[index] = raw[index] - raw[index-channels]
 		cost += rasterPNGAbs8(destination[index])
 		if cost >= stopAt {
 			break
@@ -354,20 +510,20 @@ func rasterPNGSubFilter(destination, raw []byte, stopAt int) int {
 	return cost
 }
 
-func rasterPNGAverageFilter(destination, raw, prior []byte, stopAt int) int {
+func rasterPNGAverageFilter(destination, raw, prior []byte, stopAt, channels int) int {
 	_ = prior[len(raw)-1]
 	destination[0] = 3
 	destination = destination[1:]
 	cost := 0
-	for index := 0; index < 3; index++ {
+	for index := 0; index < channels; index++ {
 		destination[index] = raw[index] - prior[index]/2
 		cost += rasterPNGAbs8(destination[index])
 		if cost >= stopAt {
 			return cost
 		}
 	}
-	for index := 3; index < len(raw); index++ {
-		destination[index] = raw[index] - byte((int(raw[index-3])+int(prior[index]))/2)
+	for index := channels; index < len(raw); index++ {
+		destination[index] = raw[index] - byte((int(raw[index-channels])+int(prior[index]))/2)
 		cost += rasterPNGAbs8(destination[index])
 		if cost >= stopAt {
 			break
@@ -376,21 +532,21 @@ func rasterPNGAverageFilter(destination, raw, prior []byte, stopAt int) int {
 	return cost
 }
 
-func rasterPNGPaethFilter(destination, raw, prior []byte, stopAt int) int {
+func rasterPNGPaethFilter(destination, raw, prior []byte, stopAt, channels int) int {
 	_ = prior[len(raw)-1]
 	destination[0] = 4
 	destination = destination[1:]
 	cost := 0
-	for index := 0; index < 3; index++ {
+	for index := 0; index < channels; index++ {
 		destination[index] = raw[index] - prior[index]
 		cost += rasterPNGAbs8(destination[index])
 		if cost >= stopAt {
 			return cost
 		}
 	}
-	for index := 3; index < len(raw); index++ {
-		left := raw[index-3]
-		upperLeft := prior[index-3]
+	for index := channels; index < len(raw); index++ {
+		left := raw[index-channels]
+		upperLeft := prior[index-channels]
 		upper := prior[index]
 		leftDistance := rasterPNGByteDistance(upper, upperLeft)
 		upperDistance := rasterPNGByteDistance(left, upperLeft)

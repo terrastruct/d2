@@ -442,8 +442,11 @@ func TestFolderPNGExportMatchesStatelessOutput(t *testing.T) {
 	pooledDirectory := t.TempDir()
 	var encoder rasterPNGEncoder
 	renderFolder(pooledDirectory, &encoder, false)
-	if encoder.native.storage == nil || encoder.native.zw == nil || encoder.native.bw == nil {
+	if encoder.bands.native.storage == nil || encoder.bands.native.zw == nil || encoder.bands.native.bw == nil {
 		t.Fatal("folder render retained no reusable workspace between boards")
+	}
+	if encoder.bands.native.stream.output != nil || encoder.bands.writer.output != nil || encoder.bands.writer.ctx != nil {
+		t.Fatal("folder render retained its last output or context")
 	}
 	statelessDirectory := t.TempDir()
 	renderFolder(statelessDirectory, nil, false)
@@ -471,7 +474,7 @@ func TestFolderPNGExportMatchesStatelessOutput(t *testing.T) {
 		}
 	}
 	encoder.close()
-	if encoder.native.storage != nil || encoder.native.zw != nil || encoder.native.bw != nil || encoder.native.stream.output != nil {
+	if encoder.bands.native.storage != nil || encoder.bands.native.zw != nil || encoder.bands.native.bw != nil || encoder.bands.native.stream.output != nil {
 		t.Fatal("completed folder export retained operation state")
 	}
 }
