@@ -445,7 +445,8 @@ func appendDashPoint(points []d2scene.Point, point d2scene.Point) []d2scene.Poin
 func drawStroke(ctx context.Context, dst *image.RGBA, runs []strokeRun, transform d2scene.Matrix, stroke *preparedStroke, scratch *rasterScratch) error {
 	if stroke.paint.kind == preparedSolidPaint {
 		rasterizer := scratch.reset(dst.Bounds())
-		shifted := d2scene.Translate(-float64(dst.Bounds().Min.X), -float64(dst.Bounds().Min.Y)).Mul(transform)
+		origin := setRasterizerReference(rasterizer, dst.Bounds().Min, stroke.referenceBounds.Min, scratch.regionFilters)
+		shifted := d2scene.Translate(-float64(origin.X), -float64(origin.Y)).Mul(transform)
 		for _, run := range runs {
 			if err := ctx.Err(); err != nil {
 				return err
@@ -462,7 +463,12 @@ func drawStroke(ctx context.Context, dst *image.RGBA, runs []strokeRun, transfor
 
 	bounds := paintedStrokePixelBounds(runs, transform, stroke, dst.Bounds())
 	return drawRasterizedPaint(ctx, dst, bounds, stroke.paint, scratch, "gradient stroke", func(rasterizer *scanline.Rasterizer) error {
-		shifted := d2scene.Translate(-float64(bounds.Min.X), -float64(bounds.Min.Y)).Mul(transform)
+		reference := bounds.Min
+		if scratch.regionFilters {
+			reference = paintedStrokePixelBounds(runs, transform, stroke, stroke.referenceBounds).Min
+		}
+		origin := setRasterizerReference(rasterizer, bounds.Min, reference, scratch.regionFilters)
+		shifted := d2scene.Translate(-float64(origin.X), -float64(origin.Y)).Mul(transform)
 		for _, run := range runs {
 			if err := ctx.Err(); err != nil {
 				return err
@@ -830,16 +836,16 @@ func addPolygon(rasterizer *scanline.Rasterizer, transform d2scene.Matrix, point
 		firstIndex = len(points) - 1
 	}
 	first := transform.Point(points[firstIndex])
-	rasterizer.MoveTo(float32(first.X), float32(first.Y))
+	rasterizer.MoveTo64(first.X, first.Y)
 	if reverse {
 		for index := len(points) - 2; index >= 0; index-- {
 			point := transform.Point(points[index])
-			rasterizer.LineTo(float32(point.X), float32(point.Y))
+			rasterizer.LineTo64(point.X, point.Y)
 		}
 	} else {
 		for _, localPoint := range points[1:] {
 			point := transform.Point(localPoint)
-			rasterizer.LineTo(float32(point.X), float32(point.Y))
+			rasterizer.LineTo64(point.X, point.Y)
 		}
 	}
 	rasterizer.ClosePath()
@@ -866,23 +872,23 @@ func addCircle(rasterizer *scanline.Rasterizer, transform d2scene.Matrix, center
 	// form a non-zero union instead of cancelling one another.
 	k := 0.5522847498307936 * radius
 	start := transform.Point(d2scene.Point{X: center.X + radius, Y: center.Y})
-	rasterizer.MoveTo(float32(start.X), float32(start.Y))
+	rasterizer.MoveTo64(start.X, start.Y)
 	c1 := transform.Point(d2scene.Point{X: center.X + radius, Y: center.Y - k})
 	c2 := transform.Point(d2scene.Point{X: center.X + k, Y: center.Y - radius})
 	end := transform.Point(d2scene.Point{X: center.X, Y: center.Y - radius})
-	rasterizer.CubeTo(float32(c1.X), float32(c1.Y), float32(c2.X), float32(c2.Y), float32(end.X), float32(end.Y))
+	rasterizer.CubeTo64(c1.X, c1.Y, c2.X, c2.Y, end.X, end.Y)
 	c1 = transform.Point(d2scene.Point{X: center.X - k, Y: center.Y - radius})
 	c2 = transform.Point(d2scene.Point{X: center.X - radius, Y: center.Y - k})
 	end = transform.Point(d2scene.Point{X: center.X - radius, Y: center.Y})
-	rasterizer.CubeTo(float32(c1.X), float32(c1.Y), float32(c2.X), float32(c2.Y), float32(end.X), float32(end.Y))
+	rasterizer.CubeTo64(c1.X, c1.Y, c2.X, c2.Y, end.X, end.Y)
 	c1 = transform.Point(d2scene.Point{X: center.X - radius, Y: center.Y + k})
 	c2 = transform.Point(d2scene.Point{X: center.X - k, Y: center.Y + radius})
 	end = transform.Point(d2scene.Point{X: center.X, Y: center.Y + radius})
-	rasterizer.CubeTo(float32(c1.X), float32(c1.Y), float32(c2.X), float32(c2.Y), float32(end.X), float32(end.Y))
+	rasterizer.CubeTo64(c1.X, c1.Y, c2.X, c2.Y, end.X, end.Y)
 	c1 = transform.Point(d2scene.Point{X: center.X + k, Y: center.Y + radius})
 	c2 = transform.Point(d2scene.Point{X: center.X + radius, Y: center.Y + k})
 	end = transform.Point(d2scene.Point{X: center.X + radius, Y: center.Y})
-	rasterizer.CubeTo(float32(c1.X), float32(c1.Y), float32(c2.X), float32(c2.Y), float32(end.X), float32(end.Y))
+	rasterizer.CubeTo64(c1.X, c1.Y, c2.X, c2.Y, end.X, end.Y)
 	rasterizer.ClosePath()
 }
 

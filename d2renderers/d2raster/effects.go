@@ -25,7 +25,8 @@ type renderResources struct {
 }
 
 type rasterizerResourcePlanner struct {
-	counter *scanline.Rasterizer
+	counter       *scanline.Rasterizer
+	regionFilters bool
 }
 
 type offscreenPixelKind uint8
@@ -253,8 +254,13 @@ func addScanlineWork(resources *renderResources, work int64) error {
 }
 
 func planRenderResources(ctx context.Context, node *preparedNode, dst image.Rectangle, patterns []*preparedPatternTile, maxOffscreenBytes int64) (renderResources, error) {
+	return planRenderResourcesRegion(ctx, node, dst, patterns, maxOffscreenBytes, false)
+}
+
+func planRenderResourcesRegion(ctx context.Context, node *preparedNode, dst image.Rectangle, patterns []*preparedPatternTile, maxOffscreenBytes int64, regionFilters bool) (renderResources, error) {
 	planner := &rasterizerResourcePlanner{
-		counter: scanline.NewCounter(0, 0, scanline.MaxEdgesForBytes(maxOffscreenBytes)),
+		counter:       scanline.NewCounter(0, 0, scanline.MaxEdgesForBytes(maxOffscreenBytes)),
+		regionFilters: regionFilters,
 	}
 	resources, err := planNodeResources(ctx, node, dst, planner)
 	if err != nil {
@@ -332,16 +338,23 @@ func planNodeResources(ctx context.Context, node *preparedNode, dst image.Rectan
 	finalLayerBytes := int64(0)
 	paintBounds := dst
 	if usesFilters {
+		filters, inputBounds := node.filters, node.contentBounds
 		var err error
-		baseBytes, err = pixelStorageBytes(node.contentBounds, 4)
+		if planner.regionFilters {
+			filters, inputBounds, err = regionalFilters(filters, inputBounds, visibleBounds)
+			if err != nil {
+				return resources, err
+			}
+		}
+		baseBytes, err = pixelStorageBytes(inputBounds, 4)
 		if err != nil {
 			return resources, fmt.Errorf("d2raster: filter input layer: %w", err)
 		}
-		resources.peakOffscreenBytes, finalLayerBytes, err = planFilterResources(node.filters, node.contentBounds)
+		resources.peakOffscreenBytes, finalLayerBytes, err = planFilterResources(filters, inputBounds)
 		if err != nil {
 			return resources, err
 		}
-		paintBounds = node.contentBounds
+		paintBounds = inputBounds
 	} else if usesEffectLayer {
 		var err error
 		baseBytes, err = pixelStorageBytes(visibleBounds, 4)
@@ -415,9 +428,12 @@ func planNodeResources(ctx context.Context, node *preparedNode, dst image.Rectan
 				return resources, err
 			}
 		} else if !node.clip.bounds.Intersect(visibleBounds).Empty() {
-			target := image.Rect(0, 0, visibleBounds.Dx(), visibleBounds.Dy())
-			shifted := d2scene.Translate(-float64(visibleBounds.Min.X), -float64(visibleBounds.Min.Y))
-			if err := planner.recordFill(ctx, &resources, target, node.clip.subpaths, shifted, "clip"); err != nil {
+			origin := visibleBounds.Min
+			if planner.regionFilters {
+				origin = node.clip.referenceBounds.Min
+			}
+			shifted := d2scene.Translate(-float64(origin.X), -float64(origin.Y))
+			if err := planner.recordFill(ctx, &resources, visibleBounds, node.clip.subpaths, shifted, "clip", origin); err != nil {
 				return resources, err
 			}
 		}
@@ -499,15 +515,22 @@ func planPrimitiveResources(ctx context.Context, primitive *preparedPrimitive, d
 				return resources, err
 			}
 		} else if primitive.fill.kind == preparedSolidPaint {
-			shifted := d2scene.Translate(-float64(dst.Min.X), -float64(dst.Min.Y)).Mul(primitive.transform)
-			if err := planner.recordFill(ctx, &resources, dst, primitive.subpaths, shifted, "solid fill"); err != nil {
+			origin := dst.Min
+			if planner.regionFilters {
+				origin = primitive.referenceBounds.Min
+			}
+			shifted := d2scene.Translate(-float64(origin.X), -float64(origin.Y)).Mul(primitive.transform)
+			if err := planner.recordFill(ctx, &resources, dst, primitive.subpaths, shifted, "solid fill", origin); err != nil {
 				return resources, err
 			}
 		} else {
 			if !bounds.Empty() {
-				target := image.Rect(0, 0, bounds.Dx(), bounds.Dy())
-				shifted := d2scene.Translate(-float64(bounds.Min.X), -float64(bounds.Min.Y)).Mul(primitive.transform)
-				if err := planner.recordFill(ctx, &resources, target, primitive.subpaths, shifted, "gradient fill"); err != nil {
+				origin := bounds.Min
+				if planner.regionFilters {
+					origin = subpathPixelBounds(primitive.subpaths, primitive.transform, 0, primitive.referenceBounds).Min
+				}
+				shifted := d2scene.Translate(-float64(origin.X), -float64(origin.Y)).Mul(primitive.transform)
+				if err := planner.recordFill(ctx, &resources, bounds, primitive.subpaths, shifted, "gradient fill", origin); err != nil {
 					return resources, err
 				}
 			}
@@ -515,16 +538,23 @@ func planPrimitiveResources(ctx context.Context, primitive *preparedPrimitive, d
 	}
 	if primitive.stroke != nil {
 		if primitive.stroke.paint.kind == preparedSolidPaint {
-			shifted := d2scene.Translate(-float64(dst.Min.X), -float64(dst.Min.Y)).Mul(primitive.transform)
-			if err := planner.recordStroke(ctx, &resources, dst, primitive.strokeRuns, shifted, primitive.stroke, "solid stroke"); err != nil {
+			origin := dst.Min
+			if planner.regionFilters {
+				origin = primitive.stroke.referenceBounds.Min
+			}
+			shifted := d2scene.Translate(-float64(origin.X), -float64(origin.Y)).Mul(primitive.transform)
+			if err := planner.recordStroke(ctx, &resources, dst, primitive.strokeRuns, shifted, primitive.stroke, "solid stroke", origin); err != nil {
 				return resources, err
 			}
 		} else {
 			bounds := paintedStrokePixelBounds(primitive.strokeRuns, primitive.transform, primitive.stroke, dst)
 			if !bounds.Empty() {
-				target := image.Rect(0, 0, bounds.Dx(), bounds.Dy())
-				shifted := d2scene.Translate(-float64(bounds.Min.X), -float64(bounds.Min.Y)).Mul(primitive.transform)
-				if err := planner.recordStroke(ctx, &resources, target, primitive.strokeRuns, shifted, primitive.stroke, "gradient stroke"); err != nil {
+				origin := bounds.Min
+				if planner.regionFilters {
+					origin = paintedStrokePixelBounds(primitive.strokeRuns, primitive.transform, primitive.stroke, primitive.stroke.referenceBounds).Min
+				}
+				shifted := d2scene.Translate(-float64(origin.X), -float64(origin.Y)).Mul(primitive.transform)
+				if err := planner.recordStroke(ctx, &resources, bounds, primitive.strokeRuns, shifted, primitive.stroke, "gradient stroke", origin); err != nil {
 					return resources, err
 				}
 			}
@@ -563,9 +593,10 @@ func updateRasterizerBytes(resources *renderResources) {
 	resources.rasterizerBytes = bytes
 }
 
-func (p *rasterizerResourcePlanner) recordFill(ctx context.Context, resources *renderResources, target image.Rectangle, paths []subpath, transform d2scene.Matrix, purpose string) error {
+func (p *rasterizerResourcePlanner) recordFill(ctx context.Context, resources *renderResources, target image.Rectangle, paths []subpath, transform d2scene.Matrix, purpose string, referenceOrigin image.Point) error {
 	recordRasterizerRequirement(resources, target)
 	p.counter.Reset(target.Dx(), target.Dy())
+	setRasterizerReference(p.counter, target.Min, referenceOrigin, p.regionFilters)
 	for index, path := range paths {
 		if index&255 == 0 {
 			if err := ctx.Err(); err != nil {
@@ -586,9 +617,10 @@ func (p *rasterizerResourcePlanner) recordFill(ctx context.Context, resources *r
 	return addScanlineWork(resources, work)
 }
 
-func (p *rasterizerResourcePlanner) recordStroke(ctx context.Context, resources *renderResources, target image.Rectangle, runs []strokeRun, transform d2scene.Matrix, stroke *preparedStroke, purpose string) error {
+func (p *rasterizerResourcePlanner) recordStroke(ctx context.Context, resources *renderResources, target image.Rectangle, runs []strokeRun, transform d2scene.Matrix, stroke *preparedStroke, purpose string, referenceOrigin image.Point) error {
 	recordRasterizerRequirement(resources, target)
 	p.counter.Reset(target.Dx(), target.Dy())
+	setRasterizerReference(p.counter, target.Min, referenceOrigin, p.regionFilters)
 	for _, run := range runs {
 		if err := addStrokeRun(ctx, p.counter, run, transform, stroke); err != nil {
 			return err
@@ -667,12 +699,20 @@ func renderFilteredEffectNode(ctx context.Context, dst *image.RGBA, node *prepar
 	if visibleBounds.Empty() || node.contentBounds.Empty() {
 		return nil
 	}
-	current, err := reserveRGBA(scratch, node.contentBounds, "filter input layer")
+	filters, inputBounds := node.filters, node.contentBounds
+	var err error
+	if scratch.regionFilters {
+		filters, inputBounds, err = regionalFilters(filters, inputBounds, visibleBounds)
+		if err != nil {
+			return err
+		}
+	}
+	current, err := reserveRGBA(scratch, inputBounds, "filter input layer")
 	if err != nil {
 		return err
 	}
 	defer func() { current.release() }()
-	if node.primitive != nil && !node.primitive.bounds.Intersect(node.contentBounds).Empty() {
+	if node.primitive != nil && !node.primitive.bounds.Intersect(inputBounds).Empty() {
 		if err := drawPrimitive(ctx, current.image, node.primitive, scratch); err != nil {
 			return err
 		}
@@ -682,7 +722,7 @@ func renderFilteredEffectNode(ctx context.Context, dst *image.RGBA, node *prepar
 			return err
 		}
 	}
-	for _, filter := range node.filters {
+	for _, filter := range filters {
 		if err := applyPreparedFilter(ctx, &current, filter, scratch); err != nil {
 			return err
 		}
@@ -738,7 +778,8 @@ func applyNonZeroClip(ctx context.Context, layer *image.RGBA, clip *preparedClip
 	}
 
 	rasterizer := scratch.reset(image.Rect(0, 0, width, height))
-	shifted := d2scene.Translate(-float64(bounds.Min.X), -float64(bounds.Min.Y))
+	origin := setRasterizerReference(rasterizer, bounds.Min, clip.referenceBounds.Min, scratch.regionFilters)
+	shifted := d2scene.Translate(-float64(origin.X), -float64(origin.Y))
 	for index, path := range clip.subpaths {
 		if index&255 == 0 {
 			if err := ctx.Err(); err != nil {

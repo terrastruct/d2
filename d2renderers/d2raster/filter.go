@@ -309,6 +309,91 @@ func unionFilterBounds(left, right image.Rectangle) (image.Rectangle, error) {
 	return result, nil
 }
 
+// regionalFilters works backwards from the pixels a destination will consume.
+// Each pass keeps its original kernel and transparent-outside-input semantics,
+// but only allocates the output needed by its successor. The input rectangle
+// includes every contributing sample, so the existing integer blur arithmetic
+// and shadow interpolation produce the same pixels as the complete layers.
+// Prepared filters are shared across bands and must remain immutable.
+func regionalFilters(filters []preparedFilter, input, destination image.Rectangle) ([]preparedFilter, image.Rectangle, error) {
+	result := make([]preparedFilter, len(filters))
+	needed := destination
+	for index := len(filters) - 1; index >= 0; index-- {
+		filter := filters[index]
+		previous := input
+		if index > 0 {
+			previous = filters[index-1].output
+		}
+		filter.output = needed.Intersect(filter.output)
+		filter.passes = append([]blurPass(nil), filter.passes...)
+		blurredNeeded := filter.output
+		if filter.kind == preparedDropShadow {
+			blurredBounds := previous
+			if len(filter.passes) != 0 {
+				blurredBounds = filter.passes[len(filter.passes)-1].bounds
+			}
+			blurredNeeded = shadowSampleBounds(filter.output, blurredBounds, filter.offsetX, filter.offsetY)
+		} else if filter.kind != preparedGaussianBlur {
+			return nil, image.Rectangle{}, fmt.Errorf("d2raster: internal unknown prepared filter %d", filter.kind)
+		}
+		for passIndex := len(filter.passes) - 1; passIndex >= 0; passIndex-- {
+			pass := &filter.passes[passIndex]
+			pass.bounds = blurredNeeded.Intersect(pass.bounds)
+			previousPass := previous
+			if passIndex > 0 {
+				previousPass = filters[index].passes[passIndex-1].bounds
+			}
+			x, y := pass.radius, 0
+			if pass.axis == blurVertical {
+				x, y = 0, pass.radius
+			}
+			expanded, err := expandFilterBounds(pass.bounds, x, y)
+			if err != nil {
+				// At the platform coordinate boundary, keeping the full previous
+				// pass is conservative and avoids overflowing an intermediate ROI.
+				blurredNeeded = previousPass
+			} else {
+				blurredNeeded = expanded.Intersect(previousPass)
+			}
+		}
+		needed = blurredNeeded.Intersect(previous)
+		if filter.kind == preparedDropShadow {
+			// Source-over keeps the unshifted input in addition to its shadow.
+			// A rectangle spans both regions; extreme offsets can still require
+			// substantial storage and remain subject to MaxOffscreenBytes.
+			needed = unionRect(needed, filter.output.Intersect(previous))
+		}
+		result[index] = filter
+	}
+	return result, needed.Intersect(input), nil
+}
+
+func shadowSampleBounds(destination, source image.Rectangle, offsetX, offsetY float64) image.Rectangle {
+	if destination.Empty() || source.Empty() {
+		return image.Rectangle{}
+	}
+	// Outside the exact float-integer domain the original sampler deliberately
+	// uses floating-point coordinate arithmetic. Retain its source domain rather
+	// than infer a cropped integer domain from rounded endpoints.
+	const maxExactInteger = 1 << 53
+	if !rectangleWithinExactFloatIntegerDomain(destination) || !rectangleWithinExactFloatIntegerDomain(source) ||
+		!finite(offsetX) || !finite(offsetY) || math.Abs(offsetX) > maxExactInteger || math.Abs(offsetY) > maxExactInteger {
+		return source
+	}
+	padding := 2.0 // floor(sample) and floor(sample)+1 for bilinear interpolation.
+	if offsetX == math.Trunc(offsetX) && offsetY == math.Trunc(offsetY) {
+		padding = 1
+	}
+	minX := math.Max(math.Floor(float64(destination.Min.X)-offsetX), float64(source.Min.X))
+	minY := math.Max(math.Floor(float64(destination.Min.Y)-offsetY), float64(source.Min.Y))
+	maxX := math.Min(math.Floor(float64(destination.Max.X-1)-offsetX)+padding, float64(source.Max.X))
+	maxY := math.Min(math.Floor(float64(destination.Max.Y-1)-offsetY)+padding, float64(source.Max.Y))
+	if minX >= maxX || minY >= maxY {
+		return image.Rectangle{}
+	}
+	return image.Rect(int(minX), int(minY), int(maxX), int(maxY))
+}
+
 type ownedRGBA struct {
 	image       *image.RGBA
 	reservation int64
