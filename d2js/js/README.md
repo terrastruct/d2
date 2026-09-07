@@ -159,7 +159,9 @@ All [RenderOptions](#renderoptions) properties in addition to:
 
 ## Development
 
-D2.js uses Bun, so install this first.
+D2.js development requires the Go version in the root `go.mod`, the Bun version
+in `package.json`, and Node.js 24 with npm. The integration tests use Node to
+check the installed npm package in both CommonJS and ESM applications.
 
 Optional: For optimal WASM file size, also install binaryen:
 ```bash

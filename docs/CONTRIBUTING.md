@@ -45,11 +45,14 @@ D2, make sure you initialize the submodules:
 git submodule update --init --recursive
 ```
 
-`./make.sh` runs everything. Subcommands to run individual parts of the CI:
+`./make.sh` runs the standard checks, including JS and Go WASM tests. Install the
+Go version from `go.mod`, the Bun version from `d2js/js/package.json`, and Node.js
+24 with npm. Subcommands to run individual parts of the CI:
 
 - `./make.sh fmt`
 - `./make.sh lint`
 - `./make.sh test`
+- `./make.sh test-wasm`
 - `./make.sh race`
 - `./make.sh build`
 
@@ -124,8 +127,9 @@ ipsum1() {
 
 Run: `./ci/test.sh`
 
-CI runs tests with `-race` to catch potential race conditions. It's much slower, but if
-your machine can run it locally, you can do so with `./make.sh race`.
+The weekly CI workflow runs tests with `-race -count=1` to catch race conditions
+without using cached test results. Run the same check locally with
+`./ci/test.sh -race -count=1 ./...`, or use `./make.sh race` during development.
 
 If you add a new test and run, it will show failure. That's because the vast majority of
 D2's tests are comparing outputs. You don't define the expected output manually. The

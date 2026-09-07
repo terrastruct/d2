@@ -7,7 +7,6 @@ if [ ! -e "$(dirname "$0")/../../ci/sub/.git" ]; then
 fi
 . "$(dirname "$0")/../../ci/sub/lib.sh"
 cd -- "$(dirname "$0")/../.."
-. ./ci/release/assets.sh
 
 help() {
   cat <<EOF
@@ -99,16 +98,18 @@ main() {
     flag_errusage "no arguments are accepted"
   fi
 
+  if [ -n "${RELEASE-}" ] && [ -z "${RELEASE_BUILD_IN_CI-}" ]; then
+    echo >&2 "production archives are built and uploaded by the Release archives workflow"
+    echo >&2 "use ./ci/release/release.sh to prepare a release, then follow its Actions run"
+    return 1
+  fi
+
   VERSION=${VERSION:-$(git_describe_ref)}
   BUILD_DIR=ci/release/build/$VERSION
   ensure_release_tool
   sh_c mkdir -p "$BUILD_DIR"
   sh_c rm -f ci/release/build/latest
   sh_c ln -s "$VERSION" ci/release/build/latest
-  if [ -n "${RELEASE-}" ] && [ -z "${RELEASE_BUILD_IN_CI-}" ]; then
-    download_ci_build
-    return
-  fi
   if [ -n "${HOST_ONLY-}" ]; then
     ensure_os
     ensure_arch
@@ -181,83 +182,6 @@ write_checksums() {
     --manifest "'$BUILD_DIR/SHA256SUMS'" \
     --directory "'$BUILD_DIR'" \
     --expected-count "$EXPECTED_COUNT"
-}
-
-download_ci_build() {
-  if [ -n "${REBUILD-}" ]; then
-    echo >&2 "release workflow artifacts are immutable and cannot be rebuilt locally"
-    echo >&2 "rerun failed jobs in the existing Release archives workflow instead"
-    return 1
-  fi
-  if [ -n "${DRY_RUN-}" ]; then
-    sh_c gh run download RELEASE_RUN_ID --name release-archives --dir "'$BUILD_DIR'"
-    return
-  fi
-
-  REPOSITORY=$(gh_repo)
-  TAG_COMMIT=$(git rev-parse "$VERSION^{commit}")
-  RUN_ID=
-  RUN_URL=
-  ATTEMPT=1
-  while [ "$ATTEMPT" -le 360 ]; do
-    RUNS=$(gh run list \
-      --repo "$REPOSITORY" \
-      --workflow release-archives.yml \
-      --commit "$TAG_COMMIT" \
-      --event push \
-      --limit 20 \
-      --json databaseId,status,conclusion,headBranch,headSha,createdAt,url)
-    RUN=$(printf '%s' "$RUNS" | jq -c \
-      --arg version "$VERSION" \
-      --arg commit "$TAG_COMMIT" \
-      '[.[] | select(.headBranch == $version and .headSha == $commit)] |
-       sort_by(.createdAt) | last // empty')
-    if [ -n "$RUN" ]; then
-      RUN_ID=$(printf '%s' "$RUN" | jq -r .databaseId)
-      RUN_URL=$(printf '%s' "$RUN" | jq -r .url)
-      RUN_STATUS=$(printf '%s' "$RUN" | jq -r .status)
-      RUN_CONCLUSION=$(printf '%s' "$RUN" | jq -r '.conclusion // ""')
-      if [ "$RUN_STATUS" = completed ]; then
-        if [ "$RUN_CONCLUSION" != success ]; then
-          echo >&2 "Release archives workflow failed: $RUN_URL"
-          echo >&2 "rerun its failed jobs, then rerun the release command"
-          return 1
-        fi
-        break
-      fi
-    fi
-    if [ "$ATTEMPT" -eq 360 ]; then
-      echo >&2 "timed out waiting for the Release archives workflow for $VERSION"
-      echo >&2 "last matching workflow: ${RUN_URL:-none}"
-      return 1
-    fi
-    sleep 10
-    ATTEMPT=$((ATTEMPT + 1))
-  done
-
-  DOWNLOAD_DIR=$(mktempd)/release-archives
-  sh_c mkdir -p "$DOWNLOAD_DIR"
-  sh_c gh run download "$RUN_ID" \
-    --repo "$REPOSITORY" \
-    --name release-archives \
-    --dir "'$DOWNLOAD_DIR'"
-  "$RELEASE_TOOL" verify-checksums \
-    --manifest "$DOWNLOAD_DIR/SHA256SUMS" \
-    --directory "$DOWNLOAD_DIR" \
-    --expected-count 6
-  verify_ci_release_asset_directory "$DOWNLOAD_DIR" "$VERSION"
-  verify_ci_release_asset_directory "$BUILD_DIR" "$VERSION" 0
-  for TARGET in \
-    linux-amd64 linux-arm64 \
-    macos-amd64 macos-arm64 \
-    windows-amd64 windows-arm64; do
-    sh_c rm -f "$BUILD_DIR/d2-$VERSION-$TARGET.tar.gz"
-    sh_c cp "$DOWNLOAD_DIR/d2-$VERSION-$TARGET.tar.gz" "$BUILD_DIR/"
-  done
-  sh_c rm -f "$BUILD_DIR/SHA256SUMS"
-  sh_c cp "$DOWNLOAD_DIR/SHA256SUMS" "$BUILD_DIR/"
-  verify_ci_release_asset_directory "$BUILD_DIR" "$VERSION"
-  log "downloaded verified release archives from $RUN_URL"
 }
 
 build() {

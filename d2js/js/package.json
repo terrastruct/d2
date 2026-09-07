@@ -43,7 +43,7 @@
   "scripts": {
     "build": "./make.sh build",
     "test": "bun test test/unit",
-    "test:integration": "bun test test/integration",
+    "test:integration": "./ci/test-integration.sh",
     "test:all": "bun run test && bun run test:integration",
     "dev": "bun --watch dev-server.js"
   },
