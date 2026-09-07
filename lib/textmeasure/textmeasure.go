@@ -96,7 +96,8 @@ type Ruler struct {
 
 	atlases map[d2fonts.Font]*atlas
 
-	ttfs map[d2fonts.Font]*parsedFont
+	ttfs  map[d2fonts.Font]*parsedFont
+	faces map[d2fonts.Font]font.Face
 
 	buf    []byte
 	prevR  rune
@@ -127,6 +128,7 @@ func NewRuler() (*Ruler, error) {
 		tabWidths:        make(map[d2fonts.Font]float64),
 		atlases:          make(map[d2fonts.Font]*atlas),
 		ttfs:             make(map[d2fonts.Font]*parsedFont),
+		faces:            make(map[d2fonts.Font]font.Face),
 	}
 
 	for _, fontFamily := range d2fonts.FontFamilies {
@@ -174,11 +176,22 @@ func (r *Ruler) HasFontFamilyLoaded(fontFamily *d2fonts.FontFamily) bool {
 func (r *Ruler) addFontSize(font d2fonts.Font) {
 	sizeless := font
 	sizeless.Size = SIZELESS_FONT_SIZE
-	face := r.ttfs[sizeless].newFace(float64(font.Size))
+	face := r.fontFace(font, r.ttfs[sizeless])
 	atlas := NewAtlas(face, Runes)
 	r.atlases[font] = atlas
 	r.lineHeights[font] = atlas.lineHeight
 	r.tabWidths[font] = atlas.glyph(' ').advance * TAB_SIZE
+}
+
+// fontFace retains the per-size scratch buffers used by immutable font metrics.
+// A Ruler already owns mutable drawing state and must not be used concurrently.
+func (r *Ruler) fontFace(spec d2fonts.Font, parsed *parsedFont) font.Face {
+	if face := r.faces[spec]; face != nil {
+		return face
+	}
+	face := parsed.newFace(float64(spec.Size))
+	r.faces[spec] = face
+	return face
 }
 
 func (t *Ruler) measureFontWidth(fontSpec d2fonts.Font, s string) (float64, bool) {
@@ -197,7 +210,7 @@ func (t *Ruler) measureFontWidth(fontSpec d2fonts.Font, s string) (float64, bool
 		}
 	}
 
-	face := ttf.newFace(float64(fontSpec.Size))
+	face := t.fontFace(fontSpec, ttf)
 	bounds, advance := font.BoundString(face, s)
 	left := min(bounds.Min.X, 0)
 	right := max(bounds.Max.X, advance)
@@ -223,7 +236,7 @@ func (t *Ruler) measureFontAdvance(fontSpec d2fonts.Font, s string) (float64, bo
 			return 0, false
 		}
 	}
-	face := ttf.newFace(float64(fontSpec.Size))
+	face := t.fontFace(fontSpec, ttf)
 	return float64(font.MeasureString(face, s)) / 64, true
 }
 
@@ -618,21 +631,22 @@ func (txt *Ruler) drawBuf(font d2fonts.Font) {
 			continue
 		}
 
-		var bounds *rect
-		_, _, bounds, txt.Dot = txt.atlases[font].DrawRune(txt.prevR, r, txt.Dot)
-
+		_, bounds, _ := txt.atlases[font].measureRune(txt.prevR, r, txt.Dot)
 		txt.prevR = r
 
 		if txt.boundsWithDot {
-			txt.bounds = txt.bounds.union(&rect{txt.Dot, txt.Dot})
-			txt.bounds = txt.bounds.union(bounds)
-		} else {
-			if txt.bounds.w()*txt.bounds.h() == 0 {
-				txt.bounds = bounds
-			} else {
-				txt.bounds = txt.bounds.union(bounds)
-			}
+			txt.bounds.tl.X = math.Min(txt.bounds.tl.X, txt.Dot.X)
+			txt.bounds.tl.Y = math.Min(txt.bounds.tl.Y, txt.Dot.Y)
+			txt.bounds.br.X = math.Max(txt.bounds.br.X, txt.Dot.X)
+			txt.bounds.br.Y = math.Max(txt.bounds.br.Y, txt.Dot.Y)
+		} else if txt.bounds.w()*txt.bounds.h() == 0 {
+			*txt.bounds.tl, *txt.bounds.br = bounds.tl, bounds.br
+			continue
 		}
+		txt.bounds.tl.X = math.Min(txt.bounds.tl.X, bounds.tl.X)
+		txt.bounds.tl.Y = math.Min(txt.bounds.tl.Y, bounds.tl.Y)
+		txt.bounds.br.X = math.Max(txt.bounds.br.X, bounds.br.X)
+		txt.bounds.br.Y = math.Max(txt.bounds.br.Y, bounds.br.Y)
 	}
 }
 
