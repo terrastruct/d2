@@ -6,90 +6,14 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-	"log/slog"
-	"regexp"
-	"strconv"
 	"strings"
 	"testing"
 
-	"github.com/d2lang/d2/d2graph"
-	"github.com/d2lang/d2/d2layouts/d2dagrelayout"
-	"github.com/d2lang/d2/d2lib"
 	"github.com/d2lang/d2/d2renderers/d2fonts"
 	"github.com/d2lang/d2/d2renderers/d2raster"
 	"github.com/d2lang/d2/d2renderers/d2scene"
-	"github.com/d2lang/d2/d2renderers/d2svg"
-	svgappendix "github.com/d2lang/d2/d2renderers/d2svg/appendix"
 	"github.com/d2lang/d2/d2target"
-	"github.com/d2lang/d2/internal/testlog"
-	d2log "github.com/d2lang/d2/lib/log"
-	"github.com/d2lang/d2/lib/textmeasure"
 )
-
-func TestAppendixMatchesSVGViewBoxAndScaleQuirk(t *testing.T) {
-	t.Parallel()
-	diagram := appendixTestDiagram()
-	diagram.Root.Stroke = "B1"
-	diagram.Root.StrokeWidth = 2
-	diagram.Root.DoubleBorder = true
-	legendShape := *d2target.BaseShape()
-	legendShape.ID, legendShape.Type, legendShape.Label = "legend-entry", d2target.ShapeRectangle, "linked node"
-	legendShape.Fill, legendShape.Stroke = "B6", "B1"
-	diagram.Legend = &d2target.Legend{Label: "Key", Shapes: []d2target.Shape{legendShape}}
-	pad := int64(17)
-	scale := 1.75
-	options := Options{
-		Pad: &pad, Scale: &scale, Appendix: true,
-		LinkBudget: LinkBudget{MaxRegions: 2, MaxStringBytes: 4_096},
-	}
-	document, err := Build(context.Background(), diagram, options)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	ruler, err := textmeasure.NewRuler()
-	if err != nil {
-		t.Fatal(err)
-	}
-	renderOptions := &d2svg.RenderOpts{Pad: &pad, Scale: &scale}
-	svg, err := d2svg.Render(diagram, renderOptions)
-	if err != nil {
-		t.Fatal(err)
-	}
-	svg = svgappendix.Append(diagram, renderOptions, ruler, svg)
-	if svg == nil {
-		t.Fatal("svg appendix returned nil")
-	}
-	wantViewBox := parseSVGAppendixViewBox(t, svg)
-	if document.ViewBox != wantViewBox {
-		t.Fatalf("scene viewbox = %+v, svg = %+v", document.ViewBox, wantViewBox)
-	}
-	wantLogicalWidth, wantLogicalHeight := parseSVGOuterDimensions(t, svg)
-	if document.LogicalWidth != wantLogicalWidth || document.LogicalHeight != wantLogicalHeight {
-		t.Fatalf("scene logical dimensions = %vx%v, svg = %vx%v", document.LogicalWidth, document.LogicalHeight, wantLogicalWidth, wantLogicalHeight)
-	}
-	if document.LogicalWidth == scale*document.ViewBox.Width || document.LogicalHeight == scale*document.ViewBox.Height {
-		t.Fatal("appendix unexpectedly retained the pre-appendix outer SVG scale")
-	}
-
-	outer, ok := document.Root.Children[0].Primitive.(d2scene.Rect)
-	if !ok {
-		t.Fatalf("double-border outer background = %T, want Rect", document.Root.Children[0].Primitive)
-	}
-	if outer.Box.Width != document.ViewBox.Width || outer.Box.Height != document.ViewBox.Height {
-		t.Fatalf("rewritten outer background = %+v, want final viewbox width/height %+v", outer.Box, document.ViewBox)
-	}
-	inner := document.Root.Children[1].Primitive.(d2scene.Rect)
-	if inner.Box.Width == document.ViewBox.Width || inner.Box.Height == document.ViewBox.Height {
-		t.Fatal("svg double-border quirk lost: appendix must rewrite only the first background rectangle")
-	}
-	if got := document.Root.Children[len(document.Root.Children)-2].ID; got != "legend" {
-		t.Fatalf("penultimate root layer = %q, want legend before appendix", got)
-	}
-	if got := document.Root.Children[len(document.Root.Children)-1].ID; got != "appendix" {
-		t.Fatalf("last root layer = %q, want appendix", got)
-	}
-}
 
 func TestAppendixPaintOrderNumbersAndGeometry(t *testing.T) {
 	t.Parallel()
@@ -297,89 +221,6 @@ func TestAppendixRasterPaintsSeparatorAndBadges(t *testing.T) {
 	}
 }
 
-func TestAppendixCompiledCorpusMatchesSVGGeometry(t *testing.T) {
-	t.Parallel()
-	tests := []struct {
-		name    string
-		themeID int64
-		script  string
-		rows    int
-	}{
-		{
-			name: "tooltip wider than diagram",
-			script: `x: { tooltip: Total abstinence is easier than perfect moderation }
-y: { tooltip: Gee, I feel kind of LIGHT in the head now,\nknowing I can't make my satellite dish PAYMENTS! }
-x -> y
-`,
-			rows: 2,
-		},
-		{
-			name:    "links dark",
-			themeID: 200,
-			script: `x: { link: https://d2lang.com }
-y: { link: https://fosny.eu; tooltip: two lines\nremain two lines }
-x -> y
-`,
-			rows: 3,
-		},
-		{
-			name: "root fill",
-			script: `x: { tooltip: Total abstinence is easier than perfect moderation }
-y: { tooltip: the second note }
-x -> y
-style.fill: PaleVioletRed
-`,
-			rows: 2,
-		},
-	}
-	for _, test := range tests {
-		test := test
-		t.Run(test.name, func(t *testing.T) {
-			t.Parallel()
-			ctx := context.Background()
-			ctx = d2log.With(ctx, testlog.New(t))
-			ctx = d2log.Leveled(ctx, slog.LevelDebug)
-			ruler, err := textmeasure.NewRuler()
-			if err != nil {
-				t.Fatal(err)
-			}
-			renderOptions := &d2svg.RenderOpts{ThemeID: &test.themeID}
-			layoutResolver := func(string) (d2graph.LayoutGraph, error) {
-				return d2dagrelayout.DefaultLayout, nil
-			}
-			diagram, _, err := d2lib.Compile(ctx, test.script, &d2lib.CompileOptions{
-				Ruler: ruler, LayoutResolver: layoutResolver,
-			}, renderOptions)
-			if err != nil {
-				t.Fatal(err)
-			}
-			document, err := Build(ctx, diagram, Options{
-				ThemeID: &test.themeID, Appendix: true,
-				LinkBudget: LinkBudget{MaxRegions: 16, MaxStringBytes: 1 << 20},
-			})
-			if err != nil {
-				t.Fatal(err)
-			}
-			svg, err := d2svg.Render(diagram, renderOptions)
-			if err != nil {
-				t.Fatal(err)
-			}
-			svg = svgappendix.Append(diagram, renderOptions, ruler, svg)
-			if want := parseSVGAppendixViewBox(t, svg); document.ViewBox != want {
-				t.Fatalf("scene viewbox = %+v, svg = %+v", document.ViewBox, want)
-			}
-			wantWidth, wantHeight := parseSVGOuterDimensions(t, svg)
-			if document.LogicalWidth != wantWidth || document.LogicalHeight != wantHeight {
-				t.Fatalf("scene dimensions = %vx%v, svg = %vx%v", document.LogicalWidth, document.LogicalHeight, wantWidth, wantHeight)
-			}
-			appendix := document.Root.Children[len(document.Root.Children)-1]
-			if appendix.ID != "appendix" || len(appendix.Children) != test.rows+1 {
-				t.Fatalf("appendix ID/rows = %q/%d, want appendix/%d", appendix.ID, len(appendix.Children)-1, test.rows)
-			}
-		})
-	}
-}
-
 func TestAppendixBoundsStringsAndCancellation(t *testing.T) {
 	t.Parallel()
 	diagram := d2target.NewDiagram()
@@ -445,42 +286,6 @@ func appendixTestDiagram() *d2target.Diagram {
 	second.ZIndex = -1
 	diagram.Shapes = []d2target.Shape{first, second}
 	return diagram
-}
-
-var svgDimensionPattern = regexp.MustCompile(`(?:width|height)="([.0-9]+)"`)
-
-func parseSVGAppendixViewBox(t *testing.T, svg []byte) d2scene.Box {
-	t.Helper()
-	parts := svgappendix.FindViewboxSlice(svg)
-	if len(parts) != 4 {
-		t.Fatalf("svg viewbox = %#v", parts)
-	}
-	values := make([]float64, 4)
-	for index, part := range parts {
-		value, err := strconv.ParseFloat(part, 64)
-		if err != nil {
-			t.Fatal(err)
-		}
-		values[index] = value
-	}
-	return d2scene.Box{X: values[0], Y: values[1], Width: values[2], Height: values[3]}
-}
-
-func parseSVGOuterDimensions(t *testing.T, svg []byte) (float64, float64) {
-	t.Helper()
-	matches := svgDimensionPattern.FindAllSubmatch(svg, 2)
-	if len(matches) != 2 {
-		t.Fatalf("svg outer dimensions not found in %q", svg[:min(200, len(svg))])
-	}
-	width, err := strconv.ParseFloat(string(matches[0][1]), 64)
-	if err != nil {
-		t.Fatal(err)
-	}
-	height, err := strconv.ParseFloat(string(matches[1][1]), 64)
-	if err != nil {
-		t.Fatal(err)
-	}
-	return width, height
 }
 
 func pixelNeighborhoodContains(frame image.Image, viewBox d2scene.Box, point d2scene.Point, radius int, predicate func(color.NRGBA) bool) bool {

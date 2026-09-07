@@ -1,54 +1,114 @@
-<html>
-  <title>E2E report</title>
-  <body>
-    <h1>Table of Contents</h1>
-    <ul>
-      {{range .Tests}}
-      <li><a href="#{{.Name}}">{{.Name}}</a></li>
-      {{end}}
-    </ul>
-    <div class="cases">
-      {{range .Tests}}
-      <div class="case" id="{{.Name}}">
-        <h1><a href="{{.GotSVG}}">{{.Name}}</a></h1>
-        {{ if .ExpSVG }}
-        <h2 class="case-exp">Expected</h2>
-        {{ end }}
-        <h2 class="case-got">Got</h2>
-        <div class="case-img-wrapper">
-          {{ if .ExpSVG }}
-          <img src="{{.ExpSVG}}" width="100%" />
-          {{ end }}
-          <img src="{{.GotSVG}}" width="100%" />
-        </div>
-      </div>
-      {{end}}
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>E2E report</title>
     <style>
-      .cases {
-        display: inline-flex;
-        flex-wrap: wrap;
+      body {
+        margin: 24px;
+        font: 15px/1.5 system-ui, sans-serif;
+        color: #243346;
+        background: #f4f6f8;
+      }
+      a {
+        color: inherit;
+        text-underline-offset: 3px;
       }
       .case {
-        position: relative;
-        padding: 20px;
-        width: 100%;
-      }
-      .case-img-wrapper {
-        display: flex;
-        align-items: center;
-      }
-      .case img {
-        width: 600px;
-      }
-      .case-exp + .case-got {
-        position: absolute;
-        left: 600px;
+        margin: 32px 0;
+        padding: 24px;
+        border: 1px solid #d7dfe6;
+        background: white;
       }
       .case h2 {
+        margin-top: 0;
+        overflow-wrap: anywhere;
+        font-size: 20px;
+      }
+      .variant {
+        color: #61758a;
+        font-size: 13px;
+      }
+      .case-images {
+        display: flex;
+        align-items: flex-start;
+        gap: 24px;
+      }
+      figure {
+        flex: 1;
+        min-width: 0;
         margin: 0;
-        display: inline;
+      }
+      figcaption {
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+      img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+      .missing {
+        color: #924f09;
+      }
+      @media (max-width: 750px) {
+        body {
+          margin: 12px;
+        }
+        .case {
+          padding: 16px;
+        }
+        .case-images {
+          flex-direction: column;
+        }
+        figure {
+          width: 100%;
+        }
       }
     </style>
+  </head>
+  <body>
+    <h1>E2E report</h1>
+    {{if .Tests}}
+    <nav aria-label="Snapshots">
+      <ul>
+        {{range .Tests}}
+        <li><a href="#{{.ID}}">{{.Name}}</a></li>
+        {{end}}
+      </ul>
+    </nav>
+    <main>
+      {{range .Tests}}
+      <section class="case" id="{{.ID}}">
+        <h2><a href="{{.GotImage}}">{{.Name}}</a></h2>
+        <p class="variant">{{.Variant}}</p>
+        {{if .MissingExpected}}
+        <p class="missing">
+          Missing expected snapshot. Review the new output before accepting its golden.
+        </p>
+        {{end}}
+        <div class="case-images">
+          {{if .ExpImage}}
+          <figure>
+            <figcaption>Expected</figcaption>
+            <a href="{{.ExpImage}}"
+              ><img src="{{.ExpImage}}" alt="Expected {{.Name}}" loading="lazy"
+            /></a>
+          </figure>
+          {{end}}
+          <figure>
+            <figcaption>{{.GotLabel}}</figcaption>
+            <a href="{{.GotImage}}"
+              ><img src="{{.GotImage}}" alt="{{.GotLabel}} {{.Name}}" loading="lazy"
+            /></a>
+          </figure>
+        </div>
+      </section>
+      {{end}}
+    </main>
+    {{else}}
+    <p>No snapshots match the selected filters.</p>
+    {{end}}
   </body>
 </html>

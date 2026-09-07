@@ -41,6 +41,7 @@ type CompileRequest struct {
 type RenderOptions struct {
 	Pad                *int64                   `json:"pad"`
 	Sketch             *bool                    `json:"sketch"`
+	Isometric          *bool                    `json:"isometric"`
 	Center             *bool                    `json:"center"`
 	ThemeID            *int64                   `json:"themeID"`
 	DarkThemeID        *int64                   `json:"darkThemeID"`
