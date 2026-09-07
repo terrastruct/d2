@@ -27,6 +27,8 @@ elif args[:3] == ['api', '--paginate', '--slurp']:
 elif args[:2] == ['pr', 'list']:
     print(json.dumps(state.get('prs', [])))
 elif args[:2] == ['pr', 'create']:
+    if state.get('fail_create'):
+        raise SystemExit('simulated PR creation failure')
     print('https://github.com/test/repo/pull/1')
 else:
     raise SystemExit('unexpected gh command: ' + str(args))
@@ -100,6 +102,19 @@ class PreparationTests(unittest.TestCase):
         self.assertEqual(self.git('rev-parse', 'HEAD'), before)
         self.assertEqual(self.git('tag'), '')
 
+    def test_existing_draft_without_remote_tag_is_not_reused(self):
+        self.state.write_text(json.dumps({'releases': [{'tag_name': 'v1.2.3', 'draft': True, 'assets': []}]}))
+        before = self.refs()
+        self.assertIn('do not reuse this version', self.prepare(success=False))
+        self.assertEqual(self.refs(), before)
+
+    def test_published_tagged_release_is_rejected_without_changes(self):
+        self.prepare()
+        self.state.write_text(json.dumps({'releases': [{'tag_name': 'v1.2.3', 'draft': False, 'assets': []}]}))
+        before = self.refs()
+        self.assertIn('use a new version', self.prepare(success=False))
+        self.assertEqual(self.refs(), before)
+
     def test_dry_run_does_not_change_git_or_github(self):
         before = self.git('rev-parse', 'HEAD')
         self.prepare('--dry-run')
@@ -107,6 +122,116 @@ class PreparationTests(unittest.TestCase):
         self.assertEqual(self.git('status', '--porcelain'), '')
         self.assertEqual(self.git('tag'), '')
         self.assertFalse(any(call['args'][:2] == ['pr', 'create'] for call in self.calls()))
+
+    def refs(self):
+        local = self.git('for-each-ref', '--format=%(refname) %(objectname)')
+        remote = subprocess.check_output(['git', '--git-dir', str(self.remote), 'for-each-ref', '--format=%(refname) %(objectname)'], text=True).strip()
+        return local, remote, self.git('branch', '--show-current')
+
+    def remote_git(self, *args):
+        return subprocess.check_output(['git', '--git-dir', str(self.remote), *args], text=True, stderr=subprocess.DEVNULL).strip()
+
+    def add_commit(self, name):
+        (self.repo / name).write_text(name)
+        self.git('add', '--', name)
+        self.git('commit', '-qm', name)
+        return self.git('rev-parse', 'HEAD')
+
+    def assert_rejected_without_ref_changes(self):
+        before = self.refs()
+        calls = len(self.calls())
+        self.assertIn('choose a new version', self.prepare(success=False))
+        self.assertEqual(self.refs(), before)
+        self.assertFalse(any(call['args'][:2] in (['pr', 'create'], ['pr', 'edit']) for call in self.calls()[calls:]))
+
+    def test_existing_matching_tag_is_a_noop_even_from_master(self):
+        self.prepare()
+        self.git('checkout', '-q', 'master')
+        before = self.refs()
+        calls = len(self.calls())
+        self.assertIn('already tagged', self.prepare())
+        self.assertEqual(self.refs(), before)
+        self.assertFalse(any(call['args'][0] == 'pr' for call in self.calls()[calls:]))
+
+    def test_existing_remote_tag_does_not_recreate_missing_local_tag(self):
+        self.prepare()
+        self.git('tag', '-d', 'v1.2.3')
+        before = self.refs()
+        self.assertIn('already tagged', self.prepare())
+        self.assertEqual(self.refs(), before)
+
+    def test_changed_source_after_tag_requires_new_version(self):
+        self.prepare()
+        self.add_commit('new-source')
+        self.assert_rejected_without_ref_changes()
+
+    def test_conflicting_tag_objects_at_same_commit_are_rejected(self):
+        self.prepare()
+        self.git('tag', '-f', '-a', 'v1.2.3', '-m', 'different annotation')
+        self.assert_rejected_without_ref_changes()
+
+    def test_conflicting_remote_tag_commit_is_rejected(self):
+        self.prepare()
+        self.remote_git('update-ref', 'refs/tags/v1.2.3', self.git('rev-parse', 'HEAD^'))
+        self.assert_rejected_without_ref_changes()
+
+    def test_partial_preparation_retry_does_not_create_another_commit(self):
+        self.state.write_text(json.dumps({'fail_create': True}))
+        self.prepare(success=False)
+        before = self.git('rev-parse', 'HEAD')
+        self.assertEqual(self.git('tag'), '')
+        self.assertEqual(self.remote_git('rev-parse', 'refs/heads/v1.2.3'), before)
+        self.state.write_text('{}')
+        self.prepare()
+        self.assertEqual(self.git('rev-parse', 'HEAD'), before)
+        self.assertEqual(self.remote_git('rev-parse', 'refs/tags/v1.2.3^{commit}'), before)
+
+    def test_partial_remote_branch_can_resume_without_new_commit(self):
+        self.state.write_text(json.dumps({'fail_create': True}))
+        self.prepare(success=False)
+        commit = self.git('rev-parse', 'HEAD')
+        self.git('checkout', '-q', 'master')
+        self.git('branch', '-D', 'v1.2.3')
+        self.state.write_text('{}')
+        self.prepare()
+        self.assertEqual(self.git('rev-parse', 'HEAD'), commit)
+        self.assertEqual(self.remote_git('rev-parse', 'refs/tags/v1.2.3^{commit}'), commit)
+
+    def test_local_tag_from_failed_push_is_pushed_without_recreation(self):
+        self.prepare()
+        self.remote_git('update-ref', '-d', 'refs/tags/v1.2.3')
+        self.state.write_text(json.dumps({'prs': [{'url': 'https://github.com/test/repo/pull/1', 'state': 'OPEN'}]}))
+        tag_object = self.git('rev-parse', 'refs/tags/v1.2.3')
+        commit = self.git('rev-parse', 'HEAD')
+        self.prepare()
+        self.assertEqual(self.git('rev-parse', 'HEAD'), commit)
+        self.assertEqual(self.git('rev-parse', 'refs/tags/v1.2.3'), tag_object)
+        self.assertEqual(self.remote_git('rev-parse', 'refs/tags/v1.2.3'), tag_object)
+
+    def test_follow_tags_config_cannot_push_tag_before_pr_success(self):
+        self.prepare()
+        self.remote_git('update-ref', '-d', 'refs/tags/v1.2.3')
+        self.git('config', 'push.followTags', 'true')
+        self.state.write_text(json.dumps({'fail_create': True}))
+        before = self.refs()
+        self.prepare(success=False)
+        self.assertEqual(self.refs(), before)
+
+    def test_conflicting_local_only_tag_is_rejected(self):
+        self.prepare()
+        self.remote_git('update-ref', '-d', 'refs/tags/v1.2.3')
+        self.add_commit('different-source')
+        self.assert_rejected_without_ref_changes()
+
+    def test_divergent_untagged_branch_is_rejected_before_checkout(self):
+        self.state.write_text(json.dumps({'fail_create': True}))
+        self.prepare(success=False)
+        self.git('checkout', '-q', 'master')
+        other_commit = self.add_commit('divergent-source')
+        self.git('push', 'origin', 'HEAD:refs/heads/divergent-fixture')
+        self.remote_git('update-ref', 'refs/heads/v1.2.3', other_commit)
+        self.state.write_text('{}')
+        self.assert_rejected_without_ref_changes()
 
     def test_removed_flags_are_rejected_before_any_action(self):
         for flag in ('--skip-build', '--publish', '--rebuild'):

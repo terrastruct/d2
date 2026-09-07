@@ -15,6 +15,15 @@ def output(*args):
     return subprocess.check_output(args, text=True).strip()
 
 
+def local_ref(ref):
+    result = subprocess.run(["git", "rev-parse", "--verify", "--quiet", ref], text=True, stdout=subprocess.PIPE)
+    return result.stdout.strip() if result.returncode == 0 else None
+
+
+def has_file(commit, path):
+    return subprocess.run(["git", "cat-file", "-e", f"{commit}:{path}"], stderr=subprocess.DEVNULL).returncode == 0
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--version", default=os.environ.get("VERSION"))
@@ -48,7 +57,39 @@ def main():
     if len(releases) > 1:
         parser.error("multiple releases have the requested tag")
     if releases and (not releases[0]["draft"] or any(asset["name"].endswith(".msi") for asset in releases[0]["assets"])):
-        parser.error("this release is published or already has its MSI; retry failed Actions jobs instead of preparing it again")
+        parser.error("this release is published or already has its MSI; use a new version for changes, or retry failed Actions jobs for the existing draft")
+    branch_ref = f"refs/heads/{version}"
+    tag_ref = f"refs/tags/{version}"
+    remote_refs = {}
+    for line in output("git", "ls-remote", "origin", branch_ref, tag_ref, tag_ref + "^{}").splitlines():
+        commit, ref = line.split()
+        remote_refs[ref] = commit
+    branch = local_ref(branch_ref)
+    local_tag = local_ref(tag_ref)
+    local_tag_commit = local_ref(tag_ref + "^{commit}") if local_tag else None
+    remote_branch = remote_refs.get(branch_ref)
+    remote_tag = remote_refs.get(tag_ref)
+    remote_tag_commit = remote_refs.get(tag_ref + "^{}", remote_tag)
+    if local_tag and not local_tag_commit:
+        parser.error("the local release tag does not point to a commit; choose a new version")
+    if remote_tag:
+        if (local_tag and local_tag != remote_tag) or any(ref and ref != remote_tag_commit for ref in (branch, remote_branch)):
+            parser.error("existing release tag and local/remote release refs disagree; they will not be changed; choose a new version")
+        print(f"{version} is already tagged. Use its existing Actions run for retries; changed code requires a new version.")
+        return
+    if releases:
+        parser.error("a release already exists without its remote tag; do not reuse this version")
+    source = branch or remote_branch or local_ref("refs/heads/master")
+    if not source or not local_ref(source + "^{commit}"):
+        parser.error("release branch commit is unavailable locally; fetch origin before retrying")
+    if remote_branch and subprocess.run(["git", "merge-base", "--is-ancestor", remote_branch, source]).returncode != 0:
+        parser.error("local and remote release branches diverged; they will not be changed; choose a new version")
+    changelog = Path("ci/release/changelogs") / f"{version}.md"
+    prepared = has_file(source, changelog)
+    if local_tag and (local_tag_commit != source or not prepared):
+        parser.error("the local tag does not match a prepared release branch; it will not be changed; choose a new version")
+    if not prepared and (not has_file(source, "ci/release/changelogs/next.md") or not has_file(source, "ci/release/changelogs/template.md")):
+        parser.error("release changelog inputs are missing from the source commit")
 
     def run(*command):
         if args.dry_run:
@@ -56,21 +97,16 @@ def main():
         else:
             subprocess.run(command, check=True)
 
-    branch_exists = subprocess.run(["git", "show-ref", "--verify", "--quiet", f"refs/heads/{version}"]).returncode == 0
-    if not branch_exists:
-        run("git", "branch", version, "master")
+    if not branch:
+        run("git", "branch", version, source)
     run("git", "checkout", version)
-    changelog = Path("ci/release/changelogs") / f"{version}.md"
-    if not changelog.exists():
+    if not prepared:
         run("cp", "ci/release/changelogs/next.md", str(changelog))
         if "-" not in version:
             run("cp", "ci/release/changelogs/template.md", "ci/release/changelogs/next.md")
-    run("git", "add", "--", "ci/release/changelogs")
-    if output("git", "show", "--no-patch", "--format=%s") == version:
-        run("git", "commit", "--allow-empty", "--amend", "--no-edit")
-    else:
-        run("git", "commit", "--allow-empty", "-m", version)
-    run("git", "push", "-f", "origin", f"refs/heads/{version}")
+        run("git", "add", "--", "ci/release/changelogs")
+        run("git", "commit", "-m", version)
+    run("git", "-c", "push.followTags=false", "push", "origin", branch_ref)
 
     prs = json.loads(output("gh", "pr", "list", "--repo", repository, "--state", "all", "--head", version, "--json", "url,state"))
     if not any(pr["state"] in ("OPEN", "MERGED") for pr in prs):
@@ -82,9 +118,9 @@ def main():
                 body_file.write(body)
                 body_file.flush()
                 run("gh", "pr", "create", "--repo", repository, "--base", "master", "--head", version, "--title", version, "--body-file", body_file.name)
-    # Retain the existing release-tag policy. Tag immutability is a separate change.
-    run("git", "tag", "--force", "-a", version, "-m", version)
-    run("git", "push", "-f", "origin", f"refs/tags/{version}")
+    if not local_tag:
+        run("git", "tag", "-a", version, "-m", version)
+    run("git", "-c", "push.followTags=false", "push", "origin", tag_ref)
     if args.dry_run:
         print("Dry run complete. No files, Git refs, or GitHub records were changed.")
         return

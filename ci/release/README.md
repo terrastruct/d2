@@ -53,8 +53,26 @@ Run from a clean checkout with Python 3, Git, and an authenticated GitHub CLI. T
 prepares the release branch, changelog, PR, and tag, then returns. It leaves existing PR
 descriptions unchanged and uses the Human/AI template for new PRs. Prereleases must have
 a semantic-version suffix, for example `--version=v0.9.0-rc.1`; `--prerelease` with a
-stable-looking version is rejected. This refactor retains the existing release-tag update
-policy; tag protection and immutable GitHub releases are separate repository decisions.
+stable-looking version is rejected.
+
+A version is assigned once. The script never amends a release commit, force-pushes a branch,
+or replaces a tag, including tags for draft releases. It checks local and remote release
+refs before making changes. For an unfinished release, a matching remote tag makes
+preparation a no-op with guidance to follow the existing Actions run. Published releases
+and drafts with an MSI reject preparation. Conflicting tags or release branches require a
+new version. A local tag left by a failed push can be pushed only when it points to the
+unchanged prepared commit, without recreating the tag object. An untagged partial preparation
+reuses its existing changelog commit and pushes the branch normally; it does not create another
+empty commit.
+If a remote preparation commit is unavailable locally, fetch origin before retrying.
+
+Enable **Release immutability** in the repository's release settings to enforce the lock
+on GitHub. Draft assets remain editable until publication; the uploader still accepts only
+identical existing assets. Publishing freezes the release assets and associated tag, so
+attach and verify every asset before publishing. Release notes/title and prerelease/latest
+status remain editable. Enabling this setting applies to future published releases; it does
+not retroactively lock already published releases. See [GitHub's release immutability
+settings](https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/establish-provenance-and-integrity/prevent-release-changes).
 
 Pushing the tag starts one `Release archives` dependency graph:
 
@@ -75,8 +93,9 @@ is overwritten. There is no workstation download/upload handoff or independent M
 
 After the workflow succeeds, review and merge the release PR, then publish the complete
 draft manually on GitHub. `release.sh` rejects `--publish`, `--skip-build`, and `--rebuild`,
-and refuses preparation after publication or once an MSI is attached. To recover a failed
-run, use **Re-run failed jobs** on that run. Its Actions artifacts are immutable: a full
+and never repurposes an existing version. To recover a failed run without changing code or
+artifacts, use **Re-run failed jobs** on that run. Code or build changes require a new version,
+even if the old version is still a draft. Its Actions artifacts are immutable: a full
 rerun fails rather than replacing them. If draft upload was interrupted, the failed job
 resumes by accepting identical existing assets and attaching only missing ones. Artifacts
 are retained for 30 days; recover failures within that window.
