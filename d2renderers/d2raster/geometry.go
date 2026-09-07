@@ -482,6 +482,10 @@ func drawStroke(ctx context.Context, dst *image.RGBA, runs []strokeRun, transfor
 }
 
 func paintedStrokePixelBounds(runs []strokeRun, transform d2scene.Matrix, stroke *preparedStroke, canvas image.Rectangle) image.Rectangle {
+	return strokeRunPixelBounds(runs, transform, strokeExtent(stroke, transform), canvas)
+}
+
+func strokeExtent(stroke *preparedStroke, transform d2scene.Matrix) float64 {
 	expansion := stroke.width * transform.MaxScale() / 2
 	factor := 1.0
 	if stroke.cap == d2scene.CapSquare {
@@ -490,7 +494,7 @@ func paintedStrokePixelBounds(runs []strokeRun, transform d2scene.Matrix, stroke
 	if stroke.join == d2scene.JoinMiter && stroke.miterLimit > factor {
 		factor = stroke.miterLimit
 	}
-	return strokeRunPixelBounds(runs, transform, expansion*factor, canvas)
+	return expansion * factor
 }
 
 func strokeRunPixelBounds(runs []strokeRun, transform d2scene.Matrix, expansion float64, canvas image.Rectangle) image.Rectangle {

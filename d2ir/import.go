@@ -54,15 +54,16 @@ func formatCyclicChain(cyclicChain []string) string {
 
 // Returns either *Map or *Field.
 func (c *compiler) _import(imp *d2ast.Import, importer Node) (Node, bool) {
-	ir, ok := c.__import(imp, importTemplateSafeAt(importer))
-	if !ok {
-		return nil, false
-	}
+	_, fieldImport := importer.(*Field)
+	return c.__import(imp, importTemplateSafeAt(importer), fieldImport)
+}
+
+func (c *compiler) selectImport(ir *Map, imp *d2ast.Import) (Node, bool) {
 	nilScopeMap(ir)
-	if len(imp.IDA()) > 0 {
-		f := ir.getFieldIndexed(imp.IDA()...)
+	if ida := imp.IDA(); len(ida) > 0 {
+		f := ir.getFieldIndexed(ida...)
 		if f == nil {
-			c.errorf(imp, "import key %q doesn't exist inside import", imp.IDA())
+			c.errorf(imp, "import key %q doesn't exist inside import", ida)
 			return nil, false
 		}
 		return f, true
@@ -70,7 +71,7 @@ func (c *compiler) _import(imp *d2ast.Import, importer Node) (Node, bool) {
 	return ir, true
 }
 
-func (c *compiler) __import(imp *d2ast.Import, templateSafe bool) (*Map, bool) {
+func (c *compiler) __import(imp *d2ast.Import, templateSafe, fieldImport bool) (Node, bool) {
 	impPath, ok := c.pushImportStack(imp)
 	if !ok {
 		return nil, false
@@ -88,7 +89,17 @@ func (c *compiler) __import(imp *d2ast.Import, templateSafe bool) (*Map, bool) {
 	if cacheable {
 		if template := c.importTemplates[impPath]; template != nil {
 			c.seenImports[impPath] = struct{}{}
-			return cloneImportMap(template), true
+			if ida := imp.IDA(); fieldImport && !imp.Spread && len(ida) > 0 && template.canSelect() {
+				selected := template.ir.getFieldIndexed(ida...)
+				if selected == nil {
+					c.errorf(imp, "import key %q doesn't exist inside import", ida)
+					return nil, false
+				}
+				field := cloneImportField(selected)
+				nilScopeMap(field)
+				return field, true
+			}
+			return c.selectImport(cloneImportMap(template.ir), imp)
 		}
 	}
 
@@ -117,10 +128,10 @@ func (c *compiler) __import(imp *d2ast.Import, templateSafe bool) (*Map, bool) {
 
 	c.seenImports[impPath] = struct{}{}
 	if cacheable && len(c.err.Errors) == errCount {
-		c.importTemplates[impPath] = cloneImportMap(ir)
+		c.importTemplates[impPath] = &importTemplate{ir: cloneImportMap(ir)}
 	}
 
-	return ir, true
+	return c.selectImport(ir, imp)
 }
 
 // Imported IR templates are context independent for ordinary maps. Board

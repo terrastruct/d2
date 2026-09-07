@@ -215,12 +215,81 @@ func cloneASTInterpolation(src []d2ast.InterpolationBox) []d2ast.InterpolationBo
 	return dst
 }
 
+// A selective non-spread import only copies the chosen field into its
+// destination. Once the complete library has been compiled and validated, its
+// unrelated siblings need not be copied again for each use. Keep full copies
+// for boards, globs, and maps in arrays, whose retained contexts can refer
+// outside that field. Imports into arrays also retain the source ancestry.
+type importTemplate struct {
+	ir               *Map
+	selective        bool
+	selectionChecked bool
+}
+
+func (t *importTemplate) canSelect() bool {
+	if !t.selectionChecked {
+		t.selective = canSelectImport(t.ir)
+		t.selectionChecked = true
+	}
+	return t.selective
+}
+
+func canSelectImport(n Node) bool {
+	return canSelectImportNode(n, false)
+}
+
+func canSelectImportNode(n Node, inArray bool) bool {
+	switch n := n.(type) {
+	case *Map:
+		// nilScopeMap does not descend into arrays. Those references retain
+		// the complete imported ancestry, so use the complete clone for them.
+		if inArray || len(n.globs) != 0 {
+			return false
+		}
+		for _, f := range n.Fields {
+			if !canSelectImport(f) {
+				return false
+			}
+		}
+		for _, e := range n.Edges {
+			if !canSelectImport(e) {
+				return false
+			}
+		}
+	case *Field:
+		if NodeBoardKind(n) != "" {
+			return false
+		}
+		return n.Composite == nil || canSelectImport(n.Composite)
+	case *Edge:
+		return n.Map_ == nil || canSelectImport(n.Map_)
+	case *Array:
+		for _, value := range n.Values {
+			if !canSelectImportNode(value, true) {
+				return false
+			}
+		}
+	}
+	return true
+}
+
+func cloneImportField(src *Field) *Field {
+	dst := src.Copy(nil).(*Field)
+	cloneImportContexts(src, dst)
+	return dst
+}
+
 // cloneImportMap deep-copies mutable IR and remaps reference/glob contexts to
 // the copy. The ordinary Map.Copy intentionally shares source contexts; import
 // templates need stronger isolation because nilScopeMap and substitutions
 // mutate them after each import.
 func cloneImportMap(src *Map) *Map {
 	dst := src.Copy(nil).(*Map)
+	cloneImportContexts(src, dst)
+	return dst
+}
+
+func cloneImportContexts(src, dst Node) {
 	mapCopies := make(map[*Map]*Map)
 	collectMapCopies(src, dst, mapCopies)
 	contextCopies := make(map[*RefContext]*RefContext)
@@ -241,7 +310,6 @@ func cloneImportMap(src *Map) *Map {
 
 	cloneNodeReferences(src, dst, cloneContext)
 	cloneGlobContexts(src, dst, mapCopies, cloneContext)
-	return dst
 }
 
 func collectMapCopies(src, dst Node, copies map[*Map]*Map) {
