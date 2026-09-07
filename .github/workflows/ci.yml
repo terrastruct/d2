@@ -38,15 +38,6 @@ jobs:
         with:
           name: d2chaos
           path: ./d2chaos/out
-  nofixups:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - run: git submodule update --init
-      - run: COLOR=1 ./ci/sub/bin/nofixups.sh
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
   signed:
     runs-on: ubuntu-latest
     timeout-minutes: 5

@@ -94,6 +94,25 @@ def existing_asset(release, path, expected_digest, expected_size, allow_pending=
     return True
 
 
+def starter_asset_id(asset):
+    if (asset.get("state") == "starter" and type(asset.get("size")) is int and asset["size"] == 0
+            and asset.get("digest") is None and type(asset.get("id")) is int and asset["id"] > 0):
+        return asset["id"]
+    return None
+
+
+def preflight_assets(release, assets):
+    starters = {}
+    for asset in assets:
+        matches = [item for item in release["assets"] if item["name"] == asset[0].name]
+        asset_id = starter_asset_id(matches[0]) if len(matches) == 1 else None
+        if asset_id is not None:
+            starters[asset[0].name] = asset_id
+            continue
+        existing_asset(release, *asset)
+    return starters
+
+
 def upload(repository, version, commit, assets):
     verify_tag(repository, version, commit)
     release = find_release(repository, version)
@@ -111,9 +130,18 @@ def upload(repository, version, commit, assets):
     verify_draft(release, version)
     release_id = release["id"]
     prerelease = release["prerelease"]
-    # Preflight every existing asset before the first upload. Retries accept only identical bytes.
-    for asset in assets:
-        existing_asset(release, *asset)
+    # A failed GitHub upload can leave an empty starter. Never delete completed assets.
+    starters = preflight_assets(release, assets)
+    for name, asset_id in starters.items():
+        release = api(f"repos/{repository}/releases/{release_id}")
+        verify_draft(release, version, release_id, prerelease)
+        if preflight_assets(release, assets).get(name) != asset_id:
+            raise ValueError(f"starter asset changed before cleanup: {name}")
+        asset = api(f"repos/{repository}/releases/assets/{asset_id}")
+        if asset.get("name") != name or starter_asset_id(asset) != asset_id:
+            raise ValueError(f"starter asset changed before cleanup: {name}")
+        verify_tag(repository, version, commit)
+        gh("api", "--method", "DELETE", f"repos/{repository}/releases/assets/{asset_id}")
     for path, expected_digest, expected_size in assets:
         verify_tag(repository, version, commit)
         release = api(f"repos/{repository}/releases/{release_id}")

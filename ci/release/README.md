@@ -95,10 +95,14 @@ After the workflow succeeds, review and merge the release PR, then publish the c
 draft manually on GitHub. `release.sh` rejects `--publish`, `--skip-build`, and `--rebuild`,
 and never repurposes an existing version. To recover a failed run without changing code or
 artifacts, use **Re-run failed jobs** on that run. Code or build changes require a new version,
-even if the old version is still a draft. Its Actions artifacts are immutable: a full
-rerun fails rather than replacing them. If draft upload was interrupted, the failed job
-resumes by accepting identical existing assets and attaching only missing ones. Artifacts
-are retained for 30 days; recover failures within that window.
+even if the old version is still a draft. Individual Actions artifacts are immutable, but
+reruns can create newer artifacts with the same names; downloads by name select the newest.
+Retry failed jobs to reuse completed build outputs. If draft upload was interrupted, the
+failed job accepts identical existing assets and attaches only missing ones. A GitHub upload
+failure can leave an empty `starter` asset; after rechecking the tag, draft, and asset identity,
+the uploader deletes only that zero-byte placeholder and retries its upload. Changed or
+completed assets are never deleted. Artifacts are retained for 30 days; recover failures
+within that window. Run recovery without another uploader modifying the same draft.
 
 Release-related PRs exercise the same archive and native smoke jobs and, when the WiX gate
 below is enabled, the MSI build. PRs never attest or write release assets. CI is called
