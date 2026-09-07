@@ -14,22 +14,35 @@ type gridRowMeasurements struct {
 }
 
 func newGridRowMeasurements(sizes []float64, gap float64) *gridRowMeasurements {
-	// Bound the cache independently of diagram size; collisions only cause a
-	// measurement to be recomputed. Small diagrams fit without collisions.
-	const maxEntries = 32 * 1024
-	entries := 1
-	for len(sizes) > 0 && entries < maxEntries && entries/len(sizes) < len(sizes) {
-		entries *= 2
-	}
-	return &gridRowMeasurements{sizes: sizes, gap: gap, cache: make([]gridRowMeasurement, entries)}
+	return &gridRowMeasurements{sizes: sizes, gap: gap}
 }
 
 func (m *gridRowMeasurements) get(start, end int) gridRowMeasurement {
+	// Empty and singleton rows take constant time to measure. In particular,
+	// a grid with one row per object should not allocate a large row cache.
+	if end-start <= 1 {
+		return m.measure(start, end)
+	}
+	if m.cache == nil {
+		// Bound the cache independently of diagram size; collisions only cause
+		// recomputation. Small diagrams fit without collisions.
+		const maxEntries = 32 * 1024
+		entries := 1
+		for entries < maxEntries && entries/len(m.sizes) < len(m.sizes) {
+			entries *= 2
+		}
+		m.cache = make([]gridRowMeasurement, entries)
+	}
 	slot := (uint(start)*uint(len(m.sizes)) + uint(end)) & uint(len(m.cache)-1)
 	cached := &m.cache[slot]
 	if cached.start == start && cached.end == end {
 		return *cached
 	}
+	*cached = m.measure(start, end)
+	return *cached
+}
+
+func (m *gridRowMeasurements) measure(start, end int) gridRowMeasurement {
 	size, withGap := 0., 0.
 	for _, v := range m.sizes[start:end] {
 		size += v
@@ -38,8 +51,7 @@ func (m *gridRowMeasurements) get(start, end int) gridRowMeasurement {
 	if start < end {
 		withGap -= m.gap
 	}
-	*cached = gridRowMeasurement{start: start, end: end, size: size, withGap: withGap}
-	return *cached
+	return gridRowMeasurement{start: start, end: end, size: size, withGap: withGap}
 }
 
 // The division and row checks run in their original order, including repeated

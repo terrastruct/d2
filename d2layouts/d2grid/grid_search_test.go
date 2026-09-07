@@ -154,7 +154,52 @@ func TestGridRowMeasurementsPreserveAdditionOrder(t *testing.T) {
 			}
 		}
 	}
-	if got := len(newGridRowMeasurements(make([]float64, 100000), 40).cache); got != 32*1024 {
+	large := newGridRowMeasurements(make([]float64, 100000), 40)
+	large.get(0, 2)
+	if got := len(large.cache); got != 32*1024 {
 		t.Fatalf("large grid cache has %d entries, want 32768", got)
+	}
+}
+
+func TestGridSingletonMeasurementsDoNotAllocateCache(t *testing.T) {
+	values := []float64{0, math.Copysign(0, -1), math.SmallestNonzeroFloat64, 0.1, 99.99, 1e20}
+	for _, gap := range []float64{0, 0.1, 40, 1e20} {
+		measurements := newGridRowMeasurements(values, gap)
+		for start := range values {
+			for _, end := range []int{start, start + 1} {
+				got := measurements.get(start, end)
+				var size, withGap float64
+				for _, value := range values[start:end] {
+					size += value
+					withGap += value + gap
+				}
+				if start < end {
+					withGap -= gap
+				}
+				if math.Float64bits(got.size) != math.Float64bits(size) || math.Float64bits(got.withGap) != math.Float64bits(withGap) {
+					t.Fatalf("row [%d:%d], gap %v differs: %+v, want %v/%v", start, end, gap, got, size, withGap)
+				}
+			}
+		}
+		if measurements.cache != nil {
+			t.Fatal("empty and singleton measurements allocated a cache")
+		}
+		if allocations := testing.AllocsPerRun(100, func() {
+			measurements.get(0, 0)
+			measurements.get(0, 1)
+		}); allocations != 0 {
+			t.Fatalf("empty and singleton measurements allocated %v times", allocations)
+		}
+		// The first longer row still enables the bounded cache.
+		measurements.get(0, 2)
+		if measurements.cache == nil {
+			t.Fatal("multi-object measurement did not allocate its cache")
+		}
+	}
+	for _, n := range []int{100, 400} {
+		gd := benchmarkGrid(n, n)
+		gd.columns = n
+		assertSearchMatchesReference(t, gd, false)
+		assertSearchMatchesReference(t, gd, true)
 	}
 }
