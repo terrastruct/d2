@@ -1,8 +1,9 @@
 package textmeasure
 
 import (
-	"github.com/d2lang/d2/d2renderers/d2fonts"
 	"testing"
+
+	"github.com/d2lang/d2/d2renderers/d2fonts"
 )
 
 func BenchmarkRulerLabelMetrics(b *testing.B) {

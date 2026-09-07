@@ -481,30 +481,16 @@ func rasterPNGUpFilter(destination, raw, prior []byte) int {
 	_ = prior[len(raw)-1]
 	destination[0] = 2
 	destination = destination[1:]
+	if bytes.Equal(raw, prior) {
+		clear(destination[:len(raw)])
+		return 0
+	}
 	cost := 0
-	for index := 0; index < len(raw); {
-		end := min(index+16, len(raw))
-		if end-index == 16 && rasterPNGEqual16(raw[index:], prior[index:]) {
-			clear(destination[index:end])
-			index = end
-			continue
-		}
-		// Avoid probing every block of a varied row that starts without an
-		// unchanged run, as happens for photos and gradients.
-		if index == 0 {
-			end = len(raw)
-		}
-		for ; index < end; index++ {
-			destination[index] = raw[index] - prior[index]
-			cost += rasterPNGAbs8(destination[index])
-		}
+	for index, value := range raw {
+		destination[index] = value - prior[index]
+		cost += rasterPNGAbs8(destination[index])
 	}
 	return cost
-}
-
-func rasterPNGEqual16(a, b []byte) bool {
-	return binary.LittleEndian.Uint64(a) == binary.LittleEndian.Uint64(b) &&
-		binary.LittleEndian.Uint64(a[8:]) == binary.LittleEndian.Uint64(b[8:])
 }
 
 func rasterPNGSubFilter(destination, raw []byte, stopAt, channels int) int {
@@ -518,22 +504,11 @@ func rasterPNGSubFilter(destination, raw []byte, stopAt, channels int) int {
 			return cost
 		}
 	}
-	for index := channels; index < len(raw); {
-		end := min(index+16, len(raw))
-		if end-index == 16 && rasterPNGEqual16(raw[index:], raw[index-channels:]) {
-			clear(destination[index:end])
-			index = end
-			continue
-		}
-		if index == channels {
-			end = len(raw)
-		}
-		for ; index < end; index++ {
-			destination[index] = raw[index] - raw[index-channels]
-			cost += rasterPNGAbs8(destination[index])
-			if cost >= stopAt {
-				return cost
-			}
+	for index := channels; index < len(raw); index++ {
+		destination[index] = raw[index] - raw[index-channels]
+		cost += rasterPNGAbs8(destination[index])
+		if cost >= stopAt {
+			break
 		}
 	}
 	return cost
@@ -573,40 +548,26 @@ func rasterPNGPaethFilter(destination, raw, prior []byte, stopAt, channels int) 
 			return cost
 		}
 	}
-	for index := channels; index < len(raw); {
-		end := min(index+16, len(raw))
-		// An unchanged run, including its preceding pixel, has zero Paeth
-		// residuals: left equals upper-left, so the predictor is upper.
-		if end-index == 16 && rasterPNGEqual16(raw[index:], prior[index:]) &&
-			bytes.Equal(raw[index-channels:index], prior[index-channels:index]) {
-			clear(destination[index:end])
-			index = end
-			continue
+	for index := channels; index < len(raw); index++ {
+		left := raw[index-channels]
+		upperLeft := prior[index-channels]
+		upper := prior[index]
+		leftDistance := rasterPNGByteDistance(upper, upperLeft)
+		upperDistance := rasterPNGByteDistance(left, upperLeft)
+		diagonalDistance := int(left) + int(upper) - 2*int(upperLeft)
+		if diagonalDistance < 0 {
+			diagonalDistance = -diagonalDistance
 		}
-		if index == channels {
-			end = len(raw)
+		predictor := upperLeft
+		if leftDistance <= upperDistance && leftDistance <= diagonalDistance {
+			predictor = left
+		} else if upperDistance <= diagonalDistance {
+			predictor = upper
 		}
-		for ; index < end; index++ {
-			left := raw[index-channels]
-			upperLeft := prior[index-channels]
-			upper := prior[index]
-			leftDistance := rasterPNGByteDistance(upper, upperLeft)
-			upperDistance := rasterPNGByteDistance(left, upperLeft)
-			diagonalDistance := int(left) + int(upper) - 2*int(upperLeft)
-			if diagonalDistance < 0 {
-				diagonalDistance = -diagonalDistance
-			}
-			predictor := upperLeft
-			if leftDistance <= upperDistance && leftDistance <= diagonalDistance {
-				predictor = left
-			} else if upperDistance <= diagonalDistance {
-				predictor = upper
-			}
-			destination[index] = raw[index] - predictor
-			cost += rasterPNGAbs8(destination[index])
-			if cost >= stopAt {
-				return cost
-			}
+		destination[index] = raw[index] - predictor
+		cost += rasterPNGAbs8(destination[index])
+		if cost >= stopAt {
+			break
 		}
 	}
 	return cost
