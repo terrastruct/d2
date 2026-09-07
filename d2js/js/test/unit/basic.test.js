@@ -399,7 +399,7 @@ vars: {
     const version = await d2.version();
     expect(version).toBeDefined();
     expect(typeof version).toBe("string");
-    expect(version).toContain("v");
+    expect(version).toMatch(/^(v\d+\.\d+\.\d+(?:-[\w.-]+)?|[0-9a-f]{7,40})$/);
     await d2.dispose();
   }, 20000);
 

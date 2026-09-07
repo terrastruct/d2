@@ -5,6 +5,10 @@ include changes to the main d2 project.**
 
 ## Next
 
+## [0.1.34]
+### September 7, 2026
+
+- Support D2 0.9.0, including the bundled open-source TALA layout engine (`layout: "tala"`) and configurable TALA seeds.
 - Add `D2.dispose()` for terminating the backing worker
 - Fix concurrent calls sharing a D2 instance
 - Fix completions after Unicode characters
@@ -13,7 +17,6 @@ include changes to the main d2 project.**
 - Fix theme-overrides not applying
 - Fix grids in ELK layouts
 - Significantly reduce bundle size
-- Support D2 0.7.1
 
 ## [0.1.22]
 ### March 20, 2025

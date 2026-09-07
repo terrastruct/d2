@@ -181,7 +181,7 @@ test("correlates every operation through the real worker", async () => {
   expect(rendered).toContain("base");
   expect(await d2.decode(encoded)).toBe("encoded result");
   expect(decoded).toBe("decoded result");
-  expect(version).toMatch(/^v?\d+\.\d+\.\d+/);
+  expect(version).toMatch(/^(v\d+\.\d+\.\d+(?:-[\w.-]+)?|[0-9a-f]{7,40})$/);
   expect(jsVersion).toBe(packageJson.version);
   await d2.dispose();
 }, 20000);
