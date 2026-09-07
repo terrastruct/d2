@@ -84,9 +84,11 @@ jobs:
           NPM_PUBLISH_MODE: pack
           NPM_VERSION: ${{ inputs.version }}
         run: |
-          CI_FORCE=1 CI_MAKE_ROOT=0 COLOR=1 ./make.sh js
           cd d2js/js
-          bun test test/unit
+          bun install --frozen-lockfile
+          ./ci/build.sh
+          bun run test:all
+          git diff --exit-code
 
       - name: Upload immutable package tarballs
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
