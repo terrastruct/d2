@@ -7,6 +7,7 @@ on:
       - .github/workflows/ci.yml
       - .github/workflows/windows-msi.yml
       - ci/release/**
+      - d2layouts/d2talalayout/**
       - ci/sub
       - install.sh
       - go.mod
@@ -204,6 +205,14 @@ jobs:
           }
           if (-not (Select-String -LiteralPath $outputFile -Pattern '<svg' -Quiet)) {
             throw "d2 SVG smoke render did not produce SVG"
+          }
+          $talaOutputFile = Join-Path $destination "smoke-tala.svg"
+          & $binary --layout=tala $inputFile $talaOutputFile
+          if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $talaOutputFile -PathType Leaf)) {
+            throw "d2 TALA SVG smoke render failed"
+          }
+          if (-not (Select-String -LiteralPath $talaOutputFile -Pattern '<svg' -Quiet)) {
+            throw "d2 TALA SVG smoke render did not produce SVG"
           }
           $pngFile = Join-Path $destination "smoke.png"
           & $binary $inputFile $pngFile

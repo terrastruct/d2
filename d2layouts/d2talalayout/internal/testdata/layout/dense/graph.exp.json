@@ -1,0 +1,813 @@
+{
+  "nodes": [
+    {
+      "id": 3106861101,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 225,
+        "y": 902
+      },
+      "fontSize": 14,
+      "shapeType": "Square"
+    },
+    {
+      "id": 2728542386,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 321,
+        "y": 1142
+      },
+      "fontSize": 14,
+      "shapeType": "Square"
+    },
+    {
+      "id": 1089970655,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 144,
+        "y": 192
+      },
+      "fontSize": 14,
+      "shapeType": "Square"
+    },
+    {
+      "id": 1106498811,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 336,
+        "y": 192
+      },
+      "fontSize": 14,
+      "shapeType": "Square"
+    },
+    {
+      "id": 1046703819,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 480,
+        "y": 658
+      },
+      "fontSize": 14,
+      "shapeType": "Square"
+    },
+    {
+      "id": 735409265,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 513,
+        "y": 1152
+      },
+      "fontSize": 14,
+      "shapeType": "Square"
+    },
+    {
+      "id": 4284927874,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 412,
+        "y": 1344
+      },
+      "fontSize": 14,
+      "shapeType": "Square"
+    },
+    {
+      "id": 2619643491,
+      "width": 158,
+      "height": 232,
+      "topLeft": {
+        "x": 104,
+        "y": 1440
+      },
+      "fontSize": 14,
+      "shapeType": "Cylinder"
+    },
+    {
+      "id": 190334323,
+      "width": 38,
+      "height": 40,
+      "topLeft": {
+        "x": 164,
+        "y": 1548
+      },
+      "shapeType": "Image"
+    },
+    {
+      "id": 1540279698,
+      "width": 160,
+      "height": 160,
+      "topLeft": {
+        "x": 214,
+        "y": 399
+      },
+      "fontSize": 20,
+      "shapeType": "Square"
+    },
+    {
+      "id": 3161905025,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 129,
+        "y": 706
+      },
+      "fontSize": 14,
+      "shapeType": "Square"
+    },
+    {
+      "id": 3922011524,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 240,
+        "y": 0
+      },
+      "fontSize": 14,
+      "shapeType": "Square"
+    },
+    {
+      "id": 1860361822,
+      "width": 184,
+      "height": 184,
+      "topLeft": {
+        "x": 417,
+        "y": 864
+      },
+      "shapeType": "Square"
+    },
+    {
+      "id": 1273655300,
+      "width": 64,
+      "height": 64,
+      "topLeft": {
+        "x": 477,
+        "y": 924
+      },
+      "shapeType": "Image"
+    },
+    {
+      "id": 1414934089,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 129,
+        "y": 1248
+      },
+      "fontSize": 14,
+      "shapeType": "Square"
+    },
+    {
+      "id": 1620941827,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 694,
+        "y": 658
+      },
+      "fontSize": 14,
+      "shapeType": "Square"
+    },
+    {
+      "id": 268737776,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 480,
+        "y": 425
+      },
+      "fontSize": 14,
+      "shapeType": "Square"
+    },
+    {
+      "id": 3882365527,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 0,
+        "y": 425
+      },
+      "fontSize": 14,
+      "shapeType": "Square"
+    },
+    {
+      "id": 2616977708,
+      "width": 64,
+      "height": 64,
+      "topLeft": {
+        "x": 434,
+        "y": 1536
+      },
+      "shapeType": "Image"
+    }
+  ],
+  "edges": [
+    {
+      "id": 1339301636,
+      "from": 1089970655,
+      "to": 1540279698,
+      "points": [
+        {
+          "x": 179,
+          "y": 300
+        },
+        {
+          "x": 179,
+          "y": 439
+        },
+        {
+          "x": 214,
+          "y": 439
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 3766485596,
+      "from": 1106498811,
+      "to": 1540279698,
+      "points": [
+        {
+          "x": 409,
+          "y": 300
+        },
+        {
+          "x": 409,
+          "y": 439
+        },
+        {
+          "x": 374,
+          "y": 439
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 1376476089,
+      "from": 2728542386,
+      "to": 1414934089,
+      "points": [
+        {
+          "x": 321,
+          "y": 1195
+        },
+        {
+          "x": 177,
+          "y": 1195
+        },
+        {
+          "x": 177,
+          "y": 1248
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 2402315492,
+      "from": 3106861101,
+      "to": 1414934089,
+      "points": [
+        {
+          "x": 225,
+          "y": 956
+        },
+        {
+          "x": 177,
+          "y": 956
+        },
+        {
+          "x": 177,
+          "y": 1248
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 2687044456,
+      "from": 1540279698,
+      "to": 3106861101,
+      "points": [
+        {
+          "x": 285,
+          "y": 559
+        },
+        {
+          "x": 285,
+          "y": 902
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 1000711861,
+      "from": 1540279698,
+      "to": 3161905025,
+      "points": [
+        {
+          "x": 307,
+          "y": 559
+        },
+        {
+          "x": 307,
+          "y": 760
+        },
+        {
+          "x": 237,
+          "y": 760
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 3364326136,
+      "from": 3161905025,
+      "to": 3106861101,
+      "points": [
+        {
+          "x": 177,
+          "y": 814
+        },
+        {
+          "x": 177,
+          "y": 956
+        },
+        {
+          "x": 225,
+          "y": 956
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 476569271,
+      "from": 1540279698,
+      "to": 1046703819,
+      "points": [
+        {
+          "x": 329,
+          "y": 559
+        },
+        {
+          "x": 329,
+          "y": 709
+        },
+        {
+          "x": 480,
+          "y": 709
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 211681115,
+      "from": 1540279698,
+      "to": 2728542386,
+      "points": [
+        {
+          "x": 353,
+          "y": 559
+        },
+        {
+          "x": 353,
+          "y": 1142
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 655146081,
+      "from": 3922011524,
+      "to": 1106498811,
+      "points": [
+        {
+          "x": 348,
+          "y": 54
+        },
+        {
+          "x": 396,
+          "y": 54
+        },
+        {
+          "x": 396,
+          "y": 192
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 3869368877,
+      "from": 3922011524,
+      "to": 1089970655,
+      "points": [
+        {
+          "x": 240,
+          "y": 54
+        },
+        {
+          "x": 192,
+          "y": 54
+        },
+        {
+          "x": 192,
+          "y": 192
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 1617562099,
+      "from": 1540279698,
+      "to": 3922011524,
+      "points": [
+        {
+          "x": 294,
+          "y": 399
+        },
+        {
+          "x": 294,
+          "y": 108
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 3226073562,
+      "from": 2728542386,
+      "to": 4284927874,
+      "points": [
+        {
+          "x": 429,
+          "y": 1201
+        },
+        {
+          "x": 485,
+          "y": 1201
+        },
+        {
+          "x": 485,
+          "y": 1344
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 2230604686,
+      "from": 4284927874,
+      "to": 1414934089,
+      "points": [
+        {
+          "x": 448,
+          "y": 1344
+        },
+        {
+          "x": 448,
+          "y": 1297
+        },
+        {
+          "x": 237,
+          "y": 1297
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": ""
+    },
+    {
+      "id": 2264628960,
+      "from": 735409265,
+      "to": 4284927874,
+      "points": [
+        {
+          "x": 513,
+          "y": 1230
+        },
+        {
+          "x": 485,
+          "y": 1230
+        },
+        {
+          "x": 485,
+          "y": 1344
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 1597328499,
+      "from": 735409265,
+      "to": 1860361822,
+      "points": [
+        {
+          "x": 557,
+          "y": 1152
+        },
+        {
+          "x": 557,
+          "y": 1048
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 1229046537,
+      "from": 1860361822,
+      "to": 1046703819,
+      "points": [
+        {
+          "x": 534,
+          "y": 864
+        },
+        {
+          "x": 534,
+          "y": 766
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 1098885751,
+      "from": 2728542386,
+      "to": 1860361822,
+      "points": [
+        {
+          "x": 429,
+          "y": 1201
+        },
+        {
+          "x": 457,
+          "y": 1201
+        },
+        {
+          "x": 457,
+          "y": 1048
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 3771347244,
+      "from": 3106861101,
+      "to": 1860361822,
+      "points": [
+        {
+          "x": 333,
+          "y": 956
+        },
+        {
+          "x": 417,
+          "y": 956
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 2327917262,
+      "from": 1414934089,
+      "to": 2619643491,
+      "points": [
+        {
+          "x": 183,
+          "y": 1356
+        },
+        {
+          "x": 183,
+          "y": 1440
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 1535083207,
+      "from": 1046703819,
+      "to": 1620941827,
+      "points": [
+        {
+          "x": 588,
+          "y": 712
+        },
+        {
+          "x": 694,
+          "y": 712
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 985976219,
+      "from": 1540279698,
+      "to": 268737776,
+      "points": [
+        {
+          "x": 374,
+          "y": 479
+        },
+        {
+          "x": 480,
+          "y": 479
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 673047011,
+      "from": 1540279698,
+      "to": 3882365527,
+      "points": [
+        {
+          "x": 214,
+          "y": 479
+        },
+        {
+          "x": 108,
+          "y": 479
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 4054276191,
+      "from": 2616977708,
+      "to": 4284927874,
+      "points": [
+        {
+          "x": 466,
+          "y": 1536
+        },
+        {
+          "x": 466,
+          "y": 1452
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle"
+    }
+  ],
+  "CellSize": 57,
+  "containers": {
+    "0": [
+      735409265,
+      1046703819,
+      1089970655,
+      1106498811,
+      1414934089,
+      1540279698,
+      1860361822,
+      2619643491,
+      2728542386,
+      3106861101,
+      3161905025,
+      3922011524,
+      4284927874,
+      1620941827,
+      268737776,
+      3882365527,
+      2616977708
+    ],
+    "1860361822": [
+      1273655300
+    ],
+    "2619643491": [
+      190334323
+    ]
+  },
+  "hubs": {
+    "1046703819": [
+      1620941827
+    ],
+    "1414934089": [
+      2619643491
+    ],
+    "1540279698": [
+      268737776,
+      3882365527
+    ],
+    "4284927874": [
+      2616977708
+    ]
+  },
+  "crossingCost": 1613.7584639999998,
+  "turnCost": 1824,
+  "nonCenterPortCost": 599.9069999999998
+}

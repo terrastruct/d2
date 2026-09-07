@@ -50,7 +50,7 @@ jobs:
           cp ci/release/docker/entrypoint.sh ci/release/docker/Dockerfile "$RUNNER_TEMP/docker-context/"
       - name: Build and measure local image using the release build path
         run: ./ci/release/docker/image.sh build local "$RUNNER_TEMP/docker-context"
-      - name: Smoke-test CLI, SVG, and PNG natively
+      - name: Smoke-test CLI, SVG, TALA, and PNG natively
         run: ./ci/release/docker/image.sh smoke "$IMAGE"
       - name: Clean up Docker image
         if: always()

@@ -1,0 +1,75 @@
+{
+  "nodes": [
+    {
+      "id": 108289031,
+      "width": 185,
+      "height": 126,
+      "topLeft": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 3939368189,
+      "width": 188,
+      "height": 142,
+      "topLeft": null,
+      "shapeType": "Cloud"
+    },
+    {
+      "id": 3818877272,
+      "width": 135,
+      "height": 126,
+      "topLeft": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 3869210129,
+      "width": 137,
+      "height": 126,
+      "topLeft": null,
+      "shapeType": "Square"
+    }
+  ],
+  "edges": [
+    {
+      "id": 3648662198,
+      "from": 108289031,
+      "to": 3818877272,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 1214348202,
+      "from": 108289031,
+      "to": 3869210129,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    }
+  ],
+  "CellSize": 0,
+  "containers": {
+    "0": [
+      108289031,
+      3939368189
+    ],
+    "3939368189": [
+      3818877272,
+      3869210129
+    ]
+  },
+  "clusters": {},
+  "sequences": {},
+  "clusterVessels": {},
+  "sequenceVessels": {},
+  "trees": {},
+  "crossingCost": 0,
+  "turnCost": 0,
+  "nonCenterPortCost": 0
+}

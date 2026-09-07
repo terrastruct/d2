@@ -1,0 +1,199 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "width": 658,
+      "height": 701,
+      "topLeft": {
+        "x": 4803,
+        "y": 61
+      },
+      "fontSize": null,
+      "shapeType": "Diamond"
+    },
+    {
+      "id": 2,
+      "width": 82,
+      "height": 83,
+      "topLeft": {
+        "x": 4818,
+        "y": 248
+      },
+      "fontSize": null,
+      "shapeType": "Circle"
+    },
+    {
+      "id": 3,
+      "width": 86,
+      "height": 101,
+      "topLeft": {
+        "x": 4911,
+        "y": 207
+      },
+      "fontSize": null,
+      "shapeType": "RealSquare"
+    },
+    {
+      "id": 4,
+      "width": 87,
+      "height": 93,
+      "topLeft": {
+        "x": 5147,
+        "y": 570
+      },
+      "fontSize": null,
+      "shapeType": "Parallelogram"
+    },
+    {
+      "id": 5,
+      "width": 101,
+      "height": 86,
+      "topLeft": {
+        "x": 5282,
+        "y": 191
+      },
+      "fontSize": null,
+      "shapeType": "Cloud"
+    },
+    {
+      "id": 6,
+      "width": 83,
+      "height": 95,
+      "topLeft": {
+        "x": 4904,
+        "y": 171
+      },
+      "fontSize": null,
+      "shapeType": "Hexagon"
+    },
+    {
+      "id": 7,
+      "width": 99,
+      "height": 89,
+      "topLeft": {
+        "x": 5063,
+        "y": 460
+      },
+      "fontSize": null,
+      "shapeType": "Circle"
+    },
+    {
+      "id": 8,
+      "width": 563,
+      "height": 260,
+      "topLeft": {
+        "x": 5132,
+        "y": 771
+      },
+      "fontSize": null,
+      "shapeType": "Parallelogram"
+    },
+    {
+      "id": 9,
+      "width": 114,
+      "height": 123,
+      "topLeft": {
+        "x": 5526,
+        "y": 882
+      },
+      "fontSize": null,
+      "shapeType": "Diamond"
+    },
+    {
+      "id": 10,
+      "width": 93,
+      "height": 112,
+      "topLeft": {
+        "x": 5526,
+        "y": 884
+      },
+      "fontSize": null,
+      "shapeType": "Step"
+    },
+    {
+      "id": 11,
+      "width": 636,
+      "height": 276,
+      "topLeft": {
+        "x": 2526,
+        "y": 3694
+      },
+      "fontSize": null,
+      "shapeType": "Package"
+    }
+  ],
+  "edges": [
+    {
+      "id": 1,
+      "from": 1,
+      "to": 9,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 2,
+      "from": 9,
+      "to": 6,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 3,
+      "from": 6,
+      "to": 10,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 4,
+      "from": 10,
+      "to": 7,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    }
+  ],
+  "CellSize": 0,
+  "containers": {
+    "0": [
+      1,
+      8,
+      11
+    ],
+    "1": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "8": [
+      9
+    ],
+    "9": [
+      10
+    ]
+  },
+  "clusters": {},
+  "clusterVessels": {},
+  "trees": {},
+  "crossingCost": 0,
+  "turnCost": 0,
+  "nonCenterPortCost": 0
+}

@@ -85,7 +85,7 @@ func compileInput(ctx context.Context, input string, compileOpts *CompileOptions
 	applyConfigs(config, compileOpts, renderOpts)
 	applyDefaults(compileOpts, renderOpts)
 	if config != nil {
-		g.Data = config.Data
+		applyGraphData(g, config.Data)
 	}
 
 	d, err := compile(ctx, g, compileOpts, renderOpts)
@@ -102,6 +102,44 @@ func compileInput(ctx context.Context, input string, compileOpts *CompileOptions
 		d.Config = config
 	}
 	return d, g, err
+}
+
+func applyGraphData(g *d2graph.Graph, data map[string]interface{}) {
+	if g == nil {
+		return
+	}
+	g.Data = cloneGraphData(data)
+	for _, boards := range [][]*d2graph.Graph{g.Layers, g.Scenarios, g.Steps} {
+		for _, board := range boards {
+			applyGraphData(board, data)
+		}
+	}
+}
+
+func cloneGraphData(data map[string]interface{}) map[string]interface{} {
+	if data == nil {
+		return nil
+	}
+	clone := make(map[string]interface{}, len(data))
+	for key, value := range data {
+		clone[key] = cloneGraphDataValue(value)
+	}
+	return clone
+}
+
+func cloneGraphDataValue(value interface{}) interface{} {
+	switch value := value.(type) {
+	case map[string]interface{}:
+		return cloneGraphData(value)
+	case []interface{}:
+		clone := make([]interface{}, len(value))
+		for i, entry := range value {
+			clone[i] = cloneGraphDataValue(entry)
+		}
+		return clone
+	default:
+		return value
+	}
 }
 
 func compile(ctx context.Context, g *d2graph.Graph, compileOpts *CompileOptions, renderOpts *d2svg.RenderOpts) (*d2target.Diagram, error) {

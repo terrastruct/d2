@@ -1,0 +1,55 @@
+name: TALA fuzz
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/tala-fuzz.yml
+      - d2layouts/d2talalayout/**
+      - go.mod
+      - go.sum
+  schedule:
+    - cron: "23 10 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tala-fuzz-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  fuzz:
+    name: fuzz-${{ matrix.name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: engine
+            package: ./d2layouts/d2talalayout/internal/engine
+            target: FuzzAutolayout
+          - name: hierarchy-rank
+            package: ./d2layouts/d2talalayout/internal/hierarchy
+            target: FuzzRankDAG
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: ./go.mod
+          cache: true
+      - name: Run bounded fuzzing
+        env:
+          FUZZ_TIME: ${{ github.event_name == 'schedule' && '2m' || '15s' }}
+          PACKAGE: ${{ matrix.package }}
+          TARGET: ${{ matrix.target }}
+        run: go test "$PACKAGE" -run '^$' -fuzz "^$TARGET$" -fuzztime="$FUZZ_TIME" -parallel=2
+      - name: Upload failing corpus entry
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: tala-fuzz-${{ matrix.name }}-${{ github.sha }}
+          path: ${{ matrix.package }}/testdata/fuzz/${{ matrix.target }}
+          if-no-files-found: warn
+          retention-days: 14

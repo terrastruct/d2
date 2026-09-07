@@ -1,0 +1,239 @@
+{
+  "nodes": [
+    {
+      "id": 3826002220,
+      "width": 114,
+      "height": 126,
+      "topLeft": {
+        "x": 0,
+        "y": 88
+      },
+      "shapeType": ""
+    },
+    {
+      "id": 3876335077,
+      "width": 115,
+      "height": 126,
+      "topLeft": {
+        "x": 214,
+        "y": 176
+      },
+      "shapeType": ""
+    },
+    {
+      "id": 3859557458,
+      "width": 114,
+      "height": 126,
+      "topLeft": {
+        "x": 215,
+        "y": 0
+      },
+      "shapeType": ""
+    },
+    {
+      "id": 3775669363,
+      "width": 115,
+      "height": 126,
+      "topLeft": {
+        "x": 0,
+        "y": 302
+      },
+      "shapeType": "Step"
+    },
+    {
+      "id": 3758891744,
+      "width": 114,
+      "height": 126,
+      "topLeft": {
+        "x": 80,
+        "y": 302
+      },
+      "shapeType": "Step"
+    }
+  ],
+  "edges": [
+    {
+      "id": 624220850,
+      "from": 3826002220,
+      "to": 3876335077,
+      "points": [
+        {
+          "x": 114,
+          "y": 151
+        },
+        {
+          "x": 164,
+          "y": 151
+        },
+        {
+          "x": 164,
+          "y": 239
+        },
+        {
+          "x": 214,
+          "y": 239
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 4237091736,
+      "from": 3826002220,
+      "to": 3859557458,
+      "points": [
+        {
+          "x": 114,
+          "y": 151
+        },
+        {
+          "x": 164,
+          "y": 151
+        },
+        {
+          "x": 164,
+          "y": 63
+        },
+        {
+          "x": 215,
+          "y": 63
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    }
+  ],
+  "CellSize": 126,
+  "containers": {
+    "0": [
+      3826002220,
+      3876335077,
+      3859557458,
+      3775669363,
+      3758891744
+    ]
+  },
+  "sequences": {
+    "5361704182646325489": {
+      "Nodes": [
+        3775669363,
+        3758891744
+      ],
+      "EdgeAbductions": [],
+      "Container": 0
+    }
+  },
+  "sequenceVessels": {
+    "5361704182646325489": {
+      "id": 5361704182646325489,
+      "width": 194,
+      "height": 126,
+      "topLeft": {
+        "x": 0,
+        "y": 302
+      },
+      "shapeType": ""
+    }
+  },
+  "trees": {
+    "3826002220": [
+      {
+        "Node": {
+          "id": 3876335077,
+          "width": 115,
+          "height": 126,
+          "topLeft": {
+            "x": 214,
+            "y": 176
+          },
+          "shapeType": ""
+        },
+        "Children": [],
+        "SentinelEdge": {
+          "id": 624220850,
+          "from": 3826002220,
+          "to": 3876335077,
+          "points": [
+            {
+              "x": 114,
+              "y": 151
+            },
+            {
+              "x": 164,
+              "y": 151
+            },
+            {
+              "x": 164,
+              "y": 239
+            },
+            {
+              "x": 214,
+              "y": 239
+            }
+          ],
+          "minWidth": 0,
+          "minHeight": 0,
+          "labelPercentage": 0,
+          "style": {},
+          "sourceArrowhead": "",
+          "targetArrowhead": "triangle"
+        },
+        "Orientation": 5
+      },
+      {
+        "Node": {
+          "id": 3859557458,
+          "width": 114,
+          "height": 126,
+          "topLeft": {
+            "x": 215,
+            "y": 0
+          },
+          "shapeType": ""
+        },
+        "Children": [],
+        "SentinelEdge": {
+          "id": 4237091736,
+          "from": 3826002220,
+          "to": 3859557458,
+          "points": [
+            {
+              "x": 114,
+              "y": 151
+            },
+            {
+              "x": 164,
+              "y": 151
+            },
+            {
+              "x": 164,
+              "y": 63
+            },
+            {
+              "x": 215,
+              "y": 63
+            }
+          ],
+          "minWidth": 0,
+          "minHeight": 0,
+          "labelPercentage": 0,
+          "style": {},
+          "sourceArrowhead": "",
+          "targetArrowhead": "triangle"
+        },
+        "Orientation": 5
+      }
+    ]
+  },
+  "crossingCost": 22.339584,
+  "turnCost": 25.25,
+  "nonCenterPortCost": 0
+}

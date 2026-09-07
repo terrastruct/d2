@@ -1,0 +1,81 @@
+{
+  "nodes": [
+    {
+      "id": 2345492369,
+      "width": 590,
+      "height": 444,
+      "topLeft": {
+        "x": 479,
+        "y": 252
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 2425351259,
+      "width": 120,
+      "height": 84,
+      "topLeft": {
+        "x": 584,
+        "y": 529
+      },
+      "fontSize": null,
+      "shapeType": "Package"
+    },
+    {
+      "id": 4192082805,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 189,
+        "y": 728
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 3776704977,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 575,
+        "y": 753
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    }
+  ],
+  "edges": [
+    {
+      "id": 2378299949,
+      "from": 4192082805,
+      "to": 2425351259,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 610791406,
+      "from": 3776704977,
+      "to": 2425351259,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    }
+  ],
+  "CellSize": 0,
+  "containers": {
+    "0": [
+      2345492369,
+      3776704977,
+      4192082805
+    ],
+    "2345492369": [
+      2425351259
+    ]
+  },
+  "clusters": {},
+  "crossingCost": 0,
+  "turnCost": 0,
+  "nonCenterPortCost": 0
+}

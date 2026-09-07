@@ -1,0 +1,249 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "width": 437,
+      "height": 597,
+      "topLeft": {
+        "x": 4763,
+        "y": 5422
+      },
+      "fontSize": null,
+      "shapeType": "Diamond"
+    },
+    {
+      "id": 2,
+      "width": 375,
+      "height": 90,
+      "topLeft": {
+        "x": 6088,
+        "y": 4092
+      },
+      "fontSize": null,
+      "shapeType": "RealSquare"
+    },
+    {
+      "id": 3,
+      "width": 161,
+      "height": 712,
+      "topLeft": {
+        "x": 6023,
+        "y": 5521
+      },
+      "fontSize": null,
+      "shapeType": "Step"
+    },
+    {
+      "id": 4,
+      "width": 125,
+      "height": 157,
+      "topLeft": {
+        "x": 6023,
+        "y": 5582
+      },
+      "fontSize": null,
+      "shapeType": "Page"
+    },
+    {
+      "id": 5,
+      "width": 416,
+      "height": 578,
+      "topLeft": {
+        "x": 5653,
+        "y": 2403
+      },
+      "fontSize": null,
+      "shapeType": "Step"
+    },
+    {
+      "id": 6,
+      "width": 192,
+      "height": 198,
+      "topLeft": {
+        "x": 5788,
+        "y": 2484
+      },
+      "fontSize": null,
+      "shapeType": "Queue"
+    },
+    {
+      "id": 7,
+      "width": 155,
+      "height": 191,
+      "topLeft": {
+        "x": 5788,
+        "y": 2487
+      },
+      "fontSize": null,
+      "shapeType": "Parallelogram"
+    },
+    {
+      "id": 8,
+      "width": 687,
+      "height": 281,
+      "topLeft": {
+        "x": 4413,
+        "y": 5823
+      },
+      "fontSize": null,
+      "shapeType": "Package"
+    },
+    {
+      "id": 9,
+      "width": 139,
+      "height": 133,
+      "topLeft": {
+        "x": 4678,
+        "y": 5950
+      },
+      "fontSize": null,
+      "shapeType": "Document"
+    },
+    {
+      "id": 10,
+      "width": 121,
+      "height": 115,
+      "topLeft": {
+        "x": 4681,
+        "y": 5950
+      },
+      "fontSize": null,
+      "shapeType": "Parallelogram"
+    },
+    {
+      "id": 11,
+      "width": 71,
+      "height": 139,
+      "topLeft": {
+        "x": 5928,
+        "y": 1705
+      },
+      "fontSize": null,
+      "shapeType": "Document"
+    },
+    {
+      "id": 12,
+      "width": 738,
+      "height": 88,
+      "topLeft": {
+        "x": 1357,
+        "y": 2327
+      },
+      "fontSize": null,
+      "shapeType": "Package"
+    },
+    {
+      "id": 13,
+      "width": 260,
+      "height": 555,
+      "topLeft": {
+        "x": 4746,
+        "y": 370
+      },
+      "fontSize": null,
+      "shapeType": "Queue"
+    }
+  ],
+  "edges": [
+    {
+      "id": 1,
+      "from": 4,
+      "to": 5,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 2,
+      "from": 10,
+      "to": 2,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 3,
+      "from": 2,
+      "to": 9,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 4,
+      "from": 9,
+      "to": 12,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 5,
+      "from": 6,
+      "to": 10,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 6,
+      "from": 2,
+      "to": 4,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    }
+  ],
+  "CellSize": 0,
+  "containers": {
+    "0": [
+      1,
+      2,
+      3,
+      5,
+      8,
+      11,
+      12,
+      13
+    ],
+    "3": [
+      4
+    ],
+    "5": [
+      6
+    ],
+    "6": [
+      7
+    ],
+    "8": [
+      9
+    ],
+    "9": [
+      10
+    ]
+  },
+  "clusters": {},
+  "clusterVessels": {},
+  "trees": {},
+  "crossingCost": 0,
+  "turnCost": 0,
+  "nonCenterPortCost": 0
+}

@@ -1,0 +1,624 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "width": 499,
+      "height": 177,
+      "topLeft": {
+        "x": 11136,
+        "y": 6147
+      },
+      "fontSize": null,
+      "shapeType": "Page"
+    },
+    {
+      "id": 2,
+      "width": 176,
+      "height": 150,
+      "topLeft": {
+        "x": 11442,
+        "y": 6147
+      },
+      "fontSize": null,
+      "shapeType": "Page"
+    },
+    {
+      "id": 3,
+      "width": 287,
+      "height": 270,
+      "topLeft": {
+        "x": 4440,
+        "y": 13782
+      },
+      "fontSize": null,
+      "shapeType": "Hexagon"
+    },
+    {
+      "id": 4,
+      "width": 238,
+      "height": 77,
+      "topLeft": {
+        "x": 5666,
+        "y": 3484
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 5,
+      "width": 132,
+      "height": 444,
+      "topLeft": {
+        "x": 17046,
+        "y": 417
+      },
+      "fontSize": null,
+      "shapeType": "Oval"
+    },
+    {
+      "id": 6,
+      "width": 126,
+      "height": 125,
+      "topLeft": {
+        "x": 17046,
+        "y": 658
+      },
+      "fontSize": null,
+      "shapeType": "Package"
+    },
+    {
+      "id": 7,
+      "width": 211,
+      "height": 115,
+      "topLeft": {
+        "x": 10177,
+        "y": 6675
+      },
+      "fontSize": null,
+      "shapeType": "Package"
+    },
+    {
+      "id": 8,
+      "width": 102,
+      "height": 97,
+      "topLeft": {
+        "x": 10242,
+        "y": 6675
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 9,
+      "width": 377,
+      "height": 297,
+      "topLeft": {
+        "x": 1234,
+        "y": 4696
+      },
+      "fontSize": null,
+      "shapeType": "Document"
+    },
+    {
+      "id": 10,
+      "width": 123,
+      "height": 138,
+      "topLeft": {
+        "x": 1318,
+        "y": 4827
+      },
+      "fontSize": null,
+      "shapeType": "Cylinder"
+    },
+    {
+      "id": 11,
+      "width": 147,
+      "height": 123,
+      "topLeft": {
+        "x": 1258,
+        "y": 4772
+      },
+      "fontSize": null,
+      "shapeType": "Person"
+    },
+    {
+      "id": 12,
+      "width": 477,
+      "height": 318,
+      "topLeft": {
+        "x": 5651,
+        "y": 17505
+      },
+      "fontSize": null,
+      "shapeType": "RealSquare"
+    },
+    {
+      "id": 13,
+      "width": 94,
+      "height": 84,
+      "topLeft": {
+        "x": 5956,
+        "y": 17674
+      },
+      "fontSize": null,
+      "shapeType": "Callout"
+    },
+    {
+      "id": 14,
+      "width": 85,
+      "height": 98,
+      "topLeft": {
+        "x": 5784,
+        "y": 17591
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 15,
+      "width": 101,
+      "height": 99,
+      "topLeft": {
+        "x": 5954,
+        "y": 17626
+      },
+      "fontSize": null,
+      "shapeType": "Cloud"
+    },
+    {
+      "id": 16,
+      "width": 408,
+      "height": 112,
+      "topLeft": {
+        "x": 8646,
+        "y": 9108
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 17,
+      "width": 347,
+      "height": 523,
+      "topLeft": {
+        "x": 3530,
+        "y": 5190
+      },
+      "fontSize": null,
+      "shapeType": "Package"
+    },
+    {
+      "id": 18,
+      "width": 427,
+      "height": 61,
+      "topLeft": {
+        "x": 5005,
+        "y": 18279
+      },
+      "fontSize": null,
+      "shapeType": "Parallelogram"
+    },
+    {
+      "id": 19,
+      "width": 237,
+      "height": 293,
+      "topLeft": {
+        "x": 3065,
+        "y": 5575
+      },
+      "fontSize": null,
+      "shapeType": "Cloud"
+    },
+    {
+      "id": 20,
+      "width": 251,
+      "height": 310,
+      "topLeft": {
+        "x": 3689,
+        "y": 11744
+      },
+      "fontSize": null,
+      "shapeType": "Oval"
+    },
+    {
+      "id": 21,
+      "width": 126,
+      "height": 156,
+      "topLeft": {
+        "x": 3852,
+        "y": 68
+      },
+      "fontSize": null,
+      "shapeType": "Package"
+    },
+    {
+      "id": 22,
+      "width": 458,
+      "height": 510,
+      "topLeft": {
+        "x": 121,
+        "y": 5031
+      },
+      "fontSize": null,
+      "shapeType": "Cloud"
+    },
+    {
+      "id": 23,
+      "width": 187,
+      "height": 447,
+      "topLeft": {
+        "x": 978,
+        "y": 4650
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 24,
+      "width": 231,
+      "height": 503,
+      "topLeft": {
+        "x": 12676,
+        "y": 9529
+      },
+      "fontSize": null,
+      "shapeType": "StoredData"
+    },
+    {
+      "id": 25,
+      "width": 90,
+      "height": 107,
+      "topLeft": {
+        "x": 12756,
+        "y": 9537
+      },
+      "fontSize": null,
+      "shapeType": "Queue"
+    },
+    {
+      "id": 26,
+      "width": 89,
+      "height": 94,
+      "topLeft": {
+        "x": 12763,
+        "y": 9853
+      },
+      "fontSize": null,
+      "shapeType": "Cylinder"
+    },
+    {
+      "id": 27,
+      "width": 268,
+      "height": 164,
+      "topLeft": {
+        "x": 9770,
+        "y": 16770
+      },
+      "fontSize": null,
+      "shapeType": "Oval"
+    },
+    {
+      "id": 28,
+      "width": 68,
+      "height": 67,
+      "topLeft": {
+        "x": 9915,
+        "y": 16798
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 29,
+      "width": 67,
+      "height": 78,
+      "topLeft": {
+        "x": 9875,
+        "y": 16783
+      },
+      "fontSize": null,
+      "shapeType": "Cloud"
+    },
+    {
+      "id": 30,
+      "width": 140,
+      "height": 105,
+      "topLeft": {
+        "x": 17141,
+        "y": 7719
+      },
+      "fontSize": null,
+      "shapeType": "Cylinder"
+    },
+    {
+      "id": 31,
+      "width": 79,
+      "height": 99,
+      "topLeft": {
+        "x": 17142,
+        "y": 7719
+      },
+      "fontSize": null,
+      "shapeType": "Person"
+    },
+    {
+      "id": 32,
+      "width": 154,
+      "height": 346,
+      "topLeft": {
+        "x": 15441,
+        "y": 13571
+      },
+      "fontSize": null,
+      "shapeType": "RealSquare"
+    },
+    {
+      "id": 33,
+      "width": 61,
+      "height": 539,
+      "topLeft": {
+        "x": 4956,
+        "y": 8056
+      },
+      "fontSize": null,
+      "shapeType": "StoredData"
+    },
+    {
+      "id": 34,
+      "width": 100,
+      "height": 441,
+      "topLeft": {
+        "x": 13232,
+        "y": 12276
+      },
+      "fontSize": null,
+      "shapeType": "Hexagon"
+    },
+    {
+      "id": 35,
+      "width": 75,
+      "height": 79,
+      "topLeft": {
+        "x": 13232,
+        "y": 12509
+      },
+      "fontSize": null,
+      "shapeType": "Package"
+    },
+    {
+      "id": 36,
+      "width": 323,
+      "height": 221,
+      "topLeft": {
+        "x": 11195,
+        "y": 6823
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 37,
+      "width": 167,
+      "height": 189,
+      "topLeft": {
+        "x": 11202,
+        "y": 6823
+      },
+      "fontSize": null,
+      "shapeType": "Circle"
+    }
+  ],
+  "edges": [
+    {
+      "id": 1,
+      "from": 35,
+      "to": 25,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 2,
+      "from": 25,
+      "to": 17,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 3,
+      "from": 37,
+      "to": 34,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 4,
+      "from": 13,
+      "to": 18,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 5,
+      "from": 8,
+      "to": 31,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 6,
+      "from": 16,
+      "to": 22,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 7,
+      "from": 27,
+      "to": 15,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 8,
+      "from": 11,
+      "to": 2,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 9,
+      "from": 9,
+      "to": 1,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 10,
+      "from": 1,
+      "to": 33,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 11,
+      "from": 33,
+      "to": 10,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 12,
+      "from": 26,
+      "to": 20,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 13,
+      "from": 20,
+      "to": 21,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    }
+  ],
+  "CellSize": 0,
+  "containers": {
+    "0": [
+      1,
+      3,
+      4,
+      5,
+      7,
+      9,
+      12,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      27,
+      30,
+      32,
+      33,
+      34,
+      36
+    ],
+    "1": [
+      2
+    ],
+    "12": [
+      13,
+      14,
+      15
+    ],
+    "24": [
+      25,
+      26
+    ],
+    "27": [
+      28,
+      29
+    ],
+    "30": [
+      31
+    ],
+    "34": [
+      35
+    ],
+    "36": [
+      37
+    ],
+    "5": [
+      6
+    ],
+    "7": [
+      8
+    ],
+    "9": [
+      10,
+      11
+    ]
+  },
+  "clusters": {},
+  "clusterVessels": {},
+  "trees": {},
+  "crossingCost": 0,
+  "turnCost": 0,
+  "nonCenterPortCost": 0
+}

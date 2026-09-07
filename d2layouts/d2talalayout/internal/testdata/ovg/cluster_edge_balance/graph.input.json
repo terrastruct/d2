@@ -1,0 +1,139 @@
+{
+  "nodes": [
+    {
+      "id": 2947802513,
+      "d2id": "Category",
+      "width": 175,
+      "height": 175,
+      "topLeft": null,
+      "shapeType": "Circle"
+    },
+    {
+      "id": 1702016080,
+      "d2id": "Cola",
+      "width": 140,
+      "height": 140,
+      "topLeft": null,
+      "shapeType": "Circle"
+    },
+    {
+      "id": 10944613,
+      "d2id": "Question",
+      "width": 173,
+      "height": 173,
+      "topLeft": null,
+      "shapeType": "Circle"
+    },
+    {
+      "id": 3859557458,
+      "d2id": "c",
+      "width": 114,
+      "height": 126,
+      "topLeft": null,
+      "shapeType": ""
+    },
+    {
+      "id": 3826002220,
+      "d2id": "a",
+      "width": 114,
+      "height": 126,
+      "topLeft": null,
+      "shapeType": ""
+    },
+    {
+      "id": 3876335077,
+      "d2id": "b",
+      "width": 115,
+      "height": 126,
+      "topLeft": null,
+      "shapeType": ""
+    }
+  ],
+  "edges": [
+    {
+      "id": 2116557091,
+      "from": 3859557458,
+      "to": 3826002220,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 640998469,
+      "from": 3826002220,
+      "to": 3876335077,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 493454406,
+      "from": 3876335077,
+      "to": 3859557458,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 564174777,
+      "from": 3826002220,
+      "to": 2947802513,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 4294583807,
+      "from": 3826002220,
+      "to": 1702016080,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 3828900947,
+      "from": 3826002220,
+      "to": 10944613,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    }
+  ],
+  "CellSize": 0,
+  "containers": {
+    "0": [
+      2947802513,
+      1702016080,
+      10944613,
+      3859557458,
+      3826002220,
+      3876335077
+    ]
+  },
+  "clusters": {},
+  "sequences": {},
+  "clusterVessels": {},
+  "sequenceVessels": {},
+  "trees": {},
+  "crossingCost": 0,
+  "turnCost": 0,
+  "nonCenterPortCost": 0
+}

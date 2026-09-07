@@ -1,0 +1,98 @@
+{
+  "nodes": [
+    {
+      "id": 3826002220,
+      "width": 114,
+      "height": 126,
+      "topLeft": {
+        "x": 0,
+        "y": 0
+      },
+      "shapeType": ""
+    },
+    {
+      "id": 3876335077,
+      "width": 115,
+      "height": 126,
+      "topLeft": {
+        "x": 0,
+        "y": 203
+      },
+      "shapeType": "Step"
+    },
+    {
+      "id": 3859557458,
+      "width": 123,
+      "height": 126,
+      "topLeft": {
+        "x": 80,
+        "y": 203
+      },
+      "shapeType": "Step"
+    }
+  ],
+  "edges": [
+    {
+      "id": 624220850,
+      "from": 3826002220,
+      "to": 3876335077,
+      "points": [
+        {
+          "x": 40,
+          "y": 126
+        },
+        {
+          "x": 40,
+          "y": 203
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    }
+  ],
+  "CellSize": 126,
+  "containers": {
+    "0": [
+      3826002220,
+      3876335077,
+      3859557458
+    ]
+  },
+  "sequences": {
+    "5361704182646325489": {
+      "Nodes": [
+        3876335077,
+        3859557458
+      ],
+      "EdgeAbductions": [
+        {
+          "Edge": 624220850,
+          "OriginallyFromNode": 0,
+          "OriginallyToNode": 3876335077,
+          "CurrentFromNode": 3826002220,
+          "CurrentToNode": 5361704182646325489
+        }
+      ],
+      "Container": 0
+    }
+  },
+  "sequenceVessels": {
+    "5361704182646325489": {
+      "id": 5361704182646325489,
+      "width": 203,
+      "height": 126,
+      "topLeft": {
+        "x": 0,
+        "y": 203
+      },
+      "shapeType": ""
+    }
+  },
+  "crossingCost": 8.515584,
+  "turnCost": 9.625,
+  "nonCenterPortCost": 38
+}

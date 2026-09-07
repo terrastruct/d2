@@ -22,6 +22,7 @@ import (
 	"github.com/d2lang/d2/d2graph"
 	"github.com/d2lang/d2/d2layouts/d2dagrelayout"
 	"github.com/d2lang/d2/d2layouts/d2elklayout"
+	"github.com/d2lang/d2/d2layouts/d2talalayout"
 	"github.com/d2lang/d2/d2lib"
 	"github.com/d2lang/d2/d2plugin"
 	"github.com/d2lang/d2/d2renderers/d2animate"
@@ -234,7 +235,7 @@ func runASCIITxtarTest(t *testing.T, tc testCase) {
 
 type testCase struct {
 	name string
-	// if the test is just testing a render/style thing, no need to exercise both engines
+	// If the test is just exercising rendering or styling, the default layout is sufficient.
 	justDagre         bool
 	testSerialization bool
 	script            string
@@ -243,6 +244,7 @@ type testCase struct {
 	skip              bool
 	dagreFeatureError string
 	elkFeatureError   string
+	talaLayoutError   string
 	expErr            string
 	themeID           *int64
 }
@@ -298,13 +300,22 @@ func run(t *testing.T, tc testCase) {
 
 	layoutsTested := []string{"dagre"}
 	if !tc.justDagre {
-		layoutsTested = append(layoutsTested, "elk")
+		layoutsTested = append(layoutsTested, "elk", "tala")
 	}
+	talaOpts := d2talalayout.DefaultOptions()
+	// One deterministic attempt keeps the full cross-engine E2E matrix tractable.
+	// Multi-seed selection is covered by the TALA package and plugin tests.
+	talaOpts.Seeds = []int64{1}
+	talaOpts.MaxConcurrency = 1
 
 	layoutResolver := func(engine string) (d2graph.LayoutGraph, error) {
 		layout := d2dagrelayout.DefaultLayout
 		if strings.EqualFold(engine, "elk") {
 			layout = d2elklayout.DefaultLayout
+		} else if strings.EqualFold(engine, "tala") {
+			layout = func(ctx context.Context, g *d2graph.Graph) error {
+				return d2talalayout.Layout(ctx, g, &talaOpts)
+			}
 		}
 		if tc.testSerialization {
 			return func(ctx context.Context, g *d2graph.Graph) error {
@@ -329,17 +340,27 @@ func run(t *testing.T, tc testCase) {
 		}
 		return layout, nil
 	}
+	routerResolver := func(engine string) (d2graph.RouteEdges, error) {
+		if strings.EqualFold(engine, "tala") {
+			return d2talalayout.RouteEdges, nil
+		}
+		return nil, nil
+	}
 
 	for _, layoutName := range layoutsTested {
+		// If measured texts exist, we are specifically exercising text
+		// measurements, so the default layout is sufficient.
+		if tc.mtexts != nil && layoutName != "dagre" {
+			continue
+		}
+
 		var plugin d2plugin.Plugin
 		if layoutName == "dagre" {
 			plugin = &d2plugin.DagrePlugin
 		} else if layoutName == "elk" {
-			// If measured texts exists, we are specifically exercising text measurements, no need to run on both layouts
-			if tc.mtexts != nil {
-				continue
-			}
 			plugin = &d2plugin.ELKPlugin
+		} else if layoutName == "tala" {
+			plugin = &d2plugin.TALAPlugin
 		}
 
 		compileOpts := &d2lib.CompileOptions{
@@ -347,6 +368,7 @@ func run(t *testing.T, tc testCase) {
 			MeasuredTexts:  tc.mtexts,
 			Layout:         go2.Pointer(layoutName),
 			LayoutResolver: layoutResolver,
+			RouterResolver: routerResolver,
 			LayoutReuse:    true,
 		}
 		renderOpts := &d2svg.RenderOpts{
@@ -357,6 +379,11 @@ func run(t *testing.T, tc testCase) {
 		}
 
 		diagram, g, err := d2lib.Compile(ctx, tc.script, compileOpts, renderOpts)
+		if layoutName == "tala" && tc.talaLayoutError != "" {
+			assert.Error(t, err)
+			assert.ErrorString(t, err, tc.talaLayoutError)
+			return
+		}
 		if tc.expErr != "" {
 			assert.Error(t, err)
 			assert.ErrorString(t, err, tc.expErr)
