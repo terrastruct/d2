@@ -7,7 +7,7 @@
 [Docs](https://d2lang.com) | [Cheat sheet](./docs/assets/cheat_sheet.pdf) | [Comparisons](https://text-to-diagram.com) | [Playground](https://play.d2lang.com)
 
 [![ci](https://github.com/d2lang/d2/actions/workflows/ci.yml/badge.svg)](https://github.com/d2lang/d2/actions/workflows/ci.yml)
-[![daily](https://github.com/d2lang/d2/actions/workflows/daily.yml/badge.svg)](https://github.com/d2lang/d2/actions/workflows/daily.yml)
+[![weekly race tests](https://github.com/d2lang/d2/actions/workflows/weekly-race.yml/badge.svg)](https://github.com/d2lang/d2/actions/workflows/weekly-race.yml)
 [![release](https://img.shields.io/github/v/release/d2lang/d2)](https://github.com/d2lang/d2/releases)
 [![changelog](https://img.shields.io/badge/changelog-read-blue)](./CHANGELOG.md)
 [![npm version](https://img.shields.io/npm/v/@d2lang/d2)](https://www.npmjs.com/package/@d2lang/d2)
