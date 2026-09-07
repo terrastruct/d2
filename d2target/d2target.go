@@ -7,6 +7,7 @@ import (
 	"hash/fnv"
 	"math"
 	"net/url"
+	"strconv"
 	"strings"
 
 	"github.com/d2lang/util-go/go2"
@@ -220,6 +221,13 @@ func marshalHashJSON(v any) ([]byte, error) {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return nil, err
+	}
+	// The only URL values in these types are icon fields. json.Marshal emits
+	// compact field names and escapes quotation marks inside string values, so
+	// this marker cannot be hidden by whitespace or matched inside label text.
+	// Most diagrams have no icons; avoid decoding their entire JSON again.
+	if !bytes.Contains(b, []byte(`"icon":{`)) {
+		return b, nil
 	}
 	return stabilizeHashURLs(b)
 }
@@ -666,78 +674,87 @@ func calculateTooltipBounds(targetShape Shape, diagramFontFamily, diagramMonoFon
 }
 
 func (diagram Diagram) GetNestedCorpus() string {
-	corpus := diagram.GetCorpus()
+	var corpus strings.Builder
+	diagram.appendNestedCorpus(&corpus)
+	return corpus.String()
+}
+
+func (diagram Diagram) appendNestedCorpus(corpus *strings.Builder) {
+	diagram.appendCorpus(corpus)
 	for _, d := range diagram.Layers {
-		corpus += d.GetNestedCorpus()
+		d.appendNestedCorpus(corpus)
 	}
 	for _, d := range diagram.Scenarios {
-		corpus += d.GetNestedCorpus()
+		d.appendNestedCorpus(corpus)
 	}
 	for _, d := range diagram.Steps {
-		corpus += d.GetNestedCorpus()
+		d.appendNestedCorpus(corpus)
 	}
-
-	return corpus
 }
 
 func (diagram Diagram) GetCorpus() string {
-	var corpus string
+	var corpus strings.Builder
+	diagram.appendCorpus(&corpus)
+	return corpus.String()
+}
+
+func (diagram Diagram) appendCorpus(corpus *strings.Builder) {
 	appendixCount := 0
 	for _, s := range diagram.Shapes {
-		corpus += s.Label
+		corpus.WriteString(s.Label)
 		if s.Tooltip != "" {
-			corpus += s.Tooltip
+			corpus.WriteString(s.Tooltip)
 			appendixCount++
-			corpus += fmt.Sprint(appendixCount)
+			corpus.WriteString(strconv.Itoa(appendixCount))
 		}
 		if s.Link != "" {
-			corpus += s.Link
+			corpus.WriteString(s.Link)
 			appendixCount++
-			corpus += fmt.Sprint(appendixCount)
+			corpus.WriteString(strconv.Itoa(appendixCount))
 		}
-		corpus += s.PrettyLink
+		corpus.WriteString(s.PrettyLink)
 		if s.Type == ShapeClass {
 			for _, cf := range s.Fields {
-				corpus += cf.Text(0).Text + cf.VisibilityToken()
+				corpus.WriteString(cf.Text(0).Text)
+				corpus.WriteString(cf.VisibilityToken())
 			}
 			for _, cm := range s.Methods {
-				corpus += cm.Text(0).Text + cm.VisibilityToken()
+				corpus.WriteString(cm.Text(0).Text)
+				corpus.WriteString(cm.VisibilityToken())
 			}
 		}
 		if s.Type == ShapeSQLTable {
 			for _, c := range s.Columns {
 				for _, t := range c.Texts(0) {
-					corpus += t.Text
+					corpus.WriteString(t.Text)
 				}
-				corpus += c.ConstraintAbbr()
+				corpus.WriteString(c.ConstraintAbbr())
 			}
 		}
 	}
 	for _, c := range diagram.Connections {
-		corpus += c.Label
+		corpus.WriteString(c.Label)
 		if c.SrcLabel != nil {
-			corpus += c.SrcLabel.Label
+			corpus.WriteString(c.SrcLabel.Label)
 		}
 		if c.DstLabel != nil {
-			corpus += c.DstLabel.Label
+			corpus.WriteString(c.DstLabel.Label)
 		}
 	}
 
 	if diagram.Legend != nil {
 		if diagram.Legend.Label != "" {
-			corpus += diagram.Legend.Label
+			corpus.WriteString(diagram.Legend.Label)
 		} else {
-			corpus += "Legend"
+			corpus.WriteString("Legend")
 		}
 		for _, s := range diagram.Legend.Shapes {
-			corpus += s.Label
+			corpus.WriteString(s.Label)
 		}
 		for _, c := range diagram.Legend.Connections {
-			corpus += c.Label
+			corpus.WriteString(c.Label)
 		}
 	}
-
-	return corpus
 }
 
 func NewDiagram() *Diagram {

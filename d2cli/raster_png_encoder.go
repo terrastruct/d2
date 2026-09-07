@@ -481,6 +481,10 @@ func rasterPNGUpFilter(destination, raw, prior []byte) int {
 	_ = prior[len(raw)-1]
 	destination[0] = 2
 	destination = destination[1:]
+	if bytes.Equal(raw, prior) {
+		clear(destination[:len(raw)])
+		return 0
+	}
 	cost := 0
 	for index, value := range raw {
 		destination[index] = value - prior[index]
