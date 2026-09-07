@@ -49,37 +49,60 @@ it depends on from ../sub/lib.
 - ./release.sh is the top level script to generate a new release.
   Run with --help for usage.
 
-The first release-script run must leave the GitHub release as a draft. Pushing its tag
-starts two workflows:
+Run from a clean checkout with Python 3, Git, and an authenticated GitHub CLI. The script
+prepares the release branch, changelog, PR, and tag, then returns. It leaves existing PR
+descriptions unchanged and uses the Human/AI template for new PRs. Prereleases must have
+a semantic-version suffix, for example `--version=v0.9.0-rc.1`; `--prerelease` with a
+stable-looking version is rejected.
 
-- `Release archives` builds all six archives twice from the exact tag commit with the
-  pinned Go toolchain and compares their SHA-256 digests. It strips and verifies each
-  binary, normalizes every archive, enforces size budgets, runs each archive on a native
-  GitHub-hosted runner, and generates signed build-provenance and SBOM attestations. The
-  release script waits for that exact successful workflow run, downloads its immutable
-  archive artifact, verifies `SHA256SUMS`, and uploads those same bytes to the draft.
-- `Windows MSI` waits for the six uploaded archives and pins the exact Windows amd64
-  archive, builds the installer on GitHub's `windows-2022` runner, verifies its metadata
-  and installed contents, and uploads `d2-<version>-windows-amd64.msi` to that same draft.
+A version is assigned once. The script never amends a release commit, force-pushes a branch,
+or replaces a tag, including tags for draft releases. It checks local and remote release
+refs before making changes. For an unfinished release, a matching remote tag makes
+preparation a no-op with guidance to follow the existing Actions run. Published releases
+and drafts with an MSI reject preparation. Conflicting tags or release branches require a
+new version. A local tag left by a failed push can be pushed only when it points to the
+unchanged prepared commit, without recreating the tag object. An untagged partial preparation
+reuses its existing changelog commit and pushes the branch normally; it does not create another
+empty commit.
+If a remote preparation commit is unavailable locally, fetch origin before retrying.
 
-Do not publish the release until the workflow is green and the MSI is present. Review and
-merge the release PR, then publish the draft on GitHub. The D2 wrapper rejects
-`release.sh --publish`, and it refuses any release-builder rerun after the MSI is attached.
-This prevents the shared helper from publishing while the asynchronous build is running or
-moving the tag after an MSI was built from it. `release.sh --rebuild` is intentionally
-unsupported for CI-built archives. Re-run only failed jobs in the existing workflow run;
-a full rerun fails closed instead of replacing its immutable Actions artifacts.
-It also rejects a legacy local MSI in the version's build directory so the shared asset
-uploader cannot attach an unverified installer. The wrapper rejects `--skip-build`, and the
-production build accepts only the six named archives plus `SHA256SUMS`; unexpected files
-and symlinks fail closed before upload.
+Enable **Release immutability** in the repository's release settings to enforce the lock
+on GitHub. Draft assets remain editable until publication; the uploader still accepts only
+identical existing assets. Publishing freezes the release assets and associated tag, so
+attach and verify every asset before publishing. Release notes/title and prerelease/latest
+status remain editable. Enabling this setting applies to future published releases; it does
+not retroactively lock already published releases. See [GitHub's release immutability
+settings](https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/establish-provenance-and-integrity/prevent-release-changes).
 
-The MSI workflow can also be dispatched manually with release upload disabled. `v0.7.1` is
-the continuity fixture; because that release predates notices in the archives, only this
-non-uploading fixture build packages the current notices file. Every production MSI
-requires `THIRD_PARTY_NOTICES.txt` from its pinned release archive. Re-run only a failed
-job: the workflow's Actions artifact is immutable within a run, and a full rerun fails
-closed instead of replacing it.
+Pushing the tag starts one `Release archives` dependency graph:
+
+1. The existing CI workflow tests the exact tag commit. In parallel, the archive job builds
+   all six archives twice using the pinned Go toolchain, compares SHA-256 digests, verifies
+   stripped binaries and normalized archives, enforces size budgets, and generates an SBOM.
+2. Each archive runs natively on its supported platform, checking its version, SVG, and PNG.
+3. The reusable `Windows MSI` workflow consumes that run's Windows amd64 archive, verifies
+   its checksum, and builds and verifies the installer on `windows-2022`. It always packages
+   notices from the new archive, so an old published release is no longer a PR test fixture.
+4. After tests, native smoke, and MSI verification succeed, the workflow attests the archive
+   provenance, SBOM, and checksum manifest. A separate write-scoped job creates or resumes a
+   draft and uploads the same archives, `SHA256SUMS`, MSI, and `d2.spdx.json`.
+
+The uploader rechecks the tag commit and draft identity/state before uploads and verifies
+all final asset digests. Existing assets are accepted only when their bytes match; nothing
+is overwritten. There is no workstation download/upload handoff or independent MSI poller.
+
+After the workflow succeeds, review and merge the release PR, then publish the complete
+draft manually on GitHub. `release.sh` rejects `--publish`, `--skip-build`, and `--rebuild`,
+and never repurposes an existing version. To recover a failed run without changing code or
+artifacts, use **Re-run failed jobs** on that run. Code or build changes require a new version,
+even if the old version is still a draft. Its Actions artifacts are immutable: a full
+rerun fails rather than replacing them. If draft upload was interrupted, the failed job
+resumes by accepting identical existing assets and attaching only missing ones. Artifacts
+are retained for 30 days; recover failures within that window.
+
+Release-related PRs exercise the same archive and native smoke jobs and, when the WiX gate
+below is enabled, the MSI build. PRs never attest or write release assets. CI is called
+directly by the tag workflow, so it does not depend on another token-generated event.
 
 Every release produced by this workflow includes `SHA256SUMS`. To verify archive
 provenance and its checksum:
@@ -96,9 +119,9 @@ The installer uses WiX 7. Before the workflow can install or run WiX 7, a reposi
 must review the [WiX Open Source Maintenance Fee and EULA terms](https://docs.firegiant.com/wix/osmf/),
 confirm that any required sponsorship is in place, and set the `WIX7_EULA_ACCEPTED`
 repository variable to exactly `true`. That explicit owner-controlled gate enables the
-workflow to pass `-acceptEula wix7`. Pull requests still validate the pinned release inputs
-when the variable is absent, but skip the EULA-dependent MSI steps. Tag-triggered and
-manually dispatched builds fail closed when the variable is absent.
+workflow to pass `-acceptEula wix7`. Pull requests still build and smoke-test their release
+archives when the variable is absent, but skip MSI packaging. Tag-triggered builds fail
+closed when the variable is absent; no draft is uploaded.
 
 ## build.sh
 
@@ -106,8 +129,8 @@ manually dispatched builds fail closed when the variable is absent.
   Run with --help for usage.
 
 Use `--host-only` to build only the release for the host's `$OS-$ARCH` pair. Local
-development invocations still build locally. The production release path instead downloads
-the exact archives produced by the tag-triggered `Release archives` workflow.
+development invocations still build locally. Production builds and artifact uploads belong
+to the tag-triggered `Release archives` workflow; `RELEASE=1` local builds are rejected.
 
 ### Docker image helper
 
@@ -135,6 +158,11 @@ allow only protected branches. Docker Hub tag immutability must remain enabled o
 repositories for version tags with
 `^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z]+([.-][0-9A-Za-z]+)*)?$`; `latest` remains outside
 that rule and mutable. This repository-side rule is the final overwrite guard.
+
+The workflow uses a native amd64/arm64 matrix and passes per-platform digest artifacts to
+its publication job. PR image smoke tests call the same build and smoke script. Release
+orchestration scripts come from the protected dispatch commit; a separate checkout supplies
+the Dockerfile and entrypoint from the exact release commit.
 
 Before publishing a production tag, the workflow:
 

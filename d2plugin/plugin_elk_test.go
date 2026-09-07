@@ -3,9 +3,13 @@
 package d2plugin
 
 import (
+	"context"
 	"encoding/json"
+	"fmt"
+	"sync"
 	"testing"
 
+	"github.com/d2lang/d2/d2graph"
 	"github.com/d2lang/d2/d2layouts/d2elklayout"
 )
 
@@ -39,4 +43,55 @@ func TestELKPluginHydrateOptsRejectsNonELKJSON(t *testing.T) {
 	if err := p.HydrateOpts([]byte(`{"elk.padding":42}`)); err == nil {
 		t.Fatal("expected invalid ELK options to fail")
 	}
+}
+
+func TestELKPluginConcurrentMetadataAndLayout(t *testing.T) {
+	var p Plugin = &elkPlugin{}
+	ctx := context.Background()
+	options := make([][]byte, 2)
+	for i := range options {
+		opts := d2elklayout.DefaultOpts
+		opts.NodeSpacing += i
+		var err error
+		options[i], err = json.Marshal(opts)
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	checks := []func(int) error{
+		func(i int) error { return p.HydrateOpts(options[i%len(options)]) },
+		func(int) error {
+			flags, err := p.Flags(ctx)
+			if err != nil {
+				return err
+			}
+			info, err := p.Info(ctx)
+			if err != nil {
+				return err
+			}
+			if len(flags) == 0 || info.Name != "elk" {
+				return fmt.Errorf("unexpected plugin metadata: %v, %v", flags, info)
+			}
+			return nil
+		},
+		func(int) error { return p.Layout(ctx, d2graph.NewGraph()) },
+	}
+	start := make(chan struct{})
+	var wg sync.WaitGroup
+	for _, check := range checks {
+		wg.Add(1)
+		go func(check func(int) error) {
+			defer wg.Done()
+			<-start
+			for i := 0; i < 100; i++ {
+				if err := check(i); err != nil {
+					t.Error(err)
+					return
+				}
+			}
+		}(check)
+	}
+	close(start)
+	wg.Wait()
 }

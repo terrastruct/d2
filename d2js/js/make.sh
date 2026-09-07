@@ -34,4 +34,8 @@ if ! command -v bun >/dev/null 2>&1 || [ "$(bun --version)" != "$BUN_VERSION" ];
   exit 1
 fi
 
-_make "$@"
+# Go sources outside this directory also affect the WASM package. Invoke make
+# directly so _make's directory-based change filter cannot skip these checks.
+export CI_MAKE_ROOT=0
+make -sj8 "$@"
+ci_waitjobs
