@@ -92,6 +92,29 @@ making style maps in D2 light/dark mode specific. See
 .It Fl s , -sketch Ar false
 Renders the diagram to look like it was sketched by hand
 .Ns .
+.It Fl -isometric Ar false
+Render SVG, PNG, GIF, PDF or PPTX with the native Go isometric renderer.
+Preserve compiled positions and dimensions, and render nested source containers as platforms.
+Like sketch, this can also be enabled using D2_ISOMETRIC=true or
+vars: {d2-config: {isometric: true}} in D2 source.
+An explicit flag takes precedence over the environment, which takes precedence over source config.
+Use --isometric=false to disable a source or environment setting.
+Without an output filename, --isometric defaults to SVG.
+No browser or GPU is required.
+Images fit the diagram within 1600 by 1000 pixels, or 1000 by 625 pixels for
+GIF, with a fixed camera. Use --scale to change those maximum dimensions.
+A single-board GIF uses an 8.33-second traffic cycle, or an 8-second
+cycle when it includes animated shapes or source panels, so both loop cleanly.
+Authored style.animated enables motion.
+Multiple boards export to SVG or PNG directories, PDF pages, PPTX slides or one GIF slideshow, in root,
+layers, scenarios, steps order. Folder-only boards are skipped.
+PDF and PPTX preserve board navigation and clickable source links.
+Their pages embed the same native image as PNG export, with projected link regions.
+GIF slides default to 1000ms per board; --animate-interval changes that delay.
+Use --target to select a board or --target='' for the root without subboards.
+Cannot be combined with sketch or force-appendix. Isometric SVG currently rejects dark-theme
+and animated multi-board SVG; use separate themed SVGs or a GIF slideshow.
+.Ns .
 .It Fl -center Ar flag
 Center the SVG in the containing viewbox, such as your browser screen
 .Ns .
@@ -215,6 +238,8 @@ See --pad flag.
 See --center flag.
 .It Ev Sy D2_SKETCH
 See -s[ketch] flag.
+.It Ev Sy D2_ISOMETRIC
+See --isometric flag.
 .It Ev Sy D2_BUNDLE
 See -b[undle] flag.
 .It Ev Sy D2_FORCE_APPENDIX

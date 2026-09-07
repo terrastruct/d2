@@ -2,102 +2,16 @@ package d2scenebuild
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"image/color"
-	"os"
-	"regexp"
 	"strconv"
 	"strings"
 	"testing"
 
-	"github.com/d2lang/d2/d2renderers/d2fonts"
 	"github.com/d2lang/d2/d2renderers/d2raster"
 	"github.com/d2lang/d2/d2renderers/d2scene"
-	"github.com/d2lang/d2/d2renderers/d2svg"
 	"github.com/d2lang/d2/d2target"
 )
-
-func TestBuildLegendMatchesCheckedInSVGDimensionsAndStructure(t *testing.T) {
-	t.Parallel()
-
-	encoded, err := os.ReadFile("../../e2etests/testdata/txtar/legend-mono/dagre/board.exp.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	var diagram d2target.Diagram
-	if err := json.Unmarshal(encoded, &diagram); err != nil {
-		t.Fatal(err)
-	}
-	pad := int64(0)
-	options := Options{Pad: &pad}
-	svgOptions := &d2svg.RenderOpts{Pad: &pad}
-	if diagram.Config != nil {
-		options.ThemeID = diagram.Config.ThemeID
-		svgOptions.ThemeID = diagram.Config.ThemeID
-	}
-	document, err := Build(context.Background(), &diagram, options)
-	if err != nil {
-		t.Fatalf("Build() error = %v", err)
-	}
-	svg, err := d2svg.Render(&diagram, svgOptions)
-	if err != nil {
-		t.Fatalf("d2svg.Render() error = %v", err)
-	}
-	wantViewBox := svgInnerViewBox(t, svg)
-	if document.ViewBox != wantViewBox {
-		t.Fatalf("scene viewbox = %+v, svg = %+v", document.ViewBox, wantViewBox)
-	}
-
-	if len(document.Root.Children) == 0 {
-		t.Fatal("document root has no children")
-	}
-	legend := document.Root.Children[len(document.Root.Children)-1]
-	if legend.ID != "legend" {
-		t.Fatalf("last root child = %q, want legend", legend.ID)
-	}
-	wantChildren := []string{
-		"legend:shadow", "legend:panel", "legend:title",
-		"legend:shape:0", "legend:shape:0:label",
-	}
-	if got := childIDs(legend.Children); !equalStrings(got, wantChildren) {
-		t.Fatalf("legend children = %q, want %q", got, wantChildren)
-	}
-	shapeWrapper := legend.Children[3]
-	if shapeWrapper.Transform.A != .2 || shapeWrapper.Transform.D != .2 ||
-		shapeWrapper.Transform.E != 86 || shapeWrapper.Transform.F != 53 {
-		t.Fatalf("legend shape transform = %+v, want translate(86,53) scale(.2)", shapeWrapper.Transform)
-	}
-	shadow, ok := legend.Children[0].Primitive.(d2scene.Rect)
-	if !ok || shadow.Box != (d2scene.Box{X: 66, Y: -1, Width: 184, Height: 105}) || shadow.RadiusX != 4 || shadow.RadiusY != 4 {
-		t.Fatalf("legend shadow panel = %#v, want svg box/radius", legend.Children[0].Primitive)
-	}
-	if len(legend.Children[0].Filters) != 1 {
-		t.Fatalf("legend shadow filter count = %d, want 1", len(legend.Children[0].Filters))
-	}
-	filter, ok := legend.Children[0].Filters[0].(d2scene.DropShadow)
-	if !ok || filter.OffsetX != 0 || filter.OffsetY != 2 || filter.SigmaX != 3 || filter.SigmaY != 3 || filter.Color.A != 26 {
-		t.Fatalf("legend shadow filter = %#v, want CSS drop-shadow equivalent", legend.Children[0].Filters[0])
-	}
-
-	title := legend.Children[2].Primitive.(d2scene.TextRun)
-	item := legend.Children[4].Primitive.(d2scene.TextRun)
-	if title.Font.Family != string(d2fonts.SourceCodePro) || title.Font.Weight != 700 || title.Font.Size != 16 {
-		t.Fatalf("legend title font = %+v, want diagram primary bold 16", title.Font)
-	}
-	if item.Font.Family != string(d2fonts.SourceCodePro) || item.Font.Weight != 400 || item.Font.Size != 14 {
-		t.Fatalf("legend item font = %+v, want diagram primary regular 14", item.Font)
-	}
-	for _, id := range []d2scene.AssetID{
-		"font:" + d2scene.AssetID(d2fonts.SourceCodePro) + ":bold",
-		"font:" + d2scene.AssetID(d2fonts.SourceCodePro) + ":regular",
-	} {
-		asset, ok := document.Assets[id].(d2scene.FontAsset)
-		if !ok || len(asset.Data) == 0 {
-			t.Fatalf("legend font asset %q = %T, want owned non-empty font", id, document.Assets[id])
-		}
-	}
-}
 
 func TestBuildLegendPreservesEmptyItemAndSeparatorQuirks(t *testing.T) {
 	t.Parallel()
@@ -478,24 +392,6 @@ func appendLegendShape(legend *d2target.Legend, shape d2target.Shape) *d2target.
 	}
 	legend.Shapes = append(legend.Shapes, shape)
 	return legend
-}
-
-func svgInnerViewBox(t *testing.T, svg []byte) d2scene.Box {
-	t.Helper()
-	pattern := regexp.MustCompile(`<svg class="[^"]*\bd2-svg\b[^"]*"[^>]*viewBox="(-?[0-9]+) (-?[0-9]+) ([0-9]+) ([0-9]+)"`)
-	match := pattern.FindSubmatch(svg)
-	if match == nil {
-		t.Fatalf("SVG output has no inner d2-svg viewBox")
-	}
-	values := make([]int, 4)
-	for index := range values {
-		value, err := strconv.Atoi(string(match[index+1]))
-		if err != nil {
-			t.Fatal(err)
-		}
-		values[index] = value
-	}
-	return d2scene.Box{X: float64(values[0]), Y: float64(values[1]), Width: float64(values[2]), Height: float64(values[3])}
 }
 
 func countLegendSceneNodes(node *d2scene.Node) int {

@@ -1431,6 +1431,11 @@ func compileConfig(ir *d2ir.Map) (*d2target.Config, error) {
 		val, _ := strconv.ParseBool(f.Primary().Value.ScalarString())
 		config.Sketch = &val
 	}
+	f = configMap.GetField(d2ast.FlatUnquotedString("isometric"))
+	if f != nil {
+		val, _ := strconv.ParseBool(f.Primary().Value.ScalarString())
+		config.Isometric = &val
+	}
 
 	f = configMap.GetField(d2ast.FlatUnquotedString("theme-id"))
 	if f != nil {

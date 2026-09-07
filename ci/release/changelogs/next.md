@@ -1,5 +1,6 @@
 #### Features 🚀
 
+- renders: add native isometric SVG, PNG, GIF, PDF, and PPTX exports with `--isometric`, source configuration, and Go/JavaScript options
 - exports: render PNG, GIF, PDF, and PPTX with the built-in renderer
 
 #### Improvements 🧹

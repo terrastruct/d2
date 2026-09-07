@@ -63,6 +63,18 @@ type pagedBoard struct {
 	preview []byte
 }
 
+// Both raster renderers feed the same board traversal, navigation and typed
+// link adapters. Images and link regions are already in final pixel space.
+type pagedBoardRenderer interface {
+	render(*d2target.Diagram, bool) (*pagedBoard, error)
+	close()
+	info() (context.Context, map[string]int, int)
+}
+
+func (r *pagedRenderer) info() (context.Context, map[string]int, int) {
+	return r.ctx, r.boardIDToPage, r.totalBoards
+}
+
 func newPagedRenderer(ctx context.Context, plugin d2plugin.Plugin, inputPath string, cacheImages bool, diagram *d2target.Diagram, opts d2svg.RenderOpts) (*pagedRenderer, error) {
 	if ctx == nil {
 		ctx = context.Background()
@@ -410,8 +422,14 @@ func renderPDFWithExporter(ctx context.Context, plugin d2plugin.Plugin, opts d2s
 	if err != nil {
 		return nil, false, err
 	}
+	return renderPDFWithRenderer(renderer, opts, ruler, diagram, rootPath, includeNav, wantPreview, export)
+}
+
+func renderPDFWithRenderer(renderer pagedBoardRenderer, opts d2svg.RenderOpts, ruler *textmeasure.Ruler, diagram *d2target.Diagram, rootPath []pdf.BoardTitle, includeNav, wantPreview bool, export func(*pdf.GoFPDF) (bool, error)) ([]byte, bool, error) {
 	defer renderer.close()
-	ctx = renderer.ctx
+	ctx, boardIDToPage, totalBoards := renderer.info()
+	renderedBoards := 0
+	var err error
 	rootPath, err = pdfRootPath(rootPath, diagram.IsFolderOnly)
 	if err != nil {
 		return nil, false, err
@@ -424,8 +442,8 @@ func renderPDFWithExporter(ctx context.Context, plugin d2plugin.Plugin, opts d2s
 			return err
 		}
 		if !board.IsFolderOnly {
-			if page, ok := renderer.boardIDToPage[boardID]; !ok || page != renderer.renderedBoards {
-				return fmt.Errorf("PDF board %q has page index %d/%v, want %d", boardID, page, ok, renderer.renderedBoards)
+			if page, ok := boardIDToPage[boardID]; !ok || page != renderedBoards {
+				return fmt.Errorf("PDF board %q has page index %d/%v, want %d", boardID, page, ok, renderedBoards)
 			}
 			rootFill := board.Root.Fill
 			rendered, err := renderer.render(board, wantsPreview)
@@ -435,13 +453,14 @@ func renderPDFWithExporter(ctx context.Context, plugin d2plugin.Plugin, opts d2s
 			if wantsPreview {
 				preview = rendered.preview
 			}
-			linkShapes, err := pdfLinkShapes(ctx, rendered.links, renderer.boardIDToPage)
+			linkShapes, err := pdfLinkShapes(ctx, rendered.links, boardIDToPage)
 			if err != nil {
 				return err
 			}
-			if err := document.AddPDFPage(rendered.png, boardPath, themeID(opts), rootFill, linkShapes, padding(opts), 0, 0, renderer.boardIDToPage, includeNav); err != nil {
+			if err := document.AddPDFPage(rendered.png, boardPath, themeID(opts), rootFill, linkShapes, padding(opts), 0, 0, boardIDToPage, includeNav); err != nil {
 				return err
 			}
+			renderedBoards++
 		}
 		for _, group := range []struct {
 			name     string
@@ -463,8 +482,8 @@ func renderPDFWithExporter(ctx context.Context, plugin d2plugin.Plugin, opts d2s
 	if err := walk(diagram, "root", rootPath, wantPreview && !diagram.IsFolderOnly); err != nil {
 		return preview, false, err
 	}
-	if renderer.renderedBoards != renderer.totalBoards {
-		return preview, false, fmt.Errorf("paged export rendered %d boards, want %d", renderer.renderedBoards, renderer.totalBoards)
+	if renderedBoards != totalBoards {
+		return preview, false, fmt.Errorf("paged export rendered %d boards, want %d", renderedBoards, totalBoards)
 	}
 	if wantPreview {
 		preview, err = appendRasterPreview(diagram, opts, ruler, preview)
@@ -484,9 +503,18 @@ func renderPPTX(ctx context.Context, presentation *pptx.Presentation, plugin d2p
 	if err != nil {
 		return nil, err
 	}
+	return renderPPTXWithRenderer(renderer, presentation, opts, ruler, diagram, rootPath, wantPreview)
+}
+
+func renderPPTXWithRenderer(renderer pagedBoardRenderer, presentation *pptx.Presentation, opts d2svg.RenderOpts, ruler *textmeasure.Ruler, diagram *d2target.Diagram, rootPath []pptx.BoardTitle, wantPreview bool) ([]byte, error) {
 	defer renderer.close()
-	ctx = renderer.ctx
-	rootPath, err = pptxRootPath(rootPath, diagram.IsFolderOnly, renderer.boardIDToPage)
+	ctx, boardIDToPage, totalBoards := renderer.info()
+	renderedBoards := 0
+	if presentation == nil {
+		return nil, fmt.Errorf("PPTX export requires a presentation")
+	}
+	var err error
+	rootPath, err = pptxRootPath(rootPath, diagram.IsFolderOnly, boardIDToPage)
 	if err != nil {
 		return nil, err
 	}
@@ -497,8 +525,8 @@ func renderPPTX(ctx context.Context, presentation *pptx.Presentation, plugin d2p
 			return err
 		}
 		if !board.IsFolderOnly {
-			if page, ok := renderer.boardIDToPage[boardID]; !ok || page != renderer.renderedBoards {
-				return fmt.Errorf("PPTX board %q has page index %d/%v, want %d", boardID, page, ok, renderer.renderedBoards)
+			if page, ok := boardIDToPage[boardID]; !ok || page != renderedBoards {
+				return fmt.Errorf("PPTX board %q has page index %d/%v, want %d", boardID, page, ok, renderedBoards)
 			}
 			rendered, err := renderer.render(board, wantsPreview)
 			if err != nil {
@@ -511,9 +539,10 @@ func renderPPTX(ctx context.Context, presentation *pptx.Presentation, plugin d2p
 			if err != nil {
 				return err
 			}
-			if err := addPPTXLinks(ctx, slide, rendered.links, renderer.boardIDToPage); err != nil {
+			if err := addPPTXLinks(ctx, slide, rendered.links, boardIDToPage); err != nil {
 				return err
 			}
+			renderedBoards++
 		}
 		for _, group := range []struct {
 			name     string
@@ -523,7 +552,7 @@ func renderPPTX(ctx context.Context, presentation *pptx.Presentation, plugin d2p
 				childID := boardID + "." + group.name + "." + child.Name
 				path := boardPath
 				if !child.IsFolderOnly {
-					page, ok := renderer.boardIDToPage[childID]
+					page, ok := boardIDToPage[childID]
 					if !ok {
 						return fmt.Errorf("PPTX renderable board %q has no preflighted page", childID)
 					}
@@ -539,8 +568,8 @@ func renderPPTX(ctx context.Context, presentation *pptx.Presentation, plugin d2p
 	if err := walk(diagram, "root", rootPath, wantPreview && !diagram.IsFolderOnly); err != nil {
 		return preview, err
 	}
-	if renderer.renderedBoards != renderer.totalBoards {
-		return preview, fmt.Errorf("paged export rendered %d boards, want %d", renderer.renderedBoards, renderer.totalBoards)
+	if renderedBoards != totalBoards {
+		return preview, fmt.Errorf("paged export rendered %d boards, want %d", renderedBoards, totalBoards)
 	}
 	if !wantPreview {
 		return nil, nil

@@ -44,6 +44,7 @@ var BorderOffset = geo.NewVector(5, 5)
 
 type Config struct {
 	Sketch             *bool           `json:"sketch"`
+	Isometric          *bool           `json:"isometric,omitempty"`
 	ThemeID            *int64          `json:"themeID"`
 	DarkThemeID        *int64          `json:"darkThemeID"`
 	Pad                *int64          `json:"pad"`

@@ -27,6 +27,19 @@ Usage:
 
 %[1]s compiles and renders file.d2 to file.svg | file.png | file.pdf | file.pptx | file.gif | file.txt
 It defaults to file.svg if an output path is not provided.
+Use --isometric for SVG, PNG, GIF, PDF or PPTX output with the native isometric renderer:
+  %[1]s --isometric file.d2 file.svg
+  %[1]s --isometric file.d2 file.png
+  %[1]s --isometric file.d2 file.gif
+  %[1]s --isometric file.d2 file.pdf
+  %[1]s --isometric file.d2 file.pptx
+You can also set D2_ISOMETRIC=true or vars: {d2-config: {isometric: true}} in D2 source.
+Flags override environment variables, which override source configuration; --isometric=false disables it.
+Isometric images preserve the compiled layout and render entirely in Go; no browser or GPU is required.
+Images fit the diagram within 1600x1000 pixels (1000x625 for GIF); --scale changes those maximum dimensions.
+Multiple boards export to SVG or PNG directories, PDF pages, PPTX slides or one GIF slideshow.
+PDF and PPTX retain board navigation and clickable links. --animate-interval sets the GIF slide delay.
+Use --target to select a board, or --target='' for the root without its subboards.
 
 Use - to have d2 read from stdin or write to stdout.
 

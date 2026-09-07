@@ -11,6 +11,8 @@ export class D2 {
 export interface RenderOptions {
   /** Enable sketch mode [default: false] */
   sketch?: boolean;
+  /** Enable native isometric SVG rendering, preserving the compiled layout [default: false]. Icons and images must use embedded data URLs. Cannot be combined with sketch, ASCII, darkThemeID, forceAppendix, or animateInterval. */
+  isometric?: boolean;
   /** Theme ID to use [default: 0] */
   themeID?: number;
   /** Theme ID to use when client is in dark mode */
