@@ -1,0 +1,127 @@
+{
+  "nodes": [
+    {
+      "id": 1487447415,
+      "width": 371,
+      "height": 67,
+      "topLeft": {
+        "x": 1228,
+        "y": 601
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 2803727288,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 1178,
+        "y": 415
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 3077690439,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 1360,
+        "y": 415
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 886116603,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 1550,
+        "y": 415
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 4272828346,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 1745,
+        "y": 415
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 931245109,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 980,
+        "y": 415
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    }
+  ],
+  "edges": [
+    {
+      "id": 4153528739,
+      "from": 931245109,
+      "to": 1487447415,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 3349797030,
+      "from": 2803727288,
+      "to": 1487447415,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 3130611142,
+      "from": 3077690439,
+      "to": 1487447415,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 4103549517,
+      "from": 886116603,
+      "to": 1487447415,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 2349029667,
+      "from": 4272828346,
+      "to": 1487447415,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    }
+  ],
+  "CellSize": 0,
+  "containers": {
+    "0": [
+      886116603,
+      931245109,
+      1487447415,
+      2803727288,
+      3077690439,
+      4272828346
+    ]
+  },
+  "clusters": {},
+  "crossingCost": 0,
+  "turnCost": 0,
+  "nonCenterPortCost": 0
+}

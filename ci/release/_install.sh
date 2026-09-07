@@ -19,7 +19,7 @@ help() {
 
   cat <<EOF
 usage: $arg0 [-d|--dry-run] [--version vX.X.X] [--method detect] [--prefix path]
-  [--tala latest] [--force] [--uninstall] [-x|--trace]
+  [--force] [--uninstall] [-x|--trace]
 
 install.sh automates the installation of D2 onto your system. It currently only supports
 the installation of standalone releases from GitHub and via Homebrew on macOS. See the
@@ -59,14 +59,12 @@ Flags:
   install.sh will tell you whether \$PATH or \$MANPATH need to be updated after successful
   installation.
 
---tala [latest]
-  Install Terrastruct's closed source TALA for improved layouts.
-  See https://github.com/terrastruct/tala
-  It optionally takes an argument of the TALA version to install.
-  Installation obeys all other flags, just like the installation of d2. For example,
-  the d2plugin-tala binary will be installed into \$PREFIX/bin/d2plugin-tala
-  warn: The version may not be obeyed with package manager installations. Use
-        --method=standalone to enforce the version.
+--tala [legacy-version] (unsupported)
+  --tala is no longer supported. This installer installs only D2 and rejects
+  legacy TALA installation requests before changing your installation.
+  For releases with bundled TALA, omit --tala and verify availability with d2 layout.
+  For older releases, install the legacy plugin separately:
+  https://github.com/terrastruct/TALA/releases
 
 --force:
   Force installation over the existing version even if they match. It will attempt a
@@ -79,7 +77,6 @@ Flags:
   as for installation. i.e if you used --method standalone you must again use --method
   standalone for uninstallation. With detect, the install script will try to use the OS
   package manager to uninstall instead.
-  note: tala will also be uninstalled if installed.
 
 -x, --trace:
   Run script with set -x.
@@ -114,7 +111,7 @@ main() {
         ;;
       tala)
         shift "$FLAGSHIFT"
-        TALA=${FLAGARG:-latest}
+        TALA_REQUEST=1
         ;;
       method)
         flag_nonemptyarg && shift "$FLAGSHIFT"
@@ -146,6 +143,12 @@ main() {
 
   if [ $# -gt 0 ]; then
     flag_errusage "no arguments are accepted"
+  fi
+
+  if [ -n "${TALA_REQUEST-}" ]; then
+    flag_errusage "--tala is no longer supported; this installer installs only D2.
+For releases with bundled TALA, omit --tala and verify availability with d2 layout.
+For older releases, install the legacy plugin separately: https://github.com/terrastruct/TALA/releases"
   fi
 
   REPO=${REPO:-d2lang/d2}
@@ -203,14 +206,9 @@ install() {
   case $METHOD in
     standalone)
       install_d2_standalone
-      if [ -n "${TALA-}" ]; then
-        # Run in subshell to avoid overwriting VERSION.
-        TALA_VERSION="$( RELEASE_INFO= install_tala_standalone && echo "$VERSION" )"
-      fi
       ;;
     homebrew)
       install_d2_brew
-      if [ -n "${TALA-}" ]; then install_tala_brew; fi
       ;;
   esac
 
@@ -224,9 +222,6 @@ install() {
 
 install_post_standalone() {
   log "d2-$VERSION-$OS-$ARCH has been successfully installed into $PREFIX"
-  if [ -n "${TALA-}" ]; then
-    log "tala-$TALA_VERSION-$OS-$ARCH has been successfully installed into $PREFIX"
-  fi
   log "Rerun this install script with --uninstall to uninstall."
   log
   if ! echo "$PATH" | grep -qF "$PREFIX/bin"; then
@@ -234,10 +229,10 @@ install_post_standalone() {
 Extend your \$PATH to use d2:
   export PATH=$PREFIX/bin:\$PATH
 Then run:
-  ${TALA:+D2_LAYOUT=tala }d2 --help
+  d2 --help
 EOF
   else
-    log "Run ${TALA:+D2_LAYOUT=tala }d2 --help for usage."
+    log "Run d2 --help for usage."
   fi
   if ! manpath 2>/dev/null | grep -qF "$PREFIX/share/man"; then
     logcat >&2 <<EOF
@@ -246,36 +241,20 @@ Extend your \$MANPATH to view d2's manpages:
 Then run:
   man d2
 EOF
-  if [ -n "${TALA-}" ]; then
-    log "  man d2plugin-tala"
-  fi
   else
     log "Run man d2 for detailed docs."
-    if [ -n "${TALA-}" ]; then
-      log "Run man d2plugin-tala for detailed TALA docs."
-    fi
   fi
 }
 
 install_post_brew() {
   log "d2 has been successfully installed with homebrew."
-  if [ -n "${TALA-}" ]; then
-    log "tala has been successfully installed with homebrew."
-  fi
   log "Rerun this install script with --uninstall to uninstall."
   log
-  log "Run ${TALA:+D2_LAYOUT=tala }d2 --help for usage."
+  log "Run d2 --help for usage."
   log "Run man d2 for detailed docs."
-  if [ -n "${TALA-}" ]; then
-    log "Run man d2plugin-tala for detailed TALA docs."
-  fi
 
   VERSION=$(brew info d2 | head -n1 | cut -d' ' -f4)
   VERSION=${VERSION%,}
-  if [ -n "${TALA-}" ]; then
-    TALA_VERSION=$(brew info tala | head -n1 | cut -d' ' -f4)
-    TALA_VERSION=${TALA_VERSION%,}
-  fi
 }
 
 install_post_warn() {
@@ -283,12 +262,6 @@ install_post_warn() {
     INSTALLED_VERSION=$(d2 --version)
     if [ "$INSTALLED_VERSION" != "$VERSION" ]; then
       warn "newly installed d2 $VERSION is shadowed by d2 $INSTALLED_VERSION in \$PATH"
-    fi
-  fi
-  if [ -n "${TALA-}" ] && command -v d2plugin-tala >/dev/null; then
-    INSTALLED_TALA_VERSION=$(d2plugin-tala --version)
-    if [ "$INSTALLED_TALA_VERSION" != "$TALA_VERSION" ]; then
-      warn "newly installed d2plugin-tala $TALA_VERSION is shadowed by d2plugin-tala $INSTALLED_TALA_VERSION in \$PATH"
     fi
   fi
 }
@@ -331,59 +304,7 @@ install_d2_brew() {
   sh_c brew install d2
 }
 
-install_tala_standalone() {
-  REPO="${REPO_TALA:-terrastruct/tala}"
-  VERSION=$TALA
-
-  header "installing tala-$VERSION"
-
-  ensure_version
-
-  if command -v d2plugin-tala >/dev/null; then
-    INSTALLED_VERSION="$(d2plugin-tala --version)"
-    if [ ! "${FORCE-}" -a "$VERSION" = "$INSTALLED_VERSION" ]; then
-      log "skipping installation as tala $VERSION is already installed."
-      return 0
-    fi
-    log "uninstalling tala $INSTALLED_VERSION to install $VERSION"
-    if ! uninstall_tala_standalone; then
-      warn "failed to uninstall tala $INSTALLED_VERSION"
-    fi
-  fi
-
-  ARCHIVE="tala-$VERSION-$OS-$ARCH.tar.gz"
-  log "installing standalone release $ARCHIVE from github"
-
-  ensure_version
-  asset_url="https://github.com/$REPO/releases/download/$VERSION/$ARCHIVE"
-  fetch_gh "$asset_url" "$CACHE_DIR/$ARCHIVE" 'application/octet-stream'
-
-  ensure_prefix_sh_c
-  "$sh_c" mkdir -p "'$INSTALL_DIR'"
-  "$sh_c" tar -C "$INSTALL_DIR" -xzf "$CACHE_DIR/$ARCHIVE"
-  "$sh_c" sh -c "'cd \"$INSTALL_DIR/tala-$VERSION\" && make install PREFIX=\"$PREFIX\"'"
-}
-
-install_tala_brew() {
-  header "installing tala with homebrew"
-  sh_c brew update
-  sh_c brew install terrastruct/tap/tala
-}
-
 uninstall() {
-  # We uninstall tala first as package managers require that it be uninstalled before
-  # uninstalling d2 as TALA depends on d2.
-  if command -v d2plugin-tala >/dev/null; then
-    INSTALLED_VERSION="$(d2plugin-tala --version)"
-    header "uninstalling tala-$INSTALLED_VERSION"
-    case $METHOD in
-      standalone) uninstall_tala_standalone ;;
-      homebrew) uninstall_tala_brew ;;
-    esac
-  elif [ "${TALA-}" ]; then
-    warn "no version of tala installed"
-  fi
-
   if ! command -v d2 >/dev/null; then
     warn "no version of d2 installed"
     return 0
@@ -413,24 +334,6 @@ uninstall_d2_standalone() {
 
 uninstall_d2_brew() {
   sh_c brew remove d2
-}
-
-uninstall_tala_standalone() {
-  log "uninstalling standalone release tala-$INSTALLED_VERSION"
-
-  if [ ! -e "$INSTALL_DIR/tala-$INSTALLED_VERSION" ]; then
-    warn "missing standalone install release directory $INSTALL_DIR/tala-$INSTALLED_VERSION"
-    warn "tala must have been installed via some other installation method."
-    return 1
-  fi
-
-  ensure_prefix_sh_c
-  "$sh_c" sh -c "'cd \"$INSTALL_DIR/tala-$INSTALLED_VERSION\" && make uninstall PREFIX=\"$PREFIX\"'"
-  "$sh_c" rm -rf "$INSTALL_DIR/tala-$INSTALLED_VERSION"
-}
-
-uninstall_tala_brew() {
-  sh_c brew remove tala
 }
 
 cache_dir() {

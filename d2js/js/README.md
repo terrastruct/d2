@@ -106,9 +106,12 @@ const svg = await d2.render(result.diagram, result.renderOptions);
 
 Creates a new D2 instance.
 
-### `compile(input: string | CompileRequest, options?: CompileOptions): Promise<CompileResult>`
+### `compile(input: string | CompileRequest, options?: CompileOptions): Promise<CompileResponse>`
 
-Compiles D2 markup into an intermediate representation. It compile options are provided in both `input` and `options`, the latter will take precedence.
+Compiles D2 markup into an intermediate representation. Pass options directly as the
+second argument, for example `d2.compile('x -> y', { layout: 'tala' })`. For an object
+input, `input.options` is optional and takes precedence over the second argument when
+both specify the same option.
 
 ### `render(diagram: Diagram, options?: RenderOptions): Promise<string>`
 
@@ -124,7 +127,7 @@ resources are released. Calling `dispose()` more than once is safe.
 
 All [RenderOptions](#renderoptions) properties in addition to:
 
-- `layout`: Layout engine to use ('dagre' | 'elk') [default: 'dagre']
+- `layout`: Layout engine to use (`'dagre' | 'elk' | 'tala'`) [default: `'dagre'`]
 - `fontRegular` A byte array containing .ttf file to use for the regular font. If none provided, Source Sans Pro Regular is used.
 - `fontItalic` A byte array containing .ttf file to use for the italic font. If none provided, Source Sans Pro Italic is used.
 - `fontBold` A byte array containing .ttf file to use for the bold font. If none provided, Source Sans Pro Bold is used.
@@ -148,12 +151,12 @@ All [RenderOptions](#renderoptions) properties in addition to:
 
 - `fs`: A mapping of D2 file paths to their content
 - `inputPath`: The path of the entry D2 file [default: index]
-- `options`: The [CompileOptions](#compileoptions) to pass to the compiler
+- `options`: Optional [CompileOptions](#compileoptions) to pass to the compiler
 
-### `CompileResult`
+### `CompileResponse`
 
 - `diagram`: `Diagram`: Compiled D2 diagram
-- `options`: `RenderOptions`: Render options merged with configuration set in diagram
+- `renderOptions`: `RenderOptions`: Render options merged with configuration set in diagram
 - `fs`
 - `graph`
 

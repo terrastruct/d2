@@ -43,8 +43,9 @@
   "scripts": {
     "build": "./make.sh build",
     "test": "bun test test/unit",
+    "test:types": "tsc --project test/types/tsconfig.json",
     "test:integration": "./ci/test-integration.sh",
-    "test:all": "bun run test && bun run test:integration",
+    "test:all": "bun run test:types && bun run test && bun run test:integration",
     "dev": "bun --watch dev-server.js"
   },
   "keywords": [
@@ -57,7 +58,8 @@
   ],
   "license": "MPL-2.0",
   "devDependencies": {
-    "bun": "1.3.14"
+    "bun": "1.3.14",
+    "typescript": "5.9.3"
   },
   "dependencies": {}
 }

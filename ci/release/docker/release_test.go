@@ -15,7 +15,7 @@ import (
 
 // Include subprocess inputs in the test binary so script edits invalidate Go's test cache.
 //
-//go:embed common.sh release.sh
+//go:embed common.sh release.sh image.sh
 var scriptSources embed.FS
 
 func TestMain(m *testing.M) {

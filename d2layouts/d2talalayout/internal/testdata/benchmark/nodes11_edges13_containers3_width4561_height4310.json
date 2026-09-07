@@ -1,0 +1,296 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "width": 436,
+      "height": 542,
+      "topLeft": {
+        "x": 1616,
+        "y": 4440
+      },
+      "fontSize": null,
+      "shapeType": "Person"
+    },
+    {
+      "id": 2,
+      "width": 80,
+      "height": 114,
+      "topLeft": {
+        "x": 2143,
+        "y": 4264
+      },
+      "fontSize": null,
+      "shapeType": "Diamond"
+    },
+    {
+      "id": 3,
+      "width": 309,
+      "height": 395,
+      "topLeft": {
+        "x": 1372,
+        "y": 1632
+      },
+      "fontSize": null,
+      "shapeType": "Document"
+    },
+    {
+      "id": 4,
+      "width": 485,
+      "height": 314,
+      "topLeft": {
+        "x": 17,
+        "y": 4101
+      },
+      "fontSize": null,
+      "shapeType": "Callout"
+    },
+    {
+      "id": 5,
+      "width": 328,
+      "height": 683,
+      "topLeft": {
+        "x": 2294,
+        "y": 4906
+      },
+      "fontSize": null,
+      "shapeType": "Queue"
+    },
+    {
+      "id": 6,
+      "width": 173,
+      "height": 125,
+      "topLeft": {
+        "x": 3028,
+        "y": 3874
+      },
+      "fontSize": null,
+      "shapeType": "Document"
+    },
+    {
+      "id": 7,
+      "width": 240,
+      "height": 434,
+      "topLeft": {
+        "x": 1891,
+        "y": 1279
+      },
+      "fontSize": null,
+      "shapeType": "Parallelogram"
+    },
+    {
+      "id": 8,
+      "width": 179,
+      "height": 343,
+      "topLeft": {
+        "x": 1821,
+        "y": 2280
+      },
+      "fontSize": null,
+      "shapeType": "Callout"
+    },
+    {
+      "id": 9,
+      "width": 138,
+      "height": 172,
+      "topLeft": {
+        "x": 1821,
+        "y": 2325
+      },
+      "fontSize": null,
+      "shapeType": "Parallelogram"
+    },
+    {
+      "id": 10,
+      "width": 398,
+      "height": 441,
+      "topLeft": {
+        "x": 4180,
+        "y": 1387
+      },
+      "fontSize": null,
+      "shapeType": "Package"
+    },
+    {
+      "id": 11,
+      "width": 299,
+      "height": 382,
+      "topLeft": {
+        "x": 4180,
+        "y": 1423
+      },
+      "fontSize": null,
+      "shapeType": "StoredData"
+    }
+  ],
+  "edges": [
+    {
+      "id": 1,
+      "from": 11,
+      "to": 1,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 2,
+      "from": 1,
+      "to": 4,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 3,
+      "from": 4,
+      "to": 8,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 4,
+      "from": 8,
+      "to": 3,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 5,
+      "from": 9,
+      "to": 1,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 6,
+      "from": 2,
+      "to": 3,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 7,
+      "from": 8,
+      "to": 1,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 8,
+      "from": 6,
+      "to": 4,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 9,
+      "from": 5,
+      "to": 2,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 10,
+      "from": 8,
+      "to": 1,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 11,
+      "from": 7,
+      "to": 2,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 12,
+      "from": 11,
+      "to": 1,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 13,
+      "from": 1,
+      "to": 8,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    }
+  ],
+  "CellSize": 0,
+  "containers": {
+    "0": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      10
+    ],
+    "10": [
+      11
+    ],
+    "8": [
+      9
+    ]
+  },
+  "clusters": {},
+  "clusterVessels": {},
+  "trees": {},
+  "crossingCost": 0,
+  "turnCost": 0,
+  "nonCenterPortCost": 0
+}

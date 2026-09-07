@@ -98,7 +98,9 @@ jobs:
           ref: ${{ fromJSON(needs.validate.outputs.release).commit }}
           path: release-source
           persist-credentials: false
-          sparse-checkout: ci/release/docker
+          sparse-checkout: |
+            ci/release/docker
+            d2plugin
       - name: Download and verify exact release archive
         env:
           GH_TOKEN: ${{ github.token }}
@@ -113,9 +115,12 @@ jobs:
       - name: Build once and stage identical digests in both repositories with provenance
         id: image
         run: ./ci/release/docker/image.sh build push "$RUNNER_TEMP/docker-context"
-      - name: Smoke-test staged CLI, SVG, and PNG natively
+      - name: Smoke-test staged CLI, SVG, TALA, and PNG natively
         env:
           IMAGE: ${{ steps.image.outputs.image }}
+          # Older release archives predate bundled TALA. Check the pinned source,
+          # so a missing TALA binary in a native release cannot silently skip smoke.
+          REQUIRE_TALA: ${{ hashFiles('release-source/d2plugin/plugin_tala.go') != '' }}
         run: ./ci/release/docker/image.sh smoke "$IMAGE"
       - name: Record verified architecture digest
         env:

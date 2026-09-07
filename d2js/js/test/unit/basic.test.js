@@ -16,6 +16,33 @@ describe("D2 Unit Tests", () => {
     await d2.dispose();
   }, 20000);
 
+  test("tala layout works from options and source configuration", async () => {
+    const d2 = new D2();
+    const direct = await d2.compile("x -> y", { layout: "tala" });
+    expect(direct.diagram).toBeDefined();
+    const directSvg = await d2.render(direct.diagram);
+    expect(directSvg).toContain("<svg");
+    expect(directSvg).toContain("</svg>");
+
+    const configured = await d2.compile(`
+vars: {
+  d2-config: {
+    layout-engine: tala
+    data: {
+      tala-seeds: [1]
+    }
+  }
+}
+container: {
+  child
+}
+outside
+container.child -> outside
+`);
+    expect(configured.diagram).toBeDefined();
+    await d2.worker.terminate();
+  }, 20000);
+
   test("import works", async () => {
     const d2 = new D2();
     const fs = {
@@ -306,108 +333,63 @@ describe("D2 Unit Tests", () => {
     await d2.dispose();
   }, 20000);
 
-  test("layout engine switching works (dagre -> elk)", async () => {
+  test("layout engine switching works across bundled engines", async () => {
     const d2 = new D2();
 
-    // Test diagram
     const testDiagram = `a -> b
   a -> c
   b -> d
   c -> d`;
+    const sourceForLayout = (layout) => `${testDiagram}
 
-    // First compile with dagre using d2-config
-    const dagreSource = `${testDiagram}
+vars: {
+  d2-config: {
+    layout-engine: ${layout}
+    ${layout === "tala" ? "data: { tala-seeds: [1] }" : ""}
+  }
+}`;
 
-  vars: {
-    d2-config: {
-      layout-engine: dagre
+    for (const layout of ["dagre", "elk", "tala"]) {
+      const result = await d2.compile(sourceForLayout(layout));
+      expect(result.diagram).toBeDefined();
+
+      const svg = await d2.render(result.diagram);
+      expect(svg).toContain("<svg");
+      expect(svg).toContain("</svg>");
     }
-  }`;
-
-    const dagreResult = await d2.compile(dagreSource);
-    expect(dagreResult.diagram).toBeDefined();
-
-    // Then compile with elk using d2-config
-    const elkSource = `${testDiagram}
-
-  vars: {
-    d2-config: {
-      layout-engine: elk
-    }
-  }`;
-
-    const elkResult = await d2.compile(elkSource);
-    expect(elkResult.diagram).toBeDefined();
-
-    // Both should render successfully
-    const dagreSvg = await d2.render(dagreResult.diagram);
-    expect(dagreSvg).toContain("<svg");
-    expect(dagreSvg).toContain("</svg>");
-
-    const elkSvg = await d2.render(elkResult.diagram);
-    expect(elkSvg).toContain("<svg");
-    expect(elkSvg).toContain("</svg>");
 
     await d2.dispose();
   }, 30000);
 
-  test("layout engine switching works (elk -> dagre -> elk)", async () => {
+  test("layout engine switching works (elk -> dagre -> tala -> elk)", async () => {
     const d2 = new D2();
 
-    // Test diagram
     const testDiagram = `a -> b
   a -> c
   b -> d
   c -> d`;
+    const sourceForLayout = (layout) => `${testDiagram}
 
-    // Start with ELK
-    const elkSource1 = `${testDiagram}
+vars: {
+  d2-config: {
+    layout-engine: ${layout}
+    ${layout === "tala" ? "data: { tala-seeds: [1] }" : ""}
+  }
+}`;
 
-  vars: {
-    d2-config: {
-      layout-engine: elk
+    const results = [];
+    // Returning to ELK after switching engines triggered a panic in the past.
+    for (const layout of ["elk", "dagre", "tala", "elk"]) {
+      const result = await d2.compile(sourceForLayout(layout));
+      expect(result.diagram).toBeDefined();
+      results.push(result);
     }
-  }`;
 
-    const elkResult1 = await d2.compile(elkSource1);
-    expect(elkResult1.diagram).toBeDefined();
-
-    // Switch to Dagre
-    const dagreSource = `${testDiagram}
-
-  vars: {
-    d2-config: {
-      layout-engine: dagre
+    for (const result of results) {
+      const svg = await d2.render(result.diagram);
+      expect(svg).toContain("<svg");
+      expect(svg).toContain("</svg>");
     }
-  }`;
-
-    const dagreResult = await d2.compile(dagreSource);
-    expect(dagreResult.diagram).toBeDefined();
-
-    // Switch back to ELK (this should trigger the panic without the fix)
-    const elkSource2 = `${testDiagram}
-
-  vars: {
-    d2-config: {
-      layout-engine: elk
-    }
-  }`;
-
-    const elkResult2 = await d2.compile(elkSource2);
-    expect(elkResult2.diagram).toBeDefined();
-
-    // All should render successfully
-    const elkSvg1 = await d2.render(elkResult1.diagram);
-    expect(elkSvg1).toContain("<svg");
-    expect(elkSvg1).toContain("</svg>");
-
-    const dagreSvg = await d2.render(dagreResult.diagram);
-    expect(dagreSvg).toContain("<svg");
-    expect(dagreSvg).toContain("</svg>");
-
-    const elkSvg2 = await d2.render(elkResult2.diagram);
-    expect(elkSvg2).toContain("<svg");
-    expect(elkSvg2).toContain("</svg>");
 
     await d2.dispose();
   }, 30000);

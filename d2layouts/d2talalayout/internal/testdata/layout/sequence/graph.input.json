@@ -1,0 +1,124 @@
+{
+  "nodes": [
+    {
+      "id": 1405799865,
+      "width": 145,
+      "height": 142,
+      "topLeft": null,
+      "shapeType": ""
+    },
+    {
+      "id": 676755900,
+      "width": 114,
+      "height": 126,
+      "topLeft": null,
+      "shapeType": "Step"
+    },
+    {
+      "id": 727088757,
+      "width": 115,
+      "height": 126,
+      "topLeft": null,
+      "shapeType": "Step"
+    },
+    {
+      "id": 710311138,
+      "width": 114,
+      "height": 126,
+      "topLeft": null,
+      "shapeType": "Step"
+    },
+    {
+      "id": 626423043,
+      "width": 115,
+      "height": 126,
+      "topLeft": null,
+      "shapeType": "Step"
+    },
+    {
+      "id": 609645424,
+      "width": 114,
+      "height": 126,
+      "topLeft": null,
+      "shapeType": "Step"
+    }
+  ],
+  "edges": [
+    {
+      "id": 624220850,
+      "from": 676755900,
+      "to": 727088757,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 2879422145,
+      "from": 710311138,
+      "to": 626423043,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 1865084774,
+      "from": 626423043,
+      "to": 609645424,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 2718560401,
+      "from": 727088757,
+      "to": 626423043,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 42,
+      "minHeight": 21,
+      "labelPercentage": 0
+    },
+    {
+      "id": 2475604836,
+      "from": 626423043,
+      "to": 727088757,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 42,
+      "minHeight": 21,
+      "labelPercentage": 0
+    }
+  ],
+  "CellSize": 0,
+  "containers": {
+    "0": [
+      1405799865
+    ],
+    "1405799865": [
+      676755900,
+      727088757,
+      710311138,
+      626423043,
+      609645424
+    ]
+  },
+  "clusters": {},
+  "sequences": {},
+  "clusterVessels": {},
+  "sequenceVessels": {},
+  "trees": {},
+  "crossingCost": 0,
+  "turnCost": 0,
+  "nonCenterPortCost": 0
+}

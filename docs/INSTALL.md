@@ -60,10 +60,13 @@ It follows the XDG standards, installs `d2` properly into a Unix hierarchy path
 allows for easy uninstall. You can easily adjust the used path with `--prefix`.
 
 Some other niceties are that it'll tell you if you need to adjust `$PATH` or `$MANPATH` to
-access `d2` and its manpages. It can also install
-[TALA](https://github.com/terrastruct/tala) for you with `--tala`. You can also use it to
-install a specific version of `d2` with `--version`. Run it with `--help` for more more
-detailed docs on its various options and features.
+access `d2` and its manpages. For releases that bundle TALA, select it with
+`d2 --layout=tala`; run `d2 layout` to check the installed engines.
+This installer installs only D2 and rejects the obsolete `--tala` option before
+installation. Omit that option when installing D2. Older D2 releases require the
+separate plugin available from the [legacy TALA releases](https://github.com/terrastruct/TALA/releases).
+You can install a specific version of `d2` with `--version`. Run the script with
+`--help` for detailed docs on its options and features.
 
 If you're still concerned, remember you can run with `--dry-run` to avoid writing anything.
 

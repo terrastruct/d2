@@ -1,0 +1,57 @@
+{
+  "nodes": [
+    {
+      "id": 2019098418,
+      "width": 108,
+      "height": 108,
+      "topLeft": null,
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 1548078252,
+      "width": 108,
+      "height": 108,
+      "topLeft": null,
+      "fontSize": null,
+      "shapeType": "Square"
+    }
+  ],
+  "edges": [
+    {
+      "id": 311690888,
+      "from": 2019098418,
+      "to": 1548078252,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 942047202,
+      "from": 2019098418,
+      "to": 1548078252,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 606685792,
+      "from": 1548078252,
+      "to": 2019098418,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    }
+  ],
+  "CellSize": 0,
+  "containers": {
+    "0": [
+      1548078252,
+      2019098418
+    ]
+  },
+  "clusters": {},
+  "crossingCost": 0,
+  "turnCost": 0,
+  "nonCenterPortCost": 0
+}

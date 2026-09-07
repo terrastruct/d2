@@ -1,6 +1,9 @@
 export class D2 {
-  compile(input: string, options?: Omit<CompileRequest, "fs">): Promise<CompileResponse>;
-  compile(input: CompileRequest): Promise<CompileResponse>;
+  /** Options in input.options take precedence over the second argument. */
+  compile(
+    input: string | CompileRequest,
+    options?: CompileOptions
+  ): Promise<CompileResponse>;
 
   render(diagram: Diagram, options?: RenderOptions): Promise<string>;
 
@@ -39,7 +42,7 @@ export interface RenderOptions {
 
 export interface CompileOptions extends RenderOptions {
   /** Layout engine to use [default: 'dagre'] */
-  layout?: "dagre" | "elk";
+  layout?: "dagre" | "elk" | "tala";
   /** A byte array containing .ttf file to use for the regular font. If none provided, Source Sans Pro Regular is used. */
   fontRegular?: Uint8Array;
   /** A byte array containing .ttf file to use for the italic font. If none provided, Source Sans Pro Italic is used. */
@@ -56,7 +59,7 @@ export interface CompileRequest {
   /** The path of the entry D2 file [default: index]*/
   inputPath?: string;
   /** The CompileOptions to pass to the compiler*/
-  options: CompileOptions;
+  options?: CompileOptions;
 }
 
 export interface CompileResponse {

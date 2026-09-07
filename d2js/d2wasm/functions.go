@@ -16,6 +16,7 @@ import (
 	"github.com/d2lang/d2/d2graph"
 	"github.com/d2lang/d2/d2layouts/d2dagrelayout"
 	"github.com/d2lang/d2/d2layouts/d2elklayout"
+	"github.com/d2lang/d2/d2layouts/d2talalayout"
 	"github.com/d2lang/d2/d2lib"
 	"github.com/d2lang/d2/d2lsp"
 	"github.com/d2lang/d2/d2oracle"
@@ -228,9 +229,17 @@ func Compile(args []js.Value) (interface{}, error) {
 			return d2dagrelayout.DefaultLayout, nil
 		case "elk":
 			return d2elklayout.DefaultLayout, nil
+		case "tala":
+			return d2talalayout.DefaultLayout, nil
 		default:
 			return nil, &WASMError{Message: fmt.Sprintf("layout option '%s' not recognized", engine), Code: 400}
 		}
+	}
+	compileOpts.RouterResolver = func(engine string) (d2graph.RouteEdges, error) {
+		if engine == "tala" {
+			return d2talalayout.RouteEdges, nil
+		}
+		return nil, nil
 	}
 
 	var err error

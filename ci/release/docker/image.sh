@@ -71,6 +71,12 @@ case "$command" in
       test -s "$smoke/output.$format"
     done
     grep -q '<svg' "$smoke/output.svg"
+    if [[ ${REQUIRE_TALA:-true} == true ]]; then
+      docker run --rm --platform "$PLATFORM" -u "$(id -u):$(id -g)" \
+        -v "$smoke:/home/debian/src" "$image" --layout=tala input.d2 output-tala.svg
+      test -s "$smoke/output-tala.svg"
+      grep -q '<svg' "$smoke/output-tala.svg"
+    fi
     [[ $(od -An -tx1 -N8 "$smoke/output.png" | tr -d ' \n') == 89504e470d0a1a0a ]] || die "invalid PNG signature"
     ;;
   *) die "unknown image command: $command" ;;

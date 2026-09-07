@@ -1,0 +1,761 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "width": 410,
+      "height": 592,
+      "topLeft": {
+        "x": 7880,
+        "y": 9901
+      },
+      "fontSize": null,
+      "shapeType": "Parallelogram"
+    },
+    {
+      "id": 2,
+      "width": 721,
+      "height": 292,
+      "topLeft": {
+        "x": 10197,
+        "y": 3530
+      },
+      "fontSize": null,
+      "shapeType": "Package"
+    },
+    {
+      "id": 3,
+      "width": 138,
+      "height": 113,
+      "topLeft": {
+        "x": 10283,
+        "y": 3538
+      },
+      "fontSize": null,
+      "shapeType": "Parallelogram"
+    },
+    {
+      "id": 4,
+      "width": 132,
+      "height": 129,
+      "topLeft": {
+        "x": 10594,
+        "y": 3669
+      },
+      "fontSize": null,
+      "shapeType": "Oval"
+    },
+    {
+      "id": 5,
+      "width": 169,
+      "height": 693,
+      "topLeft": {
+        "x": 10876,
+        "y": 2861
+      },
+      "fontSize": null,
+      "shapeType": "Cloud"
+    },
+    {
+      "id": 6,
+      "width": 394,
+      "height": 65,
+      "topLeft": {
+        "x": 7470,
+        "y": 217
+      },
+      "fontSize": null,
+      "shapeType": "Document"
+    },
+    {
+      "id": 7,
+      "width": 253,
+      "height": 256,
+      "topLeft": {
+        "x": 7770,
+        "y": 11758
+      },
+      "fontSize": null,
+      "shapeType": "Hexagon"
+    },
+    {
+      "id": 8,
+      "width": 375,
+      "height": 711,
+      "topLeft": {
+        "x": 9686,
+        "y": 11341
+      },
+      "fontSize": null,
+      "shapeType": "RealSquare"
+    },
+    {
+      "id": 9,
+      "width": 64,
+      "height": 69,
+      "topLeft": {
+        "x": 9698,
+        "y": 11382
+      },
+      "fontSize": null,
+      "shapeType": "Oval"
+    },
+    {
+      "id": 10,
+      "width": 73,
+      "height": 71,
+      "topLeft": {
+        "x": 9970,
+        "y": 11833
+      },
+      "fontSize": null,
+      "shapeType": "Queue"
+    },
+    {
+      "id": 11,
+      "width": 66,
+      "height": 60,
+      "topLeft": {
+        "x": 9880,
+        "y": 11802
+      },
+      "fontSize": null,
+      "shapeType": "Hexagon"
+    },
+    {
+      "id": 12,
+      "width": 73,
+      "height": 63,
+      "topLeft": {
+        "x": 9728,
+        "y": 11874
+      },
+      "fontSize": null,
+      "shapeType": "Queue"
+    },
+    {
+      "id": 13,
+      "width": 61,
+      "height": 70,
+      "topLeft": {
+        "x": 9717,
+        "y": 11639
+      },
+      "fontSize": null,
+      "shapeType": "StoredData"
+    },
+    {
+      "id": 14,
+      "width": 605,
+      "height": 624,
+      "topLeft": {
+        "x": 1138,
+        "y": 7684
+      },
+      "fontSize": null,
+      "shapeType": "StoredData"
+    },
+    {
+      "id": 15,
+      "width": 158,
+      "height": 174,
+      "topLeft": {
+        "x": 1447,
+        "y": 7919
+      },
+      "fontSize": null,
+      "shapeType": "Queue"
+    },
+    {
+      "id": 16,
+      "width": 119,
+      "height": 131,
+      "topLeft": {
+        "x": 1447,
+        "y": 7933
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 17,
+      "width": 179,
+      "height": 179,
+      "topLeft": {
+        "x": 1244,
+        "y": 8074
+      },
+      "fontSize": null,
+      "shapeType": "Callout"
+    },
+    {
+      "id": 18,
+      "width": 502,
+      "height": 346,
+      "topLeft": {
+        "x": 3231,
+        "y": 5228
+      },
+      "fontSize": null,
+      "shapeType": "Callout"
+    },
+    {
+      "id": 19,
+      "width": 160,
+      "height": 137,
+      "topLeft": {
+        "x": 3236,
+        "y": 5354
+      },
+      "fontSize": null,
+      "shapeType": "Package"
+    },
+    {
+      "id": 20,
+      "width": 123,
+      "height": 116,
+      "topLeft": {
+        "x": 3244,
+        "y": 5354
+      },
+      "fontSize": null,
+      "shapeType": "Cylinder"
+    },
+    {
+      "id": 21,
+      "width": 85,
+      "height": 591,
+      "topLeft": {
+        "x": 4492,
+        "y": 240
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 22,
+      "width": 685,
+      "height": 606,
+      "topLeft": {
+        "x": 6889,
+        "y": 10549
+      },
+      "fontSize": null,
+      "shapeType": "Queue"
+    },
+    {
+      "id": 23,
+      "width": 646,
+      "height": 233,
+      "topLeft": {
+        "x": 355,
+        "y": 9683
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 24,
+      "width": 81,
+      "height": 286,
+      "topLeft": {
+        "x": 11093,
+        "y": 3530
+      },
+      "fontSize": null,
+      "shapeType": "Oval"
+    },
+    {
+      "id": 25,
+      "width": 192,
+      "height": 554,
+      "topLeft": {
+        "x": 8300,
+        "y": 4879
+      },
+      "fontSize": null,
+      "shapeType": "Queue"
+    },
+    {
+      "id": 26,
+      "width": 182,
+      "height": 183,
+      "topLeft": {
+        "x": 8300,
+        "y": 4979
+      },
+      "fontSize": null,
+      "shapeType": "Diamond"
+    }
+  ],
+  "edges": [
+    {
+      "id": 1,
+      "from": 10,
+      "to": 18,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 2,
+      "from": 9,
+      "to": 4,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 3,
+      "from": 4,
+      "to": 25,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 4,
+      "from": 14,
+      "to": 7,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 5,
+      "from": 7,
+      "to": 6,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 6,
+      "from": 20,
+      "to": 17,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 7,
+      "from": 25,
+      "to": 6,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 8,
+      "from": 6,
+      "to": 11,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 9,
+      "from": 11,
+      "to": 20,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 10,
+      "from": 20,
+      "to": 3,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 11,
+      "from": 26,
+      "to": 17,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 12,
+      "from": 17,
+      "to": 22,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 13,
+      "from": 22,
+      "to": 21,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 14,
+      "from": 14,
+      "to": 12,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 15,
+      "from": 23,
+      "to": 11,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 16,
+      "from": 11,
+      "to": 21,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 17,
+      "from": 3,
+      "to": 9,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 18,
+      "from": 9,
+      "to": 1,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 19,
+      "from": 24,
+      "to": 17,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 20,
+      "from": 17,
+      "to": 12,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 21,
+      "from": 12,
+      "to": 15,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 22,
+      "from": 15,
+      "to": 19,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 23,
+      "from": 19,
+      "to": 25,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 24,
+      "from": 8,
+      "to": 6,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 25,
+      "from": 18,
+      "to": 24,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 26,
+      "from": 6,
+      "to": 2,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 27,
+      "from": 12,
+      "to": 10,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 28,
+      "from": 10,
+      "to": 4,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 29,
+      "from": 4,
+      "to": 17,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 30,
+      "from": 17,
+      "to": 22,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 31,
+      "from": 23,
+      "to": 7,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 32,
+      "from": 7,
+      "to": 9,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 33,
+      "from": 26,
+      "to": 2,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 34,
+      "from": 2,
+      "to": 20,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 35,
+      "from": 21,
+      "to": 12,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 36,
+      "from": 13,
+      "to": 11,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 37,
+      "from": 14,
+      "to": 19,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 38,
+      "from": 19,
+      "to": 22,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    }
+  ],
+  "CellSize": 0,
+  "containers": {
+    "0": [
+      1,
+      2,
+      5,
+      6,
+      7,
+      8,
+      14,
+      18,
+      21,
+      22,
+      23,
+      24,
+      25
+    ],
+    "14": [
+      15,
+      17
+    ],
+    "15": [
+      16
+    ],
+    "18": [
+      19
+    ],
+    "19": [
+      20
+    ],
+    "2": [
+      3,
+      4
+    ],
+    "25": [
+      26
+    ],
+    "8": [
+      9,
+      10,
+      11,
+      12,
+      13
+    ]
+  },
+  "clusters": {},
+  "clusterVessels": {},
+  "trees": {},
+  "crossingCost": 0,
+  "turnCost": 0,
+  "nonCenterPortCost": 0
+}

@@ -1,0 +1,423 @@
+{
+  "nodes": [
+    {
+      "id": 3795088187,
+      "d2id": "lost",
+      "width": 717,
+      "height": 366,
+      "topLeft": {
+        "x": 505,
+        "y": 0
+      },
+      "shapeType": "Square",
+      "label": {
+        "Text": "lost",
+        "Position": "INSIDE_TOP_CENTER",
+        "Width": 46,
+        "Height": 37
+      }
+    },
+    {
+      "id": 4262297032,
+      "d2id": "children",
+      "width": 434,
+      "height": 246,
+      "topLeft": {
+        "x": 565,
+        "y": 60
+      },
+      "shapeType": "Square",
+      "label": {
+        "Text": "children",
+        "Position": "INSIDE_TOP_CENTER",
+        "Width": 88,
+        "Height": 32
+      }
+    },
+    {
+      "id": 2202142904,
+      "d2id": "strike",
+      "width": 147,
+      "height": 126,
+      "topLeft": {
+        "x": 625,
+        "y": 120
+      },
+      "shapeType": "Square",
+      "label": {
+        "Text": "strike",
+        "Position": "INSIDE_MIDDLE_CENTER",
+        "Width": 42,
+        "Height": 21
+      }
+    },
+    {
+      "id": 4077834250,
+      "d2id": "down",
+      "width": 147,
+      "height": 126,
+      "topLeft": {
+        "x": 792,
+        "y": 120
+      },
+      "shapeType": "Square",
+      "label": {
+        "Text": "down",
+        "Position": "INSIDE_MIDDLE_CENTER",
+        "Width": 42,
+        "Height": 21
+      }
+    },
+    {
+      "id": 3315722899,
+      "d2id": "upon",
+      "width": 143,
+      "height": 126,
+      "topLeft": {
+        "x": 1019,
+        "y": 60
+      },
+      "shapeType": "Square",
+      "label": {
+        "Text": "upon",
+        "Position": "INSIDE_MIDDLE_CENTER",
+        "Width": 38,
+        "Height": 21
+      }
+    },
+    {
+      "id": 3961713787,
+      "d2id": "thee",
+      "width": 258,
+      "height": 246,
+      "topLeft": {
+        "x": 240,
+        "y": 456
+      },
+      "shapeType": "Square",
+      "label": {
+        "Text": "thee",
+        "Position": "INSIDE_TOP_CENTER",
+        "Width": 57,
+        "Height": 37
+      }
+    },
+    {
+      "id": 1106703095,
+      "d2id": "with",
+      "width": 138,
+      "height": 126,
+      "topLeft": {
+        "x": 300,
+        "y": 516
+      },
+      "shapeType": "Square",
+      "label": {
+        "Text": "with",
+        "Position": "INSIDE_MIDDLE_CENTER",
+        "Width": 33,
+        "Height": 21
+      }
+    },
+    {
+      "id": 2288983949,
+      "d2id": "vengeance",
+      "width": 277,
+      "height": 246,
+      "topLeft": {
+        "x": 560,
+        "y": 456
+      },
+      "shapeType": "Square",
+      "label": {
+        "Text": "vengeance",
+        "Position": "INSIDE_TOP_CENTER",
+        "Width": 137,
+        "Height": 37
+      }
+    },
+    {
+      "id": 3884366406,
+      "d2id": "furious",
+      "width": 157,
+      "height": 126,
+      "topLeft": {
+        "x": 620,
+        "y": 516
+      },
+      "shapeType": "Square",
+      "label": {
+        "Text": "furious",
+        "Position": "INSIDE_MIDDLE_CENTER",
+        "Width": 52,
+        "Height": 21
+      }
+    },
+    {
+      "id": 2856220944,
+      "d2id": "anger",
+      "width": 148,
+      "height": 126,
+      "topLeft": {
+        "x": 0,
+        "y": 516
+      },
+      "shapeType": "Square",
+      "label": {
+        "Text": "anger",
+        "Position": "INSIDE_MIDDLE_CENTER",
+        "Width": 43,
+        "Height": 21
+      }
+    },
+    {
+      "id": 4171928618,
+      "d2id": "those",
+      "width": 146,
+      "height": 126,
+      "topLeft": {
+        "x": 294,
+        "y": 792
+      },
+      "shapeType": "Square",
+      "label": {
+        "Text": "those",
+        "Position": "INSIDE_MIDDLE_CENTER",
+        "Width": 41,
+        "Height": 21
+      }
+    },
+    {
+      "id": 4212348398,
+      "d2id": "great",
+      "width": 145,
+      "height": 126,
+      "topLeft": {
+        "x": 626,
+        "y": 792
+      },
+      "shapeType": "Square",
+      "label": {
+        "Text": "great",
+        "Position": "INSIDE_MIDDLE_CENTER",
+        "Width": 40,
+        "Height": 21
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": 2110307224,
+      "from": 3795088187,
+      "to": 2856220944,
+      "points": [
+        {
+          "x": 505,
+          "y": 122
+        },
+        {
+          "x": 74,
+          "y": 122
+        },
+        {
+          "x": 74,
+          "y": 516
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 1766123566,
+      "from": 3795088187,
+      "to": 3961713787,
+      "points": [
+        {
+          "x": 505,
+          "y": 244
+        },
+        {
+          "x": 369,
+          "y": 244
+        },
+        {
+          "x": 369,
+          "y": 456
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 1490059869,
+      "from": 3795088187,
+      "to": 2288983949,
+      "points": [
+        {
+          "x": 698,
+          "y": 366
+        },
+        {
+          "x": 698,
+          "y": 456
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 1105254106,
+      "from": 3961713787,
+      "to": 4171928618,
+      "points": [
+        {
+          "x": 342,
+          "y": 702
+        },
+        {
+          "x": 342,
+          "y": 792
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 4191753760,
+      "from": 2856220944,
+      "to": 4171928618,
+      "points": [
+        {
+          "x": 74,
+          "y": 642
+        },
+        {
+          "x": 74,
+          "y": 855
+        },
+        {
+          "x": 294,
+          "y": 855
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 2704977590,
+      "from": 2288983949,
+      "to": 4171928618,
+      "points": [
+        {
+          "x": 674,
+          "y": 702
+        },
+        {
+          "x": 674,
+          "y": 747
+        },
+        {
+          "x": 390,
+          "y": 747
+        },
+        {
+          "x": 390,
+          "y": 792
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 797963185,
+      "from": 2288983949,
+      "to": 4212348398,
+      "points": [
+        {
+          "x": 722,
+          "y": 702
+        },
+        {
+          "x": 722,
+          "y": 792
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    }
+  ],
+  "CellSize": 189,
+  "containers": {
+    "0": [
+      3795088187,
+      3961713787,
+      2288983949,
+      2856220944,
+      4171928618,
+      4212348398
+    ],
+    "2288983949": [
+      3884366406
+    ],
+    "3795088187": [
+      4262297032,
+      3315722899
+    ],
+    "3961713787": [
+      1106703095
+    ],
+    "4262297032": [
+      2202142904,
+      4077834250
+    ]
+  },
+  "hubs": {
+    "2288983949": [
+      4212348398
+    ]
+  },
+  "hierarchies": [
+    {
+      "Levels": {
+        "2288983949": 1,
+        "2856220944": 1,
+        "3795088187": 0,
+        "3961713787": 1,
+        "4171928618": 2,
+        "4212348398": 2,
+        "4262297032": 0
+      }
+    }
+  ],
+  "crossingCost": 162.04592570243958,
+  "turnCost": 183.15737768378318,
+  "nonCenterPortCost": 0
+}

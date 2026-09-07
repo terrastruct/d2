@@ -1,0 +1,302 @@
+{
+  "nodes": [
+    {
+      "id": 55823958,
+      "width": 516,
+      "height": 526,
+      "topLeft": null,
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 215148004,
+      "width": 128,
+      "height": 128,
+      "topLeft": null,
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 3176490940,
+      "width": 108,
+      "height": 108,
+      "topLeft": null,
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 3098454838,
+      "width": 128,
+      "height": 128,
+      "topLeft": null,
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 1844746253,
+      "width": 128,
+      "height": 128,
+      "topLeft": null,
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 1793941699,
+      "width": 108,
+      "height": 108,
+      "topLeft": null,
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 1263536650,
+      "width": 582,
+      "height": 258,
+      "topLeft": null,
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 1890212860,
+      "width": 108,
+      "height": 108,
+      "topLeft": null,
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 3943036970,
+      "width": 108,
+      "height": 108,
+      "topLeft": null,
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 2788873274,
+      "width": 108,
+      "height": 108,
+      "topLeft": null,
+      "fontSize": 14,
+      "shapeType": "Square"
+    },
+    {
+      "id": 1146908279,
+      "width": 108,
+      "height": 108,
+      "topLeft": null,
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 2891615139,
+      "width": 108,
+      "height": 108,
+      "topLeft": null,
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 1605477236,
+      "width": 108,
+      "height": 108,
+      "topLeft": null,
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 1330816079,
+      "width": 503,
+      "height": 369,
+      "topLeft": null,
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 5579784,
+      "width": 128,
+      "height": 128,
+      "topLeft": null,
+      "fontSize": null,
+      "shapeType": "Oval"
+    },
+    {
+      "id": 1683831685,
+      "width": 104,
+      "height": 132,
+      "topLeft": null,
+      "fontSize": null,
+      "shapeType": "Page"
+    },
+    {
+      "id": 1841573592,
+      "width": 100,
+      "height": 128,
+      "topLeft": null,
+      "fontSize": null,
+      "shapeType": "Cylinder"
+    },
+    {
+      "id": 2737876786,
+      "width": 108,
+      "height": 108,
+      "topLeft": null,
+      "fontSize": null,
+      "shapeType": "Hexagon"
+    },
+    {
+      "id": 803984628,
+      "width": 128,
+      "height": 128,
+      "topLeft": null,
+      "fontSize": null,
+      "shapeType": "Oval"
+    },
+    {
+      "id": 1255391560,
+      "width": 128,
+      "height": 128,
+      "topLeft": null,
+      "fontSize": null,
+      "shapeType": "Oval"
+    }
+  ],
+  "edges": [
+    {
+      "id": 1957484274,
+      "from": 215148004,
+      "to": 3098454838,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 2754269535,
+      "from": 215148004,
+      "to": 3176490940,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 927680720,
+      "from": 3176490940,
+      "to": 3098454838,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 1873996946,
+      "from": 1793941699,
+      "to": 1844746253,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 2258343659,
+      "from": 55823958,
+      "to": 1844746253,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 2011599942,
+      "from": 1263536650,
+      "to": 55823958,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 3070645379,
+      "from": 1844746253,
+      "to": 1793941699,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 2085798954,
+      "from": 803984628,
+      "to": 55823958,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 3115925670,
+      "from": 1255391560,
+      "to": 55823958,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    }
+  ],
+  "CellSize": 0,
+  "containers": {
+    "0": [
+      55823958,
+      803984628,
+      1146908279,
+      1255391560,
+      1263536650,
+      1330816079,
+      1605477236,
+      1793941699,
+      1844746253,
+      2737876786,
+      2891615139
+    ],
+    "1263536650": [
+      1890212860,
+      2788873274,
+      3943036970
+    ],
+    "1330816079": [
+      5579784,
+      1683831685,
+      1841573592
+    ],
+    "55823958": [
+      215148004,
+      3098454838,
+      3176490940
+    ]
+  },
+  "clusters": {},
+  "clusterVessels": {},
+  "trees": {},
+  "crossingCost": 0,
+  "turnCost": 0,
+  "nonCenterPortCost": 0
+}

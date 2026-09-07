@@ -1,0 +1,101 @@
+{
+  "nodes": [
+    {
+      "id": 1585235219,
+      "d2id": "users",
+      "width": 265,
+      "height": 222,
+      "topLeft": null,
+      "shapeType": "Table"
+    },
+    {
+      "id": 1337911437,
+      "d2id": "products",
+      "width": 296,
+      "height": 185,
+      "topLeft": null,
+      "shapeType": "Table"
+    },
+    {
+      "id": 845059820,
+      "d2id": "orders",
+      "width": 219,
+      "height": 148,
+      "topLeft": null,
+      "shapeType": "Table"
+    },
+    {
+      "id": 3042109200,
+      "d2id": "shipments",
+      "width": 299,
+      "height": 185,
+      "topLeft": null,
+      "shapeType": "Table"
+    }
+  ],
+  "edges": [
+    {
+      "id": 3721427352,
+      "from": 1585235219,
+      "to": 845059820,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 189,
+      "minHeight": 21,
+      "labelPercentage": 0,
+      "label": {
+        "Text": "users.id \u003c-\u003e orders.user_id",
+        "Position": "",
+        "Width": 189,
+        "Height": 21
+      }
+    },
+    {
+      "id": 796947286,
+      "from": 1337911437,
+      "to": 845059820,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 242,
+      "minHeight": 21,
+      "labelPercentage": 0,
+      "label": {
+        "Text": "products.id \u003c-\u003e orders.product_id",
+        "Position": "",
+        "Width": 242,
+        "Height": 21
+      }
+    },
+    {
+      "id": 1160838145,
+      "from": 3042109200,
+      "to": 845059820,
+      "points": [],
+      "sourceArrowhead": "triangle",
+      "targetArrowhead": "triangle",
+      "minWidth": 233,
+      "minHeight": 21,
+      "labelPercentage": 0,
+      "label": {
+        "Text": "shipments.order_id \u003c-\u003e orders.id",
+        "Position": "",
+        "Width": 233,
+        "Height": 21
+      }
+    }
+  ],
+  "CellSize": 0,
+  "containers": {
+    "0": [
+      1585235219,
+      1337911437,
+      845059820,
+      3042109200
+    ]
+  },
+  "crossingCost": 0,
+  "turnCost": 0,
+  "nonCenterPortCost": 0
+}

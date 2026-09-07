@@ -1,0 +1,8 @@
+go test fuzz v1
+int64(46)
+byte('\v')
+byte('\x05')
+byte('\x04')
+byte('n')
+byte('\'')
+byte('[')

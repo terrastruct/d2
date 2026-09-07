@@ -1,0 +1,159 @@
+{
+  "nodes": [
+    {
+      "id": 108289031,
+      "width": 185,
+      "height": 126,
+      "topLeft": {
+        "x": 159,
+        "y": 567
+      },
+      "shapeType": "Square"
+    },
+    {
+      "id": 3939368189,
+      "width": 506,
+      "height": 449,
+      "topLeft": {
+        "x": 0,
+        "y": 0
+      },
+      "shapeType": "Cloud"
+    },
+    {
+      "id": 3818877272,
+      "width": 137,
+      "height": 126,
+      "topLeft": {
+        "x": 104,
+        "y": 244
+      },
+      "shapeType": "Square"
+    },
+    {
+      "id": 3869210129,
+      "width": 137,
+      "height": 126,
+      "topLeft": {
+        "x": 261,
+        "y": 244
+      },
+      "shapeType": "Square"
+    }
+  ],
+  "edges": [
+    {
+      "id": 3648662198,
+      "from": 108289031,
+      "to": 3818877272,
+      "points": [
+        {
+          "x": 250,
+          "y": 567
+        },
+        {
+          "x": 250,
+          "y": 508
+        },
+        {
+          "x": 172,
+          "y": 508
+        },
+        {
+          "x": 172,
+          "y": 370
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 1214348202,
+      "from": 108289031,
+      "to": 3869210129,
+      "points": [
+        {
+          "x": 250,
+          "y": 567
+        },
+        {
+          "x": 250,
+          "y": 508
+        },
+        {
+          "x": 329,
+          "y": 508
+        },
+        {
+          "x": 329,
+          "y": 370
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    }
+  ],
+  "CellSize": 189,
+  "containers": {
+    "0": [
+      108289031,
+      3939368189
+    ],
+    "3939368189": [
+      3818877272,
+      3869210129
+    ]
+  },
+  "clusters": {
+    "5361704182646325489": {
+      "Nodes": [
+        3818877272,
+        3869210129
+      ],
+      "Arrangement": "Row",
+      "DesiredArrangement": "Row",
+      "EdgeAbductions": [
+        {
+          "Edge": 3648662198,
+          "OriginallyFromNode": 0,
+          "OriginallyToNode": 3818877272,
+          "CurrentFromNode": 108289031,
+          "CurrentToNode": 5361704182646325489
+        },
+        {
+          "Edge": 1214348202,
+          "OriginallyFromNode": 0,
+          "OriginallyToNode": 3869210129,
+          "CurrentFromNode": 108289031,
+          "CurrentToNode": 5361704182646325489
+        }
+      ],
+      "Container": 3939368189,
+      "FixedSize": false,
+      "Padding": 20
+    }
+  },
+  "clusterVessels": {
+    "5361704182646325489": {
+      "id": 5361704182646325489,
+      "width": 294,
+      "height": 126,
+      "topLeft": {
+        "x": -55,
+        "y": 244
+      },
+      "shapeType": ""
+    }
+  },
+  "crossingCost": 54.418456500229695,
+  "turnCost": 41.815816385669194,
+  "nonCenterPortCost": 0
+}
