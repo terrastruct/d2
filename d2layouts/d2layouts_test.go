@@ -313,3 +313,43 @@ func BenchmarkLayoutNestedPartitions(b *testing.B) {
 		})
 	}
 }
+
+func TestExtractSubgraphsPreservesIndependentConfigData(t *testing.T) {
+	for _, batched := range []bool{false, true} {
+		t.Run(fmt.Sprintf("batched=%t", batched), func(t *testing.T) {
+			g := compileLayoutTestGraph(t, `grid: {grid-columns: 1; a -> b}
+note: {near: top-left; c -> d}`)
+			data := map[string]interface{}{
+				"tala-seeds": []interface{}{"7", "11"},
+				"metadata":   map[string]interface{}{"name": "original"},
+			}
+			g.Data = map[string]interface{}{
+				"tala-seeds": []interface{}{"7", "11"},
+				"metadata":   map[string]interface{}{"name": "original"},
+			}
+			specs := collectNestedExtractions(g)
+			var graphs []*d2graph.Graph
+			if batched {
+				batch := extractSubgraphs(g, specs)
+				for _, spec := range specs {
+					graphs = append(graphs, batch.extractions[spec.container].nestedGraph)
+				}
+			} else {
+				for _, spec := range specs {
+					nested, _, _ := ExtractSubgraph(spec.container, spec.includeSelf)
+					graphs = append(graphs, nested)
+				}
+			}
+			for _, graph := range graphs {
+				if !reflect.DeepEqual(graph.Data, data) {
+					t.Fatalf("nested data = %#v, want %#v", graph.Data, data)
+				}
+				graph.Data["tala-seeds"].([]interface{})[0] = "changed"
+				graph.Data["metadata"].(map[string]interface{})["name"] = "changed"
+			}
+			if !reflect.DeepEqual(g.Data, data) {
+				t.Fatalf("nested layout changed parent data: %#v", g.Data)
+			}
+		})
+	}
+}
