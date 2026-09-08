@@ -11,6 +11,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"unicode/utf8"
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -710,12 +711,16 @@ func (obj *Object) newObject(ids d2ast.String) *Object {
 	if k != nil && len(k.Path) > 0 {
 		idval = k.Path[0].Unbox().ScalarString()
 	}
+	label := ids.ScalarString()
+	if !utf8.ValidString(label) {
+		label = idval
+	}
 	child := &Object{
 		ID:    id,
 		IDVal: idval,
 		Attributes: Attributes{
 			Label: Scalar{
-				Value: idval,
+				Value: label,
 			},
 		},
 
