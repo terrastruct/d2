@@ -105,6 +105,7 @@ type ConfigurableOpts struct {
 	NodeSpacing     int    `json:"spacing.nodeNodeBetweenLayers,omitempty"`
 	Padding         string `json:"elk.padding,omitempty"`
 	EdgeNodeSpacing int    `json:"spacing.edgeNodeBetweenLayers,omitempty"`
+	EdgeEdgeSpacing int    `json:"spacing.edgeEdgeBetweenLayers"`
 	SelfLoopSpacing int    `json:"elk.spacing.nodeSelfLoop"`
 }
 
@@ -113,6 +114,7 @@ var DefaultOpts = ConfigurableOpts{
 	NodeSpacing:     70.0,
 	Padding:         "[top=50,left=50,bottom=50,right=50]",
 	EdgeNodeSpacing: 40.0,
+	EdgeEdgeSpacing: 50.0,
 	SelfLoopSpacing: 50.0,
 }
 
@@ -172,16 +174,15 @@ func (s elkGraphStats) maxSelfLoopLabel(parent *d2graph.Object, isWidth bool) in
 }
 
 type elkOpts struct {
-	EdgeNode                     int       `json:"elk.spacing.edgeNode,omitempty"`
-	FixedAlignment               string    `json:"elk.layered.nodePlacement.bk.fixedAlignment,omitempty"`
-	Thoroughness                 int       `json:"elk.layered.thoroughness,omitempty"`
-	EdgeEdgeBetweenLayersSpacing int       `json:"elk.layered.spacing.edgeEdgeBetweenLayers,omitempty"`
-	Direction                    Direction `json:"elk.direction"`
-	HierarchyHandling            string    `json:"elk.hierarchyHandling,omitempty"`
-	InlineEdgeLabels             bool      `json:"elk.edgeLabels.inline,omitempty"`
-	ForceNodeModelOrder          bool      `json:"elk.layered.crossingMinimization.forceNodeModelOrder,omitempty"`
-	ConsiderModelOrder           string    `json:"elk.layered.considerModelOrder.strategy,omitempty"`
-	CycleBreakingStrategy        string    `json:"elk.layered.cycleBreaking.strategy,omitempty"`
+	EdgeNode              int       `json:"elk.spacing.edgeNode,omitempty"`
+	FixedAlignment        string    `json:"elk.layered.nodePlacement.bk.fixedAlignment,omitempty"`
+	Thoroughness          int       `json:"elk.layered.thoroughness,omitempty"`
+	Direction             Direction `json:"elk.direction"`
+	HierarchyHandling     string    `json:"elk.hierarchyHandling,omitempty"`
+	InlineEdgeLabels      bool      `json:"elk.edgeLabels.inline,omitempty"`
+	ForceNodeModelOrder   bool      `json:"elk.layered.crossingMinimization.forceNodeModelOrder,omitempty"`
+	ConsiderModelOrder    string    `json:"elk.layered.considerModelOrder.strategy,omitempty"`
+	CycleBreakingStrategy string    `json:"elk.layered.cycleBreaking.strategy,omitempty"`
 
 	SelfLoopDistribution string `json:"elk.layered.edgeRouting.selfLoopDistribution,omitempty"`
 
@@ -197,19 +198,19 @@ type elkOpts struct {
 
 func newRootLayoutOptions(opts *ConfigurableOpts) *elkOpts {
 	return &elkOpts{
-		Thoroughness:                 8,
-		EdgeEdgeBetweenLayersSpacing: 50,
-		EdgeNode:                     edge_node_spacing,
-		HierarchyHandling:            "INCLUDE_CHILDREN",
-		FixedAlignment:               "BALANCED",
-		ConsiderModelOrder:           "NODES_AND_EDGES",
-		CycleBreakingStrategy:        "GREEDY_MODEL_ORDER",
-		NodeSizeConstraints:          "MINIMUM_SIZE",
-		ContentAlignment:             "H_CENTER V_CENTER",
+		Thoroughness:          8,
+		EdgeNode:              edge_node_spacing,
+		HierarchyHandling:     "INCLUDE_CHILDREN",
+		FixedAlignment:        "BALANCED",
+		ConsiderModelOrder:    "NODES_AND_EDGES",
+		CycleBreakingStrategy: "GREEDY_MODEL_ORDER",
+		NodeSizeConstraints:   "MINIMUM_SIZE",
+		ContentAlignment:      "H_CENTER V_CENTER",
 		ConfigurableOpts: ConfigurableOpts{
 			Algorithm:       opts.Algorithm,
 			NodeSpacing:     opts.NodeSpacing,
 			EdgeNodeSpacing: opts.EdgeNodeSpacing,
+			EdgeEdgeSpacing: opts.EdgeEdgeSpacing,
 			SelfLoopSpacing: opts.SelfLoopSpacing,
 		},
 	}
@@ -217,11 +218,10 @@ func newRootLayoutOptions(opts *ConfigurableOpts) *elkOpts {
 
 func newContainerLayoutOptions(opts *ConfigurableOpts) *elkOpts {
 	return &elkOpts{
-		Thoroughness:                 8,
-		EdgeEdgeBetweenLayersSpacing: 50,
-		HierarchyHandling:            "INCLUDE_CHILDREN",
-		FixedAlignment:               "BALANCED",
-		EdgeNode:                     edge_node_spacing,
+		Thoroughness:      8,
+		HierarchyHandling: "INCLUDE_CHILDREN",
+		FixedAlignment:    "BALANCED",
+		EdgeNode:          edge_node_spacing,
 		// ELK 0.12 crashes on compound subgraphs when model-order
 		// processing is enabled below the root. Keep it disabled there.
 		ConsiderModelOrder:    "NONE",
@@ -231,6 +231,7 @@ func newContainerLayoutOptions(opts *ConfigurableOpts) *elkOpts {
 		ConfigurableOpts: ConfigurableOpts{
 			NodeSpacing:     opts.NodeSpacing,
 			EdgeNodeSpacing: opts.EdgeNodeSpacing,
+			EdgeEdgeSpacing: opts.EdgeEdgeSpacing,
 			SelfLoopSpacing: opts.SelfLoopSpacing,
 			Padding:         opts.Padding,
 		},

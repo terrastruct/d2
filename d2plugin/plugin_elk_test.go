@@ -19,6 +19,7 @@ func TestELKPluginHydrateOpts(t *testing.T) {
 		NodeSpacing:     123,
 		Padding:         "[top=11,left=22,bottom=33,right=44]",
 		EdgeNodeSpacing: 67,
+		EdgeEdgeSpacing: 78,
 		SelfLoopSpacing: 89,
 	}
 	raw, err := json.Marshal(want)
