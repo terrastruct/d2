@@ -103,7 +103,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
-	stdoutFormatFlag := ms.Opts.String("", "stdout-format", "", "", "output format when writing to stdout (svg, png, ascii, txt, pdf, pptx, gif). Usage: d2 input.d2 --stdout-format png - > output.png")
+	stdoutFormatFlag := ms.Opts.String("", "stdout-format", "", "", "output format when writing to stdout (svg, png, ascii, txt, pdf, pptx, gif, json). Usage: d2 input.d2 --stdout-format png - > output.png")
 	if err != nil {
 		return err
 	}
@@ -983,6 +983,18 @@ func _renderWithPNGEncoder(ctx context.Context, ms *xmain.State, plugin d2plugin
 			return ascii, written, err
 		}
 		return ascii, written, nil
+	}
+	if outputFormat == JSON {
+		jsonBytes, err := json.MarshalIndent(diagram, "", "  ")
+		if err != nil {
+			return nil, err
+		}
+		jsonBytes = append(jsonBytes, '\n')
+		err = Write(ms, outputPath, jsonBytes)
+		if err != nil {
+			return jsonBytes, err
+		}
+		return jsonBytes, nil
 	}
 	toPNG := outputFormat == PNG
 

@@ -14,8 +14,9 @@ const PPTX exportExtension = ".pptx"
 const PDF exportExtension = ".pdf"
 const SVG exportExtension = ".svg"
 const TXT exportExtension = ".txt"
+const JSON exportExtension = ".json"
 
-var SUPPORTED_EXTENSIONS = []exportExtension{SVG, PNG, PDF, PPTX, GIF, TXT}
+var SUPPORTED_EXTENSIONS = []exportExtension{SVG, PNG, PDF, PPTX, GIF, TXT, JSON}
 
 var STDOUT_FORMAT_MAP = map[string]exportExtension{
 	"png":   PNG,
@@ -25,9 +26,10 @@ var STDOUT_FORMAT_MAP = map[string]exportExtension{
 	"pdf":   PDF,
 	"pptx":  PPTX,
 	"gif":   GIF,
+	"json":  JSON,
 }
 
-var SUPPORTED_STDOUT_FORMATS = []string{"png", "svg", "ascii", "txt", "pdf", "pptx", "gif"}
+var SUPPORTED_STDOUT_FORMATS = []string{"png", "svg", "ascii", "txt", "pdf", "pptx", "gif", "json"}
 
 func getOutputFormat(stdoutFormatFlag *string, outputPath string) (exportExtension, error) {
 	if stdoutFormatFlag != nil && *stdoutFormatFlag != "" {
