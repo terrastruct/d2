@@ -126,3 +126,41 @@ func (segment Segment) Length() float64 {
 func (segment Segment) ToVector() Vector {
 	return NewVector(segment.End.X-segment.Start.X, segment.End.Y-segment.Start.Y)
 }
+
+// IntersectCircle returns intersection points of this segment with a circle
+// centered at the given point with the given radius. Returned points lie on
+// the segment (parameter t in [0,1]). A tangent contact yields a single
+// point; the list is empty when the segment misses the circle, or only
+// touches it outside its endpoints.
+func (s Segment) IntersectCircle(center *Point, radius float64) []*Point {
+	dx := s.End.X - s.Start.X
+	dy := s.End.Y - s.Start.Y
+	fx := s.Start.X - center.X
+	fy := s.Start.Y - center.Y
+	a := dx*dx + dy*dy
+	if a == 0 {
+		return nil
+	}
+	b := 2 * (fx*dx + fy*dy)
+	c := fx*fx + fy*fy - radius*radius
+	disc := b*b - 4*a*c
+	if disc < 0 {
+		return nil
+	}
+	sqrtDisc := math.Sqrt(disc)
+	roots := []float64{(-b - sqrtDisc) / (2 * a)}
+	if disc > 0 {
+		roots = append(roots, (-b+sqrtDisc)/(2*a))
+	}
+	var pts []*Point
+	for _, t := range roots {
+		if t < 0 {
+			continue
+		}
+		if t > 1 {
+			continue
+		}
+		pts = append(pts, NewPoint(s.Start.X+t*dx, s.Start.Y+t*dy))
+	}
+	return pts
+}

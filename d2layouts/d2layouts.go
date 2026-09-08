@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2layouts/d2cycle"
 	"github.com/d2lang/d2/d2layouts/d2grid"
 	"github.com/d2lang/d2/d2layouts/d2near"
 	"github.com/d2lang/d2/d2layouts/d2sequence"
@@ -20,12 +21,12 @@ import (
 
 type DiagramType string
 
-// a grid diagram at a constant near is
 const (
 	DefaultGraphType  DiagramType = ""
 	ConstantNearGraph DiagramType = "constant-near"
 	GridDiagram       DiagramType = "grid-diagram"
 	SequenceDiagram   DiagramType = "sequence-diagram"
+	CycleDiagram      DiagramType = "cycle-diagram"
 )
 
 type GraphInfo struct {
@@ -289,6 +290,12 @@ func LayoutNested(ctx context.Context, g *d2graph.Graph, graphInfo GraphInfo, co
 			if err != nil {
 				return err
 			}
+		case CycleDiagram:
+			log.Debug(ctx, "layout cycle", slog.Any("rootlevel", g.RootLevel), slog.Any("shapes", g.PrintString()))
+			err = d2cycle.Layout(ctx, g, coreLayout)
+			if err != nil {
+				return err
+			}
 		default:
 			log.Debug(ctx, "default layout", slog.Any("rootlevel", g.RootLevel), slog.Any("shapes", g.PrintString()))
 			err := coreLayout(ctx, g)
@@ -393,6 +400,8 @@ func NestedGraphInfo(obj *d2graph.Object) (gi GraphInfo) {
 		gi.DiagramType = SequenceDiagram
 	} else if obj.IsGridDiagram() {
 		gi.DiagramType = GridDiagram
+	} else if obj.IsCycleDiagram() {
+		gi.DiagramType = CycleDiagram
 	}
 	return gi
 }
