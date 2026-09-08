@@ -1035,6 +1035,18 @@ var ShortToFullLanguageAliases = map[string]string{
 }
 var FullToShortLanguageAliases map[string]string
 
+// Structured shapes use explicit labels as types, not source-derived defaults.
+func hasDefaultLabel(obj *d2graph.Object) bool {
+	if obj.Label.Value == obj.IDVal {
+		return true
+	}
+	if !strings.EqualFold(obj.Label.Value, obj.IDVal) {
+		return false
+	}
+	key := obj.Label.MapKey
+	return key == nil || key.Primary.Unbox() == nil && key.Value.ScalarBox().Unbox() == nil
+}
+
 func (c *compiler) compileClass(obj *d2graph.Object) {
 	obj.Class = &d2target.Class{}
 	for _, f := range obj.ChildrenArray {
@@ -1056,7 +1068,7 @@ func (c *compiler) compileClass(obj *d2graph.Object) {
 
 		if !strings.Contains(f.IDVal, "(") {
 			typ := f.Label.Value
-			if typ == f.IDVal {
+			if hasDefaultLabel(f) {
 				typ = ""
 			}
 			underline := f.Attributes.Style.Underline != nil && f.Attributes.Style.Underline.Value == "true"
@@ -1070,7 +1082,7 @@ func (c *compiler) compileClass(obj *d2graph.Object) {
 			// TODO: Not great, AST should easily allow specifying alternate primary field
 			// as an explicit label should change the name.
 			returnType := f.Label.Value
-			if returnType == f.IDVal {
+			if hasDefaultLabel(f) {
 				returnType = "void"
 			}
 			underline := f.Attributes.Style.Underline != nil && f.Attributes.Style.Underline.Value == "true"
@@ -1099,7 +1111,7 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 	obj.SQLTable = &d2target.SQLTable{}
 	for _, col := range obj.ChildrenArray {
 		typ := col.Label.Value
-		if typ == col.IDVal {
+		if hasDefaultLabel(col) {
 			// Not great, AST should easily allow specifying alternate primary field
 			// as an explicit label should change the name.
 			typ = ""

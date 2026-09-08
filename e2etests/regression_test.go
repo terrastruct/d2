@@ -2,11 +2,39 @@ package e2etests
 
 import (
 	"testing"
+
+	"github.com/d2lang/d2/d2target"
 )
 
 func testRegression(t *testing.T) {
 	terminalThemeID := int64(300)
 	tcs := []testCase{
+		{
+			name: "quoted_keyword_labels",
+			script: `direction: right
+"LEFT" -> 'ShApE'
+"left" -> "LABEL"
+"LABEL": shown
+box: {
+  "TOP"
+  "top" -> node
+}
+`,
+			assertions: func(t *testing.T, diagram *d2target.Diagram) {
+				want := map[string]string{
+					"left": "LEFT", "shape": "ShApE", "label": "shown",
+					"box": "box", "box.top": "TOP", "box.node": "node",
+				}
+				if len(diagram.Shapes) != len(want) {
+					t.Fatalf("shapes = %d, want %d", len(diagram.Shapes), len(want))
+				}
+				for _, shape := range diagram.Shapes {
+					if label, ok := want[shape.ID]; !ok || shape.Label != label {
+						t.Errorf("shape %q label = %q, want %q", shape.ID, shape.Label, label)
+					}
+				}
+			},
+		},
 		{
 			// https://github.com/terrastruct/d2/issues/919
 			name: "hex-fill",

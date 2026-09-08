@@ -3,6 +3,7 @@ package d2graph_test
 import (
 	"strings"
 	"testing"
+	"unicode/utf8"
 
 	"github.com/d2lang/d2/d2ast"
 	"github.com/d2lang/d2/d2format"
@@ -23,8 +24,12 @@ func TestEnsureChildCanonicalIDs(t *testing.T) {
 			g := d2graph.NewGraph()
 			quoted := d2ast.FlatDoubleQuotedString(value)
 			child := g.Root.EnsureChild([]d2ast.String{quoted})
-			if child == g.Root || child.ID != wantID || child.IDVal != wantValue || child.Label.Value != wantValue {
-				t.Fatalf("ID/value/label = %q/%q/%q, want %q/%q/%q", child.ID, child.IDVal, child.Label.Value, wantID, wantValue, wantValue)
+			wantLabel := value
+			if !utf8.ValidString(value) {
+				wantLabel = wantValue
+			}
+			if child == g.Root || child.ID != wantID || child.IDVal != wantValue || child.Label.Value != wantLabel {
+				t.Fatalf("ID/value/label = %q/%q/%q, want %q/%q/%q", child.ID, child.IDVal, child.Label.Value, wantID, wantValue, wantLabel)
 			}
 			if child.Parent != g.Root || child.Graph != g || len(g.Objects) != 1 || g.Objects[0] != child || g.Root.Children[strings.ToLower(wantID)] != child {
 				t.Fatal("created child is not registered consistently")
