@@ -19,6 +19,7 @@ func TestConfigurableOptsSerializeELK012Keys(t *testing.T) {
 		NodeSpacing:     123,
 		Padding:         "[top=11,left=22,bottom=33,right=44]",
 		EdgeNodeSpacing: 67,
+		EdgeEdgeSpacing: 78,
 		SelfLoopSpacing: 89,
 	}
 	raw, err := json.Marshal(opts)
@@ -34,6 +35,7 @@ func TestConfigurableOptsSerializeELK012Keys(t *testing.T) {
 		"spacing.nodeNodeBetweenLayers": float64(123),
 		"elk.padding":                   "[top=11,left=22,bottom=33,right=44]",
 		"spacing.edgeNodeBetweenLayers": float64(67),
+		"spacing.edgeEdgeBetweenLayers": float64(78),
 		"elk.spacing.nodeSelfLoop":      float64(89),
 	}
 	if len(got) != len(want) {
@@ -101,6 +103,21 @@ func TestConfigurableOptsAffectLayout(t *testing.T) {
 		spaciousGap := verticalGap(objectByID(t, spacious, "a"), objectByID(t, spacious, "c"))
 		if spaciousGap-compactGap < 300 {
 			t.Fatalf("edge-node layer gap changed from %g to %g, want a material increase", compactGap, spaciousGap)
+		}
+	})
+
+	t.Run("edge-edge spacing between layers", func(t *testing.T) {
+		const src = "a -> x\na -> y\nb -> x\nb -> y\nc -> x\nc -> y"
+		compact := layoutOptionFixture(t, src, func(opts *ConfigurableOpts) {
+			opts.EdgeEdgeSpacing = 5
+		})
+		spacious := layoutOptionFixture(t, src, func(opts *ConfigurableOpts) {
+			opts.EdgeEdgeSpacing = 200
+		})
+		compactGap := verticalGap(objectByID(t, compact, "a"), objectByID(t, compact, "x"))
+		spaciousGap := verticalGap(objectByID(t, spacious, "a"), objectByID(t, spacious, "x"))
+		if spaciousGap-compactGap < 300 {
+			t.Fatalf("edge-edge layer gap changed from %g to %g, want a material increase", compactGap, spaciousGap)
 		}
 	})
 

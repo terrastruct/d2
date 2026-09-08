@@ -55,6 +55,13 @@ func (p *elkPlugin) Flags(context.Context) ([]PluginSpecificFlag, error) {
 			Tag:     "spacing.edgeNodeBetweenLayers",
 		},
 		{
+			Name:    "elk-edgeEdgeBetweenLayers",
+			Type:    "int64",
+			Default: int64(d2elklayout.DefaultOpts.EdgeEdgeSpacing),
+			Usage:   "the spacing to be preserved between pairs of edges routed between the same pair of layers",
+			Tag:     "spacing.edgeEdgeBetweenLayers",
+		},
+		{
 			Name:    "elk-nodeSelfLoop",
 			Type:    "int64",
 			Default: int64(d2elklayout.DefaultOpts.SelfLoopSpacing),

@@ -24,6 +24,7 @@ func TestConvertGraphPreservesCustomELKProfile(t *testing.T) {
 		NodeSpacing:     123,
 		Padding:         "[top=11,left=22,bottom=33,right=44]",
 		EdgeNodeSpacing: 67,
+		EdgeEdgeSpacing: 78,
 		SelfLoopSpacing: 89,
 	}
 
@@ -38,7 +39,8 @@ func TestConvertGraphPreservesCustomELKProfile(t *testing.T) {
 	}
 	root := rootOpts.ConfigurableOpts
 	if root.Algorithm != opts.Algorithm || root.NodeSpacing != opts.NodeSpacing ||
-		root.EdgeNodeSpacing != opts.EdgeNodeSpacing || root.SelfLoopSpacing != opts.SelfLoopSpacing {
+		root.EdgeNodeSpacing != opts.EdgeNodeSpacing || root.EdgeEdgeSpacing != opts.EdgeEdgeSpacing ||
+		root.SelfLoopSpacing != opts.SelfLoopSpacing {
 		t.Fatalf("root profile = %#v, want algorithm/spacing values from %#v", root, opts)
 	}
 	if len(elkGraph.Children) != 1 || elkGraph.Children[0].ID != "container" {
@@ -56,6 +58,7 @@ func TestConvertGraphPreservesCustomELKProfile(t *testing.T) {
 		NodeSpacing:     opts.NodeSpacing,
 		Padding:         opts.Padding,
 		EdgeNodeSpacing: opts.EdgeNodeSpacing,
+		EdgeEdgeSpacing: opts.EdgeEdgeSpacing,
 		SelfLoopSpacing: opts.SelfLoopSpacing,
 	}) {
 		t.Fatalf("container profile = %#v, want custom spacing and padding", containerOpts.ConfigurableOpts)
