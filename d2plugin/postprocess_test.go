@@ -15,7 +15,22 @@ import (
 
 const postProcessHelperEnv = "D2_POSTPROCESS_HELPER_PROCESS"
 
+const (
+	pluginInfoHelperEnv = "D2_PLUGIN_INFO_HELPER_PROCESS"
+	pluginInfoMarkerEnv = "D2_PLUGIN_INFO_HELPER_MARKER"
+)
+
 func TestMain(m *testing.M) {
+	if os.Getenv(pluginInfoHelperEnv) == "1" {
+		if marker := os.Getenv(pluginInfoMarkerEnv); marker != "" {
+			if err := os.WriteFile(marker, []byte("executed"), 0o600); err != nil {
+				fmt.Fprint(os.Stderr, err)
+				os.Exit(2)
+			}
+		}
+		fmt.Fprint(os.Stdout, `{"name":"tala","features":[]}`)
+		os.Exit(0)
+	}
 	if os.Getenv(postProcessHelperEnv) == "1" {
 		if len(os.Args) != 2 || os.Args[1] != "postprocess" {
 			fmt.Fprintf(os.Stderr, "unexpected helper arguments: %q", os.Args[1:])

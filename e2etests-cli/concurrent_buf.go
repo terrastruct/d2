@@ -16,6 +16,8 @@ func (e *stderrWrapper) Write(p []byte) (n int, err error) {
 }
 
 func (e *stderrWrapper) Reset() {
+	e.m.Lock()
+	defer e.m.Unlock()
 	e.msg = ""
 }
 

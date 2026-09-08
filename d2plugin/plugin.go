@@ -9,6 +9,7 @@ import (
 	"context"
 	"encoding/json"
 	"os/exec"
+	"path/filepath"
 	"strings"
 
 	"github.com/d2lang/util-go/xexec"
@@ -78,6 +79,13 @@ type Plugin interface {
 	Layout(context.Context, *d2graph.Graph) error
 }
 
+// pluginInstancer lets a bundled plugin isolate mutable configuration for each
+// resolver. Plugins without mutable per-compile state can keep returning their
+// registered singleton.
+type pluginInstancer interface {
+	newInstance() Plugin
+}
+
 // PostProcessor is the optional legacy extension for changing D2's rendered output.
 //
 // Deprecated: Post-processing is retained for one plugin-protocol compatibility
@@ -135,6 +143,20 @@ func ListPlugins(ctx context.Context) ([]Plugin, error) {
 	}
 BINARY_PLUGINS_LOOP:
 	for _, path := range matches {
+		// A bundled plugin owns its executable basename. Skip a shadowed
+		// external binary before even running its info command: a stale,
+		// malformed, or hanging legacy plugin must not make the bundled engine
+		// unavailable.
+		basename := externalPluginName(path)
+		for _, bundled := range plugins {
+			info, err := bundled.Info(ctx)
+			if err != nil {
+				return nil, err
+			}
+			if strings.EqualFold(info.Name, basename) {
+				continue BINARY_PLUGINS_LOOP
+			}
+		}
 		p := &execPlugin{path: path}
 		info, err := p.Info(ctx)
 		if err != nil {
@@ -145,13 +167,24 @@ BINARY_PLUGINS_LOOP:
 			if err != nil {
 				return nil, err
 			}
-			if info.Name == info2.Name {
+			if strings.EqualFold(info.Name, info2.Name) {
 				continue BINARY_PLUGINS_LOOP
 			}
 		}
 		ps = append(ps, p)
 	}
 	return ps, nil
+}
+
+func externalPluginName(path string) string {
+	basename := filepath.Base(path)
+	if ext := filepath.Ext(basename); strings.EqualFold(ext, ".exe") {
+		basename = strings.TrimSuffix(basename, ext)
+	}
+	if len(basename) >= len(binaryPrefix) && strings.EqualFold(basename[:len(binaryPrefix)], binaryPrefix) {
+		return basename[len(binaryPrefix):]
+	}
+	return basename
 }
 
 func ListPluginInfos(ctx context.Context, ps []Plugin) ([]*PluginInfo, error) {
@@ -180,6 +213,9 @@ func FindPlugin(ctx context.Context, ps []Plugin, name string) (Plugin, error) {
 			return nil, err
 		}
 		if strings.EqualFold(info.Name, name) {
+			if instancer, ok := p.(pluginInstancer); ok {
+				return instancer.newInstance(), nil
+			}
 			return p, nil
 		}
 	}

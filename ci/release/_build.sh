@@ -57,8 +57,9 @@ sh_c GOOS="$GOOS" GOARCH="$GOARCH" go build -mod=readonly -pgo=off \
   -ldflags "'-s -w -X github.com/d2lang/d2/lib/version.Version=$VERSION'" \
   -o "$BINARY" .
 
-MAX_RELEASE_BINARY_BYTES=${MAX_RELEASE_BINARY_BYTES:-40000000}
-MAX_RELEASE_ARCHIVE_BYTES=${MAX_RELEASE_ARCHIVE_BYTES:-18000000}
+# Allow the bundled TALA engine and native exporters on all six release targets.
+MAX_RELEASE_BINARY_BYTES=${MAX_RELEASE_BINARY_BYTES:-45000000}
+MAX_RELEASE_ARCHIVE_BYTES=${MAX_RELEASE_ARCHIVE_BYTES:-19000000}
 sh_c "$RELEASE_TOOL" verify-binary \
   --path "'$BINARY'" \
   --goos "$GOOS" \

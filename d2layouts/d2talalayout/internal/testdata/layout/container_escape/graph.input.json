@@ -1,0 +1,255 @@
+{
+  "nodes": [
+    {
+      "id": 115358714,
+      "width": 506,
+      "height": 714,
+      "topLeft": {
+        "x": 425,
+        "y": 124
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 1107896814,
+      "width": 128,
+      "height": 128,
+      "topLeft": {
+        "x": 728,
+        "y": 427
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 627196230,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 738,
+        "y": 201
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 1246716096,
+      "width": 128,
+      "height": 128,
+      "topLeft": {
+        "x": 500,
+        "y": 199
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 1214219578,
+      "width": 128,
+      "height": 128,
+      "topLeft": {
+        "x": 1030,
+        "y": 100
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 347713828,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 1257,
+        "y": 452
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 1918322963,
+      "width": 258,
+      "height": 674,
+      "topLeft": {
+        "x": 46,
+        "y": 728
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 2335145302,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 121,
+        "y": 803
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 360507439,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 121,
+        "y": 1219
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    },
+    {
+      "id": 2508153565,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 121,
+        "y": 1011
+      },
+      "fontSize": 17,
+      "shapeType": "Square"
+    },
+    {
+      "id": 4188108988,
+      "width": 128,
+      "height": 128,
+      "topLeft": {
+        "x": 207,
+        "y": 100
+      },
+      "fontSize": null,
+      "shapeType": "Oval"
+    },
+    {
+      "id": 3688887193,
+      "width": 128,
+      "height": 128,
+      "topLeft": {
+        "x": 15,
+        "y": 100
+      },
+      "fontSize": null,
+      "shapeType": "Oval"
+    },
+    {
+      "id": 3524652103,
+      "width": 108,
+      "height": 108,
+      "topLeft": {
+        "x": 510,
+        "y": 655
+      },
+      "fontSize": null,
+      "shapeType": "Square"
+    }
+  ],
+  "edges": [
+    {
+      "id": 1413281401,
+      "from": 1107896814,
+      "to": 1246716096,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 2098528333,
+      "from": 1107896814,
+      "to": 627196230,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 2648920824,
+      "from": 627196230,
+      "to": 1246716096,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 407043242,
+      "from": 347713828,
+      "to": 1214219578,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 3330659283,
+      "from": 115358714,
+      "to": 1214219578,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 1569158468,
+      "from": 1918322963,
+      "to": 115358714,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 1702151847,
+      "from": 1214219578,
+      "to": 347713828,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 1803172147,
+      "from": 4188108988,
+      "to": 115358714,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 3704695270,
+      "from": 3688887193,
+      "to": 115358714,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 2662902485,
+      "from": 3524652103,
+      "to": 1107896814,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    }
+  ],
+  "CellSize": 0,
+  "containers": {
+    "0": [
+      115358714,
+      347713828,
+      1214219578,
+      1918322963,
+      3688887193,
+      4188108988
+    ],
+    "115358714": [
+      627196230,
+      1107896814,
+      1246716096,
+      3524652103
+    ],
+    "1918322963": [
+      360507439,
+      2335145302,
+      2508153565
+    ]
+  },
+  "clusters": {},
+  "crossingCost": 0,
+  "turnCost": 0,
+  "nonCenterPortCost": 0
+}

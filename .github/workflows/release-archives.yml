@@ -5,7 +5,9 @@ on:
     paths:
       - .github/workflows/release-archives.yml
       - .github/workflows/ci.yml
+      - .github/workflows/windows-msi.yml
       - ci/release/**
+      - d2layouts/d2talalayout/**
       - ci/sub
       - install.sh
       - go.mod
@@ -22,6 +24,13 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  tests:
+    if: github.event_name == 'push'
+    permissions:
+      actions: read
+      contents: read
+    uses: ./.github/workflows/ci.yml
+
   build:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
@@ -29,6 +38,8 @@ jobs:
       RELEASE_BUILD_SERIAL: "1"
     outputs:
       version: ${{ steps.version.outputs.version }}
+      commit: ${{ steps.version.outputs.commit }}
+      windows_sha256: ${{ steps.archives.outputs.windows_sha256 }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -56,6 +67,7 @@ jobs:
             version="v0.0.0-pr.$PR_NUMBER"
           fi
           echo "version=$version" >>"$GITHUB_OUTPUT"
+          echo "commit=$(git rev-parse HEAD)" >>"$GITHUB_OUTPUT"
 
       - name: Verify modules
         env:
@@ -83,6 +95,14 @@ jobs:
           ./ci/release/build.sh --rebuild --version="$VERSION"
           diff -u "$RUNNER_TEMP/first-SHA256SUMS" "ci/release/build/$VERSION/SHA256SUMS"
           git diff --exit-code
+
+      - name: Record Windows archive checksum
+        id: archives
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          digest=$(sha256sum "ci/release/build/$VERSION/d2-$VERSION-windows-amd64.tar.gz" | cut -d ' ' -f 1)
+          echo "windows_sha256=$digest" >>"$GITHUB_OUTPUT"
 
       - name: Generate release SBOM
         env:
@@ -186,12 +206,40 @@ jobs:
           if (-not (Select-String -LiteralPath $outputFile -Pattern '<svg' -Quiet)) {
             throw "d2 SVG smoke render did not produce SVG"
           }
+          $talaOutputFile = Join-Path $destination "smoke-tala.svg"
+          & $binary --layout=tala $inputFile $talaOutputFile
+          if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $talaOutputFile -PathType Leaf)) {
+            throw "d2 TALA SVG smoke render failed"
+          }
+          if (-not (Select-String -LiteralPath $talaOutputFile -Pattern '<svg' -Quiet)) {
+            throw "d2 TALA SVG smoke render did not produce SVG"
+          }
+          $pngFile = Join-Path $destination "smoke.png"
+          & $binary $inputFile $pngFile
+          if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $pngFile -PathType Leaf)) {
+            throw "d2 PNG smoke render failed"
+          }
+          $pngBytes = [System.IO.File]::ReadAllBytes($pngFile)
+          if ($pngBytes.Length -lt 8 -or [System.BitConverter]::ToString($pngBytes, 0, 8) -cne '89-50-4E-47-0D-0A-1A-0A') {
+            throw "d2 PNG smoke render did not produce PNG"
+          }
+
+  msi:
+    needs: [build, smoke]
+    if: github.event_name != 'pull_request' || vars.WIX7_EULA_ACCEPTED == 'true'
+    uses: ./.github/workflows/windows-msi.yml
+    with:
+      version: ${{ needs.build.outputs.version }}
+      commit: ${{ needs.build.outputs.commit }}
+      archive_sha256: ${{ needs.build.outputs.windows_sha256 }}
 
   attest:
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && github.repository == 'd2lang/d2'
     needs:
       - build
       - smoke
+      - msi
+      - tests
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
@@ -224,3 +272,39 @@ jobs:
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
         with:
           subject-path: ${{ runner.temp }}/release-archives/SHA256SUMS
+
+  draft:
+    if: github.event_name == 'push' && github.repository == 'd2lang/d2'
+    needs: [build, smoke, msi, tests, attest]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.build.outputs.commit }}
+          persist-credentials: false
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: release-archives
+          path: ${{ runner.temp }}/release-archives
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: windows-msi
+          path: ${{ runner.temp }}/windows-msi
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: release-sbom
+          path: ${{ runner.temp }}/release-sbom
+      - name: Attach verified artifacts to draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.build.outputs.version }}
+          RELEASE_COMMIT: ${{ needs.build.outputs.commit }}
+        run: |
+          python3 ci/release/upload-draft.py \
+            --repository "$GITHUB_REPOSITORY" --version "$VERSION" --commit "$RELEASE_COMMIT" \
+            --archives "$RUNNER_TEMP/release-archives" \
+            --msi "$RUNNER_TEMP/windows-msi/d2-$VERSION-windows-amd64.msi" \
+            --sbom "$RUNNER_TEMP/release-sbom/d2.spdx.json"

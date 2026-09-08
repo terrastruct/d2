@@ -1,0 +1,225 @@
+{
+  "nodes": [
+    {
+      "id": 3775669363,
+      "d2id": "d",
+      "width": 115,
+      "height": 126,
+      "topLeft": {
+        "x": 0,
+        "y": 0
+      },
+      "shapeType": "Square",
+      "label": {
+        "Text": "d",
+        "Position": "INSIDE_MIDDLE_CENTER",
+        "Width": 10,
+        "Height": 21
+      }
+    },
+    {
+      "id": 1992750552,
+      "d2id": "escape1",
+      "width": 164,
+      "height": 126,
+      "topLeft": {
+        "x": 60,
+        "y": 282
+      },
+      "shapeType": "Square",
+      "label": {
+        "Text": "escape1",
+        "Position": "INSIDE_MIDDLE_CENTER",
+        "Width": 59,
+        "Height": 21
+      }
+    },
+    {
+      "id": 1384782272,
+      "d2id": "escape2",
+      "width": 166,
+      "height": 126,
+      "topLeft": {
+        "x": 366,
+        "y": 282
+      },
+      "shapeType": "Square",
+      "label": {
+        "Text": "escape2",
+        "Position": "INSIDE_MIDDLE_CENTER",
+        "Width": 61,
+        "Height": 21
+      }
+    },
+    {
+      "id": 3859557458,
+      "d2id": "c",
+      "width": 114,
+      "height": 126,
+      "topLeft": {
+        "x": 239,
+        "y": 0
+      },
+      "shapeType": "Square",
+      "label": {
+        "Text": "c",
+        "Position": "INSIDE_MIDDLE_CENTER",
+        "Width": 9,
+        "Height": 21
+      }
+    },
+    {
+      "id": 3826002220,
+      "d2id": "a",
+      "width": 286,
+      "height": 246,
+      "topLeft": {
+        "x": 0,
+        "y": 222
+      },
+      "shapeType": "Square",
+      "label": {
+        "Text": "a",
+        "Position": "INSIDE_TOP_CENTER",
+        "Width": 15,
+        "Height": 37
+      }
+    },
+    {
+      "id": 3876335077,
+      "d2id": "b",
+      "width": 286,
+      "height": 246,
+      "topLeft": {
+        "x": 306,
+        "y": 222
+      },
+      "shapeType": "Square",
+      "label": {
+        "Text": "b",
+        "Position": "INSIDE_TOP_CENTER",
+        "Width": 17,
+        "Height": 37
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": 2945731827,
+      "from": 3859557458,
+      "to": 3826002220,
+      "points": [
+        {
+          "x": 296,
+          "y": 126
+        },
+        {
+          "x": 296,
+          "y": 174
+        },
+        {
+          "x": 143,
+          "y": 174
+        },
+        {
+          "x": 143,
+          "y": 222
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 4267436182,
+      "from": 3859557458,
+      "to": 3876335077,
+      "points": [
+        {
+          "x": 296,
+          "y": 126
+        },
+        {
+          "x": 296,
+          "y": 174
+        },
+        {
+          "x": 449,
+          "y": 174
+        },
+        {
+          "x": 449,
+          "y": 222
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    }
+  ],
+  "CellSize": 286,
+  "containers": {
+    "0": [
+      3775669363,
+      3859557458,
+      3826002220,
+      3876335077
+    ],
+    "3826002220": [
+      1992750552
+    ],
+    "3876335077": [
+      1384782272
+    ]
+  },
+  "clusters": {
+    "5361704182646325489": {
+      "Nodes": [
+        3826002220,
+        3876335077
+      ],
+      "Arrangement": "Row",
+      "DesiredArrangement": "Row",
+      "EdgeAbductions": [
+        {
+          "Edge": 2945731827,
+          "OriginallyFromNode": 0,
+          "OriginallyToNode": 3826002220,
+          "CurrentFromNode": 3859557458,
+          "CurrentToNode": 5361704182646325489
+        },
+        {
+          "Edge": 4267436182,
+          "OriginallyFromNode": 0,
+          "OriginallyToNode": 3876335077,
+          "CurrentFromNode": 3859557458,
+          "CurrentToNode": 5361704182646325489
+        }
+      ],
+      "Container": 0,
+      "FixedSize": false,
+      "Padding": 20
+    }
+  },
+  "clusterVessels": {
+    "5361704182646325489": {
+      "id": 5361704182646325489,
+      "width": 592,
+      "height": 246,
+      "topLeft": {
+        "x": -286,
+        "y": 348
+      },
+      "shapeType": ""
+    }
+  },
+  "crossingCost": 21.233663999999997,
+  "turnCost": 24,
+  "nonCenterPortCost": 0
+}

@@ -1,7 +1,7 @@
 .POSIX:
 
 .PHONY: all
-all: fmt gen js lint build test
+all: fmt gen js lint build test test-wasm
 
 .PHONY: fmt
 fmt:
@@ -18,6 +18,9 @@ build: fmt
 .PHONY: test
 test: fmt
 	prefix "$@" ./ci/test.sh
+.PHONY: test-wasm
+test-wasm: fmt
+	prefix "$@" ./ci/test-wasm.sh
 .PHONY: race
 race: fmt
 	prefix "$@" ./ci/test.sh --race ./...

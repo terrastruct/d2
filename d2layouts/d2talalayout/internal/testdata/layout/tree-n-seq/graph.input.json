@@ -1,0 +1,92 @@
+{
+  "nodes": [
+    {
+      "id": 3775669363,
+      "width": 115,
+      "height": 126,
+      "topLeft": null,
+      "shapeType": "Step"
+    },
+    {
+      "id": 3758891744,
+      "width": 114,
+      "height": 126,
+      "topLeft": null,
+      "shapeType": "Step"
+    },
+    {
+      "id": 3826002220,
+      "width": 114,
+      "height": 126,
+      "topLeft": null,
+      "shapeType": ""
+    },
+    {
+      "id": 3876335077,
+      "width": 115,
+      "height": 126,
+      "topLeft": null,
+      "shapeType": ""
+    },
+    {
+      "id": 3859557458,
+      "width": 114,
+      "height": 126,
+      "topLeft": null,
+      "shapeType": ""
+    }
+  ],
+  "edges": [
+    {
+      "id": 624220850,
+      "from": 3826002220,
+      "to": 3876335077,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 4237091736,
+      "from": 3826002220,
+      "to": 3859557458,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 1865084774,
+      "from": 3775669363,
+      "to": 3758891744,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    }
+  ],
+  "CellSize": 0,
+  "containers": {
+    "0": [
+      3775669363,
+      3758891744,
+      3826002220,
+      3876335077,
+      3859557458
+    ]
+  },
+  "clusters": {},
+  "sequences": {},
+  "clusterVessels": {},
+  "sequenceVessels": {},
+  "trees": {},
+  "crossingCost": 0,
+  "turnCost": 0,
+  "nonCenterPortCost": 0
+}

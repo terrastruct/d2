@@ -107,6 +107,7 @@ type preparedNode struct {
 }
 
 type preparedPrimitive struct {
+	referenceBounds image.Rectangle
 	subpaths        []subpath
 	strokeRuns      []strokeRun
 	transform       d2scene.Matrix
@@ -121,10 +122,11 @@ type preparedPrimitive struct {
 }
 
 type preparedClip struct {
-	subpaths []subpath
-	fillRule d2scene.FillRule
-	bounds   image.Rectangle
-	edges    int64
+	referenceBounds image.Rectangle
+	subpaths        []subpath
+	fillRule        d2scene.FillRule
+	bounds          image.Rectangle
+	edges           int64
 }
 
 type preparedMask struct {
@@ -133,13 +135,14 @@ type preparedMask struct {
 }
 
 type preparedStroke struct {
-	paint      *preparedPaint
-	width      float64
-	cap        d2scene.LineCap
-	join       d2scene.LineJoin
-	miterLimit float64
-	dashes     []float64
-	dashOffset float64
+	referenceBounds image.Rectangle
+	paint           *preparedPaint
+	width           float64
+	cap             d2scene.LineCap
+	join            d2scene.LineJoin
+	miterLimit      float64
+	dashes          []float64
+	dashOffset      float64
 }
 
 type animationOverrides struct {
@@ -176,6 +179,7 @@ type preflight struct {
 }
 
 type rasterScratch struct {
+	regionFilters     bool
 	rasterizer        *scanline.Rasterizer
 	rasterizerEdges   int
 	rasterizerBounded bool
@@ -605,6 +609,10 @@ func (w contextWriter) Write(data []byte) (int, error) {
 }
 
 func prepareWithSession(ctx context.Context, document *d2scene.Document, options FrameOptions, session *RenderSession) (*preparedDocument, error) {
+	return prepareWithSessionBands(ctx, document, options, session, 0)
+}
+
+func prepareWithSessionBands(ctx context.Context, document *d2scene.Document, options FrameOptions, session *RenderSession, bandHeight int) (*preparedDocument, error) {
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
@@ -664,7 +672,11 @@ func prepareWithSession(ctx context.Context, document *d2scene.Document, options
 	if int64(width) > options.MaxPixels/int64(height) {
 		return nil, fmt.Errorf("d2raster: frame pixels exceed limit %d", options.MaxPixels)
 	}
-	if _, err := finalFrameStorageBytes(width, height); err != nil {
+	storageHeight := height
+	if bandHeight > 0 {
+		storageHeight = min(height, bandHeight)
+	}
+	if _, err := finalFrameStorageBytes(width, storageHeight); err != nil {
 		return nil, err
 	}
 	if document.Root == nil {
@@ -713,7 +725,20 @@ func prepareWithSession(ctx context.Context, document *d2scene.Document, options
 	if err != nil {
 		return nil, err
 	}
-	resources, err := planRenderResources(ctx, root, p.frameBounds, patterns, options.MaxOffscreenBytes)
+	var resources renderResources
+	if bandHeight > 0 {
+		if err := setBandReferenceBounds(ctx, root, p.frameBounds); err != nil {
+			return nil, err
+		}
+		for _, pattern := range patterns {
+			if err := setBandReferenceBounds(ctx, pattern.root, pattern.bounds); err != nil {
+				return nil, err
+			}
+		}
+		resources, err = planBandResources(ctx, root, p.frameBounds, patterns, options, bandHeight)
+	} else {
+		resources, err = planRenderResources(ctx, root, p.frameBounds, patterns, options.MaxOffscreenBytes)
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -1509,7 +1534,7 @@ func prepareAnimatedStrokeWithPaint(stroke *d2scene.Stroke, animatedColor *color
 }
 
 func renderNode(ctx context.Context, dst *image.RGBA, node *preparedNode, scratch *rasterScratch) error {
-	if node == nil || node.opacity == 0 || node.bounds.Empty() {
+	if node == nil || node.opacity == 0 || node.bounds.Intersect(dst.Bounds()).Empty() {
 		return nil
 	}
 	if err := ctx.Err(); err != nil {
@@ -1552,7 +1577,8 @@ func drawPrimitive(ctx context.Context, dst *image.RGBA, primitive *preparedPrim
 			}
 		} else if primitive.fill.kind == preparedSolidPaint {
 			rasterizer := scratch.reset(dst.Bounds())
-			shifted := d2scene.Translate(-float64(dst.Bounds().Min.X), -float64(dst.Bounds().Min.Y)).Mul(primitive.transform)
+			origin := setRasterizerReference(rasterizer, dst.Bounds().Min, primitive.referenceBounds.Min, scratch.regionFilters)
+			shifted := d2scene.Translate(-float64(origin.X), -float64(origin.Y)).Mul(primitive.transform)
 			for _, path := range primitive.subpaths {
 				addFillSubpath(rasterizer, path, shifted)
 			}
@@ -1562,7 +1588,12 @@ func drawPrimitive(ctx context.Context, dst *image.RGBA, primitive *preparedPrim
 		} else {
 			bounds := subpathPixelBounds(primitive.subpaths, primitive.transform, 0, dst.Bounds())
 			err := drawRasterizedPaint(ctx, dst, bounds, primitive.fill, scratch, "gradient fill", func(rasterizer *scanline.Rasterizer) error {
-				shifted := d2scene.Translate(-float64(bounds.Min.X), -float64(bounds.Min.Y)).Mul(primitive.transform)
+				reference := bounds.Min
+				if scratch.regionFilters {
+					reference = subpathPixelBounds(primitive.subpaths, primitive.transform, 0, primitive.referenceBounds).Min
+				}
+				origin := setRasterizerReference(rasterizer, bounds.Min, reference, scratch.regionFilters)
+				shifted := d2scene.Translate(-float64(origin.X), -float64(origin.Y)).Mul(primitive.transform)
 				for _, path := range primitive.subpaths {
 					addFillSubpath(rasterizer, path, shifted)
 				}
@@ -1589,10 +1620,10 @@ func addFillSubpath(rasterizer *scanline.Rasterizer, path subpath, transform d2s
 		return
 	}
 	first := transform.Point(path.points[0])
-	rasterizer.MoveTo(float32(first.X), float32(first.Y))
+	rasterizer.MoveTo64(first.X, first.Y)
 	for _, point := range path.points[1:] {
 		point = transform.Point(point)
-		rasterizer.LineTo(float32(point.X), float32(point.Y))
+		rasterizer.LineTo64(point.X, point.Y)
 	}
 	// SVG fill closes open subpaths implicitly.
 	rasterizer.ClosePath()

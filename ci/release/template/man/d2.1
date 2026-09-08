@@ -45,6 +45,8 @@ Pass - to have
 .Nm
 read from stdin or write to stdout.
 .Pp
+PNG exports support up to 32768 pixels per dimension, subject to rendering resource limits.
+.Pp
 Never use the presence of the output file to check for success.
 Always use the exit status of
 .Nm d2
@@ -260,7 +262,5 @@ See --no-xml-tag flag.
 .It Ev Sy OMIT_VERSION
 See --omit-version
 .El
-.Sh SEE ALSO
-.Xr d2plugin-tala 1
 .Sh AUTHORS
 .An "D2 contributors"

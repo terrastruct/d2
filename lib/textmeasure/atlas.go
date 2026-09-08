@@ -118,55 +118,53 @@ func (a *atlas) Descent() float64 {
 // Rect is a rectangle where the glyph should be positioned. frame is the glyph frame inside the
 // atlas's Picture. NewDot is the new position of the dot.
 func (a *atlas) DrawRune(prevR, r rune, dot *geo.Point) (rect2, frame, bounds *rect, newDot *geo.Point) {
+	position, measured, frame := a.measureRune(prevR, r, dot)
+	if frame == nil {
+		return newRect(), newRect(), newRect(), dot
+	}
+	rect2 = position.rect()
+	bounds = rect2
+	if position.w()*position.h() != 0 {
+		bounds = measured.rect()
+	}
+	return rect2, frame, bounds, dot
+}
+
+// runeRect keeps temporary glyph bounds on the stack. Ruler needs the same
+// arithmetic as DrawRune, but does not need a heap rectangle for each glyph.
+type runeRect struct{ tl, br geo.Point }
+
+func (r runeRect) w() float64  { return r.br.X - r.tl.X }
+func (r runeRect) h() float64  { return r.br.Y - r.tl.Y }
+func (r runeRect) rect() *rect { return &rect{tl: r.tl.Copy(), br: r.br.Copy()} }
+
+func (a *atlas) measureRune(prevR, r rune, dot *geo.Point) (position, bounds runeRect, frame *rect) {
 	if !a.contains(r) {
 		r = unicode.ReplacementChar
 	}
 	if !a.contains(unicode.ReplacementChar) {
-		return newRect(), newRect(), newRect(), dot
+		return runeRect{}, runeRect{}, nil
 	}
 	if !a.contains(prevR) {
 		prevR = unicode.ReplacementChar
 	}
-
 	if prevR >= 0 {
 		dot.X += a.Kern(prevR, r)
 	}
-
 	glyph := a.glyph(r)
-
-	subbed := geo.NewPoint(
-		dot.X-glyph.dot.X,
-		dot.Y-glyph.dot.Y,
-	)
-
-	rect2 = &rect{
-		tl: geo.NewPoint(
-			glyph.frame.tl.X+subbed.X,
-			glyph.frame.tl.Y+subbed.Y,
-		),
-		br: geo.NewPoint(
-			glyph.frame.br.X+subbed.X,
-			glyph.frame.br.Y+subbed.Y,
-		),
+	// Preserve the packed operation order even for fractional or large dots.
+	x, y := dot.X-glyph.dot.X, dot.Y-glyph.dot.Y
+	position = runeRect{
+		tl: geo.Point{X: glyph.frame.tl.X + x, Y: glyph.frame.tl.Y + y},
+		br: geo.Point{X: glyph.frame.br.X + x, Y: glyph.frame.br.Y + y},
 	}
-	bounds = rect2
-
+	bounds = position
 	if bounds.w()*bounds.h() != 0 {
-		bounds = &rect{
-			tl: geo.NewPoint(
-				bounds.tl.X,
-				dot.Y-a.Descent(),
-			),
-			br: geo.NewPoint(
-				bounds.br.X,
-				dot.Y+a.Ascent(),
-			),
-		}
+		bounds.tl.Y = dot.Y - a.Descent()
+		bounds.br.Y = dot.Y + a.Ascent()
 	}
-
 	dot.X += glyph.advance
-
-	return rect2, glyph.frame, bounds, dot
+	return position, bounds, glyph.frame
 }
 
 type fixedGlyph struct {

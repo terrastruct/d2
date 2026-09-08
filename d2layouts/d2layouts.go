@@ -484,6 +484,7 @@ func extractSubgraphs(g *d2graph.Graph, specs []subgraphExtractionSpec) *subgrap
 			}
 		}
 		nestedGraph := d2graph.NewGraph()
+		nestedGraph.Data = cloneGraphData(g.Data)
 		nestedGraph.RootLevel = int(spec.container.Level())
 		if spec.includeSelf {
 			nestedGraph.RootLevel--
@@ -614,10 +615,39 @@ func (b *subgraphExtractionBatch) rollbackAfter(index int) {
 	}
 }
 
+// Clone JSON-shaped source configuration for nested layout calls so a plugin
+// cannot change the configuration of the parent or another nested diagram.
+func cloneGraphData(data map[string]interface{}) map[string]interface{} {
+	if data == nil {
+		return nil
+	}
+	clone := make(map[string]interface{}, len(data))
+	for key, value := range data {
+		clone[key] = cloneGraphDataValue(value)
+	}
+	return clone
+}
+
+func cloneGraphDataValue(value interface{}) interface{} {
+	switch value := value.(type) {
+	case map[string]interface{}:
+		return cloneGraphData(value)
+	case []interface{}:
+		clone := make([]interface{}, len(value))
+		for i, entry := range value {
+			clone[i] = cloneGraphDataValue(entry)
+		}
+		return clone
+	default:
+		return value
+	}
+}
+
 func ExtractSubgraph(container *d2graph.Object, includeSelf bool) (nestedGraph *d2graph.Graph, externalEdges []*d2graph.Edge, externalEdgeIDs []edgeIDs) {
 	// includeSelf: when we have a constant near or a grid cell that is a container,
 	// we want to include itself in the nested graph, not just its descendants,
 	nestedGraph = d2graph.NewGraph()
+	nestedGraph.Data = cloneGraphData(container.Graph.Data)
 	nestedGraph.RootLevel = int(container.Level())
 	if includeSelf {
 		nestedGraph.RootLevel--

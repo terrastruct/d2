@@ -8,6 +8,11 @@ on:
         required: true
         type: string
         default: nightly
+      d2_ref:
+        description: Exact D2 release tag to build, or empty for the dispatched master commit
+        required: false
+        type: string
+        default: ""
 permissions:
   contents: read
 
@@ -17,7 +22,7 @@ concurrency:
 
 jobs:
   pack:
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master' && github.ref_protected
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -25,6 +30,22 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
+
+      - name: Select the exact D2 release source
+        if: inputs.d2_ref != ''
+        env:
+          D2_REF: ${{ inputs.d2_ref }}
+        run: |
+          set -euo pipefail
+          if ! [[ "$D2_REF" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z]+([.-][0-9A-Za-z]+)*)?$ ]]; then
+            echo "d2_ref must be a v-prefixed semantic-version tag" >&2
+            exit 1
+          fi
+          source_commit=$(git rev-parse --verify "refs/tags/$D2_REF^{commit}")
+          git merge-base --is-ancestor "$source_commit" "$GITHUB_SHA"
+          git checkout --detach "$source_commit"
+          git submodule update --init --recursive
+          echo "Building D2 $D2_REF from $source_commit" >>"$GITHUB_STEP_SUMMARY"
 
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
@@ -63,9 +84,11 @@ jobs:
           NPM_PUBLISH_MODE: pack
           NPM_VERSION: ${{ inputs.version }}
         run: |
-          CI_FORCE=1 CI_MAKE_ROOT=0 COLOR=1 ./make.sh js
           cd d2js/js
-          bun test test/unit
+          bun install --frozen-lockfile
+          ./ci/build.sh
+          bun run test:all
+          git diff --exit-code
 
       - name: Upload immutable package tarballs
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

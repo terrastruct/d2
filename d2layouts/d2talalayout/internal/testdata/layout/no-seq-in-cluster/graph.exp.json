@@ -1,0 +1,162 @@
+{
+  "nodes": [
+    {
+      "id": 3826002220,
+      "width": 114,
+      "height": 126,
+      "topLeft": {
+        "x": 0,
+        "y": 194
+      },
+      "shapeType": ""
+    },
+    {
+      "id": 4094444124,
+      "width": 115,
+      "height": 126,
+      "topLeft": {
+        "x": 0,
+        "y": 0
+      },
+      "shapeType": ""
+    },
+    {
+      "id": 3775669363,
+      "width": 115,
+      "height": 126,
+      "topLeft": {
+        "x": 0,
+        "y": 388
+      },
+      "shapeType": ""
+    },
+    {
+      "id": 3876335077,
+      "width": 115,
+      "height": 126,
+      "topLeft": {
+        "x": 194,
+        "y": 194
+      },
+      "shapeType": "Step"
+    },
+    {
+      "id": 3859557458,
+      "width": 114,
+      "height": 126,
+      "topLeft": {
+        "x": 274,
+        "y": 194
+      },
+      "shapeType": "Step"
+    }
+  ],
+  "edges": [
+    {
+      "id": 624220850,
+      "from": 3826002220,
+      "to": 3876335077,
+      "points": [
+        {
+          "x": 114,
+          "y": 257
+        },
+        {
+          "x": 229,
+          "y": 257
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 2309192259,
+      "from": 4094444124,
+      "to": 3826002220,
+      "points": [
+        {
+          "x": 57,
+          "y": 126
+        },
+        {
+          "x": 57,
+          "y": 194
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    },
+    {
+      "id": 280061717,
+      "from": 3826002220,
+      "to": 3775669363,
+      "points": [
+        {
+          "x": 57,
+          "y": 320
+        },
+        {
+          "x": 57,
+          "y": 388
+        }
+      ],
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0,
+      "style": {},
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle"
+    }
+  ],
+  "CellSize": 126,
+  "containers": {
+    "0": [
+      3826002220,
+      4094444124,
+      3775669363,
+      3876335077,
+      3859557458
+    ]
+  },
+  "sequences": {
+    "5361704182646325489": {
+      "Nodes": [
+        3876335077,
+        3859557458
+      ],
+      "EdgeAbductions": [
+        {
+          "Edge": 624220850,
+          "OriginallyFromNode": 0,
+          "OriginallyToNode": 3876335077,
+          "CurrentFromNode": 3826002220,
+          "CurrentToNode": 5361704182646325489
+        }
+      ],
+      "Container": 0
+    }
+  },
+  "sequenceVessels": {
+    "5361704182646325489": {
+      "id": 5361704182646325489,
+      "width": 194,
+      "height": 126,
+      "topLeft": {
+        "x": 194,
+        "y": 194
+      },
+      "shapeType": ""
+    }
+  },
+  "crossingCost": 26.54208,
+  "turnCost": 30,
+  "nonCenterPortCost": 38
+}

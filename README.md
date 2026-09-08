@@ -7,7 +7,7 @@
 [Docs](https://d2lang.com) | [Cheat sheet](./docs/assets/cheat_sheet.pdf) | [Comparisons](https://text-to-diagram.com) | [Playground](https://play.d2lang.com)
 
 [![ci](https://github.com/d2lang/d2/actions/workflows/ci.yml/badge.svg)](https://github.com/d2lang/d2/actions/workflows/ci.yml)
-[![daily](https://github.com/d2lang/d2/actions/workflows/daily.yml/badge.svg)](https://github.com/d2lang/d2/actions/workflows/daily.yml)
+[![weekly race tests](https://github.com/d2lang/d2/actions/workflows/weekly-race.yml/badge.svg)](https://github.com/d2lang/d2/actions/workflows/weekly-race.yml)
 [![release](https://img.shields.io/github/v/release/d2lang/d2)](https://github.com/d2lang/d2/releases)
 [![changelog](https://img.shields.io/badge/changelog-read-blue)](./CHANGELOG.md)
 [![npm version](https://img.shields.io/npm/v/@d2lang/d2)](https://www.npmjs.com/package/@d2lang/d2)
@@ -199,9 +199,9 @@ bundled with the build or separately installed as a standalone binary.
 - [elk-go](https://github.com/d2lang/elk-go) (bundled): A native Go port of the ELK
   directed graph layout engine, particularly suited for node-link diagrams with an
   inherent direction and ports.
-- [TALA](https://github.com/terrastruct/TALA) (binary): Novel layout engine designed
-  specifically for software architecture diagrams. Requires separate install, visit the
-  Github page for more.
+- [TALA](./d2layouts/d2talalayout) (bundled, opt-in): Native layout and edge-routing engine designed
+  specifically for software architecture diagrams. Select it with `--layout=tala`,
+  `D2_LAYOUT=tala`, or a `layout-engine: tala` setting under `vars.d2-config` in D2 source.
 
 D2 intends to integrate with a variety of layout engines, e.g. `dot`, as well as
 single-purpose layout types like sequence diagrams. You can choose whichever layout engine

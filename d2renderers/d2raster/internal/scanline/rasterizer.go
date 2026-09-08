@@ -107,9 +107,10 @@ type Rasterizer struct {
 	partial    []float32
 	difference []float32
 
-	first   point
-	current point
-	hasPath bool
+	first        point
+	current      point
+	hasPath      bool
+	originOffset point
 
 	touchedMin int
 	touchedMax int
@@ -166,6 +167,7 @@ func (r *Rasterizer) Reset(width, height int) {
 	r.scanEdges = r.scanEdges[:0]
 	r.active = r.active[:0]
 	r.hasPath = false
+	r.originOffset = point{}
 	r.edgeCount = 0
 	r.pathErr = nil
 	r.workVisibleEdges = 0
@@ -229,7 +231,28 @@ func (r *Rasterizer) resizeRows(width int) {
 
 // MoveTo starts a new subpath at x, y.
 func (r *Rasterizer) MoveTo(x, y float32) {
-	p := point{x: float64(x), y: float64(y)}
+	r.moveTo(point{x: float64(x), y: float64(y)})
+}
+
+// SetOriginOffset sets the translation applied by the 64-bit path methods
+// after their coordinates have been rounded to float32. This lets a cropped
+// target preserve the coordinate rounding of a larger reference target.
+// Reset clears the translation; the original float32 methods ignore it.
+func (r *Rasterizer) SetOriginOffset(x, y float64) {
+	r.originOffset = point{x: x, y: y}
+}
+
+func (r *Rasterizer) referencePoint(x, y float64) point {
+	return point{x: float64(float32(x)) + r.originOffset.x, y: float64(float32(y)) + r.originOffset.y}
+}
+
+// MoveTo64 starts a subpath, rounding relative to the reference origin before
+// applying the translation configured by SetOriginOffset.
+func (r *Rasterizer) MoveTo64(x, y float64) {
+	r.moveTo(r.referencePoint(x, y))
+}
+
+func (r *Rasterizer) moveTo(p point) {
 	r.first = p
 	r.current = p
 	r.hasPath = true
@@ -237,7 +260,16 @@ func (r *Rasterizer) MoveTo(x, y float32) {
 
 // LineTo appends a straight edge to the current subpath.
 func (r *Rasterizer) LineTo(x, y float32) {
-	next := point{x: float64(x), y: float64(y)}
+	r.lineTo(point{x: float64(x), y: float64(y)})
+}
+
+// LineTo64 appends an edge using the reference rounding and origin translation
+// described by MoveTo64.
+func (r *Rasterizer) LineTo64(x, y float64) {
+	r.lineTo(r.referencePoint(x, y))
+}
+
+func (r *Rasterizer) lineTo(next point) {
 	if !r.hasPath {
 		r.first = next
 		r.current = next
@@ -252,14 +284,24 @@ func (r *Rasterizer) LineTo(x, y float32) {
 // the tolerance is independent of the source transform.
 func (r *Rasterizer) CubeTo(cx0, cy0, cx1, cy1, x, y float32) {
 	end := point{x: float64(x), y: float64(y)}
+	c0 := point{x: float64(cx0), y: float64(cy0)}
+	c1 := point{x: float64(cx1), y: float64(cy1)}
+	r.cubeTo(c0, c1, end)
+}
+
+// CubeTo64 appends a cubic curve using reference rounding for its control and
+// end points before applying the configured origin translation.
+func (r *Rasterizer) CubeTo64(cx0, cy0, cx1, cy1, x, y float64) {
+	r.cubeTo(r.referencePoint(cx0, cy0), r.referencePoint(cx1, cy1), r.referencePoint(x, y))
+}
+
+func (r *Rasterizer) cubeTo(c0, c1, end point) {
 	if !r.hasPath {
 		r.first = end
 		r.current = end
 		r.hasPath = true
 		return
 	}
-	c0 := point{x: float64(cx0), y: float64(cy0)}
-	c1 := point{x: float64(cx1), y: float64(cy1)}
 	r.flattenCube(r.current, c0, c1, end, 0)
 	r.current = end
 }

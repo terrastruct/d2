@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"hash/crc32"
+	"io"
 	"math"
 
 	"github.com/d2lang/d2/lib/version"
@@ -24,6 +25,22 @@ const (
 	pngChunkIEND     = uint32(0x49454e44) // IEND
 	d2ExifIFDSize    = 38
 )
+
+// WriteExif writes D2's complete eXIf chunk. A streaming PNG encoder calls it
+// after IHDR, before emitting image data, without retaining the encoded image.
+func WriteExif(w io.Writer) error {
+	dataSize, err := d2ExifDataSize(version.Version)
+	if err != nil {
+		return err
+	}
+	chunk := make([]byte, pngChunkOverhead+dataSize)
+	writeD2ExifChunk(chunk, 0, version.Version, dataSize)
+	n, err := w.Write(chunk)
+	if err == nil && n != len(chunk) {
+		return io.ErrShortWrite
+	}
+	return err
+}
 
 // AddExif returns png with D2's EXIF metadata inserted after IHDR. An existing
 // EXIF chunk is replaced at its original position. The input is validated

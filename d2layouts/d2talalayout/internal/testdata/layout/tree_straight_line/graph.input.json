@@ -1,0 +1,101 @@
+{
+  "nodes": [
+    {
+      "id": 873436672,
+      "width": 137,
+      "height": 126,
+      "topLeft": null,
+      "shapeType": ""
+    },
+    {
+      "id": 2541194078,
+      "width": 130,
+      "height": 126,
+      "topLeft": null,
+      "shapeType": "StoredData"
+    },
+    {
+      "id": 3607948159,
+      "width": 191,
+      "height": 111,
+      "topLeft": null,
+      "shapeType": "Class"
+    },
+    {
+      "id": 974102386,
+      "width": 100,
+      "height": 100,
+      "topLeft": null,
+      "shapeType": ""
+    },
+    {
+      "id": 4207512678,
+      "width": 158,
+      "height": 126,
+      "topLeft": null,
+      "shapeType": ""
+    }
+  ],
+  "edges": [
+    {
+      "id": 290743837,
+      "from": 873436672,
+      "to": 4207512678,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 2873891463,
+      "from": 3607948159,
+      "to": 873436672,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 1254226016,
+      "from": 3607948159,
+      "to": 2541194078,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    },
+    {
+      "id": 2699454566,
+      "from": 2541194078,
+      "to": 974102386,
+      "points": [],
+      "sourceArrowhead": "",
+      "targetArrowhead": "triangle",
+      "minWidth": 0,
+      "minHeight": 0,
+      "labelPercentage": 0
+    }
+  ],
+  "CellSize": 0,
+  "containers": {
+    "0": [
+      873436672,
+      2541194078,
+      3607948159,
+      974102386,
+      4207512678
+    ]
+  },
+  "clusters": {},
+  "clusterVessels": {},
+  "trees": {},
+  "crossingCost": 0,
+  "turnCost": 0,
+  "nonCenterPortCost": 0
+}
