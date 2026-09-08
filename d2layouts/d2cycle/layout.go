@@ -83,8 +83,11 @@ func normalizeToOrigin(g *d2graph.Graph) {
 			edge.Move(dx, dy)
 		}
 	}
-	g.Root.Width = maxX - minX
-	g.Root.Height = maxY - minY
+	// The exporter truncates positions and sizes to whole pixels, and the
+	// circle leaves shapes on half pixels, so a bare width can round down
+	// past a child and draw the container border through it. Round up.
+	g.Root.Width = math.Ceil(maxX - minX)
+	g.Root.Height = math.Ceil(maxY - minY)
 }
 
 func calculateRadius(objects []*d2graph.Object) float64 {
