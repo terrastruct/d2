@@ -272,6 +272,7 @@ func Layout(ctx context.Context, graph *d2graph.Graph, opts *Options) (err error
 	if err != nil {
 		return err
 	}
+	ordinary := best
 	best, err = considerSeedCandidate(workCtx, best, func() (seedResult, error) {
 		candidate, err := engine.CompoundCandidate(workCtx, best.graph)
 		if err != nil {
@@ -285,13 +286,40 @@ func Layout(ctx context.Context, graph *d2graph.Graph, opts *Options) (err error
 	if err != nil {
 		return err
 	}
+	if best.graph != ordinary.graph {
+		selected := best
+		best, err = refineSeedResult(workCtx, selected, func() (seedResult, error) {
+			candidate, err := engine.PreserveCompoundRoutes(workCtx, ordinary.graph, selected.graph)
+			if err != nil {
+				return seedResult{}, err
+			}
+			return evaluateSeedResult(workCtx, input, candidate)
+		})
+		if err != nil {
+			return err
+		}
+	}
 	return applySeedResult(workCtx, graph, best)
 }
 
 // Optional strategies may reject a geometry or exhaust their own search. They
 // must not invalidate a complete ordinary result. Caller cancellation remains
 // an error; a timing-dependent subset of candidates is never selected.
-func considerSeedCandidate(ctx context.Context, incumbent seedResult, build func() (seedResult, error)) (selected seedResult, err error) {
+func considerSeedCandidate(ctx context.Context, incumbent seedResult, build func() (seedResult, error)) (seedResult, error) {
+	candidate, err := refineSeedResult(ctx, incumbent, build)
+	if err != nil {
+		return incumbent, err
+	}
+	if candidate.score.compare(incumbent.score) < 0 {
+		return candidate, nil
+	}
+	return incumbent, nil
+}
+
+// A routing refinement preserves the selected placement. Its enclosure checks
+// retain already-valid interior paths; the completed-layout score does
+// not measure their shared fan structure. Validation still runs before apply.
+func refineSeedResult(ctx context.Context, incumbent seedResult, build func() (seedResult, error)) (selected seedResult, err error) {
 	selected = incumbent
 	defer func() {
 		if recover() != nil {
@@ -308,8 +336,5 @@ func considerSeedCandidate(ctx context.Context, incumbent seedResult, build func
 		}
 		return incumbent, nil
 	}
-	if candidate.score.compare(incumbent.score) < 0 {
-		selected = candidate
-	}
-	return selected, nil
+	return candidate, nil
 }
