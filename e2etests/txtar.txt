@@ -1773,3 +1773,35 @@ style: {fill-pattern: dots; fill:"radial-gradient(#fbfbf8, #e3e3f0)"; stroke: "#
 
 a->b
 
+-- cycle-diagram --
+four: "" {
+  shape: cycle
+  a -> b -> c -> d -> a
+}
+nonrect: "" {
+  shape: cycle
+  a: {shape: circle}
+  b: {shape: hexagon}
+  c: {shape: diamond}
+  a -> b -> c -> a
+  b -> a
+}
+mixed: "" {
+  shape: cycle
+  style.fill: honeydew
+  style.stroke: red
+  x: {
+    p
+    q
+    p -> q
+  }
+  y
+  z: {shape: circle}
+  x.p -> y
+  y -> z -> x
+}
+two: "" {
+  shape: cycle
+  a -> b
+  b -> a
+}
