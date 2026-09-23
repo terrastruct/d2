@@ -21,7 +21,8 @@ const (
 	// minRadius is the smallest radius a cycle is drawn with.
 	minRadius = 200.
 	// padding is the minimum gap between adjacent children along the circle.
-	padding = 24.
+	padding          = 24.
+	containerPadding = 30.
 	// maxArcSweep bounds each cubic segment so the Bezier approximation of a
 	// circular arc stays visually exact.
 	maxArcSweep = math.Pi / 2
@@ -51,6 +52,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, coreLayout d2graph.LayoutGrap
 		}
 	}
 
+	positionLabelsIcons(g.Root)
 	for _, obj := range g.Objects {
 		positionLabelsIcons(obj)
 	}
@@ -395,7 +397,7 @@ func pointOnCircle(center *geo.Point, radius, angle float64) *geo.Point {
 }
 
 // normalizeGraph shifts all objects and routes so the bounding box starts at
-// (0, 0) and records the bounding box on the root.
+// (0, 0) and records the padded bounding box on the root.
 func normalizeGraph(g *d2graph.Graph) {
 	tl := geo.NewPoint(math.Inf(1), math.Inf(1))
 	br := geo.NewPoint(math.Inf(-1), math.Inf(-1))
@@ -422,8 +424,9 @@ func normalizeGraph(g *d2graph.Graph) {
 		return
 	}
 
-	dx := -tl.X
-	dy := -tl.Y
+	contentPadding := containerContentPadding(g.Root)
+	dx := contentPadding.Left - tl.X
+	dy := contentPadding.Top - tl.Y
 	if dx != 0 || dy != 0 {
 		for _, obj := range g.Objects {
 			if obj.TopLeft != nil {
@@ -435,7 +438,29 @@ func normalizeGraph(g *d2graph.Graph) {
 			edge.Move(dx, dy)
 		}
 	}
-	g.Root.Box = geo.NewBox(geo.NewPoint(0, 0), br.X-tl.X, br.Y-tl.Y)
+	g.Root.Box = geo.NewBox(
+		geo.NewPoint(0, 0),
+		br.X-tl.X+contentPadding.Left+contentPadding.Right,
+		br.Y-tl.Y+contentPadding.Top+contentPadding.Bottom,
+	)
+}
+
+func containerContentPadding(root *d2graph.Object) geo.Spacing {
+	padding := geo.Spacing{
+		Top:    containerPadding,
+		Bottom: containerPadding,
+		Left:   containerPadding,
+		Right:  containerPadding,
+	}
+	if root == nil {
+		return padding
+	}
+	margin, spacing := root.Spacing()
+	padding.Top = math.Max(padding.Top, math.Max(margin.Top, spacing.Top))
+	padding.Bottom = math.Max(padding.Bottom, math.Max(margin.Bottom, spacing.Bottom))
+	padding.Left = math.Max(padding.Left, math.Max(margin.Left, spacing.Left))
+	padding.Right = math.Max(padding.Right, math.Max(margin.Right, spacing.Right))
+	return padding
 }
 
 func modulo2Pi(angle float64) float64 {

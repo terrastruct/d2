@@ -8,7 +8,9 @@ import (
 
 	"github.com/d2lang/d2/d2compiler"
 	"github.com/d2lang/d2/d2graph"
+	"github.com/d2lang/d2/d2target"
 	"github.com/d2lang/d2/lib/geo"
+	"github.com/d2lang/d2/lib/label"
 )
 
 func compileGraph(t *testing.T, script string) *d2graph.Graph {
@@ -120,6 +122,42 @@ a -> b -> c -> d -> a
 	second := children[1]
 	if second.Center().X <= cx {
 		t.Fatalf("expected second child on the right side, got (%v,%v)", second.Center().X, second.Center().Y)
+	}
+}
+
+func TestLayoutAddsContainerInset(t *testing.T) {
+	g := compileGraph(t, `shape: cycle
+a -> b -> c -> d -> a
+`)
+	g.Root.Label.Value = "Cycle"
+	g.Root.LabelDimensions = d2target.TextDimensions{Width: 80, Height: 40}
+	labelPosition := label.InsideTopCenter.String()
+	g.Root.LabelPosition = &labelPosition
+	if err := Layout(context.Background(), g, fakeCoreLayout); err != nil {
+		t.Fatal(err)
+	}
+
+	root := g.Root.Box
+	if root == nil {
+		t.Fatal("expected cycle root box")
+	}
+	for _, child := range g.Root.ChildrenArray {
+		if child.TopLeft.X <= root.TopLeft.X || child.TopLeft.Y < root.TopLeft.Y+50 ||
+			child.TopLeft.X+child.Width >= root.TopLeft.X+root.Width ||
+			child.TopLeft.Y+child.Height >= root.TopLeft.Y+root.Height {
+			t.Fatalf("expected child %q to be inset from cycle container, got child %v and root %v", child.ID, child.TopLeft, root.TopLeft)
+		}
+	}
+	for _, edge := range g.Edges {
+		if !edge.IsCurve {
+			t.Fatalf("expected cycle edge %q to remain curved", edge.AbsID())
+		}
+		for _, point := range edge.Route {
+			if point.X <= root.TopLeft.X || point.Y <= root.TopLeft.Y ||
+				point.X >= root.TopLeft.X+root.Width || point.Y >= root.TopLeft.Y+root.Height {
+				t.Fatalf("expected edge %q point %v to be inset from cycle container %v", edge.AbsID(), point, root.TopLeft)
+			}
+		}
 	}
 }
 
