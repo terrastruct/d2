@@ -1,63 +1,57 @@
 package d2isometricimg
 
 import (
+	"bytes"
+	"context"
 	"math"
 	"strconv"
 	"strings"
 	"testing"
 
 	"github.com/d2lang/d2/d2renderers/d2scene"
+	"github.com/d2lang/d2/d2target"
 )
 
-func TestNativeSVGMatrixIgnoresRichViewportResiduals(t *testing.T) {
-	// Actual ARM64 and amd64 rich-label viewport pairs. Cancellation when
-	// centering a label can perturb both a real translation and a nominal zero;
-	// LaTeX also exposes these errors in translations smaller than one unit.
-	for _, tc := range []struct {
-		name string
-		a, b d2scene.Matrix
-	}{
-		{"code", d2scene.Matrix{A: 4.2631578947368425, D: 4.2631578947368425, E: 119.31578947368418, F: -1.0658141036401504e-14}, d2scene.Matrix{A: 4.2631578947368425, D: 4.2631578947368425, E: 119.31578947368419, F: -1.4210854715202004e-14}},
-		{"markdown", d2scene.Matrix{A: 6.137254901960785, D: 6.137254901960784, E: 0.8627450980391643, F: -1.021405182655144e-14}, d2scene.Matrix{A: 6.137254901960785, D: 6.137254901960784, E: 0.8627450980391131}},
-		{"latex", d2scene.Matrix{A: 0.018097111502225906, D: 0.018097111502225906, E: 0.0038678952272470928, F: 15.996036856817478}, d2scene.Matrix{A: 0.018097111502225906, D: 0.018097111502225906, E: 0.003867895227244844, F: 15.996036856817478}},
+func TestNativeSVGMatrixPreservesAuthoredPrecision(t *testing.T) {
+	for _, input := range []d2scene.Matrix{
+		{A: 1e-100, B: -2e-100, C: 3e-100, D: 4e-100, E: 1e300, F: -1e300},
+		{A: 1, D: 1, E: 4e-13, F: -4e-13},
+		{A: 1.0000000000001, D: .9999999999999, E: math.Nextafter(1, 2)},
 	} {
-		t.Run(tc.name, func(t *testing.T) {
-			if tc.a == tc.b {
-				t.Fatal("fixture must retain distinct CPU rounding residuals")
-			}
-			a, b := nativeSVGMatrix(tc.a), nativeSVGMatrix(tc.b)
-			if a != b {
-				t.Fatalf("equivalent rich viewports differ: %s != %s", a, b)
-			}
-			parsed := parseNativeSVGTestMatrix(t, a)
-			if again := nativeSVGMatrix(parsed); again != a {
-				t.Fatalf("matrix precision is not idempotent: %s != %s", a, again)
-			}
-			for _, point := range []d2scene.Point{{}, {X: 100000, Y: 100000}} {
-				before, after := tc.a.Point(point), parsed.Point(point)
-				if math.Hypot(before.X-after.X, before.Y-after.Y) > 1e-6 {
-					t.Fatal("matrix serialization moved label geometry by more than one millionth of a unit")
-				}
-			}
-		})
+		serialized := nativeSVGMatrix(input)
+		output := parseNativeSVGTestMatrix(t, serialized)
+		if input != output {
+			t.Fatalf("authored transform changed: %+v != %+v", input, output)
+		}
+		if again := nativeSVGMatrix(output); again != serialized {
+			t.Fatalf("matrix serialization is not idempotent: %s != %s", serialized, again)
+		}
+	}
+	input := d2scene.Matrix{A: 1, D: 1, E: math.Copysign(0, -1)}
+	if got := nativeSVGMatrix(input); got != "matrix(1 0 0 1 0 0)" {
+		t.Fatalf("negative zero survived serialization: %s", got)
 	}
 }
 
-func TestNativeSVGMatrixPreservesSmallScalesAndLargeTranslations(t *testing.T) {
-	input := d2scene.Matrix{A: 1e-100, B: -2e-100, C: 3e-100, D: 4e-100, E: 1e300, F: -1e300}
-	output := parseNativeSVGTestMatrix(t, nativeSVGMatrix(input))
-	if input != output {
-		t.Fatalf("authored transform collapsed or overflowed: %+v != %+v", input, output)
+func TestNativeSVGPreservesMagnifiedAuthoredIconTranslation(t *testing.T) {
+	// The child's tiny translation becomes 40 pixels in this 100-pixel icon
+	// after its parent scale. Rounding all matrix translations as if they were
+	// generated viewport residuals moves the red rectangle across the face.
+	const source = `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><g transform="scale(1e14)"><rect width="5e-13" height="1e-12" fill="#ff0000" transform="translate(4e-13 0)"/></g></svg>`
+	d := d2target.NewDiagram()
+	s := *d2target.BaseShape()
+	s.ID, s.Type, s.Width, s.Height = "artwork", d2target.ShapeImage, 100, 100
+	s.Fill, s.Stroke, s.StrokeWidth = "transparent", "none", 0
+	s.Icon = iconData(t, "image/svg+xml", []byte(source))
+	d.Shapes = []d2target.Shape{s}
+	data, err := Render(context.Background(), d, &Options{Format: SVG, Width: 500, Height: 400, FitContent: true})
+	if err != nil {
+		t.Fatal(err)
 	}
-	for _, zero := range []float64{0, math.Copysign(0, -1), 1e-14, -1e-14} {
-		input := d2scene.Matrix{A: 1, D: 1, E: zero, F: -zero}
-		if got := nativeSVGMatrix(input); got != "matrix(1 0 0 1 0 0)" {
-			t.Fatalf("translation residual or negative zero survived serialization: %s", got)
+	for _, transform := range []string{"matrix(1e+14 0 0 1e+14 0 0)", "matrix(1 0 0 1 4e-13 0)"} {
+		if !bytes.Contains(data, []byte(transform)) {
+			t.Fatalf("authored SVG transform was lost in public image rendering: %s", transform)
 		}
-	}
-	input = d2scene.Matrix{A: 1, D: 1, E: 5e-8, F: -5e-8}
-	if got := parseNativeSVGTestMatrix(t, nativeSVGMatrix(input)); got != input {
-		t.Fatalf("small authored translation disappeared: %+v", got)
 	}
 }
 
