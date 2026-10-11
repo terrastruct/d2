@@ -11,7 +11,11 @@ declare const input: string | CompileRequest;
 
 const source = "x -> y";
 const request: CompileRequest = { fs: { index: source } };
-const options: CompileOptions = { layout: "tala", sketch: false };
+const options: CompileOptions = {
+  layout: "tala",
+  sketch: false,
+  isometric: true,
+};
 
 const defaults: Promise<CompileResponse> = d2.compile(source);
 const configured: Promise<CompileResponse> = d2.compile(source, options);
@@ -27,6 +31,7 @@ for (const layout of ["dagre", "elk", "tala"] as const) {
 configured.then((response) => {
   const renderOptions: RenderOptions = response.renderOptions;
   d2.render(response.diagram, renderOptions);
+  d2.render(response.diagram, { ...renderOptions, isometric: false });
 
   // @ts-expect-error The response exposes renderOptions, not options.
   response.options;

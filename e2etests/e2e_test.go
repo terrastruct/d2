@@ -201,7 +201,6 @@ func runASCIITxtarTest(t *testing.T, tc testCase) {
 	if os.Getenv("SKIP_SVG_CHECK") == "" {
 		err2 = diff.Testdata(filepath.Join(outputDir, "sketch"), ".svg", svgBytes)
 	}
-
 	extendedAsciiArtist := d2ascii.NewASCIIartist()
 
 	// Extended (Unicode) ASCII
@@ -437,6 +436,7 @@ func run(t *testing.T, tc testCase) {
 		if os.Getenv("SKIP_SVG_CHECK") == "" {
 			err2 = diff.Testdata(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
 		}
+		renderIsometric(t, ctx, diagram, dataPath, renderOpts)
 
 		assert.Success(t, err)
 		assert.Success(t, err2)
