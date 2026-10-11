@@ -132,6 +132,7 @@ func svgPolygonPath(polygons [][]svgPoint) string {
 		if len(p) > 1 && p[0] == p[len(p)-1] {
 			p = p[:len(p)-1]
 		}
+		p = svgOmitCollinearSplits(p)
 		if len(p) < 3 {
 			continue
 		}
@@ -163,6 +164,45 @@ func svgPolygonPath(polygons [][]svgPoint) string {
 		s.WriteByte('Z')
 	}
 	return s.String()
+}
+
+// Clipping nearly coincident planes can place a redundant intersection at
+// different positions along the same straight edge on different CPUs. Drop
+// such splits only after projection, at the SVG's six-decimal output precision;
+// the visibility mesh and its depth values remain unchanged. Work in place on
+// the serializer's private, rounded copy, retaining at least three vertices.
+func svgOmitCollinearSplits(points []svgPoint) []svgPoint {
+	if len(points) <= 3 {
+		return points
+	}
+	redundant := func(a, b, c svgPoint) bool {
+		dx, dy := c.x-a.x, c.y-a.y
+		px, py := b.x-a.x, b.y-a.y
+		length2 := float64(dx*dx) + float64(dy*dy)
+		along := float64(px*dx) + float64(py*dy)
+		if length2 == 0 || along < 0 || along > length2 {
+			return false
+		}
+		cross := float64(px*dy) - float64(py*dx)
+		return math.Abs(cross) <= 1e-6*math.Sqrt(length2)
+	}
+	clean := points[:0]
+	for i, p := range points {
+		for len(clean) > 1 && len(clean)+len(points)-i > 3 && redundant(clean[len(clean)-2], clean[len(clean)-1], p) {
+			clean = clean[:len(clean)-1]
+		}
+		clean = append(clean, p)
+	}
+	for len(clean) > 3 {
+		if redundant(clean[len(clean)-1], clean[0], clean[1]) {
+			clean = clean[1:]
+		} else if redundant(clean[len(clean)-2], clean[len(clean)-1], clean[0]) {
+			clean = clean[:len(clean)-1]
+		} else {
+			break
+		}
+	}
+	return clean
 }
 
 type svgPaintBatch struct {

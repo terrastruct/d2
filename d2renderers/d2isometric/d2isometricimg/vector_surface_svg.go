@@ -95,7 +95,26 @@ func nativeSVGNumber(n float64) string {
 	return strconv.FormatFloat(n, 'g', -1, 64)
 }
 func nativeSVGMatrix(m d2scene.Matrix) string {
-	return "matrix(" + nativeSVGNumber(m.A) + " " + nativeSVGNumber(m.B) + " " + nativeSVGNumber(m.C) + " " + nativeSVGNumber(m.D) + " " + nativeSVGNumber(m.E) + " " + nativeSVGNumber(m.F) + ")"
+	// Shared scene transforms can retain different final bits when a CPU
+	// contracts multiply-adds (including cancellation to almost zero during
+	// rich-label viewport fitting). Serialize stable display precision, without
+	// changing the scene used for layout, rasterization or visibility tests.
+	// Keep twelve significant digits even for tiny scale/shear coefficients:
+	// rounding those to a fixed number of decimals could collapse an authored
+	// SVG transform. Small translations use twelve decimal places instead,
+	// so cancellation near zero cannot expose otherwise insignificant bits.
+	number := func(value float64, translation bool) string {
+		if translation && math.Abs(value) < 1 {
+			// Restrict the absolute quantization to this range to avoid
+			// overflowing or losing precision on large authored translations.
+			value = math.Round(value*1e12) / 1e12
+		}
+		if value == 0 {
+			return "0"
+		}
+		return strconv.FormatFloat(value, 'g', 12, 64)
+	}
+	return "matrix(" + number(m.A, false) + " " + number(m.B, false) + " " + number(m.C, false) + " " + number(m.D, false) + " " + number(m.E, true) + " " + number(m.F, true) + ")"
 }
 func nativeSVGAttr(name, value string) string {
 	return " " + name + "=\"" + html.EscapeString(value) + "\""
