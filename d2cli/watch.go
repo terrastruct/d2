@@ -347,6 +347,17 @@ func (w *watcher) requestCompile() {
 	}
 }
 
+// boardStillCurrent reports whether compiledFor is still the board being
+// viewed. A compile can take long enough that the user navigates to a
+// different board before it finishes; its result must be discarded rather
+// than published, or it would overwrite the newly-selected board's cached
+// result with stale data.
+func (w *watcher) boardStillCurrent(compiledFor string) bool {
+	w.boardpathMu.Lock()
+	defer w.boardpathMu.Unlock()
+	return compiledFor == w.boardPath
+}
+
 func (w *watcher) ensureAddWatch(ctx context.Context, path string) (time.Time, error) {
 	interval := time.Millisecond * 16
 	tc := time.NewTimer(0)
@@ -449,9 +460,10 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 		// localfile.Policy to reject directories and other special files.
 		fs := trackedFS{localFiles: localfile.Unrestricted()}
 		w.boardpathMu.Lock()
+		compiledBoardPath := w.boardPath
 		var boardPath []string
-		if w.boardPath != "" {
-			boardPath = strings.Split(w.boardPath, string(os.PathSeparator))
+		if compiledBoardPath != "" {
+			boardPath = strings.Split(compiledBoardPath, string(os.PathSeparator))
 		}
 		svg, _, err := compile(ctx, w.ms, &fs, w.layout, w.renderOpts, w.fontFamily, w.monoFontFamily, w.animateInterval, w.inputPath, w.outputPath, boardPath, false, w.bundle, w.forceAppendix, w.outputFormat, w.asciiMode, true)
 		w.boardpathMu.Unlock()
@@ -470,11 +482,17 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			return err
 		}
 
-		w.broadcast(&compileResult{
-			SVG:   string(svg),
-			Scale: w.renderOpts.Scale,
-			Err:   errs,
-		})
+		// handleRoot may have already switched to a different board and cleared
+		// w.res while this compile was in flight. Only publish this result if
+		// the board it was compiled for is still the one being viewed, so we
+		// never hand a newly-connecting client the wrong board's SVG.
+		if w.boardStillCurrent(compiledBoardPath) {
+			w.broadcast(&compileResult{
+				SVG:   string(svg),
+				Scale: w.renderOpts.Scale,
+				Err:   errs,
+			})
+		}
 
 		if firstCompile {
 			firstCompile = false
@@ -611,6 +629,15 @@ func (w *watcher) handleRoot(hw http.ResponseWriter, r *http.Request) {
 	}
 	w.boardpathMu.Unlock()
 	if recompile {
+		// Discard the previous board's cached result so a websocket client
+		// connecting for this navigation can't receive a stale SVG (with the
+		// wrong dimensions) before the new board finishes compiling. Without
+		// this, the client's watch.js locks in a fit-to-window scale computed
+		// from the old board and never recomputes it once the correct SVG
+		// arrives, leaving the diagram mis-scaled.
+		w.resMu.Lock()
+		w.res = nil
+		w.resMu.Unlock()
 		w.requestCompile()
 	}
 }
