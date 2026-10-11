@@ -12,6 +12,7 @@ import (
 	"github.com/d2lang/d2/d2renderers/d2scene"
 	"github.com/d2lang/d2/d2renderers/d2scenebuild"
 	"github.com/d2lang/d2/d2target"
+	"github.com/d2lang/d2/lib/textmeasure"
 )
 
 // Page combines the native PNG with annotations in final image pixels. Writers
@@ -90,6 +91,9 @@ func preflightPageMetadata(ctx context.Context, diagram *d2target.Diagram, budge
 				return err
 			}
 		}
+		if err := validateNativeLink(link); err != nil {
+			return err
+		}
 		if link != "" && tooltip != "" {
 			if p, err := url.ParseRequestURI(tooltip); err == nil && p.Host != "" {
 				return fmt.Errorf("isometric page tooltip must not be a URL when link is also set")
@@ -135,6 +139,10 @@ func (b *meshBuilder) addNativeLink(points [4]Vec, region d2scene.LinkRegion) {
 			return
 		}
 	}
+	if err := validateNativeLink(region.URL); err != nil {
+		b.err = err
+		return
+	}
 	for _, p := range points {
 		if !captionFinite(p.X, p.Y, p.Z) {
 			b.err = fmt.Errorf("isometric page link bounds are non-finite")
@@ -164,6 +172,13 @@ func validatePageLinkText(ctx context.Context, value string) error {
 	return ctx.Err()
 }
 
+func validateNativeLink(link string) error {
+	if textmeasure.IsDangerousLink(link) {
+		return fmt.Errorf("isometric link uses an unsafe URL scheme")
+	}
+	return nil
+}
+
 func (b *meshBuilder) validateTypedLink(link, tooltip string) bool {
 	if b.options.vector {
 		return true // SVG preserves arbitrary source tooltip text in a title.
@@ -179,9 +194,20 @@ func (b *meshBuilder) validateTypedLink(link, tooltip string) bool {
 
 func nativeLinkDestination(link, tooltip string) d2scene.LinkRegion {
 	r := d2scene.LinkRegion{URL: link, Tooltip: tooltip}
-	if key, err := d2parser.ParseKey(link); err == nil && len(key.Path) > 0 && key.Path[0].Unbox().ScalarString() == "root" {
-		r.URL, r.Target = "", link
+	key, err := d2parser.ParseKey(link)
+	if err != nil || len(key.Path) == 0 || len(key.Path)%2 == 0 || key.Path[0].Unbox().ScalarString() != "root" {
+		return r
 	}
+	// Semantic board targets alternate a board collection and its name. An
+	// already-resolved export such as root.svg is a relative URL, not a target.
+	for i := 1; i < len(key.Path); i += 2 {
+		switch key.Path[i].Unbox().ScalarString() {
+		case "layers", "scenarios", "steps":
+		default:
+			return r
+		}
+	}
+	r.URL, r.Target = "", link
 	return r
 }
 

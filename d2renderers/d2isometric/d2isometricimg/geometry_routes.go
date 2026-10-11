@@ -362,7 +362,7 @@ func (b *meshBuilder) edges(edges []d2isometric.Edge, placer *routeCaptionPlacer
 		if edge.Label == "" && !hasIcon {
 			continue
 		}
-		pw, pd := nativeRouteCaptionSize(edge, .5, edge.Metadata.Original.Text, hasIcon, b.scale)
+		pw, pd := nativeRouteCaptionSize(edge.Metadata.Original.Text, hasIcon, b.scale)
 		if surface, positioned := nativeConnectionCaptionSurface(lanePaths[i], edge.Metadata.Original, pw, pd, b.scale); positioned {
 			if nativeCaptionOnEdge(edge.Metadata.Original) {
 				surface.center.Y += nativeRouteRadius(edge)
@@ -427,7 +427,7 @@ func (b *meshBuilder) edges(edges []d2isometric.Edge, placer *routeCaptionPlacer
 		}
 		hasIcon := edge.Icon != "" && edge.Metadata.Original.Icon != nil
 		if (edge.Label != "" || hasIcon) && nativeCaptionOnEdge(edge.Metadata.Original) {
-			pw, pd := nativeRouteCaptionSize(edge, .5, edge.Metadata.Original.Text, hasIcon, b.scale)
+			pw, pd := nativeRouteCaptionSize(edge.Metadata.Original.Text, hasIcon, b.scale)
 			if surface, ok := nativeConnectionCaptionSurface(lanePaths[edgeIndex], edge.Metadata.Original, pw, pd, b.scale); ok {
 				surface.center.Y += nativeRouteRadius(edge)
 				// The print area can be wider than its text. Leave a close gap
@@ -488,7 +488,7 @@ func (b *meshBuilder) edges(edges []d2isometric.Edge, placer *routeCaptionPlacer
 			if caption.text == "" && !hasIcon {
 				continue
 			}
-			pw, pd := nativeRouteCaptionSize(edge, caption.fraction, caption.style, hasIcon, b.scale)
+			pw, pd := nativeRouteCaptionSize(caption.style, hasIcon, b.scale)
 			var surface labelSurface
 			positioned := false
 			if captionIndex == 0 {

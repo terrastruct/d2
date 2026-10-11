@@ -353,7 +353,7 @@ func (b *meshBuilder) canonicalNode(n d2isometric.Node, tint string) {
 		for _, profile := range profiles {
 			world := make([]Vec, len(profile))
 			for i, p := range profile {
-				world[i] = nv(n.Position.X-w/2+p.X*sx+dx, top+dy, n.Position.Z-d/2+p.Z*sz+dz)
+				world[i] = nv(n.Position.X-w/2+float64(p.X*sx)+dx, top+dy, n.Position.Z-d/2+float64(p.Z*sz)+dz)
 			}
 			if n.Type == d2target.ShapePage {
 				pageProfile = world
@@ -377,7 +377,7 @@ func (b *meshBuilder) canonicalNode(n d2isometric.Node, tint string) {
 			}
 		}
 		paint := face
-		paint.center = nv(n.Position.X-w/2+face.center.X*sx+dx, top+dy+.0005, n.Position.Z-d/2+face.center.Z*sz+dz)
+		paint.center = nv(n.Position.X-w/2+float64(face.center.X*sx)+dx, top+dy+.0005, n.Position.Z-d/2+float64(face.center.Z*sz)+dz)
 		paint.width, paint.depth = face.width*sx, face.depth*sz
 		before := len(b.triangles)
 		b.surfaceTexture(tex, paint, n.Opacity)

@@ -7,6 +7,7 @@ import (
 
 	"github.com/d2lang/d2/d2renderers/d2isometric"
 	"github.com/d2lang/d2/d2target"
+	libcolor "github.com/d2lang/d2/lib/color"
 )
 
 // Presentation copies can lift a nested plate within the clearance below the
@@ -85,7 +86,7 @@ func (b *meshBuilder) hierarchyNode(node d2isometric.Node, tint string) {
 	for i := start; i < len(b.triangles); i++ {
 		for j := range b.triangles[i].V {
 			v := &b.triangles[i].V[j]
-			v.Position.Y = floor + (v.Position.Y-floor)*relief
+			v.Position.Y = floor + float64((v.Position.Y-floor)*relief)
 			v.Normal = nunit(nv(v.Normal.X, v.Normal.Y/relief, v.Normal.Z))
 		}
 	}
@@ -102,7 +103,7 @@ func (b *meshBuilder) hierarchyNode(node d2isometric.Node, tint string) {
 	for i := firstLink; i < len(b.links); i++ {
 		for j := range b.links[i].points {
 			p := &b.links[i].points[j]
-			p.Y = floor + (p.Y-floor)*relief
+			p.Y = floor + float64((p.Y-floor)*relief)
 		}
 	}
 	b.markPaintOwner(start)
@@ -304,7 +305,20 @@ func (b *meshBuilder) hierarchyBoard(board d2isometric.Board, owner *d2isometric
 	}
 	faceOwner := *owner
 	faceOwner.Size = board.Size
-	source := nativeFaceSource(faceOwner, richColor(fill))
+	sourceFill := richColor(fill)
+	if libcolor.IsGradient(tint) {
+		// Authored gradients are source paint, not a representative solid swatch.
+		sourceFill = tint
+		if !platform && board.Kind != "sequence-group" {
+			var err error
+			sourceFill, err = nativeGradientOpacity(tint, .22)
+			if err != nil {
+				b.err = err
+				return
+			}
+		}
+	}
+	source := nativeFaceSource(faceOwner, sourceFill)
 	profiles, err := nativeShapeProfiles(source)
 	if err != nil {
 		b.err = err
@@ -342,13 +356,13 @@ func (b *meshBuilder) hierarchyBoard(board d2isometric.Board, owner *d2isometric
 			for _, profile := range profiles {
 				world := make([]Vec, len(profile))
 				for i, p := range profile {
-					world[i] = nv(board.Position.X-board.Size.X/2+p.X*sx+dx, top, board.Position.Z-board.Size.Z/2+p.Z*sz+dz)
+					world[i] = nv(board.Position.X-board.Size.X/2+float64(p.X*sx)+dx, top, board.Position.Z-board.Size.Z/2+float64(p.Z*sz)+dz)
 				}
 				b.extrudedProfile(world, top-depth, nil, side)
 			}
 		}
 		paint := face
-		paint.center = nv(board.Position.X-board.Size.X/2+face.center.X*sx+dx, top, board.Position.Z-board.Size.Z/2+face.center.Z*sz+dz)
+		paint.center = nv(board.Position.X-board.Size.X/2+float64(face.center.X*sx)+dx, top, board.Position.Z-board.Size.Z/2+float64(face.center.Z*sz)+dz)
 		paint.width, paint.depth = face.width*sx, face.depth*sz
 		start := len(b.triangles)
 		b.surfaceTexture(tex, paint, opacity)

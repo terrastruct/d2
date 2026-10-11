@@ -14,6 +14,19 @@ import (
 // caller includes Triangle.DepthBias in z; it never changes projected x/y.
 type svgPoint struct{ x, y, z float64 }
 
+// Canonicalize the camera boundary before topology-sensitive clipping. Fused
+// multiply-add is available on some CPUs but not others; its last-bit changes
+// must not change which coplanar polygons are split or their paint order. The
+// binary grids preserve far more precision than the SVG's six decimal places
+// (and the depth tie tolerance), without changing the source layout.
+func svgProjectedPoint(x, y, z float64) svgPoint {
+	return svgPoint{
+		math.Round(x*(1<<24)) / (1 << 24),
+		math.Round(y*(1<<24)) / (1 << 24),
+		math.Round(z*(1<<36)) / (1 << 36),
+	}
+}
+
 type svgVisibilityFace struct {
 	points  []svgPoint // Convex, planar projected polygon, either winding.
 	opaque  bool       // A fully opaque, depth-writing surface, not a decal.
@@ -70,7 +83,9 @@ type svgDepthPlane struct {
 }
 
 func (p svgDepthPlane) at(v svgPoint) float64 {
-	return p.origin.z + p.dx*(v.x-p.origin.x) + p.dy*(v.y-p.origin.y)
+	// Explicit conversions round each product, forbidding implicit FMA here
+	// and in the clipping predicates below even after compiler inlining.
+	return p.origin.z + float64(p.dx*(v.x-p.origin.x)) + float64(p.dy*(v.y-p.origin.y))
 }
 
 func svgPolygonArea(points []svgPoint) float64 {
@@ -81,7 +96,7 @@ func svgPolygonArea(points []svgPoint) float64 {
 	o := points[0]
 	for i := 1; i+1 < len(points); i++ {
 		a, b := points[i], points[i+1]
-		area += (a.x-o.x)*(b.y-o.y) - (a.y-o.y)*(b.x-o.x)
+		area += float64((a.x-o.x)*(b.y-o.y)) - float64((a.y-o.y)*(b.x-o.x))
 	}
 	return area / 2
 }
@@ -94,7 +109,7 @@ func svgPolygonPlane(points []svgPoint) (svgDepthPlane, bool) {
 	best, index := 0.0, 0
 	for i := 1; i+1 < len(points); i++ {
 		a, b := points[i], points[i+1]
-		d := (a.x-o.x)*(b.y-o.y) - (a.y-o.y)*(b.x-o.x)
+		d := float64((a.x-o.x)*(b.y-o.y)) - float64((a.y-o.y)*(b.x-o.x))
 		if math.Abs(d) > math.Abs(best) {
 			best, index = d, i
 		}
@@ -104,8 +119,8 @@ func svgPolygonPlane(points []svgPoint) (svgDepthPlane, bool) {
 	}
 	a, b := points[index], points[index+1]
 	return svgDepthPlane{o,
-		((a.z-o.z)*(b.y-o.y) - (b.z-o.z)*(a.y-o.y)) / best,
-		((a.x-o.x)*(b.z-o.z) - (b.x-o.x)*(a.z-o.z)) / best,
+		(float64((a.z-o.z)*(b.y-o.y)) - float64((b.z-o.z)*(a.y-o.y))) / best,
+		(float64((a.x-o.x)*(b.z-o.z)) - float64((b.x-o.x)*(a.z-o.z))) / best,
 	}, true
 }
 
@@ -217,7 +232,7 @@ func svgSplitPolygon(points []svgPoint, distance func(svgPoint) float64) (inside
 		dc := distances[i]
 		if (dp < 0 && dc > 0) || (dp > 0 && dc < 0) {
 			t := dp / (dp - dc)
-			p := svgPoint{previous.x + t*(current.x-previous.x), previous.y + t*(current.y-previous.y), previous.z + t*(current.z-previous.z)}
+			p := svgPoint{previous.x + float64(t*(current.x-previous.x)), previous.y + float64(t*(current.y-previous.y)), previous.z + float64(t*(current.z-previous.z))}
 			inside, outside = append(inside, p), append(outside, p)
 		}
 		if dc >= 0 {
@@ -263,14 +278,17 @@ func svgValidFragment(points []svgPoint) []svgPoint {
 	}
 	box := svgPolygonBox(points)
 	span := math.Max(box.maxX-box.minX, box.maxY-box.minY)
-	if math.Abs(svgPolygonArea(points)) <= math.Max(1e-12, span*span*1e-13) {
+	// Projection rounding can leave almost-collinear slivers at shared edges.
+	// They are narrower than SVG serialization precision, but retaining them
+	// would multiply subsequent cuts and exhaust the visibility work budget.
+	if math.Abs(svgPolygonArea(points)) <= math.Max(span*1e-8, span*span*1e-13) {
 		return nil
 	}
 	return points
 }
 
 func svgEdgeDistance(a, b svgPoint) func(svgPoint) float64 {
-	return func(p svgPoint) float64 { return (b.x-a.x)*(p.y-a.y) - (b.y-a.y)*(p.x-a.x) }
+	return func(p svgPoint) float64 { return float64((b.x-a.x)*(p.y-a.y)) - float64((b.y-a.y)*(p.x-a.x)) }
 }
 
 // A convex subtraction yields disjoint convex fragments. Checking intersection
@@ -316,10 +334,10 @@ func svgVisibleFaces(ctx context.Context, faces []svgVisibilityFace) ([][][]svgP
 // Fragment indexing controls combinatorial growth independently. The native
 // raster work ceiling remains an absolute bound for every visibility pass.
 func svgVisibilityWorkLimit(faces int) int {
-	if faces > rasterMaxWork/2048 {
+	if faces > rasterMaxWork/2304 {
 		return rasterMaxWork
 	}
-	return max(svgDefaultVisibilityLimits.work, faces*2048)
+	return max(svgDefaultVisibilityLimits.work, faces*2304)
 }
 
 func svgVisibleFacesWithLimits(ctx context.Context, faces []svgVisibilityFace, limits svgVisibilityLimits) ([][][]svgPoint, error) {
@@ -356,7 +374,9 @@ func svgVisibleFacesWithLimits(ctx context.Context, faces []svgVisibilityFace, l
 				points[a], points[b] = points[b], points[a]
 			}
 		}
-		polygons[i] = svgVisibilityPolygon{points, plane, svgPolygonBox(points), svgPolygonArea(points)}
+		// Area is only a clipping-order heuristic. Group subpixel-equivalent
+		// areas so symmetric faces use the stable source-order tie break.
+		polygons[i] = svgVisibilityPolygon{points, plane, svgPolygonBox(points), math.Round(svgPolygonArea(points)*1e4) / 1e4}
 	}
 	var grid *svgVisibilityGrid
 	var tree *svgVisibilityTree

@@ -37,6 +37,7 @@ type Material struct {
 	// Physical solid caps and unwrapped walls have a filled source background;
 	// their texture's antialiased perimeter is not a geometric hole.
 	svgSolidTexture bool
+	gradient        string
 }
 
 type Triangle struct {
@@ -102,6 +103,7 @@ type Raster struct {
 	output            *image.RGBA
 	static            *rasterDrawPlan // large images replay only touched strips
 	background        color.NRGBA
+	backgroundTexture *image.RGBA
 	ground            float64
 	groundBounds      image.Rectangle // finite receiver footprint of actual shadows
 }
@@ -173,6 +175,7 @@ func newRaster(ctx context.Context, width, height int, triangles []Triangle, bac
 		return nil, err
 	}
 	r := &Raster{width: width, height: height, aa: rasterAA, background: background, ground: rasterShadowGround(triangles)}
+	r.backgroundTexture, _ = ctx.Value(nativeGradientBackgroundKey{}).(*image.RGBA)
 	r.camera = rasterFit(triangles, nativeViewDirection(), width*r.aa, height*r.aa, 1.08)
 	if camera != nil {
 		if camera.width < 1 || camera.height < 1 {
@@ -555,19 +558,26 @@ func rasterTextureStorage(b image.Rectangle, stride, pixels, channels int) error
 	if b.Min.X < -1e9 || b.Min.Y < -1e9 || b.Max.X > 1e9 || b.Max.Y > 1e9 || b.Max.X <= b.Min.X || b.Max.Y <= b.Min.Y || b.Dx() > 16384 || b.Dy() > 16384 || stride < b.Dx()*channels {
 		return fmt.Errorf("invalid native isometric texture storage")
 	}
-	if int64(b.Dy()-1)*int64(stride)+int64(b.Dx()*channels) > int64(pixels) {
+	// Divide the available storage before comparing the stride: a caller-owned
+	// image can supply a stride whose multiplication by the row count overflows.
+	rowBytes := b.Dx() * channels
+	if pixels < rowBytes || b.Dy() > 1 && stride > (pixels-rowBytes)/(b.Dy()-1) {
 		return fmt.Errorf("short native isometric texture storage")
 	}
 	return nil
 }
 
-func rasterFinite(f float64) bool    { return !math.IsNaN(f) && !math.IsInf(f, 0) }
-func rasterAdd(a, b Vec) Vec         { return Vec{X: a.X + b.X, Y: a.Y + b.Y, Z: a.Z + b.Z} }
-func rasterSub(a, b Vec) Vec         { return Vec{X: a.X - b.X, Y: a.Y - b.Y, Z: a.Z - b.Z} }
-func rasterMul(a Vec, s float64) Vec { return Vec{X: a.X * s, Y: a.Y * s, Z: a.Z * s} }
-func rasterDot(a, b Vec) float64     { return a.X*b.X + a.Y*b.Y + a.Z*b.Z }
+// Round vector products explicitly, as in the mesh helpers, so camera and
+// geometry calculations agree on CPUs with and without fused arithmetic.
+func rasterFinite(f float64) bool { return !math.IsNaN(f) && !math.IsInf(f, 0) }
+func rasterAdd(a, b Vec) Vec      { return Vec{X: a.X + b.X, Y: a.Y + b.Y, Z: a.Z + b.Z} }
+func rasterSub(a, b Vec) Vec      { return Vec{X: a.X - b.X, Y: a.Y - b.Y, Z: a.Z - b.Z} }
+func rasterMul(a Vec, s float64) Vec {
+	return Vec{X: float64(a.X * s), Y: float64(a.Y * s), Z: float64(a.Z * s)}
+}
+func rasterDot(a, b Vec) float64 { return float64(a.X*b.X) + float64(a.Y*b.Y) + float64(a.Z*b.Z) }
 func rasterCross(a, b Vec) Vec {
-	return Vec{X: a.Y*b.Z - a.Z*b.Y, Y: a.Z*b.X - a.X*b.Z, Z: a.X*b.Y - a.Y*b.X}
+	return Vec{X: float64(a.Y*b.Z) - float64(a.Z*b.Y), Y: float64(a.Z*b.X) - float64(a.X*b.Z), Z: float64(a.X*b.Y) - float64(a.Y*b.X)}
 }
 func rasterUnit(a Vec) Vec {
 	l := math.Sqrt(rasterDot(a, a))
@@ -605,7 +615,7 @@ func rasterFit(ts []Triangle, direction Vec, width, height int, padding float64)
 type rasterPoint struct{ x, y, z float64 }
 
 func (c rasterCamera) project(p Vec) rasterPoint {
-	return rasterPoint{x: (rasterDot(p, c.right)-c.centerX)*c.scale + float64(c.width)/2, y: float64(c.height)/2 - (rasterDot(p, c.up)-c.centerY)*c.scale, z: rasterDot(p, c.direction) - c.centerDepth}
+	return rasterPoint{x: float64((rasterDot(p, c.right)-c.centerX)*c.scale) + float64(c.width)/2, y: float64(c.height)/2 - float64((rasterDot(p, c.up)-c.centerY)*c.scale), z: rasterDot(p, c.direction) - c.centerDepth}
 }
 func (c rasterCamera) world(x, y, z float64) Vec {
 	return rasterAdd(rasterAdd(rasterMul(c.right, (x-float64(c.width)/2)/c.scale+c.centerX), rasterMul(c.up, (float64(c.height)/2-y)/c.scale+c.centerY)), rasterMul(c.direction, z+c.centerDepth))
@@ -819,10 +829,14 @@ func (r *Raster) paintGround(w *rasterWork, pixels *image.RGBA, bg color.NRGBA) 
 				p = rasterAdd(p, rasterMul(r.camera.direction, (ground-p.Y)/r.camera.direction.Y))
 				shadow = r.groundShadow.occlusion(p, Vec{Y: 1}) * .11
 			}
+			paint := bg
+			if r.backgroundTexture != nil {
+				paint = nativeGradientBackground(r.backgroundTexture, (float64(x)+.5)/float64(r.camera.width), (float64(y)+.5)/float64(r.camera.height), bg)
+			}
 			at := pixels.PixOffset(x, y)
-			pixels.Pix[at] = uint8(math.Round(float64(bg.R)*(1-shadow) + 36*shadow))
-			pixels.Pix[at+1] = uint8(math.Round(float64(bg.G)*(1-shadow) + 55*shadow))
-			pixels.Pix[at+2] = uint8(math.Round(float64(bg.B)*(1-shadow) + 84*shadow))
+			pixels.Pix[at] = uint8(math.Round(float64(paint.R)*(1-shadow) + 36*shadow))
+			pixels.Pix[at+1] = uint8(math.Round(float64(paint.G)*(1-shadow) + 55*shadow))
+			pixels.Pix[at+2] = uint8(math.Round(float64(paint.B)*(1-shadow) + 84*shadow))
 			pixels.Pix[at+3] = 255
 		}
 	}

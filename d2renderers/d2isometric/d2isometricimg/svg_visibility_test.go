@@ -259,7 +259,7 @@ func TestSVGVisibilityBoundsCancellationAndDegenerates(t *testing.T) {
 			t.Fatalf("ordinary diagram budget changed: %d faces -> %d", faces, got)
 		}
 	}
-	if got := svgVisibilityWorkLimit(100_000); got != 204_800_000 {
+	if got := svgVisibilityWorkLimit(100_000); got != 230_400_000 {
 		t.Fatalf("large mesh did not get a linear allowance: %d", got)
 	}
 	for _, faces := range []int{1_000_000, int(^uint(0) >> 1)} {

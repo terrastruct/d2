@@ -328,7 +328,8 @@ func svgOrderPolygonRelation(left, right svgOrderPolygon, sourceA, sourceB int, 
 			return 0, err
 		}
 		q := right.points[(i+1)%len(right.points)]
-		overlap, _ = svgSplitPolygon(overlap, func(v svgPoint) float64 { return winding * ((q.x-p.x)*(v.y-p.y) - (q.y-p.y)*(v.x-p.x)) })
+		distance := svgEdgeDistance(p, q)
+		overlap, _ = svgSplitPolygon(overlap, func(v svgPoint) float64 { return winding * distance(v) })
 		if len(overlap) == 0 {
 			return 0, nil
 		}

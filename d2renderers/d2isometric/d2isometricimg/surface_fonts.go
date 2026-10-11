@@ -216,6 +216,9 @@ func nativeFallbackTextTexture(ctx context.Context, value string, style labelTex
 	w := max(1, int(math.Min(100000, math.Ceil(style.Width/style.PixelScale))))
 	h := max(1, int(math.Min(100000, math.Ceil(float64(len(lines))*fontSize*1.2))))
 	s := d2target.Shape{ID: "surface-text", Type: d2target.ShapeText, Width: w, Height: h, Fill: "transparent", Stroke: "none", Opacity: 1, LabelPosition: "INSIDE_MIDDLE_CENTER", Text: d2target.Text{Label: normalizeLabel(value), FontSize: max(1, int(math.Round(fontSize))), LabelWidth: w, LabelHeight: h, FontFamily: "default", Color: richColor(style.Color), Bold: style.Bold, Italic: style.Italic, Underline: style.Underline}}
+	if style.ForegroundPaint != nil {
+		s.Color = style.Foreground
+	}
 	d := d2target.NewDiagram()
 	d.Root.Fill, d.Root.Stroke = "transparent", "none"
 	d.FontFamily, d.MonoFontFamily = &primary, &mono
@@ -275,8 +278,12 @@ func nativeFallbackTextTexture(ctx context.Context, value string, style labelTex
 		return nil, textLayout{}, err
 	}
 	tex := image.NewRGBA(frame.Bounds())
-	if style.Background != nil {
-		draw.Draw(tex, tex.Bounds(), image.NewUniform(*style.Background), image.Point{}, draw.Src)
+	background, err := nativeLabelBackground(ctx, style, width, height)
+	if err != nil {
+		return nil, textLayout{}, err
+	}
+	if background != nil {
+		draw.Draw(tex, tex.Bounds(), background, image.Point{}, draw.Src)
 	}
 	draw.Draw(tex, tex.Bounds(), frame, image.Point{}, draw.Over)
 	for y := 0; y < height; y++ {
@@ -291,7 +298,7 @@ func nativeFallbackTextTexture(ctx context.Context, value string, style labelTex
 	view := *doc
 	view.LogicalWidth, view.LogicalHeight = float64(width), float64(height)
 	view.ViewportFit, view.ViewportAlign = d2scene.ViewportMeet, d2scene.ViewportAlignXMidYMid
-	if err := retainStyledNativeVectorSurface(ctx, tex, &view, style.Background, style.Opacity); err != nil {
+	if err := retainStyledNativeVectorSurface(ctx, tex, &view, nativeLabelBackgroundPaint(style), style.Opacity); err != nil {
 		return nil, textLayout{}, err
 	}
 	return tex, textLayout{Lines: lines, FontSize: fontSize * style.PixelScale * fit, LineHeight: fontSize * style.PixelScale * fit * 1.2}, nil

@@ -31,6 +31,56 @@ func TestSVGTextureLightingMatchesNativeLinearShader(t *testing.T) {
 	}
 }
 
+// A cylinder normal at the view silhouette can acquire either sign in its
+// camera dot product when generated with fused versus separate arithmetic.
+// That last-bit drift must not reverse the light-facing side of the surface.
+func TestSVGLightingKeepsSilhouetteNormalsStable(t *testing.T) {
+	camera := rasterCamera{direction: nv(.169192644517612123, .756745003806134187, .631435545606668369)}
+	normals := []Vec{
+		nv(-.965925826289068201, 0, .25881904510252085),
+		nv(-.965925826289068423, 0, .258819045102520295),
+	}
+	if rasterDot(rasterUnit(normals[0]), camera.direction) <= 0 || rasterDot(rasterUnit(normals[1]), camera.direction) >= 0 {
+		t.Fatal("fixture must straddle the silhouette by floating-point residuals")
+	}
+	material := &Material{Color: color.NRGBA{201, 204, 215, 255}, Roughness: .62, Metalness: .12}
+	r := &Raster{camera: camera}
+	var referenceColor Vec
+	var referenceSlope, referenceIntercept [3]float64
+	var referenceGradient string
+	for i, normal := range normals {
+		red, green, blue := r.shade(rasterMaterial(material), Vec{}, normal)
+		gotColor := nv(red, green, blue)
+		triangle := Triangle{Material: material}
+		triangle.V[0].Normal = normal
+		slope, intercept := svgTextureLighting(camera, triangle)
+		vertices := [3]svgLightingVertex{
+			{point: svgPoint{x: 0, y: 0}, normal: nv(-.98078528040323032, 0, .195090322016129247)},
+			{point: svgPoint{x: 0, y: 100}, normal: nv(-.98078528040323032, 0, .195090322016129247)},
+			{point: svgPoint{x: 100, y: 100}, normal: normal},
+		}
+		gradient, _ := svgFitLightingGradient(r, rasterMaterial(material), vertices)
+		w := &nativeSVGWriter{ctx: context.Background()}
+		writeSVGLightingGradient(w, gradient, "silhouette")
+		if i == 0 {
+			referenceColor, referenceSlope, referenceIntercept = gotColor, slope, intercept
+			referenceGradient = w.buf.String()
+			continue
+		}
+		if err := svgColorError(gotColor, referenceColor); err > 1e-12 {
+			t.Fatalf("silhouette residual reversed native lighting: error=%g", err)
+		}
+		for channel := range slope {
+			if math.Abs(slope[channel]-referenceSlope[channel]) > 1e-12 || math.Abs(intercept[channel]-referenceIntercept[channel]) > 1e-12 {
+				t.Fatalf("silhouette residual reversed texture lighting: slope=%v intercept=%v", slope, intercept)
+			}
+		}
+		if got := w.buf.String(); got != referenceGradient {
+			t.Fatalf("silhouette residual changed serialized gradient:\nfirst %s\nsecond %s", referenceGradient, got)
+		}
+	}
+}
+
 func TestSVGCurvedGradientSamplesTheNativeHighlight(t *testing.T) {
 	r := &Raster{camera: nativeCameraAxes()}
 	material := rasterMaterial(&Material{Color: color.NRGBA{145, 190, 225, 255}, Roughness: .2, Metalness: .7})

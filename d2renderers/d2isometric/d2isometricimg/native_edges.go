@@ -67,17 +67,20 @@ type classicInkFacet struct {
 
 func (f *classicInkFacet) depthAt(p Vec) (float64, bool) {
 	a, c, d := f.points[0], f.points[1], f.points[2]
-	denom := (c.Y-d.Y)*(a.X-d.X) + (d.X-c.X)*(a.Y-d.Y)
+	// Ink support controls mesh clipping as well as depth. Round each product
+	// before cancellation so fused arithmetic cannot move a point across a
+	// supporting edge or change the triangulation of its clipped patch.
+	denom := float64((c.Y-d.Y)*(a.X-d.X)) + float64((d.X-c.X)*(a.Y-d.Y))
 	if math.Abs(denom) < 1e-14 {
 		return 0, false
 	}
-	u := ((c.Y-d.Y)*(p.X-d.X) + (d.X-c.X)*(p.Y-d.Y)) / denom
-	v := ((d.Y-a.Y)*(p.X-d.X) + (a.X-d.X)*(p.Y-d.Y)) / denom
+	u := (float64((c.Y-d.Y)*(p.X-d.X)) + float64((d.X-c.X)*(p.Y-d.Y))) / denom
+	v := (float64((d.Y-a.Y)*(p.X-d.X)) + float64((a.X-d.X)*(p.Y-d.Y))) / denom
 	w := 1 - u - v
 	if u < -1e-8 || v < -1e-8 || w < -1e-8 {
 		return 0, false
 	}
-	return u*a.Z + v*c.Z + w*d.Z + f.bias, true
+	return float64(u*a.Z) + float64(v*c.Z) + float64(w*d.Z) + f.bias, true
 }
 
 func classicInkKeyOf(p Vec) classicInkKey {
@@ -470,7 +473,8 @@ func (b *meshBuilder) classicInkEdges(n d2isometric.Node, triangles []Triangle) 
 		b.err = err
 		return
 	}
-	material := &Material{Color: paint, Unlit: true, Roughness: 1, svgContour: true}
+	material := nativeMaterial(n.Stroke, 1, 0, n.Opacity)
+	material.Unlit, material.svgContour = true, true
 	dash, gap := 0., 0.
 	if n.StrokeDash > 0 {
 		dash, gap = svg.GetStrokeDashAttributes(float64(n.StrokeWidth), n.StrokeDash)
@@ -630,7 +634,7 @@ func (b *meshBuilder) classicInkFace(vertices [3]Vertex, support []*classicInkFa
 		if max(a.X, c.X, d.X) < loX || min(a.X, c.X, d.X) > hiX || max(a.Y, c.Y, d.Y) < loY || min(a.Y, c.Y, d.Y) > hiY {
 			continue
 		}
-		area := (c.X-a.X)*(d.Y-a.Y) - (c.Y-a.Y)*(d.X-a.X)
+		area := float64((c.X-a.X)*(d.Y-a.Y)) - float64((c.Y-a.Y)*(d.X-a.X))
 		if math.Abs(area) < 1e-14 {
 			continue
 		}
@@ -641,7 +645,9 @@ func (b *meshBuilder) classicInkFace(vertices [3]Vertex, support []*classicInkFa
 		polygon := append([]Vec(nil), projected[:]...)
 		for i, p := range face.points {
 			q := face.points[(i+1)%3]
-			polygon = clip(polygon, func(at Vec) float64 { return sign * ((q.X-p.X)*(at.Y-p.Y) - (q.Y-p.Y)*(at.X-p.X)) })
+			polygon = clip(polygon, func(at Vec) float64 {
+				return sign * (float64((q.X-p.X)*(at.Y-p.Y)) - float64((q.Y-p.Y)*(at.X-p.X)))
+			})
 		}
 		// A supported patch replaces only the part that the physical face
 		// occludes. The original ribbon owns its exposed outer half.
@@ -653,9 +659,30 @@ func (b *meshBuilder) classicInkFace(vertices [3]Vertex, support []*classicInkFa
 			z, _ := face.depthAt(p)
 			return Vertex{Position: nadd(nadd(nmul(camera.right, p.X), nmul(camera.up, p.Y)), nmul(camera.direction, z)), Normal: camera.direction}
 		}
-		first := vertex(polygon[0])
+		// A clip touching an existing vertex can return the same polygon
+		// starting at either neighboring edge after floating-point rounding.
+		// A stable fan anchor keeps that equivalent loop from changing mesh
+		// diagonals (and later visibility splits) across FMA/non-FMA CPUs.
+		anchor := classicInkFanAnchor(polygon)
+		first := vertex(polygon[anchor])
 		for i := 1; i < len(polygon)-1; i++ {
-			emit(first, vertex(polygon[i]), vertex(polygon[i+1]))
+			emit(first, vertex(polygon[(anchor+i)%len(polygon)]), vertex(polygon[(anchor+i+1)%len(polygon)]))
 		}
 	}
+}
+
+func classicInkFanAnchor(polygon []Vec) int {
+	// These keys are far finer than physical ink. They only
+	// choose a starting vertex; the emitted geometry retains its exact position.
+	key := func(p Vec) classicInkKey {
+		const precision = 1 << 32
+		return classicInkKey{int64(math.Round(p.X * precision)), int64(math.Round(p.Y * precision)), int64(math.Round(p.Z * precision))}
+	}
+	first := 0
+	for i := 1; i < len(polygon); i++ {
+		if classicInkLess(key(polygon[i]), key(polygon[first])) {
+			first = i
+		}
+	}
+	return first
 }

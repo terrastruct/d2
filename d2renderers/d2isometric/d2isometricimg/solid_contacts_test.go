@@ -191,7 +191,7 @@ func testSolidContactArrowsTrafficAndMainCaption(t *testing.T, queue d2isometric
 			}
 		}
 	}
-	width, depth := nativeRouteCaptionSize(e, .5, e.Metadata.Original.Text, false, .01)
+	width, depth := nativeRouteCaptionSize(e.Metadata.Original.Text, false, .01)
 	anchor, _ := nativeConnectionCaptionSurface(e.Points, e.Metadata.Original, width, depth, .01)
 	anchor.center.Y += nativeRouteRadius(e)
 	for _, triangle := range b.triangles {

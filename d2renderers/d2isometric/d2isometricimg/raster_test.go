@@ -164,6 +164,27 @@ func TestNativeRasterAdmissionAndCancellation(t *testing.T) {
 	}
 }
 
+func TestNativeRasterRejectsOverflowingTextureStorage(t *testing.T) {
+	maxStride := int(^uint(0) >> 1)
+	bounds := image.Rect(0, 0, 2, 3)
+	for _, texture := range []image.Image{
+		&image.RGBA{Rect: bounds, Stride: maxStride, Pix: make([]byte, 8)},
+		&image.NRGBA{Rect: bounds, Stride: maxStride, Pix: make([]byte, 8)},
+		&image.Alpha{Rect: bounds, Stride: maxStride, Pix: make([]byte, 2)},
+	} {
+		mesh := rasterTestQuad(0, &Material{Color: color.NRGBA{A: 255}, Texture: texture})
+		if _, err := NewRaster(context.Background(), 64, 64, mesh, color.NRGBA{}); err == nil {
+			t.Fatalf("overflowing %T stride was admitted", texture)
+		}
+	}
+	// A single row never advances by Stride, so its actual storage remains valid.
+	texture := &image.RGBA{Rect: image.Rect(0, 0, 2, 1), Stride: maxStride, Pix: make([]byte, 8)}
+	mesh := rasterTestQuad(0, &Material{Color: color.NRGBA{A: 255}, Texture: texture})
+	if _, err := NewRaster(context.Background(), 64, 64, mesh, color.NRGBA{}); err != nil {
+		t.Fatalf("valid single-row texture rejected: %v", err)
+	}
+}
+
 func TestNativeRasterTranslucentBackfaces(t *testing.T) {
 	paint := &Material{Color: color.NRGBA{R: 255, A: 128}, Unlit: true}
 	back := rasterTestQuad(-1, paint)

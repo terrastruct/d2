@@ -2,6 +2,7 @@ package d2cli
 
 import (
 	"bytes"
+	"context"
 	"encoding/xml"
 	"io"
 	"os"
@@ -10,6 +11,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/d2lang/d2/d2renderers/d2isometric/d2isometricimg"
 	"github.com/d2lang/d2/d2target"
 )
 
@@ -141,6 +143,61 @@ func TestIsometricSVGBoardLinksPreserveSource(t *testing.T) {
 	}
 	if board.Shapes[0].Link != "root.layers.parent.layers.child" || board.Connections[0].Link != "root.layers.parent" {
 		t.Fatal("rebasing changed the source board")
+	}
+}
+
+func TestIsometricSVGBoardNamedRootUsesFileLinks(t *testing.T) {
+	dir := t.TempDir()
+	source := "a.link: layers.root\na -> b: {label: next; link: layers.root}\nlayers: {root: {b.link: root}}"
+	if _, err := imageCLI(t, dir, source, "--isometric", "--scale=.1", "views.svg"); err != nil {
+		t.Fatal(err)
+	}
+	for _, tc := range []struct{ file, link string }{{"index.svg", "./root.svg"}, {"root.svg", "index.svg"}} {
+		data, err := os.ReadFile(filepath.Join(dir, "views", tc.file))
+		if err != nil {
+			t.Fatal(err)
+		}
+		_, links := inspectIsometricSVG(t, data)
+		for _, link := range links {
+			if link != tc.link {
+				t.Fatalf("board %s: expected file link %q, got %v", tc.file, tc.link, links)
+			}
+		}
+		wantCount := 1
+		if tc.file == "index.svg" {
+			wantCount = 2 // Both the shape and connection must navigate.
+		}
+		if len(links) != wantCount {
+			t.Fatalf("board %s: expected %d links, got %v", tc.file, wantCount, links)
+		}
+	}
+}
+
+func TestIsometricSVGResolvedFileLinksRetainURLProvenance(t *testing.T) {
+	for _, name := range []string{"root", "root.layers", "root.scenarios", "root.steps"} {
+		t.Run(name, func(t *testing.T) {
+			board := d2target.NewDiagram()
+			shape := d2target.BaseShape()
+			shape.ID, shape.Type, shape.Width, shape.Height = "a", d2target.ShapeRectangle, 100, 60
+			shape.Link = "root.layers.child"
+			board.Shapes = []d2target.Shape{*shape}
+			paths := map[string]string{"root": "/export/index.svg", "root.layers.child": "/export/" + name + ".svg"}
+			rebased, err := relinkIsometricSVGBoard(board, "root", "root", paths)
+			if err != nil {
+				t.Fatal(err)
+			}
+			data, err := d2isometricimg.Render(context.Background(), rebased, &d2isometricimg.Options{Format: d2isometricimg.SVG, Width: 160, Height: 100})
+			if err != nil {
+				t.Fatal(err)
+			}
+			_, links := inspectIsometricSVG(t, data)
+			if len(links) != 1 || links[0] != "./"+name+".svg" {
+				t.Fatalf("resolved filename %s became a board fragment: %v", name, links)
+			}
+			if board.Shapes[0].Link != shape.Link {
+				t.Fatal("rebasing changed the source board")
+			}
+		})
 	}
 }
 

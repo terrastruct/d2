@@ -70,7 +70,7 @@ func preflightSVGMetadata(ctx context.Context, diagram *d2target.Diagram, budget
 				return err
 			}
 		}
-		return nil
+		return validateNativeLink(link)
 	}
 	for _, s := range diagram.Shapes {
 		if err := check(s.Link, s.Tooltip); err != nil {
@@ -118,23 +118,38 @@ func svgColor(r, g, b float64) string {
 
 func svgPolygonPath(polygons [][]svgPoint) string {
 	var s strings.Builder
-	for _, p := range polygons {
+	for _, polygon := range polygons {
+		// Serialize a canonical loop. Clipping can retain a different starting
+		// vertex at an exactly shared edge, without changing its silhouette.
+		// Discard vertices that coincide at SVG precision before choosing it.
+		p := make([]svgPoint, 0, len(polygon))
+		for _, v := range polygon {
+			v = svgPoint{x: math.Round(v.x*1e6) / 1e6, y: math.Round(v.y*1e6) / 1e6}
+			if len(p) == 0 || v != p[len(p)-1] {
+				p = append(p, v)
+			}
+		}
+		if len(p) > 1 && p[0] == p[len(p)-1] {
+			p = p[:len(p)-1]
+		}
 		if len(p) < 3 {
 			continue
 		}
-		area := 0.
-		for i := range p {
-			q := p[(i+1)%len(p)]
-			area += p[i].x*q.y - p[i].y*q.x
-		}
+		area := 2 * svgPolygonArea(p)
 		if math.Abs(area) < 1e-10 {
 			continue
 		}
 		// A nonzero compound path is a union, including overlapping pieces.
+		first := 0
 		for i := range p {
-			j := i
+			if p[i].x < p[first].x || p[i].x == p[first].x && p[i].y < p[first].y {
+				first = i
+			}
+		}
+		for i := range p {
+			j := (first + i) % len(p)
 			if area < 0 {
-				j = len(p) - 1 - i
+				j = (first + len(p) - i) % len(p)
 			}
 			if i == 0 {
 				s.WriteByte('M')
@@ -207,7 +222,7 @@ func nativeSceneSVG(ctx context.Context, scene *nativeScene) ([]byte, error) {
 		f.opaque = !t.NoDepthWrite && paint.alpha == 1 && (paint.texture == nil || m.svgSolidTexture) && !paint.multiply
 		for _, v := range t.V {
 			p := camera.project(v.Position)
-			f.points = append(f.points, svgPoint{p.x, p.y, p.z + t.DepthBias})
+			f.points = append(f.points, svgProjectedPoint(p.x, p.y, p.z+t.DepthBias))
 		}
 	}
 	visible, err := svgVisibleFaces(ctx, faces)
@@ -336,6 +351,14 @@ func nativeSceneSVG(ctx context.Context, scene *nativeScene) ([]byte, error) {
 	w := &nativeSVGWriter{ctx: ctx}
 	w.write(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="%d" height="%d" viewBox="0 0 %d %d" role="img"><title>D2 isometric diagram</title>`, scene.width, scene.height, scene.width, scene.height)
 	w.write(`<rect width="100%%" height="100%%" fill="%s"/>`, svgColor(float64(scene.background.R)/255, float64(scene.background.G)/255, float64(scene.background.B)/255))
+	if scene.backgroundPaint != nil {
+		document := nativePaintDocument(scene.backgroundPaint)
+		fragment, err := nativeSurfaceSVG(ctx, &nativeVectorSurface{document: document}, "background")
+		if err != nil {
+			return nil, err
+		}
+		w.write(`<g transform="scale(%d %d)">%s</g>`, scene.width, scene.height, fragment)
+	}
 	writeSVGGroundShadow(w, scene)
 	id := 0
 	for _, u := range units {
@@ -364,13 +387,13 @@ func svgIsDecal(t Triangle) bool {
 func svgTextureAffine(t Triangle, p [3]svgPoint) ([6]float64, error) {
 	u, v := t.V[1].U-t.V[0].U, t.V[1].V-t.V[0].V
 	x, y := t.V[2].U-t.V[0].U, t.V[2].V-t.V[0].V
-	det := u*y - x*v
+	det := float64(u*y) - float64(x*v)
 	if math.Abs(det) < 1e-15 {
 		return [6]float64{}, fmt.Errorf("native SVG texture has a degenerate UV mapping")
 	}
 	dx, dy, ex, ey := p[1].x-p[0].x, p[1].y-p[0].y, p[2].x-p[0].x, p[2].y-p[0].y
-	a, b, c, d := (dx*y-ex*v)/det, (dy*y-ey*v)/det, (u*ex-x*dx)/det, (u*ey-x*dy)/det
-	return [6]float64{a, b, c, d, p[0].x - a*t.V[0].U - c*t.V[0].V, p[0].y - b*t.V[0].U - d*t.V[0].V}, nil
+	a, b, c, d := (float64(dx*y)-float64(ex*v))/det, (float64(dy*y)-float64(ey*v))/det, (float64(u*ex)-float64(x*dx))/det, (float64(u*ey)-float64(x*dy))/det
+	return [6]float64{a, b, c, d, p[0].x - float64(a*t.V[0].U) - float64(c*t.V[0].V), p[0].y - float64(b*t.V[0].U) - float64(d*t.V[0].V)}, nil
 }
 
 func writeSVGBatch(w *nativeSVGWriter, b *svgPaintBatch, id int, camera rasterCamera) {
@@ -412,18 +435,27 @@ func writeSVGBatch(w *nativeSVGWriter, b *svgPaintBatch, id int, camera rasterCa
 }
 
 func writeSVGLinks(w *nativeSVGWriter, s *nativeScene) {
-	links := append([]nativeLink(nil), s.links...)
-	area := func(link nativeLink) float64 {
-		p, q, r := s.camera.project(link.points[0]), s.camera.project(link.points[1]), s.camera.project(link.points[2])
-		return math.Abs((q.x-p.x)*(r.y-p.y) - (r.x-p.x)*(q.y-p.y))
+	type projectedLink struct {
+		link   nativeLink
+		points []svgPoint
+		area   float64
 	}
-	sort.SliceStable(links, func(i, j int) bool { return area(links[i]) > area(links[j]) })
-	for _, link := range links {
-		var points []svgPoint
+	links := make([]projectedLink, len(s.links))
+	for i, link := range s.links {
+		projected := &links[i]
+		projected.link = link
 		for _, v := range link.points {
 			p := s.camera.project(v)
-			points = append(points, svgPoint{p.x, p.y, p.z})
+			projected.points = append(projected.points, svgProjectedPoint(p.x, p.y, p.z))
 		}
+		// Hit regions use the same canonical projection and rounded area
+		// arithmetic as physical faces. Tiny FMA residuals must not reorder
+		// equal-size links, changing which overlapping target wins a click.
+		projected.area = math.Abs(svgPolygonArea(projected.points))
+	}
+	sort.SliceStable(links, func(i, j int) bool { return links[i].area > links[j].area })
+	for _, projected := range links {
+		link, points := projected.link, projected.points
 		destination := link.region.URL
 		if destination == "" && link.region.Target != "" {
 			destination = "#" + link.region.Target

@@ -129,8 +129,12 @@ func (p *richLabelPainter) texture(original d2target.Shape, style labelTextStyle
 		return nil, err
 	}
 	texture := image.NewRGBA(frame.Bounds())
-	if style.Background != nil {
-		draw.Draw(texture, texture.Bounds(), image.NewUniform(*style.Background), image.Point{}, draw.Src)
+	background, err := nativeLabelBackground(p.ctx, style, w, h)
+	if err != nil {
+		return nil, err
+	}
+	if background != nil {
+		draw.Draw(texture, texture.Bounds(), background, image.Point{}, draw.Src)
 	}
 	draw.Draw(texture, texture.Bounds(), frame, image.Point{}, draw.Over)
 	// Text and any inline backgrounds receive object opacity once. Conversion
@@ -152,7 +156,7 @@ func (p *richLabelPainter) texture(original d2target.Shape, style labelTextStyle
 		return nil, err
 	}
 	p.lastDocument = document
-	if err := retainStyledNativeVectorSurface(p.ctx, texture, document, style.Background, style.Opacity); err != nil {
+	if err := retainStyledNativeVectorSurface(p.ctx, texture, document, nativeLabelBackgroundPaint(style), style.Opacity); err != nil {
 		return nil, err
 	}
 	return texture, nil
@@ -247,6 +251,9 @@ func richLabelDocumentWithResources(ctx context.Context, original d2target.Shape
 	primary = family
 	s.FontFamily = "DEFAULT"
 	ink := richColor(style.Color)
+	if style.ForegroundPaint != nil {
+		ink = style.Foreground
+	}
 	s.Color = ink
 	if s.Language == "latex" {
 		s.Stroke = ink

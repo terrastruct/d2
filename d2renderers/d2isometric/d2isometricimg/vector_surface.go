@@ -20,6 +20,7 @@ type nativeVectorSurface struct {
 	inkCoverage     *nativeVectorSurface
 	coverageOpacity float64
 	capBackground   *color.NRGBA
+	capPaint        d2scene.Paint
 }
 
 // A solid cap's source viewport includes its centered stroke. Its retained
@@ -85,7 +86,7 @@ func nativeVectorForTexture(ctx context.Context, texture *image.RGBA) *nativeVec
 
 // Match an RGBA compositing step performed after a document was rasterized:
 // background first, followed by the document, with one object-opacity fade.
-func retainStyledNativeVectorSurface(ctx context.Context, texture *image.RGBA, document *d2scene.Document, background *color.NRGBA, opacity float64) error {
+func retainStyledNativeVectorSurface(ctx context.Context, texture *image.RGBA, document *d2scene.Document, background d2scene.Paint, opacity float64) error {
 	if !nativeVectorEnabled(ctx) {
 		return nil
 	}
@@ -101,7 +102,7 @@ func retainStyledNativeVectorSurface(ctx context.Context, texture *image.RGBA, d
 	root.Opacity = opacity
 	box := d2scene.Box{Width: view.LogicalWidth, Height: view.LogicalHeight}
 	if background != nil {
-		root.Children = append(root.Children, d2scene.NewNode(d2scene.Rect{Box: box, Fill: d2scene.SolidPaint{Color: *background}}))
+		root.Children = append(root.Children, d2scene.NewNode(d2scene.Rect{Box: box, Fill: background}))
 	}
 	root.Children = append(root.Children, content)
 	view.Root, view.ViewBox = root, box

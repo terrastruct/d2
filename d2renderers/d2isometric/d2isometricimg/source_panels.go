@@ -10,9 +10,11 @@ import (
 	"github.com/d2lang/d2/d2renderers/d2isometric"
 	"github.com/d2lang/d2/d2renderers/d2scene"
 	"github.com/d2lang/d2/d2renderers/d2scenebuild"
+	"github.com/d2lang/d2/d2renderers/internal/scenepaint"
 	"github.com/d2lang/d2/d2target"
 	"github.com/d2lang/d2/d2themes"
 	"github.com/d2lang/d2/d2themes/d2themescatalog"
+	libcolor "github.com/d2lang/d2/lib/color"
 )
 
 // A printed panel retains native legend and root-frame decoration. Diagram
@@ -233,11 +235,12 @@ func (b *meshBuilder) rootDecorations(s *d2isometric.Scene, assets *d2scenebuild
 }
 
 func finishNativeScene(b *meshBuilder, s *d2isometric.Scene, width, height int, packets []packetRoute) (*nativeScene, error) {
+	b.prepareGradientMaterials()
 	if b.err != nil {
 		return nil, b.err
 	}
 	background := color.NRGBA{245, 247, 251, 255}
-	if !nativeToken(s.Root.Fill) {
+	if !nativeToken(s.Root.Fill) && !libcolor.IsGradient(s.Background) {
 		c := nativePaint(s.Background, "#f5f7fb")
 		a := float64(c.A) / 255
 		background = color.NRGBA{uint8(float64(c.R)*a + float64(background.R)*(1-a)), uint8(float64(c.G)*a + float64(background.G)*(1-a)), uint8(float64(c.B)*a + float64(background.B)*(1-a)), 255}
@@ -251,12 +254,23 @@ func finishNativeScene(b *meshBuilder, s *d2isometric.Scene, width, height int, 
 	}
 	width, height = camera.width, camera.height
 	result := &nativeScene{packets: packets, triangles: b.triangles, panels: b.panels, width: width, height: height, background: background, animatedNodes: b.animatedNodes, pixelScale: b.scale, links: b.links}
+	if !nativeToken(s.Root.Fill) && libcolor.IsGradient(s.Background) {
+		var err error
+		result.backgroundPaint, err = scenepaint.Gradient(s.Background)
+		if err != nil {
+			return nil, err
+		}
+		result.backgroundTexture = b.gradientTexture(s.Background)
+		if b.err != nil {
+			return nil, b.err
+		}
+	}
 	result.camera = camera
 	if b.options.deferRaster {
 		return result, nil
 	}
 	camera = cameraAtResolution(camera, width*rasterAA, height*rasterAA)
-	raster, err := newRaster(b.ctx, width, height, b.triangles, background, &camera, nil)
+	raster, err := newRaster(nativeGradientBackgroundContext(b.ctx, result.backgroundTexture), width, height, b.triangles, background, &camera, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -316,5 +330,5 @@ func (s *nativeScene) frameRaster(ctx context.Context, seconds float64, animated
 		ground := rasterShadowGround(s.triangles)
 		groundCamera = rasterFit(rasterGroundTriangles(s.triangles, ground, nativeViewDirection()), rasterShadowDirection(), 2048, 2048, 1.08)
 	}
-	return newRaster(ctx, s.width, s.height, triangles, s.background, &s.raster.camera, &shadowCamera, &groundCamera)
+	return newRaster(nativeGradientBackgroundContext(ctx, s.backgroundTexture), s.width, s.height, triangles, s.background, &s.raster.camera, &shadowCamera, &groundCamera)
 }

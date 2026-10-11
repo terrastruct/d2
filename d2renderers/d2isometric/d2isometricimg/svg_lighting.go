@@ -15,11 +15,7 @@ func svgTextureLighting(camera rasterCamera, t Triangle) (slope, intercept [3]fl
 	if p.unlit {
 		return slope, intercept
 	}
-	normal := svgTriangleNormal(t, 0)
-	normal = rasterUnit(normal)
-	if rasterDot(normal, camera.direction) < 0 {
-		normal = rasterMul(normal, -1)
-	}
+	normal := rasterLightingNormal(svgTriangleNormal(t, 0), camera.direction)
 	ambient := .32 + .12*rasterClamp(normal.Y*.5+.5)
 	illumination := Vec{X: ambient, Y: ambient, Z: ambient}
 	spec := Vec{}
@@ -270,7 +266,7 @@ func svgGroundCaster(t Triangle, ground, receiver float64, camera rasterCamera, 
 		p := nsub(vertex, nmul(light, (vertex.Y-(ground+rasterShadowNormalOffset))/light.Y))
 		p.Y = ground
 		q := camera.project(p)
-		points = append(points, svgPoint{q.x, q.y, ndot(vertex, light)})
+		points = append(points, svgProjectedPoint(q.x, q.y, ndot(vertex, light)))
 	}
 	return points
 }

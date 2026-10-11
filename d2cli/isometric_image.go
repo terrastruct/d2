@@ -261,7 +261,13 @@ func relinkIsometricSVGBoard(diagram *d2target.Diagram, key, sourceRootID string
 			return link, nil
 		}
 		rel, err := filepath.Rel(filepath.Dir(paths[key]), output)
-		return boardOutputLink(rel), err
+		link = boardOutputLink(rel)
+		// Preserve URL provenance when an exported filename also resembles a
+		// semantic board target (for example root.layers.svg).
+		if strings.HasPrefix(link, "root.") {
+			link = "./" + link
+		}
+		return link, err
 	}
 	var err error
 	board.Root.Link, err = rebase(board.Root.Link)

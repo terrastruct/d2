@@ -5,7 +5,9 @@ import (
 	"math"
 
 	"github.com/d2lang/d2/d2renderers/d2isometric"
+	"github.com/d2lang/d2/d2renderers/internal/scenepaint"
 	"github.com/d2lang/d2/d2target"
+	libcolor "github.com/d2lang/d2/lib/color"
 )
 
 // Surface decoration must not select a different physical shape. In
@@ -96,6 +98,10 @@ func (b *meshBuilder) solidPaint(n d2isometric.Node, kind, fill string) nativeSo
 		cap.svgSolidTexture = true
 		wall.svgSolidTexture = true
 		cap.Vector = nativeVectorSolidCap(cap.Vector, nativePaint(fill, "transparent"))
+		if cap.Vector != nil && libcolor.IsGradient(fill) {
+			cap.Vector.capBackground = nil
+			cap.Vector.capPaint, b.err = scenepaint.Gradient(fill)
+		}
 	}
 	return nativeSolidPaint{cap: cap, ink: ink, wall: wall, inkFit: b.solidInkFit(stroke, kind == d2target.ShapeHexagon), shadowFillAlpha: shadowFillAlpha}
 }

@@ -56,6 +56,9 @@ func nativeSurfaceSVG(ctx context.Context, surface *nativeVectorSurface, prefix 
 	if surface.capBackground != nil {
 		content = "<rect width=\"1\" height=\"1\" fill=\"" + nativeSVGColor(*surface.capBackground) + "\"/>" + content
 	}
+	if surface.capPaint != nil {
+		content = w.primitive(d2scene.Rect{Box: d2scene.Box{Width: 1, Height: 1}, Fill: surface.capPaint}, 0) + content
+	}
 	if surface.inkCoverage != nil {
 		ink, err := nativeSurfaceSVG(ctx, surface.inkCoverage, prefix+"-coverage")
 		if err != nil {
@@ -68,7 +71,7 @@ func nativeSurfaceSVG(ctx context.Context, surface *nativeVectorSurface, prefix 
 		values := make([]string, 256)
 		for i := range values {
 			a := float64(i) / 255
-			values[i] = nativeSVGNumber((1 - a) / (1 - a*surface.coverageOpacity))
+			values[i] = nativeSVGNumber((1 - a) / (1 - float64(a*surface.coverageOpacity)))
 		}
 		// SourceAlpha has black RGB. Make its compensated coverage white so
 		// SVG 1.1 luminance-mask readers agree with SVG 2 alpha-mask readers.

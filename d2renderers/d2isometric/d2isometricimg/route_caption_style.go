@@ -23,36 +23,37 @@ func nativeCaptionOnEdge(original d2target.Connection) bool {
 	return label.FromString(original.LabelPosition).IsOnEdge()
 }
 
-// Lane fans subdivide a source leg into shorter pieces. Caption reservations
-// and painting use the same original print dimensions, regardless of lanes.
-func nativeRouteCaptionSize(edge d2isometric.Edge, fraction float64, style d2target.Text, hasIcon bool, scale float64) (width, depth float64) {
-	_, _, span := captionPosition(edge.Points, fraction)
-	share := .86
-	if fraction == .5 && (edge.SourceLabel != nil || edge.TargetLabel != nil) {
-		share = .46
-	} else if fraction != .5 && (edge.Label != "" || edge.Icon != "" || fraction < .5 && edge.TargetLabel != nil && edge.TargetLabel.Label != "" || fraction > .5 && edge.SourceLabel != nil && edge.SourceLabel.Label != "") {
-		share = .23
-	}
-	width = min(span*share, max(1, float64(style.LabelWidth)*scale+.1))
+// Compiled text metrics describe the print area independently of the route.
+// Curves and lane fans subdivide legs into arbitrarily short pieces; neither
+// those pieces nor neighboring captions may shrink authored text. Placement
+// handles conflicts while retaining these dimensions, including multiline text.
+func nativeRouteCaptionSize(style d2target.Text, hasIcon bool, scale float64) (width, depth float64) {
+	// Raw API callers may omit metrics. Keep a bounded fallback instead of
+	// estimating from untrusted text length; the painter still enforces its
+	// source, glyph and pixel budgets. Compiled metrics take precedence.
+	width = max(1, float64(float64(style.LabelWidth)*scale)+.1)
 	lh := style.LabelHeight
 	if lh <= 0 {
 		lh = 25
 	}
-	depth = max(.25, min(.7, float64(lh)*scale+.06))
+	depth = max(.25, float64(float64(lh)*scale)+.06)
 	if hasIcon {
-		if edge.Label == "" {
-			width, depth = min(span*share, .38), .38
-		} else {
-			width = min(span*share, width+.38)
-			depth = max(depth, .38)
+		if style.Label == "" {
+			return .38, .38
 		}
+		// surfaceIconLayout reserves a small glyph-overhang margin and gap.
+		// Include them before adding the icon lane, so even long labels keep
+		// their complete print area rather than pushing the icon above them.
+		width = max(width, float64(float64(style.LabelWidth)*scale*1.06)+.04) + .38 + .08
+		depth = max(depth, .38)
 	}
 	return width, depth
 }
 
 // The compiled label position and percentage are semantic placement inputs.
-// Apply them along the displayed planar route, retaining a flat, leg-aligned
-// print surface. Unspecified positions still use the collision-aware placer.
+// Apply them along the displayed planar route, retaining a flat print surface
+// that follows its leg when it fits. Unspecified positions still use the
+// collision-aware placer.
 func nativeConnectionCaptionSurface(points []Vec, original d2target.Connection, width, depth, scale float64) (labelSurface, bool) {
 	position := label.FromString(original.LabelPosition)
 	fraction, side := .5, 0.
@@ -98,7 +99,63 @@ func nativeConnectionCaptionSurface(points []Vec, original d2target.Connection, 
 		if direction.X < -1e-6 || math.Abs(direction.X) < 1e-6 && direction.Z < 0 {
 			direction = nmul(direction, -1)
 		}
-		return labelSurface{center: center, width: width, depth: depth, angle: math.Atan2(direction.Z, direction.X)}, true
+		angle := math.Atan2(direction.Z, direction.X)
+		start, end := nativeCaptionRouteRun(points, lengths, i)
+		// D2 reserves horizontal label dimensions. A short leg cannot hold
+		// that entire width after rotating it toward the endpoints. Retain
+		// the source X orientation when it would overrun the usable run,
+		// including clearance for the raised endpoint faces. This changes
+		// only print direction and restores the compiled source label anchor;
+		// font size and the physical plane stay unchanged.
+		if width+2*depth > 2*min(distance-start, end-distance)+1e-9 {
+			angle = 0
+			if source, ok := nativeCaptionSourceCenter(points, original, scale); ok {
+				center.X, center.Z = source.X, source.Z
+			}
+		}
+		return labelSurface{center: center, width: width, depth: depth, angle: angle}, true
 	}
 	return labelSurface{}, false
+}
+
+// Aggregate a direction-consistent run around the caption anchor. Curved routes
+// contain many tiny tessellation segments, while elbows delimit distinct legs.
+// Their individual segment lengths must never determine text orientation.
+func nativeCaptionRouteRun(points []Vec, lengths []float64, index int) (start, end float64) {
+	direction := nunit(nsub(points[index], points[index-1]))
+	aligned := func(i int) bool {
+		if lengths[i]-lengths[i-1] <= 1e-9 {
+			return true
+		}
+		return ndot(direction, nunit(nsub(points[i], points[i-1]))) >= math.Sqrt(3)/2
+	}
+	start, end = lengths[index-1], lengths[index]
+	for i := index - 1; i >= 1 && aligned(i); i-- {
+		start = lengths[i-1]
+	}
+	for i := index + 1; i < len(points) && aligned(i); i++ {
+		end = lengths[i]
+	}
+	return start, end
+}
+
+// Curved D2 routes retain control points for their compiled label placement.
+// Using the tessellated curve's midpoint instead moves labels inward and can
+// overlap two labels whose source allocations were disjoint. Translate the
+// compiled label rectangle with the same source-to-scene offset as the route.
+func nativeCaptionSourceCenter(points []Vec, original d2target.Connection, scale float64) (Vec, bool) {
+	if len(original.Route) < 2 || len(original.Route) > 10000 {
+		return Vec{}, false
+	}
+	for _, p := range original.Route {
+		if p == nil || !captionFinite(p.X, p.Y) || math.Abs(p.X) > rasterCoordinateLimit || math.Abs(p.Y) > rasterCoordinateLimit {
+			return Vec{}, false
+		}
+	}
+	p := original.GetLabelTopLeft()
+	if p == nil || !captionFinite(p.X, p.Y) {
+		return Vec{}, false
+	}
+	return nv(points[0].X+(p.X+float64(original.LabelWidth)/2-original.Route[0].X)*scale, 0,
+		points[0].Z+(p.Y+float64(original.LabelHeight)/2-original.Route[0].Y)*scale), true
 }

@@ -12,25 +12,30 @@ import (
 	"github.com/mazznoer/csscolorparser"
 
 	"github.com/d2lang/d2/d2renderers/d2isometric"
+	"github.com/d2lang/d2/d2renderers/d2scene"
 	"github.com/d2lang/d2/d2renderers/d2scenebuild"
+	"github.com/d2lang/d2/d2renderers/internal/scenepaint"
 	"github.com/d2lang/d2/d2target"
 	"github.com/d2lang/d2/d2themes"
 	"github.com/d2lang/d2/d2themes/d2themescatalog"
+	libcolor "github.com/d2lang/d2/lib/color"
 )
 
 // The native renderer turns the compiled scene into meshes with layout-sized
 // footprints and physical extrusion.
 type nativeScene struct {
-	raster        *Raster
-	camera        rasterCamera // logical output coordinates, also used by SVG
-	packets       []packetRoute
-	triangles     []Triangle
-	panels        []nativePanel
-	width, height int
-	background    color.NRGBA
-	animatedNodes []nativeAnimatedNode
-	pixelScale    float64
-	links         []nativeLink
+	raster            *Raster
+	camera            rasterCamera // logical output coordinates, also used by SVG
+	packets           []packetRoute
+	triangles         []Triangle
+	panels            []nativePanel
+	width, height     int
+	background        color.NRGBA
+	backgroundPaint   d2scene.Paint
+	backgroundTexture *image.RGBA
+	animatedNodes     []nativeAnimatedNode
+	pixelScale        float64
+	links             []nativeLink
 }
 type meshBuilder struct {
 	ctx               context.Context
@@ -57,6 +62,7 @@ type meshBuilder struct {
 	options           nativeSceneOptions
 	links             []nativeLink
 	linkBytes         int
+	gradientTextures  map[string]*image.RGBA
 }
 type labelSurface struct {
 	center              Vec
@@ -66,13 +72,17 @@ type labelSurface struct {
 
 const maxNativeTriangles = 1_000_000
 
+// Explicit product conversions prevent CPU-dependent FMA contraction after
+// inlining. Last-bit drift can change clipped ink topology and SVG batching.
 func nv(x, y, z float64) Vec    { return Vec{X: x, Y: y, Z: z} }
 func nadd(a, b Vec) Vec         { return nv(a.X+b.X, a.Y+b.Y, a.Z+b.Z) }
 func nsub(a, b Vec) Vec         { return nv(a.X-b.X, a.Y-b.Y, a.Z-b.Z) }
-func nmul(a Vec, s float64) Vec { return nv(a.X*s, a.Y*s, a.Z*s) }
-func ndot(a, b Vec) float64     { return a.X*b.X + a.Y*b.Y + a.Z*b.Z }
-func ncross(a, b Vec) Vec       { return nv(a.Y*b.Z-a.Z*b.Y, a.Z*b.X-a.X*b.Z, a.X*b.Y-a.Y*b.X) }
-func nlen(a Vec) float64        { return math.Sqrt(ndot(a, a)) }
+func nmul(a Vec, s float64) Vec { return nv(float64(a.X*s), float64(a.Y*s), float64(a.Z*s)) }
+func ndot(a, b Vec) float64     { return float64(a.X*b.X) + float64(a.Y*b.Y) + float64(a.Z*b.Z) }
+func ncross(a, b Vec) Vec {
+	return nv(float64(a.Y*b.Z)-float64(a.Z*b.Y), float64(a.Z*b.X)-float64(a.X*b.Z), float64(a.X*b.Y)-float64(a.Y*b.X))
+}
+func nlen(a Vec) float64 { return math.Sqrt(ndot(a, a)) }
 func nunit(a Vec) Vec {
 	if l := nlen(a); l > 1e-12 {
 		return nmul(a, 1/l)
@@ -95,6 +105,11 @@ func nativeToken(s string) bool {
 	return false
 }
 func nativePaint(s, fallback string) color.NRGBA {
+	if libcolor.IsGradient(s) {
+		if summary, ok := nativeGradientSummary(s); ok {
+			return summary
+		}
+	}
 	if nativeToken(s) {
 		s = fallback
 	}
@@ -108,7 +123,12 @@ func nativePaint(s, fallback string) color.NRGBA {
 func nativeMaterial(s string, rough, metal, opacity float64) *Material {
 	c := nativePaint(s, "#edf1f7")
 	c.A = uint8(math.Round(float64(c.A) * max(0, min(1, opacity))))
-	return &Material{Color: c, Roughness: rough, Metalness: metal}
+	m := &Material{Color: c, Roughness: rough, Metalness: metal}
+	if libcolor.IsGradient(s) {
+		m.Color = color.NRGBA{255, 255, 255, uint8(math.Round(255 * max(0, min(1, opacity))))}
+		m.gradient = s
+	}
+	return m
 }
 func tintDark(c color.NRGBA, f float64) color.NRGBA {
 	c.R = uint8(float64(c.R) * f)
@@ -298,7 +318,21 @@ func (b *meshBuilder) printStyle(s labelSurface, style d2target.Text, ink string
 			ink = readableSurfaceInk(style.LabelFill, opacity)
 		}
 	}
-	return labelTextStyle{Width: s.width, Depth: s.depth, FontSize: fontSize, PixelScale: b.scale, FontFamily: style.FontFamily, Bold: style.Bold, Italic: style.Italic, Underline: style.Underline, Color: nativePaint(ink, "#253650"), Background: bg, Opacity: opacity, Align: s.align, MaxLines: 64}
+	result := labelTextStyle{Foreground: ink, Width: s.width, Depth: s.depth, FontSize: fontSize, PixelScale: b.scale, FontFamily: style.FontFamily, Bold: style.Bold, Italic: style.Italic, Underline: style.Underline, Color: nativePaint(ink, "#253650"), Background: bg, Opacity: opacity, Align: s.align, MaxLines: 64}
+	for _, entry := range []struct {
+		raw   string
+		paint *d2scene.Paint
+	}{{ink, &result.ForegroundPaint}, {style.LabelFill, &result.BackgroundPaint}} {
+		if libcolor.IsGradient(entry.raw) {
+			paint, err := scenepaint.Gradient(entry.raw)
+			if err != nil {
+				b.err = err
+			} else {
+				*entry.paint = paint
+			}
+		}
+	}
+	return result
 }
 
 func (b *meshBuilder) shapeLabel(original d2target.Shape, s labelSurface, ink string, opacity float64, kind string) {

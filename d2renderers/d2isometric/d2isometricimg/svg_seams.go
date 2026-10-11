@@ -139,8 +139,9 @@ func svgExpandCoverPolygon(polygon []svgPoint, width float64) []svgPoint {
 		if length < 1e-12 {
 			continue
 		}
+		distance := svgEdgeDistance(a, b)
 		points, _ = svgSplitPolygon(points, func(p svgPoint) float64 {
-			return sign*(dx*(p.y-a.y)-dy*(p.x-a.x))/length + width
+			return sign*distance(p)/length + width
 		})
 	}
 	return points

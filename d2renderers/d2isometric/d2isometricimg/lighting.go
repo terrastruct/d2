@@ -9,14 +9,21 @@ var rasterLightDirections = [3]Vec{rasterUnit(Vec{X: -1, Y: 1.8, Z: 1}), rasterU
 var rasterLightStrengths = [3]float64{.55, .16, .07}
 var rasterLightColors = [3]Vec{{X: 1, Y: 1, Z: 1}, {X: .93, Y: .96, Z: 1}, {X: 1, Y: 1, Z: 1}}
 
+// A silhouette normal is perpendicular to the camera. Mesh arithmetic can
+// leave a residual of either sign there; do not let it flip the lit side.
+func rasterLightingNormal(normal, direction Vec) Vec {
+	normal = rasterUnit(normal)
+	if rasterDot(normal, direction) < -1e-12 {
+		return rasterMul(normal, -1)
+	}
+	return normal
+}
+
 func (r *Raster) shade(p rasterPaint, position, normal Vec) (float64, float64, float64) {
 	if p.unlit {
 		return rasterSRGB(p.base.X), rasterSRGB(p.base.Y), rasterSRGB(p.base.Z)
 	}
-	normal = rasterUnit(normal)
-	if rasterDot(normal, r.camera.direction) < 0 {
-		normal = rasterMul(normal, -1)
-	}
+	normal = rasterLightingNormal(normal, r.camera.direction)
 	h := rasterClamp(normal.Y*.5 + .5)
 	ambient := .32 + .12*h
 	illumination := Vec{X: ambient, Y: ambient, Z: ambient}

@@ -45,7 +45,9 @@ func nativeStructuredRows(s d2target.Shape) []nativeStructuredRow {
 		if s.Type == d2target.ShapeClass && i >= len(s.Fields) {
 			section = "method"
 		}
-		z := hh + float64(i)*rh
+		// This coordinate also defines the retained SVG viewport. Keep its
+		// multiply and add identical on CPUs with and without fused arithmetic.
+		z := hh + float64(float64(i)*rh)
 		// A multiline class header can use more than its nominal two rows.
 		// The ordinary renderer clips the last cells at the source viewport;
 		// keep that same boundary instead of extending the physical component.
@@ -264,13 +266,13 @@ func (b *meshBuilder) structuredRail(n d2isometric.Node, z, depth, bottom, top f
 	for _, profile := range profiles {
 		world := make([]Vec, len(profile))
 		for i, p := range profile {
-			world[i] = nv(n.Position.X-n.Size.X/2+p.X*sx, top, n.Position.Z-n.Size.Z/2+(z+p.Z*depth/float64(face.Height))*sz)
+			world[i] = nv(n.Position.X-n.Size.X/2+float64(p.X*sx), top, n.Position.Z-n.Size.Z/2+float64((z+p.Z*depth/float64(face.Height))*sz))
 		}
 		b.extrudedProfile(world, bottom, cap, mat)
 	}
 	if decorated {
 		tex, ink, area := b.nativeFaceLayers(face, n.Opacity)
-		area.center = nv(n.Position.X-n.Size.X/2+area.center.X*sx, top+.0005, n.Position.Z-n.Size.Z/2+(z+area.center.Z*depth/float64(face.Height))*sz)
+		area.center = nv(n.Position.X-n.Size.X/2+float64(area.center.X*sx), top+.0005, n.Position.Z-n.Size.Z/2+float64((z+area.center.Z*depth/float64(face.Height))*sz))
 		area.width, area.depth = area.width*sx, area.depth*depth/float64(face.Height)*sz
 		start := len(b.triangles)
 		b.surfaceTexture(tex, area, n.Opacity)

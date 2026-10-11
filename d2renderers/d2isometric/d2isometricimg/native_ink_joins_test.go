@@ -155,3 +155,46 @@ func TestClassicInkBranchJoinKeepsStraightStrokeWidth(t *testing.T) {
 		}
 	}
 }
+
+// The support clip may return an equivalent polygon at a different starting
+// vertex. Its fan must retain the same diagonals: SVG visibility consumes the
+// triangles individually, so equivalent silhouettes alone are insufficient.
+func TestClassicInkSupportClipCyclicInput(t *testing.T) {
+	camera := nativeCameraAxes()
+	world := func(p Vec) Vec {
+		return nadd(nadd(nmul(camera.right, p.X), nmul(camera.up, p.Y)), nmul(camera.direction, p.Z))
+	}
+	points := [3]Vec{nv(0, 0, 0), nv(4, 0, 0), nv(0, 4, 0)}
+	support := []*classicInkFacet{{points: [3]Vec{nv(-1, 1, 1), nv(3, -1, 1), nv(3, 4, 1)}}}
+	material := nativeMaterial("black", 1, 0, 1)
+	var want []Triangle
+	for shift := 0; shift < 3; shift++ {
+		b := &meshBuilder{ctx: context.Background()}
+		vertices := [3]Vertex{}
+		for i := range vertices {
+			vertices[i] = Vertex{Position: world(points[(i+shift)%3]), Normal: camera.direction}
+		}
+		b.classicInkFace(vertices, support, material, camera)
+		if b.err != nil {
+			t.Fatal(b.err)
+		}
+		if len(b.triangles) < 4 {
+			t.Fatalf("fixture has only %d support triangles", len(b.triangles)-1)
+		}
+		got := b.triangles[1:]
+		if shift == 0 {
+			want = got
+			continue
+		}
+		if len(got) != len(want) {
+			t.Fatalf("cyclic input changed fan size: got %d want %d", len(got), len(want))
+		}
+		for i := range got {
+			for j := range got[i].V {
+				if distance := nlen(nsub(got[i].V[j].Position, want[i].V[j].Position)); distance > 1e-10 {
+					t.Fatalf("cyclic input changed triangle %d vertex %d by %g", i, j, distance)
+				}
+			}
+		}
+	}
+}

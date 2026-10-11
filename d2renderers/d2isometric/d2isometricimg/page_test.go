@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"strings"
 	"testing"
 
 	"github.com/d2lang/d2/d2renderers/d2isometric"
@@ -126,4 +127,65 @@ func TestPagePreservesInlineMarkdownOnEdgeCaptions(t *testing.T) {
 		}
 	}
 	t.Fatalf("rich edge caption link missing: %+v", p.Links)
+}
+
+func TestNativeInteractiveExportsRejectUnsafeLinks(t *testing.T) {
+	for _, format := range []string{"svg", "page"} {
+		for _, object := range []string{"shape", "connection"} {
+			t.Run(format+"/"+object, func(t *testing.T) {
+				for _, link := range []string{
+					"javascript:alert(1)", "JAVA\tSCRIPT:alert(1)", "vBsCrIpT:msgbox(1)",
+					"data:text/html,<script>alert(1)</script>", "data:image/svg+xml,<svg onload=alert(1)>",
+					"file:///etc/passwd", "j&#x61;vascript:alert(1)", "java%0Ascript:alert(1)", "java%250Ascript:alert(1)",
+				} {
+					d := captureDiagram()
+					if object == "shape" {
+						d.Shapes[0].Link = link
+					} else {
+						d.Connections[0].Link, d.Connections[0].Label = link, "details"
+					}
+					o := &Options{Width: 160, Height: 100}
+					var err error
+					if format == "svg" {
+						o.Format = SVG
+						var data []byte
+						data, err = Render(context.Background(), d, o)
+						if len(data) != 0 {
+							t.Fatalf("unsafe destination %q produced SVG", link)
+						}
+					} else {
+						var page *Page
+						page, err = RenderPage(context.Background(), d, o)
+						if page != nil {
+							t.Fatalf("unsafe destination %q produced a page", link)
+						}
+					}
+					if err == nil || !strings.Contains(err.Error(), "unsafe URL scheme") {
+						t.Fatalf("unsafe destination %q: %v", link, err)
+					}
+				}
+			})
+		}
+	}
+}
+
+func TestNativeLinkDestinationDistinguishesBoardTargetsAndFiles(t *testing.T) {
+	for _, tc := range []struct {
+		link   string
+		target bool
+	}{
+		{"root", true}, {"root.layers.detail", true}, {"root.scenarios.alternate", true},
+		{"root.steps.next", true}, {`root.layers."root.svg".steps."next.step"`, true},
+		{"root.svg", false}, {"root.html", false}, {"root.layers.svg", true},
+		{"root.layers", false}, {"root.layers.detail.svg", false},
+		{"../root.svg", false}, {"root.svg?view=1#detail", false},
+		{"https://example.com/root.svg", false}, {"vscode://file/example.go:10:2", false},
+	} {
+		t.Run(tc.link, func(t *testing.T) {
+			r := nativeLinkDestination(tc.link, "details")
+			if r.Tooltip != "details" || tc.target && (r.Target != tc.link || r.URL != "") || !tc.target && (r.URL != tc.link || r.Target != "") {
+				t.Fatalf("destination changed: %+v", r)
+			}
+		})
+	}
 }

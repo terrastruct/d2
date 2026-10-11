@@ -156,7 +156,7 @@ func TestProjectedCaptionReservesLaterAuthoredAnchor(t *testing.T) {
 	fixed.ID = "fixed"
 	fixed.Points = []Vec{nv(0, .08, -.25), nv(10, .08, -.25)}
 	fixed.Metadata.Original.LabelPosition = "INSIDE_MIDDLE_CENTER"
-	width, depth := nativeRouteCaptionSize(fixed, .5, style, false, .01)
+	width, depth := nativeRouteCaptionSize(style, false, .01)
 	anchor, ok := nativeConnectionCaptionSurface(fixed.Points, fixed.Metadata.Original, width, depth, .01)
 	if !ok {
 		t.Fatal("authored anchor was not recognized")

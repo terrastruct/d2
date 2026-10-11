@@ -41,6 +41,8 @@ type labelTextStyle struct {
 	Bold, Italic, Underline            bool
 	Color                              color.NRGBA
 	Background                         *color.NRGBA
+	ForegroundPaint, BackgroundPaint   d2scene.Paint
+	Foreground                         string
 	Opacity                            float64
 	Align                              string
 	MaxLines                           int
@@ -218,7 +220,7 @@ func (p *textPainter) texture(value string, style labelTextStyle) (*image.RGBA, 
 				for _, y := range []float64{float64(glyph.Ink.Min.Y) / 64, float64(glyph.Ink.Max.Y) / 64} {
 					x, y := x+glyph.PositionX, y+glyph.PositionY
 					if shear {
-						x -= y * .20
+						x -= float64(y * .20)
 					}
 					result.minX = math.Min(result.minX, x)
 					result.maxX = math.Max(result.maxX, x)
@@ -259,29 +261,31 @@ func (p *textPainter) texture(value string, style labelTextStyle) (*image.RGBA, 
 			return nil, textLayout{}, err
 		}
 		shapedLines[i] = shaped
-		minY = math.Min(minY, float64(i)*lineHeight+shaped.minY*unitScale)
-		maxY = math.Max(maxY, float64(i)*lineHeight+shaped.maxY*unitScale)
+		minY = math.Min(minY, float64(float64(i)*lineHeight)+float64(shaped.minY*unitScale))
+		maxY = math.Max(maxY, float64(float64(i)*lineHeight)+float64(shaped.maxY*unitScale))
 	}
 	baseline := (float64(layoutH)-(maxY-minY))/2 - minY
 	drawScaleX, drawScaleY := float64(w)/float64(layoutW), float64(h)/float64(layoutH)
 	raster := vector.NewRasterizer(w, h)
 	var outline d2scene.Path
-	captureVector := nativeVectorEnabled(p.ctx)
+	captureVector := nativeVectorEnabled(p.ctx) || style.ForegroundPaint != nil || style.BackgroundPaint != nil
 	record := func(command d2scene.PathCommand) {
 		if captureVector {
 			outline.Commands = append(outline.Commands, command)
 		}
 	}
 	var buffer sfnt.Buffer
+	// Round placement products before translation: SVG preserves these
+	// outline coordinates, so fused arithmetic must not vary them by CPU.
 	for i, line := range shapedLines {
 		if err := p.ctx.Err(); err != nil {
 			return nil, textLayout{}, err
 		}
-		x := (float64(layoutW)-(line.maxX-line.minX)*unitScale)/2 - line.minX*unitScale
+		x := (float64(layoutW)-float64((line.maxX-line.minX)*unitScale))/2 - float64(line.minX*unitScale)
 		if style.Align == "left" {
-			x = inset - line.minX*unitScale
+			x = inset - float64(line.minX*unitScale)
 		}
-		y := baseline + float64(i)*lineHeight
+		y := baseline + float64(float64(i)*lineHeight)
 		for _, glyph := range line.text.Glyphs {
 			if glyph.Empty || !glyph.HasInk {
 				continue
@@ -297,9 +301,9 @@ func (p *textPainter) texture(value string, style labelTextStyle) (*image.RGBA, 
 			transform := func(point fixed.Point26_6) (float32, float32) {
 				gx, gy := float64(point.X)/64+glyph.PositionX, float64(point.Y)/64+glyph.PositionY
 				if shear {
-					gx -= gy * .20
+					gx -= float64(gy * .20)
 				}
-				return float32((x + gx*unitScale) * drawScaleX), float32((y + gy*unitScale) * drawScaleY)
+				return float32((x + float64(gx*unitScale)) * drawScaleX), float32((y + float64(gy*unitScale)) * drawScaleY)
 			}
 			open := false
 			for _, segment := range segments {
@@ -336,8 +340,8 @@ func (p *textPainter) texture(value string, style labelTextStyle) (*image.RGBA, 
 			}
 		}
 		if style.Underline && line.maxX > line.minX {
-			left, right := x+line.minX*unitScale, x+line.maxX*unitScale
-			top, bottom := y+fontPixels*.10, y+fontPixels*.15
+			left, right := x+float64(line.minX*unitScale), x+float64(line.maxX*unitScale)
+			top, bottom := y+float64(fontPixels*.10), y+float64(fontPixels*.15)
 			left, right = left*drawScaleX, right*drawScaleX
 			top, bottom = top*drawScaleY, bottom*drawScaleY
 			raster.MoveTo(float32(left), float32(top))
@@ -364,8 +368,31 @@ func (p *textPainter) texture(value string, style labelTextStyle) (*image.RGBA, 
 			background.A = uint8(math.Round(float64(background.A) * style.Opacity))
 			root.Children = append(root.Children, d2scene.NewNode(d2scene.Rect{Box: box, Fill: d2scene.SolidPaint{Color: background}}))
 		}
+		if style.ForegroundPaint != nil || style.BackgroundPaint != nil {
+			// Keep authored paint spatial: apply it to the complete label outline,
+			// then composite the caption fill and object opacity exactly once.
+			root.Children = nil
+			root.Opacity = style.Opacity
+			if style.BackgroundPaint != nil {
+				root.Children = append(root.Children, d2scene.NewNode(d2scene.Rect{Box: box, Fill: style.BackgroundPaint}))
+			} else if style.Background != nil {
+				root.Children = append(root.Children, d2scene.NewNode(d2scene.Rect{Box: box, Fill: d2scene.SolidPaint{Color: *style.Background}}))
+			}
+			outline.Fill = d2scene.SolidPaint{Color: style.Color}
+			if style.ForegroundPaint != nil {
+				outline.Fill = style.ForegroundPaint
+			}
+		}
 		root.Children = append(root.Children, d2scene.NewNode(outline))
-		if err := retainNativeVectorSurface(p.ctx, texture, d2scene.NewDocument(box, root)); err != nil {
+		document := d2scene.NewDocument(box, root)
+		if style.ForegroundPaint != nil || style.BackgroundPaint != nil {
+			var err error
+			texture, err = rasterNativeSurfaceDocument(p.ctx, document, w, h)
+			if err != nil {
+				return nil, textLayout{}, err
+			}
+		}
+		if err := retainNativeVectorSurface(p.ctx, texture, document); err != nil {
 			return nil, textLayout{}, err
 		}
 	}
