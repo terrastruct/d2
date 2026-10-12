@@ -478,6 +478,27 @@ func IsLifelineEnd(obj *d2graph.Object) bool {
 	return obj.ID == LifelineEndID(obj.ID[:markerIndex])
 }
 
+func isSelfOrSibling(message *d2graph.Edge) bool {
+	if message.Src == message.Dst {
+		return true
+	}
+	if strings.HasPrefix(message.Dst.AbsID(), message.Src.AbsID()+".") {
+		return true
+	}
+	if strings.HasPrefix(message.Src.AbsID(), message.Dst.AbsID()+".") {
+		return true
+	}
+	currSrc := message.Src
+	for !currSrc.Parent.IsSequenceDiagram() {
+		currSrc = currSrc.Parent
+	}
+	currDst := message.Dst
+	for !currDst.Parent.IsSequenceDiagram() {
+		currDst = currDst.Parent
+	}
+	return currSrc == currDst
+}
+
 func (sd *sequenceDiagram) placeNotes() {
 	rankToX := make(map[int]float64)
 	for _, actor := range sd.actors {
@@ -490,8 +511,8 @@ func (sd *sequenceDiagram) placeNotes() {
 
 		for _, msg := range sd.messages {
 			if sd.verticalIndices[msg.AbsID()] < verticalIndex {
-				if msg.Src == msg.Dst {
-					// For self-messages, account for the full vertical space they occupy
+				if isSelfOrSibling(msg) {
+					// For self/sibling messages, account for the full vertical space they occupy
 					y += sd.yStep + math.Max(float64(msg.LabelDimensions.Height), MIN_MESSAGE_DISTANCE)*1.5
 				} else {
 					y += sd.yStep + float64(msg.LabelDimensions.Height)
@@ -609,21 +630,7 @@ func (sd *sequenceDiagram) routeMessages() error {
 		} else {
 			return fmt.Errorf("could not find center of %s. Is it declared as an actor?", message.Dst.ID)
 		}
-		isToDescendant := strings.HasPrefix(message.Dst.AbsID(), message.Src.AbsID()+".")
-		isFromDescendant := strings.HasPrefix(message.Src.AbsID(), message.Dst.AbsID()+".")
-		isSelfMessage := message.Src == message.Dst
-
-		currSrc := message.Src
-		for !currSrc.Parent.IsSequenceDiagram() {
-			currSrc = currSrc.Parent
-		}
-		currDst := message.Dst
-		for !currDst.Parent.IsSequenceDiagram() {
-			currDst = currDst.Parent
-		}
-		isToSibling := currSrc == currDst
-
-		if isSelfMessage || isToDescendant || isFromDescendant || isToSibling {
+		if isSelfOrSibling(message) {
 			midX := startX + math.Max(SELF_MESSAGE_HORIZONTAL_TRAVEL, float64(message.LabelDimensions.Width)/2.+label.PADDING*2)
 			startY := messageOffset + noteOffset
 			endY := startY + math.Max(float64(message.LabelDimensions.Height), MIN_MESSAGE_DISTANCE)*1.5

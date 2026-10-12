@@ -471,3 +471,126 @@ func TestSequenceToDescendant(t *testing.T) {
 		t.Fatal("expected route to end at `a` lifeline")
 	}
 }
+
+func TestGroupStartsWithNoteOverlap(t *testing.T) {
+	input := `
+shape: sequence_diagram
+
+job
+
+group1: {
+  job.t1 -> job.t2: one
+  job.t1 -> job.t3: two
+}
+group2: {
+  job.t1."overlap with group1"
+}
+`
+	ctx := log.With(context.Background(), testlog.New(t))
+	g, _, err := d2compiler.Compile("", strings.NewReader(input), nil)
+	assert.Nil(t, err)
+
+	for _, obj := range g.Objects {
+		if obj.Box == nil {
+			obj.Box = geo.NewBox(nil, 100, 100)
+		}
+	}
+
+	err = d2sequence.Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
+		return nil
+	})
+	assert.Nil(t, err)
+
+	group1, has := g.Root.HasChild([]string{"group1"})
+	assert.True(t, has)
+	group2, has := g.Root.HasChild([]string{"group2"})
+	assert.True(t, has)
+
+	assert.GreaterOrEqual(t, group2.TopLeft.Y, group1.TopLeft.Y+group1.Height,
+		"group2 (top %v) must not overlap group1 (bottom %v)", group2.TopLeft.Y, group1.TopLeft.Y+group1.Height)
+}
+
+func TestGroupStartsWithNoteFollowedByMessages(t *testing.T) {
+	input := `
+shape: sequence_diagram
+
+a
+b
+
+group1: {
+  a."step one note"
+  a -> b: step one
+}
+group2: {
+  b."step two note"
+  b -> a: step two
+}
+`
+	ctx := log.With(context.Background(), testlog.New(t))
+	g, _, err := d2compiler.Compile("", strings.NewReader(input), nil)
+	assert.Nil(t, err)
+
+	for _, obj := range g.Objects {
+		if obj.Box == nil {
+			obj.Box = geo.NewBox(nil, 100, 100)
+		}
+	}
+
+	err = d2sequence.Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
+		return nil
+	})
+	assert.Nil(t, err)
+
+	group1, has := g.Root.HasChild([]string{"group1"})
+	assert.True(t, has)
+	group2, has := g.Root.HasChild([]string{"group2"})
+	assert.True(t, has)
+
+	assert.GreaterOrEqual(t, group2.TopLeft.Y, group1.TopLeft.Y+group1.Height,
+		"group2 (top %v) must not overlap group1 (bottom %v)", group2.TopLeft.Y, group1.TopLeft.Y+group1.Height)
+}
+
+func TestMultipleGroupsStartingWithNotes(t *testing.T) {
+	input := `
+shape: sequence_diagram
+
+srv
+
+g1: {
+  srv."init config"
+}
+g2: {
+  srv."start worker"
+}
+g3: {
+  srv."listen on port"
+}
+`
+	ctx := log.With(context.Background(), testlog.New(t))
+	g, _, err := d2compiler.Compile("", strings.NewReader(input), nil)
+	assert.Nil(t, err)
+
+	for _, obj := range g.Objects {
+		if obj.Box == nil {
+			obj.Box = geo.NewBox(nil, 100, 100)
+		}
+	}
+
+	err = d2sequence.Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
+		return nil
+	})
+	assert.Nil(t, err)
+
+	g1, has := g.Root.HasChild([]string{"g1"})
+	assert.True(t, has)
+	g2, has := g.Root.HasChild([]string{"g2"})
+	assert.True(t, has)
+	g3, has := g.Root.HasChild([]string{"g3"})
+	assert.True(t, has)
+
+	assert.GreaterOrEqual(t, g2.TopLeft.Y, g1.TopLeft.Y+g1.Height,
+		"g2 (top %v) must not overlap g1 (bottom %v)", g2.TopLeft.Y, g1.TopLeft.Y+g1.Height)
+	assert.GreaterOrEqual(t, g3.TopLeft.Y, g2.TopLeft.Y+g2.Height,
+		"g3 (top %v) must not overlap g2 (bottom %v)", g3.TopLeft.Y, g2.TopLeft.Y+g2.Height)
+}
+
