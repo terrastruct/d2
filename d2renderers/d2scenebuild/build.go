@@ -972,7 +972,7 @@ func (b *builder) buildShapeText(targetShape d2target.Shape) ([]*d2scene.Node, e
 		topLeft := latexShapeLabelTopLeft(targetShape)
 		node, err := b.buildLatexLabelNode(
 			fmt.Sprintf("shape %q", targetShape.ID), targetShape.ID+":label:0",
-			targetShape.Label, targetShape.Stroke, topLeft,
+			targetShape.Label, targetShape.GetFontColor(), topLeft,
 		)
 		if err != nil {
 			return nil, err

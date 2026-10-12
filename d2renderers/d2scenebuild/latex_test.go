@@ -27,7 +27,7 @@ func TestBuildLatexShapeAndConnectionLabels(t *testing.T) {
 		LabelFill: "#ff0000", Underline: true, Bold: true,
 	}
 	shape.LabelPosition = "INSIDE_MIDDLE_CENTER"
-	shape.Stroke = "#000000"
+	shape.Color = "#000000"
 	connection := &diagram.Connections[0]
 	connection.Text = d2target.Text{
 		Label: formula, Language: "latex",
@@ -114,11 +114,11 @@ func TestBuildLatexResolvesCurrentColorWithoutOverridingExplicitColor(t *testing
 	if err != nil {
 		t.Fatal(err)
 	}
-	makeShape := func(id string, x int, stroke string) d2target.Shape {
+	makeShape := func(id string, x int, fontColor string) d2target.Shape {
 		return d2target.Shape{
 			ID: id, Type: d2target.ShapeText, Pos: d2target.Point{X: x}, Width: width, Height: height,
-			Opacity: 1, Fill: "none", Stroke: stroke,
-			Text:          d2target.Text{Label: formula, Language: "latex", LabelWidth: width, LabelHeight: height},
+			Opacity: 1, Fill: "none",
+			Text:          d2target.Text{Label: formula, Language: "latex", LabelWidth: width, LabelHeight: height, Color: fontColor},
 			LabelPosition: "INSIDE_MIDDLE_CENTER",
 		}
 	}
@@ -214,9 +214,10 @@ func TestBuildLatexLabelRendersPixels(t *testing.T) {
 	diagram.Shapes = []d2target.Shape{{
 		ID: "formula", Type: d2target.ShapeText,
 		Width: width, Height: height, Opacity: 1,
-		Fill: "none", Stroke: "#0055cc",
+		Fill: "none",
 		Text: d2target.Text{
 			Label: formula, Language: "latex", LabelWidth: width, LabelHeight: height,
+			Color: "#0055cc",
 		},
 		LabelPosition: "INSIDE_MIDDLE_CENTER",
 	}}

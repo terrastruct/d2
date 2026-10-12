@@ -81,6 +81,7 @@
   - Encode and escape clip-path identifiers consistently in definitions and
     references. [#2906](https://github.com/d2lang/d2/pull/2906)
   - Escape color attributes across shapes, connections, labels, and themes. [#2909](https://github.com/d2lang/d2/pull/2909)
+  - Render LaTeX labels with the shape's font color instead of its stroke color.
 
 ---
 

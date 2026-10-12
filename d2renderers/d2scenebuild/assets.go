@@ -43,7 +43,7 @@ func (b *builder) preflightAssets() error {
 		if targetShape.Opacity == 0 || targetShape.Label == "" || targetShape.Language != "latex" {
 			continue
 		}
-		if _, err := b.resolveLatexAsset(fmt.Sprintf("shape %q", targetShape.ID), targetShape.Label, targetShape.Stroke); err != nil {
+		if _, err := b.resolveLatexAsset(fmt.Sprintf("shape %q", targetShape.ID), targetShape.Label, targetShape.GetFontColor()); err != nil {
 			return err
 		}
 	}
