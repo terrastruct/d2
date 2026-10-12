@@ -1,6 +1,7 @@
 package d2svgimport
 
 import (
+	"context"
 	"fmt"
 	"image/color"
 	"math"
@@ -87,43 +88,122 @@ func (i *svgImporter) compileGradientElement(element *svgElement) error {
 	}
 }
 
-func (i *svgImporter) compileLinearGradient(element *svgElement) error {
-	for _, name := range []string{"x1", "y1", "x2", "y2", "gradientUnits"} {
-		if _, ok := element.attrs[name]; !ok {
-			return i.errorf("element <linearGradient> is missing required attribute %q", name)
-		}
-	}
-	units, err := trimSVGSpace(i.ctx, element.attrs["gradientUnits"])
+func parseObjectBoundingBoxCoordinate(ctx context.Context, raw string) (float64, error) {
+	trimmed, err := trimSVGSpace(ctx, raw)
 	if err != nil {
-		return err
+		return 0, err
 	}
-	if units != "userSpaceOnUse" {
-		return i.errorf("element <linearGradient> supports only gradientUnits=\"userSpaceOnUse\"")
+	if len(trimmed) > 512 {
+		return 0, fmt.Errorf("number is too long")
 	}
-
-	coordinate := func(name string) (float64, error) {
-		value, err := parseSVGLength(element.attrs[name], true)
+	if trimmed == "" {
+		return 0, fmt.Errorf("empty number")
+	}
+	if strings.HasSuffix(trimmed, "%") {
+		numberPart := strings.TrimSpace(trimmed[:len(trimmed)-1])
+		if numberPart == "" {
+			return 0, fmt.Errorf("empty percentage")
+		}
+		if strings.Contains(numberPart, "%") {
+			return 0, fmt.Errorf("invalid percentage coordinate")
+		}
+		number, err := parseSVGNumber(numberPart)
 		if err != nil {
-			return 0, i.propertyError(element, name, err)
+			return 0, err
+		}
+		value := number / 100.0
+		if math.IsNaN(value) || math.IsInf(value, 0) {
+			return 0, fmt.Errorf("coordinate must be finite")
 		}
 		return value, nil
 	}
-	x1, err := coordinate("x1")
-	if err != nil {
-		return err
+	if strings.Contains(trimmed, "%") {
+		return 0, fmt.Errorf("percentages must end with %%")
 	}
-	y1, err := coordinate("y1")
+	number, err := parseSVGNumber(trimmed)
 	if err != nil {
-		return err
+		return 0, err
 	}
-	x2, err := coordinate("x2")
-	if err != nil {
-		return err
+	if math.IsNaN(number) || math.IsInf(number, 0) {
+		return 0, fmt.Errorf("coordinate must be finite")
 	}
-	y2, err := coordinate("y2")
-	if err != nil {
-		return err
+	return number, nil
+}
+
+func (i *svgImporter) compileLinearGradient(element *svgElement) error {
+	units := "objectBoundingBox"
+	if raw, ok := element.attrs["gradientUnits"]; ok {
+		trimmed, err := trimSVGSpace(i.ctx, raw)
+		if err != nil {
+			return err
+		}
+		units = trimmed
 	}
+
+	var paintUnits d2scene.PaintUnits
+	switch units {
+	case "objectBoundingBox":
+		paintUnits = d2scene.ObjectBoundingBox
+	case "userSpaceOnUse":
+		paintUnits = d2scene.UserSpaceOnUse
+	default:
+		return i.errorf("element <linearGradient> supports only gradientUnits=\"userSpaceOnUse\" or \"objectBoundingBox\"")
+	}
+
+	var x1, y1, x2, y2 float64
+	if paintUnits == d2scene.UserSpaceOnUse {
+		for _, name := range []string{"x1", "y1", "x2", "y2"} {
+			if _, ok := element.attrs[name]; !ok {
+				return i.errorf("element <linearGradient> is missing required attribute %q", name)
+			}
+		}
+		coordinate := func(name string) (float64, error) {
+			value, err := parseSVGLength(element.attrs[name], true)
+			if err != nil {
+				return 0, i.propertyError(element, name, err)
+			}
+			return value, nil
+		}
+		var err error
+		if x1, err = coordinate("x1"); err != nil {
+			return err
+		}
+		if y1, err = coordinate("y1"); err != nil {
+			return err
+		}
+		if x2, err = coordinate("x2"); err != nil {
+			return err
+		}
+		if y2, err = coordinate("y2"); err != nil {
+			return err
+		}
+	} else {
+		coordinate := func(name string, defaultValue float64) (float64, error) {
+			raw, ok := element.attrs[name]
+			if !ok {
+				return defaultValue, nil
+			}
+			value, err := parseObjectBoundingBoxCoordinate(i.ctx, raw)
+			if err != nil {
+				return 0, i.propertyError(element, name, err)
+			}
+			return value, nil
+		}
+		var err error
+		if x1, err = coordinate("x1", 0); err != nil {
+			return err
+		}
+		if y1, err = coordinate("y1", 0); err != nil {
+			return err
+		}
+		if x2, err = coordinate("x2", 1); err != nil {
+			return err
+		}
+		if y2, err = coordinate("y2", 0); err != nil {
+			return err
+		}
+	}
+
 	start := d2scene.Point{X: x1, Y: y1}
 	end := d2scene.Point{X: x2, Y: y2}
 	if start == end {
@@ -172,7 +252,7 @@ func (i *svgImporter) compileLinearGradient(element *svgElement) error {
 	}
 
 	element.gradient = &d2scene.LinearGradient{
-		Start: start, End: end, Units: d2scene.UserSpaceOnUse,
+		Start: start, End: end, Units: paintUnits,
 		Transform: transform, Spread: d2scene.SpreadPad,
 	}
 	return nil

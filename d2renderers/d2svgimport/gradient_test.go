@@ -8,6 +8,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/d2lang/d2/d2renderers/d2raster"
 	"github.com/d2lang/d2/d2renderers/d2scene"
 )
 
@@ -108,8 +109,9 @@ func TestImportNodeRejectsUnsupportedLinearGradientForms(t *testing.T) {
 		{"outside-defs", `<linearGradient id="g" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0"/></linearGradient>`, "direct child of <defs>"},
 		{"missing-id", `<defs><linearGradient x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0"/></linearGradient></defs>`, "must declare an id"},
 		{"missing-coordinate", `<defs><linearGradient id="g" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0"/></linearGradient></defs>`, `missing required attribute "x1"`},
-		{"default-object-bounds", `<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="0"><stop offset="0"/></linearGradient></defs>`, `missing required attribute "gradientUnits"`},
-		{"object-bounds", `<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox"><stop offset="0"/></linearGradient></defs>`, "userSpaceOnUse"},
+		{"invalid-gradient-units", `<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="0" gradientUnits="invalidUnits"><stop offset="0"/></linearGradient></defs>`, "gradientUnits"},
+		{"object-bounds-invalid-coordinate", `<defs><linearGradient id="g" x1="invalid"><stop offset="0"/></linearGradient></defs>`, "invalid x1"},
+		{"object-bounds-zero-vector", `<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="0"><stop offset="0"/></linearGradient></defs>`, "zero-length"},
 		{"percentage-coordinate", `<defs><linearGradient id="g" x1="0%" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0"/></linearGradient></defs>`, "percentages are unsupported"},
 		{"repeat-spread", `<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" spreadMethod="repeat"><stop offset="0"/></linearGradient></defs>`, "only the pad"},
 		{"href-inheritance", `<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" href="#base"><stop offset="0"/></linearGradient></defs>`, `unsupported attribute "href"`},
@@ -191,3 +193,133 @@ func nearMatrix(got, want d2scene.Matrix) bool {
 	return nearFloat(got.A, want.A) && nearFloat(got.B, want.B) && nearFloat(got.C, want.C) &&
 		nearFloat(got.D, want.D) && nearFloat(got.E, want.E) && nearFloat(got.F, want.F)
 }
+
+func TestImportNodeLinearGradientObjectBoundingBoxDefaults(t *testing.T) {
+	result := mustImport(t, `<svg viewBox="0 0 10 10">
+  <defs>
+    <linearGradient id="defaultGradient">
+      <stop offset="0" stop-color="red"/>
+      <stop offset="1" stop-color="blue"/>
+    </linearGradient>
+  </defs>
+  <rect id="target" width="10" height="10" fill="url(#defaultGradient)"/>
+</svg>`)
+
+	if len(result.Root.Children) != 1 || result.Root.Children[0].ID != "target" {
+		t.Fatalf("rendered gradient tree = %#v", result.Root.Children)
+	}
+	rect := result.Root.Children[0].Primitive.(d2scene.Rect)
+	fill, ok := rect.Fill.(d2scene.LinearGradient)
+	if !ok {
+		t.Fatalf("fill = %T, want linear gradient", rect.Fill)
+	}
+	if fill.Start != (d2scene.Point{X: 0, Y: 0}) || fill.End != (d2scene.Point{X: 1, Y: 0}) ||
+		fill.Units != d2scene.ObjectBoundingBox || fill.Spread != d2scene.SpreadPad ||
+		fill.Transform != d2scene.Identity() {
+		t.Fatalf("default linear gradient geometry = %#v", fill)
+	}
+	if len(fill.Stops) != 2 || fill.Stops[0].Offset != 0 || fill.Stops[1].Offset != 1 {
+		t.Fatalf("default linear gradient stops = %#v", fill.Stops)
+	}
+}
+
+func TestImportNodeLinearGradientObjectBoundingBoxCoordinateVariants(t *testing.T) {
+	tests := []struct {
+		name      string
+		svg       string
+		wantStart d2scene.Point
+		wantEnd   d2scene.Point
+		wantUnits d2scene.PaintUnits
+	}{
+		{
+			name: "explicit units with percentages",
+			svg: `<svg viewBox="0 0 10 10"><defs>
+				<linearGradient id="g" gradientUnits="objectBoundingBox" x1="10%" y1="20%" x2="90%" y2="80%">
+					<stop offset="0" stop-color="red"/><stop offset="1" stop-color="blue"/>
+				</linearGradient></defs><rect width="10" height="10" fill="url(#g)"/></svg>`,
+			wantStart: d2scene.Point{X: 0.1, Y: 0.2},
+			wantEnd:   d2scene.Point{X: 0.9, Y: 0.8},
+			wantUnits: d2scene.ObjectBoundingBox,
+		},
+		{
+			name: "explicit units with unitless numbers",
+			svg: `<svg viewBox="0 0 10 10"><defs>
+				<linearGradient id="g" gradientUnits="objectBoundingBox" x1="0.25" y1="0.5" x2="0.75" y2="0.5">
+					<stop offset="0" stop-color="red"/><stop offset="1" stop-color="blue"/>
+				</linearGradient></defs><rect width="10" height="10" fill="url(#g)"/></svg>`,
+			wantStart: d2scene.Point{X: 0.25, Y: 0.5},
+			wantEnd:   d2scene.Point{X: 0.75, Y: 0.5},
+			wantUnits: d2scene.ObjectBoundingBox,
+		},
+		{
+			name: "omitted units with partial coordinates",
+			svg: `<svg viewBox="0 0 10 10"><defs>
+				<linearGradient id="g" y1="0%" y2="100%">
+					<stop offset="0" stop-color="red"/><stop offset="1" stop-color="blue"/>
+				</linearGradient></defs><rect width="10" height="10" fill="url(#g)"/></svg>`,
+			wantStart: d2scene.Point{X: 0, Y: 0},
+			wantEnd:   d2scene.Point{X: 1, Y: 1},
+			wantUnits: d2scene.ObjectBoundingBox,
+		},
+		{
+			name: "omitted units with unitless coordinates",
+			svg: `<svg viewBox="0 0 10 10"><defs>
+				<linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+					<stop offset="0" stop-color="red"/><stop offset="1" stop-color="blue"/>
+				</linearGradient></defs><rect width="10" height="10" fill="url(#g)"/></svg>`,
+			wantStart: d2scene.Point{X: 0, Y: 0},
+			wantEnd:   d2scene.Point{X: 1, Y: 1},
+			wantUnits: d2scene.ObjectBoundingBox,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			result := mustImport(t, tc.svg)
+			rect := result.Root.Children[0].Primitive.(d2scene.Rect)
+			fill := rect.Fill.(d2scene.LinearGradient)
+			if !nearFloat(fill.Start.X, tc.wantStart.X) || !nearFloat(fill.Start.Y, tc.wantStart.Y) ||
+				!nearFloat(fill.End.X, tc.wantEnd.X) || !nearFloat(fill.End.Y, tc.wantEnd.Y) ||
+				fill.Units != tc.wantUnits {
+				t.Fatalf("geometry = %#v; want start=%v end=%v units=%v", fill, tc.wantStart, tc.wantEnd, tc.wantUnits)
+			}
+		})
+	}
+}
+
+func TestImportNodeLinearGradientObjectBoundingBoxRasterize(t *testing.T) {
+	// SVG icon from issue #2937
+	svgSource := `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" width="10" height="10">
+		<defs>
+			<linearGradient id="g">
+				<stop offset="0" stop-color="red"/>
+				<stop offset="1" stop-color="blue"/>
+			</linearGradient>
+		</defs>
+		<path d="M0 0H10V10H0Z" fill="url(#g)"/>
+	</svg>`
+
+	result := mustImport(t, svgSource)
+	document := d2scene.NewDocument(d2scene.Box{Width: 10, Height: 10}, result.Root)
+	frame, err := d2raster.Render(context.Background(), document, d2raster.FrameOptions{
+		Scale: 1, MaxWidth: 10, MaxHeight: 10, MaxPixels: 100,
+		MaxNodes: 10, MaxDepth: 10, MaxPathCommands: 20,
+		MaxAnimationTracks: 1, MaxAnimationKeyframes: 1,
+		MaxAssets: 1, MaxAssetBytes: 1, MaxDecodedAssetBytes: 1, MaxImportDepth: 10,
+		MaxOffscreenBytes: 1 << 20, MaxEvenOddClipWork: 1 << 20,
+	})
+	if err != nil {
+		t.Fatalf("d2raster.Render failed: %v", err)
+	}
+
+	leftPixel := color.NRGBAModel.Convert(frame.At(0, 5)).(color.NRGBA)
+	rightPixel := color.NRGBAModel.Convert(frame.At(9, 5)).(color.NRGBA)
+
+	if leftPixel.R < 200 || leftPixel.B > 50 || leftPixel.A != 255 {
+		t.Fatalf("left pixel = %+v, want mostly red", leftPixel)
+	}
+	if rightPixel.B < 200 || rightPixel.R > 50 || rightPixel.A != 255 {
+		t.Fatalf("right pixel = %+v, want mostly blue", rightPixel)
+	}
+}
+
