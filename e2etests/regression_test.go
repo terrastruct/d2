@@ -81,6 +81,17 @@ c -> d
 `,
 		},
 		{
+			name: "class_span_sequence",
+			script: `shape: sequence_diagram
+a: { shape: class }
+b
+
+group: {
+  a.t -> b.t
+}
+`,
+		},
+		{
 			name: "sequence_diagram_span_cover",
 			script: `shape: sequence_diagram
 b.1 -> b.1
