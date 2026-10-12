@@ -28,7 +28,7 @@ func TestSketchOrdinaryShapeFamiliesUseTypedRoughPathsDeterministically(t *testi
 		d2target.ShapeStep, d2target.ShapeCallout, d2target.ShapeStoredData,
 		d2target.ShapePerson, d2target.ShapeC4Person, d2target.ShapeDiamond,
 		d2target.ShapeHexagon, d2target.ShapeCloud,
-		d2target.ShapeSequenceDiagram, d2target.ShapeHierarchy,
+		d2target.ShapeSequenceDiagram, d2target.ShapeCycleDiagram, d2target.ShapeHierarchy,
 	}
 	for _, shapeType := range shapeTypes {
 		name := shapeType

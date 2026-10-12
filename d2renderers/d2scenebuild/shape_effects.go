@@ -295,7 +295,7 @@ func (b *builder) buildOrdinaryShapeOutline(targetShape d2target.Shape, fill d2s
 			Fill:    fill,
 			Stroke:  stroke,
 		}))
-	case d2target.ShapeRectangle, d2target.ShapeSquare, d2target.ShapeSequenceDiagram, d2target.ShapeHierarchy, "":
+	case d2target.ShapeRectangle, d2target.ShapeSquare, d2target.ShapeSequenceDiagram, d2target.ShapeCycleDiagram, d2target.ShapeHierarchy, "":
 		radius := clampBorderRadius(float64(targetShape.BorderRadius), box.Width, box.Height)
 		nodes = append(nodes, d2scene.NewNode(d2scene.Rect{
 			Box:     box,
