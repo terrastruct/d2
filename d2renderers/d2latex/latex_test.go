@@ -189,6 +189,9 @@ func TestFrozenMathJaxParity(t *testing.T) {
 		{"d2_physics_plugin", "\\var{F[g(x)]}\n\\dd(\\cos\\theta)", "4e6c3221a2cb2c21d32c8d66a51294f0839f03121a32e43e38e7d0ed89d828a7", 128, 19},
 		{"d2_displaylines", "\\displaylines{x = a + b \\\\ y = b + c}\n\\sum_{k=1}^{n} h_{k} \\int_{0}^{1} \\bigl(\\partial_{k} f(x_{k-1}+t h_{k} e_{k}) -\\partial_{k} f(a)\\bigr) \\,dt", "8fa7020a6fa463de3a6bd656498cf9fd62518bda834f0895a6f42b7dbb8abbcf", 404, 52},
 		{"d2_add", `1 + 1`, "b6eacdbf2d6531e407bfadc5d81bd3d5dc472bffa23cbc1908437553b0cfa072", 41, 14},
+		{"mathtools_paired_delimiters_setter", `\mathtoolsset{pairedDelimiters={}}\DeclarePairedDelimiters{\norm}{\lVert}{\rVert}\Huge\norm*{\frac{1}{x^2+1}}`, "ca54254a4a567f35d62f34b7c88392ad34b67aa5a5dab2a7183d723f957a2dd5", 194, 99},
+		// The frozen component lacks boldsymbol, so define its formatter explicitly.
+		{"mathtools_bigtimes_registered", `\DeclarePairedDelimiterX{\boldsymbol}[1]{}{}{\mathbf{#1}}{\Huge\bigtimes_{i=1}^{n} x_i = x_1\times x_2\times\cdots\times x_n}`, "5e9df9b0ff4eaa7595d79525d6f006a1868aa9a851fa167cfa2317fbbb959cf7", 518, 77},
 	}
 
 	for _, test := range tests {

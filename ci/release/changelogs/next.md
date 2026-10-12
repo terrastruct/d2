@@ -1,5 +1,7 @@
 #### Features 🚀
 
+- elk: configure the spacing between edges routed between the same pair of layers with `--elk-edgeEdgeBetweenLayers`. It was previously fixed at 50, which forced large gaps between layers on graphs with many links between adjacent layers.
+- renders: add native isometric SVG, PNG, GIF, PDF, and PPTX exports with `--isometric`, source configuration, and Go/JavaScript options
 - shape: `cycle` lays a container's children out on a circle and routes their connections as arcs that start and stop on the shape borders
 
 #### Improvements 🧹

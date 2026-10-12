@@ -7,6 +7,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/d2lang/util-go/go2"
+
 	"github.com/d2lang/d2/d2compiler"
 	"github.com/d2lang/d2/d2graph"
 	"github.com/d2lang/d2/lib/geo"
@@ -19,6 +21,7 @@ func TestConfigurableOptsSerializeELK012Keys(t *testing.T) {
 		NodeSpacing:     123,
 		Padding:         "[top=11,left=22,bottom=33,right=44]",
 		EdgeNodeSpacing: 67,
+		EdgeEdgeSpacing: go2.Pointer(78),
 		SelfLoopSpacing: 89,
 	}
 	raw, err := json.Marshal(opts)
@@ -34,6 +37,7 @@ func TestConfigurableOptsSerializeELK012Keys(t *testing.T) {
 		"spacing.nodeNodeBetweenLayers": float64(123),
 		"elk.padding":                   "[top=11,left=22,bottom=33,right=44]",
 		"spacing.edgeNodeBetweenLayers": float64(67),
+		"spacing.edgeEdgeBetweenLayers": float64(78),
 		"elk.spacing.nodeSelfLoop":      float64(89),
 	}
 	if len(got) != len(want) {
@@ -42,6 +46,75 @@ func TestConfigurableOptsSerializeELK012Keys(t *testing.T) {
 	for key, wantValue := range want {
 		if gotValue := got[key]; gotValue != wantValue {
 			t.Errorf("%s = %#v, want %#v (serialized %s)", key, gotValue, wantValue, raw)
+		}
+	}
+}
+
+func TestUnsetEdgeEdgeSpacingKeepsPreviousDefault(t *testing.T) {
+	// A Go API caller predating the EdgeEdgeSpacing option leaves the field nil, which
+	// must keep the spacing D2 sent before the option existed rather than ELK's own.
+	opts := ConfigurableOpts{
+		Algorithm:       "layered",
+		NodeSpacing:     70,
+		Padding:         "[top=50,left=50,bottom=50,right=50]",
+		EdgeNodeSpacing: 40,
+		SelfLoopSpacing: 50,
+	}
+	for name, got := range map[string]*elkOpts{
+		"root":      newRootLayoutOptions(&opts),
+		"container": newContainerLayoutOptions(&opts),
+	} {
+		if got.EdgeEdgeSpacing == nil || *got.EdgeEdgeSpacing != default_edge_edge_spacing {
+			t.Errorf("%s edge-edge spacing = %v, want %d", name, got.EdgeEdgeSpacing, default_edge_edge_spacing)
+		}
+	}
+}
+
+func TestExplicitZeroEdgeEdgeSpacingIsHonored(t *testing.T) {
+	// Unset is nil, so an explicit zero is a real request for no extra spacing
+	// and must reach ELK rather than being read back as the default.
+	opts := DefaultOpts
+	opts.EdgeEdgeSpacing = go2.Pointer(0)
+	for name, got := range map[string]*elkOpts{
+		"root":      newRootLayoutOptions(&opts),
+		"container": newContainerLayoutOptions(&opts),
+	} {
+		if got.EdgeEdgeSpacing == nil || *got.EdgeEdgeSpacing != 0 {
+			t.Fatalf("%s edge-edge spacing = %v, want 0", name, got.EdgeEdgeSpacing)
+		}
+		raw, err := json.Marshal(got.ConfigurableOpts)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var fields map[string]any
+		if err := json.Unmarshal(raw, &fields); err != nil {
+			t.Fatal(err)
+		}
+		if fields["spacing.edgeEdgeBetweenLayers"] != float64(0) {
+			t.Errorf("%s serialized %s, want an explicit zero for spacing.edgeEdgeBetweenLayers", name, raw)
+		}
+	}
+}
+
+func TestUnsetEdgeEdgeSpacingIsOmitted(t *testing.T) {
+	// ConfigurableOpts is embedded in elkOpts, which is also built bare for
+	// leaf nodes, ports and edge labels. ELK only applies edgeEdgeBetweenLayers
+	// to parents, so those elements must not assert a spacing of their own.
+	for name, opts := range map[string]*elkOpts{
+		"leaf node":  {SelfLoopDistribution: "EQUALLY"},
+		"port":       {PortSide: South},
+		"edge label": {InlineEdgeLabels: true},
+	} {
+		raw, err := json.Marshal(opts)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var got map[string]any
+		if err := json.Unmarshal(raw, &got); err != nil {
+			t.Fatal(err)
+		}
+		if _, ok := got["spacing.edgeEdgeBetweenLayers"]; ok {
+			t.Errorf("%s options carry spacing.edgeEdgeBetweenLayers, want it omitted (serialized %s)", name, raw)
 		}
 	}
 }
@@ -101,6 +174,21 @@ func TestConfigurableOptsAffectLayout(t *testing.T) {
 		spaciousGap := verticalGap(objectByID(t, spacious, "a"), objectByID(t, spacious, "c"))
 		if spaciousGap-compactGap < 300 {
 			t.Fatalf("edge-node layer gap changed from %g to %g, want a material increase", compactGap, spaciousGap)
+		}
+	})
+
+	t.Run("edge-edge spacing between layers", func(t *testing.T) {
+		const src = "a -> x\na -> y\nb -> x\nb -> y\nc -> x\nc -> y"
+		compact := layoutOptionFixture(t, src, func(opts *ConfigurableOpts) {
+			opts.EdgeEdgeSpacing = go2.Pointer(5)
+		})
+		spacious := layoutOptionFixture(t, src, func(opts *ConfigurableOpts) {
+			opts.EdgeEdgeSpacing = go2.Pointer(200)
+		})
+		compactGap := verticalGap(objectByID(t, compact, "a"), objectByID(t, compact, "x"))
+		spaciousGap := verticalGap(objectByID(t, spacious, "a"), objectByID(t, spacious, "x"))
+		if spaciousGap-compactGap < 300 {
+			t.Fatalf("edge-edge layer gap changed from %g to %g, want a material increase", compactGap, spaciousGap)
 		}
 	})
 

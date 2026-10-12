@@ -22,31 +22,35 @@ func AspectRatioMatrix(source, destination Box, aspect AspectRatio) (Matrix, err
 	if !finite(scaleX) || !finite(scaleY) {
 		return Matrix{}, fmt.Errorf("d2scene: aspect-ratio scale is non-finite")
 	}
-	if aspect.Align == AlignNone {
-		matrix := Translate(destination.X, destination.Y).
-			Mul(Scale(scaleX, scaleY)).
-			Mul(Translate(-source.X, -source.Y))
-		if !matrix.IsFinite() {
-			return Matrix{}, fmt.Errorf("d2scene: aspect-ratio transform is non-finite")
+	offsetX, offsetY := destination.X, destination.Y
+	if aspect.Align != AlignNone {
+		scale := scaleX
+		if scaleY < scale {
+			scale = scaleY
 		}
-		return matrix, nil
+		if aspect.Fit == AspectSlice && scaleY > scaleX {
+			scale = scaleY
+		} else if aspect.Fit == AspectSlice {
+			scale = scaleX
+		}
+		scaleX, scaleY = scale, scale
+		alignX, alignY := aspectAlignmentFractions(aspect.Align)
+		// Viewport fitting commonly subtracts nearly equal dimensions. Round
+		// each product explicitly so fused multiply-adds cannot introduce
+		// CPU-dependent residuals into retained SVG transforms. This fixes the
+		// arithmetic without quantizing authored nested transforms, whose tiny
+		// coefficients can become significant under an enclosing scale.
+		extraX := destination.Width - float64(source.Width*scale)
+		extraY := destination.Height - float64(source.Height*scale)
+		offsetX = float64(destination.X + float64(extraX*alignX))
+		offsetY = float64(destination.Y + float64(extraY*alignY))
 	}
-
-	scale := scaleX
-	if scaleY < scale {
-		scale = scaleY
+	matrix := Matrix{
+		A: scaleX,
+		D: scaleY,
+		E: offsetX - float64(source.X*scaleX),
+		F: offsetY - float64(source.Y*scaleY),
 	}
-	if aspect.Fit == AspectSlice && scaleY > scaleX {
-		scale = scaleY
-	} else if aspect.Fit == AspectSlice {
-		scale = scaleX
-	}
-	alignX, alignY := aspectAlignmentFractions(aspect.Align)
-	extraX := destination.Width - source.Width*scale
-	extraY := destination.Height - source.Height*scale
-	matrix := Translate(destination.X+extraX*alignX, destination.Y+extraY*alignY).
-		Mul(Scale(scale, scale)).
-		Mul(Translate(-source.X, -source.Y))
 	if !matrix.IsFinite() {
 		return Matrix{}, fmt.Errorf("d2scene: aspect-ratio transform is non-finite")
 	}

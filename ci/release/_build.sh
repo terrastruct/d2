@@ -59,7 +59,9 @@ sh_c GOOS="$GOOS" GOARCH="$GOARCH" go build -mod=readonly -pgo=off \
 
 # Allow the bundled TALA engine and native exporters on all six release targets.
 MAX_RELEASE_BINARY_BYTES=${MAX_RELEASE_BINARY_BYTES:-45000000}
-MAX_RELEASE_ARCHIVE_BYTES=${MAX_RELEASE_ARCHIVE_BYTES:-19000000}
+# Mach-O archives are larger than Linux archives; the isometric renderer puts
+# the macOS/amd64 archive above 19 MB even with maximum gzip compression.
+MAX_RELEASE_ARCHIVE_BYTES=${MAX_RELEASE_ARCHIVE_BYTES:-20000000}
 sh_c "$RELEASE_TOOL" verify-binary \
   --path "'$BINARY'" \
   --goos "$GOOS" \

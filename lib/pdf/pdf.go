@@ -116,11 +116,11 @@ func (g *GoFPDF) AddPDFPage(png []byte, titlePath []BoardTitle, themeID int64, f
 
 	// Add page
 	g.pdf.AddPageFormat("", fpdf.SizeType{Wd: pageWidth, Ht: pageHeight + headerHeight})
+	g.pdf.SetFillColor(int(fillRGB.Red), int(fillRGB.Green), int(fillRGB.Blue))
+	g.pdf.Rect(0, 0, pageWidth, pageHeight+headerHeight, "F")
 
 	if includeNav {
 		// Draw header
-		g.pdf.SetFillColor(int(fillRGB.Red), int(fillRGB.Green), int(fillRGB.Blue))
-		g.pdf.Rect(0, 0, pageWidth, pageHeight+headerHeight, "F")
 		if fillRGB.IsLight() {
 			g.pdf.SetTextColor(10, 15, 37) // steel-900
 		} else {

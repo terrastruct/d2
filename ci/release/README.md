@@ -135,6 +135,11 @@ closed when the variable is absent; no draft is uploaded.
 
 ## build.sh
 
+Release verification limits each binary to 45,000,000 bytes and each archive to
+20,000,000 bytes. The archive limit accommodates native isometric rendering on
+macOS as well as Linux and Windows. All six release targets retain size limits
+and metadata/checksum verification.
+
 - ./build.sh builds the release archives for each platform into ./build/<VERSION>/*.tar.gz
   Run with --help for usage.
 
