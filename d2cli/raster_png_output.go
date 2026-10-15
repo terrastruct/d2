@@ -28,17 +28,28 @@ func pngFrameOptions() d2raster.FrameOptions {
 	return options
 }
 
-func renderPNGToWriter(ctx context.Context, inputPath string, cacheImages bool, diagram *d2target.Diagram, opts d2svg.RenderOpts, encoder *rasterPNGEncoder, output io.Writer) error {
-	document, err := buildScene(ctx, inputPath, cacheImages, diagram, opts)
+func renderPNGToWriter(ctx context.Context, inputPath string, cacheImages bool, diagram *d2target.Diagram, opts d2svg.RenderOpts, encoder *rasterPNGEncoder, output io.Writer, preview []byte) ([]byte, error) {
+	assetOptions, err := sceneAssetOptions(ctx, inputPath, cacheImages)
 	if err != nil {
-		return err
+		return preview, err
+	}
+	defer assetOptions.Resolver.CloseIdleConnections()
+	document, err := buildSceneWithAssets(ctx, diagram, opts, assetOptions)
+	if err != nil {
+		return preview, err
 	}
 	var localEncoder rasterPNGEncoder
 	if encoder == nil {
 		encoder = &localEncoder
 		defer localEncoder.close()
 	}
-	return encodePNGBands(ctx, output, document, &encoder.bands)
+	if err := encodePNGBands(ctx, output, document, &encoder.bands); err != nil {
+		return preview, err
+	}
+	if len(preview) != 0 {
+		return bundleRasterPreview(ctx, assetOptions.Resolver, preview)
+	}
+	return preview, nil
 }
 
 func encodePNGBands(ctx context.Context, output io.Writer, document *d2scene.Document, encoder *rasterPNGBandEncoder) error {
