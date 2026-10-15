@@ -1019,7 +1019,8 @@ func _renderWithPNGEncoder(ctx context.Context, ms *xmain.State, opts d2svg.Rend
 		cacheImages := ms.Env.Getenv("IMG_CACHE") == "1"
 		if opts.MasterID == "" {
 			written, err := writePNGWithStatus(ctx, ms, outputPath, func(output io.Writer) error {
-				return renderPNGToWriter(ctx, inputPath, cacheImages, diagram, *renderOpts, pngEncoder, output)
+				svg, err = renderPNGToWriter(ctx, inputPath, cacheImages, diagram, *renderOpts, pngEncoder, output, svg)
+				return err
 			})
 			if err != nil {
 				return svg, written, err
@@ -1027,7 +1028,7 @@ func _renderWithPNGEncoder(ctx context.Context, ms *xmain.State, opts d2svg.Rend
 			return svg, written, nil
 		}
 		// Animated SVG composition only needs validation, not retained PNG bytes.
-		err = renderPNGToWriter(ctx, inputPath, cacheImages, diagram, *renderOpts, pngEncoder, io.Discard)
+		svg, err = renderPNGToWriter(ctx, inputPath, cacheImages, diagram, *renderOpts, pngEncoder, io.Discard, svg)
 		return svg, false, err
 	}
 

@@ -634,6 +634,45 @@ func TestFolderOnlyPNGReturnsFirstBoardPreview(t *testing.T) {
 	}
 }
 
+func TestPNGWatchPreviewEmbedsLocalImages(t *testing.T) {
+	directory := t.TempDir()
+	inputPath := filepath.Join(directory, "input.d2")
+	asset := testSolidPNG(t, color.NRGBA{R: 0x12, G: 0x34, B: 0x56, A: 0xff})
+	if err := os.WriteFile(filepath.Join(directory, "asset.png"), asset, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	assetURL, err := url.Parse("asset.png")
+	if err != nil {
+		t.Fatal(err)
+	}
+	env := xos.NewEnv(nil)
+	state := &xmain.State{Env: env, Log: cmdlog.NewTB(env, t), PWD: directory}
+	outputPath := filepath.Join(directory, "output.png")
+	boards, written, err := render(
+		context.Background(), state, 0,
+		d2svg.RenderOpts{Pad: go2.Pointer(int64(0)), Scale: go2.Pointer(1.0)},
+		inputPath, outputPath, false, false, nil,
+		rasterImageDiagram(assetURL), PNG, "", true,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !written || len(boards) != 1 {
+		t.Fatalf("PNG written/preview count = %t/%d", written, len(boards))
+	}
+	want := "data:image/png;base64," + base64.StdEncoding.EncodeToString(asset)
+	if !bytes.Contains(boards[0], []byte(want)) || bytes.Contains(boards[0], []byte(`href="asset.png"`)) {
+		t.Fatal("PNG watch preview did not embed its local image")
+	}
+	output, err := os.ReadFile(outputPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := png.Decode(bytes.NewReader(output)); err != nil {
+		t.Fatalf("PNG export: %v", err)
+	}
+}
+
 func TestBundleGIFPreviewEmbedsLocalImages(t *testing.T) {
 	directory := t.TempDir()
 	inputPath := filepath.Join(directory, "input.d2")

@@ -42,7 +42,7 @@ func TestPNGStreamMatchesCompleteFrame(t *testing.T) {
 				t.Fatal(err)
 			}
 			var got bytes.Buffer
-			if err := renderPNGToWriter(context.Background(), "-", false, diagram, opts, &encoder, &got); err != nil {
+			if _, err := renderPNGToWriter(context.Background(), "-", false, diagram, opts, &encoder, &got, nil); err != nil {
 				t.Fatalf("shadow=%v scale=%v: %v", shadow, scale, err)
 			}
 			// Identical encoded bytes also verify PNG filtering across strip
@@ -90,7 +90,7 @@ func TestPNGStreamDiagramFixtures(t *testing.T) {
 					t.Fatal(err)
 				}
 				var got bytes.Buffer
-				if err := renderPNGToWriter(context.Background(), "-", false, &diagram, opts, nil, &got); err != nil {
+				if _, err := renderPNGToWriter(context.Background(), "-", false, &diagram, opts, nil, &got, nil); err != nil {
 					t.Fatal(err)
 				}
 				assertPNGOutputPixels(t, got.Bytes(), want)
