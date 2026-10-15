@@ -71,7 +71,7 @@ git submodule update --recursive
 
 ## Logistics
 
-- Use Go 1.22.
+- Use the Go version specified in `go.mod`.
 - Please sign your commits
   ([https://github.com/terrastruct/d2/pull/557#issuecomment-1367468730](https://github.com/terrastruct/d2/pull/557#issuecomment-1367468730)).
 - D2 uses Issues as TODOs. No auto-closing on staleness.
