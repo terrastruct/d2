@@ -54,7 +54,7 @@
   - Keep `sql_table` column types that match the column name, such as
     `date: date`, instead of rendering an empty type. [#2950](https://github.com/d2lang/d2/pull/2950)
   - Keep `class` field types and method return types that match the name, such
-    as `date: date`, instead of dropping them.
+    as `date: date`, instead of dropping them. [#2952](https://github.com/d2lang/d2/pull/2952)
 - decoding and assets:
   - Cap decompressed URL-encoded D2 input at 16 MiB. [#2902](https://github.com/d2lang/d2/pull/2902)
   - Bound image references, locators, fetched and decoded bytes, cached data, and
