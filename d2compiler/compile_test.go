@@ -2858,6 +2858,26 @@ x.y -> a.b: {
 			},
 		},
 		{
+			name: "sql_column_type_matches_name",
+
+			text: `time: {
+  shape: sql_table
+  id
+  created {constraint: primary_key}
+  date: date
+  key: key
+  key {constraint: unique}
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				cols := g.Objects[0].SQLTable.Columns
+				assert.String(t, ``, cols[0].Type.Label)
+				assert.String(t, ``, cols[1].Type.Label)
+				assert.String(t, `date`, cols[2].Type.Label)
+				assert.String(t, `key`, cols[3].Type.Label)
+			},
+		},
+		{
 			name: "nested_sql",
 
 			text: `outer: {
