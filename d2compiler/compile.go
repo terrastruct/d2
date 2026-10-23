@@ -800,6 +800,11 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 	c.explicitLabels[attrs] = struct{}{}
 }
 
+func (c *compiler) hasExplicitLabel(attrs *d2graph.Attributes) bool {
+	_, ok := c.explicitLabels[attrs]
+	return ok
+}
+
 func (c *compiler) compilePosition(attrs *d2graph.Attributes, f *d2ir.Field) {
 	if c.stopped() {
 		return
@@ -1470,7 +1475,7 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 		}
 		typ := col.Label.Value
 		// A column without an explicit label defaults it to its ID, which is not a type.
-		if _, ok := c.explicitLabels[&col.Attributes]; !ok && typ == col.IDVal {
+		if !c.hasExplicitLabel(&col.Attributes) && typ == col.IDVal {
 			typ = ""
 		}
 		d2Col := d2target.SQLColumn{
