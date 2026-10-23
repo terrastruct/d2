@@ -1,0 +1,480 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,0:0:0-8:0:121",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,0:0:0-7:1:120",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,0:0:0-0:4:4",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,0:0:0-0:4:4",
+                    "value": [
+                      {
+                        "string": "time",
+                        "raw_string": "time"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,0:6:6-7:1:120",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,1:2:10-1:18:26",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,1:2:10-1:7:15",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,1:2:10-1:7:15",
+                              "value": [
+                                {
+                                  "string": "shape",
+                                  "raw_string": "shape"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,1:9:17-1:18:26",
+                          "value": [
+                            {
+                              "string": "sql_table",
+                              "raw_string": "sql_table"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,2:2:29-2:4:31",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,2:2:29-2:4:31",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,2:2:29-2:4:31",
+                              "value": [
+                                {
+                                  "string": "id",
+                                  "raw_string": "id"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {}
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,3:2:34-3:35:67",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,3:2:34-3:9:41",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,3:2:34-3:9:41",
+                              "value": [
+                                {
+                                  "string": "created",
+                                  "raw_string": "created"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,3:10:42-3:35:67",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,3:11:43-3:34:66",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,3:11:43-3:21:53",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,3:11:43-3:21:53",
+                                        "value": [
+                                          {
+                                            "string": "constraint",
+                                            "raw_string": "constraint"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,3:23:55-3:34:66",
+                                    "value": [
+                                      {
+                                        "string": "primary_key",
+                                        "raw_string": "primary_key"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,4:2:70-4:12:80",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,4:2:70-4:6:74",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,4:2:70-4:6:74",
+                              "value": [
+                                {
+                                  "string": "date",
+                                  "raw_string": "date"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,4:8:76-4:12:80",
+                          "value": [
+                            {
+                              "string": "date",
+                              "raw_string": "date"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,5:2:83-5:10:91",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,5:2:83-5:5:86",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,5:2:83-5:5:86",
+                              "value": [
+                                {
+                                  "string": "key",
+                                  "raw_string": "key"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,5:7:88-5:10:91",
+                          "value": [
+                            {
+                              "string": "key",
+                              "raw_string": "key"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,6:2:94-6:26:118",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,6:2:94-6:5:97",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,6:2:94-6:5:97",
+                              "value": [
+                                {
+                                  "string": "key",
+                                  "raw_string": "key"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,6:6:98-6:26:118",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,6:7:99-6:25:117",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,6:7:99-6:17:109",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,6:7:99-6:17:109",
+                                        "value": [
+                                          {
+                                            "string": "constraint",
+                                            "raw_string": "constraint"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,6:19:111-6:25:117",
+                                    "value": [
+                                      {
+                                        "string": "unique",
+                                        "raw_string": "unique"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "iconStyle": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "time",
+        "id_val": "time",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,0:0:0-0:4:4",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sql_column_type_matches_name.d2,0:0:0-0:4:4",
+                    "value": [
+                      {
+                        "string": "time",
+                        "raw_string": "time"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "sql_table": {
+          "columns": [
+            {
+              "name": {
+                "label": "id",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "type": {
+                "label": "",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "constraint": null,
+              "reference": ""
+            },
+            {
+              "name": {
+                "label": "created",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "type": {
+                "label": "",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "constraint": [
+                "primary_key"
+              ],
+              "reference": ""
+            },
+            {
+              "name": {
+                "label": "date",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "type": {
+                "label": "date",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "constraint": null,
+              "reference": ""
+            },
+            {
+              "name": {
+                "label": "key",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "type": {
+                "label": "key",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "constraint": [
+                "unique"
+              ],
+              "reference": ""
+            }
+          ]
+        },
+        "attributes": {
+          "label": {
+            "value": "time"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "iconStyle": {},
+          "near_key": null,
+          "shape": {
+            "value": "sql_table"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

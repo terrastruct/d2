@@ -51,6 +51,8 @@
   - Limit wildcard edge connections and selectors to bounded expansion work,
     returning a clear error before excessive fanout consumes resources.
     [#2926](https://github.com/d2lang/d2/pull/2926)
+  - Keep `sql_table` column types that match the column name, such as
+    `date: date`, instead of rendering an empty type.
 - decoding and assets:
   - Cap decompressed URL-encoded D2 input at 16 MiB. [#2902](https://github.com/d2lang/d2/pull/2902)
   - Bound image references, locators, fetched and decoded bytes, cached data, and
