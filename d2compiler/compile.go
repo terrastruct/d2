@@ -1417,9 +1417,10 @@ func (c *compiler) compileClass(obj *d2graph.Object) {
 			}
 		}
 
+		// A field or method without an explicit label defaults it to its ID, which is not a type.
 		if !strings.Contains(f.IDVal, "(") {
 			typ := f.Label.Value
-			if typ == f.IDVal {
+			if !c.hasExplicitLabel(&f.Attributes) && typ == f.IDVal {
 				typ = ""
 			}
 			underline := f.Attributes.Style.Underline != nil && f.Attributes.Style.Underline.Value == "true"
@@ -1430,10 +1431,8 @@ func (c *compiler) compileClass(obj *d2graph.Object) {
 				Underline:  underline,
 			})
 		} else {
-			// TODO: Not great, AST should easily allow specifying alternate primary field
-			// as an explicit label should change the name.
 			returnType := f.Label.Value
-			if returnType == f.IDVal {
+			if !c.hasExplicitLabel(&f.Attributes) && returnType == f.IDVal {
 				returnType = "void"
 			}
 			underline := f.Attributes.Style.Underline != nil && f.Attributes.Style.Underline.Value == "true"

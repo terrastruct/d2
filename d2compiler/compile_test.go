@@ -2878,6 +2878,27 @@ x.y -> a.b: {
 			},
 		},
 		{
+			name: "class_field_type_matches_name",
+
+			text: `Event: {
+  shape: class
+  id
+  date: date
+  +status: status
+  save()
+  now(): now()
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				class := g.Objects[0].Class
+				assert.String(t, ``, class.Fields[0].Type)
+				assert.String(t, `date`, class.Fields[1].Type)
+				assert.String(t, `status`, class.Fields[2].Type)
+				assert.String(t, `void`, class.Methods[0].Return)
+				assert.String(t, `now()`, class.Methods[1].Return)
+			},
+		},
+		{
 			name: "nested_sql",
 
 			text: `outer: {
