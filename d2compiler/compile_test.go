@@ -2858,6 +2858,47 @@ x.y -> a.b: {
 			},
 		},
 		{
+			name: "sql_column_type_matches_name",
+
+			text: `time: {
+  shape: sql_table
+  id
+  created {constraint: primary_key}
+  date: date
+  key: key
+  key {constraint: unique}
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				cols := g.Objects[0].SQLTable.Columns
+				assert.String(t, ``, cols[0].Type.Label)
+				assert.String(t, ``, cols[1].Type.Label)
+				assert.String(t, `date`, cols[2].Type.Label)
+				assert.String(t, `key`, cols[3].Type.Label)
+			},
+		},
+		{
+			name: "class_field_type_matches_name",
+
+			text: `Event: {
+  shape: class
+  id
+  date: date
+  +status: status
+  save()
+  now(): now()
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				class := g.Objects[0].Class
+				assert.String(t, ``, class.Fields[0].Type)
+				assert.String(t, `date`, class.Fields[1].Type)
+				assert.String(t, `status`, class.Fields[2].Type)
+				assert.String(t, `void`, class.Methods[0].Return)
+				assert.String(t, `now()`, class.Methods[1].Return)
+			},
+		},
+		{
 			name: "nested_sql",
 
 			text: `outer: {
